@@ -12,6 +12,7 @@ using System.Net.Http.Headers;
 using System.Web.Http.Description;
 using System.Xml.Linq;
 using Newtonsoft.Json;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
 {
@@ -214,6 +215,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
         /// <returns>The type.</returns>
         public virtual Type ResolveHttpRequestMessageType(ApiDescription api)
         {
+            Verify.ArgumentNotNull(api, "api");
             string controllerName = api.ActionDescriptor.ControllerDescriptor.ControllerName;
             string actionName = api.ActionDescriptor.ActionName;
             IEnumerable<string> parameterNames = api.ParameterDescriptions.Select(p => p.Name);
@@ -322,6 +324,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
                 }
                 else
                 {
+                    Verify.ArgumentNotNull(type, "type");
                     sample = new InvalidSample(String.Format(
                         CultureInfo.CurrentCulture,
                         "Failed to generate the sample for media type '{0}'. Cannot use formatter '{1}' to write type '{2}'.",

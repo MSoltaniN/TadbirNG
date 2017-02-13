@@ -3,9 +3,7 @@
     <StringProperty Name="MergeSettingsFiles">NoMerge</StringProperty>
     <BooleanProperty Name="WriteCache">False</BooleanProperty>
     <CollectionProperty Name="RecognizedWords">
-      <Value>Babak</Value>
-      <Value>Babaksoft</Value>
-      <Value>BabakSoft</Value>
+      <Value>Tadbir</Value>
     </CollectionProperty>
   </GlobalSettings>
   <Parsers>
@@ -312,11 +310,6 @@
     </Analyzer>
     <Analyzer AnalyzerId="StyleCop.CSharp.MaintainabilityRules">
       <Rules>
-        <Rule Name="AccessModifierMustBeDeclared">
-          <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
-          </RuleSettings>
-        </Rule>
         <Rule Name="StatementMustNotUseUnnecessaryParenthesis">
           <RuleSettings>
             <BooleanProperty Name="Enabled">False</BooleanProperty>

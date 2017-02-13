@@ -13,6 +13,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Description;
 using SPPC.Tadbir.Web.Api.Areas.HelpPage.ModelDescriptions;
 using SPPC.Tadbir.Web.Api.Areas.HelpPage.Models;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
 {
@@ -27,6 +28,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
         /// <param name="documentationProvider">The documentation provider.</param>
         public static void SetDocumentationProvider(this HttpConfiguration config, IDocumentationProvider documentationProvider)
         {
+            Verify.ArgumentNotNull(config, "config");
             config.Services.Replace(typeof(IDocumentationProvider), documentationProvider);
         }
 
@@ -178,6 +180,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
         /// <returns>The help page sample generator.</returns>
         public static HelpPageSampleGenerator GetHelpPageSampleGenerator(this HttpConfiguration config)
         {
+            Verify.ArgumentNotNull(config, "config");
             return (HelpPageSampleGenerator)config.Properties.GetOrAdd(
                 typeof(HelpPageSampleGenerator),
                 k => new HelpPageSampleGenerator());
@@ -190,6 +193,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
         /// <param name="sampleGenerator">The help page sample generator.</param>
         public static void SetHelpPageSampleGenerator(this HttpConfiguration config, HelpPageSampleGenerator sampleGenerator)
         {
+            Verify.ArgumentNotNull(config, "config");
             config.Properties.AddOrUpdate(
                 typeof(HelpPageSampleGenerator),
                 k => sampleGenerator,
@@ -203,6 +207,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
         /// <returns>The <see cref="ModelDescriptionGenerator"/></returns>
         public static ModelDescriptionGenerator GetModelDescriptionGenerator(this HttpConfiguration config)
         {
+            Verify.ArgumentNotNull(config, "config");
             return (ModelDescriptionGenerator)config.Properties.GetOrAdd(
                 typeof(ModelDescriptionGenerator),
                 k => InitializeModelDescriptionGenerator(config));
@@ -220,6 +225,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
         {
             object model;
             string modelId = ApiModelPrefix + apiDescriptionId;
+            Verify.ArgumentNotNull(config, "config");
             if (!config.Properties.TryGetValue(modelId, out model))
             {
                 Collection<ApiDescription> apiDescriptions = config.Services.GetApiExplorer().ApiDescriptions;

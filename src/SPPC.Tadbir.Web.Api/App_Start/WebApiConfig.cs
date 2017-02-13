@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -9,6 +10,8 @@ namespace SPPC.Tadbir.Web.Api
     {
         public static void Register(HttpConfiguration config)
         {
+            Verify.ArgumentNotNull(config, "config");
+
             // Web API configuration and services
 
             // Web API routes

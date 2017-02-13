@@ -2,13 +2,17 @@ using System;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 
-namespace SPPC.Tadbir.Web.Api.App_Start
+namespace SPPC.Tadbir.Web.Api.AppStart
 {
     /// <summary>
     /// Specifies the Unity configuration for the main container.
     /// </summary>
-    public class UnityConfig
+    public sealed class UnityConfig
     {
+        private UnityConfig()
+        {
+        }
+
         #region Unity Container
         private static Lazy<IUnityContainer> container = new Lazy<IUnityContainer>(() =>
         {

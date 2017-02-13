@@ -1,13 +1,19 @@
 ﻿using System.Web;
 using System.Web.Optimization;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Web.Api
 {
-    public class BundleConfig
+    public sealed class BundleConfig
     {
+        private BundleConfig()
+        {
+        }
+
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            Verify.ArgumentNotNull(bundles, "bundles");
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 

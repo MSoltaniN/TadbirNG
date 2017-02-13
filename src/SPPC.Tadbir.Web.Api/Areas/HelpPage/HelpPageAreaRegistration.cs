@@ -1,5 +1,6 @@
 using System.Web.Http;
 using System.Web.Mvc;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
 {
@@ -15,6 +16,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
+            Verify.ArgumentNotNull(context, "context");
             context.MapRoute(
                 "HelpPage_Default",
                 "Help/{action}/{apiId}",

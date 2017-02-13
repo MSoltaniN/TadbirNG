@@ -1,3 +1,4 @@
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Scope = "member", Target = "SPPC.Framework.Mapper.DomainMapper.#.cctor()", Justification = "Static constructor is required because of existing dependency between static fields.")]
 
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.

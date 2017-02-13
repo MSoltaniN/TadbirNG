@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{10E6D16E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{03A6205C-A092-49F4-835E-9D1B52AFF853}"
 	ProjectSection(SolutionItems) = preProject
+		CustomDictionary.xml = CustomDictionary.xml
 		FrameworkSolutionInfo.cs = FrameworkSolutionInfo.cs
 		TadbirSolutionInfo.cs = TadbirSolutionInfo.cs
 	EndProjectSection

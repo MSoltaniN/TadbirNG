@@ -4,23 +4,30 @@
     <Unrecognized>
     </Unrecognized>
     <Recognized>
-      <Word>Appender</Word>
+      <Word>Tadbir</Word>
+      <Word>Api</Word>
+      <Word>api</Word>
+      <Word>Src</Word>
+      <Word>src</Word>
+      <Word>Mvc</Word>
+      <Word>ModelName</Word>
     </Recognized>
     <Deprecated>
     </Deprecated>
     <Compound>
-      <Term CompoundAlternate="Babaksoft">BabakSoft</Term>
       <Term CompoundAlternate="Crosscutting">CrossCutting</Term>
-      <Term CompoundAlternate="Cellphone">CellPhone</Term>
+      <Term>ModelName</Term>
     </Compound>
     <DiscreteExceptions>
     </DiscreteExceptions>
   </Words>
   <Acronyms>
     <CasingExceptions>
+      <Acronym>SPPC</Acronym>
       <Acronym>MVC</Acronym>
-      <Acronym>WPF</Acronym>
-      <Acronym>UWP</Acronym>
+      <Acronym>Mvc</Acronym>
+      <Acronym>Api</Acronym>
+      <Acronym>api</Acronym>
     </CasingExceptions>
   </Acronyms>
 </Dictionary>

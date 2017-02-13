@@ -7,8 +7,12 @@ using System.Web.Routing;
 
 namespace SPPC.Tadbir.Web
 {
-    public class RouteConfig
+    public sealed class RouteConfig
     {
+        private RouteConfig()
+        {
+        }
+
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");

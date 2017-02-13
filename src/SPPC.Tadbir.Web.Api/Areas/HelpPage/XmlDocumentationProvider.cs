@@ -6,6 +6,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Description;
 using System.Xml.XPath;
 using SPPC.Tadbir.Web.Api.Areas.HelpPage.ModelDescriptions;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
 {
@@ -37,6 +38,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
 
         public string GetDocumentation(HttpControllerDescriptor controllerDescriptor)
         {
+            Verify.ArgumentNotNull(controllerDescriptor, "controllerDescriptor");
             XPathNavigator typeNode = GetTypeNode(controllerDescriptor.ControllerType);
             return GetTagValue(typeNode, "summary");
         }

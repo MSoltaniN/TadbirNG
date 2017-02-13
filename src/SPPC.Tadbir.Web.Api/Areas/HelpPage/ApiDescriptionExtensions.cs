@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Web;
 using System.Web.Http.Description;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
 {
@@ -14,6 +15,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
         /// <returns>The ID as a string.</returns>
         public static string GetFriendlyId(this ApiDescription description)
         {
+            Verify.ArgumentNotNull(description, "description");
             string path = description.RelativePath;
             string[] urlParts = path.Split('?');
             string localPath = urlParts[0];
