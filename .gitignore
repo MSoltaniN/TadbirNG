@@ -1,0 +1,9 @@
+﻿# Ignore conventional output paths for libraries and tests
+bin/
+testbin/
+
+# Ignore conventional Nuget package source
+lib/
+
+# Ignore $random_seed$ files that keep being generated (apparently out of no-where)
+/**/$RANDOM_SEED$
