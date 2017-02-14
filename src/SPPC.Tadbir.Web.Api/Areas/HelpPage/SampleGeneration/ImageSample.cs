@@ -17,6 +17,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
             {
                 throw new ArgumentNullException("src");
             }
+
             Src = src;
         }
 

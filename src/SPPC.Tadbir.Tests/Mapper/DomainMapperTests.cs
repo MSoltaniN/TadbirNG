@@ -17,42 +17,42 @@ namespace SPPC.Tadbir.Mapper.Tests
 
         #region Type Mapping Tests
 
-        // TODO: Verify domain mappings similar to the following example test methods...
-        //[Test]
-        //public void ContainsMappingFromModelToViewModel()
-        //{
-        //    // Arrange (Done in FixtureSetup)
+        //// TODO: Verify domain mappings similar to the following example test methods...
+        ////[Test]
+        ////public void ContainsMappingFromModelToViewModel()
+        ////{
+        ////    // Arrange (Done in FixtureSetup)
 
-        //    // Act & Assert
-        //    AssertMappingIsDefined<Model, ViewModel>();
-        //}
+        ////    // Act & Assert
+        ////    AssertMappingIsDefined<Model, ViewModel>();
+        ////}
 
-        //[Test]
-        //public void CanMapFromModelToViewModel()
-        //{
-        //    // Arrange (Done in FixtureSetup)
+        ////[Test]
+        ////public void CanMapFromModelToViewModel()
+        ////{
+        ////    // Arrange (Done in FixtureSetup)
 
-        //    // Act & Assert
-        //    AssertMapperCanConvertFromSourceToDestination<Model, ViewModel>();
-        //}
+        ////    // Act & Assert
+        ////    AssertMapperCanConvertFromSourceToDestination<Model, ViewModel>();
+        ////}
 
-        //[Test]
-        //public void ContainsMappingFromViewModelToModel()
-        //{
-        //    // Arrange (Done in FixtureSetup)
+        ////[Test]
+        ////public void ContainsMappingFromViewModelToModel()
+        ////{
+        ////    // Arrange (Done in FixtureSetup)
 
-        //    // Act & Assert
-        //    AssertMappingIsDefined<ViewModel, Model>();
-        //}
+        ////    // Act & Assert
+        ////    AssertMappingIsDefined<ViewModel, Model>();
+        ////}
 
-        //[Test]
-        //public void CanMapFromViewModelToModel()
-        //{
-        //    // Arrange (Done in FixtureSetup)
+        ////[Test]
+        ////public void CanMapFromViewModelToModel()
+        ////{
+        ////    // Arrange (Done in FixtureSetup)
 
-        //    // Act & Assert
-        //    AssertMapperCanConvertFromSourceToDestination<ViewModel, Model>();
-        //}
+        ////    // Act & Assert
+        ////    AssertMapperCanConvertFromSourceToDestination<ViewModel, Model>();
+        ////}
 
         #endregion
 

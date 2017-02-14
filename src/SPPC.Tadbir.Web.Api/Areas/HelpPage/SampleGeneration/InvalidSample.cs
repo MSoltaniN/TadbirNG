@@ -13,6 +13,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
             {
                 throw new ArgumentNullException("errorMessage");
             }
+
             ErrorMessage = errorMessage;
         }
 

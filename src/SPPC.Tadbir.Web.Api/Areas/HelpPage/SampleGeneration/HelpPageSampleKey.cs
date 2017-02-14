@@ -56,14 +56,17 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
             {
                 throw new InvalidEnumArgumentException("sampleDirection", (int)sampleDirection, typeof(SampleDirection));
             }
+
             if (controllerName == null)
             {
                 throw new ArgumentNullException("controllerName");
             }
+
             if (actionName == null)
             {
                 throw new ArgumentNullException("actionName");
             }
+
             if (parameterNames == null)
             {
                 throw new ArgumentNullException("parameterNames");
@@ -153,14 +156,17 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
             {
                 hashCode ^= MediaType.GetHashCode();
             }
+
             if (SampleDirection != null)
             {
                 hashCode ^= SampleDirection.GetHashCode();
             }
+
             if (ParameterType != null)
             {
                 hashCode ^= ParameterType.GetHashCode();
             }
+
             foreach (string parameterName in ParameterNames)
             {
                 hashCode ^= parameterName.ToUpperInvariant().GetHashCode();

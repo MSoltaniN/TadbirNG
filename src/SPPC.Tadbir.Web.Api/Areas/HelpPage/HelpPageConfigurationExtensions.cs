@@ -321,7 +321,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
                     }
                     else
                     {
-                        Debug.Assert(parameterDescriptor == null);
+                        Debug.Assert(parameterDescriptor == null, "Local variable 'parameterDescriptor' must be null.");
 
                         // If parameterDescriptor is null, this is an undeclared route parameter which only occurs
                         // when source is FromUri. Ignored in request model and among resource parameters but listed
@@ -458,6 +458,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
                     modelGenerator.GetOrCreateModelDescription(parameterType);
                 }
             }
+
             return modelGenerator;
         }
 

@@ -19,7 +19,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage.ModelDescriptions
     public class ModelDescriptionGenerator
     {
         // Modify this to support more data annotation attributes.
-        private readonly IDictionary<Type, Func<object, string>> AnnotationTextGenerator = new Dictionary<Type, Func<object, string>>
+        private readonly IDictionary<Type, Func<object, string>> annotationTextGenerator = new Dictionary<Type, Func<object, string>>
         {
             { typeof(RequiredAttribute), a => "Required" },
             { typeof(RangeAttribute), a =>
@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage.ModelDescriptions
         };
 
         // Modify this to add more default documentations.
-        private readonly IDictionary<Type, string> DefaultTypeDocumentation = new Dictionary<Type, string>
+        private readonly IDictionary<Type, string> defaultTypeDocumentation = new Dictionary<Type, string>
         {
             { typeof(Int16), "integer" },
             { typeof(Int32), "integer" },
@@ -126,11 +126,12 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage.ModelDescriptions
             {
                 if (modelType != modelDescription.ModelType)
                 {
+                    string message = "A model description could not be created. Duplicate model name '{0}' was found for types '{1}' and '{2}'. ";
+                    message += "Use the [ModelName] attribute to change the model name for at least one of the types so that it has a unique name.";
                     throw new InvalidOperationException(
                         String.Format(
                             CultureInfo.CurrentCulture,
-                            "A model description could not be created. Duplicate model name '{0}' was found for types '{1}' and '{2}'. " +
-                            "Use the [ModelName] attribute to change the model name for at least one of the types so that it has a unique name.",
+                            message,
                             modelName,
                             modelDescription.ModelType.FullName,
                             modelType.FullName));
@@ -139,7 +140,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage.ModelDescriptions
                 return modelDescription;
             }
 
-            if (DefaultTypeDocumentation.ContainsKey(modelType))
+            if (defaultTypeDocumentation.ContainsKey(modelType))
             {
                 return GenerateSimpleTypeModelDescription(modelType);
             }
@@ -161,6 +162,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage.ModelDescriptions
                         return GenerateCollectionModelDescription(modelType, genericArguments[0]);
                     }
                 }
+
                 if (genericArguments.Length == 2)
                 {
                     Type dictionaryType = typeof(IDictionary<,>).MakeGenericType(genericArguments);
@@ -252,10 +254,11 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage.ModelDescriptions
         private string CreateDefaultDocumentation(Type type)
         {
             string documentation;
-            if (DefaultTypeDocumentation.TryGetValue(type, out documentation))
+            if (defaultTypeDocumentation.TryGetValue(type, out documentation))
             {
                 return documentation;
             }
+
             if (DocumentationProvider != null)
             {
                 documentation = DocumentationProvider.GetDocumentation(type);
@@ -272,7 +275,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage.ModelDescriptions
             foreach (Attribute attribute in attributes)
             {
                 Func<object, string> textGenerator;
-                if (AnnotationTextGenerator.TryGetValue(attribute.GetType(), out textGenerator))
+                if (annotationTextGenerator.TryGetValue(attribute.GetType(), out textGenerator))
                 {
                     annotations.Add(
                         new ParameterAnnotation
@@ -291,6 +294,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage.ModelDescriptions
                 {
                     return -1;
                 }
+
                 if (y.AnnotationAttribute is RequiredAttribute)
                 {
                     return 1;
@@ -409,13 +413,16 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage.ModelDescriptions
                         Name = field.Name,
                         Value = field.GetRawConstantValue().ToString()
                     };
+
                     if (DocumentationProvider != null)
                     {
                         enumValue.Documentation = DocumentationProvider.GetDocumentation(field);
                     }
+
                     enumDescription.Values.Add(enumValue);
                 }
             }
+
             GeneratedModels.Add(enumDescription.Name, enumDescription);
 
             return enumDescription;

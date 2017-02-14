@@ -42,8 +42,8 @@ namespace SPPC.Tadbir.Mapper
         private static void MapCoreTypes(IMapperConfigurationExpression mapperConfig)
         {
             // TODO: Add domain mapping configuration statements similar to the following commented lines...
-            //mapperConfig.CreateMap<Model, ViewModel>();
-            //mapperConfig.CreateMap<ViewModel, Model>();
+            // mapperConfig.CreateMap<Model, ViewModel>();
+            // mapperConfig.CreateMap<ViewModel, Model>();
         }
 
         private static MapperConfiguration _configuration;

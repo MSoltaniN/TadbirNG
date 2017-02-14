@@ -14,7 +14,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
     public class ObjectGenerator
     {
         internal const int DefaultCollectionSize = 2;
-        private readonly SimpleTypeObjectGenerator SimpleObjectGenerator = new SimpleTypeObjectGenerator();
+        private readonly SimpleTypeObjectGenerator simpleObjectGenerator = new SimpleTypeObjectGenerator();
 
         /// <summary>
         /// Generates an object for a given type. The type needs to be public, have a public default constructor and settable public properties/fields. Currently it supports the following types:
@@ -33,72 +33,6 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
         public object GenerateObject(Type type)
         {
             return GenerateObject(type, new Dictionary<Type, object>());
-        }
-
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Here we just want to return null if anything goes wrong.")]
-        private object GenerateObject(Type type, Dictionary<Type, object> createdObjectReferences)
-        {
-            try
-            {
-                if (SimpleTypeObjectGenerator.CanGenerateObject(type))
-                {
-                    return SimpleObjectGenerator.GenerateObject(type);
-                }
-
-                if (type.IsArray)
-                {
-                    return GenerateArray(type, DefaultCollectionSize, createdObjectReferences);
-                }
-
-                if (type.IsGenericType)
-                {
-                    return GenerateGenericType(type, DefaultCollectionSize, createdObjectReferences);
-                }
-
-                if (type == typeof(IDictionary))
-                {
-                    return GenerateDictionary(typeof(Hashtable), DefaultCollectionSize, createdObjectReferences);
-                }
-
-                if (typeof(IDictionary).IsAssignableFrom(type))
-                {
-                    return GenerateDictionary(type, DefaultCollectionSize, createdObjectReferences);
-                }
-
-                if (type == typeof(IList) ||
-                    type == typeof(IEnumerable) ||
-                    type == typeof(ICollection))
-                {
-                    return GenerateCollection(typeof(ArrayList), DefaultCollectionSize, createdObjectReferences);
-                }
-
-                if (typeof(IList).IsAssignableFrom(type))
-                {
-                    return GenerateCollection(type, DefaultCollectionSize, createdObjectReferences);
-                }
-
-                if (type == typeof(IQueryable))
-                {
-                    return GenerateQueryable(type, DefaultCollectionSize, createdObjectReferences);
-                }
-
-                if (type.IsEnum)
-                {
-                    return GenerateEnum(type);
-                }
-
-                if (type.IsPublic || type.IsNestedPublic)
-                {
-                    return GenerateComplexObject(type, createdObjectReferences);
-                }
-            }
-            catch
-            {
-                // Returns null if anything fails
-                return null;
-            }
-
-            return null;
         }
 
         private static object GenerateGenericType(Type type, int collectionSize, Dictionary<Type, object> createdObjectReferences)
@@ -176,10 +110,12 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
                 parameterValues[i] = objectGenerator.GenerateObject(genericArgs[i], createdObjectReferences);
                 failedToCreateTuple &= parameterValues[i] == null;
             }
+
             if (failedToCreateTuple)
             {
                 return null;
             }
+
             object result = Activator.CreateInstance(type, parameterValues);
             return result;
         }
@@ -209,6 +145,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
                 // Failed to create key and values
                 return null;
             }
+
             object result = Activator.CreateInstance(keyValuePairType, keyObject, valueObject);
             return result;
         }
@@ -276,6 +213,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
             {
                 return possibleValues.GetValue(0);
             }
+
             return null;
         }
 
@@ -292,10 +230,12 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
             {
                 list = GenerateArray(typeof(object[]), size, createdObjectReferences);
             }
+
             if (list == null)
             {
                 return null;
             }
+
             if (isGeneric)
             {
                 Type argumentType = typeof(IEnumerable<>).MakeGenericType(queryableType.GetGenericArguments());
@@ -362,6 +302,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
 
                 result = defaultCtor.Invoke(new object[0]);
             }
+
             createdObjectReferences.Add(type, result);
             SetPublicProperties(type, result, createdObjectReferences);
             SetPublicFields(type, result, createdObjectReferences);
@@ -393,10 +334,86 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
             }
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Here we just want to return null if anything goes wrong.")]
+        private object GenerateObject(Type type, Dictionary<Type, object> createdObjectReferences)
+        {
+            try
+            {
+                if (SimpleTypeObjectGenerator.CanGenerateObject(type))
+                {
+                    return simpleObjectGenerator.GenerateObject(type);
+                }
+
+                if (type.IsArray)
+                {
+                    return GenerateArray(type, DefaultCollectionSize, createdObjectReferences);
+                }
+
+                if (type.IsGenericType)
+                {
+                    return GenerateGenericType(type, DefaultCollectionSize, createdObjectReferences);
+                }
+
+                if (type == typeof(IDictionary))
+                {
+                    return GenerateDictionary(typeof(Hashtable), DefaultCollectionSize, createdObjectReferences);
+                }
+
+                if (typeof(IDictionary).IsAssignableFrom(type))
+                {
+                    return GenerateDictionary(type, DefaultCollectionSize, createdObjectReferences);
+                }
+
+                if (type == typeof(IList) ||
+                    type == typeof(IEnumerable) ||
+                    type == typeof(ICollection))
+                {
+                    return GenerateCollection(typeof(ArrayList), DefaultCollectionSize, createdObjectReferences);
+                }
+
+                if (typeof(IList).IsAssignableFrom(type))
+                {
+                    return GenerateCollection(type, DefaultCollectionSize, createdObjectReferences);
+                }
+
+                if (type == typeof(IQueryable))
+                {
+                    return GenerateQueryable(type, DefaultCollectionSize, createdObjectReferences);
+                }
+
+                if (type.IsEnum)
+                {
+                    return GenerateEnum(type);
+                }
+
+                if (type.IsPublic || type.IsNestedPublic)
+                {
+                    return GenerateComplexObject(type, createdObjectReferences);
+                }
+            }
+            catch
+            {
+                // Returns null if anything fails
+                return null;
+            }
+
+            return null;
+        }
+
         private class SimpleTypeObjectGenerator
         {
-            private long _index = 0;
             private static readonly Dictionary<Type, Func<long, object>> DefaultGenerators = InitializeGenerators();
+            private long _index = 0;
+
+            public static bool CanGenerateObject(Type type)
+            {
+                return DefaultGenerators.ContainsKey(type);
+            }
+
+            public object GenerateObject(Type type)
+            {
+                return DefaultGenerators[type](++_index);
+            }
 
             [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity", Justification = "These are simple type factories and cannot be split up.")]
             private static Dictionary<Type, Func<long, object>> InitializeGenerators()
@@ -440,16 +457,6 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
                         }
                     },
                 };
-            }
-
-            public static bool CanGenerateObject(Type type)
-            {
-                return DefaultGenerators.ContainsKey(type);
-            }
-
-            public object GenerateObject(Type type)
-            {
-                return DefaultGenerators[type](++_index);
             }
         }
     }

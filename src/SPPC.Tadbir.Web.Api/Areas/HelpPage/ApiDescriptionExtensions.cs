@@ -35,6 +35,7 @@ namespace SPPC.Tadbir.Web.Api.Areas.HelpPage
             {
                 friendlyPath.AppendFormat("_{0}", queryKeyString.Replace('.', '-'));
             }
+
             return friendlyPath.ToString();
         }
     }
