@@ -91,6 +91,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">
+      <Project>{4a10f6f8-6a15-490c-b222-be5dfa4775f9}</Project>
+      <Name>SPPC.Framework.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj">
       <Project>{504D9334-9367-4535-925B-CCB7574CE350}</Project>
       <Name>SPPC.Tadbir.Common</Name>

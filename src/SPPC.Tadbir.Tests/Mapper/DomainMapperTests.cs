@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using NUnit.Framework;
+using SPPC.Framework.Mapper;
 
 namespace SPPC.Tadbir.Mapper.Tests
 {

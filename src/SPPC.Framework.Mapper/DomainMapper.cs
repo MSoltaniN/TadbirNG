@@ -5,7 +5,8 @@ using AutoMapper;
 namespace SPPC.Framework.Mapper
 {
     /// <summary>
-    /// Provides support for mappings between model and view model classes.
+    /// Provides support for mappings between framework model and view model classes using the AutoMapper
+    /// object mapping library.
     /// </summary>
     public partial class DomainMapper : IDomainMapper
     {
@@ -24,7 +25,7 @@ namespace SPPC.Framework.Mapper
         }
 
         /// <summary>
-        /// Maps source object to another object having a different type.
+        /// Maps source object to another object having a potentially different type.
         /// </summary>
         /// <typeparam name="T">Type of target object</typeparam>
         /// <param name="source">Source object that should be mapped</param>

@@ -21,6 +21,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\..\misc\assets\Relaxed.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\..\bin\Debug\SPPC.Tadbir.Mapper.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\bin\Release\SPPC.Tadbir.Mapper.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
     <OutputPath>..\..\bin\Staging\</OutputPath>
@@ -38,6 +40,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\..\bin\Staging\SPPC.Tadbir.Mapper.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LiveHost|AnyCPU'">
     <OutputPath>..\..\bin\LiveHost\</OutputPath>
@@ -47,6 +50,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\..\bin\LiveHost\SPPC.Tadbir.Mapper.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=5.2.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
@@ -68,6 +72,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">
+      <Project>{4a10f6f8-6a15-490c-b222-be5dfa4775f9}</Project>
+      <Name>SPPC.Framework.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj">
       <Project>{504D9334-9367-4535-925B-CCB7574CE350}</Project>
       <Name>SPPC.Tadbir.Common</Name>

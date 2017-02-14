@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
-using SPPC.Tadbir.Mapper;
+using SPPC.Framework.Mapper;
 using SwForAll.Platform.Persistence;
 using SwForAll.Platform.Persistence.NHibernate;
 

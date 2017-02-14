@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using AutoMapper;
+using SPPC.Framework.Mapper;
 
 namespace SPPC.Tadbir.Mapper
 {
     /// <summary>
-    /// Provides support for mappings between model and view model classes.
+    /// Provides support for mappings between Tadbir model and view model classes using the AutoMapper
+    /// object mapping library.
     /// </summary>
     public partial class DomainMapper : IDomainMapper
     {
