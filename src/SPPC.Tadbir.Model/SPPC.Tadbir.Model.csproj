@@ -63,6 +63,15 @@
     <Compile Include="..\TadbirSolutionInfo.cs">
       <Link>TadbirSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Auth\User.Generated.cs" />
+    <Compile Include="Contact\Person.Generated.cs" />
+    <Compile Include="Corporate\Branch.Generated.cs" />
+    <Compile Include="Corporate\Company.Generated.cs" />
+    <Compile Include="Finance\Account.Generated.cs" />
+    <Compile Include="Finance\Currency.Generated.cs" />
+    <Compile Include="Finance\FiscalPeriod.Generated.cs" />
+    <Compile Include="Finance\Transaction.Generated.cs" />
+    <Compile Include="Finance\TransactionLine.Generated.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>

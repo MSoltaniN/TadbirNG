@@ -7,3 +7,6 @@ lib/
 
 # Ignore $random_seed$ files that keep being generated (apparently out of no-where)
 /**/$RANDOM_SEED$
+
+# Ignore generated files
+res/_codegen_
