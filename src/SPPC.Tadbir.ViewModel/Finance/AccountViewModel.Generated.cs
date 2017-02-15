@@ -12,6 +12,8 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -38,24 +40,24 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// Gets or sets the user-friendly code of the account
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(512, ErrorMessage = "{0} can have a maximum of {1} characters.")]
+        [Display(Name = FieldNames.CodeField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Code { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the account
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(512, ErrorMessage = "{0} can have a maximum of {1} characters.")]
+        [Display(Name = FieldNames.NameField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the detail information related to this account
         /// </summary>
-        [Display(Name = "")]
-        [StringLength(512, ErrorMessage = "{0} can have a maximum of {1} characters.")]
+        [Display(Name = FieldNames.DescriptionField)]
+        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
     }
 }

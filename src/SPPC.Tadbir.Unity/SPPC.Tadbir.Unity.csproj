@@ -92,13 +92,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">
-      <Project>{4a10f6f8-6a15-490c-b222-be5dfa4775f9}</Project>
-      <Name>SPPC.Framework.Common</Name>
+    <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
+      <Project>{25d668e5-7585-47d7-8ab6-2fd4ac3f8565}</Project>
+      <Name>SPPC.Framework.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj">
-      <Project>{504D9334-9367-4535-925B-CCB7574CE350}</Project>
-      <Name>SPPC.Tadbir.Common</Name>
+    <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj">
+      <Project>{10837cb4-3c60-42ef-9806-d312c17b9f2f}</Project>
+      <Name>SPPC.Tadbir.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.Mapper\SPPC.Tadbir.Mapper.csproj">
       <Project>{9DFCE647-E7AB-4B9F-A838-21DAE1FF85DC}</Project>

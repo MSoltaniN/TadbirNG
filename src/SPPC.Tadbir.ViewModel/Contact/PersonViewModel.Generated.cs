@@ -12,6 +12,8 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Contact
 {
@@ -37,17 +39,17 @@ namespace SPPC.Tadbir.ViewModel.Contact
         /// <summary>
         /// Gets or sets the first name of this person
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(64, ErrorMessage = "{0} can have a maximum of {1} characters.")]
+        [Display(Name = FieldNames.FirstNameField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string FirstName { get; set; }
 
         /// <summary>
         /// Gets or sets the last name of this person
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(64, ErrorMessage = "{0} can have a maximum of {1} characters.")]
+        [Display(Name = FieldNames.LastNameField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string LastName { get; set; }
     }
 }

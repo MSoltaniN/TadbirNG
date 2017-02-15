@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5594D8DB-0D82-4CB7-B868-9B3CE680037A}</ProjectGuid>
+    <ProjectGuid>{10837CB4-3C60-42EF-9806-D312C17B9F2F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SPPC.Tadbir.NHibernate</RootNamespace>
-    <AssemblyName>SPPC.Tadbir.NHibernate</AssemblyName>
+    <RootNamespace>SPPC.Tadbir</RootNamespace>
+    <AssemblyName>SPPC.Tadbir.Interfaces</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,8 +20,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\bin\Debug\SPPC.Tadbir.Interfaces.XML</DocumentationFile>
     <CodeAnalysisRuleSet>..\..\misc\assets\Relaxed.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\..\bin\Debug\SPPC.Tadbir.NHibernate.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\bin\Release\SPPC.Tadbir.NHibernate.XML</DocumentationFile>
+    <DocumentationFile>..\..\bin\Release\SPPC.Tadbir.Interfaces.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Staging|AnyCPU'">
     <OutputPath>..\..\bin\Staging\</OutputPath>
@@ -40,7 +40,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\..\bin\Staging\SPPC.Tadbir.NHibernate.XML</DocumentationFile>
+    <DocumentationFile>..\..\bin\Staging\SPPC.Tadbir.Interfaces.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LiveHost|AnyCPU'">
     <OutputPath>..\..\bin\LiveHost\</OutputPath>
@@ -50,26 +50,11 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\..\bin\LiveHost\SPPC.Tadbir.NHibernate.XML</DocumentationFile>
+    <DocumentationFile>..\..\bin\LiveHost\SPPC.Tadbir.Interfaces.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentNHibernate, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\FluentNHibernate.2.0.3.0\lib\net40\FluentNHibernate.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NHibernate, Version=4.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\NHibernate.4.1.1.4000\lib\net40\NHibernate.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="SwForAll.Platform.Common">
       <HintPath>..\..\lib\SwForAll.Platform.1.0.0\SwForAll.Platform.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="SwForAll.Platform.Persistence">
-      <HintPath>..\..\lib\SwForAll.Platform.1.0.0\SwForAll.Platform.Persistence.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -81,37 +66,18 @@
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="Mapping\Auth\UserMap.Generated.cs" />
-    <Compile Include="Mapping\Contact\PersonMap.Generated.cs" />
-    <Compile Include="Mapping\Corporate\BranchMap.Generated.cs" />
-    <Compile Include="Mapping\Corporate\CompanyMap.Generated.cs" />
-    <Compile Include="Mapping\Finance\AccountMap.Generated.cs" />
-    <Compile Include="Mapping\Finance\CurrencyMap.Generated.cs" />
-    <Compile Include="Mapping\Finance\FiscalPeriodMap.Generated.cs" />
-    <Compile Include="Mapping\Finance\TransactionLineMap.Generated.cs" />
-    <Compile Include="Mapping\Finance\TransactionMap.Generated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj">
-      <Project>{10837cb4-3c60-42ef-9806-d312c17b9f2f}</Project>
-      <Name>SPPC.Tadbir.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SPPC.Tadbir.Model\SPPC.Tadbir.Model.csproj">
-      <Project>{B11E84DB-B3CE-437C-AFDA-39A3DEDD1584}</Project>
-      <Name>SPPC.Tadbir.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.ViewModel\SPPC.Tadbir.ViewModel.csproj">
-      <Project>{C3445A49-084D-4FC2-B1BB-DCE676B52618}</Project>
+      <Project>{c3445a49-084d-4fc2-b1bb-dce676b52618}</Project>
       <Name>SPPC.Tadbir.ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Repository\" />
+    <Folder Include="Mapping\" />
+    <Folder Include="NHibernate\" />
+    <Folder Include="Service\" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">

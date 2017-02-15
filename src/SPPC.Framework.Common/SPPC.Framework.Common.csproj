@@ -54,9 +54,6 @@
     <DocumentationFile>..\..\bin\LiveHost\SPPC.Framework.Common.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SwForAll.Platform.Common">
-      <HintPath>..\..\lib\SwForAll.Platform.1.0.0\SwForAll.Platform.Common.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -67,19 +64,10 @@
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="Mapping\IDomainMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Values\ValidationMessages.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SPPC.Framework.ViewModel\SPPC.Framework.ViewModel.csproj">
-      <Project>{9CF4AAA8-6C3D-4449-96FA-D019C6DE8A25}</Project>
-      <Name>SPPC.Framework.ViewModel</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NHibernate\" />
-    <Folder Include="Service\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>

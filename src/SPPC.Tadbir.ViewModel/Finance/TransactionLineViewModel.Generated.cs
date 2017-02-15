@@ -12,6 +12,8 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -36,22 +38,22 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// Gets or sets the detail information that further describes this financial entry (article)
         /// </summary>
-        [Display(Name = "")]
-        [StringLength(512, ErrorMessage = "{0} can have a maximum of {1} characters.")]
+        [Display(Name = FieldNames.DescriptionField)]
+        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the amount debited in this financial transaction entry
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
+        [Display(Name = FieldNames.DebitField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public decimal Debit { get; set; }
 
         /// <summary>
         /// Gets or sets the amount credited in this financial transaction entry
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
+        [Display(Name = FieldNames.CreditField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public decimal Credit { get; set; }
     }
 }

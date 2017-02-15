@@ -12,6 +12,8 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -38,45 +40,45 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// Gets or sets the user-friendly identifier of this financial transaction
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(64, ErrorMessage = "{0} can have a maximum of {1} characters.")]
+        [Display(Name = FieldNames.NumberField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string No { get; set; }
 
         /// <summary>
         /// Gets or sets the date when this financial transaction occured
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
+        [Display(Name = FieldNames.DateField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public DateTime Date { get; set; }
 
         /// <summary>
         /// Gets or sets the detail information that further describes this financial transaction
         /// </summary>
-        [Display(Name = "")]
-        [StringLength(512, ErrorMessage = "{0} can have a maximum of {1} characters.")]
+        [Display(Name = FieldNames.DescriptionField)]
+        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the current status of this financial transaction
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(64, ErrorMessage = "{0} can have a maximum of {1} characters.")]
+        [Display(Name = FieldNames.StatusField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Status { get; set; }
 
         /// <summary>
         /// Gets or sets the value that indicates if this financial transaction is authentic
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
+        [Display(Name = FieldNames.IsVerifiedField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public bool IsVerified { get; set; }
 
         /// <summary>
         /// Gets or sets the value that indicates if this financial transaction can be considered final
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
+        [Display(Name = FieldNames.IsApprovedField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public bool IsApproved { get; set; }
     }
 }

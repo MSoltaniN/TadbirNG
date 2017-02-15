@@ -90,9 +90,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">
-      <Project>{4A10F6F8-6A15-490C-B222-BE5DFA4775F9}</Project>
-      <Name>SPPC.Framework.Common</Name>
+    <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
+      <Project>{25d668e5-7585-47d7-8ab6-2fd4ac3f8565}</Project>
+      <Name>SPPC.Framework.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Framework.Mapper\SPPC.Framework.Mapper.csproj">
       <Project>{B3DB67F3-9A53-4452-A8CC-3F1E5F48211B}</Project>

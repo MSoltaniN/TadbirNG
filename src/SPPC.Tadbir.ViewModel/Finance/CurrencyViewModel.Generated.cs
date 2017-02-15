@@ -12,6 +12,8 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -36,9 +38,9 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// Gets or sets the name of this currency
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(64, ErrorMessage = "{0} can have a maximum of {1} characters.")]
+        [Display(Name = FieldNames.NameField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Name { get; set; }
     }
 }

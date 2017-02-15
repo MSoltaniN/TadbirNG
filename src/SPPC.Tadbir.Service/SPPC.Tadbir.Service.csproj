@@ -66,9 +66,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj">
-      <Project>{504D9334-9367-4535-925B-CCB7574CE350}</Project>
-      <Name>SPPC.Tadbir.Common</Name>
+    <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj">
+      <Project>{10837cb4-3c60-42ef-9806-d312c17b9f2f}</Project>
+      <Name>SPPC.Tadbir.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.ViewModel\SPPC.Tadbir.ViewModel.csproj">
       <Project>{C3445A49-084D-4FC2-B1BB-DCE676B52618}</Project>

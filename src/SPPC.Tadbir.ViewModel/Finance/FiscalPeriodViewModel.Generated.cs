@@ -12,6 +12,8 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -37,30 +39,30 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// Gets or sets the name of this fiscal period
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(64, ErrorMessage = "{0} can have a maximum of {1} characters.")]
+        [Display(Name = FieldNames.NameField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the date when business activities of this period starts
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
+        [Display(Name = FieldNames.StartDateField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public DateTime StartDate { get; set; }
 
         /// <summary>
         /// Gets or sets the date when business activities of this period ends
         /// </summary>
-        [Display(Name = "")]
-        [Required(ErrorMessage = "{0} is required.")]
+        [Display(Name = FieldNames.EndDateField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public DateTime EndDate { get; set; }
 
         /// <summary>
         /// Gets or sets the detail information related to this fiscal period
         /// </summary>
-        [Display(Name = "")]
-        [StringLength(512, ErrorMessage = "{0} can have a maximum of {1} characters.")]
+        [Display(Name = FieldNames.DescriptionField)]
+        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
     }
 }
