@@ -1,7 +1,17 @@
-﻿@{
-    ViewBag.Title = "About";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+﻿@using SPPC.Tadbir.Values
 
-<p>Use this area to provide additional information.</p>
+@{
+    ViewBag.Title = Strings.About;
+}
+<h2>@String.Format("{0} {1}", Strings.About, Strings.AppName)</h2>
+<h3>@Strings.WebVersion</h3>
+
+<p>@Strings.AboutMainContent</p>
+
+<p>@Strings.AboutSubsystemIntro</p>
+<ul>
+    <li><strong>@Strings.Accounting :</strong> @Strings.AccountingIntro</li>
+    <li><strong>@Strings.CashFlow :</strong> @Strings.CashFlowIntro</li>
+    <li><strong>@Strings.SalesPurchase :</strong> @Strings.SalesPurchaseIntro</li>
+    <li><strong>@Strings.WarehousingInventory :</strong> @Strings.WarehousingIntro</li>
+</ul>

@@ -22,3 +22,9 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.copyright {
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+}
