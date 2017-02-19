@@ -91,12 +91,18 @@
     <Compile Include="Mapping\Finance\TransactionLineMap.Generated.cs" />
     <Compile Include="Mapping\Finance\TransactionMap.Generated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AccountRepository.cs" />
+    <Compile Include="Repository\AccountRepository.Generated.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
+      <Project>{25d668e5-7585-47d7-8ab6-2fd4ac3f8565}</Project>
+      <Name>SPPC.Framework.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj">
       <Project>{10837cb4-3c60-42ef-9806-d312c17b9f2f}</Project>
       <Name>SPPC.Tadbir.Interfaces</Name>
@@ -110,9 +116,7 @@
       <Name>SPPC.Tadbir.ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Repository\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>

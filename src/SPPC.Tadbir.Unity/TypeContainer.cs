@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Web;
 using Microsoft.Practices.Unity;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.Service;
 using SPPC.Tadbir.Mapper;
+using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.Service;
 using SwForAll.Platform.Persistence;
 using SwForAll.Platform.Persistence.NHibernate;
 
@@ -74,7 +77,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<IUnitOfWork, UnitOfWork>();
 
             // TODO: Associate each new repository class with its contract, similar to the following code...
-            // _container.RegisterType<IRepository, Repository>();
+            _container.RegisterType<IAccountRepository, AccountRepository>();
         }
 
         /// <summary>
@@ -82,6 +85,8 @@ namespace SPPC.Tadbir.Unity
         /// </summary>
         public void RegisterServiceTypes()
         {
+            _container.RegisterType<IApiClient, ServiceClient>();
+            _container.RegisterType<IAccountService, AccountService>();
         }
 
         /// <summary>

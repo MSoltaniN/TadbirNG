@@ -78,7 +78,7 @@ namespace SPPC.Tadbir.Values
         public const string SalesPurchase = "خرید و فروش";
 
         /// <summary>
-        /// Localized text for theInventory and Warehousing subsystem name
+        /// Localized text for the Inventory and Warehousing subsystem name
         /// </summary>
         public const string WarehousingInventory = "کنترل موجودی و انبار";
 
@@ -101,5 +101,20 @@ namespace SPPC.Tadbir.Values
         /// Localized text for intro content related to the Inventory and Warehousing subsystem
         /// </summary>
         public const string WarehousingIntro = "بخش کنترل موجودی و انبار با امکانات گسترده و انعطاف پذیری در تعریف اطلاعات پایه و عملیاتی، پاسخگوی نیازهای سازمانی طیف بسیار وسیعی از کاربران خواهد بود.";
+
+        /// <summary>
+        /// Localized text for Edit caption 
+        /// </summary>
+        public const string Edit = "ویرایش";
+
+        /// <summary>
+        /// Localized text for Details caption
+        /// </summary>
+        public const string Details = "جزئیات";
+
+        /// <summary>
+        /// Localized text for Delete caption
+        /// </summary>
+        public const string Delete = "حذف";
     }
 }

@@ -81,11 +81,6 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the corporate branch in which this financial transaction is defined
-        /// </summary>
-        public virtual Branch Branch { get; set; }
-
-        /// <summary>
         /// Gets or sets the fiscal period in which this financial transaction occured
         /// </summary>
         public virtual FiscalPeriod FiscalPeriod { get; set; }

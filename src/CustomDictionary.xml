@@ -12,6 +12,8 @@
       <Word>src</Word>
       <Word>Mvc</Word>
       <Word>ModelName</Word>
+      <Word>param</Word>
+      <Word>fp</Word>
     </Recognized>
     <Deprecated>
     </Deprecated>

@@ -75,6 +75,9 @@
     <Reference Include="SwForAll.Platform.Common">
       <HintPath>..\..\lib\SwForAll.Platform.1.0.0\SwForAll.Platform.Common.dll</HintPath>
     </Reference>
+    <Reference Include="SwForAll.Platform.Persistence">
+      <HintPath>..\..\lib\SwForAll.Platform.1.0.0\SwForAll.Platform.Persistence.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -180,6 +183,8 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\AccountsController.cs" />
+    <Compile Include="Controllers\AccountsController.Generated.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -240,7 +245,9 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -256,7 +263,20 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj">
+      <Project>{10837cb4-3c60-42ef-9806-d312c17b9f2f}</Project>
+      <Name>SPPC.Tadbir.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tadbir.Unity\SPPC.Tadbir.Unity.csproj">
+      <Project>{2788A1DA-3298-4635-8AAB-064B5EA773C8}</Project>
+      <Name>SPPC.Tadbir.Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tadbir.ViewModel\SPPC.Tadbir.ViewModel.csproj">
+      <Project>{c3445a49-084d-4fc2-b1bb-dce676b52618}</Project>
+      <Name>SPPC.Tadbir.ViewModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
@@ -299,7 +319,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>3287</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:3287/</IISUrl>
+          <IISUrl>http://localhost:3300/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

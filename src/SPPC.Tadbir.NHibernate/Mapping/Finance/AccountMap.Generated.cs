@@ -49,10 +49,6 @@ namespace SPPC.Tadbir.NHibernate.Mapping
 
         private void MapReferences()
         {
-            References(x => x.Branch)
-                .Column("BranchID")
-                .Not.LazyLoad()
-                .Cascade.All();
             References(x => x.FiscalPeriod)
                 .Column("FiscalPeriodID")
                 .Not.LazyLoad()

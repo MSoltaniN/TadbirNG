@@ -256,6 +256,7 @@
         <CollectionProperty Name="Hungarian">
           <Value>as</Value>
           <Value>db</Value>
+          <Value>fp</Value>
           <Value>id</Value>
           <Value>is</Value>
           <Value>no</Value>

@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
+using SPPC.Tadbir.Unity;
 
 namespace SPPC.Tadbir.Web.AppStart
 {
@@ -14,10 +15,26 @@ namespace SPPC.Tadbir.Web.AppStart
         }
 
         #region Unity Container
+
         private static Lazy<IUnityContainer> container = new Lazy<IUnityContainer>(() =>
         {
-            var container = new UnityContainer();
-            RegisterTypes(container);
+            UnityContainer temp = null;
+            UnityContainer container = null;
+            try
+            {
+                temp = new UnityContainer();
+                RegisterTypes(temp);
+                container = temp;
+                temp = null;
+            }
+            finally
+            {
+                if (temp != null)
+                {
+                    temp.Dispose();
+                }
+            }
+
             return container;
         });
 
@@ -28,6 +45,7 @@ namespace SPPC.Tadbir.Web.AppStart
         {
             return container.Value;
         }
+
         #endregion
 
         /// <summary>Registers the type mappings with the Unity container.</summary>
@@ -36,11 +54,10 @@ namespace SPPC.Tadbir.Web.AppStart
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
         public static void RegisterTypes(IUnityContainer container)
         {
-            // NOTE: To load from web.config uncomment the line below. Make sure to add a Microsoft.Practices.Unity.Configuration to the using statements.
-            // container.LoadConfiguration();
-
-            // TODO: Register your types here
-            // container.RegisterType<IProductRepository, ProductRepository>();
+            _unityWrapper = new TypeContainer(container);
+            _unityWrapper.RegisterAll();
         }
+
+        private static TypeContainer _unityWrapper;
     }
 }

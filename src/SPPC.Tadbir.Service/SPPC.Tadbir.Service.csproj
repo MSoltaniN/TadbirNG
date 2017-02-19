@@ -60,12 +60,17 @@
     <Compile Include="..\TadbirSolutionInfo.cs">
       <Link>TadbirSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="AccountService.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
+      <Project>{25D668E5-7585-47D7-8AB6-2FD4AC3F8565}</Project>
+      <Name>SPPC.Framework.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj">
       <Project>{10837cb4-3c60-42ef-9806-d312c17b9f2f}</Project>
       <Name>SPPC.Tadbir.Interfaces</Name>

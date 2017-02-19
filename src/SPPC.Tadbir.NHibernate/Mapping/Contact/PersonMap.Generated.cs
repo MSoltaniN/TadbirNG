@@ -46,8 +46,9 @@ namespace SPPC.Tadbir.NHibernate.Mapping
 
         private void MapReferences()
         {
-            HasOne(x => x.User)
-                .PropertyRef(y => y.Person)
+            References(x => x.User)
+                .Column("UserID")
+                .Unique()
                 .Not.LazyLoad()
                 .Cascade.All();
         }
