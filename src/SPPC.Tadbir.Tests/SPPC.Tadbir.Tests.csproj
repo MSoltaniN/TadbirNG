@@ -112,6 +112,10 @@
       <Project>{9DFCE647-E7AB-4B9F-A838-21DAE1FF85DC}</Project>
       <Name>SPPC.Tadbir.Mapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tadbir.Model\SPPC.Tadbir.Model.csproj">
+      <Project>{B11E84DB-B3CE-437C-AFDA-39A3DEDD1584}</Project>
+      <Name>SPPC.Tadbir.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.Service\SPPC.Tadbir.Service.csproj">
       <Project>{6EB4DCA8-EBC3-40E6-BE52-0B2BDE145A27}</Project>
       <Name>SPPC.Tadbir.Service</Name>

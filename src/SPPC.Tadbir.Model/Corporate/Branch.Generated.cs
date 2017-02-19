@@ -64,24 +64,12 @@ namespace SPPC.Tadbir.Model.Corporate
         public virtual Company Company { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of all accounts defined for this branch
-        /// </summary>
-        public virtual IList<Account> Accounts { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the collection of all financial transactions related to this branch
-        /// </summary>
-        public virtual IList<Transaction> Transactions { get; protected set; }
-
-        /// <summary>
         /// Gets or sets the collection of all fiscal periods defined for this branch
         /// </summary>
         public virtual IList<FiscalPeriod> FiscalPeriods { get; protected set; }
 
         private void InitReferences()
         {
-            this.Accounts = new List<Account>();
-            this.Transactions = new List<Transaction>();
             this.FiscalPeriods = new List<FiscalPeriod>();
 
             //// IMPORTANT NOTE: DO NOT add initialization statements for one-to-one and many-to-one relationships.

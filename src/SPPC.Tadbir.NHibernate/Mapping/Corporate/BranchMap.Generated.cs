@@ -46,14 +46,6 @@ namespace SPPC.Tadbir.NHibernate.Mapping
 
         private void MapReferences()
         {
-            HasMany(x => x.Accounts)
-                .KeyColumn("BranchID")
-                .LazyLoad()
-                .Cascade.All();
-            HasMany(x => x.Transactions)
-                .KeyColumn("BranchID")
-                .LazyLoad()
-                .Cascade.All();
             References(x => x.Company)
                 .Column("CompanyID")
                 .Not.LazyLoad()

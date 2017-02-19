@@ -116,5 +116,15 @@ namespace SPPC.Tadbir.Values
         /// Localized text for Delete caption
         /// </summary>
         public const string Delete = "حذف";
+
+        /// <summary>
+        /// Localized text for Save caption 
+        /// </summary>
+        public const string Save = "ذخیره";
+
+        /// <summary>
+        /// Localized text for Cancel caption 
+        /// </summary>
+        public const string Cancel = "انصراف";
     }
 }

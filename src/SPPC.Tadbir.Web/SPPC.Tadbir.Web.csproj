@@ -180,6 +180,8 @@
     <Content Include="Areas\Accounting\Views\web.config" />
     <Content Include="Areas\Accounting\Views\Accounts\Index.cshtml" />
     <Content Include="Areas\Accounting\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Accounting\Views\Accounts\Create.cshtml" />
+    <Content Include="Areas\Accounting\Views\Accounts\Edit.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -188,6 +190,7 @@
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.bootstrap.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />

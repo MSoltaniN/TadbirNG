@@ -41,7 +41,6 @@
         </Property>
       </Properties>
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="False" joinTable="" description="Corporate branch in which this account is defined" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="False" joinTable="" description="Fiscal period in which this account is defined" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="OneToMany" endpointName="TransactionLine" entityName="TransactionLine" hasKey="False" joinTable="" description="Collection of financial transaction lines (articles) in which this account is used" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
@@ -80,8 +79,6 @@
         </Property>
       </Properties>
       <Relations>
-        <Relation multiplicity="OneToMany" endpointName="Account" entityName="Account" hasKey="False" joinTable="" description="Collection of all accounts defined for this branch" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToMany" endpointName="Transaction" entityName="Transaction" hasKey="False" joinTable="" description="Collection of all financial transactions related to this branch" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Company" entityName="Company" hasKey="False" joinTable="" description="Main company that controls the activities of this branch" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="OneToMany" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="False" joinTable="" description="Collection of all fiscal periods defined for this branch" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
@@ -300,7 +297,6 @@
         </Property>
       </Properties>
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="False" joinTable="" description="Corporate branch in which this financial transaction is defined" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="False" joinTable="" description="Fiscal period in which this financial transaction occured" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Creator" entityName="User" hasKey="False" joinTable="" description="User that initially created this financial transaction" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="LastModifier" entityName="User" hasKey="False" joinTable="" description="User that last modified this financial transaction" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />

@@ -23,6 +23,32 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return View(accounts.ToPagedList(pageNumber, pageSize));
         }
 
+        // GET: accounting/accounts/create
+        public ViewResult Create()
+        {
+            var account = new AccountViewModel() { FiscalPeriodId = TempContext.CurrentFiscalPeriodId };
+            return View(account);
+        }
+
+        // POST: accounting/accounts/create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(AccountViewModel viewModel)
+        {
+            if (viewModel == null)
+            {
+                return RedirectToAction("index", "error");
+            }
+
+            if (ModelState.IsValid)
+            {
+                _accountService.SaveAccount(viewModel);
+                return RedirectToAction("index");
+            }
+
+            return View(viewModel);
+        }
+
         private IAccountService _accountService;
     }
 }

@@ -15,5 +15,11 @@ namespace SPPC.Tadbir.Service
         /// <param name="fpId">Identifier of an existing fiscal period</param>
         /// <returns>Collection of all account items in the specified fiscal period</returns>
         IEnumerable<AccountViewModel> GetAccounts(int fpId);
+
+        /// <summary>
+        /// Inserts or updates a financial account.
+        /// </summary>
+        /// <param name="account">Financial account to insert or update</param>
+        void SaveAccount(AccountViewModel account);
     }
 }

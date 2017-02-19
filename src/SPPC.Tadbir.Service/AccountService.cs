@@ -32,6 +32,15 @@ namespace SPPC.Tadbir.Service
             return accounts;
         }
 
+        /// <summary>
+        /// Inserts or updates a financial account.
+        /// </summary>
+        /// <param name="account">Financial account to insert or update</param>
+        public void SaveAccount(AccountViewModel account)
+        {
+            _apiClient.Insert(account, "accounts");
+        }
+
         private IApiClient _apiClient;
     }
 }

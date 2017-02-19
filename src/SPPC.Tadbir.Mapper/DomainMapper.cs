@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using AutoMapper;
 using SPPC.Framework.Mapper;
+using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Mapper
 {
@@ -38,14 +40,13 @@ namespace SPPC.Tadbir.Mapper
 
         private static void RegisterMappings(IMapperConfigurationExpression mapperConfig)
         {
-            MapCoreTypes(mapperConfig);
+            MapFinanceTypes(mapperConfig);
         }
 
-        private static void MapCoreTypes(IMapperConfigurationExpression mapperConfig)
+        private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)
         {
-            // TODO: Add domain mapping configuration statements similar to the following commented lines...
-            // mapperConfig.CreateMap<Model, ViewModel>();
-            // mapperConfig.CreateMap<ViewModel, Model>();
+            mapperConfig.CreateMap<Account, AccountViewModel>();
+            mapperConfig.CreateMap<AccountViewModel, Account>();
         }
 
         private static MapperConfiguration _configuration;

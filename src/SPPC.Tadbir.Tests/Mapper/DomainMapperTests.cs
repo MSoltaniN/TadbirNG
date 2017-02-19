@@ -4,10 +4,13 @@ using System.Linq;
 using AutoMapper;
 using NUnit.Framework;
 using SPPC.Framework.Mapper;
+using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Mapper.Tests
 {
     [TestFixture]
+    [Category("DomainMapping")]
     public class DomainMapperTests
     {
         [OneTimeSetUp]
@@ -16,44 +19,43 @@ namespace SPPC.Tadbir.Mapper.Tests
             _domainMapper = new DomainMapper();
         }
 
-        #region Type Mapping Tests
+        #region Finance Type Mapping Tests
 
-        //// TODO: Verify domain mappings similar to the following example test methods...
-        ////[Test]
-        ////public void ContainsMappingFromModelToViewModel()
-        ////{
-        ////    // Arrange (Done in FixtureSetup)
+        [Test]
+        public void ContainsMappingFromAccountToAccountViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
 
-        ////    // Act & Assert
-        ////    AssertMappingIsDefined<Model, ViewModel>();
-        ////}
+            // Act & Assert
+            AssertMappingIsDefined<Account, AccountViewModel>();
+        }
 
-        ////[Test]
-        ////public void CanMapFromModelToViewModel()
-        ////{
-        ////    // Arrange (Done in FixtureSetup)
+        [Test]
+        public void CanMapFromAccountToAccountViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
 
-        ////    // Act & Assert
-        ////    AssertMapperCanConvertFromSourceToDestination<Model, ViewModel>();
-        ////}
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<Account, AccountViewModel>();
+        }
 
-        ////[Test]
-        ////public void ContainsMappingFromViewModelToModel()
-        ////{
-        ////    // Arrange (Done in FixtureSetup)
+        [Test]
+        public void ContainsMappingFromAccountViewModelToAccount()
+        {
+            // Arrange (Done in FixtureSetup)
 
-        ////    // Act & Assert
-        ////    AssertMappingIsDefined<ViewModel, Model>();
-        ////}
+            // Act & Assert
+            AssertMappingIsDefined<AccountViewModel, Account>();
+        }
 
-        ////[Test]
-        ////public void CanMapFromViewModelToModel()
-        ////{
-        ////    // Arrange (Done in FixtureSetup)
+        [Test]
+        public void CanMapFromAccountViewModelToAccount()
+        {
+            // Arrange (Done in FixtureSetup)
 
-        ////    // Act & Assert
-        ////    AssertMapperCanConvertFromSourceToDestination<ViewModel, Model>();
-        ////}
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<AccountViewModel, Account>();
+        }
 
         #endregion
 
