@@ -264,6 +264,14 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">
+      <Project>{4A10F6F8-6A15-490C-B222-BE5DFA4775F9}</Project>
+      <Name>SPPC.Framework.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj">
+      <Project>{504d9334-9367-4535-925b-ccb7574ce350}</Project>
+      <Name>SPPC.Tadbir.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj">
       <Project>{10837cb4-3c60-42ef-9806-d312c17b9f2f}</Project>
       <Name>SPPC.Tadbir.Interfaces</Name>

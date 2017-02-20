@@ -228,6 +228,10 @@
     <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
+      <Project>{25d668e5-7585-47d7-8ab6-2fd4ac3f8565}</Project>
+      <Name>SPPC.Framework.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj">
       <Project>{504d9334-9367-4535-925b-ccb7574ce350}</Project>
       <Name>SPPC.Tadbir.Common</Name>

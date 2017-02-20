@@ -86,5 +86,10 @@ namespace SPPC.Tadbir.Values
         /// Localized name of IsApproved field.
         /// </summary>
         public const string IsApprovedField = "تصویب شده";
+
+        /// <summary>
+        /// Localized name of Code field in Account entity.
+        /// </summary>
+        public const string AccountCode = "کد حساب";
     }
 }

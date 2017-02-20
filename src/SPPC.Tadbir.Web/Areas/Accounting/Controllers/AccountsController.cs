@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using PagedList;
+using SPPC.Framework.Service;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -33,20 +34,63 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         // POST: accounting/accounts/create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(AccountViewModel viewModel)
+        public ActionResult Create(AccountViewModel account)
         {
-            if (viewModel == null)
+            if (account == null)
             {
                 return RedirectToAction("index", "error");
             }
 
             if (ModelState.IsValid)
             {
-                _accountService.SaveAccount(viewModel);
+                var response = _accountService.SaveAccount(account);
+                if (response.Result == ServiceResult.ValidationFailed)
+                {
+                    ModelState.AddModelError("Code", response.Message);
+                    return View(account);
+                }
+
                 return RedirectToAction("index");
             }
 
+            return View(account);
+        }
+
+        // GET: accounting/accounts/edit/id
+        public ActionResult Edit(int id)
+        {
+            var viewModel = _accountService.GetAccount(id);
+            if (viewModel == null)
+            {
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
+            }
+
             return View(viewModel);
+        }
+
+        // POST: accounting/accounts/edit/id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(AccountViewModel account)
+        {
+            if (account == null)
+            {
+                return RedirectToAction("index", "error");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var response = _accountService.SaveAccount(account);
+                if (response.Result == ServiceResult.ValidationFailed)
+                {
+                    ModelState.AddModelError("Code", response.Message);
+                    return View(account);
+                }
+
+                return RedirectToAction("index");
+            }
+
+            return View(account);
         }
 
         private IAccountService _accountService;

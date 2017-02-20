@@ -17,6 +17,8 @@ using System.Net;
 using System.Web.Http;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.Values;
+using SPPC.Framework.Values;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -41,7 +43,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accounts/{accountId}
-        [Route("accounts/{accountId}")]
+        [Route("accounts/{accountId:int}")]
         public IHttpActionResult GetAccount(int accountId)
         {
             if (accountId <= 0)
@@ -71,6 +73,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (_repository.IsDuplicateAccount(account))
+            {
+                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.AccountCode);
+                return BadRequest(message);
+            }
+
             _repository.SaveAccount(account);
             return StatusCode(HttpStatusCode.Created);
         }
@@ -97,6 +105,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            if (_repository.IsDuplicateAccount(account))
+            {
+                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.AccountCode);
+                return BadRequest(message);
             }
 
             _repository.SaveAccount(account);

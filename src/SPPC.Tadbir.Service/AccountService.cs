@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.ViewModel.Finance;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Service
 {
@@ -33,12 +34,34 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Retrieves a single account item specified by unique identifier.
+        /// </summary>
+        /// <param name="accountId">Unique identifier of the account to retrieve</param>
+        /// <returns>Account item having the specified identifier as an <see cref="AccountViewModel"/> instance</returns>
+        public AccountViewModel GetAccount(int accountId)
+        {
+            var account = _apiClient.Get<AccountViewModel>("accounts/{0}", accountId);
+            return account;
+        }
+
+        /// <summary>
         /// Inserts or updates a financial account.
         /// </summary>
         /// <param name="account">Financial account to insert or update</param>
-        public void SaveAccount(AccountViewModel account)
+        public ServiceResponse SaveAccount(AccountViewModel account)
         {
-            _apiClient.Insert(account, "accounts");
+            Verify.ArgumentNotNull(account, "account");
+            ServiceResponse response = null;
+            if (account.Id == 0)
+            {
+                response = _apiClient.Insert(account, "accounts");
+            }
+            else
+            {
+                response = _apiClient.Update(account, "accounts/{0}", account.Id);
+            }
+
+            return response;
         }
 
         private IApiClient _apiClient;

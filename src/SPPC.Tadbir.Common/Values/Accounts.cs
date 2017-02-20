@@ -31,5 +31,10 @@ namespace SPPC.Tadbir.Values
         /// Localized text for the caption for creating a new account
         /// </summary>
         public const string CreateNew = "ایجاد حساب جدید";
+
+        /// <summary>
+        /// Localized text for the caption for editing an existing account
+        /// </summary>
+        public const string EditExisting = "ویرایش حساب";
     }
 }

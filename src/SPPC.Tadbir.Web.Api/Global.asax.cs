@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.Web.Api
             InitNHibernate();
         }
 
-        private static void InitNHibernate()
+        private void InitNHibernate()
         {
             var nhibernate = UnityConfig.GetConfiguredContainer()
                 .Resolve<IORMapper>();

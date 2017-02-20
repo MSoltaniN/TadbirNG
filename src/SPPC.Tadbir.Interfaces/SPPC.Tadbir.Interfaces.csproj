@@ -72,6 +72,10 @@
     <Compile Include="Service\IAccountService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
+      <Project>{25D668E5-7585-47D7-8AB6-2FD4AC3F8565}</Project>
+      <Name>SPPC.Framework.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.ViewModel\SPPC.Tadbir.ViewModel.csproj">
       <Project>{c3445a49-084d-4fc2-b1bb-dce676b52618}</Project>
       <Name>SPPC.Tadbir.ViewModel</Name>

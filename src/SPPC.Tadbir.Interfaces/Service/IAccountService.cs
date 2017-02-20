@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPPC.Framework.Service;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Service
@@ -17,9 +18,16 @@ namespace SPPC.Tadbir.Service
         IEnumerable<AccountViewModel> GetAccounts(int fpId);
 
         /// <summary>
+        /// Retrieves a single account item specified by unique identifier.
+        /// </summary>
+        /// <param name="accountId">Unique identifier of the account to retrieve</param>
+        /// <returns>Account item having the specified identifier as an <see cref="AccountViewModel"/> instance</returns>
+        AccountViewModel GetAccount(int accountId);
+
+        /// <summary>
         /// Inserts or updates a financial account.
         /// </summary>
         /// <param name="account">Financial account to insert or update</param>
-        void SaveAccount(AccountViewModel account);
+        ServiceResponse SaveAccount(AccountViewModel account);
     }
 }
