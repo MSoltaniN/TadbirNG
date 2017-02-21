@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Finance;
@@ -48,7 +49,19 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Account, AccountViewModel>();
             mapperConfig.CreateMap<AccountViewModel, Account>();
             mapperConfig.CreateMap<Account, AccountFullViewModel>();
-            mapperConfig.CreateMap<Transaction, TransactionViewModel>();
+            mapperConfig.CreateMap<Transaction, TransactionViewModel>()
+                .ForMember(
+                    dest => dest.DebitSum,
+                    opts => opts.MapFrom(
+                        src => src.Lines
+                            .Select(line => line.Debit)
+                            .Sum()))
+                .ForMember(
+                    dest => dest.CreditSum,
+                    opts => opts.MapFrom(
+                        src => src.Lines
+                            .Select(line => line.Credit)
+                            .Sum()));
             mapperConfig.CreateMap<TransactionViewModel, Transaction>();
         }
 

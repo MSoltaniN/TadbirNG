@@ -1,4 +1,6 @@
-﻿@using SPPC.Framework.Extensions
+﻿@using System.Globalization
+@using SwForAll.Platform.Common
+@using SPPC.Framework.Extensions
 @using SPPC.Tadbir.Values
 @using SPPC.Tadbir.ViewModel.Finance
 @using PagedList.Mvc
@@ -14,6 +16,9 @@
             Transactions.CurrentPageInfo,
             Model.TotalItemCount, Model.PageNumber, Model.PageCount);
     }
+
+    var persianCulture = new CultureInfo("fa-IR");
+    persianCulture.NumberFormat.CurrencySymbol = String.Empty;
 }
 
 <ol class="breadcrumb">
@@ -45,12 +50,16 @@
     <tbody>
         @foreach (var item in Model)
         {
+            var date = JalaliDateTime.FromDateTime(item.Date);
+            string formattedDate = String.Format("{0}/{1}/{2}", date.Year, date.Month, date.Day);
+            string debit = item.DebitSum.ToString("C0", persianCulture);
+            string credit = item.CreditSum.ToString("C0", persianCulture);
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.No)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Date)
+                    @formattedDate
                 </td>
                 <td title="@item.Description">
                     @item.Description.AutoEllipsis(50)
@@ -59,10 +68,10 @@
                     @Html.DisplayFor(modelItem => item.Status)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DebitSum)
+                    @debit
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CreditSum)
+                    @credit
                 </td>
                 <td>
                     @Html.ActionLink(Strings.Edit, "edit", new { id = item.Id }) |
@@ -71,6 +80,11 @@
                 </td>
             </tr>
         }
+        <tr>
+            <td colspan="4">@Strings.Total</td>
+            <td>@Model.Sum(item => item.DebitSum).ToString("C0", persianCulture)</td>
+            <td>@Model.Sum(item => item.CreditSum).ToString("C0", persianCulture)</td>
+        </tr>
     </tbody>
 </table>
 

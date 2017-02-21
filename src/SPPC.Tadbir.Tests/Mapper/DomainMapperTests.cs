@@ -57,6 +57,42 @@ namespace SPPC.Tadbir.Mapper.Tests
             AssertMapperCanConvertFromSourceToDestination<AccountViewModel, Account>();
         }
 
+        [Test]
+        public void ContainsMappingFromTransactionToTransactionViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<Transaction, TransactionViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromTransactionToTransactionViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<Transaction, TransactionViewModel>();
+        }
+
+        [Test]
+        public void ContainsMappingFromTransactionViewModelToTransaction()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<TransactionViewModel, Transaction>();
+        }
+
+        [Test]
+        public void CanMapFromTransactionViewModelToTransaction()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<TransactionViewModel, Transaction>();
+        }
+
         #endregion
 
         private void AssertMappingIsDefined<TSource, TDestination>()

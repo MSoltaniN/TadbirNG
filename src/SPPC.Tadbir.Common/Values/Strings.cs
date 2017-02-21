@@ -131,5 +131,10 @@ namespace SPPC.Tadbir.Values
         /// Localized text for Cancel caption 
         /// </summary>
         public const string Cancel = "انصراف";
+
+        /// <summary>
+        /// Localized text for Total caption 
+        /// </summary>
+        public const string Total = "جمع کل";
     }
 }

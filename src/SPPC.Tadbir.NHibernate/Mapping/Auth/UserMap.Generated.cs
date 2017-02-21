@@ -27,7 +27,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
         public UserMap()
         {
             Schema("Auth");
-            Table("User");
+            Table("[User]");
             Id(x => x.Id)
                 .Column("UserID")
                 .GeneratedBy.Identity();

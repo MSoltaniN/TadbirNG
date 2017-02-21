@@ -116,15 +116,6 @@ namespace SPPC.Tadbir.Unity.Tests
             Assert.That(registration.LifetimeManagerType, Is.EqualTo(typeof(ContainerControlledLifetimeManager)));
         }
 
-        private void AssertIsRegisteredWithTransientInstance<TInterface>()
-            where TInterface : class
-        {
-            var registration = GetRegistration<TInterface>();
-
-            Assert.That(registration.RegisteredType, Is.EqualTo(registration.MappedToType));
-            Assert.That(registration.LifetimeManagerType, Is.EqualTo(typeof(TransientLifetimeManager)));
-        }
-
         private void AssertIsRegisteredWithConcreteType<TInterface>()
             where TInterface : class
         {
