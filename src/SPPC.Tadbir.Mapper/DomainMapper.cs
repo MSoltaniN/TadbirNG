@@ -48,6 +48,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Account, AccountViewModel>();
             mapperConfig.CreateMap<AccountViewModel, Account>();
             mapperConfig.CreateMap<Account, AccountFullViewModel>();
+            mapperConfig.CreateMap<Transaction, TransactionViewModel>();
+            mapperConfig.CreateMap<TransactionViewModel, Transaction>();
         }
 
         private static MapperConfiguration _configuration;

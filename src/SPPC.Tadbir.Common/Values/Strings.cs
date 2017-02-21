@@ -43,6 +43,11 @@ namespace SPPC.Tadbir.Values
         public const string ManageAccounts = "مدیریت حساب ها";
 
         /// <summary>
+        /// Localized text for Manage Transactions navigation link
+        /// </summary>
+        public const string ManageTransactions = "مدیریت اسناد";
+
+        /// <summary>
         /// Localized text for About page title
         /// </summary>
         public const string About = "درباره";

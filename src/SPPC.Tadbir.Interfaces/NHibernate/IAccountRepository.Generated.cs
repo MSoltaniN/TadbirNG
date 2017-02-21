@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.NHibernate
     public partial interface IAccountRepository
     {
         /// <summary>
-        /// Retrieves all accounts from repository.
+        /// Retrieves all accounts in specified fiscal period from repository.
         /// </summary>
         /// <param name="fpId">Identifier of an existing fiscal period</param>
         /// <returns>A collection of <see cref="AccountViewModel"/> objects retrieved from repository</returns>

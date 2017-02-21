@@ -146,6 +146,7 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Areas\Accounting\AccountingAreaRegistration.cs" />
     <Compile Include="Areas\Accounting\Controllers\AccountsController.cs" />
+    <Compile Include="Areas\Accounting\Controllers\TransactionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -183,6 +184,7 @@
     <Content Include="Areas\Accounting\Views\Accounts\Create.cshtml" />
     <Content Include="Areas\Accounting\Views\Accounts\Edit.cshtml" />
     <Content Include="Areas\Accounting\Views\Accounts\Details.cshtml" />
+    <Content Include="Areas\Accounting\Views\Transactions\Index.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

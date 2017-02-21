@@ -68,8 +68,10 @@
     </Compile>
     <Compile Include="NHibernate\IAccountRepository.cs" />
     <Compile Include="NHibernate\IAccountRepository.Generated.cs" />
+    <Compile Include="NHibernate\ITransactionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\IAccountService.cs" />
+    <Compile Include="Service\ITransactionService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">

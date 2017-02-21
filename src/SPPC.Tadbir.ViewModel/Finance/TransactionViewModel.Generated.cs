@@ -66,19 +66,5 @@ namespace SPPC.Tadbir.ViewModel.Finance
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Status { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value that indicates if this financial transaction is authentic
-        /// </summary>
-        [Display(Name = FieldNames.IsVerifiedField)]
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public bool IsVerified { get; set; }
-
-        /// <summary>
-        /// Gets or sets the value that indicates if this financial transaction can be considered final
-        /// </summary>
-        [Display(Name = FieldNames.IsApprovedField)]
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public bool IsApproved { get; set; }
     }
 }

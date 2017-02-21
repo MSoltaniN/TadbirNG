@@ -106,5 +106,15 @@ namespace SPPC.Tadbir.Values
         /// Localized name of Company entity.
         /// </summary>
         public const string CompanyEntity = "شرکت";
+
+        /// <summary>
+        /// Localized name of DebitSum field
+        /// </summary>
+        public const string DebitSumField = "جمع بدهکار";
+
+        /// <summary>
+        /// Localized name of CreditSum field
+        /// </summary>
+        public const string CreditSumField = "جمع بستانکار";
     }
 }

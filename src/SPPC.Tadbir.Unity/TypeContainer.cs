@@ -76,8 +76,8 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterInstance<IHibernateWrapper>(nhibernate);
             _container.RegisterType<IUnitOfWork, UnitOfWork>();
 
-            // TODO: Associate each new repository class with its contract, similar to the following code...
             _container.RegisterType<IAccountRepository, AccountRepository>();
+            _container.RegisterType<ITransactionRepository, TransactionRepository>();
         }
 
         /// <summary>
@@ -87,6 +87,7 @@ namespace SPPC.Tadbir.Unity
         {
             _container.RegisterType<IApiClient, ServiceClient>();
             _container.RegisterType<IAccountService, AccountService>();
+            _container.RegisterType<ITransactionService, TransactionService>();
         }
 
         /// <summary>

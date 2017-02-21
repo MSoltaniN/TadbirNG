@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
-        /// Retrieves all accounts from database.
+        /// Retrieves all accounts in specified fiscal period from database.
         /// </summary>
         /// <param name="fpId">Identifier of an existing fiscal period</param>
         /// <returns>A collection of <see cref="AccountViewModel"/> objects retrieved from database</returns>

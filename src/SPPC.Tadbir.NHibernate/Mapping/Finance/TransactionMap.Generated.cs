@@ -27,7 +27,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
         public TransactionMap()
         {
             Schema("Finance");
-            Table("Transaction");
+            Table("[Transaction]");
             Id(x => x.Id)
                 .Column("TransactionID")
                 .GeneratedBy.Identity();
@@ -69,10 +69,12 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Cascade.All();
             References(x => x.Verifier)
                 .Column("VerifierID")
+                .Nullable()
                 .Not.LazyLoad()
                 .Cascade.All();
             References(x => x.Approver)
                 .Column("ApproverID")
+                .Nullable()
                 .Not.LazyLoad()
                 .Cascade.All();
             HasMany(x => x.Lines)
