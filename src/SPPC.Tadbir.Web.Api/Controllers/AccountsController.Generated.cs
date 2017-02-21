@@ -75,7 +75,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (_repository.IsDuplicateAccount(account))
             {
-                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.AccountCode);
+                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.AccountCodeField);
                 return BadRequest(message);
             }
 
@@ -109,7 +109,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (_repository.IsDuplicateAccount(account))
             {
-                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.AccountCode);
+                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.AccountCodeField);
                 return BadRequest(message);
             }
 

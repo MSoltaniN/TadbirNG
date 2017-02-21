@@ -47,6 +47,7 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<Account, AccountViewModel>();
             mapperConfig.CreateMap<AccountViewModel, Account>();
+            mapperConfig.CreateMap<Account, AccountFullViewModel>();
         }
 
         private static MapperConfiguration _configuration;

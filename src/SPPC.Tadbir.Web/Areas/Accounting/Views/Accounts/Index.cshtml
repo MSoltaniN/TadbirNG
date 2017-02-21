@@ -1,3 +1,4 @@
+@using SPPC.Framework.Extensions
 @using SPPC.Tadbir.Values
 @using SPPC.Tadbir.ViewModel.Finance
 @using PagedList.Mvc
@@ -48,8 +49,8 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
+            <td title="@item.Description">
+                @item.Description.AutoEllipsis()
             </td>
             <td>
                 @Html.ActionLink(Strings.Edit, "edit", new { id = item.Id }) |

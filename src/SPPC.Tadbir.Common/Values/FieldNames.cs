@@ -90,6 +90,21 @@ namespace SPPC.Tadbir.Values
         /// <summary>
         /// Localized name of Code field in Account entity.
         /// </summary>
-        public const string AccountCode = "کد حساب";
+        public const string AccountCodeField = "کد حساب";
+
+        /// <summary>
+        /// Localized name of Fiscal Period entity.
+        /// </summary>
+        public const string FiscalPeriodEntity = "دوره مالی";
+
+        /// <summary>
+        /// Localized name of Branch entity.
+        /// </summary>
+        public const string BranchEntity = "شعبه";
+
+        /// <summary>
+        /// Localized name of Company entity.
+        /// </summary>
+        public const string CompanyEntity = "شرکت";
     }
 }

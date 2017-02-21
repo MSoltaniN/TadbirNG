@@ -182,6 +182,7 @@
     <Content Include="Areas\Accounting\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Accounting\Views\Accounts\Create.cshtml" />
     <Content Include="Areas\Accounting\Views\Accounts\Edit.cshtml" />
+    <Content Include="Areas\Accounting\Views\Accounts\Details.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -228,6 +229,10 @@
     <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">
+      <Project>{4a10f6f8-6a15-490c-b222-be5dfa4775f9}</Project>
+      <Name>SPPC.Framework.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
       <Project>{25d668e5-7585-47d7-8ab6-2fd4ac3f8565}</Project>
       <Name>SPPC.Framework.Interfaces</Name>

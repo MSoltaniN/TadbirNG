@@ -67,6 +67,7 @@
     <Compile Include="Corporate\BranchViewModel.Generated.cs" />
     <Compile Include="Corporate\CompanyViewModel.cs" />
     <Compile Include="Corporate\CompanyViewModel.Generated.cs" />
+    <Compile Include="Finance\AccountFullViewModel.cs" />
     <Compile Include="Finance\AccountViewModel.cs" />
     <Compile Include="Finance\AccountViewModel.Generated.cs" />
     <Compile Include="Finance\CurrencyViewModel.Generated.cs" />

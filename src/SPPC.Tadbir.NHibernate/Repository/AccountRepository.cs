@@ -30,6 +30,24 @@ namespace SPPC.Tadbir.NHibernate
             return (account != null);
         }
 
+        /// <summary>
+        /// Retrieves a single financial account with detail information from repository
+        /// </summary>
+        /// <param name="accountId">Unique identifier of an existing account</param>
+        /// <returns>The account retrieved from repository as a <see cref="AccountFullViewModel"/> object</returns>
+        public AccountFullViewModel GetAccountDetail(int accountId)
+        {
+            AccountFullViewModel accountViewModel = null;
+            var repository = _unitOfWork.GetRepository<Account>();
+            var account = repository.GetByID(accountId);
+            if (account != null)
+            {
+                accountViewModel = _mapper.Map<AccountFullViewModel>(account);
+            }
+
+            return accountViewModel;
+        }
+
         static partial void UpdateExistingAccount(AccountViewModel accountViewModel, Account account)
         {
             account.Code = accountViewModel.Code;

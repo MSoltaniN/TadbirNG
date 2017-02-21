@@ -1,0 +1,66 @@
+@using SPPC.Tadbir.ViewModel.Finance
+@using SPPC.Tadbir.Values
+@model AccountFullViewModel
+
+@{
+    ViewBag.Title = Accounts.Details;
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(Accounts.IndexTitle, "index", "accounts", new { area = "Accounting" }, null)</li>
+    <li class="active">@Accounts.Details</li>
+</ol>
+
+<div class="col-sm-8 col-sm-offset-2 form-centered">
+    <div class="page-header">
+        <h2>@Accounts.Details</h2>
+    </div>
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Code)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FiscalPeriodName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FiscalPeriodName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FiscalPeriodBranchName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FiscalPeriodBranchName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FiscalPeriodBranchCompanyName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FiscalPeriodBranchCompanyName)
+        </dd>
+    </dl>
+    <p>
+        @Html.ActionLink(Accounts.EditExisting, "edit", new { id = Model.Id }) |
+        @Html.ActionLink(Accounts.IndexTitle, "index")
+    </p>
+</div>

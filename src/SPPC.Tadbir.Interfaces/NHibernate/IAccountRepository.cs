@@ -16,5 +16,12 @@ namespace SPPC.Tadbir.NHibernate
         /// <remarks>If the account code is used in the same account (i.e. the account is being edited
         /// without changing its code value), this method will return false.</remarks>
         bool IsDuplicateAccount(AccountViewModel accountViewModel);
+
+        /// <summary>
+        /// Retrieves a single financial account with detail information from repository
+        /// </summary>
+        /// <param name="accountId">Unique identifier of an existing account</param>
+        /// <returns>The account retrieved from repository as a <see cref="AccountFullViewModel"/> object</returns>
+        AccountFullViewModel GetAccountDetail(int accountId);
     }
 }

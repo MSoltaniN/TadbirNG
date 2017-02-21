@@ -93,6 +93,18 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return View(account);
         }
 
+        // GET: accounting/accounts/details/id
+        public ActionResult Details(int id)
+        {
+            var viewModel = _accountService.GetDetailAccountInfo(id);
+            if (viewModel == null)
+            {
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
+            }
+
+            return View(viewModel);
+        }
+
         private IAccountService _accountService;
     }
 }

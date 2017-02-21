@@ -121,14 +121,6 @@ namespace SPPC.Tadbir.NHibernate
             }
         }
 
-        private static void EnsureExistingAccount(Account account)
-        {
-            if (account == null)
-            {
-                throw ExceptionBuilder.NewArgumentException("Original account could not be found.", "accountId");
-            }
-        }
-
         static partial void UpdateExistingAccount(AccountViewModel accountViewModel, Account account);
 
         private IUnitOfWork _unitOfWork;

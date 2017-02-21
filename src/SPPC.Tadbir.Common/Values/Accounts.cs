@@ -36,5 +36,10 @@ namespace SPPC.Tadbir.Values
         /// Localized text for the caption for editing an existing account
         /// </summary>
         public const string EditExisting = "ویرایش حساب";
+
+        /// <summary>
+        /// Localized text for the caption for account details
+        /// </summary>
+        public const string Details = "جزئیات حساب";
     }
 }
