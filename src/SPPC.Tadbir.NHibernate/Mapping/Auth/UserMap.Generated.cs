@@ -41,19 +41,19 @@ namespace SPPC.Tadbir.NHibernate.Mapping
         private void MapReferences()
         {
             HasMany(x => x.CreatedTransactions)
-                .KeyColumn("UserID")
+                .KeyColumn("CreatorID")
                 .LazyLoad()
                 .Cascade.All();
             HasMany(x => x.ModifiedTransactions)
-                .KeyColumn("UserID")
+                .KeyColumn("ModifierID")
                 .LazyLoad()
                 .Cascade.All();
             HasMany(x => x.VerifiedTransactions)
-                .KeyColumn("UserID")
+                .KeyColumn("VerifierID")
                 .LazyLoad()
                 .Cascade.All();
             HasMany(x => x.ApprovedTransactions)
-                .KeyColumn("UserID")
+                .KeyColumn("ApproverID")
                 .LazyLoad()
                 .Cascade.All();
             HasOne(x => x.Person)

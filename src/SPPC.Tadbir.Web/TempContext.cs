@@ -11,6 +11,7 @@ namespace SPPC.Tadbir.Web
         {
         }
 
+        public const int CurrentUserId = 1;
         public const int CurrentBranchId = 1;
         public const int CurrentFiscalPeriodId = 1;
     }

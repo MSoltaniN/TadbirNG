@@ -28,8 +28,9 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public TransactionViewModel()
         {
             this.No = String.Empty;
+            this.Date = String.Empty;
             this.Description = String.Empty;
-            this.Status = String.Empty;
+            this.Status = Transactions.UnregisteredStatus;
         }
 
         /// <summary>

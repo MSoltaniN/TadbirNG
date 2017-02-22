@@ -31,5 +31,9 @@ namespace SPPC.Tadbir.Values
         /// Localized text for the caption for creating a new transaction
         /// </summary>
         public const string CreateNew = "ایجاد سند جدید";
+
+        public const string InvalidDate = "تاریخ سند خارج از محدوده تاریخی دوره مالی جاری قرار دارد.";
+
+        public const string UnregisteredStatus = "ثبت نشده";
     }
 }

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using SPPC.Framework.Mapper;
+using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
+using SwForAll.Platform.Common;
 using SwForAll.Platform.Persistence;
 
 namespace SPPC.Tadbir.NHibernate
@@ -40,6 +42,92 @@ namespace SPPC.Tadbir.NHibernate
                 .Select(item => _mapper.Map<TransactionViewModel>(item))
                 .ToList();
             return transactions;
+        }
+
+        public void SaveTransaction(TransactionViewModel transaction)
+        {
+            Verify.ArgumentNotNull(transaction, "transaction");
+            EnsureHasValidFiscalPeriod(transaction);
+            EnsureHasValidUsers(transaction);
+            var repository = _unitOfWork.GetRepository<FiscalPeriod>();
+            var userRepository = _unitOfWork.GetRepository<User>();
+            var fiscalPeriod = repository.GetByID(transaction.FiscalPeriodId);
+            var creator = userRepository.GetByID(transaction.CreatorId);
+            var modifier = userRepository.GetByID(transaction.LastModifierId);
+            EnsureExistingFiscalPeriod(fiscalPeriod);
+            EnsureExistingUsers(creator, modifier);
+
+            var existing = fiscalPeriod.Transactions
+                .Where(txn => txn.Id == transaction.Id)
+                .SingleOrDefault();
+            if (existing == null)
+            {
+                var newTransaction = _mapper.Map<Transaction>(transaction);
+                newTransaction.FiscalPeriod = fiscalPeriod;
+                newTransaction.Creator = creator;
+                newTransaction.LastModifier = modifier;
+                fiscalPeriod.Transactions.Add(newTransaction);
+                creator.CreatedTransactions.Add(newTransaction);
+                modifier.ModifiedTransactions.Add(newTransaction);
+                repository.Update(fiscalPeriod);
+                userRepository.Update(creator);
+                userRepository.Update(modifier);
+            }
+
+            _unitOfWork.Commit();
+        }
+
+        public bool IsValidTransaction(TransactionViewModel transaction)
+        {
+            Verify.ArgumentNotNull(transaction, "transaction");
+            var repository = _unitOfWork.GetRepository<FiscalPeriod>();
+            var fiscalPeriod = repository.GetByID(transaction.FiscalPeriodId);
+            DateTime transactionDate = DateTime.MinValue;
+            JalaliDateTime jalali = null;
+            if (JalaliDateTime.TryParse(transaction.Date, out jalali))
+            {
+                transactionDate = jalali.ToGregorian();
+            }
+
+            bool isValid = (fiscalPeriod != null)
+                && (transactionDate >= fiscalPeriod.StartDate)
+                && (transactionDate <= fiscalPeriod.EndDate);
+            return isValid;
+        }
+
+        private static void EnsureHasValidFiscalPeriod(TransactionViewModel transaction)
+        {
+            Verify.ArgumentNotNull(transaction, "transaction");
+            if (transaction.FiscalPeriodId <= 0)
+            {
+                throw ExceptionBuilder.NewArgumentException("Target fiscal period is invalid.", "transaction.FiscalPeriodId");
+            }
+        }
+
+        private static void EnsureExistingFiscalPeriod(FiscalPeriod fiscalPeriod)
+        {
+            if (fiscalPeriod == null)
+            {
+                throw ExceptionBuilder.NewArgumentException(
+                    "Target fiscal period could not be found.", "transaction.FiscalPeriodId");
+            }
+        }
+
+        private static void EnsureHasValidUsers(TransactionViewModel transaction)
+        {
+            Verify.ArgumentNotNull(transaction, "transaction");
+            if (transaction.CreatorId <= 0 || transaction.LastModifierId <= 0)
+            {
+                throw ExceptionBuilder.NewArgumentException("Creator and/or last modifier is invalid.");
+            }
+        }
+
+        private void EnsureExistingUsers(User creator, User modifier)
+        {
+            if (creator == null || modifier == null)
+            {
+                throw ExceptionBuilder.NewArgumentException("Creator and/or last modifier could not be found.");
+            }
         }
 
         private IUnitOfWork _unitOfWork;

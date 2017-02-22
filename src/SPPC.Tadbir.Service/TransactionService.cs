@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.ViewModel.Finance;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Service
 {
@@ -30,6 +31,22 @@ namespace SPPC.Tadbir.Service
             var transactions = _apiClient.Get<IEnumerable<TransactionViewModel>>(
                 "transactions/fp/{0}", fpId);
             return transactions;
+        }
+
+        public ServiceResponse SaveTransaction(TransactionViewModel transaction)
+        {
+            Verify.ArgumentNotNull(transaction, "transaction");
+            ServiceResponse response = null;
+            if (transaction.Id == 0)
+            {
+                response = _apiClient.Insert(transaction, "transactions");
+            }
+            else
+            {
+                response = _apiClient.Update(transaction, "transactions/{0}", transaction.Id);
+            }
+
+            return response;
         }
 
         private IApiClient _apiClient;

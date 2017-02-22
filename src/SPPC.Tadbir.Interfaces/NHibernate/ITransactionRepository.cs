@@ -15,5 +15,9 @@ namespace SPPC.Tadbir.NHibernate
         /// <param name="fpId">Identifier of an existing fiscal period</param>
         /// <returns>A collection of <see cref="TransactionViewModel"/> objects retrieved from repository</returns>
         IList<TransactionViewModel> GetTransactions(int fpId);
+
+        void SaveTransaction(TransactionViewModel transaction);
+
+        bool IsValidTransaction(TransactionViewModel transaction);
     }
 }

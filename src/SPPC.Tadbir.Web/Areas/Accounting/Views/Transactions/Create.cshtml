@@ -1,0 +1,57 @@
+﻿@using SPPC.Tadbir.Values
+@model SPPC.Tadbir.ViewModel.Finance.TransactionViewModel
+
+@{
+    ViewBag.Title = Transactions.CreateNew;
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(Transactions.IndexTitle, "index", "transactions", new { area = "Accounting" }, null)</li>
+    <li class="active">@Transactions.CreateNew</li>
+</ol>
+
+<div class="col-sm-8 col-sm-offset-2 form-centered">
+    <div class="page-header">
+        <h2>@Transactions.CreateNew</h2>
+    </div>
+    <div class="form-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.FiscalPeriodId)
+            @Html.HiddenFor(model => model.CreatorId)
+            @Html.HiddenFor(model => model.LastModifierId)
+            @Html.HiddenFor(model => model.Status)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.No, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.No, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.No, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "4" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="@Strings.Save" class="btn btn-primary" />
+                @Html.ActionLink(Strings.Cancel, "index", "transactions", new { area = "Accounting" }, new { @class = "btn btn-primary" })
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

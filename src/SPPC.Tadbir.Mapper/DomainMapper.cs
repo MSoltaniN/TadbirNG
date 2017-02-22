@@ -67,7 +67,11 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.Date,
                     opts => opts.MapFrom(
                         src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()));
-            mapperConfig.CreateMap<TransactionViewModel, Transaction>();
+            mapperConfig.CreateMap<TransactionViewModel, Transaction>()
+                .ForMember(
+                    dest => dest.Date,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.Parse(src.Date).ToGregorian()));
         }
 
         private static MapperConfiguration _configuration;

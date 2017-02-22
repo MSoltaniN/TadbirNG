@@ -62,21 +62,21 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             References(x => x.Creator)
                 .Column("CreatorID")
                 .Not.LazyLoad()
-                .Cascade.All();
+                .Cascade.SaveUpdate();
             References(x => x.LastModifier)
                 .Column("ModifierID")
                 .Not.LazyLoad()
-                .Cascade.All();
+                .Cascade.SaveUpdate();
             References(x => x.Verifier)
                 .Column("VerifierID")
                 .Nullable()
                 .Not.LazyLoad()
-                .Cascade.All();
+                .Cascade.SaveUpdate();
             References(x => x.Approver)
                 .Column("ApproverID")
                 .Nullable()
                 .Not.LazyLoad()
-                .Cascade.All();
+                .Cascade.SaveUpdate();
             HasMany(x => x.Lines)
                 .KeyColumn("TransactionID")
                 .LazyLoad()

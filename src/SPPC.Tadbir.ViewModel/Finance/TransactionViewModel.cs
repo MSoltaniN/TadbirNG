@@ -5,6 +5,12 @@ namespace SPPC.Tadbir.ViewModel.Finance
 {
     public partial class TransactionViewModel
     {
+        public int CreatorId { get; set; }
+
+        public int LastModifierId { get; set; }
+
+        public int FiscalPeriodId { get; set; }
+
         /// <summary>
         /// Gets or sets the sum of all debit values in transaction lines (articles).
         /// </summary>
