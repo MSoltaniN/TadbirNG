@@ -33,6 +33,11 @@ namespace SPPC.Tadbir.Service
             return transactions;
         }
 
+        /// <summary>
+        /// Inserts or updates a financial transaction.
+        /// </summary>
+        /// <param name="transaction">Financial transaction to insert or update</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of service operation</returns>
         public ServiceResponse SaveTransaction(TransactionViewModel transaction)
         {
             Verify.ArgumentNotNull(transaction, "transaction");
@@ -47,6 +52,17 @@ namespace SPPC.Tadbir.Service
             }
 
             return response;
+        }
+
+        /// <summary>
+        /// Retrieves detail information of a single transaction item specified by unique identifier.
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of the transaction to retrieve</param>
+        /// <returns>Transaction item with detail information as a <see cref="TransactionFullViewModel"/> instance</returns>
+        public TransactionFullViewModel GetDetailTransactionInfo(int transactionId)
+        {
+            var transaction = _apiClient.Get<TransactionFullViewModel>("transactions/{0}/detail", transactionId);
+            return transaction;
         }
 
         private IApiClient _apiClient;

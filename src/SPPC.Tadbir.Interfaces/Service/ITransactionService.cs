@@ -17,6 +17,18 @@ namespace SPPC.Tadbir.Service
         /// <returns>Collection of all transactions in the specified fiscal period</returns>
         IEnumerable<TransactionViewModel> GetTransactions(int fpId);
 
+        /// <summary>
+        /// Inserts or updates a financial transaction.
+        /// </summary>
+        /// <param name="transaction">Financial transaction to insert or update</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of service operation</returns>
         ServiceResponse SaveTransaction(TransactionViewModel transaction);
+
+        /// <summary>
+        /// Retrieves detail information of a single transaction item specified by unique identifier.
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of the transaction to retrieve</param>
+        /// <returns>Transaction item with detail information as a <see cref="TransactionFullViewModel"/> instance</returns>
+        TransactionFullViewModel GetDetailTransactionInfo(int transactionId);
     }
 }

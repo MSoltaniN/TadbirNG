@@ -44,6 +44,28 @@ namespace SPPC.Tadbir.NHibernate
             return transactions;
         }
 
+        /// <summary>
+        /// Retrieves a single financial transaction with detail information from repository
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of an existing transaction</param>
+        /// <returns>The transaction retrieved from repository as a <see cref="TransactionFullViewModel"/> object</returns>
+        public TransactionFullViewModel GetTransactionDetail(int transactionId)
+        {
+            TransactionFullViewModel transactionDetail = null;
+            var repository = _unitOfWork.GetRepository<Transaction>();
+            var transaction = repository.GetByID(transactionId);
+            if (transaction != null)
+            {
+                transactionDetail = _mapper.Map<TransactionFullViewModel>(transaction);
+            }
+
+            return transactionDetail;
+        }
+
+        /// <summary>
+        /// Inserts or updates a single transaction in repository.
+        /// </summary>
+        /// <param name="transaction">Item to insert or update</param>
         public void SaveTransaction(TransactionViewModel transaction)
         {
             Verify.ArgumentNotNull(transaction, "transaction");
@@ -77,6 +99,13 @@ namespace SPPC.Tadbir.NHibernate
             _unitOfWork.Commit();
         }
 
+        /// <summary>
+        /// Validates the specified transaction to make sure it fulfills all business rules. Current implementation
+        /// verifies that transaction date is between start and end dates of the fiscal period in which the transaction
+        /// is defined.
+        /// </summary>
+        /// <param name="transaction">Transaction that needs to be validated</param>
+        /// <returns>True if the transaction fulfills all business rules; otherwise, returns false.</returns>
         public bool IsValidTransaction(TransactionViewModel transaction)
         {
             Verify.ArgumentNotNull(transaction, "transaction");

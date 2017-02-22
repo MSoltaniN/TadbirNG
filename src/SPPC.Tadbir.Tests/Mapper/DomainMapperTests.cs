@@ -93,6 +93,42 @@ namespace SPPC.Tadbir.Mapper.Tests
             AssertMapperCanConvertFromSourceToDestination<TransactionViewModel, Transaction>();
         }
 
+        [Test]
+        public void ContainsMappingFromTransactionLineToTransactionLineViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<TransactionLine, TransactionLineViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromTransactionLineToTransactionLineViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<TransactionLine, TransactionLineViewModel>();
+        }
+
+        [Test]
+        public void ContainsMappingFromTransactionToTransactionFullViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<Transaction, TransactionFullViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromTransactionToTransactionFullViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<Transaction, TransactionFullViewModel>();
+        }
+
         #endregion
 
         private void AssertMappingIsDefined<TSource, TDestination>()

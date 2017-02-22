@@ -64,6 +64,18 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return View(transaction);
         }
 
+        // GET: accounting/transactions/details/id
+        public ActionResult Details(int id)
+        {
+            var transaction = _service.GetDetailTransactionInfo(id);
+            if (transaction == null)
+            {
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
+            }
+
+            return View(transaction);
+        }
+
         private ITransactionService _service;
     }
 }

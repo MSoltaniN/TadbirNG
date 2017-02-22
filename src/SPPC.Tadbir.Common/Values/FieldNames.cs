@@ -116,5 +116,10 @@ namespace SPPC.Tadbir.Values
         /// Localized name of CreditSum field
         /// </summary>
         public const string CreditSumField = "جمع بستانکار";
+
+        /// <summary>
+        /// Localized name of Currency Type field.
+        /// </summary>
+        public const string CurrencyTypeField = "نوع ارز";
     }
 }

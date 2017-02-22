@@ -50,6 +50,11 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Account, AccountViewModel>();
             mapperConfig.CreateMap<AccountViewModel, Account>();
             mapperConfig.CreateMap<Account, AccountFullViewModel>();
+            mapperConfig.CreateMap<Transaction, TransactionFullViewModel>()
+                .ForMember(
+                    dest => dest.Date,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()));
             mapperConfig.CreateMap<Transaction, TransactionViewModel>()
                 .ForMember(
                     dest => dest.DebitSum,
@@ -72,6 +77,7 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.Date,
                     opts => opts.MapFrom(
                         src => JalaliDateTime.Parse(src.Date).ToGregorian()));
+            mapperConfig.CreateMap<TransactionLine, TransactionLineViewModel>();
         }
 
         private static MapperConfiguration _configuration;

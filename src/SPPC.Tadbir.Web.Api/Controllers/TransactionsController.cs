@@ -31,6 +31,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(transactions);
         }
 
+        // GET: api/transactions/{transactionId:int}/detail
+        [Route("transactions/{transactionId:int}/detail")]
+        public IHttpActionResult GetTransactionDetail(int transactionId)
+        {
+            if (transactionId <= 0)
+            {
+                return NotFound();
+            }
+
+            var transaction = _repository.GetTransactionDetail(transactionId);
+            var result = (transaction != null)
+                ? Json(transaction)
+                : NotFound() as IHttpActionResult;
+
+            return result;
+        }
+
         // POST: api/transactions
         [Route("transactions")]
         public IHttpActionResult PostNewTransaction([FromBody] TransactionViewModel transaction)

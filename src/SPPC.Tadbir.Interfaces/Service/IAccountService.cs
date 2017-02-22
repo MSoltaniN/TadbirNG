@@ -35,6 +35,7 @@ namespace SPPC.Tadbir.Service
         /// Inserts or updates a financial account.
         /// </summary>
         /// <param name="account">Financial account to insert or update</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of service operation</returns>
         ServiceResponse SaveAccount(AccountViewModel account);
     }
 }

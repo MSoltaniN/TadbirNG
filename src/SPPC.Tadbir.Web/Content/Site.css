@@ -24,9 +24,8 @@ textarea {
 }
 
 .copyright {
-  position: fixed;
-  bottom: 0;
-  z-index: 1000;
+    float: none;
+    margin-top: 40px;
 }
 
 table th {
