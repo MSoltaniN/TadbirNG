@@ -46,11 +46,12 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string No { get; set; }
 
         /// <summary>
-        /// Gets or sets the date when this financial transaction occured
+        /// Gets or sets the date when this financial transaction occured.
+        /// The date is in persian (Jalali/Shamsi) calendar.
         /// </summary>
         [Display(Name = FieldNames.DateField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
 
         /// <summary>
         /// Gets or sets the detail information that further describes this financial transaction

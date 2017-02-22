@@ -29,6 +29,7 @@ namespace SPPC.Tadbir.Model.Finance
         public Transaction()
         {
             this.No = String.Empty;
+            this.Date = DateTime.Now;
             this.Description = String.Empty;
             this.Status = String.Empty;
             this.ModifiedDate = DateTime.Now;

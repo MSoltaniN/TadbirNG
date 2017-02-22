@@ -5,6 +5,7 @@ using AutoMapper;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Mapper
 {
@@ -61,7 +62,11 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.MapFrom(
                         src => src.Lines
                             .Select(line => line.Credit)
-                            .Sum()));
+                            .Sum()))
+                .ForMember(
+                    dest => dest.Date,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()));
             mapperConfig.CreateMap<TransactionViewModel, Transaction>();
         }
 

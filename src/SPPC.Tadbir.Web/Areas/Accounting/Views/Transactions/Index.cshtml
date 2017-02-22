@@ -1,5 +1,4 @@
 ﻿@using System.Globalization
-@using SwForAll.Platform.Common
 @using SPPC.Framework.Extensions
 @using SPPC.Tadbir.Values
 @using SPPC.Tadbir.ViewModel.Finance
@@ -50,8 +49,6 @@
     <tbody>
         @foreach (var item in Model)
         {
-            var date = JalaliDateTime.FromDateTime(item.Date);
-            string formattedDate = String.Format("{0}/{1}/{2}", date.Year, date.Month, date.Day);
             string debit = item.DebitSum.ToString("C0", persianCulture);
             string credit = item.CreditSum.ToString("C0", persianCulture);
             <tr>
@@ -59,7 +56,7 @@
                     @Html.DisplayFor(modelItem => item.No)
                 </td>
                 <td>
-                    @formattedDate
+                    @Html.DisplayFor(modelItem => item.Date)
                 </td>
                 <td title="@item.Description">
                     @item.Description.AutoEllipsis(50)
