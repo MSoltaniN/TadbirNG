@@ -16,36 +16,14 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public TransactionFullViewModel()
         {
+            Transaction = new TransactionViewModel();
             Lines = new List<TransactionLineViewModel>();
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity.
+        /// Gets or sets a <see cref="TransactionViewModel"/> object containing the main transaction data.
         /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user-friendly identifier of this financial transaction
-        /// </summary>
-        [Display(Name = FieldNames.NumberField)]
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string No { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date when this financial transaction occured.
-        /// The date is in persian (Jalali/Shamsi) calendar.
-        /// </summary>
-        [Display(Name = FieldNames.DateField)]
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public string Date { get; set; }
-
-        /// <summary>
-        /// Gets or sets the detail information that further describes this financial transaction
-        /// </summary>
-        [Display(Name = FieldNames.DescriptionField)]
-        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string Description { get; set; }
+        public TransactionViewModel Transaction { get; set; }
 
         /// <summary>
         /// Gets or sets the name of fiscal period in which this transaction is defined.

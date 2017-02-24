@@ -52,9 +52,9 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Account, AccountFullViewModel>();
             mapperConfig.CreateMap<Transaction, TransactionFullViewModel>()
                 .ForMember(
-                    dest => dest.Date,
+                    dest => dest.Transaction,
                     opts => opts.MapFrom(
-                        src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()));
+                        src => _autoMapper.Map<TransactionViewModel>(src)));
             mapperConfig.CreateMap<Transaction, TransactionViewModel>()
                 .ForMember(
                     dest => dest.DebitSum,

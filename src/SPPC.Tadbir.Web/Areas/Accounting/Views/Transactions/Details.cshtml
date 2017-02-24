@@ -21,24 +21,31 @@
     </div>
     <dl>
         <dt>
-            @Html.DisplayNameFor(model => model.No)
+            @Html.DisplayNameFor(model => model.Transaction.No)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.No)
+            @Html.DisplayFor(model => model.Transaction.No)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Date)
+            @Html.DisplayNameFor(model => model.Transaction.Date)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Date)
+            @Html.DisplayFor(model => model.Transaction.Date)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Transaction.Description)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Transaction.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Transaction.Status)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Transaction.Status)
         </dd>
 
         <dt>
@@ -111,7 +118,7 @@
         </tbody>
     </table>
     <p>
-        @Html.ActionLink(Transactions.EditExisting, "edit", new { id = Model.Id }) |
+        @Html.ActionLink(Transactions.EditExisting, "edit", new { id = Model.Transaction.Id }) |
         @Html.ActionLink(Transactions.IndexTitle, "index")
     </p>
 </div>

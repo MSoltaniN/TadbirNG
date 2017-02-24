@@ -95,6 +95,11 @@ namespace SPPC.Tadbir.NHibernate
                 userRepository.Update(creator);
                 userRepository.Update(modifier);
             }
+            else
+            {
+                UpdateExistingTransaction(existing, transaction);
+                repository.Update(fiscalPeriod);
+            }
 
             _unitOfWork.Commit();
         }
@@ -151,12 +156,19 @@ namespace SPPC.Tadbir.NHibernate
             }
         }
 
-        private void EnsureExistingUsers(User creator, User modifier)
+        private static void EnsureExistingUsers(User creator, User modifier)
         {
             if (creator == null || modifier == null)
             {
                 throw ExceptionBuilder.NewArgumentException("Creator and/or last modifier could not be found.");
             }
+        }
+
+        private static void UpdateExistingTransaction(Transaction existing, TransactionViewModel transaction)
+        {
+            existing.No = transaction.No;
+            existing.Date = JalaliDateTime.Parse(transaction.Date).ToGregorian();
+            existing.Description = transaction.Description;
         }
 
         private IUnitOfWork _unitOfWork;

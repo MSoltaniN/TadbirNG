@@ -1,0 +1,135 @@
+﻿@using System.Globalization
+@using SPPC.Framework.Extensions
+@using SPPC.Tadbir.Values
+@using PagedList
+@using PagedList.Mvc
+@model SPPC.Tadbir.ViewModel.Finance.TransactionFullViewModel
+
+@{
+    ViewBag.Title = Transactions.EditExisting;
+    var persianCulture = new CultureInfo("fa-IR");
+    persianCulture.NumberFormat.CurrencySymbol = String.Empty;
+    var articles = Model.Lines.ToPagedList(1, 10);
+    string pageInfo = TransactionLines.NoRecords;
+    if (articles.Count > 0)
+    {
+        pageInfo = String.Format(
+            TransactionLines.CurrentPageInfo,
+            articles.TotalItemCount, articles.PageNumber, articles.PageCount);
+    }
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(Transactions.IndexTitle, "index", "transactions", new { area = "Accounting" }, null)</li>
+    <li class="active">@Transactions.EditExisting</li>
+</ol>
+
+<div class="col-sm-8 col-sm-offset-2 form-centered">
+    <div class="page-header">
+        <h2>@Transactions.EditExisting</h2>
+    </div>
+    <div class="form-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Transaction.Id)
+            @Html.HiddenFor(model => model.Transaction.FiscalPeriodId)
+            @Html.HiddenFor(model => model.Transaction.CreatorId)
+            @Html.HiddenFor(model => model.Transaction.LastModifierId)
+            @Html.HiddenFor(model => model.Transaction.Status)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Transaction.No, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Transaction.No, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Transaction.No, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Transaction.Date, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Transaction.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Transaction.Date, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Transaction.Description, htmlAttributes: new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.Transaction.Description, new { @class = "form-control", rows = "4" })
+                @Html.ValidationMessageFor(model => model.Transaction.Description, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="page-header">
+                <h4>@Transactions.TransactionLines</h4>
+            </div>
+
+            <p>
+                @Html.ActionLink(TransactionLines.CreateNew, "create", "articles", new { transactionId = Model.Transaction.Id }, new { @class = "btn btn-sm btn-primary" })
+                <span class="pull-left">@pageInfo</span>
+            </p>
+
+            <table class="table table-bordered table-striped table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th>@FieldNames.AccountCodeField</th>
+                        <th>@FieldNames.CurrencyTypeField</th>
+                        <th>@FieldNames.DescriptionField</th>
+                        <th>@FieldNames.DebitField</th>
+                        <th>@FieldNames.CreditField</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Lines)
+                    {
+                        <tr>
+                            <td>
+                                @item.AccountCode
+                            </td>
+                            <td>
+                                @item.CurrencyName
+                            </td>
+                            <td title="@item.Description">
+                                @item.Description.AutoEllipsis(50)
+                            </td>
+                            <td>
+                                @item.Debit.ToString("C0", persianCulture)
+                            </td>
+                            <td>
+                                @item.Credit.ToString("C0", persianCulture)
+                            </td>
+                            <td>
+                                @Html.ActionLink(Strings.Edit, "edit", "articles", new { id = item.Id, transactionId = item.TransactionId }, null) |
+                                @Html.ActionLink(Strings.Details, "details", "articles", new { id = item.Id, transactionId = item.TransactionId }, null) |
+                                @Html.ActionLink(Strings.Delete, "delete", "articles", new { id = item.Id, transactionId = item.TransactionId }, null)
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="3">
+                            @Strings.Total
+                        </td>
+                        <td>
+                            @Model.Lines.Select(line => line.Debit).Sum().ToString("C0", persianCulture)
+                        </td>
+                        <td>
+                            @Model.Lines.Select(line => line.Credit).Sum().ToString("C0", persianCulture)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            @Html.PagedListPager(articles, page => Url.Action("index", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+            <hr />
+            <div class="form-group">
+                <input type="submit" value="@Strings.Save" class="btn btn-primary" />
+                @Html.ActionLink(Strings.Cancel, "index", "transactions", new { area = "Accounting" }, new { @class = "btn btn-primary" })
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -64,6 +64,43 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return View(transaction);
         }
 
+        // GET: accounting/transactions/edit/id
+        public ActionResult Edit(int id)
+        {
+            var transaction = _service.GetDetailTransactionInfo(id);
+            if (transaction == null)
+            {
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
+            }
+
+            return View(transaction);
+        }
+
+        // POST: accounting/transactions/edit/id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(TransactionFullViewModel fullTransaction)
+        {
+            if (fullTransaction == null)
+            {
+                return RedirectToAction("index", "error");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var response = _service.SaveTransaction(fullTransaction.Transaction);
+                if (response.Result == ServiceResult.ValidationFailed)
+                {
+                    ModelState.AddModelError("Transaction.Date", response.Message);
+                    return View(fullTransaction);
+                }
+
+                return RedirectToAction("index");
+            }
+
+            return View(fullTransaction);
+        }
+
         // GET: accounting/transactions/details/id
         public ActionResult Details(int id)
         {

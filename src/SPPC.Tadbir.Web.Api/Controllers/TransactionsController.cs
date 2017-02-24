@@ -72,6 +72,40 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(HttpStatusCode.Created);
         }
 
+        // PUT: api/transactions/{transactionId:int}
+        [Route("transactions/{transactionId:int}")]
+        public IHttpActionResult PutModifiedTransaction(int transactionId, [FromBody] TransactionViewModel transaction)
+        {
+            if (transaction == null)
+            {
+                return BadRequest("Could not put modified transaction because a 'null' value was provided.");
+            }
+
+            if (transactionId <= 0 || transaction.Id <= 0)
+            {
+                return BadRequest("Could not put modified transaction because original transaction does not exist.");
+            }
+
+            if (transactionId != transaction.Id)
+            {
+                return BadRequest("Could not put modified transaction because of an identity conflict in the request.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_repository.IsValidTransaction(transaction))
+            {
+                var message = String.Format(Transactions.InvalidDate);
+                return BadRequest(message);
+            }
+
+            _repository.SaveTransaction(transaction);
+            return Ok();
+        }
+
         private ITransactionRepository _repository;
     }
 }

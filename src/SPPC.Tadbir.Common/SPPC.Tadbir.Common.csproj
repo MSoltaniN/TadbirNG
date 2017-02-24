@@ -68,6 +68,7 @@
     <Compile Include="Values\Accounts.cs" />
     <Compile Include="Values\FieldNames.cs" />
     <Compile Include="Values\Strings.cs" />
+    <Compile Include="Values\TransactionLines.cs" />
     <Compile Include="Values\Transactions.cs" />
   </ItemGroup>
   <ItemGroup />
