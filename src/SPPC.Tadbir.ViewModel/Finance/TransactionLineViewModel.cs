@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
 using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Finance
@@ -16,6 +17,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// Gets or sets the identifier of the account that is affected by this article.
         /// </summary>
         [Display(Name = FieldNames.AccountField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public int AccountId { get; set; }
 
         /// <summary>
@@ -27,6 +29,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// Gets or sets the identifier of the currency that qualifies monetary values in this article.
         /// </summary>
         [Display(Name = FieldNames.CurrencyTypeField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public int CurrencyId { get; set; }
 
         /// <summary>

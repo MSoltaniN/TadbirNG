@@ -67,6 +67,10 @@ namespace SPPC.Tadbir.Service
             {
                 response = _apiClient.Insert(article, "transactions/{0}/articles", article.TransactionId);
             }
+            else
+            {
+                response = _apiClient.Update(article, "transactions/articles/{0}", article.Id);
+            }
 
             return response;
         }
@@ -80,6 +84,18 @@ namespace SPPC.Tadbir.Service
         {
             var transaction = _apiClient.Get<TransactionFullViewModel>("transactions/{0}/detail", transactionId);
             return transaction;
+        }
+
+        /// <summary>
+        /// Retrieves a single transaction article specified by unique identifier.
+        /// </summary>
+        /// <param name="articleId">Unique identifier of the transaction article to retrieve</param>
+        /// <returns>Transaction article as a <see cref="TransactionLineViewModel"/> object</returns>
+        public TransactionLineViewModel GetArticle(int articleId)
+        {
+            var article = _apiClient.Get<TransactionLineViewModel>(
+                "transactions/articles/{0}", articleId);
+            return article;
         }
 
         private IApiClient _apiClient;

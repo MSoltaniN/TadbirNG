@@ -1,9 +1,10 @@
-﻿@using SPPC.Framework.Helpers
+﻿@using System.Globalization
+@using SPPC.Framework.Helpers
 @using SPPC.Tadbir.Values
 @model SPPC.Tadbir.ViewModel.Finance.TransactionLineViewModel
 
 @{
-    ViewBag.Title = TransactionLines.CreateNew;
+    ViewBag.Title = TransactionLines.EditExisting;
     var accounts = (ViewBag.AccountLookup as IEnumerable<KeyValue>)
         .Select(acc => new SelectListItem() { Value = acc.Key, Text = acc.Value });
     var currencies = (ViewBag.CurrencyLookup as IEnumerable<KeyValue>)
@@ -14,12 +15,12 @@
     <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
     <li>@Html.ActionLink(Transactions.IndexTitle, "index", "transactions", new { area = "accounting" }, null)</li>
     <li>@Html.ActionLink(Transactions.EditExisting, "edit", "transactions", new { area = "accounting", id = Model.TransactionId }, null)</li>
-    <li class="active">@TransactionLines.CreateNew</li>
+    <li class="active">@TransactionLines.EditExisting</li>
 </ol>
 
 <div class="col-sm-8 col-sm-offset-2 form-centered">
     <div class="page-header">
-        <h2>@TransactionLines.CreateNew</h2>
+        <h2>@TransactionLines.EditExisting</h2>
     </div>
     <div class="form-body">
         @using (Html.BeginForm())
@@ -43,13 +44,13 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Debit, htmlAttributes: new { @class = "control-label" })
-                @Html.TextBoxFor(model => model.Debit, Model.Debit.ToString(), new { @class = "form-control" })
+                @Html.TextBoxFor(model => model.Debit, Model.Debit.ToString("G0"), new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Debit, "", new { @class = "text-danger" })
             </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Credit, htmlAttributes: new { @class = "control-label" })
-                @Html.TextBoxFor(model => model.Credit, Model.Credit.ToString(), new { @class = "form-control" })
+                @Html.TextBoxFor(model => model.Credit, Model.Credit.ToString("G0"), new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Credit, "", new { @class = "text-danger" })
             </div>
 

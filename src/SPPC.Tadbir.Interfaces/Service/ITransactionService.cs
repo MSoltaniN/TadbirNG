@@ -37,5 +37,12 @@ namespace SPPC.Tadbir.Service
         /// <param name="article">Article to insert or update</param>
         /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of service operation</returns>
         ServiceResponse SaveArticle(TransactionLineViewModel article);
+
+        /// <summary>
+        /// Retrieves a single transaction article specified by unique identifier.
+        /// </summary>
+        /// <param name="articleId">Unique identifier of the transaction article to retrieve</param>
+        /// <returns>Transaction article as a <see cref="TransactionLineViewModel"/> object</returns>
+        TransactionLineViewModel GetArticle(int articleId);
     }
 }

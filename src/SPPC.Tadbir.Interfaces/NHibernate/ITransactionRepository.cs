@@ -17,11 +17,18 @@ namespace SPPC.Tadbir.NHibernate
         IList<TransactionViewModel> GetTransactions(int fpId);
 
         /// <summary>
-        /// Retrieves a single financial transaction with detail information from repository
+        /// Retrieves a single financial transaction with detail information from repository.
         /// </summary>
         /// <param name="transactionId">Unique identifier of an existing transaction</param>
         /// <returns>The transaction retrieved from repository as a <see cref="TransactionFullViewModel"/> object</returns>
         TransactionFullViewModel GetTransactionDetail(int transactionId);
+
+        /// <summary>
+        /// Retrieves a single financial article from repository.
+        /// </summary>
+        /// <param name="articleId">Unique identifier of an existing article</param>
+        /// <returns>The article retrieved from repository as a <see cref="TransactionLineViewModel"/> object</returns>
+        TransactionLineViewModel GetArticle(int articleId);
 
         /// <summary>
         /// Inserts or updates a single transaction in repository.

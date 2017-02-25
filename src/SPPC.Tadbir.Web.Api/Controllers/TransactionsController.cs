@@ -64,8 +64,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (!_repository.IsValidTransaction(transaction))
             {
-                var message = String.Format(Transactions.InvalidDate);
-                return BadRequest(message);
+                return BadRequest(Transactions.InvalidDate);
             }
 
             _repository.SaveTransaction(transaction);
@@ -98,8 +97,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (!_repository.IsValidTransaction(transaction))
             {
-                var message = String.Format(Transactions.InvalidDate);
-                return BadRequest(message);
+                return BadRequest(Transactions.InvalidDate);
             }
 
             _repository.SaveTransaction(transaction);
@@ -130,8 +128,62 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(ModelState);
             }
 
+            if ((article.Debit > 0m) && (article.Credit > 0m))
+            {
+                return BadRequest(TransactionLines.DebitAndCreditNotAllowed);
+            }
+
             _repository.SaveArticle(article);
             return StatusCode(HttpStatusCode.Created);
+        }
+
+        // PUT: api/transactions/articles/{articleId:int}
+        [Route("transactions/articles/{articleId:int}")]
+        public IHttpActionResult PutModifiedArticle(int articleId, [FromBody] TransactionLineViewModel article)
+        {
+            if (article == null)
+            {
+                return BadRequest("Could not put modified article because a 'null' value was provided.");
+            }
+
+            if (articleId <= 0 || article.Id <= 0)
+            {
+                return BadRequest("Could not put modified article because original transaction does not exist.");
+            }
+
+            if (articleId != article.Id)
+            {
+                return BadRequest("Could not put modified article because of an identity conflict in the request.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if ((article.Debit > 0m) && (article.Credit > 0m))
+            {
+                return BadRequest(TransactionLines.DebitAndCreditNotAllowed);
+            }
+
+            _repository.SaveArticle(article);
+            return Ok();
+        }
+
+        // GET: api/transactions/articles/{articleId:int}
+        [Route("transactions/articles/{articleId:int}")]
+        public IHttpActionResult GetArticle(int articleId)
+        {
+            if (articleId <= 0)
+            {
+                return NotFound();
+            }
+
+            var article = _repository.GetArticle(articleId);
+            var result = (article != null)
+                ? Json(article)
+                : NotFound() as IHttpActionResult;
+            return result;
         }
 
         private ITransactionRepository _repository;

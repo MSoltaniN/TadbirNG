@@ -63,6 +63,24 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
+        /// Retrieves a single financial article from repository.
+        /// </summary>
+        /// <param name="articleId">Unique identifier of an existing article</param>
+        /// <returns>The article retrieved from repository as a <see cref="TransactionLineViewModel"/> object</returns>
+        public TransactionLineViewModel GetArticle(int articleId)
+        {
+            TransactionLineViewModel articleViewModel = null;
+            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            var article = repository.GetByID(articleId);
+            if (article != null)
+            {
+                articleViewModel = _mapper.Map<TransactionLineViewModel>(article);
+            }
+
+            return articleViewModel;
+        }
+
+        /// <summary>
         /// Inserts or updates a single transaction in repository.
         /// </summary>
         /// <param name="transaction">Item to insert or update</param>
@@ -117,6 +135,11 @@ namespace SPPC.Tadbir.NHibernate
             {
                 var newArticle = _mapper.Map<TransactionLine>(article);
                 repository.Insert(newArticle);
+            }
+            else
+            {
+                UpdateExistingArticle(existing, article);
+                repository.Update(existing);
             }
 
             _unitOfWork.Commit();
@@ -187,6 +210,15 @@ namespace SPPC.Tadbir.NHibernate
             existing.No = transaction.No;
             existing.Date = JalaliDateTime.Parse(transaction.Date).ToGregorian();
             existing.Description = transaction.Description;
+        }
+
+        private static void UpdateExistingArticle(TransactionLine existing, TransactionLineViewModel article)
+        {
+            existing.Account = new Account() { Id = article.AccountId };
+            existing.Currency = new Currency() { Id = article.CurrencyId };
+            existing.Debit = article.Debit;
+            existing.Credit = article.Credit;
+            existing.Description = article.Description;
         }
 
         private IUnitOfWork _unitOfWork;
