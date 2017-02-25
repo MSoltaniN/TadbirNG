@@ -121,5 +121,10 @@ namespace SPPC.Tadbir.Values
         /// Localized name of Currency Type field.
         /// </summary>
         public const string CurrencyTypeField = "نوع ارز";
+
+        /// <summary>
+        /// Localized name of Account field.
+        /// </summary>
+        public const string AccountField = "حساب";
     }
 }

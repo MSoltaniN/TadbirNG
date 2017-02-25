@@ -186,6 +186,7 @@
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\AccountsController.Generated.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LookupController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

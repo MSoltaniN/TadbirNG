@@ -105,6 +105,24 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
+        /// Inserts or updates a single transaction line (article) in repository.
+        /// </summary>
+        /// <param name="article">Article to insert or update</param>
+        public void SaveArticle(TransactionLineViewModel article)
+        {
+            Verify.ArgumentNotNull(article, "article");
+            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            var existing = repository.GetByID(article.Id);
+            if (existing == null)
+            {
+                var newArticle = _mapper.Map<TransactionLine>(article);
+                repository.Insert(newArticle);
+            }
+
+            _unitOfWork.Commit();
+        }
+
+        /// <summary>
         /// Validates the specified transaction to make sure it fulfills all business rules. Current implementation
         /// verifies that transaction date is between start and end dates of the fiscal period in which the transaction
         /// is defined.

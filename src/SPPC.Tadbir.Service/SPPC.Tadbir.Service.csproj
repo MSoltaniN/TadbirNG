@@ -68,10 +68,15 @@
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="LookupService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransactionService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">
+      <Project>{4a10f6f8-6a15-490c-b222-be5dfa4775f9}</Project>
+      <Name>SPPC.Framework.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
       <Project>{25D668E5-7585-47D7-8AB6-2FD4AC3F8565}</Project>
       <Name>SPPC.Framework.Interfaces</Name>

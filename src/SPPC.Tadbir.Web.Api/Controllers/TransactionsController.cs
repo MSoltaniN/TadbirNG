@@ -106,6 +106,34 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // POST: api/transactions/{transactionId:int}/articles
+        [Route("transactions/{transactionId:int}/articles")]
+        public IHttpActionResult PostNewArticle(int transactionId, [FromBody] TransactionLineViewModel article)
+        {
+            if (transactionId <= 0)
+            {
+                return BadRequest("Could not post new article because the parent transaction could not be found.");
+            }
+
+            if (article == null)
+            {
+                return BadRequest("Could not post new article because a 'null' value was provided.");
+            }
+
+            if (article.TransactionId != transactionId)
+            {
+                return BadRequest("Could not post new article because of an identity conflict in the request.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _repository.SaveArticle(article);
+            return StatusCode(HttpStatusCode.Created);
+        }
+
         private ITransactionRepository _repository;
     }
 }

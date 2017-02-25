@@ -78,6 +78,9 @@ namespace SPPC.Tadbir.Model.Finance
 
         private void InitReferences()
         {
+            Transaction = new Transaction();
+            Account = new Account();
+            Currency = new Currency();
 
             //// IMPORTANT NOTE: DO NOT add initialization statements for one-to-one and many-to-one relationships.
             //// 1. Initializing one-to-one associations causes StackOverflowException (A initializes B and B initializes A)

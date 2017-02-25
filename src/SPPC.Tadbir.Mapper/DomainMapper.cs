@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -50,6 +51,9 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Account, AccountViewModel>();
             mapperConfig.CreateMap<AccountViewModel, Account>();
             mapperConfig.CreateMap<Account, AccountFullViewModel>();
+            mapperConfig.CreateMap<Account, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.Code)));
             mapperConfig.CreateMap<Transaction, TransactionFullViewModel>()
                 .ForMember(
                     dest => dest.Transaction,
@@ -78,6 +82,14 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.MapFrom(
                         src => JalaliDateTime.Parse(src.Date).ToGregorian()));
             mapperConfig.CreateMap<TransactionLine, TransactionLineViewModel>();
+            mapperConfig.CreateMap<TransactionLineViewModel, TransactionLine>()
+                .AfterMap((viewModel, model) => model.Transaction.Id = viewModel.TransactionId)
+                .AfterMap((viewModel, model) => model.Account.Id = viewModel.AccountId)
+                .AfterMap((viewModel, model) => model.Currency.Id = viewModel.CurrencyId);
+
+            mapperConfig.CreateMap<Currency, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
         }
 
         private static MapperConfiguration _configuration;

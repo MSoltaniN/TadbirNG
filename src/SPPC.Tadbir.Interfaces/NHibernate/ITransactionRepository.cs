@@ -30,6 +30,12 @@ namespace SPPC.Tadbir.NHibernate
         void SaveTransaction(TransactionViewModel transaction);
 
         /// <summary>
+        /// Inserts or updates a single transaction line (article) in repository.
+        /// </summary>
+        /// <param name="article">Article to insert or update</param>
+        void SaveArticle(TransactionLineViewModel article);
+
+        /// <summary>
         /// Validates the specified transaction to make sure it fulfills all business rules.
         /// </summary>
         /// <param name="transaction">Transaction that needs to be validated</param>

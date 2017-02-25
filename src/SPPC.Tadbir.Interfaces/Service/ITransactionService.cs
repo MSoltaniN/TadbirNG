@@ -30,5 +30,12 @@ namespace SPPC.Tadbir.Service
         /// <param name="transactionId">Unique identifier of the transaction to retrieve</param>
         /// <returns>Transaction item with detail information as a <see cref="TransactionFullViewModel"/> instance</returns>
         TransactionFullViewModel GetDetailTransactionInfo(int transactionId);
+
+        /// <summary>
+        /// Inserts or updates a financial transaction article.
+        /// </summary>
+        /// <param name="article">Article to insert or update</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of service operation</returns>
+        ServiceResponse SaveArticle(TransactionLineViewModel article);
     }
 }

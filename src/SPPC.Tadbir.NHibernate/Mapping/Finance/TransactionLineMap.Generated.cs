@@ -50,15 +50,15 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             References(x => x.Transaction)
                 .Column("TransactionID")
                 .Not.LazyLoad()
-                .Cascade.All();
+                .Cascade.None();
             References(x => x.Account)
                 .Column("AccountID")
                 .Not.LazyLoad()
-                .Cascade.All();
+                .Cascade.None();
             References(x => x.Currency)
                 .Column("CurrencyID")
                 .Not.LazyLoad()
-                .Cascade.All();
+                .Cascade.None();
         }
     }
 }

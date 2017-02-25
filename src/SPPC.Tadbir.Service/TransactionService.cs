@@ -55,6 +55,23 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Inserts or updates a financial transaction article.
+        /// </summary>
+        /// <param name="article">Article to insert or update</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of service operation</returns>
+        public ServiceResponse SaveArticle(TransactionLineViewModel article)
+        {
+            Verify.ArgumentNotNull(article, "article");
+            var response = new ServiceResponse();
+            if (article.Id == 0)
+            {
+                response = _apiClient.Insert(article, "transactions/{0}/articles", article.TransactionId);
+            }
+
+            return response;
+        }
+
+        /// <summary>
         /// Retrieves detail information of a single transaction item specified by unique identifier.
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to retrieve</param>

@@ -1,0 +1,73 @@
+﻿@using SPPC.Framework.Helpers
+    @using SPPC.Tadbir.Values
+    @model SPPC.Tadbir.ViewModel.Finance.TransactionLineViewModel
+
+    @{
+        ViewBag.Title = TransactionLines.CreateNew;
+        var accounts = (ViewBag.AccountLookup as IEnumerable<KeyValue>)
+            .Select(acc => new SelectListItem() { Value = acc.Key, Text = acc.Value });
+        var currencies = (ViewBag.CurrencyLookup as IEnumerable<KeyValue>)
+            .Select(curr => new SelectListItem() { Value = curr.Key, Text = curr.Value });
+    }
+
+    <ol class="breadcrumb">
+        <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
+        <li>@Html.ActionLink(Transactions.IndexTitle, "index", "transactions", new { area = "accounting" }, null)</li>
+        <li>@Html.ActionLink(Transactions.EditExisting, "edit", "transactions", new { area = "accounting", id = Model.TransactionId }, null)</li>
+        <li class="active">@TransactionLines.CreateNew</li>
+    </ol>
+
+    <div class="col-sm-8 col-sm-offset-2 form-centered">
+        <div class="page-header">
+            <h2>@TransactionLines.CreateNew</h2>
+        </div>
+        <div class="form-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.TransactionId)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AccountId, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.AccountId, accounts, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.AccountId, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CurrencyId, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.CurrencyId, currencies, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CurrencyId, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Debit, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Debit, Model.Debit.ToString(), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Debit, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Credit, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Credit, Model.Credit.ToString(), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Credit, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "4" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="@Strings.Save" class="btn btn-primary" />
+                    @Html.ActionLink(Strings.Cancel, "edit", "transactions",
+                        new { area = "accounting", id = Model.TransactionId }, new { @class = "btn btn-primary" })
+                </div>
+            }
+        </div>
+    </div>
+
+    @section scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
