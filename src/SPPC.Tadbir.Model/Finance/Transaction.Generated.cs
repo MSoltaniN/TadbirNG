@@ -113,12 +113,13 @@ namespace SPPC.Tadbir.Model.Finance
 
         private void InitReferences()
         {
-            this.Lines = new List<TransactionLine>();
+            Lines = new List<TransactionLine>();
+            FiscalPeriod = new FiscalPeriod();
+            Creator = new User();
+            LastModifier = new User();
 
-            //// IMPORTANT NOTE: DO NOT add initialization statements for one-to-one and many-to-one relationships.
-            //// 1. Initializing one-to-one associations causes StackOverflowException (A initializes B and B initializes A)
-            //// 2. Initializing many-to-one associations causes most mapping tests to fail, because they will trigger many
-            //// unnecessary operations (INSERT and UPDATE) by in-memory SQLite database.
+            //// IMPORTANT NOTE: DO NOT add initialization statements for one-to-one relationships.
+            //// Initializing one-to-one associations causes StackOverflowException (A initializes B and B initializes A)
         }
     }
 }

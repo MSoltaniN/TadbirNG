@@ -49,7 +49,8 @@ namespace SPPC.Tadbir.Mapper
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)
         {
             mapperConfig.CreateMap<Account, AccountViewModel>();
-            mapperConfig.CreateMap<AccountViewModel, Account>();
+            mapperConfig.CreateMap<AccountViewModel, Account>()
+                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId);
             mapperConfig.CreateMap<Account, AccountFullViewModel>();
             mapperConfig.CreateMap<Account, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
@@ -80,7 +81,10 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.Date,
                     opts => opts.MapFrom(
-                        src => JalaliDateTime.Parse(src.Date).ToGregorian()));
+                        src => JalaliDateTime.Parse(src.Date).ToGregorian()))
+                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
+                .AfterMap((viewModel, model) => model.Creator.Id = viewModel.CreatorId)
+                .AfterMap((viewModel, model) => model.LastModifier.Id = viewModel.LastModifierId);
             mapperConfig.CreateMap<TransactionLine, TransactionLineViewModel>();
             mapperConfig.CreateMap<TransactionLine, TransactionLineFullViewModel>()
                 .ForMember(

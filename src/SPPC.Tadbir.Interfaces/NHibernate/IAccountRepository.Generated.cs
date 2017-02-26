@@ -38,7 +38,7 @@ namespace SPPC.Tadbir.NHibernate
         /// <summary>
         /// Inserts or updates a single account in repository.
         /// </summary>
-        /// <param name="accountViewModel">Item to insert or update</param>
-        void SaveAccount(AccountViewModel accountViewModel);
+        /// <param name="account">Item to insert or update</param>
+        void SaveAccount(AccountViewModel account);
     }
 }

@@ -76,49 +76,24 @@ namespace SPPC.Tadbir.NHibernate
         /// <summary>
         /// Inserts or updates a single account in database.
         /// </summary>
-        /// <param name="accountViewModel">Item to insert or update</param>
-        public void SaveAccount(AccountViewModel accountViewModel)
+        /// <param name="account">Item to insert or update</param>
+        public void SaveAccount(AccountViewModel account)
         {
-            Verify.ArgumentNotNull(accountViewModel, "accountViewModel");
-            EnsureHasValidFiscalPeriod(accountViewModel);
-            var repository = _unitOfWork.GetRepository<FiscalPeriod>();
-            var fiscalPeriod = repository.GetByID(accountViewModel.FiscalPeriodId);
-            EnsureExistingFiscalPeriod(fiscalPeriod);
-
-            var existing = fiscalPeriod.Accounts
-                .Where(account => account.Id == accountViewModel.Id)
-                .SingleOrDefault();
+            Verify.ArgumentNotNull(account, "account");
+            var repository = _unitOfWork.GetRepository<Account>();
+            var existing = repository.GetByID(account.Id);
             if (existing == null)
             {
-                var newAccount = _mapper.Map<Account>(accountViewModel);
-                newAccount.FiscalPeriod = fiscalPeriod;
-                fiscalPeriod.Accounts.Add(newAccount);
+                var newAccount = _mapper.Map<Account>(account);
+                repository.Insert(newAccount);
             }
             else
             {
-                UpdateExistingAccount(accountViewModel, existing);
+                UpdateExistingAccount(account, existing);
+                repository.Update(existing);
             }
 
-            repository.Update(fiscalPeriod);
             _unitOfWork.Commit();
-        }
-
-        private static void EnsureHasValidFiscalPeriod(AccountViewModel accountViewModel)
-        {
-            Verify.ArgumentNotNull(accountViewModel, "accountViewModel");
-            if (accountViewModel.FiscalPeriodId <= 0)
-            {
-                throw ExceptionBuilder.NewArgumentException("Target fiscal period is invalid.", "accountViewModel.FiscalPeriodId");
-            }
-        }
-
-        private static void EnsureExistingFiscalPeriod(FiscalPeriod fiscalPeriod)
-        {
-            if (fiscalPeriod == null)
-            {
-                throw ExceptionBuilder.NewArgumentException(
-                    "Target fiscal period could not be found.", "accountViewModel.FiscalPeriodId");
-            }
         }
 
         static partial void UpdateExistingAccount(AccountViewModel accountViewModel, Account account);

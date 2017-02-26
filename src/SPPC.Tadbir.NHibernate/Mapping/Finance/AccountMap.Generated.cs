@@ -52,7 +52,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             References(x => x.FiscalPeriod)
                 .Column("FiscalPeriodID")
                 .Not.LazyLoad()
-                .Cascade.All();
+                .Cascade.None();
             HasMany(x => x.TransactionLines)
                 .KeyColumn("AccountID")
                 .LazyLoad()

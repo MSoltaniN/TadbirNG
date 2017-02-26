@@ -106,36 +106,17 @@ namespace SPPC.Tadbir.NHibernate
         public void SaveTransaction(TransactionViewModel transaction)
         {
             Verify.ArgumentNotNull(transaction, "transaction");
-            EnsureHasValidFiscalPeriod(transaction);
-            EnsureHasValidUsers(transaction);
-            var repository = _unitOfWork.GetRepository<FiscalPeriod>();
-            var userRepository = _unitOfWork.GetRepository<User>();
-            var fiscalPeriod = repository.GetByID(transaction.FiscalPeriodId);
-            var creator = userRepository.GetByID(transaction.CreatorId);
-            var modifier = userRepository.GetByID(transaction.LastModifierId);
-            EnsureExistingFiscalPeriod(fiscalPeriod);
-            EnsureExistingUsers(creator, modifier);
-
-            var existing = fiscalPeriod.Transactions
-                .Where(txn => txn.Id == transaction.Id)
-                .SingleOrDefault();
+            var repository = _unitOfWork.GetRepository<Transaction>();
+            var existing = repository.GetByID(transaction.Id);
             if (existing == null)
             {
                 var newTransaction = _mapper.Map<Transaction>(transaction);
-                newTransaction.FiscalPeriod = fiscalPeriod;
-                newTransaction.Creator = creator;
-                newTransaction.LastModifier = modifier;
-                fiscalPeriod.Transactions.Add(newTransaction);
-                creator.CreatedTransactions.Add(newTransaction);
-                modifier.ModifiedTransactions.Add(newTransaction);
-                repository.Update(fiscalPeriod);
-                userRepository.Update(creator);
-                userRepository.Update(modifier);
+                repository.Insert(newTransaction);
             }
             else
             {
                 UpdateExistingTransaction(existing, transaction);
-                repository.Update(fiscalPeriod);
+                repository.Update(existing);
             }
 
             _unitOfWork.Commit();
@@ -187,41 +168,6 @@ namespace SPPC.Tadbir.NHibernate
                 && (transactionDate >= fiscalPeriod.StartDate)
                 && (transactionDate <= fiscalPeriod.EndDate);
             return isValid;
-        }
-
-        private static void EnsureHasValidFiscalPeriod(TransactionViewModel transaction)
-        {
-            Verify.ArgumentNotNull(transaction, "transaction");
-            if (transaction.FiscalPeriodId <= 0)
-            {
-                throw ExceptionBuilder.NewArgumentException("Target fiscal period is invalid.", "transaction.FiscalPeriodId");
-            }
-        }
-
-        private static void EnsureExistingFiscalPeriod(FiscalPeriod fiscalPeriod)
-        {
-            if (fiscalPeriod == null)
-            {
-                throw ExceptionBuilder.NewArgumentException(
-                    "Target fiscal period could not be found.", "transaction.FiscalPeriodId");
-            }
-        }
-
-        private static void EnsureHasValidUsers(TransactionViewModel transaction)
-        {
-            Verify.ArgumentNotNull(transaction, "transaction");
-            if (transaction.CreatorId <= 0 || transaction.LastModifierId <= 0)
-            {
-                throw ExceptionBuilder.NewArgumentException("Creator and/or last modifier is invalid.");
-            }
-        }
-
-        private static void EnsureExistingUsers(User creator, User modifier)
-        {
-            if (creator == null || modifier == null)
-            {
-                throw ExceptionBuilder.NewArgumentException("Creator and/or last modifier could not be found.");
-            }
         }
 
         private static void UpdateExistingTransaction(Transaction existing, TransactionViewModel transaction)

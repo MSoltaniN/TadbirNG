@@ -58,25 +58,25 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             References(x => x.FiscalPeriod)
                 .Column("FiscalPeriodID")
                 .Not.LazyLoad()
-                .Cascade.All();
+                .Cascade.None();
             References(x => x.Creator)
                 .Column("CreatorID")
                 .Not.LazyLoad()
-                .Cascade.SaveUpdate();
+                .Cascade.None();
             References(x => x.LastModifier)
                 .Column("ModifierID")
                 .Not.LazyLoad()
-                .Cascade.SaveUpdate();
+                .Cascade.None();
             References(x => x.Verifier)
                 .Column("VerifierID")
                 .Nullable()
                 .Not.LazyLoad()
-                .Cascade.SaveUpdate();
+                .Cascade.None();
             References(x => x.Approver)
                 .Column("ApproverID")
                 .Nullable()
                 .Not.LazyLoad()
-                .Cascade.SaveUpdate();
+                .Cascade.None();
             HasMany(x => x.Lines)
                 .KeyColumn("TransactionID")
                 .LazyLoad()
