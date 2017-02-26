@@ -81,6 +81,25 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
+        /// Retrieves a single financial transaction line (article) with detail information from repository.
+        /// </summary>
+        /// <param name="articleId">Unique identifier of an existing transaction line (article)</param>
+        /// <returns>The transaction line (article) retrieved from repository as a
+        /// <see cref="TransactionLineFullViewModel"/> object</returns>
+        public TransactionLineFullViewModel GetArticleDetails(int articleId)
+        {
+            TransactionLineFullViewModel articleDetails = null;
+            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            var article = repository.GetByID(articleId);
+            if (article != null)
+            {
+                articleDetails = _mapper.Map<TransactionLineFullViewModel>(article);
+            }
+
+            return articleDetails;
+        }
+
+        /// <summary>
         /// Inserts or updates a single transaction in repository.
         /// </summary>
         /// <param name="transaction">Item to insert or update</param>

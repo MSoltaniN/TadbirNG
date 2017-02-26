@@ -192,6 +192,7 @@
     <Content Include="Areas\Accounting\Views\Transactions\Edit.cshtml" />
     <Content Include="Areas\Accounting\Views\Articles\Create.cshtml" />
     <Content Include="Areas\Accounting\Views\Articles\Edit.cshtml" />
+    <Content Include="Areas\Accounting\Views\Articles\Details.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

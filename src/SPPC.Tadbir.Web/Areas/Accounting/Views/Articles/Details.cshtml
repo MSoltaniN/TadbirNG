@@ -1,0 +1,91 @@
+﻿@using System.Globalization
+@using SPPC.Tadbir.Values
+@model SPPC.Tadbir.ViewModel.Finance.TransactionLineFullViewModel
+
+@{
+    ViewBag.Title = TransactionLines.Details;
+    var persianCulture = new CultureInfo("fa-IR");
+    persianCulture.NumberFormat.CurrencySymbol = String.Empty;
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(Transactions.IndexTitle, "index", "transactions", new { area = "accounting" }, null)</li>
+    <li>@Html.ActionLink(Transactions.Details, "details", "transactions", new { area = "accounting", id = Model.Article.TransactionId }, null)</li>
+    <li class="active">@TransactionLines.Details</li>
+</ol>
+
+<div class="col-sm-8 col-sm-offset-2 form-centered">
+    <div class="page-header">
+        <h2>@TransactionLines.Details</h2>
+    </div>
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Article.AccountCode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Article.AccountCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AccountName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Article.CurrencyName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Article.CurrencyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Article.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Article.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Article.Debit)
+        </dt>
+        <dd>
+            @Model.Article.Debit.ToString("C0", persianCulture)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Article.Credit)
+        </dt>
+        <dd>
+            @Model.Article.Credit.ToString("C0", persianCulture)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransactionFiscalPeriodName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TransactionFiscalPeriodName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransactionFiscalPeriodBranchName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TransactionFiscalPeriodBranchName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransactionFiscalPeriodBranchCompanyName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TransactionFiscalPeriodBranchCompanyName)
+        </dd>
+    </dl>
+    <p>
+        @Html.ActionLink(TransactionLines.EditExisting, "edit", new { id = Model.Article.Id }) |
+        @Html.ActionLink(Transactions.EditExisting, "edit", "transactions",
+            new { area = "accounting", id = Model.Article.TransactionId }, null)
+    </p>
+</div>

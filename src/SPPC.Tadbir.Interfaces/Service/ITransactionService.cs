@@ -44,5 +44,13 @@ namespace SPPC.Tadbir.Service
         /// <param name="articleId">Unique identifier of the transaction article to retrieve</param>
         /// <returns>Transaction article as a <see cref="TransactionLineViewModel"/> object</returns>
         TransactionLineViewModel GetArticle(int articleId);
+
+        /// <summary>
+        /// Retrieves detail information of a single transaction line (article) specified by unique identifier.
+        /// </summary>
+        /// <param name="articleId">Unique identifier of the transaction line (article) to retrieve</param>
+        /// <returns>Transaction line (article) with detail information as a <see cref="TransactionLineFullViewModel"/>
+        /// instance</returns>
+        TransactionLineFullViewModel GetDetailArticleInfo(int articleId);
     }
 }

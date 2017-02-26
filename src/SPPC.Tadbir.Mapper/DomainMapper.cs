@@ -82,6 +82,11 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.MapFrom(
                         src => JalaliDateTime.Parse(src.Date).ToGregorian()));
             mapperConfig.CreateMap<TransactionLine, TransactionLineViewModel>();
+            mapperConfig.CreateMap<TransactionLine, TransactionLineFullViewModel>()
+                .ForMember(
+                    dest => dest.Article,
+                    opts => opts.MapFrom(
+                        src => _autoMapper.Map<TransactionLineViewModel>(src)));
             mapperConfig.CreateMap<TransactionLineViewModel, TransactionLine>()
                 .AfterMap((viewModel, model) => model.Transaction.Id = viewModel.TransactionId)
                 .AfterMap((viewModel, model) => model.Account.Id = viewModel.AccountId)

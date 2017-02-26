@@ -98,6 +98,19 @@ namespace SPPC.Tadbir.Service
             return article;
         }
 
+        /// <summary>
+        /// Retrieves detail information of a single transaction line (article) specified by unique identifier.
+        /// </summary>
+        /// <param name="articleId">Unique identifier of the transaction line (article) to retrieve</param>
+        /// <returns>Transaction line (article) with detail information as a <see cref="TransactionLineFullViewModel"/>
+        /// instance</returns>
+        public TransactionLineFullViewModel GetDetailArticleInfo(int articleId)
+        {
+            var articleDetail = _apiClient.Get<TransactionLineFullViewModel>(
+                "transactions/articles/{0}/details", articleId);
+            return articleDetail;
+        }
+
         private IApiClient _apiClient;
     }
 }

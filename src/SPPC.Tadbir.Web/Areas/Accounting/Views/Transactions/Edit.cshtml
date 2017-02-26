@@ -99,8 +99,8 @@
                                 @item.Credit.ToString("C0", persianCulture)
                             </td>
                             <td>
-                                @Html.ActionLink(Strings.Edit, "edit", "articles", new { id = item.Id, transactionId = item.TransactionId }, null) |
-                                @Html.ActionLink(Strings.Details, "details", "articles", new { id = item.Id, transactionId = item.TransactionId }, null) |
+                                @Html.ActionLink(Strings.Edit, "edit", "articles", new { id = item.Id }, null) |
+                                @Html.ActionLink(Strings.Details, "details", "articles", new { id = item.Id }, null) |
                                 @Html.ActionLink(Strings.Delete, "delete", "articles", new { id = item.Id, transactionId = item.TransactionId }, null)
                             </td>
                         </tr>

@@ -186,6 +186,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
+        // GET: api/transactions/articles/{articleId:int}/details
+        [Route("transactions/articles/{articleId:int}/details")]
+        public IHttpActionResult GetArticleDetails(int articleId)
+        {
+            if (articleId <= 0)
+            {
+                return NotFound();
+            }
+
+            var article = _repository.GetArticleDetails(articleId);
+            var result = (article != null)
+                ? Json(article)
+                : NotFound() as IHttpActionResult;
+            return result;
+        }
+
         private ITransactionRepository _repository;
     }
 }

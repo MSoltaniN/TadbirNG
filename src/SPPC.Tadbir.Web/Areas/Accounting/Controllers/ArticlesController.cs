@@ -52,8 +52,8 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return View(article);
         }
 
-        // GET: accounting/articles/edit/id?transactionId={id}
-        public ActionResult Edit(int id, int transactionId)
+        // GET: accounting/articles/edit/id
+        public ActionResult Edit(int id)
         {
             var article = _service.GetArticle(id);
             if (article == null)
@@ -89,6 +89,18 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             }
 
             InitLookups();
+            return View(article);
+        }
+
+        // GET: accounting/articles/details/id
+        public ActionResult Details(int id)
+        {
+            var article = _service.GetDetailArticleInfo(id);
+            if (article == null)
+            {
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
+            }
+
             return View(article);
         }
 

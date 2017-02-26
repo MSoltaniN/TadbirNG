@@ -81,6 +81,7 @@
                 <th>@FieldNames.DescriptionField</th>
                 <th>@FieldNames.DebitField</th>
                 <th>@FieldNames.CreditField</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -101,6 +102,9 @@
                     </td>
                     <td>
                         @item.Credit.ToString("C0", persianCulture)
+                    </td>
+                    <td>
+                        @Html.ActionLink(Strings.Details, "details", "articles", new { id = item.Id }, null)
                     </td>
                 </tr>
             }

@@ -23,6 +23,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// Gets or sets the code of the account that is affected by this article.
         /// </summary>
+        [Display(Name = FieldNames.AccountCodeField)]
         public string AccountCode { get; set; }
 
         /// <summary>
@@ -35,6 +36,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// Gets or sets the name of the currency that qualifies the amount of this article
         /// </summary>
+        [Display(Name = FieldNames.CurrencyTypeField)]
         public string CurrencyName { get; set; }
     }
 }
