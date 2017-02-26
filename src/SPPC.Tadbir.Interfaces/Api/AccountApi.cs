@@ -1,0 +1,55 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace SPPC.Tadbir.Api
+{
+    /// <summary>
+    /// Defines API server routes and API client operation URLs for working with financial accounts.
+    /// </summary>
+    public sealed class AccountApi
+    {
+        private AccountApi()
+        {
+        }
+
+        /// <summary>
+        /// API client URL for accounts defined in a fiscal period
+        /// </summary>
+        public const string FiscalPeriodAccounts = "accounts/fp/{0}";
+
+        /// <summary>
+        /// API server route URL for accounts defined in a fiscal period (fpId : Fiscal period identifier)
+        /// </summary>
+        public const string FiscalPeriodAccountsUrl = "accounts/fp/{fpId:int}";
+
+        /// <summary>
+        /// API client URL for a single account specified by identifier
+        /// </summary>
+        public const string Account = "accounts/{0}";
+
+        /// <summary>
+        /// API server route URL for a single account specified by identifier
+        /// </summary>
+        public const string AccountUrl = "accounts/{accountId:int}";
+
+        /// <summary>
+        /// API client URL for all accounts
+        /// </summary>
+        public const string Accounts = "accounts";
+
+        /// <summary>
+        /// API server route URL for all accounts
+        /// </summary>
+        public const string AccountsUrl = "accounts";
+
+        /// <summary>
+        /// API client URL for details of an account specified by identifier
+        /// </summary>
+        public const string AccountDetails = "accounts/{0}/details";
+
+        /// <summary>
+        /// API server route URL for details of an account specified by identifier
+        /// </summary>
+        public const string AccountDetailsUrl = "accounts/{accountId:int}/details";
+    }
+}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
+using SPPC.Tadbir.Api;
 
 namespace SPPC.Tadbir.Service
 {
@@ -27,7 +28,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>Lookup collection of existing accounts in the fiscal period</returns>
         public IEnumerable<KeyValue> LookupAccounts(int fpId)
         {
-            var accountLookup = _apiClient.Get<IEnumerable<KeyValue>>("lookup/accounts/{0}", fpId);
+            var accountLookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.FiscalPeriodAccounts, fpId);
             return accountLookup;
         }
 
@@ -37,7 +38,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>Lookup collection of existing currencies</returns>
         public IEnumerable<KeyValue> LookupCurrencies()
         {
-            var currencyLookup = _apiClient.Get<IEnumerable<KeyValue>>("lookup/currencies");
+            var currencyLookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.Currencies);
             return currencyLookup;
         }
 

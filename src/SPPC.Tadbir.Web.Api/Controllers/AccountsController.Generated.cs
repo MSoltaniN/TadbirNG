@@ -19,6 +19,7 @@ using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Values;
 using SPPC.Framework.Values;
+using SPPC.Tadbir.Api;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -30,7 +31,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accounts/fp/{fpId:int}
-        [Route("accounts/fp/{fpId:int}")]
+        [Route(AccountApi.FiscalPeriodAccountsUrl)]
         public IHttpActionResult GetAccounts(int fpId)
         {
             if (fpId <= 0)
@@ -42,8 +43,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accounts);
         }
 
-        // GET: api/accounts/{accountId}
-        [Route("accounts/{accountId:int}")]
+        // GET: api/accounts/{accountId:int}
+        [Route(AccountApi.AccountUrl)]
         public IHttpActionResult GetAccount(int accountId)
         {
             if (accountId <= 0)
@@ -60,7 +61,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/accounts
-        [Route("accounts")]
+        [Route(AccountApi.AccountsUrl)]
         public IHttpActionResult PostNewAccount([FromBody] AccountViewModel account)
         {
             if (account == null)
@@ -83,8 +84,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(HttpStatusCode.Created);
         }
 
-        // PUT: api/accounts/{accountId}
-        [Route("accounts/{accountId}")]
+        // PUT: api/accounts/{accountId:int}
+        [Route(AccountApi.AccountUrl)]
         public IHttpActionResult PutModifiedAccount(int accountId, [FromBody] AccountViewModel account)
         {
             if (account == null)

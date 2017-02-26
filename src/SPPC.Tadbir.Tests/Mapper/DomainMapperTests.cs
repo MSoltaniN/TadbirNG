@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using NUnit.Framework;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -55,6 +56,60 @@ namespace SPPC.Tadbir.Mapper.Tests
 
             // Act & Assert
             AssertMapperCanConvertFromSourceToDestination<AccountViewModel, Account>();
+        }
+
+        [Test]
+        public void ContainsMappingFromAccountToAccountFullViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<Account, AccountFullViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromAccountToAccountFullViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<Account, AccountFullViewModel>();
+        }
+
+        [Test]
+        public void ContainsMappingFromAccountToKeyValue()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<Account, KeyValue>();
+        }
+
+        [Test]
+        public void CanMapFromAccountToKeyValue()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<Account, KeyValue>();
+        }
+
+        [Test]
+        public void ContainsMappingFromTransactionToTransactionFullViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<Transaction, TransactionFullViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromTransactionToTransactionFullViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<Transaction, TransactionFullViewModel>();
         }
 
         [Test]
@@ -112,21 +167,57 @@ namespace SPPC.Tadbir.Mapper.Tests
         }
 
         [Test]
-        public void ContainsMappingFromTransactionToTransactionFullViewModel()
+        public void ContainsMappingFromTransactionLineToTransactionLineFullViewModel()
         {
             // Arrange (Done in FixtureSetup)
 
             // Act & Assert
-            AssertMappingIsDefined<Transaction, TransactionFullViewModel>();
+            AssertMappingIsDefined<TransactionLine, TransactionLineFullViewModel>();
         }
 
         [Test]
-        public void CanMapFromTransactionToTransactionFullViewModel()
+        public void CanMapFromTransactionLineToTransactionLineFullViewModel()
         {
             // Arrange (Done in FixtureSetup)
 
             // Act & Assert
-            AssertMapperCanConvertFromSourceToDestination<Transaction, TransactionFullViewModel>();
+            AssertMapperCanConvertFromSourceToDestination<TransactionLine, TransactionLineFullViewModel>();
+        }
+
+        [Test]
+        public void ContainsMappingFromTransactionLineViewModelToTransactionLine()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<TransactionLineViewModel, TransactionLine>();
+        }
+
+        [Test]
+        public void CanMapFromTransactionLineViewModelToTransactionLine()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<TransactionLineViewModel, TransactionLine>();
+        }
+
+        [Test]
+        public void ContainsMappingFromCurrencyToKeyValue()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<Currency, KeyValue>();
+        }
+
+        [Test]
+        public void CanMapFromCurrencyToKeyValue()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<Currency, KeyValue>();
         }
 
         #endregion

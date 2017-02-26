@@ -4,6 +4,9 @@ using System.Linq;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.Service;
+using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.Service;
 using SwForAll.Platform.Persistence;
 using SwForAll.Platform.Persistence.NHibernate;
 
@@ -68,9 +71,73 @@ namespace SPPC.Tadbir.Unity.Tests
             AssertIsRegisteredWithConcreteType<IUnitOfWork>();
         }
 
+        [Test]
+        public void ContainsAccountRepositoryRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<IAccountRepository>();
+        }
+
+        [Test]
+        public void ContainsTransactionRepositoryRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<ITransactionRepository>();
+        }
+
+        [Test]
+        public void ContainsLookupRepositoryRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<ILookupRepository>();
+        }
+
         #endregion
 
         #region Service Type Registrations
+
+        [Test]
+        public void ContainsApiClientRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<IApiClient>();
+        }
+
+        [Test]
+        public void ContainsAccountServiceRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<IAccountService>();
+        }
+
+        [Test]
+        public void ContainsTransactionServiceRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<ITransactionService>();
+        }
+
+        [Test]
+        public void ContainsLookupServiceRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<ILookupService>();
+        }
+
         #endregion
 
         #region IDisposable Support

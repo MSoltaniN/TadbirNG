@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SPPC.Framework.Service;
+using SPPC.Tadbir.Api;
 using SPPC.Tadbir.ViewModel.Finance;
 using SwForAll.Platform.Common;
 
@@ -28,8 +29,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>Collection of all account items in the specified fiscal period</returns>
         public IEnumerable<AccountViewModel> GetAccounts(int fpId)
         {
-            var accounts = _apiClient.Get<IEnumerable<AccountViewModel>>(
-                "accounts/fp/{0}", fpId);
+            var accounts = _apiClient.Get<IEnumerable<AccountViewModel>>(AccountApi.FiscalPeriodAccounts, fpId);
             return accounts;
         }
 
@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>Account item having the specified identifier as an <see cref="AccountViewModel"/> instance</returns>
         public AccountViewModel GetAccount(int accountId)
         {
-            var account = _apiClient.Get<AccountViewModel>("accounts/{0}", accountId);
+            var account = _apiClient.Get<AccountViewModel>(AccountApi.Account, accountId);
             return account;
         }
 
@@ -51,7 +51,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>Account item with detail information as an <see cref="AccountFullViewModel"/> instance</returns>
         public AccountFullViewModel GetDetailAccountInfo(int accountId)
         {
-            var account = _apiClient.Get<AccountFullViewModel>("accounts/{0}/detail", accountId);
+            var account = _apiClient.Get<AccountFullViewModel>(AccountApi.AccountDetails, accountId);
             return account;
         }
 
@@ -65,11 +65,11 @@ namespace SPPC.Tadbir.Service
             ServiceResponse response = null;
             if (account.Id == 0)
             {
-                response = _apiClient.Insert(account, "accounts");
+                response = _apiClient.Insert(account, AccountApi.Accounts);
             }
             else
             {
-                response = _apiClient.Update(account, "accounts/{0}", account.Id);
+                response = _apiClient.Update(account, AccountApi.Account, account.Id);
             }
 
             return response;

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using SPPC.Framework.Values;
+using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -19,7 +20,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/transactions/fp/{fpId:int}
-        [Route("transactions/fp/{fpId:int}")]
+        [Route(TransactionApi.FiscalPeriodTransactionsUrl)]
         public IHttpActionResult GetTransactions(int fpId)
         {
             if (fpId <= 0)
@@ -31,8 +32,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(transactions);
         }
 
-        // GET: api/transactions/{transactionId:int}/detail
-        [Route("transactions/{transactionId:int}/detail")]
+        // GET: api/transactions/{transactionId:int}/details
+        [Route(TransactionApi.TransactionDetailsUrl)]
         public IHttpActionResult GetTransactionDetail(int transactionId)
         {
             if (transactionId <= 0)
@@ -49,7 +50,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/transactions
-        [Route("transactions")]
+        [Route(TransactionApi.TransactionsUrl)]
         public IHttpActionResult PostNewTransaction([FromBody] TransactionViewModel transaction)
         {
             if (transaction == null)
@@ -72,7 +73,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/transactions/{transactionId:int}
-        [Route("transactions/{transactionId:int}")]
+        [Route(TransactionApi.TransactionUrl)]
         public IHttpActionResult PutModifiedTransaction(int transactionId, [FromBody] TransactionViewModel transaction)
         {
             if (transaction == null)
@@ -105,7 +106,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/transactions/{transactionId:int}/articles
-        [Route("transactions/{transactionId:int}/articles")]
+        [Route(TransactionApi.TransactionArticlesUrl)]
         public IHttpActionResult PostNewArticle(int transactionId, [FromBody] TransactionLineViewModel article)
         {
             if (transactionId <= 0)
@@ -138,7 +139,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/transactions/articles/{articleId:int}
-        [Route("transactions/articles/{articleId:int}")]
+        [Route(TransactionApi.TransactionArticleUrl)]
         public IHttpActionResult PutModifiedArticle(int articleId, [FromBody] TransactionLineViewModel article)
         {
             if (article == null)
@@ -171,7 +172,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/transactions/articles/{articleId:int}
-        [Route("transactions/articles/{articleId:int}")]
+        [Route(TransactionApi.TransactionArticleUrl)]
         public IHttpActionResult GetArticle(int articleId)
         {
             if (articleId <= 0)
@@ -187,7 +188,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/transactions/articles/{articleId:int}/details
-        [Route("transactions/articles/{articleId:int}/details")]
+        [Route(TransactionApi.TransactionArticleDetailsUrl)]
         public IHttpActionResult GetArticleDetails(int articleId)
         {
             if (articleId <= 0)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -15,8 +16,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
         }
 
-        // GET: api/lookup/accounts/{fpId:int}
-        [Route("lookup/accounts/{fpId:int}")]
+        // GET: api/lookup/accounts/fp/{fpId:int}
+        [Route(LookupApi.FiscalPeriodAccountsUrl)]
         public IHttpActionResult GetAccountsLookup(int fpId)
         {
             if (fpId <= 0)
@@ -29,7 +30,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/lookup/currencies
-        [Route("lookup/currencies")]
+        [Route(LookupApi.CurrenciesUrl)]
         public IHttpActionResult GetCurrenciesLookup()
         {
             var currencyLookup = _repository.GetCurrencies();

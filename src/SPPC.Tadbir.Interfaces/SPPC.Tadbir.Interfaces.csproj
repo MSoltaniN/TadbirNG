@@ -63,6 +63,9 @@
     <Compile Include="..\TadbirSolutionInfo.cs">
       <Link>TadbirSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Api\AccountApi.cs" />
+    <Compile Include="Api\LookupApi.cs" />
+    <Compile Include="Api\TransactionApi.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>

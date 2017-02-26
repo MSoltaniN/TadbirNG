@@ -48,13 +48,13 @@ namespace SPPC.Tadbir.Values
         public const string TransactionLines = "آرتیکل های سند";
 
         /// <summary>
-        /// Localized text for a validation message that indicates the transaction date is outside fiscal period
-        /// </summary>
-        public const string InvalidDate = "تاریخ سند خارج از محدوده تاریخی دوره مالی جاری قرار دارد.";
-
-        /// <summary>
         /// Localized text for the caption for Unregistered transaction status
         /// </summary>
         public const string UnregisteredStatus = "ثبت نشده";
+
+        /// <summary>
+        /// Localized text for a validation message that indicates the transaction date is outside fiscal period
+        /// </summary>
+        public static readonly string InvalidDate = "تاریخ سند خارج از محدوده تاریخی دوره مالی جاری قرار دارد.";
     }
 }

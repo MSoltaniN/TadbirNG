@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SPPC.Framework.Service;
+using SPPC.Tadbir.Api;
 using SPPC.Tadbir.ViewModel.Finance;
 using SwForAll.Platform.Common;
 
@@ -29,7 +30,7 @@ namespace SPPC.Tadbir.Service
         public IEnumerable<TransactionViewModel> GetTransactions(int fpId)
         {
             var transactions = _apiClient.Get<IEnumerable<TransactionViewModel>>(
-                "transactions/fp/{0}", fpId);
+                TransactionApi.FiscalPeriodTransactions, fpId);
             return transactions;
         }
 
@@ -44,11 +45,11 @@ namespace SPPC.Tadbir.Service
             ServiceResponse response = null;
             if (transaction.Id == 0)
             {
-                response = _apiClient.Insert(transaction, "transactions");
+                response = _apiClient.Insert(transaction, TransactionApi.Transactions);
             }
             else
             {
-                response = _apiClient.Update(transaction, "transactions/{0}", transaction.Id);
+                response = _apiClient.Update(transaction, TransactionApi.Transaction, transaction.Id);
             }
 
             return response;
@@ -65,11 +66,11 @@ namespace SPPC.Tadbir.Service
             var response = new ServiceResponse();
             if (article.Id == 0)
             {
-                response = _apiClient.Insert(article, "transactions/{0}/articles", article.TransactionId);
+                response = _apiClient.Insert(article, TransactionApi.TransactionArticles, article.TransactionId);
             }
             else
             {
-                response = _apiClient.Update(article, "transactions/articles/{0}", article.Id);
+                response = _apiClient.Update(article, TransactionApi.TransactionArticle, article.Id);
             }
 
             return response;
@@ -82,7 +83,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>Transaction item with detail information as a <see cref="TransactionFullViewModel"/> instance</returns>
         public TransactionFullViewModel GetDetailTransactionInfo(int transactionId)
         {
-            var transaction = _apiClient.Get<TransactionFullViewModel>("transactions/{0}/detail", transactionId);
+            var transaction = _apiClient.Get<TransactionFullViewModel>(TransactionApi.TransactionDetails, transactionId);
             return transaction;
         }
 
@@ -94,7 +95,7 @@ namespace SPPC.Tadbir.Service
         public TransactionLineViewModel GetArticle(int articleId)
         {
             var article = _apiClient.Get<TransactionLineViewModel>(
-                "transactions/articles/{0}", articleId);
+                TransactionApi.TransactionArticle, articleId);
             return article;
         }
 
@@ -107,7 +108,7 @@ namespace SPPC.Tadbir.Service
         public TransactionLineFullViewModel GetDetailArticleInfo(int articleId)
         {
             var articleDetail = _apiClient.Get<TransactionLineFullViewModel>(
-                "transactions/articles/{0}/details", articleId);
+                TransactionApi.TransactionArticleDetails, articleId);
             return articleDetail;
         }
 
