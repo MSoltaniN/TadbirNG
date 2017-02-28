@@ -11,10 +11,12 @@
 // ------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Web.Http.Results;
 using Moq;
 using NUnit.Framework;
+using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.ViewModel.Finance;
 
@@ -37,7 +39,69 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             _existingAccount = new AccountViewModel() { Id = _existingAccountId };
         }
 
-        #region GetAccount (GET: accounts/{accountId}) tests
+        #region GetAccounts (GET: accounts/fp/{fpId:int}) tests
+
+        [Test]
+        public void GetAccounts_SpecifiesCorrectRoute()
+        {
+            // Arrange
+
+            // Act & Assert
+            AssertActionRouteEquals("GetAccounts", AccountApi.FiscalPeriodAccountsUrl);
+        }
+
+        [Test]
+        public void GetAccounts_ReturnsNonNullResult()
+        {
+            // Arrange
+
+            // Act
+            var result = _controller.GetAccounts(_fpId);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
+        public void GetAccounts_CallsRepositoryWithFiscalPeriodId()
+        {
+            // Arrange
+
+            // Act
+            _controller.GetAccounts(_fpId);
+
+            // Assert
+            _mockRepository.Verify(repo => repo.GetAccounts(_fpId));
+        }
+
+        [Test]
+        public void GetAccounts_ReturnsJsonWithCorrectContentType()
+        {
+            // Arrange
+
+            // Act
+            var result = _controller.GetAccounts(_fpId) as JsonResult<IList<AccountViewModel>>;
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
+        public void GetAccounts_GivenInvalidFiscalPeriodId_ReturnsNotFound()
+        {
+            // Arrange
+            int invalidFpId = -2;
+
+            // Act
+            var result = _controller.GetAccounts(invalidFpId) as NotFoundResult;
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+        }
+
+        #endregion
+
+        #region GetAccount (GET: accounts/{accountId:int}) tests
 
         [Test]
         public void GetAccount_SpecifiesCorrectRoute()
@@ -45,11 +109,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("GetAccount", "accounts/{accountId}");
+            AssertActionRouteEquals("GetAccount", AccountApi.AccountUrl);
         }
 
         [Test]
-        public void GetAccount_ReturnsNonNullResult()
+        public void GetAccount_ReturnsNotNullResult()
         {
             // Arrange (Done in setup methods)
 
@@ -70,7 +134,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             _controller.GetAccount(accountId);
 
             // Assert
-            _mockRepository.Verify(repo => repo.GetAccount(accountId), Times.Once);
+            _mockRepository.Verify(repo => repo.GetAccount(accountId));
         }
 
         [Test]
@@ -127,7 +191,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("PostNewAccount", "accounts");
+            AssertActionRouteEquals("PostNewAccount", AccountApi.AccountsUrl);
         }
 
         [Test]
@@ -152,7 +216,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             _controller.PostNewAccount(newAccount);
 
             // Assert
-            _mockRepository.Verify(repo => repo.SaveAccount(newAccount), Times.Once);
+            _mockRepository.Verify(repo => repo.SaveAccount(newAccount));
         }
 
         [Test]
@@ -198,7 +262,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
         #endregion
 
-        #region PutModifiedAccount (PUT: accounts/{accountId}) tests
+        #region PutModifiedAccount (PUT: accounts/{accountId:int}) tests
 
         [Test]
         public void PutModifiedAccount_SpecifiesCorrectRoute()
@@ -206,7 +270,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("PutModifiedAccount", "accounts/{accountId}");
+            AssertActionRouteEquals("PutModifiedAccount", AccountApi.AccountUrl);
         }
 
         [Test]
@@ -296,7 +360,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             _controller.PutModifiedAccount(_existingAccountId, _existingAccount);
 
             // Assert
-            _mockRepository.Verify(repo => repo.SaveAccount(_existingAccount), Times.Once);
+            _mockRepository.Verify(repo => repo.SaveAccount(_existingAccount));
         }
 
         [Test]
@@ -316,5 +380,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         private Mock<IAccountRepository> _mockRepository;
         private AccountViewModel _existingAccount;
         private int _existingAccountId = 1;
+        private int _fpId = 1;
     }
 }

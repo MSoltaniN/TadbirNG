@@ -83,6 +83,11 @@
       <Link>TadbirSolutionInfo.cs</Link>
     </Compile>
     <Compile Include="ApiControllerTestBase.cs" />
+    <Compile Include="Api\AccountsControllerTests.cs" />
+    <Compile Include="Api\AccountsControllerTests.Generated.cs" />
+    <Compile Include="Api\LookupControllerTests.cs" />
+    <Compile Include="Api\TransactionsControllerTests.cs" />
+    <Compile Include="Api\TransactionsControllerTests.Generated.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -91,7 +96,6 @@
     <Compile Include="Unity\TypeContainerTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Api\" />
     <Folder Include="Service\" />
     <Folder Include="Web\" />
   </ItemGroup>

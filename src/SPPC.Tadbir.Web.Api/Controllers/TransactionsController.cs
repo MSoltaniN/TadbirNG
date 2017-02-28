@@ -105,6 +105,38 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // GET: api/transactions/articles/{articleId:int}
+        [Route(TransactionApi.TransactionArticleUrl)]
+        public IHttpActionResult GetArticle(int articleId)
+        {
+            if (articleId <= 0)
+            {
+                return NotFound();
+            }
+
+            var article = _repository.GetArticle(articleId);
+            var result = (article != null)
+                ? Json(article)
+                : NotFound() as IHttpActionResult;
+            return result;
+        }
+
+        // GET: api/transactions/articles/{articleId:int}/details
+        [Route(TransactionApi.TransactionArticleDetailsUrl)]
+        public IHttpActionResult GetArticleDetails(int articleId)
+        {
+            if (articleId <= 0)
+            {
+                return NotFound();
+            }
+
+            var article = _repository.GetArticleDetails(articleId);
+            var result = (article != null)
+                ? Json(article)
+                : NotFound() as IHttpActionResult;
+            return result;
+        }
+
         // POST: api/transactions/{transactionId:int}/articles
         [Route(TransactionApi.TransactionArticlesUrl)]
         public IHttpActionResult PostNewArticle(int transactionId, [FromBody] TransactionLineViewModel article)
@@ -169,38 +201,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             _repository.SaveArticle(article);
             return Ok();
-        }
-
-        // GET: api/transactions/articles/{articleId:int}
-        [Route(TransactionApi.TransactionArticleUrl)]
-        public IHttpActionResult GetArticle(int articleId)
-        {
-            if (articleId <= 0)
-            {
-                return NotFound();
-            }
-
-            var article = _repository.GetArticle(articleId);
-            var result = (article != null)
-                ? Json(article)
-                : NotFound() as IHttpActionResult;
-            return result;
-        }
-
-        // GET: api/transactions/articles/{articleId:int}/details
-        [Route(TransactionApi.TransactionArticleDetailsUrl)]
-        public IHttpActionResult GetArticleDetails(int articleId)
-        {
-            if (articleId <= 0)
-            {
-                return NotFound();
-            }
-
-            var article = _repository.GetArticleDetails(articleId);
-            var result = (article != null)
-                ? Json(article)
-                : NotFound() as IHttpActionResult;
-            return result;
         }
 
         private ITransactionRepository _repository;
