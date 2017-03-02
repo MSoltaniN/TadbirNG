@@ -12,13 +12,13 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
     {
         public AccountsController(IAccountService accountService)
         {
-            _accountService = accountService;
+            _service = accountService;
         }
 
         // GET: accounting/accounts[?page={page}]
         public ViewResult Index(int? page = null)
         {
-            var accounts = _accountService.GetAccounts(TempContext.CurrentFiscalPeriodId);
+            var accounts = _service.GetAccounts(TempContext.CurrentFiscalPeriodId);
             int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(accounts.ToPagedList(pageNumber, pageSize));
@@ -43,7 +43,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 
             if (ModelState.IsValid)
             {
-                var response = _accountService.SaveAccount(account);
+                var response = _service.SaveAccount(account);
                 if (response.Result == ServiceResult.ValidationFailed)
                 {
                     ModelState.AddModelError("Code", response.Message);
@@ -59,7 +59,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         // GET: accounting/accounts/edit/id
         public ActionResult Edit(int id)
         {
-            var viewModel = _accountService.GetAccount(id);
+            var viewModel = _service.GetAccount(id);
             if (viewModel == null)
             {
                 return RedirectToAction("notfound", "error", new { area = String.Empty });
@@ -80,7 +80,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 
             if (ModelState.IsValid)
             {
-                var response = _accountService.SaveAccount(account);
+                var response = _service.SaveAccount(account);
                 if (response.Result == ServiceResult.ValidationFailed)
                 {
                     ModelState.AddModelError("Code", response.Message);
@@ -96,7 +96,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         // GET: accounting/accounts/details/id
         public ActionResult Details(int id)
         {
-            var viewModel = _accountService.GetDetailAccountInfo(id);
+            var viewModel = _service.GetDetailAccountInfo(id);
             if (viewModel == null)
             {
                 return RedirectToAction("notfound", "error", new { area = String.Empty });
@@ -105,6 +105,18 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return View(viewModel);
         }
 
-        private IAccountService _accountService;
+        // GET: accounting/account/delete/id
+        public ActionResult Delete(int id)
+        {
+            var response = _service.DeleteAccount(id);
+            if (response.Result == ServiceResult.DeleteFailed)
+            {
+                return View(response);
+            }
+
+            return RedirectToAction("index");
+        }
+
+        private IAccountService _service;
     }
 }

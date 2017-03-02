@@ -37,5 +37,12 @@ namespace SPPC.Tadbir.Service
         /// <param name="account">Financial account to insert or update</param>
         /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of service operation</returns>
         ServiceResponse SaveAccount(AccountViewModel account);
+
+        /// <summary>
+        /// Deletes a financial account specified by unique identifier.
+        /// </summary>
+        /// <param name="accountId">Unique identifier of the account to delete</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of delete operation</returns>
+        ServiceResponse DeleteAccount(int accountId);
     }
 }

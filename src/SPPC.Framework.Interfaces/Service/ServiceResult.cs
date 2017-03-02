@@ -19,8 +19,13 @@ namespace SPPC.Framework.Service
         ValidationFailed = 1,
 
         /// <summary>
+        /// Indicates that delete operation could not succeed because of a business logic error.
+        /// </summary>
+        DeleteFailed = 2,
+
+        /// <summary>
         /// Indicates that the service operation did not succeed because of a server-side error
         /// </summary>
-        ServerError = 2
+        ServerError = 3
     }
 }

@@ -18,10 +18,23 @@ namespace SPPC.Tadbir.NHibernate
         bool IsDuplicateAccount(AccountViewModel accountViewModel);
 
         /// <summary>
+        /// Determines if the account specified by identifier is referenced by other records. 
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
+        bool IsUsedAccount(int accountId);
+
+        /// <summary>
         /// Retrieves a single financial account with detail information from repository
         /// </summary>
         /// <param name="accountId">Unique identifier of an existing account</param>
         /// <returns>The account retrieved from repository as a <see cref="AccountFullViewModel"/> object</returns>
         AccountFullViewModel GetAccountDetail(int accountId);
+
+        /// <summary>
+        /// Deletes an existing financial account from repository.
+        /// </summary>
+        /// <param name="accountId">Identifier of the account to delete</param>
+        void DeleteAccount(int accountId);
     }
 }

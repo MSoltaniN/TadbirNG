@@ -67,3 +67,7 @@
 <p>
     @Html.ActionLink(Accounts.CreateNew, "create", "accounts", new { }, new { @class = "btn btn-sm btn-primary" })
 </p>
+
+@section scripts {
+    @Scripts.Render("~/bundles/site")
+}

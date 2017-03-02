@@ -1,0 +1,20 @@
+﻿@using SPPC.Tadbir.Values
+@model SPPC.Framework.Service.ServiceResponse
+
+@{
+    ViewBag.Title = Accounts.DeleteError;
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(Accounts.IndexTitle, "index", "accounts", new { area = "Accounting" }, null)</li>
+    <li class="active">@Accounts.Delete</li>
+</ol>
+
+<div class="alert alert-danger">
+    <h2>@Accounts.DeleteError</h2>
+    <p><strong>@Model.Message</strong></p>
+    <p>@Model.Hint</p>
+    <br />
+    @Html.ActionLink(Accounts.ReturnToIndex, "index", "accounts", null, new { @class = "btn btn-primary" })
+</div>

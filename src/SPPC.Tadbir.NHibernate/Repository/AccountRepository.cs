@@ -31,6 +31,20 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
+        /// Determines if the account specified by identifier is referenced by other records. 
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
+        public bool IsUsedAccount(int accountId)
+        {
+            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            var articleCount = repository
+                .GetByCriteria(art => art.Account.Id == accountId)
+                .Count();
+            return (articleCount != 0);
+        }
+
+        /// <summary>
         /// Retrieves a single financial account with detail information from repository
         /// </summary>
         /// <param name="accountId">Unique identifier of an existing account</param>
@@ -46,6 +60,21 @@ namespace SPPC.Tadbir.NHibernate
             }
 
             return accountViewModel;
+        }
+
+        /// <summary>
+        /// Deletes an existing financial account from repository.
+        /// </summary>
+        /// <param name="accountId">Identifier of the account to delete</param>
+        public void DeleteAccount(int accountId)
+        {
+            var repository = _unitOfWork.GetRepository<Account>();
+            var account = repository.GetByID(accountId);
+            if (account != null)
+            {
+                repository.Delete(account);
+                _unitOfWork.Commit();
+            }
         }
 
         static partial void UpdateExistingAccount(AccountViewModel accountViewModel, Account account)

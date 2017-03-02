@@ -36,8 +36,13 @@ namespace SPPC.Framework.Service
         public string Message { get; private set; }
 
         /// <summary>
+        /// Gets possible solutions that may prevent a failed operation.
+        /// </summary>
+        public string Hint { get; set; }
+
+        /// <summary>
         /// Gets a value that shows the result of a service operation.
         /// </summary>
-        public ServiceResult Result { get; private set; }
+        public ServiceResult Result { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 using SwForAll.Platform.Common;
 
@@ -70,6 +71,23 @@ namespace SPPC.Tadbir.Service
             else
             {
                 response = _apiClient.Update(account, AccountApi.Account, account.Id);
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        /// Deletes a financial account specified by unique identifier.
+        /// </summary>
+        /// <param name="accountId">Unique identifier of the account to delete</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of delete operation</returns>
+        public ServiceResponse DeleteAccount(int accountId)
+        {
+            var response = _apiClient.Delete(AccountApi.Account, accountId);
+            if (!response.Succeeded)
+            {
+                response.Result = ServiceResult.DeleteFailed;
+                response.Hint = Accounts.HowToDeleteHint;
             }
 
             return response;
