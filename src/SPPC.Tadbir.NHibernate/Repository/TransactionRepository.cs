@@ -63,6 +63,48 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
+        /// Inserts or updates a single transaction in repository.
+        /// </summary>
+        /// <param name="transaction">Item to insert or update</param>
+        public void SaveTransaction(TransactionViewModel transaction)
+        {
+            Verify.ArgumentNotNull(transaction, "transaction");
+            var repository = _unitOfWork.GetRepository<Transaction>();
+            var existing = repository.GetByID(transaction.Id);
+            if (existing == null)
+            {
+                var newTransaction = _mapper.Map<Transaction>(transaction);
+                repository.Insert(newTransaction);
+            }
+            else
+            {
+                UpdateExistingTransaction(existing, transaction);
+                repository.Update(existing);
+            }
+
+            _unitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// Deletes an existing financial transaction from repository.
+        /// </summary>
+        /// <param name="transactionId">Identifier of the transaction to delete</param>
+        public bool DeleteTransaction(int transactionId)
+        {
+            var repository = _unitOfWork.GetRepository<Transaction>();
+            var transaction = repository.GetByID(transactionId);
+            if (transaction != null)
+            {
+                transaction.Lines.Clear();
+                repository.Update(transaction);
+                repository.Delete(transaction);
+                _unitOfWork.Commit();
+            }
+
+            return (transaction != null);
+        }
+
+        /// <summary>
         /// Retrieves a single financial article from repository.
         /// </summary>
         /// <param name="articleId">Unique identifier of an existing article</param>
@@ -97,29 +139,6 @@ namespace SPPC.Tadbir.NHibernate
             }
 
             return articleDetails;
-        }
-
-        /// <summary>
-        /// Inserts or updates a single transaction in repository.
-        /// </summary>
-        /// <param name="transaction">Item to insert or update</param>
-        public void SaveTransaction(TransactionViewModel transaction)
-        {
-            Verify.ArgumentNotNull(transaction, "transaction");
-            var repository = _unitOfWork.GetRepository<Transaction>();
-            var existing = repository.GetByID(transaction.Id);
-            if (existing == null)
-            {
-                var newTransaction = _mapper.Map<Transaction>(transaction);
-                repository.Insert(newTransaction);
-            }
-            else
-            {
-                UpdateExistingTransaction(existing, transaction);
-                repository.Update(existing);
-            }
-
-            _unitOfWork.Commit();
         }
 
         /// <summary>

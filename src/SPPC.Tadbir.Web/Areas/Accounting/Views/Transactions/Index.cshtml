@@ -90,3 +90,7 @@
 <p>
     @Html.ActionLink(Transactions.CreateNew, "create", "transactions", new { }, new { @class = "btn btn-sm btn-primary" })
 </p>
+
+@section scripts {
+    @Scripts.Render("~/bundles/site")
+}

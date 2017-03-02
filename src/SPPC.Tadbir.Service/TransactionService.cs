@@ -56,6 +56,15 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Deletes a financial transaction specified by unique identifier.
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of the transaction to delete</param>
+        public void DeleteTransaction(int transactionId)
+        {
+            _apiClient.Delete(TransactionApi.Transaction, transactionId);
+        }
+
+        /// <summary>
         /// Inserts or updates a financial transaction article.
         /// </summary>
         /// <param name="article">Article to insert or update</param>

@@ -80,7 +80,8 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             HasMany(x => x.Lines)
                 .KeyColumn("TransactionID")
                 .LazyLoad()
-                .Cascade.All();
+                .Inverse()
+                .Cascade.DeleteOrphan();
         }
     }
 }

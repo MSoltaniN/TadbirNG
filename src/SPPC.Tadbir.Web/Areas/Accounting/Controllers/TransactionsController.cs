@@ -113,6 +113,13 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return View(transaction);
         }
 
+        // GET: accounting/transactions/delete/id
+        public ActionResult Delete(int id)
+        {
+            _service.DeleteTransaction(id);
+            return RedirectToAction("index");
+        }
+
         private ITransactionService _service;
     }
 }

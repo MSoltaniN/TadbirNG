@@ -24,6 +24,18 @@ namespace SPPC.Tadbir.NHibernate
         TransactionFullViewModel GetTransactionDetail(int transactionId);
 
         /// <summary>
+        /// Inserts or updates a single transaction in repository.
+        /// </summary>
+        /// <param name="transaction">Item to insert or update</param>
+        void SaveTransaction(TransactionViewModel transaction);
+
+        /// <summary>
+        /// Deletes an existing financial transaction from repository.
+        /// </summary>
+        /// <param name="transactionId">Identifier of the transaction to delete</param>
+        bool DeleteTransaction(int transactionId);
+
+        /// <summary>
         /// Retrieves a single financial article from repository.
         /// </summary>
         /// <param name="articleId">Unique identifier of an existing article</param>
@@ -37,12 +49,6 @@ namespace SPPC.Tadbir.NHibernate
         /// <returns>The transaction line (article) retrieved from repository as a
         /// <see cref="TransactionLineFullViewModel"/> object</returns>
         TransactionLineFullViewModel GetArticleDetails(int articleId);
-
-        /// <summary>
-        /// Inserts or updates a single transaction in repository.
-        /// </summary>
-        /// <param name="transaction">Item to insert or update</param>
-        void SaveTransaction(TransactionViewModel transaction);
 
         /// <summary>
         /// Inserts or updates a single transaction line (article) in repository.

@@ -105,6 +105,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // DELETE: api/transactions/{transactionId:int}
+        [Route(TransactionApi.TransactionUrl)]
+        public IHttpActionResult DeleteExistingTransaction(int transactionId)
+        {
+            if (transactionId <= 0)
+            {
+                return BadRequest("Could not delete transaction because it does not exist.");
+            }
+
+            bool deleted = _repository.DeleteTransaction(transactionId);
+            var result = deleted
+                ? StatusCode(HttpStatusCode.NoContent)
+                : BadRequest("Could not delete transaction because it does not exist.") as IHttpActionResult;
+            return result;
+        }
+
         // GET: api/transactions/articles/{articleId:int}
         [Route(TransactionApi.TransactionArticleUrl)]
         public IHttpActionResult GetArticle(int articleId)
