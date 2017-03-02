@@ -56,5 +56,11 @@ namespace SPPC.Tadbir.NHibernate
         /// <param name="transaction">Transaction that needs to be validated</param>
         /// <returns>True if the transaction fulfills all business rules; otherwise, returns false.</returns>
         bool IsValidTransaction(TransactionViewModel transaction);
+
+        /// <summary>
+        /// Deletes an existing financial transaction line (article) from repository.
+        /// </summary>
+        /// <param name="articleId">Identifier of the article to delete</param>
+        void DeleteArticle(int articleId);
     }
 }

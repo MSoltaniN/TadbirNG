@@ -52,5 +52,11 @@ namespace SPPC.Tadbir.Service
         /// <returns>Transaction line (article) with detail information as a <see cref="TransactionLineFullViewModel"/>
         /// instance</returns>
         TransactionLineFullViewModel GetDetailArticleInfo(int articleId);
+
+        /// <summary>
+        /// Deletes a financial transaction line (article) specified by unique identifier.
+        /// </summary>
+        /// <param name="articleId">Unique identifier of the article to delete</param>
+        void DeleteArticle(int articleId);
     }
 }

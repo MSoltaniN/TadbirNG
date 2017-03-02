@@ -104,6 +104,13 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return View(article);
         }
 
+        // GET: accounting/articles/delete/id?transactionId={tid}
+        public ActionResult Delete(int id, int transactionId)
+        {
+            _service.DeleteArticle(id);
+            return RedirectToAction("edit", "transactions", new { area = "accounting", id = transactionId });
+        }
+
         private void InitLookups()
         {
             ViewBag.AccountLookup = _lookupService.LookupAccounts(TempContext.CurrentFiscalPeriodId);

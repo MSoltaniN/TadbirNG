@@ -112,6 +112,15 @@ namespace SPPC.Tadbir.Service
             return articleDetail;
         }
 
+        /// <summary>
+        /// Deletes a financial transaction line (article) specified by unique identifier.
+        /// </summary>
+        /// <param name="articleId">Unique identifier of the article to delete</param>
+        public void DeleteArticle(int articleId)
+        {
+            _apiClient.Delete(TransactionApi.TransactionArticle, articleId);
+        }
+
         private IApiClient _apiClient;
     }
 }

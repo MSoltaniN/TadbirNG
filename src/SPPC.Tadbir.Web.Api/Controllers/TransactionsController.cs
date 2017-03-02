@@ -203,6 +203,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // DELETE: api/transactions/articles/{articleId:int}
+        [Route(TransactionApi.TransactionArticleUrl)]
+        public IHttpActionResult DeleteExistingArticle(int articleId)
+        {
+            if (articleId <= 0)
+            {
+                return BadRequest("Could not delete article because it does not exist.");
+            }
+
+            var article = _repository.GetArticle(articleId);
+            if (article == null)
+            {
+                return BadRequest("Could not delete article because it does not exist.");
+            }
+
+            _repository.DeleteArticle(articleId);
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
         private ITransactionRepository _repository;
     }
 }

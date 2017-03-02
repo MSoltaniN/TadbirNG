@@ -170,6 +170,21 @@ namespace SPPC.Tadbir.NHibernate
             return isValid;
         }
 
+        /// <summary>
+        /// Deletes an existing financial transaction line (article) from repository.
+        /// </summary>
+        /// <param name="articleId">Identifier of the article to delete</param>
+        public void DeleteArticle(int articleId)
+        {
+            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            var article = repository.GetByID(articleId);
+            if (article != null)
+            {
+                repository.Delete(article);
+                _unitOfWork.Commit();
+            }
+        }
+
         private static void UpdateExistingTransaction(Transaction existing, TransactionViewModel transaction)
         {
             existing.No = transaction.No;

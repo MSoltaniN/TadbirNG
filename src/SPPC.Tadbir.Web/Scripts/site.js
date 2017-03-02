@@ -11,7 +11,7 @@ $(function () {
  *   e : Javascript event object passed to the event handler.
  */
 function confirmDelete(e) {
-    var confirmed = confirm('آیا در مورد حذف این مورد اطمینان دارید؟');
+    var confirmed = confirm('آیا در مورد حذف این سطر اطلاعاتی اطمینان دارید؟');
     if (!confirmed) {
         e.preventDefault();
     }
