@@ -1,0 +1,1396 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SwForAll.Platform.Common</name>
+    </assembly>
+    <members>
+        <member name="T:SwForAll.Platform.Common.Binding.DataSource">
+            <summary>
+            Default implementation for the <see cref="T:SwForAll.Platform.Common.Binding.IDataSource"/> interface.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Binding.DataSource.#ctor(System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SwForAll.Platform.Common.Binding.DataSource"/> class with the specified object as
+            the underlying data source.
+            </summary>
+            <param name="data">The underlying data source</param>
+        </member>
+        <member name="P:SwForAll.Platform.Common.Binding.DataSource.Data">
+            <summary>
+            Gets the object whose data members (properties) should be managed in a binding scenario.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Binding.DataSource.SetProperty(System.String,System.Object)">
+            <summary>
+            Modifies the current value of a specified data member in the underlying data source.
+            </summary>
+            <param name="name">Name of the data member whose value is being modified</param>
+            <param name="value">New value to set in a data member of the underlying data source</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Binding.DataSource.GetProperty(System.String)">
+            <summary>
+            Reads and returns the current value of a specified data member in the underlying data source.
+            </summary>
+            <param name="name">Name of the data member whose value is being read</param>
+            <returns>Current value of the specified data member in the underlying data source</returns>
+        </member>
+        <member name="T:SwForAll.Platform.Common.Binding.IDataSource">
+            <summary>
+            Defines members required for treating an object as a data source in a binding scenario.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.Binding.IDataSource.Data">
+            <summary>
+            Gets the object whose data members (properties) should be managed in a binding scenario.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Binding.IDataSource.SetProperty(System.String,System.Object)">
+            <summary>
+            Modifies the current value of a specified data member in the underlying data source.
+            </summary>
+            <param name="name">Name of the data member whose value is being modified</param>
+            <param name="value">New value to set in a data member of the underlying data source</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Binding.IDataSource.GetProperty(System.String)">
+            <summary>
+            Reads and returns the current value of a specified data member in the underlying data source.
+            </summary>
+            <param name="name">Name of the data member whose value is being read</param>
+            <returns>Current value of the specified data member in the underlying data source</returns>
+        </member>
+        <member name="T:SwForAll.Platform.Common.Constants">
+            <summary>
+            Provides common constant values used throughout the platform.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.Constants.MinDate">
+            <summary>
+            Gets minimum date value suitable for database operations using SQL Server.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.Constants.DateFormat">
+            <summary>
+            Gets the default date time format override when default system format will not be used.
+            </summary>
+        </member>
+        <member name="T:SwForAll.Platform.Common.BuiltinType">
+            <summary>
+            Defines generic data type for a property.
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.String">
+            <summary>
+            The System.String data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.Char">
+            <summary>
+            The System.Char data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.Byte">
+            <summary>
+            The System.Byte data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.SByte">
+            <summary>
+            The System.SByte data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.Int16">
+            <summary>
+            The System.Int16 data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.UInt16">
+            <summary>
+            The System.UInt16 data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.Int32">
+            <summary>
+            The System.Int32 data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.UInt32">
+            <summary>
+            The System.UInt32 data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.Int64">
+            <summary>
+            The System.Int64 data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.UInt64">
+            <summary>
+            The System.UInt64 data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.Decimal">
+            <summary>
+            The System.Decimal data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.Single">
+            <summary>
+            The System.Single data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.Double">
+            <summary>
+            The System.Double data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.DateTime">
+            <summary>
+            The System.DateTime data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.TimeSpan">
+            <summary>
+            The System.TimeSpan data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.Boolean">
+            <summary>
+            The System.Boolean data type
+            </summary>
+        </member>
+        <member name="F:SwForAll.Platform.Common.BuiltinType.Guid">
+            <summary>
+            The System.Guid data type
+            </summary>
+        </member>
+        <member name="T:SwForAll.Platform.Common.ExceptionBuilder">
+            <summary>
+            Initializes and returns standard exceptions.
+            </summary>
+            <remarks>Wherever possible, use methods of this class to build exceptions, instead of directly creating them.
+            </remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewArgumentException">
+            <summary>
+            Initializes and returns a new instance of the ArgumentException class.
+            </summary>
+            <returns>A new default instance of ArgumentException class.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewArgumentException(System.String)">
+            <summary>
+            Initializes and returns a new instance of the ArgumentException class with a specified error message.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <returns>A new instance of ArgumentException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewArgumentException(System.String,System.Exception)">
+            <summary>
+            Initializes and returns a new instance of the ArgumentException class with
+            a specified error message and a reference to the inner exception that is
+            the cause of this exception.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception.
+            If the innerException parameter is not a null reference, the current exception is raised
+            in a catch block that handles the inner exception.
+            </param>
+            <returns>A new instance of ArgumentException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewArgumentException(System.String,System.String)">
+            <summary>
+            Initializes and returns a new instance of the ArgumentException class with
+            a specified error message and the name of the parameter that causes this
+            exception.
+            </summary>
+            <param name="message">The error message that explains the reason for the
+            exception.</param>
+            <param name="parameterName">The name of the parameter that caused the current
+            exception.</param>
+            <returns>A new instance of ArgumentException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewArgumentException(System.String,System.String,System.Exception)">
+            <summary>
+            Initializes and returns a new instance of the ArgumentException class with
+            a specified error message, the parameter name and a reference to the inner exception that is
+            the cause of this exception.
+            </summary>
+            <param name="message">The error message that explains the reason for the
+            exception.</param>
+            <param name="parameterName">The name of the parameter that caused the current
+            exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception.
+            If the innerException parameter is not a null reference, the current exception is raised
+            in a catch block that handles the inner exception.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewArgumentNullException">
+            <summary>
+            Initializes and returns a new instance of the ArgumentNullException class.
+            </summary>
+            <returns>A new default instance of ArgumentNullException class.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewArgumentNullException(System.String)">
+            <summary>
+            Initializes and returns a new instance of the ArgumentNullException class with
+            the name of the parameter that causes this exception.
+            </summary>
+            <param name="parameterName">The name of the parameter that caused the exception.</param>
+            <returns>A new instance of ArgumentNullException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewArgumentNullException(System.String,System.Exception)">
+            <summary>
+            Initializes and returns a new instance of the ArgumentNullException class with
+            a specified error message and the exception that is the cause of this exception.
+            </summary>
+            <param name="message">The error message that explains the reason for this
+            exception.</param>
+            <param name="innerException">The exception that is the cause of the current
+            exception, or a null reference if no inner exception is specified.</param>
+            <returns>A new instance of ArgumentNullException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewArgumentNullException(System.String,System.String)">
+            <summary>
+            Initializes and returns an instance of the ArgumentNullException class with
+            a specified error message and the name of the parameter that causes this
+            exception.
+            </summary>
+            <param name="parameterName">The name of the parameter that caused the exception.</param>
+            <param name="message">A message that describes the error.</param>
+            <returns>A new instance of ArgumentNullException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewArgumentOutOfRangeException">
+            <summary>
+            Initializes and returns a new instance of the ArgumentOutOfRangeException class.
+            </summary>
+            <returns>A new default instance of ArgumentOutOfRangeException class.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewArgumentOutOfRangeException(System.String)">
+            <summary>
+            Initializes and returns a new instance of the ArgumentOutOfRangeException class with
+            the name of the parameter that causes this exception.
+            </summary>
+            <param name="parameterName">The name of the parameter that caused the exception.</param>
+            <returns>A new instance of ArgumentOutOfRangeException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewArgumentOutOfRangeException(System.String,System.Exception)">
+            <summary>
+            Initializes and returns a new instance of the ArgumentOutOfRangeException class with
+            a specified error message and the exception that is the cause of this exception.
+            </summary>
+            <param name="message">The error message that explains the reason for this
+            exception.</param>
+            <param name="innerException">The exception that is the cause of the current
+            exception, or a null reference if no inner exception is specified.</param>
+            <returns>A new instance of ArgumentOutOfRangeException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewArgumentOutOfRangeException(System.String,System.String)">
+            <summary>
+            Initializes and returns an instance of the ArgumentOutOfRangeException class with
+            a specified error message and the name of the parameter that causes this
+            exception.
+            </summary>
+            <param name="parameterName">The name of the parameter that caused the exception.</param>
+            <param name="message">A message that describes the error.</param>
+            <returns>A new instance of ArgumentOutOfRangeException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewArgumentOutOfRangeException(System.String,System.Object,System.String)">
+            <summary>
+            Initializes and returns an instance of the ArgumentOutOfRangeException class with
+            a specified error message, the value of the argument and the name of the parameter that causes this
+            exception.
+            </summary>
+            <param name="parameterName">The name of the parameter that caused the exception.</param>
+            <param name="actualValue">The value of the argument that caused this exception</param>
+            <param name="message">A message that describes the error.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewInvalidEnumArgumentException">
+            <summary>
+            Initializes and returns a new instance of the InvalidEnumArgumentException class without a message.
+            </summary>
+            <returns>A new default instance of InvalidEnumArgumentException class.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewInvalidEnumArgumentException(System.String)">
+            <summary>
+            Initializes and returns a new instance of the InvalidEnumArgumentException class with the specified message.
+            </summary>
+            <param name="message">The message to display with this exception.</param>
+            <returns>A new instance of InvalidEnumArgumentException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewInvalidEnumArgumentException(System.String,System.Exception)">
+            <summary>
+            Initializes and returns a new instance of the InvalidEnumArgumentException class with the specified
+            detailed description and the specified exception.
+            </summary>
+            <param name="message">The message to display with this exception.</param>
+            <param name="innerException">The exception that is the cause of the current
+            exception. If the innerException parameter is not a null reference, the current
+            exception is raised in a catch block that handles the inner exception.</param>
+            <returns>A new instance of InvalidEnumArgumentException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewInvalidEnumArgumentException(System.String,System.Int32,System.Type)">
+            <summary>
+            Initializes and returns a new instance of the InvalidEnumArgumentException class with a message generated
+            from the argument, the invalid value, and an enumeration class.
+            </summary>
+            <param name="argName">The name of the parameter that caused the current exception.</param>
+            <param name="invalidValue">The value of the argument that failed.</param>
+            <param name="enumClass">A Type that represents the enumeration class with the valid values.</param>
+            <returns>A new instance of InvalidEnumArgumentException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewInvalidOperationException">
+            <summary>
+            Initializes and returns a new instance of the InvalidOperationException class.
+            </summary>
+            <returns>A new default instance of InvalidOperationException class.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewInvalidOperationException(System.String)">
+            <summary>
+            Initializes and returns a new instance of the InvalidOperationException class with a specified error message.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <returns>A new instance of InvalidOperationException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewInvalidOperationException(System.String,System.Exception)">
+            <summary>
+            Initializes and returns a new instance of the InvalidOperationException class with a specified error message
+            and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception.
+            If the innerException parameter is not a null reference, the current exception is raised
+            in a catch block that handles the inner exception.
+            </param>
+            <returns>A new instance of InvalidOperationException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewNotSupportedException">
+            <summary>
+            Initializes and returns a new instance of the NotSupportedException class.
+            </summary>
+            <returns>A new default instance of NotSupportedException class.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewNotSupportedException(System.String)">
+            <summary>
+            Initializes and returns a new instance of the NotSupportedException class with a specified error message.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <returns>A new instance of NotSupportedException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewNotSupportedException(System.String,System.Exception)">
+            <summary>
+            Initializes and returns a new instance of the NotSupportedException class with a specified error message
+            and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception.
+            If the innerException parameter is not a null reference, the current exception is raised
+            in a catch block that handles the inner exception.
+            </param>
+            <returns>A new instance of NotSupportedException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewNotImplementedException">
+            <summary>
+            Initializes and returns a new instance of the NotImplementedException class.
+            </summary>
+            <returns>A new default instance of NotImplementedException class.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewNotImplementedException(System.String)">
+            <summary>
+            Initializes and returns a new instance of the NotImplementedException class with a specified error message.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <returns>A new instance of NotImplementedException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewNotImplementedException(System.String,System.Exception)">
+            <summary>
+            Initializes and returns a new instance of the NotImplementedException class with a specified error message
+            and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception.
+            If the innerException parameter is not a null reference, the current exception is raised
+            in a catch block that handles the inner exception.
+            </param>
+            <returns>A new instance of NotImplementedException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewFormatException">
+            <summary>
+            Initializes and returns a new instance of the FormatException class.
+            </summary>
+            <returns>A new default instance of FormatException class.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewFormatException(System.String)">
+            <summary>
+            Initializes and returns a new instance of the FormatException class with a specified error message.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <returns>A new instance of FormatException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewFormatException(System.String,System.Exception)">
+            <summary>
+            Initializes and returns a new instance of the FormatException class with a specified error message
+            and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception.
+            If the innerException parameter is not a null reference, the current exception is raised
+            in a catch block that handles the inner exception.
+            </param>
+            <returns>A new instance of FormatException class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewGenericException``1">
+            <summary>
+            Initializes and returns a new instance of a generic exception class.
+            </summary>
+            <typeparam name="TException">Type of the exception to build</typeparam>
+            <returns>A new default instance of the specified exception class.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewGenericException``1(System.String)">
+            <summary>
+            Initializes and returns a new instance of a generic exception class with a specified error message.
+            </summary>
+            <typeparam name="TException">Type of the exception to build</typeparam>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <returns>A new instance of the specified exception class with specified arguments.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ExceptionBuilder.NewGenericException``1(System.String,System.Exception)">
+            <summary>
+            Initializes and returns a new instance of a generic exception class with a specified error message
+            and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <typeparam name="TException">Type of the exception to build</typeparam>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">The exception that is the cause of the current exception.
+            If the innerException parameter is not a null reference, the current exception is raised
+            in a catch block that handles the inner exception.</param>
+            <returns>A new instance of the specified exception class with specified arguments.</returns>
+        </member>
+        <member name="T:SwForAll.Platform.Common.JalaliDateTime">
+            <summary>
+            Represents a date and time value in Jalali (Persian) calendar.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.JalaliDateTime.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SwForAll.Platform.Common.JalaliDateTime"/> class that is initialized to the current
+            system date and time.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.JalaliDateTime.#ctor(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SwForAll.Platform.Common.JalaliDateTime"/> class that is initialized to a date in
+            Jalali calendar specified by year, month and day values.
+            </summary>
+            <param name="year">Year value in Jalali calendar</param>
+            <param name="month">One-based index of the month in Jalali calendar</param>
+            <param name="day">One-based index of the day in Jalali calendar</param>
+        </member>
+        <member name="P:SwForAll.Platform.Common.JalaliDateTime.Year">
+            <summary>
+            Gets the year component of the Jalali date encapsulated by this object.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.JalaliDateTime.Month">
+            <summary>
+            Gets the month component of the Jalali date encapsulated by this object.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.JalaliDateTime.Day">
+            <summary>
+            Gets the day component of the Jalali date encapsulated by this object.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.JalaliDateTime.Hour">
+            <summary>
+            Gets or sets the hour component of the Jalali date encapsulated by this object.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.JalaliDateTime.Minute">
+            <summary>
+            Gets or sets the minute component of the Jalali date encapsulated by this object.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.JalaliDateTime.MonthName">
+            <summary>
+            Gets the local name of the month component of the Jalali date encapsulated by this object.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.JalaliDateTime.Weekday">
+            <summary>
+            Gets the local name of the day of week in the Jalali date encapsulated by this object.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.JalaliDateTime.Now">
+            <summary>
+            Gets a <see cref="T:SwForAll.Platform.Common.JalaliDateTime"/> object initialized to the current system date and time in Jalali calendar.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.JalaliDateTime.TryParse(System.String,SwForAll.Platform.Common.JalaliDateTime@)">
+            <summary>
+            Attempts to parse the given string as a date value in Jalali calendar.
+            </summary>
+            <param name="dateTime">String representation of a date value</param>
+            <param name="value">A <see cref="T:SwForAll.Platform.Common.JalaliDateTime"/> object parsed from given string</param>
+            <returns>True if given string could be parsed as a date value in Jalali calendar; otherwise returns false.</returns>
+            <remarks>If parsing fails, given <see cref="T:SwForAll.Platform.Common.JalaliDateTime"/> value is initialized to <c>JalaliDateTime.Now</c>.</remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.JalaliDateTime.FromDateTime(System.DateTime)">
+            <summary>
+            Initializes a <see cref="T:SwForAll.Platform.Common.JalaliDateTime"/> object from the given <see cref="T:System.DateTime"/> object.
+            </summary>
+            <param name="date">A DateTime value that should be converted to the equivalent value in Jalali calendar.</param>
+            <returns>Equivalent of the given DateTime value in Jalali calendar</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.JalaliDateTime.ToGregorian">
+            <summary>
+            Returns a <see cref="T:System.DateTime"/> object representing the equivalent of this object in Gregorian calendar.
+            </summary>
+            <returns>Equivalent of DateTime value of this object in Gregorian calendar</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.JalaliDateTime.ToString">
+            <summary>
+            Returns the local string representation of the DateTime value of this object.
+            </summary>
+            <returns>Local string representation of the underlying date</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.JalaliDateTime.ToShortDateString">
+            <summary>
+            Returns a string representation of the Jalali date using common persian string format (YYYY/MM/DD).
+            </summary>
+            <returns>Short date representation of this Jalali date object.</returns>
+        </member>
+        <member name="T:SwForAll.Platform.Common.ObjectNameProvider">
+            <summary>
+            Extracts a name from a given object using different naming strategies.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ObjectNameProvider.GetName(System.Object,System.String)">
+            <summary>
+            Returns a name for a given object using either a predefined naming priority or the DisplayName attribute
+            of an optional property in the source object.
+            </summary>
+            <param name="source">Source object to provide a name for.</param>
+            <param name="property">Name of a property in the source object to use for naming.</param>
+            <returns>A name for the source object.</returns>
+            <remarks>When property argument is not null, the DisplayName attribute of the property by that name
+            is used as the object name. When property argument is null, this method returns the value of Name
+            property in source object, if present; otherwise returns the name of the CLR type of source object.
+            </remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ObjectNameProvider.GetDisplayName(System.Object,System.String)">
+            <summary>
+            Returns the DisplayName property of DisplayName attribute of a specified property in source object.
+            </summary>
+            <param name="source">Source object to provide a name for.</param>
+            <param name="property">Name of a property in the source object to use for naming.</param>
+            <returns>Display name of the specified property in source object, derived from DisplayName attribute
+            of that property.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ObjectNameProvider.GetObjectName(System.Object)">
+            <summary>
+            Returns the value of Name property in source object. Throws ArgumentException if the source object
+            does not implement a Name property.
+            </summary>
+            <param name="source">Source object to provide a name for.</param>
+            <returns>Value of Name property in source object.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ObjectNameProvider.GetTypeName(System.Object)">
+            <summary>
+            Returns the name of CLR type of source object.
+            </summary>
+            <param name="source">Source object to provide a name for.</param>
+            <returns>Name of CLR type of source object.</returns>
+        </member>
+        <member name="T:SwForAll.Platform.Common.Reflector">
+            <summary>
+            Provides common reflection services using .NET Reflection API. Using this class will free developers
+            from learning the internals of Reflection API. 
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.GetProperty(System.Object,System.String)">
+            <summary>
+            Reads the current value of an instance property in an object.
+            </summary>
+            <param name="source">The object to read the property from</param>
+            <param name="name">The name of the property to read from the object</param>
+            <returns>The property value currently set in the object</returns>
+            <remarks>The property specified by name can be either a simple property or a
+            property path, where path items are separated by dot.</remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.GetProperty(System.Type,System.String)">
+            <summary>
+            Reads the current value of a static property in a type.
+            </summary>
+            <param name="sourceType">The type whose static property is being queried</param>
+            <param name="name">The name of the property to read from the class</param>
+            <returns>The current value of the static property in the specified type</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.GetProperty(System.Object,System.String,System.Type[],System.Object[])">
+            <summary>
+            Reads current value of an indexed property in the source object.
+            </summary>
+            <param name="source">An Object whose property must be read.</param>
+            <param name="name">Name of an indexed property in the source object.</param>
+            <param name="indexArgTypes">An array of Type objects specifying types of property indices.</param>
+            <param name="indexArgValues">An object array specifying required property index values.</param>
+            <returns>Current value of the indexed property.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.SetProperty(System.Object,System.String,System.Object)">
+            <summary>
+            Overwrites current value of an object property with a new value.
+            </summary>
+            <param name="source">The object we have to write the property value to</param>
+            <param name="name">The name of the property to write in the object</param>
+            <param name="value">The new value to write to the object property</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.CopyProperty(System.Object,System.String,System.Object,System.String)">
+            <summary>
+            Copies a property value from a source object into a target object.
+            </summary>
+            <param name="source">The object to read the property from</param>
+            <param name="sourceProp">The name of the property to read from the source object</param>
+            <param name="target">The object we have to write the property value to</param>
+            <param name="targetProp">The name of the property to write in the target object</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.IsReadOnly(System.Object,System.String)">
+            <summary>
+            Determines if a property in a source object is read-only.
+            </summary>
+            <param name="source">The object to read the property from</param>
+            <param name="propertyName">The name of the property to read from the object</param>
+            <returns>True if the specified property is read-only (i.e. can not be set); otherwise returns false.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.IsBuiltin(System.Type)">
+            <summary>
+            Determines if a CLR type is among simple data types in .NET System namespace.
+            </summary>
+            <param name="type">The CLR type that must be checked.</param>
+            <returns>True if the given type is the base System.Object type, an enum type or one of common types
+            defined in BuiltinType enumeration type.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.IsGenericCollection(System.Object,System.String)">
+            <summary>
+            Determines if a specified property in a source object is a generic collection.
+            </summary>
+            <param name="source">The object to read the property from</param>
+            <param name="propertyName">The name of the property to read from the object</param>
+            <returns>True if the runtime type of specified property is one of generic collection types;
+            otherwise returns false.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.IsGenericCollection(System.Object)">
+            <summary>
+            Determines if a specified object is a generic collection.
+            </summary>
+            <param name="source">The object whose type is checked.</param>
+            <returns>True if the runtime type of specified object is one of generic collection types;
+            otherwise returns false.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.GetPropertyType(System.Object,System.String)">
+            <summary>
+            Gets the type of the specified property in an object instance.
+            </summary>
+            <param name="source">An object whose specific property will be queried</param>
+            <param name="propertyName">Name of the property to read from the given object. If the given object
+            does not implement the property, an exception will be thrown.</param>
+            <returns>Type of the specified property in the given object</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.GetPropertyType(System.Type,System.String)">
+            <summary>
+            Gets the type of the specified property in a given type.
+            </summary>
+            <param name="sourceType">A type whose specific property will be queried</param>
+            <param name="propertyName">Name of the property to query from the given type. If the given type
+            does not implement the property, an exception will be thrown.</param>
+            <returns>Type of the specified property in the given type</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.GetPropertyNames(System.Object)">
+            <summary>
+            Reflects on the given object and returns the names of all public properties.
+            </summary>
+            <param name="source">The source object whose property names must be returned.</param>
+            <returns>A string array containing all property names.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.GetPropertyNames(System.Type)">
+            <summary>
+            Reflects on the given .NET type and returns the names of all public properties.
+            </summary>
+            <param name="type">The .NET type whose property names must be returned.</param>
+            <returns>A string array containing all property names.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.GetPropertyNames(System.Object,System.Type)">
+            <summary>
+            Reflects on the given object and returns the names of all properties having a specified Type.
+            </summary>
+            <param name="source">The source object whose property names must be returned.</param>
+            <param name="propertyType">The type of properties that must be returned.</param>
+            <returns>A string array containing all property names having the specified Type.</returns>
+            <remarks>Current implementation performs an exact match of the requested property type; in other words,
+            it does not return properties having types derived from the given type.</remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.Instantiate(System.String)">
+            <summary>
+            Creates a new instance of a type given by its full type name.
+            </summary>
+            <param name="typeName">Fully qualified name of the type that should be instantiated.
+            </param>
+            <returns>A new instance of the given type.</returns>
+            <remarks>If the specified type does not implement a public default constructor, an exception will be thrown.
+            </remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.Instantiate(System.Type)">
+            <summary>
+            Creates a new instance of a type given by the exact .NET type.
+            </summary>
+            <param name="type">A Type object specifying the exact type to instantiate.</param>
+            <returns>A new instance of the given type.</returns>
+            <remarks>If the specified type does not implement a public default constructor, an exception will be thrown.
+            </remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.Instantiate(System.Type,System.Object[])">
+            <summary>
+            Creates a new instance of a type given by the exact .NET type and a variable number of arguments
+            required by the type's constructor. 
+            </summary>
+            <param name="type">A Type object specifying the exact type to instantiate.</param>
+            <param name="args">A variable number of arguments required by the type's constructor.</param>
+            <returns>A new instance of the given type.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.DerivesFrom(System.Type,System.Type)">
+            <summary>
+            Determines whether a type derives from a specific type.
+            </summary>
+            <param name="type">A potential derived Type.</param>
+            <param name="baseType">A potential base Type.</param>
+            <returns>True if [type] is derived from [baseType], otherwise false. </returns>
+            <remarks>Current implementation only supports reference types.</remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.DerivesFromClass(System.Type,System.Type)">
+            <summary>
+            Determines whether a type derives from a specific class. This implies that the type given by
+            baseType argument must be a class, as opposed to an interface.
+            </summary>
+            <param name="type">A potential derived Type.</param>
+            <param name="baseType">A potential base class.</param>
+            <returns>True if [type] is derived from [baseType] class, otherwise false. </returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.DerivesFromInterface(System.Type,System.Type)">
+            <summary>
+            Determines whether a type derives from a specific interface. This implies that the type given by
+            baseType argument must be an interface, as opposed to a class.
+            </summary>
+            <param name="type">A potential derived Type.</param>
+            <param name="baseType">A potential base interface.</param>
+            <returns>True if [type] is derived from [baseType] interface, otherwise false. </returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.GetGenericType(System.Type,System.Type[])">
+            <summary>
+            Returns a generic type whose type argument(s) match the specified type array and whose base type
+            corresponds to the given type.
+            </summary>
+            <param name="baseGenericType">The base type of required generic type.</param>
+            <param name="typeArguments">a variable array of type arguments expected by the required generic type.</param>
+            <returns>The required generic type.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.GetAttribute(System.Reflection.ICustomAttributeProvider,System.Type)">
+            <summary>
+            Reflects on the given type and returns a specific attribute of that type.
+            </summary>
+            <param name="targetType">An ICustomAttributeProvider instance corresponding to the type whose custom
+            attribute will be queried.</param>
+            <param name="attributeType">The type of attribute to read from target type.</param>
+            <returns>An Attribute instance assigned to the given Type, if the attribute is available;
+            otherwise null.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.GetPropertyAttribute(System.Type,System.String,System.Type)">
+            <summary>
+            Reflects on the given type and returns a specific attribute from a property in that type, if available.
+            </summary>
+            <param name="targetType">The type from which the specified attribute will be queried</param>
+            <param name="propertyName">Name of a property in the target type whose attribute is required</param>
+            <param name="attributeType">The type of attribute to read from the specified property in the target type.
+            </param>
+            <returns>An Attribute instance assigned to the property of the given Type, if available;
+            otherwise null.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Reflector.Invoke(System.Object,System.String,System.Object[])">
+            <summary>
+            Invokes a method specified by name on the given object while passing given arguments to the method.
+            </summary>
+            <param name="source">The object whose method must be invoked.</param>
+            <param name="methodName">Name of method to invoke.</param>
+            <param name="args">An object array that will be passed to the method as arguments.
+            If given argument list doesn't contain all arguments required by the method, or one
+            or more arguments have types that don't match the type expected by the method, an exception
+            will be thrown.</param>
+        </member>
+        <member name="T:SwForAll.Platform.Common.InterfaceComparer">
+            <summary>
+            Defines a method for comparing two interface types.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.InterfaceComparer.Compare(System.Type,System.Type)">
+            <summary>
+            Compares two types and determines the inheritance order of them.
+            </summary>
+            <param name="x">The left type of the comparison operator.</param>
+            <param name="y">The right type of the comparison operator.</param>
+            <returns>-1 if an object having the type y can be assigned to an object having the type x,
+            1 if an object having the type x can be assigned to an object having the type y, otherwise
+            returns 0.</returns>
+            <remarks> This comparison follows the same semantic convention as integral types;
+            i.e. if x is less than y returns -1 and if x is greater than y returns 1. A type
+            higher in the inheritance hierarchy is supposed to be greater than a type lower
+            in the inheritance hierarchy. If two types are unrelated (don't belong to the same
+            inheritance hierarchy), or if two types are equal, then this method returns 0;
+            With this logic, the clients cannot rely on this method for type equality.</remarks>
+        </member>
+        <member name="T:SwForAll.Platform.Common.Transform">
+            <summary>
+            Converts raw data between different representations.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Transform.ToHexString(System.Byte[])">
+            <summary>
+            Converts a byte array to an equivalent sequence of hexadecimal strings. In this
+            transformation, each byte of data is mapped to two hex characters (0-9, A-F).
+            </summary>
+            <param name="input">An array of 8-bit unsigned integers which should be converted
+            to hexadecimal form.</param>
+            <returns>A string containing hexadecimal equivalent of input byte array.</returns>
+            <exception cref="T:System.ArgumentNullException">input is null reference.</exception>
+            <remarks>Hexadecimal strings are formed in uppercase letters.</remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Transform.ToBase64String(System.Byte[])">
+            <summary>
+            Converts a byte array to the equivalent base64 string.
+            </summary>
+            <param name="input">An array of 8-bit unsigned integers which should be converted
+            to base64 form.</param>
+            <returns>A string containing base64 equivalent of input byte array.</returns>
+            <exception cref="T:System.ArgumentNullException">input is null reference.</exception>
+            <remarks>Base64 strings are formatted without line breaks.</remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Transform.FromHexString(System.String)">
+            <summary>
+            Converts a sequence of hexadecimal characters (0-9, A-F) to an equivalent
+            array of bytes.
+            </summary>
+            <param name="input">A string containing a sequence of valid hexadecimal
+            characters (0-9, A-F).</param>
+            <returns>An array of 8-bit unsigned integers which is equivalent to the
+            input sequence of hexadecimal characters.</returns>
+            <exception cref="T:System.ArgumentNullException">input is null reference.</exception>
+            <exception cref="T:System.ArgumentException">input string contains invalid
+            hex characters, or the count of characters in the given string is not even.
+            </exception>
+            <remarks>Input string is read from left to right.</remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Transform.FromBase64String(System.String)">
+            <summary>
+            Converts a sequence of base64 characters to an equivalent array of bytes.
+            </summary>
+            <param name="input">A base64 string that should be converted.</param>
+            <returns>An array of 8-bit unsigned integers which is equivalent to the
+            base64 string.</returns>
+            <exception cref="T:System.ArgumentNullException">input is null reference.</exception>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Transform.StringFromHexString(System.String)">
+            <summary>
+            Converts a sequence of hexadecimal characters (0-9, A-F) to an equivalent UTF8 string.
+            </summary>
+            <param name="input">A string containing a sequence of valid hexadecimal characters (0-9, A-F)</param>
+            <returns>A unicode (UTF8) string whose byte sequence is equivalent to the hexadecimal input</returns>
+        </member>
+        <member name="T:SwForAll.Platform.Common.Leaf">
+            <summary>
+            Defines a leaf node in a tree hierarchy that does not have any child items.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.Leaf.Name">
+            <summary>
+            Gets or sets the display name of this leaf node.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.Leaf.Parent">
+            <summary>
+            Gets the containing Tree object.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.Leaf.Data">
+            <summary>
+            Gets or sets the data object associated with this leaf node.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Leaf.ToString">
+            <summary>
+            Provides a string representation for this leaf node.
+            </summary>
+            <returns>String representation of this leaf node.</returns>
+        </member>
+        <member name="T:SwForAll.Platform.Common.ObjectMetadata">
+            <summary>
+            Provides a generic container of metadata information for an object.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.ObjectMetadata.Name">
+            <summary>
+            Gets or sets the name of the object described by this metadata instance.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.ObjectMetadata.ItemType">
+            <summary>
+            Gets or sets the CLR type name of items in a collection object described by this metadata instance.
+            If the object being described does not have a collection type, this member should be null.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ObjectMetadata.ToString">
+            <summary>
+            Provides a string representation for this object.
+            </summary>
+            <returns>String representation of this object.</returns>
+        </member>
+        <member name="T:SwForAll.Platform.Common.ObjectTreeBuilder">
+            <summary>
+            Builds a Tree data structure from a source object using its property information.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.ObjectTreeBuilder.BuildTree(System.Object,System.Object)">
+            <summary>
+            Reflects on type information of the source object and creates a Tree object containing
+            the full object hierarchy contained in source object. 
+            </summary>
+            <param name="source">The object to build a tree hierarchy for.</param>
+            <param name="metadata">If not null, serves as custom metadata in the root node
+            of the resulting Tree object.</param>
+            <returns>A Tree object built from type information in source object.</returns>
+        </member>
+        <member name="T:SwForAll.Platform.Common.Tree">
+            <summary>
+            Defines a generic hierarchical data structure that can be built from a source object.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Tree.#ctor">
+            <summary>
+            Initializes a new instance of Tree class that is initially empty.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.Tree.Parent">
+            <summary>
+            Gets a Tree object that is immediately above this tree node in a tree hierarchy.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.Tree.Data">
+            <summary>
+            Gets or sets the data item associated with the node represented by this Tree object.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.Tree.Metadata">
+            <summary>
+            Gets or sets a custom metadata item that describes the node represented by this Tree object.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.Tree.Children">
+            <summary>
+            Gets a collection of child tree nodes in the subtree represented by this Tree object.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Common.Tree.Leaves">
+            <summary>
+            Gets a collection of child leaf nodes in the subtree represented by this Tree object.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Tree.Flatten">
+            <summary>
+            Creates a flat sequence of tree items from the hierarchy of nodes under this tree.
+            </summary>
+            <returns>An enumerable sequence of tree items.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Tree.FindChild(System.Object)">
+            <summary>
+            Finds and returns the child tree item whose data is equal to the specified data object.
+            </summary>
+            <param name="childData">A data object to find in child tree items recursively.</param>
+            <returns>A child tree object if specified data is assigned to a tree item under this tree;
+            otherwise returns null.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Tree.AddChild(SwForAll.Platform.Common.Tree)">
+            <summary>
+            Adds a new child subtree to this Tree object.
+            </summary>
+            <param name="child">The child tree node to add.</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Tree.RemoveChild(SwForAll.Platform.Common.Tree)">
+            <summary>
+            Removes a child subtree from this Tree object.
+            </summary>
+            <param name="child">The child tree node to remove.</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Tree.AddLeaf(SwForAll.Platform.Common.Leaf)">
+            <summary>
+            Adds a new child leaf node to this tree object.
+            </summary>
+            <param name="leaf">The child leaf node to add.</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Tree.ToString">
+            <summary>
+            Provides a string representation for this tree node.
+            </summary>
+            <returns>String representation of this tree node.</returns>
+        </member>
+        <member name="T:SwForAll.Platform.Common.Verify">
+            <summary>
+            Provides useful methods to perform argument checking in methods.
+            </summary>
+            <remarks>Use members of this class to check arguments in a method or property, before
+            performing the main operations.
+            </remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Verify.ArgumentNotNull(System.Object)">
+            <summary>
+            Checks given argument for null reference. If argument is null, throws a new
+            instance of ArgumentNullException.
+            </summary>
+            <param name="argValue">Argument to check for null reference</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Verify.ArgumentNotNull(System.Object,System.String)">
+            <summary>
+            Checks given argument for null reference. If argument is null, throws a new
+            instance of ArgumentNullException, with argument name of the generated exception
+            set to argName.
+            </summary>
+            <param name="argValue">Argument to check for null reference</param>
+            <param name="argName">Name of the argument to check</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Verify.ArgumentNotNullOrEmptyString(System.String)">
+            <summary>
+            Checks given string argument for null reference or empty value. If argument is null,
+            throws a new instance of ArgumentNullException. If argument is empty string,
+            throws a new instance of ArgumentException.
+            </summary>
+            <param name="argValue">String argument to check for null reference or empty value</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Verify.ArgumentNotNullOrEmptyString(System.String,System.String)">
+            <summary>
+            Checks given string argument for null reference or empty value. If argument is null,
+            throws a new instance of ArgumentNullException. If argument is empty string,
+            throws a new instance of ArgumentException. If an exception is generated, argument
+            name of the exception instance is set to argName.
+            </summary>
+            <param name="argValue">String argument to check for null reference or empty value</param>
+            <param name="argName">Name of the string argument to check</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Verify.ArgumentNotNullOrWhitespace(System.String)">
+            <summary>
+            Checks given string argument for null reference or whitespace value. If argument is null,
+            throws a new instance of ArgumentNullException. If argument is a string containing only
+            whitespace characters, throws a new instance of ArgumentException.
+            </summary>
+            <param name="argValue">String argument to check for null reference or whitespace value</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Verify.ArgumentNotNullOrWhitespace(System.String,System.String)">
+            <summary>
+            Checks given string argument for null reference or whitespace value. If argument is null,
+            throws a new instance of ArgumentNullException. If argument is a string containing only
+            whitespace characters, throws a new instance of ArgumentException. If an exception is generated,
+            argument name of the exception instance is set to argName.
+            </summary>
+            <param name="argValue">String argument to check for null reference or whitespace value</param>
+            <param name="argName">Name of the string argument to check</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Verify.ArgumentNotLessThan(System.IComparable,System.IComparable)">
+            <summary>
+            Checks given argument to make sure it is not less than a specified minimum value.
+            If the condition is not met, throws a new instance of ArgumentOutOfRangeException.
+            </summary>
+            <param name="argValue">A comparable argument to check for required condition</param>
+            <param name="minValue">The specified minimum value required by argument</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Verify.ArgumentNotLessThan(System.IComparable,System.IComparable,System.String)">
+            <summary>
+            Checks given argument to make sure it is not less than a specified minimum value.
+            If the condition is not met, throws a new instance of ArgumentOutOfRangeException.
+            If an exception is generated, argument name of the exception instance is set to argName.
+            </summary>
+            <param name="argValue">A comparable argument to check for required condition</param>
+            <param name="minValue">The specified minimum value required by argument</param>
+            <param name="argName">Name of the argument to check</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Verify.ArgumentNotGreaterThan(System.IComparable,System.IComparable)">
+            <summary>
+            Checks given argument to make sure it is not greater than a specified maximum value.
+            If the condition is not met, throws a new instance of ArgumentOutOfRangeException.
+            </summary>
+            <param name="argValue">A comparable argument to check for required condition</param>
+            <param name="maxValue">The specified maximum value required by argument</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Verify.ArgumentNotGreaterThan(System.IComparable,System.IComparable,System.String)">
+            <summary>
+            Checks given argument to make sure it is not greater than a specified maximum value.
+            If the condition is not met, throws a new instance of ArgumentOutOfRangeException.
+            If an exception is generated, argument name of the exception instance is set to argName.
+            </summary>
+            <param name="argValue">A comparable argument to check for required condition</param>
+            <param name="maxValue">The specified maximum value required by argument</param>
+            <param name="argName">Name of the argument to check</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Verify.ArgumentNotOutOfRange(System.IComparable,System.IComparable,System.IComparable)">
+            <summary>
+            Checks given argument to make sure it is not outside a range specified by a minimum and a maximum value.
+            If the condition is not met, throws a new instance of ArgumentOutOfRangeException.
+            </summary>
+            <param name="argValue">A comparable argument to check for required condition</param>
+            <param name="minValue">The specified minimum value required by argument</param>
+            <param name="maxValue">The specified maximum value required by argument</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Verify.ArgumentNotOutOfRange(System.IComparable,System.IComparable,System.IComparable,System.String)">
+            <summary>
+            Checks given argument to make sure it is not outside a range specified by a minimum and a maximum value.
+            If the condition is not met, throws a new instance of ArgumentOutOfRangeException.
+            If an exception is generated, argument name of the exception instance is set to argName.
+            </summary>
+            <param name="argValue">A comparable argument to check for required condition</param>
+            <param name="minValue">The specified minimum value required by argument</param>
+            <param name="maxValue">The specified maximum value required by argument</param>
+            <param name="argName">Name of the argument to check</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Verify.EnumValueIsDefined(System.Type,System.String,System.Int32)">
+            <summary>
+            Checks given integer argument to make sure it can be represented by the specified enum type.
+            </summary>
+            <param name="enumType">A Type that represents the enumeration class with the valid values.</param>
+            <param name="argName">The name of the argument that must be checked.</param>
+            <param name="argValue">The value of the argument that must be checked.</param>
+            <remarks>InvalidEnumArgumentException type is not supported in Silverlight.</remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Verify.TypeIsAssignableFromType(System.Type,System.Type)">
+            <summary>
+            Checks to see if two given types can be assigned to each other.
+            </summary>
+            <param name="leftType">The Type to which a value needs to be assigned.</param>
+            <param name="rightType">The Type whose value needs to be assigned.</param>
+        </member>
+        <member name="T:SwForAll.Platform.Common.Xml.XLinqHelper">
+            <summary>
+            A utility class for manipulating and persisting XML data using .NET XLinq API.
+            </summary>
+            <remarks>This class is unnecessarily coupled to Home-LLC Metadata API by some methods. Some refactoring
+            is required to make this class more reusable.</remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.#ctor(System.Xml.Linq.XElement)">
+            <summary>
+            Initializes a new instance of XLinqHelper class with the specified root element.
+            </summary>
+            <param name="xRoot">An XElement that will become the root XML element for this instance.</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of XLinqHelper class using the specified XML file as the data source
+            and the specified root element name.
+            </summary>
+            <param name="xmlFilePath">Absolute or relative path to the XML file that this instance should handle.</param>
+            <param name="xmlRoot">Name of an existing node in the source XML file that will become the root XML element
+            for this instance.</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Initializes a new instance of XLinqHelper class using the specified XML file as the data source,
+            the name of the root element and the name of the default XML namespace that this instance must use.
+            </summary>
+            <param name="xmlFilePath">Absolute or relative path to the XML file that this instance should handle.</param>
+            <param name="xmlRoot">Name of an existing node in the source XML file that will become the root XML element
+            for this instance.</param>
+            <param name="xmlNamespace">Name of the default XML namespace that this instance must use.</param>
+        </member>
+        <member name="P:SwForAll.Platform.Common.Xml.XLinqHelper.RootElement">
+            <summary>
+            Gets the topmost (root) XML element used by this instance.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.AddElement(System.Xml.Linq.XElement)">
+            <summary>
+            Adds a specific element as children of the root element.
+            </summary>
+            <param name="xElement">The element that must be added.</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.AddElement(System.Xml.Linq.XElement,System.Xml.Linq.XElement)">
+            <summary>
+            Adds a specific element as children of the specified parent element.
+            </summary>
+            <param name="xElement">The element that must be added.</param>
+            <param name="xParent">The element that will contain the added element in its children.</param>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.DeleteElement(System.Xml.Linq.XElement)">
+            <summary>
+            Removes the specified element from its parent.
+            </summary>
+            <param name="xElement">The element that must be removed.</param>
+            <remarks>This method immediately saves modifications back to disk. This will hurt performance when many
+            nodes are being deleted in a loop. This will be fixed while refactoring library classes.</remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.DeleteAll">
+            <summary>
+            Removes all nodes from the root element.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.Save">
+            <summary>
+            Saves the root element back to the destination file.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetElementID(System.String,System.String)">
+            <summary>
+            Searches through all elements under root element and returns the ElementID value of the first element
+            having the specified node name and the specified value for Name subnode.
+            </summary>
+            <param name="elementName">The name of element to search.</param>
+            <param name="name">The Name value to search.</param>
+            <returns>The value of ElementID attribute of found node, or null if no node having specified properties
+            could be found.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetNodeValue(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Returns the node value of a child element of the specified parent node having the specified node name.
+            </summary>
+            <param name="xParent">The parent node whose specific child node is being searched.</param>
+            <param name="name">The node name of the child being searched.</param>
+            <returns>The value of a child node having specified properties, or empty string if no such node
+            could be found.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetAttributeValue(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Returns the attribute value of the specified node having the specified attribute name.
+            </summary>
+            <param name="xParent">The node whose specific attribute is being queried.</param>
+            <param name="name">The node name of the attribute being queried.</param>
+            <returns>The value of specified attribute, or empty string if no such attribute could be found.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetElement(System.String,System.String)">
+            <summary>
+            Returns the first XML node under the root element having the specified ID and name.
+            </summary>
+            <param name="elementID">The value of ElementID attribute for the node to find.</param>
+            <param name="elementName">The name of the node to find.</param>
+            <returns>The first XML node under root element having specified properties, or null if
+            no such element could be found.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetElement(System.String,System.String,System.Boolean)">
+            <summary>
+            Returns the first XML node under the root element having the specified ID and name.
+            </summary>
+            <param name="elementID">The value of ElementID attribute for the node to find.</param>
+            <param name="elementName">The name of the node to find.</param>
+            <param name="recursive">true to request a recursive search to be made, otherwise false.</param>
+            <returns>The first XML node under root element having specified properties, or null if
+            no such element could be found.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetElement(System.Xml.Linq.XElement,System.String,System.String)">
+            <summary>
+            Returns the first child XML node under the specified parent element having the specified ID and name.
+            </summary>
+            <param name="xParent">The node whose children must be searched.</param>
+            <param name="elementID">The value of ElementID attribute for the node to find.</param>
+            <param name="elementName">The name of the node to find.</param>
+            <returns>The first child XML node under parent element having specified properties, or null if
+            no such element could be found.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetElement(System.Xml.Linq.XElement,System.String,System.String,System.Boolean)">
+            <summary>
+            Returns the first child XML node under the specified parent element having the specified ID and name.
+            </summary>
+            <param name="xParent">The node whose children must be searched.</param>
+            <param name="elementID">The value of ElementID attribute for the node to find.</param>
+            <param name="elementName">The name of the node to find.</param>
+            <param name="recursive">true to request a recursive search to be made, otherwise false.</param>
+            <returns>The first child XML node under parent element having specified properties, or null if
+            no such element could be found.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetChildElements">
+            <summary>
+            Returns all child elements that immediately descend from the root element.
+            </summary>
+            <returns>An IEnumerable&lt;XElement&gt; that can be enumerated to obtain child elements.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetChildElements(System.Boolean)">
+            <summary>
+            Returns all child elements of the root element.
+            </summary>
+            <param name="recursive">If set to true, all child elements will be fetched recursively. Otherwise,
+            only child elements that immediately descend from root element will be returned.</param>
+            <returns>An IEnumerable&lt;XElement&gt; that can be enumerated to obtain child elements.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetChildElements(System.String)">
+            <summary>
+            Returns all child elements of the root element having the specified node name.
+            </summary>
+            <param name="elementName">Name of child nodes that should be returned.</param>
+            <returns>An IEnumerable&lt;XElement&gt; that can be enumerated to obtain child elements.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetChildElements(System.String,System.Boolean)">
+            <summary>
+            Returns all child elements of the root element having the specified node name.
+            </summary>
+            <param name="elementName">Name of child nodes that should be returned.</param>
+            <param name="recursive">If set to true, all child elements will be fetched recursively. Otherwise,
+            only child elements that immediately descend from root element will be returned.</param>
+            <returns>An IEnumerable&lt;XElement&gt; that can be enumerated to obtain child elements.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetChildElements(System.Xml.Linq.XElement)">
+            <summary>
+            Returns all child elements that immediately descend from the specified element.
+            </summary>
+            <param name="xParent">The element whose immediate children must be returned.</param>
+            <returns>An IEnumerable&lt;XElement&gt; that can be enumerated to obtain child elements.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetChildElements(System.Xml.Linq.XElement,System.Boolean)">
+            <summary>
+            Returns all child elements of the specified element.
+            </summary>
+            <param name="xParent">The element whose children must be returned.</param>
+            <param name="recursive">If set to true, all child elements will be fetched recursively. Otherwise,
+            only child elements that immediately descend from specified element will be returned.</param>
+            <returns>An IEnumerable&lt;XElement&gt; that can be enumerated to obtain child elements.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetChildElements(System.Xml.Linq.XElement,System.String)">
+            <summary>
+            Returns all child elements of the specified element having the specified node name.
+            </summary>
+            <param name="xParent">The element whose children must be returned.</param>
+            <param name="elementName">Name of child nodes that should be returned.</param>
+            <returns>An IEnumerable&lt;XElement&gt; that can be enumerated to obtain child elements.</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Common.Xml.XLinqHelper.GetChildElements(System.Xml.Linq.XElement,System.String,System.Boolean)">
+            <summary>
+            Returns all child elements of the specified node that have the specified name.
+            </summary>
+            <param name="xParent">The element whose children must be returned.</param>
+            <param name="elementName">Name of child nodes that should be returned.</param>
+            <param name="recursive">If set to true, all child elements will be fetched recursively. Otherwise,
+            only child elements that immediately descend from specified element will be returned.</param>
+            <returns>An IEnumerable&lt;XElement&gt; that can be enumerated to obtain child elements.</returns>
+        </member>
+        <member name="T:SwForAll.Platform.Domain.IEntity">
+            <summary>
+            Defines members required for identifying and tracking a business entity that is persisted to a database.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Domain.IEntity.Id">
+            <summary>
+            Gets or sets the unique identifier for a business entity, suitable for being mapped to an auto-generated
+            integer field.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Domain.IEntity.RowGuid">
+            <summary>
+            Gets or sets the unique identifier for a business entity, suitable for being mapped to an auto-generated
+            globally unique identifier (GUID) field.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Domain.IEntity.ModifiedDate">
+            <summary>
+            Gets or sets the last modification date for a business entity.
+            </summary>
+        </member>
+    </members>
+</doc>

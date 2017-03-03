@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SwForAll.Platform.Persistence.NHibernate</name>
+    </assembly>
+    <members>
+        <member name="T:SwForAll.Platform.Persistence.NHibernate.HibernateConfiguration">
+            <summary>
+            Represents the minimum configuration required by Fluent NHibernate to properly
+            configure NHibernate and entity mappings, using its fluent interface.
+            </summary>
+            <remarks><para>This class requires the following items to be defined in <c>appSettings</c> section of
+            the application configuration file :</para>
+            <para>* An item named "Connection" whose value is the key for the default connection string.</para>
+            <para>* An item named "Assembly" whose value is the fully qualified name of the assembly containing
+            fluent mappings of domain entities.</para>
+            </remarks>
+        </member>
+        <member name="P:SwForAll.Platform.Persistence.NHibernate.HibernateConfiguration.Connection">
+            <summary>
+            Gets or sets the name of the default connection string.
+            </summary>
+        </member>
+        <member name="P:SwForAll.Platform.Persistence.NHibernate.HibernateConfiguration.MappingAssembly">
+            <summary>
+            Gets or sets the assembly name for the assembly where fluent mappings for domain entities are defined.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Persistence.NHibernate.HibernateConfiguration.FromConfigFile">
+            <summary>
+            Initializes and returns a new instance of the <see cref="T:SwForAll.Platform.Persistence.NHibernate.HibernateConfiguration"/> class using the
+            information in the appSettings section of the main application configuration file.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:SwForAll.Platform.Persistence.NHibernate.HibernateConfigurator">
+            <summary>
+            Represents a thin wrapper around the popular NHibernate O/R mapper which is suitable for use
+            in desktop applications.
+            </summary>
+            <remarks>Because no session context is bound for a desktop application, this class has no meaningful notion
+            of a current session. This mean that new sessions remain open until they are explicitly closed. For this
+            reason, it is strongly recommended to always use this class through a UnitOfWork instance and call Commit
+            method after active database connection is no longer used.</remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Persistence.NHibernate.HibernateConfigurator.Initialize">
+            <summary>
+            Performs one-time initialization of NHibernate. This essentially means configuring entity mappings
+            and building a suitable implementation of the ISessionFactory interface.
+            </summary>
+            <remarks>It is very important that this method be called once during application initialization;
+            otherwise the SessionFactory property cannot possibly be usable.</remarks>
+        </member>
+        <member name="P:SwForAll.Platform.Persistence.NHibernate.HibernateConfigurator.SessionFactory">
+            <summary>
+            Gets an <see cref="T:NHibernate.ISessionFactory"/> instance used for connecting to the main database.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Persistence.NHibernate.HibernateConfigurator.Configure(SwForAll.Platform.Persistence.NHibernate.HibernateConfiguration)">
+            <summary>
+            Performs all necessary NHibernate configuration without actually creating the session factory.
+            </summary>
+            <param name="configuration"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SwForAll.Platform.Persistence.NHibernate.Repository`1">
+            <summary>
+            Provides an <see cref="T:SwForAll.Platform.Persistence.IRepository`1"/> implementation that uses NHibernate as the underlying
+            OR/M framework.
+            </summary>
+            <typeparam name="TEntity">Type of entity that can be managed by this repository</typeparam>
+            <remarks>IMPORTANT NOTE :
+            <para>Because NHibernate supports the notion of session context, it provides several different mechanisms for
+            correctly managing the lifecycle of a new session. In order not to compromise this powerful feature, current
+            repository implementation relies on a specific <see cref="T:SwForAll.Platform.Persistence.NHibernate.IHibernateWrapper"/> implementation for session
+            lifecycle management. As a result, it never attempts to dispose or close the session obtained from this wrapper.
+            </para></remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Persistence.NHibernate.Repository`1.#ctor(SwForAll.Platform.Persistence.NHibernate.IHibernateWrapper)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SwForAll.Platform.Persistence.NHibernate.Repository`1"/> class that uses a specific
+            <see cref="T:SwForAll.Platform.Persistence.NHibernate.IHibernateWrapper"/> implementation.
+            </summary>
+            <param name="hibernate">An <see cref="T:SwForAll.Platform.Persistence.NHibernate.IHibernateWrapper"/> implementation used for underlying
+            database operations</param>
+        </member>
+        <member name="T:SwForAll.Platform.Persistence.NHibernate.UnitOfWork">
+            <summary>
+            Provides a thin wrapper around NHibernate implementation of the Unit of Work pattern (i.e. ISession)
+            to enable atomic database operations performed through all repository instances obtained from its context.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Persistence.NHibernate.UnitOfWork.#ctor(SwForAll.Platform.Persistence.NHibernate.IHibernateWrapper)">
+            <summary>
+            Initializes a new instance of the <see cref="T:SwForAll.Platform.Persistence.NHibernate.UnitOfWork"/> class that uses a specific
+            <see cref="T:SwForAll.Platform.Persistence.NHibernate.IHibernateWrapper"/> implementation.
+            </summary>
+            <param name="hibernate">An <see cref="T:SwForAll.Platform.Persistence.NHibernate.IHibernateWrapper"/> implementation used for underlying
+            database operations</param>
+        </member>
+        <member name="M:SwForAll.Platform.Persistence.NHibernate.UnitOfWork.GetRepository``1">
+            <summary>
+            Initializes and returns a new instance of a repository for a specific domain entity.
+            </summary>
+            <typeparam name="TEntity">Type of domain entity</typeparam>
+            <returns>A repository for the specified domain entity</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Persistence.NHibernate.UnitOfWork.Commit">
+            <summary>
+            Persists all pending database modifications since the last commit to the database.
+            </summary>
+        </member>
+        <member name="T:SwForAll.Platform.Persistence.NHibernate.WebHibernateConfigurator">
+            <summary>
+            Represents a thin wrapper around the popular NHibernate O/R mapper which is suitable for use
+            in Web applications.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Persistence.NHibernate.WebHibernateConfigurator.Configure(SwForAll.Platform.Persistence.NHibernate.HibernateConfiguration)">
+            <summary>
+            Performs one-time initialization of NHibernate. This essentially means configuring entity mappings
+            and building a suitable implementation of the ISessionFactory interface. Also sets a session context
+            especially designed for Web applications (i.e. new session per HTTP request)
+            </summary>
+            <remarks>It is very important that this method be called once during application initialization;
+            otherwise the SessionFactory property cannot possibly be usable.</remarks>
+        </member>
+    </members>
+</doc>

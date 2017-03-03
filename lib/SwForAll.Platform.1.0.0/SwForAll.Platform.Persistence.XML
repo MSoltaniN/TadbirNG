@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SwForAll.Platform.Persistence</name>
+    </assembly>
+    <members>
+        <member name="T:SwForAll.Platform.Persistence.IORMapper">
+            <summary>
+            Defines necessary members for working with an object-relational (O/R) mapper.
+            </summary>
+        </member>
+        <member name="M:SwForAll.Platform.Persistence.IORMapper.Initialize">
+            <summary>
+            Performs one-time initialization required before the O/R mapper can be used, if any.
+            </summary>
+        </member>
+        <member name="T:SwForAll.Platform.Persistence.BasicXmlSerializer">
+            <summary>
+            Provides a simple implementation for XML serialize/deserialize operations.
+            </summary>
+            <remarks>
+            Current serialization logic in this class can be summarized as below :
+            1. No specific attribute is required by the input object.
+            2. All public properties in a given object will be serialized, regardless of any exclusion criteria
+            that may be specified on a property.
+            3. A property having built-in types (i.e. all common types in System namespace, as well as all enum types)
+            will be serialized as an XML attribute having property name in camel-case form.
+            4. A generic collection property will be serialized as a container XML element having original
+            property name. Each element inside the collection will be serialized as a custom object (i.e. not built-in)
+            To be able to later deserialize a collection element, an additional property containing the element's full
+            type name (called clrType) will also be added to the resulting XML element.
+            5. A property having a custom non-enumeration type will be serialized as an XML child element recursively.
+            </remarks>
+        </member>
+        <member name="M:SwForAll.Platform.Persistence.BasicXmlSerializer.Serialize(System.Object)">
+            <summary>
+            Converts given object into a well-formed XML representation and returns the serialized form
+            as an XElement object.
+            </summary>
+            <param name="item">Object that needs to be serialized</param>
+            <returns>Serialized form of the input object as an XElement instance</returns>
+        </member>
+        <member name="M:SwForAll.Platform.Persistence.BasicXmlSerializer.Serialize(System.String,System.Object)">
+            <summary>
+            Converts given object into a well-formed XML representation and saves the serialized form
+            in a standard XML file (with UTF-8 encoding) in the specified path.
+            </summary>
+            <param name="path">Absolute or related path to the file where the serialized object must be saved</param>
+            <param name="item">Object that needs to be serialized</param>
+        </member>
+    </members>
+</doc>
