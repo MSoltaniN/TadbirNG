@@ -33,7 +33,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         {
             if (article == null)
             {
-                return RedirectToAction("index", "error");
+                return RedirectToAction("index", "error", new { area = String.Empty });
             }
 
             if (ModelState.IsValid)
@@ -59,7 +59,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             var article = _service.GetArticle(id);
             if (article == null)
             {
-                return RedirectToAction("notfound", "error");
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
             }
 
             InitLookups();
@@ -73,7 +73,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         {
             if (article == null)
             {
-                return RedirectToAction("index", "error");
+                return RedirectToAction("index", "error", new { area = String.Empty });
             }
 
             if (ModelState.IsValid)

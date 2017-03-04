@@ -152,6 +152,7 @@
     <Compile Include="Areas\Accounting\Controllers\ArticlesController.cs" />
     <Compile Include="Areas\Accounting\Controllers\TransactionsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Extensions\CaptchaExtensions.cs" />
     <Compile Include="Extensions\ControllerExtensions.cs" />
@@ -239,11 +240,12 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Error\Error.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Accounting\Views\Shared\" />

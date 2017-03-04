@@ -39,7 +39,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         {
             if (account == null)
             {
-                return RedirectToAction("index", "error");
+                return RedirectToAction("index", "error", new { area = String.Empty });
             }
 
             if (ModelState.IsValid)
@@ -76,7 +76,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         {
             if (account == null)
             {
-                return RedirectToAction("index", "error");
+                return RedirectToAction("index", "error", new { area = String.Empty });
             }
 
             if (ModelState.IsValid)

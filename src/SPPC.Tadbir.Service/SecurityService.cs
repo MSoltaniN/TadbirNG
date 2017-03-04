@@ -60,7 +60,7 @@ namespace SPPC.Tadbir.Service
         /// </summary>
         /// <param name="user">A <see cref="UserViewModel"/> instance for which a principal must be created</param>
         /// <returns>A principal created for the specified user</returns>
-        private IPrincipal GetPrincipal(UserViewModel user)
+        private static IPrincipal GetPrincipal(UserViewModel user)
         {
             Verify.ArgumentNotNull(user, "user");
             var authCookie = FormsAuthentication.GetAuthCookie(ValidUserName, false);

@@ -133,7 +133,7 @@ namespace SPPC.Framework.Service
             }
             else if (!response.IsSuccessStatusCode && response.StatusCode != HttpStatusCode.NotFound)
             {
-                throw new HttpRequestException("Error occured while executing Web API request.");
+                throw new HttpRequestException("Error occurred while executing Web API request.");
             }
 
             return serviceResponse;
