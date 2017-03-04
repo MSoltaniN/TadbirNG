@@ -198,5 +198,10 @@ namespace SPPC.Tadbir.Values
         /// Localized text for 'New security code' caption
         /// </summary>
         public static readonly string NewSecurityCode = "کد امنیتی جدید";
+
+        /// <summary>
+        /// Localized text for a validation message indicating that a date value is invalid.
+        /// </summary>
+        public static readonly string InvalidDate = "تاریخ وارد شده معتبر نیست.";
     }
 }

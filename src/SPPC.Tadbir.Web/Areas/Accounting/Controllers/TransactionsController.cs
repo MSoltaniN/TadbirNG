@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 {
@@ -50,6 +49,13 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
                 return RedirectToAction("index", "error", new { area = String.Empty });
             }
 
+            JalaliDateTime jalali;
+            if (!JalaliDateTime.TryParse(transaction.Date, out jalali))
+            {
+                ModelState.AddModelError("Date", Strings.InvalidDate);
+                return View(transaction);
+            }
+
             if (ModelState.IsValid)
             {
                 var response = _service.SaveTransaction(transaction);
@@ -85,6 +91,13 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             if (fullTransaction == null)
             {
                 return RedirectToAction("index", "error", new { area = String.Empty });
+            }
+
+            JalaliDateTime jalali;
+            if (!JalaliDateTime.TryParse(fullTransaction.Transaction.Date, out jalali))
+            {
+                ModelState.AddModelError("Transaction.Date", Strings.InvalidDate);
+                return View(fullTransaction);
             }
 
             if (ModelState.IsValid)
