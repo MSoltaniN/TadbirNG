@@ -8,6 +8,7 @@ using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 {
+    [Authorize]
     public class AccountsController : Controller
     {
         public AccountsController(IAccountService accountService)

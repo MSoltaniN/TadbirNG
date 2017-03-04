@@ -90,6 +90,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<IAccountService, AccountService>();
             _container.RegisterType<ITransactionService, TransactionService>();
             _container.RegisterType<ILookupService, LookupService>();
+            _container.RegisterType<ISecurityService, SecurityService>();
         }
 
         /// <summary>

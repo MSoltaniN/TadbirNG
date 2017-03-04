@@ -10,6 +10,7 @@ using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 {
+    [Authorize]
     public class TransactionsController : Controller
     {
         public TransactionsController(ITransactionService service)

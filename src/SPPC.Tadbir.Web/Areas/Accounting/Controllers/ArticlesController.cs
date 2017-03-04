@@ -9,6 +9,7 @@ using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 {
+    [Authorize]
     public class ArticlesController : Controller
     {
         public ArticlesController(ITransactionService service, ILookupService lookupService)

@@ -136,5 +136,36 @@ namespace SPPC.Tadbir.Values
         /// Localized text for Total caption 
         /// </summary>
         public const string Total = "جمع کل";
+
+        /// <summary>
+        /// Localized text for 'Login to app' caption
+        /// </summary>
+        public const string AppLogin = "ورود به برنامه";
+
+        /// <summary>
+        /// Localized text for a message indicating that the value entered for security code is incorrect.
+        /// </summary>
+        public const string InvalidSecurityCode = "کد امنیتی وارد شده نادرست است.";
+
+        /// <summary>
+        /// Localized text for a validation message indicating that entering security code is required.
+        /// </summary>
+        public const string SecurityCodeIsRequired = "وارد کردن کد امنیتی اجباری است.";
+
+        /// <summary>
+        /// Localized text for a validation message indicating that the value entered for user name or password
+        /// is incorrect.
+        /// </summary>
+        public const string InvalidUserOrPassword = "نام کاربری یا رمز ورود نادرست است.";
+
+        /// <summary>
+        /// Localized text for a message indicating that the request verification token is invalid.
+        /// </summary>
+        public const string InvalidBrowserRequest = "درخواست دریافت شده از مرورگر معتبر نیست. لطفا دوباره تلاش کنید.";
+
+        /// <summary>
+        /// Localized text for 'New security code' caption
+        /// </summary>
+        public static readonly string NewSecurityCode = "کد امنیتی جدید";
     }
 }

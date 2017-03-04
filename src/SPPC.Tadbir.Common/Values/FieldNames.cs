@@ -131,5 +131,20 @@ namespace SPPC.Tadbir.Values
         /// Localized name of Account field.
         /// </summary>
         public const string AccountField = "حساب";
+
+        /// <summary>
+        /// Localized name of UserName field
+        /// </summary>
+        public const string UserName = "نام کاربری";
+
+        /// <summary>
+        /// Localized name of Password field
+        /// </summary>
+        public const string Password = "رمز ورود";
+
+        /// <summary>
+        /// Localized name of Security Code field (used in forms that require Captcha validation)
+        /// </summary>
+        public static readonly string SecurityCode = "کد امنیتی";
     }
 }

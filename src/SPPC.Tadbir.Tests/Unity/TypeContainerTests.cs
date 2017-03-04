@@ -138,6 +138,15 @@ namespace SPPC.Tadbir.Unity.Tests
             AssertIsRegisteredWithConcreteType<ILookupService>();
         }
 
+        [Test]
+        public void ContainsSecurityServiceRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<ISecurityService>();
+        }
+
         #endregion
 
         #region IDisposable Support
