@@ -17,6 +17,10 @@
             TransactionLines.CurrentPageInfo,
             articles.TotalItemCount, articles.PageNumber, articles.PageCount);
     }
+
+    var htmlAttributes = new Dictionary<string, object>();
+    htmlAttributes.Add("class", "form-control");
+    htmlAttributes.Add("data-targetselector", "#Transaction_Date");
 }
 
 <ol class="breadcrumb">
@@ -49,7 +53,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Transaction.Date, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Transaction.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.Transaction.Date, htmlAttributes)
                 @Html.ValidationMessageFor(model => model.Transaction.Date, "", new { @class = "text-danger" })
             </div>
 
@@ -132,5 +136,6 @@
 
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/datepicker")
     @Scripts.Render("~/bundles/site")
 }

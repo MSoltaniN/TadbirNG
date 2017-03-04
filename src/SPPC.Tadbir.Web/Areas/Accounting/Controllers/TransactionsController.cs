@@ -33,7 +33,8 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             {
                 FiscalPeriodId = TempContext.CurrentFiscalPeriodId,
                 CreatorId = TempContext.CurrentUserId,
-                LastModifierId = TempContext.CurrentUserId
+                LastModifierId = TempContext.CurrentUserId,
+                Date = JalaliDateTime.Now.ToShortDateString()
             };
 
             return View(transaction);

@@ -2,6 +2,7 @@
 $(function () {
     $('[href*="/delete/"]').click(confirmDelete);
 
+    setupDatePickers();
     setupCaptcha();
 });
 
@@ -17,6 +18,28 @@ function confirmDelete(e) {
     if (!confirmed) {
         e.preventDefault();
     }
+}
+
+/*
+ * setupDatePickers
+ *   Prepares date picker components inside the page, if any.
+ * Argument(s)
+ *   none
+ */
+ function setupDatePickers() {
+    $('[id*=Date]').MdPersianDateTimePicker({
+        Placement: 'left',
+        Trigger: 'click',
+        EnableTimePicker: false,
+        GroupId: '',
+        ToDate: false,
+        FromDate: false,
+        DisableBeforeToday: false,
+        Disabled: false,
+        Format: 'yyyy/MM/dd',
+        IsGregorian: false,
+        EnglishNumber: true,
+    });
 }
 
 /*

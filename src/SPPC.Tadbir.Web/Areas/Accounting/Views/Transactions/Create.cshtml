@@ -3,6 +3,9 @@
 
 @{
     ViewBag.Title = Transactions.CreateNew;
+    var htmlAttributes = new Dictionary<string, object>();
+    htmlAttributes.Add("class", "form-control");
+    htmlAttributes.Add("data-targetselector", "#Date");
 }
 
 <ol class="breadcrumb">
@@ -34,7 +37,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label" })
-                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextBoxFor(model => model.Date, htmlAttributes)
                 @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
             </div>
 
@@ -54,4 +57,6 @@
 
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/site")
 }
