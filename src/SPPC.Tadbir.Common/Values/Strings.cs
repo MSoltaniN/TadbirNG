@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.Values
         /// <summary>
         /// Localized text for the main copyright content
         /// </summary>
-        public const string CopyrightText = "کلیه حقوق برای شرکت پردازش مواری سامان (با مسئولیت محدود) محفوظ است.";
+        public const string CopyrightText = "کلیه حقوق برای شرکت پردازش موازی سامان (با مسئولیت محدود) محفوظ است.";
 
         /// <summary>
         /// Localized text for home page title

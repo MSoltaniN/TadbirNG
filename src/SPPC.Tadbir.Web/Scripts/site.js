@@ -26,20 +26,23 @@ function confirmDelete(e) {
  * Argument(s)
  *   none
  */
- function setupDatePickers() {
-    $('[id*=Date]').MdPersianDateTimePicker({
-        Placement: 'left',
-        Trigger: 'click',
-        EnableTimePicker: false,
-        GroupId: '',
-        ToDate: false,
-        FromDate: false,
-        DisableBeforeToday: false,
-        Disabled: false,
-        Format: 'yyyy/MM/dd',
-        IsGregorian: false,
-        EnglishNumber: true,
-    });
+function setupDatePickers() {
+    var dates = $('[id*=Date]');
+    if (dates.length > 0) {
+        dates.MdPersianDateTimePicker({
+            Placement: 'left',
+            Trigger: 'click',
+            EnableTimePicker: false,
+            GroupId: '',
+            ToDate: false,
+            FromDate: false,
+            DisableBeforeToday: false,
+            Disabled: false,
+            Format: 'yyyy/MM/dd',
+            IsGregorian: false,
+            EnglishNumber: true,
+        });
+    }
 }
 
 /*
