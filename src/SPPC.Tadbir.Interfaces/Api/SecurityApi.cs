@@ -21,5 +21,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all users
         /// </summary>
         public const string UsersUrl = "users";
+
+        /// <summary>
+        /// API client URL for a user specified by user name.
+        /// </summary>
+        public const string UserByName = "users/{0}";
+
+        /// <summary>
+        /// API server route URL for a user specified by user name.
+        /// </summary>
+        public const string UserByNameUrl = "users/{userName}";
     }
 }

@@ -28,7 +28,7 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public UserViewModel()
         {
             this.UserName = String.Empty;
-            this.Password = String.Empty;
+            this.PasswordHash = String.Empty;
         }
 
         /// <summary>
@@ -45,12 +45,12 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public string UserName { get; set; }
 
         /// <summary>
-        /// Gets or sets the calculated hash value of this user's password
+        /// Gets or sets the calculated hash value of this user's password as a hexadecimal string.
         /// </summary>
         [Display(Name = FieldNames.Password)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time when this user last logged into the application

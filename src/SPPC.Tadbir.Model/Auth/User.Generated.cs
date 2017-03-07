@@ -55,7 +55,7 @@ namespace SPPC.Tadbir.Model.Auth
         public virtual string UserName { get; set; }
 
         /// <summary>
-        /// Gets or sets the calculated hash value of this user's password
+        /// Gets or sets the calculated hash value of this user's password as a hexadecimal string
         /// </summary>
         public virtual string PasswordHash { get; set; }
 

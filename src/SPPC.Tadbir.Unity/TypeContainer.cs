@@ -4,6 +4,7 @@ using System.Web;
 using Microsoft.Practices.Unity;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Service;
+using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Service;
@@ -92,6 +93,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<ITransactionService, TransactionService>();
             _container.RegisterType<ILookupService, LookupService>();
             _container.RegisterType<ISecurityService, SecurityService>();
+            _container.RegisterType<ICryptoService, CryptoService>();
         }
 
         /// <summary>

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Principal;
+using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Security;
 using SPPC.Framework.Service;
+using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.ViewModel.Auth;
 using SwForAll.Platform.Common;
@@ -21,10 +22,12 @@ namespace SPPC.Tadbir.Service
         /// Initializes a new instance of the <see cref="SecurityService"/> class.
         /// </summary>
         /// <param name="apiClient">Object that wraps common operations for calling a Web API service</param>
+        /// <param name="crypto">An <see cref="ICryptoService"/> implementation to use for cryptographic operations</param>
         /// <param name="httpContext">Current Web application context to use for security operations</param>
-        public SecurityService(IApiClient apiClient, HttpContextBase httpContext)
+        public SecurityService(IApiClient apiClient, ICryptoService crypto, HttpContextBase httpContext)
         {
             _apiClient = apiClient;
+            _crypto = crypto;
             _httpContext = httpContext;
         }
 
@@ -36,12 +39,19 @@ namespace SPPC.Tadbir.Service
         /// to user information inside database; otherwise, returns null.</returns>
         public UserViewModel Authenticate(LoginViewModel login)
         {
-            // In the absence of an actual security infrastructure, this service will only accept
-            // hard-coded user credentials...
-            UserViewModel user = null;
-            if (login.UserName == ValidUserName && login.Password == ValidPassword)
+            Verify.ArgumentNotNull(login, "login");
+            UserViewModel user = _apiClient.Get<UserViewModel>(SecurityApi.UserByName, login.UserName);
+            if (user != null)
             {
-                user = new UserViewModel() { Id = 1 };
+                byte[] passwordHash = Transform.FromHexString(user.PasswordHash);
+                if (_crypto.ValidateHash(Encoding.UTF8.GetBytes(login.Password), passwordHash))
+                {
+                    user.PasswordHash = String.Empty;
+                }
+                else
+                {
+                    user = null;
+                }
             }
 
             return user;
@@ -77,9 +87,9 @@ namespace SPPC.Tadbir.Service
         private static IPrincipal GetPrincipal(UserViewModel user)
         {
             Verify.ArgumentNotNull(user, "user");
-            var authCookie = FormsAuthentication.GetAuthCookie(ValidUserName, false);
+            var authCookie = FormsAuthentication.GetAuthCookie(user.UserName, false);
             var ticket = FormsAuthentication.Decrypt(authCookie.Value);
-            FormsAuthentication.SetAuthCookie(ValidUserName, false);
+            FormsAuthentication.SetAuthCookie(user.UserName, false);
             var identity = new FormsIdentity(ticket);
             return new GenericPrincipal(identity, new string[0]);
         }
@@ -95,10 +105,8 @@ namespace SPPC.Tadbir.Service
             Thread.CurrentPrincipal = principal;
         }
 
-        private HttpContextBase _httpContext;
         private IApiClient _apiClient;
-
-        private const string ValidUserName = "admin";
-        private const string ValidPassword = "Admin@Tadbir1395";
+        private ICryptoService _crypto;
+        private HttpContextBase _httpContext;
     }
 }

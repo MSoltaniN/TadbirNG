@@ -39,6 +39,27 @@ namespace SPPC.Tadbir.NHibernate
             return users;
         }
 
+        /// <summary>
+        /// Retrieves a single user specified by user name from repository.
+        /// </summary>
+        /// <param name="userName">User name to search for</param>
+        /// <returns>A <see cref="UserViewModel"/> instance that corresponds to the specified user name, if there is
+        /// such a user defined; otherwise, returns null.</returns>
+        public UserViewModel GetUser(string userName)
+        {
+            UserViewModel userViewModel = null;
+            var repository = _unitOfWork.GetRepository<User>();
+            var user = repository
+                .GetByCriteria(usr => usr.UserName == userName)
+                .FirstOrDefault();
+            if (user != null)
+            {
+                userViewModel = _mapper.Map<UserViewModel>(user);
+            }
+
+            return userViewModel;
+        }
+
         private IUnitOfWork _unitOfWork;
         private IDomainMapper _mapper;
     }

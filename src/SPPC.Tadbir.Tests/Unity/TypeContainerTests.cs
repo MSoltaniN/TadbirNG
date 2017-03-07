@@ -5,6 +5,7 @@ using Microsoft.Practices.Unity;
 using NUnit.Framework;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Service;
+using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Service;
 using SwForAll.Platform.Persistence;
@@ -154,6 +155,15 @@ namespace SPPC.Tadbir.Unity.Tests
 
             // Act & Assert
             AssertIsRegisteredWithConcreteType<ISecurityService>();
+        }
+
+        [Test]
+        public void ContainsCryptoServiceRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<ICryptoService>();
         }
 
         #endregion

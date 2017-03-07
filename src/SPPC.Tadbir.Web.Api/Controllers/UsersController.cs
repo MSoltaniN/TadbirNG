@@ -24,6 +24,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(users);
         }
 
+        // GET: api/users/{userName}
+        [Route(SecurityApi.UserByNameUrl)]
+        public IHttpActionResult GetUserByName(string userName)
+        {
+            if (String.IsNullOrEmpty(userName))
+            {
+                return NotFound();
+            }
+
+            var user = _repository.GetUser(userName);
+            var result = (user != null)
+                ? Json(user)
+                : NotFound() as IHttpActionResult;
+            return result;
+        }
+
         private ISecurityRepository _repository;
     }
 }
