@@ -48,6 +48,11 @@ namespace SPPC.Tadbir.Values
         public const string ManageTransactions = "مدیریت اسناد";
 
         /// <summary>
+        /// Localized text for Manage Users navigation link
+        /// </summary>
+        public const string ManageUsers = "مدیریت کاربران";
+
+        /// <summary>
         /// Localized text for About page title
         /// </summary>
         public const string About = "درباره";
@@ -86,6 +91,11 @@ namespace SPPC.Tadbir.Values
         /// Localized text for the Inventory and Warehousing subsystem name
         /// </summary>
         public const string WarehousingInventory = "کنترل موجودی و انبار";
+
+        /// <summary>
+        /// Localized text for the System Administration component name.
+        /// </summary>
+        public const string SystemAdministration = "راهبری سیستم";
 
         /// <summary>
         /// Localized text for intro content related to the Accounting subsystem

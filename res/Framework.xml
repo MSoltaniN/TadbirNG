@@ -358,6 +358,30 @@
           <ColumnView name="Id" visible="True" width="120" />
           <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
         </Property>
+        <Property name="UserName" type="String" isValidated="True" description="Login name of this user" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtUserName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="UserName" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="User Name" visible="True" width="120" />
+          <ValidationRule name="UserName_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="PasswordHash" type="String" isValidated="True" description="Calculated hash value of this user's password" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtPasswordHash" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="PasswordHash" type="nvarchar(256)" nullable="False" />
+          <ColumnView name="Password Hash" visible="True" width="120" />
+          <ValidationRule name="PasswordHash_Validation" required="True" minimum="0" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="LastLoginDate" type="DateTime" isValidated="False" description="Date and time when this user last logged into the application" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpLastLoginDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="LastLoginDate" type="datetime" nullable="True" />
+          <ColumnView name="Last Login Date" visible="True" width="120" />
+          <ValidationRule name="LastLoginDate_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="IsEnabled" type="Boolean" isValidated="True" description="Value that indicates if this user is enabled inside the application's security system" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="chkIsEnabled" format="" type="CheckBox" bindingMember="Checked" />
+          <PropertyStorage name="IsEnabled" type="bit" nullable="False" />
+          <ColumnView name="Is Enabled" visible="True" width="120" />
+          <ValidationRule name="IsEnabled_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />

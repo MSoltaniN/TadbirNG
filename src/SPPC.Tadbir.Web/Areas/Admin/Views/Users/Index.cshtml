@@ -1,0 +1,77 @@
+﻿@using SPPC.Framework.Extensions
+@using SPPC.Tadbir.Values
+@using SPPC.Tadbir.ViewModel.Auth
+@using PagedList.Mvc
+
+@model PagedList.IPagedList<UserViewModel>
+
+@{
+    ViewBag.Title = Users.IndexTitle;
+    string pageInfo = Users.NoRecords;
+    if (Model.Count > 0)
+    {
+        pageInfo = String.Format(
+            Users.CurrentPageInfo,
+            Model.TotalItemCount, Model.PageNumber, Model.PageCount);
+    }
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li class="active">@Users.IndexTitle</li>
+</ol>
+
+<div class="page-header">
+    <h3>@Users.IndexTitle</h3>
+</div>
+
+<p>
+    @Html.ActionLink(Users.CreateNew, "create", "users", new { }, new { @class = "btn btn-sm btn-primary" })
+    <span class="pull-left">@pageInfo</span>
+</p>
+
+<table class="table table-bordered table-striped table-responsive table-hover">
+    <thead>
+        <tr>
+            <th>@FieldNames.UserName</th>
+            <th>@FieldNames.FirstNameField</th>
+            <th>@FieldNames.LastNameField</th>
+            <th>@FieldNames.LastLoginDate</th>
+            <th>@FieldNames.StatusField</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            string status = item.IsEnabled ? Users.Enabled : Users.Disabled;
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PersonFirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PersonLastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastLoginDate)
+                </td>
+                <td>
+                    @status
+                </td>
+                <td>
+                    @Html.ActionLink(Strings.Edit, "edit", new { id = item.Id }) |
+                    @Html.ActionLink(Strings.Details, "details", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+<p>
+    @Html.ActionLink(Users.CreateNew, "create", "users", new { }, new { @class = "btn btn-sm btn-primary" })
+</p>

@@ -5,7 +5,9 @@ using AutoMapper;
 using NUnit.Framework;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
+using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Mapper.Tests
@@ -19,6 +21,46 @@ namespace SPPC.Tadbir.Mapper.Tests
         {
             _domainMapper = new DomainMapper();
         }
+
+        #region Security Type Mapping Tests
+
+        [Test]
+        public void ContainsMappingFromUserToUserViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<User, UserViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromUserToUserViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<User, UserViewModel>();
+        }
+
+        [Test]
+        public void ContainsMappingFromUserViewModelToUser()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<UserViewModel, User>();
+        }
+
+        [Test]
+        public void CanMapFromUserViewModelToUser()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<UserViewModel, User>();
+        }
+
+        #endregion
 
         #region Finance Type Mapping Tests
 

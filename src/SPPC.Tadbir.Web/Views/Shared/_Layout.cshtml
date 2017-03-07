@@ -26,7 +26,13 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Strings.Accounting <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink(Strings.ManageAccounts, "index", "accounts", new { area = "Accounting" }, null)</li>
-                            <li>@Html.ActionLink(Strings.ManageTransactions, "index", "transactions", new { area = "Accounting" }, null)</li>
+                            <li>@Html.ActionLink(Strings.ManageTransactions, "index", "transactions", new { area = "accounting" }, null)</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" style="float:right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Strings.SystemAdministration <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink(Strings.ManageUsers, "index", "users", new { area = "admin" }, null)</li>
                         </ul>
                     </li>
                     <li style="float:right">@Html.ActionLink(Strings.About, "about", "home", new { area = "" }, null)</li>

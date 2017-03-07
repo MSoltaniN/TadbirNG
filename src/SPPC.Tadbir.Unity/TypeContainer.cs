@@ -79,6 +79,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<IAccountRepository, AccountRepository>();
             _container.RegisterType<ITransactionRepository, TransactionRepository>();
             _container.RegisterType<ILookupRepository, LookupRepository>();
+            _container.RegisterType<ISecurityRepository, SecurityRepository>();
         }
 
         /// <summary>

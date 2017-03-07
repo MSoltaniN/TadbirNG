@@ -70,6 +70,7 @@
     <Compile Include="Values\Strings.cs" />
     <Compile Include="Values\TransactionLines.cs" />
     <Compile Include="Values\Transactions.cs" />
+    <Compile Include="Values\Users.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

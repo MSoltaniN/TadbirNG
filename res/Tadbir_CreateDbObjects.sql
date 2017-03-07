@@ -31,6 +31,10 @@ GO
 
 CREATE TABLE [Auth].[User] (
     [UserID]         INT              IDENTITY (1, 1) NOT NULL,
+    [UserName]       NVARCHAR(64)     NOT NULL,
+    [PasswordHash]   VARCHAR(256)    NOT NULL,
+    [LastLoginDate]  DATETIME         NULL,
+    [IsEnabled]      BIT              NOT NULL
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_User_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Auth_User_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Auth_User] PRIMARY KEY CLUSTERED ([UserID] ASC)

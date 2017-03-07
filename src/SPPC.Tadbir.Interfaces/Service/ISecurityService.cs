@@ -22,5 +22,11 @@ namespace SPPC.Tadbir.Service
         /// </summary>
         /// <param name="user">User to set context for</param>
         void Login(UserViewModel user);
+
+        /// <summary>
+        /// Retrieves all application users currently registered in security system.
+        /// </summary>
+        /// <returns>Collection of all users in security system</returns>
+        IEnumerable<UserViewModel> GetUsers();
     }
 }

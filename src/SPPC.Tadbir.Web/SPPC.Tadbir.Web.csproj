@@ -151,6 +151,8 @@
     <Compile Include="Areas\Accounting\Controllers\AccountsController.cs" />
     <Compile Include="Areas\Accounting\Controllers\ArticlesController.cs" />
     <Compile Include="Areas\Accounting\Controllers\TransactionsController.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -201,6 +203,9 @@
     <Content Include="Areas\Accounting\Views\Articles\Edit.cshtml" />
     <Content Include="Areas\Accounting\Views\Articles\Details.cshtml" />
     <Content Include="Areas\Accounting\Views\Accounts\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -243,6 +248,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Accounting\Views\Shared\" />
+    <Folder Include="Areas\Admin\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

@@ -5,6 +5,8 @@ using System.Security.Principal;
 using System.Threading;
 using System.Web;
 using System.Web.Security;
+using SPPC.Framework.Service;
+using SPPC.Tadbir.Api;
 using SPPC.Tadbir.ViewModel.Auth;
 using SwForAll.Platform.Common;
 
@@ -18,9 +20,11 @@ namespace SPPC.Tadbir.Service
         /// <summary>
         /// Initializes a new instance of the <see cref="SecurityService"/> class.
         /// </summary>
+        /// <param name="apiClient">Object that wraps common operations for calling a Web API service</param>
         /// <param name="httpContext">Current Web application context to use for security operations</param>
-        public SecurityService(HttpContextBase httpContext)
+        public SecurityService(IApiClient apiClient, HttpContextBase httpContext)
         {
+            _apiClient = apiClient;
             _httpContext = httpContext;
         }
 
@@ -55,6 +59,16 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Retrieves all application users currently registered in security system.
+        /// </summary>
+        /// <returns>Collection of all users in security system</returns>
+        public IEnumerable<UserViewModel> GetUsers()
+        {
+            var users = _apiClient.Get<IEnumerable<UserViewModel>>(SecurityApi.Users);
+            return users;
+        }
+
+        /// <summary>
         /// Creates and returns a concrete <see cref="IPrincipal"/> instance using specified member information,
         /// its assigned roles and a value indicating if user must be kept logged in.
         /// </summary>
@@ -82,6 +96,7 @@ namespace SPPC.Tadbir.Service
         }
 
         private HttpContextBase _httpContext;
+        private IApiClient _apiClient;
 
         private const string ValidUserName = "admin";
         private const string ValidPassword = "Admin@Tadbir1395";

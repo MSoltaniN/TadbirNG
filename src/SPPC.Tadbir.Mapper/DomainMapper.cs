@@ -4,7 +4,9 @@ using System.Linq;
 using AutoMapper;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
+using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SwForAll.Platform.Common;
 
@@ -43,7 +45,14 @@ namespace SPPC.Tadbir.Mapper
 
         private static void RegisterMappings(IMapperConfigurationExpression mapperConfig)
         {
+            MapSecurityTypes(mapperConfig);
             MapFinanceTypes(mapperConfig);
+        }
+
+        private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<User, UserViewModel>();
+            mapperConfig.CreateMap<UserViewModel, User>();
         }
 
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)
