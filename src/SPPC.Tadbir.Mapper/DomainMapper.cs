@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using AutoMapper;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -22,6 +24,16 @@ namespace SPPC.Tadbir.Mapper
         {
             _configuration = new MapperConfiguration(config => RegisterMappings(config));
             _autoMapper = _configuration.CreateMapper();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DomainMapper"/> class.
+        /// </summary>
+        /// <param name="crypto">An <see cref="ICryptoService"/> implementation used for performing cryptography
+        /// operations during class mapping.</param>
+        public DomainMapper(ICryptoService crypto)
+        {
+            _crypto = crypto;
         }
 
         /// <summary>
@@ -51,8 +63,13 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<User, UserViewModel>();
-            mapperConfig.CreateMap<UserViewModel, User>();
+            mapperConfig.CreateMap<User, UserViewModel>()
+                .ForMember(dest => dest.Password, opts => opts.MapFrom(src => src.PasswordHash));
+            mapperConfig.CreateMap<UserViewModel, User>()
+                .ForMember(dest => dest.PasswordHash,
+                    opts => opts.MapFrom(
+                        src => Transform.ToHexString(
+                            _crypto.CreateHash(Encoding.UTF8.GetBytes(src.Password))).ToLower()));
         }
 
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)
@@ -110,6 +127,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
         }
 
+        private static ICryptoService _crypto;
         private static MapperConfiguration _configuration;
         private static IMapper _autoMapper;
     }

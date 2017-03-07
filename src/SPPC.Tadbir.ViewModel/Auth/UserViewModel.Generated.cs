@@ -28,7 +28,7 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public UserViewModel()
         {
             this.UserName = String.Empty;
-            this.PasswordHash = String.Empty;
+            this.Password = String.Empty;
         }
 
         /// <summary>
@@ -45,12 +45,15 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public string UserName { get; set; }
 
         /// <summary>
-        /// Gets or sets the calculated hash value of this user's password as a hexadecimal string.
+        /// Gets or sets the password for this user.
         /// </summary>
+        /// <remarks>Because data store passwords are always hashed, clear-text password cannot be set from data store
+        /// value (since hash algorithms always work in one way only). So, when a user is mapped from data store record,
+        /// this property will be set to hashed value.</remarks>
         [Display(Name = FieldNames.Password)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string PasswordHash { get; set; }
+        [StringLength(32, MinimumLength = 4, ErrorMessage = ValidationMessages.TextFieldHasLengthRange)]
+        public string Password { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time when this user last logged into the application
@@ -62,7 +65,6 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// Gets or sets the value that indicates if this user is enabled inside the application's security system
         /// </summary>
         [Display(Name = FieldNames.StatusField)]
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public bool IsEnabled { get; set; }
     }
 }

@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Moq;
 using NUnit.Framework;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -19,7 +21,10 @@ namespace SPPC.Tadbir.Mapper.Tests
         [OneTimeSetUp]
         public void FixtureSetup()
         {
-            _domainMapper = new DomainMapper();
+            _mockCrypto = new Mock<ICryptoService>();
+            _mockCrypto.Setup(crypto => crypto.CreateHash(It.IsAny<byte[]>()))
+                .Returns(new byte[] { 0x12, 0x34, 0x56, 0x78, 0x90, 0xab, 0xcd, 0xef });
+            _domainMapper = new DomainMapper(_mockCrypto.Object);
         }
 
         #region Security Type Mapping Tests
@@ -285,5 +290,6 @@ namespace SPPC.Tadbir.Mapper.Tests
         }
 
         private IDomainMapper _domainMapper;
+        private Mock<ICryptoService> _mockCrypto;
     }
 }

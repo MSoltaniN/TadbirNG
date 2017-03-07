@@ -22,5 +22,25 @@ namespace SPPC.Tadbir.NHibernate
         /// <returns>A <see cref="UserViewModel"/> instance that corresponds to the specified user name, if there is
         /// such a user defined; otherwise, returns null.</returns>
         UserViewModel GetUser(string userName);
+
+        /// <summary>
+        /// Inserts or updates a single user in repository.
+        /// </summary>
+        /// <param name="user">Item to insert or update</param>
+        void SaveUser(UserViewModel user);
+
+        /// <summary>
+        /// Sets LastLoginDate field of the specified user to current system date/time.
+        /// </summary>
+        /// <param name="userId">Unique identifier of an existing user</param>
+        void UpdateUserLastLogin(int userId);
+
+        /// <summary>
+        /// Determines if the specified <see cref="UserViewModel"/> instance has a user name that is already used
+        /// by a different user.
+        /// </summary>
+        /// <param name="user">User item to check for duplicate user name</param>
+        /// <returns>True if the user name is already used; otherwise returns false.</returns>
+        bool IsDuplicateUser(UserViewModel user);
     }
 }

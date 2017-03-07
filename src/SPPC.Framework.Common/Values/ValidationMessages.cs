@@ -28,6 +28,11 @@ namespace SPPC.Framework.Values
         public const string TextFieldIsTooLong = "{0} می تواند حداکثر {1} حرف داشته باشد.";
 
         /// <summary>
+        /// Localized text for a message indicating that the length of a text field must fall within a specific range.
+        /// </summary>
+        public const string TextFieldHasLengthRange = "طول {0} باید بین {2} تا {1} حرف باشد.";
+
+        /// <summary>
         /// Localized text for a validation message indicating that a field value is duplicate.
         /// </summary>
         public const string DuplicateFieldValue = "{0} تکراری است.";

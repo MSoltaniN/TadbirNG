@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPPC.Framework.Service;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Service
@@ -28,5 +29,12 @@ namespace SPPC.Tadbir.Service
         /// </summary>
         /// <returns>Collection of all users in security system</returns>
         IEnumerable<UserViewModel> GetUsers();
+
+        /// <summary>
+        /// Inserts or updates an application user.
+        /// </summary>
+        /// <param name="user">User to insert or update</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
+        ServiceResponse SaveUser(UserViewModel user);
     }
 }

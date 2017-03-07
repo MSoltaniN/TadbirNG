@@ -50,7 +50,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Column("UserID")
                 .Unique()
                 .Not.LazyLoad()
-                .Cascade.All();
+                .Cascade.None();
         }
     }
 }

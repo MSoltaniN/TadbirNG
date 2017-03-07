@@ -41,17 +41,13 @@ namespace SPPC.Tadbir.Service
         {
             Verify.ArgumentNotNull(login, "login");
             UserViewModel user = _apiClient.Get<UserViewModel>(SecurityApi.UserByName, login.UserName);
-            if (user != null)
+            if (IsAuthenticated(user, login.Password))
             {
-                byte[] passwordHash = Transform.FromHexString(user.PasswordHash);
-                if (_crypto.ValidateHash(Encoding.UTF8.GetBytes(login.Password), passwordHash))
-                {
-                    user.PasswordHash = String.Empty;
-                }
-                else
-                {
-                    user = null;
-                }
+                UpdateUserLogin(user.Id);
+            }
+            else
+            {
+                user = null;
             }
 
             return user;
@@ -79,6 +75,27 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Inserts or updates an application user.
+        /// </summary>
+        /// <param name="user">User to insert or update</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
+        public ServiceResponse SaveUser(UserViewModel user)
+        {
+            Verify.ArgumentNotNull(user, "user");
+            ServiceResponse response = null;
+            if (user.Id == 0)
+            {
+                response = _apiClient.Insert(user, SecurityApi.Users);
+            }
+            else
+            {
+                response = _apiClient.Update(user, SecurityApi.User, user.Id);
+            }
+
+            return response;
+        }
+
+        /// <summary>
         /// Creates and returns a concrete <see cref="IPrincipal"/> instance using specified member information,
         /// its assigned roles and a value indicating if user must be kept logged in.
         /// </summary>
@@ -103,6 +120,24 @@ namespace SPPC.Tadbir.Service
             Verify.ArgumentNotNull(principal, "principal");
             _httpContext.User = principal;
             Thread.CurrentPrincipal = principal;
+        }
+
+        private bool IsAuthenticated(UserViewModel user, string password)
+        {
+            bool isAuthenticated = false;
+            if (user != null)
+            {
+                byte[] passwordHash = Transform.FromHexString(user.Password);
+                byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+                isAuthenticated = user.IsEnabled && _crypto.ValidateHash(passwordBytes, passwordHash);
+            }
+
+            return isAuthenticated;
+        }
+
+        private void UpdateUserLogin(int userId)
+        {
+            _apiClient.Update(new { }, SecurityApi.UserLastLogin, userId);
         }
 
         private IApiClient _apiClient;
