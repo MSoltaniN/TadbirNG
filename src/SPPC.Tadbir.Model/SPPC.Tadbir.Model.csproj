@@ -63,6 +63,9 @@
     <Compile Include="..\TadbirSolutionInfo.cs">
       <Link>TadbirSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Auth\Permission.Generated.cs" />
+    <Compile Include="Auth\PermissionGroup.Generated.cs" />
+    <Compile Include="Auth\Role.Generated.cs" />
     <Compile Include="Auth\User.Generated.cs" />
     <Compile Include="Contact\Person.Generated.cs" />
     <Compile Include="Corporate\Branch.Generated.cs" />

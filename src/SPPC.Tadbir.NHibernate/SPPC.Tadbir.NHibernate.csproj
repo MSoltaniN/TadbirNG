@@ -81,6 +81,9 @@
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Mapping\Auth\PermissionGroupMap.Generated.cs" />
+    <Compile Include="Mapping\Auth\PermissionMap.Generated.cs" />
+    <Compile Include="Mapping\Auth\RoleMap.Generated.cs" />
     <Compile Include="Mapping\Auth\UserMap.Generated.cs" />
     <Compile Include="Mapping\Contact\PersonMap.Generated.cs" />
     <Compile Include="Mapping\Corporate\BranchMap.Generated.cs" />

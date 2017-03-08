@@ -202,6 +202,93 @@
         <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="False" joinTable="" description="Corporate branch in which this fiscal period can be used" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
+    <Entity name="Permission" area="Auth" identifier="Id" description="Represents a potential access grant for a unit of functionality in the application" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="PermissionID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="Name" type="String" isValidated="True" description="Name of this permission" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Name" type="nvarchar(128)" nullable="False" />
+          <ColumnView name="Name" visible="True" width="120" />
+          <ValidationRule name="Name_Validation" required="True" minimum="0" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="Flag" type="Int32" isValidated="True" description="Numerical code that identifies a secure operation that this permission represents" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnFlag" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="Flag" type="int" nullable="False" />
+          <ColumnView name="Flag" visible="True" width="120" />
+          <ValidationRule name="Flag_Validation" required="True" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="Description" type="String" isValidated="True" description="Detail information related to this permission" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
+          <ColumnView name="Description" visible="True" width="120" />
+          <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="Group" entityName="PermissionGroup" hasKey="True" joinTable="" description="Main permission group that contains this permission" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Role" entityName="Role" hasKey="False" joinTable="RolePermission" description="Collection of all roles that this permission is enabled in them." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
+    <Entity name="PermissionGroup" area="Auth" identifier="Id" description="Represents a category used for organizing related permissions." clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="PermissionGroupID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="Name" type="String" isValidated="True" description="Name of this permission group" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Name" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="Name" visible="True" width="120" />
+          <ValidationRule name="Name_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="EntityName" type="String" isValidated="True" description="Name of an application-defined entity that permissions in this group protect" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtEntityName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="EntityName" type="nvarchar(64)" nullable="True" />
+          <ColumnView name="Entity Name" visible="True" width="120" />
+          <ValidationRule name="EntityName_Validation" required="False" minimum="0" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="Description" type="String" isValidated="True" description="Detail information related to this permission group" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
+          <ColumnView name="Description" visible="True" width="120" />
+          <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="OneToMany" endpointName="Permission" entityName="Permission" hasKey="False" joinTable="" description="Collection of all permissions defined in this group" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
     <Entity name="Person" area="Contact" identifier="Id" description="Represents information about a business person" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -237,6 +324,44 @@
       </Properties>
       <Relations>
         <Relation multiplicity="OneToOne" endpointName="User" entityName="User" hasKey="False" joinTable="" description="Application user that represents this user in security subsystem" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
+    <Entity name="Role" area="Auth" identifier="Id" description="Represents a logical authority used in a role-based security subsystem." clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="RoleID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="Name" type="String" isValidated="True" description="Name of this application role" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Name" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="Name" visible="True" width="120" />
+          <ValidationRule name="Name_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="Description" type="String" isValidated="True" description="Detail information related to this role" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
+          <ColumnView name="Description" visible="True" width="120" />
+          <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToMany" endpointName="User" entityName="User" hasKey="False" joinTable="UserRole" description="Collection of all application users that this role is assigned to them" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Permission" entityName="Permission" hasKey="False" joinTable="RolePermission" description="Collection of all operational permissions that are enabled for this role" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="Transaction" area="Finance" identifier="Id" description="Represents a financial transaction that provides monetary information for a business event" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -364,9 +489,9 @@
           <ColumnView name="User Name" visible="True" width="120" />
           <ValidationRule name="UserName_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
         </Property>
-        <Property name="PasswordHash" type="String" isValidated="True" description="Calculated hash value of this user's password" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="PasswordHash" type="String" isValidated="True" description="Calculated hash value of this user's password as a hexadecimal string" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtPasswordHash" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="PasswordHash" type="nvarchar(256)" nullable="False" />
+          <PropertyStorage name="PasswordHash" type="varchar(256)" nullable="False" />
           <ColumnView name="Password Hash" visible="True" width="120" />
           <ValidationRule name="PasswordHash_Validation" required="True" minimum="0" maximum="256" format="" type="Length" />
         </Property>
@@ -401,6 +526,7 @@
         <Relation multiplicity="OneToMany" endpointName="VerifiedTransaction" entityName="Transaction" hasKey="False" joinTable="" description="Collection of all financial transactions verified by this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="OneToMany" endpointName="ApprovedTransaction" entityName="Transaction" hasKey="False" joinTable="" description="Collection of all financial transactions approved by this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="OneToOne" endpointName="Person" entityName="Person" hasKey="False" joinTable="" description="Business person that this user represents" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Role" entityName="Role" hasKey="False" joinTable="UserRole" description="Collection of all application-defined roles that are assigned to this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
   </Entities>

@@ -1,5 +1,6 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Login", Scope = "type", Target = "SPPC.Tadbir.ViewModel.Auth.LoginViewModel", Justification = "The word Login is preferred.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Login", Scope = "member", Target = "SPPC.Tadbir.ViewModel.Auth.UserViewModel.#LastLoginDate", Justification = "The word Login is preferred.")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Flag", Scope = "member", Target = "SPPC.Tadbir.ViewModel.Auth.PermissionViewModel.#Flag", Justification = "Member might be used as a bit flag and the naming is intentional.")]
 
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.

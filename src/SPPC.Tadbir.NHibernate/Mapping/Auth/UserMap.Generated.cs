@@ -70,6 +70,13 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .PropertyRef(y => y.User)
                 .Not.LazyLoad()
                 .Cascade.All();
+            HasManyToMany(x => x.Roles)
+                .Schema("Auth")
+                .Table("UserRole")
+                .ParentKeyColumn("UserID")
+                .ChildKeyColumn("RoleID")
+                .Cascade.All()
+                .LazyLoad();
         }
     }
 }

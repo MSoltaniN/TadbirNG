@@ -32,12 +32,70 @@ GO
 CREATE TABLE [Auth].[User] (
     [UserID]         INT              IDENTITY (1, 1) NOT NULL,
     [UserName]       NVARCHAR(64)     NOT NULL,
-    [PasswordHash]   VARCHAR(256)    NOT NULL,
+    [PasswordHash]   VARCHAR(256)     NOT NULL,
     [LastLoginDate]  DATETIME         NULL,
     [IsEnabled]      BIT              NOT NULL
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_User_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Auth_User_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Auth_User] PRIMARY KEY CLUSTERED ([UserID] ASC)
+)
+GO
+
+CREATE TABLE [Auth].[Role] (
+    [RoleID]         INT              IDENTITY (1, 1) NOT NULL,
+    [Name]           NVARCHAR(64)     NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_Role_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Auth_Role_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Auth_Role] PRIMARY KEY CLUSTERED ([RoleID] ASC)
+)
+GO
+
+CREATE TABLE [Auth].[UserRole] (
+    [UserRoleID]     INT              IDENTITY (1, 1) NOT NULL,
+    [UserID]         INT              NOT NULL,
+    [RoleID]         INT              NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_UserRole_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Auth_UserRole_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Auth_UserRole] PRIMARY KEY CLUSTERED ([UserRoleID] ASC)
+    , CONSTRAINT [FK_Auth_UserRole_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User] ([UserID])
+    , CONSTRAINT [FK_Auth_UserRole_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role] ([RoleID])
+)
+GO
+
+CREATE TABLE [Auth].[PermissionGroup] (
+    [PermissionGroupID]   INT              IDENTITY (1, 1) NOT NULL,
+    [Name]                NVARCHAR(64)     NOT NULL,
+    [EntityName]          NVARCHAR(64)     NULL,
+    [Description]         NVARCHAR(512)    NULL,
+    [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_PermissionGroup_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Auth_PermissionGroup_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Auth_PermissionGroup] PRIMARY KEY CLUSTERED ([PermissionGroupID] ASC)
+)
+GO
+
+CREATE TABLE [Auth].[Permission] (
+    [PermissionID]   INT              IDENTITY (1, 1) NOT NULL,
+	[GroupID]        INT              NOT NULL,
+    [Name]           NVARCHAR(128)    NOT NULL,
+    [Flag]           INT              NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_Permission_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Auth_Permission_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Auth_Permission] PRIMARY KEY CLUSTERED ([PermissionID] ASC)
+    , CONSTRAINT [FK_Auth_Permission_Auth_PermissionGroup] FOREIGN KEY ([GroupID]) REFERENCES [Auth].[PermissionGroup] ([PermissionGroupID])
+)
+GO
+
+CREATE TABLE [Auth].[RolePermission] (
+    [RolePermissionID]   INT              IDENTITY (1, 1) NOT NULL,
+    [RoleID]             INT              NOT NULL,
+    [PermissionID]       INT              NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_RolePermission_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Auth_RolePermission_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Auth_RolePermission] PRIMARY KEY CLUSTERED ([RolePermissionID] ASC)
+    , CONSTRAINT [FK_Auth_RolePermission_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role] ([RoleID])
+    , CONSTRAINT [FK_Auth_RolePermission_Auth_Permission] FOREIGN KEY ([PermissionID]) REFERENCES [Auth].[Permission] ([PermissionID])
 )
 GO
 

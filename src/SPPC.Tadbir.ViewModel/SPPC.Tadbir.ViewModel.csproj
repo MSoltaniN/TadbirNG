@@ -62,6 +62,9 @@
       <Link>TadbirSolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Auth\LoginViewModel.cs" />
+    <Compile Include="Auth\PermissionGroupViewModel.Generated.cs" />
+    <Compile Include="Auth\PermissionViewModel.Generated.cs" />
+    <Compile Include="Auth\RoleViewModel.Generated.cs" />
     <Compile Include="Auth\UserViewModel.cs" />
     <Compile Include="Auth\UserViewModel.Generated.cs" />
     <Compile Include="Contact\PersonViewModel.Generated.cs" />
