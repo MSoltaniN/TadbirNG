@@ -64,12 +64,18 @@ namespace SPPC.Tadbir.Mapper
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
         {
             mapperConfig.CreateMap<User, UserViewModel>()
+                .ForMember(dest => dest.LastLoginDate, opts => opts.MapFrom(
+                    src => src.LastLoginDate.HasValue
+                        ? JalaliDateTime.FromDateTime(src.LastLoginDate.Value).ToString()
+                        : String.Empty))
                 .ForMember(dest => dest.Password, opts => opts.MapFrom(src => src.PasswordHash));
             mapperConfig.CreateMap<UserViewModel, User>()
+                .ForMember(dest => dest.LastLoginDate, opts => opts.Ignore())
                 .ForMember(dest => dest.PasswordHash,
                     opts => opts.MapFrom(
-                        src => Transform.ToHexString(
-                            _crypto.CreateHash(Encoding.UTF8.GetBytes(src.Password))).ToLower()));
+                        src => !String.IsNullOrEmpty(src.Password)
+                            ? _crypto.CreateHash(src.Password).ToLower()
+                            : String.Empty));
         }
 
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)

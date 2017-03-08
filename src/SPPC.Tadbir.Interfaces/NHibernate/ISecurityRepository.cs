@@ -24,6 +24,14 @@ namespace SPPC.Tadbir.NHibernate
         UserViewModel GetUser(string userName);
 
         /// <summary>
+        /// Retrieves a single user specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="userId">Unique identifier of the user to search for</param>
+        /// <returns>A <see cref="UserViewModel"/> instance that corresponds to the specified identifier, if there is
+        /// such a user defined; otherwise, returns null.</returns>
+        UserViewModel GetUser(int userId);
+
+        /// <summary>
         /// Inserts or updates a single user in repository.
         /// </summary>
         /// <param name="user">Item to insert or update</param>

@@ -31,6 +31,14 @@ namespace SPPC.Tadbir.Service
         IEnumerable<UserViewModel> GetUsers();
 
         /// <summary>
+        /// Retrieves a single user specified by unique identifier.
+        /// </summary>
+        /// <param name="userId">Unique identifier of an existing user</param>
+        /// <returns>A <see cref="UserViewModel"/> object containing user information, if user can be found;
+        /// otherwise, returns null.</returns>
+        UserViewModel GetUser(int userId);
+
+        /// <summary>
         /// Inserts or updates an application user.
         /// </summary>
         /// <param name="user">User to insert or update</param>

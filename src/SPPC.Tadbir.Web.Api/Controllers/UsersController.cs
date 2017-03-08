@@ -43,6 +43,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
+        // GET: api/users/{userId:int}
+        [Route(SecurityApi.UserUrl)]
+        public IHttpActionResult GetUser(int userId)
+        {
+            if (userId <= 0)
+            {
+                return NotFound();
+            }
+
+            var user = _repository.GetUser(userId);
+            var result = (user != null)
+                ? Json(user)
+                : NotFound() as IHttpActionResult;
+
+            return result;
+        }
+
         // POST: api/users
         [Route(SecurityApi.UsersUrl)]
         public IHttpActionResult PostNewUser([FromBody] UserViewModel user)
@@ -95,6 +112,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.UserName);
                 return BadRequest(message);
+            }
+
+            if (user.Password == Users.DummyPassword)
+            {
+                user.Password = String.Empty;
             }
 
             _repository.SaveUser(user);

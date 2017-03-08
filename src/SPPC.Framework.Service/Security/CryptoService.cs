@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Text;
 using SwForAll.Platform.Common;
 
 namespace SPPC.Framework.Service.Security
@@ -27,6 +28,20 @@ namespace SPPC.Framework.Service.Security
         public byte[] CreateHash(byte[] data)
         {
             return _hashProvider.ComputeHash(data);
+        }
+
+        /// <summary>
+        /// Transforms given text data to a cryptographic hash value using a standard hashing algorithm.
+        /// Current implementation uses SHA256 data hashing algorithm.
+        /// </summary>
+        /// <param name="data">Text data that needs to be hashed</param>
+        /// <returns>SHA256 hash of given data in Hexadecimal form</returns>
+        public string CreateHash(string data)
+        {
+            Verify.ArgumentNotNullOrEmptyString(data, "data");
+            var dataBytes = Encoding.UTF8.GetBytes(data);
+            var dataHashBytes = _hashProvider.ComputeHash(dataBytes);
+            return Transform.ToHexString(dataHashBytes);
         }
 
         /// <summary>

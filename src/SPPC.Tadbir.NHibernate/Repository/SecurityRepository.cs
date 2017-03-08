@@ -63,6 +63,25 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
+        /// Retrieves a single user specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="userId">Unique identifier of the user to search for</param>
+        /// <returns>A <see cref="UserViewModel"/> instance that corresponds to the specified identifier, if there is
+        /// such a user defined; otherwise, returns null.</returns>
+        public UserViewModel GetUser(int userId)
+        {
+            UserViewModel userViewModel = null;
+            var repository = _unitOfWork.GetRepository<User>();
+            var user = repository.GetByID(userId);
+            if (user != null)
+            {
+                userViewModel = _mapper.Map<UserViewModel>(user);
+            }
+
+            return userViewModel;
+        }
+
+        /// <summary>
         /// Inserts or updates a single user in repository.
         /// </summary>
         /// <param name="user">Item to insert or update</param>
@@ -112,7 +131,8 @@ namespace SPPC.Tadbir.NHibernate
             Verify.ArgumentNotNull(user, "user");
             var repository = _unitOfWork.GetRepository<User>();
             var existing = repository
-                .GetByCriteria(usr => usr.UserName == user.UserName)
+                .GetByCriteria(usr => usr.Id != user.Id
+                    && usr.UserName == user.UserName)
                 .FirstOrDefault();
             return (existing != null);
         }
@@ -121,9 +141,13 @@ namespace SPPC.Tadbir.NHibernate
         {
             var modifiedUser = _mapper.Map<User>(user);
             existing.UserName = user.UserName;
-            existing.PasswordHash = modifiedUser.PasswordHash;
             existing.IsEnabled = user.IsEnabled;
-            existing.LastLoginDate = user.LastLoginDate;
+            existing.Person.FirstName = user.PersonFirstName;
+            existing.Person.LastName = user.PersonLastName;
+            if (!String.IsNullOrEmpty(modifiedUser.PasswordHash))
+            {
+                existing.PasswordHash = modifiedUser.PasswordHash;
+            }
         }
 
         private User GetNewUser(UserViewModel userViewModel)

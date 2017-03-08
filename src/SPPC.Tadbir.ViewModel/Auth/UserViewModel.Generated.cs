@@ -56,10 +56,11 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public string Password { get; set; }
 
         /// <summary>
-        /// Gets or sets the date and time when this user last logged into the application
+        /// Gets or sets the date and time when this user last logged into the application.
+        /// The date is in Persian (Jalali/Shamsi) calendar.
         /// </summary>
         [Display(Name = FieldNames.LastLoginDate)]
-        public DateTime? LastLoginDate { get; set; }
+        public string LastLoginDate { get; set; }
 
         /// <summary>
         /// Gets or sets the value that indicates if this user is enabled inside the application's security system

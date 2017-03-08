@@ -75,6 +75,18 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Retrieves a single user specified by unique identifier.
+        /// </summary>
+        /// <param name="userId">Unique identifier of an existing user</param>
+        /// <returns>A <see cref="UserViewModel"/> object containing user information, if user can be found;
+        /// otherwise, returns null.</returns>
+        public UserViewModel GetUser(int userId)
+        {
+            var user = _apiClient.Get<UserViewModel>(SecurityApi.User, userId);
+            return user;
+        }
+
+        /// <summary>
         /// Inserts or updates an application user.
         /// </summary>
         /// <param name="user">User to insert or update</param>

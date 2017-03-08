@@ -22,8 +22,8 @@ namespace SPPC.Tadbir.Mapper.Tests
         public void FixtureSetup()
         {
             _mockCrypto = new Mock<ICryptoService>();
-            _mockCrypto.Setup(crypto => crypto.CreateHash(It.IsAny<byte[]>()))
-                .Returns(new byte[] { 0x12, 0x34, 0x56, 0x78, 0x90, 0xab, 0xcd, 0xef });
+            _mockCrypto.Setup(crypto => crypto.CreateHash(It.IsAny<string>()))
+                .Returns("1234567890abcdef");
             _domainMapper = new DomainMapper(_mockCrypto.Object);
         }
 

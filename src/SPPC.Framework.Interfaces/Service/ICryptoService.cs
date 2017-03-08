@@ -19,6 +19,13 @@ namespace SPPC.Framework.Service.Security
         byte[] CreateHash(byte[] data);
 
         /// <summary>
+        /// Transforms given text data to a cryptographic hash value using a standard hashing algorithm.
+        /// </summary>
+        /// <param name="data">Text data that needs to be hashed</param>
+        /// <returns>Hash of given data in string form, for example, Hexadecimal or Base64</returns>
+        string CreateHash(string data);
+
+        /// <summary>
         /// Validates given data against a hash value by computing data hash and comparing it to the given hash.
         /// </summary>
         /// <param name="data">Binary data that needs to be validated.</param>

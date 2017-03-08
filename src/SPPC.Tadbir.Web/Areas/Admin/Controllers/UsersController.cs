@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using PagedList;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
@@ -21,10 +22,10 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         // GET: admin/users
         public ViewResult Index(int? page = null)
         {
-            var accounts = _service.GetUsers();
+            var users = _service.GetUsers();
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-            return View(accounts.ToPagedList(pageNumber, pageSize));
+            return View(users.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: admin/users/create
@@ -38,6 +39,43 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(UserViewModel user)
+        {
+            if (user == null)
+            {
+                return RedirectToAction("index", "error", new { area = String.Empty });
+            }
+
+            if (ModelState.IsValid)
+            {
+                var response = _service.SaveUser(user);
+                if (response.Result == ServiceResult.ValidationFailed)
+                {
+                    ModelState.AddModelError("UserName", response.Message);
+                    return View(user);
+                }
+
+                return RedirectToAction("index");
+            }
+
+            return View(user);
+        }
+
+        // GET: admin/users/edit/id
+        public ActionResult Edit(int id)
+        {
+            var user = _service.GetUser(id);
+            if (user == null)
+            {
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
+            }
+
+            return View(user);
+        }
+
+        // POST: admin/users/edit/id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(UserViewModel user)
         {
             if (user == null)
             {
