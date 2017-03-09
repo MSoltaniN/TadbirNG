@@ -108,6 +108,16 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Retrieves all application-defined roles currently registered in security system.
+        /// </summary>
+        /// <returns>Collection of all roles in security system</returns>
+        public IEnumerable<RoleViewModel> GetRoles()
+        {
+            var roles = _apiClient.Get<IEnumerable<RoleViewModel>>(SecurityApi.Roles);
+            return roles;
+        }
+
+        /// <summary>
         /// Creates and returns a concrete <see cref="IPrincipal"/> instance using specified member information,
         /// its assigned roles and a value indicating if user must be kept logged in.
         /// </summary>

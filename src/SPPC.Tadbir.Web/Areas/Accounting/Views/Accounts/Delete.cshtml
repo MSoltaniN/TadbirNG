@@ -1,4 +1,5 @@
-﻿@using SPPC.Tadbir.Values
+﻿@using SPPC.Framework.Values
+@using SPPC.Tadbir.Values
 @model SPPC.Framework.Service.ServiceResponse
 
 @{
@@ -6,7 +7,7 @@
 }
 
 <ol class="breadcrumb">
-    <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
     <li>@Html.ActionLink(Accounts.IndexTitle, "index", "accounts", new { area = "Accounting" }, null)</li>
     <li class="active">@Accounts.Delete</li>
 </ol>

@@ -1,13 +1,13 @@
-﻿@using SPPC.Tadbir.Values
+﻿@using SPPC.Framework.Values
 
 @{
-    ViewBag.Title = Strings.PageNotFoundTitle;
+    ViewBag.Title = ErrorMessages.PageNotFoundTitle;
 }
 
 <div class="error-message">
     <div class="alert alert-info">
-        <h2 class="text-info">@Strings.PageNotFoundTitle</h2>
-        <h4 class="text-info">@Strings.PageNotFound</h4>
+        <h2 class="text-info">@ErrorMessages.PageNotFoundTitle</h2>
+        <h4 class="text-info">@ErrorMessages.PageNotFound</h4>
     </div>
-    <p>@Strings.PageNotFoundHint</p>
+    <p>@ErrorMessages.PageNotFoundHint</p>
 </div>

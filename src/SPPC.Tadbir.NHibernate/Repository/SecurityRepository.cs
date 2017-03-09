@@ -137,6 +137,20 @@ namespace SPPC.Tadbir.NHibernate
             return (existing != null);
         }
 
+        /// <summary>
+        /// Retrieves all application roles from repository.
+        /// </summary>
+        /// <returns>A collection of <see cref="RoleViewModel"/> objects retrieved from repository</returns>
+        public IList<RoleViewModel> GetRoles()
+        {
+            var repository = _unitOfWork.GetRepository<Role>();
+            var roles = repository
+                .GetAll()
+                .Select(user => _mapper.Map<RoleViewModel>(user))
+                .ToList();
+            return roles;
+        }
+
         private void UpdateExistingUser(User existing, UserViewModel user)
         {
             var modifiedUser = _mapper.Map<User>(user);

@@ -44,5 +44,11 @@ namespace SPPC.Tadbir.Service
         /// <param name="user">User to insert or update</param>
         /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
         ServiceResponse SaveUser(UserViewModel user);
+
+        /// <summary>
+        /// Retrieves all application-defined roles currently registered in security system.
+        /// </summary>
+        /// <returns>Collection of all roles in security system</returns>
+        IEnumerable<RoleViewModel> GetRoles();
     }
 }

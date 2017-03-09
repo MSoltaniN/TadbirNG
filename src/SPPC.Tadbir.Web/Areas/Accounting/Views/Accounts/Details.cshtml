@@ -1,3 +1,4 @@
+@using SPPC.Framework.Values
 @using SPPC.Tadbir.ViewModel.Finance
 @using SPPC.Tadbir.Values
 @model AccountFullViewModel
@@ -7,7 +8,7 @@
 }
 
 <ol class="breadcrumb">
-    <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
     <li>@Html.ActionLink(Accounts.IndexTitle, "index", "accounts", new { area = "Accounting" }, null)</li>
     <li class="active">@Accounts.Details</li>
 </ol>

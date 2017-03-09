@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
 @using SPPC.Framework.Extensions
+@using SPPC.Framework.Values
 @using SPPC.Tadbir.Values
 @using SPPC.Tadbir.ViewModel.Finance
 @using PagedList.Mvc
@@ -21,7 +22,7 @@
 }
 
 <ol class="breadcrumb">
-    <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
     <li class="active">@Transactions.IndexTitle</li>
 </ol>
 
@@ -71,9 +72,9 @@
                     @credit
                 </td>
                 <td>
-                    @Html.ActionLink(Strings.Edit, "edit", new { id = item.Id }) |
-                    @Html.ActionLink(Strings.Details, "details", new { id = item.Id }) |
-                    @Html.ActionLink(Strings.Delete, "delete", new { id = item.Id })
+                    @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id }) |
+                    @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id }) |
+                    @Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
                 </td>
             </tr>
         }

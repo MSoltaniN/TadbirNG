@@ -1,4 +1,5 @@
 ﻿@using SPPC.Framework.Helpers
+@using SPPC.Framework.Values
 @using SPPC.Tadbir.Values
 @model SPPC.Tadbir.ViewModel.Finance.TransactionLineViewModel
 
@@ -11,7 +12,7 @@
 }
 
 <ol class="breadcrumb">
-    <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
     <li>@Html.ActionLink(Transactions.IndexTitle, "index", "transactions", new { area = "accounting" }, null)</li>
     <li>@Html.ActionLink(Transactions.EditExisting, "edit", "transactions", new { area = "accounting", id = Model.TransactionId }, null)</li>
     <li class="active">@TransactionLines.CreateNew</li>
@@ -60,8 +61,8 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="@Strings.Save" class="btn btn-primary" />
-                @Html.ActionLink(Strings.Cancel, "edit", "transactions",
+                <input type="submit" value="@LocalStrings.Save" class="btn btn-primary" />
+                @Html.ActionLink(LocalStrings.Cancel, "edit", "transactions",
                     new { area = "accounting", id = Model.TransactionId }, new { @class = "btn btn-primary" })
             </div>
         }

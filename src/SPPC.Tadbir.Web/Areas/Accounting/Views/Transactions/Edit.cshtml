@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
 @using SPPC.Framework.Extensions
+@using SPPC.Framework.Values
 @using SPPC.Tadbir.Values
 @using PagedList
 @using PagedList.Mvc
@@ -24,7 +25,7 @@
 }
 
 <ol class="breadcrumb">
-    <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
     <li>@Html.ActionLink(Transactions.IndexTitle, "index", "transactions", new { area = "Accounting" }, null)</li>
     <li class="active">@Transactions.EditExisting</li>
 </ol>
@@ -103,9 +104,9 @@
                                 @item.Credit.ToString("C0", persianCulture)
                             </td>
                             <td>
-                                @Html.ActionLink(Strings.Edit, "edit", "articles", new { id = item.Id }, null) |
-                                @Html.ActionLink(Strings.Details, "details", "articles", new { id = item.Id }, null) |
-                                @Html.ActionLink(Strings.Delete, "delete", "articles", new { id = item.Id, transactionId = item.TransactionId }, null)
+                                @Html.ActionLink(LocalStrings.Edit, "edit", "articles", new { id = item.Id }, null) |
+                                @Html.ActionLink(LocalStrings.Details, "details", "articles", new { id = item.Id }, null) |
+                                @Html.ActionLink(LocalStrings.Delete, "delete", "articles", new { id = item.Id, transactionId = item.TransactionId }, null)
                             </td>
                         </tr>
                     }
@@ -127,8 +128,8 @@
 
             <hr />
             <div class="form-group">
-                <input type="submit" value="@Strings.Save" class="btn btn-primary" />
-                @Html.ActionLink(Strings.Cancel, "index", "transactions", new { area = "Accounting" }, new { @class = "btn btn-primary" })
+                <input type="submit" value="@LocalStrings.Save" class="btn btn-primary" />
+                @Html.ActionLink(LocalStrings.Cancel, "index", "transactions", new { area = "Accounting" }, new { @class = "btn btn-primary" })
             </div>
         }
     </div>

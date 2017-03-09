@@ -1,5 +1,6 @@
 ﻿@using System.Globalization
 @using SPPC.Framework.Extensions
+@using SPPC.Framework.Values
 @using SPPC.Tadbir.Values
 @model SPPC.Tadbir.ViewModel.Finance.TransactionFullViewModel
 
@@ -10,7 +11,7 @@
 }
 
 <ol class="breadcrumb">
-    <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
     <li>@Html.ActionLink(Transactions.IndexTitle, "index", "transactions", new { area = "accounting" }, null)</li>
     <li class="active">@Transactions.Details</li>
 </ol>
@@ -104,7 +105,7 @@
                         @item.Credit.ToString("C0", persianCulture)
                     </td>
                     <td>
-                        @Html.ActionLink(Strings.Details, "details", "articles", new { id = item.Id }, null)
+                        @Html.ActionLink(LocalStrings.Details, "details", "articles", new { id = item.Id }, null)
                     </td>
                 </tr>
             }

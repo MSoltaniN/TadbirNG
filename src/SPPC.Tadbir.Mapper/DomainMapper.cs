@@ -76,6 +76,7 @@ namespace SPPC.Tadbir.Mapper
                         src => !String.IsNullOrEmpty(src.Password)
                             ? _crypto.CreateHash(src.Password).ToLower()
                             : String.Empty));
+            mapperConfig.CreateMap<Role, RoleViewModel>();
         }
 
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)

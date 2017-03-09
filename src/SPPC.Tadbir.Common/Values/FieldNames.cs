@@ -98,21 +98,6 @@ namespace SPPC.Tadbir.Values
         public const string AccountNameField = "نام حساب";
 
         /// <summary>
-        /// Localized name of Fiscal Period entity.
-        /// </summary>
-        public const string FiscalPeriodEntity = "دوره مالی";
-
-        /// <summary>
-        /// Localized name of Branch entity.
-        /// </summary>
-        public const string BranchEntity = "شعبه";
-
-        /// <summary>
-        /// Localized name of Company entity.
-        /// </summary>
-        public const string CompanyEntity = "شرکت";
-
-        /// <summary>
         /// Localized name of DebitSum field
         /// </summary>
         public const string DebitSumField = "جمع بدهکار";
@@ -131,6 +116,11 @@ namespace SPPC.Tadbir.Values
         /// Localized name of Account field.
         /// </summary>
         public const string AccountField = "حساب";
+
+        /// <summary>
+        /// Localized name of Permissions field.
+        /// </summary>
+        public const string PermissionsField = "دسترسی ها";
 
         /// <summary>
         /// Localized name of UserName field

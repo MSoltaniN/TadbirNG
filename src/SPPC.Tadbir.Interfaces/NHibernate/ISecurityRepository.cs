@@ -50,5 +50,11 @@ namespace SPPC.Tadbir.NHibernate
         /// <param name="user">User item to check for duplicate user name</param>
         /// <returns>True if the user name is already used; otherwise returns false.</returns>
         bool IsDuplicateUser(UserViewModel user);
+
+        /// <summary>
+        /// Retrieves all application roles from repository.
+        /// </summary>
+        /// <returns>A collection of <see cref="RoleViewModel"/> objects retrieved from repository</returns>
+        IList<RoleViewModel> GetRoles();
     }
 }

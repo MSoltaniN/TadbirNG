@@ -28,11 +28,6 @@ namespace SPPC.Tadbir.Values
         public const string CopyrightText = "کلیه حقوق برای شرکت پردازش موازی سامان (با مسئولیت محدود) محفوظ است.";
 
         /// <summary>
-        /// Localized text for home page title
-        /// </summary>
-        public const string HomePage = "صفحه اصلی";
-
-        /// <summary>
         /// Localized text for the application lead information in home page
         /// </summary>
         public const string AppLeadInfo = "سازمان خود را هر کجا که هستید با قدرت و اطمینان اداره کنید.";
@@ -51,6 +46,11 @@ namespace SPPC.Tadbir.Values
         /// Localized text for Manage Users navigation link
         /// </summary>
         public const string ManageUsers = "مدیریت کاربران";
+
+        /// <summary>
+        /// Localized text for Manage Roles navigation link
+        /// </summary>
+        public const string ManageRoles = "مدیریت نقش ها";
 
         /// <summary>
         /// Localized text for About page title
@@ -118,31 +118,6 @@ namespace SPPC.Tadbir.Values
         public const string WarehousingIntro = "بخش کنترل موجودی و انبار با امکانات گسترده و انعطاف پذیری در تعریف اطلاعات پایه و عملیاتی، پاسخگوی نیازهای سازمانی طیف بسیار وسیعی از کاربران خواهد بود.";
 
         /// <summary>
-        /// Localized text for Edit caption 
-        /// </summary>
-        public const string Edit = "ویرایش";
-
-        /// <summary>
-        /// Localized text for Details caption
-        /// </summary>
-        public const string Details = "جزئیات";
-
-        /// <summary>
-        /// Localized text for Delete caption
-        /// </summary>
-        public const string Delete = "حذف";
-
-        /// <summary>
-        /// Localized text for Save caption 
-        /// </summary>
-        public const string Save = "ذخیره";
-
-        /// <summary>
-        /// Localized text for Cancel caption 
-        /// </summary>
-        public const string Cancel = "انصراف";
-
-        /// <summary>
         /// Localized text for Total caption 
         /// </summary>
         public const string Total = "جمع کل";
@@ -172,37 +147,6 @@ namespace SPPC.Tadbir.Values
         /// Localized text for a message indicating that the request verification token is invalid.
         /// </summary>
         public const string InvalidBrowserRequest = "درخواست دریافت شده از مرورگر معتبر نیست. لطفا دوباره تلاش کنید.";
-
-        /// <summary>
-        /// Localized text for Not Found title
-        /// </summary>
-        public const string PageNotFoundTitle = "صفحه مورد نظر یافت نشد";
-
-        /// <summary>
-        /// Localized text for user hint applicable to a Not Found (404) error
-        /// </summary>
-        public const string PageNotFoundHint = "لطفا در مورد درستی آدرس وب مورد نظرتان اطمینان حاصل نموده و دوباره تلاش کنید.";
-
-        /// <summary>
-        /// Localized text for a short message displayed in case of a Not Found (404) error
-        /// </summary>
-        public const string PageNotFound = "صفحه مورد نظر شما در این برنامه وجود ندارد.";
-
-        /// <summary>
-        /// Localized text for Error Occured title
-        /// </summary>
-        public const string ErrorOccurredTitle = "بروز خطا";
-
-        /// <summary>
-        /// Localized text for common courtesy message displayed in case of a server error
-        /// (i.e. We appologize for the inconvenience)
-        /// </summary>
-        public const string ErrorOccurredHint = "پوزش ما را بابت وقفه احتمالی در کار خود بپذیرید.";
-
-        /// <summary>
-        /// Localized text for a short message displayed in case of a server error
-        /// </summary>
-        public const string ErrorOccurred = "متاسفانه بدلیل بروز خطای سمت سرور، درخواست شما در این زمان قابل اجرا نیست.";
 
         /// <summary>
         /// Localized text for 'New security code' caption

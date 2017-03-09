@@ -65,6 +65,24 @@ namespace SPPC.Tadbir.Mapper.Tests
             AssertMapperCanConvertFromSourceToDestination<UserViewModel, User>();
         }
 
+        [Test]
+        public void ContainsMappingFromRoleToRoleViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<Role, RoleViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromRoleToRoleViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<Role, RoleViewModel>();
+        }
+
         #endregion
 
         #region Finance Type Mapping Tests

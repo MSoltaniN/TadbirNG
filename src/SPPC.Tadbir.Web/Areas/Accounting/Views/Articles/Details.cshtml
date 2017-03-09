@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@using SPPC.Framework.Values
 @using SPPC.Tadbir.Values
 @model SPPC.Tadbir.ViewModel.Finance.TransactionLineFullViewModel
 
@@ -9,7 +10,7 @@
 }
 
 <ol class="breadcrumb">
-    <li>@Html.ActionLink(Strings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
     <li>@Html.ActionLink(Transactions.IndexTitle, "index", "transactions", new { area = "accounting" }, null)</li>
     <li>@Html.ActionLink(Transactions.Details, "details", "transactions", new { area = "accounting", id = Model.Article.TransactionId }, null)</li>
     <li class="active">@TransactionLines.Details</li>
