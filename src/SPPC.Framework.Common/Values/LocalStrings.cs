@@ -30,7 +30,7 @@ namespace SPPC.Framework.Values
         /// <summary>
         /// Localized text for the paging information in current list page
         /// </summary>
-        public const string CurrentPageInfo = "{0} 1}، صفحه {2} از {3}";
+        public const string CurrentPageInfo = "{0} {1}، صفحه {2} از {3}";
 
         /// <summary>
         /// Localized text for the caption for creating a new entity

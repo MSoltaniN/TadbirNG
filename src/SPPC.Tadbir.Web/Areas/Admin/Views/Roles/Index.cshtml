@@ -50,15 +50,15 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                <td title="@item.Description">
+                    @item.Description.AutoEllipsis(60)
                 </td>
-                <td title=@permissions>
-                    @permissions.AutoEllipsis()
+                <td lang="fa" title="@permissions">
+                    @permissions.AutoEllipsis(60)
                 </td>
                 <td>
                     @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id }) |
-                    @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id })
+                    @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id }) |
                     @Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
                 </td>
             </tr>
