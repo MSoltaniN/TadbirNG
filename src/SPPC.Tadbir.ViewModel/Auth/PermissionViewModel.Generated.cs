@@ -12,6 +12,8 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Auth
 {
@@ -37,21 +39,21 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// <summary>
         /// Gets or sets the name of this permission
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(128, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
+        [Display(Name = FieldNames.NameField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(128, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the numerical code that identifies a secure operation that this permission represents
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [Range(0, 2147483647, ErrorMessage = "{0} must be between {1} and {2}.")]
         public int Flag { get; set; }
 
         /// <summary>
         /// Gets or sets the detail information related to this permission
         /// </summary>
-        [StringLength(512, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
+        [Display(Name = FieldNames.DescriptionField)]
+        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
     }
 }

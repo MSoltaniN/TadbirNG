@@ -138,6 +138,16 @@ namespace SPPC.Tadbir.Values
         public const string LastLoginDate = "تاریخ آخرین ورود";
 
         /// <summary>
+        /// Localized name of EntityName field
+        /// </summary>
+        public const string EntityNameField = "نام موجودیت";
+
+        /// <summary>
+        /// Localized name of Permission Group field
+        /// </summary>
+        public const string PermissionGroupField = "گروه دسترسی";
+
+        /// <summary>
         /// Localized name of Security Code field (used in forms that require Captcha validation)
         /// </summary>
         public static readonly string SecurityCode = "کد امنیتی";

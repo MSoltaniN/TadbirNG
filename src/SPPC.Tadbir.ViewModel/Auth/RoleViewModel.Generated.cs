@@ -13,6 +13,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Auth
 {
@@ -39,14 +41,16 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// <summary>
         /// Gets or sets the name of this application role
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(64, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
+        [Display(Name = FieldNames.NameField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the detail information related to this role
         /// </summary>
-        [StringLength(512, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
+        [Display(Name = FieldNames.DescriptionField)]
+        [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
     }
 }

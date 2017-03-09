@@ -118,6 +118,38 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Retrieves all existing permissions and includes them in a blank (uninitializes) role instance.
+        /// </summary>
+        /// <returns>A <see cref="RoleFullViewModel"/> object that contains all available permissions</returns>
+        public RoleFullViewModel GetNewRole()
+        {
+            var newRole = _apiClient.Get<RoleFullViewModel>(SecurityApi.NewRole);
+            return newRole;
+        }
+
+        /// <summary>
+        /// Inserts or updates a security role.
+        /// </summary>
+        /// <param name="role">Role to insert or update</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
+        public ServiceResponse SaveRole(RoleFullViewModel role)
+        {
+            Verify.ArgumentNotNull(role, "role");
+            Verify.ArgumentNotNull(role.Role, "role.Role");
+            ServiceResponse response = null;
+            if (role.Role.Id == 0)
+            {
+                response = _apiClient.Insert(role, SecurityApi.Roles);
+            }
+            else
+            {
+                response = _apiClient.Update(role, SecurityApi.Role, role.Role.Id);
+            }
+
+            return response;
+        }
+
+        /// <summary>
         /// Creates and returns a concrete <see cref="IPrincipal"/> instance using specified member information,
         /// its assigned roles and a value indicating if user must be kept logged in.
         /// </summary>

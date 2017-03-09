@@ -50,5 +50,18 @@ namespace SPPC.Tadbir.Service
         /// </summary>
         /// <returns>Collection of all roles in security system</returns>
         IEnumerable<RoleViewModel> GetRoles();
+
+        /// <summary>
+        /// Retrieves all existing permissions and includes them in a blank (uninitializes) role instance.
+        /// </summary>
+        /// <returns>A <see cref="RoleFullViewModel"/> object that contains all available permissions</returns>
+        RoleFullViewModel GetNewRole();
+
+        /// <summary>
+        /// Inserts or updates a security role.
+        /// </summary>
+        /// <param name="role">Role to insert or update</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
+        ServiceResponse SaveRole(RoleFullViewModel role);
     }
 }

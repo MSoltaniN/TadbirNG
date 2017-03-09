@@ -81,6 +81,12 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.Permissions,
                     opts => opts.MapFrom(
                         src => src.Permissions.Select(perm => perm.Name)));
+            mapperConfig.CreateMap<RoleViewModel, Role>()
+                .ForMember(dest => dest.Permissions, opts => opts.Ignore());
+            mapperConfig.CreateMap<Permission, PermissionViewModel>()
+                .ForMember(dest => dest.IsEnabled, opts => opts.UseValue(true));
+            mapperConfig.CreateMap<PermissionViewModel, Permission>()
+                .AfterMap((viewModel, model) => model.Group.Id = viewModel.GroupId);
         }
 
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)

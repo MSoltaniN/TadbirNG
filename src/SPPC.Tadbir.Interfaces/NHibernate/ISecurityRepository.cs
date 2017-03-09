@@ -56,5 +56,18 @@ namespace SPPC.Tadbir.NHibernate
         /// </summary>
         /// <returns>A collection of <see cref="RoleViewModel"/> objects retrieved from repository</returns>
         IList<RoleViewModel> GetRoles();
+
+        /// <summary>
+        /// Initializes and returns a new role object that contains all available security permissions.
+        /// </summary>
+        /// <returns>A blank <see cref="RoleFullViewModel"/> object that contains full permission list from repository
+        /// </returns>
+        RoleFullViewModel GetNewRole();
+
+        /// <summary>
+        /// Inserts or updates a single security role, including all permissions in it, in repository
+        /// </summary>
+        /// <param name="role">Role to insert or update</param>
+        void SaveRole(RoleFullViewModel role);
     }
 }

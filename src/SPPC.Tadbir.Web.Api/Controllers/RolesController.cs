@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -22,6 +23,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var roles = _repository.GetRoles();
             return Json(roles);
+        }
+
+        // GET: api/roles/new
+        [Route(SecurityApi.NewRoleUrl)]
+        public IHttpActionResult GetNewRole()
+        {
+            var newRole = _repository.GetNewRole();
+            return Json(newRole);
+        }
+
+        // POST: api/roles
+        [Route(SecurityApi.RolesUrl)]
+        public IHttpActionResult PostNewRole([FromBody] RoleFullViewModel role)
+        {
+            if (role == null || role.Role == null)
+            {
+                return BadRequest("Could not post new role because a 'null' value was provided.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _repository.SaveRole(role);
+            return StatusCode(HttpStatusCode.Created);
         }
 
         private ISecurityRepository _repository;

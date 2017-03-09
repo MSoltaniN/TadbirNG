@@ -151,6 +151,42 @@ namespace SPPC.Tadbir.NHibernate
             return roles;
         }
 
+        /// <summary>
+        /// Initializes and returns a new role object that contains all available security permissions.
+        /// </summary>
+        /// <returns>A blank <see cref="RoleFullViewModel"/> object that contains full permission list from repository
+        /// </returns>
+        public RoleFullViewModel GetNewRole()
+        {
+            var repository = _unitOfWork.GetRepository<Permission>();
+            var all = repository
+                .GetAll()
+                .Select(perm => _mapper.Map<PermissionViewModel>(perm))
+                .ToArray();
+            Array.ForEach(all, perm => perm.IsEnabled = false);
+            var role = new RoleFullViewModel() { Permissions = new List<PermissionViewModel>(all) };
+            return role;
+        }
+
+        /// <summary>
+        /// Inserts or updates a single security role, including all permissions in it, in repository
+        /// </summary>
+        /// <param name="role">Role to insert or update</param>
+        public void SaveRole(RoleFullViewModel role)
+        {
+            var repository = _unitOfWork.GetRepository<Role>();
+            var existing = repository.GetByID(role.Role.Id);
+            if (existing == null)
+            {
+                var newRole = _mapper.Map<Role>(role.Role);
+                Array.ForEach(role.Permissions
+                        .Where(perm => perm.IsEnabled)
+                        .ToArray(), perm => newRole.Permissions.Add(_mapper.Map<Permission>(perm)));
+                repository.Insert(newRole);
+                _unitOfWork.Commit();
+            }
+        }
+
         private void UpdateExistingUser(User existing, UserViewModel user)
         {
             var modifiedUser = _mapper.Map<User>(user);

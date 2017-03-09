@@ -78,7 +78,7 @@ CREATE TABLE [Auth].[Permission] (
     [PermissionID]   INT              IDENTITY (1, 1) NOT NULL,
 	[GroupID]        INT              NOT NULL,
     [Name]           NVARCHAR(128)    NOT NULL,
-    [Flag]           INT              NOT NULL,
+    [Flag]           INT              CONSTRAINT [DF_Auth_Permission_Flag] DEFAULT (0) NOT NULL,
     [Description]    NVARCHAR(512)    NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_Permission_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Auth_Permission_ModifiedDate] DEFAULT (getdate()) NOT NULL
