@@ -1,0 +1,93 @@
+﻿@using SPPC.Framework.Extensions
+@using SPPC.Framework.Values
+@using SPPC.Tadbir.Values
+@model SPPC.Tadbir.ViewModel.Auth.RoleFullViewModel
+
+@{
+    string title = String.Format(LocalStrings.EditExistingEntity, Entities.Role);
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Roles);
+    ViewBag.Title = title;
+    var count = Model.Permissions.Count();
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(indexTitle, "index", "roles", new { area = "admin" }, null)</li>
+    <li class="active">@title</li>
+</ol>
+
+<div class="col-sm-8 col-sm-offset-2 form-centered">
+    <div class="page-header">
+        <h2>@title</h2>
+    </div>
+    <div class="form-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Role.Name, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Role.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Role.Name, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Role.Description, htmlAttributes: new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.Role.Description, new { @class = "form-control", rows = "4" })
+                @Html.ValidationMessageFor(model => model.Role.Description, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="page-header">
+                <h4>@FieldNames.PermissionsField</h4>
+            </div>
+
+            <table class="table table-bordered table-striped table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>@FieldNames.NameField</th>
+                        <th>@FieldNames.PermissionGroupField</th>
+                        <th>@FieldNames.DescriptionField</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for (int i = 0; i < count; i++)
+                {
+                    @Html.HiddenFor(model => model.Role.Id)
+                    @Html.HiddenFor(model => model.Permissions[i].Id)
+                    @Html.HiddenFor(model => model.Permissions[i].Name)
+                    @Html.HiddenFor(model => model.Permissions[i].GroupId)
+                    @Html.HiddenFor(model => model.Permissions[i].GroupName)
+                    @Html.HiddenFor(model => model.Permissions[i].Flag)
+                    @Html.HiddenFor(model => model.Permissions[i].Description)
+                    <tr>
+                        <td>
+                            @Html.CheckBoxFor(model => model.Permissions[i].IsEnabled)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Permissions[i].Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Permissions[i].GroupName)
+                        </td>
+                        <td title="@Model.Permissions[i].Description">
+                            @Model.Permissions[i].Description.AutoEllipsis(50)
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <input type="submit" value="@LocalStrings.Save" class="btn btn-primary" />
+                @Html.ActionLink(LocalStrings.Cancel, "index", "roles", new { area = "admin" }, new { @class = "btn btn-primary" })
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

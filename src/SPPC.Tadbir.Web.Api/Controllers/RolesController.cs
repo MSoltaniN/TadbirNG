@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -65,6 +66,39 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             _repository.SaveRole(role);
             return StatusCode(HttpStatusCode.Created);
+        }
+
+        // PUT: api/roles/{roleId:int}
+        [Route(SecurityApi.RoleUrl)]
+        public IHttpActionResult PutModifiedRole(int roleId, [FromBody] RoleFullViewModel role)
+        {
+            if (roleId == Constants.AdminRoleId)
+            {
+                return BadRequest("Could not put modified role because the role is read-only.");
+            }
+
+            if (role == null || role.Role == null)
+            {
+                return BadRequest("Could not put modified role because a 'null' value was provided.");
+            }
+
+            if (roleId <= 0 || role.Role.Id <= 0)
+            {
+                return BadRequest("Could not put modified role because original role does not exist.");
+            }
+
+            if (roleId != role.Role.Id)
+            {
+                return BadRequest("Could not put modified role because of an identity conflict in the request.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _repository.SaveRole(role);
+            return Ok();
         }
 
         private ISecurityRepository _repository;

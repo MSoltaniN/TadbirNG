@@ -13,6 +13,11 @@ namespace SPPC.Tadbir.Values
         }
 
         /// <summary>
+        /// Special identifier for System Administrator user (admin) in security system
+        /// </summary>
+        public const int AdminUserId = 1;
+
+        /// <summary>
         /// Special-purpose name of the system administrator user
         /// </summary>
         public const string AdminUserName = "admin";

@@ -42,30 +42,33 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            string status = item.IsEnabled ? Users.Enabled : Users.Disabled;
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PersonFirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PersonLastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastLoginDate)
-                </td>
-                <td>
-                    @status
-                </td>
-                <td>
-                    @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id })
-                </td>
-            </tr>
-        }
+    @foreach (var item in Model)
+    {
+        string status = item.IsEnabled ? Users.Enabled : Users.Disabled;
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PersonFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PersonLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastLoginDate)
+            </td>
+            <td>
+                @status
+            </td>
+            @if (item.Id != Constants.AdminUserId)
+            {
+            <td>
+                @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id })
+            </td>
+            }
+        </tr>
+    }
     </tbody>
 </table>
 

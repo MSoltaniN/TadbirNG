@@ -27,6 +27,8 @@ namespace SPPC.Tadbir.NHibernate
             _mapper = mapper;
         }
 
+        #region User Management operations
+
         /// <summary>
         /// Retrieves all application users from repository.
         /// </summary>
@@ -137,6 +139,10 @@ namespace SPPC.Tadbir.NHibernate
             return (existing != null);
         }
 
+        #endregion
+
+        #region Role Management operations
+
         /// <summary>
         /// Retrieves all application roles from repository.
         /// </summary>
@@ -165,10 +171,10 @@ namespace SPPC.Tadbir.NHibernate
                 .ToArray();
             var role = new RoleFullViewModel();
             Array.ForEach(all, perm =>
-                {
-                    perm.IsEnabled = false;
-                    role.Permissions.Add(perm);
-                });
+            {
+                perm.IsEnabled = false;
+                role.Permissions.Add(perm);
+            });
             return role;
         }
 
@@ -223,12 +229,69 @@ namespace SPPC.Tadbir.NHibernate
             if (existing == null)
             {
                 var newRole = _mapper.Map<Role>(role.Role);
-                Array.ForEach(role.Permissions
-                        .Where(perm => perm.IsEnabled)
-                        .ToArray(), perm => newRole.Permissions.Add(_mapper.Map<Permission>(perm)));
+                AddRolePermissions(newRole, role);
                 repository.Insert(newRole);
-                _unitOfWork.Commit();
             }
+            else
+            {
+                if (ArePermissionsModified(existing, role))
+                {
+                    if (existing.Permissions.Count > 0)
+                    {
+                        RemoveDisabledPermissions(existing, role);
+                    }
+
+                    AddNewPermissions(existing, role);
+                }
+
+                UpdateExistingRole(existing, role);
+                repository.Update(existing);
+            }
+
+            _unitOfWork.Commit();
+        }
+
+        #endregion
+
+        private static void RemoveDisabledPermissions(Role existing, RoleFullViewModel role)
+        {
+            var currentItems = role.Permissions
+                .Where(perm => perm.IsEnabled)
+                .Select(perm => perm.Id);
+            var removedItems = existing.Permissions
+                .Select(perm => perm.Id)
+                .Where(id => !currentItems.Contains(id))
+                .ToArray();
+            foreach (int id in removedItems)
+            {
+                existing.Permissions.Remove(existing.Permissions
+                    .Where(perm => perm.Id == id)
+                    .Single());
+            }
+        }
+
+        private static void UpdateExistingRole(Role existing, RoleFullViewModel role)
+        {
+            existing.Name = role.Role.Name;
+            existing.Description = role.Role.Description;
+        }
+
+        private static bool ArePermissionsModified(Role existing, RoleFullViewModel role)
+        {
+            var existingItems = existing.Permissions
+                .Select(perm => perm.Id)
+                .ToArray();
+            var enabledItems = role.Permissions
+                .Where(perm => perm.IsEnabled)
+                .Select(perm => perm.Id)
+                .ToArray();
+            return (!AreEqual(existingItems, enabledItems));
+        }
+
+        private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
+        {
+            return left.Count() == right.Count()
+                && left.All(value => right.Contains(value));
         }
 
         private void UpdateExistingUser(User existing, UserViewModel user)
@@ -256,6 +319,23 @@ namespace SPPC.Tadbir.NHibernate
             user.Person = person;
             person.User = user;
             return user;
+        }
+
+        private void AddNewPermissions(Role existing, RoleFullViewModel role)
+        {
+            var currentItems = existing.Permissions.Select(perm => perm.Id);
+            var newItems = role.Permissions.Where(perm => perm.IsEnabled).Where(perm => !currentItems.Contains(perm.Id));
+            foreach (var item in newItems)
+            {
+                existing.Permissions.Add(_mapper.Map<Permission>(item));
+            }
+        }
+
+        private void AddRolePermissions(Role role, RoleFullViewModel roleViewModel)
+        {
+            Array.ForEach(roleViewModel.Permissions
+                .Where(perm => perm.IsEnabled)
+                .ToArray(), perm => role.Permissions.Add(_mapper.Map<Permission>(perm)));
         }
 
         private IUnitOfWork _unitOfWork;

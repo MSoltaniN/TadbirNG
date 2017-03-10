@@ -9,6 +9,8 @@ namespace SPPC.Tadbir.NHibernate
     /// </summary>
     public interface ISecurityRepository
     {
+        #region User Management operations
+
         /// <summary>
         /// Retrieves all application users from repository.
         /// </summary>
@@ -51,6 +53,10 @@ namespace SPPC.Tadbir.NHibernate
         /// <returns>True if the user name is already used; otherwise returns false.</returns>
         bool IsDuplicateUser(UserViewModel user);
 
+        #endregion
+
+        #region Role Management operations
+
         /// <summary>
         /// Retrieves all application roles from repository.
         /// </summary>
@@ -77,5 +83,7 @@ namespace SPPC.Tadbir.NHibernate
         /// </summary>
         /// <param name="role">Role to insert or update</param>
         void SaveRole(RoleFullViewModel role);
+
+        #endregion
     }
 }

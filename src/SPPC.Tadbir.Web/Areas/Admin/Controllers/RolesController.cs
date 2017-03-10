@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
@@ -44,7 +45,44 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                var response = _service.SaveRole(fullRole);
+                _service.SaveRole(fullRole);
+                return RedirectToAction("index");
+            }
+
+            return View(fullRole);
+        }
+
+        // GET: admin/roles/edit/id
+        public ActionResult Edit(int id)
+        {
+            // Prevent modification of Admin role by directly browsing the Edit page...
+            if (id == Constants.AdminRoleId)
+            {
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
+            }
+
+            var role = _service.GetRole(id);
+            if (role == null)
+            {
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
+            }
+
+            return View(role);
+        }
+
+        // POST: admin/roles/edit/id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(RoleFullViewModel fullRole)
+        {
+            if (fullRole == null)
+            {
+                return RedirectToAction("index", "error", new { area = String.Empty });
+            }
+
+            if (ModelState.IsValid)
+            {
+                _service.SaveRole(fullRole);
                 return RedirectToAction("index");
             }
 

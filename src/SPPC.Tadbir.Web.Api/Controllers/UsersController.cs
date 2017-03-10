@@ -88,6 +88,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(SecurityApi.UserUrl)]
         public IHttpActionResult PutModifiedUser(int userId, [FromBody] UserViewModel user)
         {
+            if (userId == Constants.AdminUserId)
+            {
+                return BadRequest("Could not put modified user because the user is read-only.");
+            }
+
             if (user == null)
             {
                 return BadRequest("Could not put modified user because a 'null' value was provided.");
