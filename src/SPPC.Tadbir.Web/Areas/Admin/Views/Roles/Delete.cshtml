@@ -1,0 +1,25 @@
+﻿@using SPPC.Framework.Values
+@using SPPC.Tadbir.Values
+@model SPPC.Framework.Service.ServiceResponse
+
+@{
+    string title = String.Format(ErrorMessages.DeleteError, Entities.Role);
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Roles);
+    string deleteTitle = String.Format(LocalStrings.DeleteEntity, Entities.Role);
+    string returnTitle = String.Format(LocalStrings.ReturnToPage, indexTitle);
+    ViewBag.Title = title;
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(indexTitle, "index", "roles", new { area = "admin" }, null)</li>
+    <li class="active">@deleteTitle</li>
+</ol>
+
+<div class="alert alert-danger">
+    <h2>@title</h2>
+    <p><strong>@Model.Message</strong></p>
+    <p>@Model.Hint</p>
+    <br />
+    @Html.ActionLink(returnTitle, "index", "roles", new { area = "admin" }, new { @class = "btn btn-primary" })
+</div>

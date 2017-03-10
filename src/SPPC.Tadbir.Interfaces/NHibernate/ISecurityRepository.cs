@@ -79,10 +79,32 @@ namespace SPPC.Tadbir.NHibernate
         RoleFullViewModel GetRole(int roleId);
 
         /// <summary>
+        /// Retrieves brief information for a single role specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of the role to search for</param>
+        /// <returns>A <see cref="RoleViewModel"/> instance that corresponds to the specified role identifier,
+        /// if there is such a role defined; otherwise, returns null.</returns>
+        RoleViewModel GetRoleBrief(int roleId);
+
+        /// <summary>
         /// Inserts or updates a single security role, including all permissions in it, in repository
         /// </summary>
         /// <param name="role">Role to insert or update</param>
         void SaveRole(RoleFullViewModel role);
+
+        /// <summary>
+        /// Deletes a role specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of the role to delete</param>
+        /// <remarks>If no role with specified identifier could be found, no exception should be thrown.</remarks>
+        void DeleteRole(int roleId);
+
+        /// <summary>
+        /// Determines if an existing role specified by unique identifier is assigned to users.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of the role to search for</param>
+        /// <returns>true if specified role is assigned; otherwise false.</returns>
+        bool IsAssignedRole(int roleId);
 
         #endregion
     }

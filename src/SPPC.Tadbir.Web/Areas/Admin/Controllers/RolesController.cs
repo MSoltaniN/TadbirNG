@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PagedList;
+using SPPC.Framework.Service;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -99,6 +100,24 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
             }
 
             return View(role);
+        }
+
+        // GET: admin/roles/delete/id
+        public ActionResult Delete(int id)
+        {
+            // Prevent deletion of Admin role by directly browsing the Edit page...
+            if (id == Constants.AdminRoleId)
+            {
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
+            }
+
+            var response = _service.DeleteRole(id);
+            if (response.Result == ServiceResult.DeleteFailed)
+            {
+                return View(response);
+            }
+
+            return RedirectToAction("index");
         }
 
         private ISecurityService _service;

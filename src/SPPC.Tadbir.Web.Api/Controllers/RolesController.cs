@@ -101,6 +101,36 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // DELETE: api/roles/{roleId:int}
+        [Route(SecurityApi.RoleUrl)]
+        public IHttpActionResult DeleteExistingRole(int roleId)
+        {
+            if (roleId == Constants.AdminRoleId)
+            {
+                return BadRequest("Could not delete role because the role is read-only.");
+            }
+
+            if (roleId <= 0)
+            {
+                return BadRequest("Could not delete role because it does not exist.");
+            }
+
+            var role = _repository.GetRoleBrief(roleId);
+            if (role == null)
+            {
+                return BadRequest("Could not delete role because it does not exist.");
+            }
+
+            if (_repository.IsAssignedRole(roleId))
+            {
+                var message = String.Format(Strings.CannotDeleteAssignedRole, role.Name);
+                return BadRequest(message);
+            }
+
+            _repository.DeleteRole(roleId);
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
         private ISecurityRepository _repository;
     }
 }

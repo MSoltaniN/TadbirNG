@@ -3,17 +3,18 @@
 @model SPPC.Framework.Service.ServiceResponse
 
 @{
-    ViewBag.Title = Accounts.DeleteError;
+    string title = String.Format(ErrorMessages.DeleteError, Entities.Account);
+    ViewBag.Title = title;
 }
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
-    <li>@Html.ActionLink(Accounts.IndexTitle, "index", "accounts", new { area = "Accounting" }, null)</li>
+    <li>@Html.ActionLink(Accounts.IndexTitle, "index", "accounts", new { area = "accounting" }, null)</li>
     <li class="active">@Accounts.Delete</li>
 </ol>
 
 <div class="alert alert-danger">
-    <h2>@Accounts.DeleteError</h2>
+    <h2>@title</h2>
     <p><strong>@Model.Message</strong></p>
     <p>@Model.Hint</p>
     <br />

@@ -48,6 +48,16 @@ namespace SPPC.Framework.Values
         public const string EntityDetails = "جزئیات {0}";
 
         /// <summary>
+        /// Localized text for the caption for deleting an existing entity
+        /// </summary>
+        public const string DeleteEntity = "حذف {0}";
+
+        /// <summary>
+        /// Localized text for the caption for returning to a specific page
+        /// </summary>
+        public const string ReturnToPage = "بازگشت به {0}";
+
+        /// <summary>
         /// Localized text for Edit caption 
         /// </summary>
         public const string Edit = "ویرایش";

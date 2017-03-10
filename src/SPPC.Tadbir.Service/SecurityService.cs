@@ -8,6 +8,7 @@ using System.Web.Security;
 using SPPC.Framework.Service;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SwForAll.Platform.Common;
 
@@ -156,6 +157,24 @@ namespace SPPC.Tadbir.Service
             else
             {
                 response = _apiClient.Update(role, SecurityApi.Role, role.Role.Id);
+            }
+
+            return response;
+        }
+
+        /// <summary>
+        /// Deletes a security role. If specified role cannot be deleted, returns a response whose result
+        /// is set to ServiceResult.DeleteFailed.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of an existing role</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
+        public ServiceResponse DeleteRole(int roleId)
+        {
+            var response = _apiClient.Delete(SecurityApi.Role, roleId);
+            if (!response.Succeeded)
+            {
+                response.Result = ServiceResult.DeleteFailed;
+                response.Hint = Strings.DeleteRoleHint;
             }
 
             return response;

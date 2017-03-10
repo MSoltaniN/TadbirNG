@@ -42,5 +42,10 @@ namespace SPPC.Framework.Values
         /// Localized text for a short message displayed in case of a server error
         /// </summary>
         public const string ErrorOccurred = "متاسفانه بدلیل بروز خطای سمت سرور، درخواست شما در این زمان قابل اجرا نیست.";
+
+        /// <summary>
+        /// Localized text for the message indicating an error in deleting an entity record
+        /// </summary>
+        public const string DeleteError = "بروز خطا در حذف {0}";
     }
 }

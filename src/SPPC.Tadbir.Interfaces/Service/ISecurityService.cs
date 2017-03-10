@@ -71,5 +71,12 @@ namespace SPPC.Tadbir.Service
         /// <param name="role">Role to insert or update</param>
         /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
         ServiceResponse SaveRole(RoleFullViewModel role);
+
+        /// <summary>
+        /// Deletes a security role.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of an existing role</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
+        ServiceResponse DeleteRole(int roleId);
     }
 }

@@ -28,6 +28,16 @@ namespace SPPC.Tadbir.Values
         public const string Company = "شرکت";
 
         /// <summary>
+        /// Localized name of Account entity (long form).
+        /// </summary>
+        public const string AccountLongName = "سرفصل حسابداری";
+
+        /// <summary>
+        /// Localized name of Account entity.
+        /// </summary>
+        public const string Account = "حساب";
+
+        /// <summary>
         /// Localized name of Role entity (singular form).
         /// </summary>
         public const string Role = "نقش";

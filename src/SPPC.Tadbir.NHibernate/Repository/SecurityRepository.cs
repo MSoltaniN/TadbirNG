@@ -219,6 +219,25 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
+        /// Retrieves brief information for a single role specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of the role to search for</param>
+        /// <returns>A <see cref="RoleViewModel"/> instance that corresponds to the specified role identifier,
+        /// if there is such a role defined; otherwise, returns null.</returns>
+        public RoleViewModel GetRoleBrief(int roleId)
+        {
+            RoleViewModel roleBrief = null;
+            var repository = _unitOfWork.GetRepository<Role>();
+            var role = repository.GetByID(roleId);
+            if (role != null)
+            {
+                roleBrief = _mapper.Map<RoleViewModel>(role);
+            }
+
+            return roleBrief;
+        }
+
+        /// <summary>
         /// Inserts or updates a single security role, including all permissions in it, in repository
         /// </summary>
         /// <param name="role">Role to insert or update</param>
@@ -249,6 +268,43 @@ namespace SPPC.Tadbir.NHibernate
             }
 
             _unitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// Deletes a role specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of the role to delete</param>
+        /// <remarks>If no role with specified identifier could be found, no exception would be thrown.</remarks>
+        public void DeleteRole(int roleId)
+        {
+            var repository = _unitOfWork.GetRepository<Role>();
+            var role = repository.GetByID(roleId);
+            if (role != null)
+            {
+                role.Permissions.Clear();
+                repository.Update(role);
+                repository.Delete(role);
+                _unitOfWork.Commit();
+            }
+        }
+
+        /// <summary>
+        /// Determines if an existing role specified by unique identifier is assigned to users.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of the role to search for</param>
+        /// <returns>true if specified role is assigned; otherwise false. If no role with specified identifier
+        /// could be found, returns false.</returns>
+        public bool IsAssignedRole(int roleId)
+        {
+            bool isAssigned = false;
+            var repository = _unitOfWork.GetRepository<Role>();
+            var role = repository.GetByID(roleId);
+            if (role != null)
+            {
+                isAssigned = (role.Users.Count > 0);
+            }
+
+            return isAssigned;
         }
 
         #endregion

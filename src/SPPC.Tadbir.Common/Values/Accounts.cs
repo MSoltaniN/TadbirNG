@@ -48,11 +48,6 @@ namespace SPPC.Tadbir.Values
         public const string Delete = "حذف حساب";
 
         /// <summary>
-        /// Localized text for the text indicating an error in deleting an account
-        /// </summary>
-        public const string DeleteError = "بروز خطا در حذف حساب";
-
-        /// <summary>
         /// Localized text for the text providing a hint about how to delete an account
         /// </summary>
         public const string HowToDeleteHint = "برای حذف این حساب ابتدا لازم است سندهای مربوطه را حذف یا اصلاح کنید.";

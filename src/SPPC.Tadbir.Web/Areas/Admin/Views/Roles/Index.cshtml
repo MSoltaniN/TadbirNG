@@ -80,3 +80,7 @@
 <p>
     @Html.ActionLink(createNew, "create", "roles", new { }, new { @class = "btn btn-sm btn-primary" })
 </p>
+
+@section scripts {
+    @Scripts.Render("~/bundles/site")
+}

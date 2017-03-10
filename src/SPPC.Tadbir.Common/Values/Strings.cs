@@ -154,6 +154,17 @@ namespace SPPC.Tadbir.Values
         public const string NoPermissionAssigned = "هیچ دسترسی به این نقش تخصیص داده نشده است.";
 
         /// <summary>
+        /// Localized text for a hint text indicating that before deleting a role one must unassign all role users.
+        /// </summary>
+        public const string DeleteRoleHint = "پیش از حذف یک نقش باید ابتدا نقش مورد نظر از تمام کاربران موجود سلب شود.";
+
+        /// <summary>
+        /// Localized text for an error message indicating that a role is assigned to one or more users
+        /// and cannot be deleted.
+        /// </summary>
+        public static readonly string CannotDeleteAssignedRole = "نقش {0} به یک یا چند کاربر  تخصیص داده شده و قابل حذف نیست.";
+
+        /// <summary>
         /// Localized text for 'New security code' caption
         /// </summary>
         public static readonly string NewSecurityCode = "کد امنیتی جدید";
