@@ -149,6 +149,11 @@ namespace SPPC.Tadbir.Values
         public const string InvalidBrowserRequest = "درخواست دریافت شده از مرورگر معتبر نیست. لطفا دوباره تلاش کنید.";
 
         /// <summary>
+        /// Localized text for a message indicating that no permission is currently assigned to a role
+        /// </summary>
+        public const string NoPermissionAssigned = "هیچ دسترسی به این نقش تخصیص داده نشده است.";
+
+        /// <summary>
         /// Localized text for 'New security code' caption
         /// </summary>
         public static readonly string NewSecurityCode = "کد امنیتی جدید";

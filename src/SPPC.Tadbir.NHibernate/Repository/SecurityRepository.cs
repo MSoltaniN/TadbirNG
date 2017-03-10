@@ -163,8 +163,52 @@ namespace SPPC.Tadbir.NHibernate
                 .GetAll()
                 .Select(perm => _mapper.Map<PermissionViewModel>(perm))
                 .ToArray();
-            Array.ForEach(all, perm => perm.IsEnabled = false);
-            var role = new RoleFullViewModel() { Permissions = new List<PermissionViewModel>(all) };
+            var role = new RoleFullViewModel();
+            Array.ForEach(all, perm =>
+                {
+                    perm.IsEnabled = false;
+                    role.Permissions.Add(perm);
+                });
+            return role;
+        }
+
+        /// <summary>
+        /// Retrieves a single role specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of the role to search for</param>
+        /// <returns>A <see cref="RoleFullViewModel"/> instance that corresponds to the specified identifier, if there is
+        /// such a role defined; otherwise, returns null.</returns>
+        public RoleFullViewModel GetRole(int roleId)
+        {
+            RoleFullViewModel role = null;
+            var repository = _unitOfWork.GetRepository<Role>();
+            var existing = repository.GetByID(roleId);
+            if (existing != null)
+            {
+                var enabledPermissions = existing.Permissions
+                    .Select(perm => _mapper.Map<PermissionViewModel>(perm));
+                var permissionRepository = _unitOfWork.GetRepository<Permission>();
+                var disabledPermissions = permissionRepository
+                    .GetAll()
+                    .Select(perm => _mapper.Map<PermissionViewModel>(perm))
+                    .Except(enabledPermissions, new PermissionEqualityComparer())
+                    .ToArray();
+                Array.ForEach(disabledPermissions, perm => perm.IsEnabled = false);
+                foreach (var permission in disabledPermissions)
+                {
+                    permission.IsEnabled = false;
+                }
+
+                role = new RoleFullViewModel()
+                {
+                    Role = _mapper.Map<RoleViewModel>(existing)
+                };
+                Array.ForEach(enabledPermissions
+                    .Concat(disabledPermissions)
+                    .OrderBy(perm => perm.Id)
+                    .ToArray(), perm => role.Permissions.Add(perm));
+            }
+
             return role;
         }
 

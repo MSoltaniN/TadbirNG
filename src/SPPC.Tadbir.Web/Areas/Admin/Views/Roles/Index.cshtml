@@ -43,26 +43,35 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+    @foreach (var item in Model)
+    {
+        string permissions = String.Join(" | ", item.Permissions);
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td title="@item.Description">
+                @item.Description.AutoEllipsis(60)
+            </td>
+            <td lang="fa" title="@permissions">
+                @permissions.AutoEllipsis(60)
+            </td>
+        @if (item.Id != Constants.AdminRoleId)
         {
-            string permissions = String.Join(" | ", item.Permissions);
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td title="@item.Description">
-                    @item.Description.AutoEllipsis(60)
-                </td>
-                <td lang="fa" title="@permissions">
-                    @permissions.AutoEllipsis(60)
-                </td>
-                <td>
-                    @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id }) |
-                    @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id }) |
-                    @Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
-                </td>
-            </tr>
+            <td>
+                @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id }) |
+                @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id }) |
+                @Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
+            </td>
         }
+        else
+        {
+            <td>
+                @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id })
+            </td>
+        }
+        </tr>
+    }
     </tbody>
 </table>
 

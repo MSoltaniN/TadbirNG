@@ -114,7 +114,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            if (user.Password == Users.DummyPassword)
+            if (user.Password == Constants.DummyPassword)
             {
                 user.Password = String.Empty;
             }

@@ -51,15 +51,5 @@ namespace SPPC.Tadbir.Values
         /// Localized text for the caption for Disabled
         /// </summary>
         public const string Disabled = "غیرفعال";
-
-        /// <summary>
-        /// Special-purpose name of the system administrator user
-        /// </summary>
-        public const string AdminUserName = "admin";
-
-        /// <summary>
-        /// Dummy text to display in password boxes
-        /// </summary>
-        public const string DummyPassword = "************";
     }
 }

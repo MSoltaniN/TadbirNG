@@ -33,6 +33,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(newRole);
         }
 
+        // GET: api/roles/{roleId:int}
+        [Route(SecurityApi.RoleUrl)]
+        public IHttpActionResult GetRole(int roleId)
+        {
+            if (roleId <= 0)
+            {
+                return NotFound();
+            }
+
+            var role = _repository.GetRole(roleId);
+            var result = (role != null)
+                ? Json(role)
+                : NotFound() as IHttpActionResult;
+            return result;
+        }
+
         // POST: api/roles
         [Route(SecurityApi.RolesUrl)]
         public IHttpActionResult PostNewRole([FromBody] RoleFullViewModel role)

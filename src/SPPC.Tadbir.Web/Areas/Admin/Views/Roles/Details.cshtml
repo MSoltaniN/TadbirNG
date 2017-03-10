@@ -1,0 +1,91 @@
+﻿@using SPPC.Framework.Extensions
+@using SPPC.Framework.Values
+@using SPPC.Tadbir.Values
+@model SPPC.Tadbir.ViewModel.Auth.RoleFullViewModel
+
+@{
+    string title = String.Format(LocalStrings.EntityDetails, Entities.Role);
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Roles);
+    string editExisting = String.Format(LocalStrings.EditExistingEntity, Entities.Role);
+    var enabledPermissions = Model.Permissions.Where(perm => perm.IsEnabled);
+    ViewBag.Title = title;
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(indexTitle, "index", "roles", new { area = "admin" }, null)</li>
+    <li class="active">@title</li>
+</ol>
+
+<div class="col-sm-8 col-sm-offset-2 form-centered">
+    <div class="page-header">
+        <h2>@title</h2>
+    </div>
+    <dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Role.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Role.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Role.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Role.Description)
+        </dd>
+    </dl>
+
+    <div class="page-header">
+        <h3>@FieldNames.PermissionsField</h3>
+    </div>
+
+    @if (enabledPermissions.Count() <= 0)
+    {
+        <p>@Strings.NoPermissionAssigned</p>
+        <br /><br />
+    }
+    else
+    {
+        <table class="table table-bordered table-striped table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th>@FieldNames.NameField</th>
+                    <th>@FieldNames.PermissionGroupField</th>
+                    <th>@FieldNames.DescriptionField</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var perm in enabledPermissions)
+                {
+                    <tr>
+                        <td>
+                            @perm.Name
+                        </td>
+                        <td>
+                            @perm.GroupName
+                        </td>
+                        <td title="@perm.Description">
+                            @perm.Description.AutoEllipsis(50)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (Model.Role.Id != Constants.AdminRoleId)
+    {
+    <p>
+        @Html.ActionLink(editExisting, "edit", new { id = Model.Role.Id }) |
+        @Html.ActionLink(indexTitle, "index")
+    </p>
+    }
+    else
+    {
+    <p>
+        @Html.ActionLink(indexTitle, "index")
+    </p>
+    }
+</div>

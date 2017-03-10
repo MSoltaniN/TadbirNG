@@ -128,6 +128,18 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Retrieves a single role specified by unique identifier.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of an existing role</param>
+        /// <returns>A <see cref="RoleFullViewModel"/> object containing role information, if role can be found;
+        /// otherwise, returns null.</returns>
+        public RoleFullViewModel GetRole(int roleId)
+        {
+            var role = _apiClient.Get<RoleFullViewModel>(SecurityApi.Role, roleId);
+            return role;
+        }
+
+        /// <summary>
         /// Inserts or updates a security role.
         /// </summary>
         /// <param name="role">Role to insert or update</param>

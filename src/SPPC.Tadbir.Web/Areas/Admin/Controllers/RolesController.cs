@@ -25,14 +25,14 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
             return View(roles.ToPagedList(pageNumber, pageSize));
         }
 
-        // GET: admin/users/create
+        // GET: admin/roles/create
         public ViewResult Create()
         {
             var newRole = _service.GetNewRole();
             return View(newRole);
         }
 
-        // POST: admin/users/create
+        // POST: admin/roles/create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(RoleFullViewModel fullRole)
@@ -49,6 +49,18 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
             }
 
             return View(fullRole);
+        }
+
+        // GET: admin/roles/details/id
+        public ActionResult Details(int id)
+        {
+            var role = _service.GetRole(id);
+            if (role == null)
+            {
+                return RedirectToAction("notfound", "error", new { area = "admin" });
+            }
+
+            return View(role);
         }
 
         private ISecurityService _service;

@@ -66,6 +66,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Values\Accounts.cs" />
+    <Compile Include="Values\Constants.cs" />
     <Compile Include="Values\Entities.cs" />
     <Compile Include="Values\FieldNames.cs" />
     <Compile Include="Values\Strings.cs" />
