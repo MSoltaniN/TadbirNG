@@ -22,7 +22,6 @@ namespace SPPC.Framework.Helpers
         public static string From<T>(T value, bool indented = true)
         {
             Verify.ArgumentNotNull(value, "value");
-
             using (var writer = new StringWriter(new StringBuilder()))
             {
                 var serializer = new JsonSerializer();
@@ -41,7 +40,6 @@ namespace SPPC.Framework.Helpers
         public static T To<T>(string json)
         {
             Verify.ArgumentNotNullOrWhitespace(json, "json");
-
             using (var reader = new StringReader(json))
             {
                 var serializer = new JsonSerializer();

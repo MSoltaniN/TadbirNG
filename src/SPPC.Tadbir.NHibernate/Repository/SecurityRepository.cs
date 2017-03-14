@@ -91,16 +91,19 @@ namespace SPPC.Tadbir.NHibernate
         {
             Verify.ArgumentNotNull(user, "user");
             var repository = _unitOfWork.GetRepository<User>();
-            var existing = repository.GetByID(user.Id);
-            if (existing == null)
+            if (user.Id == 0)
             {
                 var newUser = GetNewUser(user);
                 repository.Insert(newUser);
             }
             else
             {
-                UpdateExistingUser(existing, user);
-                repository.Update(existing);
+                var existing = repository.GetByID(user.Id);
+                if (existing != null)
+                {
+                    UpdateExistingUser(existing, user);
+                    repository.Update(existing);
+                }
             }
 
             _unitOfWork.Commit();
@@ -243,9 +246,10 @@ namespace SPPC.Tadbir.NHibernate
         /// <param name="role">Role to insert or update</param>
         public void SaveRole(RoleFullViewModel role)
         {
+            Verify.ArgumentNotNull(role, "role");
+            Verify.ArgumentNotNull(role.Role, "role.Role");
             var repository = _unitOfWork.GetRepository<Role>();
-            var existing = repository.GetByID(role.Role.Id);
-            if (existing == null)
+            if (role.Role.Id == 0)
             {
                 var newRole = _mapper.Map<Role>(role.Role);
                 AddRolePermissions(newRole, role);
@@ -253,18 +257,22 @@ namespace SPPC.Tadbir.NHibernate
             }
             else
             {
-                if (ArePermissionsModified(existing, role))
+                var existing = repository.GetByID(role.Role.Id);
+                if (existing != null)
                 {
-                    if (existing.Permissions.Count > 0)
+                    if (ArePermissionsModified(existing, role))
                     {
-                        RemoveDisabledPermissions(existing, role);
+                        if (existing.Permissions.Count > 0)
+                        {
+                            RemoveDisabledPermissions(existing, role);
+                        }
+
+                        AddNewPermissions(existing, role);
                     }
 
-                    AddNewPermissions(existing, role);
+                    UpdateExistingRole(existing, role);
+                    repository.Update(existing);
                 }
-
-                UpdateExistingRole(existing, role);
-                repository.Update(existing);
             }
 
             _unitOfWork.Commit();

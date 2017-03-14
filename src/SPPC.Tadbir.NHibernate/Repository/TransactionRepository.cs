@@ -70,16 +70,19 @@ namespace SPPC.Tadbir.NHibernate
         {
             Verify.ArgumentNotNull(transaction, "transaction");
             var repository = _unitOfWork.GetRepository<Transaction>();
-            var existing = repository.GetByID(transaction.Id);
-            if (existing == null)
+            if (transaction.Id == 0)
             {
                 var newTransaction = _mapper.Map<Transaction>(transaction);
                 repository.Insert(newTransaction);
             }
             else
             {
-                UpdateExistingTransaction(existing, transaction);
-                repository.Update(existing);
+                var existing = repository.GetByID(transaction.Id);
+                if (existing != null)
+                {
+                    UpdateExistingTransaction(existing, transaction);
+                    repository.Update(existing);
+                }
             }
 
             _unitOfWork.Commit();
@@ -149,16 +152,19 @@ namespace SPPC.Tadbir.NHibernate
         {
             Verify.ArgumentNotNull(article, "article");
             var repository = _unitOfWork.GetRepository<TransactionLine>();
-            var existing = repository.GetByID(article.Id);
-            if (existing == null)
+            if (article.Id == 0)
             {
                 var newArticle = _mapper.Map<TransactionLine>(article);
                 repository.Insert(newArticle);
             }
             else
             {
-                UpdateExistingArticle(existing, article);
-                repository.Update(existing);
+                var existing = repository.GetByID(article.Id);
+                if (existing != null)
+                {
+                    UpdateExistingArticle(existing, article);
+                    repository.Update(existing);
+                }
             }
 
             _unitOfWork.Commit();

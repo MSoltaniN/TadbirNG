@@ -81,16 +81,19 @@ namespace SPPC.Tadbir.NHibernate
         {
             Verify.ArgumentNotNull(account, "account");
             var repository = _unitOfWork.GetRepository<Account>();
-            var existing = repository.GetByID(account.Id);
-            if (existing == null)
+            if (account.Id == 0)
             {
                 var newAccount = _mapper.Map<Account>(account);
                 repository.Insert(newAccount);
             }
             else
             {
-                UpdateExistingAccount(account, existing);
-                repository.Update(existing);
+                var existing = repository.GetByID(account.Id);
+                if (existing != null)
+                {
+                    UpdateExistingAccount(account, existing);
+                    repository.Update(existing);
+                }
             }
 
             _unitOfWork.Commit();
