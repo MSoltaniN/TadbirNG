@@ -106,6 +106,20 @@ namespace SPPC.Tadbir.NHibernate
         /// <returns>true if specified role is assigned; otherwise false.</returns>
         bool IsAssignedRole(int roleId);
 
+        /// <summary>
+        /// Retrieves branch associations for a role specified by identifier.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of an existing role</param>
+        /// <returns>An object that contains information about all branches accessible by specified role</returns>
+        RoleBranchesViewModel GetRoleBranches(int roleId);
+
+        /// <summary>
+        /// Updates branch associations for a role specified by identifier.
+        /// </summary>
+        /// <param name="role">A <see cref="RoleBranchesViewModel"/> object that contains information about all branch
+        /// associations to the specified role</param>
+        void SaveRoleBranches(RoleBranchesViewModel role);
+
         #endregion
     }
 }

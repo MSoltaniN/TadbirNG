@@ -4,7 +4,9 @@ using System.Linq;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Contact;
+using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Corporate;
 using SwForAll.Platform.Common;
 using SwForAll.Platform.Persistence;
 
@@ -203,10 +205,6 @@ namespace SPPC.Tadbir.NHibernate
                     .Except(enabledPermissions, new PermissionEqualityComparer())
                     .ToArray();
                 Array.ForEach(disabledPermissions, perm => perm.IsEnabled = false);
-                foreach (var permission in disabledPermissions)
-                {
-                    permission.IsEnabled = false;
-                }
 
                 role = new RoleFullViewModel()
                 {
@@ -315,6 +313,61 @@ namespace SPPC.Tadbir.NHibernate
             return isAssigned;
         }
 
+        /// <summary>
+        /// Retrieves branch associations for a role specified by identifier.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of an existing role</param>
+        /// <returns>An object that contains information about all branches accessible by specified role</returns>
+        public RoleBranchesViewModel GetRoleBranches(int roleId)
+        {
+            RoleBranchesViewModel role = null;
+            var repository = _unitOfWork.GetRepository<Role>();
+            var existing = repository.GetByID(roleId);
+            if (existing != null)
+            {
+                var enabledBranches = existing.Branches
+                    .Select(br => _mapper.Map<BranchViewModel>(br));
+                var branchRepository = _unitOfWork.GetRepository<Branch>();
+                var disabledBranches = branchRepository
+                    .GetAll()
+                    .Select(perm => _mapper.Map<BranchViewModel>(perm))
+                    .Except(enabledBranches, new BranchEqualityComparer())
+                    .ToArray();
+                Array.ForEach(disabledBranches, br => br.IsAccessible = false);
+
+                role = _mapper.Map<RoleBranchesViewModel>(existing);
+                Array.ForEach(enabledBranches
+                    .Concat(disabledBranches)
+                    .OrderBy(br => br.Id)
+                    .ToArray(), br => role.Branches.Add(br));
+            }
+
+            return role;
+        }
+
+        /// <summary>
+        /// Updates branch associations for a role specified by identifier.
+        /// </summary>
+        /// <param name="role">A <see cref="RoleBranchesViewModel"/> object that contains information about all branch
+        /// associations to the specified role</param>
+        public void SaveRoleBranches(RoleBranchesViewModel role)
+        {
+            Verify.ArgumentNotNull(role, "role");
+            var repository = _unitOfWork.GetRepository<Role>();
+            var existing = repository.GetByID(role.Id);
+            if (existing != null && AreBranchesModified(existing, role))
+            {
+                if (existing.Branches.Count > 0)
+                {
+                    RemoveInaccessibleBranches(existing, role);
+                }
+
+                AddNewBranches(existing, role);
+                repository.Update(existing);
+                _unitOfWork.Commit();
+            }
+        }
+
         #endregion
 
         private static void RemoveDisabledPermissions(Role existing, RoleFullViewModel role)
@@ -350,6 +403,35 @@ namespace SPPC.Tadbir.NHibernate
                 .Select(perm => perm.Id)
                 .ToArray();
             return (!AreEqual(existingItems, enabledItems));
+        }
+
+        private static bool AreBranchesModified(Role existing, RoleBranchesViewModel role)
+        {
+            var existingItems = existing.Branches
+                .Select(br => br.Id)
+                .ToArray();
+            var enabledItems = role.Branches
+                .Where(br => br.IsAccessible)
+                .Select(br => br.Id)
+                .ToArray();
+            return (!AreEqual(existingItems, enabledItems));
+        }
+
+        private static void RemoveInaccessibleBranches(Role existing, RoleBranchesViewModel role)
+        {
+            var currentItems = role.Branches
+                .Where(br => br.IsAccessible)
+                .Select(br => br.Id);
+            var removedItems = existing.Branches
+                .Select(br => br.Id)
+                .Where(id => !currentItems.Contains(id))
+                .ToArray();
+            foreach (int id in removedItems)
+            {
+                existing.Branches.Remove(existing.Branches
+                    .Where(br => br.Id == id)
+                    .Single());
+            }
         }
 
         private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
@@ -388,10 +470,24 @@ namespace SPPC.Tadbir.NHibernate
         private void AddNewPermissions(Role existing, RoleFullViewModel role)
         {
             var currentItems = existing.Permissions.Select(perm => perm.Id);
-            var newItems = role.Permissions.Where(perm => perm.IsEnabled).Where(perm => !currentItems.Contains(perm.Id));
+            var newItems = role.Permissions
+                .Where(perm => perm.IsEnabled
+                    && !currentItems.Contains(perm.Id));
             foreach (var item in newItems)
             {
                 existing.Permissions.Add(_mapper.Map<Permission>(item));
+            }
+        }
+
+        private void AddNewBranches(Role existing, RoleBranchesViewModel role)
+        {
+            var currentItems = existing.Branches.Select(br => br.Id);
+            var newItems = role.Branches
+                .Where(br => br.IsAccessible
+                    && !currentItems.Contains(br.Id));
+            foreach (var item in newItems)
+            {
+                existing.Branches.Add(_mapper.Map<Branch>(item));
             }
         }
 

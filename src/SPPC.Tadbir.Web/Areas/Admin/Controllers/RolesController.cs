@@ -120,6 +120,37 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
             return RedirectToAction("index");
         }
 
+        // GET: admin/roles/branches/id
+        public ActionResult Branches(int id)
+        {
+            var branches = _service.GetRoleBranches(id);
+            if (branches == null)
+            {
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
+            }
+
+            return View(branches);
+        }
+
+        // POST: admin/roles/branches/id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Branches(RoleBranchesViewModel roleBranches)
+        {
+            if (roleBranches == null)
+            {
+                return RedirectToAction("index", "error", new { area = String.Empty });
+            }
+
+            if (ModelState.IsValid)
+            {
+                _service.SaveRoleBranches(roleBranches);
+                return RedirectToAction("index");
+            }
+
+            return View(roleBranches);
+        }
+
         private ISecurityService _service;
     }
 }

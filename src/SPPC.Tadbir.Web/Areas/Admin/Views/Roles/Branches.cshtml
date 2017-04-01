@@ -1,0 +1,68 @@
+﻿@using SPPC.Framework.Extensions
+@using SPPC.Framework.Values
+@using SPPC.Tadbir.Values
+@model SPPC.Tadbir.ViewModel.Auth.RoleBranchesViewModel
+
+@{
+    string title = String.Format(Strings.RoleBranches, Model.Name);
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Roles);
+    ViewBag.Title = title;
+    var count = Model.Branches.Count();
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(indexTitle, "index", "roles", new { area = "admin" }, null)</li>
+    <li class="active" title="@title">@title.AutoEllipsis(50)</li>
+</ol>
+
+<div class="col-sm-8 col-sm-offset-2 form-centered">
+    <div class="page-header">
+        <h2>@title</h2>
+    </div>
+    <div class="form-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <table class="table table-bordered table-striped table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>@FieldNames.NameField</th>
+                        <th>@FieldNames.DescriptionField</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for (int i = 0; i < count; i++)
+                {
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.Branches[i].Id)
+                    @Html.HiddenFor(model => model.Branches[i].CompanyId)
+                    @Html.HiddenFor(model => model.Branches[i].Name)
+                    @Html.HiddenFor(model => model.Branches[i].Description)
+                    @Html.HiddenFor(model => model.Branches[i].Level)
+                    <tr>
+                        <td>
+                            @Html.CheckBoxFor(model => model.Branches[i].IsAccessible)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Branches[i].Name)
+                        </td>
+                        <td title="@Model.Branches[i].Description">
+                            @Model.Branches[i].Description.AutoEllipsis(50)
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <input type="submit" value="@LocalStrings.Save" class="btn btn-primary" />
+                @Html.ActionLink(LocalStrings.Cancel, "index", "roles", new { area = "admin" }, new { @class = "btn btn-primary" })
+            </div>
+        }
+    </div>
+</div>

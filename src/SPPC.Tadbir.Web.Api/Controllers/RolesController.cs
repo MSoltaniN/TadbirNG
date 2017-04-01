@@ -131,6 +131,50 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        // GET: api/roles/{roleId:int}/branches
+        [Route(SecurityApi.RoleBranchesUrl)]
+        public IHttpActionResult GetRoleBranches(int roleId)
+        {
+            if (roleId <= 0)
+            {
+                return NotFound();
+            }
+
+            var branches = _repository.GetRoleBranches(roleId);
+            var result = (branches != null)
+                ? Json(branches)
+                : NotFound() as IHttpActionResult;
+            return result;
+        }
+
+        // PUT: api/roles/{roleId:int}/branches
+        [Route(SecurityApi.RoleBranchesUrl)]
+        public IHttpActionResult PutModifiedRoleBranches(int roleId, RoleBranchesViewModel branches)
+        {
+            if (branches == null)
+            {
+                return BadRequest("Could not put modified role branches because a 'null' value was provided.");
+            }
+
+            if (roleId <= 0 || branches.Id <= 0)
+            {
+                return BadRequest("Could not put modified role branches because original role does not exist.");
+            }
+
+            if (roleId != branches.Id)
+            {
+                return BadRequest("Could not put modified role branches because of an identity conflict in the request.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _repository.SaveRoleBranches(branches);
+            return Ok();
+        }
+
         private ISecurityRepository _repository;
     }
 }

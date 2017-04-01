@@ -61,13 +61,15 @@
             <td>
                 @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id }) |
                 @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id }) |
-                @Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
+                @Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id }) |
+                @Html.ActionLink(Entities.Branches, "branches", new { id = item.Id })
             </td>
         }
         else
         {
             <td>
-                @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id })
+                @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id }) |
+                @Html.ActionLink(Entities.Branches, "branches", new { id = item.Id })
             </td>
         }
         </tr>

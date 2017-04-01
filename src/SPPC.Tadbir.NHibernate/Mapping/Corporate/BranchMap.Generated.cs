@@ -51,22 +51,22 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             References(x => x.Company)
                 .Column("CompanyID")
                 .Not.LazyLoad()
-                .Cascade.All();
-            HasMany(x => x.FiscalPeriods)
-                .KeyColumn("BranchID")
-                .LazyLoad()
-                .Cascade.All();
+                .Cascade.None();
+            ////HasMany(x => x.FiscalPeriods)
+            ////    .KeyColumn("BranchID")
+            ////    .LazyLoad()
+            ////    .Cascade.None();
             HasManyToMany(x => x.Roles)
                 .Schema("Auth")
                 .Table("RoleBranch")
                 .ParentKeyColumn("BranchID")
                 .ChildKeyColumn("RoleID")
-                .Cascade.All()
+                .Cascade.None().Inverse()
                 .LazyLoad();
             References(x => x.Parent)
                 .Column("ParentID")
                 .Not.LazyLoad()
-                .Cascade.All();
+                .Cascade.None();
         }
     }
 }

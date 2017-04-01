@@ -181,6 +181,31 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Retrieves information about all branches accessible by a role specified by unique identifier.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of an existing role</param>
+        /// <returns>A <see cref="RoleBranchesViewModel"/> object containing accessible branches, if the role can be found;
+        /// otherwise, returns null.</returns>
+        public RoleBranchesViewModel GetRoleBranches(int roleId)
+        {
+            var branches = _apiClient.Get<RoleBranchesViewModel>(SecurityApi.RoleBranches, roleId);
+            return branches;
+        }
+
+        /// <summary>
+        /// Updates accessible branches for a role specified by unique identifier.
+        /// </summary>
+        /// <param name="branches">A <see cref="RoleBranchesViewModel"/> object containing accessible branches for the role
+        /// </param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
+        public ServiceResponse SaveRoleBranches(RoleBranchesViewModel branches)
+        {
+            Verify.ArgumentNotNull(branches, "branches");
+            ServiceResponse response = _apiClient.Update(branches, SecurityApi.RoleBranches, branches.Id);
+            return response;
+        }
+
+        /// <summary>
         /// Creates and returns a concrete <see cref="IPrincipal"/> instance using specified member information,
         /// its assigned roles and a value indicating if user must be kept logged in.
         /// </summary>

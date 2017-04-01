@@ -73,6 +73,16 @@ namespace SPPC.Tadbir.Api
         public const string RoleUrl = "roles/{roleId:int}";
 
         /// <summary>
+        /// API client URL for branches accessible to a role specified by unique identifier.
+        /// </summary>
+        public const string RoleBranches = "roles/{0}/branches";
+
+        /// <summary>
+        /// API server route URL for branches accessible to a role specified by unique identifier.
+        /// </summary>
+        public const string RoleBranchesUrl = "roles/{roleId:int}/branches";
+
+        /// <summary>
         /// API client URL for a new role that contains all available permissions.
         /// </summary>
         public const string NewRole = "roles/new";

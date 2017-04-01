@@ -7,8 +7,10 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
 using SwForAll.Platform.Common;
 
@@ -59,6 +61,7 @@ namespace SPPC.Tadbir.Mapper
         {
             MapSecurityTypes(mapperConfig);
             MapFinanceTypes(mapperConfig);
+            MapCorporateTypes(mapperConfig);
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
@@ -83,6 +86,9 @@ namespace SPPC.Tadbir.Mapper
                         src => src.Permissions.Select(perm => perm.Name)));
             mapperConfig.CreateMap<RoleViewModel, Role>()
                 .ForMember(dest => dest.Permissions, opts => opts.Ignore());
+            mapperConfig.CreateMap<Role, RoleBranchesViewModel>()
+                .ForMember(dest => dest.Branches, opts => opts.Ignore());
+
             mapperConfig.CreateMap<Permission, PermissionViewModel>()
                 .ForMember(dest => dest.IsEnabled, opts => opts.UseValue(true));
             mapperConfig.CreateMap<PermissionViewModel, Permission>()
@@ -142,6 +148,14 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Currency, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+        }
+
+        private static void MapCorporateTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<Branch, BranchViewModel>()
+                .ForMember(dest => dest.IsAccessible, opts => opts.UseValue(true));
+            mapperConfig.CreateMap<BranchViewModel, Branch>()
+                .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId);
         }
 
         private static ICryptoService _crypto;

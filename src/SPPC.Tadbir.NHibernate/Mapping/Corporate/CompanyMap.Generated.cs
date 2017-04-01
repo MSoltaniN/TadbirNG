@@ -49,7 +49,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             HasMany(x => x.Branches)
                 .KeyColumn("CompanyID")
                 .LazyLoad()
-                .Cascade.All();
+                .Cascade.None();
         }
     }
 }

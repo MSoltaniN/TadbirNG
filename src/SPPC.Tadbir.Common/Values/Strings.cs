@@ -159,6 +159,16 @@ namespace SPPC.Tadbir.Values
         public const string DeleteRoleHint = "پیش از حذف یک نقش باید ابتدا نقش مورد نظر از تمام کاربران موجود سلب شود.";
 
         /// <summary>
+        /// Localized text for Accessible Branches caption
+        /// </summary>
+        public const string AccessibleBranches = "شعب قابل دسترسی";
+
+        /// <summary>
+        /// Localized text for a template string that formats accessible branches for a role
+        /// </summary>
+        public const string RoleBranches = "شعب قابل دسترسی توسط {0}";
+
+        /// <summary>
         /// Localized text for an error message indicating that a role is assigned to one or more users
         /// and cannot be deleted.
         /// </summary>

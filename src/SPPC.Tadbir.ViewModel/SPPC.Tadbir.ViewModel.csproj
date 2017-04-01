@@ -69,12 +69,14 @@
     <Compile Include="Auth\PermissionGroupViewModel.Generated.cs" />
     <Compile Include="Auth\PermissionViewModel.cs" />
     <Compile Include="Auth\PermissionViewModel.Generated.cs" />
+    <Compile Include="Auth\RoleBranchesViewModel.cs" />
     <Compile Include="Auth\RoleFullViewModel.cs" />
     <Compile Include="Auth\RoleViewModel.cs" />
     <Compile Include="Auth\RoleViewModel.Generated.cs" />
     <Compile Include="Auth\UserViewModel.cs" />
     <Compile Include="Auth\UserViewModel.Generated.cs" />
     <Compile Include="Contact\PersonViewModel.Generated.cs" />
+    <Compile Include="Corporate\BranchEqualityComparer.cs" />
     <Compile Include="Corporate\BranchViewModel.cs" />
     <Compile Include="Corporate\BranchViewModel.Generated.cs" />
     <Compile Include="Corporate\CompanyViewModel.cs" />

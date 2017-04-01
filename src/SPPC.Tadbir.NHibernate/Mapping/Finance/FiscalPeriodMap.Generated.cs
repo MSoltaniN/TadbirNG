@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             References(x => x.Branch)
                 .Column("BranchID")
                 .Not.LazyLoad()
-                .Cascade.All();
+                .Cascade.None();
         }
     }
 }

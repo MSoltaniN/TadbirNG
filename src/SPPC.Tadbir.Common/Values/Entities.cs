@@ -18,9 +18,14 @@ namespace SPPC.Tadbir.Values
         public const string FiscalPeriod = "دوره مالی";
 
         /// <summary>
-        /// Localized name of Branch entity.
+        /// Localized name of Branch entity (singular form).
         /// </summary>
         public const string Branch = "شعبه";
+
+        /// <summary>
+        /// Localized name of Branch entity (plural form).
+        /// </summary>
+        public const string Branches = "شعب";
 
         /// <summary>
         /// Localized name of Company entity.
