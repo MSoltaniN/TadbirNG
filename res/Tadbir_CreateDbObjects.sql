@@ -124,12 +124,26 @@ GO
 CREATE TABLE [Corporate].[Branch] (
     [BranchID]       INT              IDENTITY (1, 1) NOT NULL,
 	[CompanyID]      INT              NOT NULL,
+	[ParentID]       INT              NULL,
     [Name]           NVARCHAR(128)    NOT NULL,
     [Description]    NVARCHAR(512)    NULL,
+	[Level]          INT              CONSTRAINT [DF_Corporate_Branch_Level] DEFAULT (0) NOT NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Corporate_Branch_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Corporate_Branch_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Corporate_Branch] PRIMARY KEY CLUSTERED ([BranchID] ASC)
     , CONSTRAINT [FK_Corporate_Branch_Corporate_Company] FOREIGN KEY ([CompanyID]) REFERENCES [Corporate].[Company] ([CompanyID])
+)
+GO
+
+CREATE TABLE [Auth].[RoleBranch] (
+    [RoleBranchID]       INT              IDENTITY (1, 1) NOT NULL,
+    [RoleID]             INT              NOT NULL,
+    [BranchID]           INT              NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_RoleBranch_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Auth_RoleBranch_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Auth_RoleBranch] PRIMARY KEY CLUSTERED ([RoleBranchID] ASC)
+    , CONSTRAINT [FK_Auth_RoleBranch_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role] ([RoleID])
+    , CONSTRAINT [FK_Auth_RoleBranch_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
 )
 GO
 

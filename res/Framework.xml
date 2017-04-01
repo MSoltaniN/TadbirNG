@@ -65,6 +65,12 @@
           <ColumnView name="Description" visible="True" width="120" />
           <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
         </Property>
+        <Property name="Level" type="Int32" isValidated="False" description="Level of this branch in the main branch hierarchy" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnLevel" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="Level" type="int" nullable="False" />
+          <ColumnView name="Level" visible="True" width="120" />
+          <ValidationRule name="Level_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
@@ -81,6 +87,8 @@
       <Relations>
         <Relation multiplicity="ManyToOne" endpointName="Company" entityName="Company" hasKey="False" joinTable="" description="Main company that controls the activities of this branch" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="OneToMany" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="False" joinTable="" description="Collection of all fiscal periods defined for this branch" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Role" entityName="Role" hasKey="False" joinTable="RoleBranch" description="Collection of all roles that can access this branch" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Branch" hasKey="True" joinTable="RoleBranch" description="Parent of this branch in the main branch hierarchy" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="Company" area="Corporate" identifier="Id" description="Represents a business unit that is registered as a legal entity" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -362,6 +370,7 @@
       <Relations>
         <Relation multiplicity="ManyToMany" endpointName="User" entityName="User" hasKey="False" joinTable="UserRole" description="Collection of all application users that this role is assigned to them" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToMany" endpointName="Permission" entityName="Permission" hasKey="False" joinTable="RolePermission" description="Collection of all operational permissions that are enabled for this role" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Branch" entityName="Branch" hasKey="False" joinTable="RoleBranch" description="Collection of all branches that this role can access" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="Transaction" area="Finance" identifier="Id" description="Represents a financial transaction that provides monetary information for a business event" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
