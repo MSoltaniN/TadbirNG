@@ -69,25 +69,25 @@ namespace SPPC.Tadbir.Model.Auth
         /// </summary>
         public virtual DateTime ModifiedDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the collection of all financial transactions created by this user
-        /// </summary>
-        public virtual IList<Transaction> CreatedTransactions { get; protected set; }
+        /////// <summary>
+        /////// Gets or sets the collection of all financial transactions created by this user
+        /////// </summary>
+        ////public virtual IList<Transaction> CreatedTransactions { get; protected set; }
 
-        /// <summary>
-        /// Gets or sets the collection of all financial transactions modified by this user
-        /// </summary>
-        public virtual IList<Transaction> ModifiedTransactions { get; protected set; }
+        /////// <summary>
+        /////// Gets or sets the collection of all financial transactions modified by this user
+        /////// </summary>
+        ////public virtual IList<Transaction> ModifiedTransactions { get; protected set; }
 
-        /// <summary>
-        /// Gets or sets the collection of all financial transactions verified by this user
-        /// </summary>
-        public virtual IList<Transaction> VerifiedTransactions { get; protected set; }
+        /////// <summary>
+        /////// Gets or sets the collection of all financial transactions verified by this user
+        /////// </summary>
+        ////public virtual IList<Transaction> VerifiedTransactions { get; protected set; }
 
-        /// <summary>
-        /// Gets or sets the collection of all financial transactions approved by this user
-        /// </summary>
-        public virtual IList<Transaction> ApprovedTransactions { get; protected set; }
+        /////// <summary>
+        /////// Gets or sets the collection of all financial transactions approved by this user
+        /////// </summary>
+        ////public virtual IList<Transaction> ApprovedTransactions { get; protected set; }
 
         /// <summary>
         /// Gets or sets the business person that this user represents
@@ -102,10 +102,10 @@ namespace SPPC.Tadbir.Model.Auth
         private void InitReferences()
         {
             Person = new Person();
-            CreatedTransactions = new List<Transaction>();
-            ModifiedTransactions = new List<Transaction>();
-            VerifiedTransactions = new List<Transaction>();
-            ApprovedTransactions = new List<Transaction>();
+            ////CreatedTransactions = new List<Transaction>();
+            ////ModifiedTransactions = new List<Transaction>();
+            ////VerifiedTransactions = new List<Transaction>();
+            ////ApprovedTransactions = new List<Transaction>();
             Roles = new List<Role>();
 
             //// IMPORTANT NOTE: DO NOT add initialization statements for one-to-one and many-to-one relationships.

@@ -71,8 +71,11 @@
     <Compile Include="Auth\PermissionViewModel.Generated.cs" />
     <Compile Include="Auth\RoleBranchesViewModel.cs" />
     <Compile Include="Auth\RoleFullViewModel.cs" />
+    <Compile Include="Auth\RoleUsersViewModel.cs" />
     <Compile Include="Auth\RoleViewModel.cs" />
     <Compile Include="Auth\RoleViewModel.Generated.cs" />
+    <Compile Include="Auth\UserBriefViewModel.cs" />
+    <Compile Include="Auth\UserEqualityComparer.cs" />
     <Compile Include="Auth\UserViewModel.cs" />
     <Compile Include="Auth\UserViewModel.Generated.cs" />
     <Compile Include="Contact\PersonViewModel.Generated.cs" />

@@ -175,6 +175,50 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // GET: api/roles/{roleId:int}/users
+        [Route(SecurityApi.RoleUsersUrl)]
+        public IHttpActionResult GetRoleUsers(int roleId)
+        {
+            if (roleId <= 0)
+            {
+                return NotFound();
+            }
+
+            var users = _repository.GetRoleUsers(roleId);
+            var result = (users != null)
+                ? Json(users)
+                : NotFound() as IHttpActionResult;
+            return result;
+        }
+
+        // PUT: api/roles/{roleId:int}/users
+        [Route(SecurityApi.RoleUsersUrl)]
+        public IHttpActionResult PutModifiedRoleUsers(int roleId, RoleUsersViewModel users)
+        {
+            if (users == null)
+            {
+                return BadRequest("Could not put modified role users because a 'null' value was provided.");
+            }
+
+            if (roleId <= 0 || users.Id <= 0)
+            {
+                return BadRequest("Could not put modified role users because original role does not exist.");
+            }
+
+            if (roleId != users.Id)
+            {
+                return BadRequest("Could not put modified role users because of an identity conflict in the request.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _repository.SaveRoleUsers(users);
+            return Ok();
+        }
+
         private ISecurityRepository _repository;
     }
 }

@@ -1,0 +1,75 @@
+﻿@using SPPC.Framework.Extensions
+@using SPPC.Framework.Values
+@using SPPC.Tadbir.Values
+@model SPPC.Tadbir.ViewModel.Auth.RoleUsersViewModel
+
+@{
+    string title = String.Format(Strings.RoleUsers, Model.Name);
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Roles);
+    ViewBag.Title = title;
+    var count = Model.Users.Count();
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(indexTitle, "index", "roles", new { area = "admin" }, null)</li>
+    <li class="active" title="@title">@title.AutoEllipsis(50)</li>
+</ol>
+
+<div class="col-sm-8 col-sm-offset-2 form-centered">
+    <div class="page-header">
+        <h2>@title</h2>
+    </div>
+    <div class="form-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <table class="table table-bordered table-striped table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>@FieldNames.UserName</th>
+                        <th>@FieldNames.FirstNameField</th>
+                        <th>@FieldNames.LastNameField</th>
+                        <th>@FieldNames.StatusField</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for (int i = 0; i < count; i++)
+                {
+                    string status = Model.Users[i].IsEnabled ? Users.Enabled : Users.Disabled;
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.Users[i].Id)
+                    @Html.HiddenFor(model => model.Users[i].UserName)
+                    @Html.HiddenFor(model => model.Users[i].IsEnabled)
+                    <tr>
+                        <td>
+                            @Html.CheckBoxFor(model => model.Users[i].HasRole)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Users[i].UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Users[i].PersonFirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Users[i].PersonLastName)
+                        </td>
+                        <td>
+                            @status
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <input type="submit" value="@LocalStrings.Save" class="btn btn-primary" />
+                @Html.ActionLink(LocalStrings.Cancel, "index", "roles", new { area = "admin" }, new { @class = "btn btn-primary" })
+            </div>
+        }
+    </div>
+</div>

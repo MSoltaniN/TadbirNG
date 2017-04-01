@@ -94,5 +94,21 @@ namespace SPPC.Tadbir.Service
         /// </param>
         /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
         ServiceResponse SaveRoleBranches(RoleBranchesViewModel branches);
+
+        /// <summary>
+        /// Retrieves information about all users that have a role specified by unique identifier.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of an existing role</param>
+        /// <returns>A <see cref="RoleUsersViewModel"/> object containing assigned users, if the role can be found;
+        /// otherwise, returns null.</returns>
+        RoleUsersViewModel GetRoleUsers(int roleId);
+
+        /// <summary>
+        /// Updates assigned users for a role specified by unique identifier.
+        /// </summary>
+        /// <param name="users">A <see cref="RoleUsersViewModel"/> object containing users assigned to the role
+        /// </param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
+        ServiceResponse SaveRoleUsers(RoleUsersViewModel users);
     }
 }

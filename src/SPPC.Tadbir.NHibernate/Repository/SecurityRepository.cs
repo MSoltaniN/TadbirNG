@@ -330,7 +330,7 @@ namespace SPPC.Tadbir.NHibernate
                 var branchRepository = _unitOfWork.GetRepository<Branch>();
                 var disabledBranches = branchRepository
                     .GetAll()
-                    .Select(perm => _mapper.Map<BranchViewModel>(perm))
+                    .Select(br => _mapper.Map<BranchViewModel>(br))
                     .Except(enabledBranches, new BranchEqualityComparer())
                     .ToArray();
                 Array.ForEach(disabledBranches, br => br.IsAccessible = false);
@@ -363,6 +363,61 @@ namespace SPPC.Tadbir.NHibernate
                 }
 
                 AddNewBranches(existing, role);
+                repository.Update(existing);
+                _unitOfWork.Commit();
+            }
+        }
+
+        /// <summary>
+        /// Retrieves user associations for a role specified by identifier.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of an existing role</param>
+        /// <returns>An object that contains information about all users assigned to specified role</returns>
+        public RoleUsersViewModel GetRoleUsers(int roleId)
+        {
+            RoleUsersViewModel role = null;
+            var repository = _unitOfWork.GetRepository<Role>();
+            var existing = repository.GetByID(roleId);
+            if (existing != null)
+            {
+                var enabledUsers = existing.Users
+                    .Select(usr => _mapper.Map<UserBriefViewModel>(usr));
+                var userRepository = _unitOfWork.GetRepository<User>();
+                var disabledUsers = userRepository
+                    .GetAll()
+                    .Select(usr => _mapper.Map<UserBriefViewModel>(usr))
+                    .Except(enabledUsers, new UserEqualityComparer())
+                    .ToArray();
+                Array.ForEach(disabledUsers, usr => usr.HasRole = false);
+
+                role = _mapper.Map<RoleUsersViewModel>(existing);
+                Array.ForEach(enabledUsers
+                    .Concat(disabledUsers)
+                    .OrderBy(usr => usr.Id)
+                    .ToArray(), usr => role.Users.Add(usr));
+            }
+
+            return role;
+        }
+
+        /// <summary>
+        /// Updates user associations for a role specified by identifier.
+        /// </summary>
+        /// <param name="role">A <see cref="RoleUsersViewModel"/> object that contains information about all user
+        /// associations to the specified role</param>
+        public void SaveRoleUsers(RoleUsersViewModel role)
+        {
+            Verify.ArgumentNotNull(role, "role");
+            var repository = _unitOfWork.GetRepository<Role>();
+            var existing = repository.GetByID(role.Id);
+            if (existing != null && AreUsersModified(existing, role))
+            {
+                if (existing.Users.Count > 0)
+                {
+                    RemoveUnassignedUsers(existing, role);
+                }
+
+                AddNewUsers(existing, role);
                 repository.Update(existing);
                 _unitOfWork.Commit();
             }
@@ -417,6 +472,18 @@ namespace SPPC.Tadbir.NHibernate
             return (!AreEqual(existingItems, enabledItems));
         }
 
+        private static bool AreUsersModified(Role existing, RoleUsersViewModel role)
+        {
+            var existingItems = existing.Users
+                .Select(usr => usr.Id)
+                .ToArray();
+            var enabledItems = role.Users
+                .Where(usr => usr.HasRole)
+                .Select(usr => usr.Id)
+                .ToArray();
+            return (!AreEqual(existingItems, enabledItems));
+        }
+
         private static void RemoveInaccessibleBranches(Role existing, RoleBranchesViewModel role)
         {
             var currentItems = role.Branches
@@ -430,6 +497,23 @@ namespace SPPC.Tadbir.NHibernate
             {
                 existing.Branches.Remove(existing.Branches
                     .Where(br => br.Id == id)
+                    .Single());
+            }
+        }
+
+        private static void RemoveUnassignedUsers(Role existing, RoleUsersViewModel role)
+        {
+            var currentItems = role.Users
+                .Where(usr => usr.HasRole)
+                .Select(usr => usr.Id);
+            var removedItems = existing.Users
+                .Select(usr => usr.Id)
+                .Where(id => !currentItems.Contains(id))
+                .ToArray();
+            foreach (int id in removedItems)
+            {
+                existing.Users.Remove(existing.Users
+                    .Where(usr => usr.Id == id)
                     .Single());
             }
         }
@@ -488,6 +572,18 @@ namespace SPPC.Tadbir.NHibernate
             foreach (var item in newItems)
             {
                 existing.Branches.Add(_mapper.Map<Branch>(item));
+            }
+        }
+
+        private void AddNewUsers(Role existing, RoleUsersViewModel role)
+        {
+            var currentItems = existing.Users.Select(usr => usr.Id);
+            var newItems = role.Users
+                .Where(usr => usr.HasRole
+                    && !currentItems.Contains(usr.Id));
+            foreach (var item in newItems)
+            {
+                existing.Users.Add(_mapper.Map<User>(item));
             }
         }
 

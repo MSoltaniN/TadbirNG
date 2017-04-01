@@ -79,6 +79,11 @@ namespace SPPC.Tadbir.Mapper
                         src => !String.IsNullOrEmpty(src.Password)
                             ? _crypto.CreateHash(src.Password).ToLower()
                             : String.Empty));
+
+            mapperConfig.CreateMap<User, UserBriefViewModel>()
+                .ForMember(dest => dest.HasRole, opts => opts.UseValue(true));
+            mapperConfig.CreateMap<UserBriefViewModel, User>();
+
             mapperConfig.CreateMap<Role, RoleViewModel>()
                 .ForMember(
                     dest => dest.Permissions,
@@ -88,6 +93,8 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Permissions, opts => opts.Ignore());
             mapperConfig.CreateMap<Role, RoleBranchesViewModel>()
                 .ForMember(dest => dest.Branches, opts => opts.Ignore());
+            mapperConfig.CreateMap<Role, RoleUsersViewModel>()
+                .ForMember(dest => dest.Users, opts => opts.Ignore());
 
             mapperConfig.CreateMap<Permission, PermissionViewModel>()
                 .ForMember(dest => dest.IsEnabled, opts => opts.UseValue(true));

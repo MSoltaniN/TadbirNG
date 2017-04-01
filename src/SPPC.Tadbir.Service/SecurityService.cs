@@ -206,6 +206,31 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Retrieves information about all users that have a role specified by unique identifier.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of an existing role</param>
+        /// <returns>A <see cref="RoleUsersViewModel"/> object containing assigned users, if the role can be found;
+        /// otherwise, returns null.</returns>
+        public RoleUsersViewModel GetRoleUsers(int roleId)
+        {
+            var users = _apiClient.Get<RoleUsersViewModel>(SecurityApi.RoleUsers, roleId);
+            return users;
+        }
+
+        /// <summary>
+        /// Updates assigned users for a role specified by unique identifier.
+        /// </summary>
+        /// <param name="users">A <see cref="RoleUsersViewModel"/> object containing users assigned to the role
+        /// </param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
+        public ServiceResponse SaveRoleUsers(RoleUsersViewModel users)
+        {
+            Verify.ArgumentNotNull(users, "users");
+            ServiceResponse response = _apiClient.Update(users, SecurityApi.RoleUsers, users.Id);
+            return response;
+        }
+
+        /// <summary>
         /// Creates and returns a concrete <see cref="IPrincipal"/> instance using specified member information,
         /// its assigned roles and a value indicating if user must be kept logged in.
         /// </summary>

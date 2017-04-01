@@ -169,6 +169,11 @@ namespace SPPC.Tadbir.Values
         public const string RoleBranches = "شعب قابل دسترسی توسط {0}";
 
         /// <summary>
+        /// Localized text for a template string that formats assigned users for a role
+        /// </summary>
+        public const string RoleUsers = "کاربران دارای نقش {0}";
+
+        /// <summary>
         /// Localized text for an error message indicating that a role is assigned to one or more users
         /// and cannot be deleted.
         /// </summary>

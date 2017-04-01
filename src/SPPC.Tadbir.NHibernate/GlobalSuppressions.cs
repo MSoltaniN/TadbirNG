@@ -5,6 +5,7 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Scope = "member", Target = "SPPC.Tadbir.NHibernate.SecurityRepository.#SaveUser(SPPC.Tadbir.ViewModel.Auth.UserViewModel)", Justification = "Parameter is checked by Verify utility class.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Scope = "member", Target = "SPPC.Tadbir.NHibernate.SecurityRepository.#SaveRole(SPPC.Tadbir.ViewModel.Auth.RoleFullViewModel)", Justification = "Parameter is checked by Verify utility class.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Scope = "member", Target = "SPPC.Tadbir.NHibernate.SecurityRepository.#SaveRoleBranches(SPPC.Tadbir.ViewModel.Auth.RoleBranchesViewModel)", Justification = "Parameter is checked by Verify utility class.")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Scope = "member", Target = "SPPC.Tadbir.NHibernate.SecurityRepository.#SaveRoleUsers(SPPC.Tadbir.ViewModel.Auth.RoleUsersViewModel)", Justification = "Parameter is checked by Verify utility class.")]
 
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.

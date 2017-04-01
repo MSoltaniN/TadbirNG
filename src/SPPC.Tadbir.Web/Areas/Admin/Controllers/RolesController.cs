@@ -151,6 +151,37 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
             return View(roleBranches);
         }
 
+        // GET: admin/roles/users/id
+        public ActionResult Users(int id)
+        {
+            var users = _service.GetRoleUsers(id);
+            if (users == null)
+            {
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
+            }
+
+            return View(users);
+        }
+
+        // POST: admin/roles/users/id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Users(RoleUsersViewModel roleUsers)
+        {
+            if (roleUsers == null)
+            {
+                return RedirectToAction("index", "error", new { area = String.Empty });
+            }
+
+            if (ModelState.IsValid)
+            {
+                _service.SaveRoleUsers(roleUsers);
+                return RedirectToAction("index");
+            }
+
+            return View(roleUsers);
+        }
+
         private ISecurityService _service;
     }
 }

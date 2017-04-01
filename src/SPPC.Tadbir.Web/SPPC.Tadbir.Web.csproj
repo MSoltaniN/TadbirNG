@@ -215,6 +215,7 @@
     <Content Include="Areas\Admin\Views\Roles\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Roles\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Roles\Branches.cshtml" />
+    <Content Include="Areas\Admin\Views\Roles\Users.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

@@ -43,6 +43,16 @@ namespace SPPC.Tadbir.Values
         public const string Account = "حساب";
 
         /// <summary>
+        /// Localized name of User entity (singular form).
+        /// </summary>
+        public const string User = "کاربر";
+
+        /// <summary>
+        /// Localized name of User entity (plural form).
+        /// </summary>
+        public const string Users = "کاربران";
+
+        /// <summary>
         /// Localized name of Role entity (singular form).
         /// </summary>
         public const string Role = "نقش";

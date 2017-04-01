@@ -120,6 +120,20 @@ namespace SPPC.Tadbir.NHibernate
         /// associations to the specified role</param>
         void SaveRoleBranches(RoleBranchesViewModel role);
 
+        /// <summary>
+        /// Retrieves user associations for a role specified by identifier.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of an existing role</param>
+        /// <returns>An object that contains information about all users assigned to specified role</returns>
+        RoleUsersViewModel GetRoleUsers(int roleId);
+
+        /// <summary>
+        /// Updates user associations for a role specified by identifier.
+        /// </summary>
+        /// <param name="role">A <see cref="RoleUsersViewModel"/> object that contains information about all user
+        /// associations to the specified role</param>
+        void SaveRoleUsers(RoleUsersViewModel role);
+
         #endregion
     }
 }
