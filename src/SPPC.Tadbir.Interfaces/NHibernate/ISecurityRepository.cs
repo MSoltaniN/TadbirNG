@@ -46,6 +46,12 @@ namespace SPPC.Tadbir.NHibernate
         void UpdateUserLastLogin(int userId);
 
         /// <summary>
+        /// Updates a user profile in repository.
+        /// </summary>
+        /// <param name="profile">User profile to update</param>
+        void UpdateUserPassword(UserProfileViewModel profile);
+
+        /// <summary>
         /// Determines if the specified <see cref="UserViewModel"/> instance has a user name that is already used
         /// by a different user.
         /// </summary>

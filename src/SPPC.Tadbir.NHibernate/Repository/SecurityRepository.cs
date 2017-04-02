@@ -128,6 +128,25 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
+        /// Updates a user profile in repository.
+        /// </summary>
+        /// <param name="profile">User profile to update</param>
+        public void UpdateUserPassword(UserProfileViewModel profile)
+        {
+            Verify.ArgumentNotNull(profile, "profile");
+            var repository = _unitOfWork.GetRepository<User>();
+            var user = repository
+                .GetByCriteria(usr => usr.UserName == profile.UserName)
+                .FirstOrDefault();
+            if (user != null)
+            {
+                user.PasswordHash = profile.NewPassword;
+                repository.Update(user);
+                _unitOfWork.Commit();
+            }
+        }
+
+        /// <summary>
         /// Determines if the specified <see cref="UserViewModel"/> instance has a user name that is already used
         /// by a different user.
         /// </summary>

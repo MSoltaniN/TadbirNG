@@ -46,6 +46,13 @@ namespace SPPC.Tadbir.Service
         ServiceResponse SaveUser(UserViewModel user);
 
         /// <summary>
+        /// Updates the password in a user's profile.
+        /// </summary>
+        /// <param name="profile">An object containing user profile information</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
+        ServiceResponse ChangePassword(UserProfileViewModel profile);
+
+        /// <summary>
         /// Retrieves all application-defined roles currently registered in security system.
         /// </summary>
         /// <returns>Collection of all roles in security system</returns>

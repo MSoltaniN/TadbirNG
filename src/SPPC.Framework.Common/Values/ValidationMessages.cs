@@ -36,5 +36,10 @@ namespace SPPC.Framework.Values
         /// Localized text for a validation message indicating that a field value is duplicate.
         /// </summary>
         public const string DuplicateFieldValue = "{0} تکراری است.";
+
+        /// <summary>
+        /// Localized text for a validation message indicating that two related field values are not equal.
+        /// </summary>
+        public const string FieldsDoNotMatch = "{0} و {1} نباید متفاوت باشند.";
     }
 }

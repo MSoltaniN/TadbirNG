@@ -18,14 +18,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink(Strings.AppBrandName, "index", "home", new { area = "" }, new { @class = "navbar-brand", style = "float:right" })
+                @Html.ActionLink(Strings.AppBrandName, "index", "home", new { area = String.Empty }, new { @class = "navbar-brand", style = "float:right" })
             </div>
             <div class="navbar-collapse collapse" style="float:right">
                 <ul class="nav navbar-nav">
                     <li class="dropdown" style="float:right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Strings.Accounting <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink(Strings.ManageAccounts, "index", "accounts", new { area = "Accounting" }, null)</li>
+                            <li>@Html.ActionLink(Strings.ManageAccounts, "index", "accounts", new { area = "accounting" }, null)</li>
                             <li>@Html.ActionLink(Strings.ManageTransactions, "index", "transactions", new { area = "accounting" }, null)</li>
                         </ul>
                     </li>
@@ -36,7 +36,13 @@
                             <li>@Html.ActionLink(Strings.ManageRoles, "index", "roles", new { area = "admin" }, null)</li>
                         </ul>
                     </li>
-                    <li style="float:right">@Html.ActionLink(Strings.About, "about", "home", new { area = "" }, null)</li>
+                    <li class="dropdown" style="float:right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Strings.Tools <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink(Strings.ChangePassword, "manage", "account", new { area = String.Empty }, null)</li>
+                        </ul>
+                    </li>
+                    <li style="float:right">@Html.ActionLink(Strings.About, "about", "home", new { area = String.Empty }, null)</li>
                 </ul>
             </div>
         </div>

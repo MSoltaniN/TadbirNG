@@ -76,6 +76,7 @@
     <Compile Include="Auth\RoleViewModel.Generated.cs" />
     <Compile Include="Auth\UserBriefViewModel.cs" />
     <Compile Include="Auth\UserEqualityComparer.cs" />
+    <Compile Include="Auth\UserProfileViewModel.cs" />
     <Compile Include="Auth\UserViewModel.cs" />
     <Compile Include="Auth\UserViewModel.Generated.cs" />
     <Compile Include="Contact\PersonViewModel.Generated.cs" />

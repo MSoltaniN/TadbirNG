@@ -141,6 +141,42 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // PUT: api/users/{userName}/password
+        [Route(SecurityApi.UserPasswordUrl)]
+        public IHttpActionResult PutUserPassword(string userName, [FromBody] UserProfileViewModel profile)
+        {
+            if (profile == null)
+            {
+                return BadRequest("Could not put user password because a 'null' value was provided.");
+            }
+
+            if (String.IsNullOrEmpty(userName) || String.IsNullOrEmpty(profile.UserName))
+            {
+                return BadRequest("Could not put user password because user does not exist.");
+            }
+
+            if (userName != profile.UserName)
+            {
+                return BadRequest("Could not put user password because of user name conflict in the request.");
+            }
+
+            //// NOTE: DO NOT check ModelState here, because plain-text passwords are replaced by hash values.
+
+            var user = _repository.GetUser(userName);
+            if (user == null)
+            {
+                return BadRequest("Could not put user password because user does not exist.");
+            }
+
+            if (String.Compare(user.Password, profile.OldPassword, true) != 0)
+            {
+                return BadRequest(Strings.IncorrectOldPassword);
+            }
+
+            _repository.UpdateUserPassword(profile);
+            return Ok();
+        }
+
         private ISecurityRepository _repository;
     }
 }

@@ -109,6 +109,18 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Updates the password in a user's profile.
+        /// </summary>
+        /// <param name="profile">An object containing user profile information</param>
+        /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
+        public ServiceResponse ChangePassword(UserProfileViewModel profile)
+        {
+            ProcessProfile(profile);
+            var response = _apiClient.Update(profile, SecurityApi.UserPassword, profile.UserName);
+            return response;
+        }
+
+        /// <summary>
         /// Retrieves all application-defined roles currently registered in security system.
         /// </summary>
         /// <returns>Collection of all roles in security system</returns>
@@ -273,6 +285,16 @@ namespace SPPC.Tadbir.Service
         private void UpdateUserLogin(int userId)
         {
             _apiClient.Update(new { }, SecurityApi.UserLastLogin, userId);
+        }
+
+        private void ProcessProfile(UserProfileViewModel profile)
+        {
+            Verify.ArgumentNotNull(profile, "profile");
+            var oldPasswordHash = _crypto.CreateHash(profile.OldPassword);
+            var newPasswordHash = _crypto.CreateHash(profile.NewPassword);
+            profile.OldPassword = oldPasswordHash;
+            profile.NewPassword = newPasswordHash;
+            profile.RepeatPassword = newPasswordHash;
         }
 
         private IApiClient _apiClient;

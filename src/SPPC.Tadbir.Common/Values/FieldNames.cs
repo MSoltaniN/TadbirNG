@@ -133,6 +133,21 @@ namespace SPPC.Tadbir.Values
         public const string Password = "رمز ورود";
 
         /// <summary>
+        /// Localized name of Old Password field
+        /// </summary>
+        public const string OldPassword = "رمز ورود قدیم";
+
+        /// <summary>
+        /// Localized name of New Password field
+        /// </summary>
+        public const string NewPassword = "رمز ورود جدید";
+
+        /// <summary>
+        /// Localized name of Repeat Password field
+        /// </summary>
+        public const string RepeatPassword = "تکرار رمز ورود";
+
+        /// <summary>
         /// Localized name of LastLoginDate field.
         /// </summary>
         public const string LastLoginDate = "تاریخ آخرین ورود";

@@ -53,6 +53,16 @@ namespace SPPC.Tadbir.Values
         public const string ManageRoles = "مدیریت نقش ها";
 
         /// <summary>
+        /// Localized text for Tools navigation link
+        /// </summary>
+        public const string Tools = "امکانات";
+
+        /// <summary>
+        /// Localized text for Change Password navigation link
+        /// </summary>
+        public const string ChangePassword = "تغییر رمز ورود";
+
+        /// <summary>
         /// Localized text for About page title
         /// </summary>
         public const string About = "درباره";
@@ -188,5 +198,10 @@ namespace SPPC.Tadbir.Values
         /// Localized text for a validation message indicating that a date value is invalid.
         /// </summary>
         public static readonly string InvalidDate = "تاریخ وارد شده معتبر نیست.";
+
+        /// <summary>
+        /// Localized text for a validation message indicating that the value entered for old password is incorrect.
+        /// </summary>
+        public static readonly string IncorrectOldPassword = "رمز ورود قدیم صحیح نیست.";
     }
 }
