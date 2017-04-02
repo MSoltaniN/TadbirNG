@@ -164,6 +164,16 @@ namespace SPPC.Tadbir.Values
         public const string NoPermissionAssigned = "هیچ دسترسی به این نقش تخصیص داده نشده است.";
 
         /// <summary>
+        /// Localized text for a message indicating that no branch is currently accessible to a role
+        /// </summary>
+        public const string NoAccessibleBranches = "این نقش به هیچ شعبه ای دسترسی ندارد.";
+
+        /// <summary>
+        /// Localized text for a message indicating that no branch is currently accessible to a role
+        /// </summary>
+        public const string NoAssignedUsers = "این نقش به هیچ کاربری تخصیص داده نشده است.";
+
+        /// <summary>
         /// Localized text for a hint text indicating that before deleting a role one must unassign all role users.
         /// </summary>
         public const string DeleteRoleHint = "پیش از حذف یک نقش باید ابتدا نقش مورد نظر از تمام کاربران موجود سلب شود.";

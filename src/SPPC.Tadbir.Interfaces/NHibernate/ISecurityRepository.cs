@@ -77,12 +77,20 @@ namespace SPPC.Tadbir.NHibernate
         RoleFullViewModel GetNewRole();
 
         /// <summary>
-        /// Retrieves a single role specified by unique identifier from repository.
+        /// Retrieves a single role with permissions (specified by role identifier) from repository.
         /// </summary>
         /// <param name="roleId">Unique identifier of the role to search for</param>
         /// <returns>A <see cref="RoleFullViewModel"/> instance that corresponds to the specified identifier, if there is
         /// such a role defined; otherwise, returns null.</returns>
         RoleFullViewModel GetRole(int roleId);
+
+        /// <summary>
+        /// Retrieves a single role with full details (specified by role identifier) from repository.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of the role to search for</param>
+        /// <returns>A <see cref="RoleDetailsViewModel"/> instance that corresponds to the specified identifier, if there is
+        /// such a role defined; otherwise, returns null.</returns>
+        RoleDetailsViewModel GetRoleDetails(int roleId);
 
         /// <summary>
         /// Retrieves brief information for a single role specified by unique identifier from repository.

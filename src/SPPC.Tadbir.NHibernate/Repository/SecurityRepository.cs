@@ -203,7 +203,7 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
-        /// Retrieves a single role specified by unique identifier from repository.
+        /// Retrieves a single role with permissions (specified by role identifier) from repository.
         /// </summary>
         /// <param name="roleId">Unique identifier of the role to search for</param>
         /// <returns>A <see cref="RoleFullViewModel"/> instance that corresponds to the specified identifier, if there is
@@ -233,6 +233,37 @@ namespace SPPC.Tadbir.NHibernate
                     .Concat(disabledPermissions)
                     .OrderBy(perm => perm.Id)
                     .ToArray(), perm => role.Permissions.Add(perm));
+            }
+
+            return role;
+        }
+
+        /// <summary>
+        /// Retrieves a single role with full details (specified by role identifier) from repository.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of the role to search for</param>
+        /// <returns>A <see cref="RoleDetailsViewModel"/> instance that corresponds to the specified identifier, if there is
+        /// such a role defined; otherwise, returns null.</returns>
+        public RoleDetailsViewModel GetRoleDetails(int roleId)
+        {
+            RoleDetailsViewModel role = null;
+            var repository = _unitOfWork.GetRepository<Role>();
+            var existing = repository.GetByID(roleId);
+            if (existing != null)
+            {
+                role = new RoleDetailsViewModel()
+                {
+                    Role = _mapper.Map<RoleViewModel>(existing)
+                };
+                Array.ForEach(
+                    existing.Permissions.ToArray(),
+                    perm => role.Permissions.Add(_mapper.Map<PermissionViewModel>(perm)));
+                Array.ForEach(
+                    existing.Branches.ToArray(),
+                    br => role.Branches.Add(_mapper.Map<BranchViewModel>(br)));
+                Array.ForEach(
+                    existing.Users.ToArray(),
+                    usr => role.Users.Add(_mapper.Map<UserBriefViewModel>(usr)));
             }
 
             return role;

@@ -1,13 +1,12 @@
 ﻿@using SPPC.Framework.Extensions
 @using SPPC.Framework.Values
 @using SPPC.Tadbir.Values
-@model SPPC.Tadbir.ViewModel.Auth.RoleFullViewModel
+@model SPPC.Tadbir.ViewModel.Auth.RoleDetailsViewModel
 
 @{
     string title = String.Format(LocalStrings.EntityDetails, Entities.Role);
     string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Roles);
     string editExisting = String.Format(LocalStrings.EditExistingEntity, Entities.Role);
-    var enabledPermissions = Model.Permissions.Where(perm => perm.IsEnabled);
     ViewBag.Title = title;
 }
 
@@ -41,7 +40,7 @@
         <h3>@FieldNames.PermissionsField</h3>
     </div>
 
-    @if (enabledPermissions.Count() <= 0)
+    @if (Model.Permissions.Count() <= 0)
     {
         <p>@Strings.NoPermissionAssigned</p>
         <br /><br />
@@ -57,7 +56,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var perm in enabledPermissions)
+                @foreach (var perm in Model.Permissions)
                 {
                     <tr>
                         <td>
@@ -68,6 +67,83 @@
                         </td>
                         <td title="@perm.Description">
                             @perm.Description.AutoEllipsis(50)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div class="page-header">
+        <h3>@Strings.AccessibleBranches</h3>
+    </div>
+
+    @if (Model.Branches.Count() <= 0)
+    {
+        <p>@Strings.NoAccessibleBranches</p>
+        <br /><br />
+    }
+    else
+    {
+        <table class="table table-bordered table-striped table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th>@FieldNames.NameField</th>
+                    <th>@FieldNames.DescriptionField</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var branch in Model.Branches)
+                {
+                    <tr>
+                        <td>
+                            @branch.Name
+                        </td>
+                        <td title="@branch.Description">
+                            @branch.Description.AutoEllipsis(50)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div class="page-header">
+        <h3>@Entities.Users</h3>
+    </div>
+
+    @if (Model.Branches.Count() <= 0)
+    {
+        <p>@Strings.NoAssignedUsers</p>
+        <br /><br />
+    }
+    else
+    {
+        <table class="table table-bordered table-striped table-responsive table-hover">
+            <thead>
+                <tr>
+                    <th>@FieldNames.UserName</th>
+                    <th>@FieldNames.FirstNameField</th>
+                    <th>@FieldNames.LastNameField</th>
+                    <th>@FieldNames.StatusField</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    var status = user.IsEnabled ? Users.Enabled : Users.Disabled;
+                    <tr>
+                        <td>
+                            @user.UserName
+                        </td>
+                        <td>
+                            @user.PersonFirstName
+                        </td>
+                        <td>
+                            @user.PersonLastName
+                        </td>
+                        <td>
+                            @status
                         </td>
                     </tr>
                 }

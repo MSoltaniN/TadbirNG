@@ -70,6 +70,7 @@
     <Compile Include="Auth\PermissionViewModel.cs" />
     <Compile Include="Auth\PermissionViewModel.Generated.cs" />
     <Compile Include="Auth\RoleBranchesViewModel.cs" />
+    <Compile Include="Auth\RoleDetailsViewModel.cs" />
     <Compile Include="Auth\RoleFullViewModel.cs" />
     <Compile Include="Auth\RoleUsersViewModel.cs" />
     <Compile Include="Auth\RoleViewModel.cs" />

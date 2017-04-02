@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.ViewModel.Auth
 {
     /// <summary>
-    /// Provides complete details for a security, including additional fields from related entities.
+    /// Provides details for a security role, including enabled permissions.
     /// </summary>
     public class RoleFullViewModel
     {
@@ -23,7 +23,7 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public RoleViewModel Role { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of permissions that are enabled for this role.
+        /// Gets the collection of permissions that are enabled for this role.
         /// </summary>
         public IList<PermissionViewModel> Permissions { get; private set; }
     }

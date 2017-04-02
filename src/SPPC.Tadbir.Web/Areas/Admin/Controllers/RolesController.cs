@@ -93,10 +93,10 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         // GET: admin/roles/details/id
         public ActionResult Details(int id)
         {
-            var role = _service.GetRole(id);
+            var role = _service.GetRoleDetails(id);
             if (role == null)
             {
-                return RedirectToAction("notfound", "error", new { area = "admin" });
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
             }
 
             return View(role);
