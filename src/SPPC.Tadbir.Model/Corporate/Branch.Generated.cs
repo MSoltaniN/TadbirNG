@@ -69,10 +69,10 @@ namespace SPPC.Tadbir.Model.Corporate
         /// </summary>
         public virtual Company Company { get; set; }
 
-        //// <summary>
-        //// Gets or sets the collection of all fiscal periods defined for this branch
-        //// </summary>
-        ////public virtual IList<FiscalPeriod> FiscalPeriods { get; protected set; }
+        ///<summary>
+        ///Gets or sets the collection of all fiscal periods defined for this branch
+        ///</summary>
+        public virtual IList<FiscalPeriod> FiscalPeriods { get; protected set; }
 
         /// <summary>
         /// Gets or sets the collection of all roles that can access this branch
@@ -86,14 +86,9 @@ namespace SPPC.Tadbir.Model.Corporate
 
         private void InitReferences()
         {
-            ////this.FiscalPeriods = new List<FiscalPeriod>();
+            this.FiscalPeriods = new List<FiscalPeriod>();
             this.Roles = new List<Role>();
             this.Company = new Company();
-
-            //// IMPORTANT NOTE: DO NOT add initialization statements for one-to-one and many-to-one relationships.
-            //// 1. Initializing one-to-one associations causes StackOverflowException (A initializes B and B initializes A)
-            //// 2. Initializing many-to-one associations causes most mapping tests to fail, because they will trigger many
-            //// unnecessary operations (INSERT and UPDATE) by in-memory SQLite database.
         }
     }
 }

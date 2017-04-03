@@ -51,21 +51,21 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Table("UserRole")
                 .ParentKeyColumn("RoleID")
                 .ChildKeyColumn("UserID")
-                .Cascade.All()
+                .Cascade.None()
                 .LazyLoad();
             HasManyToMany(x => x.Permissions)
                 .Schema("Auth")
                 .Table("RolePermission")
                 .ParentKeyColumn("RoleID")
                 .ChildKeyColumn("PermissionID")
-                .Cascade.All()
+                .Cascade.None()
                 .LazyLoad();
             HasManyToMany(x => x.Branches)
                 .Schema("Auth")
                 .Table("RoleBranch")
                 .ParentKeyColumn("RoleID")
                 .ChildKeyColumn("BranchID")
-                .Cascade.All()
+                .Cascade.None()
                 .LazyLoad();
         }
     }
