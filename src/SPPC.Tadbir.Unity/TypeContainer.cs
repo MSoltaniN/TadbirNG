@@ -94,6 +94,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<ILookupService, LookupService>();
             _container.RegisterType<ISecurityService, SecurityService>();
             _container.RegisterType<ICryptoService, CryptoService>();
+            _container.RegisterType<ISecurityContextManager, SecurityContextManager>();
         }
 
         /// <summary>

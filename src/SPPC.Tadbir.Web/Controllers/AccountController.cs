@@ -16,9 +16,10 @@ namespace SPPC.Tadbir.Web.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        public AccountController(ISecurityService service)
+        public AccountController(ISecurityService service, ISecurityContextManager contextManager)
         {
             _service = service;
+            _contextManager = contextManager;
         }
 
         // GET: account/login
@@ -40,6 +41,8 @@ namespace SPPC.Tadbir.Web.Controllers
                 var user = _service.Authenticate(loginModel);
                 if (user != null)
                 {
+                    var userContext = _service.GetUserContext(user.Id);
+                    _contextManager.SetUserContext(userContext);
                     _service.Login(user);
                     string redir = returnUrl ?? "/";
                     return Redirect(redir);
@@ -91,5 +94,6 @@ namespace SPPC.Tadbir.Web.Controllers
         }
 
         private ISecurityService _service;
+        private ISecurityContextManager _contextManager;
     }
 }

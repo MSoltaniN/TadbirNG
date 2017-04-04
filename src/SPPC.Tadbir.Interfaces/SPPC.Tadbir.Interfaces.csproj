@@ -77,9 +77,13 @@
     <Compile Include="NHibernate\ITransactionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\IAccountService.cs" />
+    <Compile Include="Service\ISecurityContext.cs" />
     <Compile Include="Service\ILookupService.cs" />
+    <Compile Include="Service\ISecurityContextManager.cs" />
     <Compile Include="Service\ISecurityService.cs" />
     <Compile Include="Service\ITransactionService.cs" />
+    <Compile Include="Service\Permissions.cs" />
+    <Compile Include="Service\SecurityContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">
@@ -95,9 +99,7 @@
       <Name>SPPC.Tadbir.ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mapping\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>

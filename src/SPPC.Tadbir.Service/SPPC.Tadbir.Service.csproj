@@ -71,6 +71,7 @@
     </Compile>
     <Compile Include="LookupService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecurityContextManager.cs" />
     <Compile Include="SecurityService.cs" />
     <Compile Include="TransactionService.cs" />
   </ItemGroup>

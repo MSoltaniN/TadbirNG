@@ -39,6 +39,14 @@ namespace SPPC.Tadbir.Service
         UserViewModel GetUser(int userId);
 
         /// <summary>
+        /// Retrieves context information for a single user specified by identifier.
+        /// </summary>
+        /// <param name="userId">Unique identifier of an existing user</param>
+        /// <returns>A <see cref="UserContextViewModel"/> object containing user context information,
+        /// if user can be found; otherwise, returns null.</returns>
+        UserContextViewModel GetUserContext(int userId);
+
+        /// <summary>
         /// Inserts or updates an application user.
         /// </summary>
         /// <param name="user">User to insert or update</param>

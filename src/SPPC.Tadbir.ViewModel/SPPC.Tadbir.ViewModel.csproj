@@ -66,6 +66,7 @@
       <Link>TadbirSolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Auth\LoginViewModel.cs" />
+    <Compile Include="Auth\PermissionBriefViewModel.cs" />
     <Compile Include="Auth\PermissionGroupViewModel.Generated.cs" />
     <Compile Include="Auth\PermissionViewModel.cs" />
     <Compile Include="Auth\PermissionViewModel.Generated.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Auth\RoleViewModel.cs" />
     <Compile Include="Auth\RoleViewModel.Generated.cs" />
     <Compile Include="Auth\UserBriefViewModel.cs" />
+    <Compile Include="Auth\UserContextViewModel.cs" />
     <Compile Include="Auth\UserEqualityComparer.cs" />
     <Compile Include="Auth\UserProfileViewModel.cs" />
     <Compile Include="Auth\UserViewModel.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="Corporate\BranchViewModel.Generated.cs" />
     <Compile Include="Corporate\CompanyViewModel.cs" />
     <Compile Include="Corporate\CompanyViewModel.Generated.cs" />
+    <Compile Include="EntityEqualityComparer.cs" />
     <Compile Include="Finance\AccountFullViewModel.cs" />
     <Compile Include="Finance\AccountViewModel.cs" />
     <Compile Include="Finance\AccountViewModel.Generated.cs" />

@@ -137,6 +137,24 @@ namespace SPPC.Tadbir.Mapper.Tests
             AssertMapperCanConvertFromSourceToDestination<PermissionViewModel, Permission>();
         }
 
+        [Test]
+        public void ContainsMappingFromUserToUserContextViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<User, UserContextViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromUserToUserContextViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<User, UserContextViewModel>();
+        }
+
         #endregion
 
         #region Finance Type Mapping Tests

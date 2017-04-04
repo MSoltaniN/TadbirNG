@@ -83,6 +83,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<User, UserBriefViewModel>()
                 .ForMember(dest => dest.HasRole, opts => opts.UseValue(true));
             mapperConfig.CreateMap<UserBriefViewModel, User>();
+            mapperConfig.CreateMap<User, UserContextViewModel>();
 
             mapperConfig.CreateMap<Role, RoleViewModel>()
                 .ForMember(
@@ -100,6 +101,9 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.IsEnabled, opts => opts.UseValue(true));
             mapperConfig.CreateMap<PermissionViewModel, Permission>()
                 .AfterMap((viewModel, model) => model.Group.Id = viewModel.GroupId);
+            mapperConfig.CreateMap<Permission, PermissionBriefViewModel>()
+                .ForMember(dest => dest.EntityName, opts => opts.MapFrom(src => src.Group.EntityName))
+                .ForMember(dest => dest.Flags, opts => opts.MapFrom(src => src.Flag));
         }
 
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)

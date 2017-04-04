@@ -31,5 +31,10 @@ namespace SPPC.Tadbir.Values
         /// Special identifier for System Administrator role in security system
         /// </summary>
         public const int AdminRoleId = 1;
+
+        /// <summary>
+        /// Name of security context cookie used for authorization
+        /// </summary>
+        public const string ContextCookieName = "TadbirContext";
     }
 }

@@ -34,6 +34,14 @@ namespace SPPC.Tadbir.NHibernate
         UserViewModel GetUser(int userId);
 
         /// <summary>
+        /// Retrieves context information for a user specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="userId">Unique identifier of the user to search for</param>
+        /// <returns>A <see cref="UserContextViewModel"/> instance containing context information, if there is
+        /// such a user defined; otherwise, returns null.</returns>
+        UserContextViewModel GetUserContext(int userId);
+
+        /// <summary>
         /// Inserts or updates a single user in repository.
         /// </summary>
         /// <param name="user">Item to insert or update</param>

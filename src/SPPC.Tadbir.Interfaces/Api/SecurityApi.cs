@@ -63,6 +63,16 @@ namespace SPPC.Tadbir.Api
         public const string UserPasswordUrl = "users/{userName}/password";
 
         /// <summary>
+        /// API client URL for application context related to a user specified by identifier.
+        /// </summary>
+        public const string UserContext = "users/{0}/context";
+
+        /// <summary>
+        /// API server route URL for application context related to a user specified by identifier.
+        /// </summary>
+        public const string UserContextUrl = "users/{userId:int}/context";
+
+        /// <summary>
         /// API client URL for all roles
         /// </summary>
         public const string Roles = "roles";

@@ -177,6 +177,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // GET: api/users/{userId:int}/context
+        [Route(SecurityApi.UserContextUrl)]
+        public IHttpActionResult GetUserContext(int userId)
+        {
+            if (userId <= 0)
+            {
+                return NotFound();
+            }
+
+            var userContext = _repository.GetUserContext(userId);
+            var result = (userContext != null)
+                ? Json(userContext)
+                : NotFound() as IHttpActionResult;
+            return result;
+        }
+
         private ISecurityRepository _repository;
     }
 }

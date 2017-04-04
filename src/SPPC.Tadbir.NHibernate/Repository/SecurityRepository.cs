@@ -5,6 +5,7 @@ using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Corporate;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SwForAll.Platform.Common;
@@ -64,6 +65,46 @@ namespace SPPC.Tadbir.NHibernate
             }
 
             return userViewModel;
+        }
+
+        /// <summary>
+        /// Retrieves context information for a user specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="userId">Unique identifier of the user to search for</param>
+        /// <returns>A <see cref="UserContextViewModel"/> instance containing context information, if there is
+        /// such a user defined; otherwise, returns null.</returns>
+        public UserContextViewModel GetUserContext(int userId)
+        {
+            UserContextViewModel userContext = null;
+            var repository = _unitOfWork.GetRepository<User>();
+            var user = repository.GetByID(userId);
+            if (user != null)
+            {
+                userContext = _mapper.Map<UserContextViewModel>(user);
+                var branches = new List<int>();
+                Array.ForEach(user.Roles.ToArray(), role => branches.AddRange(role.Branches.Select(br => br.Id)));
+                Array.ForEach(branches.Distinct().ToArray(), br => userContext.Branches.Add(br));
+
+                var permissions = new List<PermissionBriefViewModel>();
+                Array.ForEach(
+                    user.Roles.ToArray(),
+                    role => permissions.AddRange(
+                        role.Permissions.Select(perm => _mapper.Map<PermissionBriefViewModel>(perm))));
+                var groups = permissions
+                    .Distinct(new PermissionEqualityComparer())
+                    .GroupBy(perm => perm.EntityName);
+                foreach (var group in groups)
+                {
+                    var permission = new PermissionBriefViewModel()
+                    {
+                        EntityName = group.Key,
+                        Flags = group.Sum(perm => perm.Flags)
+                    };
+                    userContext.Permissions.Add(permission);
+                }
+            }
+
+            return userContext;
         }
 
         /// <summary>
@@ -221,7 +262,7 @@ namespace SPPC.Tadbir.NHibernate
                 var disabledPermissions = permissionRepository
                     .GetAll()
                     .Select(perm => _mapper.Map<PermissionViewModel>(perm))
-                    .Except(enabledPermissions, new PermissionEqualityComparer())
+                    .Except(enabledPermissions, new EntityEqualityComparer<PermissionViewModel>())
                     .ToArray();
                 Array.ForEach(disabledPermissions, perm => perm.IsEnabled = false);
 

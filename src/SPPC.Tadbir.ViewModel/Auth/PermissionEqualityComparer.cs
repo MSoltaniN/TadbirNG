@@ -7,15 +7,15 @@ namespace SPPC.Tadbir.ViewModel.Auth
     /// <summary>
     /// Defines methods to support the comparison of <see cref="PermissionViewModel"/> objects for equality.
     /// </summary>
-    public class PermissionEqualityComparer : IEqualityComparer<PermissionViewModel>
+    public class PermissionEqualityComparer : IEqualityComparer<PermissionBriefViewModel>
     {
         /// <summary>
         /// Determines whether the specified objects are equal.
         /// </summary>
-        /// <param name="x">The first object of type PermissionViewModel to compare.</param>
-        /// <param name="y">The second object of type PermissionViewModel to compare.</param>
+        /// <param name="x">The first object of type PermissionBriefViewModel to compare.</param>
+        /// <param name="y">The second object of type PermissionBriefViewModel to compare.</param>
         /// <returns>true if the specified objects are equal; otherwise, false.</returns>
-        public bool Equals(PermissionViewModel x, PermissionViewModel y)
+        public bool Equals(PermissionBriefViewModel x, PermissionBriefViewModel y)
         {
             bool areEqual = true;
             if (x == null || y == null)
@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.ViewModel.Auth
             }
             else
             {
-                areEqual = (x.Id == y.Id);
+                areEqual = ((x.EntityName == y.EntityName) && (x.Flags == y.Flags));
             }
 
             return areEqual;
@@ -33,12 +33,12 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// <summary>
         /// Returns a hash code for the specified object.
         /// </summary>
-        /// <param name="obj">The PermissionViewModel for which a hash code is to be returned.</param>
+        /// <param name="obj">The PermissionBriefViewModel for which a hash code is to be returned.</param>
         /// <returns>A hash code for the specified object.</returns>
-        public int GetHashCode(PermissionViewModel obj)
+        public int GetHashCode(PermissionBriefViewModel obj)
         {
             Verify.ArgumentNotNull(obj, "obj");
-            return obj.Id.GetHashCode();
+            return (obj.EntityName.GetHashCode() ^ obj.Flags.GetHashCode());
         }
     }
 }
