@@ -27,6 +27,12 @@ namespace SPPC.Framework.Values
         /// </summary>
         public const string PageNotFound = "صفحه مورد نظر شما در این برنامه وجود ندارد.";
 
+        public const string AccessDeniedTitle = "دسترسی کافی نیست";
+
+        public const string AccessDeniedHint = "در صورتی که فکر می کنید اشتباهی صورت گرفته است، لطفا با راهبر سیستم تماس بگیرید.";
+
+        public const string AccessDenied = "شما مجوز امنیتی کافی برای دسترسی به این صفحه ندارید.";
+
         /// <summary>
         /// Localized text for Error Occured title
         /// </summary>

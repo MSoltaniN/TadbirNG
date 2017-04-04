@@ -9,6 +9,16 @@ namespace SPPC.Tadbir.ViewModel.Auth
     [Serializable]
     public class PermissionBriefViewModel
     {
+        public PermissionBriefViewModel()
+        {
+        }
+
+        public PermissionBriefViewModel(string entity, int flags)
+        {
+            EntityName = entity;
+            Flags = flags;
+        }
+
         /// <summary>
         /// Gets or sets the name of entity related to this permission.
         /// </summary>

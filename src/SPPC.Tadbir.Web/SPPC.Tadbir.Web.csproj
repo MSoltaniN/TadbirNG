@@ -159,6 +159,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Extensions\CaptchaExtensions.cs" />
     <Compile Include="Extensions\ControllerExtensions.cs" />
+    <Compile Include="Filters\AppAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -256,6 +257,7 @@
     <Content Include="Views\Error\Error.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
+    <Content Include="Views\Error\Denied.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Accounting\Views\Shared\" />

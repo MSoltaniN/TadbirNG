@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using SPPC.Framework.Service;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.Web.Filters;
 
 namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
 {
-    [Authorize]
     public class UsersController : Controller
     {
         public UsersController(ISecurityService service)
@@ -20,6 +18,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         }
 
         // GET: admin/users
+        [AppAuthorize(SecureEntity.User, (int)UserPermissions.View)]
         public ViewResult Index(int? page = null)
         {
             var users = _service.GetUsers();
@@ -29,6 +28,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         }
 
         // GET: admin/users/create
+        [AppAuthorize(SecureEntity.User, (int)UserPermissions.Create)]
         public ViewResult Create()
         {
             var newUser = new UserViewModel() { IsEnabled = true };
@@ -38,6 +38,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         // POST: admin/users/create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.User, (int)UserPermissions.Create)]
         public ActionResult Create(UserViewModel user)
         {
             if (user == null)
@@ -61,6 +62,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         }
 
         // GET: admin/users/edit/id
+        [AppAuthorize(SecureEntity.User, (int)UserPermissions.Edit)]
         public ActionResult Edit(int id)
         {
             // Prevent modification of Admin user by directly browsing the Edit page...
@@ -81,6 +83,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         // POST: admin/users/edit/id
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.User, (int)UserPermissions.Edit)]
         public ActionResult Edit(UserViewModel user)
         {
             if (user == null)

@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using SPPC.Framework.Service;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.Web.Filters;
 
 namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
 {
@@ -19,6 +18,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         }
 
         // GET: admin/roles
+        [AppAuthorize(SecureEntity.Role, (int)RolePermissions.View)]
         public ViewResult Index(int? page = null)
         {
             var roles = _service.GetRoles();
@@ -28,6 +28,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         }
 
         // GET: admin/roles/create
+        [AppAuthorize(SecureEntity.Role, (int)RolePermissions.Create)]
         public ViewResult Create()
         {
             var newRole = _service.GetNewRole();
@@ -37,6 +38,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         // POST: admin/roles/create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.Role, (int)RolePermissions.Create)]
         public ActionResult Create(RoleFullViewModel fullRole)
         {
             if (fullRole == null)
@@ -54,6 +56,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         }
 
         // GET: admin/roles/edit/id
+        [AppAuthorize(SecureEntity.Role, (int)RolePermissions.Edit)]
         public ActionResult Edit(int id)
         {
             // Prevent modification of Admin role by directly browsing the Edit page...
@@ -74,6 +77,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         // POST: admin/roles/edit/id
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.Role, (int)RolePermissions.Edit)]
         public ActionResult Edit(RoleFullViewModel fullRole)
         {
             if (fullRole == null)
@@ -91,6 +95,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         }
 
         // GET: admin/roles/details/id
+        [AppAuthorize(SecureEntity.Role, (int)RolePermissions.View)]
         public ActionResult Details(int id)
         {
             var role = _service.GetRoleDetails(id);
@@ -103,6 +108,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         }
 
         // GET: admin/roles/delete/id
+        [AppAuthorize(SecureEntity.Role, (int)RolePermissions.Delete)]
         public ActionResult Delete(int id)
         {
             // Prevent deletion of Admin role by directly browsing the Edit page...
@@ -121,6 +127,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         }
 
         // GET: admin/roles/branches/id
+        [AppAuthorize(SecureEntity.Role, (int)RolePermissions.AssignBranches)]
         public ActionResult Branches(int id)
         {
             var branches = _service.GetRoleBranches(id);
@@ -135,6 +142,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         // POST: admin/roles/branches/id
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.Role, (int)RolePermissions.AssignBranches)]
         public ActionResult Branches(RoleBranchesViewModel roleBranches)
         {
             if (roleBranches == null)
@@ -152,6 +160,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         }
 
         // GET: admin/roles/users/id
+        [AppAuthorize(SecureEntity.Role, (int)RolePermissions.AssignUsers)]
         public ActionResult Users(int id)
         {
             var users = _service.GetRoleUsers(id);
@@ -166,6 +175,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         // POST: admin/roles/users/id
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.Role, (int)RolePermissions.AssignUsers)]
         public ActionResult Users(RoleUsersViewModel roleUsers)
         {
             if (roleUsers == null)

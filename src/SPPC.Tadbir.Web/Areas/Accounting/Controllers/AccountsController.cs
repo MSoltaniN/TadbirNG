@@ -1,14 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 using PagedList;
 using SPPC.Framework.Service;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.Web.Filters;
 
 namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 {
-    [Authorize]
     public class AccountsController : Controller
     {
         public AccountsController(IAccountService accountService)
@@ -17,6 +17,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/accounts[?page={page}]
+        [AppAuthorize(SecureEntity.Account, (int)AccountPermissions.View)]
         public ViewResult Index(int? page = null)
         {
             var accounts = _service.GetAccounts(TempContext.CurrentFiscalPeriodId);
@@ -26,6 +27,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/accounts/create
+        [AppAuthorize(SecureEntity.Account, (int)AccountPermissions.Create)]
         public ViewResult Create()
         {
             var account = new AccountViewModel() { FiscalPeriodId = TempContext.CurrentFiscalPeriodId };
@@ -35,6 +37,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         // POST: accounting/accounts/create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.Account, (int)AccountPermissions.Create)]
         public ActionResult Create(AccountViewModel account)
         {
             if (account == null)
@@ -58,6 +61,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/accounts/edit/id
+        [AppAuthorize(SecureEntity.Account, (int)AccountPermissions.Edit)]
         public ActionResult Edit(int id)
         {
             var viewModel = _service.GetAccount(id);
@@ -72,6 +76,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         // POST: accounting/accounts/edit/id
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.Account, (int)AccountPermissions.Edit)]
         public ActionResult Edit(AccountViewModel account)
         {
             if (account == null)
@@ -95,6 +100,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/accounts/details/id
+        [AppAuthorize(SecureEntity.Account, (int)AccountPermissions.View)]
         public ActionResult Details(int id)
         {
             var viewModel = _service.GetDetailAccountInfo(id);
@@ -107,6 +113,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/account/delete/id
+        [AppAuthorize(SecureEntity.Account, (int)AccountPermissions.Delete)]
         public ActionResult Delete(int id)
         {
             var response = _service.DeleteAccount(id);

@@ -2,9 +2,11 @@
 using System.Web.Mvc;
 using PagedList;
 using SPPC.Framework.Service;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.Web.Filters;
 using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
@@ -18,6 +20,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/transactions[?page={page}]
+        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public ActionResult Index(int? page = null)
         {
             var transactions = _service.GetTransactions(TempContext.CurrentFiscalPeriodId);
@@ -27,6 +30,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/transactions/create
+        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
         public ViewResult Create()
         {
             var transaction = new TransactionViewModel()
@@ -43,6 +47,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         // POST: accounting/transactions/create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
         public ActionResult Create(TransactionViewModel transaction)
         {
             if (transaction == null)
@@ -73,6 +78,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/transactions/edit/id
+        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
         public ActionResult Edit(int id)
         {
             var transaction = _service.GetDetailTransactionInfo(id);
@@ -87,6 +93,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         // POST: accounting/transactions/edit/id
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
         public ActionResult Edit(TransactionFullViewModel fullTransaction)
         {
             if (fullTransaction == null)
@@ -117,6 +124,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/transactions/details/id
+        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public ActionResult Details(int id)
         {
             var transaction = _service.GetDetailTransactionInfo(id);
@@ -129,6 +137,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/transactions/delete/id
+        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
         public ActionResult Delete(int id)
         {
             _service.DeleteTransaction(id);

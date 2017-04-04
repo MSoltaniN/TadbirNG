@@ -8,16 +8,22 @@ namespace SPPC.Tadbir.Web.Controllers
 {
     public class ErrorController : Controller
     {
-        // GET: Error
-        public ActionResult Index()
+        // GET: error
+        public ViewResult Index()
         {
             return View("Error");
         }
 
-        // GET: Error/NotFound
-        public ActionResult NotFound()
+        // GET: error/notfound
+        public ViewResult NotFound()
         {
-            return View("NotFound");
+            return View();
+        }
+
+        // GET: error/denied
+        public ViewResult Denied()
+        {
+            return View();
         }
     }
 }
