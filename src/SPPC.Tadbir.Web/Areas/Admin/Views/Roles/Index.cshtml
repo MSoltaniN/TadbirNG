@@ -1,4 +1,8 @@
-﻿@using SPPC.Framework.Extensions
+﻿@using Microsoft.Practices.Unity
+@using SPPC.Tadbir.Security
+@using SPPC.Tadbir.Service
+@using SPPC.Tadbir.Web.AppStart
+@using SPPC.Framework.Extensions
 @using SPPC.Framework.Values
 @using SPPC.Tadbir.Values
 @using SPPC.Tadbir.ViewModel.Auth
@@ -17,6 +21,11 @@
             LocalStrings.CurrentPageInfo,
             Model.TotalItemCount, Entities.Role, Model.PageNumber, Model.PageCount);
     }
+
+    var contextManager = UnityConfig
+        .GetConfiguredContainer()
+        .Resolve<ISecurityContextManager>();
+    var currentContext = contextManager.CurrentContext;
 }
 
 <ol class="breadcrumb">
@@ -28,10 +37,13 @@
     <h3>@indexTitle</h3>
 </div>
 
+@if (currentContext.HasPermissions(Permissions.Role.Create))
+{
 <p>
     @Html.ActionLink(createNew, "create", "roles", new { }, new { @class = "btn btn-sm btn-primary" })
     <span class="pull-left">@pageInfo</span>
 </p>
+}
 
 <table class="table table-bordered table-striped table-responsive table-hover">
     <thead>
@@ -59,19 +71,37 @@
         @if (item.Id != Constants.AdminRoleId)
         {
             <td>
-                @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id }) |
-                @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id }) |
-                @Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id }) |
-                @Html.ActionLink(Entities.Users, "users", new { id = item.Id }) |
-                @Html.ActionLink(Entities.Branches, "branches", new { id = item.Id })
+            @if (currentContext.HasPermissions(Permissions.Role.Edit))
+            {
+                @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id })<span> | </span>
+            }
+                @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id })
+            @if (currentContext.HasPermissions(Permissions.Role.Delete))
+            {
+                <span> | </span>@Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
+            }
+            @if (currentContext.HasPermissions(Permissions.Role.AssignUsers))
+            {
+                <span> | </span>@Html.ActionLink(Entities.Users, "users", new { id = item.Id })
+            }
+            @if (currentContext.HasPermissions(Permissions.Role.AssignBranches))
+            {
+                <span> | </span>@Html.ActionLink(Entities.Branches, "branches", new { id = item.Id })
+            }
             </td>
         }
         else
         {
             <td>
-                @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id }) |
-                @Html.ActionLink(Entities.Users, "users", new { id = item.Id }) |
-                @Html.ActionLink(Entities.Branches, "branches", new { id = item.Id })
+                @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id })
+            @if (currentContext.HasPermissions(Permissions.Role.AssignUsers))
+            {
+                <span> | </span>@Html.ActionLink(Entities.Users, "users", new { id = item.Id })
+            }
+            @if (currentContext.HasPermissions(Permissions.Role.AssignBranches))
+            {
+                <span> | </span>@Html.ActionLink(Entities.Branches, "branches", new { id = item.Id })
+            }
             </td>
         }
         </tr>
@@ -81,9 +111,12 @@
 
 @Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
 
+@if (currentContext.HasPermissions(Permissions.Role.Create))
+{
 <p>
     @Html.ActionLink(createNew, "create", "roles", new { }, new { @class = "btn btn-sm btn-primary" })
 </p>
+}
 
 @section scripts {
     @Scripts.Render("~/bundles/site")

@@ -1,4 +1,8 @@
-﻿@using SPPC.Framework.Extensions
+﻿@using Microsoft.Practices.Unity
+@using SPPC.Tadbir.Security
+@using SPPC.Tadbir.Service
+@using SPPC.Tadbir.Web.AppStart
+@using SPPC.Framework.Extensions
 @using SPPC.Framework.Values
 @using SPPC.Tadbir.Values
 @model SPPC.Tadbir.ViewModel.Auth.RoleDetailsViewModel
@@ -8,6 +12,11 @@
     string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Roles);
     string editExisting = String.Format(LocalStrings.EditExistingEntity, Entities.Role);
     ViewBag.Title = title;
+
+    var contextManager = UnityConfig
+        .GetConfiguredContainer()
+        .Resolve<ISecurityContextManager>();
+    var currentContext = contextManager.CurrentContext;
 }
 
 <ol class="breadcrumb">
@@ -151,7 +160,7 @@
         </table>
     }
 
-    @if (Model.Role.Id != Constants.AdminRoleId)
+    @if (Model.Role.Id != Constants.AdminRoleId && currentContext.HasPermissions(Permissions.Role.Edit))
     {
     <p>
         @Html.ActionLink(editExisting, "edit", new { id = Model.Role.Id }) |

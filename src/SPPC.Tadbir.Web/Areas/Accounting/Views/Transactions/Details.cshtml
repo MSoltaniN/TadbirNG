@@ -1,4 +1,8 @@
 ﻿@using System.Globalization
+@using Microsoft.Practices.Unity
+@using SPPC.Tadbir.Security
+@using SPPC.Tadbir.Service
+@using SPPC.Tadbir.Web.AppStart
 @using SPPC.Framework.Extensions
 @using SPPC.Framework.Values
 @using SPPC.Tadbir.Values
@@ -8,6 +12,11 @@
     ViewBag.Title = Transactions.Details;
     var persianCulture = new CultureInfo("fa-IR");
     persianCulture.NumberFormat.CurrencySymbol = String.Empty;
+
+    var contextManager = UnityConfig
+        .GetConfiguredContainer()
+        .Resolve<ISecurityContextManager>();
+    var currentContext = contextManager.CurrentContext;
 }
 
 <ol class="breadcrumb">
@@ -123,7 +132,10 @@
         </tbody>
     </table>
     <p>
-        @Html.ActionLink(Transactions.EditExisting, "edit", new { id = Model.Transaction.Id }) |
+    @if(currentContext.HasPermissions(Permissions.Transaction.Edit))
+    {
+        @Html.ActionLink(Transactions.EditExisting, "edit", new { id = Model.Transaction.Id })<span> | </span>
+    }
         @Html.ActionLink(Transactions.IndexTitle, "index")
     </p>
 </div>

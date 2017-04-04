@@ -1,4 +1,8 @@
-﻿@using SPPC.Framework.Values
+﻿@using Microsoft.Practices.Unity
+@using SPPC.Tadbir.Security
+@using SPPC.Tadbir.Service
+@using SPPC.Tadbir.Web.AppStart
+@using SPPC.Framework.Values
 @using SPPC.Tadbir.Values
 @using SPPC.Tadbir.ViewModel.Auth
 @using PagedList.Mvc
@@ -14,6 +18,11 @@
             Users.CurrentPageInfo,
             Model.TotalItemCount, Model.PageNumber, Model.PageCount);
     }
+
+    var contextManager = UnityConfig
+        .GetConfiguredContainer()
+        .Resolve<ISecurityContextManager>();
+    var currentContext = contextManager.CurrentContext;
 }
 
 <ol class="breadcrumb">
@@ -25,10 +34,13 @@
     <h3>@Users.IndexTitle</h3>
 </div>
 
+@if(currentContext.HasPermissions(Permissions.User.Create))
+{
 <p>
     @Html.ActionLink(Users.CreateNew, "create", "users", new { }, new { @class = "btn btn-sm btn-primary" })
     <span class="pull-left">@pageInfo</span>
 </p>
+}
 
 <table class="table table-bordered table-striped table-responsive table-hover">
     <thead>
@@ -61,7 +73,7 @@
             <td>
                 @status
             </td>
-            @if (item.Id != Constants.AdminUserId)
+            @if (item.Id != Constants.AdminUserId && currentContext.HasPermissions(Permissions.User.Edit))
             {
             <td>
                 @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id })
@@ -74,6 +86,9 @@
 
 @Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
 
+@if (currentContext.HasPermissions(Permissions.User.Create))
+{
 <p>
     @Html.ActionLink(Users.CreateNew, "create", "users", new { }, new { @class = "btn btn-sm btn-primary" })
 </p>
+}

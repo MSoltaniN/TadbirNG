@@ -12,7 +12,7 @@ namespace SPPC.Tadbir.Service
         /// <summary>
         /// Gets current security context, usually set after a successful login.
         /// </summary>
-        ISecurityContext Current { get; }
+        ISecurityContext CurrentContext { get; }
 
         /// <summary>
         /// Saves security context of current application user in a suitable place, so that it can be

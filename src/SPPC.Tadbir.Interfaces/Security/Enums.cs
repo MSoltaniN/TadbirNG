@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Tadbir.Service
+namespace SPPC.Tadbir.Security
 {
     /// <summary>
     /// Provides flag values for permissions currently defined for managing a financial account.

@@ -76,13 +76,19 @@
     <Compile Include="NHibernate\ISecurityRepository.cs" />
     <Compile Include="NHibernate\ITransactionRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\AccountPermission.cs" />
+    <Compile Include="Security\SecureEntity.cs" />
+    <Compile Include="Security\Enums.cs" />
+    <Compile Include="Security\RolePermission.cs" />
+    <Compile Include="Security\TransactionPermission.cs" />
+    <Compile Include="Security\UserPermission.cs" />
     <Compile Include="Service\IAccountService.cs" />
     <Compile Include="Service\ISecurityContext.cs" />
     <Compile Include="Service\ILookupService.cs" />
     <Compile Include="Service\ISecurityContextManager.cs" />
     <Compile Include="Service\ISecurityService.cs" />
     <Compile Include="Service\ITransactionService.cs" />
-    <Compile Include="Service\Permissions.cs" />
+    <Compile Include="Security\Permissions.cs" />
     <Compile Include="Service\SecurityContext.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +99,10 @@
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
       <Project>{25D668E5-7585-47D7-8AB6-2FD4AC3F8565}</Project>
       <Name>SPPC.Framework.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj">
+      <Project>{504D9334-9367-4535-925B-CCB7574CE350}</Project>
+      <Name>SPPC.Tadbir.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.ViewModel\SPPC.Tadbir.ViewModel.csproj">
       <Project>{c3445a49-084d-4fc2-b1bb-dce676b52618}</Project>

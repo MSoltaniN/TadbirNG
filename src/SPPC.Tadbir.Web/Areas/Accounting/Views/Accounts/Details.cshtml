@@ -1,3 +1,7 @@
+@using Microsoft.Practices.Unity
+@using SPPC.Tadbir.Security
+@using SPPC.Tadbir.Service
+@using SPPC.Tadbir.Web.AppStart
 @using SPPC.Framework.Values
 @using SPPC.Tadbir.ViewModel.Finance
 @using SPPC.Tadbir.Values
@@ -5,6 +9,11 @@
 
 @{
     ViewBag.Title = Accounts.Details;
+
+    var contextManager = UnityConfig
+        .GetConfiguredContainer()
+        .Resolve<ISecurityContextManager>();
+    var currentContext = contextManager.CurrentContext;
 }
 
 <ol class="breadcrumb">
@@ -61,7 +70,10 @@
         </dd>
     </dl>
     <p>
-        @Html.ActionLink(Accounts.EditExisting, "edit", new { id = Model.Id }) |
+    @if (currentContext.HasPermissions(Permissions.Account.Edit))
+    {
+        @Html.ActionLink(Accounts.EditExisting, "edit", new { id = Model.Id })<span> | </span>
+    }
         @Html.ActionLink(Accounts.IndexTitle, "index")
     </p>
 </div>

@@ -26,9 +26,9 @@ namespace SPPC.Tadbir.Service
         /// <summary>
         /// Gets current security context, usually set after a successful login.
         /// </summary>
-        public ISecurityContext Current
+        public ISecurityContext CurrentContext
         {
-            get { return GetCurrent(); }
+            get { return GetCurrentContext(); }
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace SPPC.Tadbir.Service
             return encodedValue;
         }
 
-        private ISecurityContext GetCurrent()
+        private ISecurityContext GetCurrentContext()
         {
             ISecurityContext current = null;
             var contextCookie = _httpContext.Request.Cookies[Values.Constants.ContextCookieName];

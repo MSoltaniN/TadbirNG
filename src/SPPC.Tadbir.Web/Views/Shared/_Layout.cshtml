@@ -1,4 +1,14 @@
-﻿@using SPPC.Tadbir.Values
+﻿@using Microsoft.Practices.Unity
+@using SPPC.Tadbir.Security
+@using SPPC.Tadbir.Service
+@using SPPC.Tadbir.Values
+@using SPPC.Tadbir.Web.AppStart
+@{ 
+    var contextManager = UnityConfig
+        .GetConfiguredContainer()
+        .Resolve<ISecurityContextManager>();
+    var currentContext = contextManager.CurrentContext;
+}
 
 <!DOCTYPE html>
 <html lang="fa">
@@ -25,15 +35,27 @@
                     <li class="dropdown" style="float:right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Strings.Accounting <span class="caret"></span></a>
                         <ul class="dropdown-menu">
+                        @if (currentContext.HasPermissions(Permissions.Account.View))
+                        {
                             <li>@Html.ActionLink(Strings.ManageAccounts, "index", "accounts", new { area = "accounting" }, null)</li>
+                        }
+                        @if (currentContext.HasPermissions(Permissions.Transaction.View))
+                        {
                             <li>@Html.ActionLink(Strings.ManageTransactions, "index", "transactions", new { area = "accounting" }, null)</li>
+                        }
                         </ul>
                     </li>
                     <li class="dropdown" style="float:right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Strings.SystemAdministration <span class="caret"></span></a>
                         <ul class="dropdown-menu">
+                        @if (currentContext.HasPermissions(Permissions.User.View))
+                        {
                             <li>@Html.ActionLink(Strings.ManageUsers, "index", "users", new { area = "admin" }, null)</li>
+                        }
+                        @if (currentContext.HasPermissions(Permissions.Role.View))
+                        {
                             <li>@Html.ActionLink(Strings.ManageRoles, "index", "roles", new { area = "admin" }, null)</li>
+                        }
                         </ul>
                     </li>
                     <li class="dropdown" style="float:right">
