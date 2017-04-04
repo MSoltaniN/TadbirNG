@@ -27,10 +27,19 @@ namespace SPPC.Framework.Values
         /// </summary>
         public const string PageNotFound = "صفحه مورد نظر شما در این برنامه وجود ندارد.";
 
+        /// <summary>
+        /// Localized text for Access Denied title
+        /// </summary>
         public const string AccessDeniedTitle = "دسترسی کافی نیست";
 
+        /// <summary>
+        /// Localized text for user hint applicable to an Access Denied (401) error
+        /// </summary>
         public const string AccessDeniedHint = "در صورتی که فکر می کنید اشتباهی صورت گرفته است، لطفا با راهبر سیستم تماس بگیرید.";
 
+        /// <summary>
+        /// Localized text for a short message displayed in case of an Access Denied (401) error
+        /// </summary>
         public const string AccessDenied = "شما مجوز امنیتی کافی برای دسترسی به این صفحه ندارید.";
 
         /// <summary>
