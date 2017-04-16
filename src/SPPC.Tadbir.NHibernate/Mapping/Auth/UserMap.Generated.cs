@@ -50,26 +50,26 @@ namespace SPPC.Tadbir.NHibernate.Mapping
 
         private void MapReferences()
         {
-            ////HasMany(x => x.CreatedTransactions)
-            ////    .KeyColumn("CreatorID")
-            ////    .LazyLoad()
-            ////    .Cascade.None();
-            ////HasMany(x => x.ModifiedTransactions)
-            ////    .KeyColumn("ModifierID")
-            ////    .LazyLoad()
-            ////    .Cascade.None();
-            ////HasMany(x => x.VerifiedTransactions)
-            ////    .KeyColumn("VerifierID")
-            ////    .LazyLoad()
-            ////    .Cascade.None();
-            ////HasMany(x => x.ApprovedTransactions)
-            ////    .KeyColumn("ApproverID")
-            ////    .LazyLoad()
-            ////    .Cascade.None();
+            HasMany(x => x.CreatedTransactions)
+                .KeyColumn("CreatorID")
+                .LazyLoad()
+                .Cascade.None();
+            HasMany(x => x.ModifiedTransactions)
+                .KeyColumn("ModifierID")
+                .LazyLoad()
+                .Cascade.None();
+            HasMany(x => x.VerifiedTransactions)
+                .KeyColumn("VerifierID")
+                .LazyLoad()
+                .Cascade.None();
+            HasMany(x => x.ApprovedTransactions)
+                .KeyColumn("ApproverID")
+                .LazyLoad()
+                .Cascade.None();
             HasOne(x => x.Person)
                 .PropertyRef(y => y.User)
                 .Not.LazyLoad()
-                .Cascade.None();
+                .Cascade.SaveUpdate();
             HasManyToMany(x => x.Roles)
                 .Schema("Auth")
                 .Table("UserRole")
