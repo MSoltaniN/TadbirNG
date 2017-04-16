@@ -11,8 +11,6 @@
 // ------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Web.Http;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -20,6 +18,8 @@ using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Values;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.Security;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -32,6 +32,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/accounts/fp/{fpId:int}
         [Route(AccountApi.FiscalPeriodAccountsUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IHttpActionResult GetAccounts(int fpId)
         {
             if (fpId <= 0)
@@ -45,6 +46,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/accounts/{accountId:int}
         [Route(AccountApi.AccountUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IHttpActionResult GetAccount(int accountId)
         {
             if (accountId <= 0)
@@ -62,6 +64,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/accounts
         [Route(AccountApi.AccountsUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         public IHttpActionResult PostNewAccount([FromBody] AccountViewModel account)
         {
             if (account == null)
@@ -86,6 +89,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/accounts/{accountId:int}
         [Route(AccountApi.AccountUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Edit)]
         public IHttpActionResult PutModifiedAccount(int accountId, [FromBody] AccountViewModel account)
         {
             if (account == null)

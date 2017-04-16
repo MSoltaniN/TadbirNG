@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
 using SPPC.Tadbir.Api;
-using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -13,6 +12,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     {
         // GET: api/accounts/{accountId:int}/details
         [Route(AccountApi.AccountDetailsUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IHttpActionResult GetAccountDetail(int accountId)
         {
             if (accountId <= 0)
@@ -30,6 +30,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // DELETE: api/accounts/{accountId:int}
         [Route(AccountApi.AccountUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
         public IHttpActionResult DeleteExistingAccount(int accountId)
         {
             if (accountId <= 0)
