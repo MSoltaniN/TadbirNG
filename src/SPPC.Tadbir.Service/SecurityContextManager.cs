@@ -18,9 +18,11 @@ namespace SPPC.Tadbir.Service
         /// Initializes a new instance of the <see cref=" SecurityContextManager"/> class, using given Web context.
         /// </summary>
         /// <param name="httpContext">An object that provides current Web application context</param>
-        public SecurityContextManager(HttpContextBase httpContext)
+        /// <param name="contextEncoder">An object used for encoding and decoding <see cref="SecurityContext"/> objects</param>
+        public SecurityContextManager(HttpContextBase httpContext, ITextEncoder<SecurityContext> contextEncoder)
         {
             _httpContext = httpContext;
+            _contextEncoder = contextEncoder;
         }
 
         /// <summary>
@@ -32,6 +34,14 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Gets current security context in a readable encoded form.
+        /// </summary>
+        public string EncodedContext
+        {
+            get { return GetEncodedContext(); }
+        }
+
+        /// <summary>
         /// Saves security context of current application user in an HTTP cookie, so that it can be
         /// easily retrieved on demand for performing authorization.
         /// </summary>
@@ -40,34 +50,8 @@ namespace SPPC.Tadbir.Service
         {
             Verify.ArgumentNotNull(userContext, "userContext");
             var context = new SecurityContext(userContext);
-            var cookie = new HttpCookie(Values.Constants.ContextCookieName, ToEncodedValue(context));
+            var cookie = new HttpCookie(Values.Constants.ContextCookieName, _contextEncoder.Encode(context));
             _httpContext.Response.Cookies.Set(cookie);
-        }
-
-        private static ISecurityContext FromEncodedValue(string encodedValue)
-        {
-            Verify.ArgumentNotNullOrEmptyString(encodedValue, "encodedValue");
-            ISecurityContext context = null;
-            using (var stream = new MemoryStream(Transform.FromBase64String(encodedValue)))
-            {
-                var formatter = new BinaryFormatter();
-                context = formatter.Deserialize(stream) as SecurityContext;
-            }
-
-            return context;
-        }
-
-        private static string ToEncodedValue(SecurityContext context)
-        {
-            var encodedValue = String.Empty;
-            using (var stream = new MemoryStream())
-            {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(stream, context);
-                encodedValue = Transform.ToBase64String(stream.ToArray());
-            }
-
-            return encodedValue;
         }
 
         private ISecurityContext GetCurrentContext()
@@ -76,12 +60,25 @@ namespace SPPC.Tadbir.Service
             var contextCookie = _httpContext.Request.Cookies[Values.Constants.ContextCookieName];
             if (contextCookie != null)
             {
-                current = FromEncodedValue(contextCookie.Value);
+                current = _contextEncoder.Decode(contextCookie.Value);
             }
 
             return current;
         }
 
-        private HttpContextBase _httpContext;
+        private string GetEncodedContext()
+        {
+            string current = String.Empty;
+            var contextCookie = _httpContext.Request.Cookies[Values.Constants.ContextCookieName];
+            if (contextCookie != null)
+            {
+                current = contextCookie.Value;
+            }
+
+            return current;
+        }
+
+        private readonly HttpContextBase _httpContext;
+        private readonly ITextEncoder<SecurityContext> _contextEncoder;
     }
 }

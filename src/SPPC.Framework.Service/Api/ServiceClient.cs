@@ -145,7 +145,10 @@ namespace SPPC.Framework.Service
             return new Uri(String.Format("{0}{1}", _httpClient.BaseAddress.ToString(), resourceUrl));
         } 
 
-        private readonly HttpClient _httpClient;
+        /// <summary>
+        /// Internal object used for sending HTTP requests
+        /// </summary>
+        protected HttpClient _httpClient;
         private bool _disposed = false;
     }
 }

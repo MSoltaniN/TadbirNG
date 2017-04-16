@@ -88,13 +88,14 @@ namespace SPPC.Tadbir.Unity
         /// </summary>
         public void RegisterServiceTypes()
         {
-            _container.RegisterType<IApiClient, ServiceClient>();
+            _container.RegisterType<IApiClient, ApiClient>();
             _container.RegisterType<IAccountService, AccountService>();
             _container.RegisterType<ITransactionService, TransactionService>();
             _container.RegisterType<ILookupService, LookupService>();
             _container.RegisterType<ISecurityService, SecurityService>();
             _container.RegisterType<ICryptoService, CryptoService>();
             _container.RegisterType<ISecurityContextManager, SecurityContextManager>();
+            _container.RegisterType<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
         }
 
         /// <summary>

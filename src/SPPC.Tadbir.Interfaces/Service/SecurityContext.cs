@@ -15,6 +15,13 @@ namespace SPPC.Tadbir.Service
         /// <summary>
         /// Initializes a new instance of the <see cref="SecurityContext"/> class.
         /// </summary>
+        public SecurityContext()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityContext"/> class.
+        /// </summary>
         /// <param name="userContext">An object containing context information for current application user</param>
         public SecurityContext(UserContextViewModel userContext)
         {
@@ -25,7 +32,7 @@ namespace SPPC.Tadbir.Service
         /// <summary>
         /// Gets or sets the context for current application user.
         /// </summary>
-        public UserContextViewModel User { get; private set; }
+        public UserContextViewModel User { get; set; }
 
         /// <summary>
         /// Returns a value that indicates if current user can access data for a branch specified by identifier.

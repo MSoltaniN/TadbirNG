@@ -6,8 +6,10 @@ using System.Net.Http;
 using System.Web.Http;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -36,6 +38,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/roles/{roleId:int}
         [Route(SecurityApi.RoleUrl)]
+        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public IHttpActionResult GetRole(int roleId)
         {
             if (roleId <= 0)

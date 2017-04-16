@@ -33,8 +33,13 @@ namespace SPPC.Tadbir.Values
         public const int AdminRoleId = 1;
 
         /// <summary>
-        /// Name of security context cookie used for authorization
+        /// Name of security context cookie used for authorization in application level
         /// </summary>
         public const string ContextCookieName = "TadbirContext";
+
+        /// <summary>
+        /// Name of authorization context HTTP header used for authorization in Web service level
+        /// </summary>
+        public const string ContextHeaderName = "X-Tadbir-AuthTicket";
     }
 }

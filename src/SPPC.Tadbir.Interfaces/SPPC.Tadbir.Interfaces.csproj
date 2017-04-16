@@ -87,6 +87,7 @@
     <Compile Include="Service\ILookupService.cs" />
     <Compile Include="Service\ISecurityContextManager.cs" />
     <Compile Include="Service\ISecurityService.cs" />
+    <Compile Include="Service\ITextEncoder.cs" />
     <Compile Include="Service\ITransactionService.cs" />
     <Compile Include="Security\Permissions.cs" />
     <Compile Include="Service\SecurityContext.cs" />

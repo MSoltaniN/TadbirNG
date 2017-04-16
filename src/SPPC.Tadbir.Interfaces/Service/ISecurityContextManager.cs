@@ -15,6 +15,11 @@ namespace SPPC.Tadbir.Service
         ISecurityContext CurrentContext { get; }
 
         /// <summary>
+        /// Gets current security context in a readable encoded form.
+        /// </summary>
+        string EncodedContext { get; }
+
+        /// <summary>
         /// Saves security context of current application user in a suitable place, so that it can be
         /// easily retrieved on demand for performing authorization.
         /// </summary>

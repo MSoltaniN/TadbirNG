@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
+using Microsoft.Practices.Unity;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.Web.Api.AppStart;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -191,6 +191,35 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 ? Json(userContext)
                 : NotFound() as IHttpActionResult;
             return result;
+        }
+
+        // GET: api/users/{userId:int}/ticket
+        [Route("users/{userId:int}/ticket")]
+        public IHttpActionResult GetUserTicket(int userId)
+        {
+#if DEBUG
+            if (userId <= 0)
+            {
+                return NotFound();
+            }
+
+            string ticket = String.Empty;
+            var userContext = _repository.GetUserContext(userId);
+            if (userContext != null)
+            {
+                var contextEncoder = UnityConfig.GetConfiguredContainer()
+                    .Resolve<ITextEncoder<SecurityContext>>();
+                var securityContext = new SecurityContext(userContext);
+                ticket = contextEncoder.Encode(securityContext);
+            }
+
+            var result = (!String.IsNullOrEmpty(ticket))
+                ? Json(ticket)
+                : NotFound() as IHttpActionResult;
+            return result;
+#else
+            return NotFound();
+#endif
         }
 
         private ISecurityRepository _repository;
