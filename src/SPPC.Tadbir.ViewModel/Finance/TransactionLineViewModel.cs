@@ -14,6 +14,16 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int TransactionId { get; set; }
 
         /// <summary>
+        /// Gets or sets the identifier of the corporate branch in which this line (article) item is defined
+        /// </summary>
+        public int BranchId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the fiscal period in which this line (article) item is defined
+        /// </summary>
+        public int FiscalPeriodId { get; set; }
+
+        /// <summary>
         /// Gets or sets the identifier of the account that is affected by this article.
         /// </summary>
         [Display(Name = FieldNames.AccountField)]

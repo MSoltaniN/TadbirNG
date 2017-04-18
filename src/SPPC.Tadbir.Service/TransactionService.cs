@@ -23,14 +23,15 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// Retrieves all transaction items that are currently defined in the specified fiscal period.
+        /// Retrieves all transaction items that are currently defined in the specified fiscal period and branch.
         /// </summary>
         /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
         /// <returns>Collection of all transactions in the specified fiscal period</returns>
-        public IEnumerable<TransactionViewModel> GetTransactions(int fpId)
+        public IEnumerable<TransactionViewModel> GetTransactions(int fpId, int branchId)
         {
             var transactions = _apiClient.Get<IEnumerable<TransactionViewModel>>(
-                TransactionApi.FiscalPeriodTransactions, fpId);
+                TransactionApi.FiscalPeriodBranchTransactions, fpId, branchId);
             return transactions;
         }
 

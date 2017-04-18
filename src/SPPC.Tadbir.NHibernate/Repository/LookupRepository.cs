@@ -31,12 +31,14 @@ namespace SPPC.Tadbir.NHibernate
         /// account in database.
         /// </summary>
         /// <param name="fpId">Unique identifier of an existing fiscal period</param>
+        /// <param name="branchId">Unique identifier of the branch to look for accounts</param>
         /// <returns>Collection of all account items in the specified fiscal period.</returns>
-        public IEnumerable<KeyValue> GetAccounts(int fpId)
+        public IEnumerable<KeyValue> GetAccounts(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetRepository<Account>();
             var accounts = repository
-                .GetByCriteria(acc => acc.FiscalPeriod.Id == fpId)
+                .GetByCriteria(acc => acc.FiscalPeriod.Id == fpId
+                    && acc.Branch.Id == branchId)
                 .OrderBy(acc => acc.Code)
                 .Select(acc => _mapper.Map<KeyValue>(acc));
             return accounts;

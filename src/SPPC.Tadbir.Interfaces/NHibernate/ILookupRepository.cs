@@ -10,13 +10,14 @@ namespace SPPC.Tadbir.NHibernate
     public interface ILookupRepository
     {
         /// <summary>
-        /// Retrieves all financial account items in the specified fiscal period as a collection of
+        /// Retrieves all financial account items in the specified fiscal period and branch as a collection of
         /// <see cref="KeyValue"/> objects. The key for each entry is the unique identifier of corresponding
         /// account in data store.
         /// </summary>
         /// <param name="fpId">Unique identifier of an existing fiscal period</param>
+        /// <param name="branchId">Unique identifier of the branch to look for accounts</param>
         /// <returns>Collection of all account items in the specified fiscal period.</returns>
-        IEnumerable<KeyValue> GetAccounts(int fpId);
+        IEnumerable<KeyValue> GetAccounts(int fpId, int branchId);
 
         /// <summary>
         /// Retrieves all currency objects as a collection of <see cref="KeyValue"/> objects. The key for each

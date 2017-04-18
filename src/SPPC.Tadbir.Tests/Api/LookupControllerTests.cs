@@ -34,7 +34,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act & Assert
-            AssertActionRouteEquals("GetAccountsLookup", LookupApi.FiscalPeriodAccountsUrl);
+            AssertActionRouteEquals("GetAccountsLookup", LookupApi.FiscalPeriodBranchAccountsUrl);
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            var result = _controller.GetAccountsLookup(_fpId);
+            var result = _controller.GetAccountsLookup(_fpId, _branchId);
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -55,10 +55,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            _controller.GetAccountsLookup(_fpId);
+            _controller.GetAccountsLookup(_fpId, _branchId);
 
             // Assert
-            _mockRepository.Verify(repo => repo.GetAccounts(_fpId));
+            _mockRepository.Verify(repo => repo.GetAccounts(_fpId, _branchId));
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            var result = _controller.GetAccountsLookup(_fpId) as JsonResult<IEnumerable<KeyValue>>;
+            var result = _controller.GetAccountsLookup(_fpId, _branchId) as JsonResult<IEnumerable<KeyValue>>;
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -80,7 +80,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             int invalidFpId = -2;
 
             // Act
-            var result = _controller.GetAccountsLookup(invalidFpId) as NotFoundResult;
+            var result = _controller.GetAccountsLookup(invalidFpId, _branchId) as NotFoundResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -139,5 +139,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
         private Mock<ILookupRepository> _mockRepository;
         private int _fpId = 1;
+        private int _branchId = 1;
     }
 }

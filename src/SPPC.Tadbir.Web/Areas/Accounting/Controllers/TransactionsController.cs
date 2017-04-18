@@ -11,19 +11,19 @@ using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 {
-    [Authorize]
     public class TransactionsController : Controller
     {
-        public TransactionsController(ITransactionService service)
+        public TransactionsController(ITransactionService service, ISecurityContextManager contextManager)
         {
             _service = service;
+            _contextManager = contextManager;
         }
 
         // GET: accounting/transactions[?page={page}]
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public ActionResult Index(int? page = null)
         {
-            var transactions = _service.GetTransactions(TempContext.CurrentFiscalPeriodId);
+            var transactions = _service.GetTransactions(TempContext.CurrentFiscalPeriodId, TempContext.CurrentBranchId);
             int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(transactions.ToPagedList(pageNumber, pageSize));
@@ -33,11 +33,13 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
         public ViewResult Create()
         {
+            var currentContext = _contextManager.CurrentContext;
             var transaction = new TransactionViewModel()
             {
                 FiscalPeriodId = TempContext.CurrentFiscalPeriodId,
-                CreatorId = TempContext.CurrentUserId,
-                LastModifierId = TempContext.CurrentUserId,
+                BranchId = TempContext.CurrentBranchId,
+                CreatorId = currentContext.User.Id,
+                LastModifierId = currentContext.User.Id,
                 Date = JalaliDateTime.Now.ToShortDateString()
             };
 
@@ -145,5 +147,6 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         private ITransactionService _service;
+        private ISecurityContextManager _contextManager;
     }
 }

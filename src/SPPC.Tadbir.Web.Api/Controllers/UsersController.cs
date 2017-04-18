@@ -32,7 +32,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/users/{userName}
         [Route(SecurityApi.UserByNameUrl)]
-        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public IHttpActionResult GetUserByName(string userName)
         {
             if (String.IsNullOrEmpty(userName))

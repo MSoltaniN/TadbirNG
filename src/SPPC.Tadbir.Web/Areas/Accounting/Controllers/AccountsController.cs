@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         [AppAuthorize(SecureEntity.Account, (int)AccountPermissions.View)]
         public ViewResult Index(int? page = null)
         {
-            var accounts = _service.GetAccounts(TempContext.CurrentFiscalPeriodId);
+            var accounts = _service.GetAccounts(TempContext.CurrentFiscalPeriodId, TempContext.CurrentBranchId);
             int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(accounts.ToPagedList(pageNumber, pageSize));
@@ -30,7 +30,11 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         [AppAuthorize(SecureEntity.Account, (int)AccountPermissions.Create)]
         public ViewResult Create()
         {
-            var account = new AccountViewModel() { FiscalPeriodId = TempContext.CurrentFiscalPeriodId };
+            var account = new AccountViewModel()
+            {
+                FiscalPeriodId = TempContext.CurrentFiscalPeriodId,
+                BranchId = TempContext.CurrentBranchId
+            };
             return View(account);
         }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Api;
@@ -22,13 +21,15 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// Retrieves existing accounts in the specified fiscal period as a lookup collection.
+        /// Retrieves existing accounts in the specified fiscal period and branch as a lookup collection.
         /// </summary>
         /// <param name="fpId">Unique identifier of the fiscal period to look for accounts</param>
+        /// <param name="branchId">Unique identifier of the branch to look for accounts</param>
         /// <returns>Lookup collection of existing accounts in the fiscal period</returns>
-        public IEnumerable<KeyValue> LookupAccounts(int fpId)
+        public IEnumerable<KeyValue> LookupAccounts(int fpId, int branchId)
         {
-            var accountLookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.FiscalPeriodAccounts, fpId);
+            var accountLookup = _apiClient.Get<IEnumerable<KeyValue>>(
+                LookupApi.FiscalPeriodBranchAccounts, fpId, branchId);
             return accountLookup;
         }
 

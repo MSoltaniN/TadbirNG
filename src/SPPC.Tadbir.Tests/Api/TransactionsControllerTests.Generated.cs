@@ -52,7 +52,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act & Assert
-            AssertActionRouteEquals("GetTransactions", TransactionApi.FiscalPeriodTransactionsUrl);
+            AssertActionRouteEquals("GetTransactions", TransactionApi.FiscalPeriodBranchTransactionsUrl);
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            var result = _controller.GetTransactions(_fpId);
+            var result = _controller.GetTransactions(_fpId, _branchId);
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -73,10 +73,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            _controller.GetTransactions(_fpId);
+            _controller.GetTransactions(_fpId, _branchId);
 
             // Assert
-            _mockRepository.Verify(repo => repo.GetTransactions(_fpId));
+            _mockRepository.Verify(repo => repo.GetTransactions(_fpId, _branchId));
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            var result = _controller.GetTransactions(_fpId) as JsonResult<IList<TransactionViewModel>>;
+            var result = _controller.GetTransactions(_fpId, _branchId) as JsonResult<IList<TransactionViewModel>>;
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -98,7 +98,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             int invalidFpId = -2;
 
             // Act
-            var result = _controller.GetTransactions(invalidFpId) as NotFoundResult;
+            var result = _controller.GetTransactions(invalidFpId, _branchId) as NotFoundResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -594,6 +594,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         private int _existingTransactionId = 1;
         private int _existingArticleId = 1;
         private int _fpId = 1;
+        private int _branchId = 1;
         private TransactionLineViewModel _existingArticle;
     }
 }

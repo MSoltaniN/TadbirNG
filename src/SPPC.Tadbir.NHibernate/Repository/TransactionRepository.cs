@@ -29,15 +29,17 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
-        /// Retrieves all transactions in specified fiscal period from repository.
+        /// Retrieves all transactions in specified fiscal period and corporate branch from repository.
         /// </summary>
         /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
         /// <returns>A collection of <see cref="TransactionViewModel"/> objects retrieved from repository</returns>
-        public IList<TransactionViewModel> GetTransactions(int fpId)
+        public IList<TransactionViewModel> GetTransactions(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetRepository<Transaction>();
             var transactions = repository
-                .GetByCriteria(txn => txn.FiscalPeriod.Id == fpId)
+                .GetByCriteria(txn => txn.FiscalPeriod.Id == fpId
+                    && txn.Branch.Id == branchId)
                 .OrderBy(txn => txn.Date)
                 .Select(item => _mapper.Map<TransactionViewModel>(item))
                 .ToList();

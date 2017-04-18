@@ -47,7 +47,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act & Assert
-            AssertActionRouteEquals("GetAccounts", AccountApi.FiscalPeriodAccountsUrl);
+            AssertActionRouteEquals("GetAccounts", AccountApi.FiscalPeriodBranchAccountsUrl);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            var result = _controller.GetAccounts(_fpId);
+            var result = _controller.GetAccounts(_fpId, _branchId);
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -68,10 +68,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            _controller.GetAccounts(_fpId);
+            _controller.GetAccounts(_fpId, _branchId);
 
             // Assert
-            _mockRepository.Verify(repo => repo.GetAccounts(_fpId));
+            _mockRepository.Verify(repo => repo.GetAccounts(_fpId, _branchId));
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            var result = _controller.GetAccounts(_fpId) as JsonResult<IList<AccountViewModel>>;
+            var result = _controller.GetAccounts(_fpId, _branchId) as JsonResult<IList<AccountViewModel>>;
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -93,7 +93,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             int invalidFpId = -2;
 
             // Act
-            var result = _controller.GetAccounts(invalidFpId) as NotFoundResult;
+            var result = _controller.GetAccounts(invalidFpId, _branchId) as NotFoundResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -381,5 +381,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         private AccountViewModel _existingAccount;
         private int _existingAccountId = 1;
         private int _fpId = 1;
+        private int _branchId = 1;
     }
 }

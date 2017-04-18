@@ -40,15 +40,17 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
-        /// Retrieves all accounts in specified fiscal period from database.
+        /// Retrieves all accounts in specified fiscal period and corporate branch from database.
         /// </summary>
         /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
         /// <returns>A collection of <see cref="AccountViewModel"/> objects retrieved from database</returns>
-        public IList<AccountViewModel> GetAccounts(int fpId)
+        public IList<AccountViewModel> GetAccounts(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetRepository<Account>();
             var accounts = repository
-                .GetByCriteria(acc => acc.FiscalPeriod.Id == fpId)
+                .GetByCriteria(acc => acc.FiscalPeriod.Id == fpId
+                    && acc.Branch.Id == branchId)
                 .OrderBy(acc => acc.Code)
                 .Select(item => _mapper.Map<AccountViewModel>(item))
                 .ToList();

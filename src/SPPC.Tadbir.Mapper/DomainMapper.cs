@@ -110,7 +110,8 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<Account, AccountViewModel>();
             mapperConfig.CreateMap<AccountViewModel, Account>()
-                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId);
+                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
+                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
             mapperConfig.CreateMap<Account, AccountFullViewModel>();
             mapperConfig.CreateMap<Account, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
@@ -143,6 +144,7 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.MapFrom(
                         src => JalaliDateTime.Parse(src.Date).ToGregorian()))
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
+                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
                 .AfterMap((viewModel, model) => model.Creator.Id = viewModel.CreatorId)
                 .AfterMap((viewModel, model) => model.LastModifier.Id = viewModel.LastModifierId);
             mapperConfig.CreateMap<TransactionLine, TransactionLineViewModel>();
@@ -153,6 +155,8 @@ namespace SPPC.Tadbir.Mapper
                         src => _autoMapper.Map<TransactionLineViewModel>(src)));
             mapperConfig.CreateMap<TransactionLineViewModel, TransactionLine>()
                 .AfterMap((viewModel, model) => model.Transaction.Id = viewModel.TransactionId)
+                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
+                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
                 .AfterMap((viewModel, model) => model.Account.Id = viewModel.AccountId)
                 .AfterMap((viewModel, model) => model.Currency.Id = viewModel.CurrencyId);
 

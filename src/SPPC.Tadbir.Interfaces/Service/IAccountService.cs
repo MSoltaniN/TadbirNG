@@ -11,11 +11,12 @@ namespace SPPC.Tadbir.Service
     public interface IAccountService
     {
         /// <summary>
-        /// Retrieves all account items that are currently defined in the specified fiscal period.
+        /// Retrieves all account items that are currently defined in the specified fiscal period and branch.
         /// </summary>
         /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
         /// <returns>Collection of all account items in the specified fiscal period</returns>
-        IEnumerable<AccountViewModel> GetAccounts(int fpId);
+        IEnumerable<AccountViewModel> GetAccounts(int fpId, int branchId);
 
         /// <summary>
         /// Retrieves a single account item specified by unique identifier.

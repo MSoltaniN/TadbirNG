@@ -33,19 +33,19 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// Gets or sets the name of fiscal period in which this transaction line (article) is defined.
         /// </summary>
         [Display(Name = Entities.FiscalPeriod)]
-        public string TransactionFiscalPeriodName { get; set; }
+        public string FiscalPeriodName { get; set; }
 
         /// <summary>
         /// Gets or sets the name of company branch in which the fiscal period of this transaction line (article)
         /// is defined.
         /// </summary>
         [Display(Name = Entities.Branch)]
-        public string TransactionFiscalPeriodBranchName { get; set; }
+        public string BranchName { get; set; }
 
         /// <summary>
         /// Gets or sets the name of company in which the branch for this transaction line (article) is defined.
         /// </summary>
         [Display(Name = Entities.Company)]
-        public string TransactionFiscalPeriodBranchCompanyName { get; set; }
+        public string BranchCompanyName { get; set; }
     }
 }

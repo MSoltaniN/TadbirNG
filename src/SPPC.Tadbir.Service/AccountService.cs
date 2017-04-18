@@ -24,13 +24,15 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// Retrieves all account items that are currently defined in the specified fiscal period.
+        /// Retrieves all account items that are currently defined in the specified fiscal period and branch.
         /// </summary>
         /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
         /// <returns>Collection of all account items in the specified fiscal period</returns>
-        public IEnumerable<AccountViewModel> GetAccounts(int fpId)
+        public IEnumerable<AccountViewModel> GetAccounts(int fpId, int branchId)
         {
-            var accounts = _apiClient.Get<IEnumerable<AccountViewModel>>(AccountApi.FiscalPeriodAccounts, fpId);
+            var accounts = _apiClient.Get<IEnumerable<AccountViewModel>>(
+                AccountApi.FiscalPeriodBranchAccounts, fpId, branchId);
             return accounts;
         }
 

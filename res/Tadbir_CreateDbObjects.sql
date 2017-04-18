@@ -149,7 +149,7 @@ GO
 
 CREATE TABLE [Finance].[FiscalPeriod] (
     [FiscalPeriodID]   INT              IDENTITY (1, 1) NOT NULL,
-	[BranchID]         INT              NOT NULL,
+	[CompanyID]        INT              NOT NULL,
     [Name]             NVARCHAR(64)     NOT NULL,
     [StartDate]        DATETIME         NOT NULL,
     [EndDate]          DATETIME         NOT NULL,
@@ -157,13 +157,14 @@ CREATE TABLE [Finance].[FiscalPeriod] (
     [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_FiscalPeriod_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]     DATETIME         CONSTRAINT [DF_Finance_FiscalPeriod_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_FiscalPeriod] PRIMARY KEY CLUSTERED ([FiscalPeriodID] ASC)
-    , CONSTRAINT [FK_Finance_FiscalPeriod_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+    , CONSTRAINT [FK_Finance_FiscalPeriod_Corporate_Company] FOREIGN KEY ([CompanyID]) REFERENCES [Corporate].[Company] ([CompanyID])
 )
 GO
 
 CREATE TABLE [Finance].[Account] (
     [AccountID]      INT              IDENTITY (1, 1) NOT NULL,
 	[FiscalPeriodID] INT              NOT NULL,
+	[BranchID]       INT              NOT NULL,
     [Code]           NVARCHAR(512)    NOT NULL,
     [Name]           NVARCHAR(512)    NOT NULL,
     [Description]    NVARCHAR(512)    NULL,
@@ -171,12 +172,14 @@ CREATE TABLE [Finance].[Account] (
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_Account_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_Account] PRIMARY KEY CLUSTERED ([AccountID] ASC)
     , CONSTRAINT [FK_Finance_Account_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_Account_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
 )
 GO
 
 CREATE TABLE [Finance].[Transaction] (
     [TransactionID]   INT              IDENTITY (1, 1) NOT NULL,
 	[FiscalPeriodID]  INT              NOT NULL,
+	[BranchID]        INT              NOT NULL,
 	[CreatorID]       INT              NOT NULL,
 	[ModifierID]      INT              NOT NULL,
 	[VerifierID]      INT              NULL,
@@ -191,6 +194,7 @@ CREATE TABLE [Finance].[Transaction] (
     [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_Transaction_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_Transaction] PRIMARY KEY CLUSTERED ([TransactionID] ASC)
     , CONSTRAINT [FK_Finance_Transaction_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_Transaction_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
     , CONSTRAINT [FK_Finance_Transaction_Auth_User_Creator] FOREIGN KEY ([CreatorID]) REFERENCES [Auth].[User] ([UserID])
     , CONSTRAINT [FK_Finance_Transaction_Auth_User_Modifier] FOREIGN KEY ([ModifierID]) REFERENCES [Auth].[User] ([UserID])
     , CONSTRAINT [FK_Finance_Transaction_Auth_User_Verifier] FOREIGN KEY ([VerifierID]) REFERENCES [Auth].[User] ([UserID])
@@ -199,17 +203,21 @@ CREATE TABLE [Finance].[Transaction] (
 GO
 
 CREATE TABLE [Finance].[TransactionLine] (
-    [LineID]        INT              IDENTITY (1, 1) NOT NULL,
-	[TransactionID] INT              NOT NULL,
-	[AccountID]     INT              NOT NULL,
-	[CurrencyID]    INT              NOT NULL,
-    [Description]   NVARCHAR(512)    NULL,
-    [Debit]         MONEY            NOT NULL,
-    [Credit]        MONEY            NOT NULL,
-    [rowguid]       UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_TransactionLine_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]  DATETIME         CONSTRAINT [DF_Finance_TransactionLine_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    [LineID]          INT              IDENTITY (1, 1) NOT NULL,
+	[TransactionID]   INT              NOT NULL,
+	[FiscalPeriodID]  INT              NOT NULL,
+	[BranchID]        INT              NOT NULL,
+	[AccountID]       INT              NOT NULL,
+	[CurrencyID]      INT              NOT NULL,
+    [Description]     NVARCHAR(512)    NULL,
+    [Debit]           MONEY            NOT NULL,
+    [Credit]          MONEY            NOT NULL,
+    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_TransactionLine_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_TransactionLine_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_TransactionLine] PRIMARY KEY CLUSTERED ([LineID] ASC)
     , CONSTRAINT [FK_Finance_TransactionLine_Finance_Transaction] FOREIGN KEY ([TransactionID]) REFERENCES [Finance].[Transaction] ([TransactionID])
+    , CONSTRAINT [FK_Finance_TransactionLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_TransactionLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
     , CONSTRAINT [FK_Finance_TransactionLine_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
     , CONSTRAINT [FK_Finance_TransactionLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
 )

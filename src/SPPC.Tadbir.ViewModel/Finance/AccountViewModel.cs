@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
     public partial class AccountViewModel
     {
+        /// <summary>
+        /// Gets or sets the identifier of the branch in which this account is defined.
+        /// </summary>
+        public int BranchId { get; set; }
+
         /// <summary>
         /// Gets or sets the identifier of the fiscal period in which this financial account is defined.
         /// </summary>

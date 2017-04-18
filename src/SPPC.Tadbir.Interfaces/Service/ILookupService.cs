@@ -10,11 +10,12 @@ namespace SPPC.Tadbir.Service
     public interface ILookupService
     {
         /// <summary>
-        /// Retrieves existing accounts in the specified fiscal period as a lookup collection.
+        /// Retrieves existing accounts in the specified fiscal period and branch as a lookup collection.
         /// </summary>
         /// <param name="fpId">Unique identifier of the fiscal period to look for accounts</param>
+        /// <param name="branchId">Unique identifier of the branch to look for accounts</param>
         /// <returns>Lookup collection of existing accounts in the fiscal period</returns>
-        IEnumerable<KeyValue> LookupAccounts(int fpId);
+        IEnumerable<KeyValue> LookupAccounts(int fpId, int branchId);
 
         /// <summary>
         /// Retrieves existing currencies as a lookup collection

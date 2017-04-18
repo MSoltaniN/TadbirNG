@@ -21,6 +21,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int FiscalPeriodId { get; set; }
 
         /// <summary>
+        /// Gets or sets the identifier of the branch in which this financial transaction is defined.
+        /// </summary>
+        public int BranchId { get; set; }
+
+        /// <summary>
         /// Gets or sets the sum of all debit values in transaction lines (articles).
         /// </summary>
         public decimal DebitSum { get; set; }

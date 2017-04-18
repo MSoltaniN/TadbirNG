@@ -17,17 +17,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
         }
 
-        // GET: api/transactions/fp/{fpId:int}
-        [Route(TransactionApi.FiscalPeriodTransactionsUrl)]
+        // GET: api/transactions/fp/{fpId:int}/branch/{branchId:int}
+        [Route(TransactionApi.FiscalPeriodBranchTransactionsUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
-        public IHttpActionResult GetTransactions(int fpId)
+        public IHttpActionResult GetTransactions(int fpId, int branchId)
         {
-            if (fpId <= 0)
+            if (fpId <= 0 || branchId <= 0)
             {
                 return NotFound();
             }
 
-            var transactions = _repository.GetTransactions(fpId);
+            var transactions = _repository.GetTransactions(fpId, branchId);
             return Json(transactions);
         }
 

@@ -30,17 +30,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
         }
 
-        // GET: api/accounts/fp/{fpId:int}
-        [Route(AccountApi.FiscalPeriodAccountsUrl)]
+        // GET: api/accounts/fp/{fpId:int}/branch/{branchId:int}
+        [Route(AccountApi.FiscalPeriodBranchAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public IHttpActionResult GetAccounts(int fpId)
+        public IHttpActionResult GetAccounts(int fpId, int branchId)
         {
-            if (fpId <= 0)
+            if (fpId <= 0 || branchId <= 0)
             {
                 return NotFound();
             }
 
-            var accounts = _repository.GetAccounts(fpId);
+            var accounts = _repository.GetAccounts(fpId, branchId);
             return Json(accounts);
         }
 

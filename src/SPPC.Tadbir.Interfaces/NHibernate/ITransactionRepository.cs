@@ -10,11 +10,12 @@ namespace SPPC.Tadbir.NHibernate
     public interface ITransactionRepository
     {
         /// <summary>
-        /// Retrieves all transactions in specified fiscal period from repository.
+        /// Retrieves all transactions in specified fiscal period and branch from repository.
         /// </summary>
         /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
         /// <returns>A collection of <see cref="TransactionViewModel"/> objects retrieved from repository</returns>
-        IList<TransactionViewModel> GetTransactions(int fpId);
+        IList<TransactionViewModel> GetTransactions(int fpId, int branchId);
 
         /// <summary>
         /// Retrieves a single financial transaction with detail information from repository.

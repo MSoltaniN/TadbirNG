@@ -21,7 +21,12 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         public ActionResult Create(int transactionId)
         {
             InitLookups();
-            var article = new TransactionLineViewModel() { TransactionId = transactionId };
+            var article = new TransactionLineViewModel()
+            {
+                TransactionId = transactionId,
+                FiscalPeriodId = TempContext.CurrentFiscalPeriodId,
+                BranchId = TempContext.CurrentBranchId
+            };
             return View(article);
         }
 
@@ -118,7 +123,8 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 
         private void InitLookups()
         {
-            ViewBag.AccountLookup = _lookupService.LookupAccounts(TempContext.CurrentFiscalPeriodId);
+            ViewBag.AccountLookup = _lookupService.LookupAccounts(
+                TempContext.CurrentFiscalPeriodId, TempContext.CurrentBranchId);
             ViewBag.CurrencyLookup = _lookupService.LookupCurrencies();
         }
 
