@@ -79,6 +79,9 @@
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Workflow\WorkItem.Generated.cs" />
+    <Compile Include="Workflow\WorkItemDocument.Generated.cs" />
+    <Compile Include="Workflow\WorkItemHistory.Generated.cs" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">

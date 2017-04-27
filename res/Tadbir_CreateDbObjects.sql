@@ -20,6 +20,9 @@ GO
 CREATE SCHEMA [Finance]
 GO
 
+CREATE SCHEMA [Workflow]
+GO
+
 CREATE TABLE [Finance].[Currency] (
     [CurrencyID]     INT              IDENTITY (1, 1) NOT NULL,
     [Name]           NVARCHAR(64)     NOT NULL,
@@ -177,21 +180,20 @@ CREATE TABLE [Finance].[Account] (
 GO
 
 CREATE TABLE [Finance].[Transaction] (
-    [TransactionID]   INT              IDENTITY (1, 1) NOT NULL,
-	[FiscalPeriodID]  INT              NOT NULL,
-	[BranchID]        INT              NOT NULL,
-	[CreatorID]       INT              NOT NULL,
-	[ModifierID]      INT              NOT NULL,
-	[VerifierID]      INT              NULL,
-	[ApproverID]      INT              NULL,
-    [No]              NVARCHAR(64)     NOT NULL,
-    [Date]            DATETIME         NOT NULL,
-    [Description]     NVARCHAR(512)    NULL,
-    [Status]          NVARCHAR(64)     NOT NULL,
-    [IsVerified]      BIT              NOT NULL,
-    [IsApproved]      BIT              NOT NULL,
-    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Transaction_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_Transaction_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    [TransactionID]     INT              IDENTITY (1, 1) NOT NULL,
+	[FiscalPeriodID]    INT              NOT NULL,
+	[BranchID]          INT              NOT NULL,
+	[CreatorID]         INT              NOT NULL,
+	[ModifierID]        INT              NOT NULL,
+	[VerifierID]        INT              NULL,
+	[ApproverID]        INT              NULL,
+    [No]                NVARCHAR(64)     NOT NULL,
+    [Date]              DATETIME         NOT NULL,
+    [Description]       NVARCHAR(512)    NULL,
+    [Status]            NVARCHAR(64)     NOT NULL,
+    [OperationalStatus] NVARCHAR(64)     NOT NULL,
+    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Transaction_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_Transaction_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_Transaction] PRIMARY KEY CLUSTERED ([TransactionID] ASC)
     , CONSTRAINT [FK_Finance_Transaction_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_Transaction_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
@@ -220,6 +222,56 @@ CREATE TABLE [Finance].[TransactionLine] (
     , CONSTRAINT [FK_Finance_TransactionLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
     , CONSTRAINT [FK_Finance_TransactionLine_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
     , CONSTRAINT [FK_Finance_TransactionLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
+)
+GO
+
+CREATE TABLE [Workflow].[WorkItem] (
+    [WorkItemID]     INT              IDENTITY (1, 1) NOT NULL,
+	[CreatedByID]    INT              NOT NULL,
+	[TargetID]       INT              NOT NULL,
+    [Number]         NVARCHAR(16)     NOT NULL,
+    [Date]           DATETIME         NOT NULL,
+    [Time]           TIME(7)          NOT NULL,
+    [Title]          NVARCHAR(128)    NOT NULL,
+    [DocumentType]   VARCHAR(128)     NOT NULL,
+    [Remarks]        NVARCHAR(1024)   NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Workflow_WorkItem_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Workflow_WorkItem_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_WorkItem] PRIMARY KEY CLUSTERED ([WorkItemID] ASC)
+    , CONSTRAINT [FK_Workflow_WorkItem_Auth_User] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User] ([UserID])
+    , CONSTRAINT [FK_Workflow_WorkItem_Auth_Role] FOREIGN KEY ([TargetID]) REFERENCES [Auth].[Role] ([RoleID])
+)
+GO
+
+CREATE TABLE [Workflow].[WorkItemDocument] (
+    [DocumentItemID]   INT              IDENTITY (1, 1) NOT NULL,
+    [WorkItemID]       INT              NOT NULL,
+    [DocumentID]       INT              NOT NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Workflow_WorkItemDocument_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Workflow_WorkItemDocument_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_WorkItemDocument] PRIMARY KEY CLUSTERED ([DocumentItemID] ASC)
+    , CONSTRAINT [FK_Workflow_WorkItemDocument_Workflow_WorkItem] FOREIGN KEY ([WorkItemID]) REFERENCES [Workflow].[WorkItem] ([WorkItemID])
+)
+GO
+
+CREATE TABLE [Workflow].[WorkItemHistory] (
+    [HistoryItemID]       INT              IDENTITY (1, 1) NOT NULL,
+    [WorkItemID]          INT              NOT NULL,
+	[CreatedByID]         INT              NOT NULL,
+	[TargetID]            INT              NOT NULL,
+    [Number]              NVARCHAR(16)     NOT NULL,
+    [Date]                DATETIME         NOT NULL,
+    [Time]                TIME(7)          NOT NULL,
+    [Title]               NVARCHAR(128)    NOT NULL,
+    [DocumentType]        NVARCHAR(128)    NOT NULL,
+    [DocumentID]          INT              NOT NULL,
+    [Remarks]             NVARCHAR(1024)   NULL,
+    [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Workflow_WorkItemHistory_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Workflow_WorkItemHistory_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_WorkItemHistory] PRIMARY KEY CLUSTERED ([WorkItemHistoryID] ASC)
+    , CONSTRAINT [FK_Workflow_WorkItemHistory_Workflow_WorkItem] FOREIGN KEY ([WorkItemID]) REFERENCES [Workflow].[WorkItem] ([WorkItemID])
+    , CONSTRAINT [FK_Workflow_WorkItemHistory_Auth_User] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User] ([UserID])
+    , CONSTRAINT [FK_Workflow_WorkItemHistory_Auth_Role] FOREIGN KEY ([TargetID]) REFERENCES [Auth].[Role] ([RoleID])
 )
 GO
 

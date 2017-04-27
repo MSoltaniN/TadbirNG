@@ -78,6 +78,11 @@ namespace SPPC.Tadbir.Values
         public const string StatusField = "وضعیت";
 
         /// <summary>
+        /// Localized name of Operational Status field.
+        /// </summary>
+        public const string OperationalStatusField = "وضعیت عملیاتی";
+
+        /// <summary>
         /// Localized name of IsVerified field.
         /// </summary>
         public const string IsVerifiedField = "تایید شده";

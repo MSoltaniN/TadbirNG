@@ -93,6 +93,9 @@
     <Compile Include="Mapping\Finance\FiscalPeriodMap.Generated.cs" />
     <Compile Include="Mapping\Finance\TransactionLineMap.Generated.cs" />
     <Compile Include="Mapping\Finance\TransactionMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\WorkItemDocumentMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\WorkItemHistoryMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\WorkItemMap.Generated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
     <Compile Include="Repository\AccountRepository.Generated.cs" />

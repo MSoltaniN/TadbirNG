@@ -382,41 +382,35 @@
           <ColumnView name="Id" visible="True" width="120" />
           <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
         </Property>
-        <Property name="No" type="String" isValidated="True" description="User-friendly identifier of this financial transaction" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="No" type="String" isValidated="True" description="شماره سند مالی که می تواند شامل اعداد و حروف باشد" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtNo" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="No" type="nvarchar(64)" nullable="False" />
           <ColumnView name="No" visible="True" width="120" />
           <ValidationRule name="No_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
         </Property>
-        <Property name="Date" type="DateTime" isValidated="True" description="Date when this financial transaction occured" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="Date" type="DateTime" isValidated="True" description="تاریخ وقوع پیشامد مالی در عملیات روزمره کسب و کار" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="Date" type="datetime" nullable="False" />
           <ColumnView name="Date" visible="True" width="120" />
           <ValidationRule name="Date_Validation" required="True" minimum="" maximum="" format="yyyy-MM-dd" type="Value" />
         </Property>
-        <Property name="Description" type="String" isValidated="True" description="Detail information that further describes this financial transaction" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="Description" type="String" isValidated="True" description="شرح سند مالی که جزئیات بیشتری را در مورد پیشامد مالی ارائه می دهد" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
           <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
         </Property>
-        <Property name="Status" type="String" isValidated="True" description="Current status of this financial transaction" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="Status" type="String" isValidated="True" description="وضعیت ثبت سند مالی (مقادیر ممکن عبارتند از : پیش نویس، ثبت نشده، ثبت عادی و ثبت قطعی)" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtStatus" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Status" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Status" visible="True" width="120" />
           <ValidationRule name="Status_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
         </Property>
-        <Property name="IsVerified" type="Boolean" isValidated="True" description="Value that indicates if this financial transaction is authentic" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="chkIsVerified" format="" type="CheckBox" bindingMember="Checked" />
-          <PropertyStorage name="IsVerified" type="bit" nullable="False" />
-          <ColumnView name="Is Verified" visible="True" width="120" />
-          <ValidationRule name="IsVerified_Validation" required="True" minimum="" maximum="" format="" type="Value" />
-        </Property>
-        <Property name="IsApproved" type="Boolean" isValidated="True" description="Value that indicates if this financial transaction can be considered final" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="chkIsApproved" format="" type="CheckBox" bindingMember="Checked" />
-          <PropertyStorage name="IsApproved" type="bit" nullable="False" />
-          <ColumnView name="Is Approved" visible="True" width="120" />
-          <ValidationRule name="IsApproved_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        <Property name="OperationalStatus" type="String" isValidated="True" description="وضعیت عملیاتی سند مالی (مقادیر ممکن عبارتند از : تنظیم شده، بررسی شده، تایید شده و تصویب شده)" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtOperationalStatus" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="OperationalStatus" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="Operational Status" visible="True" width="120" />
+          <ValidationRule name="OperationalStatus_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
@@ -540,6 +534,169 @@
         <Relation multiplicity="OneToMany" endpointName="ApprovedTransaction" entityName="Transaction" hasKey="False" joinTable="" description="Collection of all financial transactions approved by this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="OneToOne" endpointName="Person" entityName="Person" hasKey="False" joinTable="" description="Business person that this user represents" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToMany" endpointName="Role" entityName="Role" hasKey="False" joinTable="UserRole" description="Collection of all application-defined roles that are assigned to this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
+    <Entity name="WorkItem" area="Workflow" identifier="Id" description="یک ردیف کار را در کارتابل کاربران یا نقش ها نشان می دهد" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="WorkItemID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="Number" type="String" isValidated="True" description="شماره سری کار که می تواند شامل اعداد و حروف باشد" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtNumber" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Number" type="nvarchar(16)" nullable="False" />
+          <ColumnView name="Number" visible="True" width="120" />
+          <ValidationRule name="Number_Validation" required="True" minimum="0" maximum="16" format="" type="Length" />
+        </Property>
+        <Property name="Date" type="DateTime" isValidated="False" description="تاریخ ایجاد کار که به صورت خودکار مقداردهی می شود" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="Date" type="datetime" nullable="False" />
+          <ColumnView name="Date" visible="True" width="120" />
+          <ValidationRule name="Date_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="Time" type="TimeSpan" isValidated="False" description="زمان ایجاد کار که به صورت خودکار مقداردهی می شود" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpTime" format="" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="Time" type="time(7)" nullable="False" />
+          <ColumnView name="Time" visible="True" width="120" />
+          <ValidationRule name="Time_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="Title" type="String" isValidated="True" description="عنوان یا موضوع کار که در چارچوب یک گردش کار به صورت خودکار مقداردهی می شود" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtTitle" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Title" type="nvarchar(128)" nullable="False" />
+          <ColumnView name="Title" visible="True" width="120" />
+          <ValidationRule name="Title_Validation" required="True" minimum="0" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="DocumentType" type="String" isValidated="False" description="نوع موجودیت مرتبط با کار" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDocumentType" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="DocumentType" type="varchar(128)" nullable="False" />
+          <ColumnView name="Document Type" visible="True" width="120" />
+          <ValidationRule name="DocumentType_Validation" required="True" minimum="0" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="Remarks" type="String" isValidated="True" description="توضیحات یا پاراف متنی مرتبط با کار که می تواند خالی باشد" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRemarks" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Remarks" type="nvarchar(1024)" nullable="True" />
+          <ColumnView name="Remarks" visible="True" width="120" />
+          <ValidationRule name="Remarks_Validation" required="False" minimum="0" maximum="1024" format="" type="Length" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="CreatedBy" entityName="User" hasKey="False" joinTable="" description="کاربر ایجاد کننده کار" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Target" entityName="Role" hasKey="False" joinTable="" description="نقش سازمانی که باید گیرنده کار باشد" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Document" entityName="WorkItemDocument" hasKey="False" joinTable="" description="رکوردهای موجودیت مرتبط با کار" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
+    <Entity name="WorkItemDocument" area="Workflow" identifier="Id" description="یک رکورد از موجودیت مرتبط با یک کار را نشان می دهد" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="DocumentItemID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="DocumentID" type="Int32" isValidated="False" description="شناسه دیتابیسی موجودیت مرتبط با کار" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnDocumentID" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="DocumentID" type="int" nullable="False" />
+          <ColumnView name="Document I D" visible="True" width="120" />
+          <ValidationRule name="DocumentID_Validation" required="True" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="WorkItem" entityName="WorkItem" hasKey="False" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
+    <Entity name="WorkItemHistory" area="Workflow" identifier="Id" description="یک رکورد از سوابق عملیات انجام شده روی یک موجودیت را نشان می دهد." clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="WorkItemHistoryID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="Number" type="String" isValidated="True" description="شماره سری کار که می تواند شامل اعداد و حروف باشد" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtNumber" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Number" type="nvarchar(16)" nullable="False" />
+          <ColumnView name="Number" visible="True" width="120" />
+          <ValidationRule name="Number_Validation" required="True" minimum="0" maximum="16" format="" type="Length" />
+        </Property>
+        <Property name="Date" type="DateTime" isValidated="False" description="تاریخ ایجاد کار که به صورت خودکار مقداردهی می شود" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="Date" type="datetime" nullable="False" />
+          <ColumnView name="Date" visible="True" width="120" />
+          <ValidationRule name="Date_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="Time" type="TimeSpan" isValidated="False" description="زمان ایجاد کار که به صورت خودکار مقداردهی می شود" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpTime" format="" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="Time" type="time(7)" nullable="False" />
+          <ColumnView name="Time" visible="True" width="120" />
+          <ValidationRule name="Time_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="Title" type="String" isValidated="True" description="عنوان یا موضوع کار که در چارچوب یک گردش کار به صورت خودکار مقداردهی می شود" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtTitle" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Title" type="nvarchar(128)" nullable="False" />
+          <ColumnView name="Title" visible="True" width="120" />
+          <ValidationRule name="Title_Validation" required="True" minimum="0" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="DocumentType" type="String" isValidated="False" description="نوع موجودیت مرتبط با کار" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDocumentType" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="DocumentType" type="nvarchar(128)" nullable="False" />
+          <ColumnView name="Document Type" visible="True" width="120" />
+          <ValidationRule name="DocumentType_Validation" required="True" minimum="0" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="DocumentID" type="Int32" isValidated="False" description="شناسه دیتابیسی موجودیت مرتبط با کار" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnDocumentID" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="DocumentID" type="int" nullable="False" />
+          <ColumnView name="Document I D" visible="True" width="120" />
+          <ValidationRule name="DocumentID_Validation" required="True" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="Remarks" type="String" isValidated="True" description="توضیحات یا پاراف متنی مرتبط با کار که می تواند خالی باشد" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRemarks" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Remarks" type="nvarchar(1024)" nullable="True" />
+          <ColumnView name="Remarks" visible="True" width="120" />
+          <ValidationRule name="Remarks_Validation" required="False" minimum="0" maximum="1024" format="" type="Length" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="WorkItem" entityName="WorkItem" hasKey="False" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="CreatedBy" entityName="User" hasKey="False" joinTable="" description="کاربر ایجاد کننده کار" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Target" entityName="Role" hasKey="False" joinTable="" description="نقش سازمانی که باید گیرنده کار باشد" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
   </Entities>

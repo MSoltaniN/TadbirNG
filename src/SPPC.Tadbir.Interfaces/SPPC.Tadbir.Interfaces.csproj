@@ -91,6 +91,7 @@
     <Compile Include="Service\ITransactionService.cs" />
     <Compile Include="Security\Permissions.cs" />
     <Compile Include="Service\SecurityContext.cs" />
+    <Compile Include="Workflow\ITransactionWorkflow.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">
