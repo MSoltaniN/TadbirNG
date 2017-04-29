@@ -1,3 +1,4 @@
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Scope = "member", Target = "SPPC.Tadbir.Workflow.WaitForStateActivity.#Execute(System.Activities.NativeActivityContext)")]
 
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.
