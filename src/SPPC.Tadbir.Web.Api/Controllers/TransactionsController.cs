@@ -6,15 +6,21 @@ using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.Web.Api.AppStart;
 using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.Workflow;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     public class TransactionsController : ApiController
     {
-        public TransactionsController(ITransactionRepository repository)
+        public TransactionsController(ITransactionRepository repository, ITransactionWorkflow workflow)
         {
+            Verify.ArgumentNotNull(workflow, "workflow");
             _repository = repository;
+            _workflow = workflow;
+            _workflow.TypeContainer = UnityConfig.GetConfiguredContainer();
         }
 
         // GET: api/transactions/fp/{fpId:int}/branch/{branchId:int}
@@ -247,5 +253,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private ITransactionRepository _repository;
+        private ITransactionWorkflow _workflow;
     }
 }

@@ -9,6 +9,11 @@ namespace SPPC.Tadbir.Workflow
     public interface ITransactionWorkflow
     {
         /// <summary>
+        /// پیاده سازی مناسب برای ایجاد کلاس ها از اینترفیس ها
+        /// </summary>
+        object TypeContainer { get; set; }
+
+        /// <summary>
         /// یک سند مالی پیش نویس را در حالت ثبت نشده و وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
         /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید حالت و وضعیتش تغییر کند</param>

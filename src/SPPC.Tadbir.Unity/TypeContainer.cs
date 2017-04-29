@@ -8,6 +8,7 @@ using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Workflow;
 using SwForAll.Platform.Persistence;
 using SwForAll.Platform.Persistence.NHibernate;
 
@@ -81,6 +82,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<ITransactionRepository, TransactionRepository>();
             _container.RegisterType<ILookupRepository, LookupRepository>();
             _container.RegisterType<ISecurityRepository, SecurityRepository>();
+            _container.RegisterType<IWorkItemRepository, WorkItemRepository>();
         }
 
         /// <summary>
@@ -96,6 +98,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<ICryptoService, CryptoService>();
             _container.RegisterType<ISecurityContextManager, SecurityContextManager>();
             _container.RegisterType<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
+            _container.RegisterInstance<ITransactionWorkflow>(TransactionWorkflow.Instance);
         }
 
         /// <summary>

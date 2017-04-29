@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         /// شماره سری کار که می تواند شامل اعداد و حروف باشد
         /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(16, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
+        [StringLength(16, ErrorMessage = "{0} must have from {2} to {1} characters.")]
         public string Number { get; set; }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         /// عنوان یا موضوع کار که در چارچوب یک گردش کار به صورت خودکار مقداردهی می شود
         /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(128, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
+        [StringLength(128, ErrorMessage = "{0} must have from {2} to {1} characters.")]
         public string Title { get; set; }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         /// <summary>
         /// توضیحات یا پاراف متنی مرتبط با کار که می تواند خالی باشد
         /// </summary>
-        [StringLength(1024, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
+        [StringLength(1024, ErrorMessage = "{0} must have from {2} to {1} characters.")]
         public string Remarks { get; set; }
     }
 }

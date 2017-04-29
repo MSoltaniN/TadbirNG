@@ -102,6 +102,7 @@
     <Compile Include="Repository\LookupRepository.cs" />
     <Compile Include="Repository\SecurityRepository.cs" />
     <Compile Include="Repository\TransactionRepository.cs" />
+    <Compile Include="Repository\WorkItemRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

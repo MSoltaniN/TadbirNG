@@ -117,6 +117,10 @@
       <Project>{6EB4DCA8-EBC3-40E6-BE52-0B2BDE145A27}</Project>
       <Name>SPPC.Tadbir.Service</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tadbir.Workflow\SPPC.Tadbir.Workflow.csproj">
+      <Project>{63e67713-a69a-40a5-8259-ea476f20b46a}</Project>
+      <Name>SPPC.Tadbir.Workflow</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">

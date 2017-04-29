@@ -19,6 +19,7 @@ using SPPC.Tadbir.ViewModel.Finance;
 using Moq;
 using NUnit.Framework;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Workflow;
 
 namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 {
@@ -30,12 +31,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         public void FixtureSetup()
         {
             _mockRepository = new Mock<ITransactionRepository>();
+            _mockWorkflow = new Mock<ITransactionWorkflow>();
         }
 
         [SetUp]
         public void Setup()
         {
-            _controller = new TransactionsController(_mockRepository.Object);
+            _controller = new TransactionsController(_mockRepository.Object, _mockWorkflow.Object);
             _existingTransaction = new TransactionViewModel() { Id = _existingTransactionId };
             _existingArticle = new TransactionLineViewModel()
             {
@@ -590,6 +592,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         #endregion
 
         private Mock<ITransactionRepository> _mockRepository;
+        private Mock<ITransactionWorkflow> _mockWorkflow;
         private TransactionViewModel _existingTransaction;
         private int _existingTransactionId = 1;
         private int _existingArticleId = 1;

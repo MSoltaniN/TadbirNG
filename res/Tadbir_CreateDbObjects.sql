@@ -268,7 +268,7 @@ CREATE TABLE [Workflow].[WorkItemHistory] (
     [Remarks]             NVARCHAR(1024)   NULL,
     [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Workflow_WorkItemHistory_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]        DATETIME         CONSTRAINT [DF_Workflow_WorkItemHistory_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_WorkItemHistory] PRIMARY KEY CLUSTERED ([WorkItemHistoryID] ASC)
+    , CONSTRAINT [PK_WorkItemHistory] PRIMARY KEY CLUSTERED ([HistoryItemID] ASC)
     , CONSTRAINT [FK_Workflow_WorkItemHistory_Workflow_WorkItem] FOREIGN KEY ([WorkItemID]) REFERENCES [Workflow].[WorkItem] ([WorkItemID])
     , CONSTRAINT [FK_Workflow_WorkItemHistory_Auth_User] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User] ([UserID])
     , CONSTRAINT [FK_Workflow_WorkItemHistory_Auth_Role] FOREIGN KEY ([TargetID]) REFERENCES [Auth].[Role] ([RoleID])
