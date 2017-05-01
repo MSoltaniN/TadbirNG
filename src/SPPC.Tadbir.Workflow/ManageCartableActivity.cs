@@ -2,6 +2,7 @@
 using System.Activities;
 using SPPC.Framework.Unity.WF;
 using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Workflow
@@ -26,6 +27,12 @@ namespace SPPC.Tadbir.Workflow
 
         public InArgument<string> Remarks { get; set; }
 
+        [RequiredArgument]
+        public InArgument<string> Status { get; set; }
+
+        [RequiredArgument]
+        public InArgument<string> OperationalStatus { get; set; }
+
         /// <summary>
         /// فعالیت را با استفاده از اطلاعات جاری محیطی اجرا می کند.
         /// </summary>
@@ -34,31 +41,9 @@ namespace SPPC.Tadbir.Workflow
         {
             InitializeDependencies(context);
             var workItem = GetNewWorkItem(context);
-            _repository.SaveWorkItem(workItem);
-        }
-
-        private void InitializeDependencies(CodeActivityContext context)
-        {
-            _repository = context.GetDependency<IWorkItemRepository>();
-        }
-
-        private WorkItemViewModel GetNewWorkItem(CodeActivityContext context)
-        {
-            DateTime current = DateTime.Now;
-            var workItem = new WorkItemViewModel()
-            {
-                CreatedById = context.GetValue(CreatedById),
-                TargetRole = context.GetValue(Target),
-                Number = GenerateNumber(),
-                Date = current.Date,
-                Time = current.TimeOfDay,
-                Title = context.GetValue(Title),
-                DocumentType = "Transaction",
-                DocumentId = context.GetValue(DocumentId),
-                Remarks = context.GetValue(Remarks)
-            };
-
-            return workItem;
+            string status = context.GetValue(OperationalStatus);
+            var createDelegate = GetWorkItemDelegate(status);
+            createDelegate(workItem);
         }
 
         private static string GenerateNumber()
@@ -71,6 +56,55 @@ namespace SPPC.Tadbir.Workflow
                 .Substring(0, 8);
         }
 
+        private void InitializeDependencies(CodeActivityContext context)
+        {
+            _repository = context.GetDependency<IWorkItemRepository>("WF");
+        }
+
+        private CreateWorkItemDelegate GetWorkItemDelegate(string status)
+        {
+            CreateWorkItemDelegate method = null;
+            switch (status)
+            {
+                case DocumentStatus.Created:
+                    break;
+                case DocumentStatus.Prepared:
+                    method = new CreateWorkItemDelegate(_repository.CreateInitialWorkItem);
+                    break;
+                case DocumentStatus.Approved:
+                    method = new CreateWorkItemDelegate(_repository.CreateFinalWorkItem);
+                    break;
+                default:
+                    method = new CreateWorkItemDelegate(_repository.CreateWorkItem);
+                    break;
+            }
+
+            return method;
+        }
+
+        private WorkItemViewModel GetNewWorkItem(CodeActivityContext context)
+        {
+            DateTime current = DateTime.Now;
+            var workItem = new WorkItemViewModel()
+            {
+                CreatedById = context.GetValue(CreatedById),
+                TargetId = Convert.ToInt32(context.GetValue(Target)),
+                Number = GenerateNumber(),
+                Date = current.Date,
+                Time = current.TimeOfDay,
+                Title = context.GetValue(Title),
+                DocumentType = "Transaction",
+                DocumentId = context.GetValue(DocumentId),
+                Remarks = context.GetValue(Remarks),
+                Status = context.GetValue(Status),
+                OperationalStatus = context.GetValue(OperationalStatus)
+            };
+
+            return workItem;
+        }
+
         private IWorkItemRepository _repository;
     }
+
+    internal delegate void CreateWorkItemDelegate(WorkItemViewModel workItem);
 }

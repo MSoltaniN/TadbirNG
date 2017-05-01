@@ -58,12 +58,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\TadbirSolutionInfo.cs">
       <Link>TadbirSolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Api\AccountApi.cs" />
+    <Compile Include="Api\CartableApi.cs" />
     <Compile Include="Api\LookupApi.cs" />
     <Compile Include="Api\SecurityApi.cs" />
     <Compile Include="Api\TransactionApi.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Security\SecureEntity.cs" />
     <Compile Include="Security\Enums.cs" />
     <Compile Include="Security\RolePermission.cs" />
+    <Compile Include="Security\TadbirIdentity.cs" />
     <Compile Include="Security\TransactionPermission.cs" />
     <Compile Include="Security\UserPermission.cs" />
     <Compile Include="Service\IAccountService.cs" />

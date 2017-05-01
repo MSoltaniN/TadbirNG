@@ -66,6 +66,15 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Updates operational status of a financial transaction to Prepared.
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of the transaction to prepare</param>
+        public void PrepareTransaction(int transactionId)
+        {
+            _apiClient.Update(new { }, TransactionApi.PrepareTransaction, transactionId);
+        }
+
+        /// <summary>
         /// Inserts or updates a financial transaction article.
         /// </summary>
         /// <param name="article">Article to insert or update</param>

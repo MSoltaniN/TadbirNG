@@ -72,9 +72,29 @@ namespace SPPC.Tadbir.Security
         Delete = 0x8,
 
         /// <summary>
+        /// دسترسی تنظیم سند (تغییر وضعیت عملیاتی سند به وضعیت تنظیم شده)
+        /// </summary>
+        Prepare = 0x10,
+
+        /// <summary>
+        /// دسترسی بررسی سند (تغییر وضعیت عملیاتی سند به وضعیت بررسی شده)
+        /// </summary>
+        Review = 0x20,
+
+        /// <summary>
+        /// دسترسی تایید سند (تغییر وضعیت عملیاتی سند به وضعیت تایید شده)
+        /// </summary>
+        Confirm = 0x40,
+
+        /// <summary>
+        /// دسترسی تصویب سند (تغییر وضعیت عملیاتی سند به وضعیت تصویب شده)
+        /// </summary>
+        Approve = 0x80,
+
+        /// <summary>
         /// Indicates all permissions available for managing a transaction
         /// </summary>
-        All = 0xf
+        All = 0xff
     }
 
     /// <summary>

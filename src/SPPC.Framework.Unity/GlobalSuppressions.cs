@@ -1,5 +1,6 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Scope = "member", Target = "SPPC.Framework.Unity.WF.ActivityContextExtensions.#GetDependency`1(System.Activities.ActivityContext)", Justification = "Argument is checked using Verify utility class.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "IUnityContainer", Scope = "member", Target = "SPPC.Framework.Unity.WF.DependencyInjectionExtension.#GetUnityContainer(System.Object)", Justification = "Interface name is required for clarifying exception message.")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Scope = "member", Target = "SPPC.Framework.Unity.WF.ActivityContextExtensions.#GetDependency`1(System.Activities.ActivityContext,System.String)", Justification = "Argument is checked using Verify utility class.")]
 
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.

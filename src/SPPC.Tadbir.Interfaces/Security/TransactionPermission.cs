@@ -35,6 +35,30 @@ namespace SPPC.Tadbir.Security
                 Flags = (int)TransactionPermissions.Delete
             };
 
+            Prepare = new PermissionBriefViewModel()
+            {
+                EntityName = SecureEntity.Transaction,
+                Flags = (int)TransactionPermissions.Prepare
+            };
+
+            Review = new PermissionBriefViewModel()
+            {
+                EntityName = SecureEntity.Transaction,
+                Flags = (int)TransactionPermissions.Review
+            };
+
+            Confirm = new PermissionBriefViewModel()
+            {
+                EntityName = SecureEntity.Transaction,
+                Flags = (int)TransactionPermissions.Confirm
+            };
+
+            Approve = new PermissionBriefViewModel()
+            {
+                EntityName = SecureEntity.Transaction,
+                Flags = (int)TransactionPermissions.Approve
+            };
+
             All = new PermissionBriefViewModel()
             {
                 EntityName = SecureEntity.Transaction,
@@ -69,6 +93,26 @@ namespace SPPC.Tadbir.Security
         /// Gets an object that indicates permission to delete an existing transaction.
         /// </summary>
         public PermissionBriefViewModel Delete { get; private set; }
+
+        /// <summary>
+        /// Gets an object that indicates permission to prepare an existing transaction.
+        /// </summary>
+        public PermissionBriefViewModel Prepare { get; private set; }
+
+        /// <summary>
+        /// Gets an object that indicates permission to review an existing transaction.
+        /// </summary>
+        public PermissionBriefViewModel Review { get; private set; }
+
+        /// <summary>
+        /// Gets an object that indicates permission to confirm an existing transaction.
+        /// </summary>
+        public PermissionBriefViewModel Confirm { get; private set; }
+
+        /// <summary>
+        /// Gets an object that indicates permission to approve an existing transaction.
+        /// </summary>
+        public PermissionBriefViewModel Approve { get; private set; }
 
         /// <summary>
         /// Gets an object that indicates all permissions for managing a transaction.

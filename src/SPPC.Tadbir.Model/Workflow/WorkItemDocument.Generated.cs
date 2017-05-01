@@ -57,6 +57,7 @@ namespace SPPC.Tadbir.Model.Workflow
 
         private void InitReferences()
         {
+            WorkItem = new WorkItem();
         }
     }
 }

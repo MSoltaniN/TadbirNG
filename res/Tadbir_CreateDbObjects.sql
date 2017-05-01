@@ -228,7 +228,7 @@ GO
 CREATE TABLE [Workflow].[WorkItem] (
     [WorkItemID]     INT              IDENTITY (1, 1) NOT NULL,
 	[CreatedByID]    INT              NOT NULL,
-	[TargetID]       INT              NOT NULL,
+	[TargetID]       INT              NULL,
     [Number]         NVARCHAR(16)     NOT NULL,
     [Date]           DATETIME         NOT NULL,
     [Time]           TIME(7)          NOT NULL,
@@ -256,22 +256,20 @@ GO
 
 CREATE TABLE [Workflow].[WorkItemHistory] (
     [HistoryItemID]       INT              IDENTITY (1, 1) NOT NULL,
-    [WorkItemID]          INT              NOT NULL,
-	[CreatedByID]         INT              NOT NULL,
-	[TargetID]            INT              NOT NULL,
+	[UserID]              INT              NOT NULL,
     [Number]              NVARCHAR(16)     NOT NULL,
     [Date]                DATETIME         NOT NULL,
     [Time]                TIME(7)          NOT NULL,
     [Title]               NVARCHAR(128)    NOT NULL,
     [DocumentType]        NVARCHAR(128)    NOT NULL,
     [DocumentID]          INT              NOT NULL,
+    [Status]              NVARCHAR(64)     NOT NULL,
+    [OperationalStatus]   NVARCHAR(64)     NOT NULL,
     [Remarks]             NVARCHAR(1024)   NULL,
     [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Workflow_WorkItemHistory_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]        DATETIME         CONSTRAINT [DF_Workflow_WorkItemHistory_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_WorkItemHistory] PRIMARY KEY CLUSTERED ([HistoryItemID] ASC)
-    , CONSTRAINT [FK_Workflow_WorkItemHistory_Workflow_WorkItem] FOREIGN KEY ([WorkItemID]) REFERENCES [Workflow].[WorkItem] ([WorkItemID])
-    , CONSTRAINT [FK_Workflow_WorkItemHistory_Auth_User] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User] ([UserID])
-    , CONSTRAINT [FK_Workflow_WorkItemHistory_Auth_Role] FOREIGN KEY ([TargetID]) REFERENCES [Auth].[Role] ([RoleID])
+    , CONSTRAINT [FK_Workflow_WorkItemHistory_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User] ([UserID])
 )
 GO
 
@@ -284,6 +282,10 @@ SET IDENTITY_INSERT [Auth].[User] OFF
 
 SET IDENTITY_INSERT [Auth].[Role] ON
 INSERT INTO [Auth].[Role] (RoleID, Name, [Description]) VALUES (1, N'راهبر سیستم', N'این نقش دارای کلیه دسترسی های تعریف شده در برنامه بوده و قابل اصلاح یا حذف نیست.')
+INSERT INTO [Auth].[Role] (RoleID, Name, [Description]) VALUES (2, N'کارشناس حسابداری', NULL)
+INSERT INTO [Auth].[Role] (RoleID, Name, [Description]) VALUES (3, N'رییس حسابداری', NULL)
+INSERT INTO [Auth].[Role] (RoleID, Name, [Description]) VALUES (4, N'معاون مالی', NULL)
+INSERT INTO [Auth].[Role] (RoleID, Name, [Description]) VALUES (5, N'مدیر مالی', NULL)
 SET IDENTITY_INSERT [Auth].[Role] OFF
 
 SET IDENTITY_INSERT [Auth].[UserRole] ON
@@ -306,15 +308,19 @@ INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (5, 2
 INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (6, 2, N'ایجاد سند', 2)
 INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (7, 2, N'اصلاح سند', 4)
 INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (8, 2, N'حذف سند', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (9, 3, N'مشاهده کاربران', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (10, 3, N'ایجاد کاربر', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (11, 3, N'اصلاح کاربر', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (12, 4, N'مشاهده نقش ها', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (13, 4, N'ایجاد نقش', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (14, 4, N'اصلاح نقش', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (15, 4, N'حذف نقش', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (16, 4, N'تخصیص نقش به کاربر', 16)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (17, 4, N'حذف کاربر از نقش', 32)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (9, 2, N'تنظیم سند', 16)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (10, 2, N'بررسی سند', 32)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (11, 2, N'تایید سند', 64)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (12, 2, N'تصویب سند', 128)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (13, 3, N'مشاهده کاربران', 1)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (14, 3, N'ایجاد کاربر', 2)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (15, 3, N'اصلاح کاربر', 4)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (16, 4, N'مشاهده نقش ها', 1)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (17, 4, N'ایجاد نقش', 2)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (18, 4, N'اصلاح نقش', 4)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (19, 4, N'حذف نقش', 8)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (20, 4, N'تخصیص کاربر به نقش', 16)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (21, 4, N'تخصیص شعبه به نقش', 32)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 SET IDENTITY_INSERT [Auth].[RolePermission] ON
@@ -335,6 +341,28 @@ INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VAL
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (15, 1, 15)
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (16, 1, 16)
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (17, 1, 17)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (18, 1, 18)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (19, 1, 19)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (20, 1, 20)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (21, 1, 21)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (22, 2, 1)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (23, 2, 5)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (24, 2, 6)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (25, 2, 7)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (26, 2, 8)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (27, 2, 9)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (28, 3, 1)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (29, 3, 5)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (30, 3, 6)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (31, 3, 7)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (32, 3, 8)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (33, 3, 10)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (34, 4, 1)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (35, 4, 5)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (36, 4, 11)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (37, 5, 1)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (38, 5, 5)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (39, 5, 12)
 SET IDENTITY_INSERT [Auth].[RolePermission] OFF
 
 SET ANSI_NULLS OFF

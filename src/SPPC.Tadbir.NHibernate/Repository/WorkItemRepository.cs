@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using SPPC.Framework.Mapper;
+using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.ViewModel.Workflow;
 using SwForAll.Platform.Common;
 using SwForAll.Platform.Persistence;
@@ -46,18 +46,57 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
-        /// یک واحد کاری را در دستابیس ذخیره می کند.
+        /// رکورد کار مورد نیاز در ابتدای گردش کار را در دیتابیس ایجاد می کند.
         /// </summary>
-        /// <param name="workItem">کار جدید یا یک کار موجود</param>
-        public void SaveWorkItem(WorkItemViewModel workItem)
+        /// <param name="workItem">اطلاعات کار جدید با فرمت مدل نمایشی</param>
+        public void CreateInitialWorkItem(WorkItemViewModel workItem)
         {
             Verify.ArgumentNotNull(workItem, "workItem");
-            Debug.WriteLine(
-                "New Work Item: ['CreatedByID' = {0}, 'Target' = {1}, 'Date' = {2}, " +
-                "'Time' = {3}, 'Title' = {4}, 'DocumentType' = Transaction, 'DocumentID' = {5}, " +
-                "'Remarks' = {6}]",
-                workItem.CreatedById, workItem.TargetRole, workItem.Date.ToShortDateString(), workItem.Time.ToString(),
-                workItem.Title, workItem.DocumentId, workItem.Remarks);
+            var transactionRepository = _unitOfWork.GetRepository<Transaction>();
+            var transaction = transactionRepository.GetByID(workItem.DocumentId);
+            if (transaction != null)
+            {
+                transaction.Status = workItem.Status;
+                transaction.OperationalStatus = workItem.OperationalStatus;
+                transactionRepository.Update(transaction);
+
+                var itemRepository = _unitOfWork.GetRepository<WorkItem>();
+                var newWorkItem = _mapper.Map<WorkItem>(workItem);
+                itemRepository.Insert(newWorkItem);
+
+                var documentRepository = _unitOfWork.GetRepository<WorkItemDocument>();
+                var document = new WorkItemDocumentViewModel()
+                {
+                    WorkItemId = newWorkItem.Id,
+                    DocumentId = workItem.DocumentId
+                };
+                var newDocument = _mapper.Map<WorkItemDocument>(document);
+                documentRepository.Insert(newDocument);
+
+                var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
+                var history = _mapper.Map<WorkItemHistory>(workItem);
+                historyRepository.Insert(history);
+            }
+
+            _unitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// رکورد کار مورد نیاز در گردش کار را در دیتابیس ایجاد می کند.
+        /// </summary>
+        /// <param name="workItem">اطلاعات کار جدید با فرمت مدل نمایشی</param>
+        public void CreateWorkItem(WorkItemViewModel workItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// رکورد کار مورد نیاز در انتهای گردش کار را در دیتابیس ایجاد می کند.
+        /// </summary>
+        /// <param name="workItem">اطلاعات کار جدید با فرمت مدل نمایشی</param>
+        public void CreateFinalWorkItem(WorkItemViewModel workItem)
+        {
+            throw new NotImplementedException();
         }
 
         private IUnitOfWork _unitOfWork;

@@ -15,12 +15,13 @@ namespace SPPC.Framework.Unity.WF
         /// </summary>
         /// <typeparam name="T">Type of dependency that is required</typeparam>
         /// <param name="context">Current activity context</param>
+        /// <param name="name">Name of type registration to use for type resolution. Default is null.</param>
         /// <returns>Dependency that is required</returns>
-        public static T GetDependency<T>(this ActivityContext context)
+        public static T GetDependency<T>(this ActivityContext context, string name = null)
         {
             Verify.ArgumentNotNull(context, "context");
             var extension = context.GetExtension<DependencyInjectionExtension>();
-            return extension.GetDependency<T>();
+            return extension.GetDependency<T>(name);
         }
     }
 }

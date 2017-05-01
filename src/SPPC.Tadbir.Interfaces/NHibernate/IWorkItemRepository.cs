@@ -24,9 +24,21 @@ namespace SPPC.Tadbir.NHibernate
         IList<WorkItemViewModel> GetUserOutbox(int userId);
 
         /// <summary>
-        /// یک واحد کاری را در دستابیس ذخیره می کند.
+        /// رکورد کار مورد نیاز در ابتدای گردش کار را در دیتابیس ایجاد می کند.
         /// </summary>
-        /// <param name="workItem">کار جدید یا یک کار موجود</param>
-        void SaveWorkItem(WorkItemViewModel workItem);
+        /// <param name="workItem">اطلاعات کار جدید با فرمت مدل نمایشی</param>
+        void CreateInitialWorkItem(WorkItemViewModel workItem);
+
+        /// <summary>
+        /// رکورد کار مورد نیاز در گردش کار را در دیتابیس ایجاد می کند.
+        /// </summary>
+        /// <param name="workItem">اطلاعات کار جدید با فرمت مدل نمایشی</param>
+        void CreateWorkItem(WorkItemViewModel workItem);
+
+        /// <summary>
+        /// رکورد کار مورد نیاز در انتهای گردش کار را در دیتابیس ایجاد می کند.
+        /// </summary>
+        /// <param name="workItem">اطلاعات کار جدید با فرمت مدل نمایشی</param>
+        void CreateFinalWorkItem(WorkItemViewModel workItem);
     }
 }

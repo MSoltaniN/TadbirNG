@@ -8,6 +8,7 @@ using System.Web.Security;
 using SPPC.Framework.Service;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SwForAll.Platform.Common;
@@ -278,7 +279,7 @@ namespace SPPC.Tadbir.Service
             var authCookie = FormsAuthentication.GetAuthCookie(user.UserName, false);
             var ticket = FormsAuthentication.Decrypt(authCookie.Value);
             FormsAuthentication.SetAuthCookie(user.UserName, false);
-            var identity = new FormsIdentity(ticket);
+            var identity = new TadbirIdentity(user.Id, ticket);
             return new GenericPrincipal(identity, new string[0]);
         }
 

@@ -27,8 +27,12 @@ namespace SPPC.Tadbir.Web.Api
 
         private static void InitNHibernate()
         {
+            // Resolve and initialize NHibernate instances registered for both API service and WF...
             var nhibernate = UnityConfig.GetConfiguredContainer()
                 .Resolve<IORMapper>();
+            nhibernate.Initialize();
+            nhibernate = UnityConfig.GetConfiguredContainer()
+                .Resolve<IORMapper>("WF");
             nhibernate.Initialize();
         }
     }

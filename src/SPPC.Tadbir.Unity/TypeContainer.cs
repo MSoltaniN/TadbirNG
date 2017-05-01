@@ -73,16 +73,23 @@ namespace SPPC.Tadbir.Unity
         public void RegisterPersistenceTypes()
         {
             // =========== NHibernate Persistence Layer dependencies ===========
-            var nhibernate = new WebHibernateConfigurator();
-            _container.RegisterInstance<IORMapper>(nhibernate);
-            _container.RegisterInstance<IHibernateWrapper>(nhibernate);
+            var apiHibernate = new WebHibernateConfigurator();
+            var wfHibernate = new HibernateConfigurator();
+            _container.RegisterInstance<IORMapper>(apiHibernate);
+            _container.RegisterInstance<IHibernateWrapper>(apiHibernate);
+            _container.RegisterInstance<IORMapper>("WF", wfHibernate);
+            _container.RegisterInstance<IHibernateWrapper>("WF", wfHibernate);
             _container.RegisterType<IUnitOfWork, UnitOfWork>();
+            _container.RegisterType<IUnitOfWork, UnitOfWork>(
+                "WF", new InjectionConstructor(new ResolvedParameter<IHibernateWrapper>("WF")));
 
             _container.RegisterType<IAccountRepository, AccountRepository>();
             _container.RegisterType<ITransactionRepository, TransactionRepository>();
             _container.RegisterType<ILookupRepository, LookupRepository>();
             _container.RegisterType<ISecurityRepository, SecurityRepository>();
-            _container.RegisterType<IWorkItemRepository, WorkItemRepository>();
+            _container.RegisterType<IWorkItemRepository, WorkItemRepository>(
+                "WF", new InjectionConstructor(
+                    new ResolvedParameter<IUnitOfWork>("WF"), new ResolvedParameter<IDomainMapper>()));
         }
 
         /// <summary>
@@ -97,6 +104,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<ISecurityService, SecurityService>();
             _container.RegisterType<ICryptoService, CryptoService>();
             _container.RegisterType<ISecurityContextManager, SecurityContextManager>();
+            _container.RegisterType<ISecurityContextManager, ServiceContextManager>("API");
             _container.RegisterType<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
             _container.RegisterInstance<ITransactionWorkflow>(TransactionWorkflow.Instance);
         }

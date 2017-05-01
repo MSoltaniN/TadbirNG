@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Net;
 using System.Web.Http;
+using Microsoft.Practices.Unity;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.AppStart;
@@ -21,7 +23,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
             _workflow = workflow;
             _workflow.TypeContainer = UnityConfig.GetConfiguredContainer();
+            _workflow.ContextManager = UnityConfig.GetConfiguredContainer()
+                .Resolve<ISecurityContextManager>("API");
         }
+
+        #region Transaction CRUD Operations
 
         // GET: api/transactions/fp/{fpId:int}/branch/{branchId:int}
         [Route(TransactionApi.FiscalPeriodBranchTransactionsUrl)]
@@ -129,6 +135,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 : BadRequest("Could not delete transaction because it does not exist.") as IHttpActionResult;
             return result;
         }
+
+        #endregion
+
+        #region Article CRUD Operations
 
         // GET: api/transactions/articles/{articleId:int}
         [Route(TransactionApi.TransactionArticleUrl)]
@@ -251,6 +261,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository.DeleteArticle(articleId);
             return StatusCode(HttpStatusCode.NoContent);
         }
+
+        #endregion
+
+        #region Transaction Workflow Operations
+
+        [Route(TransactionApi.PrepareTransactionUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
+        public IHttpActionResult PutTransactionAsPrepared(int transactionId)
+        {
+            if (transactionId <= 0)
+            {
+                return BadRequest("Could not put transaction as Prepared because transaction does not exist.");
+            }
+
+            _workflow.Prepare(transactionId);
+            return Ok();
+        }
+
+        #endregion
 
         private ITransactionRepository _repository;
         private ITransactionWorkflow _workflow;

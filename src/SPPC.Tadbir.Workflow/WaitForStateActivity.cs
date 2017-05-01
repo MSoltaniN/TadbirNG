@@ -31,7 +31,7 @@ namespace SPPC.Tadbir.Workflow
             string name = BookmarkName.Get(context);
             if (String.IsNullOrEmpty(name))
             {
-                throw new InvalidOperationException("BookmarkName cannot be null or empty string.");
+                throw new InvalidOperationException("Bookmark name cannot be null or empty string.");
             }
 
             context.CreateBookmark(name, new BookmarkCallback(OnReceiveStatus));

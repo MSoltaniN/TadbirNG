@@ -15,6 +15,7 @@
       <Word>param</Word>
       <Word>fp</Word>
       <Word>Captcha</Word>
+      <Word>CFO</Word>
     </Recognized>
     <Deprecated>
     </Deprecated>
@@ -32,6 +33,7 @@
       <Acronym>Mvc</Acronym>
       <Acronym>Api</Acronym>
       <Acronym>api</Acronym>
+      <Acronym>CFO</Acronym>
     </CasingExceptions>
   </Acronyms>
 </Dictionary>

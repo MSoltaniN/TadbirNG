@@ -53,6 +53,16 @@ namespace SPPC.Tadbir.Api
         public const string TransactionDetailsUrl = "transactions/{transactionId:int}/details";
 
         /// <summary>
+        /// API client URL for preparing a single transaction specified by identifier
+        /// </summary>
+        public const string PrepareTransaction = "transactions/{0}/prepare";
+
+        /// <summary>
+        /// API server route URL for preparing a single transaction specified by identifier
+        /// </summary>
+        public const string PrepareTransactionUrl = "transactions/{transactionId:int}/prepare";
+
+        /// <summary>
         /// API client URL for all articles in a single transaction specified by identifier
         /// </summary>
         public const string TransactionArticles = "transactions/{0}/articles";

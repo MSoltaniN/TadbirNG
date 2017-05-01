@@ -28,9 +28,9 @@ namespace SPPC.Framework.Unity.WF
         /// </summary>
         /// <typeparam name="T">Type of dependency that is required</typeparam>
         /// <returns>Dependency that is required</returns>
-        public T GetDependency<T>()
+        public T GetDependency<T>(string name = null)
         {
-            return _container.Resolve<T>();
+            return _container.Resolve<T>(name);
         }
 
         private static IUnityContainer GetUnityContainer(object container)
@@ -39,7 +39,7 @@ namespace SPPC.Framework.Unity.WF
             var unityContainer = container as IUnityContainer;
             if (unityContainer == null)
             {
-                ExceptionBuilder.NewInvalidOperationException(
+                throw ExceptionBuilder.NewInvalidOperationException(
                     "Constructor argument 'container' must be set to a configured IUnityContainer instance.");
             }
 

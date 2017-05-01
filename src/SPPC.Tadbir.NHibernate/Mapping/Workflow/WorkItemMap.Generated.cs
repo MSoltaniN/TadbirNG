@@ -37,6 +37,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Map(x => x.Date)
                 .Not.Nullable();
             Map(x => x.Time)
+                .CustomType("TimeAsTimeSpan")
                 .Not.Nullable();
             Map(x => x.Title)
                 .Length(128)

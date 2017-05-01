@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using SPPC.Framework.Unity.WF;
+using SPPC.Tadbir.Service;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Workflow
 {
@@ -23,59 +25,71 @@ namespace SPPC.Tadbir.Workflow
 
         public object TypeContainer { get; set; }
 
-        public void Prepare(int transactionId, int userId)
+        public ISecurityContextManager ContextManager { get; set; }
+
+        public void Prepare(int transactionId)
         {
-            StartNewWorkflow(transactionId, userId);
-            Debug.WriteLine("Prepare: Transaction '[id]={0}' is prepared by user '[id]={1}'.", transactionId, userId);
+            StartNewWorkflow(transactionId, CurrentUserId);
+            Debug.WriteLine(
+                "Prepare: Transaction '[id]={0}' is prepared by user '[id]={1}'.", transactionId, CurrentUserId);
         }
 
-        public void Review(int transactionId, int userId)
+        public void Review(int transactionId)
         {
-            TriggerTransition(transactionId, userId, "Reviewed");
-            Debug.WriteLine("Review: Transaction '[id]={0}' is reviewed by user '[id]={1}'.", transactionId, userId);
+            TriggerTransition(transactionId, CurrentUserId, "Reviewed");
+            Debug.WriteLine(
+                "Review: Transaction '[id]={0}' is reviewed by user '[id]={1}'.", transactionId, CurrentUserId);
         }
 
-        public void RequestRevision(int transactionId, int userId)
+        public void RequestRevision(int transactionId)
         {
-            TriggerTransition(transactionId, userId, "Prepared");
-            Debug.WriteLine("RejectReview: Transaction '[id]={0}' is rejected by user '[id]={1}'.", transactionId, userId);
+            TriggerTransition(transactionId, CurrentUserId, "Prepared");
+            Debug.WriteLine(
+                "RejectReview: Transaction '[id]={0}' is rejected by user '[id]={1}'.", transactionId, CurrentUserId);
         }
 
-        public void Confirm(int transactionId, int userId)
+        public void Confirm(int transactionId)
         {
-            TriggerTransition(transactionId, userId, "Confirmed");
-            Debug.WriteLine("Confirm: Transaction '[id]={0}' is confirmed by user '[id]={1}'.", transactionId, userId);
+            TriggerTransition(transactionId, CurrentUserId, "Confirmed");
+            Debug.WriteLine(
+                "Confirm: Transaction '[id]={0}' is confirmed by user '[id]={1}'.", transactionId, CurrentUserId);
         }
 
-        public void Approve(int transactionId, int userId)
+        public void Approve(int transactionId)
         {
-            TriggerTransition(transactionId, userId, "Approved");
-            Debug.WriteLine("Approve: Transaction '[id]={0}' is approved by user '[id]={1}'.", transactionId, userId);
+            TriggerTransition(transactionId, CurrentUserId, "Approved");
+            Debug.WriteLine(
+                "Approve: Transaction '[id]={0}' is approved by user '[id]={1}'.", transactionId, CurrentUserId);
         }
 
-        public void PrepareMultiple(IEnumerable<int> transactions, int userId)
+        public void PrepareMultiple(IEnumerable<int> transactions)
         {
             throw new NotImplementedException();
         }
 
-        public void ReviewMultiple(IEnumerable<int> transactions, int userId)
+        public void ReviewMultiple(IEnumerable<int> transactions)
         {
             throw new NotImplementedException();
         }
 
-        public void RequestRevisionMultiple(IEnumerable<int> transactions, int userId)
+        public void RequestRevisionMultiple(IEnumerable<int> transactions)
         {
             throw new NotImplementedException();
         }
 
-        public void ConfirmMultiple(IEnumerable<int> transactions, int userId)
+        public void ConfirmMultiple(IEnumerable<int> transactions)
         {
             throw new NotImplementedException();
         }
 
-        public void ApproveMultiple(IEnumerable<int> transactions, int userId)
+        public void ApproveMultiple(IEnumerable<int> transactions)
         {
             throw new NotImplementedException();
+        }
+
+        private int CurrentUserId
+        {
+            get { return ContextManager.CurrentContext.User.Id; }
         }
 
         private DependencyInjectionExtension DependencyExtension
@@ -85,6 +99,13 @@ namespace SPPC.Tadbir.Workflow
 
         private void StartNewWorkflow(int transactionId, int userId)
         {
+            if (_workflows.ContainsKey(transactionId))
+            {
+                string message = String.Format(
+                    "This financial transaction is already inside transaction workflow (Id = {0})", transactionId);
+                throw ExceptionBuilder.NewInvalidOperationException(message);
+            }
+
             var workflow = new WorkflowApplication(
                 new TransactionStateWorkflow(), new Dictionary<string, object>
                 {

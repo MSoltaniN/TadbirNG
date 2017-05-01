@@ -10,6 +10,8 @@ namespace SPPC.Tadbir.Service
     /// </summary>
     public interface ITransactionService
     {
+        #region Transaction CRUD Operations
+
         /// <summary>
         /// Retrieves all transaction items that are currently defined in the specified fiscal period and branch.
         /// </summary>
@@ -38,6 +40,10 @@ namespace SPPC.Tadbir.Service
         /// <param name="transactionId">Unique identifier of the transaction to delete</param>
         void DeleteTransaction(int transactionId);
 
+        #endregion
+
+        #region Article CRUD Operations
+
         /// <summary>
         /// Inserts or updates a financial transaction article.
         /// </summary>
@@ -65,5 +71,17 @@ namespace SPPC.Tadbir.Service
         /// </summary>
         /// <param name="articleId">Unique identifier of the article to delete</param>
         void DeleteArticle(int articleId);
+
+        #endregion
+
+        #region Transaction Workflow Operations
+
+        /// <summary>
+        /// Updates operational status of a financial transaction to Prepared.
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of the transaction to prepare</param>
+        void PrepareTransaction(int transactionId);
+
+        #endregion
     }
 }

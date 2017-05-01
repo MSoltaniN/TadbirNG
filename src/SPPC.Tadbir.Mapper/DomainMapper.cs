@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using AutoMapper;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
@@ -9,9 +7,11 @@ using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Workflow;
 using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Mapper
@@ -62,6 +62,7 @@ namespace SPPC.Tadbir.Mapper
             MapSecurityTypes(mapperConfig);
             MapFinanceTypes(mapperConfig);
             MapCorporateTypes(mapperConfig);
+            MapWorkflowTypes(mapperConfig);
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
@@ -171,6 +172,19 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.IsAccessible, opts => opts.UseValue(true));
             mapperConfig.CreateMap<BranchViewModel, Branch>()
                 .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId);
+        }
+
+        private static void MapWorkflowTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<WorkItem, WorkItemViewModel>();
+            mapperConfig.CreateMap<WorkItemViewModel, WorkItem>()
+                .AfterMap((viewModel, model) => model.CreatedBy.Id = viewModel.CreatedById)
+                .AfterMap((viewModel, model) => model.Target.Id = viewModel.TargetId);
+            mapperConfig.CreateMap<WorkItemDocumentViewModel, WorkItemDocument>()
+                .AfterMap((viewModel, model) => model.WorkItem.Id = viewModel.WorkItemId);
+            mapperConfig.CreateMap<WorkItemViewModel, WorkItemHistory>()
+                .ForMember(dest => dest.Id, opts => opts.Ignore())
+                .AfterMap((viewModel, model) => model.User.Id = viewModel.CreatedById);
         }
 
         private static ICryptoService _crypto;

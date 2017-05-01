@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 
         // GET: accounting/transactions[?page={page}]
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.View)]
-        public ActionResult Index(int? page = null)
+        public ViewResult Index(int? page = null)
         {
             var transactions = _service.GetTransactions(TempContext.CurrentFiscalPeriodId, TempContext.CurrentBranchId);
             int pageSize = 10;
@@ -143,6 +143,14 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         public ActionResult Delete(int id)
         {
             _service.DeleteTransaction(id);
+            return RedirectToAction("index");
+        }
+
+        // GET: accounting/transactions/prepare/id
+        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
+        public ActionResult Prepare(int id)
+        {
+            _service.PrepareTransaction(id);
             return RedirectToAction("index");
         }
 

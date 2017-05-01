@@ -94,9 +94,17 @@
     </XamlAppDef>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
+      <Project>{25D668E5-7585-47D7-8AB6-2FD4AC3F8565}</Project>
+      <Name>SPPC.Framework.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Framework.Unity\SPPC.Framework.Unity.csproj">
       <Project>{202c8b97-9665-47fe-9d8b-7e46f4d7b5d8}</Project>
       <Name>SPPC.Framework.Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj">
+      <Project>{504D9334-9367-4535-925B-CCB7574CE350}</Project>
+      <Name>SPPC.Tadbir.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj">
       <Project>{10837CB4-3C60-42EF-9806-D312C17B9F2F}</Project>

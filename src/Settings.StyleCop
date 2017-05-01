@@ -260,6 +260,7 @@
           <Value>id</Value>
           <Value>is</Value>
           <Value>no</Value>
+          <Value>wf</Value>
           <Value>x</Value>
           <Value>y</Value>
         </CollectionProperty>
