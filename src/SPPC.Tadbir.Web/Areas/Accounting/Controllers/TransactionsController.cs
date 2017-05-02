@@ -162,6 +162,14 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return RedirectToAction("index");
         }
 
+        // GET: accounting/transactions/reject/id
+        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
+        public ActionResult Reject(int id)
+        {
+            _service.RejectTransaction(id);
+            return RedirectToAction("index");
+        }
+
         private ITransactionService _service;
         private ISecurityContextManager _contextManager;
     }

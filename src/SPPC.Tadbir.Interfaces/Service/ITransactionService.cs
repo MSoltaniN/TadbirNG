@@ -88,6 +88,13 @@ namespace SPPC.Tadbir.Service
         /// <param name="transactionId">Unique identifier of the transaction to review</param>
         void ReviewTransaction(int transactionId);
 
+        /// <summary>
+        /// Updates operational status of a reviewed financial transaction to Prepred,
+        /// meaning it needs to be reviewed again.
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of the transaction to reject</param>
+        void RejectTransaction(int transactionId);
+
         #endregion
     }
 }

@@ -84,6 +84,16 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Updates operational status of a reviewed financial transaction to Prepred,
+        /// meaning it needs to be reviewed again.
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of the transaction to reject</param>
+        public void RejectTransaction(int transactionId)
+        {
+            _apiClient.Update(new { }, TransactionApi.RejectTransaction, transactionId);
+        }
+
+        /// <summary>
         /// Inserts or updates a financial transaction article.
         /// </summary>
         /// <param name="article">Article to insert or update</param>

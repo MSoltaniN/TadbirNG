@@ -293,6 +293,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // PUT: api/transactions/{transactionId:int}/reject
+        [Route(TransactionApi.RejectTransactionUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
+        public IHttpActionResult PutTransactionAsRejected(int transactionId)
+        {
+            if (transactionId <= 0)
+            {
+                return BadRequest("Could not put transaction as rejected because transaction does not exist.");
+            }
+
+            _workflow.RejectReviewed(transactionId);
+            return Ok();
+        }
+
         #endregion
 
         private ITransactionRepository _repository;

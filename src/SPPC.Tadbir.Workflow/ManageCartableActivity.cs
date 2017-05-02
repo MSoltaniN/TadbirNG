@@ -27,6 +27,8 @@ namespace SPPC.Tadbir.Workflow
 
         public InArgument<string> Remarks { get; set; }
 
+        public InArgument<string> FromStatus { get; set; }
+
         [RequiredArgument]
         public InArgument<string> Status { get; set; }
 
@@ -41,8 +43,9 @@ namespace SPPC.Tadbir.Workflow
         {
             InitializeDependencies(context);
             var workItem = GetNewWorkItem(context);
+            string previousStatus = context.GetValue(FromStatus);
             string status = context.GetValue(OperationalStatus);
-            var createDelegate = GetWorkItemDelegate(status);
+            var createDelegate = GetWorkItemDelegate(status, previousStatus);
             createDelegate(workItem);
         }
 
@@ -61,7 +64,7 @@ namespace SPPC.Tadbir.Workflow
             _repository = context.GetDependency<IWorkItemRepository>("WF");
         }
 
-        private CreateWorkItemDelegate GetWorkItemDelegate(string status)
+        private CreateWorkItemDelegate GetWorkItemDelegate(string status, string fromStatus)
         {
             CreateWorkItemDelegate method = null;
             switch (status)
@@ -69,7 +72,9 @@ namespace SPPC.Tadbir.Workflow
                 case DocumentStatus.Created:
                     break;
                 case DocumentStatus.Prepared:
-                    method = new CreateWorkItemDelegate(_repository.CreateInitialWorkItem);
+                    method = String.IsNullOrEmpty(fromStatus)
+                        ? new CreateWorkItemDelegate(_repository.CreateInitialWorkItem)
+                        : new CreateWorkItemDelegate(_repository.CreateWorkItem);
                     break;
                 case DocumentStatus.Approved:
                     method = new CreateWorkItemDelegate(_repository.CreateFinalWorkItem);

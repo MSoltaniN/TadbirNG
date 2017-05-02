@@ -35,7 +35,7 @@ namespace SPPC.Tadbir.Workflow
         /// یک سند مالی ثبت نشده و بررسی شده را برای بررسی مجدد در وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
         /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید وضعیتش تغییر کند</param>
-        void RequestRevision(int transactionId);
+        void RejectReviewed(int transactionId);
 
         /// <summary>
         /// یک سند مالی ثبت نشده و بررسی شده را در حالت ثبت عادی و وضعیت عملیاتی تایید شده قرار می دهد.
@@ -65,7 +65,7 @@ namespace SPPC.Tadbir.Workflow
         /// مجموعه ای از اسناد مالی ثبت نشده و بررسی شده را برای بررسی مجدد در وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
         /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
-        void RequestRevisionMultiple(IEnumerable<int> transactions);
+        void RejectReviewedMultiple(IEnumerable<int> transactions);
 
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت نشده و بررسی شده را در حالت ثبت عادی و وضعیت عملیاتی تایید شده قرار می دهد.

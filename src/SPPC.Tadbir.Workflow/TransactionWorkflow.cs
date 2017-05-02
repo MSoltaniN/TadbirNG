@@ -41,7 +41,7 @@ namespace SPPC.Tadbir.Workflow
                 "Review: Transaction '[id]={0}' is reviewed by user '[id]={1}'.", transactionId, CurrentUserId);
         }
 
-        public void RequestRevision(int transactionId)
+        public void RejectReviewed(int transactionId)
         {
             TriggerTransition(transactionId, CurrentUserId, "Prepared");
             Debug.WriteLine(
@@ -72,7 +72,7 @@ namespace SPPC.Tadbir.Workflow
             throw new NotImplementedException();
         }
 
-        public void RequestRevisionMultiple(IEnumerable<int> transactions)
+        public void RejectReviewedMultiple(IEnumerable<int> transactions)
         {
             throw new NotImplementedException();
         }

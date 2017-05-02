@@ -54,6 +54,11 @@
                 <mca:CSharpValue x:TypeArguments="x:Int32">TransactionId</mca:CSharpValue>
               </InArgument>
             </local:ManageCartableActivity.DocumentId>
+            <local:ManageCartableActivity.FromStatus>
+              <InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">fromState</mca:CSharpValue>
+              </InArgument>
+            </local:ManageCartableActivity.FromStatus>
           </local:ManageCartableActivity>
         </State.Entry>
         <State.Transitions>
@@ -82,7 +87,7 @@
             <Transition.To>
               <State x:Name="__ReferenceID1" DisplayName="Reviewed" sap2010:WorkflowViewState.IdRef="State_3">
                 <State.Entry>
-                  <local:ManageCartableActivity Remarks="{x:Null}" DisplayName="CartableForReviewedState" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_2" OperationalStatus="Reviewed" Status="NormalCheck" Target="4" Title="A transaction needs to be confirmed.">
+                  <local:ManageCartableActivity FromStatus="{x:Null}" Remarks="{x:Null}" DisplayName="CartableForReviewedState" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_2" OperationalStatus="Reviewed" Status="NormalCheck" Target="4" Title="A transaction needs to be confirmed.">
                     <local:ManageCartableActivity.CreatedById>
                       <InArgument x:TypeArguments="x:Int32">
                         <mca:CSharpValue x:TypeArguments="x:Int32">Convert.ToInt32(userId)</mca:CSharpValue>
@@ -99,6 +104,18 @@
                   <Transition DisplayName="RejectReview" sap2010:WorkflowViewState.IdRef="Transition_1">
                     <Transition.Trigger>
                       <Sequence sap2010:WorkflowViewState.IdRef="Sequence_2">
+                        <Assign sap2010:WorkflowViewState.IdRef="Assign_1">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:String">
+                              <mca:CSharpReference x:TypeArguments="x:String">fromState</mca:CSharpReference>
+                            </OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:String">
+                              <mca:CSharpValue x:TypeArguments="x:String">state</mca:CSharpValue>
+                            </InArgument>
+                          </Assign.Value>
+                        </Assign>
                         <local:WaitForStateActivity BookmarkName="GetUserP" DisplayName="WaitForPrepareUser" sap2010:WorkflowViewState.IdRef="WaitForStateActivity_6">
                           <local:WaitForStateActivity.Result>
                             <OutArgument x:TypeArguments="x:String">
@@ -147,7 +164,7 @@
                     <Transition.To>
                       <State x:Name="__ReferenceID2" DisplayName="Confirmed" sap2010:WorkflowViewState.IdRef="State_2">
                         <State.Entry>
-                          <local:ManageCartableActivity Remarks="{x:Null}" DisplayName="CartableForConfirmedState" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_3" OperationalStatus="Confirmed" Status="NormalCheck" Target="5" Title="A transaction needs to be approved.">
+                          <local:ManageCartableActivity FromStatus="{x:Null}" Remarks="{x:Null}" DisplayName="CartableForConfirmedState" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_3" OperationalStatus="Confirmed" Status="NormalCheck" Target="5" Title="A transaction needs to be approved.">
                             <local:ManageCartableActivity.CreatedById>
                               <InArgument x:TypeArguments="x:Int32">
                                 <mca:CSharpValue x:TypeArguments="x:Int32">Convert.ToInt32(userId)</mca:CSharpValue>
@@ -186,7 +203,7 @@
                             <Transition.To>
                               <State x:Name="__ReferenceID3" DisplayName="Approved" sap2010:WorkflowViewState.IdRef="State_1" IsFinal="True">
                                 <State.Entry>
-                                  <local:ManageCartableActivity Remarks="{x:Null}" DisplayName="CartableForApprovedState" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_4" OperationalStatus="Approved" Status="FinalCheck" Target="(none)" Title="A transaction was approved">
+                                  <local:ManageCartableActivity FromStatus="{x:Null}" Remarks="{x:Null}" DisplayName="CartableForApprovedState" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_4" OperationalStatus="Approved" Status="FinalCheck" Target="(none)" Title="A transaction was approved">
                                     <local:ManageCartableActivity.CreatedById>
                                       <InArgument x:TypeArguments="x:Int32">
                                         <mca:CSharpValue x:TypeArguments="x:Int32">Convert.ToInt32(userId)</mca:CSharpValue>
@@ -224,8 +241,9 @@
           <mca:CSharpValue x:TypeArguments="x:String">StartedById</mca:CSharpValue>
         </Variable.Default>
       </Variable>
+      <Variable x:TypeArguments="x:String" Name="fromState" />
     </StateMachine.Variables>
-    <sads:DebugSymbol.Symbol>d2JEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1xUcmFuc2FjdGlvblN0YXRlV29ya2Zsb3cueGFtbEMqA+UBEgIBAd0BNN0BPgMBmwHgAQvgAVQDAZYBLAfWAQ8CAXFTD9IBFwIBOJQBF84BHwIBE7sBH8oBJwIBAi4LOSoDAYcBPg9NGgIBeFAPUGECAXNVE2AyAgFiZRd0IgIBU3oXemkCAU5/F44BIgIBP5EBF5EBagIBOpYBG6EBOgIBKaYBH7UBKgIBGrgBH7gBcQIBFb0BI8gBQgIBBC7VAS7YAQMBlQExETFlAwGQATYRNlsDAYsBLsIBLs0BAwGKAS7fAS6EAgMBiQEusAEuugEDAYgBPxFFLgMBgAFGEUwuAgF5Vd8BVeIBAgFwWBlYbQIBa10ZXWMCAWZVygFV1wECAWVV6QFVjwICAWRVuAFVwgECAWNmGWw2AgFbbRlzNgIBVIABGYYBNgIBR4cBGY0BNgIBQJYB6QGWAewBAgE3mQEhmQF1AgEyngEhngFrAgEtlgHUAZYB4QECASyWAfMBlgGYAgIBK5YBwQGWAcwBAgEqpwEhrQE+AgEirgEhtAE+AgEbvQHuAb0B9gECARLAASnAAX0CAQ3FASnFAXMCAQi9AdoBvQHmAQIBB70B/QG9AZkCAgEGvQHIAb0B0gECAQU/Oj9EAwGGAUIXQmMDAYEBRjpGRQIBf0kXSWICAXpmQmZMAgFhaR9pawIBXG1CbU0CAVpwH3BqAgFVgAFCgAFMAgFNgwEfgwFrAgFIhwFChwFNAgFGigEfigFqAgFBpwFKpwFUAgEoqgEnqgFzAgEjrgFKrgFVAgEhsQEnsQFyAgEc</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2JEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1xUcmFuc2FjdGlvblN0YXRlV29ya2Zsb3cueGFtbEcqA/cBEgIBAe4BNO4BPgMBwwHxAQvxAVQDAb0BLAfnAQ8DAY0BWA/jARcCAT+lARffAR8CARXMAR/bAScCAQIuCz4qAwGmAUMPUhoDAZUBVQ9VYQMBjwFaE2UyAgF8aheFASICAV6LAReLAWkCAViQARefASICAUeiAReiAWoCAUGnARuyAToCAS63AR/GASoCAR3JAR/JAXECARfOASPZAUICAQQu1QEu2AEDAbwBMRExZQMBtgE2ETZbAwGwAS7CAS7NAQMBrwEu3wEuhAIDAa4BOxE7WAMBqAEusAEuugEDAacBRBFKLgMBngFLEVEuAwGWAVr1AVr4AQMBjAFdGV1tAwGGAWIZYmMDAYABWuABWu0BAgF/Wv8BWqUCAgF+Ws4BWtgBAgF9axl2IgIBb3cZfTYCAWd+GYQBNgIBX5EBGZcBNgIBUJgBGZ4BNgIBSKcB/wGnAYICAgE+qgEhqgF1AgE4rwEhrwFrAgEypwHqAacB9wECATGnAYkCpwGuAgIBMKcB1wGnAeIBAgEvuAEhvgE+AgEmvwEhxQE+AgEezgGEAs4BjAICARTRASnRAX0CAQ7WASnWAXMCAQjOAfABzgH8AQIBB84BkwLOAa8CAgEGzgHeAc4B6AECAQVEOkREAwGlAUcXR2MDAZ8BSzpLRQMBnQFOF05iAwGXAXMfc2ICAXZuH25uAgFwd0J3TAIBbnofemsCAWh+Qn5NAgFmgQEfgQFqAgFgkQFCkQFMAgFXlAEflAFrAgFRmAFCmAFNAgFPmwEfmwFqAgFJuAFKuAFUAgEtuwEnuwFzAgEnvwFKvwFVAgElwgEnwgFyAgEf</sads:DebugSymbol.Symbol>
   </StateMachine>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -240,16 +258,17 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ManageCartableActivity_2" sap:VirtualizedContainerService.HintSize="200,22.4" />
-      <sap2010:ViewStateData Id="WaitForStateActivity_6" sap:VirtualizedContainerService.HintSize="200,22.4" />
-      <sap2010:ViewStateData Id="WaitForStateActivity_2" sap:VirtualizedContainerService.HintSize="200,22.4" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="222.4,209.6">
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="243.2,62.4" />
+      <sap2010:ViewStateData Id="WaitForStateActivity_6" sap:VirtualizedContainerService.HintSize="243.2,22.4" />
+      <sap2010:ViewStateData Id="WaitForStateActivity_2" sap:VirtualizedContainerService.HintSize="243.2,22.4" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="265.6,312">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Transition_1" sap:VirtualizedContainerService.HintSize="429.6,661.6">
+      <sap2010:ViewStateData Id="Transition_1" sap:VirtualizedContainerService.HintSize="429.6,764">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:PointCollection x:Key="ConnectorLocation">153,195.6 153,165.6 164.32,165.6 164.32,149.6</av:PointCollection>
@@ -278,7 +297,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ManageCartableActivity_4" sap:VirtualizedContainerService.HintSize="200,22.4" />
-      <sap2010:ViewStateData Id="State_1" sap:VirtualizedContainerService.HintSize="325.6,224">
+      <sap2010:ViewStateData Id="State_1" sap:VirtualizedContainerService.HintSize="130.4,66.4">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">402.8,199.2</av:Point>
@@ -298,7 +317,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="State_2" sap:VirtualizedContainerService.HintSize="325.6,473.6">
+      <sap2010:ViewStateData Id="State_2" sap:VirtualizedContainerService.HintSize="132,69.6">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">234,195.2</av:Point>
