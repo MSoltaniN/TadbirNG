@@ -82,6 +82,12 @@ namespace SPPC.Tadbir.Service
         /// <param name="transactionId">Unique identifier of the transaction to prepare</param>
         void PrepareTransaction(int transactionId);
 
+        /// <summary>
+        /// Updates operational status of a financial transaction to Reviewed.
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of the transaction to review</param>
+        void ReviewTransaction(int transactionId);
+
         #endregion
     }
 }

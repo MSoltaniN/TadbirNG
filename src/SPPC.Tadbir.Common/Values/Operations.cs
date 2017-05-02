@@ -23,6 +23,11 @@ namespace SPPC.Tadbir.Values
         public const string Review = "بررسی";
 
         /// <summary>
+        /// متن فارسی برای عمل بررسی مجدد سند در فرآیند ثبت سند مالی
+        /// </summary>
+        public const string Reject = "بررسی مجدد";
+
+        /// <summary>
         /// متن فارسی برای عمل تایید سند در فرآیند ثبت سند مالی
         /// </summary>
         public const string Confirm = "تایید";

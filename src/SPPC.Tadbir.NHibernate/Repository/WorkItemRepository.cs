@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Workflow;
@@ -56,14 +57,17 @@ namespace SPPC.Tadbir.NHibernate
             var transaction = transactionRepository.GetByID(workItem.DocumentId);
             if (transaction != null)
             {
+                // Step 1 : Update transaction status with latest values...
                 transaction.Status = workItem.Status;
                 transaction.OperationalStatus = workItem.OperationalStatus;
                 transactionRepository.Update(transaction);
 
+                // Step 2 : Create a new pending work item using source and target identities...
                 var itemRepository = _unitOfWork.GetRepository<WorkItem>();
                 var newWorkItem = _mapper.Map<WorkItem>(workItem);
                 itemRepository.Insert(newWorkItem);
 
+                // Step 3 : Create new document record for transaction...
                 var documentRepository = _unitOfWork.GetRepository<WorkItemDocument>();
                 var document = new WorkItemDocumentViewModel()
                 {
@@ -73,6 +77,7 @@ namespace SPPC.Tadbir.NHibernate
                 var newDocument = _mapper.Map<WorkItemDocument>(document);
                 documentRepository.Insert(newDocument);
 
+                // Step 4 : Create history (log) item for this status change...
                 var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
                 var history = _mapper.Map<WorkItemHistory>(workItem);
                 historyRepository.Insert(history);
@@ -87,7 +92,41 @@ namespace SPPC.Tadbir.NHibernate
         /// <param name="workItem">اطلاعات کار جدید با فرمت مدل نمایشی</param>
         public void CreateWorkItem(WorkItemViewModel workItem)
         {
-            throw new NotImplementedException();
+            Verify.ArgumentNotNull(workItem, "workItem");
+            var transactionRepository = _unitOfWork.GetRepository<Transaction>();
+            var transaction = transactionRepository.GetByID(workItem.DocumentId);
+            if (transaction != null)
+            {
+                // Step 1 : Update transaction status with latest values...
+                transaction.Status = workItem.Status;
+                transaction.OperationalStatus = workItem.OperationalStatus;
+                transactionRepository.Update(transaction);
+
+                // Step 2 : Create a new pending work item using source and target identities...
+                var itemRepository = _unitOfWork.GetRepository<WorkItem>();
+                var newWorkItem = _mapper.Map<WorkItem>(workItem);
+                itemRepository.Insert(newWorkItem);
+
+                // Step 3 : Correlate existing document record for transaction with new work item...
+                var documentRepository = _unitOfWork.GetRepository<WorkItemDocument>();
+                var document = documentRepository
+                    .GetByCriteria(item => item.DocumentId == workItem.DocumentId)
+                    .First();
+                int pendingId = document.WorkItem.Id;
+                document.WorkItem.Id = newWorkItem.Id;
+                documentRepository.Update(document);
+
+                // Step 4 : Delete previous (pending) work item...
+                var pendingItem = itemRepository.GetByID(pendingId);
+                itemRepository.Delete(pendingItem);
+
+                // Step 5 : Create history (log) item for this status change...
+                var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
+                var history = _mapper.Map<WorkItemHistory>(workItem);
+                historyRepository.Insert(history);
+            }
+
+            _unitOfWork.Commit();
         }
 
         /// <summary>

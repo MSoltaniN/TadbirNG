@@ -75,6 +75,15 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Updates operational status of a financial transaction to Reviewed.
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of the transaction to review</param>
+        public void ReviewTransaction(int transactionId)
+        {
+            _apiClient.Update(new { }, TransactionApi.ReviewTransaction, transactionId);
+        }
+
+        /// <summary>
         /// Inserts or updates a financial transaction article.
         /// </summary>
         /// <param name="article">Article to insert or update</param>

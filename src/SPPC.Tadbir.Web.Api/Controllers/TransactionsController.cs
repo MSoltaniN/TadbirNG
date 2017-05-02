@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Web.Http;
-using Microsoft.Practices.Unity;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Security;
@@ -277,6 +276,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             _workflow.Prepare(transactionId);
+            return Ok();
+        }
+
+        // PUT: api/transactions/{transactionId:int}/review
+        [Route(TransactionApi.ReviewTransactionUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Review)]
+        public IHttpActionResult PutTransactionAsReviewed(int transactionId)
+        {
+            if (transactionId <= 0)
+            {
+                return BadRequest("Could not put transaction as Reviewed because transaction does not exist.");
+            }
+
+            _workflow.Review(transactionId);
             return Ok();
         }
 

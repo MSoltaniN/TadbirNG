@@ -90,12 +90,12 @@
                     @credit
                 </td>
                 <td>
-                @if (currentContext.HasPermissions(Permissions.Account.Edit))
+                @if (currentContext.HasPermissions(Permissions.Transaction.Edit))
                 {
                     @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id })<span> | </span>
                 }
                     @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id })
-                @if (currentContext.HasPermissions(Permissions.Account.Delete))
+                @if (currentContext.HasPermissions(Permissions.Transaction.Delete))
                 {
                     <span> | </span>@Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
                 }
@@ -110,6 +110,7 @@
                 @if (item.OperationalStatus == DocumentStatus.Reviewed && currentContext.HasPermissions(Permissions.Transaction.Confirm))
                 {
                     <span> | </span>@Html.ActionLink(Operations.Confirm, "confirm", new { id = item.Id })
+                    <span> | </span>@Html.ActionLink(Operations.Reject, "reject", new { id = item.Id })
                 }
                 @if (item.OperationalStatus == DocumentStatus.Confirmed && currentContext.HasPermissions(Permissions.Transaction.Approve))
                 {

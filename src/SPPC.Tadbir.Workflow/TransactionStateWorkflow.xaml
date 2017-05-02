@@ -82,7 +82,7 @@
             <Transition.To>
               <State x:Name="__ReferenceID1" DisplayName="Reviewed" sap2010:WorkflowViewState.IdRef="State_3">
                 <State.Entry>
-                  <local:ManageCartableActivity Remarks="{x:Null}" DisplayName="CartableForReviewedState" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_2" OperationalStatus="Reviewed" Status="Unchecked" Target="4" Title="A transaction needs to be confirmed.">
+                  <local:ManageCartableActivity Remarks="{x:Null}" DisplayName="CartableForReviewedState" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_2" OperationalStatus="Reviewed" Status="NormalCheck" Target="4" Title="A transaction needs to be confirmed.">
                     <local:ManageCartableActivity.CreatedById>
                       <InArgument x:TypeArguments="x:Int32">
                         <mca:CSharpValue x:TypeArguments="x:Int32">Convert.ToInt32(userId)</mca:CSharpValue>
@@ -225,7 +225,7 @@
         </Variable.Default>
       </Variable>
     </StateMachine.Variables>
-    <sads:DebugSymbol.Symbol>d2JEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1xUcmFuc2FjdGlvblN0YXRlV29ya2Zsb3cueGFtbEMqA+UBEgIBAd0BNN0BPgMBmwHgAQvgAVQDAZYBLAfWAQ8CAXFTD9IBFwIBOJQBF84BHwIBE7sBH8oBJwIBAi4LOSoDAYcBPg9NGgIBeFAPUGECAXNVE2AyAgFiZRd0IgIBU3oXemkCAU5/F44BIgIBP5EBF5EBagIBOpYBG6EBOgIBKaYBH7UBKgIBGrgBH7gBcQIBFb0BI8gBQgIBBC7VAS7YAQMBlQExETFlAwGQATYRNlsDAYsBLsIBLs0BAwGKAS7fAS6EAgMBiQEusAEuugEDAYgBPxFFLgMBgAFGEUwuAgF5Vd0BVeABAgFwWBlYbQIBa10ZXWMCAWZVygFV1QECAWVV5wFVjQICAWRVuAFVwgECAWNmGWw2AgFbbRlzNgIBVIABGYYBNgIBR4cBGY0BNgIBQJYB6QGWAewBAgE3mQEhmQF1AgEyngEhngFrAgEtlgHUAZYB4QECASyWAfMBlgGYAgIBK5YBwQGWAcwBAgEqpwEhrQE+AgEirgEhtAE+AgEbvQHuAb0B9gECARLAASnAAX0CAQ3FASnFAXMCAQi9AdoBvQHmAQIBB70B/QG9AZkCAgEGvQHIAb0B0gECAQU/Oj9EAwGGAUIXQmMDAYEBRjpGRQIBf0kXSWICAXpmQmZMAgFhaR9pawIBXG1CbU0CAVpwH3BqAgFVgAFCgAFMAgFNgwEfgwFrAgFIhwFChwFNAgFGigEfigFqAgFBpwFKpwFUAgEoqgEnqgFzAgEjrgFKrgFVAgEhsQEnsQFyAgEc</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2JEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1xUcmFuc2FjdGlvblN0YXRlV29ya2Zsb3cueGFtbEMqA+UBEgIBAd0BNN0BPgMBmwHgAQvgAVQDAZYBLAfWAQ8CAXFTD9IBFwIBOJQBF84BHwIBE7sBH8oBJwIBAi4LOSoDAYcBPg9NGgIBeFAPUGECAXNVE2AyAgFiZRd0IgIBU3oXemkCAU5/F44BIgIBP5EBF5EBagIBOpYBG6EBOgIBKaYBH7UBKgIBGrgBH7gBcQIBFb0BI8gBQgIBBC7VAS7YAQMBlQExETFlAwGQATYRNlsDAYsBLsIBLs0BAwGKAS7fAS6EAgMBiQEusAEuugEDAYgBPxFFLgMBgAFGEUwuAgF5Vd8BVeIBAgFwWBlYbQIBa10ZXWMCAWZVygFV1wECAWVV6QFVjwICAWRVuAFVwgECAWNmGWw2AgFbbRlzNgIBVIABGYYBNgIBR4cBGY0BNgIBQJYB6QGWAewBAgE3mQEhmQF1AgEyngEhngFrAgEtlgHUAZYB4QECASyWAfMBlgGYAgIBK5YBwQGWAcwBAgEqpwEhrQE+AgEirgEhtAE+AgEbvQHuAb0B9gECARLAASnAAX0CAQ3FASnFAXMCAQi9AdoBvQHmAQIBB70B/QG9AZkCAgEGvQHIAb0B0gECAQU/Oj9EAwGGAUIXQmMDAYEBRjpGRQIBf0kXSWICAXpmQmZMAgFhaR9pawIBXG1CbU0CAVpwH3BqAgFVgAFCgAFMAgFNgwEfgwFrAgFIhwFChwFNAgFGigEfigFqAgFBpwFKpwFUAgEoqgEnqgFzAgEjrgFKrgFVAgEhsQEnsQFyAgEc</sads:DebugSymbol.Symbol>
   </StateMachine>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>

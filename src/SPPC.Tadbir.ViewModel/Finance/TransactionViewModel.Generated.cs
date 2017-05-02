@@ -30,17 +30,17 @@ namespace SPPC.Tadbir.ViewModel.Finance
             this.No = String.Empty;
             this.Date = "1390/09/09";
             this.Description = String.Empty;
-            this.Status = Transactions.UnregisteredStatus;
-            this.OperationalStatus = String.Empty;
+            this.Status = TransactionStatus.Draft;
+            this.OperationalStatus = DocumentStatus.Created;
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity.
+        /// شناسه دیتابیسی این موجودیت
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the شماره سند مالی که می تواند شامل اعداد و حروف باشد
+        /// شماره سند مالی که می تواند شامل اعداد و حروف باشد
         /// </summary>
         [Display(Name = FieldNames.NumberField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
@@ -48,21 +48,21 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string No { get; set; }
 
         /// <summary>
-        /// Gets or sets the تاریخ وقوع پیشامد مالی در عملیات روزمره کسب و کار
+        /// تاریخ وقوع پیشامد مالی در عملیات روزمره کسب و کار
         /// </summary>
         [Display(Name = FieldNames.DateField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public string Date { get; set; }
 
         /// <summary>
-        /// Gets or sets the شرح سند مالی که جزئیات بیشتری را در مورد پیشامد مالی ارائه می دهد
+        /// شرح سند مالی که جزئیات بیشتری را در مورد پیشامد مالی ارائه می دهد
         /// </summary>
         [Display(Name = FieldNames.DescriptionField)]
         [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the وضعیت ثبت سند مالی (مقادیر ممکن عبارتند از : پیش نویس، ثبت نشده، ثبت عادی و ثبت قطعی)
+        /// وضعیت ثبت سند مالی (مقادیر ممکن عبارتند از : پیش نویس، ثبت نشده، ثبت عادی و ثبت قطعی)
         /// </summary>
         [Display(Name = FieldNames.StatusField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
@@ -70,7 +70,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string Status { get; set; }
 
         /// <summary>
-        /// Gets or sets the وضعیت عملیاتی سند مالی (مقادیر ممکن عبارتند از : تنظیم شده، بررسی شده، تایید شده و تصویب شده)
+        /// وضعیت عملیاتی سند مالی (مقادیر ممکن عبارتند از : تنظیم شده، بررسی شده، تایید شده و تصویب شده)
         /// </summary>
         [Display(Name = FieldNames.OperationalStatusField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

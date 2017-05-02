@@ -46,6 +46,7 @@
             @Html.HiddenFor(model => model.Transaction.CreatorId)
             @Html.HiddenFor(model => model.Transaction.LastModifierId)
             @Html.HiddenFor(model => model.Transaction.Status)
+            @Html.HiddenFor(model => model.Transaction.OperationalStatus)
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Transaction.No, htmlAttributes: new { @class = "control-label" })
