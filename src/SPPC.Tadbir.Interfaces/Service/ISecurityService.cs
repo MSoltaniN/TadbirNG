@@ -25,6 +25,11 @@ namespace SPPC.Tadbir.Service
         void Login(UserViewModel user);
 
         /// <summary>
+        /// Removes an authenticated user from current application context.
+        /// </summary>
+        void Logout();
+
+        /// <summary>
         /// Retrieves all application users currently registered in security system.
         /// </summary>
         /// <returns>Collection of all users in security system</returns>

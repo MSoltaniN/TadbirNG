@@ -67,6 +67,20 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Removes an authenticated user from current application context.
+        /// </summary>
+        public void Logout()
+        {
+            var cookie = _httpContext.Request.Cookies[FormsAuthentication.FormsCookieName];
+            cookie.Expires = DateTime.Now.AddDays(-1);
+            _httpContext.Response.SetCookie(cookie);
+
+            var principal = new GenericPrincipal(new GenericIdentity(String.Empty), new string[0]);
+            _httpContext.User = principal;
+            Thread.CurrentPrincipal = principal;
+        }
+
+        /// <summary>
         /// Retrieves all application users currently registered in security system.
         /// </summary>
         /// <returns>Collection of all users in security system</returns>

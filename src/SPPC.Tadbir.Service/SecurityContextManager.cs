@@ -45,10 +45,17 @@ namespace SPPC.Tadbir.Service
         /// Saves security context of current application user in an HTTP cookie, so that it can be
         /// easily retrieved on demand for performing authorization.
         /// </summary>
-        /// <param name="userContext">Object containing context information related to current application user</param>
+        /// <param name="userContext">Object containing context information related to current application user;
+        /// If this object is null, this method immediately expires context cookie, effectively clearing the context.
+        /// </param>
         public void SetUserContext(UserContextViewModel userContext)
         {
-            Verify.ArgumentNotNull(userContext, "userContext");
+            if (userContext == null)
+            {
+                ClearContext();
+                return;
+            }
+
             var context = new SecurityContext(userContext);
             var cookie = new HttpCookie(Values.Constants.ContextCookieName, _contextEncoder.Encode(context));
             _httpContext.Response.Cookies.Set(cookie);
@@ -76,6 +83,13 @@ namespace SPPC.Tadbir.Service
             }
 
             return current;
+        }
+
+        private void ClearContext()
+        {
+            var cookie = _httpContext.Request.Cookies[Values.Constants.ContextCookieName];
+            cookie.Expires = DateTime.Now.AddDays(-1);
+            _httpContext.Response.Cookies.Set(cookie);
         }
 
         private readonly HttpContextBase _httpContext;

@@ -17,14 +17,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 {
     public class TransactionsController : ApiController
     {
-        public TransactionsController(ITransactionRepository repository, ITransactionWorkflow workflow)
+        public TransactionsController(
+            ITransactionRepository repository, ITransactionWorkflow workflow, ISecurityContextManager contextManager)
         {
             Verify.ArgumentNotNull(workflow, "workflow");
             _repository = repository;
             _workflow = workflow;
             _workflow.TypeContainer = UnityConfig.GetConfiguredContainer();
-            _workflow.ContextManager = UnityConfig.GetConfiguredContainer()
-                .Resolve<ISecurityContextManager>("API");
+            _workflow.ContextManager = contextManager;
         }
 
         #region Transaction CRUD Operations
@@ -266,6 +266,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Transaction Workflow Operations
 
+        // PUT: api/transactions/{transactionId:int}/prepare
         [Route(TransactionApi.PrepareTransactionUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
         public IHttpActionResult PutTransactionAsPrepared(int transactionId)

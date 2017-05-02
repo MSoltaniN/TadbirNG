@@ -138,6 +138,11 @@ namespace SPPC.Tadbir.Values
         public const string AppLogin = "ورود به برنامه";
 
         /// <summary>
+        /// Localized text for 'Logout' caption
+        /// </summary>
+        public const string AppLogout = "خروج از برنامه";
+
+        /// <summary>
         /// Localized text for a message indicating that the value entered for security code is incorrect.
         /// </summary>
         public const string InvalidSecurityCode = "کد امنیتی وارد شده نادرست است.";

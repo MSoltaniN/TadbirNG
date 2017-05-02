@@ -52,6 +52,14 @@ namespace SPPC.Tadbir.Web.Controllers
             return View();
         }
 
+        // GET: account/logout
+        public ActionResult Logout()
+        {
+            _service.Logout();
+            _contextManager.SetUserContext(null);
+            return RedirectToAction("login");
+        }
+
         // GET: account/manage
         public ActionResult Manage()
         {
