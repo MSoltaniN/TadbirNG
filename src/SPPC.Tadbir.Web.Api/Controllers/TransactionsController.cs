@@ -307,6 +307,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // PUT: api/transactions/{transactionId:int}/confirm
+        [Route(TransactionApi.ConfirmTransactionUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
+        public IHttpActionResult PutTransactionAsConfirmed(int transactionId)
+        {
+            if (transactionId <= 0)
+            {
+                return BadRequest("Could not put transaction as Confirmed because transaction does not exist.");
+            }
+
+            _workflow.Confirm(transactionId);
+            return Ok();
+        }
+
         #endregion
 
         private ITransactionRepository _repository;
