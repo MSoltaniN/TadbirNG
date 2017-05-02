@@ -203,7 +203,7 @@
                             <Transition.To>
                               <State x:Name="__ReferenceID3" DisplayName="Approved" sap2010:WorkflowViewState.IdRef="State_1" IsFinal="True">
                                 <State.Entry>
-                                  <local:ManageCartableActivity FromStatus="{x:Null}" Remarks="{x:Null}" DisplayName="CartableForApprovedState" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_4" OperationalStatus="Approved" Status="FinalCheck" Target="(none)" Title="A transaction was approved">
+                                  <local:ManageCartableActivity FromStatus="{x:Null}" Remarks="{x:Null}" DisplayName="CartableForApprovedState" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_4" OperationalStatus="Approved" Status="FinalCheck" Target="0" Title="A transaction was approved">
                                     <local:ManageCartableActivity.CreatedById>
                                       <InArgument x:TypeArguments="x:Int32">
                                         <mca:CSharpValue x:TypeArguments="x:Int32">Convert.ToInt32(userId)</mca:CSharpValue>
@@ -243,7 +243,7 @@
       </Variable>
       <Variable x:TypeArguments="x:String" Name="fromState" />
     </StateMachine.Variables>
-    <sads:DebugSymbol.Symbol>d2JEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1xUcmFuc2FjdGlvblN0YXRlV29ya2Zsb3cueGFtbEcqA/cBEgIBAe4BNO4BPgMBwwHxAQvxAVQDAb0BLAfnAQ8DAY0BWA/jARcCAT+lARffAR8CARXMAR/bAScCAQIuCz4qAwGmAUMPUhoDAZUBVQ9VYQMBjwFaE2UyAgF8aheFASICAV6LAReLAWkCAViQARefASICAUeiAReiAWoCAUGnARuyAToCAS63AR/GASoCAR3JAR/JAXECARfOASPZAUICAQQu1QEu2AEDAbwBMRExZQMBtgE2ETZbAwGwAS7CAS7NAQMBrwEu3wEuhAIDAa4BOxE7WAMBqAEusAEuugEDAacBRBFKLgMBngFLEVEuAwGWAVr1AVr4AQMBjAFdGV1tAwGGAWIZYmMDAYABWuABWu0BAgF/Wv8BWqUCAgF+Ws4BWtgBAgF9axl2IgIBb3cZfTYCAWd+GYQBNgIBX5EBGZcBNgIBUJgBGZ4BNgIBSKcB/wGnAYICAgE+qgEhqgF1AgE4rwEhrwFrAgEypwHqAacB9wECATGnAYkCpwGuAgIBMKcB1wGnAeIBAgEvuAEhvgE+AgEmvwEhxQE+AgEezgGEAs4BjAICARTRASnRAX0CAQ7WASnWAXMCAQjOAfABzgH8AQIBB84BkwLOAa8CAgEGzgHeAc4B6AECAQVEOkREAwGlAUcXR2MDAZ8BSzpLRQMBnQFOF05iAwGXAXMfc2ICAXZuH25uAgFwd0J3TAIBbnofemsCAWh+Qn5NAgFmgQEfgQFqAgFgkQFCkQFMAgFXlAEflAFrAgFRmAFCmAFNAgFPmwEfmwFqAgFJuAFKuAFUAgEtuwEnuwFzAgEnvwFKvwFVAgElwgEnwgFyAgEf</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2JEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1xUcmFuc2FjdGlvblN0YXRlV29ya2Zsb3cueGFtbEcqA/cBEgIBAe4BNO4BPgMBwwHxAQvxAVQDAb0BLAfnAQ8DAY0BWA/jARcCAT+lARffAR8CARXMAR/bAScCAQIuCz4qAwGmAUMPUhoDAZUBVQ9VYQMBjwFaE2UyAgF8aheFASICAV6LAReLAWkCAViQARefASICAUeiAReiAWoCAUGnARuyAToCAS63AR/GASoCAR3JAR/JAXECARfOASPZAUICAQQu1QEu2AEDAbwBMRExZQMBtgE2ETZbAwGwAS7CAS7NAQMBrwEu3wEuhAIDAa4BOxE7WAMBqAEusAEuugEDAacBRBFKLgMBngFLEVEuAwGWAVr1AVr4AQMBjAFdGV1tAwGGAWIZYmMDAYABWuABWu0BAgF/Wv8BWqUCAgF+Ws4BWtgBAgF9axl2IgIBb3cZfTYCAWd+GYQBNgIBX5EBGZcBNgIBUJgBGZ4BNgIBSKcB/wGnAYICAgE+qgEhqgF1AgE4rwEhrwFrAgEypwHqAacB9wECATGnAYkCpwGuAgIBMKcB1wGnAeIBAgEvuAEhvgE+AgEmvwEhxQE+AgEezgGEAs4BhwICARTRASnRAX0CAQ7WASnWAXMCAQjOAfABzgH8AQIBB84BjgLOAaoCAgEGzgHeAc4B6AECAQVEOkREAwGlAUcXR2MDAZ8BSzpLRQMBnQFOF05iAwGXAXMfc2ICAXZuH25uAgFwd0J3TAIBbnofemsCAWh+Qn5NAgFmgQEfgQFqAgFgkQFCkQFMAgFXlAEflAFrAgFRmAFCmAFNAgFPmwEfmwFqAgFJuAFKuAFUAgEtuwEnuwFzAgEnvwFKvwFVAgElwgEnwgFyAgEf</sads:DebugSymbol.Symbol>
   </StateMachine>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -297,7 +297,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ManageCartableActivity_4" sap:VirtualizedContainerService.HintSize="200,22.4" />
-      <sap2010:ViewStateData Id="State_1" sap:VirtualizedContainerService.HintSize="130.4,66.4">
+      <sap2010:ViewStateData Id="State_1" sap:VirtualizedContainerService.HintSize="325.6,224">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">402.8,199.2</av:Point>
@@ -308,7 +308,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Transition_2" sap:VirtualizedContainerService.HintSize="429.6,661.6">
+      <sap2010:ViewStateData Id="Transition_2" sap:VirtualizedContainerService.HintSize="429.6,663.2">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:PointCollection x:Key="ConnectorLocation">366,233.48 396,233.48 396,235.72 402.8,235.72</av:PointCollection>
@@ -337,7 +337,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="State_3" sap:VirtualizedContainerService.HintSize="325.6,500.8">
+      <sap2010:ViewStateData Id="State_3" sap:VirtualizedContainerService.HintSize="132,68.8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">54,195.6</av:Point>
@@ -357,7 +357,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="State_4" sap:VirtualizedContainerService.HintSize="325.6,473.6">
+      <sap2010:ViewStateData Id="State_4" sap:VirtualizedContainerService.HintSize="130.4,69.6">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">60,80</av:Point>

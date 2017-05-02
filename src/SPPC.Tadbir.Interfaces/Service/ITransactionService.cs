@@ -101,6 +101,12 @@ namespace SPPC.Tadbir.Service
         /// <param name="transactionId">Unique identifier of the transaction to confirm</param>
         void ConfirmTransaction(int transactionId);
 
+        /// <summary>
+        /// Updates operational status of a financial transaction to Approved.
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of the transaction to approve</param>
+        void ApproveTransaction(int transactionId);
+
         #endregion
     }
 }

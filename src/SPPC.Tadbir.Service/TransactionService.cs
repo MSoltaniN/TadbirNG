@@ -103,6 +103,15 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Updates operational status of a financial transaction to Approved.
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of the transaction to approve</param>
+        public void ApproveTransaction(int transactionId)
+        {
+            _apiClient.Update(new { }, TransactionApi.ApproveTransaction, transactionId);
+        }
+
+        /// <summary>
         /// Inserts or updates a financial transaction article.
         /// </summary>
         /// <param name="article">Article to insert or update</param>

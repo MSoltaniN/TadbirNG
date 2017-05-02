@@ -30,36 +30,31 @@ namespace SPPC.Tadbir.Workflow
         public void Prepare(int transactionId)
         {
             StartNewWorkflow(transactionId, CurrentUserId);
-            Debug.WriteLine(
-                "Prepare: Transaction '[id]={0}' is prepared by user '[id]={1}'.", transactionId, CurrentUserId);
+            LogOperation(transactionId, "Prepare", "prepared");
         }
 
         public void Review(int transactionId)
         {
             TriggerTransition(transactionId, CurrentUserId, "Reviewed");
-            Debug.WriteLine(
-                "Review: Transaction '[id]={0}' is reviewed by user '[id]={1}'.", transactionId, CurrentUserId);
+            LogOperation(transactionId, "Review", "reviewed");
         }
 
         public void RejectReviewed(int transactionId)
         {
             TriggerTransition(transactionId, CurrentUserId, "Prepared");
-            Debug.WriteLine(
-                "RejectReview: Transaction '[id]={0}' is rejected by user '[id]={1}'.", transactionId, CurrentUserId);
+            LogOperation(transactionId, "RejectReview", "rejected");
         }
 
         public void Confirm(int transactionId)
         {
             TriggerTransition(transactionId, CurrentUserId, "Confirmed");
-            Debug.WriteLine(
-                "Confirm: Transaction '[id]={0}' is confirmed by user '[id]={1}'.", transactionId, CurrentUserId);
+            LogOperation(transactionId, "Confirm", "confirmed");
         }
 
         public void Approve(int transactionId)
         {
             TriggerTransition(transactionId, CurrentUserId, "Approved");
-            Debug.WriteLine(
-                "Approve: Transaction '[id]={0}' is approved by user '[id]={1}'.", transactionId, CurrentUserId);
+            LogOperation(transactionId, "Approve", "approved");
         }
 
         public void PrepareMultiple(IEnumerable<int> transactions)
@@ -139,6 +134,15 @@ namespace SPPC.Tadbir.Workflow
                     .First();
                 _workflows.Remove(workflowEntry);
             }
+        }
+
+        private void LogOperation(int transactionId, string title, string completedText)
+        {
+            Debug.WriteLine(
+                "{0}=================================================================={0}" +
+                "{1}: Transaction '[id]={2}' is {3} by user '[id]={4}'.{0}" +
+                "==================================================================",
+                Environment.NewLine, title, transactionId, completedText, CurrentUserId);
         }
 
         private static Lazy<TransactionWorkflow> _instance =

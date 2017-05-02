@@ -135,7 +135,36 @@ namespace SPPC.Tadbir.NHibernate
         /// <param name="workItem">اطلاعات کار جدید با فرمت مدل نمایشی</param>
         public void CreateFinalWorkItem(WorkItemViewModel workItem)
         {
-            throw new NotImplementedException();
+            Verify.ArgumentNotNull(workItem, "workItem");
+            var transactionRepository = _unitOfWork.GetRepository<Transaction>();
+            var transaction = transactionRepository.GetByID(workItem.DocumentId);
+            if (transaction != null)
+            {
+                // Step 1 : Update transaction status with latest values...
+                transaction.Status = workItem.Status;
+                transaction.OperationalStatus = workItem.OperationalStatus;
+                transactionRepository.Update(transaction);
+
+                // Step 2 : Delete workflow document record, since workflow is about to be completed...
+                var documentRepository = _unitOfWork.GetRepository<WorkItemDocument>();
+                var document = documentRepository
+                    .GetByCriteria(item => item.DocumentId == workItem.DocumentId)
+                    .First();
+                int pendingId = document.WorkItem.Id;
+                documentRepository.Delete(document);
+
+                // Step 3 : Delete pending work item, since workflow is about to be completed...
+                var itemRepository = _unitOfWork.GetRepository<WorkItem>();
+                var pendingItem = itemRepository.GetByID(pendingId);
+                itemRepository.Delete(pendingItem);
+
+                // Step 4 : Create history (log) item for final status change...
+                var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
+                var history = _mapper.Map<WorkItemHistory>(workItem);
+                historyRepository.Insert(history);
+            }
+
+            _unitOfWork.Commit();
         }
 
         private IUnitOfWork _unitOfWork;

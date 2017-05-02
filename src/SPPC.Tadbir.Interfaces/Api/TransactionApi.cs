@@ -93,6 +93,16 @@ namespace SPPC.Tadbir.Api
         public const string ConfirmTransactionUrl = "transactions/{transactionId:int}/confirm";
 
         /// <summary>
+        /// API client URL for approving a single transaction specified by identifier
+        /// </summary>
+        public const string ApproveTransaction = "transactions/{0}/approve";
+
+        /// <summary>
+        /// API server route URL for approving a single transaction specified by identifier
+        /// </summary>
+        public const string ApproveTransactionUrl = "transactions/{transactionId:int}/approve";
+
+        /// <summary>
         /// API client URL for all articles in a single transaction specified by identifier
         /// </summary>
         public const string TransactionArticles = "transactions/{0}/articles";
