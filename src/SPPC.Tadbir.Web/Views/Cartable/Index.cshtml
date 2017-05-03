@@ -1,0 +1,71 @@
+﻿@using PagedList.Mvc
+@using SPPC.Framework.Values
+@using SPPC.Tadbir.Values
+@using SPPC.Tadbir.ViewModel.Workflow
+
+@model PagedList.IPagedList<InboxItemViewModel>
+
+@{
+    ViewBag.Title = Strings.Cartable;
+    string pageInfo = String.Format(LocalStrings.NoRecords, Entities.AWorkItem);
+    if (Model.Count > 0)
+    {
+        pageInfo = String.Format(
+            LocalStrings.CurrentPageInfo,
+            Model.TotalItemCount, Entities.WorkItem, Model.PageNumber, Model.PageCount);
+    }
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = String.Empty }, null)</li>
+    <li class="active">@Strings.Cartable</li>
+</ol>
+
+<div class="page-header">
+    <h3>@Strings.Cartable</h3>
+</div>
+<span class="pull-left">@pageInfo</span>
+
+<table class="table table-bordered table-striped table-responsive table-hover">
+    <thead>
+        <tr>
+            <th>@FieldNames.NumberField</th>
+            <th>@FieldNames.Subject</th>
+            <th>@FieldNames.DateField</th>
+            <th>@FieldNames.Time</th>
+            <th>@FieldNames.CreatedBy</th>
+            <th>@FieldNames.DocumentType</th>
+            <th>@FieldNames.DocumentNo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @String.Format("{0}:{1}:{2}", item.Time.Hours, item.Time.Minutes.ToString("D2"), item.Time.Seconds.ToString("D2"))
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentNo)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)

@@ -66,5 +66,15 @@ namespace SPPC.Tadbir.Values
         /// Localized name of Role entity (unknown).
         /// </summary>
         public const string ARole = "نقشی";
+
+        /// <summary>
+        /// Localized name of WorkItem entity (singular form).
+        /// </summary>
+        public const string WorkItem = "کار";
+
+        /// <summary>
+        /// Localized name of WorkItem entity (unknown).
+        /// </summary>
+        public const string AWorkItem = "کاری";
     }
 }

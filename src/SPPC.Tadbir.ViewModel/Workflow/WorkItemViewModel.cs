@@ -11,7 +11,7 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         public int CreatedById { get; set; }
 
         /// <summary>
-        /// نام نقش گیرنده این کار
+        /// شناسه دیتابیسی نقش گیرنده این کار
         /// </summary>
         public int TargetId { get; set; }
 

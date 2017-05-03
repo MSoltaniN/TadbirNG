@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using SPPC.Framework.Mapper;
+using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.ViewModel.Workflow;
@@ -27,13 +29,35 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
-        /// مجموعه کارهای موجود در کارتابل دریاقتی کاربر تعیین شده را از دیتابیس می خواند.
+        /// مجموعه کارهای موجود در کارتابل دریافتی کاربر تعیین شده را از دیتابیس می خواند.
         /// </summary>
         /// <param name="userId">شناسه دیتابیسی یک کاربر موجود</param>
         /// <returns>مجموعه ای از کارها که در کارتابل دریافتی کاربر تعیین شده نمایش داده می شود</returns>
-        public IList<WorkItemViewModel> GetUserInbox(int userId)
+        public IList<InboxItemViewModel> GetUserInbox(int userId)
         {
-            throw new NotImplementedException();
+            IList<InboxItemViewModel> workItems = new List<InboxItemViewModel>();
+            var userRepository = _unitOfWork.GetRepository<User>();
+            var user = userRepository.GetByID(userId);
+            if (user != null)
+            {
+                var roleIds = user.Roles
+                    .Select(role => role.Id)
+                    .ToArray();
+                var repository = _unitOfWork.GetRepository<WorkItem>();
+                workItems = repository
+                    .GetByCriteria(GetInboxCriteria(roleIds))
+                    .Select(wi => _mapper.Map<InboxItemViewModel>(wi))
+                    .ToList();
+
+                var documentRepository = _unitOfWork.GetRepository<Transaction>();
+                foreach (var workItem in workItems)
+                {
+                    var document = documentRepository.GetByID(workItem.DocumentId);
+                    workItem.DocumentNo = document.No;
+                }
+            }
+
+            return workItems;
         }
 
         /// <summary>
@@ -186,6 +210,36 @@ namespace SPPC.Tadbir.NHibernate
             var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
             var history = _mapper.Map<WorkItemHistory>(workItem);
             historyRepository.Insert(history);
+        }
+
+        // NOTE: This function should later be implemented in a generic manner (using dynamic lambda expressions,
+        // instead of a hard-coded switch statement)
+        private static Expression<Func<WorkItem, bool>> GetInboxCriteria(int[] roles)
+        {
+            Expression<Func<WorkItem, bool>> criteria = null;
+            switch (roles.Length)
+            {
+                case 1:
+                    criteria = (wi => wi.Target.Id == roles[0]);
+                    break;
+                case 2:
+                    criteria = (wi => wi.Target.Id == roles[0] || wi.Target.Id == roles[1]);
+                    break;
+                case 3:
+                    criteria = (wi => wi.Target.Id == roles[0] || wi.Target.Id == roles[1]
+                        || wi.Target.Id == roles[2]);
+                    break;
+                case 4:
+                    criteria = (wi => wi.Target.Id == roles[0] || wi.Target.Id == roles[1]
+                        || wi.Target.Id == roles[2] || wi.Target.Id == roles[3]);
+                    break;
+                case 0:
+                default:
+                    criteria = (wi => false);
+                    break;
+            }
+
+            return criteria;
         }
 
         private IUnitOfWork _unitOfWork;

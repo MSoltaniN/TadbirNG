@@ -168,6 +168,31 @@ namespace SPPC.Tadbir.Values
         public const string PermissionGroupField = "گروه دسترسی";
 
         /// <summary>
+        /// Localized name of CreatedBy field
+        /// </summary>
+        public const string CreatedBy = "ایجاد کننده";
+
+        /// <summary>
+        /// Localized name of Time field
+        /// </summary>
+        public const string Time = "زمان";
+
+        /// <summary>
+        /// Localized name of Subject field
+        /// </summary>
+        public const string Subject = "موضوع";
+
+        /// <summary>
+        /// Localized name of DocumentType field
+        /// </summary>
+        public const string DocumentType = "نوع مستند";
+
+        /// <summary>
+        /// Localized name of DocumentNo field
+        /// </summary>
+        public const string DocumentNo = "شماره مستند";
+
+        /// <summary>
         /// Localized name of Security Code field (used in forms that require Captcha validation)
         /// </summary>
         public static readonly string SecurityCode = "کد امنیتی";

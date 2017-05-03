@@ -41,5 +41,10 @@ namespace SPPC.Tadbir.Values
         /// Name of authorization context HTTP header used for authorization in Web service level
         /// </summary>
         public const string ContextHeaderName = "X-Tadbir-AuthTicket";
+
+        /// <summary>
+        /// اندازه پیش فرض صفحه در فهرست های اطلاعاتی
+        /// </summary>
+        public const int DefaultPageSize = 10;
     }
 }

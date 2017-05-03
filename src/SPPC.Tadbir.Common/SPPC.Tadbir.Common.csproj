@@ -68,6 +68,7 @@
     <Compile Include="Values\Accounts.cs" />
     <Compile Include="Values\Constants.cs" />
     <Compile Include="Values\DocumentStatus.cs" />
+    <Compile Include="Values\DocumentType.cs" />
     <Compile Include="Values\Entities.cs" />
     <Compile Include="Values\FieldNames.cs" />
     <Compile Include="Values\Operations.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Values\Transactions.cs" />
     <Compile Include="Values\TransactionStatus.cs" />
     <Compile Include="Values\Users.cs" />
+    <Compile Include="Values\WorkItemTitle.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

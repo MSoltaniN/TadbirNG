@@ -20,7 +20,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(CartableApi.UserInboxItemsUrl)]
         public IHttpActionResult GetUserInbox(int userId)
         {
-            throw new NotImplementedException();
+            if (userId <= 0)
+            {
+                return NotFound();
+            }
+
+            var workItems = _repository.GetUserInbox(userId);
+            return Json(workItems);
         }
 
         [Route(CartableApi.UserOutboxItemsUrl)]

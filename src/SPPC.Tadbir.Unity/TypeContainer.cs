@@ -87,6 +87,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<ITransactionRepository, TransactionRepository>();
             _container.RegisterType<ILookupRepository, LookupRepository>();
             _container.RegisterType<ISecurityRepository, SecurityRepository>();
+            _container.RegisterType<IWorkItemRepository, WorkItemRepository>();
             _container.RegisterType<IWorkItemRepository, WorkItemRepository>(
                 "WF", new InjectionConstructor(
                     new ResolvedParameter<IUnitOfWork>("WF"), new ResolvedParameter<IDomainMapper>()));
@@ -103,6 +104,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<ILookupService, LookupService>();
             _container.RegisterType<ISecurityService, SecurityService>();
             _container.RegisterType<ICryptoService, CryptoService>();
+            _container.RegisterType<ICartableService, CartableService>();
             _container.RegisterType<ISecurityContextManager, SecurityContextManager>();
             _container.RegisterType<ISecurityContextManager, ServiceContextManager>("API");
             _container.RegisterType<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();

@@ -155,6 +155,7 @@
     <Compile Include="Areas\Admin\Controllers\RolesController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CartableController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Extensions\CaptchaExtensions.cs" />
@@ -258,6 +259,7 @@
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Error\Denied.cshtml" />
+    <Content Include="Views\Cartable\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Accounting\Views\Shared\" />

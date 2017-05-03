@@ -87,6 +87,7 @@
     <Compile Include="Security\TransactionPermission.cs" />
     <Compile Include="Security\UserPermission.cs" />
     <Compile Include="Service\IAccountService.cs" />
+    <Compile Include="Service\ICartableService.cs" />
     <Compile Include="Service\ISecurityContext.cs" />
     <Compile Include="Service\ILookupService.cs" />
     <Compile Include="Service\ISecurityContextManager.cs" />

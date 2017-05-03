@@ -8,6 +8,7 @@ using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Workflow;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -177,6 +178,27 @@ namespace SPPC.Tadbir.Mapper
         private static void MapWorkflowTypes(IMapperConfigurationExpression mapperConfig)
         {
             mapperConfig.CreateMap<WorkItem, WorkItemViewModel>();
+            mapperConfig.CreateMap<WorkItem, InboxItemViewModel>()
+                .ForMember(
+                    dest => dest.CreatedBy,
+                    opts => opts.MapFrom(
+                        src => String.Format("{0} {1}", src.CreatedBy.Person.FirstName, src.CreatedBy.Person.LastName)))
+                .ForMember(
+                    dest => dest.Title,
+                    opts => opts.MapFrom(
+                        src => WorkItemTitle.ToLocalValue(src.Title)))
+                .ForMember(
+                    dest => dest.DocumentId,
+                    opts => opts.MapFrom(
+                        src => src.Documents[0].DocumentId))
+                .ForMember(
+                    dest => dest.DocumentType,
+                    opts => opts.MapFrom(
+                        src => DocumentType.ToLocalValue(src.DocumentType)))
+                .ForMember(
+                    dest => dest.Date,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()));
             mapperConfig.CreateMap<WorkItemViewModel, WorkItem>()
                 .AfterMap((viewModel, model) => model.CreatedBy.Id = viewModel.CreatedById)
                 .AfterMap((viewModel, model) => model.Target.Id = viewModel.TargetId);

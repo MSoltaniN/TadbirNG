@@ -68,6 +68,11 @@ namespace SPPC.Tadbir.Values
         public const string About = "درباره";
 
         /// <summary>
+        /// Localized text for Cartable link
+        /// </summary>
+        public const string Cartable = "کارتابل";
+
+        /// <summary>
         /// Localized text for the application type name
         /// </summary>
         public const string WebVersion = "نسخه وب";
