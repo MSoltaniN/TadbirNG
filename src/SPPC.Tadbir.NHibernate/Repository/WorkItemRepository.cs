@@ -53,34 +53,16 @@ namespace SPPC.Tadbir.NHibernate
         public void CreateInitialWorkItem(WorkItemViewModel workItem)
         {
             Verify.ArgumentNotNull(workItem, "workItem");
-            var transactionRepository = _unitOfWork.GetRepository<Transaction>();
-            var transaction = transactionRepository.GetByID(workItem.DocumentId);
-            if (transaction != null)
+
+            // Step 1 : Update transaction status with latest values...
+            if (DidUpdateDocument(workItem))
             {
-                // Step 1 : Update transaction status with latest values...
-                transaction.Status = workItem.Status;
-                transaction.OperationalStatus = workItem.OperationalStatus;
-                transactionRepository.Update(transaction);
+                // Step 2 : Create a new pending work item (and its attached document)
+                // using source user and target role for the operation...
+                CreateNewWorkItem(workItem);
 
-                // Step 2 : Create a new pending work item using source and target identities...
-                var itemRepository = _unitOfWork.GetRepository<WorkItem>();
-                var newWorkItem = _mapper.Map<WorkItem>(workItem);
-                itemRepository.Insert(newWorkItem);
-
-                // Step 3 : Create new document record for transaction...
-                var documentRepository = _unitOfWork.GetRepository<WorkItemDocument>();
-                var document = new WorkItemDocumentViewModel()
-                {
-                    WorkItemId = newWorkItem.Id,
-                    DocumentId = workItem.DocumentId
-                };
-                var newDocument = _mapper.Map<WorkItemDocument>(document);
-                documentRepository.Insert(newDocument);
-
-                // Step 4 : Create history (log) item for this status change...
-                var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
-                var history = _mapper.Map<WorkItemHistory>(workItem);
-                historyRepository.Insert(history);
+                // Step 3 : Create history (log) item for this status change...
+                CreateHistoryItem(workItem);
             }
 
             _unitOfWork.Commit();
@@ -93,37 +75,15 @@ namespace SPPC.Tadbir.NHibernate
         public void CreateWorkItem(WorkItemViewModel workItem)
         {
             Verify.ArgumentNotNull(workItem, "workItem");
-            var transactionRepository = _unitOfWork.GetRepository<Transaction>();
-            var transaction = transactionRepository.GetByID(workItem.DocumentId);
-            if (transaction != null)
+
+            // Step 1 : Update transaction status with latest values...
+            if (DidUpdateDocument(workItem))
             {
-                // Step 1 : Update transaction status with latest values...
-                transaction.Status = workItem.Status;
-                transaction.OperationalStatus = workItem.OperationalStatus;
-                transactionRepository.Update(transaction);
+                // Step 2 : Update existing work item for this transaction...
+                UpdatePendingWorkItem(workItem);
 
-                // Step 2 : Create a new pending work item using source and target identities...
-                var itemRepository = _unitOfWork.GetRepository<WorkItem>();
-                var newWorkItem = _mapper.Map<WorkItem>(workItem);
-                itemRepository.Insert(newWorkItem);
-
-                // Step 3 : Correlate existing document record for transaction with new work item...
-                var documentRepository = _unitOfWork.GetRepository<WorkItemDocument>();
-                var document = documentRepository
-                    .GetByCriteria(item => item.DocumentId == workItem.DocumentId)
-                    .First();
-                int pendingId = document.WorkItem.Id;
-                document.WorkItem.Id = newWorkItem.Id;
-                documentRepository.Update(document);
-
-                // Step 4 : Delete previous (pending) work item...
-                var pendingItem = itemRepository.GetByID(pendingId);
-                itemRepository.Delete(pendingItem);
-
-                // Step 5 : Create history (log) item for this status change...
-                var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
-                var history = _mapper.Map<WorkItemHistory>(workItem);
-                historyRepository.Insert(history);
+                // Step 3 : Create history (log) item for this status change...
+                CreateHistoryItem(workItem);
             }
 
             _unitOfWork.Commit();
@@ -136,35 +96,96 @@ namespace SPPC.Tadbir.NHibernate
         public void CreateFinalWorkItem(WorkItemViewModel workItem)
         {
             Verify.ArgumentNotNull(workItem, "workItem");
+
+            // Step 1 : Update transaction status with latest values...
+            if (DidUpdateDocument(workItem))
+            {
+                // Step 2 : Delete existing work item for this transaction...
+                DeletePendingWorkItem(workItem);
+
+                // Step 3 : Create history (log) item for this status change...
+                CreateHistoryItem(workItem);
+            }
+
+            _unitOfWork.Commit();
+        }
+
+        private bool DidUpdateDocument(WorkItemViewModel workItem)
+        {
+            bool didUpdate = false;
             var transactionRepository = _unitOfWork.GetRepository<Transaction>();
             var transaction = transactionRepository.GetByID(workItem.DocumentId);
             if (transaction != null)
             {
-                // Step 1 : Update transaction status with latest values...
                 transaction.Status = workItem.Status;
                 transaction.OperationalStatus = workItem.OperationalStatus;
                 transactionRepository.Update(transaction);
-
-                // Step 2 : Delete workflow document record, since workflow is about to be completed...
-                var documentRepository = _unitOfWork.GetRepository<WorkItemDocument>();
-                var document = documentRepository
-                    .GetByCriteria(item => item.DocumentId == workItem.DocumentId)
-                    .First();
-                int pendingId = document.WorkItem.Id;
-                documentRepository.Delete(document);
-
-                // Step 3 : Delete pending work item, since workflow is about to be completed...
-                var itemRepository = _unitOfWork.GetRepository<WorkItem>();
-                var pendingItem = itemRepository.GetByID(pendingId);
-                itemRepository.Delete(pendingItem);
-
-                // Step 4 : Create history (log) item for final status change...
-                var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
-                var history = _mapper.Map<WorkItemHistory>(workItem);
-                historyRepository.Insert(history);
+                didUpdate = true;
             }
 
-            _unitOfWork.Commit();
+            return didUpdate;
+        }
+
+        private void CreateNewWorkItem(WorkItemViewModel workItem)
+        {
+            // Step 1 : Insert work item record...
+            var itemRepository = _unitOfWork.GetRepository<WorkItem>();
+            var newWorkItem = _mapper.Map<WorkItem>(workItem);
+            itemRepository.Insert(newWorkItem);
+
+            // Step 2 : Insert related document (transaction) record...
+            var documentRepository = _unitOfWork.GetRepository<WorkItemDocument>();
+            var document = new WorkItemDocumentViewModel()
+            {
+                WorkItemId = newWorkItem.Id,
+                DocumentId = workItem.DocumentId
+            };
+            var newDocument = _mapper.Map<WorkItemDocument>(document);
+            documentRepository.Insert(newDocument);
+        }
+
+        private void UpdatePendingWorkItem(WorkItemViewModel workItem)
+        {
+            // Step 2 : Create a new pending work item using source and target identities...
+            var itemRepository = _unitOfWork.GetRepository<WorkItem>();
+            var newWorkItem = _mapper.Map<WorkItem>(workItem);
+            itemRepository.Insert(newWorkItem);
+
+            // Step 3 : Correlate existing document record for transaction with new work item...
+            var documentRepository = _unitOfWork.GetRepository<WorkItemDocument>();
+            var document = documentRepository
+                .GetByCriteria(item => item.DocumentId == workItem.DocumentId)
+                .First();
+            int pendingId = document.WorkItem.Id;
+            document.WorkItem.Id = newWorkItem.Id;
+            documentRepository.Update(document);
+
+            // Step 4 : Delete previous (pending) work item...
+            var pendingItem = itemRepository.GetByID(pendingId);
+            itemRepository.Delete(pendingItem);
+        }
+
+        private void DeletePendingWorkItem(WorkItemViewModel workItem)
+        {
+            // Step 1 : Delete workflow document record, since workflow is about to be completed...
+            var documentRepository = _unitOfWork.GetRepository<WorkItemDocument>();
+            var document = documentRepository
+                .GetByCriteria(item => item.DocumentId == workItem.DocumentId)
+                .First();
+            int pendingId = document.WorkItem.Id;
+            documentRepository.Delete(document);
+
+            // Step 2 : Delete pending work item, since workflow is about to be completed...
+            var itemRepository = _unitOfWork.GetRepository<WorkItem>();
+            var pendingItem = itemRepository.GetByID(pendingId);
+            itemRepository.Delete(pendingItem);
+        }
+
+        private void CreateHistoryItem(WorkItemViewModel workItem)
+        {
+            var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
+            var history = _mapper.Map<WorkItemHistory>(workItem);
+            historyRepository.Insert(history);
         }
 
         private IUnitOfWork _unitOfWork;

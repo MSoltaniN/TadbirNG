@@ -55,7 +55,14 @@
             @Html.DisplayNameFor(model => model.Transaction.Status)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Transaction.Status)
+            @TransactionStatus.ToLocalValue(Model.Transaction.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Transaction.OperationalStatus)
+        </dt>
+        <dd>
+            @DocumentStatus.ToLocalValue(Model.Transaction.OperationalStatus)
         </dd>
 
         <dt>

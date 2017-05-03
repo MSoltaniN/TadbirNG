@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using SPPC.Framework.Unity.WF;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Values;
 using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Workflow
@@ -35,25 +36,25 @@ namespace SPPC.Tadbir.Workflow
 
         public void Review(int transactionId)
         {
-            TriggerTransition(transactionId, CurrentUserId, "Reviewed");
+            TriggerTransition(transactionId, CurrentUserId, DocumentStatus.Reviewed);
             LogOperation(transactionId, "Review", "reviewed");
         }
 
         public void RejectReviewed(int transactionId)
         {
-            TriggerTransition(transactionId, CurrentUserId, "Prepared");
+            TriggerTransition(transactionId, CurrentUserId, DocumentStatus.Prepared);
             LogOperation(transactionId, "RejectReview", "rejected");
         }
 
         public void Confirm(int transactionId)
         {
-            TriggerTransition(transactionId, CurrentUserId, "Confirmed");
+            TriggerTransition(transactionId, CurrentUserId, DocumentStatus.Confirmed);
             LogOperation(transactionId, "Confirm", "confirmed");
         }
 
         public void Approve(int transactionId)
         {
-            TriggerTransition(transactionId, CurrentUserId, "Approved");
+            TriggerTransition(transactionId, CurrentUserId, DocumentStatus.Approved);
             LogOperation(transactionId, "Approve", "approved");
         }
 
