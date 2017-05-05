@@ -147,8 +147,8 @@ namespace SPPC.Tadbir.Mapper
                         src => JalaliDateTime.Parse(src.Date).ToGregorian()))
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
-                .AfterMap((viewModel, model) => model.Creator.Id = viewModel.CreatorId)
-                .AfterMap((viewModel, model) => model.LastModifier.Id = viewModel.LastModifierId);
+                .AfterMap((viewModel, model) => model.CreatedBy.Id = viewModel.CreatedById)
+                .AfterMap((viewModel, model) => model.ModifiedBy.Id = viewModel.ModifiedById);
             mapperConfig.CreateMap<TransactionLine, TransactionLineViewModel>();
             mapperConfig.CreateMap<TransactionLine, TransactionLineFullViewModel>()
                 .ForMember(

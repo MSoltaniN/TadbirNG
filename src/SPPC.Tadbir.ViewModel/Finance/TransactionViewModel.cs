@@ -8,12 +8,12 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// Gets or sets the identifier of the user who first created this transaction
         /// </summary>
-        public int CreatorId { get; set; }
+        public int CreatedById { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the user who last modified this transaction
         /// </summary>
-        public int LastModifierId { get; set; }
+        public int ModifiedById { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the fiscal period in which this financial transaction is defined.

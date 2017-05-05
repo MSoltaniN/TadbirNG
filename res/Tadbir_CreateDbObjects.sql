@@ -183,10 +183,10 @@ CREATE TABLE [Finance].[Transaction] (
     [TransactionID]     INT              IDENTITY (1, 1) NOT NULL,
 	[FiscalPeriodID]    INT              NOT NULL,
 	[BranchID]          INT              NOT NULL,
-	[CreatorID]         INT              NOT NULL,
-	[ModifierID]        INT              NOT NULL,
-	[VerifierID]        INT              NULL,
-	[ApproverID]        INT              NULL,
+	[CreatedByID]       INT              NOT NULL,
+	[ModifiedByID]      INT              NOT NULL,
+	[ConfirmedByID]     INT              NULL,
+	[ApprovedByID]      INT              NULL,
     [No]                NVARCHAR(64)     NOT NULL,
     [Date]              DATETIME         NOT NULL,
     [Description]       NVARCHAR(512)    NULL,
@@ -197,10 +197,10 @@ CREATE TABLE [Finance].[Transaction] (
     , CONSTRAINT [PK_Finance_Transaction] PRIMARY KEY CLUSTERED ([TransactionID] ASC)
     , CONSTRAINT [FK_Finance_Transaction_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_Transaction_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
-    , CONSTRAINT [FK_Finance_Transaction_Auth_User_Creator] FOREIGN KEY ([CreatorID]) REFERENCES [Auth].[User] ([UserID])
-    , CONSTRAINT [FK_Finance_Transaction_Auth_User_Modifier] FOREIGN KEY ([ModifierID]) REFERENCES [Auth].[User] ([UserID])
-    , CONSTRAINT [FK_Finance_Transaction_Auth_User_Verifier] FOREIGN KEY ([VerifierID]) REFERENCES [Auth].[User] ([UserID])
-    , CONSTRAINT [FK_Finance_Transaction_Auth_User_Approver] FOREIGN KEY ([ApproverID]) REFERENCES [Auth].[User] ([UserID])
+    , CONSTRAINT [FK_Finance_Transaction_Auth_User_CreatedBy] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User] ([UserID])
+    , CONSTRAINT [FK_Finance_Transaction_Auth_User_ModifiedBy] FOREIGN KEY ([ModifiedByID]) REFERENCES [Auth].[User] ([UserID])
+    , CONSTRAINT [FK_Finance_Transaction_Auth_User_ConfirmedBy] FOREIGN KEY ([ConfirmedByID]) REFERENCES [Auth].[User] ([UserID])
+    , CONSTRAINT [FK_Finance_Transaction_Auth_User_ApprovedBy] FOREIGN KEY ([ApprovedByID]) REFERENCES [Auth].[User] ([UserID])
 )
 GO
 

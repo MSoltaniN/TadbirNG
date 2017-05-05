@@ -217,6 +217,7 @@ namespace SPPC.Tadbir.NHibernate
             existing.No = transaction.No;
             existing.Date = JalaliDateTime.Parse(transaction.Date).ToGregorian();
             existing.Description = transaction.Description;
+            existing.ModifiedBy = new User() { Id = transaction.ModifiedById };
         }
 
         private static void UpdateExistingArticle(TransactionLine existing, TransactionLineViewModel article)

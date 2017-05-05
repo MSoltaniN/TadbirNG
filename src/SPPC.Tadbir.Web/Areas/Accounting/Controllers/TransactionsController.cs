@@ -38,8 +38,8 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             {
                 FiscalPeriodId = TempContext.CurrentFiscalPeriodId,
                 BranchId = TempContext.CurrentBranchId,
-                CreatorId = currentContext.User.Id,
-                LastModifierId = currentContext.User.Id,
+                CreatedById = currentContext.User.Id,
+                ModifiedById = currentContext.User.Id,
                 Date = JalaliDateTime.Now.ToShortDateString()
             };
 
@@ -89,6 +89,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
                 return RedirectToAction("notfound", "error", new { area = String.Empty });
             }
 
+            transaction.Transaction.ModifiedById = _contextManager.CurrentContext.User.Id;
             return View(transaction);
         }
 

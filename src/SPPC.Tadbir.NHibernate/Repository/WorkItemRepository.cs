@@ -6,6 +6,7 @@ using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Workflow;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Workflow;
 using SwForAll.Platform.Common;
 using SwForAll.Platform.Persistence;
@@ -134,6 +135,36 @@ namespace SPPC.Tadbir.NHibernate
             _unitOfWork.Commit();
         }
 
+        // NOTE: This function should later be implemented in a generic manner (using dynamic lambda expressions,
+        // instead of a hard-coded switch statement)
+        private static Expression<Func<WorkItem, bool>> GetInboxCriteria(int[] roles)
+        {
+            Expression<Func<WorkItem, bool>> criteria = null;
+            switch (roles.Length)
+            {
+                case 1:
+                    criteria = (wi => wi.Target.Id == roles[0]);
+                    break;
+                case 2:
+                    criteria = (wi => wi.Target.Id == roles[0] || wi.Target.Id == roles[1]);
+                    break;
+                case 3:
+                    criteria = (wi => wi.Target.Id == roles[0] || wi.Target.Id == roles[1]
+                        || wi.Target.Id == roles[2]);
+                    break;
+                case 4:
+                    criteria = (wi => wi.Target.Id == roles[0] || wi.Target.Id == roles[1]
+                        || wi.Target.Id == roles[2] || wi.Target.Id == roles[3]);
+                    break;
+                case 0:
+                default:
+                    criteria = (wi => false);
+                    break;
+            }
+
+            return criteria;
+        }
+
         private bool DidUpdateDocument(WorkItemViewModel workItem)
         {
             bool didUpdate = false;
@@ -143,6 +174,16 @@ namespace SPPC.Tadbir.NHibernate
             {
                 transaction.Status = workItem.Status;
                 transaction.OperationalStatus = workItem.OperationalStatus;
+                if (workItem.OperationalStatus == DocumentStatus.Confirmed)
+                {
+                    transaction.ConfirmedBy = new User() { Id = workItem.CreatedById };
+                }
+
+                if (workItem.OperationalStatus == DocumentStatus.Approved)
+                {
+                    transaction.ApprovedBy = new User() { Id = workItem.CreatedById };
+                }
+
                 transactionRepository.Update(transaction);
                 didUpdate = true;
             }
@@ -210,36 +251,6 @@ namespace SPPC.Tadbir.NHibernate
             var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
             var history = _mapper.Map<WorkItemHistory>(workItem);
             historyRepository.Insert(history);
-        }
-
-        // NOTE: This function should later be implemented in a generic manner (using dynamic lambda expressions,
-        // instead of a hard-coded switch statement)
-        private static Expression<Func<WorkItem, bool>> GetInboxCriteria(int[] roles)
-        {
-            Expression<Func<WorkItem, bool>> criteria = null;
-            switch (roles.Length)
-            {
-                case 1:
-                    criteria = (wi => wi.Target.Id == roles[0]);
-                    break;
-                case 2:
-                    criteria = (wi => wi.Target.Id == roles[0] || wi.Target.Id == roles[1]);
-                    break;
-                case 3:
-                    criteria = (wi => wi.Target.Id == roles[0] || wi.Target.Id == roles[1]
-                        || wi.Target.Id == roles[2]);
-                    break;
-                case 4:
-                    criteria = (wi => wi.Target.Id == roles[0] || wi.Target.Id == roles[1]
-                        || wi.Target.Id == roles[2] || wi.Target.Id == roles[3]);
-                    break;
-                case 0:
-                default:
-                    criteria = (wi => false);
-                    break;
-            }
-
-            return criteria;
         }
 
         private IUnitOfWork _unitOfWork;

@@ -30,9 +30,9 @@ INSERT INTO [Finance].[Currency] (CurrencyID, Name) VALUES (1, N'ریال')
 SET IDENTITY_INSERT [Finance].[Currency] OFF
 
 SET IDENTITY_INSERT [Finance].[Transaction] ON
-INSERT INTO [Finance].[Transaction] (TransactionID, FiscalPeriodID, BranchID, CreatorID, ModifierID, [No], [Date], [Description], [Status], OperationalStatus)
+INSERT INTO [Finance].[Transaction] (TransactionID, FiscalPeriodID, BranchID, CreatedByID, ModifiedByID, [No], [Date], [Description], [Status], OperationalStatus)
   VALUES (1, 1, 1, 1, 1, N'1', N'2017-02-14', N'سند اولیه تاسیس', N'Draft', N'Created')
-INSERT INTO [Finance].[Transaction] (TransactionID, FiscalPeriodID, BranchID, CreatorID, ModifierID, [No], [Date], [Description], [Status], OperationalStatus)
+INSERT INTO [Finance].[Transaction] (TransactionID, FiscalPeriodID, BranchID, CreatedByID, ModifiedByID, [No], [Date], [Description], [Status], OperationalStatus)
   VALUES (2, 1, 1, 1, 1, N'2', N'2017-02-17', N'خرید نقدی لوازم اداری', N'Draft', N'Created')
 SET IDENTITY_INSERT [Finance].[Transaction] OFF
 

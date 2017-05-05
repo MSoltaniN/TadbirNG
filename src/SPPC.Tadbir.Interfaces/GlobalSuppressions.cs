@@ -13,6 +13,7 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible", Scope = "member", Target = "SPPC.Tadbir.Security.Permissions.#User", Justification = "This type implements a fluent API for application use.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible", Scope = "member", Target = "SPPC.Tadbir.Security.Permissions.#Role", Justification = "This type implements a fluent API for application use.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Logout", Scope = "member", Target = "SPPC.Tadbir.Service.ISecurityService.#Logout()", Justification = "The word Logout is preferred.")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces", Scope = "type", Target = "SPPC.Tadbir.Security.Permissions", Justification = "This class is part of a private API and will not conflict with .NET Security API.")]
 
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.

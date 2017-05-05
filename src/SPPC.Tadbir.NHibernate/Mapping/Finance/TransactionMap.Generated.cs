@@ -62,21 +62,21 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Column("FiscalPeriodID")
                 .Not.LazyLoad()
                 .Cascade.None();
-            References(x => x.Creator)
-                .Column("CreatorID")
+            References(x => x.CreatedBy)
+                .Column("CreatedByID")
                 .Not.LazyLoad()
                 .Cascade.None();
-            References(x => x.LastModifier)
-                .Column("ModifierID")
+            References(x => x.ModifiedBy)
+                .Column("ModifiedByID")
                 .Not.LazyLoad()
                 .Cascade.None();
-            References(x => x.Verifier)
-                .Column("VerifierID")
+            References(x => x.ConfirmedBy)
+                .Column("ConfirmedByID")
                 .Nullable()
                 .Not.LazyLoad()
                 .Cascade.None();
-            References(x => x.Approver)
-                .Column("ApproverID")
+            References(x => x.ApprovedBy)
+                .Column("ApprovedByID")
                 .Nullable()
                 .Not.LazyLoad()
                 .Cascade.None();

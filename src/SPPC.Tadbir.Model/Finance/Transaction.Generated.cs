@@ -85,22 +85,22 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// Gets or sets the user that initially created this financial transaction
         /// </summary>
-        public virtual User Creator { get; set; }
+        public virtual User CreatedBy { get; set; }
 
         /// <summary>
         /// Gets or sets the user that last modified this financial transaction
         /// </summary>
-        public virtual User LastModifier { get; set; }
+        public virtual User ModifiedBy { get; set; }
 
         /// <summary>
         /// Gets or sets the user that has verified the authenticity of this financial transaction
         /// </summary>
-        public virtual User Verifier { get; set; }
+        public virtual User ConfirmedBy { get; set; }
 
         /// <summary>
         /// Gets or sets the user that has finalized this financial transaction
         /// </summary>
-        public virtual User Approver { get; set; }
+        public virtual User ApprovedBy { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of lines (articles) in this financial transaction
@@ -117,8 +117,8 @@ namespace SPPC.Tadbir.Model.Finance
             Lines = new List<TransactionLine>();
             FiscalPeriod = new FiscalPeriod();
             Branch = new Branch();
-            Creator = new User();
-            LastModifier = new User();
+            CreatedBy = new User();
+            ModifiedBy = new User();
         }
     }
 }
