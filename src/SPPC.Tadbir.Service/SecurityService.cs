@@ -12,6 +12,7 @@ using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SwForAll.Platform.Common;
+using SwForAll.Platform.Configuration;
 
 namespace SPPC.Tadbir.Service
 {
@@ -31,6 +32,7 @@ namespace SPPC.Tadbir.Service
             _apiClient = apiClient;
             _crypto = crypto;
             _httpContext = httpContext;
+            _rootUrl = ConfigHelper.GetAppSettings(Values.Constants.AppRootKey);
         }
 
         /// <summary>
@@ -290,9 +292,9 @@ namespace SPPC.Tadbir.Service
         private static IPrincipal GetPrincipal(UserViewModel user)
         {
             Verify.ArgumentNotNull(user, "user");
-            var authCookie = FormsAuthentication.GetAuthCookie(user.UserName, false);
+            var authCookie = FormsAuthentication.GetAuthCookie(user.UserName, false, _rootUrl);
             var ticket = FormsAuthentication.Decrypt(authCookie.Value);
-            FormsAuthentication.SetAuthCookie(user.UserName, false);
+            FormsAuthentication.SetAuthCookie(user.UserName, false, _rootUrl);
             var identity = new TadbirIdentity(user.Id, ticket);
             return new GenericPrincipal(identity, new string[0]);
         }
@@ -339,5 +341,6 @@ namespace SPPC.Tadbir.Service
         private IApiClient _apiClient;
         private ICryptoService _crypto;
         private HttpContextBase _httpContext;
+        private static string _rootUrl;
     }
 }

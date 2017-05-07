@@ -6,6 +6,7 @@ using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.Web.Extensions;
 using SwForAll.Platform.Common;
+using SwForAll.Platform.Configuration;
 
 namespace SPPC.Tadbir.Web.Controllers
 {
@@ -16,6 +17,7 @@ namespace SPPC.Tadbir.Web.Controllers
         {
             _service = service;
             _contextManager = contextManager;
+            _rootUrl = ConfigHelper.GetAppSettings(Values.Constants.AppRootKey);
         }
 
         // GET: account/login
@@ -40,7 +42,7 @@ namespace SPPC.Tadbir.Web.Controllers
                     var userContext = _service.GetUserContext(user.Id);
                     _contextManager.SetUserContext(userContext);
                     _service.Login(user);
-                    string redir = returnUrl ?? "/";
+                    string redir = returnUrl ?? _rootUrl;
                     return Redirect(redir);
                 }
                 else
@@ -99,5 +101,6 @@ namespace SPPC.Tadbir.Web.Controllers
 
         private ISecurityService _service;
         private ISecurityContextManager _contextManager;
+        private string _rootUrl;
     }
 }

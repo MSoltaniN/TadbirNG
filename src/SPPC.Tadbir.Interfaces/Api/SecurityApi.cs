@@ -45,12 +45,12 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for a user specified by user name.
         /// </summary>
-        public const string UserByName = "users/{0}";
+        public const string UserByName = "users/name/{0}";
 
         /// <summary>
         /// API server route URL for a user specified by user name.
         /// </summary>
-        public const string UserByNameUrl = "users/{userName}";
+        public const string UserByNameUrl = "users/name/{userName}";
 
         /// <summary>
         /// API client URL for the password of a user specified by user name.

@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Web;
 using SPPC.Tadbir.ViewModel.Auth;
-using SwForAll.Platform.Common;
+using SwForAll.Platform.Configuration;
 
 namespace SPPC.Tadbir.Service
 {
@@ -23,6 +23,7 @@ namespace SPPC.Tadbir.Service
         {
             _httpContext = httpContext;
             _contextEncoder = contextEncoder;
+            _rootUrl = ConfigHelper.GetAppSettings(Values.Constants.AppRootKey);
         }
 
         /// <summary>
@@ -58,6 +59,7 @@ namespace SPPC.Tadbir.Service
 
             var context = new SecurityContext(userContext);
             var cookie = new HttpCookie(Values.Constants.ContextCookieName, _contextEncoder.Encode(context));
+            cookie.Path = _rootUrl;
             _httpContext.Response.Cookies.Set(cookie);
         }
 
@@ -94,5 +96,6 @@ namespace SPPC.Tadbir.Service
 
         private readonly HttpContextBase _httpContext;
         private readonly ITextEncoder<SecurityContext> _contextEncoder;
+        private readonly string _rootUrl;
     }
 }

@@ -38,7 +38,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
             {
                 // If custom authorization ticket header is not found in request, return Bad Request (400) response...
                 string reason = string.Format(
-                    "Authorization ticket header '{0}' could be found.", Values.Constants.ContextHeaderName);
+                    "Authorization ticket header '{0}' could not be found.", Values.Constants.ContextHeaderName);
                 actionContext.Response = new HttpResponseMessage(HttpStatusCode.BadRequest) { ReasonPhrase = reason };
             }
             else if (!IsAuthorized(authTicket))

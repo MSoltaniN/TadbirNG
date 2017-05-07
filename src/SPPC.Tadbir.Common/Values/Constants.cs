@@ -46,5 +46,10 @@ namespace SPPC.Tadbir.Values
         /// اندازه پیش فرض صفحه در فهرست های اطلاعاتی
         /// </summary>
         public const int DefaultPageSize = 10;
+
+        /// <summary>
+        /// نام تنظیمات مربوط به مسیر صفحه اصلی برنامه روی سرور وب
+        /// </summary>
+        public const string AppRootKey = "AppRoot";
     }
 }
