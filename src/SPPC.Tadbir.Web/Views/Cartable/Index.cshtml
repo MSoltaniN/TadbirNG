@@ -14,6 +14,8 @@
             LocalStrings.CurrentPageInfo,
             Model.TotalItemCount, Entities.WorkItem, Model.PageNumber, Model.PageCount);
     }
+
+    string area = "accounting";
 }
 
 <ol class="breadcrumb">
@@ -36,11 +38,13 @@
             <th>@FieldNames.CreatedBy</th>
             <th>@FieldNames.DocumentType</th>
             <th>@FieldNames.DocumentNo</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
+            string controller = String.Format("{0}s", item.DocumentType.ToLower());
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Number)
@@ -58,10 +62,14 @@
                     @Html.DisplayFor(modelItem => item.CreatedBy)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DocumentType)
+                    @DocumentType.ToLocalValue(item.DocumentType)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DocumentNo)
+                </td>
+                <td>
+                    @Html.ActionLink(LocalStrings.View, "details", controller,
+                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
                 </td>
             </tr>
         }

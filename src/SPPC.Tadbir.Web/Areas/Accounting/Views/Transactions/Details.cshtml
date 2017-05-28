@@ -144,5 +144,10 @@
         @Html.ActionLink(Transactions.EditExisting, "edit", new { id = Model.Transaction.Id })<span> | </span>
     }
         @Html.ActionLink(Transactions.IndexTitle, "index")
+    @if (Request.QueryString.AllKeys.Contains("returnUrl"))
+    {
+        string caption = String.Format(LocalStrings.ReturnToPage, Strings.Cartable);
+        <span> | </span>@Html.ActionLink(caption, "index", "cartable", new { area = String.Empty }, new { @class = "btn btn-primary" })
+    }
     </p>
 </div>

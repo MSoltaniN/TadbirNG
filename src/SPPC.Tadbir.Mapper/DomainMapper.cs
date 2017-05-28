@@ -192,10 +192,6 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.MapFrom(
                         src => src.Documents[0].DocumentId))
                 .ForMember(
-                    dest => dest.DocumentType,
-                    opts => opts.MapFrom(
-                        src => DocumentType.ToLocalValue(src.DocumentType)))
-                .ForMember(
                     dest => dest.Date,
                     opts => opts.MapFrom(
                         src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()));

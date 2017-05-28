@@ -58,6 +58,11 @@ namespace SPPC.Framework.Values
         public const string ReturnToPage = "بازگشت به {0}";
 
         /// <summary>
+        /// Localized text for View caption 
+        /// </summary>
+        public const string View = "مشاهده";
+
+        /// <summary>
         /// Localized text for Edit caption 
         /// </summary>
         public const string Edit = "ویرایش";

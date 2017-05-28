@@ -23,7 +23,7 @@ namespace SPPC.Tadbir.Model.Workflow
     public partial class WorkItem : IEntity
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorkItem"/> class.
+        /// نمونه جدیدی از این کلاس ایجاد می کند.
         /// </summary>
         public WorkItem()
         {
@@ -71,7 +71,7 @@ namespace SPPC.Tadbir.Model.Workflow
         public virtual string Remarks { get; set; }
 
         /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که از نوع Guid بوده و به صورت خودکار توسط دیتابیس مقداردهی می شود
+        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
         /// </summary>
         public virtual Guid RowGuid { get; set; }
 
