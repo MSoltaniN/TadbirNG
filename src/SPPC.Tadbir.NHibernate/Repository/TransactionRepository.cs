@@ -4,7 +4,9 @@ using System.Linq;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Workflow;
 using SwForAll.Platform.Common;
 using SwForAll.Platform.Persistence;
 
@@ -59,6 +61,13 @@ namespace SPPC.Tadbir.NHibernate
             if (transaction != null)
             {
                 transactionDetail = _mapper.Map<TransactionFullViewModel>(transaction);
+                var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
+                var history = historyRepository
+                    .GetByCriteria(hist => hist.DocumentId == transactionId)
+                    .OrderByDescending(hist => hist.Date)
+                    .OrderByDescending(hist => hist.Time)
+                    .Select(hist => _mapper.Map<HistoryItemViewModel>(hist));
+                (transactionDetail.Actions as List<HistoryItemViewModel>).AddRange(history);
             }
 
             return transactionDetail;

@@ -43,6 +43,16 @@ namespace SPPC.Tadbir.Values
         public const string Account = "حساب";
 
         /// <summary>
+        /// Localized name of Transaction entity (long form).
+        /// </summary>
+        public const string TransactionLongName = "سند مالی";
+
+        /// <summary>
+        /// Localized name of Transaction entity.
+        /// </summary>
+        public const string Transaction = "سند";
+
+        /// <summary>
         /// Localized name of User entity (singular form).
         /// </summary>
         public const string User = "کاربر";

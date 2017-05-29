@@ -203,6 +203,23 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<WorkItemViewModel, WorkItemHistory>()
                 .ForMember(dest => dest.Id, opts => opts.Ignore())
                 .AfterMap((viewModel, model) => model.User.Id = viewModel.CreatedById);
+            mapperConfig.CreateMap<WorkItemHistory, HistoryItemViewModel>()
+                .ForMember(
+                    dest => dest.Date,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()))
+                .ForMember(
+                    dest => dest.UserFullName,
+                    opts => opts.MapFrom(
+                        src => String.Format("{0} {1}", src.User.Person.FirstName, src.User.Person.LastName)))
+                .ForMember(
+                    dest => dest.Status,
+                    opts => opts.MapFrom(
+                        src => TransactionStatus.ToLocalValue(src.Status)))
+                .ForMember(
+                    dest => dest.OperationalStatus,
+                    opts => opts.MapFrom(
+                        src => DocumentStatus.ToLocalValue(src.OperationalStatus)));
         }
 
         private static ICryptoService _crypto;

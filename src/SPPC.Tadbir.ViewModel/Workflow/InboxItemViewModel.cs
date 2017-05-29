@@ -9,7 +9,7 @@ namespace SPPC.Tadbir.ViewModel.Workflow
     public class InboxItemViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InboxItemViewModel"/> class.
+        /// یک نمونه جدید از این کلاس ایجاد می کند
         /// </summary>
         public InboxItemViewModel()
         {

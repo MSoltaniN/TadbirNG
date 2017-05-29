@@ -184,6 +184,11 @@ namespace SPPC.Tadbir.Values
         public const string NoAssignedUsers = "این نقش به هیچ کاربری تخصیص داده نشده است.";
 
         /// <summary>
+        /// Localized text for a message indicating that an operational entity (document) has no actions.
+        /// </summary>
+        public const string NoDocumentActions = "اقدامی روی این {0} انجام نشده است.";
+
+        /// <summary>
         /// Localized text for a hint text indicating that before deleting a role one must unassign all role users.
         /// </summary>
         public const string DeleteRoleHint = "پیش از حذف یک نقش باید ابتدا نقش مورد نظر از تمام کاربران موجود سلب شود.";
@@ -202,6 +207,16 @@ namespace SPPC.Tadbir.Values
         /// Localized text for a template string that formats assigned users for a role
         /// </summary>
         public const string RoleUsers = "کاربران دارای نقش {0}";
+
+        /// <summary>
+        /// Localized text for Actions Chain caption
+        /// </summary>
+        public const string ActionsChain = "زنجیره اقدامات";
+
+        /// <summary>
+        /// Localized text for Row caption
+        /// </summary>
+        public const string Row = "ردیف";
 
         /// <summary>
         /// Localized text for an error message indicating that a role is assigned to one or more users

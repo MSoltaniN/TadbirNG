@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.ViewModel.Workflow
     public partial class WorkItemDocumentViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorkItemDocumentViewModel"/> class.
+        /// یک نمونه جدید از این کلاس ایجاد می کند
         /// </summary>
         public WorkItemDocumentViewModel()
         {

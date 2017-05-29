@@ -17,6 +17,7 @@
         .GetConfiguredContainer()
         .Resolve<ISecurityContextManager>();
     var currentContext = contextManager.CurrentContext;
+    int row = 1;
 }
 
 <ol class="breadcrumb">
@@ -104,26 +105,26 @@
         <tbody>
             @foreach (var item in Model.Lines)
             {
-                <tr>
-                    <td>
-                        @item.AccountCode
-                    </td>
-                    <td>
-                        @item.CurrencyName
-                    </td>
-                    <td title="@item.Description">
-                        @item.Description.AutoEllipsis(50)
-                    </td>
-                    <td>
-                        @item.Debit.ToString("C0", persianCulture)
-                    </td>
-                    <td>
-                        @item.Credit.ToString("C0", persianCulture)
-                    </td>
-                    <td>
-                        @Html.ActionLink(LocalStrings.Details, "details", "articles", new { id = item.Id }, null)
-                    </td>
-                </tr>
+            <tr>
+                <td>
+                    @item.AccountCode
+                </td>
+                <td>
+                    @item.CurrencyName
+                </td>
+                <td title="@item.Description">
+                    @item.Description.AutoEllipsis(50)
+                </td>
+                <td>
+                    @item.Debit.ToString("C0", persianCulture)
+                </td>
+                <td>
+                    @item.Credit.ToString("C0", persianCulture)
+                </td>
+                <td>
+                    @Html.ActionLink(LocalStrings.Details, "details", "articles", new { id = item.Id }, null)
+                </td>
+            </tr>
             }
             <tr>
                 <td colspan="3">
@@ -138,16 +139,66 @@
             </tr>
         </tbody>
     </table>
+
+    <div class="page-header">
+        <h4>@Strings.ActionsChain</h4>
+    </div>
+    @if (Model.Actions.Count > 0)
+    {
+    <table class="table table-bordered table-striped table-responsive table-hover">
+        <thead>
+            <tr>
+                <th>@Strings.Row</th>
+                <th>@FieldNames.DateField</th>
+                <th>@FieldNames.Time</th>
+                <th>@FieldNames.UserFullName</th>
+                <th>@FieldNames.StatusField</th>
+                <th>@FieldNames.OperationalStatusField</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Actions)
+        {
+            <tr>
+                <td>
+                    @row
+                </td>
+                <td>
+                    @item.Date
+                </td>
+                <td>
+                    @String.Format("{0}:{1}:{2}", item.Time.Hours, item.Time.Minutes.ToString("D2"), item.Time.Seconds.ToString("D2"))
+                </td>
+                <td>
+                    @item.UserFullName
+                </td>
+                <td>
+                    @item.Status
+                </td>
+                <td>
+                    @item.OperationalStatus
+                </td>
+            </tr>
+            row++;
+        }
+        </tbody>
+    </table>
+    }
+    else
+    {
+        <p>@String.Format(Strings.NoDocumentActions, Entities.Transaction)</p>
+    }
+    <br /><br />
     <p>
-    @if(currentContext.HasPermissions(Permissions.Transaction.Edit))
-    {
-        @Html.ActionLink(Transactions.EditExisting, "edit", new { id = Model.Transaction.Id })<span> | </span>
-    }
+        @if (currentContext.HasPermissions(Permissions.Transaction.Edit))
+        {
+            @Html.ActionLink(Transactions.EditExisting, "edit", new { id = Model.Transaction.Id })<span> | </span>
+        }
         @Html.ActionLink(Transactions.IndexTitle, "index")
-    @if (Request.QueryString.AllKeys.Contains("returnUrl"))
-    {
-        string caption = String.Format(LocalStrings.ReturnToPage, Strings.Cartable);
-        <span> | </span>@Html.ActionLink(caption, "index", "cartable", new { area = String.Empty }, new { @class = "btn btn-primary" })
-    }
+        @if (Request.QueryString.AllKeys.Contains("returnUrl"))
+        {
+            string caption = String.Format(LocalStrings.ReturnToPage, Strings.Cartable);
+            <span> | </span>@Html.ActionLink(caption, "index", "cartable", new { area = String.Empty }, new { @class = "btn btn-primary" })
+        }
     </p>
 </div>

@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.ViewModel.Workflow
     public partial class WorkItemViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WorkItemViewModel"/> class.
+        /// یک نمونه جدید از این کلاس ایجاد می کند
         /// </summary>
         public WorkItemViewModel()
         {
