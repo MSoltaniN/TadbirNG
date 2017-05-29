@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 using PagedList;
 using SPPC.Framework.Service;
@@ -160,7 +162,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         public ActionResult Review(int id)
         {
             _service.ReviewTransaction(id);
-            return RedirectToAction("index");
+            return GetNextResult();
         }
 
         // GET: accounting/transactions/reject/id
@@ -168,7 +170,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         public ActionResult Reject(int id)
         {
             _service.RejectTransaction(id);
-            return RedirectToAction("index");
+            return GetNextResult();
         }
 
         // GET: accounting/transactions/confirm/id
@@ -176,7 +178,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         public ActionResult Confirm(int id)
         {
             _service.ConfirmTransaction(id);
-            return RedirectToAction("index");
+            return GetNextResult();
         }
 
         // GET: accounting/transactions/approve/id
@@ -184,7 +186,15 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         public ActionResult Approve(int id)
         {
             _service.ApproveTransaction(id);
-            return RedirectToAction("index");
+            return GetNextResult();
+        }
+
+        private ActionResult GetNextResult()
+        {
+            ActionResult nextResult = Request.QueryString.AllKeys.Contains("returnUrl")
+                ? Redirect(Request.QueryString["returnUrl"])
+                : RedirectToAction("index") as ActionResult;
+            return nextResult;
         }
 
         private ITransactionService _service;

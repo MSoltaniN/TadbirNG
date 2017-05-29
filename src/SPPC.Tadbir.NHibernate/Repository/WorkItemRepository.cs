@@ -55,6 +55,7 @@ namespace SPPC.Tadbir.NHibernate
                 {
                     var document = documentRepository.GetByID(workItem.DocumentId);
                     workItem.DocumentNo = document.No;
+                    workItem.DocumentStatus = document.OperationalStatus;
                 }
             }
 

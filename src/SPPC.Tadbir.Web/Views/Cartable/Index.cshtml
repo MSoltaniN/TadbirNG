@@ -1,7 +1,11 @@
-﻿@using PagedList.Mvc
+﻿@using Microsoft.Practices.Unity
+@using PagedList.Mvc
 @using SPPC.Framework.Values
+@using SPPC.Tadbir.Security
+@using SPPC.Tadbir.Service
 @using SPPC.Tadbir.Values
 @using SPPC.Tadbir.ViewModel.Workflow
+@using SPPC.Tadbir.Web.AppStart
 
 @model PagedList.IPagedList<InboxItemViewModel>
 
@@ -16,6 +20,10 @@
     }
 
     string area = "accounting";
+    var contextManager = UnityConfig
+        .GetConfiguredContainer()
+        .Resolve<ISecurityContextManager>();
+    var currentContext = contextManager.CurrentContext;
 }
 
 <ol class="breadcrumb">
@@ -68,8 +76,32 @@
                     @Html.DisplayFor(modelItem => item.DocumentNo)
                 </td>
                 <td>
+                @if (currentContext.HasPermissions(Permissions.Transaction.View))
+                {
                     @Html.ActionLink(LocalStrings.View, "details", controller,
                         new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
+                }
+                @if (item.DocumentStatus == DocumentStatus.Prepared && currentContext.HasPermissions(Permissions.Transaction.Review))
+                {
+                    <span> | </span>
+                    @Html.ActionLink(Operations.Review, "review", controller,
+                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
+                }
+                @if (item.DocumentStatus == DocumentStatus.Reviewed && currentContext.HasPermissions(Permissions.Transaction.Confirm))
+                {
+                    <span> | </span>
+                    @Html.ActionLink(Operations.Confirm, "confirm", controller,
+                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
+                    <span> | </span>
+                    @Html.ActionLink(Operations.Reject, "reject", controller,
+                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
+                }
+                @if (item.DocumentStatus == DocumentStatus.Confirmed && currentContext.HasPermissions(Permissions.Transaction.Approve))
+                {
+                    <span> | </span>
+                    @Html.ActionLink(Operations.Approve, "approve", controller,
+                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
+                }
                 </td>
             </tr>
         }

@@ -59,5 +59,10 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         /// شماره موجودیت مرتبط با کار
         /// </summary>
         public string DocumentNo { get; set; }
+
+        /// <summary>
+        /// وضعیت عملیاتی موجودیت مرتبط یا کار
+        /// </summary>
+        public string DocumentStatus { get; set; }
     }
 }

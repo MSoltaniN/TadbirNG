@@ -3,6 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using SPPC.Framework.Unity.WF;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
@@ -10,13 +11,14 @@ using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Workflow
 {
-    public class TransactionWorkflow : ITransactionWorkflow
+    public class TransactionWorkflow : ITransactionWorkflow, IDisposable
     {
         private TransactionWorkflow()
         {
             _workflows = new Dictionary<int, WorkflowApplication>();
             _dependencyExtension =
                 new Lazy<DependencyInjectionExtension>(() => new DependencyInjectionExtension(TypeContainer));
+            _syncEvent = new AutoResetEvent(false);
         }
 
         public static TransactionWorkflow Instance
@@ -83,6 +85,37 @@ namespace SPPC.Tadbir.Workflow
             throw new NotImplementedException();
         }
 
+        #region IDisposable Support
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Supports correct implementation of the Disposable pattern for this class.
+        /// </summary>
+        /// <param name="disposing">Indicates if this instance is currently being disposed</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                _syncEvent.Dispose();
+                _disposed = true;
+            }
+        }
+
+        #endregion
+
         private int CurrentUserId
         {
             get { return ContextManager.CurrentContext.User.Id; }
@@ -109,9 +142,11 @@ namespace SPPC.Tadbir.Workflow
                     { "TransactionId", transactionId }
                 });
             workflow.Extensions.Add(DependencyExtension);
-            workflow.Completed += new Action<WorkflowApplicationCompletedEventArgs>(OnWorkflowCompleted);
+            workflow.Completed = new Action<WorkflowApplicationCompletedEventArgs>(OnWorkflowCompleted);
+            workflow.Idle = new Action<WorkflowApplicationIdleEventArgs>(OnWorkflowIdle);
             workflow.Run();
             _workflows.Add(transactionId, workflow);
+            _syncEvent.WaitOne();
         }
 
         private void TriggerTransition(int transactionId, int userId, string newState)
@@ -123,6 +158,7 @@ namespace SPPC.Tadbir.Workflow
                 string stateBookmark = String.Format("GetState{0}", newState[0]);
                 workflow.ResumeBookmark(userBookmark, userId.ToString());
                 workflow.ResumeBookmark(stateBookmark, newState);
+                _syncEvent.WaitOne();
             }
         }
 
@@ -135,6 +171,11 @@ namespace SPPC.Tadbir.Workflow
                     .First();
                 _workflows.Remove(workflowEntry);
             }
+        }
+
+        private void OnWorkflowIdle(WorkflowApplicationIdleEventArgs args)
+        {
+            _syncEvent.Set();
         }
 
         private void LogOperation(int transactionId, string title, string completedText)
@@ -150,5 +191,7 @@ namespace SPPC.Tadbir.Workflow
             new Lazy<TransactionWorkflow>(() => new TransactionWorkflow());
         private Lazy<DependencyInjectionExtension> _dependencyExtension;
         private IDictionary<int, WorkflowApplication> _workflows;
+        private AutoResetEvent _syncEvent;
+        private bool _disposed = false;
     }
 }
