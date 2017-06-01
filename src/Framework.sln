@@ -75,6 +75,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Tadbir.Interfaces", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Tadbir.Workflow", "SPPC.Tadbir.Workflow\SPPC.Tadbir.Workflow.csproj", "{63E67713-A69A-40A5-8259-EA476F20B46A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Tadbir.WorkflowService", "SPPC.Tadbir.WorkflowService\SPPC.Tadbir.WorkflowService.csproj", "{C18F1815-AA59-4098-A0F4-955BCC4DE662}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -251,6 +253,14 @@ Global
 		{63E67713-A69A-40A5-8259-EA476F20B46A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{63E67713-A69A-40A5-8259-EA476F20B46A}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
 		{63E67713-A69A-40A5-8259-EA476F20B46A}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{C18F1815-AA59-4098-A0F4-955BCC4DE662}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C18F1815-AA59-4098-A0F4-955BCC4DE662}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C18F1815-AA59-4098-A0F4-955BCC4DE662}.LiveHost|Any CPU.ActiveCfg = Release|Any CPU
+		{C18F1815-AA59-4098-A0F4-955BCC4DE662}.LiveHost|Any CPU.Build.0 = Release|Any CPU
+		{C18F1815-AA59-4098-A0F4-955BCC4DE662}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C18F1815-AA59-4098-A0F4-955BCC4DE662}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C18F1815-AA59-4098-A0F4-955BCC4DE662}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{C18F1815-AA59-4098-A0F4-955BCC4DE662}.Staging|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -287,5 +297,6 @@ Global
 		{25D668E5-7585-47D7-8AB6-2FD4AC3F8565} = {D302E495-CD8F-4A5D-8F7C-A403C89B1EE4}
 		{10837CB4-3C60-42EF-9806-D312C17B9F2F} = {1F5DE704-3403-418A-9DCF-E70C355D0B46}
 		{63E67713-A69A-40A5-8259-EA476F20B46A} = {41092B11-7B66-4638-97E2-60BBCE803642}
+		{C18F1815-AA59-4098-A0F4-955BCC4DE662} = {41092B11-7B66-4638-97E2-60BBCE803642}
 	EndGlobalSection
 EndGlobal

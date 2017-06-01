@@ -10,11 +10,6 @@ namespace SPPC.Tadbir.Workflow
     public interface ITransactionWorkflow
     {
         /// <summary>
-        /// پیاده سازی مناسب برای ایجاد کلاس ها از اینترفیس ها
-        /// </summary>
-        object TypeContainer { get; set; }
-
-        /// <summary>
         /// اطلاعات امنیتی کاربر جاری در برنامه
         /// </summary>
         ISecurityContextManager ContextManager { get; set; }

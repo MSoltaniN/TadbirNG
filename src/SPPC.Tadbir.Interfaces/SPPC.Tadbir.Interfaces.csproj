@@ -58,6 +58,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +98,8 @@
     <Compile Include="Security\Permissions.cs" />
     <Compile Include="Service\SecurityContext.cs" />
     <Compile Include="Workflow\ITransactionWorkflow.cs" />
+    <Compile Include="Workflow\StateOperation.cs" />
+    <Compile Include="Workflow\StateOperationName.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">

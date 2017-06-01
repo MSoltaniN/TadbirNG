@@ -4,6 +4,7 @@ using SPPC.Framework.Unity.WF;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Workflow;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Workflow
 {
@@ -14,26 +15,7 @@ namespace SPPC.Tadbir.Workflow
     public class ManageCartableActivity : CodeActivity
     {
         [RequiredArgument]
-        public InArgument<int> CreatedById { get; set; }
-
-        [RequiredArgument]
-        public InArgument<string> Target { get; set; }
-
-        [RequiredArgument]
-        public InArgument<int> DocumentId { get; set; }
-
-        [RequiredArgument]
-        public InArgument<string> Title { get; set; }
-
-        public InArgument<string> Remarks { get; set; }
-
-        public InArgument<string> FromStatus { get; set; }
-
-        [RequiredArgument]
-        public InArgument<string> Status { get; set; }
-
-        [RequiredArgument]
-        public InArgument<string> OperationalStatus { get; set; }
+        public InArgument<StateOperation> Operation { get; set; }
 
         /// <summary>
         /// فعالیت را با استفاده از اطلاعات جاری محیطی اجرا می کند.
@@ -41,11 +23,11 @@ namespace SPPC.Tadbir.Workflow
         /// <param name="context">اطلاعات محیط اجرایی فعالیت در زمان اجرای آن</param>
         protected override void Execute(CodeActivityContext context)
         {
+            Verify.ArgumentNotNull(context, "context");
             InitializeDependencies(context);
-            var workItem = GetNewWorkItem(context);
-            string previousStatus = context.GetValue(FromStatus);
-            string status = context.GetValue(OperationalStatus);
-            var createDelegate = GetWorkItemDelegate(status, previousStatus);
+            var operation = context.GetValue(Operation);
+            var workItem = GetNewWorkItem(operation);
+            var createDelegate = GetWorkItemDelegate(operation.NewStatus, operation.CurrentStatus);
             createDelegate(workItem);
         }
 
@@ -72,7 +54,7 @@ namespace SPPC.Tadbir.Workflow
                 case DocumentStatus.Created:
                     break;
                 case DocumentStatus.Prepared:
-                    method = String.IsNullOrEmpty(fromStatus)
+                    method = (fromStatus == DocumentStatus.Created)
                         ? new CreateWorkItemDelegate(_repository.CreateInitialWorkItem)
                         : new CreateWorkItemDelegate(_repository.CreateWorkItem);
                     break;
@@ -87,22 +69,21 @@ namespace SPPC.Tadbir.Workflow
             return method;
         }
 
-        private WorkItemViewModel GetNewWorkItem(CodeActivityContext context)
+        private static WorkItemViewModel GetNewWorkItem(StateOperation operation)
         {
             DateTime current = DateTime.Now;
             var workItem = new WorkItemViewModel()
             {
-                CreatedById = context.GetValue(CreatedById),
-                TargetId = Convert.ToInt32(context.GetValue(Target)),
+                CreatedById = operation.CreatedById,
+                TargetId = operation.TargetId,
                 Number = GenerateNumber(),
                 Date = current.Date,
                 Time = current.TimeOfDay,
-                Title = context.GetValue(Title),
-                DocumentType = "Transaction",
-                DocumentId = context.GetValue(DocumentId),
-                Remarks = context.GetValue(Remarks),
-                Status = context.GetValue(Status),
-                OperationalStatus = context.GetValue(OperationalStatus)
+                Title = operation.Title,
+                DocumentType = operation.DocumentType,
+                DocumentId = operation.DocumentId,
+                Status = operation.Status,
+                OperationalStatus = operation.NewStatus
             };
 
             return workItem;

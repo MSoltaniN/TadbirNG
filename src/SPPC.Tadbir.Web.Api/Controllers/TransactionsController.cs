@@ -7,7 +7,6 @@ using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.Web.Api.AppStart;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Workflow;
 using SwForAll.Platform.Common;
@@ -22,7 +21,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Verify.ArgumentNotNull(workflow, "workflow");
             _repository = repository;
             _workflow = workflow;
-            _workflow.TypeContainer = UnityConfig.GetConfiguredContainer();
             _workflow.ContextManager = contextManager;
         }
 
