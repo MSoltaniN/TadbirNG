@@ -41,6 +41,26 @@ namespace SPPC.Tadbir.Workflow
                 .Substring(0, 8);
         }
 
+        private static WorkItemViewModel GetNewWorkItem(StateOperation operation)
+        {
+            DateTime current = DateTime.Now;
+            var workItem = new WorkItemViewModel()
+            {
+                CreatedById = operation.CreatedById,
+                TargetId = operation.TargetId,
+                Number = GenerateNumber(),
+                Date = current.Date,
+                Time = current.TimeOfDay,
+                Title = operation.Title,
+                DocumentType = operation.DocumentType,
+                DocumentId = operation.DocumentId,
+                Status = operation.Status,
+                OperationalStatus = operation.NewStatus
+            };
+
+            return workItem;
+        }
+
         private void InitializeDependencies(CodeActivityContext context)
         {
             _repository = context.GetDependency<IWorkItemRepository>("WF");
@@ -67,26 +87,6 @@ namespace SPPC.Tadbir.Workflow
             }
 
             return method;
-        }
-
-        private static WorkItemViewModel GetNewWorkItem(StateOperation operation)
-        {
-            DateTime current = DateTime.Now;
-            var workItem = new WorkItemViewModel()
-            {
-                CreatedById = operation.CreatedById,
-                TargetId = operation.TargetId,
-                Number = GenerateNumber(),
-                Date = current.Date,
-                Time = current.TimeOfDay,
-                Title = operation.Title,
-                DocumentType = operation.DocumentType,
-                DocumentId = operation.DocumentId,
-                Status = operation.Status,
-                OperationalStatus = operation.NewStatus
-            };
-
-            return workItem;
         }
 
         private IWorkItemRepository _repository;

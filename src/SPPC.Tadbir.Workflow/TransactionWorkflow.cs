@@ -13,35 +13,60 @@ namespace SPPC.Tadbir.Workflow
         public void Prepare(int transactionId)
         {
             var prepare = StateOperation.Prepare(CurrentUserId, transactionId, DocumentType.Transaction);
-            InvokeServiceOperation(prepare);
+            using (var client = new DocumentStateClient())
+            {
+                client.Prepare(prepare);
+                client.Close();
+            }
+
             LogOperation(transactionId, "Prepare", "prepared");
         }
 
         public void Review(int transactionId)
         {
             var review = StateOperation.Review(CurrentUserId, transactionId, DocumentType.Transaction);
-            InvokeServiceOperation(review);
+            using (var client = new DocumentStateClient())
+            {
+                client.Review(review);
+                client.Close();
+            }
+
             LogOperation(transactionId, "Review", "reviewed");
         }
 
         public void RejectReviewed(int transactionId)
         {
             var reject = StateOperation.RejectReview(CurrentUserId, transactionId, DocumentType.Transaction);
-            InvokeServiceOperation(reject);
+            using (var client = new DocumentStateClient())
+            {
+                client.Reject(reject);
+                client.Close();
+            }
+
             LogOperation(transactionId, "RejectReview", "rejected");
         }
 
         public void Confirm(int transactionId)
         {
             var confirm = StateOperation.Confirm(CurrentUserId, transactionId, DocumentType.Transaction);
-            InvokeServiceOperation(confirm);
+            using (var client = new DocumentStateClient())
+            {
+                client.Confirm(confirm);
+                client.Close();
+            }
+
             LogOperation(transactionId, "Confirm", "confirmed");
         }
 
         public void Approve(int transactionId)
         {
             var approve = StateOperation.Approve(CurrentUserId, transactionId, DocumentType.Transaction);
-            InvokeServiceOperation(approve);
+            using (var client = new DocumentStateClient())
+            {
+                client.Approve(approve);
+                client.Close();
+            }
+
             LogOperation(transactionId, "Approve", "approved");
         }
 
