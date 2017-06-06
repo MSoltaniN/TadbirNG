@@ -15,35 +15,45 @@ namespace SPPC.Tadbir.Workflow
     public interface IStateWithDecision
     {
 
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IStateWithDecision/Prepare")]
-        void Prepare(SPPC.Tadbir.Workflow.StateOperation operation);
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Prepare", ReplyAction = "http://tempuri.org/IStateWithDecision/PrepareResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
+        int Prepare(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IStateWithDecision/Prepare")]
-        System.Threading.Tasks.Task PrepareAsync(SPPC.Tadbir.Workflow.StateOperation operation);
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Prepare", ReplyAction = "http://tempuri.org/IStateWithDecision/PrepareResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
+        System.Threading.Tasks.Task<int> PrepareAsync(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IStateWithDecision/Review")]
-        void Review(SPPC.Tadbir.Workflow.StateOperation operation);
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Review", ReplyAction = "http://tempuri.org/IStateWithDecision/ReviewResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
+        int Review(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IStateWithDecision/Review")]
-        System.Threading.Tasks.Task ReviewAsync(SPPC.Tadbir.Workflow.StateOperation operation);
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Review", ReplyAction = "http://tempuri.org/IStateWithDecision/ReviewResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
+        System.Threading.Tasks.Task<int> ReviewAsync(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IStateWithDecision/Approve")]
-        void Approve(SPPC.Tadbir.Workflow.StateOperation operation);
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Approve", ReplyAction = "http://tempuri.org/IStateWithDecision/ApproveResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
+        int Approve(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IStateWithDecision/Approve")]
-        System.Threading.Tasks.Task ApproveAsync(SPPC.Tadbir.Workflow.StateOperation operation);
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Approve", ReplyAction = "http://tempuri.org/IStateWithDecision/ApproveResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
+        System.Threading.Tasks.Task<int> ApproveAsync(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IStateWithDecision/Confirm")]
-        void Confirm(SPPC.Tadbir.Workflow.StateOperation operation);
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Confirm", ReplyAction = "http://tempuri.org/IStateWithDecision/ConfirmResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
+        int Confirm(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IStateWithDecision/Confirm")]
-        System.Threading.Tasks.Task ConfirmAsync(SPPC.Tadbir.Workflow.StateOperation operation);
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Confirm", ReplyAction = "http://tempuri.org/IStateWithDecision/ConfirmResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
+        System.Threading.Tasks.Task<int> ConfirmAsync(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IStateWithDecision/Reject")]
-        void Reject(SPPC.Tadbir.Workflow.StateOperation operation);
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Reject", ReplyAction = "http://tempuri.org/IStateWithDecision/RejectResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
+        int Reject(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/IStateWithDecision/Reject")]
-        System.Threading.Tasks.Task RejectAsync(SPPC.Tadbir.Workflow.StateOperation operation);
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Reject", ReplyAction = "http://tempuri.org/IStateWithDecision/RejectResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
+        System.Threading.Tasks.Task<int> RejectAsync(SPPC.Tadbir.Workflow.StateOperation operation);
     }
 
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -80,52 +90,52 @@ namespace SPPC.Tadbir.Workflow
         {
         }
 
-        public void Prepare(SPPC.Tadbir.Workflow.StateOperation operation)
+        public int Prepare(SPPC.Tadbir.Workflow.StateOperation operation)
         {
-            base.Channel.Prepare(operation);
+            return base.Channel.Prepare(operation);
         }
 
-        public System.Threading.Tasks.Task PrepareAsync(SPPC.Tadbir.Workflow.StateOperation operation)
+        public System.Threading.Tasks.Task<int> PrepareAsync(SPPC.Tadbir.Workflow.StateOperation operation)
         {
             return base.Channel.PrepareAsync(operation);
         }
 
-        public void Review(SPPC.Tadbir.Workflow.StateOperation operation)
+        public int Review(SPPC.Tadbir.Workflow.StateOperation operation)
         {
-            base.Channel.Review(operation);
+            return base.Channel.Review(operation);
         }
 
-        public System.Threading.Tasks.Task ReviewAsync(SPPC.Tadbir.Workflow.StateOperation operation)
+        public System.Threading.Tasks.Task<int> ReviewAsync(SPPC.Tadbir.Workflow.StateOperation operation)
         {
             return base.Channel.ReviewAsync(operation);
         }
 
-        public void Approve(SPPC.Tadbir.Workflow.StateOperation operation)
+        public int Approve(SPPC.Tadbir.Workflow.StateOperation operation)
         {
-            base.Channel.Approve(operation);
+            return base.Channel.Approve(operation);
         }
 
-        public System.Threading.Tasks.Task ApproveAsync(SPPC.Tadbir.Workflow.StateOperation operation)
+        public System.Threading.Tasks.Task<int> ApproveAsync(SPPC.Tadbir.Workflow.StateOperation operation)
         {
             return base.Channel.ApproveAsync(operation);
         }
 
-        public void Confirm(SPPC.Tadbir.Workflow.StateOperation operation)
+        public int Confirm(SPPC.Tadbir.Workflow.StateOperation operation)
         {
-            base.Channel.Confirm(operation);
+            return base.Channel.Confirm(operation);
         }
 
-        public System.Threading.Tasks.Task ConfirmAsync(SPPC.Tadbir.Workflow.StateOperation operation)
+        public System.Threading.Tasks.Task<int> ConfirmAsync(SPPC.Tadbir.Workflow.StateOperation operation)
         {
             return base.Channel.ConfirmAsync(operation);
         }
 
-        public void Reject(SPPC.Tadbir.Workflow.StateOperation operation)
+        public int Reject(SPPC.Tadbir.Workflow.StateOperation operation)
         {
-            base.Channel.Reject(operation);
+            return base.Channel.Reject(operation);
         }
 
-        public System.Threading.Tasks.Task RejectAsync(SPPC.Tadbir.Workflow.StateOperation operation)
+        public System.Threading.Tasks.Task<int> RejectAsync(SPPC.Tadbir.Workflow.StateOperation operation)
         {
             return base.Channel.RejectAsync(operation);
         }

@@ -20,7 +20,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public decimal DebitSum { get; set; }
 
-
         /// <summary>
         /// جمع مقادیر بستانکار در آرتیکل های سند
         /// </summary>
