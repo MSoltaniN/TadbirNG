@@ -140,6 +140,20 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.Date,
                     opts => opts.MapFrom(
                         src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()));
+            mapperConfig.CreateMap<Transaction, TransactionSummaryViewModel>()
+                .ForMember(
+                    dest => dest.DebitSum,
+                    opts => opts.MapFrom(
+                        src => src.Lines
+                            .Select(line => line.Debit)
+                            .Sum()))
+                .ForMember(
+                    dest => dest.CreditSum,
+                    opts => opts.MapFrom(
+                        src => src.Lines
+                            .Select(line => line.Credit)
+                            .Sum()));
+
             mapperConfig.CreateMap<TransactionViewModel, Transaction>()
                 .ForMember(
                     dest => dest.Date,

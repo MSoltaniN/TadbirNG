@@ -99,6 +99,7 @@
     <Compile Include="Finance\TransactionLineFullViewModel.cs" />
     <Compile Include="Finance\TransactionLineViewModel.cs" />
     <Compile Include="Finance\TransactionLineViewModel.Generated.cs" />
+    <Compile Include="Finance\TransactionSummaryViewModel.cs" />
     <Compile Include="Finance\TransactionViewModel.cs" />
     <Compile Include="Finance\TransactionViewModel.Generated.cs" />
     <Compile Include="GlobalSuppressions.cs">

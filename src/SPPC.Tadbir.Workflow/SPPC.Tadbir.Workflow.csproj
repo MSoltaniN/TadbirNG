@@ -80,8 +80,10 @@
     <Compile Include="..\TadbirSolutionInfo.cs">
       <Link>TadbirSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="CartableFCService.cs" />
     <Compile Include="CartableService.cs" />
     <Compile Include="CartableSMService.cs" />
+    <Compile Include="GetTransactionSummaryActivity.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>

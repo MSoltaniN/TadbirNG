@@ -85,6 +85,9 @@ namespace SPPC.Tadbir.Unity
 
             _container.RegisterType<IAccountRepository, AccountRepository>();
             _container.RegisterType<ITransactionRepository, TransactionRepository>();
+            _container.RegisterType<ITransactionRepository, TransactionRepository>(
+                "WF", new InjectionConstructor(
+                    new ResolvedParameter<IUnitOfWork>("WF"), new ResolvedParameter<IDomainMapper>()));
             _container.RegisterType<ILookupRepository, LookupRepository>();
             _container.RegisterType<ISecurityRepository, SecurityRepository>();
             _container.RegisterType<IWorkItemRepository, WorkItemRepository>();
