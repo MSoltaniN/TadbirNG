@@ -13,7 +13,7 @@ namespace SPPC.Tadbir.Workflow
         public void Prepare(int transactionId)
         {
             var prepare = StateOperation.Prepare(CurrentUserId, transactionId, DocumentType.Transaction);
-            using (var client = new StateWithDecisionClient())
+            using (var client = new DocumentStateClient())
             {
                 client.Prepare(prepare);
                 client.Close();
@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.Workflow
         public void Review(int transactionId)
         {
             var review = StateOperation.Review(CurrentUserId, transactionId, DocumentType.Transaction);
-            using (var client = new StateWithDecisionClient())
+            using (var client = new DocumentStateClient())
             {
                 client.Review(review);
                 client.Close();
@@ -37,7 +37,7 @@ namespace SPPC.Tadbir.Workflow
         public void RejectReviewed(int transactionId)
         {
             var reject = StateOperation.RejectReview(CurrentUserId, transactionId, DocumentType.Transaction);
-            using (var client = new StateWithDecisionClient())
+            using (var client = new DocumentStateClient())
             {
                 client.Reject(reject);
                 client.Close();
@@ -49,7 +49,7 @@ namespace SPPC.Tadbir.Workflow
         public void Confirm(int transactionId)
         {
             var confirm = StateOperation.Confirm(CurrentUserId, transactionId, DocumentType.Transaction);
-            using (var client = new StateWithDecisionClient())
+            using (var client = new DocumentStateClient())
             {
                 client.Confirm(confirm);
                 client.Close();
@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Workflow
         public void Approve(int transactionId)
         {
             var approve = StateOperation.Approve(CurrentUserId, transactionId, DocumentType.Transaction);
-            using (var client = new StateWithDecisionClient())
+            using (var client = new DocumentStateClient())
             {
                 client.Approve(approve);
                 client.Close();
