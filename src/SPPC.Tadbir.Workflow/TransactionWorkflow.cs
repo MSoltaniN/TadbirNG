@@ -10,10 +10,10 @@ namespace SPPC.Tadbir.Workflow
     {
         public ISecurityContextManager ContextManager { get; set; }
 
-        public void Prepare(int transactionId)
+        public virtual void Prepare(int transactionId)
         {
             var prepare = StateOperation.Prepare(CurrentUserId, transactionId, DocumentType.Transaction);
-            using (var client = new DocumentStateTimeoutClient())
+            using (var client = new DocumentStateClient())
             {
                 client.Prepare(prepare);
                 client.Close();
@@ -22,10 +22,10 @@ namespace SPPC.Tadbir.Workflow
             LogOperation(transactionId, "Prepare", "prepared");
         }
 
-        public void Review(int transactionId)
+        public virtual void Review(int transactionId)
         {
             var review = StateOperation.Review(CurrentUserId, transactionId, DocumentType.Transaction);
-            using (var client = new DocumentStateTimeoutClient())
+            using (var client = new DocumentStateClient())
             {
                 client.Review(review);
                 client.Close();
@@ -34,10 +34,10 @@ namespace SPPC.Tadbir.Workflow
             LogOperation(transactionId, "Review", "reviewed");
         }
 
-        public void RejectReviewed(int transactionId)
+        public virtual void RejectReviewed(int transactionId)
         {
             var reject = StateOperation.RejectReview(CurrentUserId, transactionId, DocumentType.Transaction);
-            using (var client = new DocumentStateTimeoutClient())
+            using (var client = new DocumentStateClient())
             {
                 client.Reject(reject);
                 client.Close();
@@ -46,10 +46,10 @@ namespace SPPC.Tadbir.Workflow
             LogOperation(transactionId, "RejectReview", "rejected");
         }
 
-        public void Confirm(int transactionId)
+        public virtual void Confirm(int transactionId)
         {
             var confirm = StateOperation.Confirm(CurrentUserId, transactionId, DocumentType.Transaction);
-            using (var client = new DocumentStateTimeoutClient())
+            using (var client = new DocumentStateClient())
             {
                 client.Confirm(confirm);
                 client.Close();
@@ -58,10 +58,10 @@ namespace SPPC.Tadbir.Workflow
             LogOperation(transactionId, "Confirm", "confirmed");
         }
 
-        public void Approve(int transactionId)
+        public virtual void Approve(int transactionId)
         {
             var approve = StateOperation.Approve(CurrentUserId, transactionId, DocumentType.Transaction);
-            using (var client = new DocumentStateTimeoutClient())
+            using (var client = new DocumentStateClient())
             {
                 client.Approve(approve);
                 client.Close();
@@ -95,21 +95,12 @@ namespace SPPC.Tadbir.Workflow
             throw new NotImplementedException();
         }
 
-        private int CurrentUserId
+        protected int CurrentUserId
         {
             get { return ContextManager.CurrentContext.User.Id; }
         }
 
-        private static void InvokeServiceOperation(StateOperation operation)
-        {
-            using (var client = new CartableClient())
-            {
-                client.DoRequest(operation);
-                client.Close();
-            }
-        }
-
-        private void LogOperation(int transactionId, string title, string completedText)
+        protected void LogOperation(int transactionId, string title, string completedText)
         {
             Debug.WriteLine(
                 "{0}=================================================================={0}" +

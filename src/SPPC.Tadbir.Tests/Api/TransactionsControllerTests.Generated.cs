@@ -32,7 +32,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         public void FixtureSetup()
         {
             _mockRepository = new Mock<ITransactionRepository>();
-            _mockWorkflow = new Mock<ITransactionWorkflow>();
             _mockContext = new Mock<ISecurityContextManager>();
         }
 
@@ -40,7 +39,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         public void Setup()
         {
             _controller = new TransactionsController(
-                _mockRepository.Object, _mockWorkflow.Object, _mockContext.Object);
+                _mockRepository.Object, _mockContext.Object);
             _existingTransaction = new TransactionViewModel() { Id = _existingTransactionId };
             _existingArticle = new TransactionLineViewModel()
             {
@@ -595,7 +594,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         #endregion
 
         private Mock<ITransactionRepository> _mockRepository;
-        private Mock<ITransactionWorkflow> _mockWorkflow;
         private Mock<ISecurityContextManager> _mockContext;
         private TransactionViewModel _existingTransaction;
         private int _existingTransactionId = 1;

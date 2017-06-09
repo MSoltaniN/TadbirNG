@@ -91,6 +91,9 @@
     <Compile Include="ManageCartableActivity.cs" />
     <Compile Include="MoveCartableItemActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransactionBasicWorkflow.cs" />
+    <Compile Include="TransactionDecisionWorkflow.cs" />
+    <Compile Include="TransactionTimeoutWorkflow.cs" />
     <Compile Include="TransactionWorkflow.cs" />
   </ItemGroup>
   <ItemGroup>

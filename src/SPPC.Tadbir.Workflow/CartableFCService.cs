@@ -11,81 +11,81 @@
 namespace SPPC.Tadbir.Workflow
 {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IStateWithDecision")]
-    public interface IStateWithDecision
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IDocumentStateDecision")]
+    public interface IDocumentStateDecision
     {
 
-        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Prepare", ReplyAction = "http://tempuri.org/IStateWithDecision/PrepareResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDocumentStateDecision/Prepare", ReplyAction = "http://tempuri.org/IDocumentStateDecision/PrepareResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
         int Prepare(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Prepare", ReplyAction = "http://tempuri.org/IStateWithDecision/PrepareResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDocumentStateDecision/Prepare", ReplyAction = "http://tempuri.org/IDocumentStateDecision/PrepareResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
         System.Threading.Tasks.Task<int> PrepareAsync(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Review", ReplyAction = "http://tempuri.org/IStateWithDecision/ReviewResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDocumentStateDecision/Review", ReplyAction = "http://tempuri.org/IDocumentStateDecision/ReviewResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
         int Review(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Review", ReplyAction = "http://tempuri.org/IStateWithDecision/ReviewResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDocumentStateDecision/Review", ReplyAction = "http://tempuri.org/IDocumentStateDecision/ReviewResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
         System.Threading.Tasks.Task<int> ReviewAsync(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Approve", ReplyAction = "http://tempuri.org/IStateWithDecision/ApproveResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDocumentStateDecision/Approve", ReplyAction = "http://tempuri.org/IDocumentStateDecision/ApproveResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
         int Approve(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Approve", ReplyAction = "http://tempuri.org/IStateWithDecision/ApproveResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDocumentStateDecision/Approve", ReplyAction = "http://tempuri.org/IDocumentStateDecision/ApproveResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
         System.Threading.Tasks.Task<int> ApproveAsync(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Confirm", ReplyAction = "http://tempuri.org/IStateWithDecision/ConfirmResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDocumentStateDecision/Confirm", ReplyAction = "http://tempuri.org/IDocumentStateDecision/ConfirmResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
         int Confirm(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Confirm", ReplyAction = "http://tempuri.org/IStateWithDecision/ConfirmResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDocumentStateDecision/Confirm", ReplyAction = "http://tempuri.org/IDocumentStateDecision/ConfirmResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
         System.Threading.Tasks.Task<int> ConfirmAsync(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Reject", ReplyAction = "http://tempuri.org/IStateWithDecision/RejectResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDocumentStateDecision/Reject", ReplyAction = "http://tempuri.org/IDocumentStateDecision/RejectResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
         int Reject(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IStateWithDecision/Reject", ReplyAction = "http://tempuri.org/IStateWithDecision/RejectResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDocumentStateDecision/Reject", ReplyAction = "http://tempuri.org/IDocumentStateDecision/RejectResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
         System.Threading.Tasks.Task<int> RejectAsync(SPPC.Tadbir.Workflow.StateOperation operation);
     }
 
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IStateWithDecisionChannel : IStateWithDecision, System.ServiceModel.IClientChannel
+    public interface IDocumentStateDecisionChannel : IDocumentStateDecision, System.ServiceModel.IClientChannel
     {
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class StateWithDecisionClient : System.ServiceModel.ClientBase<IStateWithDecision>, IStateWithDecision
+    public partial class DocumentStateDecisionClient : System.ServiceModel.ClientBase<IDocumentStateDecision>, IDocumentStateDecision
     {
 
-        public StateWithDecisionClient()
+        public DocumentStateDecisionClient()
         {
         }
 
-        public StateWithDecisionClient(string endpointConfigurationName) :
+        public DocumentStateDecisionClient(string endpointConfigurationName) :
                 base(endpointConfigurationName)
         {
         }
 
-        public StateWithDecisionClient(string endpointConfigurationName, string remoteAddress) :
+        public DocumentStateDecisionClient(string endpointConfigurationName, string remoteAddress) :
                 base(endpointConfigurationName, remoteAddress)
         {
         }
 
-        public StateWithDecisionClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) :
+        public DocumentStateDecisionClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) :
                 base(endpointConfigurationName, remoteAddress)
         {
         }
 
-        public StateWithDecisionClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
+        public DocumentStateDecisionClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
                 base(binding, remoteAddress)
         {
         }

@@ -73,7 +73,7 @@
         <p1:PickBranch DisplayName="ConfirmedBranch" sap2010:WorkflowViewState.IdRef="PickBranch_1">
           <p1:PickBranch.Trigger>
             <p1:Sequence DisplayName="WaitForConfirmSync" sap2010:WorkflowViewState.IdRef="Sequence_3">
-              <Receive x:Name="__ReferenceID0" CanCreateInstance="True" DisplayName="ReceiveConfirm" sap2010:WorkflowViewState.IdRef="Receive_8" OperationName="Confirm" ServiceContractName="p:IStateWithDecision">
+              <Receive x:Name="__ReferenceID0" CanCreateInstance="True" DisplayName="ReceiveConfirm" sap2010:WorkflowViewState.IdRef="Receive_8" OperationName="Confirm" ServiceContractName="p:IDocumentStateDecision">
                 <Receive.CorrelatesOn>
                   <XPathMessageQuery x:Key="TxnId">
                     <XPathMessageQuery.Namespaces>
@@ -121,7 +121,7 @@
         <p1:PickBranch DisplayName="RejectedBranch" sap2010:WorkflowViewState.IdRef="PickBranch_2">
           <p1:PickBranch.Trigger>
             <p1:Sequence DisplayName="WaitForRejectSync" sap2010:WorkflowViewState.IdRef="Sequence_4">
-              <Receive x:Name="__ReferenceID1" CanCreateInstance="True" DisplayName="ReceiveReject" sap2010:WorkflowViewState.IdRef="Receive_9" OperationName="Reject" ServiceContractName="p:IStateWithDecision">
+              <Receive x:Name="__ReferenceID1" CanCreateInstance="True" DisplayName="ReceiveReject" sap2010:WorkflowViewState.IdRef="Receive_9" OperationName="Reject" ServiceContractName="p:IDocumentStateDecision">
                 <Receive.CorrelatesOn>
                   <XPathMessageQuery x:Key="TxnId">
                     <XPathMessageQuery.Namespaces>
@@ -175,7 +175,7 @@
           <p1:FlowDecision.True>
             <p1:FlowStep x:Name="__ReferenceID12" sap2010:WorkflowViewState.IdRef="FlowStep_14">
               <p1:Sequence DisplayName="WaitForApproveSync" sap2010:WorkflowViewState.IdRef="Sequence_2">
-                <Receive x:Name="__ReferenceID2" CanCreateInstance="True" DisplayName="ReceiveApprove" sap2010:WorkflowViewState.IdRef="Receive_7" OperationName="Approve" ServiceContractName="p:IStateWithDecision">
+                <Receive x:Name="__ReferenceID2" CanCreateInstance="True" DisplayName="ReceiveApprove" sap2010:WorkflowViewState.IdRef="Receive_7" OperationName="Approve" ServiceContractName="p:IDocumentStateDecision">
                   <Receive.CorrelatesOn>
                     <XPathMessageQuery x:Key="TxnId">
                       <XPathMessageQuery.Namespaces>
@@ -223,7 +223,7 @@
           <p1:FlowDecision.False>
             <p1:FlowStep x:Name="__ReferenceID11" sap2010:WorkflowViewState.IdRef="FlowStep_17">
               <p1:Sequence DisplayName="WaitForReviewSync" sap2010:WorkflowViewState.IdRef="Sequence_5">
-                <Receive x:Name="__ReferenceID7" CanCreateInstance="True" DisplayName="ReceiveReview" sap2010:WorkflowViewState.IdRef="Receive_10" OperationName="Review" ServiceContractName="p:IStateWithDecision">
+                <Receive x:Name="__ReferenceID7" CanCreateInstance="True" DisplayName="ReceiveReview" sap2010:WorkflowViewState.IdRef="Receive_10" OperationName="Review" ServiceContractName="p:IDocumentStateDecision">
                   <Receive.CorrelatesOn>
                     <XPathMessageQuery x:Key="TxnId">
                       <XPathMessageQuery.Namespaces>
@@ -326,7 +326,7 @@
     <x:Reference>__ReferenceID9</x:Reference>
     <p1:FlowStep x:Name="__ReferenceID13" sap2010:WorkflowViewState.IdRef="FlowStep_13">
       <p1:Sequence DisplayName="WaitForPrepareSync" sap2010:WorkflowViewState.IdRef="Sequence_1">
-        <Receive x:Name="__ReferenceID10" CanCreateInstance="True" DisplayName="ReceivePrepare" sap2010:WorkflowViewState.IdRef="Receive_6" OperationName="Prepare" ServiceContractName="p:IStateWithDecision">
+        <Receive x:Name="__ReferenceID10" CanCreateInstance="True" DisplayName="ReceivePrepare" sap2010:WorkflowViewState.IdRef="Receive_6" OperationName="Prepare" ServiceContractName="p:IDocumentStateDecision">
           <Receive.CorrelatesOn>
             <XPathMessageQuery x:Key="TxnId">
               <XPathMessageQuery.Namespaces>
@@ -417,7 +417,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="SendReply_2" sap:VirtualizedContainerService.HintSize="255.2,88" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="200,52.8">
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="277.6,403.2">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -472,12 +472,12 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowDecision_3" sap:VirtualizedContainerService.HintSize="143.2,87.2">
+      <sap2010:ViewStateData Id="FlowDecision_3" sap:VirtualizedContainerService.HintSize="144,87.2">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
             <av:Point x:Key="ShapeLocation">68.4,196.4</av:Point>
-            <av:Size x:Key="ShapeSize">143.2,87.2</av:Size>
+            <av:Size x:Key="ShapeSize">144,87.2</av:Size>
             <x:String x:Key="TrueLabel">total &lt;= 1 Million</x:String>
             <x:String x:Key="FalseLabel">total &gt; 1 Million</x:String>
             <av:PointCollection x:Key="FalseConnector">211.6,240 348.4,240</av:PointCollection>
@@ -494,7 +494,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Flowchart_2" sap:VirtualizedContainerService.HintSize="255.2,52.8">
+      <sap2010:ViewStateData Id="Flowchart_2" sap:VirtualizedContainerService.HintSize="625.6,636.8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -574,7 +574,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="WorkflowService_1" sap:VirtualizedContainerService.HintSize="872.8,1196.8" />
+      <sap2010:ViewStateData Id="WorkflowService_1" sap:VirtualizedContainerService.HintSize="644,772.8" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </WorkflowService>
