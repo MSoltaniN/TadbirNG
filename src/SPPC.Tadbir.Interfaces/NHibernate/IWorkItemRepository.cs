@@ -17,6 +17,14 @@ namespace SPPC.Tadbir.NHibernate
         IList<InboxItemViewModel> GetUserInbox(int userId);
 
         /// <summary>
+        /// یک کار موجود را به کارتابل ورودی نقش سازمانی جدید منتقل می کند.
+        /// </summary>
+        /// <param name="documentId">شناسه دیتابیسی مستند مرتبط با کار موجود</param>
+        /// <param name="documentType">نوع مستند مرتبط با کار موجود</param>
+        /// <param name="newTargetId">شناسه دیتابیسی نقش جدید دریافت کننده کار موجود</param>
+        void UpdateWorkItemTarget(int documentId, string documentType, int newTargetId);
+
+        /// <summary>
         /// مجموعه کارهای موجود در کارتابل ارسالی کاربر تعیین شده را از دیتابیس می خواند.
         /// </summary>
         /// <param name="userId">شناسه دیتابیسی یک کاربر موجود</param>

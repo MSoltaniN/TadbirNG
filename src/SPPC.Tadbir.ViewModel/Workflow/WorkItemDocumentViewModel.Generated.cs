@@ -36,5 +36,10 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         /// شناسه دیتابیسی موجودیت مرتبط با کار
         /// </summary>
         public int DocumentId { get; set; }
+
+        /// <summary>
+        /// نوع موجودیت مرتبط با کار
+        /// </summary>
+        public virtual string DocumentType { get; set; }
     }
 }

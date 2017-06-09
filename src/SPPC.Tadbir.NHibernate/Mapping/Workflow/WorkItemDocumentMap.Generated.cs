@@ -33,6 +33,9 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .GeneratedBy.Identity();
             Map(x => x.DocumentId)
                 .Not.Nullable();
+            Map(x => x.DocumentType)
+                .Length(128)
+                .Not.Nullable();
             Map(x => x.RowGuid, "rowguid")
                 .Generated.Insert();
             Map(x => x.ModifiedDate);

@@ -613,6 +613,12 @@
           <ColumnView name="Document I D" visible="True" width="120" />
           <ValidationRule name="DocumentID_Validation" required="True" minimum="0" maximum="2147483647" format="" type="Value" />
         </Property>
+        <Property name="DocumentType" type="String" isValidated="False" description="نوع موجودیت مرتبط با کار" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDocumentType" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="DocumentType" type="varchar(128)" nullable="False" />
+          <ColumnView name="Document Type" visible="True" width="120" />
+          <ValidationRule name="DocumentType_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+        </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />

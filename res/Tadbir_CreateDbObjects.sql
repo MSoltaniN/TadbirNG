@@ -247,6 +247,7 @@ CREATE TABLE [Workflow].[WorkItemDocument] (
     [DocumentItemID]   INT              IDENTITY (1, 1) NOT NULL,
     [WorkItemID]       INT              NOT NULL,
     [DocumentID]       INT              NOT NULL,
+    [DocumentType]     VARCHAR(128)     NOT NULL,
     [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Workflow_WorkItemDocument_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]     DATETIME         CONSTRAINT [DF_Workflow_WorkItemDocument_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_WorkItemDocument] PRIMARY KEY CLUSTERED ([DocumentItemID] ASC)

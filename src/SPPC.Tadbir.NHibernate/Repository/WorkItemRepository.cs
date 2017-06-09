@@ -136,6 +136,29 @@ namespace SPPC.Tadbir.NHibernate
             _unitOfWork.Commit();
         }
 
+        /// <summary>
+        /// یک کار موجود را به کارتابل ورودی نقش سازمانی جدید منتقل می کند.
+        /// </summary>
+        /// <param name="documentId">شناسه دیتابیسی مستند مرتبط با کار موجود</param>
+        /// <param name="documentType">نوع مستند مرتبط با کار موجود</param>
+        /// <param name="newTargetId">شناسه دیتابیسی نقش جدید دریافت کننده کار موجود</param>
+        public void UpdateWorkItemTarget(int documentId, string documentType, int newTargetId)
+        {
+            var documentRepository = _unitOfWork.GetRepository<WorkItemDocument>();
+            var document = documentRepository
+                .GetByCriteria(wid => wid.DocumentId == documentId && wid.DocumentType == documentType)
+                .FirstOrDefault();
+            if (document != null)
+            {
+                var workItemRepository = _unitOfWork.GetRepository<WorkItem>();
+                var workItem = workItemRepository.GetByID(document.WorkItem.Id);
+                workItem.Target = new Role() { Id = newTargetId };
+                workItemRepository.Update(workItem);
+            }
+
+            _unitOfWork.Commit();
+        }
+
         // NOTE: This function should later be implemented in a generic manner (using dynamic lambda expressions,
         // instead of a hard-coded switch statement)
         private static Expression<Func<WorkItem, bool>> GetInboxCriteria(int[] roles)
@@ -204,7 +227,8 @@ namespace SPPC.Tadbir.NHibernate
             var document = new WorkItemDocumentViewModel()
             {
                 WorkItemId = newWorkItem.Id,
-                DocumentId = workItem.DocumentId
+                DocumentId = workItem.DocumentId,
+                DocumentType = workItem.DocumentType
             };
             var newDocument = _mapper.Map<WorkItemDocument>(document);
             documentRepository.Insert(newDocument);

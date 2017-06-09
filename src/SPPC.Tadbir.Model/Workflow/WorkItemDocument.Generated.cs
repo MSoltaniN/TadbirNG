@@ -41,6 +41,11 @@ namespace SPPC.Tadbir.Model.Workflow
         public virtual int DocumentId { get; set; }
 
         /// <summary>
+        /// نوع موجودیت مرتبط با کار
+        /// </summary>
+        public virtual string DocumentType { get; set; }
+
+        /// <summary>
         /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
         /// </summary>
         public virtual Guid RowGuid { get; set; }
