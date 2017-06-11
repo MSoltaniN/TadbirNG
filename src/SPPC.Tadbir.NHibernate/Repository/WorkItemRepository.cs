@@ -247,7 +247,7 @@ namespace SPPC.Tadbir.NHibernate
                 .GetByCriteria(item => item.DocumentId == workItem.DocumentId)
                 .First();
             int pendingId = document.WorkItem.Id;
-            document.WorkItem.Id = newWorkItem.Id;
+            document.WorkItem = new WorkItem() { Id = newWorkItem.Id };
             documentRepository.Update(document);
 
             // Step 4 : Delete previous (pending) work item...

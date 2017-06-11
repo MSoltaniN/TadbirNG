@@ -43,7 +43,7 @@ namespace SPPC.Tadbir.Workflow
 
         private static void InvokeServiceOperation(StateOperation operation)
         {
-            using (var client = new CartableClient())
+            using (var client = new DocumentStateBasicClient())
             {
                 client.DoRequest(operation);
                 client.Close();

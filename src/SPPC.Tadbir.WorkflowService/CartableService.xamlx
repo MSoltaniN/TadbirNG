@@ -1,176 +1,218 @@
-﻿<WorkflowService mc:Ignorable="sap sap2010 sads" p:TextExpression.Namespaces="{x:Reference __ReferenceID0}" p:TextExpression.References="{x:Reference __ReferenceID1}" ConfigurationName="CartableService" sap2010:ExpressionActivityEditor.ExpressionActivityEditor="C#" sap2010:WorkflowViewState.IdRef="WorkflowService_1" Name="CartableService"
+﻿<WorkflowService mc:Ignorable="sap sap2010 sads" p1:TextExpression.Namespaces="{x:Reference __ReferenceID1}" p1:TextExpression.References="{x:Reference __ReferenceID2}" ConfigurationName="CartableService" sap2010:ExpressionActivityEditor.ExpressionActivityEditor="C#" sap2010:WorkflowViewState.IdRef="WorkflowService_1" Name="CartableService"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/servicemodel"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
- xmlns:p="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:p="http://tempuri.org/"
+ xmlns:p1="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
  xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
  xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
  xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
  xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:ssx="clr-namespace:System.ServiceModel.XamlIntegration;assembly=System.ServiceModel"
  xmlns:stw="clr-namespace:SPPC.Tadbir.Workflow;assembly=SPPC.Tadbir.Interfaces"
  xmlns:stw1="clr-namespace:SPPC.Tadbir.Workflow;assembly=SPPC.Tadbir.Workflow"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-  <p:Sequence DisplayName="ReceiveAndHandleSequence" sap2010:WorkflowViewState.IdRef="Sequence_3">
-    <p:TextExpression.Namespaces>
-      <sco:Collection x:TypeArguments="x:String" x:Name="__ReferenceID0">
+  <p1:Sequence DisplayName="ReceiveAndHandleSequence" sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <p1:TextExpression.Namespaces>
+      <sco:Collection x:TypeArguments="x:String" x:Name="__ReferenceID1">
         <x:String>System</x:String>
         <x:String>System.Collections.Generic</x:String>
         <x:String>System.Linq</x:String>
         <x:String>System.Text</x:String>
         <x:String>SPPC.Tadbir.Workflow</x:String>
+        <x:String>System.ServiceModel.Activities</x:String>
       </sco:Collection>
-    </p:TextExpression.Namespaces>
-    <p:TextExpression.References>
-      <sco:Collection x:TypeArguments="p:AssemblyReference" x:Name="__ReferenceID1">
-        <p:AssemblyReference>Microsoft.CSharp</p:AssemblyReference>
-        <p:AssemblyReference>System.Web.DynamicData</p:AssemblyReference>
-        <p:AssemblyReference>System.Web.ApplicationServices</p:AssemblyReference>
-        <p:AssemblyReference>System</p:AssemblyReference>
-        <p:AssemblyReference>System.Activities</p:AssemblyReference>
-        <p:AssemblyReference>System.Core</p:AssemblyReference>
-        <p:AssemblyReference>System.Runtime.Serialization</p:AssemblyReference>
-        <p:AssemblyReference>System.ServiceModel</p:AssemblyReference>
-        <p:AssemblyReference>System.ServiceModel.Activities</p:AssemblyReference>
-        <p:AssemblyReference>System.ServiceModel.Channels</p:AssemblyReference>
-        <p:AssemblyReference>System.Web</p:AssemblyReference>
-        <p:AssemblyReference>System.Xaml</p:AssemblyReference>
-        <p:AssemblyReference>System.Xml</p:AssemblyReference>
-        <p:AssemblyReference>SPPC.Tadbir.Interfaces</p:AssemblyReference>
-        <p:AssemblyReference>SPPC.Tadbir.Workflow</p:AssemblyReference>
-        <p:AssemblyReference>mscorlib</p:AssemblyReference>
-        <p:AssemblyReference>SPPC.Tadbir.WorkflowService</p:AssemblyReference>
+    </p1:TextExpression.Namespaces>
+    <p1:TextExpression.References>
+      <sco:Collection x:TypeArguments="p1:AssemblyReference" x:Name="__ReferenceID2">
+        <p1:AssemblyReference>Microsoft.CSharp</p1:AssemblyReference>
+        <p1:AssemblyReference>Microsoft.Practices.ServiceLocation</p1:AssemblyReference>
+        <p1:AssemblyReference>Microsoft.Practices.Unity</p1:AssemblyReference>
+        <p1:AssemblyReference>Microsoft.Practices.Unity.Configuration</p1:AssemblyReference>
+        <p1:AssemblyReference>Microsoft.Practices.Unity.RegistrationByConvention</p1:AssemblyReference>
+        <p1:AssemblyReference>SwForAll.Platform.Persistence</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Configuration</p1:AssemblyReference>
+        <p1:AssemblyReference>System</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Activities</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Core</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Data</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Runtime.Serialization</p1:AssemblyReference>
+        <p1:AssemblyReference>System.ServiceModel</p1:AssemblyReference>
+        <p1:AssemblyReference>System.ServiceModel.Activities</p1:AssemblyReference>
+        <p1:AssemblyReference>System.ServiceModel.Channels</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Web</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Xaml</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Xml</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Xml.Linq</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Framework.Unity</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Tadbir.Common</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Tadbir.Interfaces</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Tadbir.Unity</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Tadbir.ViewModel</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Tadbir.Workflow</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Activities.DurableInstancing</p1:AssemblyReference>
+        <p1:AssemblyReference>mscorlib</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Tadbir.WorkflowService</p1:AssemblyReference>
       </sco:Collection>
-    </p:TextExpression.References>
-    <p:Sequence.Variables>
-      <p:Variable x:TypeArguments="stw:StateOperation" Name="operation" />
-    </p:Sequence.Variables>
-    <Receive CanCreateInstance="True" DisplayName="ReceiveRequest" sap2010:WorkflowViewState.IdRef="Receive_3" OperationName="DoRequest" ServiceContractName="ICartable">
-      <Receive.KnownTypes>
-        <x:Type Type="stw:StateOperation" />
-      </Receive.KnownTypes>
-      <ReceiveParametersContent>
-        <p:OutArgument x:TypeArguments="stw:StateOperation" x:Key="inOperation">
-          <mca:CSharpReference x:TypeArguments="stw:StateOperation">operation</mca:CSharpReference>
-        </p:OutArgument>
-      </ReceiveParametersContent>
-    </Receive>
-    <p:If DisplayName="IfPrepareOperation" sap2010:WorkflowViewState.IdRef="If_7">
-      <p:If.Condition>
-        <p:InArgument x:TypeArguments="x:Boolean">
-          <mca:CSharpValue x:TypeArguments="x:Boolean">operation.IsPrepare</mca:CSharpValue>
-        </p:InArgument>
-      </p:If.Condition>
-      <p:If.Then>
-        <stw1:ManageCartableActivity DisplayName="AddWorkItemForPrepare" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_6">
-          <stw1:ManageCartableActivity.Operation>
-            <p:InArgument x:TypeArguments="stw:StateOperation">
-              <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
-            </p:InArgument>
-          </stw1:ManageCartableActivity.Operation>
-        </stw1:ManageCartableActivity>
-      </p:If.Then>
-      <p:If.Else>
-        <p:If DisplayName="IfReviewOperation" sap2010:WorkflowViewState.IdRef="If_8">
-          <p:If.Condition>
-            <p:InArgument x:TypeArguments="x:Boolean">
-              <mca:CSharpValue x:TypeArguments="x:Boolean">operation.IsReview</mca:CSharpValue>
-            </p:InArgument>
-          </p:If.Condition>
-          <p:If.Then>
-            <stw1:ManageCartableActivity DisplayName="AddWorkItemForReview" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_7">
-              <stw1:ManageCartableActivity.Operation>
-                <p:InArgument x:TypeArguments="stw:StateOperation">
-                  <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
-                </p:InArgument>
-              </stw1:ManageCartableActivity.Operation>
-            </stw1:ManageCartableActivity>
-          </p:If.Then>
-          <p:If.Else>
-            <p:If DisplayName="IfRejectOperation" sap2010:WorkflowViewState.IdRef="If_9">
-              <p:If.Condition>
-                <p:InArgument x:TypeArguments="x:Boolean">
-                  <mca:CSharpValue x:TypeArguments="x:Boolean">operation.IsReject</mca:CSharpValue>
-                </p:InArgument>
-              </p:If.Condition>
-              <p:If.Then>
-                <stw1:ManageCartableActivity DisplayName="AddWorkItemForReject" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_8">
-                  <stw1:ManageCartableActivity.Operation>
-                    <p:InArgument x:TypeArguments="stw:StateOperation">
-                      <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
-                    </p:InArgument>
-                  </stw1:ManageCartableActivity.Operation>
-                </stw1:ManageCartableActivity>
-              </p:If.Then>
-              <p:If.Else>
-                <p:If DisplayName="IfConfirmOperation" sap2010:WorkflowViewState.IdRef="If_10">
-                  <p:If.Condition>
-                    <p:InArgument x:TypeArguments="x:Boolean">
-                      <mca:CSharpValue x:TypeArguments="x:Boolean">operation.IsConfirm</mca:CSharpValue>
-                    </p:InArgument>
-                  </p:If.Condition>
-                  <p:If.Then>
-                    <stw1:ManageCartableActivity DisplayName="AddWorkItemForConfirm" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_9">
-                      <stw1:ManageCartableActivity.Operation>
-                        <p:InArgument x:TypeArguments="stw:StateOperation">
-                          <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
-                        </p:InArgument>
-                      </stw1:ManageCartableActivity.Operation>
-                    </stw1:ManageCartableActivity>
-                  </p:If.Then>
-                  <p:If.Else>
-                    <p:If DisplayName="IfApproveOperation" sap2010:WorkflowViewState.IdRef="If_11">
-                      <p:If.Condition>
-                        <p:InArgument x:TypeArguments="x:Boolean">
-                          <mca:CSharpValue x:TypeArguments="x:Boolean">operation.IsApprove</mca:CSharpValue>
-                        </p:InArgument>
-                      </p:If.Condition>
-                      <p:If.Then>
-                        <stw1:ManageCartableActivity DisplayName="AddWorkItemForApprove" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_10">
-                          <stw1:ManageCartableActivity.Operation>
-                            <p:InArgument x:TypeArguments="stw:StateOperation">
-                              <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
-                            </p:InArgument>
-                          </stw1:ManageCartableActivity.Operation>
-                        </stw1:ManageCartableActivity>
-                      </p:If.Then>
-                      <p:If.Else>
-                        <p:If DisplayName="IfUnsupportedOperation" sap2010:WorkflowViewState.IdRef="If_12">
-                          <p:If.Condition>
-                            <p:InArgument x:TypeArguments="x:Boolean">
-                              <mca:CSharpValue x:TypeArguments="x:Boolean">!operation.IsSupported</mca:CSharpValue>
-                            </p:InArgument>
-                          </p:If.Condition>
-                          <p:If.Then>
-                            <p:WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_2">
-                              <p:InArgument x:TypeArguments="x:String">
-                                <mca:CSharpValue x:TypeArguments="x:String">String.Format("WARNING: Operation '{0}' is NOT supported on a '{1}' document.", operation.Name, operation.CurrentStatus)</mca:CSharpValue>
-                              </p:InArgument>
-                            </p:WriteLine>
-                          </p:If.Then>
-                        </p:If>
-                      </p:If.Else>
-                    </p:If>
-                  </p:If.Else>
-                </p:If>
-              </p:If.Else>
-            </p:If>
-          </p:If.Else>
-        </p:If>
-      </p:If.Else>
-    </p:If>
-    <sads:DebugSymbol.Symbol>d2FEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVTZXJ2aWNlLnhhbWx4Gw4DowEQAQEwBTkPASY6BaEBDAECNgs2ZAEnPQs9XQEDQQlHJwEjSgmfARABBUQPRGABJE0PTWABBlENVysBIFoNnQEUAQhUE1RkASFdE11kAQlhEWcvAR1qEZsBGAELZBdkaAEebRdtaQEMcRV3MwEaehWZARwBDnQbdGwBG30bfW0BD4EBGYcBNwEXigEZlwEgARGEAR+EAXABGI0BH40BdAESkQEdlQErARSTASGTAdcBARU=</sads:DebugSymbol.Symbol>
-  </p:Sequence>
+    </p1:TextExpression.References>
+    <p1:Sequence.Variables>
+      <p1:Variable x:TypeArguments="stw:StateOperation" Name="operation" />
+      <p1:Variable x:TypeArguments="CorrelationHandle" Name="transIdHandle" />
+    </p1:Sequence.Variables>
+    <p1:Sequence sap2010:WorkflowViewState.IdRef="Sequence_4">
+      <Receive x:Name="__ReferenceID0" DisplayName="ReceiveRequest" sap2010:WorkflowViewState.IdRef="Receive_4" OperationName="DoRequest" ServiceContractName="p:IDocumentStateBasic">
+        <Receive.CorrelatesOn>
+          <XPathMessageQuery x:Key="TxnId">
+            <XPathMessageQuery.Namespaces>
+              <ssx:XPathMessageContextMarkup>
+                <x:String x:Key="xg0">http://schemas.datacontract.org/2004/07/SPPC.Tadbir.Workflow</x:String>
+                <x:String x:Key="xgSc">http://tempuri.org/</x:String>
+              </ssx:XPathMessageContextMarkup>
+            </XPathMessageQuery.Namespaces>sm:body()/xgSc:DoRequest/xgSc:operation/xg0:DocumentId</XPathMessageQuery>
+        </Receive.CorrelatesOn>
+        <Receive.CorrelatesWith>
+          <p1:InArgument x:TypeArguments="CorrelationHandle">
+            <mca:CSharpValue x:TypeArguments="CorrelationHandle">transIdHandle</mca:CSharpValue>
+          </p1:InArgument>
+        </Receive.CorrelatesWith>
+        <Receive.CorrelationInitializers>
+          <RequestReplyCorrelationInitializer>
+            <RequestReplyCorrelationInitializer.CorrelationHandle>
+              <p1:InArgument x:TypeArguments="CorrelationHandle">
+                <mca:CSharpValue x:TypeArguments="CorrelationHandle">transIdHandle</mca:CSharpValue>
+              </p1:InArgument>
+            </RequestReplyCorrelationInitializer.CorrelationHandle>
+          </RequestReplyCorrelationInitializer>
+        </Receive.CorrelationInitializers>
+        <ReceiveParametersContent>
+          <p1:OutArgument x:TypeArguments="stw:StateOperation" x:Key="operation">
+            <mca:CSharpReference x:TypeArguments="stw:StateOperation">operation</mca:CSharpReference>
+          </p1:OutArgument>
+        </ReceiveParametersContent>
+      </Receive>
+      <p1:If DisplayName="IfPrepareOperation" sap2010:WorkflowViewState.IdRef="If_18">
+        <p1:If.Condition>
+          <p1:InArgument x:TypeArguments="x:Boolean">
+            <mca:CSharpValue x:TypeArguments="x:Boolean">operation.IsPrepare</mca:CSharpValue>
+          </p1:InArgument>
+        </p1:If.Condition>
+        <p1:If.Then>
+          <stw1:ManageCartableActivity DisplayName="AddWorkItemForPrepare" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_11">
+            <stw1:ManageCartableActivity.Operation>
+              <p1:InArgument x:TypeArguments="stw:StateOperation">
+                <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+              </p1:InArgument>
+            </stw1:ManageCartableActivity.Operation>
+          </stw1:ManageCartableActivity>
+        </p1:If.Then>
+        <p1:If.Else>
+          <p1:If DisplayName="IfReviewOperation" sap2010:WorkflowViewState.IdRef="If_17">
+            <p1:If.Condition>
+              <p1:InArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpValue x:TypeArguments="x:Boolean">operation.IsReview</mca:CSharpValue>
+              </p1:InArgument>
+            </p1:If.Condition>
+            <p1:If.Then>
+              <stw1:ManageCartableActivity DisplayName="AddWorkItemForReview" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_12">
+                <stw1:ManageCartableActivity.Operation>
+                  <p1:InArgument x:TypeArguments="stw:StateOperation">
+                    <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                  </p1:InArgument>
+                </stw1:ManageCartableActivity.Operation>
+              </stw1:ManageCartableActivity>
+            </p1:If.Then>
+            <p1:If.Else>
+              <p1:If DisplayName="IfRejectOperation" sap2010:WorkflowViewState.IdRef="If_16">
+                <p1:If.Condition>
+                  <p1:InArgument x:TypeArguments="x:Boolean">
+                    <mca:CSharpValue x:TypeArguments="x:Boolean">operation.IsReject</mca:CSharpValue>
+                  </p1:InArgument>
+                </p1:If.Condition>
+                <p1:If.Then>
+                  <stw1:ManageCartableActivity DisplayName="AddWorkItemForReject" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_13">
+                    <stw1:ManageCartableActivity.Operation>
+                      <p1:InArgument x:TypeArguments="stw:StateOperation">
+                        <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                      </p1:InArgument>
+                    </stw1:ManageCartableActivity.Operation>
+                  </stw1:ManageCartableActivity>
+                </p1:If.Then>
+                <p1:If.Else>
+                  <p1:If DisplayName="IfConfirmOperation" sap2010:WorkflowViewState.IdRef="If_15">
+                    <p1:If.Condition>
+                      <p1:InArgument x:TypeArguments="x:Boolean">
+                        <mca:CSharpValue x:TypeArguments="x:Boolean">operation.IsConfirm</mca:CSharpValue>
+                      </p1:InArgument>
+                    </p1:If.Condition>
+                    <p1:If.Then>
+                      <stw1:ManageCartableActivity DisplayName="AddWorkItemForConfirm" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_14">
+                        <stw1:ManageCartableActivity.Operation>
+                          <p1:InArgument x:TypeArguments="stw:StateOperation">
+                            <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                          </p1:InArgument>
+                        </stw1:ManageCartableActivity.Operation>
+                      </stw1:ManageCartableActivity>
+                    </p1:If.Then>
+                    <p1:If.Else>
+                      <p1:If DisplayName="IfApproveOperation" sap2010:WorkflowViewState.IdRef="If_14">
+                        <p1:If.Condition>
+                          <p1:InArgument x:TypeArguments="x:Boolean">
+                            <mca:CSharpValue x:TypeArguments="x:Boolean">operation.IsApprove</mca:CSharpValue>
+                          </p1:InArgument>
+                        </p1:If.Condition>
+                        <p1:If.Then>
+                          <stw1:ManageCartableActivity DisplayName="AddWorkItemForApprove" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_15">
+                            <stw1:ManageCartableActivity.Operation>
+                              <p1:InArgument x:TypeArguments="stw:StateOperation">
+                                <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                              </p1:InArgument>
+                            </stw1:ManageCartableActivity.Operation>
+                          </stw1:ManageCartableActivity>
+                        </p1:If.Then>
+                        <p1:If.Else>
+                          <p1:If DisplayName="IfUnsupportedOperation" sap2010:WorkflowViewState.IdRef="If_13">
+                            <p1:If.Condition>
+                              <p1:InArgument x:TypeArguments="x:Boolean">
+                                <mca:CSharpValue x:TypeArguments="x:Boolean">!operation.IsSupported</mca:CSharpValue>
+                              </p1:InArgument>
+                            </p1:If.Condition>
+                            <p1:If.Then>
+                              <p1:WriteLine sap2010:WorkflowViewState.IdRef="WriteLine_3">
+                                <p1:InArgument x:TypeArguments="x:String">
+                                  <mca:CSharpValue x:TypeArguments="x:String">String.Format("WARNING: Operation '{0}' is NOT supported on a '{1}' document.", operation.Name, operation.CurrentStatus)</mca:CSharpValue>
+                                </p1:InArgument>
+                              </p1:WriteLine>
+                            </p1:If.Then>
+                          </p1:If>
+                        </p1:If.Else>
+                      </p1:If>
+                    </p1:If.Else>
+                  </p1:If>
+                </p1:If.Else>
+              </p1:If>
+            </p1:If.Else>
+          </p1:If>
+        </p1:If.Else>
+      </p1:If>
+      <SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendRequestReply" sap2010:WorkflowViewState.IdRef="SendReply_1">
+        <SendParametersContent>
+          <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
+        </SendParametersContent>
+      </SendReply>
+    </p1:Sequence>
+    <sads:DebugSymbol.Symbol>d2FEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVTZXJ2aWNlLnhhbWx4IBADzQERAQE/BcsBEwECQAddEQE7XgfFAQ8BC8YBB8oBEwEDTA1MYQFCWg1aZgE/UxFTZQE8YQ1hXwEMZQtrKQE3bgvDARMBD8gBR8gBSAEEaBFoYgE4cRFxYgEQdQ97LQEzfg/BARcBE3gVeGYBNIEBFYEBZgEUhQETiwExAS+OARO/ARsBF4gBGYgBagEwkQEZkQFrARiVARebATUBK54BF70BHwEbmAEdmAFuASyhAR2hAW8BHKUBG6sBOQEnrgEbuwEjAR+oASGoAXIBKLEBIbEBdgEgtQEfuQEuASO3ASO3AdkBASQ=</sads:DebugSymbol.Symbol>
+  </p1:Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="Receive_3" sap:VirtualizedContainerService.HintSize="255.2,88" />
-      <sap2010:ViewStateData Id="ManageCartableActivity_6" sap:VirtualizedContainerService.HintSize="200,22.4" />
-      <sap2010:ViewStateData Id="ManageCartableActivity_7" sap:VirtualizedContainerService.HintSize="200,22.4" />
-      <sap2010:ViewStateData Id="ManageCartableActivity_8" sap:VirtualizedContainerService.HintSize="200,22.4" />
-      <sap2010:ViewStateData Id="ManageCartableActivity_9" sap:VirtualizedContainerService.HintSize="200,22.4" />
-      <sap2010:ViewStateData Id="ManageCartableActivity_10" sap:VirtualizedContainerService.HintSize="200,22.4" />
-      <sap2010:ViewStateData Id="WriteLine_2" sap:VirtualizedContainerService.HintSize="210.4,62.4" />
-      <sap2010:ViewStateData Id="If_12" sap:VirtualizedContainerService.HintSize="464,214.4">
+      <sap2010:ViewStateData Id="Receive_4" sap:VirtualizedContainerService.HintSize="255.2,88" />
+      <sap2010:ViewStateData Id="ManageCartableActivity_11" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="ManageCartableActivity_12" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="ManageCartableActivity_13" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="ManageCartableActivity_14" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="ManageCartableActivity_15" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="WriteLine_3" sap:VirtualizedContainerService.HintSize="210.4,62.4" />
+      <sap2010:ViewStateData Id="If_13" sap:VirtualizedContainerService.HintSize="464,214.4">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -178,7 +220,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_11" sap:VirtualizedContainerService.HintSize="688.8,366.4">
+      <sap2010:ViewStateData Id="If_14" sap:VirtualizedContainerService.HintSize="688.8,366.4">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -186,7 +228,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_10" sap:VirtualizedContainerService.HintSize="913.6,518.4">
+      <sap2010:ViewStateData Id="If_15" sap:VirtualizedContainerService.HintSize="913.6,518.4">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -194,7 +236,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_9" sap:VirtualizedContainerService.HintSize="1138.4,670.4">
+      <sap2010:ViewStateData Id="If_16" sap:VirtualizedContainerService.HintSize="1138.4,670.4">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -202,7 +244,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_8" sap:VirtualizedContainerService.HintSize="1363.2,822.4">
+      <sap2010:ViewStateData Id="If_17" sap:VirtualizedContainerService.HintSize="1363.2,822.4">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -210,7 +252,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_7" sap:VirtualizedContainerService.HintSize="255.2,52.8">
+      <sap2010:ViewStateData Id="If_18" sap:VirtualizedContainerService.HintSize="255.2,52.8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -218,7 +260,15 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="277.6,305.6">
+      <sap2010:ViewStateData Id="SendReply_1" sap:VirtualizedContainerService.HintSize="255.2,88" />
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="277.6,433.6">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="222.4,177.6">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -226,7 +276,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="WorkflowService_1" sap:VirtualizedContainerService.HintSize="307.2,375.2">
+      <sap2010:ViewStateData Id="WorkflowService_1" sap:VirtualizedContainerService.HintSize="252,247.2">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="ShouldExpandAll">False</x:Boolean>

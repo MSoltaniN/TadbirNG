@@ -11,59 +11,61 @@
 namespace SPPC.Tadbir.Workflow
 {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "ICartable")]
-    public interface ICartable
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IDocumentStateBasic")]
+    public interface IDocumentStateBasic
     {
 
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/ICartable/DoRequest")]
-        void DoRequest(SPPC.Tadbir.Workflow.StateOperation inOperation);
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDocumentStateBasic/DoRequest", ReplyAction = "http://tempuri.org/IDocumentStateBasic/DoRequestResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
+        int DoRequest(SPPC.Tadbir.Workflow.StateOperation operation);
 
-        [System.ServiceModel.OperationContractAttribute(IsOneWay = true, Action = "http://tempuri.org/ICartable/DoRequest")]
-        System.Threading.Tasks.Task DoRequestAsync(SPPC.Tadbir.Workflow.StateOperation inOperation);
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDocumentStateBasic/DoRequest", ReplyAction = "http://tempuri.org/IDocumentStateBasic/DoRequestResponse")]
+        [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
+        System.Threading.Tasks.Task<int> DoRequestAsync(SPPC.Tadbir.Workflow.StateOperation operation);
     }
 
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface ICartableChannel : ICartable, System.ServiceModel.IClientChannel
+    public interface IDocumentStateBasicChannel : IDocumentStateBasic, System.ServiceModel.IClientChannel
     {
     }
 
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class CartableClient : System.ServiceModel.ClientBase<ICartable>, ICartable
+    public partial class DocumentStateBasicClient : System.ServiceModel.ClientBase<IDocumentStateBasic>, IDocumentStateBasic
     {
 
-        public CartableClient()
+        public DocumentStateBasicClient()
         {
         }
 
-        public CartableClient(string endpointConfigurationName) :
+        public DocumentStateBasicClient(string endpointConfigurationName) :
                 base(endpointConfigurationName)
         {
         }
 
-        public CartableClient(string endpointConfigurationName, string remoteAddress) :
+        public DocumentStateBasicClient(string endpointConfigurationName, string remoteAddress) :
                 base(endpointConfigurationName, remoteAddress)
         {
         }
 
-        public CartableClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) :
+        public DocumentStateBasicClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) :
                 base(endpointConfigurationName, remoteAddress)
         {
         }
 
-        public CartableClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
+        public DocumentStateBasicClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
                 base(binding, remoteAddress)
         {
         }
 
-        public void DoRequest(SPPC.Tadbir.Workflow.StateOperation inOperation)
+        public int DoRequest(SPPC.Tadbir.Workflow.StateOperation operation)
         {
-            base.Channel.DoRequest(inOperation);
+            return base.Channel.DoRequest(operation);
         }
 
-        public System.Threading.Tasks.Task DoRequestAsync(SPPC.Tadbir.Workflow.StateOperation inOperation)
+        public System.Threading.Tasks.Task<int> DoRequestAsync(SPPC.Tadbir.Workflow.StateOperation operation)
         {
-            return base.Channel.DoRequestAsync(inOperation);
+            return base.Channel.DoRequestAsync(operation);
         }
     }
 }

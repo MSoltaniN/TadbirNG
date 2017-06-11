@@ -52,6 +52,7 @@
         <p1:AssemblyReference>SPPC.Tadbir.Unity</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.ViewModel</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.Workflow</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Activities.DurableInstancing</p1:AssemblyReference>
         <p1:AssemblyReference>mscorlib</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.WorkflowService</p1:AssemblyReference>
       </sco:Collection>
@@ -98,7 +99,7 @@
                   </p1:InArgument>
                 </stw1:ManageCartableActivity.Operation>
               </stw1:ManageCartableActivity>
-              <SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendReviewReply" sap2010:WorkflowViewState.IdRef="SendReply_2">
+              <SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendReviewReply" sap2010:WorkflowViewState.IdRef="SendReply_2" PersistBeforeSend="True">
                 <SendParametersContent>
                   <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                 </SendParametersContent>
@@ -148,7 +149,7 @@
                           </p1:InArgument>
                         </stw1:ManageCartableActivity.Operation>
                       </stw1:ManageCartableActivity>
-                      <SendReply Request="{x:Reference __ReferenceID1}" DisplayName="SendRejectReply" sap2010:WorkflowViewState.IdRef="SendReply_3">
+                      <SendReply Request="{x:Reference __ReferenceID1}" DisplayName="SendRejectReply" sap2010:WorkflowViewState.IdRef="SendReply_3" PersistBeforeSend="True">
                         <SendParametersContent>
                           <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                         </SendParametersContent>
@@ -199,7 +200,7 @@
                           </p1:InArgument>
                         </stw1:ManageCartableActivity.Operation>
                       </stw1:ManageCartableActivity>
-                      <SendReply Request="{x:Reference __ReferenceID3}" DisplayName="SendConfirmReply" sap2010:WorkflowViewState.IdRef="SendReply_4">
+                      <SendReply Request="{x:Reference __ReferenceID3}" DisplayName="SendConfirmReply" sap2010:WorkflowViewState.IdRef="SendReply_4" PersistBeforeSend="True">
                         <SendParametersContent>
                           <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                         </SendParametersContent>
@@ -249,7 +250,7 @@
                                   </p1:InArgument>
                                 </stw1:ManageCartableActivity.Operation>
                               </stw1:ManageCartableActivity>
-                              <SendReply Request="{x:Reference __ReferenceID4}" DisplayName="SendApproveReply" sap2010:WorkflowViewState.IdRef="SendReply_5">
+                              <SendReply Request="{x:Reference __ReferenceID4}" DisplayName="SendApproveReply" sap2010:WorkflowViewState.IdRef="SendReply_5" PersistBeforeSend="True">
                                 <SendParametersContent>
                                   <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                                 </SendParametersContent>
@@ -315,7 +316,7 @@
                   </p1:InArgument>
                 </stw1:ManageCartableActivity.Operation>
               </stw1:ManageCartableActivity>
-              <SendReply Request="{x:Reference __ReferenceID8}" DisplayName="SendPrepareReply" sap2010:WorkflowViewState.IdRef="SendReply_1">
+              <SendReply Request="{x:Reference __ReferenceID8}" DisplayName="SendPrepareReply" sap2010:WorkflowViewState.IdRef="SendReply_1" PersistBeforeSend="True">
                 <SendParametersContent>
                   <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                 </SendParametersContent>
@@ -332,7 +333,7 @@
       <p1:Variable x:TypeArguments="stw:StateOperation" Name="operation" />
       <p1:Variable x:TypeArguments="CorrelationHandle" Name="transIdHandle" />
     </p1:StateMachine.Variables>
-    <sads:DebugSymbol.Symbol>d2NEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVTTVNlcnZpY2UueGFtbHgzEQPQAhUBATsFkAIQAWZtDYwCGAE20gEViAIgAR2EAh2EApEBARuUAgXKAhABAj8NahsBaHEVnAEjAU+kARXPASMBONYBHYECKwEfmAINwwIbAQRAD10ZAXVeD2QtAXFlD2kbAWlyF48BIQFckAEXlgE1AViXARebASMBUKUBF8IBIQFFwwEXyQE1AUHKARfOASMBOdcBH/QBKQEs9QEf+wE9ASj8AR+AAisBIJkCD7YCGQERtwIPvQItAQ2+Ag/CAhsBBUwVTGkBfFoVWm4BeVMZU20BdmEVYWYBcmdPZ1ABan4dfnEBY4wBHYwBdgFghQEhhQF1AV2TAR2TAW4BWZkBV5kBWAFRsQEdsQFxAUy/AR2/AXYBSbgBIbgBdQFGxgEdxgFuAULMAVfMAVgBOuMBJeMBeQEz8QEl8QF+ATDqASnqAX0BLfgBJfgBdgEp/gFf/gFgASGlAhWlAmkBGLMCFbMCbgEVrAIZrAJtARK6AhW6AmYBDsACT8ACUAEG</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2NEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVTTVNlcnZpY2UueGFtbHgzEQPRAhUBATwFkQIQAWZuDY0CGAE20wEViQIgAR2FAh2FApEBARuVAgXLAhABAkANaxsBaHIVnQEjAU+lARXQASMBONcBHYICKwEfmQINxAIbAQRBD14ZAXVfD2UtAXFmD2obAWlzF5ABIQFckQEXlwE1AViYARecASMBUKYBF8MBIQFFxAEXygE1AUHLARfPASMBOdgBH/UBKQEs9gEf/AE9ASj9AR+BAisBIJoCD7cCGQERuAIPvgItAQ2/Ag/DAhsBBU0VTWkBfFsVW24BeVQZVG0BdmIVYmYBcmhPaFABan8df3EBY40BHY0BdgFghgEhhgF1AV2UAR2UAW4BWZoBV5oBWAFRsgEdsgFxAUzAAR3AAXYBSbkBIbkBdQFGxwEdxwFuAULNAVfNAVgBOuQBJeQBeQEz8gEl8gF+ATDrASnrAX0BLfkBJfkBdgEp/wFf/wFgASGmAhWmAmkBGLQCFbQCbgEVrQIZrQJtARK7AhW7AmYBDsECT8ECUAEG</sads:DebugSymbol.Symbol>
   </p1:StateMachine>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -467,7 +468,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="State_10" sap:VirtualizedContainerService.HintSize="114.4,61.6">
+      <sap2010:ViewStateData Id="State_10" sap:VirtualizedContainerService.HintSize="325.6,473.6">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">222.8,139.2</av:Point>

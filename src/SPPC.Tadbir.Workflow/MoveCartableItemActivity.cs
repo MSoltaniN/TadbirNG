@@ -2,6 +2,7 @@
 using System.Activities;
 using SPPC.Framework.Unity.WF;
 using SPPC.Tadbir.NHibernate;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Workflow
 {
@@ -18,6 +19,7 @@ namespace SPPC.Tadbir.Workflow
 
         protected override void Execute(CodeActivityContext context)
         {
+            Verify.ArgumentNotNull(context, "context");
             InitializeDependencies(context);
             int documentId = context.GetValue(DocumentId);
             string documentType = context.GetValue(DocumentType);

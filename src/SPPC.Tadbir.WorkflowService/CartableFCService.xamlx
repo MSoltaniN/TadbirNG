@@ -110,7 +110,7 @@
                   </p1:InArgument>
                 </stw1:ManageCartableActivity.Operation>
               </stw1:ManageCartableActivity>
-              <SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendConfirmReply" sap2010:WorkflowViewState.IdRef="SendReply_3">
+              <SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendConfirmReply" sap2010:WorkflowViewState.IdRef="SendReply_3" PersistBeforeSend="True">
                 <SendParametersContent>
                   <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                 </SendParametersContent>
@@ -158,7 +158,7 @@
                   </p1:InArgument>
                 </stw1:ManageCartableActivity.Operation>
               </stw1:ManageCartableActivity>
-              <SendReply Request="{x:Reference __ReferenceID1}" DisplayName="SendRejectReply" sap2010:WorkflowViewState.IdRef="SendReply_4">
+              <SendReply Request="{x:Reference __ReferenceID1}" DisplayName="SendRejectReply" sap2010:WorkflowViewState.IdRef="SendReply_4" PersistBeforeSend="True">
                 <SendParametersContent>
                   <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                 </SendParametersContent>
@@ -212,7 +212,7 @@
                     </p1:InArgument>
                   </stw1:ManageCartableActivity.Operation>
                 </stw1:ManageCartableActivity>
-                <SendReply Request="{x:Reference __ReferenceID2}" DisplayName="SendApproveReply" sap2010:WorkflowViewState.IdRef="SendReply_2">
+                <SendReply Request="{x:Reference __ReferenceID2}" DisplayName="SendApproveReply" sap2010:WorkflowViewState.IdRef="SendReply_2" PersistBeforeSend="True">
                   <SendParametersContent>
                     <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                   </SendParametersContent>
@@ -309,7 +309,7 @@
                   <x:Reference>__ReferenceID5</x:Reference>
                   <x:Reference>__ReferenceID3</x:Reference>
                 </p1:Flowchart>
-                <SendReply Request="{x:Reference __ReferenceID7}" DisplayName="SendReviewReply" sap2010:WorkflowViewState.IdRef="SendReply_5">
+                <SendReply Request="{x:Reference __ReferenceID7}" DisplayName="SendReviewReply" sap2010:WorkflowViewState.IdRef="SendReply_5" PersistBeforeSend="True">
                   <SendParametersContent>
                     <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                   </SendParametersContent>
@@ -363,7 +363,7 @@
             </p1:InArgument>
           </stw1:ManageCartableActivity.Operation>
         </stw1:ManageCartableActivity>
-        <SendReply Request="{x:Reference __ReferenceID10}" DisplayName="SendPrepareReply" sap2010:WorkflowViewState.IdRef="SendReply_1">
+        <SendReply Request="{x:Reference __ReferenceID10}" DisplayName="SendPrepareReply" sap2010:WorkflowViewState.IdRef="SendReply_1" PersistBeforeSend="True">
           <SendParametersContent>
             <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
           </SendParametersContent>
@@ -494,7 +494,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Flowchart_2" sap:VirtualizedContainerService.HintSize="625.6,636.8">
+      <sap2010:ViewStateData Id="Flowchart_2" sap:VirtualizedContainerService.HintSize="255.2,52.8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>

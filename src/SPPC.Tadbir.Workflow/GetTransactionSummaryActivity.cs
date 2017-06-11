@@ -3,6 +3,7 @@ using System.Activities;
 using SPPC.Framework.Unity.WF;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.ViewModel.Finance;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Workflow
 {
@@ -13,6 +14,7 @@ namespace SPPC.Tadbir.Workflow
 
         protected override TransactionSummaryViewModel Execute(CodeActivityContext context)
         {
+            Verify.ArgumentNotNull(context, "context");
             InitializeDependencies(context);
             int transactionId = context.GetValue(TransactionId);
             var summary = _repository.GetTransactionSummary(transactionId);
