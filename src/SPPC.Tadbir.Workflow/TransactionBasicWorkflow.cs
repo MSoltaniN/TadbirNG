@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Workflow
 
         public override void Approve(int transactionId)
         {
-            var approve = StateOperation.Review(CurrentUserId, transactionId, DocumentType.Transaction);
+            var approve = StateOperation.Approve(CurrentUserId, transactionId, DocumentType.Transaction);
             InvokeServiceOperation(approve);
             LogOperation(transactionId, "Approve", "approved");
         }
