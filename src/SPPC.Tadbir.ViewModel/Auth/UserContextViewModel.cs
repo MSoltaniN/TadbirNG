@@ -15,6 +15,7 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public UserContextViewModel()
         {
             Branches = new List<int>();
+            Roles = new List<int>();
             Permissions = new List<PermissionBriefViewModel>();
         }
 
@@ -37,6 +38,11 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// Gets a collection of identifiers for all branches accessible to this user.
         /// </summary>
         public IList<int> Branches { get; private set; }
+
+        /// <summary>
+        /// Gets a collection of identifiers for all roles assigned to this user.
+        /// </summary>
+        public IList<int> Roles { get; private set; }
 
         /// <summary>
         /// Gets a collection of all security permissions granted to this user.

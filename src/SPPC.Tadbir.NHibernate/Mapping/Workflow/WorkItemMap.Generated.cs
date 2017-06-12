@@ -45,6 +45,9 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Map(x => x.DocumentType)
                 .Length(128)
                 .Not.Nullable();
+            Map(x => x.Action)
+                .Length(64)
+                .Not.Nullable();
             Map(x => x.Remarks)
                 .Length(1024)
                 .Nullable();

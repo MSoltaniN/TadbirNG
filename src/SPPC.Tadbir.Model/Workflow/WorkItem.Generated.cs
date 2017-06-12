@@ -66,6 +66,11 @@ namespace SPPC.Tadbir.Model.Workflow
         public virtual string DocumentType { get; set; }
 
         /// <summary>
+        /// نوع اقدامی که این کار برای انجام آن ایجاد شده است
+        /// </summary>
+        public virtual string Action { get; set; }
+
+        /// <summary>
         /// توضیحات یا پاراف متنی مرتبط با کار که می تواند خالی باشد
         /// </summary>
         public virtual string Remarks { get; set; }

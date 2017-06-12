@@ -152,6 +152,7 @@
                 <th>@FieldNames.DateField</th>
                 <th>@FieldNames.Time</th>
                 <th>@FieldNames.UserFullName</th>
+                <th>نوع اقدام</th>
                 <th>@FieldNames.StatusField</th>
                 <th>@FieldNames.OperationalStatusField</th>
             </tr>
@@ -171,6 +172,9 @@
                 </td>
                 <td>
                     @item.UserFullName
+                </td>
+                <td>
+                    @DocumentAction.ToLocalValue(item.Action)
                 </td>
                 <td>
                     @item.Status

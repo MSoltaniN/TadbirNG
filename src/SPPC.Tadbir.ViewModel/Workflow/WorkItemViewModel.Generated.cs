@@ -67,6 +67,13 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         public string DocumentType { get; set; }
 
         /// <summary>
+        /// نوع اقدامی که این کار برای انجام آن ایجاد شده است
+        /// </summary>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string Action { get; set; }
+
+        /// <summary>
         /// توضیحات یا پاراف متنی مرتبط با کار که می تواند خالی باشد
         /// </summary>
         [StringLength(1024, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]

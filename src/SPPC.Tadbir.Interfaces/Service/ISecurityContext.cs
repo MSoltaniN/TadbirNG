@@ -22,6 +22,13 @@ namespace SPPC.Tadbir.Service
         bool CanAccessBranch(int branchId);
 
         /// <summary>
+        /// Returns a value that indicates if the role specified by identifier is assigned to this user.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of an existing organization role</param>
+        /// <returns>True if current user is in specified role; otherwise, returns false.</returns>
+        bool IsInRole(int roleId);
+
+        /// <summary>
         /// Returns a value that indicates if permission to perform one or more operations is granted to
         /// current application user.
         /// </summary>

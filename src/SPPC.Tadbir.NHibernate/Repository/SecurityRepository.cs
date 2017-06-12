@@ -84,6 +84,7 @@ namespace SPPC.Tadbir.NHibernate
                 var branches = new List<int>();
                 Array.ForEach(user.Roles.ToArray(), role => branches.AddRange(role.Branches.Select(br => br.Id)));
                 Array.ForEach(branches.Distinct().ToArray(), br => userContext.Branches.Add(br));
+                Array.ForEach(user.Roles.Select(role => role.Id).ToArray(), roleId => userContext.Roles.Add(roleId));
 
                 var permissions = new List<PermissionBriefViewModel>();
                 Array.ForEach(

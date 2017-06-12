@@ -84,22 +84,22 @@
                 @if (item.DocumentStatus == DocumentStatus.Prepared && currentContext.HasPermissions(Permissions.Transaction.Review))
                 {
                     <span> | </span>
-                    @Html.ActionLink(Operations.Review, "review", controller,
+                    @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Review), "review", controller,
                         new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
                 }
                 @if (item.DocumentStatus == DocumentStatus.Reviewed && currentContext.HasPermissions(Permissions.Transaction.Confirm))
                 {
                     <span> | </span>
-                    @Html.ActionLink(Operations.Confirm, "confirm", controller,
+                    @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Confirm), "confirm", controller,
                         new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
                     <span> | </span>
-                    @Html.ActionLink(Operations.Reject, "reject", controller,
+                    @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Reject), "reject", controller,
                         new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
                 }
                 @if (item.DocumentStatus == DocumentStatus.Confirmed && currentContext.HasPermissions(Permissions.Transaction.Approve))
                 {
                     <span> | </span>
-                    @Html.ActionLink(Operations.Approve, "approve", controller,
+                    @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Approve), "approve", controller,
                         new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
                 }
                 </td>

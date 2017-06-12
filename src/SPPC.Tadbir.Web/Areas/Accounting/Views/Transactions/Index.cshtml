@@ -101,20 +101,20 @@
                 }
                 @if (item.OperationalStatus == DocumentStatus.Created && currentContext.HasPermissions(Permissions.Transaction.Prepare))
                 {
-                    <span> | </span>@Html.ActionLink(Operations.Prepare, "prepare", new { id = item.Id })
+                    <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Prepare), "prepare", new { id = item.Id })
                 }
-                @if (item.OperationalStatus == DocumentStatus.Prepared && currentContext.HasPermissions(Permissions.Transaction.Review))
+                @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentAction.Review)
                 {
-                    <span> | </span>@Html.ActionLink(Operations.Review, "review", new { id = item.Id })
+                    <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Review), "review", new { id = item.Id })
                 }
-                @if (item.OperationalStatus == DocumentStatus.Reviewed && currentContext.HasPermissions(Permissions.Transaction.Confirm))
+                @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentAction.Confirm)
                 {
-                    <span> | </span>@Html.ActionLink(Operations.Confirm, "confirm", new { id = item.Id })
-                    <span> | </span>@Html.ActionLink(Operations.Reject, "reject", new { id = item.Id })
+                    <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Confirm), "confirm", new { id = item.Id })
+                    <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Reject), "reject", new { id = item.Id })
                 }
-                @if (item.OperationalStatus == DocumentStatus.Confirmed && currentContext.HasPermissions(Permissions.Transaction.Approve))
+                @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentAction.Approve)
                 {
-                    <span> | </span>@Html.ActionLink(Operations.Approve, "approve", new { id = item.Id })
+                    <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Approve), "approve", new { id = item.Id })
                 }
                 </td>
             </tr>

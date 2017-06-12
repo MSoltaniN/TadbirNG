@@ -234,6 +234,7 @@ CREATE TABLE [Workflow].[WorkItem] (
     [Time]           TIME(7)          NOT NULL,
     [Title]          NVARCHAR(128)    NOT NULL,
     [DocumentType]   VARCHAR(128)     NOT NULL,
+    [Action]         VARCHAR(64)      NOT NULL,
     [Remarks]        NVARCHAR(1024)   NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Workflow_WorkItem_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Workflow_WorkItem_ModifiedDate] DEFAULT (getdate()) NOT NULL
@@ -266,6 +267,7 @@ CREATE TABLE [Workflow].[WorkItemHistory] (
     [DocumentID]          INT              NOT NULL,
     [Status]              NVARCHAR(64)     NOT NULL,
     [OperationalStatus]   NVARCHAR(64)     NOT NULL,
+    [Action]              VARCHAR(64)      NOT NULL,
     [Remarks]             NVARCHAR(1024)   NULL,
     [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Workflow_WorkItemHistory_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]        DATETIME         CONSTRAINT [DF_Workflow_WorkItemHistory_ModifiedDate] DEFAULT (getdate()) NOT NULL

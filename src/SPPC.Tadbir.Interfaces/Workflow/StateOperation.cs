@@ -12,12 +12,6 @@ namespace SPPC.Tadbir.Workflow
     public class StateOperation
     {
         /// <summary>
-        /// نام عملیات برای درخواست تغییر وضعیت
-        /// </summary>
-        [DataMember]
-        public string Name { get; set; }
-
-        /// <summary>
         /// شناسه دیتابیسی کاربری که تغییر وضعیت به نام او ثبت می شود
         /// </summary>
         [DataMember]
@@ -66,11 +60,23 @@ namespace SPPC.Tadbir.Workflow
         public string NewStatus { get; set; }
 
         /// <summary>
+        /// نوع اقدامی که در نتیجه عملیات روی مستند انجام می شود
+        /// </summary>
+        [DataMember]
+        public string Action { get; set; }
+
+        /// <summary>
+        /// نوع اقدام بعدی که پس از عملیات می تواند روی مستند انجام شود.
+        /// </summary>
+        [DataMember]
+        public string NextAction { get; set; }
+
+        /// <summary>
         /// مقداری که مشخص می کند آیا اقدام جاری تنظیم مستند است یا نه
         /// </summary>
         public bool IsPrepare
         {
-            get { return (Name == "Prepare" && CurrentStatus == DocumentStatus.Created); }
+            get { return (Action == DocumentAction.Prepare && CurrentStatus == DocumentStatus.Created); }
         }
 
         /// <summary>
@@ -78,7 +84,7 @@ namespace SPPC.Tadbir.Workflow
         /// </summary>
         public bool IsReview
         {
-            get { return (Name == "Review" && CurrentStatus == DocumentStatus.Prepared); }
+            get { return (Action == DocumentAction.Review && CurrentStatus == DocumentStatus.Prepared); }
         }
 
         /// <summary>
@@ -86,7 +92,7 @@ namespace SPPC.Tadbir.Workflow
         /// </summary>
         public bool IsReject
         {
-            get { return (Name == "Reject" && CurrentStatus == DocumentStatus.Reviewed); }
+            get { return (Action == DocumentAction.Reject && CurrentStatus == DocumentStatus.Reviewed); }
         }
 
         /// <summary>
@@ -94,7 +100,7 @@ namespace SPPC.Tadbir.Workflow
         /// </summary>
         public bool IsConfirm
         {
-            get { return (Name == "Confirm" && CurrentStatus == DocumentStatus.Reviewed); }
+            get { return (Action == DocumentAction.Confirm && CurrentStatus == DocumentStatus.Reviewed); }
         }
 
         /// <summary>
@@ -102,7 +108,7 @@ namespace SPPC.Tadbir.Workflow
         /// </summary>
         public bool IsApprove
         {
-            get { return (Name == "Approve" && CurrentStatus == DocumentStatus.Confirmed); }
+            get { return (Action == DocumentAction.Approve && CurrentStatus == DocumentStatus.Confirmed); }
         }
 
         /// <summary>
@@ -124,7 +130,6 @@ namespace SPPC.Tadbir.Workflow
         {
             return new StateOperation()
             {
-                Name = StateOperationName.Prepare,
                 CreatedById = userId,
                 TargetId = SystemRoles.LeadAccountant,
                 Title = WorkItemTitle.ReviewDocument,
@@ -132,7 +137,9 @@ namespace SPPC.Tadbir.Workflow
                 DocumentType = documentType,
                 Status = TransactionStatus.Unchecked,
                 CurrentStatus = DocumentStatus.Created,
-                NewStatus = DocumentStatus.Prepared
+                NewStatus = DocumentStatus.Prepared,
+                Action = DocumentAction.Prepare,
+                NextAction = DocumentAction.Review
             };
         }
 
@@ -147,7 +154,6 @@ namespace SPPC.Tadbir.Workflow
         {
             return new StateOperation()
             {
-                Name = StateOperationName.Review,
                 CreatedById = userId,
                 TargetId = SystemRoles.CFOAssistant,
                 Title = WorkItemTitle.ConfirmDocument,
@@ -155,7 +161,9 @@ namespace SPPC.Tadbir.Workflow
                 DocumentType = documentType,
                 Status = TransactionStatus.NormalCheck,
                 CurrentStatus = DocumentStatus.Prepared,
-                NewStatus = DocumentStatus.Reviewed
+                NewStatus = DocumentStatus.Reviewed,
+                Action = DocumentAction.Review,
+                NextAction = DocumentAction.Confirm
             };
         }
 
@@ -170,7 +178,6 @@ namespace SPPC.Tadbir.Workflow
         {
             return new StateOperation()
             {
-                Name = StateOperationName.Reject,
                 CreatedById = userId,
                 TargetId = SystemRoles.LeadAccountant,
                 Title = WorkItemTitle.ReviewDocument,
@@ -178,7 +185,9 @@ namespace SPPC.Tadbir.Workflow
                 DocumentType = documentType,
                 Status = TransactionStatus.Unchecked,
                 CurrentStatus = DocumentStatus.Reviewed,
-                NewStatus = DocumentStatus.Prepared
+                NewStatus = DocumentStatus.Prepared,
+                Action = DocumentAction.Reject,
+                NextAction = DocumentAction.Review
             };
         }
 
@@ -193,7 +202,6 @@ namespace SPPC.Tadbir.Workflow
         {
             return new StateOperation()
             {
-                Name = StateOperationName.Confirm,
                 CreatedById = userId,
                 TargetId = SystemRoles.CFO,
                 Title = WorkItemTitle.ApproveDocument,
@@ -201,7 +209,9 @@ namespace SPPC.Tadbir.Workflow
                 DocumentType = documentType,
                 Status = TransactionStatus.NormalCheck,
                 CurrentStatus = DocumentStatus.Reviewed,
-                NewStatus = DocumentStatus.Confirmed
+                NewStatus = DocumentStatus.Confirmed,
+                Action = DocumentAction.Confirm,
+                NextAction = DocumentAction.Approve
             };
         }
 
@@ -216,7 +226,6 @@ namespace SPPC.Tadbir.Workflow
         {
             return new StateOperation()
             {
-                Name = StateOperationName.Approve,
                 CreatedById = userId,
                 TargetId = 0,
                 Title = WorkItemTitle.DocumentApproved,
@@ -224,7 +233,9 @@ namespace SPPC.Tadbir.Workflow
                 DocumentType = documentType,
                 Status = TransactionStatus.FinalCheck,
                 CurrentStatus = DocumentStatus.Confirmed,
-                NewStatus = DocumentStatus.Approved
+                NewStatus = DocumentStatus.Approved,
+                Action = DocumentAction.Approve,
+                NextAction = String.Empty
             };
         }
     }

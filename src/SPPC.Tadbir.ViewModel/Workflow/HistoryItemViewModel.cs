@@ -31,6 +31,11 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         public string UserFullName { get; set; }
 
         /// <summary>
+        /// نوع اقدامی که در نتیجه این سابقه عملیاتی انجام شده است
+        /// </summary>
+        public string Action { get; set; }
+
+        /// <summary>
         /// وضعیت ثبتی مستند پس از اقدام
         /// </summary>
         public string Status { get; set; }

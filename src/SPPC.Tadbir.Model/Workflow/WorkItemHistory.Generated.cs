@@ -73,6 +73,11 @@ namespace SPPC.Tadbir.Model.Workflow
         public virtual int DocumentId { get; set; }
 
         /// <summary>
+        /// نوع اقدامی که در نتیجه این سابقه عملیاتی انجام شده است
+        /// </summary>
+        public virtual string Action { get; set; }
+
+        /// <summary>
         /// توضیحات یا پاراف متنی مرتبط با کار که می تواند خالی باشد
         /// </summary>
         public virtual string Remarks { get; set; }

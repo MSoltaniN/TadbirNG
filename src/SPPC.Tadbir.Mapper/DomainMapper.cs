@@ -85,7 +85,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<User, UserBriefViewModel>()
                 .ForMember(dest => dest.HasRole, opts => opts.UseValue(true));
             mapperConfig.CreateMap<UserBriefViewModel, User>();
-            mapperConfig.CreateMap<User, UserContextViewModel>();
+            mapperConfig.CreateMap<User, UserContextViewModel>()
+                .ForMember(dest => dest.Roles, opts => opts.Ignore());
 
             mapperConfig.CreateMap<Role, RoleViewModel>()
                 .ForMember(
@@ -216,6 +217,7 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.WorkItem.Id = viewModel.WorkItemId);
             mapperConfig.CreateMap<WorkItemViewModel, WorkItemHistory>()
                 .ForMember(dest => dest.Id, opts => opts.Ignore())
+                .ForMember(dest => dest.Action, opts => opts.MapFrom(src => src.PreviousAction))
                 .AfterMap((viewModel, model) => model.User.Id = viewModel.CreatedById);
             mapperConfig.CreateMap<WorkItemHistory, HistoryItemViewModel>()
                 .ForMember(

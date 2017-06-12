@@ -55,7 +55,9 @@ namespace SPPC.Tadbir.Workflow
                 DocumentType = operation.DocumentType,
                 DocumentId = operation.DocumentId,
                 Status = operation.Status,
-                OperationalStatus = operation.NewStatus
+                OperationalStatus = operation.NewStatus,
+                Action = operation.NextAction,
+                PreviousAction = operation.Action
             };
 
             return workItem;

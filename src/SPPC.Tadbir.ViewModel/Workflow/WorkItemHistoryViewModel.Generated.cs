@@ -12,6 +12,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
 
 namespace SPPC.Tadbir.ViewModel.Workflow
 {
@@ -41,8 +42,8 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         /// <summary>
         /// شماره سری کار که می تواند شامل اعداد و حروف باشد
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(16, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(16, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Number { get; set; }
 
         /// <summary>
@@ -58,8 +59,8 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         /// <summary>
         /// عنوان یا موضوع کار که در چارچوب یک گردش کار به صورت خودکار مقداردهی می شود
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(128, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(128, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Title { get; set; }
 
         /// <summary>
@@ -73,23 +74,30 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         public int DocumentId { get; set; }
 
         /// <summary>
+        /// نوع اقدامی که در نتیجه این سابقه عملیاتی انجام شده است
+        /// </summary>
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string Action { get; set; }
+
+        /// <summary>
         /// توضیحات یا پاراف متنی مرتبط با کار که می تواند خالی باشد
         /// </summary>
-        [StringLength(1024, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
+        [StringLength(1024, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Remarks { get; set; }
 
         /// <summary>
         /// وضعیت ثبتی موجودیت عملیاتی
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(64, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Status { get; set; }
 
         /// <summary>
         /// وضعیت موجودیت عملیاتی در گردش کار (مقادیر ممکن عبارتند از : ایجاد شده، تنظیم شده، بررسی شده، تایید شده و تصویب شده)
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [StringLength(64, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string OperationalStatus { get; set; }
     }
 }

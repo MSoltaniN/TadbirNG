@@ -31,5 +31,10 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         /// ، تایید شده و تصویب شده)
         /// </summary>
         public string OperationalStatus { get; set; }
+
+        /// <summary>
+        /// نوع اقدامی که منجر به ایجاد این کار شده است
+        /// </summary>
+        public string PreviousAction { get; set; }
     }
 }

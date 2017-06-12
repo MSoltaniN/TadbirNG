@@ -574,6 +574,12 @@
           <ColumnView name="Document Type" visible="True" width="120" />
           <ValidationRule name="DocumentType_Validation" required="True" minimum="0" maximum="128" format="" type="Length" />
         </Property>
+        <Property name="Action" type="String" isValidated="False" description="نوع اقدامی که این کار برای انجام آن ایجاد شده است" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtAction" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Action" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="Action" visible="True" width="120" />
+          <ValidationRule name="Action_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
         <Property name="Remarks" type="String" isValidated="True" description="توضیحات یا پاراف متنی مرتبط با کار که می تواند خالی باشد" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRemarks" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Remarks" type="nvarchar(1024)" nullable="True" />
@@ -691,6 +697,12 @@
           <PropertyStorage name="OperationalStatus" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Operational Status" visible="True" width="120" />
           <ValidationRule name="OperationalStatus_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="Action" type="String" isValidated="True" description="نوع اقدامی که در نتیجه این سابقه عملیاتی انجام شده است" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtAction" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Action" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="Action" visible="True" width="120" />
+          <ValidationRule name="Action_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
         </Property>
         <Property name="Remarks" type="String" isValidated="True" description="توضیحات یا پاراف متنی مرتبط با کار که می تواند خالی باشد" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRemarks" format="" type="TextBox" bindingMember="Text" />

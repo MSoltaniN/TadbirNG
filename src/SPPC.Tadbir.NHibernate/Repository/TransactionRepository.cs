@@ -5,6 +5,7 @@ using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Workflow;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Workflow;
 using SwForAll.Platform.Common;
@@ -44,6 +45,7 @@ namespace SPPC.Tadbir.NHibernate
                     && txn.Branch.Id == branchId)
                 .OrderBy(txn => txn.Date)
                 .Select(item => _mapper.Map<TransactionViewModel>(item))
+                .Select(item => AddWorkItemInfo(item))
                 .ToList();
             return transactions;
         }
@@ -255,6 +257,23 @@ namespace SPPC.Tadbir.NHibernate
             existing.Debit = article.Debit;
             existing.Credit = article.Credit;
             existing.Description = article.Description;
+        }
+
+        private TransactionViewModel AddWorkItemInfo(TransactionViewModel transaction)
+        {
+            var repository = _unitOfWork.GetRepository<WorkItemDocument>();
+            var document = repository
+                .GetByCriteria(wid => wid.DocumentId == transaction.Id
+                    && wid.DocumentType == DocumentType.Transaction)
+                .FirstOrDefault();
+            if (document != null)
+            {
+                transaction.WorkItemId = document.WorkItem.Id;
+                transaction.WorkItemTargetId = document.WorkItem.Target.Id;
+                transaction.WorkItemAction = document.WorkItem.Action;
+            }
+
+            return transaction;
         }
 
         private IUnitOfWork _unitOfWork;
