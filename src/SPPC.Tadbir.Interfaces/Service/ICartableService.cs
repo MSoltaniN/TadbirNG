@@ -15,5 +15,12 @@ namespace SPPC.Tadbir.Service
         /// <param name="userId">شناسه دیتابیسی یک کاربر موجود</param>
         /// <returns>مجموعه ای از رکوردهای اطلاعاتی در کارتابل ورودی کاربر داده شده</returns>
         IEnumerable<InboxItemViewModel> GetUserInbox(int userId);
+
+        /// <summary>
+        /// کارهای موجود در کارتابل ارسالی یک کاربر خاص را از دیتابیس می خواند.
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی یک کاربر موجود</param>
+        /// <returns>مجموعه ای از رکوردهای اطلاعاتی در کارتابل ارسالی کاربر داده شده</returns>
+        IEnumerable<OutboxItemViewModel> GetUserOutbox(int userId);
     }
 }

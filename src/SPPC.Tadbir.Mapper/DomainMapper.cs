@@ -236,6 +236,20 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.OperationalStatus,
                     opts => opts.MapFrom(
                         src => DocumentStatus.ToLocalValue(src.OperationalStatus)));
+            mapperConfig.CreateMap<WorkItemHistory, OutboxItemViewModel>()
+                .ForMember(dest => dest.DocumentNo, opts => opts.Ignore())
+                .ForMember(
+                    dest => dest.Date,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()))
+                .ForMember(
+                    dest => dest.DocumentType,
+                    opts => opts.MapFrom(
+                        src => DocumentType.ToLocalValue(src.DocumentType)))
+                .ForMember(
+                    dest => dest.Action,
+                    opts => opts.MapFrom(
+                        src => DocumentAction.ToLocalValue(src.Action)));
         }
 
         private static ICryptoService _crypto;

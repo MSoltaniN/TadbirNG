@@ -31,6 +31,17 @@ namespace SPPC.Tadbir.Service
             return workItems;
         }
 
+        /// <summary>
+        /// کارهای موجود در کارتابل ارسالی یک کاربر خاص را از دیتابیس می خواند.
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی یک کاربر موجود</param>
+        /// <returns>مجموعه ای از رکوردهای اطلاعاتی در کارتابل ارسالی کاربر داده شده</returns>
+        public IEnumerable<OutboxItemViewModel> GetUserOutbox(int userId)
+        {
+            var workItems = _apiClient.Get<IEnumerable<OutboxItemViewModel>>(CartableApi.UserOutboxItems, userId);
+            return workItems;
+        }
+
         private IApiClient _apiClient;
     }
 }

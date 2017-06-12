@@ -24,6 +24,14 @@ namespace SPPC.Tadbir.Web.Controllers
             return View(workItems.ToPagedList(pageNumber, Values.Constants.DefaultPageSize));
         }
 
+        // GET: cartable/outbox
+        public ViewResult Outbox(int? page = null)
+        {
+            var workItems = _service.GetUserOutbox(_userContext.User.Id);
+            int pageNumber = (page ?? 1);
+            return View(workItems.ToPagedList(pageNumber, Values.Constants.DefaultPageSize));
+        }
+
         private ICartableService _service;
         private ISecurityContext _userContext;
     }

@@ -107,6 +107,7 @@
     </Compile>
     <Compile Include="Auth\PermissionEqualityComparer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Workflow\OutboxItemViewModel.cs" />
     <Compile Include="Workflow\HistoryItemViewModel.cs" />
     <Compile Include="Workflow\InboxItemViewModel.cs" />
     <Compile Include="Workflow\WorkItemDocumentViewModel.cs" />

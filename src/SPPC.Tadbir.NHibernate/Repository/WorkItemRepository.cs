@@ -67,9 +67,22 @@ namespace SPPC.Tadbir.NHibernate
         /// </summary>
         /// <param name="userId">شناسه دیتابیسی یک کاربر موجود</param>
         /// <returns>مجموعه ای از کارها که در کارتابل ارسالی کاربر تعیین شده نمایش داده می شود</returns>
-        public IList<WorkItemViewModel> GetUserOutbox(int userId)
+        public IList<OutboxItemViewModel> GetUserOutbox(int userId)
         {
-            throw new NotImplementedException();
+            var repository = _unitOfWork.GetRepository<WorkItemHistory>();
+            var workItems = repository
+                .GetByCriteria(wih => wih.User.Id == userId)
+                .Select(wih => _mapper.Map<OutboxItemViewModel>(wih))
+                .ToList();
+
+            var documentRepository = _unitOfWork.GetRepository<Transaction>();
+            foreach (var workItem in workItems)
+            {
+                var document = documentRepository.GetByID(workItem.DocumentId);
+                workItem.DocumentNo = document.No;
+            }
+
+            return workItems;
         }
 
         /// <summary>

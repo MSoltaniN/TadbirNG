@@ -73,6 +73,11 @@ namespace SPPC.Tadbir.Values
         public const string Cartable = "کارتابل";
 
         /// <summary>
+        /// Localized text for Cartable Outbox link
+        /// </summary>
+        public const string CartableOutbox = "کارتابل ارسالی";
+
+        /// <summary>
         /// Localized text for the application type name
         /// </summary>
         public const string WebVersion = "نسخه وب";

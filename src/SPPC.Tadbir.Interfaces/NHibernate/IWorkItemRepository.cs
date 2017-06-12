@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.NHibernate
         /// </summary>
         /// <param name="userId">شناسه دیتابیسی یک کاربر موجود</param>
         /// <returns>مجموعه ای از کارها که در کارتابل ارسالی کاربر تعیین شده نمایش داده می شود</returns>
-        IList<WorkItemViewModel> GetUserOutbox(int userId);
+        IList<OutboxItemViewModel> GetUserOutbox(int userId);
 
         /// <summary>
         /// رکورد کار مورد نیاز در ابتدای گردش کار را در دیتابیس ایجاد می کند.

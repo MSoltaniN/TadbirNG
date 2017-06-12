@@ -265,6 +265,7 @@
     <Content Include="Views\Account\Manage.cshtml" />
     <Content Include="Views\Error\Denied.cshtml" />
     <Content Include="Views\Cartable\Index.cshtml" />
+    <Content Include="Views\Cartable\Outbox.cshtml" />
     <None Include="Web.LiveHost.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
