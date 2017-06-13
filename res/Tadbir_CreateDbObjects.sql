@@ -246,7 +246,7 @@ GO
 
 CREATE TABLE [Workflow].[WorkItemDocument] (
     [DocumentItemID]   INT              IDENTITY (1, 1) NOT NULL,
-    [WorkItemID]       INT              NOT NULL,
+    [WorkItemID]       INT              NULL,
     [DocumentID]       INT              NOT NULL,
     [DocumentType]     VARCHAR(128)     NOT NULL,
     [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Workflow_WorkItemDocument_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,

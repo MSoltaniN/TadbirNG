@@ -47,6 +47,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
         {
             References(x => x.WorkItem)
                 .Column("WorkItemID")
+                .Nullable()
                 .Not.LazyLoad()
                 .Cascade.None();
         }

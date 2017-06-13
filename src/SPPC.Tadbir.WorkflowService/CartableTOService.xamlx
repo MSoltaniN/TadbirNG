@@ -34,6 +34,7 @@
         <p1:AssemblyReference>Microsoft.Practices.Unity.Configuration</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.Unity.RegistrationByConvention</p1:AssemblyReference>
         <p1:AssemblyReference>SwForAll.Platform.Persistence</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Activities.DurableInstancing</p1:AssemblyReference>
         <p1:AssemblyReference>System.Configuration</p1:AssemblyReference>
         <p1:AssemblyReference>System</p1:AssemblyReference>
         <p1:AssemblyReference>System.Activities</p1:AssemblyReference>
@@ -114,7 +115,7 @@
                 <p1:PickBranch.Trigger>
                   <p1:Delay sap2010:WorkflowViewState.IdRef="Delay_2">
                     <p1:InArgument x:TypeArguments="x:TimeSpan">
-                      <mca:CSharpValue x:TypeArguments="x:TimeSpan">TimeSpan.FromMinutes(2)</mca:CSharpValue>
+                      <mca:CSharpValue x:TypeArguments="x:TimeSpan">TimeSpan.FromMinutes(4)</mca:CSharpValue>
                     </p1:InArgument>
                   </p1:Delay>
                 </p1:PickBranch.Trigger>
@@ -293,7 +294,7 @@
                         <p1:PickBranch.Trigger>
                           <p1:Delay sap2010:WorkflowViewState.IdRef="Delay_3">
                             <p1:InArgument x:TypeArguments="x:TimeSpan">
-                              <mca:CSharpValue x:TypeArguments="x:TimeSpan">TimeSpan.FromMinutes(2)</mca:CSharpValue>
+                              <mca:CSharpValue x:TypeArguments="x:TimeSpan">TimeSpan.FromMinutes(4)</mca:CSharpValue>
                             </p1:InArgument>
                           </p1:Delay>
                         </p1:PickBranch.Trigger>
@@ -489,7 +490,7 @@
       <p1:Variable x:TypeArguments="stw:StateOperation" Name="operation" />
       <p1:Variable x:TypeArguments="CorrelationHandle" Name="transIdHandle" />
     </p1:StateMachine.Variables>
-    <sads:DebugSymbol.Symbol>d2NEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVUT1NlcnZpY2UueGFtbHhZEQPtAxUBATwFrQMQAo8BvAENqQMYATbvAhWlAyABHaEDHaEDkQEBG7EDBecDEAECQA25ARcCkQHAARXrASMBePMBFewCHwE48wIdngMrAR+1Aw3gAxsBBEEPcB8CuQFxD7gBHwKSAcEBF94BIQKFAd8BF+UBNQKBAeYBF+oBIwF59AEXowInAWCkAhfrAicBOfQCH5EDKQEskgMfmAM9ASiZAx+dAysBILYDD9MDGQER1AMP2gMtAQ3bAw/fAxsBBUMTbiECugFzE3ceArUBeRG3AR8CkwHNAR3NAXECjAHbAR3bAXYCiQHUASHUAXUChgHiAR3iAW4CggHoAVfoAVgBevYBG6ECKQFhpgIbqgImAVysAhnqAicBOoADJYADeQEzjgMljgN+ATCHAymHA30BLZUDJZUDdgEpmwNfmwNgASHCAxXCA2kBGNADFdADbgEVyQMZyQNtARLXAxXXA2YBDt0DT90DUAEGRBVhHwLHAWIVaDMCwwFpFW0hArsBdRd1bgK2AXoTigEzAqsBiwETtgEhApQB9wEdlAInAW6VAh2bAjsBapwCHaACKQFiqAIfqAJ2AV2tAhu9AjsBUr4CG+kCKQE7UBtQbwLOAV4bXnQCywFXH1dzAsgBZRtlbALEAWtVa1YCvAF9GX1qArIBggEZggFtAq8BhwEZhwFuAqwBjAEVqQEfAqEBqgEVsAEzAp0BsQEVtQEhApUBgwIjgwJ3AXWRAiORAnwBcooCJ4oCewFvmAIjmAJ0AWueAl2eAl4BY7ACIbACcgFZtQIhtQJ1AVa6AiG6Am0BU78CHdwCJwFI3QId4wI7AUTkAh3oAikBPJgBG5gBbwKoAaYBG6YBdAKlAZ8BH58BcwKiAa0BG60BbAKeAbMBVbMBVgKWAcsCI8sCdwFP2QIj2QJ8AUzSAifSAnsBSeACI+ACdAFF5gJd5gJeAT0=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2NEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVUT1NlcnZpY2UueGFtbHhZEQPuAxUBAT0FrgMQAo8BvQENqgMYATbwAhWmAyABHaIDHaIDkQEBG7IDBegDEAECQQ26ARcCkQHBARXsASMBePQBFe0CHwE49AIdnwMrAR+2Aw3hAxsBBEIPcR8CuQFyD7kBHwKSAcIBF98BIQKFAeABF+YBNQKBAecBF+sBIwF59QEXpAInAWClAhfsAicBOfUCH5IDKQEskwMfmQM9ASiaAx+eAysBILcDD9QDGQER1QMP2wMtAQ3cAw/gAxsBBUQTbyECugF0E3geArUBehG4AR8CkwHOAR3OAXECjAHcAR3cAXYCiQHVASHVAXUChgHjAR3jAW4CggHpAVfpAVgBevcBG6ICKQFhpwIbqwImAVytAhnrAicBOoEDJYEDeQEzjwMljwN+ATCIAymIA30BLZYDJZYDdgEpnANfnANgASHDAxXDA2kBGNEDFdEDbgEVygMZygNtARLYAxXYA2YBDt4DT94DUAEGRRViHwLHAWMVaTMCwwFqFW4hArsBdhd2bgK2AXsTiwEzAqsBjAETtwEhApQB+AEdlQInAW6WAh2cAjsBap0CHaECKQFiqQIfqQJ2AV2uAhu+AjsBUr8CG+oCKQE7URtRbwLOAV8bX3QCywFYH1hzAsgBZhtmbALEAWxVbFYCvAF+GX5qArIBgwEZgwFtAq8BiAEZiAFuAqwBjQEVqgEfAqEBqwEVsQEzAp0BsgEVtgEhApUBhAIjhAJ3AXWSAiOSAnwBcosCJ4sCewFvmQIjmQJ0AWufAl2fAl4BY7ECIbECcgFZtgIhtgJ1AVa7AiG7Am0BU8ACHd0CJwFI3gId5AI7AUTlAh3pAikBPJkBG5kBbwKoAacBG6cBdAKlAaABH6ABcwKiAa4BG64BbAKeAbQBVbQBVgKWAcwCI8wCdwFP2gIj2gJ8AUzTAifTAnsBSeECI+ECdAFF5wJd5wJeAT0=</sads:DebugSymbol.Symbol>
   </p1:StateMachine>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -510,7 +511,7 @@
       <sap2010:ViewStateData Id="Receive_17" sap:VirtualizedContainerService.HintSize="255.2,88" />
       <sap2010:ViewStateData Id="ManageCartableActivity_14" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
       <sap2010:ViewStateData Id="SendReply_9" sap:VirtualizedContainerService.HintSize="255.2,88" />
-      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="277.6,403.2">
+      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="200,52.8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -609,7 +610,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="State_6" sap:VirtualizedContainerService.HintSize="325.6,473.6">
+      <sap2010:ViewStateData Id="State_6" sap:VirtualizedContainerService.HintSize="114.4,61.6">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">232.8,249.2</av:Point>
