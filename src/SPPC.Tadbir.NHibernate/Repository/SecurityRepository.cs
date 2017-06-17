@@ -423,7 +423,7 @@ namespace SPPC.Tadbir.NHibernate
                 var disabledBranches = branchRepository
                     .GetAll()
                     .Select(br => _mapper.Map<BranchViewModel>(br))
-                    .Except(enabledBranches, new BranchEqualityComparer())
+                    .Except(enabledBranches, new EntityEqualityComparer<BranchViewModel>())
                     .ToArray();
                 Array.ForEach(disabledBranches, br => br.IsAccessible = false);
 
@@ -478,7 +478,7 @@ namespace SPPC.Tadbir.NHibernate
                 var disabledUsers = userRepository
                     .GetAll()
                     .Select(usr => _mapper.Map<UserBriefViewModel>(usr))
-                    .Except(enabledUsers, new UserEqualityComparer())
+                    .Except(enabledUsers, new EntityEqualityComparer<UserBriefViewModel>())
                     .ToArray();
                 Array.ForEach(disabledUsers, usr => usr.HasRole = false);
 

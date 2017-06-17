@@ -78,12 +78,10 @@
     <Compile Include="Auth\RoleViewModel.Generated.cs" />
     <Compile Include="Auth\UserBriefViewModel.cs" />
     <Compile Include="Auth\UserContextViewModel.cs" />
-    <Compile Include="Auth\UserEqualityComparer.cs" />
     <Compile Include="Auth\UserProfileViewModel.cs" />
     <Compile Include="Auth\UserViewModel.cs" />
     <Compile Include="Auth\UserViewModel.Generated.cs" />
     <Compile Include="Contact\PersonViewModel.Generated.cs" />
-    <Compile Include="Corporate\BranchEqualityComparer.cs" />
     <Compile Include="Corporate\BranchViewModel.cs" />
     <Compile Include="Corporate\BranchViewModel.Generated.cs" />
     <Compile Include="Corporate\CompanyViewModel.cs" />

@@ -7,11 +7,23 @@ using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Workflow
 {
+    /// <summary>
+    /// این فعالیت اطلاعات خلاصه مربوط به یک سند مالی را از دیتابیس می خواند.
+    /// </summary>
     public sealed class GetTransactionSummaryActivity : CodeActivity<TransactionSummaryViewModel>
     {
+        /// <summary>
+        /// آرگومان اجباری برای نگهداری شناسه دیتابیسی سند مالی که اطلاعات خلاصه آن مورد نیاز است
+        /// </summary>
         [RequiredArgument]
         public InArgument<int> TransactionId { get; set; }
 
+        /// <summary>
+        /// فعالیت را با استفاده از اطلاعات جاری محیطی اجرا می کند.
+        /// </summary>
+        /// <param name="context">اطلاعات محیط اجرایی فعالیت در زمان اجرای آن</param>
+        /// <returns>اطلاعات خلاصه یک سند مالی موجود. اگر سند مالی با شناسه دیتابیسی داده شده وجود نداشته باشد
+        /// مقدار null برمیگرداند.</returns>
         protected override TransactionSummaryViewModel Execute(CodeActivityContext context)
         {
             Verify.ArgumentNotNull(context, "context");

@@ -14,6 +14,9 @@ namespace SPPC.Tadbir.Workflow
     /// </summary>
     public class ManageCartableActivity : CodeActivity
     {
+        /// <summary>
+        /// آرگومان اجباری برای نگهداری اطلاعات مورد نیاز برای انجام یک اقدام روی یک مستند
+        /// </summary>
         [RequiredArgument]
         public InArgument<StateOperation> Operation { get; set; }
 

@@ -10,59 +10,95 @@
 
 namespace SPPC.Tadbir.Workflow
 {
+    /// <summary>
+    /// Generated Code
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "IDocumentStateBasic")]
     public interface IDocumentStateBasic
     {
 
+        /// <summary>
+        /// Generated Code
+        /// </summary>
         [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDocumentStateBasic/DoRequest", ReplyAction = "http://tempuri.org/IDocumentStateBasic/DoRequestResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
         int DoRequest(SPPC.Tadbir.Workflow.StateOperation operation);
 
+        /// <summary>
+        /// Generated Code
+        /// </summary>
         [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IDocumentStateBasic/DoRequest", ReplyAction = "http://tempuri.org/IDocumentStateBasic/DoRequestResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name = "resultCode")]
         System.Threading.Tasks.Task<int> DoRequestAsync(SPPC.Tadbir.Workflow.StateOperation operation);
     }
 
+    /// <summary>
+    /// Generated Code
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface IDocumentStateBasicChannel : IDocumentStateBasic, System.ServiceModel.IClientChannel
     {
     }
 
+    /// <summary>
+    /// Generated Code
+    /// </summary>
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class DocumentStateBasicClient : System.ServiceModel.ClientBase<IDocumentStateBasic>, IDocumentStateBasic
     {
 
+        /// <summary>
+        /// Generated Code
+        /// </summary>
         public DocumentStateBasicClient()
         {
         }
 
+        /// <summary>
+        /// Generated Code
+        /// </summary>
         public DocumentStateBasicClient(string endpointConfigurationName) :
                 base(endpointConfigurationName)
         {
         }
 
+        /// <summary>
+        /// Generated Code
+        /// </summary>
         public DocumentStateBasicClient(string endpointConfigurationName, string remoteAddress) :
                 base(endpointConfigurationName, remoteAddress)
         {
         }
 
+        /// <summary>
+        /// Generated Code
+        /// </summary>
         public DocumentStateBasicClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) :
                 base(endpointConfigurationName, remoteAddress)
         {
         }
 
+        /// <summary>
+        /// Generated Code
+        /// </summary>
         public DocumentStateBasicClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
                 base(binding, remoteAddress)
         {
         }
 
+        /// <summary>
+        /// Generated Code
+        /// </summary>
         public int DoRequest(SPPC.Tadbir.Workflow.StateOperation operation)
         {
             return base.Channel.DoRequest(operation);
         }
 
+        /// <summary>
+        /// Generated Code
+        /// </summary>
         public System.Threading.Tasks.Task<int> DoRequestAsync(SPPC.Tadbir.Workflow.StateOperation operation)
         {
             return base.Channel.DoRequestAsync(operation);
