@@ -8,7 +8,10 @@
 @model AccountFullViewModel
 
 @{
-    ViewBag.Title = Accounts.Details;
+    string title = String.Format(LocalStrings.EntityDetails, Entities.Account);
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Accounts);
+    string editTitle = String.Format(LocalStrings.EditExistingEntity, Entities.Account);
+    ViewBag.Title = title;
 
     var contextManager = UnityConfig
         .GetConfiguredContainer()
@@ -18,13 +21,13 @@
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
-    <li>@Html.ActionLink(Accounts.IndexTitle, "index", "accounts", new { area = "Accounting" }, null)</li>
-    <li class="active">@Accounts.Details</li>
+    <li>@Html.ActionLink(indexTitle, "index", "accounts", new { area = "Accounting" }, null)</li>
+    <li class="active">@title</li>
 </ol>
 
 <div class="col-sm-8 col-sm-offset-2 form-centered">
     <div class="page-header">
-        <h2>@Accounts.Details</h2>
+        <h2>@title</h2>
     </div>
     <dl>
         <dt>
@@ -72,8 +75,8 @@
     <p>
     @if (currentContext.HasPermissions(Permissions.Account.Edit))
     {
-        @Html.ActionLink(Accounts.EditExisting, "edit", new { id = Model.Id })<span> | </span>
+        @Html.ActionLink(editTitle, "edit", new { id = Model.Id })<span> | </span>
     }
-        @Html.ActionLink(Accounts.IndexTitle, "index")
+        @Html.ActionLink(indexTitle, "index")
     </p>
 </div>

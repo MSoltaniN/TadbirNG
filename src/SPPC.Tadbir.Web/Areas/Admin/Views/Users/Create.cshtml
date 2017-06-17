@@ -3,18 +3,20 @@
 @model SPPC.Tadbir.ViewModel.Auth.UserViewModel
 
 @{
-    ViewBag.Title = Users.CreateNew;
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Users);
+    string title = String.Format(LocalStrings.CreateNewEntity, Entities.User);
+    ViewBag.Title = title;
 }
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
-    <li>@Html.ActionLink(Users.IndexTitle, "index", "users", new { area = "admin" }, null)</li>
-    <li class="active">@Users.CreateNew</li>
+    <li>@Html.ActionLink(indexTitle, "index", "users", new { area = "admin" }, null)</li>
+    <li class="active">@title</li>
 </ol>
 
 <div class="col-sm-8 col-sm-offset-2 form-centered">
     <div class="page-header">
-        <h2>@Users.CreateNew</h2>
+        <h2>@title</h2>
     </div>
     <div class="form-body">
         @using (Html.BeginForm())
@@ -49,7 +51,7 @@
 
             <div class="form-group">
                 @Html.CheckBoxFor(model => model.IsEnabled)
-                @Users.Enabled
+                @Strings.Enabled
             </div>
 
             <div class="form-group">

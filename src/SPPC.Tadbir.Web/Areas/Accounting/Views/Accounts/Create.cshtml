@@ -3,18 +3,20 @@
 @model SPPC.Tadbir.ViewModel.Finance.AccountViewModel
 
 @{
-    ViewBag.Title = Accounts.CreateNew;
+    string title = String.Format(LocalStrings.CreateNewEntity, Entities.Account);
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Accounts);
+    ViewBag.Title = title;
 }
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
-    <li>@Html.ActionLink(Accounts.IndexTitle, "index", "accounts", new { area = "Accounting" }, null)</li>
-    <li class="active">@Accounts.CreateNew</li>
+    <li>@Html.ActionLink(indexTitle, "index", "accounts", new { area = "Accounting" }, null)</li>
+    <li class="active">@title</li>
 </ol>
 
 <div class="col-sm-8 col-sm-offset-2 form-centered">
     <div class="page-header">
-        <h2>@Accounts.CreateNew</h2>
+        <h2>@title</h2>
     </div>
     <div class="form-body">
         @using (Html.BeginForm())

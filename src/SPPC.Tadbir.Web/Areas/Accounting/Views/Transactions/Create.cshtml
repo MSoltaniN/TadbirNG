@@ -3,7 +3,9 @@
 @model SPPC.Tadbir.ViewModel.Finance.TransactionViewModel
 
 @{
-    ViewBag.Title = Transactions.CreateNew;
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Transactions);
+    string title = String.Format(LocalStrings.CreateNewEntity, Entities.Transaction);
+    ViewBag.Title = title;
     var htmlAttributes = new Dictionary<string, object>();
     htmlAttributes.Add("class", "form-control");
     htmlAttributes.Add("data-targetselector", "#Date");
@@ -11,13 +13,13 @@
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
-    <li>@Html.ActionLink(Transactions.IndexTitle, "index", "transactions", new { area = "Accounting" }, null)</li>
-    <li class="active">@Transactions.CreateNew</li>
+    <li>@Html.ActionLink(indexTitle, "index", "transactions", new { area = "Accounting" }, null)</li>
+    <li class="active">@title</li>
 </ol>
 
 <div class="col-sm-8 col-sm-offset-2 form-centered">
     <div class="page-header">
-        <h2>@Transactions.CreateNew</h2>
+        <h2>@title</h2>
     </div>
     <div class="form-body">
         @using (Html.BeginForm())

@@ -47,7 +47,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (_repository.IsUsedAccount(accountId))
             {
                 var accountInfo = String.Format("'{0} ({1})'", account.Name, account.Code);
-                var message = String.Format(Accounts.CannotDeleteUsedAccount, accountInfo);
+                var message = String.Format(Strings.CannotDeleteUsedAccount, accountInfo);
                 return BadRequest(message);
             }
 

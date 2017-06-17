@@ -3,14 +3,16 @@
 @model SPPC.Framework.Service.ServiceResponse
 
 @{
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Accounts);
+    string deleteTitle = String.Format(LocalStrings.DeleteEntity, Entities.Account);
     string title = String.Format(ErrorMessages.DeleteError, Entities.Account);
     ViewBag.Title = title;
 }
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
-    <li>@Html.ActionLink(Accounts.IndexTitle, "index", "accounts", new { area = "accounting" }, null)</li>
-    <li class="active">@Accounts.Delete</li>
+    <li>@Html.ActionLink(indexTitle, "index", "accounts", new { area = "accounting" }, null)</li>
+    <li class="active">@deleteTitle</li>
 </ol>
 
 <div class="alert alert-danger">
@@ -18,5 +20,5 @@
     <p><strong>@Model.Message</strong></p>
     <p>@Model.Hint</p>
     <br />
-    @Html.ActionLink(Accounts.ReturnToIndex, "index", "accounts", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink(String.Format(LocalStrings.ReturnToPage, indexTitle), "index", "accounts", null, new { @class = "btn btn-primary" })
 </div>

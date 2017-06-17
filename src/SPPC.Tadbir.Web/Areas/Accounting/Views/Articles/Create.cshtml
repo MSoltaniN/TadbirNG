@@ -4,7 +4,10 @@
 @model SPPC.Tadbir.ViewModel.Finance.TransactionLineViewModel
 
 @{
-    ViewBag.Title = TransactionLines.CreateNew;
+    string title = String.Format(LocalStrings.CreateNewEntity, Entities.Article);
+    string txnIndexTitle = String.Format(LocalStrings.IndexTitle, Entities.Transactions);
+    string txnEditTitle = String.Format(LocalStrings.EditExistingEntity, Entities.Transaction);
+    ViewBag.Title = title;
     var accounts = (ViewBag.AccountLookup as IEnumerable<KeyValue>)
         .Select(acc => new SelectListItem() { Value = acc.Key, Text = acc.Value });
     var currencies = (ViewBag.CurrencyLookup as IEnumerable<KeyValue>)
@@ -13,14 +16,14 @@
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
-    <li>@Html.ActionLink(Transactions.IndexTitle, "index", "transactions", new { area = "accounting" }, null)</li>
-    <li>@Html.ActionLink(Transactions.EditExisting, "edit", "transactions", new { area = "accounting", id = Model.TransactionId }, null)</li>
-    <li class="active">@TransactionLines.CreateNew</li>
+    <li>@Html.ActionLink(txnIndexTitle, "index", "transactions", new { area = "accounting" }, null)</li>
+    <li>@Html.ActionLink(txnEditTitle, "edit", "transactions", new { area = "accounting", id = Model.TransactionId }, null)</li>
+    <li class="active">@title</li>
 </ol>
 
 <div class="col-sm-8 col-sm-offset-2 form-centered">
     <div class="page-header">
-        <h2>@TransactionLines.CreateNew</h2>
+        <h2>@title</h2>
     </div>
     <div class="form-body">
         @using (Html.BeginForm())

@@ -7,16 +7,19 @@
 @model SPPC.Tadbir.ViewModel.Finance.TransactionFullViewModel
 
 @{
-    ViewBag.Title = Transactions.EditExisting;
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Transactions);
+    string artCreateTitle = String.Format(LocalStrings.CreateNewEntity, Entities.Article);
+    string title = String.Format(LocalStrings.EditExistingEntity, Entities.Transaction);
+    ViewBag.Title = title;
     var persianCulture = new CultureInfo("fa-IR");
     persianCulture.NumberFormat.CurrencySymbol = String.Empty;
     var articles = Model.Lines.ToPagedList(1, 10);
-    string pageInfo = TransactionLines.NoRecords;
+    string pageInfo = String.Format(LocalStrings.NoRecords, Entities.AnArticle);
     if (articles.Count > 0)
     {
         pageInfo = String.Format(
-            TransactionLines.CurrentPageInfo,
-            articles.TotalItemCount, articles.PageNumber, articles.PageCount);
+            LocalStrings.CurrentPageInfo,
+            articles.TotalItemCount, Entities.Article, articles.PageNumber, articles.PageCount);
     }
 
     var htmlAttributes = new Dictionary<string, object>();
@@ -26,13 +29,13 @@
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
-    <li>@Html.ActionLink(Transactions.IndexTitle, "index", "transactions", new { area = "Accounting" }, null)</li>
-    <li class="active">@Transactions.EditExisting</li>
+    <li>@Html.ActionLink(indexTitle, "index", "transactions", new { area = "Accounting" }, null)</li>
+    <li class="active">@title</li>
 </ol>
 
 <div class="col-sm-8 col-sm-offset-2 form-centered">
     <div class="page-header">
-        <h2>@Transactions.EditExisting</h2>
+        <h2>@title</h2>
     </div>
     <div class="form-body">
         @using (Html.BeginForm())
@@ -67,11 +70,11 @@
             </div>
 
             <div class="page-header">
-                <h4>@Transactions.TransactionLines</h4>
+                <h4>@Entities.TransactionLines</h4>
             </div>
 
             <p>
-                @Html.ActionLink(TransactionLines.CreateNew, "create", "articles", new { transactionId = Model.Transaction.Id }, new { @class = "btn btn-sm btn-primary" })
+                @Html.ActionLink(artCreateTitle, "create", "articles", new { transactionId = Model.Transaction.Id }, new { @class = "btn btn-sm btn-primary" })
                 <span class="pull-left">@pageInfo</span>
             </p>
 

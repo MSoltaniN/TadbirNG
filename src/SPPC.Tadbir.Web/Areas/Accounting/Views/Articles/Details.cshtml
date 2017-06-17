@@ -4,21 +4,26 @@
 @model SPPC.Tadbir.ViewModel.Finance.TransactionLineFullViewModel
 
 @{
-    ViewBag.Title = TransactionLines.Details;
+    string title = String.Format(LocalStrings.EntityDetails, Entities.Article);
+    string txnIndexTitle = String.Format(LocalStrings.IndexTitle, Entities.Transactions);
+    string txnDetailsTitle = String.Format(LocalStrings.EntityDetails, Entities.Transaction);
+    string txnEditTitle = String.Format(LocalStrings.EditExistingEntity, Entities.Transaction);
+    string editTitle = String.Format(LocalStrings.EditExistingEntity, Entities.Article);
+    ViewBag.Title = title;
     var persianCulture = new CultureInfo("fa-IR");
     persianCulture.NumberFormat.CurrencySymbol = String.Empty;
 }
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
-    <li>@Html.ActionLink(Transactions.IndexTitle, "index", "transactions", new { area = "accounting" }, null)</li>
-    <li>@Html.ActionLink(Transactions.Details, "details", "transactions", new { area = "accounting", id = Model.Article.TransactionId }, null)</li>
-    <li class="active">@TransactionLines.Details</li>
+    <li>@Html.ActionLink(txnIndexTitle, "index", "transactions", new { area = "accounting" }, null)</li>
+    <li>@Html.ActionLink(txnDetailsTitle, "details", "transactions", new { area = "accounting", id = Model.Article.TransactionId }, null)</li>
+    <li class="active">@title</li>
 </ol>
 
 <div class="col-sm-8 col-sm-offset-2 form-centered">
     <div class="page-header">
-        <h2>@TransactionLines.Details</h2>
+        <h2>@title</h2>
     </div>
     <dl>
         <dt>
@@ -85,8 +90,8 @@
         </dd>
     </dl>
     <p>
-        @Html.ActionLink(TransactionLines.EditExisting, "edit", new { id = Model.Article.Id }) |
-        @Html.ActionLink(Transactions.EditExisting, "edit", "transactions",
+        @Html.ActionLink(editTitle, "edit", new { id = Model.Article.Id }) |
+        @Html.ActionLink(txnEditTitle, "edit", "transactions",
             new { area = "accounting", id = Model.Article.TransactionId }, null)
     </p>
 </div>

@@ -11,13 +11,15 @@
 @model PagedList.IPagedList<AccountViewModel>
 
 @{
-    ViewBag.Title = Accounts.IndexTitle;
-    string pageInfo = Accounts.NoRecords;
+    string title = String.Format(LocalStrings.IndexTitle, Entities.Accounts);
+    string createTitle = String.Format(LocalStrings.CreateNewEntity, Entities.Account);
+    ViewBag.Title = title;
+    string pageInfo = String.Format(LocalStrings.NoRecords, Entities.AnAccount);
     if (Model.Count > 0)
     {
         pageInfo = String.Format(
-            Accounts.CurrentPageInfo,
-            Model.TotalItemCount, Model.PageNumber, Model.PageCount);
+            LocalStrings.CurrentPageInfo,
+            Model.TotalItemCount, Entities.Account, Model.PageNumber, Model.PageCount);
     }
 
     var contextManager = UnityConfig
@@ -28,17 +30,17 @@
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
-    <li class="active">@Accounts.IndexTitle</li>
+    <li class="active">@title</li>
 </ol>
 
 <div class="page-header">
-    <h3>@Accounts.IndexTitle</h3>
+    <h3>@title</h3>
 </div>
 
 @if (currentContext.HasPermissions(Permissions.Account.Create))
 {
 <p>
-    @Html.ActionLink(Accounts.CreateNew, "create", "accounts", new { }, new { @class = "btn btn-sm btn-primary" })
+    @Html.ActionLink(createTitle, "create", "accounts", new { }, new { @class = "btn btn-sm btn-primary" })
 </p>
 }
 <span class="pull-left">@pageInfo</span>
@@ -86,7 +88,7 @@
 @if (currentContext.HasPermissions(Permissions.Account.Create))
 {
 <p>
-    @Html.ActionLink(Accounts.CreateNew, "create", "accounts", new { }, new { @class = "btn btn-sm btn-primary" })
+    @Html.ActionLink(createTitle, "create", "accounts", new { }, new { @class = "btn btn-sm btn-primary" })
 </p>
 }
 

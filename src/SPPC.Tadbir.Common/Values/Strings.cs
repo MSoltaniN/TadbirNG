@@ -224,10 +224,40 @@ namespace SPPC.Tadbir.Values
         public const string Row = "ردیف";
 
         /// <summary>
+        /// Localized text for the caption for Enabled
+        /// </summary>
+        public const string Enabled = "فعال";
+
+        /// <summary>
+        /// Localized text for the caption for Disabled
+        /// </summary>
+        public const string Disabled = "غیرفعال";
+
+        /// <summary>
+        /// Localized text for the caption for Unregistered transaction status
+        /// </summary>
+        public const string UnregisteredStatus = "ثبت نشده";
+
+        /// <summary>
+        /// Localized text for the text providing a hint about how to delete an account
+        /// </summary>
+        public const string HowToDeleteHint = "برای حذف این حساب ابتدا لازم است سندهای مربوطه را حذف یا اصلاح کنید.";
+
+        /// <summary>
+        /// Localized text for the text indicating that an account is used in financial transactions and cannot be deleted.
+        /// </summary>
+        public static readonly string CannotDeleteUsedAccount = "حساب {0} در یک یا چند سند مالی استفاده شده و قابل حذف نیست.";
+
+        /// <summary>
         /// Localized text for an error message indicating that a role is assigned to one or more users
         /// and cannot be deleted.
         /// </summary>
         public static readonly string CannotDeleteAssignedRole = "نقش {0} به یک یا چند کاربر  تخصیص داده شده و قابل حذف نیست.";
+
+        /// <summary>
+        /// Localized text for a validation message that indicates the transaction date is outside fiscal period
+        /// </summary>
+        public static readonly string OutOfFiscalPeriodDate = "تاریخ سند خارج از محدوده تاریخی دوره مالی جاری قرار دارد.";
 
         /// <summary>
         /// Localized text for 'New security code' caption
@@ -243,5 +273,10 @@ namespace SPPC.Tadbir.Values
         /// Localized text for a validation message indicating that the value entered for old password is incorrect.
         /// </summary>
         public static readonly string IncorrectOldPassword = "رمز ورود قدیم صحیح نیست.";
+
+        /// <summary>
+        /// Localized text for a message indicating that both debit and credit amounts cannot be entered for an article.
+        /// </summary>
+        public static readonly string DebitAndCreditNotAllowed = "وارد کردن همزمان مبالغ بدهکار و بستانکار در آرتیکل نادرست است.";
     }
 }

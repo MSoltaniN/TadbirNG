@@ -65,20 +65,15 @@
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Values\Accounts.cs" />
     <Compile Include="Values\Constants.cs" />
     <Compile Include="Values\DocumentAction.cs" />
     <Compile Include="Values\DocumentStatus.cs" />
     <Compile Include="Values\DocumentType.cs" />
     <Compile Include="Values\Entities.cs" />
     <Compile Include="Values\FieldNames.cs" />
-    <Compile Include="Values\Operations.cs" />
     <Compile Include="Values\Strings.cs" />
     <Compile Include="Values\SystemRoles.cs" />
-    <Compile Include="Values\TransactionLines.cs" />
-    <Compile Include="Values\Transactions.cs" />
     <Compile Include="Values\TransactionStatus.cs" />
-    <Compile Include="Values\Users.cs" />
     <Compile Include="Values\WorkItemTitle.cs" />
   </ItemGroup>
   <ItemGroup />

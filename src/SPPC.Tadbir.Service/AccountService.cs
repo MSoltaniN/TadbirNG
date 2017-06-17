@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Values;
@@ -89,7 +88,7 @@ namespace SPPC.Tadbir.Service
             if (!response.Succeeded)
             {
                 response.Result = ServiceResult.DeleteFailed;
-                response.Hint = Accounts.HowToDeleteHint;
+                response.Hint = Strings.HowToDeleteHint;
             }
 
             return response;

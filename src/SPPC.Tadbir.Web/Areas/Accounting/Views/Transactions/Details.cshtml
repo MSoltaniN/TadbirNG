@@ -9,7 +9,10 @@
 @model SPPC.Tadbir.ViewModel.Finance.TransactionFullViewModel
 
 @{
-    ViewBag.Title = Transactions.Details;
+    string title = String.Format(LocalStrings.EntityDetails, Entities.Transaction);
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Transactions);
+    string editTitle = String.Format(LocalStrings.EditExistingEntity, Entities.Transaction);
+    ViewBag.Title = title;
     var persianCulture = new CultureInfo("fa-IR");
     persianCulture.NumberFormat.CurrencySymbol = String.Empty;
 
@@ -22,13 +25,13 @@
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
-    <li>@Html.ActionLink(Transactions.IndexTitle, "index", "transactions", new { area = "accounting" }, null)</li>
-    <li class="active">@Transactions.Details</li>
+    <li>@Html.ActionLink(indexTitle, "index", "transactions", new { area = "accounting" }, null)</li>
+    <li class="active">@title</li>
 </ol>
 
 <div class="col-sm-8 col-sm-offset-2 form-centered">
     <div class="page-header">
-        <h2>@Transactions.Details</h2>
+        <h2>@title</h2>
     </div>
     <dl>
         <dt>
@@ -89,7 +92,7 @@
     </dl>
 
     <div class="page-header">
-        <h4>@Transactions.TransactionLines</h4>
+        <h4>@Entities.TransactionLines</h4>
     </div>
     <table class="table table-bordered table-striped table-responsive table-hover">
         <thead>
@@ -196,9 +199,9 @@
     <p>
         @if (currentContext.HasPermissions(Permissions.Transaction.Edit))
         {
-            @Html.ActionLink(Transactions.EditExisting, "edit", new { id = Model.Transaction.Id })<span> | </span>
+            @Html.ActionLink(editTitle, "edit", new { id = Model.Transaction.Id })<span> | </span>
         }
-        @Html.ActionLink(Transactions.IndexTitle, "index")
+        @Html.ActionLink(indexTitle, "index")
         @if (Request.QueryString.AllKeys.Contains("returnUrl"))
         {
             string caption = String.Format(LocalStrings.ReturnToPage, Strings.Cartable);

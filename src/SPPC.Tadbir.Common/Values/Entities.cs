@@ -43,6 +43,16 @@ namespace SPPC.Tadbir.Values
         public const string Account = "حساب";
 
         /// <summary>
+        /// Localized name of Account entity (plural form).
+        /// </summary>
+        public const string Accounts = "حساب ها";
+
+        /// <summary>
+        /// Localized name of Account entity (unknown).
+        /// </summary>
+        public const string AnAccount = "حسابی";
+
+        /// <summary>
         /// Localized name of Transaction entity (long form).
         /// </summary>
         public const string TransactionLongName = "سند مالی";
@@ -53,6 +63,36 @@ namespace SPPC.Tadbir.Values
         public const string Transaction = "سند";
 
         /// <summary>
+        /// Localized name of Transaction entity (unknown).
+        /// </summary>
+        public const string ATransaction = "سندی";
+
+        /// <summary>
+        /// Localized name of Transaction entity (plural form).
+        /// </summary>
+        public const string Transactions = "اسناد";
+
+        /// <summary>
+        /// Localized text for the caption for transaction lines (articles)
+        /// </summary>
+        public const string TransactionLines = "آرتیکل های سند";
+
+        /// <summary>
+        /// Localized name of Article.
+        /// </summary>
+        public const string Article = "آرتیکل";
+
+        /// <summary>
+        /// Localized name of Article (plural form).
+        /// </summary>
+        public const string Articles = "آرتیکل ها";
+
+        /// <summary>
+        /// Localized name of Article (unknown).
+        /// </summary>
+        public const string AnArticle = "آرتیکلی";
+
+        /// <summary>
         /// Localized name of User entity (singular form).
         /// </summary>
         public const string User = "کاربر";
@@ -61,6 +101,11 @@ namespace SPPC.Tadbir.Values
         /// Localized name of User entity (plural form).
         /// </summary>
         public const string Users = "کاربران";
+
+        /// <summary>
+        /// Localized name of User entity (unknown).
+        /// </summary>
+        public const string AUser = "کاربری";
 
         /// <summary>
         /// Localized name of Role entity (singular form).

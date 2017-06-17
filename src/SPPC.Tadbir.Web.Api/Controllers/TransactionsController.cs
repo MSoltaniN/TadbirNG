@@ -77,7 +77,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (!_repository.IsValidTransaction(transaction))
             {
-                return BadRequest(Transactions.InvalidDate);
+                return BadRequest(Strings.OutOfFiscalPeriodDate);
             }
 
             _repository.SaveTransaction(transaction);
@@ -111,7 +111,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (!_repository.IsValidTransaction(transaction))
             {
-                return BadRequest(Transactions.InvalidDate);
+                return BadRequest(Strings.OutOfFiscalPeriodDate);
             }
 
             _repository.SaveTransaction(transaction);
@@ -200,7 +200,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if ((article.Debit > 0m) && (article.Credit > 0m))
             {
-                return BadRequest(TransactionLines.DebitAndCreditNotAllowed);
+                return BadRequest(Strings.DebitAndCreditNotAllowed);
             }
 
             _repository.SaveArticle(article);
@@ -234,7 +234,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if ((article.Debit > 0m) && (article.Credit > 0m))
             {
-                return BadRequest(TransactionLines.DebitAndCreditNotAllowed);
+                return BadRequest(Strings.DebitAndCreditNotAllowed);
             }
 
             _repository.SaveArticle(article);
