@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="SPPC.Framework.WorkflowManager.WorkflowDesignerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SPPC.Framework.WorkflowManager"
+             xmlns:sapt="clr-namespace:System.Activities.Presentation.Toolbox;assembly=System.Activities.Presentation"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800" FontSize="14">
+    <Control.Resources>
+        <sys:String x:Key="AssemblyName">System.Activities, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35</sys:String>
+    </Control.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Grid.Row="0">
+            <sapt:ToolboxControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+              <sapt:ToolboxCategory CategoryName="Control Flow">
+                <sapt:ToolboxItemWrapper DisplayName="DoWhile" ToolName ="System.Activities.Statements.DoWhile" AssemblyName="{StaticResource AssemblyName}" />
+                <sapt:ToolboxItemWrapper DisplayName="ForEach&lt;T&gt;" ToolName ="System.Activities.Statements.ForEach`1" AssemblyName="{StaticResource AssemblyName}" />
+                <sapt:ToolboxItemWrapper DisplayName="If" ToolName ="System.Activities.Statements.If" AssemblyName="{StaticResource AssemblyName}" />
+                <sapt:ToolboxItemWrapper DisplayName="Parallel" ToolName ="System.Activities.Statements.Parallel" AssemblyName="{StaticResource AssemblyName}" />
+                <sapt:ToolboxItemWrapper DisplayName="ParallelForEach&lt;T&gt;" ToolName ="System.Activities.Statements.ParallelForEach`1" AssemblyName="{StaticResource AssemblyName}" />
+                <sapt:ToolboxItemWrapper DisplayName="Pick" ToolName ="System.Activities.Statements.Pick" AssemblyName="{StaticResource AssemblyName}" />
+                <sapt:ToolboxItemWrapper DisplayName="PickBranch" ToolName ="System.Activities.Statements.PickBranch" AssemblyName="{StaticResource AssemblyName}" />
+                <sapt:ToolboxItemWrapper DisplayName="Sequence" ToolName ="System.Activities.Statements.Sequence" AssemblyName="{StaticResource AssemblyName}" />
+                <sapt:ToolboxItemWrapper DisplayName="Switch&lt;T&gt;" ToolName ="System.Activities.Statements.Switch`1" AssemblyName="{StaticResource AssemblyName}" />
+                <sapt:ToolboxItemWrapper DisplayName="While" ToolName ="System.Activities.Statements.While" AssemblyName="{StaticResource AssemblyName}" />
+              </sapt:ToolboxCategory>
+                <sapt:ToolboxCategory CategoryName="Flowchart">
+                  <sapt:ToolboxItemWrapper DisplayName="Flowchart" ToolName ="System.Activities.Statements.Flowchart" AssemblyName="{StaticResource AssemblyName}" />
+                  <sapt:ToolboxItemWrapper DisplayName="FlowDecision" ToolName ="System.Activities.Statements.FlowDecision" AssemblyName="{StaticResource AssemblyName}" />
+                  <sapt:ToolboxItemWrapper DisplayName="FlowSwitch&lt;T&gt;" ToolName ="System.Activities.Statements.FlowSwitch`1" AssemblyName="{StaticResource AssemblyName}" />
+                </sapt:ToolboxCategory>
+                <sapt:ToolboxCategory CategoryName="State Machine">
+                  <sapt:ToolboxItemWrapper DisplayName="StateMachine" ToolName ="System.Activities.Statements.StateMachine" AssemblyName="{StaticResource AssemblyName}" />
+                  <sapt:ToolboxItemWrapper DisplayName="State" ToolName ="System.Activities.Statements.State" AssemblyName="{StaticResource AssemblyName}" />
+                  <sapt:ToolboxItemWrapper DisplayName="FinalState" ToolName ="System.Activities.Statements.State" AssemblyName="{StaticResource AssemblyName}" />
+                </sapt:ToolboxCategory>
+                <sapt:ToolboxCategory CategoryName="Primitives">
+                  <sapt:ToolboxItemWrapper DisplayName="Assign" ToolName ="System.Activities.Statements.Assign" AssemblyName="{StaticResource AssemblyName}" />
+                  <sapt:ToolboxItemWrapper DisplayName="Delay" ToolName ="System.Activities.Statements.Delay" AssemblyName="{StaticResource AssemblyName}" />
+                  <sapt:ToolboxItemWrapper DisplayName="InvokeDelegate" ToolName ="System.Activities.Statements.InvokeDelegate" AssemblyName="{StaticResource AssemblyName}" />
+                  <sapt:ToolboxItemWrapper DisplayName="InvokeMethod" ToolName ="System.Activities.Statements.InvokeMethod" AssemblyName="{StaticResource AssemblyName}" />
+                  <sapt:ToolboxItemWrapper DisplayName="WriteLine" ToolName ="System.Activities.Statements.WriteLine" AssemblyName="{StaticResource AssemblyName}" />
+                </sapt:ToolboxCategory>
+            </sapt:ToolboxControl>
+        </Border>
+        <GridSplitter Grid.Column="1" Grid.Row="0" Width="5" HorizontalAlignment="Stretch" />
+        <Border Grid.Column="2" Grid.Row="0" Name="DesignerBorder"/>
+        <GridSplitter Grid.Column="3" Grid.Row="0" Width="5" HorizontalAlignment="Stretch" />
+        <Border Grid.Column="4" Grid.Row="0" Name="PropertyBorder"/>
+    </Grid>
+</UserControl>

@@ -77,6 +77,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Tadbir.Workflow", "SPP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Tadbir.WorkflowService", "SPPC.Tadbir.WorkflowService\SPPC.Tadbir.WorkflowService.csproj", "{C18F1815-AA59-4098-A0F4-955BCC4DE662}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Framework.WorkflowManager", "SPPC.Framework.WorkflowManager\SPPC.Framework.WorkflowManager.csproj", "{554EB84F-2DD4-47E4-8274-1681A8584882}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -261,6 +263,14 @@ Global
 		{C18F1815-AA59-4098-A0F4-955BCC4DE662}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C18F1815-AA59-4098-A0F4-955BCC4DE662}.Staging|Any CPU.ActiveCfg = Release|Any CPU
 		{C18F1815-AA59-4098-A0F4-955BCC4DE662}.Staging|Any CPU.Build.0 = Release|Any CPU
+		{554EB84F-2DD4-47E4-8274-1681A8584882}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{554EB84F-2DD4-47E4-8274-1681A8584882}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{554EB84F-2DD4-47E4-8274-1681A8584882}.LiveHost|Any CPU.ActiveCfg = Release|Any CPU
+		{554EB84F-2DD4-47E4-8274-1681A8584882}.LiveHost|Any CPU.Build.0 = Release|Any CPU
+		{554EB84F-2DD4-47E4-8274-1681A8584882}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{554EB84F-2DD4-47E4-8274-1681A8584882}.Release|Any CPU.Build.0 = Release|Any CPU
+		{554EB84F-2DD4-47E4-8274-1681A8584882}.Staging|Any CPU.ActiveCfg = Release|Any CPU
+		{554EB84F-2DD4-47E4-8274-1681A8584882}.Staging|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -298,5 +308,6 @@ Global
 		{10837CB4-3C60-42EF-9806-D312C17B9F2F} = {1F5DE704-3403-418A-9DCF-E70C355D0B46}
 		{63E67713-A69A-40A5-8259-EA476F20B46A} = {41092B11-7B66-4638-97E2-60BBCE803642}
 		{C18F1815-AA59-4098-A0F4-955BCC4DE662} = {41092B11-7B66-4638-97E2-60BBCE803642}
+		{554EB84F-2DD4-47E4-8274-1681A8584882} = {ADE0F4CD-B1F8-4AFE-BB04-7C913F514D0D}
 	EndGlobalSection
 EndGlobal
