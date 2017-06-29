@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
@@ -16,6 +16,20 @@ namespace SPPC.Framework.WorkflowManager
             InitializeComponent();
         }
 
+        private string WorkflowPath
+        {
+            get
+            {
+                return _xamlPath;
+            }
+
+            set
+            {
+                _xamlPath = value;
+                AddToWindowTitle(_xamlPath);
+            }
+        }
+
         private void NewWorkflow_Click(object sender, RoutedEventArgs e)
         {
             bool isNewConfirmed = HandleUnsavedChanges();
@@ -23,7 +37,7 @@ namespace SPPC.Framework.WorkflowManager
             {
                 ReloadDesignerControl();
                 _ctlDesigner.NewWorkflow();
-                _xamlPath = String.Empty;
+                WorkflowPath = String.Empty;
             }
         }
 
@@ -34,16 +48,16 @@ namespace SPPC.Framework.WorkflowManager
             {
                 var fileDialog = new OpenFileDialog()
                 {
-                    Title = "Select Workflow File",
-                    Filter = "XAML Workflow Files (*.xaml)|*.xaml",
-                    DefaultExt = "xaml"
+                    Title = Strings.OpenWorkflowTitle,
+                    Filter = Strings.WorkflowFileFilter,
+                    DefaultExt = Strings.DefaultWorkflowExtension
                 };
 
                 if (fileDialog.ShowDialog(this) == true)
                 {
-                    _xamlPath = fileDialog.FileName;
+                    WorkflowPath = fileDialog.FileName;
                     ReloadDesignerControl();
-                    _ctlDesigner.OpenWorkflow(_xamlPath);
+                    _ctlDesigner.OpenWorkflow(WorkflowPath);
                 }
             }
         }
@@ -61,6 +75,17 @@ namespace SPPC.Framework.WorkflowManager
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void AddToWindowTitle(string xamlPath)
+        {
+            string title = Strings.ApplicationTitle;
+            if (!String.IsNullOrEmpty(xamlPath))
+            {
+                title = String.Format("{0} - {1}", title, Path.GetFileName(xamlPath));
+            }
+
+            this.Title = title;
         }
 
         private void ReloadDesignerControl()
@@ -81,13 +106,13 @@ namespace SPPC.Framework.WorkflowManager
 
         private void HandleSave()
         {
-            if (String.IsNullOrEmpty(_xamlPath))
+            if (String.IsNullOrEmpty(WorkflowPath))
             {
                 HandleSaveAs();
             }
             else
             {
-                _ctlDesigner.SaveWorkflow(_xamlPath);
+                _ctlDesigner.SaveWorkflow(WorkflowPath);
             }
         }
 
@@ -96,16 +121,16 @@ namespace SPPC.Framework.WorkflowManager
             bool isSaved = false;
             var fileDialog = new SaveFileDialog()
             {
-                Title = "Save As",
-                DefaultExt = "xaml",
-                Filter = "XAML Workflow Files (*.xaml)|*.xaml",
+                Title = Strings.SaveWorkflowTitle,
+                DefaultExt = Strings.DefaultWorkflowExtension,
+                Filter = Strings.WorkflowFileFilter,
                 AddExtension = true
             };
 
             if (fileDialog.ShowDialog(this) == true)
             {
                 _ctlDesigner.SaveWorkflow(fileDialog.FileName);
-                _xamlPath = fileDialog.FileName;
+                WorkflowPath = fileDialog.FileName;
                 isSaved = true;
             }
 
