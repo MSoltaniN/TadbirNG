@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Activities.Core.Presentation;
 using System.Activities.Presentation;
+using System.Activities.Presentation.View;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 using System.Windows.Controls;
+using Microsoft.CSharp.Activities;
+using RehostedWorkflowDesigner.CSharpExpressionEditor;
 
-namespace SPPC.Framework.WorkflowManager
+namespace SPPC.Framework.WorkflowDesign
 {
     /// <summary>
     /// Interaction logic for WorkflowDesignerControl.xaml
@@ -20,7 +24,7 @@ namespace SPPC.Framework.WorkflowManager
 
         public void NewWorkflow()
         {
-            _designer.Load(new Sequence());
+            _designer.Load("NewWorkflow.xaml");
         }
 
         public void OpenWorkflow(string path)
@@ -43,11 +47,24 @@ namespace SPPC.Framework.WorkflowManager
         {
             base.OnInitialized(e);
 
-            // register metadata
+            // Register Custom C# expression editor...
+            _editorService = new RoslynExpressionEditorService();
+            ExpressionTextBox.RegisterExpressionActivityEditor(
+                new CSharpValue<string>().Language, typeof(RoslynExpressionEditor),
+                CSharpExpressionHelper.CreateExpressionFromString);
+
+            _designer = new WorkflowDesigner();
+
+            // Disable the default VB expression editor...
+            DesignerConfigurationService configurationService =
+                _designer.Context.Services.GetService<DesignerConfigurationService>();
+            configurationService.TargetFrameworkName = new FrameworkName(".NETFramework", new Version(4, 5));
+            configurationService.LoadingFromUntrustedSourceEnabled = true;
+            _designer.Context.Services.Publish<IExpressionEditorService>(_editorService);
+
+            // Associate all of the basic activities with their designers
             (new DesignerMetadata()).Register();
 
-            // create the workflow designer
-            _designer = new WorkflowDesigner();
             DesignerBorder.Child = _designer.View;
             PropertyBorder.Child = _designer.PropertyInspectorView;
             _designer.ModelChanged += WorkflowDesigner_ModelChanged;
@@ -59,6 +76,7 @@ namespace SPPC.Framework.WorkflowManager
         }
 
         private WorkflowDesigner _designer;
+        private RoslynExpressionEditorService _editorService;
         private bool _isWorkflowDirty;
     }
 }
