@@ -2,7 +2,7 @@
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 
-namespace RehostedWorkflowDesigner.CSharpExpressionEditor
+namespace SPPC.Framework.WorkflowDesign.Internal
 {
     internal class ExpressionSelection : ContextItem
     {

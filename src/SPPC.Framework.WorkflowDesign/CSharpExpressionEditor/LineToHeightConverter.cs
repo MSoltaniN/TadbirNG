@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace RehostedWorkflowDesigner.CSharpExpressionEditor
+namespace SPPC.Framework.WorkflowDesign.Internal
 {
     internal sealed class LineToHeightConverter : IMultiValueConverter
     {

@@ -13,7 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace RehostedWorkflowDesigner.CSharpExpressionEditor
+namespace SPPC.Framework.WorkflowDesign.Internal
 {
     /// <summary>
     /// Interaction logic for RoslynExpressionEditor.xaml
@@ -522,7 +522,7 @@ namespace RehostedWorkflowDesigner.CSharpExpressionEditor
                             border.Child = HostControl;
                             ExpressionEditorInstance.Focus();
                         }
-                        catch (KeyNotFoundException ex)
+                        catch (KeyNotFoundException)
                         {
                             new ApplicationException("Unable to find editor with the following editor name: " + EditorName);
                         }

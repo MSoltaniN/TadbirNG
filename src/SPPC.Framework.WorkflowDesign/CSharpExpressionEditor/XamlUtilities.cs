@@ -1,10 +1,10 @@
-﻿namespace RehostedWorkflowDesigner.CSharpExpressionEditor
-{
-    using System;
-    using System.Collections;
-    using System.ComponentModel;
-    using System.Reflection;
+﻿using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Reflection;
 
+namespace SPPC.Framework.WorkflowDesign.Internal
+{
     internal static class XamlUtilities
     {
         static Hashtable converterCache;

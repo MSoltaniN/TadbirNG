@@ -7,8 +7,8 @@
     <ProjectGuid>{23916951-611E-4787-B327-53C916AD887D}</ProjectGuid>
     <OutputType>library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SPPC.Framework.WorkflowDesigner</RootNamespace>
-    <AssemblyName>SPPC.Framework.WorkflowDesigner</AssemblyName>
+    <RootNamespace>SPPC.Framework.WorkflowDesign</RootNamespace>
+    <AssemblyName>SPPC.Framework.WorkflowDesign</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\..\misc\assets\Relaxed.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -116,19 +117,40 @@
     <Compile Include="..\FrameworkSolutionInfo.cs">
       <Link>FrameworkSolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="CSharpExpressionEditor\CSharpExpressionHelper.cs" />
-    <Compile Include="CSharpExpressionEditor\ExpressionHelper.cs" />
-    <Compile Include="CSharpExpressionEditor\ExpressionSelection.cs" />
-    <Compile Include="CSharpExpressionEditor\ExpressionValidationContext.cs" />
-    <Compile Include="CSharpExpressionEditor\LineToHeightConverter.cs" />
-    <Compile Include="CSharpExpressionEditor\ParserContext.cs" />
-    <Compile Include="CSharpExpressionEditor\QueryCompletionData.cs" />
+    <Compile Include="CSharpExpressionEditor\CSharpExpressionHelper.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\ExpressionHelper.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\ExpressionSelection.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\ExpressionValidationContext.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\LineToHeightConverter.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\ParserContext.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\QueryCompletionData.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="CSharpExpressionEditor\RoslynExpressionEditor.xaml.cs">
       <DependentUpon>RoslynExpressionEditor.xaml</DependentUpon>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="CSharpExpressionEditor\RoslynExpressionEditorInstance.cs" />
-    <Compile Include="CSharpExpressionEditor\RoslynExpressionEditorService.cs" />
-    <Compile Include="CSharpExpressionEditor\XamlUtilities.cs" />
+    <Compile Include="CSharpExpressionEditor\RoslynExpressionEditorInstance.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\RoslynExpressionEditorService.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\XamlUtilities.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -163,6 +185,7 @@
     <Page Include="CSharpExpressionEditor\RoslynExpressionEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Page>
     <None Include="NewWorkflow.xaml">
       <SubType>Designer</SubType>
@@ -172,6 +195,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CSharpExpressionEditor\Event.png" />
+    <EmbeddedResource Include="CSharpExpressionEditor\Field.png" />
+    <EmbeddedResource Include="CSharpExpressionEditor\Method.png" />
+    <EmbeddedResource Include="CSharpExpressionEditor\Property.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

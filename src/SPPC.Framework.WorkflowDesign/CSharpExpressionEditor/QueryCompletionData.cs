@@ -1,12 +1,12 @@
-﻿using ICSharpCode.AvalonEdit.CodeCompletion;
+﻿using System;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Editing;
 using Microsoft.CodeAnalysis;
-using System;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
-namespace RehostedWorkflowDesigner.CSharpExpressionEditor
+namespace SPPC.Framework.WorkflowDesign.Internal
 {
     public class QueryCompletionData : ICompletionData
     {

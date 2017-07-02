@@ -1,5 +1,4 @@
-﻿using Microsoft.CSharp.Activities;
-using System;
+﻿using System;
 using System.Activities;
 using System.Activities.Expressions;
 using System.Activities.Presentation.Model;
@@ -8,8 +7,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using Microsoft.CSharp.Activities;
 
-namespace RehostedWorkflowDesigner.CSharpExpressionEditor
+namespace SPPC.Framework.WorkflowDesign.Internal
 {
     public static class CSharpExpressionHelper
     {
