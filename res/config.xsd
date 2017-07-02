@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+  xmlns="http://schemas.sppcco.com/tadbir/ng/config.xsd"
+  targetNamespace="http://schemas.sppcco.com/tadbir/ng/config.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="sppc.tadbir" type="TadbirConfigType"/>
+
+  <xs:complexType name="TadbirConfigType">
+    <xs:sequence>
+      <xs:element name="workflows" type="WorkflowCollectionType" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="WorkflowCollectionType">
+    <xs:sequence>
+      <xs:element name="add" type="WorkflowItemType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="WorkflowItemType">
+    <xs:sequence>
+      <xs:element name="editions" type="WorkflowEditionCollectionType" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="localName" type="xs:string" use="optional"/>
+  </xs:complexType>
+
+  <xs:complexType name="WorkflowEditionCollectionType">
+    <xs:sequence>
+      <xs:element name="add" type="WorkflowEditionItemType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="WorkflowEditionItemType">
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="provider" type="xs:string" use="required"/>
+    <xs:attribute name="isDefault" type="xs:boolean" use="optional" default="false"/>
+    <xs:attribute name="localName" type="xs:string" use="optional"/>
+  </xs:complexType>
+</xs:schema>

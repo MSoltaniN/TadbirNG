@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ConfigurationCatalog company="SPPC" product="Tadbir">
+  <Sections>
+    <ConfigurationItem name="sppc.tadbir" className="TadbirConfigurationSection" description="Top-level configuration section of Tadbir application." clrType="SwForAll.Platform.Metadata.ConfigurationItem, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <ConfigurationProperty name="workflows" propertyName="Workflows" type="WorkflowElementCollection" isRequired="False" defaultValue="" description="Gets configuration of all workflows in Tadbir application" clrType="SwForAll.Platform.Metadata.ConfigurationProperty, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Properties>
+    </ConfigurationItem>
+  </Sections>
+  <Elements>
+    <ConfigurationItem name="workflow" className="WorkflowElement" description="Provides configuration for a single workflow in Tadbir application" clrType="SwForAll.Platform.Metadata.ConfigurationItem, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <ConfigurationProperty name="name" propertyName="Name" type="System.String" isRequired="True" defaultValue="" description="Gets or sets the configuration name of this workflow element" clrType="SwForAll.Platform.Metadata.ConfigurationProperty, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <ConfigurationProperty name="editions" propertyName="Editions" type="WorkflowEditionElementCollection" isRequired="True" defaultValue="" description="Gets a collection of all available editions for this workflow element" clrType="SwForAll.Platform.Metadata.ConfigurationProperty, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Properties>
+    </ConfigurationItem>
+    <ConfigurationItem name="edition" className="WorkflowEditionElement" description="Provides configuration for a single implementation of a workflow" clrType="SwForAll.Platform.Metadata.ConfigurationItem, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <ConfigurationProperty name="name" propertyName="Name" type="System.String" isRequired="True" defaultValue="" description="Gets or sets the configuration name of this workflow edition" clrType="SwForAll.Platform.Metadata.ConfigurationProperty, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <ConfigurationProperty name="provider" propertyName="Provider" type="System.String" isRequired="True" defaultValue="" description="Gets or sets the full name of the class that implements this workflow edition" clrType="SwForAll.Platform.Metadata.ConfigurationProperty, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <ConfigurationProperty name="isDefault" propertyName="IsDefault" type="System.Boolean" isRequired="False" defaultValue="False" description="Gets or sets a value that indicates if this edition should be used as default" clrType="SwForAll.Platform.Metadata.ConfigurationProperty, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Properties>
+    </ConfigurationItem>
+  </Elements>
+  <Collections>
+    <ConfigurationCollection name="workflows" className="WorkflowElementCollection" itemType="WorkflowElement" description="Provides configuration for all workflows in Tadbir aplication" clrType="SwForAll.Platform.Metadata.ConfigurationCollection, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <ConfigurationCollection name="editions" className="WorkflowEditionElementCollection" itemType="WorkflowEditionElement" description="Provides configuration for all implementations of a workflow" clrType="SwForAll.Platform.Metadata.ConfigurationCollection, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+  </Collections>
+</ConfigurationCatalog>

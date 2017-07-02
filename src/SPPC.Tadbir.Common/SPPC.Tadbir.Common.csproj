@@ -55,12 +55,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\TadbirSolutionInfo.cs">
       <Link>TadbirSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Configuration\TadbirConfigurationSection.Generated.cs" />
+    <Compile Include="Configuration\TadbirConfigurationSectionHandler.Generated.cs" />
+    <Compile Include="Configuration\WorkflowEditionElement.Generated.cs" />
+    <Compile Include="Configuration\WorkflowEditionElementCollection.Generated.cs" />
+    <Compile Include="Configuration\WorkflowElement.Generated.cs" />
+    <Compile Include="Configuration\WorkflowElementCollection.Generated.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
