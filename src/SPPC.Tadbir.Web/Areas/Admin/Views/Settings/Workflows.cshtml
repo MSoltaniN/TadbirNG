@@ -28,7 +28,7 @@
             string name = Model.Workflows[index].Name.Replace(" ", String.Empty);
             int editionCount = Model.Workflows[index].Editions.Count;
     <div class="col-md-4">
-        @Html.HiddenFor(model => model.Workflows[index].Name);
+        @Html.HiddenFor(model => model.Workflows[index].Name)
         <div class="panel panel-primary">
             <div class="panel-heading"><span>@Model.Workflows[index].LocalName</span></div>
             <div class="panel-body">

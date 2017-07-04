@@ -4,6 +4,7 @@ using System.Web.Http;
 using Microsoft.Practices.Unity;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.Repository;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
@@ -11,19 +12,17 @@ using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.AppStart;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Workflow;
-using SwForAll.Platform.Configuration;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     public class TransactionsController : ApiController
     {
-        public TransactionsController(ITransactionRepository repository, ISecurityContextManager contextManager)
+        public TransactionsController(ITransactionRepository repository, ISettingsRepository settingsRepository,
+            ISecurityContextManager contextManager)
         {
             _repository = repository;
-            string mode = ConfigHelper.GetAppSettings("StateWorkflowMode");
-            _workflow = UnityConfig.GetConfiguredContainer()
-                .Resolve<ITransactionWorkflow>(mode);
-            _workflow.ContextManager = contextManager;
+            ConfigureWorkflow(settingsRepository, contextManager);
         }
 
         #region Transaction CRUD Operations
@@ -336,6 +335,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         #endregion
+
+        private void ConfigureWorkflow(ISettingsRepository settingsRepository, ISecurityContextManager contextManager)
+        {
+            Verify.ArgumentNotNull(settingsRepository, "settingsRepository");
+            var edition = settingsRepository.GetDefaultWorkflowEdition("TransactionState");
+            _workflow = UnityConfig.GetConfiguredContainer()
+                .Resolve<ITransactionWorkflow>(edition.Provider);
+            _workflow.ContextManager = contextManager;
+        }
 
         private ITransactionRepository _repository;
         private ITransactionWorkflow _workflow;

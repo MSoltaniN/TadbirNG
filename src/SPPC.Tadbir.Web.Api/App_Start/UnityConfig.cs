@@ -2,6 +2,7 @@ using System;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.Repository;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Unity;
 using SPPC.Tadbir.Web.Api.Controllers;
@@ -64,7 +65,7 @@ namespace SPPC.Tadbir.Web.Api.AppStart
             container.RegisterType<TransactionsController>(
                 new InjectionConstructor(
                     new ResolvedParameter<ITransactionRepository>(),
-                    ////new ResolvedParameter<ITransactionWorkflow>(),
+                    new ResolvedParameter<ISettingsRepository>(),
                     new ResolvedParameter<ISecurityContextManager>("API")));
 
             _unityWrapper = new TypeContainer(container);

@@ -7,6 +7,7 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Service;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.Repository;
 using SPPC.Tadbir.Service;
 using SwForAll.Platform.Persistence;
 using SwForAll.Platform.Persistence.NHibernate;
@@ -106,6 +107,15 @@ namespace SPPC.Tadbir.Unity.Tests
 
             // Act & Assert
             AssertIsRegisteredWithConcreteType<ISecurityRepository>();
+        }
+
+        [Test]
+        public void ContainsSettingsRepositoryRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<ISettingsRepository>();
         }
 
         #endregion

@@ -37,7 +37,13 @@ namespace SPPC.Tadbir.Configuration
             }
         }
 
-        private TadbirConfigurationSection LoadSection()
+        public void Save()
+        {
+            var config = Section.CurrentConfiguration;
+            config.Save();
+        }
+
+        private static TadbirConfigurationSection LoadSection()
         {
             var config = GetRootConfig();
             var configSection = config.GetSection("sppc.tadbir") as TadbirConfigurationSection;
@@ -50,7 +56,7 @@ namespace SPPC.Tadbir.Configuration
             return configSection;
         }
 
-        private Sys.Configuration GetRootConfig()
+        private static Sys.Configuration GetRootConfig()
         {
             return (HttpContext.Current != null)
                 ? WebConfigurationManager.OpenWebConfiguration("~")

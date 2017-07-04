@@ -21,6 +21,8 @@ using NUnit.Framework;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Workflow;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Repository;
+using SPPC.Tadbir.ViewModel.Settings;
 
 namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 {
@@ -31,7 +33,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         [OneTimeSetUp]
         public void FixtureSetup()
         {
+            var testEdition = new WorkflowEditionViewModel() { Provider = "basic" };
             _mockRepository = new Mock<ITransactionRepository>();
+            _mockSettingsRepository = new Mock<ISettingsRepository>();
+            _mockSettingsRepository.Setup(repo => repo.GetDefaultWorkflowEdition(It.IsAny<string>()))
+                .Returns(testEdition);
             _mockContext = new Mock<ISecurityContextManager>();
         }
 
@@ -39,7 +45,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         public void Setup()
         {
             _controller = new TransactionsController(
-                _mockRepository.Object, _mockContext.Object);
+                _mockRepository.Object, _mockSettingsRepository.Object, _mockContext.Object);
             _existingTransaction = new TransactionViewModel() { Id = _existingTransactionId };
             _existingArticle = new TransactionLineViewModel()
             {
@@ -594,6 +600,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         #endregion
 
         private Mock<ITransactionRepository> _mockRepository;
+        private Mock<ISettingsRepository> _mockSettingsRepository;
         private Mock<ISecurityContextManager> _mockContext;
         private TransactionViewModel _existingTransaction;
         private int _existingTransactionId = 1;

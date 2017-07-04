@@ -15,14 +15,14 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
             _service = service;
         }
 
-        // GET: admin/settings
+        // GET: admin/settings/workflows
         public ViewResult Workflows()
         {
             var settings = _service.GetWorkflowSettings();
             return View(settings);
         }
 
-        // POST: admin/settings
+        // POST: admin/settings/workflows
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Workflows(WorkflowSettingsViewModel settings)

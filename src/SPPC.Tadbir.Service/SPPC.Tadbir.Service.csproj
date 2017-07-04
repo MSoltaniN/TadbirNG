@@ -76,6 +76,7 @@
     <Compile Include="ApiClient.cs" />
     <Compile Include="Base64Encoder.cs" />
     <Compile Include="Api\CartableService.cs" />
+    <Compile Include="ConfigSettingsRepository.cs" />
     <Compile Include="ConfigSettingsService.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>

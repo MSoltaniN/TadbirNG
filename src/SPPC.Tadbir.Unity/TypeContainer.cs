@@ -7,6 +7,7 @@ using SPPC.Framework.Service;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.Repository;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Workflow;
 using SwForAll.Platform.Persistence;
@@ -94,6 +95,8 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<IWorkItemRepository, WorkItemRepository>(
                 "WF", new InjectionConstructor(
                     new ResolvedParameter<IUnitOfWork>("WF"), new ResolvedParameter<IDomainMapper>()));
+
+            _container.RegisterType<ISettingsRepository, ConfigSettingsRepository>();
         }
 
         /// <summary>

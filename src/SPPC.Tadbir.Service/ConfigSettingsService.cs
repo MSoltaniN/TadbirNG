@@ -1,41 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using SPPC.Framework.Mapper;
-using SPPC.Tadbir.Configuration;
+using SPPC.Framework.Service;
+using SPPC.Tadbir.Api;
 using SPPC.Tadbir.ViewModel.Settings;
 
 namespace SPPC.Tadbir.Service
 {
     public class ConfigSettingsService : ISettingsService
     {
-        public ConfigSettingsService(IDomainMapper mapper)
+        public ConfigSettingsService(IApiClient apiClient)
         {
-            _mapper = mapper;
+            _apiClient = apiClient;
         }
 
         public WorkflowSettingsViewModel GetWorkflowSettings()
         {
-            var sectionHandler = new TadbirConfigurationSectionHandler();
-            var settings = _mapper.Map<WorkflowSettingsViewModel>(sectionHandler.Section.WorkflowSettings);
+            var settings = _apiClient.Get<WorkflowSettingsViewModel>(SettingsApi.WorkflowSettings);
             return settings;
         }
 
         public void SaveWorkflowSettings(WorkflowSettingsViewModel settings)
         {
-            var sectionHandler = new TadbirConfigurationSectionHandler();
-            foreach (WorkflowElement workflow in sectionHandler.Section.WorkflowSettings.Workflows)
-            {
-                var workflowSetting = settings.Workflows
-                    .Where(wf => wf.Name == workflow.Name)
-                    .Single();
-                foreach (WorkflowEditionElement edition in workflow.Editions)
-                {
-                    edition.IsDefault = (edition.Name == workflowSetting.DefaultEdition);
-                }
-            }
+            _apiClient.Update(settings, SettingsApi.WorkflowSettings);
         }
 
-        private IDomainMapper _mapper;
+        private IApiClient _apiClient;
     }
 }

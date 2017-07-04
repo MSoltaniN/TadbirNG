@@ -71,10 +71,12 @@
     <Compile Include="Api\CartableApi.cs" />
     <Compile Include="Api\LookupApi.cs" />
     <Compile Include="Api\SecurityApi.cs" />
+    <Compile Include="Api\SettingsApi.cs" />
     <Compile Include="Api\TransactionApi.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Repository\ISettingsRepository.cs" />
     <Compile Include="NHibernate\IAccountRepository.cs" />
     <Compile Include="NHibernate\IAccountRepository.Generated.cs" />
     <Compile Include="NHibernate\ILookupRepository.cs" />
