@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Highlighting;
@@ -23,7 +24,7 @@ namespace SPPC.Framework.WorkflowDesign.Internal
         {
             this.TextArea.TextEntering += TextArea_TextEntering;
             this.TextArea.TextEntered += TextArea_TextEntered;
-            this.TextArea.LostKeyboardFocus += TextArea_LostFocus; // Need to detach events.
+            this.TextArea.LostKeyboardFocus += TextArea_LostFocus;  // Need to detach events.
 
             this.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("C#");
             this.FontFamily = new System.Windows.Media.FontFamily("Consolas");
@@ -130,6 +131,22 @@ namespace SPPC.Framework.WorkflowDesign.Internal
             if (this.LostAggregateFocus != null)
             {
                 this.LostAggregateFocus(sender, e);
+            }
+        }
+
+        private void TextArea_GotFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (this.GotAggregateFocus != null)
+            {
+                this.GotAggregateFocus(sender, e);
+            }
+        }
+
+        private void Instance_Closing(object sender, EventArgs e)
+        {
+            if (this.Closing != null)
+            {
+                this.Closing(sender, e);
             }
         }
 

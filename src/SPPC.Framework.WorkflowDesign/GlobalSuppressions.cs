@@ -99,6 +99,8 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Scope = "member", Target = "SPPC.Framework.WorkflowDesign.Internal.CSharpExpressionHelper.#TryCreateLiteral(System.Type,System.String,System.Activities.ActivityWithResult&)"
     , Justification = "Third-party code won't be edited until further notice")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Scope = "member", Target = "SPPC.Framework.WorkflowDesign.WorkflowDesignerControl.#GetToolboxControl()", Justification = "By Design")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member", Target = "SPPC.Framework.WorkflowDesign.Internal.RoslynExpressionEditorInstance.#TextArea_GotFocus(System.Object,System.Windows.Input.KeyboardFocusChangedEventArgs)", Justification = "Method was added to prevent 'Unused Member' compiler warning.")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope = "member", Target = "SPPC.Framework.WorkflowDesign.Internal.RoslynExpressionEditorInstance.#Instance_Closing(System.Object,System.EventArgs)", Justification = "Method was added to prevent 'Unused Member' compiler warning.")]
 
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.

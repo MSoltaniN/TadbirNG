@@ -37,6 +37,9 @@ namespace SPPC.Tadbir.Configuration
             }
         }
 
+        /// <summary>
+        /// Saves current configuration values in the main configuration file
+        /// </summary>
         public void Save()
         {
             var config = Section.CurrentConfiguration;
