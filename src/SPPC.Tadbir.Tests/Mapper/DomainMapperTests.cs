@@ -7,10 +7,12 @@ using NUnit.Framework;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Service.Security;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Settings;
 
 namespace SPPC.Tadbir.Mapper.Tests
 {
@@ -355,6 +357,46 @@ namespace SPPC.Tadbir.Mapper.Tests
 
             // Act & Assert
             AssertMapperCanConvertFromSourceToDestination<Currency, KeyValue>();
+        }
+
+        #endregion
+
+        #region Settings Type Mapping Tests
+
+        [Test]
+        public void ContainsMappingFromWorkflowElementToWorkflowViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<WorkflowElement, WorkflowViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromWorkflowElementToWorkflowViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<WorkflowElement, WorkflowViewModel>();
+        }
+
+        [Test]
+        public void ContainsMappingFromWorkflowEditionElementToWorkflowEditionViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<WorkflowEditionElement, WorkflowEditionViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromWorkflowEditionElementToWorkflowEditionViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<WorkflowEditionElement, WorkflowEditionViewModel>();
         }
 
         #endregion

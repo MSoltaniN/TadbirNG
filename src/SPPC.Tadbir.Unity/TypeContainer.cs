@@ -115,6 +115,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<ITransactionWorkflow, TransactionDecisionWorkflow>("flowchart");
             _container.RegisterType<ITransactionWorkflow, TransactionTimeoutWorkflow>("timeout");
             _container.RegisterType<ITransactionWorkflow, TransactionBasicWorkflow>("basic");
+            _container.RegisterType<ISettingsService, ConfigSettingsService>();
         }
 
         /// <summary>

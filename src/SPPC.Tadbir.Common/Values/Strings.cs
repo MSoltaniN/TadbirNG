@@ -53,6 +53,11 @@ namespace SPPC.Tadbir.Values
         public const string ManageRoles = "مدیریت نقش ها";
 
         /// <summary>
+        /// Localized text for Manage Workflows navigation link
+        /// </summary>
+        public const string ManageWorkflows = "مدیریت فرآیندها";
+
+        /// <summary>
         /// Localized text for Tools navigation link
         /// </summary>
         public const string Tools = "امکانات";
@@ -242,6 +247,16 @@ namespace SPPC.Tadbir.Values
         /// Localized text for the text providing a hint about how to delete an account
         /// </summary>
         public const string HowToDeleteHint = "برای حذف این حساب ابتدا لازم است سندهای مربوطه را حذف یا اصلاح کنید.";
+
+        /// <summary>
+        /// Localized text for Available Editions
+        /// </summary>
+        public const string AvailableEditions = "ویرایش های موجود";
+
+        /// <summary>
+        /// Localized string for Default
+        /// </summary>
+        public const string Default = "پیش فرض";
 
         /// <summary>
         /// Localized text for the text indicating that an account is used in financial transactions and cannot be deleted.

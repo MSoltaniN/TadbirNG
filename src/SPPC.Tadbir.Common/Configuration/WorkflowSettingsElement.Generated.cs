@@ -18,62 +18,26 @@ using System.Xml;
 namespace SPPC.Tadbir.Configuration
 {
     /// <summary>
-    /// Provides configuration for a single workflow in Tadbir application
+    /// Provides configuration for workflows in Tadbir application
     /// </summary>
-    public class WorkflowElement : ConfigurationElement
+    public class WorkflowSettingsElement : ConfigurationElement
     {
         /// <summary>
-        /// Initializes a new instance of WorkflowElement class.
+        /// Initializes a new instance of WorkflowSettingsElement class.
         /// </summary>
-        public WorkflowElement()
+        public WorkflowSettingsElement()
         {
         }
 
         /// <summary>
-        /// Gets or sets the configuration name of this workflow element
+        /// Gets configuration of all workflows in Tadbir application
         /// </summary>
-        [ConfigurationProperty("name",
-            IsRequired = true,
-            IsKey = true)]
-        public string Name
+        [ConfigurationProperty("workflows", IsDefaultCollection = false)]
+        public WorkflowElementCollection Workflows
         {
             get
             {
-                return (string)this["name"];
-            }
-            set
-            {
-                this["name"] = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the localized name for this workflow
-        /// </summary>
-        [ConfigurationProperty("localName",
-            DefaultValue = "",
-            IsRequired = false)]
-        public string LocalName
-        {
-            get
-            {
-                return (string)this["localName"];
-            }
-            set
-            {
-                this["localName"] = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets a collection of all available editions for this workflow element
-        /// </summary>
-        [ConfigurationProperty("editions", IsDefaultCollection = false)]
-        public WorkflowEditionElementCollection Editions
-        {
-            get
-            {
-                return (WorkflowEditionElementCollection)base["editions"];
+                return (WorkflowElementCollection)base["workflows"];
             }
         }
 

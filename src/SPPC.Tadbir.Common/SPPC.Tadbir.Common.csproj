@@ -57,6 +57,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +70,7 @@
     <Compile Include="Configuration\WorkflowEditionElementCollection.Generated.cs" />
     <Compile Include="Configuration\WorkflowElement.Generated.cs" />
     <Compile Include="Configuration\WorkflowElementCollection.Generated.cs" />
+    <Compile Include="Configuration\WorkflowSettingsElement.Generated.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>

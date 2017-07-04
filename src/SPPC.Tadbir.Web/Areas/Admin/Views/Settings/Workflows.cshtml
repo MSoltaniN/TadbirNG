@@ -1,0 +1,61 @@
+﻿@using SPPC.Framework.Values
+@using SPPC.Tadbir.Values
+@model SPPC.Tadbir.ViewModel.Settings.WorkflowSettingsViewModel
+
+@{
+    string title = Strings.ManageWorkflows;
+    ViewBag.Title = title;
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li class="active">@title</li>
+</ol>
+
+<div class="page-header">
+    <h3>@title</h3>
+</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="row">
+    @{
+        int workflowCount = Model.Workflows.Count;
+        for (int index = 0; index < workflowCount; index++)
+        {
+            string name = Model.Workflows[index].Name.Replace(" ", String.Empty);
+            int editionCount = Model.Workflows[index].Editions.Count;
+    <div class="col-md-4">
+        @Html.HiddenFor(model => model.Workflows[index].Name);
+        <div class="panel panel-primary">
+            <div class="panel-heading"><span>@Model.Workflows[index].LocalName</span></div>
+            <div class="panel-body">
+                <h4>@Strings.AvailableEditions</h4>
+                @for (int i = 0; i < editionCount; i++)
+                {
+                    @Html.HiddenFor(model => model.Workflows[index].Editions[i].Name)
+                    string label = Model.Workflows[index].Editions[i].IsDefault
+                        ? String.Format("{0} ({1})", Model.Workflows[index].Editions[i].LocalName, Strings.Default)
+                        : Model.Workflows[index].Editions[i].LocalName;
+                    bool isDefault = (Model.Workflows[index].Editions[i].Name == Model.Workflows[index].DefaultEdition);
+                    <div class="form-group">
+                        @Html.RadioButtonFor(model => model.Workflows[index].DefaultEdition, Model.Workflows[index].Editions[i].Name)
+                        @label
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+        }
+    }
+</div>
+
+<div class="row">
+    <div class="form-group">
+        <input type="submit" value="@LocalStrings.Save" class="btn btn-primary" />
+        @Html.ActionLink(LocalStrings.Cancel, "index", "home", new { area = String.Empty }, new { @class = "btn btn-primary" })
+    </div>
+</div>
+}

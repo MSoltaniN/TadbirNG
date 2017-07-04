@@ -35,3 +35,7 @@ textarea {
 table th {
     text-align: right;
 }
+
+.col-md-4 {
+    float: right;
+}

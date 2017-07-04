@@ -117,6 +117,10 @@
       <Project>{25d668e5-7585-47d7-8ab6-2fd4ac3f8565}</Project>
       <Name>SPPC.Framework.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj">
+      <Project>{504D9334-9367-4535-925B-CCB7574CE350}</Project>
+      <Name>SPPC.Tadbir.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj">
       <Project>{10837cb4-3c60-42ef-9806-d312c17b9f2f}</Project>
       <Name>SPPC.Tadbir.Interfaces</Name>

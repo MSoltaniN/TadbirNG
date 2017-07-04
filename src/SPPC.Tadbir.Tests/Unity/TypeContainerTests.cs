@@ -166,6 +166,15 @@ namespace SPPC.Tadbir.Unity.Tests
             AssertIsRegisteredWithConcreteType<ICryptoService>();
         }
 
+        [Test]
+        public void ContainsSettingsServiceRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<ISettingsService>();
+        }
+
         #endregion
 
         #region IDisposable Support

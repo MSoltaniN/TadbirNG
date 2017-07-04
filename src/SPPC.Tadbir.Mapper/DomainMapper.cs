@@ -4,6 +4,7 @@ using AutoMapper;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Service.Security;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
@@ -12,6 +13,7 @@ using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Settings;
 using SPPC.Tadbir.ViewModel.Workflow;
 using SwForAll.Platform.Common;
 
@@ -64,6 +66,7 @@ namespace SPPC.Tadbir.Mapper
             MapFinanceTypes(mapperConfig);
             MapCorporateTypes(mapperConfig);
             MapWorkflowTypes(mapperConfig);
+            MapSettingsTypes(mapperConfig);
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
@@ -250,6 +253,14 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.Action,
                     opts => opts.MapFrom(
                         src => DocumentAction.ToLocalValue(src.Action)));
+        }
+
+        private static void MapSettingsTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<WorkflowSettingsElement, WorkflowSettingsViewModel>();
+            mapperConfig.CreateMap<WorkflowElement, WorkflowViewModel>()
+                .ForMember(dest => dest.DefaultEdition, opts => opts.MapFrom(src => src.Editions.DefaultEdition));
+            mapperConfig.CreateMap<WorkflowEditionElement, WorkflowEditionViewModel>();
         }
 
         private static ICryptoService _crypto;
