@@ -140,7 +140,7 @@
             <tbody>
                 @foreach (var user in Model.Users)
                 {
-                    var status = user.IsEnabled ? Users.Enabled : Users.Disabled;
+                    var status = user.IsEnabled ? Strings.Enabled : Strings.Disabled;
                     <tr>
                         <td>
                             @user.UserName

@@ -40,7 +40,7 @@
                 <tbody>
                 @for (int i = 0; i < count; i++)
                 {
-                    string status = Model.Users[i].IsEnabled ? Users.Enabled : Users.Disabled;
+                    string status = Model.Users[i].IsEnabled ? Strings.Enabled : Strings.Disabled;
                     @Html.HiddenFor(model => model.Id)
                     @Html.HiddenFor(model => model.Users[i].Id)
                     @Html.HiddenFor(model => model.Users[i].UserName)
