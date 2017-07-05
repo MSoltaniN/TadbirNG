@@ -44,6 +44,7 @@
             <th>@FieldNames.DateField</th>
             <th>@FieldNames.Time</th>
             <th>@FieldNames.CreatedBy</th>
+            <th>@FieldNames.CartableRemarks</th>
             <th>@FieldNames.DocumentType</th>
             <th>@FieldNames.DocumentNo</th>
             <th></th>
@@ -70,6 +71,9 @@
                     @Html.DisplayFor(modelItem => item.CreatedBy)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Remarks)
+                </td>
+                <td>
                     @DocumentType.ToLocalValue(item.DocumentType)
                 </td>
                 <td>
@@ -85,22 +89,22 @@
                 {
                     <span> | </span>
                     @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Review), "review", controller,
-                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
+                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("review-action{0}", item.Id) })
                 }
                 @if (item.DocumentStatus == DocumentStatus.Reviewed && currentContext.HasPermissions(Permissions.Transaction.Confirm))
                 {
                     <span> | </span>
                     @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Confirm), "confirm", controller,
-                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
+                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("confirm-action{0}", item.Id) })
                     <span> | </span>
                     @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Reject), "reject", controller,
-                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
+                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("reject-action{0}", item.Id) })
                 }
                 @if (item.DocumentStatus == DocumentStatus.Confirmed && currentContext.HasPermissions(Permissions.Transaction.Approve))
                 {
                     <span> | </span>
                     @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Approve), "approve", controller,
-                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
+                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("approve-action{0}", item.Id) })
                 }
                 </td>
             </tr>
@@ -109,3 +113,7 @@
 </table>
 
 @Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+@section scripts {
+    @Scripts.Render("~/bundles/site")
+}

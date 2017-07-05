@@ -203,6 +203,11 @@ namespace SPPC.Tadbir.Values
         public const string ActionType = "نوع اقدام";
 
         /// <summary>
+        /// Localized name of Remarks field
+        /// </summary>
+        public const string CartableRemarks = "پاراف";
+
+        /// <summary>
         /// Localized name of Security Code field (used in forms that require Captcha validation)
         /// </summary>
         public static readonly string SecurityCode = "کد امنیتی";

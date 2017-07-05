@@ -64,5 +64,10 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         /// وضعیت عملیاتی موجودیت مرتبط یا کار
         /// </summary>
         public string DocumentStatus { get; set; }
+
+        /// <summary>
+        /// پاراف متنی اختیاری که کاربر پیش از اقدام می تواند وارد کند
+        /// </summary>
+        public string Remarks { get; set; }
     }
 }
