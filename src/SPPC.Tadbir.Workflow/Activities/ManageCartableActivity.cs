@@ -60,7 +60,8 @@ namespace SPPC.Tadbir.Workflow
                 Status = operation.Status,
                 OperationalStatus = operation.NewStatus,
                 Action = operation.NextAction,
-                PreviousAction = operation.Action
+                PreviousAction = operation.Action,
+                Remarks = operation.Remarks
             };
 
             return workItem;

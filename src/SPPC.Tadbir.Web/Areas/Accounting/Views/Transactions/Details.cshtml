@@ -197,6 +197,23 @@
     }
     <br /><br />
     <p>
+        @if (Model.Transaction.OperationalStatus == DocumentStatus.Created && currentContext.HasPermissions(Permissions.Transaction.Prepare))
+        {
+            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Prepare), "prepare", new { id = Model.Transaction.Id }, new { id = "prepare-action" })<span> | </span>
+        }
+        @if (Model.Transaction.WorkItemId > 0 && currentContext.IsInRole(Model.Transaction.WorkItemTargetId) && Model.Transaction.WorkItemAction == DocumentAction.Review)
+        {
+            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Review), "review", new { id = Model.Transaction.Id }, new { id = "review-action" })<span> | </span>
+        }
+        @if (Model.Transaction.WorkItemId > 0 && currentContext.IsInRole(Model.Transaction.WorkItemTargetId) && Model.Transaction.WorkItemAction == DocumentAction.Confirm)
+        {
+            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Confirm), "confirm", new { id = Model.Transaction.Id }, new { id = "confirm-action" })<span> | </span>
+            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Reject), "reject", new { id = Model.Transaction.Id }, new { id = "reject-action" })<span> | </span>
+        }
+        @if (Model.Transaction.WorkItemId > 0 && currentContext.IsInRole(Model.Transaction.WorkItemTargetId) && Model.Transaction.WorkItemAction == DocumentAction.Approve)
+        {
+            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Approve), "approve", new { id = Model.Transaction.Id }, new { id = "approve-action" })<span> | </span>
+        }
         @if (currentContext.HasPermissions(Permissions.Transaction.Edit))
         {
             @Html.ActionLink(editTitle, "edit", new { id = Model.Transaction.Id })<span> | </span>
@@ -209,3 +226,7 @@
         }
     </p>
 </div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/site")
+}

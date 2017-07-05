@@ -109,6 +109,7 @@
     <Compile Include="Settings\WorkflowEditionViewModel.cs" />
     <Compile Include="Settings\WorkflowSettingsViewModel.cs" />
     <Compile Include="Settings\WorkflowViewModel.cs" />
+    <Compile Include="Workflow\ActionDetailViewModel.cs" />
     <Compile Include="Workflow\OutboxItemViewModel.cs" />
     <Compile Include="Workflow\HistoryItemViewModel.cs" />
     <Compile Include="Workflow\InboxItemViewModel.cs" />

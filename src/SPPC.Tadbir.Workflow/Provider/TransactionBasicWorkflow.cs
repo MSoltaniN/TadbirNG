@@ -14,9 +14,10 @@ namespace SPPC.Tadbir.Workflow
         /// یک سند مالی پیش نویس را در حالت ثبت نشده و وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
         /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید حالت و وضعیتش تغییر کند</param>
-        public override void Prepare(int transactionId)
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        public override void Prepare(int transactionId, string paraph = null)
         {
-            var prepare = StateOperation.Prepare(CurrentUserId, transactionId, DocumentType.Transaction);
+            var prepare = StateOperation.Prepare(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
             InvokeServiceOperation(prepare);
             LogOperation(transactionId, "Prepare", "prepared");
         }
@@ -25,9 +26,10 @@ namespace SPPC.Tadbir.Workflow
         /// یک سند مالی ثبت نشده و تنظیم شده را در وضعیت عملیاتی بررسی شده قرار می دهد.
         /// </summary>
         /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید وضعیتش تغییر کند</param>
-        public override void Review(int transactionId)
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        public override void Review(int transactionId, string paraph = null)
         {
-            var review = StateOperation.Review(CurrentUserId, transactionId, DocumentType.Transaction);
+            var review = StateOperation.Review(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
             InvokeServiceOperation(review);
             LogOperation(transactionId, "Review", "reviewed");
         }
@@ -36,9 +38,10 @@ namespace SPPC.Tadbir.Workflow
         /// یک سند مالی ثبت نشده و بررسی شده را برای بررسی مجدد در وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
         /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید وضعیتش تغییر کند</param>
-        public override void RejectReviewed(int transactionId)
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        public override void RejectReviewed(int transactionId, string paraph = null)
         {
-            var reject = StateOperation.RejectReview(CurrentUserId, transactionId, DocumentType.Transaction);
+            var reject = StateOperation.RejectReview(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
             InvokeServiceOperation(reject);
             LogOperation(transactionId, "Reject", "rejected");
         }
@@ -47,9 +50,10 @@ namespace SPPC.Tadbir.Workflow
         /// یک سند مالی ثبت نشده و بررسی شده را در حالت ثبت عادی و وضعیت عملیاتی تایید شده قرار می دهد.
         /// </summary>
         /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید وضعیتش تغییر کند</param>
-        public override void Confirm(int transactionId)
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        public override void Confirm(int transactionId, string paraph = null)
         {
-            var confirm = StateOperation.Confirm(CurrentUserId, transactionId, DocumentType.Transaction);
+            var confirm = StateOperation.Confirm(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
             InvokeServiceOperation(confirm);
             LogOperation(transactionId, "Confirm", "confirmed");
         }
@@ -58,9 +62,10 @@ namespace SPPC.Tadbir.Workflow
         /// یک سند مالی ثبت عادی و تایید شده را در حالت ثبت قطعی و وضعیت عملیاتی تصویب شده قرار می دهد.
         /// </summary>
         /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید وضعیتش تغییر کند</param>
-        public override void Approve(int transactionId)
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        public override void Approve(int transactionId, string paraph = null)
         {
-            var approve = StateOperation.Approve(CurrentUserId, transactionId, DocumentType.Transaction);
+            var approve = StateOperation.Approve(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
             InvokeServiceOperation(approve);
             LogOperation(transactionId, "Approve", "approved");
         }

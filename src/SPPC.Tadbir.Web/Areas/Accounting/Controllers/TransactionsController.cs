@@ -149,43 +149,43 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return RedirectToAction("index");
         }
 
-        // GET: accounting/transactions/prepare/id
+        // GET: accounting/transactions/prepare/id[?paraph={encoded-text}]
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
-        public ActionResult Prepare(int id)
+        public ActionResult Prepare(int id, string paraph = null)
         {
-            _service.PrepareTransaction(id);
+            _service.PrepareTransaction(id, paraph);
             return RedirectToAction("index");
         }
 
         // GET: accounting/transactions/review/id
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Review)]
-        public ActionResult Review(int id)
+        public ActionResult Review(int id, string paraph = null)
         {
-            _service.ReviewTransaction(id);
+            _service.ReviewTransaction(id, paraph);
             return GetNextResult();
         }
 
         // GET: accounting/transactions/reject/id
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
-        public ActionResult Reject(int id)
+        public ActionResult Reject(int id, string paraph = null)
         {
-            _service.RejectTransaction(id);
+            _service.RejectTransaction(id, paraph);
             return GetNextResult();
         }
 
         // GET: accounting/transactions/confirm/id
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
-        public ActionResult Confirm(int id)
+        public ActionResult Confirm(int id, string paraph = null)
         {
-            _service.ConfirmTransaction(id);
+            _service.ConfirmTransaction(id, paraph);
             return GetNextResult();
         }
 
         // GET: accounting/transactions/approve/id
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Approve)]
-        public ActionResult Approve(int id)
+        public ActionResult Approve(int id, string paraph = null)
         {
-            _service.ApproveTransaction(id);
+            _service.ApproveTransaction(id, paraph);
             return GetNextResult();
         }
 

@@ -9,6 +9,7 @@ using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Workflow;
 using SPPC.Tadbir.Web.Api.AppStart;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Workflow;
@@ -267,70 +268,75 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/transactions/{transactionId:int}/prepare
         [Route(TransactionApi.PrepareTransactionUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
-        public IHttpActionResult PutTransactionAsPrepared(int transactionId)
+        public IHttpActionResult PutTransactionAsPrepared(int transactionId, [FromBody] ActionDetailViewModel detail)
         {
             if (transactionId <= 0)
             {
                 return BadRequest("Could not put transaction as Prepared because transaction does not exist.");
             }
 
-            _workflow.Prepare(transactionId);
+            var paraph = detail?.Paraph;
+            _workflow.Prepare(transactionId, paraph);
             return Ok();
         }
 
         // PUT: api/transactions/{transactionId:int}/review
         [Route(TransactionApi.ReviewTransactionUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Review)]
-        public IHttpActionResult PutTransactionAsReviewed(int transactionId)
+        public IHttpActionResult PutTransactionAsReviewed(int transactionId, [FromBody] ActionDetailViewModel detail)
         {
             if (transactionId <= 0)
             {
                 return BadRequest("Could not put transaction as Reviewed because transaction does not exist.");
             }
 
-            _workflow.Review(transactionId);
+            var paraph = detail?.Paraph;
+            _workflow.Review(transactionId, paraph);
             return Ok();
         }
 
         // PUT: api/transactions/{transactionId:int}/reject
         [Route(TransactionApi.RejectTransactionUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
-        public IHttpActionResult PutTransactionAsRejected(int transactionId)
+        public IHttpActionResult PutTransactionAsRejected(int transactionId, [FromBody] ActionDetailViewModel detail)
         {
             if (transactionId <= 0)
             {
                 return BadRequest("Could not put transaction as rejected because transaction does not exist.");
             }
 
-            _workflow.RejectReviewed(transactionId);
+            var paraph = detail?.Paraph;
+            _workflow.RejectReviewed(transactionId, paraph);
             return Ok();
         }
 
         // PUT: api/transactions/{transactionId:int}/confirm
         [Route(TransactionApi.ConfirmTransactionUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
-        public IHttpActionResult PutTransactionAsConfirmed(int transactionId)
+        public IHttpActionResult PutTransactionAsConfirmed(int transactionId, [FromBody] ActionDetailViewModel detail)
         {
             if (transactionId <= 0)
             {
                 return BadRequest("Could not put transaction as Confirmed because transaction does not exist.");
             }
 
-            _workflow.Confirm(transactionId);
+            var paraph = detail?.Paraph;
+            _workflow.Confirm(transactionId, paraph);
             return Ok();
         }
 
         // PUT: api/transactions/{transactionId:int}/approve
         [Route(TransactionApi.ApproveTransactionUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Approve)]
-        public IHttpActionResult PutTransactionAsApproved(int transactionId)
+        public IHttpActionResult PutTransactionAsApproved(int transactionId, [FromBody] ActionDetailViewModel detail)
         {
             if (transactionId <= 0)
             {
                 return BadRequest("Could not put transaction as Approved because transaction does not exist.");
             }
 
-            _workflow.Approve(transactionId);
+            var paraph = detail?.Paraph;
+            _workflow.Approve(transactionId, paraph);
             return Ok();
         }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Workflow;
 using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Service
@@ -69,18 +70,22 @@ namespace SPPC.Tadbir.Service
         /// Updates operational status of a financial transaction to Prepared.
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to prepare</param>
-        public void PrepareTransaction(int transactionId)
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        public void PrepareTransaction(int transactionId, string paraph = null)
         {
-            _apiClient.Update(new { }, TransactionApi.PrepareTransaction, transactionId);
+            var detail = new ActionDetailViewModel() { Paraph = paraph };
+            _apiClient.Update(detail, TransactionApi.PrepareTransaction, transactionId);
         }
 
         /// <summary>
         /// Updates operational status of a financial transaction to Reviewed.
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to review</param>
-        public void ReviewTransaction(int transactionId)
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        public void ReviewTransaction(int transactionId, string paraph = null)
         {
-            _apiClient.Update(new { }, TransactionApi.ReviewTransaction, transactionId);
+            var detail = new ActionDetailViewModel() { Paraph = paraph };
+            _apiClient.Update(detail, TransactionApi.ReviewTransaction, transactionId);
         }
 
         /// <summary>
@@ -88,27 +93,33 @@ namespace SPPC.Tadbir.Service
         /// meaning it needs to be reviewed again.
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to reject</param>
-        public void RejectTransaction(int transactionId)
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        public void RejectTransaction(int transactionId, string paraph = null)
         {
-            _apiClient.Update(new { }, TransactionApi.RejectTransaction, transactionId);
+            var detail = new ActionDetailViewModel() { Paraph = paraph };
+            _apiClient.Update(detail, TransactionApi.RejectTransaction, transactionId);
         }
 
         /// <summary>
         /// Updates operational status of a financial transaction to Confirmed.
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to confirm</param>
-        public void ConfirmTransaction(int transactionId)
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        public void ConfirmTransaction(int transactionId, string paraph = null)
         {
-            _apiClient.Update(new { }, TransactionApi.ConfirmTransaction, transactionId);
+            var detail = new ActionDetailViewModel() { Paraph = paraph };
+            _apiClient.Update(detail, TransactionApi.ConfirmTransaction, transactionId);
         }
 
         /// <summary>
         /// Updates operational status of a financial transaction to Approved.
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to approve</param>
-        public void ApproveTransaction(int transactionId)
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        public void ApproveTransaction(int transactionId, string paraph = null)
         {
-            _apiClient.Update(new { }, TransactionApi.ApproveTransaction, transactionId);
+            var detail = new ActionDetailViewModel() { Paraph = paraph };
+            _apiClient.Update(detail, TransactionApi.ApproveTransaction, transactionId);
         }
 
         /// <summary>

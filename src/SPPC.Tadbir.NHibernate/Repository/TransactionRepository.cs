@@ -70,6 +70,7 @@ namespace SPPC.Tadbir.NHibernate
                     .OrderByDescending(hist => hist.Time)
                     .Select(hist => _mapper.Map<HistoryItemViewModel>(hist));
                 (transactionDetail.Actions as List<HistoryItemViewModel>).AddRange(history);
+                transactionDetail.Transaction = AddWorkItemInfo(transactionDetail.Transaction);
             }
 
             return transactionDetail;

@@ -1,6 +1,7 @@
 ﻿// Initialize all client-side logic using jQuery...
 $(function () {
     $('[href*="/delete/"]').click(confirmDelete);
+    $('a[id*="action"]').click(promptForParaph);
 
     setupDatePickers();
     setupCaptcha();
@@ -18,6 +19,32 @@ function confirmDelete(e) {
     if (!confirmed) {
         e.preventDefault();
     }
+}
+
+/*
+ * promptForParaph
+ *   Prompts user to enter an optional paraph (comment/remark) for a workflow action.
+ *   The prompt mechanism is the browser input dialog ('window.prompt()' or just 'prompt()')
+ *   and it redirects browser to proper page to complete the action. The paraph value entered
+ *   by the user will be appended to request URL as a query string parameter.
+ * Argument(s)
+ *   e : Javascript event object passed to the event handler.
+ */
+function promptForParaph(e) {
+    var paraph = prompt("لطفا توضیحات یا پاراف مورد نظر خود را وارد کنید (اختیاری) :");
+    if(paraph != null) {
+        var targetUrl = $(this).attr('href');
+        if(paraph != "") {
+            targetUrl = targetUrl.indexOf('?') != -1
+                ? (targetUrl + '&paraph=' + paraph)
+                : (targetUrl + '?paraph=' + paraph);
+            targetUrl = encodeURI(targetUrl);
+        }
+        
+        window.location.href = targetUrl;
+    } else {
+        e.preventDefault();
+    } 
 }
 
 /*

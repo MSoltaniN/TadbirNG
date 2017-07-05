@@ -72,6 +72,12 @@ namespace SPPC.Tadbir.Workflow
         public string NextAction { get; set; }
 
         /// <summary>
+        /// پاراف متنی اختیاری که کاربر پیش از اقدام می تواند وارد کند
+        /// </summary>
+        [DataMember]
+        public string Remarks { get; set; }
+
+        /// <summary>
         /// مقداری که مشخص می کند آیا اقدام جاری تنظیم مستند است یا نه
         /// </summary>
         public bool IsPrepare
@@ -125,8 +131,9 @@ namespace SPPC.Tadbir.Workflow
         /// <param name="userId">شناسه دیتابیسی کاربر تنظیم کننده</param>
         /// <param name="documentId">شناسه دیتابیسی مستند مورد نظر برای تنظیم</param>
         /// <param name="documentType">نوع مستند مورد نظر برای تنظیم</param>
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         /// <returns></returns>
-        public static StateOperation Prepare(int userId, int documentId, string documentType)
+        public static StateOperation Prepare(int userId, int documentId, string documentType, string paraph = null)
         {
             return new StateOperation()
             {
@@ -139,7 +146,8 @@ namespace SPPC.Tadbir.Workflow
                 CurrentStatus = DocumentStatus.Created,
                 NewStatus = DocumentStatus.Prepared,
                 Action = DocumentAction.Prepare,
-                NextAction = DocumentAction.Review
+                NextAction = DocumentAction.Review,
+                Remarks = paraph
             };
         }
 
@@ -149,8 +157,9 @@ namespace SPPC.Tadbir.Workflow
         /// <param name="userId">شناسه دیتابیسی کاربر بررسی کننده</param>
         /// <param name="documentId">شناسه دیتابیسی مستند مورد نظر برای بررسی</param>
         /// <param name="documentType">نوع مستند مورد نظر برای بررسی</param>
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         /// <returns></returns>
-        public static StateOperation Review(int userId, int documentId, string documentType)
+        public static StateOperation Review(int userId, int documentId, string documentType, string paraph = null)
         {
             return new StateOperation()
             {
@@ -163,7 +172,8 @@ namespace SPPC.Tadbir.Workflow
                 CurrentStatus = DocumentStatus.Prepared,
                 NewStatus = DocumentStatus.Reviewed,
                 Action = DocumentAction.Review,
-                NextAction = DocumentAction.Confirm
+                NextAction = DocumentAction.Confirm,
+                Remarks = paraph
             };
         }
 
@@ -173,8 +183,9 @@ namespace SPPC.Tadbir.Workflow
         /// <param name="userId">شناسه دیتابیسی کاربر اقدام کننده</param>
         /// <param name="documentId">شناسه دیتابیسی مستند مورد نظر برای اقدام</param>
         /// <param name="documentType">نوع مستند مورد نظر برای اقدام</param>
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         /// <returns></returns>
-        public static StateOperation RejectReview(int userId, int documentId, string documentType)
+        public static StateOperation RejectReview(int userId, int documentId, string documentType, string paraph = null)
         {
             return new StateOperation()
             {
@@ -187,7 +198,8 @@ namespace SPPC.Tadbir.Workflow
                 CurrentStatus = DocumentStatus.Reviewed,
                 NewStatus = DocumentStatus.Prepared,
                 Action = DocumentAction.Reject,
-                NextAction = DocumentAction.Review
+                NextAction = DocumentAction.Review,
+                Remarks = paraph
             };
         }
 
@@ -197,8 +209,9 @@ namespace SPPC.Tadbir.Workflow
         /// <param name="userId">شناسه دیتابیسی کاربر تایید کننده</param>
         /// <param name="documentId">شناسه دیتابیسی مستند مورد نظر برای تایید</param>
         /// <param name="documentType">نوع مستند مورد نظر برای تایید</param>
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         /// <returns></returns>
-        public static StateOperation Confirm(int userId, int documentId, string documentType)
+        public static StateOperation Confirm(int userId, int documentId, string documentType, string paraph = null)
         {
             return new StateOperation()
             {
@@ -211,7 +224,8 @@ namespace SPPC.Tadbir.Workflow
                 CurrentStatus = DocumentStatus.Reviewed,
                 NewStatus = DocumentStatus.Confirmed,
                 Action = DocumentAction.Confirm,
-                NextAction = DocumentAction.Approve
+                NextAction = DocumentAction.Approve,
+                Remarks = paraph
             };
         }
 
@@ -221,8 +235,9 @@ namespace SPPC.Tadbir.Workflow
         /// <param name="userId">شناسه دیتابیسی کاربر تصویب کننده</param>
         /// <param name="documentId">شناسه دیتابیسی مستند مورد نظر برای تصویب</param>
         /// <param name="documentType">نوع مستند مورد نظر برای تصویب</param>
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         /// <returns></returns>
-        public static StateOperation Approve(int userId, int documentId, string documentType)
+        public static StateOperation Approve(int userId, int documentId, string documentType, string paraph = null)
         {
             return new StateOperation()
             {
@@ -235,7 +250,8 @@ namespace SPPC.Tadbir.Workflow
                 CurrentStatus = DocumentStatus.Confirmed,
                 NewStatus = DocumentStatus.Approved,
                 Action = DocumentAction.Approve,
-                NextAction = String.Empty
+                NextAction = String.Empty,
+                Remarks = paraph
             };
         }
     }

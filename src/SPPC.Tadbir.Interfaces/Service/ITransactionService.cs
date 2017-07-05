@@ -80,32 +80,37 @@ namespace SPPC.Tadbir.Service
         /// Updates operational status of a financial transaction to Prepared.
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to prepare</param>
-        void PrepareTransaction(int transactionId);
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        void PrepareTransaction(int transactionId, string paraph = null);
 
         /// <summary>
         /// Updates operational status of a financial transaction to Reviewed.
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to review</param>
-        void ReviewTransaction(int transactionId);
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        void ReviewTransaction(int transactionId, string paraph = null);
 
         /// <summary>
         /// Updates operational status of a reviewed financial transaction to Prepred,
         /// meaning it needs to be reviewed again.
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to reject</param>
-        void RejectTransaction(int transactionId);
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        void RejectTransaction(int transactionId, string paraph = null);
 
         /// <summary>
         /// Updates operational status of a financial transaction to Confirmed.
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to confirm</param>
-        void ConfirmTransaction(int transactionId);
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        void ConfirmTransaction(int transactionId, string paraph = null);
 
         /// <summary>
         /// Updates operational status of a financial transaction to Approved.
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to approve</param>
-        void ApproveTransaction(int transactionId);
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        void ApproveTransaction(int transactionId, string paraph = null);
 
         #endregion
     }
