@@ -31,6 +31,7 @@ function confirmDelete(e) {
  *   e : Javascript event object passed to the event handler.
  */
 function promptForParaph(e) {
+    e.preventDefault();
     var paraph = prompt("لطفا توضیحات یا پاراف مورد نظر خود را وارد کنید (اختیاری) :");
     if(paraph != null) {
         var targetUrl = $(this).attr('href');
@@ -42,8 +43,6 @@ function promptForParaph(e) {
         }
         
         window.location.href = targetUrl;
-    } else {
-        e.preventDefault();
     } 
 }
 

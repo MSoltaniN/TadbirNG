@@ -192,7 +192,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         private ActionResult GetNextResult()
         {
             ActionResult nextResult = Request.QueryString.AllKeys.Contains("returnUrl")
-                ? Redirect(Request.QueryString["returnUrl"])
+                ? Redirect(String.Format("~{0}", Request.QueryString["returnUrl"]))
                 : RedirectToAction("index") as ActionResult;
             return nextResult;
         }
