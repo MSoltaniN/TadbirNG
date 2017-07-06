@@ -71,10 +71,11 @@ namespace SPPC.Tadbir.Service
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to prepare</param>
         /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        public void PrepareTransaction(int transactionId, string paraph = null)
+        public ServiceResponse PrepareTransaction(int transactionId, string paraph = null)
         {
             var detail = new ActionDetailViewModel() { Paraph = paraph };
-            _apiClient.Update(detail, TransactionApi.PrepareTransaction, transactionId);
+            var response = _apiClient.Update(detail, TransactionApi.PrepareTransaction, transactionId);
+            return response;
         }
 
         /// <summary>
@@ -82,10 +83,11 @@ namespace SPPC.Tadbir.Service
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to review</param>
         /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        public void ReviewTransaction(int transactionId, string paraph = null)
+        public ServiceResponse ReviewTransaction(int transactionId, string paraph = null)
         {
             var detail = new ActionDetailViewModel() { Paraph = paraph };
-            _apiClient.Update(detail, TransactionApi.ReviewTransaction, transactionId);
+            var response = _apiClient.Update(detail, TransactionApi.ReviewTransaction, transactionId);
+            return response;
         }
 
         /// <summary>
@@ -94,10 +96,11 @@ namespace SPPC.Tadbir.Service
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to reject</param>
         /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        public void RejectTransaction(int transactionId, string paraph = null)
+        public ServiceResponse RejectTransaction(int transactionId, string paraph = null)
         {
             var detail = new ActionDetailViewModel() { Paraph = paraph };
-            _apiClient.Update(detail, TransactionApi.RejectTransaction, transactionId);
+            var response = _apiClient.Update(detail, TransactionApi.RejectTransaction, transactionId);
+            return response;
         }
 
         /// <summary>
@@ -105,10 +108,11 @@ namespace SPPC.Tadbir.Service
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to confirm</param>
         /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        public void ConfirmTransaction(int transactionId, string paraph = null)
+        public ServiceResponse ConfirmTransaction(int transactionId, string paraph = null)
         {
             var detail = new ActionDetailViewModel() { Paraph = paraph };
-            _apiClient.Update(detail, TransactionApi.ConfirmTransaction, transactionId);
+            var response = _apiClient.Update(detail, TransactionApi.ConfirmTransaction, transactionId);
+            return response;
         }
 
         /// <summary>
@@ -116,10 +120,11 @@ namespace SPPC.Tadbir.Service
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to approve</param>
         /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
-        public void ApproveTransaction(int transactionId, string paraph = null)
+        public ServiceResponse ApproveTransaction(int transactionId, string paraph = null)
         {
             var detail = new ActionDetailViewModel() { Paraph = paraph };
-            _apiClient.Update(detail, TransactionApi.ApproveTransaction, transactionId);
+            var response = _apiClient.Update(detail, TransactionApi.ApproveTransaction, transactionId);
+            return response;
         }
 
         /// <summary>

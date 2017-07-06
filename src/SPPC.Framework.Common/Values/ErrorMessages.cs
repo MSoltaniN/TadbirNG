@@ -62,5 +62,10 @@ namespace SPPC.Framework.Values
         /// Localized text for the message indicating an error in deleting an entity record
         /// </summary>
         public const string DeleteError = "بروز خطا در حذف {0}";
+
+        /// <summary>
+        /// Localized text for the message indicating an operation error
+        /// </summary>
+        public const string OperationError = "بروز خطا در عملیات {0}";
     }
 }

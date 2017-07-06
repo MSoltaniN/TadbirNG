@@ -16,6 +16,7 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Scope = "member", Target = "SPPC.Tadbir.Workflow.TransactionWorkflow.#RejectReviewed(System.Int32,System.String)", Justification = "Object is disposed only once.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Scope = "member", Target = "SPPC.Tadbir.Workflow.TransactionWorkflow.#Confirm(System.Int32,System.String)", Justification = "Object is disposed only once.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Scope = "member", Target = "SPPC.Tadbir.Workflow.TransactionWorkflow.#Approve(System.Int32,System.String)", Justification = "Object is disposed only once.")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Scope = "member", Target = "SPPC.Tadbir.Workflow.TransactionBasicWorkflow.#InvokeServiceOperation(SPPC.Tadbir.Workflow.StateOperation)", Justification = "Object is disposed only once.")]
 
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.

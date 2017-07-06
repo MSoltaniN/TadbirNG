@@ -225,6 +225,7 @@
     <Content Include="Areas\Admin\Views\Roles\Branches.cshtml" />
     <Content Include="Areas\Admin\Views\Roles\Users.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\Workflows.cshtml" />
+    <Content Include="Areas\Accounting\Views\Transactions\Error.cshtml" />
     <None Include="Properties\PublishProfiles\Staging.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />

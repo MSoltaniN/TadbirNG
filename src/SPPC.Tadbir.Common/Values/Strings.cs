@@ -293,5 +293,10 @@ namespace SPPC.Tadbir.Values
         /// Localized text for a message indicating that both debit and credit amounts cannot be entered for an article.
         /// </summary>
         public static readonly string DebitAndCreditNotAllowed = "وارد کردن همزمان مبالغ بدهکار و بستانکار در آرتیکل نادرست است.";
+
+        /// <summary>
+        /// Localized text for a message indicating that a requested operation is not allowed on a document.
+        /// </summary>
+        public static readonly string InvalidDocumentOperation = "اقدام '{0}' برای {1} '{2}' غیر مجاز است.";
     }
 }

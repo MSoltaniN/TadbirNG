@@ -153,47 +153,54 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
         public ActionResult Prepare(int id, string paraph = null)
         {
-            _service.PrepareTransaction(id, paraph);
-            return RedirectToAction("index");
+            var response = _service.PrepareTransaction(id, paraph);
+            return GetNextResult(response);
         }
 
-        // GET: accounting/transactions/review/id
+        // GET: accounting/transactions/review/id[?paraph={encoded-text}]
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Review)]
         public ActionResult Review(int id, string paraph = null)
         {
-            _service.ReviewTransaction(id, paraph);
-            return GetNextResult();
+            var response = _service.ReviewTransaction(id, paraph);
+            return GetNextResult(response);
         }
 
-        // GET: accounting/transactions/reject/id
+        // GET: accounting/transactions/reject/id[?paraph={encoded-text}]
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
         public ActionResult Reject(int id, string paraph = null)
         {
-            _service.RejectTransaction(id, paraph);
-            return GetNextResult();
+            var response = _service.RejectTransaction(id, paraph);
+            return GetNextResult(response);
         }
 
-        // GET: accounting/transactions/confirm/id
+        // GET: accounting/transactions/confirm/id[?paraph={encoded-text}]
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
         public ActionResult Confirm(int id, string paraph = null)
         {
-            _service.ConfirmTransaction(id, paraph);
-            return GetNextResult();
+            var response = _service.ConfirmTransaction(id, paraph);
+            return GetNextResult(response);
         }
 
-        // GET: accounting/transactions/approve/id
+        // GET: accounting/transactions/approve/id[?paraph={encoded-text}]
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Approve)]
         public ActionResult Approve(int id, string paraph = null)
         {
-            _service.ApproveTransaction(id, paraph);
-            return GetNextResult();
+            var response = _service.ApproveTransaction(id, paraph);
+            return GetNextResult(response);
         }
 
-        private ActionResult GetNextResult()
+        private ActionResult GetNextResult(ServiceResponse response)
         {
-            ActionResult nextResult = Request.QueryString.AllKeys.Contains("returnUrl")
-                ? Redirect(String.Format("~{0}", Request.QueryString["returnUrl"]))
-                : RedirectToAction("index") as ActionResult;
+            ActionResult nextResult = RedirectToAction("index");
+            if (!response.Succeeded)
+            {
+                nextResult = View("error", response);
+            }
+            else if (Request.QueryString.AllKeys.Contains("returnUrl"))
+            {
+                nextResult = RedirectToAction("index", "cartable", new { area = String.Empty });
+            }
+
             return nextResult;
         }
 

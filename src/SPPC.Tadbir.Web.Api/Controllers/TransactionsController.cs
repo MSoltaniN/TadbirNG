@@ -2,6 +2,7 @@
 using System.Net;
 using System.Web.Http;
 using Microsoft.Practices.Unity;
+using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Repository;
@@ -275,6 +276,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not put transaction as Prepared because transaction does not exist.");
             }
 
+            string message = ValidateStateOperation(DocumentAction.Prepare, transactionId);
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequest(message);
+            }
+
             var paraph = detail?.Paraph;
             _workflow.Prepare(transactionId, paraph);
             return Ok();
@@ -290,6 +297,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not put transaction as Reviewed because transaction does not exist.");
             }
 
+            string message = ValidateStateOperation(DocumentAction.Review, transactionId);
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequest(message);
+            }
+
             var paraph = detail?.Paraph;
             _workflow.Review(transactionId, paraph);
             return Ok();
@@ -302,7 +315,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (transactionId <= 0)
             {
-                return BadRequest("Could not put transaction as rejected because transaction does not exist.");
+                return BadRequest("Could not put transaction as Rejected because transaction does not exist.");
+            }
+
+            string message = ValidateStateOperation(DocumentAction.Reject, transactionId);
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequest(message);
             }
 
             var paraph = detail?.Paraph;
@@ -320,6 +339,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not put transaction as Confirmed because transaction does not exist.");
             }
 
+            string message = ValidateStateOperation(DocumentAction.Confirm, transactionId);
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequest(message);
+            }
+
             var paraph = detail?.Paraph;
             _workflow.Confirm(transactionId, paraph);
             return Ok();
@@ -333,6 +358,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (transactionId <= 0)
             {
                 return BadRequest("Could not put transaction as Approved because transaction does not exist.");
+            }
+
+            string message = ValidateStateOperation(DocumentAction.Approve, transactionId);
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequest(message);
             }
 
             var paraph = detail?.Paraph;
@@ -349,6 +380,26 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _workflow = UnityConfig.GetConfiguredContainer()
                 .Resolve<ITransactionWorkflow>(edition.Provider);
             _workflow.ContextManager = contextManager;
+        }
+
+        private string ValidateStateOperation(string operation, int transactionId)
+        {
+            string result = String.Empty;
+            var summary = _repository.GetTransactionSummary(transactionId);
+            if (summary == null)
+            {
+                result = String.Format(ValidationMessages.ItemNotFound, Entities.TransactionLongName);
+            }
+            else if (!StateOperationValidator.Validate(operation, summary.OperationalStatus))
+            {
+                result = String.Format(
+                    Strings.InvalidDocumentOperation,
+                    DocumentAction.ToLocalValue(operation),
+                    Entities.TransactionLongName,
+                    DocumentStatus.ToLocalValue(summary.OperationalStatus));
+            }
+
+            return result;
         }
 
         private ITransactionRepository _repository;
