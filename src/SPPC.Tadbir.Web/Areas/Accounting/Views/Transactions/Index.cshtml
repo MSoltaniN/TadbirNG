@@ -42,7 +42,7 @@
     <h3>@title</h3>
 </div>
 
-@using (Html.BeginForm("index", "transactions", FormMethod.Post, new { id = "form", name = "form" }))
+@using (Html.BeginForm("index", "transactions", FormMethod.Post, new { name = "selectForm" }))
 {
     @Html.AntiForgeryToken()
 
@@ -141,6 +141,7 @@
     </table>
 
     <div class="pull-left">
+        <input type="hidden" id="paraph" name="paraph" value="" />
         @if (currentContext.HasPermissions(Permissions.Transaction.Prepare))
         {
             <input type="submit" class="btn btn-primary" name="submit-prepare" value="@Strings.GroupPrepare" />

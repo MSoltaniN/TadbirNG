@@ -2,6 +2,7 @@
 $(function () {
     $('[href*="/delete/"]').click(confirmDelete);
     $('a[id*="action"]').click(promptForParaph);
+    $('form[name="selectForm"]').submit(handleGroupParaph);
 
     setupDatePickers();
     setupCaptcha();
@@ -46,6 +47,34 @@ function promptForParaph(e) {
         
         window.location.href = targetUrl;
     } 
+}
+
+/*
+ * handleGroupParaph
+ *   Usage : Intended to be used when selecting items is eabled in a data list.
+ *   Prompts user to enter an optional paraph (comment/remark) for a workflow group action.
+ *   The prompt mechanism is the browser input dialog ('window.prompt()' or just 'prompt()')
+ *   and it redirects browser to proper page to complete the action. The paraph value entered
+ *   by the user will be set in a hidden form field reserved for paraph.
+ * Argument(s)
+ *   e : Javascript event object passed to the event handler.
+ */
+function handleGroupParaph(e) {
+    var selectedCount = $('input[type="checkbox"][name*="IsSelected"]:checked').length;
+    if (selectedCount == 0) {
+        alert("سندی انتخاب نشده است.");
+        e.preventDefault();
+        return;
+    }
+
+    var paraph = prompt("لطفا توضیحات یا پاراف مورد نظر خود را وارد کنید (اختیاری) :");
+    if(paraph != null) {
+        var form = this;
+        form.elements.namedItem('paraph').value = paraph;
+        form.submit();
+    } else {
+        e.preventDefault();
+    }
 }
 
 

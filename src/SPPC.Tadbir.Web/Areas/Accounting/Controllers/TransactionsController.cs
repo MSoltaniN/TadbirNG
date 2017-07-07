@@ -46,6 +46,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 
             ActionResult result = null;
             var routeValues = GetGroupOperationRouteValues(allItems);
+            routeValues.Add("paraph", Request.Form["paraph"]);
             if (Request.Form.AllKeys.Contains("submit-prepare"))
             {
                 result = RedirectToAction("GroupPrepare", routeValues);
