@@ -73,6 +73,46 @@ namespace SPPC.Tadbir.Api
         public const string PrepareTransactionsUrl = "transactions/prepare";
 
         /// <summary>
+        /// API client URL for reviewing multiple transactions
+        /// </summary>
+        public const string ReviewTransactions = "transactions/review";
+
+        /// <summary>
+        /// API server route URL for reviewing multiple transactions
+        /// </summary>
+        public const string ReviewTransactionsUrl = "transactions/review";
+
+        /// <summary>
+        /// API client URL for rejecting multiple transactions
+        /// </summary>
+        public const string RejectTransactions = "transactions/reject";
+
+        /// <summary>
+        /// API server route URL for rejecting multiple transactions
+        /// </summary>
+        public const string RejectTransactionsUrl = "transactions/reject";
+
+        /// <summary>
+        /// API client URL for confirming multiple transactions
+        /// </summary>
+        public const string ConfirmTransactions = "transactions/confirm";
+
+        /// <summary>
+        /// API server route URL for confirming multiple transactions
+        /// </summary>
+        public const string ConfirmTransactionsUrl = "transactions/confirm";
+
+        /// <summary>
+        /// API client URL for approving multiple transactions
+        /// </summary>
+        public const string ApproveTransactions = "transactions/approve";
+
+        /// <summary>
+        /// API server route URL for approving multiple transactions
+        /// </summary>
+        public const string ApproveTransactionsUrl = "transactions/approve";
+
+        /// <summary>
         /// API client URL for reviewing a single transaction specified by identifier
         /// </summary>
         public const string ReviewTransaction = "transactions/{0}/review";

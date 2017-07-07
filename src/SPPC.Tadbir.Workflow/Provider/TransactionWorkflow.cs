@@ -127,36 +127,84 @@ namespace SPPC.Tadbir.Workflow
         /// مجموعه ای از اسناد مالی ثبت نشده و تنظیم شده را در وضعیت عملیاتی بررسی شده قرار می دهد.
         /// </summary>
         /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
-        public void ReviewMultiple(IEnumerable<int> transactions)
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        public virtual void ReviewMultiple(IEnumerable<int> transactions, string paraph = null)
         {
-            throw new NotImplementedException();
+            Verify.ArgumentNotNull(transactions, "transactions");
+            using (var client = new DocumentStateClient())
+            {
+                foreach (int transactionId in transactions)
+                {
+                    var review = StateOperation.Review(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                    client.Review(review);
+                    LogOperation(transactionId, "Review", "reviewed");
+                }
+
+                client.Close();
+            }
         }
 
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت نشده و بررسی شده را برای بررسی مجدد در وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
         /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
-        public void RejectReviewedMultiple(IEnumerable<int> transactions)
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        public virtual void RejectReviewedMultiple(IEnumerable<int> transactions, string paraph = null)
         {
-            throw new NotImplementedException();
+            Verify.ArgumentNotNull(transactions, "transactions");
+            using (var client = new DocumentStateClient())
+            {
+                foreach (int transactionId in transactions)
+                {
+                    var reject = StateOperation.RejectReview(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                    client.Reject(reject);
+                    LogOperation(transactionId, "Reject", "rejected");
+                }
+
+                client.Close();
+            }
         }
 
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت نشده و بررسی شده را در حالت ثبت عادی و وضعیت عملیاتی تایید شده قرار می دهد.
         /// </summary>
         /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
-        public void ConfirmMultiple(IEnumerable<int> transactions)
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        public virtual void ConfirmMultiple(IEnumerable<int> transactions, string paraph = null)
         {
-            throw new NotImplementedException();
+            Verify.ArgumentNotNull(transactions, "transactions");
+            using (var client = new DocumentStateClient())
+            {
+                foreach (int transactionId in transactions)
+                {
+                    var confirm = StateOperation.Confirm(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                    client.Confirm(confirm);
+                    LogOperation(transactionId, "Confirm", "confirmed");
+                }
+
+                client.Close();
+            }
         }
 
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت عادی و تایید شده را در حالت ثبت قطعی و وضعیت عملیاتی تصویب شده قرار می دهد.
         /// </summary>
         /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
-        public void ApproveMultiple(IEnumerable<int> transactions)
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        public virtual void ApproveMultiple(IEnumerable<int> transactions, string paraph = null)
         {
-            throw new NotImplementedException();
+            Verify.ArgumentNotNull(transactions, "transactions");
+            using (var client = new DocumentStateClient())
+            {
+                foreach (int transactionId in transactions)
+                {
+                    var approve = StateOperation.Approve(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                    client.Approve(approve);
+                    LogOperation(transactionId, "Approve", "approved");
+                }
+
+                client.Close();
+            }
         }
 
         /// <summary>

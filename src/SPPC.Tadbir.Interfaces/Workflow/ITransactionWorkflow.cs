@@ -60,24 +60,28 @@ namespace SPPC.Tadbir.Workflow
         /// مجموعه ای از اسناد مالی ثبت نشده و تنظیم شده را در وضعیت عملیاتی بررسی شده قرار می دهد.
         /// </summary>
         /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
-        void ReviewMultiple(IEnumerable<int> transactions);
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        void ReviewMultiple(IEnumerable<int> transactions, string paraph = null);
 
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت نشده و بررسی شده را برای بررسی مجدد در وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
         /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
-        void RejectReviewedMultiple(IEnumerable<int> transactions);
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        void RejectReviewedMultiple(IEnumerable<int> transactions, string paraph = null);
 
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت نشده و بررسی شده را در حالت ثبت عادی و وضعیت عملیاتی تایید شده قرار می دهد.
         /// </summary>
         /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
-        void ConfirmMultiple(IEnumerable<int> transactions);
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        void ConfirmMultiple(IEnumerable<int> transactions, string paraph = null);
 
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت عادی و تایید شده را در حالت ثبت قطعی و وضعیت عملیاتی تصویب شده قرار می دهد.
         /// </summary>
         /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
-        void ApproveMultiple(IEnumerable<int> transactions);
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        void ApproveMultiple(IEnumerable<int> transactions, string paraph = null);
     }
 }

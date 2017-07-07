@@ -269,6 +269,26 @@ namespace SPPC.Tadbir.Values
         public const string GroupPrepare = "تنظیم گروهی";
 
         /// <summary>
+        /// Localized text for Group Review
+        /// </summary>
+        public const string GroupReview = "بررسی گروهی";
+
+        /// <summary>
+        /// Localized text for Group Reject
+        /// </summary>
+        public const string GroupReject = "رد بررسی گروهی";
+
+        /// <summary>
+        /// Localized text for Group Confirm
+        /// </summary>
+        public const string GroupConfirm = "تایید گروهی";
+
+        /// <summary>
+        /// Localized text for Group Approve
+        /// </summary>
+        public const string GroupApprove = "تصویب گروهی";
+
+        /// <summary>
         /// Localized text for the text indicating that an account is used in financial transactions and cannot be deleted.
         /// </summary>
         public static readonly string CannotDeleteUsedAccount = "حساب {0} در یک یا چند سند مالی استفاده شده و قابل حذف نیست.";

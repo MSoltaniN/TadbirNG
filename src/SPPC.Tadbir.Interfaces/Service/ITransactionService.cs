@@ -91,7 +91,7 @@ namespace SPPC.Tadbir.Service
         ServiceResponse ReviewTransaction(int transactionId, string paraph = null);
 
         /// <summary>
-        /// Updates operational status of a reviewed financial transaction to Prepred,
+        /// Updates operational status of a reviewed financial transaction to Prepared,
         /// meaning it needs to be reviewed again.
         /// </summary>
         /// <param name="transactionId">Unique identifier of the transaction to reject</param>
@@ -118,6 +118,35 @@ namespace SPPC.Tadbir.Service
         /// <param name="transactions">Unique identifiers of transactions to prepare</param>
         /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
         ServiceResponse PrepareTransactions(IEnumerable<int> transactions, string paraph = null);
+
+        /// <summary>
+        /// Updates operational status of multiple financial transactions to Reviewed.
+        /// </summary>
+        /// <param name="transactions">Unique identifiers of transactions to review</param>
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        ServiceResponse ReviewTransactions(IEnumerable<int> transactions, string paraph = null);
+
+        /// <summary>
+        /// Updates operational status of multiple reviewed financial transaction to Prepared,
+        /// meaning they need to be reviewed again.
+        /// </summary>
+        /// <param name="transactions">Unique identifiers of transactions to reject</param>
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        ServiceResponse RejectTransactions(IEnumerable<int> transactions, string paraph = null);
+
+        /// <summary>
+        /// Updates operational status of multiple financial transactions to Confirmed.
+        /// </summary>
+        /// <param name="transactions">Unique identifiers of transactions to confirm</param>
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        ServiceResponse ConfirmTransactions(IEnumerable<int> transactions, string paraph = null);
+
+        /// <summary>
+        /// Updates operational status of multiple financial transactions to Approved.
+        /// </summary>
+        /// <param name="transactions">Unique identifiers of transactions to approve</param>
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        ServiceResponse ApproveTransactions(IEnumerable<int> transactions, string paraph = null);
 
         #endregion
     }

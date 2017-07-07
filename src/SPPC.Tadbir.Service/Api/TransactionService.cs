@@ -134,11 +134,57 @@ namespace SPPC.Tadbir.Service
         /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
         public ServiceResponse PrepareTransactions(IEnumerable<int> transactions, string paraph = null)
         {
-            Verify.ArgumentNotNull(transactions, "transactions");
-            var detail = new ActionDetailViewModel() { Paraph = paraph };
-            Array.ForEach(transactions.ToArray(), id => detail.Items.Add(id));
-
+            var detail = GetGroupOperationDetail(transactions, paraph);
             var response = _apiClient.Update(detail, TransactionApi.PrepareTransactions);
+            return response;
+        }
+
+        /// <summary>
+        /// Updates operational status of multiple financial transactions to Reviewed.
+        /// </summary>
+        /// <param name="transactions">Unique identifiers of transactions to review</param>
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        public ServiceResponse ReviewTransactions(IEnumerable<int> transactions, string paraph = null)
+        {
+            var detail = GetGroupOperationDetail(transactions, paraph);
+            var response = _apiClient.Update(detail, TransactionApi.ReviewTransactions);
+            return response;
+        }
+
+        /// <summary>
+        /// Updates operational status of multiple reviewed financial transaction to Prepared,
+        /// meaning they need to be reviewed again.
+        /// </summary>
+        /// <param name="transactions">Unique identifiers of transactions to reject</param>
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        public ServiceResponse RejectTransactions(IEnumerable<int> transactions, string paraph = null)
+        {
+            var detail = GetGroupOperationDetail(transactions, paraph);
+            var response = _apiClient.Update(detail, TransactionApi.RejectTransactions);
+            return response;
+        }
+
+        /// <summary>
+        /// Updates operational status of multiple financial transactions to Confirmed.
+        /// </summary>
+        /// <param name="transactions">Unique identifiers of transactions to confirm</param>
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        public ServiceResponse ConfirmTransactions(IEnumerable<int> transactions, string paraph = null)
+        {
+            var detail = GetGroupOperationDetail(transactions, paraph);
+            var response = _apiClient.Update(detail, TransactionApi.ConfirmTransactions);
+            return response;
+        }
+
+        /// <summary>
+        /// Updates operational status of multiple financial transactions to Approved.
+        /// </summary>
+        /// <param name="transactions">Unique identifiers of transactions to approve</param>
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        public ServiceResponse ApproveTransactions(IEnumerable<int> transactions, string paraph = null)
+        {
+            var detail = GetGroupOperationDetail(transactions, paraph);
+            var response = _apiClient.Update(detail, TransactionApi.ApproveTransactions);
             return response;
         }
 
@@ -206,6 +252,14 @@ namespace SPPC.Tadbir.Service
         public void DeleteArticle(int articleId)
         {
             _apiClient.Delete(TransactionApi.TransactionArticle, articleId);
+        }
+
+        private static ActionDetailViewModel GetGroupOperationDetail(IEnumerable<int> transactions, string paraph)
+        {
+            Verify.ArgumentNotNull(transactions, "transactions");
+            var detail = new ActionDetailViewModel() { Paraph = paraph };
+            Array.ForEach(transactions.ToArray(), id => detail.Items.Add(id));
+            return detail;
         }
 
         private IApiClient _apiClient;

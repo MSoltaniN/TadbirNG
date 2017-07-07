@@ -44,15 +44,9 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
                 item.IsSelected = Request.Form.AllKeys.Contains(String.Format("[{0}].IsSelected", i));
             }
 
-            ActionResult result = null;
             var routeValues = GetGroupOperationRouteValues(allItems);
             routeValues.Add("paraph", Request.Form["paraph"]);
-            if (Request.Form.AllKeys.Contains("submit-prepare"))
-            {
-                result = RedirectToAction("GroupPrepare", routeValues);
-            }
-
-            return result;
+            return GetNextResult(routeValues);
         }
 
         // GET: accounting/transactions/create
@@ -213,13 +207,53 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return GetNextResult(response);
         }
 
-        // GET: accounting/transactions/prepare?id1={id1}&id2={id2}&...[&paraph={encoded-text}]
+        // GET: accounting/transactions/prepare?id0={id0}[&id1={id1}&...&paraph={encoded-text}]
         [ActionName("GroupPrepare")]
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
         public ActionResult Prepare(string paraph = null)
         {
             var items = GetGroupOperationItems();
             var response = _service.PrepareTransactions(items, paraph);
+            return GetNextResult(response);
+        }
+
+        // GET: accounting/transactions/review?id0={id0}[&id1={id1}&...&paraph={encoded-text}]
+        [ActionName("GroupReview")]
+        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Review)]
+        public ActionResult Review(string paraph = null)
+        {
+            var items = GetGroupOperationItems();
+            var response = _service.ReviewTransactions(items, paraph);
+            return GetNextResult(response);
+        }
+
+        // GET: accounting/transactions/reject?id0={id0}[&id1={id1}&...&paraph={encoded-text}]
+        [ActionName("GroupReject")]
+        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
+        public ActionResult Reject(string paraph = null)
+        {
+            var items = GetGroupOperationItems();
+            var response = _service.RejectTransactions(items, paraph);
+            return GetNextResult(response);
+        }
+
+        // GET: accounting/transactions/confirm?id0={id0}[&id1={id1}&...&paraph={encoded-text}]
+        [ActionName("GroupConfirm")]
+        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
+        public ActionResult Confirm(string paraph = null)
+        {
+            var items = GetGroupOperationItems();
+            var response = _service.ConfirmTransactions(items, paraph);
+            return GetNextResult(response);
+        }
+
+        // GET: accounting/transactions/approve?id0={id0}[&id1={id1}&...&paraph={encoded-text}]
+        [ActionName("GroupApprove")]
+        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Approve)]
+        public ActionResult Approve(string paraph = null)
+        {
+            var items = GetGroupOperationItems();
+            var response = _service.ApproveTransactions(items, paraph);
             return GetNextResult(response);
         }
 
@@ -249,6 +283,33 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             }
 
             return nextResult;
+        }
+
+        private ActionResult GetNextResult(RouteValueDictionary routeValues)
+        {
+            ActionResult result = null;
+            if (Request.Form.AllKeys.Contains("submit-prepare"))
+            {
+                result = RedirectToAction("GroupPrepare", routeValues);
+            }
+            else if (Request.Form.AllKeys.Contains("submit-review"))
+            {
+                result = RedirectToAction("GroupReview", routeValues);
+            }
+            else if (Request.Form.AllKeys.Contains("submit-reject"))
+            {
+                result = RedirectToAction("GroupReject", routeValues);
+            }
+            else if (Request.Form.AllKeys.Contains("submit-confirm"))
+            {
+                result = RedirectToAction("GroupConfirm", routeValues);
+            }
+            else if (Request.Form.AllKeys.Contains("submit-approve"))
+            {
+                result = RedirectToAction("GroupApprove", routeValues);
+            }
+
+            return result;
         }
 
         private IEnumerable<int> GetGroupOperationItems()

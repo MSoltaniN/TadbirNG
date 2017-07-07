@@ -146,6 +146,19 @@
         {
             <input type="submit" class="btn btn-primary" name="submit-prepare" value="@Strings.GroupPrepare" />
         }
+        @if (currentContext.HasPermissions(Permissions.Transaction.Review))
+        {
+            <input type="submit" class="btn btn-primary" name="submit-review" value="@Strings.GroupReview" />
+        }
+        @if (currentContext.HasPermissions(Permissions.Transaction.Confirm))
+        {
+            <input type="submit" class="btn btn-primary" name="submit-reject" value="@Strings.GroupReject" />
+            <input type="submit" class="btn btn-primary" name="submit-confirm" value="@Strings.GroupConfirm" />
+        }
+        @if (currentContext.HasPermissions(Permissions.Transaction.Approve))
+        {
+            <input type="submit" class="btn btn-primary" name="submit-approve" value="@Strings.GroupApprove" />
+        }
     </div>
 
     @Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)

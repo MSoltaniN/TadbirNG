@@ -373,7 +373,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        // PUT: api/transactions/{transactionId:int}/prepare
+        // PUT: api/transactions/prepare
         [Route(TransactionApi.PrepareTransactionsUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
         public IHttpActionResult PutTransactionsAsPrepared([FromBody] ActionDetailViewModel detail)
@@ -390,6 +390,86 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             _workflow.PrepareMultiple(detail.Items, detail.Paraph);
+            return Ok();
+        }
+
+        // PUT: api/transactions/review
+        [Route(TransactionApi.ReviewTransactionsUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Review)]
+        public IHttpActionResult PutTransactionsAsReviewed([FromBody] ActionDetailViewModel detail)
+        {
+            if (detail == null)
+            {
+                return BadRequest("Could not put transaction as Reviewed because operation detail is null.");
+            }
+
+            string message = ValidateGroupStateOperation(DocumentAction.Review, detail.Items.ToArray());
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequest(message);
+            }
+
+            _workflow.ReviewMultiple(detail.Items, detail.Paraph);
+            return Ok();
+        }
+
+        // PUT: api/transactions/reject
+        [Route(TransactionApi.RejectTransactionsUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
+        public IHttpActionResult PutTransactionsAsRejected([FromBody] ActionDetailViewModel detail)
+        {
+            if (detail == null)
+            {
+                return BadRequest("Could not put transaction as Rejected because operation detail is null.");
+            }
+
+            string message = ValidateGroupStateOperation(DocumentAction.Reject, detail.Items.ToArray());
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequest(message);
+            }
+
+            _workflow.RejectReviewedMultiple(detail.Items, detail.Paraph);
+            return Ok();
+        }
+
+        // PUT: api/transactions/confirm
+        [Route(TransactionApi.ConfirmTransactionsUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
+        public IHttpActionResult PutTransactionsAsConfirmed([FromBody] ActionDetailViewModel detail)
+        {
+            if (detail == null)
+            {
+                return BadRequest("Could not put transaction as Confirmed because operation detail is null.");
+            }
+
+            string message = ValidateGroupStateOperation(DocumentAction.Confirm, detail.Items.ToArray());
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequest(message);
+            }
+
+            _workflow.ConfirmMultiple(detail.Items, detail.Paraph);
+            return Ok();
+        }
+
+        // PUT: api/transactions/approve
+        [Route(TransactionApi.ApproveTransactionsUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Approve)]
+        public IHttpActionResult PutTransactionsAsApproved([FromBody] ActionDetailViewModel detail)
+        {
+            if (detail == null)
+            {
+                return BadRequest("Could not put transaction as Approved because operation detail is null.");
+            }
+
+            string message = ValidateGroupStateOperation(DocumentAction.Approve, detail.Items.ToArray());
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequest(message);
+            }
+
+            _workflow.ApproveMultiple(detail.Items, detail.Paraph);
             return Ok();
         }
 
