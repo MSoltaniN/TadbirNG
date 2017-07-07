@@ -128,6 +128,21 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
+        /// Updates operational status of multiple financial transactions to Prepared.
+        /// </summary>
+        /// <param name="transactions">Unique identifiers of transactions to prepare</param>
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        public ServiceResponse PrepareTransactions(IEnumerable<int> transactions, string paraph = null)
+        {
+            Verify.ArgumentNotNull(transactions, "transactions");
+            var detail = new ActionDetailViewModel() { Paraph = paraph };
+            Array.ForEach(transactions.ToArray(), id => detail.Items.Add(id));
+
+            var response = _apiClient.Update(detail, TransactionApi.PrepareTransactions);
+            return response;
+        }
+
+        /// <summary>
         /// Inserts or updates a financial transaction article.
         /// </summary>
         /// <param name="article">Article to insert or update</param>

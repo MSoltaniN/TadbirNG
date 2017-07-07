@@ -17,6 +17,8 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Scope = "member", Target = "SPPC.Tadbir.Workflow.TransactionWorkflow.#Confirm(System.Int32,System.String)", Justification = "Object is disposed only once.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Scope = "member", Target = "SPPC.Tadbir.Workflow.TransactionWorkflow.#Approve(System.Int32,System.String)", Justification = "Object is disposed only once.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Scope = "member", Target = "SPPC.Tadbir.Workflow.TransactionBasicWorkflow.#InvokeServiceOperation(SPPC.Tadbir.Workflow.StateOperation)", Justification = "Object is disposed only once.")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Scope = "member", Target = "SPPC.Tadbir.Workflow.TransactionWorkflow.#PrepareMultiple(System.Collections.Generic.IEnumerable`1<System.Int32>,System.String)", Justification = "Object is disposed only once.")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Scope = "member", Target = "SPPC.Tadbir.Workflow.TransactionWorkflow.#PrepareMultiple(System.Collections.Generic.IEnumerable`1<System.Int32>,System.String)", Justification = "Parameter is validated using Verify utility class.")]
 
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.

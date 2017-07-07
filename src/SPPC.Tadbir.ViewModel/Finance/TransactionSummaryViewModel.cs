@@ -16,6 +16,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int Id { get; set; }
 
         /// <summary>
+        /// شماره سند مالی که می تواند شامل اعداد و حروف باشد
+        /// </summary>
+        public virtual string No { get; set; }
+
+        /// <summary>
         /// جمع مقادیر بدهکار در آرتیکل های سند
         /// </summary>
         public decimal DebitSum { get; set; }

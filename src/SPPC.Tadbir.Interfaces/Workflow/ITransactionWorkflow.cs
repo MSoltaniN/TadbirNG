@@ -53,7 +53,8 @@ namespace SPPC.Tadbir.Workflow
         /// مجموعه ای از اسناد مالی پیش نویس را در حالت ثبت نشده و وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
         /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
-        void PrepareMultiple(IEnumerable<int> transactions);
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        void PrepareMultiple(IEnumerable<int> transactions, string paraph = null);
 
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت نشده و تنظیم شده را در وضعیت عملیاتی بررسی شده قرار می دهد.

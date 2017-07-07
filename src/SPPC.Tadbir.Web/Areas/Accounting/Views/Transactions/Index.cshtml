@@ -30,6 +30,7 @@
         .GetConfiguredContainer()
         .Resolve<ISecurityContextManager>();
     var currentContext = contextManager.CurrentContext;
+    int itemCount = Model.Count;
 }
 
 <ol class="breadcrumb">
@@ -41,101 +42,119 @@
     <h3>@title</h3>
 </div>
 
-@if(currentContext.HasPermissions(Permissions.Transaction.Create))
+@using (Html.BeginForm("index", "transactions", FormMethod.Post, new { id = "form", name = "form" }))
 {
-<p>
-    @Html.ActionLink(createTitle, "create", "transactions", new { }, new { @class = "btn btn-sm btn-primary" })
-    <span class="pull-left">@pageInfo</span>
-</p>
-}
+    @Html.AntiForgeryToken()
 
-<table class="table table-bordered table-striped table-responsive table-hover">
-    <thead>
-        <tr>
-            <th>@FieldNames.NumberField</th>
-            <th>@FieldNames.DateField</th>
-            <th>@FieldNames.DescriptionField</th>
-            <th>@FieldNames.StatusField</th>
-            <th>@FieldNames.OperationalStatusField</th>
-            <th>@FieldNames.DebitSumField</th>
-            <th>@FieldNames.CreditSumField</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            string debit = item.DebitSum.ToString("C0", persianCulture);
-            string credit = item.CreditSum.ToString("C0", persianCulture);
-            string status = TransactionStatus.ToLocalValue(item.Status);
-            string opStatus = DocumentStatus.ToLocalValue(item.OperationalStatus);
+    if (currentContext.HasPermissions(Permissions.Transaction.Create))
+    {
+        <p>
+            @Html.ActionLink(createTitle, "create", "transactions", new { }, new { @class = "btn btn-sm btn-primary" })
+            <span class="pull-left">@pageInfo</span>
+        </p>
+    }
+
+    <table class="table table-bordered table-striped table-responsive table-hover">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.No)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td title="@item.Description">
-                    @item.Description.AutoEllipsis(50)
-                </td>
-                <td>
-                    @status
-                </td>
-                <td>
-                    @opStatus
-                </td>
-                <td>
-                    @debit
-                </td>
-                <td>
-                    @credit
-                </td>
-                <td>
-                @if (currentContext.HasPermissions(Permissions.Transaction.Edit))
-                {
-                    @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id })<span> | </span>
-                }
-                    @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id })
-                @if (currentContext.HasPermissions(Permissions.Transaction.Delete))
-                {
-                    <span> | </span>@Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
-                }
-                @if (item.OperationalStatus == DocumentStatus.Created && currentContext.HasPermissions(Permissions.Transaction.Prepare))
-                {
-                    <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Prepare), "prepare", new { id = item.Id }, new { id = String.Format("prepare-action{0}", item.Id) })
-                }
-                @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentAction.Review)
-                {
-                    <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Review), "review", new { id = item.Id }, new { id = String.Format("review-action{0}", item.Id) })
-                }
-                @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentAction.Confirm)
-                {
-                    <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Confirm), "confirm", new { id = item.Id }, new { id = String.Format("confirm-action{0}", item.Id) })
-                    <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Reject), "reject", new { id = item.Id }, new { id = String.Format("reject-action{0}", item.Id) })
-                }
-                @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentAction.Approve)
-                {
-                    <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Approve), "approve", new { id = item.Id }, new { id = String.Format("approve-action{0}", item.Id) })
-                }
-                </td>
+                <th></th>
+                <th>@FieldNames.NumberField</th>
+                <th>@FieldNames.DateField</th>
+                <th>@FieldNames.DescriptionField</th>
+                <th>@FieldNames.StatusField</th>
+                <th>@FieldNames.OperationalStatusField</th>
+                <th>@FieldNames.DebitSumField</th>
+                <th>@FieldNames.CreditSumField</th>
+                <th></th>
             </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < itemCount; i++)
+            {
+                var item = Model[i];
+                string debit = item.DebitSum.ToString("C0", persianCulture);
+                string credit = item.CreditSum.ToString("C0", persianCulture);
+                string status = TransactionStatus.ToLocalValue(item.Status);
+                string opStatus = DocumentStatus.ToLocalValue(item.OperationalStatus);
+                @Html.HiddenFor(modelItem => Model[i].Id);
+                <tr>
+                    <td>
+                        <input type="checkbox" name="@String.Format("[{0}].IsSelected", i)" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td title="@item.Description">
+                        @item.Description.AutoEllipsis(50)
+                    </td>
+                    <td>
+                        @status
+                    </td>
+                    <td>
+                        @opStatus
+                    </td>
+                    <td>
+                        @debit
+                    </td>
+                    <td>
+                        @credit
+                    </td>
+                    <td>
+                        @if (currentContext.HasPermissions(Permissions.Transaction.Edit))
+                        {
+                            @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id })<span> | </span>
+                        }
+                        @Html.ActionLink(LocalStrings.Details, "details", new { id = item.Id })
+                        @if (currentContext.HasPermissions(Permissions.Transaction.Delete))
+                        {
+                            <span> | </span>@Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
+                        }
+                        @if (item.OperationalStatus == DocumentStatus.Created && currentContext.HasPermissions(Permissions.Transaction.Prepare))
+                        {
+                            <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Prepare), "prepare", new { id = item.Id }, new { id = String.Format("prepare-action{0}", item.Id) })
+                        }
+                        @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentAction.Review)
+                        {
+                            <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Review), "review", new { id = item.Id }, new { id = String.Format("review-action{0}", item.Id) })
+                        }
+                        @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentAction.Confirm)
+                        {
+                            <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Confirm), "confirm", new { id = item.Id }, new { id = String.Format("confirm-action{0}", item.Id) })
+                            <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Reject), "reject", new { id = item.Id }, new { id = String.Format("reject-action{0}", item.Id) })
+                        }
+                        @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentAction.Approve)
+                        {
+                            <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Approve), "approve", new { id = item.Id }, new { id = String.Format("approve-action{0}", item.Id) })
+                        }
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td colspan="4">@Strings.Total</td>
+                <td>@Model.Sum(item => item.DebitSum).ToString("C0", persianCulture)</td>
+                <td>@Model.Sum(item => item.CreditSum).ToString("C0", persianCulture)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="pull-left">
+        @if (currentContext.HasPermissions(Permissions.Transaction.Prepare))
+        {
+            <input type="submit" class="btn btn-primary" name="submit-prepare" value="@Strings.GroupPrepare" />
         }
-        <tr>
-            <td colspan="4">@Strings.Total</td>
-            <td>@Model.Sum(item => item.DebitSum).ToString("C0", persianCulture)</td>
-            <td>@Model.Sum(item => item.CreditSum).ToString("C0", persianCulture)</td>
-        </tr>
-    </tbody>
-</table>
+    </div>
 
-@Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+    @Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
 
-@if (currentContext.HasPermissions(Permissions.Transaction.Create))
-{
-<p>
-    @Html.ActionLink(createTitle, "create", "transactions", new { }, new { @class = "btn btn-sm btn-primary" })
-</p>
+    if (currentContext.HasPermissions(Permissions.Transaction.Create))
+    {
+        <p>
+            @Html.ActionLink(createTitle, "create", "transactions", new { }, new { @class = "btn btn-sm btn-primary" })
+        </p>
+    }
 }
 
 @section scripts {

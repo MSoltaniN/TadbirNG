@@ -112,6 +112,13 @@ namespace SPPC.Tadbir.Service
         /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
         ServiceResponse ApproveTransaction(int transactionId, string paraph = null);
 
+        /// <summary>
+        /// Updates operational status of multiple financial transactions to Prepared.
+        /// </summary>
+        /// <param name="transactions">Unique identifiers of transactions to prepare</param>
+        /// <param name="paraph">Optional remarks that user can enter before completing the action</param>
+        ServiceResponse PrepareTransactions(IEnumerable<int> transactions, string paraph = null);
+
         #endregion
     }
 }

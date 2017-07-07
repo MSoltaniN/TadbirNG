@@ -259,6 +259,16 @@ namespace SPPC.Tadbir.Values
         public const string Default = "پیش فرض";
 
         /// <summary>
+        /// Localized text for Group Action
+        /// </summary>
+        public const string GroupAction = "اقدام گروهی";
+
+        /// <summary>
+        /// Localized text for Group Prepare
+        /// </summary>
+        public const string GroupPrepare = "تنظیم گروهی";
+
+        /// <summary>
         /// Localized text for the text indicating that an account is used in financial transactions and cannot be deleted.
         /// </summary>
         public static readonly string CannotDeleteUsedAccount = "حساب {0} در یک یا چند سند مالی استفاده شده و قابل حذف نیست.";
@@ -297,6 +307,6 @@ namespace SPPC.Tadbir.Values
         /// <summary>
         /// Localized text for a message indicating that a requested operation is not allowed on a document.
         /// </summary>
-        public static readonly string InvalidDocumentOperation = "اقدام '{0}' برای {1} '{2}' غیر مجاز است.";
+        public static readonly string InvalidDocumentOperation = "{0} شماره {1} : اقدام '{2}' برای {0} '{3}' غیر مجاز است.";
     }
 }

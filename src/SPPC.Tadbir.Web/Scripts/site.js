@@ -7,6 +7,7 @@ $(function () {
     setupCaptcha();
 });
 
+
 /*
  * confirmDelete
  *   Provides a very simple client-side mechanism for cancelling a delete operation
@@ -20,6 +21,7 @@ function confirmDelete(e) {
         e.preventDefault();
     }
 }
+
 
 /*
  * promptForParaph
@@ -46,6 +48,7 @@ function promptForParaph(e) {
     } 
 }
 
+
 /*
  * setupDatePickers
  *   Prepares date picker components inside the page, if any.
@@ -71,6 +74,7 @@ function setupDatePickers() {
     }
 }
 
+
 /*
  * setupCaptcha
  *   Prepares event handlers for captcha challenge generation and initializes first challenge, if required.
@@ -89,6 +93,7 @@ function setupCaptcha() {
         event.preventDefault();
     });
 }
+
 
 /*
  * getNewChallenge

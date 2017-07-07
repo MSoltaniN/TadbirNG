@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
+using SwForAll.Platform.Common;
 
 namespace SPPC.Tadbir.Workflow
 {
@@ -105,9 +106,21 @@ namespace SPPC.Tadbir.Workflow
         /// مجموعه ای از اسناد مالی پیش نویس را در حالت ثبت نشده و وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
         /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
-        public void PrepareMultiple(IEnumerable<int> transactions)
+        /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
+        public virtual void PrepareMultiple(IEnumerable<int> transactions, string paraph = null)
         {
-            throw new NotImplementedException();
+            Verify.ArgumentNotNull(transactions, "transactions");
+            using (var client = new DocumentStateClient())
+            {
+                foreach (int transactionId in transactions)
+                {
+                    var prepare = StateOperation.Prepare(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                    client.Prepare(prepare);
+                    LogOperation(transactionId, "Prepare", "prepared");
+                }
+
+                client.Close();
+            }
         }
 
         /// <summary>

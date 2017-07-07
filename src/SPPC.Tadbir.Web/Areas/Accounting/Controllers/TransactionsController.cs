@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Web.Mvc;
+using System.Web.Routing;
 using PagedList;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Filters;
 using SwForAll.Platform.Common;
@@ -29,6 +31,27 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(transactions.ToPagedList(pageNumber, pageSize));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(IList<SelectedItemViewModel> allItems)
+        {
+            Verify.ArgumentNotNull(allItems, "allItems");
+            for (int i = 0; i < allItems.Count; i++)
+            {
+                var item = allItems[i];
+                item.IsSelected = Request.Form.AllKeys.Contains(String.Format("[{0}].IsSelected", i));
+            }
+
+            ActionResult result = null;
+            var routeValues = GetGroupOperationRouteValues(allItems);
+            if (Request.Form.AllKeys.Contains("submit-prepare"))
+            {
+                result = RedirectToAction("GroupPrepare", routeValues);
+            }
+
+            return result;
         }
 
         // GET: accounting/transactions/create
@@ -189,6 +212,29 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return GetNextResult(response);
         }
 
+        // GET: accounting/transactions/prepare?id1={id1}&id2={id2}&...[&paraph={encoded-text}]
+        [ActionName("GroupPrepare")]
+        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
+        public ActionResult Prepare(string paraph = null)
+        {
+            var items = GetGroupOperationItems();
+            var response = _service.PrepareTransactions(items, paraph);
+            return GetNextResult(response);
+        }
+
+        private static RouteValueDictionary GetGroupOperationRouteValues(IList<SelectedItemViewModel> allItems)
+        {
+            var routeValues = new RouteValueDictionary();
+            int index = 0;
+            foreach (var item in allItems.Where(i => i.IsSelected))
+            {
+                routeValues.Add(String.Format("id{0}", index), item.Id);
+                index++;
+            }
+
+            return routeValues;
+        }
+
         private ActionResult GetNextResult(ServiceResponse response)
         {
             ActionResult nextResult = RedirectToAction("index");
@@ -202,6 +248,14 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             }
 
             return nextResult;
+        }
+
+        private IEnumerable<int> GetGroupOperationItems()
+        {
+            var items = new List<int>(Request.QueryString.AllKeys
+                .Where(k => k != "paraph")
+                .Select(k => Int32.Parse(Request.QueryString[k])));
+            return items;
         }
 
         private ITransactionService _service;

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Web.Http;
 using Microsoft.Practices.Unity;
@@ -371,6 +373,26 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // PUT: api/transactions/{transactionId:int}/prepare
+        [Route(TransactionApi.PrepareTransactionsUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
+        public IHttpActionResult PutTransactionsAsPrepared([FromBody] ActionDetailViewModel detail)
+        {
+            if (detail == null)
+            {
+                return BadRequest("Could not put transaction as Prepared because operation detail is null.");
+            }
+
+            string message = ValidateGroupStateOperation(DocumentAction.Prepare, detail.Items.ToArray());
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequest(message);
+            }
+
+            _workflow.PrepareMultiple(detail.Items, detail.Paraph);
+            return Ok();
+        }
+
         #endregion
 
         private void ConfigureWorkflow(ISettingsRepository settingsRepository, ISecurityContextManager contextManager)
@@ -380,6 +402,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _workflow = UnityConfig.GetConfiguredContainer()
                 .Resolve<ITransactionWorkflow>(edition.Provider);
             _workflow.ContextManager = contextManager;
+        }
+
+        private string ValidateGroupStateOperation(string operation, int[] transactions)
+        {
+            var messages = transactions
+                .Select(item => ValidateStateOperation(operation, item))
+                .Where(msg => !String.IsNullOrEmpty(msg))
+                .ToArray();
+            return String.Join(Environment.NewLine, messages);
         }
 
         private string ValidateStateOperation(string operation, int transactionId)
@@ -394,8 +425,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 result = String.Format(
                     Strings.InvalidDocumentOperation,
-                    DocumentAction.ToLocalValue(operation),
                     Entities.TransactionLongName,
+                    summary.No,
+                    DocumentAction.ToLocalValue(operation),
                     DocumentStatus.ToLocalValue(summary.OperationalStatus));
             }
 
