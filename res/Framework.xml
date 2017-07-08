@@ -727,6 +727,499 @@
         <Relation multiplicity="ManyToOne" endpointName="User" entityName="User" hasKey="False" joinTable="" description="کاربر ایجاد کننده کار" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
+    <Entity name="WorkflowInstanceEvent" area="Workflow.Tracking" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="WorkflowInstanceEventID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="WorkflowInstanceId" type="Guid" isValidated="True" description="Identifier of the generating workflow instance" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtWorkflowInstanceId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="WorkflowInstanceId" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Workflow Instance Id" visible="True" width="120" />
+          <ValidationRule name="WorkflowInstanceId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ActivityDefinition" type="String" isValidated="True" description="Display name of the root activity of the workflow that generated this record" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityDefinition" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityDefinition" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Activity Definition" visible="True" width="120" />
+          <ValidationRule name="ActivityDefinition_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="RecordNumber" type="Int64" isValidated="True" description="A sequence that defines the order in which tracking records are generated" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnRecordNumber" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="RecordNumber" type="bigint" nullable="False" />
+          <ColumnView name="Record Number" visible="True" width="120" />
+          <ValidationRule name="RecordNumber_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="State" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtState" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="State" type="nvarchar(128)" nullable="True" />
+          <ColumnView name="State" visible="True" width="120" />
+          <ValidationRule name="State_Validation" required="False" minimum="" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="TraceLevelId" type="Byte" isValidated="True" description="TraceLevel of the event" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnTraceLevelId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="TraceLevelId" type="tinyint" nullable="True" />
+          <ColumnView name="Trace Level Id" visible="True" width="120" />
+          <ValidationRule name="TraceLevelId_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="Reason" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtReason" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Reason" type="nvarchar(2048)" nullable="True" />
+          <ColumnView name="Reason" visible="True" width="120" />
+          <ValidationRule name="Reason_Validation" required="False" minimum="" maximum="2048" format="" type="Length" />
+        </Property>
+        <Property name="ExceptionDetails" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtExceptionDetails" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ExceptionDetails" type="nvarchar(max)" nullable="True" />
+          <ColumnView name="Exception Details" visible="True" width="120" />
+          <ValidationRule name="ExceptionDetails_Validation" required="False" minimum="" maximum="" format="" type="Length" />
+        </Property>
+        <Property name="SerializedAnnotations" type="String" isValidated="True" description="A collection of name/value pairs that are added to this tracking record" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtSerializedAnnotations" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="SerializedAnnotations" type="nvarchar(max)" nullable="True" />
+          <ColumnView name="Serialized Annotations" visible="True" width="120" />
+          <ValidationRule name="SerializedAnnotations_Validation" required="False" minimum="" maximum="" format="" type="Length" />
+        </Property>
+        <Property name="TimeCreated" type="DateTime" isValidated="True" description="Date and time the tracking record occurred" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpTimeCreated" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="TimeCreated" type="datetime" nullable="False" />
+          <ColumnView name="Time Created" visible="True" width="120" />
+          <ValidationRule name="TimeCreated_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations />
+    </Entity>
+    <Entity name="ActivityInstanceEvent" area="Workflow.Tracking" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="ActivityInstanceEventID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="WorkflowInstanceId" type="Guid" isValidated="True" description="Identifier of the generating workflow instance" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtWorkflowInstanceId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="WorkflowInstanceId" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Workflow Instance Id" visible="True" width="120" />
+          <ValidationRule name="WorkflowInstanceId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="RecordNumber" type="Int64" isValidated="True" description="A sequence that defines the order in which tracking records are generated" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnRecordNumber" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="RecordNumber" type="bigint" nullable="False" />
+          <ColumnView name="Record Number" visible="True" width="120" />
+          <ValidationRule name="RecordNumber_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="State" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtState" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="State" type="nvarchar(128)" nullable="True" />
+          <ColumnView name="State" visible="True" width="120" />
+          <ValidationRule name="State_Validation" required="False" minimum="" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="TraceLevelId" type="Byte" isValidated="True" description="TraceLevel of the event" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnTraceLevelId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="TraceLevelId" type="tinyint" nullable="True" />
+          <ColumnView name="Trace Level Id" visible="True" width="120" />
+          <ValidationRule name="TraceLevelId_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ActivityRecordType" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityRecordType" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityRecordType" type="nvarchar(128)" nullable="False" />
+          <ColumnView name="Activity Record Type" visible="True" width="120" />
+          <ValidationRule name="ActivityRecordType_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="ActivityName" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityName" type="nvarchar(1024)" nullable="True" />
+          <ColumnView name="Activity Name" visible="True" width="120" />
+          <ValidationRule name="ActivityName_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
+        </Property>
+        <Property name="ActivityId" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityId" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Activity Id" visible="True" width="120" />
+          <ValidationRule name="ActivityId_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="ActivityInstanceId" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityInstanceId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityInstanceId" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Activity Instance Id" visible="True" width="120" />
+          <ValidationRule name="ActivityInstanceId_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="ActivityType" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityType" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityType" type="nvarchar(2048)" nullable="True" />
+          <ColumnView name="Activity Type" visible="True" width="120" />
+          <ValidationRule name="ActivityType_Validation" required="False" minimum="" maximum="2048" format="" type="Length" />
+        </Property>
+        <Property name="SerializedArguments" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtSerializedArguments" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="SerializedArguments" type="nvarchar(max)" nullable="True" />
+          <ColumnView name="Serialized Arguments" visible="True" width="120" />
+          <ValidationRule name="SerializedArguments_Validation" required="False" minimum="" maximum="" format="" type="Length" />
+        </Property>
+        <Property name="SerializedVariables" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtSerializedVariables" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="SerializedVariables" type="nvarchar(max)" nullable="True" />
+          <ColumnView name="Serialized Variables" visible="True" width="120" />
+          <ValidationRule name="SerializedVariables_Validation" required="False" minimum="" maximum="" format="" type="Length" />
+        </Property>
+        <Property name="SerializedAnnotations" type="String" isValidated="True" description="A collection of name/value pairs that are added to this tracking record" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtSerializedAnnotations" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="SerializedAnnotations" type="nvarchar(max)" nullable="True" />
+          <ColumnView name="Serialized Annotations" visible="True" width="120" />
+          <ValidationRule name="SerializedAnnotations_Validation" required="False" minimum="" maximum="" format="" type="Length" />
+        </Property>
+        <Property name="TimeCreated" type="DateTime" isValidated="True" description="Date and time the tracking record occurred" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpTimeCreated" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="TimeCreated" type="datetime" nullable="False" />
+          <ColumnView name="Time Created" visible="True" width="120" />
+          <ValidationRule name="TimeCreated_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations />
+    </Entity>
+    <Entity name="ExtendedActivityEvent" area="Workflow.Tracking" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="ExtendedActivityEventID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="WorkflowInstanceId" type="Guid" isValidated="True" description="Identifier of the generating workflow instance" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtWorkflowInstanceId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="WorkflowInstanceId" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Workflow Instance Id" visible="True" width="120" />
+          <ValidationRule name="WorkflowInstanceId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="RecordNumber" type="Int64" isValidated="True" description="A sequence that defines the order in which tracking records are generated" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnRecordNumber" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="RecordNumber" type="bigint" nullable="True" />
+          <ColumnView name="Record Number" visible="True" width="120" />
+          <ValidationRule name="RecordNumber_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="TraceLevelId" type="Byte" isValidated="True" description="TraceLevel of the event" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnTraceLevelId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="TraceLevelId" type="tinyint" nullable="True" />
+          <ColumnView name="Trace Level Id" visible="True" width="120" />
+          <ValidationRule name="TraceLevelId_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ActivityRecordType" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityRecordType" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityRecordType" type="nvarchar(128)" nullable="False" />
+          <ColumnView name="Activity Record Type" visible="True" width="120" />
+          <ValidationRule name="ActivityRecordType_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+        </Property>
+        <Property name="ActivityName" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityName" type="nvarchar(1024)" nullable="True" />
+          <ColumnView name="Activity Name" visible="True" width="120" />
+          <ValidationRule name="ActivityName_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
+        </Property>
+        <Property name="ActivityId" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityId" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Activity Id" visible="True" width="120" />
+          <ValidationRule name="ActivityId_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="ActivityInstanceId" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityInstanceId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityInstanceId" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Activity Instance Id" visible="True" width="120" />
+          <ValidationRule name="ActivityInstanceId_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="ActivityType" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityType" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityType" type="nvarchar(2048)" nullable="True" />
+          <ColumnView name="Activity Type" visible="True" width="120" />
+          <ValidationRule name="ActivityType_Validation" required="False" minimum="" maximum="2048" format="" type="Length" />
+        </Property>
+        <Property name="ChildActivityName" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtChildActivityName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ChildActivityName" type="nvarchar(1024)" nullable="True" />
+          <ColumnView name="Child Activity Name" visible="True" width="120" />
+          <ValidationRule name="ChildActivityName_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
+        </Property>
+        <Property name="ChildActivityId" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtChildActivityId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ChildActivityId" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Child Activity Id" visible="True" width="120" />
+          <ValidationRule name="ChildActivityId_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="ChildActivityInstanceId" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtChildActivityInstanceId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ChildActivityInstanceId" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Child Activity Instance Id" visible="True" width="120" />
+          <ValidationRule name="ChildActivityInstanceId_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="ChildActivityType" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtChildActivityType" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ChildActivityType" type="nvarchar(2048)" nullable="True" />
+          <ColumnView name="Child Activity Type" visible="True" width="120" />
+          <ValidationRule name="ChildActivityType_Validation" required="False" minimum="" maximum="2048" format="" type="Length" />
+        </Property>
+        <Property name="FaultDetails" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtFaultDetails" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="FaultDetails" type="nvarchar(max)" nullable="True" />
+          <ColumnView name="Fault Details" visible="True" width="120" />
+          <ValidationRule name="FaultDetails_Validation" required="False" minimum="" maximum="" format="" type="Length" />
+        </Property>
+        <Property name="FaultHandlerActivityName" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtFaultHandlerActivityName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="FaultHandlerActivityName" type="nvarchar(1024)" nullable="True" />
+          <ColumnView name="Fault Handler Activity Name" visible="True" width="120" />
+          <ValidationRule name="FaultHandlerActivityName_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
+        </Property>
+        <Property name="FaultHandlerActivityId" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtFaultHandlerActivityId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="FaultHandlerActivityId" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Fault Handler Activity Id" visible="True" width="120" />
+          <ValidationRule name="FaultHandlerActivityId_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="FaultHandlerActivityInstanceId" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtFaultHandlerActivityInstanceId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="FaultHandlerActivityInstanceId" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Fault Handler Activity Instance Id" visible="True" width="120" />
+          <ValidationRule name="FaultHandlerActivityInstanceId_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="FaultHandlerActivityType" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtFaultHandlerActivityType" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="FaultHandlerActivityType" type="nvarchar(2048)" nullable="True" />
+          <ColumnView name="Fault Handler Activity Type" visible="True" width="120" />
+          <ValidationRule name="FaultHandlerActivityType_Validation" required="False" minimum="" maximum="2048" format="" type="Length" />
+        </Property>
+        <Property name="SerializedAnnotations" type="String" isValidated="True" description="A collection of name/value pairs that are added to this tracking record" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtSerializedAnnotations" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="SerializedAnnotations" type="nvarchar(max)" nullable="True" />
+          <ColumnView name="Serialized Annotations" visible="True" width="120" />
+          <ValidationRule name="SerializedAnnotations_Validation" required="False" minimum="" maximum="" format="" type="Length" />
+        </Property>
+        <Property name="TimeCreated" type="DateTime" isValidated="True" description="Date and time the tracking record occurred" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpTimeCreated" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="TimeCreated" type="datetime" nullable="False" />
+          <ColumnView name="Time Created" visible="True" width="120" />
+          <ValidationRule name="TimeCreated_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations />
+    </Entity>
+    <Entity name="BookmarkResumptionEvent" area="Workflow.Tracking" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="BookmarkResumptionEventID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="WorkflowInstanceId" type="Guid" isValidated="True" description="Identifier of the generating workflow instance" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtWorkflowInstanceId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="WorkflowInstanceId" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Workflow Instance Id" visible="True" width="120" />
+          <ValidationRule name="WorkflowInstanceId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="RecordNumber" type="Int64" isValidated="True" description="A sequence that defines the order in which tracking records are generated" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnRecordNumber" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="RecordNumber" type="bigint" nullable="True" />
+          <ColumnView name="Record Number" visible="True" width="120" />
+          <ValidationRule name="RecordNumber_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="TraceLevelId" type="Byte" isValidated="True" description="TraceLevel of the event" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnTraceLevelId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="TraceLevelId" type="tinyint" nullable="True" />
+          <ColumnView name="Trace Level Id" visible="True" width="120" />
+          <ValidationRule name="TraceLevelId_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="BookmarkName" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtBookmarkName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="BookmarkName" type="nvarchar(1024)" nullable="True" />
+          <ColumnView name="Bookmark Name" visible="True" width="120" />
+          <ValidationRule name="BookmarkName_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
+        </Property>
+        <Property name="BookmarkScope" type="Guid" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtBookmarkScope" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="BookmarkScope" type="uniqueidentifier" nullable="True" />
+          <ColumnView name="Bookmark Scope" visible="True" width="120" />
+          <ValidationRule name="BookmarkScope_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="OwnerActivityName" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtOwnerActivityName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="OwnerActivityName" type="nvarchar(1024)" nullable="True" />
+          <ColumnView name="Owner Activity Name" visible="True" width="120" />
+          <ValidationRule name="OwnerActivityName_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
+        </Property>
+        <Property name="OwnerActivityId" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtOwnerActivityId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="OwnerActivityId" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Owner Activity Id" visible="True" width="120" />
+          <ValidationRule name="OwnerActivityId_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="OwnerActivityInstanceId" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtOwnerActivityInstanceId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="OwnerActivityInstanceId" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Owner Activity Instance Id" visible="True" width="120" />
+          <ValidationRule name="OwnerActivityInstanceId_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="OwnerActivityType" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtOwnerActivityType" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="OwnerActivityType" type="nvarchar(2048)" nullable="True" />
+          <ColumnView name="Owner Activity Type" visible="True" width="120" />
+          <ValidationRule name="OwnerActivityType_Validation" required="False" minimum="" maximum="2048" format="" type="Length" />
+        </Property>
+        <Property name="SerializedAnnotations" type="String" isValidated="True" description="A collection of name/value pairs that are added to this tracking record" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtSerializedAnnotations" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="SerializedAnnotations" type="nvarchar(max)" nullable="True" />
+          <ColumnView name="Serialized Annotations" visible="True" width="120" />
+          <ValidationRule name="SerializedAnnotations_Validation" required="False" minimum="" maximum="" format="" type="Length" />
+        </Property>
+        <Property name="TimeCreated" type="DateTime" isValidated="True" description="Date and time the tracking record occurred" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpTimeCreated" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="TimeCreated" type="datetime" nullable="False" />
+          <ColumnView name="Time Created" visible="True" width="120" />
+          <ValidationRule name="TimeCreated_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations />
+    </Entity>
+    <Entity name="CustomTrackingEvent" area="Workflow.Tracking" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="CustomTrackingEventID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="WorkflowInstanceId" type="Guid" isValidated="True" description="Identifier of the generating workflow instance" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtWorkflowInstanceId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="WorkflowInstanceId" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Workflow Instance Id" visible="True" width="120" />
+          <ValidationRule name="WorkflowInstanceId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="RecordNumber" type="Int64" isValidated="True" description="A sequence that defines the order in which tracking records are generated" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnRecordNumber" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="RecordNumber" type="bigint" nullable="True" />
+          <ColumnView name="Record Number" visible="True" width="120" />
+          <ValidationRule name="RecordNumber_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="TraceLevelId" type="Byte" isValidated="True" description="TraceLevel of the event" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnTraceLevelId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="TraceLevelId" type="tinyint" nullable="True" />
+          <ColumnView name="Trace Level Id" visible="True" width="120" />
+          <ValidationRule name="TraceLevelId_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="CustomRecordName" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCustomRecordName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="CustomRecordName" type="nvarchar(2048)" nullable="True" />
+          <ColumnView name="Custom Record Name" visible="True" width="120" />
+          <ValidationRule name="CustomRecordName_Validation" required="False" minimum="" maximum="2048" format="" type="Length" />
+        </Property>
+        <Property name="ActivityName" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityName" type="nvarchar(1024)" nullable="True" />
+          <ColumnView name="Activity Name" visible="True" width="120" />
+          <ValidationRule name="ActivityName_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
+        </Property>
+        <Property name="ActivityId" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityId" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Activity Id" visible="True" width="120" />
+          <ValidationRule name="ActivityId_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="ActivityInstanceId" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityInstanceId" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityInstanceId" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Activity Instance Id" visible="True" width="120" />
+          <ValidationRule name="ActivityInstanceId_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="ActivityType" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtActivityType" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="ActivityType" type="nvarchar(2048)" nullable="True" />
+          <ColumnView name="Activity Type" visible="True" width="120" />
+          <ValidationRule name="ActivityType_Validation" required="False" minimum="" maximum="2048" format="" type="Length" />
+        </Property>
+        <Property name="SerializedData" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtSerializedData" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="SerializedData" type="nvarchar(max)" nullable="True" />
+          <ColumnView name="Serialized Data" visible="True" width="120" />
+          <ValidationRule name="SerializedData_Validation" required="False" minimum="" maximum="" format="" type="Length" />
+        </Property>
+        <Property name="SerializedAnnotations" type="String" isValidated="True" description="A collection of name/value pairs that are added to this tracking record" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtSerializedAnnotations" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="SerializedAnnotations" type="nvarchar(max)" nullable="True" />
+          <ColumnView name="Serialized Annotations" visible="True" width="120" />
+          <ValidationRule name="SerializedAnnotations_Validation" required="False" minimum="" maximum="" format="" type="Length" />
+        </Property>
+        <Property name="TimeCreated" type="DateTime" isValidated="True" description="Date and time the tracking record occurred" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpTimeCreated" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="TimeCreated" type="datetime" nullable="False" />
+          <ColumnView name="Time Created" visible="True" width="120" />
+          <ValidationRule name="TimeCreated_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations />
+    </Entity>
   </Entities>
   <Storage name="Framework.xml" connection="D:\GitHub\babaksoft\Projects\SPPC\framework\res" media="XmlFile" />
 </Repository>

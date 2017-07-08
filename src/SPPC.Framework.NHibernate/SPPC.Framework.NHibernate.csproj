@@ -82,6 +82,11 @@
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Mapping\Workflow\Tracking\ActivityInstanceEventMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\Tracking\BookmarkResumptionEventMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\Tracking\CustomTrackingEventMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\Tracking\ExtendedActivityEventMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\Tracking\WorkflowInstanceEventMap.Generated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -107,7 +112,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Mapping\" />
     <Folder Include="Repository\" />
   </ItemGroup>
   <ItemGroup>

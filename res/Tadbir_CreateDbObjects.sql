@@ -23,6 +23,9 @@ GO
 CREATE SCHEMA [Workflow]
 GO
 
+CREATE SCHEMA [Workflow.Tracking]
+GO
+
 CREATE TABLE [Finance].[Currency] (
     [CurrencyID]     INT              IDENTITY (1, 1) NOT NULL,
     [Name]           NVARCHAR(64)     NOT NULL,
@@ -274,6 +277,99 @@ CREATE TABLE [Workflow].[WorkItemHistory] (
     , CONSTRAINT [PK_WorkItemHistory] PRIMARY KEY CLUSTERED ([HistoryItemID] ASC)
     , CONSTRAINT [FK_Workflow_WorkItemHistory_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User] ([UserID])
 )
+GO
+
+CREATE TABLE [Workflow.Tracking].[WorkflowInstanceEvent] (
+	[EventID]                    INT IDENTITY(1,1) NOT NULL,
+	[WorkflowInstanceId]         UNIQUEIDENTIFIER NOT NULL,
+	[ActivityDefinition]         NVARCHAR(256) NULL,
+	[RecordNumber]               BIGINT NOT NULL,
+	[State]                      NVARCHAR(128) NULL,
+	[TraceLevelId]               TINYINT NULL,
+	[Reason]                     NVARCHAR(2048) NULL,
+	[ExceptionDetails]           NVARCHAR(MAX) NULL,
+	[SerializedAnnotations]      NVARCHAR(MAX) NULL,
+	[TimeCreated]                DATETIME NOT NULL,
+	CONSTRAINT [PK_Workflow_Tracking_WorkflowInstanceEvent] PRIMARY KEY ([EventID]),
+);
+GO
+
+CREATE TABLE [Workflow.Tracking].[ActivityInstanceEvent] (
+	[EventID]               INT IDENTITY(1,1) NOT NULL,
+	[WorkflowInstanceId]    UNIQUEIDENTIFIER NOT NULL,
+	[RecordNumber]          BIGINT NOT NULL,
+	[State]                 NVARCHAR(128) NULL,
+	[TraceLevelId]          TINYINT NULL,
+	[ActivityRecordType]    NVARCHAR(128) NOT NULL,
+	[ActivityName]          NVARCHAR(1024) NULL,
+	[ActivityId]            NVARCHAR(256) NULL,
+	[ActivityInstanceId]    NVARCHAR(256) NULL,
+	[ActivityType]          NVARCHAR(2048) NULL,
+	[SerializedArguments]   NVARCHAR(MAX) NULL,
+	[SerializedVariables]   NVARCHAR(MAX) NULL,
+    [SerializedAnnotations] NVARCHAR(MAX) NULL,
+	[TimeCreated]           DATETIME NOT NULL,
+	CONSTRAINT [PK_Workflow_Tracking_ActivityInstanceEvent] PRIMARY KEY ([EventID]),
+);
+GO
+
+CREATE TABLE [Workflow.Tracking].[ExtendedActivityEvent] (
+	[EventID]                        INT IDENTITY(1,1) NOT NULL,
+	[WorkflowInstanceId]             UNIQUEIDENTIFIER NOT NULL,
+	[RecordNumber]                   BIGINT NULL,
+	[TraceLevelId]                   TINYINT NULL,
+	[ActivityRecordType]             NVARCHAR(128) NOT NULL,
+	[ActivityName]                   NVARCHAR(1024) NULL,
+	[ActivityId]                     NVARCHAR(256) NULL,
+	[ActivityInstanceId]             NVARCHAR(256) NULL,
+	[ActivityType]                   NVARCHAR(2048) NULL,
+	[ChildActivityName]              NVARCHAR(1024) NULL,
+	[ChildActivityId]                NVARCHAR(256) NULL,
+	[ChildActivityInstanceId]        NVARCHAR(256) NULL,
+	[ChildActivityType]              NVARCHAR(2048) NULL,
+	[FaultDetails]	                 NVARCHAR(MAX) NULL,
+	[FaultHandlerActivityName]       NVARCHAR(1024) NULL,
+	[FaultHandlerActivityId]         NVARCHAR(256) NULL,
+	[FaultHandlerActivityInstanceId] NVARCHAR(256) NULL,
+	[FaultHandlerActivityType]       NVARCHAR(2048) NULL,
+	[SerializedAnnotations]          NVARCHAR(MAX) NULL,
+	[TimeCreated]                    DATETIME NOT NULL,
+	CONSTRAINT [PK_Workflow_Tracking_ExtendedActivityInstanceEvent] PRIMARY KEY ([EventID]),
+);
+GO
+
+CREATE TABLE [Workflow.Tracking].[BookmarkResumptionEvent] ( 
+    [EventID]                 INT IDENTITY(1,1) NOT NULL,
+    [WorkflowInstanceId]      UNIQUEIDENTIFIER NOT NULL,
+    [RecordNumber]            BIGINT NULL,
+    [TraceLevelId]            TINYINT NULL,
+    [BookmarkName]            NVARCHAR(1024) NULL,
+    [BookmarkScope]           UNIQUEIDENTIFIER NULL,
+    [OwnerActivityName]       NVARCHAR(1024) NULL,
+    [OwnerActivityId]         NVARCHAR(256) NULL,
+    [OwnerActivityInstanceId] NVARCHAR(256) NULL,
+    [OwnerActivityType]       NVARCHAR(2048) NULL,
+    [SerializedAnnotations]   NVARCHAR(MAX) NULL,
+    [TimeCreated]             DATETIME NOT NULL,
+    CONSTRAINT [PK_Workflow_Tracking_BookmarkResumptionEvent] PRIMARY KEY ([EventID])
+);
+GO
+
+CREATE TABLE [Workflow.Tracking].[CustomTrackingEvent] (
+	[EventID]               INT IDENTITY(1,1) NOT NULL,
+	[WorkflowInstanceId]    UNIQUEIDENTIFIER NOT NULL,
+	[RecordNumber]          BIGINT NULL,
+	[TraceLevelId]          TINYINT NULL,
+	[CustomRecordName]      NVARCHAR(2048) NULL,
+	[ActivityName]          NVARCHAR(1024) NULL,
+	[ActivityId]            NVARCHAR(256) NULL,
+	[ActivityInstanceId]    NVARCHAR(256) NULL,
+	[ActivityType]          NVARCHAR(2048) NULL,
+	[SerializedData]        NVARCHAR(MAX) NULL,
+	[SerializedAnnotations] NVARCHAR(MAX) NULL,
+	[TimeCreated]           DATETIME NOT NULL,
+	CONSTRAINT [PK_Workflow_Tracking_CustomTrackingEvent] PRIMARY KEY ([EventID]),
+);
 GO
 
 -- Create system records for security (NOTE: These records will be migrated to SYS database in a later stage)
