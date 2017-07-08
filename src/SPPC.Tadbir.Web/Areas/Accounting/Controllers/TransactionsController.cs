@@ -33,6 +33,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return View(transactions.ToPagedList(pageNumber, pageSize));
         }
 
+        // POST: accounting/transactions
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Index(IList<SelectedItemViewModel> allItems)
@@ -315,7 +316,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         private IEnumerable<int> GetGroupOperationItems()
         {
             var items = new List<int>(Request.QueryString.AllKeys
-                .Where(k => k != "paraph")
+                .Where(k => k.StartsWith("id"))
                 .Select(k => Int32.Parse(Request.QueryString[k])));
             return items;
         }

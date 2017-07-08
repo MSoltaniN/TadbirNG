@@ -24,6 +24,7 @@
         .GetConfiguredContainer()
         .Resolve<ISecurityContextManager>();
     var currentContext = contextManager.CurrentContext;
+    int itemCount = Model.Count;
 }
 
 <ol class="breadcrumb">
@@ -36,81 +37,113 @@
 </div>
 <span class="pull-left">@pageInfo</span>
 
-<table class="table table-bordered table-striped table-responsive table-hover">
-    <thead>
-        <tr>
-            <th>@FieldNames.NumberField</th>
-            <th>@FieldNames.Subject</th>
-            <th>@FieldNames.DateField</th>
-            <th>@FieldNames.Time</th>
-            <th>@FieldNames.CreatedBy</th>
-            <th>@FieldNames.CartableRemarks</th>
-            <th>@FieldNames.DocumentType</th>
-            <th>@FieldNames.DocumentNo</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            string controller = String.Format("{0}s", item.DocumentType.ToLower());
+@using (Html.BeginForm("index", "cartable", FormMethod.Post, new { name = "selectForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <table class="table table-bordered table-striped table-responsive table-hover">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Number)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Date)
-                </td>
-                <td>
-                    @String.Format("{0}:{1}:{2}", item.Time.Hours, item.Time.Minutes.ToString("D2"), item.Time.Seconds.ToString("D2"))
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedBy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Remarks)
-                </td>
-                <td>
-                    @DocumentType.ToLocalValue(item.DocumentType)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DocumentNo)
-                </td>
-                <td>
-                @if (currentContext.HasPermissions(Permissions.Transaction.View))
-                {
-                    @Html.ActionLink(LocalStrings.View, "details", controller,
-                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
-                }
-                @if (item.DocumentStatus == DocumentStatus.Prepared && currentContext.HasPermissions(Permissions.Transaction.Review))
-                {
-                    <span> | </span>
-                    @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Review), "review", controller,
-                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("review-action{0}", item.Id) })
-                }
-                @if (item.DocumentStatus == DocumentStatus.Reviewed && currentContext.HasPermissions(Permissions.Transaction.Confirm))
-                {
-                    <span> | </span>
-                    @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Confirm), "confirm", controller,
-                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("confirm-action{0}", item.Id) })
-                    <span> | </span>
-                    @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Reject), "reject", controller,
-                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("reject-action{0}", item.Id) })
-                }
-                @if (item.DocumentStatus == DocumentStatus.Confirmed && currentContext.HasPermissions(Permissions.Transaction.Approve))
-                {
-                    <span> | </span>
-                    @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Approve), "approve", controller,
-                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("approve-action{0}", item.Id) })
-                }
-                </td>
+                <th></th>
+                <th>@FieldNames.NumberField</th>
+                <th>@FieldNames.Subject</th>
+                <th>@FieldNames.DateField</th>
+                <th>@FieldNames.Time</th>
+                <th>@FieldNames.CreatedBy</th>
+                <th>@FieldNames.CartableRemarks</th>
+                <th>@FieldNames.DocumentType</th>
+                <th>@FieldNames.DocumentNo</th>
+                <th></th>
             </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < itemCount; i++)
+            {
+                var item = Model[i];
+                string controller = String.Format("{0}s", item.DocumentType.ToLower());
+                <tr>
+                    <td>
+                        <input type="hidden" name="@String.Format("[{0}].Id", i)" value="@item.DocumentId" />
+                        <input type="checkbox" name="@String.Format("[{0}].IsSelected", i)" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @String.Format("{0}:{1}:{2}", item.Time.Hours, item.Time.Minutes.ToString("D2"), item.Time.Seconds.ToString("D2"))
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remarks)
+                    </td>
+                    <td>
+                        @DocumentType.ToLocalValue(item.DocumentType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DocumentNo)
+                    </td>
+                    <td>
+                        @if (currentContext.HasPermissions(Permissions.Transaction.View))
+                        {
+                            @Html.ActionLink(LocalStrings.View, "details", controller,
+                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
+                        }
+                        @if (item.DocumentStatus == DocumentStatus.Prepared && currentContext.HasPermissions(Permissions.Transaction.Review))
+                        {
+                            <span> | </span>
+                            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Review), "review", controller,
+                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("review-action{0}", item.Id) })
+                        }
+                        @if (item.DocumentStatus == DocumentStatus.Reviewed && currentContext.HasPermissions(Permissions.Transaction.Confirm))
+                        {
+                            <span> | </span>
+                            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Confirm), "confirm", controller,
+                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("confirm-action{0}", item.Id) })
+                            <span> | </span>
+                            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Reject), "reject", controller,
+                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("reject-action{0}", item.Id) })
+                        }
+                        @if (item.DocumentStatus == DocumentStatus.Confirmed && currentContext.HasPermissions(Permissions.Transaction.Approve))
+                        {
+                            <span> | </span>
+                            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Approve), "approve", controller,
+                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("approve-action{0}", item.Id) })
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pull-left">
+        <input type="hidden" id="paraph" name="paraph" value="" />
+        @if (currentContext.HasPermissions(Permissions.Transaction.Prepare))
+        {
+            <input type="submit" class="btn btn-primary" name="submit-prepare" value="@Strings.GroupPrepare" />
         }
-    </tbody>
-</table>
+        @if (currentContext.HasPermissions(Permissions.Transaction.Review))
+        {
+            <input type="submit" class="btn btn-primary" name="submit-review" value="@Strings.GroupReview" />
+        }
+        @if (currentContext.HasPermissions(Permissions.Transaction.Confirm))
+        {
+            <input type="submit" class="btn btn-primary" name="submit-reject" value="@Strings.GroupReject" />
+            <input type="submit" class="btn btn-primary" name="submit-confirm" value="@Strings.GroupConfirm" />
+        }
+        @if (currentContext.HasPermissions(Permissions.Transaction.Approve))
+        {
+            <input type="submit" class="btn btn-primary" name="submit-approve" value="@Strings.GroupApprove" />
+        }
+    </div>
+}
 
 @Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
 

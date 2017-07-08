@@ -18,13 +18,22 @@
 <div class="alert alert-danger">
     <h2>@title</h2>
     <ul>
-    @foreach (var line in lines)
-    {
-        <li><strong>@line</strong></li>
-    }
+        @foreach (var line in lines)
+        {
+            <li><strong>@line</strong></li>
+        }
     </ul>
     <br />
     <p>@Model.Hint</p>
     <br />
-    @Html.ActionLink(String.Format(LocalStrings.ReturnToPage, indexTitle), "index", "transactions", null, new { @class = "btn btn-primary" })
+    @if (Request.QueryString.AllKeys.Contains("returnUrl"))
+    {
+        @Html.ActionLink(String.Format(LocalStrings.ReturnToPage, Strings.Cartable), "index", "cartable",
+            new { area = String.Empty }, new { @class = "btn btn-primary" })
+    }
+    else
+    {
+        @Html.ActionLink(String.Format(LocalStrings.ReturnToPage, indexTitle), "index", "transactions",
+            null, new { @class = "btn btn-primary" })
+    }
 </div>
