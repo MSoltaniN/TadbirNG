@@ -23,8 +23,7 @@ namespace SPPC.Tadbir.WorkflowService.Unity
             if (host != null)
             {
                 var container = UnityConfig.GetConfiguredContainer();
-                host.WorkflowExtensions.Add<DependencyInjectionExtension>(
-                    () => new DependencyInjectionExtension(container));
+                host.WorkflowExtensions.Add(() => new DependencyInjectionExtension(container));
             }
         }
 

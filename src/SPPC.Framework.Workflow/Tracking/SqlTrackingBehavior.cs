@@ -25,12 +25,14 @@ namespace SPPC.Framework.Workflow.Tracking
             if (workflowServiceHost != null)
             {
                 string workflowDisplayName = workflowServiceHost.Activity.DisplayName;
-                TrackingProfile trackingProfile = GetProfile(this._profileName, workflowDisplayName);
+                TrackingProfile trackingProfile = GetProfile(_profileName, workflowDisplayName);
 
-                workflowServiceHost.WorkflowExtensions.Add(()
-                        => new SqlTrackingParticipant
+                workflowServiceHost.WorkflowExtensions.Add(() =>
                         {
-                            TrackingProfile = trackingProfile
+                            var participant = UnityConfig.GetConfiguredContainer()
+                                .Get<SqlTrackingParticipant>();
+                            participant.TrackingProfile = trackingProfile;
+                            return participant;
                         });
             }
         }

@@ -51,6 +51,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SwForAll.Platform.Persistence, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\SwForAll.Platform.1.0.0\SwForAll.Platform.Persistence.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Configuration" />
@@ -73,6 +77,7 @@
     <Compile Include="Tracking\SqlTrackingBehavior.cs" />
     <Compile Include="Tracking\SqlTrackingExtensionElement.cs" />
     <Compile Include="Tracking\SqlTrackingParticipant.cs" />
+    <Compile Include="UnityConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
@@ -81,6 +86,33 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Activities\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
+      <Project>{25d668e5-7585-47d7-8ab6-2fd4ac3f8565}</Project>
+      <Name>SPPC.Framework.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Framework.Mapper\SPPC.Framework.Mapper.csproj">
+      <Project>{b3db67f3-9a53-4452-a8cc-3f1e5f48211b}</Project>
+      <Name>SPPC.Framework.Mapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Framework.Model\SPPC.Framework.Model.csproj">
+      <Project>{2a3f0f28-1f8f-432e-9edd-269d8460f40a}</Project>
+      <Name>SPPC.Framework.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Framework.NHibernate\SPPC.Framework.NHibernate.csproj">
+      <Project>{f9a6f065-d2b5-492f-976e-d6874fbec54c}</Project>
+      <Name>SPPC.Framework.NHibernate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Framework.Unity\SPPC.Framework.Unity.csproj">
+      <Project>{202c8b97-9665-47fe-9d8b-7e46f4d7b5d8}</Project>
+      <Name>SPPC.Framework.Unity</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

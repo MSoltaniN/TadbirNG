@@ -91,6 +91,7 @@
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeContainer.cs" />
     <Compile Include="WF\ActivityContextExtensions.cs" />
     <Compile Include="WF\DependencyInjectionExtension.cs" />
   </ItemGroup>

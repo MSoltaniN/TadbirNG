@@ -94,6 +94,11 @@
     <Compile Include="Mapping\Finance\FiscalPeriodMap.Generated.cs" />
     <Compile Include="Mapping\Finance\TransactionLineMap.Generated.cs" />
     <Compile Include="Mapping\Finance\TransactionMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\Workflow\Tracking\ActivityInstanceEventMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\Workflow\Tracking\BookmarkResumptionEventMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\Workflow\Tracking\CustomTrackingEventMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\Workflow\Tracking\ExtendedActivityEventMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\Workflow\Tracking\WorkflowInstanceEventMap.Generated.cs" />
     <Compile Include="Mapping\Workflow\WorkItemDocumentMap.Generated.cs" />
     <Compile Include="Mapping\Workflow\WorkItemHistoryMap.Generated.cs" />
     <Compile Include="Mapping\Workflow\WorkItemMap.Generated.cs" />
@@ -121,6 +126,10 @@
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
       <Project>{25d668e5-7585-47d7-8ab6-2fd4ac3f8565}</Project>
       <Name>SPPC.Framework.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SPPC.Framework.Model\SPPC.Framework.Model.csproj">
+      <Project>{2A3F0F28-1F8F-432E-9EDD-269D8460F40A}</Project>
+      <Name>SPPC.Framework.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj">
       <Project>{504D9334-9367-4535-925B-CCB7574CE350}</Project>

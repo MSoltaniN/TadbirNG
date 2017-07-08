@@ -108,6 +108,10 @@
       <Project>{202c8b97-9665-47fe-9d8b-7e46f4d7b5d8}</Project>
       <Name>SPPC.Framework.Unity</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Framework.Workflow\SPPC.Framework.Workflow.csproj">
+      <Project>{0cebce29-9b64-4fa7-a537-71282285f7c9}</Project>
+      <Name>SPPC.Framework.Workflow</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj">
       <Project>{504d9334-9367-4535-925b-ccb7574ce350}</Project>
       <Name>SPPC.Tadbir.Common</Name>

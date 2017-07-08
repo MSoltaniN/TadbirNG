@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using Microsoft.Practices.Unity;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.NHibernate;
 using SwForAll.Platform.Persistence;
 using SwForAll.Platform.Persistence.NHibernate;
 
@@ -15,12 +16,11 @@ namespace SPPC.Framework.Unity
     public class TypeContainer : IDisposable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TypeContainer"/> class that wraps a given Unity container.
+        /// Initializes a new instance of the <see cref="TypeContainer"/> class that wraps a Unity container.
         /// </summary>
-        /// <param name="container">The Unity container that is wrapped by this instance</param>
-        public TypeContainer(IUnityContainer container = null)
+        public TypeContainer()
         {
-            _container = container ?? new UnityContainer();
+            _container = new UnityContainer();
         }
 
         /// <summary>
@@ -67,13 +67,12 @@ namespace SPPC.Framework.Unity
         public void RegisterPersistenceTypes()
         {
             // =========== NHibernate Persistence Layer dependencies ===========
-            var nhibernate = new WebHibernateConfigurator();
+            var nhibernate = new HibernateConfigurator();
             _container.RegisterInstance<IORMapper>(nhibernate);
             _container.RegisterInstance<IHibernateWrapper>(nhibernate);
             _container.RegisterType<IUnitOfWork, UnitOfWork>();
 
-            // TODO: Associate each new repository class with its contract, similar to the following code...
-            // _container.RegisterType<IRepository, Repository>();
+            _container.RegisterType<ITrackingRepository, TrackingRepository>();
         }
 
         /// <summary>

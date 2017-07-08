@@ -26,7 +26,7 @@ namespace SPPC.Framework.NHibernate.Mapping
         /// </summary>
         public ExtendedActivityEventMap()
         {
-            Schema("Workflow.Tracking");
+            Schema("WFTracking");
             Table("ExtendedActivityEvent");
             Id(x => x.Id)
                 .Column("EventID")

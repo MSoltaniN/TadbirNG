@@ -23,7 +23,7 @@ GO
 CREATE SCHEMA [Workflow]
 GO
 
-CREATE SCHEMA [Workflow.Tracking]
+CREATE SCHEMA [WFTracking]
 GO
 
 CREATE TABLE [Finance].[Currency] (
@@ -279,7 +279,7 @@ CREATE TABLE [Workflow].[WorkItemHistory] (
 )
 GO
 
-CREATE TABLE [Workflow.Tracking].[WorkflowInstanceEvent] (
+CREATE TABLE [WFTracking].[WorkflowInstanceEvent] (
 	[EventID]                    INT IDENTITY(1,1) NOT NULL,
 	[WorkflowInstanceId]         UNIQUEIDENTIFIER NOT NULL,
 	[ActivityDefinition]         NVARCHAR(256) NULL,
@@ -290,11 +290,13 @@ CREATE TABLE [Workflow.Tracking].[WorkflowInstanceEvent] (
 	[ExceptionDetails]           NVARCHAR(MAX) NULL,
 	[SerializedAnnotations]      NVARCHAR(MAX) NULL,
 	[TimeCreated]                DATETIME NOT NULL,
-	CONSTRAINT [PK_Workflow_Tracking_WorkflowInstanceEvent] PRIMARY KEY ([EventID]),
+    [rowguid]                    UNIQUEIDENTIFIER CONSTRAINT [DF_WFTracking_WorkflowInstanceEvent_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]               DATETIME CONSTRAINT [DF_WFTracking_WorkflowInstanceEvent_ModifiedDate] DEFAULT (getdate()) NOT NULL,
+	CONSTRAINT [PK_WFTracking_WorkflowInstanceEvent] PRIMARY KEY ([EventID]),
 );
 GO
 
-CREATE TABLE [Workflow.Tracking].[ActivityInstanceEvent] (
+CREATE TABLE [WFTracking].[ActivityInstanceEvent] (
 	[EventID]               INT IDENTITY(1,1) NOT NULL,
 	[WorkflowInstanceId]    UNIQUEIDENTIFIER NOT NULL,
 	[RecordNumber]          BIGINT NOT NULL,
@@ -309,11 +311,13 @@ CREATE TABLE [Workflow.Tracking].[ActivityInstanceEvent] (
 	[SerializedVariables]   NVARCHAR(MAX) NULL,
     [SerializedAnnotations] NVARCHAR(MAX) NULL,
 	[TimeCreated]           DATETIME NOT NULL,
-	CONSTRAINT [PK_Workflow_Tracking_ActivityInstanceEvent] PRIMARY KEY ([EventID]),
+    [rowguid]               UNIQUEIDENTIFIER CONSTRAINT [DF_WFTracking_ActivityInstanceEvent_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]          DATETIME CONSTRAINT [DF_WFTracking_ActivityInstanceEvent_ModifiedDate] DEFAULT (getdate()) NOT NULL,
+	CONSTRAINT [PK_WFTracking_ActivityInstanceEvent] PRIMARY KEY ([EventID]),
 );
 GO
 
-CREATE TABLE [Workflow.Tracking].[ExtendedActivityEvent] (
+CREATE TABLE [WFTracking].[ExtendedActivityEvent] (
 	[EventID]                        INT IDENTITY(1,1) NOT NULL,
 	[WorkflowInstanceId]             UNIQUEIDENTIFIER NOT NULL,
 	[RecordNumber]                   BIGINT NULL,
@@ -334,11 +338,13 @@ CREATE TABLE [Workflow.Tracking].[ExtendedActivityEvent] (
 	[FaultHandlerActivityType]       NVARCHAR(2048) NULL,
 	[SerializedAnnotations]          NVARCHAR(MAX) NULL,
 	[TimeCreated]                    DATETIME NOT NULL,
-	CONSTRAINT [PK_Workflow_Tracking_ExtendedActivityInstanceEvent] PRIMARY KEY ([EventID]),
+    [rowguid]                        UNIQUEIDENTIFIER CONSTRAINT [DF_WFTracking_ExtendedActivityEvent_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]                   DATETIME CONSTRAINT [DF_WFTracking_ExtendedActivityEvent_ModifiedDate] DEFAULT (getdate()) NOT NULL,
+	CONSTRAINT [PK_WFTracking_ExtendedActivityEvent] PRIMARY KEY ([EventID]),
 );
 GO
 
-CREATE TABLE [Workflow.Tracking].[BookmarkResumptionEvent] ( 
+CREATE TABLE [WFTracking].[BookmarkResumptionEvent] ( 
     [EventID]                 INT IDENTITY(1,1) NOT NULL,
     [WorkflowInstanceId]      UNIQUEIDENTIFIER NOT NULL,
     [RecordNumber]            BIGINT NULL,
@@ -351,11 +357,13 @@ CREATE TABLE [Workflow.Tracking].[BookmarkResumptionEvent] (
     [OwnerActivityType]       NVARCHAR(2048) NULL,
     [SerializedAnnotations]   NVARCHAR(MAX) NULL,
     [TimeCreated]             DATETIME NOT NULL,
-    CONSTRAINT [PK_Workflow_Tracking_BookmarkResumptionEvent] PRIMARY KEY ([EventID])
+    [rowguid]                 UNIQUEIDENTIFIER CONSTRAINT [DF_WFTracking_BookmarkResumptionEvent_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]            DATETIME CONSTRAINT [DF_WFTracking_BookmarkResumptionEvent_ModifiedDate] DEFAULT (getdate()) NOT NULL,
+    CONSTRAINT [PK_WFTracking_BookmarkResumptionEvent] PRIMARY KEY ([EventID])
 );
 GO
 
-CREATE TABLE [Workflow.Tracking].[CustomTrackingEvent] (
+CREATE TABLE [WFTracking].[CustomTrackingEvent] (
 	[EventID]               INT IDENTITY(1,1) NOT NULL,
 	[WorkflowInstanceId]    UNIQUEIDENTIFIER NOT NULL,
 	[RecordNumber]          BIGINT NULL,
@@ -368,7 +376,9 @@ CREATE TABLE [Workflow.Tracking].[CustomTrackingEvent] (
 	[SerializedData]        NVARCHAR(MAX) NULL,
 	[SerializedAnnotations] NVARCHAR(MAX) NULL,
 	[TimeCreated]           DATETIME NOT NULL,
-	CONSTRAINT [PK_Workflow_Tracking_CustomTrackingEvent] PRIMARY KEY ([EventID]),
+    [rowguid]               UNIQUEIDENTIFIER CONSTRAINT [DF_WFTracking_CustomTrackingEvent_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]          DATETIME CONSTRAINT [DF_WFTracking_CustomTrackingEvent_ModifiedDate] DEFAULT (getdate()) NOT NULL,
+	CONSTRAINT [PK_WFTracking_CustomTrackingEvent] PRIMARY KEY ([EventID]),
 );
 GO
 
