@@ -262,6 +262,7 @@ GO
 CREATE TABLE [Workflow].[WorkItemHistory] (
     [HistoryItemID]       INT              IDENTITY (1, 1) NOT NULL,
 	[UserID]              INT              NOT NULL,
+	[RoleID]              INT              NOT NULL,
     [Number]              NVARCHAR(16)     NOT NULL,
     [Date]                DATETIME         NOT NULL,
     [Time]                TIME(7)          NOT NULL,
@@ -276,6 +277,7 @@ CREATE TABLE [Workflow].[WorkItemHistory] (
     [ModifiedDate]        DATETIME         CONSTRAINT [DF_Workflow_WorkItemHistory_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_WorkItemHistory] PRIMARY KEY CLUSTERED ([HistoryItemID] ASC)
     , CONSTRAINT [FK_Workflow_WorkItemHistory_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User] ([UserID])
+    , CONSTRAINT [FK_Workflow_WorkItemHistory_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role] ([RoleID])
 )
 GO
 

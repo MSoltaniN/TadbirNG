@@ -198,6 +198,11 @@ namespace SPPC.Tadbir.Values
         public const string UserFullName = "نام کاربر";
 
         /// <summary>
+        /// Localized name of Target Role field
+        /// </summary>
+        public const string TargetRole = "گیرنده کار";
+
+        /// <summary>
         /// Localized name of Action field
         /// </summary>
         public const string ActionType = "نوع اقدام";

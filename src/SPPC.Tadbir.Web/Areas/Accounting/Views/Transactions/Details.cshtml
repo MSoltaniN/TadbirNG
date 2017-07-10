@@ -156,6 +156,7 @@
                 <th>@FieldNames.Time</th>
                 <th>@FieldNames.UserFullName</th>
                 <th>@FieldNames.ActionType</th>
+                <th>@FieldNames.TargetRole</th>
                 <th>@FieldNames.StatusField</th>
                 <th>@FieldNames.OperationalStatusField</th>
             </tr>
@@ -178,6 +179,9 @@
                 </td>
                 <td>
                     @DocumentAction.ToLocalValue(item.Action)
+                </td>
+                <td>
+                    @item.RoleName
                 </td>
                 <td>
                     @item.Status

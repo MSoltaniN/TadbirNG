@@ -221,7 +221,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<WorkItemViewModel, WorkItemHistory>()
                 .ForMember(dest => dest.Id, opts => opts.Ignore())
                 .ForMember(dest => dest.Action, opts => opts.MapFrom(src => src.PreviousAction))
-                .AfterMap((viewModel, model) => model.User.Id = viewModel.CreatedById);
+                .AfterMap((viewModel, model) => model.User.Id = viewModel.CreatedById)
+                .AfterMap((viewModel, model) => model.Role.Id = viewModel.TargetId);
             mapperConfig.CreateMap<WorkItemHistory, HistoryItemViewModel>()
                 .ForMember(
                     dest => dest.Date,

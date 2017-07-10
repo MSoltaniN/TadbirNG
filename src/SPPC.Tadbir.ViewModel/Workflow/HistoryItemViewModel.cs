@@ -31,6 +31,11 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         public string UserFullName { get; set; }
 
         /// <summary>
+        /// نام نقشی که مخاطب اقدام در این سابقه عملیاتی بوده است
+        /// </summary>
+        public string RoleName { get; set; }
+
+        /// <summary>
         /// نوع اقدامی که در نتیجه این سابقه عملیاتی انجام شده است
         /// </summary>
         public string Action { get; set; }

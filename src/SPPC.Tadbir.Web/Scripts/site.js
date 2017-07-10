@@ -51,7 +51,7 @@ function promptForParaph(e) {
 
 /*
  * handleGroupParaph
- *   Usage : Intended to be used when selecting items is eabled in a data list.
+ *   Usage : Intended to be used when item selection is enabled in a data list.
  *   Prompts user to enter an optional paraph (comment/remark) for a workflow group action.
  *   The prompt mechanism is the browser input dialog ('window.prompt()' or just 'prompt()')
  *   and it redirects browser to proper page to complete the action. The paraph value entered
