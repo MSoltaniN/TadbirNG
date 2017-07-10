@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using Microsoft.Practices.Unity;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.NHibernate;
 using SPPC.Framework.Service;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Mapper;
@@ -97,6 +98,8 @@ namespace SPPC.Tadbir.Unity
                     new ResolvedParameter<IUnitOfWork>("WF"), new ResolvedParameter<IDomainMapper>()));
 
             _container.RegisterType<ISettingsRepository, ConfigSettingsRepository>();
+            _container.RegisterType<ITrackingRepository, TrackingRepository>();
+            _container.RegisterType<IWorkflowRepository, WorkflowRepository>();
         }
 
         /// <summary>
@@ -119,6 +122,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<ITransactionWorkflow, TransactionTimeoutWorkflow>("timeout");
             _container.RegisterType<ITransactionWorkflow, TransactionBasicWorkflow>("basic");
             _container.RegisterType<ISettingsService, ConfigSettingsService>();
+            _container.RegisterType<IWorkflowService, WorkflowService>();
         }
 
         /// <summary>

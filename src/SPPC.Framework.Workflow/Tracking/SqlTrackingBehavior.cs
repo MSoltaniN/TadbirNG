@@ -13,9 +13,8 @@ namespace SPPC.Framework.Workflow.Tracking
 {
     public class SqlTrackingBehavior : IServiceBehavior
     {
-        public SqlTrackingBehavior(string connectionString, string profileName)
+        public SqlTrackingBehavior(string profileName)
         {
-            _connectionString = connectionString;
             _profileName = profileName;
         }
 
@@ -47,7 +46,7 @@ namespace SPPC.Framework.Workflow.Tracking
         {
         }
 
-        private TrackingProfile GetProfile(string profileName, string displayName)
+        private static TrackingProfile GetProfile(string profileName, string displayName)
         {
             TrackingProfile trackingProfile = null;
             TrackingSection trackingSection = (TrackingSection)WebConfigurationManager.GetSection("system.serviceModel/tracking");
@@ -83,6 +82,5 @@ namespace SPPC.Framework.Workflow.Tracking
         }        
 
         private string _profileName;
-        private string _connectionString;
     }
 }

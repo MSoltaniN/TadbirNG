@@ -20,6 +20,16 @@ namespace SPPC.Framework.NHibernate
             _unitOfWork = unitOfWork;
         }
 
+        public IList<CustomTrackingEvent> GetCustomEvents(string name)
+        {
+            var repository = _unitOfWork.GetRepository<CustomTrackingEvent>();
+            var customEvents = repository
+                .GetByCriteria(evt => evt.CustomRecordName == name)
+                .OrderByDescending(evt => evt.TimeCreated)
+                .ToList();
+            return customEvents;
+        }
+
         /// <summary>
         /// یک رکورد ردگیری گردش کار را ذخیره می کند
         /// </summary>

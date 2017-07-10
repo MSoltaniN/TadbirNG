@@ -114,6 +114,7 @@
     <Compile Include="Workflow\OutboxItemViewModel.cs" />
     <Compile Include="Workflow\HistoryItemViewModel.cs" />
     <Compile Include="Workflow\InboxItemViewModel.cs" />
+    <Compile Include="Workflow\WorkflowInstanceViewModel.cs" />
     <Compile Include="Workflow\WorkItemDocumentViewModel.cs" />
     <Compile Include="Workflow\WorkItemDocumentViewModel.Generated.cs" />
     <Compile Include="Workflow\WorkItemHistoryViewModel.Generated.cs" />

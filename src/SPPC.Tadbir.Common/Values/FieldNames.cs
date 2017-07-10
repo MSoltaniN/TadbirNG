@@ -188,6 +188,11 @@ namespace SPPC.Tadbir.Values
         public const string DocumentType = "نوع مستند";
 
         /// <summary>
+        /// Localized name of DocumentId field
+        /// </summary>
+        public const string DocumentId = "شناسه مستند";
+
+        /// <summary>
         /// Localized name of DocumentNo field
         /// </summary>
         public const string DocumentNo = "شماره مستند";
@@ -211,6 +216,12 @@ namespace SPPC.Tadbir.Values
         /// Localized name of Remarks field
         /// </summary>
         public const string CartableRemarks = "پاراف";
+
+        public const string Workflow = "گردش کار";
+
+        public const string Edition = "ویرایش";
+
+        public const string LastActionDate = "تاریخ آخرین اقدام";
 
         /// <summary>
         /// Localized name of Security Code field (used in forms that require Captcha validation)

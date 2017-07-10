@@ -97,6 +97,10 @@
       <Project>{25d668e5-7585-47d7-8ab6-2fd4ac3f8565}</Project>
       <Name>SPPC.Framework.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Framework.NHibernate\SPPC.Framework.NHibernate.csproj">
+      <Project>{f9a6f065-d2b5-492f-976e-d6874fbec54c}</Project>
+      <Name>SPPC.Framework.NHibernate</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj">
       <Project>{a28299d4-4023-4add-b7e4-1303a60308bd}</Project>
       <Name>SPPC.Framework.Service</Name>

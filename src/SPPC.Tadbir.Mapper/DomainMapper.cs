@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using SPPC.Framework.Helpers;
@@ -222,7 +223,13 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Id, opts => opts.Ignore())
                 .ForMember(dest => dest.Action, opts => opts.MapFrom(src => src.PreviousAction))
                 .AfterMap((viewModel, model) => model.User.Id = viewModel.CreatedById)
-                .AfterMap((viewModel, model) => model.Role.Id = viewModel.TargetId);
+                .AfterMap((viewModel, model) =>
+                    model.Role = (viewModel.TargetId > 0)
+                        ? new Role()
+                            {
+                                Id = viewModel.TargetId
+                            }
+                        : null);
             mapperConfig.CreateMap<WorkItemHistory, HistoryItemViewModel>()
                 .ForMember(
                     dest => dest.Date,
@@ -254,6 +261,21 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.Action,
                     opts => opts.MapFrom(
                         src => DocumentAction.ToLocalValue(src.Action)));
+
+            mapperConfig.CreateMap<Dictionary<string, object>, WorkflowInstanceViewModel>()
+                .ForMember(dest => dest.InstanceId, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "InstanceId")))
+                .ForMember(dest => dest.DocumentType, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "DocumentType")))
+                .ForMember(dest => dest.DocumentId, opts => opts.MapFrom(src => ValueOrDefault<int>(src, "DocumentId")))
+                .ForMember(dest => dest.WorkflowName, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "WorkflowName")))
+                .ForMember(dest => dest.EditionName, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "EditionName")))
+                .ForMember(dest => dest.State, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "State")))
+                .ForMember(
+                    dest => dest.LastActionDate,
+                    opts => opts.MapFrom(src =>
+                        ValueOrDefault<DateTime>(src, "LastActionDate") == default(DateTime)
+                            ? String.Empty
+                            : JalaliDateTime.FromDateTime(ValueOrDefault<DateTime>(src, "LastActionDate"))
+                                .ToString()));
         }
 
         private static void MapSettingsTypes(IMapperConfigurationExpression mapperConfig)
@@ -262,6 +284,14 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<WorkflowElement, WorkflowViewModel>()
                 .ForMember(dest => dest.DefaultEdition, opts => opts.MapFrom(src => src.Editions.DefaultEdition));
             mapperConfig.CreateMap<WorkflowEditionElement, WorkflowEditionViewModel>();
+        }
+
+        private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)
+        {
+            var value = (dictionary.ContainsKey(key))
+                ? (TValue)dictionary[key]
+                : default(TValue);
+            return value;
         }
 
         private static ICryptoService _crypto;

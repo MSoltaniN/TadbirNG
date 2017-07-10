@@ -17,60 +17,53 @@ namespace SPPC.Framework.Workflow.Tracking
         // The track method is called when a tracking record is emitted by the workflow runtime
         protected override void Track(TrackingRecord record, TimeSpan timeout)
         {
-            try
+            var instanceRecord = record as WorkflowInstanceRecord;
+            if (instanceRecord != null)
             {
-                var instanceRecord = record as WorkflowInstanceRecord;
-                if (instanceRecord != null)
-                {
-                    var workflowEvent = CreateWorkflowInstanceEvent(instanceRecord);
-                    _repository.SaveWorkflowEvent(workflowEvent);
-                }
-
-                var stateRecord = record as ActivityStateRecord;
-                if (stateRecord != null)
-                {
-                    var activityEvent = _mapper.Map<ActivityInstanceEvent>(stateRecord);
-                    _repository.SaveActivityEvent(activityEvent);
-                }
-
-                var scheduledRecord = record as ActivityScheduledRecord;
-                if (scheduledRecord != null)
-                {
-                    var activityEvent = _mapper.Map<ExtendedActivityEvent>(scheduledRecord);
-                    _repository.SaveExtendedActivityEvent(activityEvent);
-                }
-
-                var cancelRecord = record as CancelRequestedRecord;
-                if (cancelRecord != null)
-                {
-                    var activityEvent = _mapper.Map<ExtendedActivityEvent>(cancelRecord);
-                    _repository.SaveExtendedActivityEvent(activityEvent);
-                }
-
-                var faultRecord = record as FaultPropagationRecord;
-                if (faultRecord != null)
-                {
-                    var activityEvent = _mapper.Map<ExtendedActivityEvent>(faultRecord);
-                    _repository.SaveExtendedActivityEvent(activityEvent);
-                }
-
-                var bookmarkRecord = record as BookmarkResumptionRecord;
-                if (bookmarkRecord != null)
-                {
-                    var bookmarkEvent = _mapper.Map<BookmarkResumptionEvent>(bookmarkRecord);
-                    _repository.SaveBookmarkEvent(bookmarkEvent);
-                }
-
-                var customRecord = record as CustomTrackingRecord;
-                if (customRecord != null)
-                {
-                    var customEvent = _mapper.Map<CustomTrackingEvent>(customRecord);
-                    _repository.SaveCustomEvent(customEvent);
-                }
+                var workflowEvent = CreateWorkflowInstanceEvent(instanceRecord);
+                _repository.SaveWorkflowEvent(workflowEvent);
             }
-            catch (Exception e)
+
+            var stateRecord = record as ActivityStateRecord;
+            if (stateRecord != null)
             {
-                var message = e.Message;
+                var activityEvent = _mapper.Map<ActivityInstanceEvent>(stateRecord);
+                _repository.SaveActivityEvent(activityEvent);
+            }
+
+            var scheduledRecord = record as ActivityScheduledRecord;
+            if (scheduledRecord != null)
+            {
+                var activityEvent = _mapper.Map<ExtendedActivityEvent>(scheduledRecord);
+                _repository.SaveExtendedActivityEvent(activityEvent);
+            }
+
+            var cancelRecord = record as CancelRequestedRecord;
+            if (cancelRecord != null)
+            {
+                var activityEvent = _mapper.Map<ExtendedActivityEvent>(cancelRecord);
+                _repository.SaveExtendedActivityEvent(activityEvent);
+            }
+
+            var faultRecord = record as FaultPropagationRecord;
+            if (faultRecord != null)
+            {
+                var activityEvent = _mapper.Map<ExtendedActivityEvent>(faultRecord);
+                _repository.SaveExtendedActivityEvent(activityEvent);
+            }
+
+            var bookmarkRecord = record as BookmarkResumptionRecord;
+            if (bookmarkRecord != null)
+            {
+                var bookmarkEvent = _mapper.Map<BookmarkResumptionEvent>(bookmarkRecord);
+                _repository.SaveBookmarkEvent(bookmarkEvent);
+            }
+
+            var customRecord = record as CustomTrackingRecord;
+            if (customRecord != null)
+            {
+                var customEvent = _mapper.Map<CustomTrackingEvent>(customRecord);
+                _repository.SaveCustomEvent(customEvent);
             }
         }
 

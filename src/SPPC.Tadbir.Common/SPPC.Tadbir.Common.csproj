@@ -84,6 +84,8 @@
     <Compile Include="Values\Strings.cs" />
     <Compile Include="Values\SystemRoles.cs" />
     <Compile Include="Values\TransactionStatus.cs" />
+    <Compile Include="Values\WorkflowEvent.cs" />
+    <Compile Include="Values\WorkflowTitle.cs" />
     <Compile Include="Values\WorkItemTitle.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -1,0 +1,74 @@
+﻿@using SPPC.Framework.Values
+@using SPPC.Tadbir.Values
+@using SPPC.Tadbir.ViewModel.Workflow
+@using PagedList.Mvc
+
+@model PagedList.IPagedList<WorkflowInstanceViewModel>
+
+@{
+    string title = Strings.RunningWorkflows;
+    ViewBag.Title = title;
+    string pageInfo = String.Format(LocalStrings.NoRecords, Entities.AWorkItem);
+    if (Model.Count > 0)
+    {
+        pageInfo = String.Format(
+            LocalStrings.CurrentPageInfo,
+            Model.TotalItemCount, Entities.WorkItem, Model.PageNumber, Model.PageCount);
+    }
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li class="active">@title</li>
+</ol>
+
+<div class="page-header">
+    <h3>@title</h3>
+</div>
+<span class="pull-left">@pageInfo</span>
+
+<table class="table table-bordered table-striped table-responsive table-hover">
+    <thead>
+        <tr>
+            <th>@Strings.Row</th>
+            <th>@FieldNames.DocumentType</th>
+            <th>@FieldNames.DocumentId</th>
+            <th>@FieldNames.Workflow</th>
+            <th>@FieldNames.Edition</th>
+            <th>@FieldNames.StatusField</th>
+            <th>@FieldNames.LastActionDate</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int index = 0; index < Model.Count; index++)
+        {
+            var item = Model[index];
+            string edition = String.IsNullOrEmpty(item.EditionName) ? "ماشین حالت" : item.EditionName;
+            <tr>
+                <td>
+                    @String.Format("{0}", index + 1)
+                </td>
+                <td>
+                    @DocumentType.ToLocalValue(item.DocumentType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DocumentId)
+                </td>
+                <td>
+                    @WorkflowTitle.ToLocalValue(item.WorkflowName)
+                </td>
+                <td>
+                    @edition
+                </td>
+                <td>
+                    @DocumentStatus.ToLocalValue(item.State)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastActionDate)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)

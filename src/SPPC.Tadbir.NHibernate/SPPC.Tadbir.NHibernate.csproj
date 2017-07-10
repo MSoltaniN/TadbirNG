@@ -74,6 +74,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\TadbirSolutionInfo.cs">
@@ -108,6 +110,7 @@
     <Compile Include="Repository\LookupRepository.cs" />
     <Compile Include="Repository\SecurityRepository.cs" />
     <Compile Include="Repository\TransactionRepository.cs" />
+    <Compile Include="Repository\WorkflowRepository.cs" />
     <Compile Include="Repository\WorkItemRepository.cs" />
   </ItemGroup>
   <ItemGroup>

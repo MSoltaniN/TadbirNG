@@ -67,6 +67,10 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         public const string ChangePassword = "تغییر رمز ورود";
 
+        public const string Workflows = "گردش های کاری";
+
+        public const string RunningWorkflows = "گردش های کاری در حال اجرا";
+
         /// <summary>
         /// Localized text for About page title
         /// </summary>

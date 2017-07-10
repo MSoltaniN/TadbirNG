@@ -9,6 +9,8 @@ namespace SPPC.Framework.NHibernate
     /// </summary>
     public interface ITrackingRepository
     {
+        IList<CustomTrackingEvent> GetCustomEvents(string name);
+
         /// <summary>
         /// یک رکورد ردگیری گردش کار را ذخیره می کند
         /// </summary>

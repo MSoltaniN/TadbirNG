@@ -73,9 +73,11 @@
     <Compile Include="Api\SecurityApi.cs" />
     <Compile Include="Api\SettingsApi.cs" />
     <Compile Include="Api\TransactionApi.cs" />
+    <Compile Include="Api\WorkflowApi.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="NHibernate\IWorkflowRepository.cs" />
     <Compile Include="Repository\ISettingsRepository.cs" />
     <Compile Include="NHibernate\IAccountRepository.cs" />
     <Compile Include="NHibernate\IAccountRepository.Generated.cs" />
@@ -101,6 +103,7 @@
     <Compile Include="Service\ITextEncoder.cs" />
     <Compile Include="Service\ITransactionService.cs" />
     <Compile Include="Security\Permissions.cs" />
+    <Compile Include="Service\IWorkflowService.cs" />
     <Compile Include="Service\SecurityContext.cs" />
     <Compile Include="Workflow\ITransactionWorkflow.cs" />
     <Compile Include="Workflow\StateOperation.cs" />

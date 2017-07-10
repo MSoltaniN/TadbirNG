@@ -64,6 +64,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Strings.Tools <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink(Strings.ChangePassword, "manage", "account", new { area = String.Empty }, null)</li>
+                            <li>@Html.ActionLink(Strings.Workflows, "index", "workflows", new { area = String.Empty }, null)</li>
                         </ul>
                     </li>
                     <li style="float:right">@Html.ActionLink(Strings.About, "about", "home", new { area = String.Empty }, null)</li>

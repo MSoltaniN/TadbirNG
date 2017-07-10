@@ -194,6 +194,7 @@
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\WorkflowsController.cs" />
     <Compile Include="Filters\AuthorizeRequestAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -164,6 +164,7 @@
     <Compile Include="Controllers\CartableController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\WorkflowsController.cs" />
     <Compile Include="Extensions\CaptchaExtensions.cs" />
     <Compile Include="Extensions\ControllerExtensions.cs" />
     <Compile Include="Filters\AppAuthorizeAttribute.cs" />
@@ -270,6 +271,7 @@
     <Content Include="Views\Error\Denied.cshtml" />
     <Content Include="Views\Cartable\Index.cshtml" />
     <Content Include="Views\Cartable\Outbox.cshtml" />
+    <Content Include="Views\Workflows\Index.cshtml" />
     <None Include="Web.LiveHost.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
