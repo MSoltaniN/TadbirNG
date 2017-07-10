@@ -13,6 +13,7 @@
  xmlns:ssx="clr-namespace:System.ServiceModel.XamlIntegration;assembly=System.ServiceModel"
  xmlns:stw="clr-namespace:SPPC.Tadbir.Workflow;assembly=SPPC.Tadbir.Interfaces"
  xmlns:stw1="clr-namespace:SPPC.Tadbir.Workflow;assembly=SPPC.Tadbir.Workflow"
+ xmlns:stwa="clr-namespace:SPPC.Tadbir.Workflow.Activities;assembly=SPPC.Tadbir.Workflow"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <p1:StateMachine InitialState="{x:Reference __ReferenceID11}" DisplayName="DocumentStateMachineWithTimeout" sap2010:WorkflowViewState.IdRef="StateMachine_2">
     <p1:TextExpression.Namespaces>
@@ -49,6 +50,7 @@
         <p1:AssemblyReference>System.Xml</p1:AssemblyReference>
         <p1:AssemblyReference>System.Xml.Linq</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Framework.Unity</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Framework.Workflow</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.Common</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.Interfaces</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.Unity</p1:AssemblyReference>
@@ -58,7 +60,31 @@
         <p1:AssemblyReference>SPPC.Tadbir.WorkflowService</p1:AssemblyReference>
       </sco:Collection>
     </p1:TextExpression.References>
-    <p1:State x:Name="__ReferenceID3" DisplayName="Prepared" sap2010:WorkflowViewState.IdRef="State_8">
+    <p1:State x:Name="__ReferenceID0" DisplayName="Prepared" sap2010:WorkflowViewState.IdRef="State_8">
+      <p1:State.Entry>
+        <stwa:TrackWorkflowStateActivity DisplayName="TrackPreparedState" sap2010:WorkflowViewState.IdRef="TrackWorkflowStateActivity_1">
+          <stwa:TrackWorkflowStateActivity.EditionName>
+            <p1:InArgument x:TypeArguments="x:String">
+              <mca:CSharpValue x:TypeArguments="x:String">edition</mca:CSharpValue>
+            </p1:InArgument>
+          </stwa:TrackWorkflowStateActivity.EditionName>
+          <stwa:TrackWorkflowStateActivity.Operation>
+            <p1:InArgument x:TypeArguments="stw:StateOperation">
+              <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+            </p1:InArgument>
+          </stwa:TrackWorkflowStateActivity.Operation>
+          <stwa:TrackWorkflowStateActivity.State>
+            <p1:InArgument x:TypeArguments="x:String">
+              <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Prepared</mca:CSharpValue>
+            </p1:InArgument>
+          </stwa:TrackWorkflowStateActivity.State>
+          <stwa:TrackWorkflowStateActivity.WorkflowName>
+            <p1:InArgument x:TypeArguments="x:String">
+              <mca:CSharpValue x:TypeArguments="x:String">workflow</mca:CSharpValue>
+            </p1:InArgument>
+          </stwa:TrackWorkflowStateActivity.WorkflowName>
+        </stwa:TrackWorkflowStateActivity>
+      </p1:State.Entry>
       <p1:State.Transitions>
         <p1:Transition DisplayName="Review" sap2010:WorkflowViewState.IdRef="Transition_8">
           <p1:Transition.Trigger>
@@ -66,7 +92,7 @@
               <p1:PickBranch DisplayName="WaitForReview" sap2010:WorkflowViewState.IdRef="PickBranch_3">
                 <p1:PickBranch.Trigger>
                   <p1:Sequence DisplayName="WaitForReviewSync" sap2010:WorkflowViewState.IdRef="Sequence_9">
-                    <Receive x:Name="__ReferenceID0" CanCreateInstance="True" DisplayName="ReceiveReview" sap2010:WorkflowViewState.IdRef="Receive_16" OperationName="Review" ServiceContractName="p:IDocumentStateTimeout">
+                    <Receive x:Name="__ReferenceID5" CanCreateInstance="True" DisplayName="ReceiveReview" sap2010:WorkflowViewState.IdRef="Receive_16" OperationName="Review" ServiceContractName="p:IDocumentStateTimeout">
                       <Receive.CorrelatesOn>
                         <XPathMessageQuery x:Key="TxnId">
                           <XPathMessageQuery.Namespaces>
@@ -103,7 +129,7 @@
                         </p1:InArgument>
                       </stw1:ManageCartableActivity.Operation>
                     </stw1:ManageCartableActivity>
-                    <SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendReviewReply" sap2010:WorkflowViewState.IdRef="SendReply_8" PersistBeforeSend="True">
+                    <SendReply Request="{x:Reference __ReferenceID5}" DisplayName="SendReviewReply" sap2010:WorkflowViewState.IdRef="SendReply_8" PersistBeforeSend="True">
                       <SendParametersContent>
                         <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                       </SendParametersContent>
@@ -138,7 +164,7 @@
                     </stw1:MoveCartableItemActivity.NewTargetId>
                   </stw1:MoveCartableItemActivity>
                   <p1:Sequence DisplayName="WaitForReviewSync" sap2010:WorkflowViewState.IdRef="Sequence_10">
-                    <Receive x:Name="__ReferenceID1" CanCreateInstance="True" DisplayName="ReceiveReview" sap2010:WorkflowViewState.IdRef="Receive_17" OperationName="Review" ServiceContractName="p:IDocumentStateTimeout">
+                    <Receive x:Name="__ReferenceID6" CanCreateInstance="True" DisplayName="ReceiveReview" sap2010:WorkflowViewState.IdRef="Receive_17" OperationName="Review" ServiceContractName="p:IDocumentStateTimeout">
                       <Receive.CorrelatesOn>
                         <XPathMessageQuery x:Key="TxnId">
                           <XPathMessageQuery.Namespaces>
@@ -175,7 +201,7 @@
                         </p1:InArgument>
                       </stw1:ManageCartableActivity.Operation>
                     </stw1:ManageCartableActivity>
-                    <SendReply Request="{x:Reference __ReferenceID1}" DisplayName="SendReviewReply" sap2010:WorkflowViewState.IdRef="SendReply_9" PersistBeforeSend="True">
+                    <SendReply Request="{x:Reference __ReferenceID6}" DisplayName="SendReviewReply" sap2010:WorkflowViewState.IdRef="SendReply_9" PersistBeforeSend="True">
                       <SendParametersContent>
                         <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                       </SendParametersContent>
@@ -187,11 +213,35 @@
           </p1:Transition.Trigger>
           <p1:Transition.To>
             <p1:State x:Name="__ReferenceID7" DisplayName="Reviewed" sap2010:WorkflowViewState.IdRef="State_7">
+              <p1:State.Entry>
+                <stwa:TrackWorkflowStateActivity DisplayName="TrackReviewedState" sap2010:WorkflowViewState.IdRef="TrackWorkflowStateActivity_2">
+                  <stwa:TrackWorkflowStateActivity.EditionName>
+                    <p1:InArgument x:TypeArguments="x:String">
+                      <mca:CSharpValue x:TypeArguments="x:String">edition</mca:CSharpValue>
+                    </p1:InArgument>
+                  </stwa:TrackWorkflowStateActivity.EditionName>
+                  <stwa:TrackWorkflowStateActivity.Operation>
+                    <p1:InArgument x:TypeArguments="stw:StateOperation">
+                      <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                    </p1:InArgument>
+                  </stwa:TrackWorkflowStateActivity.Operation>
+                  <stwa:TrackWorkflowStateActivity.State>
+                    <p1:InArgument x:TypeArguments="x:String">
+                      <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Reviewed</mca:CSharpValue>
+                    </p1:InArgument>
+                  </stwa:TrackWorkflowStateActivity.State>
+                  <stwa:TrackWorkflowStateActivity.WorkflowName>
+                    <p1:InArgument x:TypeArguments="x:String">
+                      <mca:CSharpValue x:TypeArguments="x:String">workflow</mca:CSharpValue>
+                    </p1:InArgument>
+                  </stwa:TrackWorkflowStateActivity.WorkflowName>
+                </stwa:TrackWorkflowStateActivity>
+              </p1:State.Entry>
               <p1:State.Transitions>
                 <p1:Transition DisplayName="Reject" sap2010:WorkflowViewState.IdRef="Transition_5">
                   <p1:Transition.Trigger>
                     <p1:Sequence DisplayName="WaitForRejectSync" sap2010:WorkflowViewState.IdRef="Sequence_3">
-                      <Receive x:Name="__ReferenceID2" CanCreateInstance="True" DisplayName="ReceiveReject" sap2010:WorkflowViewState.IdRef="Receive_11" OperationName="Reject" ServiceContractName="p:IDocumentStateTimeout">
+                      <Receive x:Name="__ReferenceID1" CanCreateInstance="True" DisplayName="ReceiveReject" sap2010:WorkflowViewState.IdRef="Receive_11" OperationName="Reject" ServiceContractName="p:IDocumentStateTimeout">
                         <Receive.CorrelatesOn>
                           <XPathMessageQuery x:Key="TxnId">
                             <XPathMessageQuery.Namespaces>
@@ -228,7 +278,7 @@
                           </p1:InArgument>
                         </stw1:ManageCartableActivity.Operation>
                       </stw1:ManageCartableActivity>
-                      <SendReply Request="{x:Reference __ReferenceID2}" DisplayName="SendRejectReply" sap2010:WorkflowViewState.IdRef="SendReply_3" PersistBeforeSend="True">
+                      <SendReply Request="{x:Reference __ReferenceID1}" DisplayName="SendRejectReply" sap2010:WorkflowViewState.IdRef="SendReply_3" PersistBeforeSend="True">
                         <SendParametersContent>
                           <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                         </SendParametersContent>
@@ -236,7 +286,7 @@
                     </p1:Sequence>
                   </p1:Transition.Trigger>
                   <p1:Transition.To>
-                    <x:Reference>__ReferenceID3</x:Reference>
+                    <x:Reference>__ReferenceID0</x:Reference>
                   </p1:Transition.To>
                 </p1:Transition>
                 <p1:Transition DisplayName="Confirm" sap2010:WorkflowViewState.IdRef="Transition_7">
@@ -245,7 +295,7 @@
                       <p1:PickBranch DisplayName="WaitForConfirm" sap2010:WorkflowViewState.IdRef="PickBranch_5">
                         <p1:PickBranch.Trigger>
                           <p1:Sequence DisplayName="WaitForConfirmSync" sap2010:WorkflowViewState.IdRef="Sequence_13">
-                            <Receive x:Name="__ReferenceID4" CanCreateInstance="True" DisplayName="ReceiveConfirm" sap2010:WorkflowViewState.IdRef="Receive_19" OperationName="Confirm" ServiceContractName="p:IDocumentStateTimeout">
+                            <Receive x:Name="__ReferenceID3" CanCreateInstance="True" DisplayName="ReceiveConfirm" sap2010:WorkflowViewState.IdRef="Receive_19" OperationName="Confirm" ServiceContractName="p:IDocumentStateTimeout">
                               <Receive.CorrelatesOn>
                                 <XPathMessageQuery x:Key="TxnId">
                                   <XPathMessageQuery.Namespaces>
@@ -282,7 +332,7 @@
                                 </p1:InArgument>
                               </stw1:ManageCartableActivity.Operation>
                             </stw1:ManageCartableActivity>
-                            <SendReply Request="{x:Reference __ReferenceID4}" DisplayName="SendConfirmReply" sap2010:WorkflowViewState.IdRef="SendReply_11" PersistBeforeSend="True">
+                            <SendReply Request="{x:Reference __ReferenceID3}" DisplayName="SendConfirmReply" sap2010:WorkflowViewState.IdRef="SendReply_11" PersistBeforeSend="True">
                               <SendParametersContent>
                                 <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                               </SendParametersContent>
@@ -317,7 +367,7 @@
                             </stw1:MoveCartableItemActivity.NewTargetId>
                           </stw1:MoveCartableItemActivity>
                           <p1:Sequence DisplayName="WaitForConfirmSync" sap2010:WorkflowViewState.IdRef="Sequence_14">
-                            <Receive x:Name="__ReferenceID5" CanCreateInstance="True" DisplayName="ReceiveConfirm" sap2010:WorkflowViewState.IdRef="Receive_20" OperationName="Confirm" ServiceContractName="p:IDocumentStateTimeout">
+                            <Receive x:Name="__ReferenceID4" CanCreateInstance="True" DisplayName="ReceiveConfirm" sap2010:WorkflowViewState.IdRef="Receive_20" OperationName="Confirm" ServiceContractName="p:IDocumentStateTimeout">
                               <Receive.CorrelatesOn>
                                 <XPathMessageQuery x:Key="TxnId">
                                   <XPathMessageQuery.Namespaces>
@@ -354,7 +404,7 @@
                                 </p1:InArgument>
                               </stw1:ManageCartableActivity.Operation>
                             </stw1:ManageCartableActivity>
-                            <SendReply Request="{x:Reference __ReferenceID5}" DisplayName="SendConfirmReply" sap2010:WorkflowViewState.IdRef="SendReply_12" PersistBeforeSend="True">
+                            <SendReply Request="{x:Reference __ReferenceID4}" DisplayName="SendConfirmReply" sap2010:WorkflowViewState.IdRef="SendReply_12" PersistBeforeSend="True">
                               <SendParametersContent>
                                 <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                               </SendParametersContent>
@@ -366,11 +416,35 @@
                   </p1:Transition.Trigger>
                   <p1:Transition.To>
                     <p1:State x:Name="__ReferenceID8" DisplayName="Confirmed" sap2010:WorkflowViewState.IdRef="State_6">
+                      <p1:State.Entry>
+                        <stwa:TrackWorkflowStateActivity DisplayName="TrackConfirmedState" sap2010:WorkflowViewState.IdRef="TrackWorkflowStateActivity_3">
+                          <stwa:TrackWorkflowStateActivity.EditionName>
+                            <p1:InArgument x:TypeArguments="x:String">
+                              <mca:CSharpValue x:TypeArguments="x:String">edition</mca:CSharpValue>
+                            </p1:InArgument>
+                          </stwa:TrackWorkflowStateActivity.EditionName>
+                          <stwa:TrackWorkflowStateActivity.Operation>
+                            <p1:InArgument x:TypeArguments="stw:StateOperation">
+                              <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                            </p1:InArgument>
+                          </stwa:TrackWorkflowStateActivity.Operation>
+                          <stwa:TrackWorkflowStateActivity.State>
+                            <p1:InArgument x:TypeArguments="x:String">
+                              <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Confirmed</mca:CSharpValue>
+                            </p1:InArgument>
+                          </stwa:TrackWorkflowStateActivity.State>
+                          <stwa:TrackWorkflowStateActivity.WorkflowName>
+                            <p1:InArgument x:TypeArguments="x:String">
+                              <mca:CSharpValue x:TypeArguments="x:String">workflow</mca:CSharpValue>
+                            </p1:InArgument>
+                          </stwa:TrackWorkflowStateActivity.WorkflowName>
+                        </stwa:TrackWorkflowStateActivity>
+                      </p1:State.Entry>
                       <p1:State.Transitions>
                         <p1:Transition DisplayName="Approve" sap2010:WorkflowViewState.IdRef="Transition_9">
                           <p1:Transition.Trigger>
                             <p1:Sequence DisplayName="WaitForApproveSync" sap2010:WorkflowViewState.IdRef="Sequence_5">
-                              <Receive x:Name="__ReferenceID6" CanCreateInstance="True" DisplayName="ReceiveApprove" sap2010:WorkflowViewState.IdRef="Receive_13" OperationName="Approve" ServiceContractName="p:IDocumentStateTimeout">
+                              <Receive x:Name="__ReferenceID2" CanCreateInstance="True" DisplayName="ReceiveApprove" sap2010:WorkflowViewState.IdRef="Receive_13" OperationName="Approve" ServiceContractName="p:IDocumentStateTimeout">
                                 <Receive.CorrelatesOn>
                                   <XPathMessageQuery x:Key="TxnId">
                                     <XPathMessageQuery.Namespaces>
@@ -407,7 +481,7 @@
                                   </p1:InArgument>
                                 </stw1:ManageCartableActivity.Operation>
                               </stw1:ManageCartableActivity>
-                              <SendReply Request="{x:Reference __ReferenceID6}" DisplayName="SendApproveReply" sap2010:WorkflowViewState.IdRef="SendReply_5" PersistBeforeSend="True">
+                              <SendReply Request="{x:Reference __ReferenceID2}" DisplayName="SendApproveReply" sap2010:WorkflowViewState.IdRef="SendReply_5" PersistBeforeSend="True">
                                 <SendParametersContent>
                                   <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
                                 </SendParametersContent>
@@ -415,7 +489,32 @@
                             </p1:Sequence>
                           </p1:Transition.Trigger>
                           <p1:Transition.To>
-                            <p1:State x:Name="__ReferenceID9" DisplayName="Approved" sap2010:WorkflowViewState.IdRef="State_9" IsFinal="True" />
+                            <p1:State x:Name="__ReferenceID9" DisplayName="Approved" sap2010:WorkflowViewState.IdRef="State_9" IsFinal="True">
+                              <p1:State.Entry>
+                                <stwa:TrackWorkflowStateActivity DisplayName="TrackApprovedState" sap2010:WorkflowViewState.IdRef="TrackWorkflowStateActivity_4">
+                                  <stwa:TrackWorkflowStateActivity.EditionName>
+                                    <p1:InArgument x:TypeArguments="x:String">
+                                      <mca:CSharpValue x:TypeArguments="x:String">edition</mca:CSharpValue>
+                                    </p1:InArgument>
+                                  </stwa:TrackWorkflowStateActivity.EditionName>
+                                  <stwa:TrackWorkflowStateActivity.Operation>
+                                    <p1:InArgument x:TypeArguments="stw:StateOperation">
+                                      <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                                    </p1:InArgument>
+                                  </stwa:TrackWorkflowStateActivity.Operation>
+                                  <stwa:TrackWorkflowStateActivity.State>
+                                    <p1:InArgument x:TypeArguments="x:String">
+                                      <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Approved</mca:CSharpValue>
+                                    </p1:InArgument>
+                                  </stwa:TrackWorkflowStateActivity.State>
+                                  <stwa:TrackWorkflowStateActivity.WorkflowName>
+                                    <p1:InArgument x:TypeArguments="x:String">
+                                      <mca:CSharpValue x:TypeArguments="x:String">workflow</mca:CSharpValue>
+                                    </p1:InArgument>
+                                  </stwa:TrackWorkflowStateActivity.WorkflowName>
+                                </stwa:TrackWorkflowStateActivity>
+                              </p1:State.Entry>
+                            </p1:State>
                           </p1:Transition.To>
                         </p1:Transition>
                       </p1:State.Transitions>
@@ -481,7 +580,7 @@
             </p1:Sequence>
           </p1:Transition.Trigger>
           <p1:Transition.To>
-            <x:Reference>__ReferenceID3</x:Reference>
+            <x:Reference>__ReferenceID0</x:Reference>
           </p1:Transition.To>
         </p1:Transition>
       </p1:State.Transitions>
@@ -489,11 +588,22 @@
     <p1:StateMachine.Variables>
       <p1:Variable x:TypeArguments="stw:StateOperation" Name="operation" />
       <p1:Variable x:TypeArguments="CorrelationHandle" Name="transIdHandle" />
+      <p1:Variable x:TypeArguments="x:String" Name="workflow">
+        <p1:Variable.Default>
+          <mca:CSharpValue x:TypeArguments="x:String">WorkflowTitle.TransactionState</mca:CSharpValue>
+        </p1:Variable.Default>
+      </p1:Variable>
+      <p1:Variable x:TypeArguments="x:String" Name="edition">
+        <p1:Variable.Default>
+          <mca:CSharpValue x:TypeArguments="x:String">WorkflowEdition.Timeout</mca:CSharpValue>
+        </p1:Variable.Default>
+      </p1:Variable>
     </p1:StateMachine.Variables>
-    <sads:DebugSymbol.Symbol>d2NEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVUT1NlcnZpY2UueGFtbHhZEQPuAxUBAT0FrgMQAo8BvQENqgMYATbwAhWmAyABHaIDHaIDkQEBG7IDBegDEAECQQ26ARcCkQHBARXsASMBePQBFe0CHwE49AIdnwMrAR+2Aw3hAxsBBEIPcR8CuQFyD7kBHwKSAcIBF98BIQKFAeABF+YBNQKBAecBF+sBIwF59QEXpAInAWClAhfsAicBOfUCH5IDKQEskwMfmQM9ASiaAx+eAysBILcDD9QDGQER1QMP2wMtAQ3cAw/gAxsBBUQTbyECugF0E3geArUBehG4AR8CkwHOAR3OAXECjAHcAR3cAXYCiQHVASHVAXUChgHjAR3jAW4CggHpAVfpAVgBevcBG6ICKQFhpwIbqwImAVytAhnrAicBOoEDJYEDeQEzjwMljwN+ATCIAymIA30BLZYDJZYDdgEpnANfnANgASHDAxXDA2kBGNEDFdEDbgEVygMZygNtARLYAxXYA2YBDt4DT94DUAEGRRViHwLHAWMVaTMCwwFqFW4hArsBdhd2bgK2AXsTiwEzAqsBjAETtwEhApQB+AEdlQInAW6WAh2cAjsBap0CHaECKQFiqQIfqQJ2AV2uAhu+AjsBUr8CG+oCKQE7URtRbwLOAV8bX3QCywFYH1hzAsgBZhtmbALEAWxVbFYCvAF+GX5qArIBgwEZgwFtAq8BiAEZiAFuAqwBjQEVqgEfAqEBqwEVsQEzAp0BsgEVtgEhApUBhAIjhAJ3AXWSAiOSAnwBcosCJ4sCewFvmQIjmQJ0AWufAl2fAl4BY7ECIbECcgFZtgIhtgJ1AVa7AiG7Am0BU8ACHd0CJwFI3gId5AI7AUTlAh3pAikBPJkBG5kBbwKoAacBG6cBdAKlAaABH6ABcwKiAa4BG64BbAKeAbQBVbQBVgKWAcwCI8wCdwFP2gIj2gJ8AUzTAifTAnsBSeECI+ECdAFF5wJd5wJeAT0=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2NEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVUT1NlcnZpY2UueGFtbHhvEgPbBBUBAdEEC9EEZwKOA9YEC9YEYAKJAz8FkQQQApIC1wENjQQYAXiiAxWJBCABPuwDHYUEKAEnlQQFywQQAQJBCVYrAvQCWw3UARcClALZARHuATMC/QHzARWeAiMC2gGmAhWfAx8BeqQDGbkDOwFjvgMd6QMrAUDuAyGDBEMBKZkEDcQEGwEESQ9JYAKEA1MPU1UC/wJED0RUAvoCTg9OZAL1AlwPiwEfAtACjAEP0wEfApUC4QEX4QFoAo0C6wEX6wFdAogC3AEX3AFcAoMC5gEX5gFsAv4B9AEXkQIhAu0BkgIXmAI1AucBmQIXnQIjAtsBpwIX1gInArYB1wIXngMnAXusAx+sA3ABc7YDH7YDZQFupwMfpwNkAWmxAx+xA3UBZL8DH9wDKQFT3QMf4wM9AU3kAx/oAysBQfYDJ/YDeAE5gAQngARtATTxAyfxA2wBL/sDJ/sDfAEqmgQPtwQZARe4BA++BC0BEb8ED8MEGwEFXhOJASEC0QKOAROSAR4CygKUARHSAR8ClgKAAh2AAnEC+AGOAh2OAnYC8wGHAiGHAnUC7gGVAh2VAm4C6AGbAlebAlgC3AGpAhvUAikCtwHZAhvdAiYCsAHfAhmdAycBfMsDJcsDeQFe2QMl2QN+AVnSAynSA30BVOADJeADdgFO5gNf5gNgAUKmBBWmBGkBIrQEFbQEbgEdrQQZrQRtARi7BBW7BGYBEsEET8EEUAEGXxV8HwLkAn0VgwEzAt4ChAEViAEhAtICkAEXkAFuAssClQETpQEzAroCpgET0QEhApcCqgIdxwInAsoByAIdzgI7AsQBzwId0wIpArgB2wIf2wJ2ArEB4AIb8AI7AqAB8QIbnAMpAX1rG2tvAu8CeRt5dALqAnIfcnMC5QKAARuAAWwC3wKGAVWGAVYC0wKYARmYAWoCxQKdARmdAW0CwAKiARmiAW4CuwKnARXEAR8CqgLFARXLATMCpALMARXQASECmAK2AiO2AncC1QHEAiPEAnwC0AG9Aie9AnsCywHLAiPLAnQCxQHRAl3RAl4CuQHjAiHjAnICqwHoAiHoAnUCpgHtAiHtAm0CoQHyAh2PAycCkAGQAx2WAzsCigGXAx2bAykBfrMBG7MBbwK1AsEBG8EBdAKwAroBH7oBcwKrAsgBG8gBbAKlAs4BVc4BVgKZAv4CI/4CdwKbAYwDI4wDfAKWAYUDJ4UDewKRAZMDI5MDdAKLAZkDXZkDXgF/</sads:DebugSymbol.Symbol>
   </p1:StateMachine>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="TrackWorkflowStateActivity_1" sap:VirtualizedContainerService.HintSize="200,22.4" />
       <sap2010:ViewStateData Id="Receive_16" sap:VirtualizedContainerService.HintSize="255.2,88" />
       <sap2010:ViewStateData Id="ManageCartableActivity_13" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
       <sap2010:ViewStateData Id="SendReply_8" sap:VirtualizedContainerService.HintSize="255.2,88" />
@@ -528,6 +638,7 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="PickBranch_4" sap:VirtualizedContainerService.HintSize="252.8,500" />
       <sap2010:ViewStateData Id="Pick_2" sap:VirtualizedContainerService.HintSize="637.6,546.4" />
+      <sap2010:ViewStateData Id="TrackWorkflowStateActivity_2" sap:VirtualizedContainerService.HintSize="200,22.4" />
       <sap2010:ViewStateData Id="Receive_11" sap:VirtualizedContainerService.HintSize="255.2,88" />
       <sap2010:ViewStateData Id="ManageCartableActivity_8" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
       <sap2010:ViewStateData Id="SendReply_3" sap:VirtualizedContainerService.HintSize="255.2,88" />
@@ -581,6 +692,7 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="PickBranch_6" sap:VirtualizedContainerService.HintSize="252.8,500" />
       <sap2010:ViewStateData Id="Pick_3" sap:VirtualizedContainerService.HintSize="637.6,546.4" />
+      <sap2010:ViewStateData Id="TrackWorkflowStateActivity_3" sap:VirtualizedContainerService.HintSize="200,22.4" />
       <sap2010:ViewStateData Id="Receive_13" sap:VirtualizedContainerService.HintSize="255.2,88" />
       <sap2010:ViewStateData Id="ManageCartableActivity_10" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
       <sap2010:ViewStateData Id="SendReply_5" sap:VirtualizedContainerService.HintSize="255.2,88" />
@@ -592,6 +704,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TrackWorkflowStateActivity_4" sap:VirtualizedContainerService.HintSize="200,22.4" />
       <sap2010:ViewStateData Id="State_9" sap:VirtualizedContainerService.HintSize="114.4,61.6">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -628,7 +741,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="State_7" sap:VirtualizedContainerService.HintSize="325.6,500.8">
+      <sap2010:ViewStateData Id="State_7" sap:VirtualizedContainerService.HintSize="114.4,61.6">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">22.8,249.2</av:Point>
@@ -646,7 +759,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="State_8" sap:VirtualizedContainerService.HintSize="325.6,473.6">
+      <sap2010:ViewStateData Id="State_8" sap:VirtualizedContainerService.HintSize="114.4,61.6">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">22.8,139.2</av:Point>
@@ -675,7 +788,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="State_10" sap:VirtualizedContainerService.HintSize="325.6,473.6">
+      <sap2010:ViewStateData Id="State_10" sap:VirtualizedContainerService.HintSize="114.4,61.6">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">222.8,139.2</av:Point>

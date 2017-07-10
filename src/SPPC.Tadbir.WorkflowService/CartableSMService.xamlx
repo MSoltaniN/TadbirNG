@@ -435,11 +435,11 @@
       <p1:Variable x:TypeArguments="x:String" Default="Transaction State" Name="workflow" />
       <p1:Variable x:TypeArguments="x:String" Name="edition">
         <p1:Variable.Default>
-          <p1:Literal x:TypeArguments="x:String" Value="" />
+          <mca:CSharpValue x:TypeArguments="x:String">WorkflowEdition.StateMachine</mca:CSharpValue>
         </p1:Variable.Default>
       </p1:Variable>
     </p1:StateMachine.Variables>
-    <sads:DebugSymbol.Symbol>d2NEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVTTVNlcnZpY2UueGFtbHhJEgO7AxUBAbMDN7MDSgKQArYDC7YDPQKPAj8F9QIQAtUBiQEN8QIYAXiGAhXtAiABPtACHekCKAEn+QIFrwMQAQJBCVYrAvoBWw2GARsC1wGLARGgATMCwAGlARXQASMCnQHYARWDAiMBeogCGZ0COwFjogIdzQIrAUDSAiHnAkMBKf0CDagDGwEESQ9JYAKKAlMPU1UChQJED0RUAoACTg9OZAL7AVwPeRkC6gF6D4ABLQLkAYEBD4UBGwLYAZMBF5MBaALQAZ0BF50BXQLLAY4BF44BXALGAZgBF5gBbALBAaYBF8MBIQKwAcQBF8oBNQKqAcsBF88BIwKeAdkBF/YBIQKNAfcBF/0BNQKHAf4BF4ICIwF7kAIfkAJwAXOaAh+aAmUBbosCH4sCZAFplQIflQJ1AWSjAh/AAikBU8ECH8cCPQFNyAIfzAIrAUHaAifaAngBOeQCJ+QCbQE01QIn1QJsAS/fAiffAnwBKv4CD5sDGQEXnAMPogMtARGjAw+nAxsBBWgVaGkC9QF2FXZuAvABbxlvbQLrAX0VfWYC5QGDAU+DAVAC2QGyAR2yAXECuwHAAR3AAXYCtgG5ASG5AXUCsQHHAR3HAW4CqwHNAVfNAVgCnwHlAR3lAXECmAHzAR3zAXYCkwHsASHsAXUCjgH6AR36AW4CiAGAAleAAlgBfK8CJa8CeQFevQIlvQJ+AVm2Aim2An0BVMQCJcQCdgFOygJfygJgAUKKAxWKA2kBIpgDFZgDbgEdkQMZkQNtARifAxWfA2YBEqUDT6UDUAEG</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2NEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVTTVNlcnZpY2UueGFtbHhJEgO7AxUBAbMDN7MDSgKUArYDC7YDZQKPAj8F9QIQAtUBiQEN8QIYAXiGAhXtAiABPtACHekCKAEn+QIFrwMQAQJBCVYrAvoBWw2GARsC1wGLARGgATMCwAGlARXQASMCnQHYARWDAiMBeogCGZ0COwFjogIdzQIrAUDSAiHnAkMBKf0CDagDGwEESQ9JYAKKAlMPU1UChQJED0RUAoACTg9OZAL7AVwPeRkC6gF6D4ABLQLkAYEBD4UBGwLYAZMBF5MBaALQAZ0BF50BXQLLAY4BF44BXALGAZgBF5gBbALBAaYBF8MBIQKwAcQBF8oBNQKqAcsBF88BIwKeAdkBF/YBIQKNAfcBF/0BNQKHAf4BF4ICIwF7kAIfkAJwAXOaAh+aAmUBbosCH4sCZAFplQIflQJ1AWSjAh/AAikBU8ECH8cCPQFNyAIfzAIrAUHaAifaAngBOeQCJ+QCbQE01QIn1QJsAS/fAiffAnwBKv4CD5sDGQEXnAMPogMtARGjAw+nAxsBBWgVaGkC9QF2FXZuAvABbxlvbQLrAX0VfWYC5QGDAU+DAVAC2QGyAR2yAXECuwHAAR3AAXYCtgG5ASG5AXUCsQHHAR3HAW4CqwHNAVfNAVgCnwHlAR3lAXECmAHzAR3zAXYCkwHsASHsAXUCjgH6AR36AW4CiAGAAleAAlgBfK8CJa8CeQFevQIlvQJ+AVm2Aim2An0BVMQCJcQCdgFOygJfygJgAUKKAxWKA2kBIpgDFZgDbgEdkQMZkQNtARifAxWfA2YBEqUDT6UDUAEG</sads:DebugSymbol.Symbol>
   </p1:StateMachine>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -496,7 +496,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="TrackWorkflowStateActivity_4" sap:VirtualizedContainerService.HintSize="200,22.4" />
-      <sap2010:ViewStateData Id="State_9" sap:VirtualizedContainerService.HintSize="325.6,224">
+      <sap2010:ViewStateData Id="State_9" sap:VirtualizedContainerService.HintSize="114.4,61.6">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">432.8,249.2</av:Point>

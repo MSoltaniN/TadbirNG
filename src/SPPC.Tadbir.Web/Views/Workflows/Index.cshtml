@@ -43,7 +43,6 @@
         @for (int index = 0; index < Model.Count; index++)
         {
             var item = Model[index];
-            string edition = String.IsNullOrEmpty(item.EditionName) ? "ماشین حالت" : item.EditionName;
             <tr>
                 <td>
                     @String.Format("{0}", index + 1)
@@ -58,7 +57,7 @@
                     @WorkflowTitle.ToLocalValue(item.WorkflowName)
                 </td>
                 <td>
-                    @edition
+                    @WorkflowEdition.ToLocalValue(item.EditionName)
                 </td>
                 <td>
                     @DocumentStatus.ToLocalValue(item.State)

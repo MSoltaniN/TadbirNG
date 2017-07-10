@@ -11,6 +11,7 @@
  xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
  xmlns:stw="clr-namespace:SPPC.Tadbir.Workflow;assembly=SPPC.Tadbir.Interfaces"
  xmlns:stw1="clr-namespace:SPPC.Tadbir.Workflow;assembly=SPPC.Tadbir.Workflow"
+ xmlns:stwa="clr-namespace:SPPC.Tadbir.Workflow.Activities;assembly=SPPC.Tadbir.Workflow"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <p1:Sequence DisplayName="StatelessWorkflowSequence" sap2010:WorkflowViewState.IdRef="Sequence_5">
     <p1:TextExpression.Namespaces>
@@ -21,6 +22,7 @@
         <x:String>System.Text</x:String>
         <x:String>SPPC.Tadbir.Workflow</x:String>
         <x:String>System.ServiceModel.Activities</x:String>
+        <x:String>SPPC.Tadbir.Values</x:String>
       </sco:Collection>
     </p1:TextExpression.Namespaces>
     <p1:TextExpression.References>
@@ -46,6 +48,7 @@
         <p1:AssemblyReference>System.Xml</p1:AssemblyReference>
         <p1:AssemblyReference>System.Xml.Linq</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Framework.Unity</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Framework.Workflow</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.Common</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.Interfaces</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.Unity</p1:AssemblyReference>
@@ -57,6 +60,16 @@
     </p1:TextExpression.References>
     <p1:Sequence.Variables>
       <p1:Variable x:TypeArguments="stw:StateOperation" Name="operation" />
+      <p1:Variable x:TypeArguments="x:String" Name="workflow">
+        <p1:Variable.Default>
+          <mca:CSharpValue x:TypeArguments="x:String">WorkflowTitle.TransactionState</mca:CSharpValue>
+        </p1:Variable.Default>
+      </p1:Variable>
+      <p1:Variable x:TypeArguments="x:String" Name="edition">
+        <p1:Variable.Default>
+          <mca:CSharpValue x:TypeArguments="x:String">WorkflowEdition.Sequential</mca:CSharpValue>
+        </p1:Variable.Default>
+      </p1:Variable>
     </p1:Sequence.Variables>
     <Receive x:Name="__ReferenceID0" CanCreateInstance="True" DisplayName="ReceiveRequest" sap2010:WorkflowViewState.IdRef="Receive_5" OperationName="DoRequest" ServiceContractName="p:IDocumentStateBasic">
       <ReceiveParametersContent>
@@ -72,13 +85,37 @@
         </p1:InArgument>
       </p1:If.Condition>
       <p1:If.Then>
-        <stw1:ManageCartableActivity DisplayName="AddWorkItemForPrepare" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_16">
-          <stw1:ManageCartableActivity.Operation>
-            <p1:InArgument x:TypeArguments="stw:StateOperation">
-              <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
-            </p1:InArgument>
-          </stw1:ManageCartableActivity.Operation>
-        </stw1:ManageCartableActivity>
+        <p1:Sequence sap2010:WorkflowViewState.IdRef="Sequence_6">
+          <stw1:ManageCartableActivity DisplayName="AddWorkItemForPrepare" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_16">
+            <stw1:ManageCartableActivity.Operation>
+              <p1:InArgument x:TypeArguments="stw:StateOperation">
+                <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+              </p1:InArgument>
+            </stw1:ManageCartableActivity.Operation>
+          </stw1:ManageCartableActivity>
+          <stwa:TrackWorkflowStateActivity DisplayName="TrackPreparedState" sap2010:WorkflowViewState.IdRef="TrackWorkflowStateActivity_1">
+            <stwa:TrackWorkflowStateActivity.EditionName>
+              <p1:InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">edition</mca:CSharpValue>
+              </p1:InArgument>
+            </stwa:TrackWorkflowStateActivity.EditionName>
+            <stwa:TrackWorkflowStateActivity.Operation>
+              <p1:InArgument x:TypeArguments="stw:StateOperation">
+                <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+              </p1:InArgument>
+            </stwa:TrackWorkflowStateActivity.Operation>
+            <stwa:TrackWorkflowStateActivity.State>
+              <p1:InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Prepared</mca:CSharpValue>
+              </p1:InArgument>
+            </stwa:TrackWorkflowStateActivity.State>
+            <stwa:TrackWorkflowStateActivity.WorkflowName>
+              <p1:InArgument x:TypeArguments="x:String">
+                <mca:CSharpValue x:TypeArguments="x:String">workflow</mca:CSharpValue>
+              </p1:InArgument>
+            </stwa:TrackWorkflowStateActivity.WorkflowName>
+          </stwa:TrackWorkflowStateActivity>
+        </p1:Sequence>
       </p1:If.Then>
       <p1:If.Else>
         <p1:If DisplayName="IfReviewOperation" sap2010:WorkflowViewState.IdRef="If_23">
@@ -88,13 +125,37 @@
             </p1:InArgument>
           </p1:If.Condition>
           <p1:If.Then>
-            <stw1:ManageCartableActivity DisplayName="AddWorkItemForReview" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_17">
-              <stw1:ManageCartableActivity.Operation>
-                <p1:InArgument x:TypeArguments="stw:StateOperation">
-                  <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
-                </p1:InArgument>
-              </stw1:ManageCartableActivity.Operation>
-            </stw1:ManageCartableActivity>
+            <p1:Sequence sap2010:WorkflowViewState.IdRef="Sequence_7">
+              <stw1:ManageCartableActivity DisplayName="AddWorkItemForReview" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_17">
+                <stw1:ManageCartableActivity.Operation>
+                  <p1:InArgument x:TypeArguments="stw:StateOperation">
+                    <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                  </p1:InArgument>
+                </stw1:ManageCartableActivity.Operation>
+              </stw1:ManageCartableActivity>
+              <stwa:TrackWorkflowStateActivity DisplayName="TrackReviewedState" sap2010:WorkflowViewState.IdRef="TrackWorkflowStateActivity_2">
+                <stwa:TrackWorkflowStateActivity.EditionName>
+                  <p1:InArgument x:TypeArguments="x:String">
+                    <mca:CSharpValue x:TypeArguments="x:String">edition</mca:CSharpValue>
+                  </p1:InArgument>
+                </stwa:TrackWorkflowStateActivity.EditionName>
+                <stwa:TrackWorkflowStateActivity.Operation>
+                  <p1:InArgument x:TypeArguments="stw:StateOperation">
+                    <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                  </p1:InArgument>
+                </stwa:TrackWorkflowStateActivity.Operation>
+                <stwa:TrackWorkflowStateActivity.State>
+                  <p1:InArgument x:TypeArguments="x:String">
+                    <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Reviewed</mca:CSharpValue>
+                  </p1:InArgument>
+                </stwa:TrackWorkflowStateActivity.State>
+                <stwa:TrackWorkflowStateActivity.WorkflowName>
+                  <p1:InArgument x:TypeArguments="x:String">
+                    <mca:CSharpValue x:TypeArguments="x:String">workflow</mca:CSharpValue>
+                  </p1:InArgument>
+                </stwa:TrackWorkflowStateActivity.WorkflowName>
+              </stwa:TrackWorkflowStateActivity>
+            </p1:Sequence>
           </p1:If.Then>
           <p1:If.Else>
             <p1:If DisplayName="IfRejectOperation" sap2010:WorkflowViewState.IdRef="If_22">
@@ -104,13 +165,37 @@
                 </p1:InArgument>
               </p1:If.Condition>
               <p1:If.Then>
-                <stw1:ManageCartableActivity DisplayName="AddWorkItemForReject" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_18">
-                  <stw1:ManageCartableActivity.Operation>
-                    <p1:InArgument x:TypeArguments="stw:StateOperation">
-                      <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
-                    </p1:InArgument>
-                  </stw1:ManageCartableActivity.Operation>
-                </stw1:ManageCartableActivity>
+                <p1:Sequence sap2010:WorkflowViewState.IdRef="Sequence_8">
+                  <stw1:ManageCartableActivity DisplayName="AddWorkItemForReject" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_18">
+                    <stw1:ManageCartableActivity.Operation>
+                      <p1:InArgument x:TypeArguments="stw:StateOperation">
+                        <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                      </p1:InArgument>
+                    </stw1:ManageCartableActivity.Operation>
+                  </stw1:ManageCartableActivity>
+                  <stwa:TrackWorkflowStateActivity DisplayName="TrackRejectedState" sap2010:WorkflowViewState.IdRef="TrackWorkflowStateActivity_3">
+                    <stwa:TrackWorkflowStateActivity.EditionName>
+                      <p1:InArgument x:TypeArguments="x:String">
+                        <mca:CSharpValue x:TypeArguments="x:String">edition</mca:CSharpValue>
+                      </p1:InArgument>
+                    </stwa:TrackWorkflowStateActivity.EditionName>
+                    <stwa:TrackWorkflowStateActivity.Operation>
+                      <p1:InArgument x:TypeArguments="stw:StateOperation">
+                        <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                      </p1:InArgument>
+                    </stwa:TrackWorkflowStateActivity.Operation>
+                    <stwa:TrackWorkflowStateActivity.State>
+                      <p1:InArgument x:TypeArguments="x:String">
+                        <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Prepared</mca:CSharpValue>
+                      </p1:InArgument>
+                    </stwa:TrackWorkflowStateActivity.State>
+                    <stwa:TrackWorkflowStateActivity.WorkflowName>
+                      <p1:InArgument x:TypeArguments="x:String">
+                        <mca:CSharpValue x:TypeArguments="x:String">workflow</mca:CSharpValue>
+                      </p1:InArgument>
+                    </stwa:TrackWorkflowStateActivity.WorkflowName>
+                  </stwa:TrackWorkflowStateActivity>
+                </p1:Sequence>
               </p1:If.Then>
               <p1:If.Else>
                 <p1:If DisplayName="IfConfirmOperation" sap2010:WorkflowViewState.IdRef="If_21">
@@ -120,13 +205,37 @@
                     </p1:InArgument>
                   </p1:If.Condition>
                   <p1:If.Then>
-                    <stw1:ManageCartableActivity DisplayName="AddWorkItemForConfirm" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_19">
-                      <stw1:ManageCartableActivity.Operation>
-                        <p1:InArgument x:TypeArguments="stw:StateOperation">
-                          <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
-                        </p1:InArgument>
-                      </stw1:ManageCartableActivity.Operation>
-                    </stw1:ManageCartableActivity>
+                    <p1:Sequence sap2010:WorkflowViewState.IdRef="Sequence_9">
+                      <stw1:ManageCartableActivity DisplayName="AddWorkItemForConfirm" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_19">
+                        <stw1:ManageCartableActivity.Operation>
+                          <p1:InArgument x:TypeArguments="stw:StateOperation">
+                            <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                          </p1:InArgument>
+                        </stw1:ManageCartableActivity.Operation>
+                      </stw1:ManageCartableActivity>
+                      <stwa:TrackWorkflowStateActivity DisplayName="TrackConfirmedState" sap2010:WorkflowViewState.IdRef="TrackWorkflowStateActivity_4">
+                        <stwa:TrackWorkflowStateActivity.EditionName>
+                          <p1:InArgument x:TypeArguments="x:String">
+                            <mca:CSharpValue x:TypeArguments="x:String">edition</mca:CSharpValue>
+                          </p1:InArgument>
+                        </stwa:TrackWorkflowStateActivity.EditionName>
+                        <stwa:TrackWorkflowStateActivity.Operation>
+                          <p1:InArgument x:TypeArguments="stw:StateOperation">
+                            <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                          </p1:InArgument>
+                        </stwa:TrackWorkflowStateActivity.Operation>
+                        <stwa:TrackWorkflowStateActivity.State>
+                          <p1:InArgument x:TypeArguments="x:String">
+                            <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Confirmed</mca:CSharpValue>
+                          </p1:InArgument>
+                        </stwa:TrackWorkflowStateActivity.State>
+                        <stwa:TrackWorkflowStateActivity.WorkflowName>
+                          <p1:InArgument x:TypeArguments="x:String">
+                            <mca:CSharpValue x:TypeArguments="x:String">workflow</mca:CSharpValue>
+                          </p1:InArgument>
+                        </stwa:TrackWorkflowStateActivity.WorkflowName>
+                      </stwa:TrackWorkflowStateActivity>
+                    </p1:Sequence>
                   </p1:If.Then>
                   <p1:If.Else>
                     <p1:If DisplayName="IfApproveOperation" sap2010:WorkflowViewState.IdRef="If_20">
@@ -136,13 +245,37 @@
                         </p1:InArgument>
                       </p1:If.Condition>
                       <p1:If.Then>
-                        <stw1:ManageCartableActivity DisplayName="AddWorkItemForApprove" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_20">
-                          <stw1:ManageCartableActivity.Operation>
-                            <p1:InArgument x:TypeArguments="stw:StateOperation">
-                              <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
-                            </p1:InArgument>
-                          </stw1:ManageCartableActivity.Operation>
-                        </stw1:ManageCartableActivity>
+                        <p1:Sequence sap2010:WorkflowViewState.IdRef="Sequence_10">
+                          <stw1:ManageCartableActivity DisplayName="AddWorkItemForApprove" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_20">
+                            <stw1:ManageCartableActivity.Operation>
+                              <p1:InArgument x:TypeArguments="stw:StateOperation">
+                                <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                              </p1:InArgument>
+                            </stw1:ManageCartableActivity.Operation>
+                          </stw1:ManageCartableActivity>
+                          <stwa:TrackWorkflowStateActivity DisplayName="TrackApprovedState" sap2010:WorkflowViewState.IdRef="TrackWorkflowStateActivity_5">
+                            <stwa:TrackWorkflowStateActivity.EditionName>
+                              <p1:InArgument x:TypeArguments="x:String">
+                                <mca:CSharpValue x:TypeArguments="x:String">edition</mca:CSharpValue>
+                              </p1:InArgument>
+                            </stwa:TrackWorkflowStateActivity.EditionName>
+                            <stwa:TrackWorkflowStateActivity.Operation>
+                              <p1:InArgument x:TypeArguments="stw:StateOperation">
+                                <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                              </p1:InArgument>
+                            </stwa:TrackWorkflowStateActivity.Operation>
+                            <stwa:TrackWorkflowStateActivity.State>
+                              <p1:InArgument x:TypeArguments="x:String">
+                                <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Approved</mca:CSharpValue>
+                              </p1:InArgument>
+                            </stwa:TrackWorkflowStateActivity.State>
+                            <stwa:TrackWorkflowStateActivity.WorkflowName>
+                              <p1:InArgument x:TypeArguments="x:String">
+                                <mca:CSharpValue x:TypeArguments="x:String">workflow</mca:CSharpValue>
+                              </p1:InArgument>
+                            </stwa:TrackWorkflowStateActivity.WorkflowName>
+                          </stwa:TrackWorkflowStateActivity>
+                        </p1:Sequence>
                       </p1:If.Then>
                       <p1:If.Else>
                         <p1:If DisplayName="IfUnsupportedOperation" sap2010:WorkflowViewState.IdRef="If_19">
@@ -174,16 +307,56 @@
         <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
       </SendParametersContent>
     </SendReply>
-    <sads:DebugSymbol.Symbol>d2FEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVTZXJ2aWNlLnhhbWx4HQ8DsgERAQE9BUMPAShEBasBDQEErAEFsAERAQJAC0BkASlHC0ddAQVLCVEnASVUCakBEQEHrgFFrgFGAQNOD05gASZXD1dgAQhbDWErASJkDacBFQEKXhNeZAEjZxNnZAELaxFxLwEfdBGlARkBDW4XbmgBIHcXd2kBDnsVgQEzARyEARWjAR0BEH4bfmwBHYcBG4cBbQERiwEZkQE3ARmUARmhASEBE44BH44BcAEalwEflwF0ARSbAR2fASwBFp0BIZ0B2QEBFw==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2FEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVTZXJ2aWNlLnhhbWx4PRADtwIRAQFBC0FnAQZGC0ZjAQJKBVAPAqIBUQWwAg0BDLECBbUCEQEKTQtNZAKjAVQLVF0BDVgJdhcCiwF5Ca4CEQERswJFswJGAQtZC18pAp0BYAt1LQKMAXwPfGABEoABDZ4BGwF0oQENrAIVARZcEVxiAp4BaBFoYgKZAXIRclcClQFjEWNWApEBbRFtZgKNAYEBD4cBLQKGAYgBD50BMQF1pAETpAFkAReoARHGAR8BXckBEaoCGQEbhAEVhAFmAocBkAEVkAFmAoIBmgEVmgFbAX6LARWLAVoBepUBFZUBagF2qQETrwExAW+wARPFATUBXswBF8wBaQEc0AEV7gEjAUbxARWoAh0BIKwBGawBagFwuAEZuAFqAWvCARnCAV8BZ7MBGbMBXgFjvQEZvQFuAV/RARfXATUBWNgBF+0BOQFH9AEb9AFtASH4ARmWAicBL5kCGaYCIQEl1AEd1AFuAVngAR3gAW4BVOoBHeoBYwFQ2wEd2wFiAUzlAR3lAXMBSPkBG/8BOQFBgAIblQI9ATCcAh+cAnQBJqACHaQCLAEq/AEh/AFyAUKIAiGIAnIBPZICIZICZwE5gwIhgwJmATWNAiGNAnYBMaICIaIC2QEBKw==</sads:DebugSymbol.Symbol>
   </p1:Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
       <sap2010:ViewStateData Id="Receive_5" sap:VirtualizedContainerService.HintSize="255.2,88" />
       <sap2010:ViewStateData Id="ManageCartableActivity_16" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="TrackWorkflowStateActivity_1" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="200,52.8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ManageCartableActivity_17" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="TrackWorkflowStateActivity_2" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="200,52.8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ManageCartableActivity_18" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="TrackWorkflowStateActivity_3" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="Sequence_8" sap:VirtualizedContainerService.HintSize="200,52.8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ManageCartableActivity_19" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="TrackWorkflowStateActivity_4" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="200,52.8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ManageCartableActivity_20" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="TrackWorkflowStateActivity_5" sap:VirtualizedContainerService.HintSize="200,22.4" />
+      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="222.4,209.6">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="WriteLine_4" sap:VirtualizedContainerService.HintSize="209.6,62.4" />
       <sap2010:ViewStateData Id="If_19" sap:VirtualizedContainerService.HintSize="200,52.8">
         <sap:WorkflowViewStateService.ViewState>
@@ -193,7 +366,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_20" sap:VirtualizedContainerService.HintSize="200,52.8">
+      <sap2010:ViewStateData Id="If_20" sap:VirtualizedContainerService.HintSize="464,212">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -201,7 +374,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_21" sap:VirtualizedContainerService.HintSize="200,52.8">
+      <sap2010:ViewStateData Id="If_21" sap:VirtualizedContainerService.HintSize="464,212">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -209,7 +382,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_22" sap:VirtualizedContainerService.HintSize="200,52.8">
+      <sap2010:ViewStateData Id="If_22" sap:VirtualizedContainerService.HintSize="464,212">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -217,7 +390,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_23" sap:VirtualizedContainerService.HintSize="200,52.8">
+      <sap2010:ViewStateData Id="If_23" sap:VirtualizedContainerService.HintSize="464,212">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>

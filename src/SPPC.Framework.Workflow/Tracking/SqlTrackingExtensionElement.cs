@@ -55,7 +55,7 @@ namespace SPPC.Framework.Workflow.Tracking
 
         protected override object CreateBehavior()
         {
-            return new SqlTrackingBehavior(ConnectionString, ProfileName);
+            return new SqlTrackingBehavior(ProfileName);
         }
     }
 }
