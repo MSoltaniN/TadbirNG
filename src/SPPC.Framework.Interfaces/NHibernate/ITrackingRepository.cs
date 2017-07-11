@@ -9,6 +9,11 @@ namespace SPPC.Framework.NHibernate
     /// </summary>
     public interface ITrackingRepository
     {
+        /// <summary>
+        /// مجموعه ای از رکوردهای ردگیری سفارشی را که با نام خاص طبقه بندی شده را برمی گرداند
+        /// </summary>
+        /// <param name="name">نام طبقه بندی مورد نیاز برای رکوردهای ردگیری</param>
+        /// <returns>مجموعه رکوردهای ردگیری سفارشی با نام مورد نظر</returns>
         IList<CustomTrackingEvent> GetCustomEvents(string name);
 
         /// <summary>

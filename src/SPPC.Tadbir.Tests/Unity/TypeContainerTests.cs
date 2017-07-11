@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
@@ -118,6 +117,24 @@ namespace SPPC.Tadbir.Unity.Tests
             AssertIsRegisteredWithConcreteType<ISettingsRepository>();
         }
 
+        [Test]
+        public void ContainsWorkItemRepositoryRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<IWorkItemRepository>();
+        }
+
+        [Test]
+        public void ContainsWorkflowRepositoryRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<IWorkflowRepository>();
+        }
+
         #endregion
 
         #region Service Type Registrations
@@ -183,6 +200,33 @@ namespace SPPC.Tadbir.Unity.Tests
 
             // Act & Assert
             AssertIsRegisteredWithConcreteType<ISettingsService>();
+        }
+
+        [Test]
+        public void ContainsSecurityContextManagerRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<ISecurityContextManager>();
+        }
+
+        [Test]
+        public void ContainsTextEncoderRegistrationForSecurityContext()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<ITextEncoder<SecurityContext>>();
+        }
+
+        [Test]
+        public void ContainsWorkflowServiceRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<IWorkflowService>();
         }
 
         #endregion

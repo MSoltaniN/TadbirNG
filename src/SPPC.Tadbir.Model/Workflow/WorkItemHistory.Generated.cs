@@ -28,6 +28,7 @@ namespace SPPC.Tadbir.Model.Workflow
         public WorkItemHistory()
         {
             this.Number = String.Empty;
+            this.Date = DateTime.Now;
             this.Title = String.Empty;
             this.DocumentType = String.Empty;
             this.Remarks = String.Empty;

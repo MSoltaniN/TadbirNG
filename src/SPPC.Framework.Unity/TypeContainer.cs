@@ -48,7 +48,7 @@ namespace SPPC.Framework.Unity
         {
             RegisterCrossCuttingTypes();
             RegisterPersistenceTypes();
-            RegisterServiceTypes();
+            ////RegisterServiceTypes();
             RegisterWebDependentTypes();
         }
 
@@ -75,12 +75,12 @@ namespace SPPC.Framework.Unity
             _container.RegisterType<ITrackingRepository, TrackingRepository>();
         }
 
-        /// <summary>
-        /// Performs type registrations for service types.
-        /// </summary>
-        public void RegisterServiceTypes()
-        {
-        }
+        /////// <summary>
+        /////// Performs type registrations for service types.
+        /////// </summary>
+        ////public void RegisterServiceTypes()
+        ////{
+        ////}
 
         /// <summary>
         /// Performs type registrations for the types that are strictly dependent to the existence of

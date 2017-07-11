@@ -8,6 +8,9 @@ namespace SPPC.Tadbir.ViewModel.Workflow
     /// </summary>
     public class WorkflowInstanceViewModel
     {
+        /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
         public WorkflowInstanceViewModel()
         {
             InstanceId = String.Empty;
@@ -18,6 +21,9 @@ namespace SPPC.Tadbir.ViewModel.Workflow
             LastActionDate = String.Empty;
         }
 
+        /// <summary>
+        /// شناسه یکتای تخصیص داده شده به این نمونه گردش کار
+        /// </summary>
         public string InstanceId { get; set; }
 
         /// <summary>

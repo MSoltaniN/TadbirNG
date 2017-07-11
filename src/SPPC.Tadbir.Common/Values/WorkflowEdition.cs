@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Values
 {
+    /// <summary>
+    /// متن های فارسی مربوط به نام ویرایش های مختلف گردش های کاری را در یک کلاس مرکزی تعریف می کند
+    /// </summary>
     public sealed class WorkflowEdition
     {
         private WorkflowEdition()

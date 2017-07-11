@@ -10,9 +10,11 @@ using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Settings;
+using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Mapper.Tests
 {
@@ -361,7 +363,173 @@ namespace SPPC.Tadbir.Mapper.Tests
 
         #endregion
 
+        #region Workflow Type Mapping Tests
+
+        [Test]
+        public void ContainsMappingFromWorkItemToWorkItemViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<WorkItem, WorkItemViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromWorkItemToWorkItemViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<WorkItem, WorkItemViewModel>();
+        }
+
+        [Test]
+        public void ContainsMappingFromWorkItemToInboxItemViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<WorkItem, InboxItemViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromWorkItemToInboxItemViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<WorkItem, InboxItemViewModel>();
+        }
+
+        [Test]
+        public void ContainsMappingFromWorkItemViewModelToWorkItem()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<WorkItemViewModel, WorkItem>();
+        }
+
+        [Test]
+        public void CanMapFromWorkItemViewModelToWorkItem()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<WorkItemViewModel, WorkItem>();
+        }
+
+        [Test]
+        public void ContainsMappingFromWorkItemDocumentViewModelToWorkItemDocument()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<WorkItemDocumentViewModel, WorkItemDocument>();
+        }
+
+        [Test]
+        public void CanMapFromWorkItemDocumentViewModelToWorkItemDocument()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<WorkItemDocumentViewModel, WorkItemDocument>();
+        }
+
+        [Test]
+        public void ContainsMappingFromWorkItemViewModelToWorkItemHistory()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<WorkItemViewModel, WorkItemHistory>();
+        }
+
+        [Test]
+        public void CanMapFromWorkItemViewModelToWorkItemHistory()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<WorkItemViewModel, WorkItemHistory>();
+        }
+
+        [Test]
+        public void ContainsMappingFromWorkItemHistoryToHistoryItemViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<WorkItemHistory, HistoryItemViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromWorkItemHistoryToHistoryItemViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<WorkItemHistory, HistoryItemViewModel>();
+        }
+
+        [Test]
+        public void ContainsMappingFromWorkItemHistoryToOutboxItemViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<WorkItemHistory, OutboxItemViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromWorkItemHistoryToOutboxItemViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<WorkItemHistory, OutboxItemViewModel>();
+        }
+
+        [Test]
+        public void ContainsMappingFromStringToAnyDictionaryToWorkflowInstanceViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<Dictionary<string, object>, WorkflowInstanceViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromStringToAnyDictionaryToWorkflowInstanceViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<Dictionary<string, object>, WorkflowInstanceViewModel>();
+        }
+
+        #endregion
+
         #region Settings Type Mapping Tests
+
+        [Test]
+        public void ContainsMappingFromWorkflowSettingsElementToWorkflowSettingsViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<WorkflowSettingsElement, WorkflowSettingsViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromWorkflowSettingsElementToWorkflowSettingsViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<WorkflowSettingsElement, WorkflowSettingsViewModel>();
+        }
 
         [Test]
         public void ContainsMappingFromWorkflowElementToWorkflowViewModel()

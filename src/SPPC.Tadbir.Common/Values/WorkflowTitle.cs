@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace SPPC.Tadbir.Values
 {
+    /// <summary>
+    /// متن های فارسی مربوط به عنوان گردش های کاری را در یک کلاس مرکزی تعریف می کند
+    /// </summary>
     public sealed class WorkflowTitle
     {
         private WorkflowTitle()

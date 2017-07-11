@@ -8,18 +8,29 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.NHibernate;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Workflow;
-using SwForAll.Platform.Persistence;
 
 namespace SPPC.Tadbir.NHibernate
 {
+    /// <summary>
+    /// عملیات مرتبط با خواندن اطلاعات گردش های کاری از دیتابیس را پیاده سازی می کند.
+    /// </summary>
     public class WorkflowRepository : IWorkflowRepository
     {
+        /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        /// <param name="mapper">پیاده سازی جاری برای نگاشت اطلاعات مدل های اطلاعاتی</param>
+        /// <param name="trackingRepository">پیاده سازی جاری برای خواندن اطلاعات ردگیری گردش های کاری از محل ذخیره</param>
         public WorkflowRepository(IDomainMapper mapper, ITrackingRepository trackingRepository)
         {
             _mapper = mapper;
             _trackingRepository = trackingRepository;
         }
 
+        /// <summary>
+        /// اطلاعات گردش های کاری در حال اجرا در برنامه را از محل ذخیره می خواند
+        /// </summary>
+        /// <returns>گردش های کاری در حال اجرا</returns>
         public IList<WorkflowInstanceViewModel> GetRunningWorkflows()
         {
             var runningWorkflows = new List<WorkflowInstanceViewModel>();

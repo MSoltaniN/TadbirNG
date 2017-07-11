@@ -57,12 +57,6 @@ namespace SPPC.Framework.NHibernate.Mapping
             Map(x => x.RowGuid, "rowguid")
                 .Generated.Insert();
             Map(x => x.ModifiedDate);
-
-            MapReferences();
-        }
-
-        private void MapReferences()
-        {
         }
     }
 }

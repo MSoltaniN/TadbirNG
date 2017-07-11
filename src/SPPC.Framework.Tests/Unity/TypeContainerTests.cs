@@ -4,13 +4,14 @@ using System.Linq;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.NHibernate;
 using SwForAll.Platform.Persistence;
 using SwForAll.Platform.Persistence.NHibernate;
 
 namespace SPPC.Framework.Unity.Tests
 {
     [TestFixture]
-    [Category("Unity")]
+    [Category("FrameworkUnity")]
     public class TypeContainerTests : IDisposable
     {
         [OneTimeSetUp]
@@ -66,6 +67,15 @@ namespace SPPC.Framework.Unity.Tests
 
             // Act & Assert
             AssertIsRegisteredWithConcreteType<IUnitOfWork>();
+        }
+
+        [Test]
+        public void ContainsTrackingRepositoryRegistration()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertIsRegisteredWithConcreteType<ITrackingRepository>();
         }
 
         #endregion

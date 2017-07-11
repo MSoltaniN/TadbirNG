@@ -1,3 +1,4 @@
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1065:DoNotRaiseExceptionsInUnexpectedLocations", Scope = "member", Target = "SPPC.Framework.Workflow.Tracking.SqlTrackingExtensionElement.#ConnectionString", Justification = "Property is used by WCF runtime and error checking is required.")]
 
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.

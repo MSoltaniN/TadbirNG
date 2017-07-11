@@ -217,10 +217,19 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         public const string CartableRemarks = "پاراف";
 
+        /// <summary>
+        /// Localized name of Workflow field
+        /// </summary>
         public const string Workflow = "گردش کار";
 
+        /// <summary>
+        /// Localized name of Edition field
+        /// </summary>
         public const string Edition = "ویرایش";
 
+        /// <summary>
+        /// Localized name of LastActionDate field
+        /// </summary>
         public const string LastActionDate = "تاریخ آخرین اقدام";
 
         /// <summary>

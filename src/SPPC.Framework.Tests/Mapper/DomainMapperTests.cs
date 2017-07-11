@@ -1,12 +1,14 @@
 using System;
-using System.Collections.Generic;
+using System.Activities.Tracking;
 using System.Linq;
 using AutoMapper;
 using NUnit.Framework;
+using SPPC.Framework.Model.Workflow.Tracking;
 
 namespace SPPC.Framework.Mapper.Tests
 {
     [TestFixture]
+    [Category("FrameworkMapping")]
     public class DomainMapperTests
     {
         [OneTimeSetUp]
@@ -17,42 +19,104 @@ namespace SPPC.Framework.Mapper.Tests
 
         #region Type Mapping Tests
 
-        //// TODO: Verify domain mappings similar to the following example test methods...
-        ////[Test]
-        ////public void ContainsMappingFromModelToViewModel()
-        ////{
-        ////    // Arrange (Done in FixtureSetup)
+       [Test]
+        public void ContainsMappingFromWorkflowInstanceRecordToWorkflowInstanceEvent()
+        {
+            // Arrange (Done in FixtureSetup)
 
-        ////    // Act & Assert
-        ////    AssertMappingIsDefined<Model, ViewModel>();
-        ////}
+            // Act & Assert
+            AssertMappingIsDefined<WorkflowInstanceRecord, WorkflowInstanceEvent>();
+        }
 
-        ////[Test]
-        ////public void CanMapFromModelToViewModel()
-        ////{
-        ////    // Arrange (Done in FixtureSetup)
+        [Test]
+        public void ContainsMappingFromWorkflowInstanceUnhandledExceptionRecordToWorkflowInstanceEvent()
+        {
+            // Arrange (Done in FixtureSetup)
 
-        ////    // Act & Assert
-        ////    AssertMapperCanConvertFromSourceToDestination<Model, ViewModel>();
-        ////}
+            // Act & Assert
+            AssertMappingIsDefined<WorkflowInstanceUnhandledExceptionRecord, WorkflowInstanceEvent>();
+        }
 
-        ////[Test]
-        ////public void ContainsMappingFromViewModelToModel()
-        ////{
-        ////    // Arrange (Done in FixtureSetup)
+        [Test]
+        public void ContainsMappingFromWorkflowInstanceTerminatedRecordToWorkflowInstanceEvent()
+        {
+            // Arrange (Done in FixtureSetup)
 
-        ////    // Act & Assert
-        ////    AssertMappingIsDefined<ViewModel, Model>();
-        ////}
+            // Act & Assert
+            AssertMappingIsDefined<WorkflowInstanceTerminatedRecord, WorkflowInstanceEvent>();
+        }
 
-        ////[Test]
-        ////public void CanMapFromViewModelToModel()
-        ////{
-        ////    // Arrange (Done in FixtureSetup)
+        [Test]
+        public void ContainsMappingFromWorkflowInstanceAbortedRecordToWorkflowInstanceEvent()
+        {
+            // Arrange (Done in FixtureSetup)
 
-        ////    // Act & Assert
-        ////    AssertMapperCanConvertFromSourceToDestination<ViewModel, Model>();
-        ////}
+            // Act & Assert
+            AssertMappingIsDefined<WorkflowInstanceAbortedRecord, WorkflowInstanceEvent>();
+        }
+
+        [Test]
+        public void ContainsMappingFromWorkflowInstanceSuspendedRecordToWorkflowInstanceEvent()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<WorkflowInstanceSuspendedRecord, WorkflowInstanceEvent>();
+        }
+
+        [Test]
+        public void ContainsMappingFromActivityStateRecordToActivityInstanceEvent()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<ActivityStateRecord, ActivityInstanceEvent>();
+        }
+
+        [Test]
+        public void ContainsMappingFromActivityScheduledRecordToExtendedActivityEvent()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<ActivityScheduledRecord, ExtendedActivityEvent>();
+        }
+
+        [Test]
+        public void ContainsMappingFromCancelRequestedRecordToExtendedActivityEvent()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<CancelRequestedRecord, ExtendedActivityEvent>();
+        }
+
+        [Test]
+        public void ContainsMappingFromFaultPropagationRecordToExtendedActivityEvent()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<FaultPropagationRecord, ExtendedActivityEvent>();
+        }
+
+        [Test]
+        public void ContainsMappingFromBookmarkResumptionRecordToBookmarkResumptionEvent()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<BookmarkResumptionRecord, BookmarkResumptionEvent>();
+        }
+
+        [Test]
+        public void ContainsMappingFromCustomTrackingRecordToCustomTrackingEvent()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<CustomTrackingRecord, CustomTrackingEvent>();
+        }
 
         #endregion
 
@@ -68,13 +132,13 @@ namespace SPPC.Framework.Mapper.Tests
             Assert.That(mapping, Is.Not.Null);
         }
 
-        private void AssertMapperCanConvertFromSourceToDestination<TSource, TDestination>()
-            where TSource : class, new()
-            where TDestination : class, new()
-        {
-            var source = new TSource();
-            _domainMapper.Map<TDestination>(source);
-        }
+        ////private void AssertMapperCanConvertFromSourceToDestination<TSource, TDestination>()
+        ////    where TSource : class, new()
+        ////    where TDestination : class, new()
+        ////{
+        ////    var source = new TSource();
+        ////    _domainMapper.Map<TDestination>(source);
+        ////}
 
         private IDomainMapper _domainMapper;
     }

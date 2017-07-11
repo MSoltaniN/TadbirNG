@@ -209,7 +209,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.DocumentId,
                     opts => opts.MapFrom(
-                        src => src.Documents[0].DocumentId))
+                        src => (src.Documents.Count > 0) ? src.Documents[0].DocumentId : 0))
                 .ForMember(
                     dest => dest.Date,
                     opts => opts.MapFrom(
