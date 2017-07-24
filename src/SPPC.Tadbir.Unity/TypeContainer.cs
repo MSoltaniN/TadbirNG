@@ -10,6 +10,7 @@ using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Repository;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.Workflow;
 using SwForAll.Platform.Persistence;
 using SwForAll.Platform.Persistence.NHibernate;
@@ -117,12 +118,13 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<ISecurityContextManager, SecurityContextManager>();
             _container.RegisterType<ISecurityContextManager, ServiceContextManager>("API");
             _container.RegisterType<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
-            _container.RegisterType<ITransactionWorkflow, TransactionWorkflow>();
-            _container.RegisterType<ITransactionWorkflow, TransactionDecisionWorkflow>("flowchart");
-            _container.RegisterType<ITransactionWorkflow, TransactionTimeoutWorkflow>("timeout");
-            _container.RegisterType<ITransactionWorkflow, TransactionBasicWorkflow>("basic");
+            _container.RegisterType<ITransactionWorkflow, TransactionWorkflow>(WorkflowEdition.StateMachine);
+            _container.RegisterType<ITransactionWorkflow, TransactionDecisionWorkflow>(WorkflowEdition.Flowchart);
+            _container.RegisterType<ITransactionWorkflow, TransactionTimeoutWorkflow>(WorkflowEdition.Timeout);
+            _container.RegisterType<ITransactionWorkflow, TransactionBasicWorkflow>(WorkflowEdition.Sequential);
             _container.RegisterType<ISettingsService, ConfigSettingsService>();
             _container.RegisterType<IWorkflowService, WorkflowService>();
+            _container.RegisterType<IWorkflowTracker, WorkflowTracker>();
         }
 
         /// <summary>

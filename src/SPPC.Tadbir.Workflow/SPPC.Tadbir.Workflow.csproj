@@ -93,6 +93,7 @@
     <Compile Include="Provider\TransactionDecisionWorkflow.cs" />
     <Compile Include="Provider\TransactionTimeoutWorkflow.cs" />
     <Compile Include="Provider\TransactionWorkflow.cs" />
+    <Compile Include="Provider\WorkflowTracker.cs" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">

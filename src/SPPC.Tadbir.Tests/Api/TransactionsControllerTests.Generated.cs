@@ -33,10 +33,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         [OneTimeSetUp]
         public void FixtureSetup()
         {
-            var testEdition = new WorkflowEditionViewModel() { Provider = "basic" };
+            var testEdition = "Flowchart";
             _mockRepository = new Mock<ITransactionRepository>();
-            _mockSettingsRepository = new Mock<ISettingsRepository>();
-            _mockSettingsRepository.Setup(repo => repo.GetDefaultWorkflowEdition(It.IsAny<string>()))
+            _mockTrackerRepository = new Mock<IWorkflowTracker>();
+            _mockTrackerRepository.Setup(repo => repo.TrackDocumentWorkflowEdition(
+                    It.IsAny<int>(), It.IsAny<string>()))
                 .Returns(testEdition);
             _mockContext = new Mock<ISecurityContextManager>();
         }
@@ -45,7 +46,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         public void Setup()
         {
             _controller = new TransactionsController(
-                _mockRepository.Object, _mockSettingsRepository.Object, _mockContext.Object);
+                _mockRepository.Object, _mockTrackerRepository.Object, _mockContext.Object);
             _existingTransaction = new TransactionViewModel() { Id = _existingTransactionId };
             _existingArticle = new TransactionLineViewModel()
             {
@@ -600,7 +601,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         #endregion
 
         private Mock<ITransactionRepository> _mockRepository;
-        private Mock<ISettingsRepository> _mockSettingsRepository;
+        private Mock<IWorkflowTracker> _mockTrackerRepository;
         private Mock<ISecurityContextManager> _mockContext;
         private TransactionViewModel _existingTransaction;
         private int _existingTransactionId = 1;

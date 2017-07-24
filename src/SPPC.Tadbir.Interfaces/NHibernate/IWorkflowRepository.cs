@@ -14,5 +14,13 @@ namespace SPPC.Tadbir.NHibernate
         /// </summary>
         /// <returns>گردش های کاری در حال اجرا</returns>
         IList<WorkflowInstanceViewModel> GetRunningWorkflows();
+
+        /// <summary>
+        /// اطلاعات نمونه گردش کار در حال اجرا برای یک مستند را از محل ذخیره می خواند
+        /// </summary>
+        /// <param name="documentId">شناسه دیتابیسی یک مستند موجود</param>
+        /// <param name="documentType">نوع مستند مورد نظر</param>
+        /// <returns></returns>
+        WorkflowInstanceViewModel GetRunningInstance(int documentId, string documentType);
     }
 }

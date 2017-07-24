@@ -106,6 +106,7 @@
     <Compile Include="Service\IWorkflowService.cs" />
     <Compile Include="Service\SecurityContext.cs" />
     <Compile Include="Workflow\ITransactionWorkflow.cs" />
+    <Compile Include="Workflow\IWorkflowTracker.cs" />
     <Compile Include="Workflow\StateOperation.cs" />
     <Compile Include="Workflow\StateOperationValidator.cs" />
   </ItemGroup>

@@ -65,7 +65,7 @@ namespace SPPC.Tadbir.Web.Api.AppStart
             container.RegisterType<TransactionsController>(
                 new InjectionConstructor(
                     new ResolvedParameter<ITransactionRepository>(),
-                    new ResolvedParameter<ISettingsRepository>(),
+                    new ResolvedParameter<IWorkflowTracker>(),
                     new ResolvedParameter<ISecurityContextManager>("API")));
 
             _unityWrapper = new TypeContainer(container);

@@ -53,6 +53,20 @@ namespace SPPC.Tadbir.NHibernate
             return runningWorkflows;
         }
 
+        /// <summary>
+        /// اطلاعات نمونه گردش کار در حال اجرا برای یک مستند را از محل ذخیره می خواند
+        /// </summary>
+        /// <param name="documentId">شناسه دیتابیسی یک مستند موجود</param>
+        /// <param name="documentType">نوع مستند مورد نظر</param>
+        /// <returns></returns>
+        public WorkflowInstanceViewModel GetRunningInstance(int documentId, string documentType)
+        {
+            var instance = GetRunningWorkflows()
+                .Where(inst => inst.DocumentId == documentId && inst.DocumentType == documentType)
+                .FirstOrDefault();
+            return instance;
+        }
+
         private static IDictionary<TKey, TValue> DeserializeData<TKey, TValue>(string serializedData)
         {
             var data = new Dictionary<TKey, TValue>();
