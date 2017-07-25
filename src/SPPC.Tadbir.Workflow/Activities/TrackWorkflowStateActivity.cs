@@ -49,6 +49,7 @@ namespace SPPC.Tadbir.Workflow.Activities
             record.Data.Add("WorkflowName", context.GetValue(WorkflowName));
             record.Data.Add("EditionName", context.GetValue(EditionName));
             record.Data.Add("State", context.GetValue(State));
+            record.Data.Add("LastActor", context.GetValue(Operation).CreatedById.ToString());
             record.Data.Add("LastActionDate", DateTime.Now);
             context.Track(record);
         }

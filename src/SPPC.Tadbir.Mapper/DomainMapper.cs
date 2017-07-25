@@ -269,6 +269,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.WorkflowName, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "WorkflowName")))
                 .ForMember(dest => dest.EditionName, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "EditionName")))
                 .ForMember(dest => dest.State, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "State")))
+                .ForMember(dest => dest.LastActor, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "LastActor")))
                 .ForMember(
                     dest => dest.LastActionDate,
                     opts => opts.MapFrom(src =>

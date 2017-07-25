@@ -228,6 +228,11 @@ namespace SPPC.Tadbir.Values
         public const string Edition = "ویرایش";
 
         /// <summary>
+        /// Localized name of LastActor field
+        /// </summary>
+        public const string LastActor = "آخرین اقدام کننده";
+
+        /// <summary>
         /// Localized name of LastActionDate field
         /// </summary>
         public const string LastActionDate = "تاریخ آخرین اقدام";

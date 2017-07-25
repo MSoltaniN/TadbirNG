@@ -36,6 +36,7 @@
             <th>@FieldNames.Workflow</th>
             <th>@FieldNames.Edition</th>
             <th>@FieldNames.StatusField</th>
+            <th>@FieldNames.LastActor</th>
             <th>@FieldNames.LastActionDate</th>
         </tr>
     </thead>
@@ -61,6 +62,9 @@
                 </td>
                 <td>
                     @DocumentStatus.ToLocalValue(item.State)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastActor)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LastActionDate)

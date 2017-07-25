@@ -6,8 +6,10 @@ using System.Runtime.Serialization;
 using System.Xml;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.NHibernate;
+using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Workflow;
+using SwForAll.Platform.Persistence;
 
 namespace SPPC.Tadbir.NHibernate
 {
@@ -19,10 +21,12 @@ namespace SPPC.Tadbir.NHibernate
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
+        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">پیاده سازی جاری برای نگاشت اطلاعات مدل های اطلاعاتی</param>
         /// <param name="trackingRepository">پیاده سازی جاری برای خواندن اطلاعات ردگیری گردش های کاری از محل ذخیره</param>
-        public WorkflowRepository(IDomainMapper mapper, ITrackingRepository trackingRepository)
+        public WorkflowRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, ITrackingRepository trackingRepository)
         {
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _trackingRepository = trackingRepository;
         }
@@ -51,6 +55,7 @@ namespace SPPC.Tadbir.NHibernate
                         .First();
                     if (latest.State != DocumentStatus.Approved)
                     {
+                        latest.LastActor = GetUserName(Int32.Parse(latest.LastActor ?? "0"));
                         runningWorkflows.Add(latest);
                     }
                 }
@@ -97,6 +102,20 @@ namespace SPPC.Tadbir.NHibernate
             return data;
         }
 
+        private string GetUserName(int userId)
+        {
+            string fullName = String.Empty;
+            var repository = _unitOfWork.GetRepository<User>();
+            var user = repository.GetByID(userId);
+            if (user != null)
+            {
+                fullName = String.Format("{0} {1}", user.Person.FirstName, user.Person.LastName);
+            }
+
+            return fullName;
+        }
+
+        private IUnitOfWork _unitOfWork;
         private IDomainMapper _mapper;
         private ITrackingRepository _trackingRepository;
     }

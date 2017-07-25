@@ -52,6 +52,11 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         public string State { get; set; }
 
         /// <summary>
+        /// نام آخرین کاربر اقدام کننده
+        /// </summary>
+        public string LastActor { get; set; }
+
+        /// <summary>
         /// تاریخ شمسی و زمان آخرین اقدام انجام شده در این نمونه گردش کار
         /// </summary>
         public string LastActionDate { get; set; }
