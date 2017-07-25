@@ -34,19 +34,25 @@ namespace SPPC.Tadbir.NHibernate
         public IList<WorkflowInstanceViewModel> GetRunningWorkflows()
         {
             var runningWorkflows = new List<WorkflowInstanceViewModel>();
-            var groupedRecords = _trackingRepository
+            var groupedByType = _trackingRepository
                 .GetCustomEvents(WorkflowEvent.StateChanged)
-                .GroupBy(evt => evt.WorkflowInstanceId);
-            foreach (var grouping in groupedRecords)
+                .Select(evt => DeserializeData<string, object>(evt.SerializedData))
+                .Select(data => _mapper.Map<WorkflowInstanceViewModel>(data))
+                .GroupBy(inst => inst.DocumentType);
+            foreach (var group in groupedByType)
             {
-                var lastEventData = grouping
-                    .OrderByDescending(evt => evt.TimeCreated)
-                    .Select(evt => evt.SerializedData)
-                    .First();
-                var eventData = DeserializeData<string, object>(lastEventData);
-                if ((string)eventData["State"] != DocumentStatus.Approved)
+                var groupedById = group
+                    .ToArray()
+                    .GroupBy(inst => inst.DocumentId);
+                foreach (var innerGroup in groupedById)
                 {
-                    runningWorkflows.Add(_mapper.Map<WorkflowInstanceViewModel>(eventData));
+                    var latest = innerGroup
+                        .OrderByDescending(inst => inst.LastActionDate)
+                        .First();
+                    if (latest.State != DocumentStatus.Approved)
+                    {
+                        runningWorkflows.Add(latest);
+                    }
                 }
             }
 
