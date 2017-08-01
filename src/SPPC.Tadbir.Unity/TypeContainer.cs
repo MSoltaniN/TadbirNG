@@ -12,8 +12,8 @@ using SPPC.Tadbir.Repository;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.Workflow;
-using SwForAll.Platform.Persistence;
-using SwForAll.Platform.Persistence.NHibernate;
+using BabakSoft.Platform.Persistence;
+using BabakSoft.Platform.Persistence.NHibernate;
 
 namespace SPPC.Tadbir.Unity
 {

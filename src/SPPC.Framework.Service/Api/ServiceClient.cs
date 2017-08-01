@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using SPPC.Framework.Helpers;
-using SwForAll.Platform.Configuration;
+using BabakSoft.Platform.Configuration;
 
 namespace SPPC.Framework.Service
 {

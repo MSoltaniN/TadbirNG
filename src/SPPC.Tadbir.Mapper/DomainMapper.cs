@@ -16,7 +16,7 @@ using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Settings;
 using SPPC.Tadbir.ViewModel.Workflow;
-using SwForAll.Platform.Common;
+using BabakSoft.Platform.Common;
 
 namespace SPPC.Tadbir.Mapper
 {

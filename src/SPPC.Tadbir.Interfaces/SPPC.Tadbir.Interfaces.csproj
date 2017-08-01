@@ -55,8 +55,8 @@
     <DocumentationFile>..\..\bin\LiveHost\SPPC.Tadbir.Interfaces.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SwForAll.Platform.Common">
-      <HintPath>..\..\lib\SwForAll.Platform.1.0.0\SwForAll.Platform.Common.dll</HintPath>
+    <Reference Include="BabakSoft.Platform.Common">
+      <HintPath>..\..\lib\BabakSoft.Platform.1.0.0\BabakSoft.Platform.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

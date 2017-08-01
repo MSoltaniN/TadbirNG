@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
-using SwForAll.Platform.Domain;
+using BabakSoft.Platform.Domain;
 
 namespace SPPC.Tadbir.Model.Corporate
 {

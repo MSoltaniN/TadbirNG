@@ -54,8 +54,12 @@
     <DocumentationFile>..\..\bin\LiveHost\SPPC.Framework.Model.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SwForAll.Platform.Common">
-      <HintPath>..\..\lib\SwForAll.Platform.1.0.0\SwForAll.Platform.Common.dll</HintPath>
+    <Reference Include="BabakSoft.Platform.Common">
+      <HintPath>..\..\lib\BabakSoft.Platform.1.0.0\BabakSoft.Platform.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="BabakSoft.Platform.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\BabakSoft.Platform.1.0.0\BabakSoft.Platform.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

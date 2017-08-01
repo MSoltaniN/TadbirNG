@@ -8,8 +8,8 @@ using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Repository;
 using SPPC.Tadbir.Service;
-using SwForAll.Platform.Persistence;
-using SwForAll.Platform.Persistence.NHibernate;
+using BabakSoft.Platform.Persistence;
+using BabakSoft.Platform.Persistence.NHibernate;
 
 namespace SPPC.Tadbir.Unity.Tests
 {

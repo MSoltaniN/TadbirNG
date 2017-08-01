@@ -36,6 +36,12 @@
       <HintPath>..\..\lib\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="BabakSoft.Platform.Interfaces">
+      <HintPath>..\..\lib\BabakSoft.Platform.1.0.0\BabakSoft.Platform.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="BabakSoft.Platform.Persistence.NHibernate">
+      <HintPath>..\..\lib\BabakSoft.Platform.1.0.0\BabakSoft.Platform.Persistence.NHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core, Version=4.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\..\lib\Castle.Core.4.1.0\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
@@ -63,12 +69,6 @@
     <Reference Include="nunit.framework, Version=3.7.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\..\lib\NUnit.3.7.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="SwForAll.Platform.Persistence">
-      <HintPath>..\..\lib\SwForAll.Platform.1.0.0\SwForAll.Platform.Persistence.dll</HintPath>
-    </Reference>
-    <Reference Include="SwForAll.Platform.Persistence.NHibernate">
-      <HintPath>..\..\lib\SwForAll.Platform.1.0.0\SwForAll.Platform.Persistence.NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />

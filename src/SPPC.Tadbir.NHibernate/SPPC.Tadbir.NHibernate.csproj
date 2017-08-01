@@ -54,6 +54,12 @@
     <DocumentationFile>..\..\bin\LiveHost\SPPC.Tadbir.NHibernate.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BabakSoft.Platform.Common">
+      <HintPath>..\..\lib\BabakSoft.Platform.1.0.0\BabakSoft.Platform.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="BabakSoft.Platform.Interfaces">
+      <HintPath>..\..\lib\BabakSoft.Platform.1.0.0\BabakSoft.Platform.Interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="FluentNHibernate, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\lib\FluentNHibernate.2.0.3.0\lib\net40\FluentNHibernate.dll</HintPath>
       <Private>True</Private>
@@ -65,12 +71,6 @@
     <Reference Include="NHibernate, Version=4.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\..\lib\NHibernate.4.1.1.4000\lib\net40\NHibernate.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="SwForAll.Platform.Common">
-      <HintPath>..\..\lib\SwForAll.Platform.1.0.0\SwForAll.Platform.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="SwForAll.Platform.Persistence">
-      <HintPath>..\..\lib\SwForAll.Platform.1.0.0\SwForAll.Platform.Persistence.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

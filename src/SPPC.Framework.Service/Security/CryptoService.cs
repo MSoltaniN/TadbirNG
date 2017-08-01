@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
-using SwForAll.Platform.Common;
+using BabakSoft.Platform.Common;
 
 namespace SPPC.Framework.Service.Security
 {

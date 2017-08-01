@@ -5,7 +5,7 @@ using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Repository;
 using SPPC.Tadbir.ViewModel.Settings;
-using SwForAll.Platform.Common;
+using BabakSoft.Platform.Common;
 
 namespace SPPC.Tadbir.Service
 {

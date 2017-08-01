@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Web;
 using SPPC.Tadbir.ViewModel.Auth;
-using SwForAll.Platform.Configuration;
+using BabakSoft.Platform.Configuration;
 
 namespace SPPC.Tadbir.Service
 {

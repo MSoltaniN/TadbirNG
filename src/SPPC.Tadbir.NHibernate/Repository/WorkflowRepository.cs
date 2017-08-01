@@ -9,7 +9,7 @@ using SPPC.Framework.NHibernate;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Workflow;
-using SwForAll.Platform.Persistence;
+using BabakSoft.Platform.Persistence;
 
 namespace SPPC.Tadbir.NHibernate
 {

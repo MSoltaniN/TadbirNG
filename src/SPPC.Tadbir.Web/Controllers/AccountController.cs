@@ -5,8 +5,8 @@ using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.Web.Extensions;
-using SwForAll.Platform.Common;
-using SwForAll.Platform.Configuration;
+using BabakSoft.Platform.Common;
+using BabakSoft.Platform.Configuration;
 
 namespace SPPC.Tadbir.Web.Controllers
 {

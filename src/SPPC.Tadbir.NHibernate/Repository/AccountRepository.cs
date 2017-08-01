@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
-using SwForAll.Platform.Common;
+using BabakSoft.Platform.Common;
 
 namespace SPPC.Tadbir.NHibernate
 {

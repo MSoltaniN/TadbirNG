@@ -5,8 +5,8 @@ using Microsoft.Practices.Unity;
 using NUnit.Framework;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.NHibernate;
-using SwForAll.Platform.Persistence;
-using SwForAll.Platform.Persistence.NHibernate;
+using BabakSoft.Platform.Persistence;
+using BabakSoft.Platform.Persistence.NHibernate;
 
 namespace SPPC.Framework.Unity.Tests
 {

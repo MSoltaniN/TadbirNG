@@ -4,7 +4,7 @@ using System.Linq;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Finance;
-using SwForAll.Platform.Persistence;
+using BabakSoft.Platform.Persistence;
 
 namespace SPPC.Tadbir.NHibernate
 {

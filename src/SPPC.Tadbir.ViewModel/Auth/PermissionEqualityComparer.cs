@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using SwForAll.Platform.Common;
+using BabakSoft.Platform.Common;
 
 namespace SPPC.Tadbir.ViewModel.Auth
 {

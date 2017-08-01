@@ -1,6 +1,6 @@
 ﻿using System.Web;
 using System.Web.Optimization;
-using SwForAll.Platform.Common;
+using BabakSoft.Platform.Common;
 
 namespace SPPC.Tadbir.Web
 {

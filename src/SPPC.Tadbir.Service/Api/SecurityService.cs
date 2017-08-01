@@ -11,8 +11,8 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
-using SwForAll.Platform.Common;
-using SwForAll.Platform.Configuration;
+using BabakSoft.Platform.Common;
+using BabakSoft.Platform.Configuration;
 
 namespace SPPC.Tadbir.Service
 {

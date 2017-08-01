@@ -8,8 +8,8 @@ using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Corporate;
-using SwForAll.Platform.Common;
-using SwForAll.Platform.Persistence;
+using BabakSoft.Platform.Common;
+using BabakSoft.Platform.Persistence;
 
 namespace SPPC.Tadbir.NHibernate
 {

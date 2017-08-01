@@ -8,8 +8,8 @@ using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Workflow;
-using SwForAll.Platform.Common;
-using SwForAll.Platform.Persistence;
+using BabakSoft.Platform.Common;
+using BabakSoft.Platform.Persistence;
 
 namespace SPPC.Tadbir.NHibernate
 {

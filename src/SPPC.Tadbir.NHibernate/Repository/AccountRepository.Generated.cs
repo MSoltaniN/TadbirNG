@@ -16,8 +16,8 @@ using System.Linq;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
-using SwForAll.Platform.Common;
-using SwForAll.Platform.Persistence;
+using BabakSoft.Platform.Common;
+using BabakSoft.Platform.Persistence;
 
 namespace SPPC.Tadbir.NHibernate
 {
