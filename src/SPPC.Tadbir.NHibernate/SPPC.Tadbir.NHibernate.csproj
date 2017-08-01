@@ -96,11 +96,11 @@
     <Compile Include="Mapping\Finance\FiscalPeriodMap.Generated.cs" />
     <Compile Include="Mapping\Finance\TransactionLineMap.Generated.cs" />
     <Compile Include="Mapping\Finance\TransactionMap.Generated.cs" />
-    <Compile Include="Mapping\Workflow\Workflow\Tracking\ActivityInstanceEventMap.Generated.cs" />
-    <Compile Include="Mapping\Workflow\Workflow\Tracking\BookmarkResumptionEventMap.Generated.cs" />
-    <Compile Include="Mapping\Workflow\Workflow\Tracking\CustomTrackingEventMap.Generated.cs" />
-    <Compile Include="Mapping\Workflow\Workflow\Tracking\ExtendedActivityEventMap.Generated.cs" />
-    <Compile Include="Mapping\Workflow\Workflow\Tracking\WorkflowInstanceEventMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\Tracking\ActivityInstanceEventMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\Tracking\BookmarkResumptionEventMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\Tracking\CustomTrackingEventMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\Tracking\ExtendedActivityEventMap.Generated.cs" />
+    <Compile Include="Mapping\Workflow\Tracking\WorkflowInstanceEventMap.Generated.cs" />
     <Compile Include="Mapping\Workflow\WorkItemDocumentMap.Generated.cs" />
     <Compile Include="Mapping\Workflow\WorkItemHistoryMap.Generated.cs" />
     <Compile Include="Mapping\Workflow\WorkItemMap.Generated.cs" />

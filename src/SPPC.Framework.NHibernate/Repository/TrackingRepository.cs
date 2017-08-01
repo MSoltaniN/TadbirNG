@@ -32,6 +32,7 @@ namespace SPPC.Framework.NHibernate
                 .GetByCriteria(evt => evt.CustomRecordName == name)
                 .OrderByDescending(evt => evt.TimeCreated)
                 .ToList();
+            _unitOfWork.Commit();
             return customEvents;
         }
 
