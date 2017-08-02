@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BabakSoft.Platform.Common;
+using BabakSoft.Platform.Persistence;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Contact;
@@ -8,8 +10,6 @@ using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Corporate;
-using BabakSoft.Platform.Common;
-using BabakSoft.Platform.Persistence;
 
 namespace SPPC.Tadbir.NHibernate
 {

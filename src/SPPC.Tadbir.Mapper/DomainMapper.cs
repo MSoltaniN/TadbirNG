@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using BabakSoft.Platform.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Service.Security;
@@ -16,7 +17,6 @@ using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Settings;
 using SPPC.Tadbir.ViewModel.Workflow;
-using BabakSoft.Platform.Common;
 
 namespace SPPC.Tadbir.Mapper
 {

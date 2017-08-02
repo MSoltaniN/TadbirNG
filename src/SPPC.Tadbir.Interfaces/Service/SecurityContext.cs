@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using SPPC.Tadbir.ViewModel.Auth;
 using BabakSoft.Platform.Common;
+using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Service
 {

@@ -77,12 +77,17 @@ namespace SPPC.Framework.Workflow.Tracking
                 var temp = ex;
                 var messages = new List<string>();
                 string type = String.Empty;
-                var iRecord = record as WorkflowInstanceRecord;
-                if (iRecord != null)
+                var instanceRecord = record as WorkflowInstanceRecord;
+                if (instanceRecord != null)
+                {
                     type = "WorkflowInstanceRecord";
-                var cRecord = record as CustomTrackingRecord;
-                if (cRecord != null)
+                }
+
+                var customRecord = record as CustomTrackingRecord;
+                if (customRecord != null)
+                {
                     type = "CustomTrackingRecord";
+                }
 
                 messages.Add(String.Format("[{0}] {1} (Tracker Id : {2:X})", type, temp.Message, this.GetHashCode()));
                 while (temp.InnerException != null)

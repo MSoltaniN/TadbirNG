@@ -2,8 +2,8 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading;
-using SPPC.Framework.Helpers;
 using BabakSoft.Platform.Configuration;
+using SPPC.Framework.Helpers;
 
 namespace SPPC.Framework.Service
 {

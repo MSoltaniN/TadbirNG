@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using BabakSoft.Platform.Persistence;
+using BabakSoft.Platform.Persistence.NHibernate;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
 using SPPC.Framework.Mapper;
@@ -8,8 +10,6 @@ using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Repository;
 using SPPC.Tadbir.Service;
-using BabakSoft.Platform.Persistence;
-using BabakSoft.Platform.Persistence.NHibernate;
 
 namespace SPPC.Tadbir.Unity.Tests
 {

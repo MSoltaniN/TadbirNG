@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using BabakSoft.Platform.Common;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
-using BabakSoft.Platform.Common;
 
 namespace SPPC.Tadbir.Service
 {

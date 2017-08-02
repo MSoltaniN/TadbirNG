@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using BabakSoft.Platform.Persistence;
+using BabakSoft.Platform.Persistence.NHibernate;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.NHibernate;
-using BabakSoft.Platform.Persistence;
-using BabakSoft.Platform.Persistence.NHibernate;
 
 namespace SPPC.Framework.Unity.Tests
 {

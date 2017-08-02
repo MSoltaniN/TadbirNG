@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BabakSoft.Platform.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Repository;
 using SPPC.Tadbir.ViewModel.Settings;
-using BabakSoft.Platform.Common;
 
 namespace SPPC.Tadbir.Service
 {

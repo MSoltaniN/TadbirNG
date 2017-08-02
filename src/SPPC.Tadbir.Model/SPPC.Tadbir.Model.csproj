@@ -71,18 +71,39 @@
     <Compile Include="Auth\PermissionGroup.Generated.cs" />
     <Compile Include="Auth\Role.Generated.cs" />
     <Compile Include="Auth\User.Generated.cs" />
+    <Compile Include="Contact\BusinessPartner.Generated.cs" />
+    <Compile Include="Contact\Customer.Generated.cs" />
     <Compile Include="Contact\Person.Generated.cs" />
+    <Compile Include="Core\DocumentStatus.Generated.cs" />
+    <Compile Include="Core\DocumentType.Generated.cs" />
+    <Compile Include="Core\ServiceJob.Generated.cs" />
     <Compile Include="Corporate\Branch.Generated.cs" />
+    <Compile Include="Corporate\BusinessUnit.Generated.cs" />
     <Compile Include="Corporate\Company.Generated.cs" />
     <Compile Include="Finance\Account.Generated.cs" />
+    <Compile Include="Finance\CostCenter.Generated.cs" />
     <Compile Include="Finance\Currency.Generated.cs" />
+    <Compile Include="Finance\DetailAccount.Generated.cs" />
     <Compile Include="Finance\FiscalPeriod.Generated.cs" />
+    <Compile Include="Finance\Project.Generated.cs" />
     <Compile Include="Finance\Transaction.Generated.cs" />
     <Compile Include="Finance\TransactionLine.Generated.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Inventory\Product.Generated.cs" />
+    <Compile Include="Inventory\ProductCategory.Generated.cs" />
+    <Compile Include="Inventory\UnitOfMeasurement.Generated.cs" />
+    <Compile Include="Inventory\Warehouse.Generated.cs" />
+    <Compile Include="Procurement\RequisitionVoucher.Generated.cs" />
+    <Compile Include="Procurement\RequisitionVoucherLine.Generated.cs" />
+    <Compile Include="Procurement\RequisitionVoucherType.Generated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sales\Invoice.Generated.cs" />
+    <Compile Include="Sales\InvoiceLine.Generated.cs" />
+    <Compile Include="Warehousing\IssueReceiptVoucher.Generated.cs" />
+    <Compile Include="Warehousing\IssueReceiptVoucherLine.Generated.cs" />
+    <Compile Include="Warehousing\IssueReceiptVoucherType.Generated.cs" />
     <Compile Include="Workflow\WorkItem.Generated.cs" />
     <Compile Include="Workflow\WorkItemDocument.Generated.cs" />
     <Compile Include="Workflow\WorkItemHistory.Generated.cs" />
@@ -92,6 +113,7 @@
       <Link>CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
