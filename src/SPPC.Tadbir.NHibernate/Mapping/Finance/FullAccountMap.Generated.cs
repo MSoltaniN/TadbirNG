@@ -10,33 +10,27 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-using SPPC.Tadbir.Model.Procurement;
+using SPPC.Tadbir.Model.Finance;
 using FluentNHibernate.Mapping;
 
 namespace SPPC.Tadbir.NHibernate.Mapping
 {
     /// <summary>
-    /// Defines fluent mappings for the <see cref="RequisitionVoucherType"/> entity class.
+    /// Defines fluent mappings for the <see cref="FullAccount"/> entity class.
     /// </summary>
-    public partial class RequisitionVoucherTypeMap : ClassMap<RequisitionVoucherType>
+    public partial class FullAccountMap : ClassMap<FullAccount>
     {
         /// <summary>
-        /// Initializes a new instance of the RequisitionVoucherTypeMap class and specifies NHibernate mappings
+        /// Initializes a new instance of the FullAccountMap class and specifies NHibernate mappings
         /// using Fluent NHibernate API.
         /// </summary>
-        public RequisitionVoucherTypeMap()
+        public FullAccountMap()
         {
-            Schema("Procurement");
-            Table("RequisitionVoucherType");
+            Schema("Finance");
+            Table("FullAccount");
             Id(x => x.Id)
-                .Column("VoucherTypeID")
+                .Column("FullAccountID")
                 .GeneratedBy.Identity();
-            Map(x => x.Name)
-                .Length(64)
-                .Not.Nullable();
-            Map(x => x.Description)
-                .Length(256)
-                .Nullable();
             Map(x => x.RowGuid, "rowguid")
                 .Generated.Insert();
             Map(x => x.ModifiedDate);
@@ -46,10 +40,22 @@ namespace SPPC.Tadbir.NHibernate.Mapping
 
         private void MapReferences()
         {
-            HasMany(x => x.RequisitionVouchers)
-                .KeyColumn("VoucherTypeID")
+            References(x => x.Account)
+                .Column("AccountID")
                 .Cascade.None()
-                .LazyLoad();
+                .Not.LazyLoad();
+            References(x => x.Detail)
+                .Column("DetailID")
+                .Cascade.None()
+                .Not.LazyLoad();
+            References(x => x.CostCenter)
+                .Column("CostCenterID")
+                .Cascade.None()
+                .Not.LazyLoad();
+            References(x => x.Project)
+                .Column("ProjectID")
+                .Cascade.None()
+                .Not.LazyLoad();
         }
     }
 }

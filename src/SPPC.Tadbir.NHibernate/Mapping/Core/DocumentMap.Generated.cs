@@ -10,33 +10,33 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-using SPPC.Tadbir.Model.Procurement;
+using SPPC.Tadbir.Model.Core;
 using FluentNHibernate.Mapping;
 
 namespace SPPC.Tadbir.NHibernate.Mapping
 {
     /// <summary>
-    /// Defines fluent mappings for the <see cref="RequisitionVoucherType"/> entity class.
+    /// Defines fluent mappings for the <see cref="Document"/> entity class.
     /// </summary>
-    public partial class RequisitionVoucherTypeMap : ClassMap<RequisitionVoucherType>
+    public partial class DocumentMap : ClassMap<Document>
     {
         /// <summary>
-        /// Initializes a new instance of the RequisitionVoucherTypeMap class and specifies NHibernate mappings
+        /// Initializes a new instance of the DocumentMap class and specifies NHibernate mappings
         /// using Fluent NHibernate API.
         /// </summary>
-        public RequisitionVoucherTypeMap()
+        public DocumentMap()
         {
-            Schema("Procurement");
-            Table("RequisitionVoucherType");
+            Schema("Core");
+            Table("Document");
             Id(x => x.Id)
-                .Column("VoucherTypeID")
+                .Column("DocumentID")
                 .GeneratedBy.Identity();
-            Map(x => x.Name)
+            Map(x => x.No)
                 .Length(64)
                 .Not.Nullable();
-            Map(x => x.Description)
-                .Length(256)
-                .Nullable();
+            Map(x => x.OperationalStatus)
+                .Length(64)
+                .Not.Nullable();
             Map(x => x.RowGuid, "rowguid")
                 .Generated.Insert();
             Map(x => x.ModifiedDate);
@@ -46,10 +46,19 @@ namespace SPPC.Tadbir.NHibernate.Mapping
 
         private void MapReferences()
         {
-            HasMany(x => x.RequisitionVouchers)
-                .KeyColumn("VoucherTypeID")
+            References(x => x.Type)
+                .Column("TypeID")
                 .Cascade.None()
-                .LazyLoad();
+                .Not.LazyLoad();
+            References(x => x.Status)
+                .Column("StatusID")
+                .Cascade.None()
+                .Not.LazyLoad();
+            References(x => x.Action)
+                .Column("ActionID")
+                .Unique()
+                .Cascade.None()
+                .Not.LazyLoad();
         }
     }
 }

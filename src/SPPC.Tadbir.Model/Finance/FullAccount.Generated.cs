@@ -14,17 +14,15 @@ using System;
 using System.Collections.Generic;
 using BabakSoft.Platform.Domain;
 
-namespace SPPC.Tadbir.Model.Warehousing
+namespace SPPC.Tadbir.Model.Finance
 {
-    public partial class IssueReceiptVoucherType : IEntity
+    public partial class FullAccount : IEntity
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="IssueReceiptVoucherType"/> class.
+        /// Initializes a new instance of the <see cref="FullAccount"/> class.
         /// </summary>
-        public IssueReceiptVoucherType()
+        public FullAccount()
         {
-            this.Name = String.Empty;
-            this.Description = String.Empty;
             this.ModifiedDate = DateTime.Now;
             InitReferences();
         }
@@ -33,8 +31,6 @@ namespace SPPC.Tadbir.Model.Warehousing
         /// Gets or sets the unique identifier for this entity. This property is auto-generated.
         /// </summary>
         public virtual int Id { get; set; }
-        public virtual string Name { get; set; }
-        public virtual string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
@@ -49,11 +45,25 @@ namespace SPPC.Tadbir.Model.Warehousing
         /// <summary>
         /// Gets or sets the todo: add description...
         /// </summary>
-        public virtual IList<IssueReceiptVoucher> IssueReceiptVouchers { get; protected set; }
+        public virtual Account Account { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
+        public virtual DetailAccount Detail { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
+        public virtual CostCenter CostCenter { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
+        public virtual Project Project { get; set; }
 
         private void InitReferences()
         {
-            this.IssueReceiptVouchers = new List<IssueReceiptVoucher>();
         }
     }
 }

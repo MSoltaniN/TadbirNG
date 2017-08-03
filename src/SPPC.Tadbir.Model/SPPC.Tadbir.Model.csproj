@@ -74,6 +74,8 @@
     <Compile Include="Contact\BusinessPartner.Generated.cs" />
     <Compile Include="Contact\Customer.Generated.cs" />
     <Compile Include="Contact\Person.Generated.cs" />
+    <Compile Include="Core\Document.Generated.cs" />
+    <Compile Include="Core\DocumentAction.Generated.cs" />
     <Compile Include="Core\DocumentStatus.Generated.cs" />
     <Compile Include="Core\DocumentType.Generated.cs" />
     <Compile Include="Core\ServiceJob.Generated.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="Finance\Currency.Generated.cs" />
     <Compile Include="Finance\DetailAccount.Generated.cs" />
     <Compile Include="Finance\FiscalPeriod.Generated.cs" />
+    <Compile Include="Finance\FullAccount.Generated.cs" />
     <Compile Include="Finance\Project.Generated.cs" />
     <Compile Include="Finance\Transaction.Generated.cs" />
     <Compile Include="Finance\TransactionLine.Generated.cs" />

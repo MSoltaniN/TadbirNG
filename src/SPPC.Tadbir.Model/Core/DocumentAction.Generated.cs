@@ -13,18 +13,17 @@
 using System;
 using System.Collections.Generic;
 using BabakSoft.Platform.Domain;
+using SPPC.Tadbir.Model.Auth;
 
-namespace SPPC.Tadbir.Model.Warehousing
+namespace SPPC.Tadbir.Model.Core
 {
-    public partial class IssueReceiptVoucherType : IEntity
+    public partial class DocumentAction : IEntity
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="IssueReceiptVoucherType"/> class.
+        /// Initializes a new instance of the <see cref="DocumentAction"/> class.
         /// </summary>
-        public IssueReceiptVoucherType()
+        public DocumentAction()
         {
-            this.Name = String.Empty;
-            this.Description = String.Empty;
             this.ModifiedDate = DateTime.Now;
             InitReferences();
         }
@@ -33,8 +32,14 @@ namespace SPPC.Tadbir.Model.Warehousing
         /// Gets or sets the unique identifier for this entity. This property is auto-generated.
         /// </summary>
         public virtual int Id { get; set; }
-        public virtual string Name { get; set; }
-        public virtual string Description { get; set; }
+        public virtual DateTime CreatedDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
+        /// </summary>
+        public virtual DateTime ModifiedDate { get; set; }
+        public virtual DateTime? ConfirmedDate { get; set; }
+        public virtual DateTime? ApprovedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
@@ -42,18 +47,32 @@ namespace SPPC.Tadbir.Model.Warehousing
         public virtual Guid RowGuid { get; set; }
 
         /// <summary>
-        /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
+        /// Gets or sets the todo: add description...
         /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
+        public virtual User CreatedBy { get; set; }
 
         /// <summary>
         /// Gets or sets the todo: add description...
         /// </summary>
-        public virtual IList<IssueReceiptVoucher> IssueReceiptVouchers { get; protected set; }
+        public virtual User ModifiedBy { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
+        public virtual User ConfirmedBy { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
+        public virtual User ApprovedBy { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
+        public virtual Document Document { get; set; }
 
         private void InitReferences()
         {
-            this.IssueReceiptVouchers = new List<IssueReceiptVoucher>();
         }
     }
 }

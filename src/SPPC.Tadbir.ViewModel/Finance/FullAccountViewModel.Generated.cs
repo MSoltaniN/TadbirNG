@@ -13,14 +13,14 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SPPC.Tadbir.ViewModel.Core
+namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class ServiceJobViewModel
+    public partial class FullAccountViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceJobViewModel"/> class.
+        /// Initializes a new instance of the <see cref="FullAccountViewModel"/> class.
         /// </summary>
-        public ServiceJobViewModel()
+        public FullAccountViewModel()
         {
         }
 

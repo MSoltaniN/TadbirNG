@@ -14,17 +14,17 @@ using System;
 using System.Collections.Generic;
 using BabakSoft.Platform.Domain;
 
-namespace SPPC.Tadbir.Model.Warehousing
+namespace SPPC.Tadbir.Model.Core
 {
-    public partial class IssueReceiptVoucherType : IEntity
+    public partial class Document : IEntity
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="IssueReceiptVoucherType"/> class.
+        /// Initializes a new instance of the <see cref="Document"/> class.
         /// </summary>
-        public IssueReceiptVoucherType()
+        public Document()
         {
-            this.Name = String.Empty;
-            this.Description = String.Empty;
+            this.No = String.Empty;
+            this.OperationalStatus = String.Empty;
             this.ModifiedDate = DateTime.Now;
             InitReferences();
         }
@@ -33,8 +33,8 @@ namespace SPPC.Tadbir.Model.Warehousing
         /// Gets or sets the unique identifier for this entity. This property is auto-generated.
         /// </summary>
         public virtual int Id { get; set; }
-        public virtual string Name { get; set; }
-        public virtual string Description { get; set; }
+        public virtual string No { get; set; }
+        public virtual string OperationalStatus { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
@@ -49,11 +49,20 @@ namespace SPPC.Tadbir.Model.Warehousing
         /// <summary>
         /// Gets or sets the todo: add description...
         /// </summary>
-        public virtual IList<IssueReceiptVoucher> IssueReceiptVouchers { get; protected set; }
+        public virtual DocumentType Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
+        public virtual DocumentStatus Status { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
+        public virtual DocumentAction Action { get; set; }
 
         private void InitReferences()
         {
-            this.IssueReceiptVouchers = new List<IssueReceiptVoucher>();
         }
     }
 }

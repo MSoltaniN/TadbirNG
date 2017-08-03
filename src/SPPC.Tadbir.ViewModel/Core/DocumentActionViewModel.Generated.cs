@@ -15,12 +15,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SPPC.Tadbir.ViewModel.Core
 {
-    public partial class ServiceJobViewModel
+    public partial class DocumentActionViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceJobViewModel"/> class.
+        /// Initializes a new instance of the <see cref="DocumentActionViewModel"/> class.
         /// </summary>
-        public ServiceJobViewModel()
+        public DocumentActionViewModel()
         {
         }
 
@@ -28,5 +28,9 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// Gets or sets the unique identifier for this entity.
         /// </summary>
         public int Id { get; set; }
+        [Required(ErrorMessage = "{0} is required.")]
+        public DateTime CreatedDate { get; set; }
+        public DateTime? ConfirmedDate { get; set; }
+        public DateTime? ApprovedDate { get; set; }
     }
 }

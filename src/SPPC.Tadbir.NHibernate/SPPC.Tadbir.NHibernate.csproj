@@ -91,6 +91,8 @@
     <Compile Include="Mapping\Contact\BusinessPartnerMap.Generated.cs" />
     <Compile Include="Mapping\Contact\CustomerMap.Generated.cs" />
     <Compile Include="Mapping\Contact\PersonMap.Generated.cs" />
+    <Compile Include="Mapping\Core\DocumentActionMap.Generated.cs" />
+    <Compile Include="Mapping\Core\DocumentMap.Generated.cs" />
     <Compile Include="Mapping\Core\DocumentStatusMap.Generated.cs" />
     <Compile Include="Mapping\Core\DocumentTypeMap.Generated.cs" />
     <Compile Include="Mapping\Core\ServiceJobMap.Generated.cs" />
@@ -102,6 +104,7 @@
     <Compile Include="Mapping\Finance\CurrencyMap.Generated.cs" />
     <Compile Include="Mapping\Finance\DetailAccountMap.Generated.cs" />
     <Compile Include="Mapping\Finance\FiscalPeriodMap.Generated.cs" />
+    <Compile Include="Mapping\Finance\FullAccountMap.Generated.cs" />
     <Compile Include="Mapping\Finance\ProjectMap.Generated.cs" />
     <Compile Include="Mapping\Finance\TransactionLineMap.Generated.cs" />
     <Compile Include="Mapping\Finance\TransactionMap.Generated.cs" />
