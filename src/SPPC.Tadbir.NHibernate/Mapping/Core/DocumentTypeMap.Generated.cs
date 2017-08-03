@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Schema("Core");
             Table("DocumentType");
             Id(x => x.Id)
-                .Column("DocumentTypeID")
+                .Column("TypeID")
                 .GeneratedBy.Identity();
             Map(x => x.Name)
                 .Length(64)

@@ -47,6 +47,6 @@ namespace SPPC.Tadbir.ViewModel.Sales
         public DateTime? ConfirmedDate { get; set; }
         public DateTime? ApprovedDate { get; set; }
         [Required(ErrorMessage = "{0} is required.")]
-        public byte Timestamp { get; set; }
+        public long Timestamp { get; set; }
     }
 }

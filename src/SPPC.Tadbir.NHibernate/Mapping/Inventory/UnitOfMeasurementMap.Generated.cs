@@ -27,9 +27,9 @@ namespace SPPC.Tadbir.NHibernate.Mapping
         public UnitOfMeasurementMap()
         {
             Schema("Inventory");
-            Table("UnitOfMeasurement");
+            Table("UOM");
             Id(x => x.Id)
-                .Column("UnitOfMeasurementID")
+                .Column("UomID")
                 .GeneratedBy.Identity();
             Map(x => x.Name)
                 .Length(64)

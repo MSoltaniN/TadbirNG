@@ -93,7 +93,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Cascade.None()
                 .Not.LazyLoad();
             References(x => x.BusinessPartner)
-                .Column("BusinessPartnerID")
+                .Column("PartnerID")
                 .Cascade.None()
                 .Not.LazyLoad();
             References(x => x.Customer)
@@ -105,7 +105,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Cascade.None()
                 .Not.LazyLoad();
             References(x => x.PartnerDetailAccount)
-                .Column("PartnerDetailAccountID")
+                .Column("PartnerDetailID")
                 .Cascade.None()
                 .Not.LazyLoad();
             References(x => x.PartnerCostCenter)
@@ -121,7 +121,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Cascade.None()
                 .Not.LazyLoad();
             References(x => x.DetailAccount)
-                .Column("DetailAccountID")
+                .Column("DetailID")
                 .Cascade.None()
                 .Not.LazyLoad();
             References(x => x.CostCenter)

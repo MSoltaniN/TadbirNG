@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Schema("Inventory");
             Table("ProductCategory");
             Id(x => x.Id)
-                .Column("ProductCategoryID")
+                .Column("CategoryID")
                 .GeneratedBy.Identity();
             Map(x => x.Code)
                 .Length(16)
@@ -56,7 +56,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Cascade.None()
                 .Not.LazyLoad();
             HasMany(x => x.Products)
-                .KeyColumn("ProductCategoryID")
+                .KeyColumn("CategoryID")
                 .Cascade.None()
                 .LazyLoad();
         }

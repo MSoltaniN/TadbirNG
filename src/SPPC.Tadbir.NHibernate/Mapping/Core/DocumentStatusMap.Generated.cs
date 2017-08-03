@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Schema("Core");
             Table("DocumentStatus");
             Id(x => x.Id)
-                .Column("DocumentStatusID")
+                .Column("StatusID")
                 .GeneratedBy.Identity();
             Map(x => x.Name)
                 .Length(64)

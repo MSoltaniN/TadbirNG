@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Schema("Sales");
             Table("InvoiceLine");
             Id(x => x.Id)
-                .Column("InvoiceLineID")
+                .Column("LineID")
                 .GeneratedBy.Identity();
             Map(x => x.No)
                 .Not.Nullable();
@@ -94,7 +94,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Cascade.None()
                 .Not.LazyLoad();
             References(x => x.DetailAccount)
-                .Column("DetailAccountID")
+                .Column("DetailID")
                 .Cascade.None()
                 .Not.LazyLoad();
             References(x => x.CostCenter)

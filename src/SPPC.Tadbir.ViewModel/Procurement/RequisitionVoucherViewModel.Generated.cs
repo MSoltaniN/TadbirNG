@@ -50,6 +50,13 @@ namespace SPPC.Tadbir.ViewModel.Procurement
         public string OperationalStatus { get; set; }
         [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
         public string Reference { get; set; }
+        public DateTime? OrderedDate { get; set; }
+        public DateTime? RequiredDate { get; set; }
+        public DateTime? PromisedDate { get; set; }
+        [MaxLength(256, ErrorMessage = "{0} must have at most {1} characters.")]
+        public string Reason { get; set; }
+        [MaxLength(256, ErrorMessage = "{0} must have at most {1} characters.")]
+        public string WarehouseComment { get; set; }
         [Required(ErrorMessage = "{0} is required.")]
         public bool IsActive { get; set; }
         [MaxLength(256, ErrorMessage = "{0} must have at most {1} characters.")]
@@ -59,13 +66,6 @@ namespace SPPC.Tadbir.ViewModel.Procurement
         public DateTime? ConfirmedDate { get; set; }
         public DateTime? ApprovedDate { get; set; }
         [Required(ErrorMessage = "{0} is required.")]
-        public byte Timestamp { get; set; }
-        public DateTime? OrderedDate { get; set; }
-        public DateTime? RequiredDate { get; set; }
-        public DateTime? PromisedDate { get; set; }
-        [MaxLength(256, ErrorMessage = "{0} must have at most {1} characters.")]
-        public string Reason { get; set; }
-        [MaxLength(256, ErrorMessage = "{0} must have at most {1} characters.")]
-        public string WarehouseComment { get; set; }
+        public long Timestamp { get; set; }
     }
 }

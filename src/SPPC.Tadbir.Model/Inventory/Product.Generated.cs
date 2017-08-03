@@ -46,6 +46,8 @@ namespace SPPC.Tadbir.Model.Inventory
         /// </summary>
         public virtual DateTime ModifiedDate { get; set; }
 
+        public virtual ProductCategory Category { get; set; }
+
         private void InitReferences()
         {
         }

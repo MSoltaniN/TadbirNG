@@ -59,7 +59,7 @@ namespace SPPC.Tadbir.Model.Warehousing
         public virtual DateTime ModifiedDate { get; set; }
         public virtual DateTime? ConfirmedDate { get; set; }
         public virtual DateTime? ApprovedDate { get; set; }
-        public virtual byte Timestamp { get; set; }
+        public virtual long Timestamp { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.

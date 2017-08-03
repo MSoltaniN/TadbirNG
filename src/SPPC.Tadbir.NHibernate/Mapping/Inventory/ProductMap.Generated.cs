@@ -46,6 +46,10 @@ namespace SPPC.Tadbir.NHibernate.Mapping
 
         private void MapReferences()
         {
+            References(x => x.Category)
+                .Column("CategoryID")
+                .Cascade.None()
+                .Not.LazyLoad();
         }
     }
 }

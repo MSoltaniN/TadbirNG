@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Schema("Core");
             Table("ServiceJob");
             Id(x => x.Id)
-                .Column("ServiceJobID")
+                .Column("JobID")
                 .GeneratedBy.Identity();
             Map(x => x.RowGuid, "rowguid")
                 .Generated.Insert();

@@ -8,6 +8,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+CREATE SCHEMA [Core]
+GO
+
 CREATE SCHEMA [Auth]
 GO
 
@@ -24,6 +27,18 @@ CREATE SCHEMA [Workflow]
 GO
 
 CREATE SCHEMA [WFTracking]
+GO
+
+CREATE SCHEMA [Inventory]
+GO
+
+CREATE SCHEMA [Procurement]
+GO
+
+CREATE SCHEMA [Warehousing]
+GO
+
+CREATE SCHEMA [Sales]
 GO
 
 CREATE TABLE [Finance].[Currency] (
@@ -382,6 +397,505 @@ CREATE TABLE [WFTracking].[CustomTrackingEvent] (
     [ModifiedDate]          DATETIME CONSTRAINT [DF_WFTracking_CustomTrackingEvent_ModifiedDate] DEFAULT (getdate()) NOT NULL,
 	CONSTRAINT [PK_WFTracking_CustomTrackingEvent] PRIMARY KEY ([EventID]),
 );
+GO
+
+CREATE TABLE [Contact].[BusinessPartner] (
+    [PartnerID]           INT              IDENTITY (1, 1) NOT NULL,
+    [Name]                NVARCHAR(128)    NOT NULL,
+    [Phone]               NVARCHAR(64)     NULL,
+    [Email]               NVARCHAR(64)     NULL,
+    [CommerceCode]        NVARCHAR(64)     NULL,
+    [Address]             NVARCHAR(256)    NULL,
+    [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Contact_BusinessPartner_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Contact_BusinessPartner_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Contact_BusinessPartner] PRIMARY KEY CLUSTERED ([PartnerID] ASC)
+)
+GO
+
+CREATE TABLE [Contact].[Customer] (
+    [CustomerID]     INT              IDENTITY (1, 1) NOT NULL,
+    [Name]           NVARCHAR(128)    NOT NULL,
+    [Phone]          NVARCHAR(64)     NULL,
+    [Email]          NVARCHAR(64)     NULL,
+    [CommerceCode]   NVARCHAR(64)     NULL,
+    [Address]        NVARCHAR(256)    NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Contact_Customer_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Contact_Customer_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Contact_Customer] PRIMARY KEY CLUSTERED ([CustomerID] ASC)
+)
+GO
+
+CREATE TABLE [Core].[DocumentType] (
+    [TypeID]                INT              IDENTITY (1, 1) NOT NULL,
+    [Name]                  NVARCHAR(64)     NOT NULL,
+    [rowguid]               UNIQUEIDENTIFIER CONSTRAINT [DF_Core_DocumentType_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]          DATETIME         CONSTRAINT [DF_Core_DocumentType_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_DocumentType] PRIMARY KEY CLUSTERED ([TypeID] ASC)
+)
+GO
+
+CREATE TABLE [Core].[DocumentStatus] (
+    [StatusID]              INT              IDENTITY (1, 1) NOT NULL,
+    [Name]                  NVARCHAR(64)     NOT NULL,
+    [rowguid]               UNIQUEIDENTIFIER CONSTRAINT [DF_Core_DocumentStatus_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]          DATETIME         CONSTRAINT [DF_Core_DocumentStatus_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_DocumentStatus] PRIMARY KEY CLUSTERED ([StatusID] ASC)
+)
+GO
+
+CREATE TABLE [Core].[ServiceJob] (
+    [JobID]                INT              IDENTITY (1, 1) NOT NULL,
+    [rowguid]              UNIQUEIDENTIFIER CONSTRAINT [DF_Core_ServiceJob_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]         DATETIME         CONSTRAINT [DF_Core_ServiceJob_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_ServiceJob] PRIMARY KEY CLUSTERED ([JobID] ASC)
+)
+GO
+
+CREATE TABLE [Corporate].[BusinessUnit] (
+    [UnitID]           INT              IDENTITY (1, 1) NOT NULL,
+    [Name]             NVARCHAR(64)     NOT NULL,
+    [Description]      NVARCHAR(256)    NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Corporate_BusinessUnit_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Corporate_BusinessUnit_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Corporate_BusinessUnit] PRIMARY KEY CLUSTERED ([UnitID] ASC)
+)
+GO
+
+CREATE TABLE [Finance].[DetailAccount] (
+    [DetailID]          INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]          INT              NULL,
+    [Code]              NVARCHAR(16)     NOT NULL,
+    [FullCode]          NVARCHAR(256)    NOT NULL,
+    [Name]              NVARCHAR(256)    NOT NULL,
+    [Level]             SMALLINT         CONSTRAINT [DF_Finance_DetailAccount_Level] DEFAULT (0) NOT NULL,
+    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_DetailAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_DetailAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_DetailAccount] PRIMARY KEY CLUSTERED ([DetailID] ASC)
+    , CONSTRAINT [FK_Finance_DetailAccount_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+)
+GO
+
+CREATE TABLE [Finance].[CostCenter] (
+    [CostCenterID]   INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]       INT              NULL,
+    [Code]           NVARCHAR(16)     NOT NULL,
+    [FullCode]       NVARCHAR(256)    NOT NULL,
+    [Name]           NVARCHAR(256)    NOT NULL,
+    [Level]          SMALLINT         CONSTRAINT [DF_Finance_CostCenter_Level] DEFAULT (0) NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CostCenter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_CostCenter_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_CostCenter] PRIMARY KEY CLUSTERED ([CostCenterID] ASC)
+    , CONSTRAINT [FK_Finance_CostCenter_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+)
+GO
+
+CREATE TABLE [Finance].[Project] (
+    [ProjectID]      INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]       INT              NULL,
+    [Code]           NVARCHAR(16)     NOT NULL,
+    [FullCode]       NVARCHAR(256)    NOT NULL,
+    [Name]           NVARCHAR(256)    NOT NULL,
+    [Level]          SMALLINT         CONSTRAINT [DF_Finance_Project_Level] DEFAULT (0) NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Project_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_Project_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_Project] PRIMARY KEY CLUSTERED ([ProjectID] ASC)
+    , CONSTRAINT [FK_Finance_Project_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[Project]([ProjectID])
+)
+GO
+
+CREATE TABLE [Inventory].[UOM] (
+    [UomID]         INT              IDENTITY (1, 1) NOT NULL,
+    [Name]          NVARCHAR(64)     NOT NULL,
+    [rowguid]       UNIQUEIDENTIFIER CONSTRAINT [DF_Inventory_UOM_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]  DATETIME         CONSTRAINT [DF_Inventory_UOM_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Inventory_UOM] PRIMARY KEY CLUSTERED ([UomID] ASC)
+)
+GO
+
+CREATE TABLE [Inventory].[ProductCategory] (
+    [CategoryID]   INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]     INT              NULL,
+    [Code]         NVARCHAR(16)     NOT NULL,
+    [FullCode]     NVARCHAR(256)    NOT NULL,
+    [Name]         NVARCHAR(64)     NOT NULL,
+    [Level]        SMALLINT         CONSTRAINT [DF_Inventory_ProductCategory_Level] DEFAULT (0) NOT NULL,
+    [rowguid]      UNIQUEIDENTIFIER CONSTRAINT [DF_Inventory_ProductCategory_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate] DATETIME         CONSTRAINT [DF_Inventory_ProductCategory_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Inventory_ProductCategory] PRIMARY KEY CLUSTERED ([CategoryID] ASC)
+    , CONSTRAINT [FK_Inventory_ProductCategory_Inventory_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Inventory].[ProductCategory]([CategoryID])
+)
+GO
+
+CREATE TABLE [Inventory].[Product] (
+    [ProductID]      INT              IDENTITY (1, 1) NOT NULL,
+	[CategoryID]     INT              NOT NULL,
+    [Code]           NVARCHAR(64)     NOT NULL,
+    [Name]           NVARCHAR(128)    NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Inventory_Product_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Inventory_Product_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Inventory_Product] PRIMARY KEY CLUSTERED ([ProductID] ASC)
+	, CONSTRAINT [FK_Inventory_Product_Inventory_ProductCategory] FOREIGN KEY([CategoryID]) REFERENCES [Inventory].[ProductCategory]([CategoryID])
+)
+GO
+
+CREATE TABLE [Inventory].[Warehouse] (
+    [WarehouseID]    INT              IDENTITY (1, 1) NOT NULL,
+    [Code]           NVARCHAR(64)     NOT NULL,
+    [Name]           NVARCHAR(128)    NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Inventory_Warehouse_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Inventory_Warehouse_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Inventory_Warehouse] PRIMARY KEY CLUSTERED ([WarehouseID] ASC)
+)
+GO
+
+CREATE TABLE [Procurement].[RequisitionVoucherType] (
+    [VoucherTypeID] INT              IDENTITY (1, 1) NOT NULL,
+    [Name]          NVARCHAR(64)     NOT NULL,
+    [Description]   NVARCHAR(256)    NULL,
+    [rowguid]       UNIQUEIDENTIFIER CONSTRAINT [DF_Procurement_RequisitionVoucherType_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]  DATETIME         CONSTRAINT [DF_Procurement_RequisitionVoucherType_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Procurement_RequisitionVoucherType] PRIMARY KEY CLUSTERED ([VoucherTypeID] ASC)
+)
+GO
+
+CREATE TABLE [Warehousing].[IssueReceiptVoucherType] (
+    [VoucherTypeID] INT              IDENTITY (1, 1) NOT NULL,
+    [Name]          NVARCHAR(64)     NOT NULL,
+    [Description]   NVARCHAR(256)    NULL,
+    [rowguid]       UNIQUEIDENTIFIER CONSTRAINT [DF_Warehousing_IssueReceiptVoucherType_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]  DATETIME         CONSTRAINT [DF_Warehousing_IssueReceiptVoucherType_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Warehousing_IssueReceiptVoucherType] PRIMARY KEY CLUSTERED ([VoucherTypeID] ASC)
+)
+GO
+
+CREATE TABLE [Procurement].[RequisitionVoucher] (
+    [VoucherID]              INT              IDENTITY (1, 1) NOT NULL,
+    [DocumentTypeID]         INT              NOT NULL,
+    [DocumentStatusID]       INT              NOT NULL,
+    [AccountID]              INT              NOT NULL,
+    [DetailAccountID]        INT              NOT NULL,
+    [CostCenterID]           INT              NOT NULL,
+    [ProjectID]              INT              NOT NULL,
+    [FiscalPeriodID]         INT              NOT NULL,
+    [BranchID]               INT              NOT NULL,
+    [CreatedByID]            INT              NOT NULL,
+    [ModifiedByID]           INT              NOT NULL,
+    [ConfirmedByID]          INT              NOT NULL,
+    [ApprovedByID]           INT              NOT NULL,
+    [RequesterID]            INT              NOT NULL,
+    [ReceiverID]             INT              NOT NULL,
+    [RequesterUnitID]        INT              NOT NULL,
+    [ReceiverUnitID]         INT              NOT NULL,
+    [WarehouseID]            INT              NOT NULL,
+    [ServiceJobID]           INT              NOT NULL,
+    [No]                     NVARCHAR(64)     NOT NULL,
+    [DocumentNo]             NVARCHAR(64)     NOT NULL,
+    [Status]                 NVARCHAR(64)     NOT NULL,
+    [OperationalStatus]      NVARCHAR(64)     NOT NULL,
+    [Reference]              NVARCHAR(64)     NULL,
+    [OrderedDate]            DATETIME         NULL,
+    [RequiredDate]           DATETIME         NULL,
+    [PromisedDate]           DATETIME         NULL,
+    [Reason]                 NVARCHAR(256)    NULL,
+    [WarehouseComment]       NVARCHAR(256)    NULL,
+    [IsActive]               BIT              NOT NULL,
+    [Description]            NVARCHAR(256)    NULL,
+    [CreatedDate]            DATETIME         NOT NULL,
+    [ModifiedDate]           DATETIME         CONSTRAINT [DF_Procurement_RequisitionVoucher_ModifiedDate] DEFAULT (getdate()) NOT NULL,
+    [ConfirmedDate]          DATETIME         NULL,
+    [ApprovedDate]           DATETIME         NULL,
+    [Timestamp]              TIMESTAMP        NOT NULL,
+    [rowguid]                UNIQUEIDENTIFIER CONSTRAINT [DF_Procurement_RequisitionVoucher_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL
+    , CONSTRAINT [PK_Procurement_RequisitionVoucher] PRIMARY KEY CLUSTERED ([VoucherID] ASC)
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Core_DocumentType] FOREIGN KEY ([DocumentTypeID]) REFERENCES [Core].[DocumentType]([TypeID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Core_DocumentStatus] FOREIGN KEY ([DocumentStatusID]) REFERENCES [Core].[DocumentStatus]([StatusID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Auth_CreatedBy] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Auth_ModifiedBy] FOREIGN KEY ([ModifiedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Auth_ConfirmedBy] FOREIGN KEY ([ConfirmedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Auth_ApprovedBy] FOREIGN KEY ([ApprovedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Contact_Requester] FOREIGN KEY ([RequesterID]) REFERENCES [Contact].[BusinessPartner]([PartnerID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Contact_Receiver] FOREIGN KEY ([ReceiverID]) REFERENCES [Contact].[BusinessPartner]([PartnerID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Corporate_RequesterUnit] FOREIGN KEY ([RequesterUnitID]) REFERENCES [Corporate].[BusinessUnit]([UnitID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Corporate_ReceiverUnit] FOREIGN KEY ([ReceiverUnitID]) REFERENCES [Corporate].[BusinessUnit]([UnitID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Inventory_Warehouse] FOREIGN KEY ([WarehouseID]) REFERENCES [Inventory].[Warehouse]([WarehouseID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Core_ServiceJob] FOREIGN KEY ([ServiceJobID]) REFERENCES [Core].[ServiceJob]([JobID])
+)
+GO
+
+CREATE TABLE [Procurement].[RequisitionVoucherLine] (
+    [LineID]                     INT              IDENTITY (1, 1) NOT NULL,
+    [VoucherID]                  INT              NOT NULL,
+    [WarehouseID]                INT              NOT NULL,
+    [ProductID]                  INT              NOT NULL,
+    [UomID]                      INT              NOT NULL,
+    [AccountID]                  INT              NOT NULL,
+    [DetailAccountID]            INT              NOT NULL,
+    [CostCenterID]               INT              NOT NULL,
+    [ProjectID]                  INT              NOT NULL,
+    [BranchID]                   INT              NOT NULL,
+    [FiscalPeriodID]             INT              NOT NULL,
+    [CreatedByID]                INT              NOT NULL,
+    [ModifiedByID]               INT              NOT NULL,
+    [ConfirmedByID]              INT              NOT NULL,
+    [ApprovedByID]               INT              NOT NULL,
+    [No]                         INT              NOT NULL,
+    [OrderedQuantity]            FLOAT            NOT NULL,
+    [DeliveredQuantity]          FLOAT            NULL,
+    [ReservedQuantity]           FLOAT            NULL,
+    [LastOrderedQuantity]        FLOAT            NULL,
+    [RequiredDate]               DATETIME         NOT NULL,
+    [PromisedDate]               DATETIME         NULL,
+    [DeliveredDate]              DATETIME         NULL,
+    [LastOrderedDate]            DATETIME         NULL,
+    [IsActive]                   BIT              NOT NULL,
+    [Description]                NVARCHAR(256)    NULL,
+    [CreatedDate]                DATETIME         NOT NULL,
+    [ModifiedDate]               DATETIME         CONSTRAINT [DF_Procurement_RequisitionVoucherLine_ModifiedDate] DEFAULT (getdate()) NOT NULL,
+    [ConfirmedDate]              DATETIME         NULL,
+    [ApprovedDate]               DATETIME         NULL,
+    [Timestamp]                  TIMESTAMP        NOT NULL,
+    [rowguid]                    UNIQUEIDENTIFIER CONSTRAINT [DF_Procurement_RequisitionVoucherLine_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL
+    , CONSTRAINT [PK_Procurement_RequisitionVoucherLine] PRIMARY KEY CLUSTERED ([LineID] ASC)
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Procurement_RequisitionVoucher] FOREIGN KEY ([VoucherID]) REFERENCES [Procurement].[RequisitionVoucher]([VoucherID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Inventory_Warehouse] FOREIGN KEY ([WarehouseID]) REFERENCES [Inventory].[Warehouse]([WarehouseID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Inventory_Product] FOREIGN KEY ([ProductID]) REFERENCES [Inventory].[Product]([ProductID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Inventory_Uom] FOREIGN KEY ([UomID]) REFERENCES [Inventory].[UOM]([UomID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Auth_CreatedBy] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Auth_ModifiedBy] FOREIGN KEY ([ModifiedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Auth_ConfirmedBy] FOREIGN KEY ([ConfirmedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Auth_ApprovedBy] FOREIGN KEY ([ApprovedByID]) REFERENCES [Auth].[User]([UserID])
+)
+GO
+
+CREATE TABLE [Warehousing].[IssueReceiptVoucher] (
+    [VoucherID]               INT              IDENTITY (1, 1) NOT NULL,
+    [DocumentTypeID]          INT              NOT NULL,
+    [DocumentStatusID]        INT              NOT NULL,
+    [FiscalPeriodID]          INT              NOT NULL,
+    [BranchID]                INT              NOT NULL,
+    [CreatedByID]             INT              NOT NULL,
+    [ModifiedByID]            INT              NOT NULL,
+    [ConfirmedByID]           INT              NOT NULL,
+    [ApprovedByID]            INT              NOT NULL,
+    [ActingPartnerID]         INT              NOT NULL,
+    [PartnerAccountID]        INT              NOT NULL,
+    [PartnerDetailID]         INT              NOT NULL,
+    [PartnerCostCenterID]     INT              NOT NULL,
+    [PartnerProjectID]        INT              NOT NULL,
+    [WarehouseID]             INT              NOT NULL,
+    [PricedVoucherID]         INT              NOT NULL,
+    [No]                      NVARCHAR(64)     NOT NULL,
+    [DocumentNo]              NVARCHAR(64)     NOT NULL,
+    [Status]                  NVARCHAR(64)     NOT NULL,
+    [OperationalStatus]       NVARCHAR(64)     NOT NULL,
+    [IsActive]                BIT              NOT NULL,
+    [Reference]               NVARCHAR(64)     NULL,
+    [Type]                    SMALLINT         NOT NULL,
+    [Description]             NVARCHAR(256)    NULL,
+    [CreatedDate]             DATETIME         NOT NULL,
+    [ModifiedDate]            DATETIME         CONSTRAINT [DF_Warehousing_IssueReceiptVoucher_ModifiedDate] DEFAULT (getdate()) NOT NULL,
+    [ConfirmedDate]           DATETIME         NULL,
+    [ApprovedDate]            DATETIME         NULL,
+    [Timestamp]               TIMESTAMP        NOT NULL,
+    [rowguid]                 UNIQUEIDENTIFIER CONSTRAINT [DF_Warehousing_IssueReceiptVoucher_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL
+    , CONSTRAINT [PK_Warehousing_IssueReceiptVoucher] PRIMARY KEY CLUSTERED ([VoucherID] ASC)
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Core_DocumentType] FOREIGN KEY ([DocumentTypeID]) REFERENCES [Core].[DocumentType]([TypeID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Core_DocumentStatus] FOREIGN KEY ([DocumentStatusID]) REFERENCES [Core].[DocumentStatus]([StatusID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Auth_CreatedBy] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Auth_ModifiedBy] FOREIGN KEY ([ModifiedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Auth_ConfirmedBy] FOREIGN KEY ([ConfirmedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Auth_ApprovedBy] FOREIGN KEY ([ApprovedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Contact_ActingPartner] FOREIGN KEY ([ActingPartnerID]) REFERENCES [Contact].[BusinessPartner]([PartnerID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Finance_PartnerAccount] FOREIGN KEY ([PartnerAccountID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Finance_PartnerDetailAccount] FOREIGN KEY ([PartnerDetailID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Finance_PartnerCostCenter] FOREIGN KEY ([PartnerCostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Finance_PartnerProject] FOREIGN KEY ([PartnerProjectID]) REFERENCES [Finance].[Project]([ProjectID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Inventory_Warehouse] FOREIGN KEY ([WarehouseID]) REFERENCES [Inventory].[Warehouse]([WarehouseID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Warehousing_PricedVoucher] FOREIGN KEY ([PricedVoucherID]) REFERENCES [Warehousing].[IssueReceiptVoucher]([VoucherID])
+)
+GO
+
+CREATE TABLE [Warehousing].[IssueReceiptVoucherLine] (
+    [LineID]                      INT              IDENTITY (1, 1) NOT NULL,
+    [VoucherID]                   INT              NOT NULL,
+    [WarehouseID]                 INT              NOT NULL,
+    [ProductID]                   INT              NOT NULL,
+    [UomID]                       INT              NOT NULL,
+    [CurrencyID]                  INT              NOT NULL,
+    [RequisitionVoucherID]        INT              NOT NULL,
+    [AccountID]                   INT              NOT NULL,
+    [DetailAccountID]             INT              NOT NULL,
+    [CostCenterID]                INT              NOT NULL,
+    [ProjectID]                   INT              NOT NULL,
+    [BranchID]                    INT              NOT NULL,
+    [FiscalPeriodID]              INT              NOT NULL,
+    [CreatedByID]                 INT              NOT NULL,
+    [ModifiedByID]                INT              NOT NULL,
+    [ConfirmedByID]               INT              NOT NULL,
+    [ApprovedByID]                INT              NOT NULL,
+    [No]                          INT              NOT NULL,
+    [Quantity]                    FLOAT            NOT NULL,
+    [UnitPrice]                   FLOAT            NOT NULL,
+    [CurrencyUnitPrice]           FLOAT            NULL,
+    [Remainder]                   FLOAT            NULL,
+    [IsActive]                    BIT              NOT NULL,
+    [Description]                 NVARCHAR(256)    NULL,
+    [CreatedDate]                 DATETIME         NOT NULL,
+    [ModifiedDate]                DATETIME         CONSTRAINT [DF_Warehousing_IssueReceiptVoucherLine_ModifiedDate] DEFAULT (getdate()) NOT NULL,
+    [ConfirmedDate]               DATETIME         NULL,
+    [ApprovedDate]                DATETIME         NULL,
+    [Timestamp]                   TIMESTAMP        NOT NULL,
+    [rowguid]                     UNIQUEIDENTIFIER CONSTRAINT [DF_Warehousing_IssueReceiptVoucherLine_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL
+    , CONSTRAINT [PK_Warehousing_IssueReceiptVoucherLine] PRIMARY KEY CLUSTERED ([LineID] ASC)
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Warehousing_Voucher] FOREIGN KEY ([VoucherID]) REFERENCES [Warehousing].[IssueReceiptVoucher]([VoucherID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Inventory_Warehouse] FOREIGN KEY ([WarehouseID]) REFERENCES [Inventory].[Warehouse]([WarehouseID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Inventory_Product] FOREIGN KEY ([ProductID]) REFERENCES [Inventory].[Product]([ProductID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Inventory_UOM] FOREIGN KEY ([UomID]) REFERENCES [Inventory].[UOM]([UomID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Procurement_RequisitionVoucher] FOREIGN KEY ([RequisitionVoucherID]) REFERENCES [Procurement].[RequisitionVoucher]([VoucherID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Finance_DetailAccount] FOREIGN KEY ([DetailAccountID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Auth_CreatedBy] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Auth_ModifiedBy] FOREIGN KEY ([ModifiedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Auth_ConfirmedBy] FOREIGN KEY ([ConfirmedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Auth_ApprovedBy] FOREIGN KEY ([ApprovedByID]) REFERENCES [Auth].[User]([UserID])
+)
+GO
+
+CREATE TABLE [Sales].[Invoice] (
+    [InvoiceID]              INT              IDENTITY (1, 1) NOT NULL,
+    [DocumentTypeID]         INT              NOT NULL,
+    [DocumentStatusID]       INT              NOT NULL,
+    [PartnerID]              INT              NULL,
+    [CustomerID]             INT              NULL,
+    [PartnerAccountID]       INT              NOT NULL,
+    [PartnerDetailID]        INT              NOT NULL,
+    [PartnerCostCenterID]    INT              NOT NULL,
+    [PartnerProjectID]       INT              NOT NULL,
+    [AccountID]              INT              NOT NULL,
+    [DetailID]               INT              NOT NULL,
+    [CostCenterID]           INT              NOT NULL,
+    [ProjectID]              INT              NOT NULL,
+    [ReferenceInvoiceID]     INT              NOT NULL,
+    [IssueReceiptVoucherID]  INT              NOT NULL,
+    [FiscalPeriodID]         INT              NOT NULL,
+    [BranchID]               INT              NOT NULL,
+    [CreatedByID]            INT              NOT NULL,
+    [ModifiedByID]           INT              NOT NULL,
+    [ConfirmedByID]          INT              NOT NULL,
+    [ApprovedByID]           INT              NOT NULL,
+    [No]                     NVARCHAR(64)     NOT NULL,
+    [DocumentNo]             NVARCHAR(64)     NOT NULL,
+    [Status]                 NVARCHAR(64)     NOT NULL,
+    [OperationalStatus]      NVARCHAR(64)     NOT NULL,
+    [IsActive]               BIT              NOT NULL,
+    [IsCancelled]            BIT              NOT NULL,
+    [Type]                   SMALLINT         NOT NULL,
+    [Reference]              NVARCHAR(64)     NULL,
+    [Date]                   DATETIME         NOT NULL,
+    [Discount]               FLOAT            NOT NULL,
+    [Expense]                FLOAT            NOT NULL,
+    [ContractNo]             NVARCHAR(64)     NULL,
+    [ShipmentNo]             NVARCHAR(64)     NULL,
+    [Description]            NVARCHAR(256)    NULL,
+    [CreatedDate]            DATETIME         NOT NULL,
+    [ModifiedDate]           DATETIME         CONSTRAINT [DF_Sales_Invoice_ModifiedDate] DEFAULT (getdate()) NOT NULL,
+    [ConfirmedDate]          DATETIME         NULL,
+    [ApprovedDate]           DATETIME         NULL,
+    [Timestamp]              TIMESTAMP        NOT NULL,
+    [rowguid]                UNIQUEIDENTIFIER CONSTRAINT [DF_Sales_Invoice_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL
+    , CONSTRAINT [PK_Sales_Invoice] PRIMARY KEY CLUSTERED ([InvoiceID] ASC)
+    , CONSTRAINT [FK_Sales_Invoice_Core_DocumentType] FOREIGN KEY ([DocumentTypeID]) REFERENCES [Core].[DocumentType]([TypeID])
+    , CONSTRAINT [FK_Sales_Invoice_Core_DocumentStatus] FOREIGN KEY ([DocumentStatusID]) REFERENCES [Core].[DocumentStatus]([StatusID])
+    , CONSTRAINT [FK_Sales_Invoice_Contact_BusinessPartner] FOREIGN KEY ([PartnerID]) REFERENCES [Contact].[BusinessPartner]([PartnerID])
+    , CONSTRAINT [FK_Sales_Invoice_Contact_Customer] FOREIGN KEY ([CustomerID]) REFERENCES [Contact].[Customer]([CustomerID])
+    , CONSTRAINT [FK_Sales_Invoice_Finance_PartnerAccount] FOREIGN KEY ([PartnerAccountID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_Sales_Invoice_Finance_PartnerDetailAccount] FOREIGN KEY ([PartnerDetailID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Sales_Invoice_Finance_PartnerCostCenter] FOREIGN KEY ([PartnerCostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Sales_Invoice_Finance_PartnerProject] FOREIGN KEY ([PartnerProjectID]) REFERENCES [Finance].[Project]([ProjectID])
+    , CONSTRAINT [FK_Sales_Invoice_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_Sales_Invoice_Finance_DetailAccount] FOREIGN KEY ([DetailID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Sales_Invoice_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Sales_Invoice_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
+    , CONSTRAINT [FK_Sales_Invoice_Sales_ReferenceInvoice] FOREIGN KEY ([ReferenceInvoiceID]) REFERENCES [Sales].[Invoice]([InvoiceID])
+    , CONSTRAINT [FK_Sales_Invoice_Warehousing_IssueReceiptVoucher] FOREIGN KEY ([IssueReceiptVoucherID]) REFERENCES [Warehousing].[IssueReceiptVoucher]([VoucherID])
+    , CONSTRAINT [FK_Sales_Invoice_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_Sales_Invoice_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_Sales_Invoice_Auth_CreatedBy] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Sales_Invoice_Auth_ModifiedBy] FOREIGN KEY ([ModifiedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Sales_Invoice_Auth_ConfirmedBy] FOREIGN KEY ([ConfirmedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Sales_Invoice_Auth_ApprovedBy] FOREIGN KEY ([ApprovedByID]) REFERENCES [Auth].[User]([UserID])
+)
+GO
+
+CREATE TABLE [Sales].[InvoiceLine] (
+    [LineID]               INT              IDENTITY (1, 1) NOT NULL,
+    [InvoiceID]            INT              NOT NULL,
+    [WarehouseID]          INT              NOT NULL,
+    [ProductID]            INT              NOT NULL,
+    [UomID]                INT              NOT NULL,
+    [CurrencyID]           INT              NOT NULL,
+    [RequisitionVoucherID] INT              NOT NULL,
+    [AccountID]            INT              NOT NULL,
+    [DetailID]             INT              NOT NULL,
+    [CostCenterID]         INT              NOT NULL,
+    [ProjectID]            INT              NOT NULL,
+    [BranchID]             INT              NOT NULL,
+    [FiscalPeriodID]       INT              NOT NULL,
+    [CreatedByID]          INT              NOT NULL,
+    [ModifiedByID]         INT              NOT NULL,
+    [ConfirmedByID]        INT              NOT NULL,
+    [ApprovedByID]         INT              NOT NULL,
+    [No]                   INT              NOT NULL,
+    [Quantity]             FLOAT            NOT NULL,
+    [UnitPrice]            FLOAT            NOT NULL,
+    [CurrencyUnitPrice]    FLOAT            NULL,
+    [Discount]             FLOAT            NULL,
+    [UnitCost]             FLOAT            NULL,
+    [IsActive]             BIT              NOT NULL,
+    [Description]          NVARCHAR(256)    NULL,
+    [CreatedDate]          DATETIME         NOT NULL,
+    [ModifiedDate]         DATETIME         CONSTRAINT [DF_Sales_InvoiceLine_ModifiedDate] DEFAULT (getdate()) NOT NULL,
+    [ConfirmedDate]        DATETIME         NULL,
+    [ApprovedDate]         DATETIME         NULL,
+    [Timestamp]            TIMESTAMP        NOT NULL,
+    [rowguid]              UNIQUEIDENTIFIER CONSTRAINT [DF_Sales_InvoiceLine_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL
+    , CONSTRAINT [PK_Sales_InvoiceLine] PRIMARY KEY CLUSTERED ([LineID] ASC)
+    , CONSTRAINT [FK_Sales_InvoiceLine_Sales_Invoice] FOREIGN KEY ([InvoiceID]) REFERENCES [Sales].[Invoice]([InvoiceID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Inventory_Warehouse] FOREIGN KEY ([WarehouseID]) REFERENCES [Inventory].[Warehouse]([WarehouseID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Inventory_Product] FOREIGN KEY ([ProductID]) REFERENCES [Inventory].[Product]([ProductID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Inventory_Uom] FOREIGN KEY ([UomID]) REFERENCES [Inventory].[UOM]([UomID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency]([CurrencyID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Procurement_RequisitionVoucher] FOREIGN KEY ([RequisitionVoucherID]) REFERENCES [Procurement].[RequisitionVoucher]([VoucherID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Finance_DetailAccount] FOREIGN KEY ([DetailID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project]([ProjectID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Auth_CreatedBy] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Auth_ModifiedBy] FOREIGN KEY ([ModifiedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Auth_ConfirmedBy] FOREIGN KEY ([ConfirmedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Auth_ApprovedBy] FOREIGN KEY ([ApprovedByID]) REFERENCES [Auth].[User]([UserID])
+)
 GO
 
 -- Create system records for security (NOTE: These records will be migrated to SYS database in a later stage)

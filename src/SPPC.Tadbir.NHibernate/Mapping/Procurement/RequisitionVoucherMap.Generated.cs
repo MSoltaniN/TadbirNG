@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Schema("Procurement");
             Table("RequisitionVoucher");
             Id(x => x.Id)
-                .Column("RequisitionVoucherID")
+                .Column("VoucherID")
                 .GeneratedBy.Identity();
             Map(x => x.No)
                 .Length(64)
@@ -45,6 +45,18 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Not.Nullable();
             Map(x => x.Reference)
                 .Length(64)
+                .Nullable();
+            Map(x => x.OrderedDate)
+                .Nullable();
+            Map(x => x.RequiredDate)
+                .Nullable();
+            Map(x => x.PromisedDate)
+                .Nullable();
+            Map(x => x.Reason)
+                .Length(256)
+                .Nullable();
+            Map(x => x.WarehouseComment)
+                .Length(256)
                 .Nullable();
             Map(x => x.IsActive)
                 .Not.Nullable();
@@ -62,18 +74,6 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Not.Nullable();
             Map(x => x.RowGuid, "rowguid")
                 .Generated.Insert();
-            Map(x => x.OrderedDate)
-                .Nullable();
-            Map(x => x.RequiredDate)
-                .Nullable();
-            Map(x => x.PromisedDate)
-                .Nullable();
-            Map(x => x.Reason)
-                .Length(256)
-                .Nullable();
-            Map(x => x.WarehouseComment)
-                .Length(256)
-                .Nullable();
 
             MapReferences();
         }
@@ -93,7 +93,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Cascade.None()
                 .Not.LazyLoad();
             References(x => x.DetailAccount)
-                .Column("DetailAccountID")
+                .Column("DetailID")
                 .Cascade.None()
                 .Not.LazyLoad();
             References(x => x.CostCenter)
@@ -146,6 +146,10 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Not.LazyLoad();
             References(x => x.Warehouse)
                 .Column("WarehouseID")
+                .Cascade.None()
+                .Not.LazyLoad();
+            References(x => x.ServiceJob)
+                .Column("ServiceJobID")
                 .Cascade.None()
                 .Not.LazyLoad();
         }

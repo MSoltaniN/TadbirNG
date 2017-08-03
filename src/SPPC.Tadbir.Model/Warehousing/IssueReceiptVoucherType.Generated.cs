@@ -46,6 +46,11 @@ namespace SPPC.Tadbir.Model.Warehousing
         /// </summary>
         public virtual DateTime ModifiedDate { get; set; }
 
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
+        public virtual IList<IssueReceiptVoucher> IssueReceiptVouchers { get; protected set; }
+
         private void InitReferences()
         {
         }

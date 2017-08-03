@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Schema("Warehousing");
             Table("IssueReceiptVoucherType");
             Id(x => x.Id)
-                .Column("IssueReceiptVoucherTypeID")
+                .Column("VoucherTypeID")
                 .GeneratedBy.Identity();
             Map(x => x.Name)
                 .Length(64)
@@ -46,6 +46,10 @@ namespace SPPC.Tadbir.NHibernate.Mapping
 
         private void MapReferences()
         {
+            HasMany(x => x.IssueReceiptVouchers)
+                .KeyColumn("VoucherTypeID")
+                .Cascade.None()
+                .LazyLoad();
         }
     }
 }

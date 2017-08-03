@@ -60,7 +60,7 @@ namespace SPPC.Tadbir.Model.Procurement
         public virtual DateTime ModifiedDate { get; set; }
         public virtual DateTime? ConfirmedDate { get; set; }
         public virtual DateTime? ApprovedDate { get; set; }
-        public virtual byte Timestamp { get; set; }
+        public virtual long Timestamp { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
@@ -156,6 +156,11 @@ namespace SPPC.Tadbir.Model.Procurement
         /// Gets or sets the todo: add description...
         /// </summary>
         public virtual Warehouse Warehouse { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
+        public virtual ServiceJob ServiceJob { get; set; }
 
         private void InitReferences()
         {

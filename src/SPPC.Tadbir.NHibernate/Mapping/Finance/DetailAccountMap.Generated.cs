@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Schema("Finance");
             Table("DetailAccount");
             Id(x => x.Id)
-                .Column("DetailAccountID")
+                .Column("DetailID")
                 .GeneratedBy.Identity();
             Map(x => x.Code)
                 .Length(16)

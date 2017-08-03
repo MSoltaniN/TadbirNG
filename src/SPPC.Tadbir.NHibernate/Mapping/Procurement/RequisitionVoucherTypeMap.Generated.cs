@@ -47,7 +47,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
         private void MapReferences()
         {
             HasMany(x => x.RequisitionVouchers)
-                .KeyColumn("RequisitionVoucherTypeID")
+                .KeyColumn("VoucherTypeID")
                 .Cascade.None()
                 .LazyLoad();
         }
