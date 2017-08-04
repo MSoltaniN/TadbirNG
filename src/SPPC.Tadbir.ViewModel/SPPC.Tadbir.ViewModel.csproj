@@ -101,6 +101,8 @@
     <Compile Include="Finance\DetailAccountViewModel.Generated.cs" />
     <Compile Include="Finance\FiscalPeriodViewModel.cs" />
     <Compile Include="Finance\FiscalPeriodViewModel.Generated.cs" />
+    <Compile Include="Finance\FullDetailTypeViewModel.Generated.cs" />
+    <Compile Include="Finance\FullDetailViewModel.Generated.cs" />
     <Compile Include="Finance\ProjectViewModel.Generated.cs" />
     <Compile Include="Finance\TransactionFullViewModel.cs" />
     <Compile Include="Finance\TransactionLineFullViewModel.cs" />

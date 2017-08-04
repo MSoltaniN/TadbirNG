@@ -110,6 +110,11 @@ namespace SPPC.Tadbir.Model.Procurement
         /// <summary>
         /// Gets or sets the todo: add description...
         /// </summary>
+        public virtual FullDetail FullDetail { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
         public virtual Document Document { get; set; }
 
         private void InitReferences()

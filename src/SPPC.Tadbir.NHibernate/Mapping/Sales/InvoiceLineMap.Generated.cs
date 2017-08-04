@@ -95,6 +95,10 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Column("FullAccountID")
                 .Cascade.None()
                 .Not.LazyLoad();
+            References(x => x.FullDetail)
+                .Column("FullDetailID")
+                .Cascade.None()
+                .Not.LazyLoad();
         }
     }
 }

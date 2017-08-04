@@ -1312,6 +1312,7 @@
         <Relation multiplicity="ManyToOne" endpointName="Warehouse" entityName="Warehouse" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="ServiceJob" entityName="ServiceJob" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="FullAccount" entityName="FullAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FullDetail" entityName="FullDetail" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Document" entityName="Document" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
@@ -1416,6 +1417,7 @@
         <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="FullAccount" entityName="FullAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FullDetail" entityName="FullDetail" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="IssueReceiptVoucher" area="Warehousing" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -1482,6 +1484,7 @@
         <Relation multiplicity="ManyToOne" endpointName="Warehouse" entityName="Warehouse" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="PricedVoucher" entityName="IssueReceiptVoucher" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="PartnerFullAccount" entityName="FullAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="PartnerFullDetail" entityName="FullDetail" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Document" entityName="Document" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
@@ -1564,6 +1567,7 @@
         <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="FullAccount" entityName="FullAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FullDetail" entityName="FullDetail" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="Invoice" area="Sales" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -1667,7 +1671,9 @@
         <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="FullAccount" entityName="FullAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FullDetail" entityName="FullDetail" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="PartnerFullAccount" entityName="FullAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="PartnerFullDetail" entityName="FullDetail" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Document" entityName="Document" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
@@ -1756,6 +1762,7 @@
         <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="FullAccount" entityName="FullAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FullDetail" entityName="FullDetail" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="DetailAccount" area="Finance" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -2474,6 +2481,76 @@
         <Relation multiplicity="ManyToOne" endpointName="Detail" entityName="DetailAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="CostCenter" entityName="CostCenter" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Project" entityName="Project" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
+    <Entity name="FullDetail" area="Finance" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="FullDetailID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="OneToOne" endpointName="Type" entityName="FullDetailType" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Detail2" entityName="DetailAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Detail3" entityName="DetailAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Detail4" entityName="DetailAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Detail5" entityName="DetailAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Detail6" entityName="DetailAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Detail7" entityName="DetailAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Detail8" entityName="DetailAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Detail9" entityName="DetailAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
+    </Entity>
+    <Entity name="FullDetailType" area="Finance" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="TypeID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
+        <Property name="Name" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Name" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="Name" visible="True" width="120" />
+          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="Description" type="String" isValidated="True" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Description" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Description" visible="True" width="120" />
+          <ValidationRule name="Description_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+        </Property>
+      </Properties>
+      <Relations>
+        <Relation multiplicity="OneToOne" endpointName="FullDetail" entityName="FullDetail" hasKey="False" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
   </Entities>

@@ -554,6 +554,42 @@ CREATE TABLE [Finance].[FullAccount] (
 )
 GO
 
+CREATE TABLE [Finance].[FullDetailType] (
+    [TypeID]         INT              IDENTITY (1, 1) NOT NULL,
+    [Name]           NVARCHAR(64)     NOT NULL,
+    [Description]    NVARCHAR(256)    NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_FullDetailType_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_FullDetailType_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_FullDetailType] PRIMARY KEY CLUSTERED ([TypeID] ASC)
+)
+GO
+
+CREATE TABLE [Finance].[FullDetail] (
+    [FullDetailID]   INT              IDENTITY (1, 1) NOT NULL,
+    [TypeID]         INT              NULL,
+    [Detail2ID]      INT              NOT NULL,
+    [Detail3ID]      INT              NULL,
+    [Detail4ID]      INT              NULL,
+    [Detail5ID]      INT              NULL,
+    [Detail6ID]      INT              NULL,
+    [Detail7ID]      INT              NULL,
+    [Detail8ID]      INT              NULL,
+    [Detail9ID]      INT              NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_FullDetail_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_FullDetail_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_FullDetail] PRIMARY KEY CLUSTERED ([FullDetailID] ASC)
+    , CONSTRAINT [FK_Finance_FullDetail_Finance_FullDetailType] FOREIGN KEY ([TypeID]) REFERENCES [Finance].[FullDetailType]([TypeID])
+    , CONSTRAINT [FK_Finance_FullDetail_Finance_Detail2] FOREIGN KEY ([Detail2ID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Finance_FullDetail_Finance_Detail3] FOREIGN KEY ([Detail3ID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Finance_FullDetail_Finance_Detail4] FOREIGN KEY ([Detail4ID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Finance_FullDetail_Finance_Detail5] FOREIGN KEY ([Detail5ID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Finance_FullDetail_Finance_Detail6] FOREIGN KEY ([Detail6ID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Finance_FullDetail_Finance_Detail7] FOREIGN KEY ([Detail7ID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Finance_FullDetail_Finance_Detail8] FOREIGN KEY ([Detail8ID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Finance_FullDetail_Finance_Detail9] FOREIGN KEY ([Detail9ID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+)
+GO
+
 CREATE TABLE [Inventory].[UOM] (
     [UomID]         INT              IDENTITY (1, 1) NOT NULL,
     [Name]          NVARCHAR(64)     NOT NULL,
@@ -630,6 +666,7 @@ CREATE TABLE [Procurement].[RequisitionVoucher] (
     [WarehouseID]        INT              NOT NULL,
     [ServiceJobID]       INT              NOT NULL,
     [FullAccountID]      INT              NOT NULL,
+    [FullDetailID]       INT              NULL,
     [DocumentID]         INT              NOT NULL,
     [No]                 NVARCHAR(64)     NOT NULL,
     [Reference]          NVARCHAR(64)     NULL,
@@ -653,6 +690,7 @@ CREATE TABLE [Procurement].[RequisitionVoucher] (
     , CONSTRAINT [FK_Procurement_RequisitionVoucher_Inventory_Warehouse] FOREIGN KEY ([WarehouseID]) REFERENCES [Inventory].[Warehouse]([WarehouseID])
     , CONSTRAINT [FK_Procurement_RequisitionVoucher_Core_ServiceJob] FOREIGN KEY ([ServiceJobID]) REFERENCES [Core].[ServiceJob]([JobID])
     , CONSTRAINT [FK_Procurement_RequisitionVoucher_Finance_FullAccount] FOREIGN KEY ([FullAccountID]) REFERENCES [Finance].[FullAccount]([FullAccountID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Finance_FullDetail] FOREIGN KEY ([FullDetailID]) REFERENCES [Finance].[FullDetail]([FullDetailID])
     , CONSTRAINT [FK_Procurement_RequisitionVoucher_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document]([DocumentID])
 )
 GO
@@ -666,6 +704,7 @@ CREATE TABLE [Procurement].[RequisitionVoucherLine] (
     [BranchID]              INT              NOT NULL,
     [FiscalPeriodID]        INT              NOT NULL,
     [FullAccountID]         INT              NOT NULL,
+    [FullDetailID]          INT              NULL,
     [No]                    INT              NOT NULL,
     [OrderedQuantity]       FLOAT            NOT NULL,
     [DeliveredQuantity]     FLOAT            NULL,
@@ -688,6 +727,7 @@ CREATE TABLE [Procurement].[RequisitionVoucherLine] (
     , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
     , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
     , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Finance_FullAccount] FOREIGN KEY ([FullAccountID]) REFERENCES [Finance].[FullAccount]([FullAccountID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Finance_FullDetail] FOREIGN KEY ([FullDetailID]) REFERENCES [Finance].[FullDetail]([FullDetailID])
 )
 GO
 
@@ -699,6 +739,7 @@ CREATE TABLE [Warehousing].[IssueReceiptVoucher] (
     [WarehouseID]          INT              NOT NULL,
     [PricedVoucherID]      INT              NOT NULL,
     [PartnerFullAccountID] INT              NOT NULL,
+    [PartnerFullDetailID]  INT              NULL,
     [DocumentID]           INT              NOT NULL,
     [No]                   NVARCHAR(64)     NOT NULL,
     [IsActive]             BIT              NOT NULL,
@@ -715,6 +756,7 @@ CREATE TABLE [Warehousing].[IssueReceiptVoucher] (
     , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Inventory_Warehouse] FOREIGN KEY ([WarehouseID]) REFERENCES [Inventory].[Warehouse]([WarehouseID])
     , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Warehousing_PricedVoucher] FOREIGN KEY ([PricedVoucherID]) REFERENCES [Warehousing].[IssueReceiptVoucher]([VoucherID])
     , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Finance_PartnerFullAccount] FOREIGN KEY ([PartnerFullAccountID]) REFERENCES [Finance].[FullAccount]([FullAccountID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Finance_PartnerFullDetail] FOREIGN KEY ([PartnerFullDetailID]) REFERENCES [Finance].[FullDetail]([FullDetailID])
     , CONSTRAINT [FK_Warehousing_IssueReceiptVoucher_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document]([DocumentID])
 )
 GO
@@ -730,6 +772,7 @@ CREATE TABLE [Warehousing].[IssueReceiptVoucherLine] (
     [BranchID]             INT              NOT NULL,
     [FiscalPeriodID]       INT              NOT NULL,
     [FullAccountID]        INT              NOT NULL,
+    [FullDetailID]         INT              NULL,
     [No]                   INT              NOT NULL,
     [Quantity]             FLOAT            NOT NULL,
     [UnitPrice]            FLOAT            NOT NULL,
@@ -750,6 +793,7 @@ CREATE TABLE [Warehousing].[IssueReceiptVoucherLine] (
     , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
     , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
     , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Finance_FullAccount] FOREIGN KEY ([FullAccountID]) REFERENCES [Finance].[FullAccount]([FullAccountID])
+    , CONSTRAINT [FK_Warehousing_IssueReceiptVoucherLine_Finance_FullDetail] FOREIGN KEY ([FullDetailID]) REFERENCES [Finance].[FullDetail]([FullDetailID])
 )
 GO
 
@@ -762,7 +806,9 @@ CREATE TABLE [Sales].[Invoice] (
     [FiscalPeriodID]        INT              NOT NULL,
     [BranchID]              INT              NOT NULL,
     [FullAccountID]         INT              NOT NULL,
+    [FullDetailID]          INT              NULL,
     [PartnerFullAccountID]  INT              NOT NULL,
+    [PartnerFullDetailID]   INT              NULL,
     [DocumentID]            INT              NOT NULL,
     [No]                    NVARCHAR(64)     NOT NULL,
     [IsActive]              BIT              NOT NULL,
@@ -786,7 +832,9 @@ CREATE TABLE [Sales].[Invoice] (
     , CONSTRAINT [FK_Sales_Invoice_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
     , CONSTRAINT [FK_Sales_Invoice_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
     , CONSTRAINT [FK_Sales_Invoice_Finance_FullAccount] FOREIGN KEY ([FullAccountID]) REFERENCES [Finance].[FullAccount]([FullAccountID])
+    , CONSTRAINT [FK_Sales_Invoice_Finance_FullDetail] FOREIGN KEY ([FullDetailID]) REFERENCES [Finance].[FullDetail]([FullDetailID])
     , CONSTRAINT [FK_Sales_Invoice_Finance_PartnerFullAccount] FOREIGN KEY ([PartnerFullAccountID]) REFERENCES [Finance].[FullAccount]([FullAccountID])
+    , CONSTRAINT [FK_Sales_Invoice_Finance_PartnerFullDetail] FOREIGN KEY ([PartnerFullDetailID]) REFERENCES [Finance].[FullDetail]([FullDetailID])
     , CONSTRAINT [FK_Sales_Invoice_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document]([DocumentID])
 )
 GO
@@ -802,6 +850,7 @@ CREATE TABLE [Sales].[InvoiceLine] (
     [BranchID]             INT              NOT NULL,
     [FiscalPeriodID]       INT              NOT NULL,
     [FullAccountID]        INT              NOT NULL,
+    [FullDetailID]         INT              NULL,
     [No]                   INT              NOT NULL,
     [Quantity]             FLOAT            NOT NULL,
     [UnitPrice]            FLOAT            NOT NULL,
@@ -823,6 +872,7 @@ CREATE TABLE [Sales].[InvoiceLine] (
     , CONSTRAINT [FK_Sales_InvoiceLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
     , CONSTRAINT [FK_Sales_InvoiceLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
     , CONSTRAINT [FK_Sales_InvoiceLine_Finance_FullAccount] FOREIGN KEY ([FullAccountID]) REFERENCES [Finance].[FullAccount]([FullAccountID])
+    , CONSTRAINT [FK_Sales_InvoiceLine_Finance_FullDetail] FOREIGN KEY ([FullDetailID]) REFERENCES [Finance].[FullDetail]([FullDetailID])
 )
 GO
 

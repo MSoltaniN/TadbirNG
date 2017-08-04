@@ -102,7 +102,17 @@ namespace SPPC.Tadbir.Model.Sales
         /// <summary>
         /// Gets or sets the todo: add description...
         /// </summary>
+        public virtual FullDetail FullDetail { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
         public virtual FullAccount PartnerFullAccount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
+        public virtual FullDetail PartnerFullDetail { get; set; }
 
         /// <summary>
         /// Gets or sets the todo: add description...

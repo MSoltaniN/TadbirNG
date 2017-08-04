@@ -101,6 +101,11 @@ namespace SPPC.Tadbir.Model.Sales
         /// </summary>
         public virtual FullAccount FullAccount { get; set; }
 
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
+        public virtual FullDetail FullDetail { get; set; }
+
         private void InitReferences()
         {
         }

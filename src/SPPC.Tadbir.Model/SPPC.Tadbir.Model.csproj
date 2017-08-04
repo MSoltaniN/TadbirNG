@@ -88,6 +88,8 @@
     <Compile Include="Finance\DetailAccount.Generated.cs" />
     <Compile Include="Finance\FiscalPeriod.Generated.cs" />
     <Compile Include="Finance\FullAccount.Generated.cs" />
+    <Compile Include="Finance\FullDetail.Generated.cs" />
+    <Compile Include="Finance\FullDetailType.Generated.cs" />
     <Compile Include="Finance\Project.Generated.cs" />
     <Compile Include="Finance\Transaction.Generated.cs" />
     <Compile Include="Finance\TransactionLine.Generated.cs" />

@@ -89,6 +89,11 @@ namespace SPPC.Tadbir.Model.Warehousing
         /// <summary>
         /// Gets or sets the todo: add description...
         /// </summary>
+        public virtual FullDetail PartnerFullDetail { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
         public virtual Document Document { get; set; }
 
         private void InitReferences()
