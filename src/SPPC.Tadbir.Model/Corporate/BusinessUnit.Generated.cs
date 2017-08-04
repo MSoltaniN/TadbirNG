@@ -16,6 +16,9 @@ using BabakSoft.Platform.Domain;
 
 namespace SPPC.Tadbir.Model.Corporate
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class BusinessUnit : IEntity
     {
         /// <summary>
@@ -33,7 +36,15 @@ namespace SPPC.Tadbir.Model.Corporate
         /// Gets or sets the unique identifier for this entity. This property is auto-generated.
         /// </summary>
         public virtual int Id { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string Name { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string Description { get; set; }
 
         /// <summary>

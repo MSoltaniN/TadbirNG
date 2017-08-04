@@ -15,6 +15,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SPPC.Tadbir.ViewModel.Core
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class ServiceJobViewModel
     {
         /// <summary>

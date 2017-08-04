@@ -15,6 +15,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SPPC.Tadbir.ViewModel.Contact
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class CustomerViewModel
     {
         /// <summary>
@@ -33,15 +36,35 @@ namespace SPPC.Tadbir.ViewModel.Contact
         /// Gets or sets the unique identifier for this entity.
         /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
         [MaxLength(128, ErrorMessage = "{0} must have at most {1} characters.")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
         public string Phone { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
         public string Email { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
         public string CommerceCode { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [MaxLength(256, ErrorMessage = "{0} must have at most {1} characters.")]
         public string Address { get; set; }
     }

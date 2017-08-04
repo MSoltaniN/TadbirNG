@@ -84,8 +84,10 @@
     <Compile Include="Contact\BusinessPartnerViewModel.Generated.cs" />
     <Compile Include="Contact\CustomerViewModel.Generated.cs" />
     <Compile Include="Contact\PersonViewModel.Generated.cs" />
+    <Compile Include="Core\DocumentActionViewModel.Generated.cs" />
     <Compile Include="Core\DocumentStatusViewModel.Generated.cs" />
     <Compile Include="Core\DocumentTypeViewModel.Generated.cs" />
+    <Compile Include="Core\DocumentViewModel.Generated.cs" />
     <Compile Include="Core\ServiceJobViewModel.Generated.cs" />
     <Compile Include="Corporate\BranchViewModel.cs" />
     <Compile Include="Corporate\BranchViewModel.Generated.cs" />

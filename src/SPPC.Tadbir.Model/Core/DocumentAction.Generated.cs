@@ -17,6 +17,9 @@ using SPPC.Tadbir.Model.Auth;
 
 namespace SPPC.Tadbir.Model.Core
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class DocumentAction : IEntity
     {
         /// <summary>
@@ -32,13 +35,25 @@ namespace SPPC.Tadbir.Model.Core
         /// Gets or sets the unique identifier for this entity. This property is auto-generated.
         /// </summary>
         public virtual int Id { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual DateTime CreatedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
         /// </summary>
         public virtual DateTime ModifiedDate { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual DateTime? ConfirmedDate { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual DateTime? ApprovedDate { get; set; }
 
         /// <summary>

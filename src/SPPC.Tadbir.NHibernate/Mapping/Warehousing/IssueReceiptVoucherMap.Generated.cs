@@ -87,6 +87,11 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Column("DocumentID")
                 .Cascade.None()
                 .Not.LazyLoad();
+            HasMany(x => x.Lines)
+                .KeyColumn("VoucherID")
+                .Inverse()
+                .Cascade.DeleteOrphan()
+                .LazyLoad();
         }
     }
 }

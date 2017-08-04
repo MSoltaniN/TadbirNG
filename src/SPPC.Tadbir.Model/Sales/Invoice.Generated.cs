@@ -21,6 +21,9 @@ using SPPC.Tadbir.Model.Warehousing;
 
 namespace SPPC.Tadbir.Model.Sales
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class Invoice : IEntity
     {
         /// <summary>
@@ -41,17 +44,65 @@ namespace SPPC.Tadbir.Model.Sales
         /// Gets or sets the unique identifier for this entity. This property is auto-generated.
         /// </summary>
         public virtual int Id { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string No { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual bool IsActive { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual bool IsCancelled { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual short Type { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string Reference { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual DateTime Date { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual double Discount { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual double Expense { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string ContractNo { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string ShipmentNo { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string Description { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual long Timestamp { get; set; }
 
         /// <summary>
@@ -63,6 +114,11 @@ namespace SPPC.Tadbir.Model.Sales
         /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
         /// </summary>
         public virtual Guid RowGuid { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
+        public virtual IList<InvoiceLine> Lines { get; protected set; }
 
         /// <summary>
         /// Gets or sets the todo: add description...

@@ -17,6 +17,9 @@ using SPPC.Tadbir.Model.Procurement;
 
 namespace SPPC.Tadbir.Model.Core
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class ServiceJob : IEntity
     {
         /// <summary>

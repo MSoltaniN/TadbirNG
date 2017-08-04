@@ -19,6 +19,9 @@ using SPPC.Tadbir.Model.Inventory;
 
 namespace SPPC.Tadbir.Model.Procurement
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class RequisitionVoucherLine : IEntity
     {
         /// <summary>
@@ -35,17 +38,65 @@ namespace SPPC.Tadbir.Model.Procurement
         /// Gets or sets the unique identifier for this entity. This property is auto-generated.
         /// </summary>
         public virtual int Id { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual int No { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual double OrderedQuantity { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual double DeliveredQuantity { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual double ReservedQuantity { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual double LastOrderedQuantity { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual DateTime RequiredDate { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual DateTime? PromisedDate { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual DateTime? DeliveredDate { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual DateTime? LastOrderedDate { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual bool IsActive { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string Description { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual long Timestamp { get; set; }
 
         /// <summary>

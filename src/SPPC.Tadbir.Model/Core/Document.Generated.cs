@@ -16,6 +16,9 @@ using BabakSoft.Platform.Domain;
 
 namespace SPPC.Tadbir.Model.Core
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class Document : IEntity
     {
         /// <summary>
@@ -33,18 +36,16 @@ namespace SPPC.Tadbir.Model.Core
         /// Gets or sets the unique identifier for this entity. This property is auto-generated.
         /// </summary>
         public virtual int Id { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string No { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string OperationalStatus { get; set; }
-
-        /// <summary>
-        /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the todo: add description...
@@ -60,6 +61,16 @@ namespace SPPC.Tadbir.Model.Core
         /// Gets or sets the todo: add description...
         /// </summary>
         public virtual DocumentAction Action { get; set; }
+
+        /// <summary>
+        /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
+        /// </summary>
+        public virtual Guid RowGuid { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
+        /// </summary>
+        public virtual DateTime ModifiedDate { get; set; }
 
         private void InitReferences()
         {

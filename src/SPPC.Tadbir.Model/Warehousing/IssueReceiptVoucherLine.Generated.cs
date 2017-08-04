@@ -20,6 +20,9 @@ using SPPC.Tadbir.Model.Procurement;
 
 namespace SPPC.Tadbir.Model.Warehousing
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class IssueReceiptVoucherLine : IEntity
     {
         /// <summary>
@@ -36,13 +39,45 @@ namespace SPPC.Tadbir.Model.Warehousing
         /// Gets or sets the unique identifier for this entity. This property is auto-generated.
         /// </summary>
         public virtual int Id { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual int No { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual double Quantity { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual double UnitPrice { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual double CurrencyUnitPrice { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual double Remainder { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual bool IsActive { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string Description { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual long Timestamp { get; set; }
 
         /// <summary>

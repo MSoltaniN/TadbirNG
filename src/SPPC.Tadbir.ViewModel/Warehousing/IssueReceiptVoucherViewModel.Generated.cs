@@ -15,6 +15,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SPPC.Tadbir.ViewModel.Warehousing
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class IssueReceiptVoucherViewModel
     {
         /// <summary>
@@ -31,18 +34,41 @@ namespace SPPC.Tadbir.ViewModel.Warehousing
         /// Gets or sets the unique identifier for this entity.
         /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
         [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
         public string No { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
         public bool IsActive { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
         public string Reference { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
         public short Type { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [MaxLength(256, ErrorMessage = "{0} must have at most {1} characters.")]
         public string Description { get; set; }
-        [Required(ErrorMessage = "{0} is required.")]
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public long Timestamp { get; set; }
     }
 }

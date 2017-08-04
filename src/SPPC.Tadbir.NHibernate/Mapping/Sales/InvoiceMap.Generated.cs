@@ -113,6 +113,11 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Column("DocumentID")
                 .Cascade.None()
                 .Not.LazyLoad();
+            HasMany(x => x.Lines)
+                .KeyColumn("InvoiceID")
+                .Inverse()
+                .Cascade.DeleteOrphan()
+                .LazyLoad();
         }
     }
 }

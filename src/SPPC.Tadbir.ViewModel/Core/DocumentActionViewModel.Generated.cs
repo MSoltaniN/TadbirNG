@@ -15,6 +15,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SPPC.Tadbir.ViewModel.Core
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class DocumentActionViewModel
     {
         /// <summary>
@@ -28,9 +31,21 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// Gets or sets the unique identifier for this entity.
         /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
         public DateTime CreatedDate { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public DateTime? ConfirmedDate { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public DateTime? ApprovedDate { get; set; }
     }
 }

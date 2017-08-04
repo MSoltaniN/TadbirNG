@@ -16,6 +16,9 @@ using BabakSoft.Platform.Domain;
 
 namespace SPPC.Tadbir.Model.Finance
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class FullAccount : IEntity
     {
         /// <summary>

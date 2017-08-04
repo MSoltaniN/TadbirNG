@@ -16,6 +16,9 @@ using BabakSoft.Platform.Domain;
 
 namespace SPPC.Tadbir.Model.Inventory
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class ProductCategory : IEntity
     {
         /// <summary>
@@ -34,9 +37,25 @@ namespace SPPC.Tadbir.Model.Inventory
         /// Gets or sets the unique identifier for this entity. This property is auto-generated.
         /// </summary>
         public virtual int Id { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string Code { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string FullCode { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string Name { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual short Level { get; set; }
 
         /// <summary>

@@ -15,6 +15,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SPPC.Tadbir.ViewModel.Warehousing
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class IssueReceiptVoucherLineViewModel
     {
         /// <summary>
@@ -29,19 +32,50 @@ namespace SPPC.Tadbir.ViewModel.Warehousing
         /// Gets or sets the unique identifier for this entity.
         /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
         public int No { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
         public double Quantity { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
         public double UnitPrice { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public double CurrencyUnitPrice { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public double Remainder { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
         public bool IsActive { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [MaxLength(256, ErrorMessage = "{0} must have at most {1} characters.")]
         public string Description { get; set; }
-        [Required(ErrorMessage = "{0} is required.")]
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public long Timestamp { get; set; }
     }
 }

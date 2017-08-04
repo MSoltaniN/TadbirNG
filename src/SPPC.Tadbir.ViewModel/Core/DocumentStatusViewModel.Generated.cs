@@ -15,6 +15,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SPPC.Tadbir.ViewModel.Core
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class DocumentStatusViewModel
     {
         /// <summary>
@@ -29,6 +32,10 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// Gets or sets the unique identifier for this entity.
         /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
         [StringLength(64, MinimumLength = 0, ErrorMessage = "{0} must have from {2} to {1} characters.")]
         public string Name { get; set; }

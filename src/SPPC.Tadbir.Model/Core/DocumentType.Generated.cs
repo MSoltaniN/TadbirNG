@@ -19,6 +19,9 @@ using SPPC.Tadbir.Model.Warehousing;
 
 namespace SPPC.Tadbir.Model.Core
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class DocumentType : IEntity
     {
         /// <summary>
@@ -35,6 +38,10 @@ namespace SPPC.Tadbir.Model.Core
         /// Gets or sets the unique identifier for this entity. This property is auto-generated.
         /// </summary>
         public virtual int Id { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual string Name { get; set; }
 
         /// <summary>

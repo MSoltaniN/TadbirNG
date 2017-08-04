@@ -15,6 +15,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SPPC.Tadbir.ViewModel.Corporate
 {
+    /// <summary>
+    /// TODO: Add description...
+    /// </summary>
     public partial class BusinessUnitViewModel
     {
         /// <summary>
@@ -30,9 +33,17 @@ namespace SPPC.Tadbir.ViewModel.Corporate
         /// Gets or sets the unique identifier for this entity.
         /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
         [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         [MaxLength(256, ErrorMessage = "{0} must have at most {1} characters.")]
         public string Description { get; set; }
     }
