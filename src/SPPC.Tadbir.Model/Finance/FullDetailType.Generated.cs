@@ -57,10 +57,10 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public virtual DateTime ModifiedDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the todo: add description...
-        /// </summary>
-        public virtual FullDetail FullDetail { get; set; }
+        ///// <summary>
+        ///// Gets or sets the todo: add description...
+        ///// </summary>
+        //public virtual FullDetail FullDetail { get; set; }
 
         private void InitReferences()
         {

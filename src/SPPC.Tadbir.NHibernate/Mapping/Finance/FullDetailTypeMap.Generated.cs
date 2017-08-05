@@ -46,10 +46,10 @@ namespace SPPC.Tadbir.NHibernate.Mapping
 
         private void MapReferences()
         {
-            HasOne(x => x.FullDetail)
-                .PropertyRef(y => y.Type)
-                .Cascade.None()
-                .Not.LazyLoad();
+            //HasOne(x => x.FullDetail)
+            //    .PropertyRef(y => y.Type)
+            //    .Cascade.None()
+            //    .Not.LazyLoad();
         }
     }
 }

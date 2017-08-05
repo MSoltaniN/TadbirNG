@@ -54,26 +54,8 @@ namespace SPPC.Tadbir.Model.Core
         /// </summary>
         public virtual DateTime ModifiedDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the todo: add description...
-        /// </summary>
-        public virtual IList<RequisitionVoucher> RequisitionVouchers { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the todo: add description...
-        /// </summary>
-        public virtual IList<IssueReceiptVoucher> IssueReceiptVouchers { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the todo: add description...
-        /// </summary>
-        public virtual IList<Invoice> Invoices { get; protected set; }
-
         private void InitReferences()
         {
-            this.RequisitionVouchers = new List<RequisitionVoucher>();
-            this.IssueReceiptVouchers = new List<IssueReceiptVoucher>();
-            this.Invoices = new List<Invoice>();
         }
     }
 }

@@ -40,11 +40,11 @@ namespace SPPC.Tadbir.NHibernate.Mapping
 
         private void MapReferences()
         {
-            References(x => x.Type)
-                .Column("TypeID")
-                .Unique()
-                .Cascade.None()
-                .Not.LazyLoad();
+            //References(x => x.Type)
+            //    .Column("TypeID")
+            //    .Unique()
+            //    .Cascade.None()
+            //    .Not.LazyLoad();
             References(x => x.Detail2)
                 .Column("Detail2ID")
                 .Cascade.None()

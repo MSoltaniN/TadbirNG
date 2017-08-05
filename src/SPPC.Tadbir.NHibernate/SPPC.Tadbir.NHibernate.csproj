@@ -106,7 +106,6 @@
     <Compile Include="Mapping\Finance\FiscalPeriodMap.Generated.cs" />
     <Compile Include="Mapping\Finance\FullAccountMap.Generated.cs" />
     <Compile Include="Mapping\Finance\FullDetailMap.Generated.cs" />
-    <Compile Include="Mapping\Finance\FullDetailTypeMap.Generated.cs" />
     <Compile Include="Mapping\Finance\ProjectMap.Generated.cs" />
     <Compile Include="Mapping\Finance\TransactionLineMap.Generated.cs" />
     <Compile Include="Mapping\Finance\TransactionMap.Generated.cs" />

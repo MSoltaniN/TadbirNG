@@ -43,18 +43,6 @@ namespace SPPC.Tadbir.NHibernate.Mapping
 
         private void MapReferences()
         {
-            HasMany(x => x.RequisitionVouchers)
-                .KeyColumn("DocumentTypeID")
-                .Cascade.None()
-                .LazyLoad();
-            HasMany(x => x.IssueReceiptVouchers)
-                .KeyColumn("DocumentTypeID")
-                .Cascade.None()
-                .LazyLoad();
-            HasMany(x => x.Invoices)
-                .KeyColumn("DocumentTypeID")
-                .Cascade.None()
-                .LazyLoad();
         }
     }
 }
