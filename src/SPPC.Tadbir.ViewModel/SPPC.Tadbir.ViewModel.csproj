@@ -124,6 +124,7 @@
     <Compile Include="Procurement\RequisitionVoucherLineViewModel.Generated.cs" />
     <Compile Include="Procurement\RequisitionVoucherTypeViewModel.Generated.cs" />
     <Compile Include="Procurement\RequisitionVoucherViewModel.Generated.cs" />
+    <Compile Include="Procurement\VoucherSummaryViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sales\InvoiceLineViewModel.Generated.cs" />
     <Compile Include="Sales\InvoiceViewModel.Generated.cs" />

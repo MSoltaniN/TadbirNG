@@ -15,6 +15,6 @@ namespace SPPC.Tadbir.NHibernate
         /// <param name="fpId">کد دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد دیتابیسی یکی از شعبه های موجود</param>
         /// <returns>مجموعه ای از درخواست های کالا در یک دوره مالی و شعبه خاص</returns>
-        IList<RequisitionVoucherViewModel> GetRequisitions(int fpId, int branchId);
+        IList<VoucherSummaryViewModel> GetRequisitions(int fpId, int branchId);
     }
 }

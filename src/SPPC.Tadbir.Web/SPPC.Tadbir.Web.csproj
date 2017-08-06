@@ -159,6 +159,8 @@
     <Compile Include="Areas\Admin\Controllers\RolesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Procurement\Controllers\RequisitionsController.cs" />
+    <Compile Include="Areas\Procurement\ProcurementAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartableController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -226,6 +228,9 @@
     <Content Include="Areas\Admin\Views\Roles\Users.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\Workflows.cshtml" />
     <Content Include="Areas\Accounting\Views\Transactions\Error.cshtml" />
+    <Content Include="Areas\Procurement\Views\web.config" />
+    <Content Include="Areas\Procurement\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Procurement\Views\Requisitions\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Staging.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -281,6 +286,7 @@
   <ItemGroup>
     <Folder Include="Areas\Accounting\Views\Shared\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Areas\Procurement\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

@@ -47,6 +47,12 @@
                         </ul>
                     </li>
                     <li class="dropdown" style="float:right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Strings.Procurement <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink(Strings.ManageRequisitions, "index", "requisitions", new { area = "procurement" }, null)</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" style="float:right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Strings.SystemAdministration <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                         @if (currentContext.HasPermissions(Permissions.User.View))

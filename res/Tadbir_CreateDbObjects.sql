@@ -445,10 +445,12 @@ GO
 
 CREATE TABLE [Core].[DocumentAction] (
     [ActionID]           INT              IDENTITY (1, 1) NOT NULL,
+	[DocumentID]         INT              NOT NULL,
+	[LineID]             INT              NULL,
     [CreatedByID]        INT              NOT NULL,
     [ModifiedByID]       INT              NOT NULL,
-    [ConfirmedByID]      INT              NOT NULL,
-    [ApprovedByID]       INT              NOT NULL,
+    [ConfirmedByID]      INT              NULL,
+    [ApprovedByID]       INT              NULL,
     [CreatedDate]        DATETIME         NOT NULL,
     [ModifiedDate]       DATETIME         CONSTRAINT [DF_Core_DocumentAction_ModifiedDate] DEFAULT (getdate()) NOT NULL,
     [ConfirmedDate]      DATETIME         NULL,
@@ -459,6 +461,7 @@ CREATE TABLE [Core].[DocumentAction] (
     , CONSTRAINT [FK_Core_DocumentAction_Auth_ModifiedBy] FOREIGN KEY ([ModifiedByID]) REFERENCES [Auth].[User]([UserID])
     , CONSTRAINT [FK_Core_DocumentAction_Auth_ConfirmedBy] FOREIGN KEY ([ConfirmedByID]) REFERENCES [Auth].[User]([UserID])
     , CONSTRAINT [FK_Core_DocumentAction_Auth_ApprovedBy] FOREIGN KEY ([ApprovedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Core_DocumentAction_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document]([DocumentID])
 )
 GO
 
@@ -467,14 +470,13 @@ CREATE TABLE [Core].[Document] (
     [TypeID]              INT              NOT NULL,
     [StatusID]            INT              NOT NULL,
     [ActionID]            INT              NOT NULL,
-    [DocumentNo]          NVARCHAR(64)     NOT NULL,
+    [No]                  NVARCHAR(64)     NOT NULL,
     [OperationalStatus]   NVARCHAR(64)     NOT NULL,
     [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Core_Document_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]        DATETIME         CONSTRAINT [DF_Core_Document_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Core_Document] PRIMARY KEY CLUSTERED ([DocumentID] ASC)
     , CONSTRAINT [FK_Core_Document_Core_DocumentType] FOREIGN KEY ([TypeID]) REFERENCES [Core].[DocumentType]([TypeID])
     , CONSTRAINT [FK_Core_Document_Core_DocumentStatus] FOREIGN KEY ([StatusID]) REFERENCES [Core].[DocumentStatus]([StatusID])
-    , CONSTRAINT [FK_Core_Document_Core_DocumentAction] FOREIGN KEY ([ActionID]) REFERENCES [Core].[DocumentAction]([ActionID])
 )
 GO
 
@@ -541,9 +543,9 @@ GO
 CREATE TABLE [Finance].[FullAccount] (
     [FullAccountID]   INT              IDENTITY (1, 1) NOT NULL,
     [AccountID]       INT              NOT NULL,
-    [DetailID]        INT              NOT NULL,
-    [CostCenterID]    INT              NOT NULL,
-    [ProjectID]       INT              NOT NULL,
+    [DetailID]        INT              NULL,
+    [CostCenterID]    INT              NULL,
+    [ProjectID]       INT              NULL,
     [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_FullAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_FullAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_FullAccount] PRIMARY KEY CLUSTERED ([FullAccountID] ASC)
@@ -664,7 +666,7 @@ CREATE TABLE [Procurement].[RequisitionVoucher] (
     [RequesterUnitID]    INT              NOT NULL,
     [ReceiverUnitID]     INT              NOT NULL,
     [WarehouseID]        INT              NOT NULL,
-    [ServiceJobID]       INT              NOT NULL,
+    [ServiceJobID]       INT              NULL,
     [FullAccountID]      INT              NOT NULL,
     [FullDetailID]       INT              NULL,
     [DocumentID]         INT              NOT NULL,

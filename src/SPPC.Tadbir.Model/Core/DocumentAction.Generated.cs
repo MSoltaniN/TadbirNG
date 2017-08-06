@@ -39,6 +39,11 @@ namespace SPPC.Tadbir.Model.Core
         /// <summary>
         /// TODO: Add description...
         /// </summary>
+        public virtual int? LineId { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public virtual DateTime CreatedDate { get; set; }
 
         /// <summary>

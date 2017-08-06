@@ -15,6 +15,6 @@ namespace SPPC.Tadbir.Service
         /// <param name="fpId">کد دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد دیتابیسی یکی از شعبه های موجود</param>
         /// <returns>مجموعه ای از درخواست های کالا در یک دوره مالی و شعبه خاص</returns>
-        IEnumerable<RequisitionVoucherViewModel> GetRequisitions(int fpId, int branchId);
+        IEnumerable<VoucherSummaryViewModel> GetRequisitions(int fpId, int branchId);
     }
 }

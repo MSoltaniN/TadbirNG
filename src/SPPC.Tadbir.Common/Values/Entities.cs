@@ -73,6 +73,21 @@ namespace SPPC.Tadbir.Values
         public const string Transactions = "اسناد";
 
         /// <summary>
+        /// Localized name for Request.
+        /// </summary>
+        public const string Request = "درخواست";
+
+        /// <summary>
+        /// Localized name for Request (unknown).
+        /// </summary>
+        public const string ARequest = "درخواستی";
+
+        /// <summary>
+        /// Localized name for Request (plural form).
+        /// </summary>
+        public const string Requests = "درخواست ها";
+
+        /// <summary>
         /// Localized text for the caption for transaction lines (articles)
         /// </summary>
         public const string TransactionLines = "آرتیکل های سند";

@@ -62,8 +62,8 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Column("ApprovedByID")
                 .Cascade.None()
                 .Not.LazyLoad();
-            HasOne(x => x.Document)
-                .PropertyRef(y => y.Action)
+            References(x => x.Document)
+                .Column("DocumentID")
                 .Cascade.None()
                 .Not.LazyLoad();
         }

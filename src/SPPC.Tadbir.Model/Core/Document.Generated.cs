@@ -60,7 +60,7 @@ namespace SPPC.Tadbir.Model.Core
         /// <summary>
         /// Gets or sets the todo: add description...
         /// </summary>
-        public virtual DocumentAction Action { get; set; }
+        public virtual IList<DocumentAction> Actions { get; protected set; }
 
         /// <summary>
         /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
@@ -74,6 +74,7 @@ namespace SPPC.Tadbir.Model.Core
 
         private void InitReferences()
         {
+            this.Actions = new List<DocumentAction>();
         }
     }
 }

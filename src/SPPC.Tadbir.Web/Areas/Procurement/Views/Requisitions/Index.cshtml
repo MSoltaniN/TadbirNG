@@ -1,0 +1,91 @@
+﻿@using System.Globalization
+@using SPPC.Framework.Extensions
+@using SPPC.Framework.Values
+@using SPPC.Tadbir.Values
+@using SPPC.Tadbir.ViewModel.Procurement
+@using PagedList.Mvc
+
+@model PagedList.IPagedList<VoucherSummaryViewModel>
+
+@{
+    string createTitle = String.Format(LocalStrings.CreateNewEntity, Entities.Request);
+    string title = String.Format(LocalStrings.IndexTitle, Entities.Requests);
+    ViewBag.Title = title;
+    string pageInfo = String.Format(LocalStrings.NoRecords, Entities.ARequest);
+    if (Model.Count > 0)
+    {
+        pageInfo = String.Format(
+            LocalStrings.CurrentPageInfo,
+            Model.TotalItemCount, Entities.Request, Model.PageNumber, Model.PageCount);
+    }
+
+    var persianCulture = new CultureInfo("fa-IR");
+    persianCulture.NumberFormat.CurrencySymbol = String.Empty;
+    int itemCount = Model.Count;
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li class="active">@title</li>
+</ol>
+
+<div class="page-header">
+    <h3>@title</h3>
+</div>
+
+<p>
+    @Html.ActionLink(createTitle, "create", "requisitions", new { }, new { @class = "btn btn-sm btn-primary" })
+    <span class="pull-left">@pageInfo</span>
+</p>
+
+<table class="table table-bordered table-striped table-responsive table-hover">
+    <thead>
+        <tr>
+            <th>@FieldNames.NumberField</th>
+            <th>@FieldNames.ReferenceField</th>
+            <th>@FieldNames.RequesterField</th>
+            <th>@FieldNames.RequesterUnitField</th>
+            <th>@FieldNames.RequestDescriptionField</th>
+            <th>@FieldNames.StatusField</th>
+            <th>@FieldNames.OperationalStatusField</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @for (int i = 0; i < itemCount; i++)
+    {
+        var item = Model[i];
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.No)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reference)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequesterName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequesterUnitName)
+            </td>
+            <td title="@item.Description">
+                @item.Description.AutoEllipsis(60)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocumentStatusName)
+            </td>
+            <td>
+                @DocumentStatus.ToLocalValue(item.DocumentOperationalStatus)
+            </td>
+            <td></td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+
+@Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+<p>
+    @Html.ActionLink(createTitle, "create", "requisitions", new { }, new { @class = "btn btn-sm btn-primary" })
+</p>

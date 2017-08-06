@@ -43,6 +43,11 @@ namespace SPPC.Tadbir.Values
         public const string ManageTransactions = "مدیریت اسناد";
 
         /// <summary>
+        /// Localized text for Manage Requisitions navigation link
+        /// </summary>
+        public const string ManageRequisitions = "مدیریت درخواست های کالا";
+
+        /// <summary>
         /// Localized text for Manage Users navigation link
         /// </summary>
         public const string ManageUsers = "مدیریت کاربران";
@@ -111,6 +116,11 @@ namespace SPPC.Tadbir.Values
         /// Localized text for the Accounting subsystem name
         /// </summary>
         public const string Accounting = "حسابداری";
+
+        /// <summary>
+        /// Localized text for the Procurement subsystem name
+        /// </summary>
+        public const string Procurement = "ندارکات";
 
         /// <summary>
         /// Localized text for the Cash Flow subsystem name

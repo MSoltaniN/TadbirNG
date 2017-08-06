@@ -32,6 +32,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Column("DocumentID")
                 .GeneratedBy.Identity();
             Map(x => x.No)
+                .Column("[No]")
                 .Length(64)
                 .Not.Nullable();
             Map(x => x.OperationalStatus)
@@ -54,11 +55,10 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Column("StatusID")
                 .Cascade.None()
                 .Not.LazyLoad();
-            References(x => x.Action)
-                .Column("ActionID")
-                .Unique()
-                .Cascade.None()
-                .Not.LazyLoad();
+            HasMany(x => x.Actions)
+                .KeyColumn("DocumentID")
+                .LazyLoad()
+                .Cascade.None();
         }
     }
 }

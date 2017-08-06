@@ -80,6 +80,7 @@
     <Compile Include="Values\DocumentStatus.cs" />
     <Compile Include="Values\DocumentType.cs" />
     <Compile Include="Values\Entities.cs" />
+    <Compile Include="Values\Enums.cs" />
     <Compile Include="Values\FieldNames.cs" />
     <Compile Include="Values\Strings.cs" />
     <Compile Include="Values\SystemRoles.cs" />

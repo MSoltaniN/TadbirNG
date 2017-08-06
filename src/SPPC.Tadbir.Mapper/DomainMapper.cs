@@ -10,11 +10,13 @@ using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Procurement;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Procurement;
 using SPPC.Tadbir.ViewModel.Settings;
 using SPPC.Tadbir.ViewModel.Workflow;
 
@@ -68,6 +70,7 @@ namespace SPPC.Tadbir.Mapper
             MapCorporateTypes(mapperConfig);
             MapWorkflowTypes(mapperConfig);
             MapSettingsTypes(mapperConfig);
+            MapProcurementTypes(mapperConfig);
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
@@ -285,6 +288,11 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<WorkflowElement, WorkflowViewModel>()
                 .ForMember(dest => dest.DefaultEdition, opts => opts.MapFrom(src => src.Editions.DefaultEdition));
             mapperConfig.CreateMap<WorkflowEditionElement, WorkflowEditionViewModel>();
+        }
+
+        private static void MapProcurementTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<RequisitionVoucher, VoucherSummaryViewModel>();
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

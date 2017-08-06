@@ -30,13 +30,13 @@ namespace SPPC.Tadbir.NHibernate
         /// <param name="fpId">کد دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد دیتابیسی یکی از شعبه های موجود</param>
         /// <returns>مجموعه ای از درخواست های کالا در یک دوره مالی و شعبه خاص</returns>
-        public IList<RequisitionVoucherViewModel> GetRequisitions(int fpId, int branchId)
+        public IList<VoucherSummaryViewModel> GetRequisitions(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetRepository<RequisitionVoucher>();
             var requisitions = repository
                 .GetByCriteria(req => req.FiscalPeriod.Id == fpId
                     && req.Branch.Id == branchId)
-                .Select(item => _mapper.Map<RequisitionVoucherViewModel>(item))
+                .Select(item => _mapper.Map<VoucherSummaryViewModel>(item))
                 .ToList();
             return requisitions;
         }
