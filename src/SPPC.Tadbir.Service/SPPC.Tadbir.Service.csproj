@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="Api\AccountService.cs" />
     <Compile Include="ApiClient.cs" />
+    <Compile Include="Api\RequisitionService.cs" />
     <Compile Include="Api\WorkflowService.cs" />
     <Compile Include="Base64Encoder.cs" />
     <Compile Include="Api\CartableService.cs" />

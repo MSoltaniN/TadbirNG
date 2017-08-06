@@ -133,6 +133,7 @@
     <Compile Include="Repository\AccountRepository.cs" />
     <Compile Include="Repository\AccountRepository.Generated.cs" />
     <Compile Include="Repository\LookupRepository.cs" />
+    <Compile Include="Repository\RequisitionRepository.cs" />
     <Compile Include="Repository\SecurityRepository.cs" />
     <Compile Include="Repository\TransactionRepository.cs" />
     <Compile Include="Repository\WorkflowRepository.cs" />

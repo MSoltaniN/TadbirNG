@@ -100,6 +100,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<ISettingsRepository, ConfigSettingsRepository>();
             _container.RegisterType<ITrackingRepository, TrackingRepository>();
             _container.RegisterType<IWorkflowRepository, WorkflowRepository>();
+            _container.RegisterType<IRequisitionRepository, RequisitionRepository>();
         }
 
         /// <summary>
@@ -124,6 +125,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<ISettingsService, ConfigSettingsService>();
             _container.RegisterType<IWorkflowService, WorkflowService>();
             _container.RegisterType<IWorkflowTracker, WorkflowTracker>();
+            _container.RegisterType<IRequisitionService, RequisitionService>();
         }
 
         /// <summary>
