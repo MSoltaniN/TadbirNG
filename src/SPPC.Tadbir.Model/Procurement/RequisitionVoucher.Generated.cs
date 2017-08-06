@@ -168,6 +168,15 @@ namespace SPPC.Tadbir.Model.Procurement
 
         private void InitReferences()
         {
+            FiscalPeriod = new FiscalPeriod();
+            Branch = new Branch();
+            Requester = new BusinessPartner();
+            Receiver = new BusinessPartner();
+            RequesterUnit = new BusinessUnit();
+            ReceiverUnit = new BusinessUnit();
+            Warehouse = new Warehouse();
+            FullAccount = new FullAccount();
+            Document = new Document();
         }
     }
 }

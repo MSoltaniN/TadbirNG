@@ -74,7 +74,9 @@ namespace SPPC.Tadbir.Model.Core
 
         private void InitReferences()
         {
-            this.Actions = new List<DocumentAction>();
+            Type = new DocumentType();
+            Status = new DocumentStatus();
+            Actions = new List<DocumentAction>();
         }
     }
 }

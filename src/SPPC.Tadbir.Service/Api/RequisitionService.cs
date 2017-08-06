@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BabakSoft.Platform.Common;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.ViewModel.Procurement;
@@ -32,6 +33,15 @@ namespace SPPC.Tadbir.Service
             var requisitions = _apiClient.Get<IEnumerable<VoucherSummaryViewModel>>(
                 RequisitionApi.FiscalPeriodBranchRequisitions, fpId, branchId);
             return requisitions;
+        }
+
+        public void SaveRequisition(RequisitionVoucherViewModel voucher)
+        {
+            Verify.ArgumentNotNull(voucher, "voucher");
+            if (voucher.Id == 0)
+            {
+                _apiClient.Insert(voucher, RequisitionApi.Requisitions);
+            }
         }
 
         private IApiClient _apiClient;

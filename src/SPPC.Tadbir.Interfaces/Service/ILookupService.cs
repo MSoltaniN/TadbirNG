@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.Service
 {
@@ -17,10 +18,24 @@ namespace SPPC.Tadbir.Service
         /// <returns>Lookup collection of existing accounts in the fiscal period</returns>
         IEnumerable<KeyValue> LookupAccounts(int fpId, int branchId);
 
+        IEnumerable<KeyValue> LookupDetailAccounts();
+
+        IEnumerable<KeyValue> LookupCostCenters();
+
+        IEnumerable<KeyValue> LookupProjects();
+
         /// <summary>
         /// Retrieves existing currencies as a lookup collection
         /// </summary>
         /// <returns>Lookup collection of existing currencies</returns>
         IEnumerable<KeyValue> LookupCurrencies();
+
+        IEnumerable<KeyValue> LookupPartners();
+
+        IEnumerable<KeyValue> LookupBusinessUnits();
+
+        IEnumerable<KeyValue> LookupWarehouses();
+
+        RequisitionVoucherDependsViewModel LookupRequisitionVoucherDepends();
     }
 }

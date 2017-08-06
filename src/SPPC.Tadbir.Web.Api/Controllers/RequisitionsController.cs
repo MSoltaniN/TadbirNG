@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -27,6 +28,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var requisitions = _repository.GetRequisitions(fpId, branchId);
             return Json(requisitions);
+        }
+
+        // POST: api/requisitions
+        [Route(RequisitionApi.RequisitionsUrl)]
+        public IHttpActionResult PostNewRequisitionVoucher([FromBody] RequisitionVoucherViewModel voucher)
+        {
+            if (voucher == null)
+            {
+                return BadRequest("Could not post new requisition because a 'null' value was provided.");
+            }
+
+            _repository.SaveRequisition(voucher);
+            return StatusCode(HttpStatusCode.Created);
         }
 
         private IRequisitionRepository _repository;

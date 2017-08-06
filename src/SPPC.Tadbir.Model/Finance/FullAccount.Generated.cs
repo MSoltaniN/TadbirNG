@@ -67,6 +67,10 @@ namespace SPPC.Tadbir.Model.Finance
 
         private void InitReferences()
         {
+            Account = new Account();
+            Detail = new DetailAccount();
+            CostCenter = new CostCenter();
+            Project = new Project();
         }
     }
 }

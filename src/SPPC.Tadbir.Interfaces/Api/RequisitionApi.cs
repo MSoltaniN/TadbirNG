@@ -21,5 +21,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all requisitions defined in a fiscal period and a corporate branch
         /// </summary>
         public const string FiscalPeriodBranchRequisitionsUrl = "requisitions/fp/{fpId:int}/branch/{branchId:int}";
+
+        /// <summary>
+        /// API client URL for all requisitions
+        /// </summary>
+        public const string Requisitions = "requisitions";
+
+        /// <summary>
+        /// API server route URL for all requisitions
+        /// </summary>
+        public const string RequisitionsUrl = "requisitions";
     }
 }

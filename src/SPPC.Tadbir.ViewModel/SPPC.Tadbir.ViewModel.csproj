@@ -121,8 +121,10 @@
     <Compile Include="Inventory\ProductViewModel.Generated.cs" />
     <Compile Include="Inventory\UnitOfMeasurementViewModel.Generated.cs" />
     <Compile Include="Inventory\WarehouseViewModel.Generated.cs" />
+    <Compile Include="Procurement\RequisitionVoucherDependsViewModel.cs" />
     <Compile Include="Procurement\RequisitionVoucherLineViewModel.Generated.cs" />
     <Compile Include="Procurement\RequisitionVoucherTypeViewModel.Generated.cs" />
+    <Compile Include="Procurement\RequisitionVoucherViewModel.cs" />
     <Compile Include="Procurement\RequisitionVoucherViewModel.Generated.cs" />
     <Compile Include="Procurement\VoucherSummaryViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

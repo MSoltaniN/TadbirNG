@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BabakSoft.Platform.Common;
 using BabakSoft.Platform.Persistence;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Procurement;
@@ -39,6 +40,20 @@ namespace SPPC.Tadbir.NHibernate
                 .Select(item => _mapper.Map<VoucherSummaryViewModel>(item))
                 .ToList();
             return requisitions;
+        }
+
+        public void SaveRequisition(RequisitionVoucherViewModel voucher)
+        {
+            Verify.ArgumentNotNull(voucher, "voucher");
+            var repository = _unitOfWork.GetRepository<RequisitionVoucher>();
+            if (voucher.Id == 0)
+            {
+                var newVoucher = _mapper.Map<RequisitionVoucher>(voucher);
+                repository.Insert(newVoucher);
+                _unitOfWork.Commit();
+            }
+
+            throw new NotImplementedException();
         }
 
         private IUnitOfWork _unitOfWork;
