@@ -240,7 +240,7 @@ namespace SPPC.Tadbir.Values
         /// <summary>
         /// Localized name of Reference field
         /// </summary>
-        public const string ReferenceField = "رفرنس";
+        public const string ReferenceField = "ارجاع";
 
         /// <summary>
         /// Localized name of Requester field
@@ -250,12 +250,38 @@ namespace SPPC.Tadbir.Values
         /// <summary>
         /// Localized name of RequesterUnit field
         /// </summary>
-        public const string RequesterUnitField = "واحد";
+        public const string RequesterUnitField = "واحد درخواست کننده";
+
+        /// <summary>
+        /// Localized name of Receiver field
+        /// </summary>
+        public const string ReceiverField = "دریافت کننده";
+
+        /// <summary>
+        /// Localized name of ReceiverUnit field
+        /// </summary>
+        public const string ReceiverUnitField = "واحد دریافت کننده";
+
+        public const string RequiredDateField = "تاریخ نیاز";
+
+        public const string PromisedDateField = "تاریخ تحویل توافق شده";
+
+        public const string WarehouseField = "انبار";
+
+        /// <summary>
+        /// Localized name of Reason field in RequisitionVoucher entity
+        /// </summary>
+        public const string RequestReasonField = "دلیل درخواست";
 
         /// <summary>
         /// Localized name of Description field in RequisitionVoucher entity
         /// </summary>
         public const string RequestDescriptionField = "شرح درخواست";
+
+        /// <summary>
+        /// Localized name of WarehouseComment field
+        /// </summary>
+        public const string WarehouseCommentField = "نظریه انبار";
 
         /// <summary>
         /// Localized name of IsActive field

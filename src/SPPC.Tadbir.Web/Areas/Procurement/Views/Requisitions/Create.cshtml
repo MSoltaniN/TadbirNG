@@ -1,0 +1,171 @@
+﻿@using SPPC.Framework.Helpers
+@using SPPC.Framework.Values
+@using SPPC.Tadbir.Values
+@model SPPC.Tadbir.ViewModel.Procurement.RequisitionVoucherViewModel
+
+@{
+    string title = String.Format(LocalStrings.CreateNewEntity, Entities.RequisitionVoucherAlt);
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Requests);
+    ViewBag.Title = title;
+    var accounts = (ViewBag.Accounts as IEnumerable<KeyValue>)
+        .Select(acc => new SelectListItem() { Value = acc.Key, Text = acc.Value });
+    var details = (ViewBag.DetailAccounts as IEnumerable<KeyValue>)
+        .Select(det => new SelectListItem() { Value = det.Key, Text = det.Value });
+    var costCenters = (ViewBag.CostCenters as IEnumerable<KeyValue>)
+        .Select(cc => new SelectListItem() { Value = cc.Key, Text = cc.Value });
+    var projects = (ViewBag.Projects as IEnumerable<KeyValue>)
+        .Select(prj => new SelectListItem() { Value = prj.Key, Text = prj.Value });
+    var partners = (ViewBag.Partners as IEnumerable<KeyValue>)
+        .Select(bp => new SelectListItem() { Value = bp.Key, Text = bp.Value });
+    var units = (ViewBag.Units as IEnumerable<KeyValue>)
+        .Select(bu => new SelectListItem() { Value = bu.Key, Text = bu.Value });
+    var warehouses = (ViewBag.Warehouses as IEnumerable<KeyValue>)
+        .Select(wh => new SelectListItem() { Value = wh.Key, Text = wh.Value });
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(indexTitle, "index")</li>
+    <li class="active">@title</li>
+</ol>
+
+<div class="col-sm-8 col-sm-offset-2 form-centered">
+    <div class="page-header">
+        <h2>@title</h2>
+    </div>
+    <div class="form-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.BranchId)
+            @Html.HiddenFor(model => model.FiscalPeriodId)
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.OrderedDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.OrderedDate, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.OrderedDate, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.WarehouseId, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.WarehouseId, warehouses, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.WarehouseId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ReceiverId, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.ReceiverId, partners, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ReceiverId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ReceiverUnitId, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.ReceiverUnitId, units, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ReceiverUnitId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.No, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.No, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.No, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Reference, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.Reference, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Reference, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RequesterId, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.RequesterId, partners, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.RequesterId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RequesterUnitId, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.RequesterUnitId, units, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.RequesterUnitId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">حساب</label>
+                        <table class="table-bordered table-condensed">
+                            <tr>
+                                <td title="انتخاب حساب">
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(model => model.FullAccountAccountId, accounts, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.FullAccountAccountId, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                                <td title="انتخاب تفصیلی شناور">
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(model => model.FullAccountDetailId, details, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.FullAccountDetailId, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td title="انتخاب مرکز هزینه">
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(model => model.FullAccountCostCenterId, costCenters, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.FullAccountCostCenterId, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                                <td title="انتخاب پروژه">
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(model => model.FullAccountProjectId, projects, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.FullAccountProjectId, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PromisedDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.PromisedDate, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PromisedDate, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Reason, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.Reason, new { @class = "form-control", rows = "4" })
+                        @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RequiredDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.RequiredDate, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.RequiredDate, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "4" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.WarehouseComment, htmlAttributes: new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.WarehouseComment, new { @class = "form-control", rows = "4" })
+                @Html.ValidationMessageFor(model => model.WarehouseComment, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="@LocalStrings.Save" class="btn btn-primary" />
+                @Html.ActionLink(LocalStrings.Cancel, "index", null, new { @class = "btn btn-primary" })
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

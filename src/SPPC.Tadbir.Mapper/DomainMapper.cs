@@ -8,8 +8,10 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Inventory;
 using SPPC.Tadbir.Model.Procurement;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Values;
@@ -71,6 +73,8 @@ namespace SPPC.Tadbir.Mapper
             MapWorkflowTypes(mapperConfig);
             MapSettingsTypes(mapperConfig);
             MapProcurementTypes(mapperConfig);
+            MapInventoryTypes(mapperConfig);
+            MapContactTypes(mapperConfig);
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
@@ -126,6 +130,15 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Account, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.Code)));
+            mapperConfig.CreateMap<DetailAccount, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
+            mapperConfig.CreateMap<CostCenter, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
+            mapperConfig.CreateMap<Project, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
             mapperConfig.CreateMap<Transaction, TransactionFullViewModel>()
                 .ForMember(
                     dest => dest.Transaction,
@@ -195,6 +208,9 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.IsAccessible, opts => opts.UseValue(true));
             mapperConfig.CreateMap<BranchViewModel, Branch>()
                 .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId);
+            mapperConfig.CreateMap<BusinessUnit, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
         }
 
         private static void MapWorkflowTypes(IMapperConfigurationExpression mapperConfig)
@@ -293,6 +309,20 @@ namespace SPPC.Tadbir.Mapper
         private static void MapProcurementTypes(IMapperConfigurationExpression mapperConfig)
         {
             mapperConfig.CreateMap<RequisitionVoucher, VoucherSummaryViewModel>();
+        }
+
+        private static void MapInventoryTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<Warehouse, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+        }
+
+        private static void MapContactTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<BusinessPartner, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

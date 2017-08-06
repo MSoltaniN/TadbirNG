@@ -88,6 +88,16 @@ namespace SPPC.Tadbir.Values
         public const string Requests = "درخواست ها";
 
         /// <summary>
+        /// Localized name for Requisition Voucher.
+        /// </summary>
+        public const string RequisitionVoucher = "درخواست کالا";
+
+        /// <summary>
+        /// Localized name for Requisition Voucher (alternative form).
+        /// </summary>
+        public const string RequisitionVoucherAlt = "درخواست کالای";
+
+        /// <summary>
         /// Localized text for the caption for transaction lines (articles)
         /// </summary>
         public const string TransactionLines = "آرتیکل های سند";
