@@ -308,7 +308,19 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapProcurementTypes(IMapperConfigurationExpression mapperConfig)
         {
+            mapperConfig.CreateMap<RequisitionVoucherType, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
             mapperConfig.CreateMap<RequisitionVoucher, VoucherSummaryViewModel>();
+            mapperConfig.CreateMap<RequisitionVoucherViewModel, RequisitionVoucher>()
+                .AfterMap((viewModel, model) => model.Type.Id = viewModel.TypeId)
+                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
+                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
+                .AfterMap((viewModel, model) => model.Requester.Id = viewModel.RequesterId)
+                .AfterMap((viewModel, model) => model.Receiver.Id = viewModel.ReceiverId)
+                .AfterMap((viewModel, model) => model.RequesterUnit.Id = viewModel.RequesterUnitId)
+                .AfterMap((viewModel, model) => model.ReceiverUnit.Id = viewModel.ReceiverUnitId)
+                .AfterMap((viewModel, model) => model.Warehouse.Id = viewModel.WarehouseId);
         }
 
         private static void MapInventoryTypes(IMapperConfigurationExpression mapperConfig)

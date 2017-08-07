@@ -9,6 +9,13 @@ namespace SPPC.Tadbir.ViewModel.Procurement
     public partial class RequisitionVoucherViewModel
     {
         /// <summary>
+        /// شناسه دیتابیسی نوع درخواست کالا
+        /// </summary>
+        [Display(Name = FieldNames.RequisitionVoucherTypeField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        public int TypeId { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی شخص درخواست کننده
         /// </summary>
         [Display(Name = FieldNames.RequesterField)]

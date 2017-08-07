@@ -93,6 +93,16 @@ namespace SPPC.Tadbir.Api
         public const string WarehousesUrl = "lookup/warehouses";
 
         /// <summary>
+        /// API client URL for lookup collections of all requisition voucher types
+        /// </summary>
+        public const string RequisitionVoucherTypes = "lookup/rvtypes";
+
+        /// <summary>
+        /// API server route URL for lookup collections of all requisition voucher types
+        /// </summary>
+        public const string RequisitionVoucherTypesUrl = "lookup/rvtypes";
+
+        /// <summary>
         /// API client URL for lookup collections of all dependencies required by a requisition voucher
         /// </summary>
         public const string RequisitionVoucherDepends = "lookup/rvdepends";

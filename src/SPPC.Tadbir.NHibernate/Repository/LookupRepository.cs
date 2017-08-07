@@ -8,6 +8,7 @@ using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Inventory;
+using SPPC.Tadbir.Model.Procurement;
 using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.NHibernate
@@ -153,9 +154,25 @@ namespace SPPC.Tadbir.NHibernate
             return warehouses;
         }
 
+        /// <summary>
+        /// Retrieves all requisition voucher type objects as a collection of <see cref="KeyValue"/> objects.
+        /// The key for each entry is the unique identifier of corresponding requisition voucher type in database.
+        /// </summary>
+        /// <returns>Collection of all requisition voucher type items.</returns>
+        public IEnumerable<KeyValue> GetRequisitionVoucherTypes()
+        {
+            var repository = _unitOfWork.GetRepository<RequisitionVoucherType>();
+            var voucherTypes = repository
+                .GetAll()
+                .OrderBy(rvt => rvt.Name)
+                .Select(rvt => _mapper.Map<KeyValue>(rvt));
+            return voucherTypes;
+        }
+
         public RequisitionVoucherDependsViewModel GetRequisitionDepends()
         {
             var depends = new RequisitionVoucherDependsViewModel();
+            depends.VoucherTypes.AddRange(GetRequisitionVoucherTypes());
             depends.Accounts.AddRange(GetAccounts(1, 1));
             depends.DetailAccounts.AddRange(GetDetailAccounts());
             depends.CostCenters.AddRange(GetCostCenters());

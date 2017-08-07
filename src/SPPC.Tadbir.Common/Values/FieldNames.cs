@@ -242,6 +242,8 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         public const string ReferenceField = "ارجاع";
 
+        public const string RequisitionVoucherTypeField = "نوع درخواست کالا";
+
         /// <summary>
         /// Localized name of Requester field
         /// </summary>

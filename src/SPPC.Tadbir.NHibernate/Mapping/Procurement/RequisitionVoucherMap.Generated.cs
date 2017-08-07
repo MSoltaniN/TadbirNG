@@ -65,6 +65,10 @@ namespace SPPC.Tadbir.NHibernate.Mapping
 
         private void MapReferences()
         {
+            References(x => x.Type)
+                .Column("VoucherTypeID")
+                .Cascade.None()
+                .Not.LazyLoad();
             References(x => x.FiscalPeriod)
                 .Column("FiscalPeriodID")
                 .Cascade.None()
@@ -107,7 +111,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Not.LazyLoad();
             References(x => x.Document)
                 .Column("DocumentID")
-                .Cascade.None()
+                .Cascade.SaveUpdate()
                 .Not.LazyLoad();
             HasMany(x => x.Lines)
                 .KeyColumn("VoucherID")

@@ -114,6 +114,11 @@ namespace SPPC.Tadbir.Model.Procurement
         /// <summary>
         /// Gets or sets the todo: add description...
         /// </summary>
+        public virtual RequisitionVoucherType Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
         public virtual FiscalPeriod FiscalPeriod { get; set; }
 
         /// <summary>
@@ -168,6 +173,7 @@ namespace SPPC.Tadbir.Model.Procurement
 
         private void InitReferences()
         {
+            Type = new RequisitionVoucherType();
             FiscalPeriod = new FiscalPeriod();
             Branch = new Branch();
             Requester = new BusinessPartner();

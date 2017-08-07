@@ -36,6 +36,8 @@ namespace SPPC.Tadbir.Service
 
         IEnumerable<KeyValue> LookupWarehouses();
 
+        IEnumerable<KeyValue> LookupRequisitionVoucherTypes();
+
         RequisitionVoucherDependsViewModel LookupRequisitionVoucherDepends();
     }
 }

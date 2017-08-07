@@ -659,6 +659,7 @@ GO
 
 CREATE TABLE [Procurement].[RequisitionVoucher] (
     [VoucherID]          INT              IDENTITY (1, 1) NOT NULL,
+	[VoucherTypeID]      INT              NOT NULL,
     [FiscalPeriodID]     INT              NOT NULL,
     [BranchID]           INT              NOT NULL,
     [RequesterID]        INT              NOT NULL,
@@ -683,6 +684,7 @@ CREATE TABLE [Procurement].[RequisitionVoucher] (
     [ModifiedDate]       DATETIME         CONSTRAINT [DF_Procurement_RequisitionVoucher_ModifiedDate] DEFAULT (getdate()) NOT NULL,
     [rowguid]                UNIQUEIDENTIFIER CONSTRAINT [DF_Procurement_RequisitionVoucher_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL
     , CONSTRAINT [PK_Procurement_RequisitionVoucher] PRIMARY KEY CLUSTERED ([VoucherID] ASC)
+    , CONSTRAINT [FK_Procurement_RequisitionVoucher_Procurement_RequisitionVoucherType] FOREIGN KEY ([VoucherTypeID]) REFERENCES [Procurement].[RequisitionVoucherType]([VoucherTypeID])
     , CONSTRAINT [FK_Procurement_RequisitionVoucher_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
     , CONSTRAINT [FK_Procurement_RequisitionVoucher_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
     , CONSTRAINT [FK_Procurement_RequisitionVoucher_Contact_Requester] FOREIGN KEY ([RequesterID]) REFERENCES [Contact].[BusinessPartner]([PartnerID])

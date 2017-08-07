@@ -8,6 +8,7 @@ namespace SPPC.Tadbir.ViewModel.Procurement
     {
         public RequisitionVoucherDependsViewModel()
         {
+            VoucherTypes = new List<KeyValue>();
             Accounts = new List<KeyValue>();
             DetailAccounts = new List<KeyValue>();
             CostCenters = new List<KeyValue>();
@@ -17,6 +18,7 @@ namespace SPPC.Tadbir.ViewModel.Procurement
             Warehouses = new List<KeyValue>();
         }
 
+        public List<KeyValue> VoucherTypes { get; protected set; }
         public List<KeyValue> Accounts { get; protected set; }
         public List<KeyValue> DetailAccounts { get; protected set; }
         public List<KeyValue> CostCenters { get; protected set; }

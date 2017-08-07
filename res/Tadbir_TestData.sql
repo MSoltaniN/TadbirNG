@@ -178,18 +178,18 @@ SET IDENTITY_INSERT [Core].[DocumentAction] OFF
 
 SET IDENTITY_INSERT [Procurement].[RequisitionVoucher] ON
 INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
-    VALUES (1, 1, 1, 1, 7, 1, 5, 2, 1, 1, N'1', N'شرح یک')
+    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
+    VALUES (1, 2, 1, 1, 1, 7, 1, 5, 2, 1, 1, N'1', N'شرح یک')
 INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
-    VALUES (2, 1, 1, 5, 7, 2, 4, 1, 1, 2, N'2', N'شرح دو')
+    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
+    VALUES (2, 3, 1, 1, 5, 7, 2, 4, 1, 1, 2, N'2', N'شرح دو')
 INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
-    VALUES (3, 1, 1, 4, 7, 3, 3, 3, 1, 3, N'3', N'شرح سه')
+    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
+    VALUES (3, 2, 1, 1, 4, 7, 3, 3, 3, 1, 3, N'3', N'شرح سه')
 INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
-    VALUES (4, 1, 1, 2, 7, 4, 2, 1, 1, 4, N'4', N'شرح چهار')
+    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
+    VALUES (4, 4, 1, 1, 2, 7, 4, 2, 1, 1, 4, N'4', N'شرح چهار')
 INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
-    VALUES (5, 1, 1, 8, 7, 5, 1, 2, 1, 5, N'5', N'شرح پنج')
+    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
+    VALUES (5, 1, 1, 1, 8, 7, 5, 1, 2, 1, 5, N'5', N'شرح پنج')
 SET IDENTITY_INSERT [Procurement].[RequisitionVoucher] OFF

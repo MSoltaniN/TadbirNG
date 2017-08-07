@@ -85,6 +85,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
+        // GET: api/lookup/rvtypes
+        [Route(LookupApi.RequisitionVoucherTypesUrl)]
+        public IHttpActionResult GetRequisitionVoucherTypesLookup()
+        {
+            var lookup = _repository.GetRequisitionVoucherTypes();
+            return Json(lookup);
+        }
+
         // GET: api/lookup/rvdepends
         [Route(LookupApi.RequisitionVoucherDependsUrl)]
         public IHttpActionResult GetRequisitionVoucherDependencies()

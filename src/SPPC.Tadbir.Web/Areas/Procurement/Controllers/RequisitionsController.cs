@@ -62,6 +62,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
         private void InitLookups()
         {
             var depends = _lookupService.LookupRequisitionVoucherDepends();
+            ViewBag.VoucherTypes = depends.VoucherTypes;
             ViewBag.Accounts = depends.Accounts;
             ViewBag.DetailAccounts = depends.DetailAccounts;
             ViewBag.CostCenters = depends.CostCenters;

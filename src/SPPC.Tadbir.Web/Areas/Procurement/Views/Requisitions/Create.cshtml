@@ -7,6 +7,8 @@
     string title = String.Format(LocalStrings.CreateNewEntity, Entities.RequisitionVoucherAlt);
     string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Requests);
     ViewBag.Title = title;
+    var types = (ViewBag.VoucherTypes as IEnumerable<KeyValue>)
+        .Select(vt => new SelectListItem() { Value = vt.Key, Text = vt.Value });
     var accounts = (ViewBag.Accounts as IEnumerable<KeyValue>)
         .Select(acc => new SelectListItem() { Value = acc.Key, Text = acc.Value });
     var details = (ViewBag.DetailAccounts as IEnumerable<KeyValue>)
@@ -43,6 +45,11 @@
             @Html.HiddenFor(model => model.BranchId)
             @Html.HiddenFor(model => model.FiscalPeriodId)
 
+            <div class="form-group">
+                @Html.LabelFor(model => model.TypeId, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.TypeId, types, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TypeId, "", new { @class = "text-danger" })
+            </div>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">

@@ -69,6 +69,13 @@ namespace SPPC.Tadbir.NHibernate
         /// <returns>Collection of all warehouse items.</returns>
         IEnumerable<KeyValue> GetWarehouses();
 
+        /// <summary>
+        /// Retrieves all requisition voucher type objects as a collection of <see cref="KeyValue"/> objects.
+        /// The key for each entry is the unique identifier of corresponding requisition voucher type in database.
+        /// </summary>
+        /// <returns>Collection of all requisition voucher type items.</returns>
+        IEnumerable<KeyValue> GetRequisitionVoucherTypes();
+
         RequisitionVoucherDependsViewModel GetRequisitionDepends();
     }
 }

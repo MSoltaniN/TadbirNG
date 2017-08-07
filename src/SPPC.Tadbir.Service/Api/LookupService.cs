@@ -104,6 +104,12 @@ namespace SPPC.Tadbir.Service
             return lookup;
         }
 
+        public IEnumerable<KeyValue> LookupRequisitionVoucherTypes()
+        {
+            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.RequisitionVoucherTypes);
+            return lookup;
+        }
+
         public RequisitionVoucherDependsViewModel LookupRequisitionVoucherDepends()
         {
             var voucherDepends = _apiClient.Get<RequisitionVoucherDependsViewModel>(LookupApi.RequisitionVoucherDepends);

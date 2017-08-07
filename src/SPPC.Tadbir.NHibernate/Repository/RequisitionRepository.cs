@@ -52,8 +52,6 @@ namespace SPPC.Tadbir.NHibernate
                 repository.Insert(newVoucher);
                 _unitOfWork.Commit();
             }
-
-            throw new NotImplementedException();
         }
 
         private IUnitOfWork _unitOfWork;
