@@ -4,6 +4,11 @@ using System.Linq;
 using BabakSoft.Platform.Common;
 using BabakSoft.Platform.Persistence;
 using SPPC.Framework.Mapper;
+using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Contact;
+using SPPC.Tadbir.Model.Corporate;
+using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Inventory;
 using SPPC.Tadbir.Model.Procurement;
 using SPPC.Tadbir.ViewModel.Procurement;
 
@@ -42,6 +47,19 @@ namespace SPPC.Tadbir.NHibernate
             return requisitions;
         }
 
+        public RequisitionFullViewModel GetRequisitionDetails(int voucherId)
+        {
+            var voucherDetails = default(RequisitionFullViewModel);
+            var repository = _unitOfWork.GetRepository<RequisitionVoucher>();
+            var voucher = repository.GetByID(voucherId);
+            if (voucher != null)
+            {
+                voucherDetails = _mapper.Map<RequisitionFullViewModel>(voucher);
+            }
+
+            return voucherDetails;
+        }
+
         public void SaveRequisition(RequisitionVoucherViewModel voucher)
         {
             Verify.ArgumentNotNull(voucher, "voucher");
@@ -51,8 +69,34 @@ namespace SPPC.Tadbir.NHibernate
                 var newVoucher = _mapper.Map<RequisitionVoucher>(voucher);
                 PrepareRequisitionActions(newVoucher);
                 repository.Insert(newVoucher);
-                _unitOfWork.Commit();
             }
+            else
+            {
+                var existing = repository.GetByID(voucher.Id);
+                if (existing != null)
+                {
+                    UpdateExistingVoucher(voucher, existing);
+                    repository.Update(existing);
+                }
+            }
+
+            _unitOfWork.Commit();
+        }
+
+        private static void UpdateExistingVoucher(RequisitionVoucherViewModel voucher, RequisitionVoucher existing)
+        {
+            existing.Type = new RequisitionVoucherType() { Id = voucher.TypeId };
+            existing.Requester = new BusinessPartner() { Id = voucher.RequesterId };
+            existing.Receiver = new BusinessPartner() { Id = voucher.ReceiverId };
+            existing.RequesterUnit = new BusinessUnit() { Id = voucher.RequesterUnitId };
+            existing.ReceiverUnit = new BusinessUnit() { Id = voucher.ReceiverUnitId };
+            existing.Warehouse = new Warehouse() { Id = voucher.WarehouseId };
+            existing.FullAccount.Account = new Account() { Id = voucher.FullAccount.AccountId };
+            existing.FullAccount.Detail = new DetailAccount() { Id = voucher.FullAccount.DetailId };
+            existing.FullAccount.CostCenter = new CostCenter() { Id = voucher.FullAccount.CostCenterId };
+            existing.FullAccount.Project = new Project() { Id = voucher.FullAccount.ProjectId };
+            var mainAction = existing.Document.Actions.First();
+            mainAction.ModifiedBy = new User() { Id = voucher.Document.Actions.First().ModifiedById };
         }
 
         private void PrepareRequisitionActions(RequisitionVoucher voucher)

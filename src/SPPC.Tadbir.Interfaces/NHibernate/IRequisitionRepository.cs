@@ -17,6 +17,8 @@ namespace SPPC.Tadbir.NHibernate
         /// <returns>مجموعه ای از درخواست های کالا در یک دوره مالی و شعبه خاص</returns>
         IList<VoucherSummaryViewModel> GetRequisitions(int fpId, int branchId);
 
+        RequisitionFullViewModel GetRequisitionDetails(int voucherId);
+
         void SaveRequisition(RequisitionVoucherViewModel voucher);
     }
 }

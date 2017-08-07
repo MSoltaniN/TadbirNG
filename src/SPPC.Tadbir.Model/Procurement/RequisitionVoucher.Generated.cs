@@ -174,6 +174,7 @@ namespace SPPC.Tadbir.Model.Procurement
 
         private void InitReferences()
         {
+            Lines = new List<RequisitionVoucherLine>();
             Type = new RequisitionVoucherType();
             FiscalPeriod = new FiscalPeriod();
             Branch = new Branch();

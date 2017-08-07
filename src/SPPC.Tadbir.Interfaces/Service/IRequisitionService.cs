@@ -17,6 +17,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>مجموعه ای از درخواست های کالا در یک دوره مالی و شعبه خاص</returns>
         IEnumerable<VoucherSummaryViewModel> GetRequisitions(int fpId, int branchId);
 
+        RequisitionFullViewModel GetDetailRequisitionInfo(int id);
         void SaveRequisition(RequisitionVoucherViewModel voucher);
     }
 }

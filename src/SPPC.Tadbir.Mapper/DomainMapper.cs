@@ -329,6 +329,10 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
             mapperConfig.CreateMap<RequisitionVoucher, VoucherSummaryViewModel>();
+            mapperConfig.CreateMap<RequisitionVoucher, RequisitionFullViewModel>()
+                .ForMember(
+                    dest => dest.Voucher,
+                    opts => opts.MapFrom(src => _autoMapper.Map<RequisitionVoucherViewModel>(src)));
             mapperConfig.CreateMap<RequisitionVoucher, RequisitionVoucherViewModel>()
                 .ForMember(
                     dest => dest.OrderedDate,
@@ -371,6 +375,12 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.RequesterUnit.Id = viewModel.RequesterUnitId)
                 .AfterMap((viewModel, model) => model.ReceiverUnit.Id = viewModel.ReceiverUnitId)
                 .AfterMap((viewModel, model) => model.Warehouse.Id = viewModel.WarehouseId);
+
+            mapperConfig.CreateMap<RequisitionVoucherLine, VoucherLineSummaryViewModel>()
+                .ForMember(
+                    dest => dest.RequiredDate,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.FromDateTime(src.RequiredDate).ToShortDateString()));
         }
 
         private static void MapInventoryTypes(IMapperConfigurationExpression mapperConfig)

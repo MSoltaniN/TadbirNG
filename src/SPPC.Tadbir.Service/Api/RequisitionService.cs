@@ -42,6 +42,16 @@ namespace SPPC.Tadbir.Service
             {
                 _apiClient.Insert(voucher, RequisitionApi.Requisitions);
             }
+            else
+            {
+                _apiClient.Update(voucher, RequisitionApi.Requisition, voucher.Id);
+            }
+        }
+
+        public RequisitionFullViewModel GetDetailRequisitionInfo(int id)
+        {
+            var requisition = _apiClient.Get<RequisitionFullViewModel>(RequisitionApi.RequisitionDetails, id);
+            return requisition;
         }
 
         private IApiClient _apiClient;

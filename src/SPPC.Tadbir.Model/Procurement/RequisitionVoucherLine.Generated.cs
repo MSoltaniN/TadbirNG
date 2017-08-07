@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using BabakSoft.Platform.Domain;
+using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Inventory;
@@ -148,6 +149,11 @@ namespace SPPC.Tadbir.Model.Procurement
         /// Gets or sets the todo: add description...
         /// </summary>
         public virtual FullDetail FullDetail { get; set; }
+
+        /// <summary>
+        /// Gets or sets the todo: add description...
+        /// </summary>
+        public virtual Document Document { get; set; }
 
         private void InitReferences()
         {
