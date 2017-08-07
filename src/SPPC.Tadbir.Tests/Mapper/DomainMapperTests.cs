@@ -9,9 +9,11 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Settings;
 using SPPC.Tadbir.ViewModel.Workflow;
@@ -565,6 +567,46 @@ namespace SPPC.Tadbir.Mapper.Tests
 
             // Act & Assert
             AssertMapperCanConvertFromSourceToDestination<WorkflowEditionElement, WorkflowEditionViewModel>();
+        }
+
+        #endregion
+
+        #region Core Type Mapping Tests
+
+        [Test]
+        public void ContainsMappingFromDocumentActionViewModelToDocumentAction()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<DocumentActionViewModel, DocumentAction>();
+        }
+
+        [Test]
+        public void CanMapFromDocumentActionViewModelToDocumentAction()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<DocumentActionViewModel, DocumentAction>();
+        }
+
+        [Test]
+        public void ContainsMappingFromDocumentViewModelToDocument()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<DocumentViewModel, Document>();
+        }
+
+        [Test]
+        public void CanMapFromDocumentViewModelToDocument()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<DocumentViewModel, Document>();
         }
 
         #endregion

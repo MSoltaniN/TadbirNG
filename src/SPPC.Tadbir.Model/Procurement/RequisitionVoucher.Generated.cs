@@ -37,6 +37,7 @@ namespace SPPC.Tadbir.Model.Procurement
             this.Reason = String.Empty;
             this.WarehouseComment = String.Empty;
             this.Description = String.Empty;
+            this.OrderedDate = DateTime.Now;
             this.ModifiedDate = DateTime.Now;
             InitReferences();
         }
@@ -59,7 +60,7 @@ namespace SPPC.Tadbir.Model.Procurement
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        public virtual DateTime? OrderedDate { get; set; }
+        public virtual DateTime OrderedDate { get; set; }
 
         /// <summary>
         /// TODO: Add description...

@@ -673,7 +673,7 @@ CREATE TABLE [Procurement].[RequisitionVoucher] (
     [DocumentID]         INT              NOT NULL,
     [No]                 NVARCHAR(64)     NOT NULL,
     [Reference]          NVARCHAR(64)     NULL,
-    [OrderedDate]        DATETIME         NULL,
+    [OrderedDate]        DATETIME         NOT NULL,
     [RequiredDate]       DATETIME         NULL,
     [PromisedDate]       DATETIME         NULL,
     [Reason]             NVARCHAR(256)    NULL,

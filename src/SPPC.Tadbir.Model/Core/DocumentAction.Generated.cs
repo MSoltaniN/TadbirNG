@@ -93,6 +93,8 @@ namespace SPPC.Tadbir.Model.Core
 
         private void InitReferences()
         {
+            CreatedBy = new User();
+            ModifiedBy = new User();
         }
     }
 }

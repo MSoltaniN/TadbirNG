@@ -38,7 +38,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Length(64)
                 .Nullable();
             Map(x => x.OrderedDate)
-                .Nullable();
+                .Not.Nullable();
             Map(x => x.RequiredDate)
                 .Nullable();
             Map(x => x.PromisedDate)
@@ -55,7 +55,8 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Length(256)
                 .Nullable();
             Map(x => x.Timestamp)
-                .Not.Nullable();
+                .Not.Nullable()
+                .Generated.Always();
             Map(x => x.ModifiedDate);
             Map(x => x.RowGuid, "rowguid")
                 .Generated.Insert();
@@ -103,7 +104,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Not.LazyLoad();
             References(x => x.FullAccount)
                 .Column("FullAccountID")
-                .Cascade.None()
+                .Cascade.SaveUpdate()
                 .Not.LazyLoad();
             References(x => x.FullDetail)
                 .Column("FullDetailID")

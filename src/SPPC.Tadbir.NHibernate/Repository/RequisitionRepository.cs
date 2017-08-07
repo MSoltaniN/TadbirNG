@@ -49,9 +49,22 @@ namespace SPPC.Tadbir.NHibernate
             if (voucher.Id == 0)
             {
                 var newVoucher = _mapper.Map<RequisitionVoucher>(voucher);
+                PrepareRequisitionActions(newVoucher);
                 repository.Insert(newVoucher);
                 _unitOfWork.Commit();
             }
+        }
+
+        private void PrepareRequisitionActions(RequisitionVoucher voucher)
+        {
+            Array.ForEach(
+                voucher.Document.Actions.ToArray(),
+                act =>
+                {
+                    act.Document = voucher.Document;
+                    act.CreatedDate = DateTime.Now;
+                    act.ModifiedDate = DateTime.Now;
+                });
         }
 
         private IUnitOfWork _unitOfWork;

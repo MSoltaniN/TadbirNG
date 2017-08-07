@@ -73,4 +73,16 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         InvoiceQuote = 12
     }
+
+    public enum DocumentStatuses
+    {
+        None = 0,
+        Draft = 1,
+        Unchecked = 2,
+        Checked = 3,
+        NormalCheck = 4,
+        FinalCheck = 5,
+        NotPriced = 6,
+        Priced = 7
+    }
 }

@@ -11,6 +11,7 @@
 // ------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SPPC.Tadbir.ViewModel.Core
@@ -27,6 +28,7 @@ namespace SPPC.Tadbir.ViewModel.Core
         {
             this.No = String.Empty;
             this.OperationalStatus = String.Empty;
+            this.Actions = new List<DocumentActionViewModel>();
         }
 
         /// <summary>

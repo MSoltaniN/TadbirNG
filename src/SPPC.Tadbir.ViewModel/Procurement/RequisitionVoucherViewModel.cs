@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel.Core;
+using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.ViewModel.Procurement
 {
@@ -50,25 +52,9 @@ namespace SPPC.Tadbir.ViewModel.Procurement
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public int WarehouseId { get; set; }
 
-        /// <summary>
-        /// شناسه دیتابیسی مولفه سرفصل مالی از بردار حساب این درخواست
-        /// </summary>
-        public int FullAccountAccountId { get; set; }
+        public FullAccountViewModel FullAccount { get; set; }
 
-        /// <summary>
-        /// شناسه دیتابیسی مولفه تفصیلی شناور از بردار حساب این درخواست
-        /// </summary>
-        public int FullAccountDetailId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی مولفه مرکز هزینه از بردار حساب این درخواست
-        /// </summary>
-        public int FullAccountCostCenterId { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی مولفه پروژه از بردار حساب این درخواست
-        /// </summary>
-        public int FullAccountProjectId { get; set; }
+        public DocumentViewModel Document { get; set; }
 
         public int FiscalPeriodId { get; set; }
 

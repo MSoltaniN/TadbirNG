@@ -25,6 +25,8 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// </summary>
         public DocumentActionViewModel()
         {
+            CreatedDate = "1390/09/09";
+            ModifiedDate = "1390/09/09";
         }
 
         /// <summary>
@@ -36,16 +38,16 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// TODO: Add description...
         /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
-        public DateTime CreatedDate { get; set; }
+        public string CreatedDate { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        public DateTime? ConfirmedDate { get; set; }
+        public string ConfirmedDate { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        public DateTime? ApprovedDate { get; set; }
+        public string ApprovedDate { get; set; }
     }
 }

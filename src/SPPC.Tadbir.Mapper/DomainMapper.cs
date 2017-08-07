@@ -9,6 +9,7 @@ using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Contact;
+using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Inventory;
@@ -16,6 +17,7 @@ using SPPC.Tadbir.Model.Procurement;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Procurement;
@@ -62,7 +64,15 @@ namespace SPPC.Tadbir.Mapper
         /// <returns>The target object mapped from the source object</returns>
         public T Map<T>(object source)
         {
-            return _autoMapper.Map<T>(source);
+            try
+            {
+                return _autoMapper.Map<T>(source);
+            }
+            catch (Exception ex)
+            {
+                string message = ex.Message;
+                return default(T);
+            }
         }
 
         private static void RegisterMappings(IMapperConfigurationExpression mapperConfig)
@@ -75,6 +85,7 @@ namespace SPPC.Tadbir.Mapper
             MapProcurementTypes(mapperConfig);
             MapInventoryTypes(mapperConfig);
             MapContactTypes(mapperConfig);
+            MapCoreTypes(mapperConfig);
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
@@ -139,6 +150,12 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Project, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
+            mapperConfig.CreateMap<FullAccount, FullAccountViewModel>();
+            mapperConfig.CreateMap<FullAccountViewModel, FullAccount>()
+                .AfterMap((viewModel, model) => model.Account.Id = viewModel.AccountId)
+                .AfterMap((viewModel, model) => model.Detail.Id = viewModel.DetailId)
+                .AfterMap((viewModel, model) => model.CostCenter.Id = viewModel.CostCenterId)
+                .AfterMap((viewModel, model) => model.Project.Id = viewModel.ProjectId);
             mapperConfig.CreateMap<Transaction, TransactionFullViewModel>()
                 .ForMember(
                     dest => dest.Transaction,
@@ -265,7 +282,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.OperationalStatus,
                     opts => opts.MapFrom(
-                        src => DocumentStatus.ToLocalValue(src.OperationalStatus)));
+                        src => Values.DocumentStatus.ToLocalValue(src.OperationalStatus)));
             mapperConfig.CreateMap<WorkItemHistory, OutboxItemViewModel>()
                 .ForMember(dest => dest.DocumentNo, opts => opts.Ignore())
                 .ForMember(
@@ -275,11 +292,11 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.DocumentType,
                     opts => opts.MapFrom(
-                        src => DocumentType.ToLocalValue(src.DocumentType)))
+                        src => Values.DocumentType.ToLocalValue(src.DocumentType)))
                 .ForMember(
                     dest => dest.Action,
                     opts => opts.MapFrom(
-                        src => DocumentAction.ToLocalValue(src.Action)));
+                        src => Values.DocumentAction.ToLocalValue(src.Action)));
 
             mapperConfig.CreateMap<Dictionary<string, object>, WorkflowInstanceViewModel>()
                 .ForMember(dest => dest.InstanceId, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "InstanceId")))
@@ -312,7 +329,40 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
             mapperConfig.CreateMap<RequisitionVoucher, VoucherSummaryViewModel>();
+            mapperConfig.CreateMap<RequisitionVoucher, RequisitionVoucherViewModel>()
+                .ForMember(
+                    dest => dest.OrderedDate,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.FromDateTime(src.OrderedDate).ToShortDateString()))
+                .ForMember(
+                    dest => dest.RequiredDate,
+                    opts => opts.MapFrom(
+                        src => src.RequiredDate.HasValue
+                            ? JalaliDateTime.FromDateTime(src.RequiredDate.Value).ToShortDateString()
+                            : String.Empty))
+                .ForMember(
+                    dest => dest.PromisedDate,
+                    opts => opts.MapFrom(
+                        src => src.PromisedDate.HasValue
+                            ? JalaliDateTime.FromDateTime(src.PromisedDate.Value).ToShortDateString()
+                            : String.Empty));
             mapperConfig.CreateMap<RequisitionVoucherViewModel, RequisitionVoucher>()
+                .ForMember(
+                    dest => dest.OrderedDate,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.Parse(src.OrderedDate).ToGregorian()))
+                .ForMember(
+                    dest => dest.RequiredDate,
+                    opts => opts.MapFrom(
+                        src => !String.IsNullOrWhiteSpace(src.RequiredDate)
+                            ? JalaliDateTime.Parse(src.RequiredDate).ToGregorian()
+                            : (DateTime?)null))
+                .ForMember(
+                    dest => dest.PromisedDate,
+                    opts => opts.MapFrom(
+                        src => !String.IsNullOrWhiteSpace(src.PromisedDate)
+                            ? JalaliDateTime.Parse(src.PromisedDate).ToGregorian()
+                            : (DateTime?)null))
                 .AfterMap((viewModel, model) => model.Type.Id = viewModel.TypeId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
@@ -328,6 +378,78 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Warehouse, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+        }
+
+        private static void MapCoreTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<Model.Core.DocumentAction, DocumentActionViewModel>()
+                .ForMember(
+                    dest => dest.CreatedDate,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.FromDateTime(src.CreatedDate).ToShortDateString()))
+                .ForMember(
+                    dest => dest.ModifiedDate,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.FromDateTime(src.ModifiedDate).ToShortDateString()))
+                .ForMember(
+                    dest => dest.ConfirmedDate,
+                    opts => opts.MapFrom(
+                        src => src.ConfirmedDate.HasValue
+                            ? JalaliDateTime.FromDateTime(src.ConfirmedDate.Value).ToShortDateString()
+                            : String.Empty))
+                .ForMember(
+                    dest => dest.ApprovedDate,
+                    opts => opts.MapFrom(
+                        src => src.ApprovedDate.HasValue
+                            ? JalaliDateTime.FromDateTime(src.ApprovedDate.Value).ToShortDateString()
+                            : String.Empty));
+            mapperConfig.CreateMap<DocumentActionViewModel, Model.Core.DocumentAction>()
+                .ForMember(
+                    dest => dest.CreatedDate,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.Parse(src.CreatedDate).ToGregorian()))
+                .ForMember(
+                    dest => dest.ModifiedDate,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.Parse(src.ModifiedDate).ToGregorian()))
+                .ForMember(
+                    dest => dest.ConfirmedDate,
+                    opts => opts.MapFrom(
+                        src => !String.IsNullOrWhiteSpace(src.ConfirmedDate)
+                            ? JalaliDateTime.Parse(src.ConfirmedDate).ToGregorian()
+                            : (DateTime?)null))
+                .ForMember(
+                    dest => dest.ApprovedDate,
+                    opts => opts.MapFrom(
+                        src => !String.IsNullOrWhiteSpace(src.ApprovedDate)
+                            ? JalaliDateTime.Parse(src.ApprovedDate).ToGregorian()
+                            : (DateTime?)null))
+                .AfterMap((viewModel, model) => model.CreatedBy.Id = viewModel.CreatedById)
+                .AfterMap((viewModel, model) => model.ModifiedBy.Id = viewModel.ModifiedById)
+                .AfterMap((viewModel, model) =>
+                    model.ConfirmedBy = (viewModel.ConfirmedById > 0)
+                        ? new User()
+                            {
+                                Id = viewModel.ConfirmedById
+                            }
+                        : null)
+                .AfterMap((viewModel, model) =>
+                    model.ApprovedBy = (viewModel.ApprovedById > 0)
+                        ? new User()
+                            {
+                                Id = viewModel.ApprovedById
+                        }
+                        : null);
+            mapperConfig.CreateMap<Document, DocumentViewModel>();
+            mapperConfig.CreateMap<DocumentViewModel, Document>()
+                .ForMember(
+                    dest => dest.Actions,
+                    opts => opts.Ignore())
+                .AfterMap((viewModel, model) => Array.ForEach(
+                    viewModel.Actions.ToArray(),
+                    act => model.Actions.Add(_autoMapper.Map<Model.Core.DocumentAction>(act))))
+                .AfterMap((viewModel, model) => model.Type.Id = viewModel.TypeId)
+                .AfterMap((viewModel, model) => model.Status.Id = viewModel.StatusId);
         }
 
         private static void MapContactTypes(IMapperConfigurationExpression mapperConfig)
