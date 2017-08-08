@@ -14,5 +14,7 @@ namespace SPPC.Tadbir.ViewModel.Core
         public int ConfirmedById { get; set; }
 
         public int ApprovedById { get; set; }
+
+        public int LineId { get; set; }
     }
 }

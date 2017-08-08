@@ -35,6 +35,12 @@ namespace SPPC.Tadbir.Service
             return requisitions;
         }
 
+        public RequisitionFullViewModel GetDetailRequisitionInfo(int id)
+        {
+            var requisition = _apiClient.Get<RequisitionFullViewModel>(RequisitionApi.RequisitionDetails, id);
+            return requisition;
+        }
+
         public void SaveRequisition(RequisitionVoucherViewModel voucher)
         {
             Verify.ArgumentNotNull(voucher, "voucher");
@@ -48,10 +54,13 @@ namespace SPPC.Tadbir.Service
             }
         }
 
-        public RequisitionFullViewModel GetDetailRequisitionInfo(int id)
+        public void SaveRequisitionLine(RequisitionVoucherLineViewModel line)
         {
-            var requisition = _apiClient.Get<RequisitionFullViewModel>(RequisitionApi.RequisitionDetails, id);
-            return requisition;
+            Verify.ArgumentNotNull(line, "line");
+            if (line.Id == 0)
+            {
+                _apiClient.Insert(line, RequisitionApi.RequisitionLines, line.VoucherId);
+            }
         }
 
         private IApiClient _apiClient;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.NHibernate
@@ -19,6 +20,10 @@ namespace SPPC.Tadbir.NHibernate
 
         RequisitionFullViewModel GetRequisitionDetails(int voucherId);
 
+        DocumentViewModel GetRequisitionDocument(int voucherId);
+
         void SaveRequisition(RequisitionVoucherViewModel voucher);
+
+        void SaveRequisitionLine(RequisitionVoucherLineViewModel line);
     }
 }

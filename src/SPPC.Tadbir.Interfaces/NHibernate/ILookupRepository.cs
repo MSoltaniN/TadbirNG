@@ -70,12 +70,28 @@ namespace SPPC.Tadbir.NHibernate
         IEnumerable<KeyValue> GetWarehouses();
 
         /// <summary>
+        /// Retrieves all product objects as a collection of <see cref="KeyValue"/> objects. The key for each
+        /// entry is the unique identifier of corresponding product in data store.
+        /// </summary>
+        /// <returns>Collection of all product items.</returns>
+        IEnumerable<KeyValue> GetProducts();
+
+        /// <summary>
+        /// Retrieves all unit of measurement (UOM) objects as a collection of <see cref="KeyValue"/> objects.
+        /// The key for each entry is the unique identifier of corresponding unit of measurement (UOM) in data store.
+        /// </summary>
+        /// <returns>Collection of all unit of measurement (UOM) items.</returns>
+        IEnumerable<KeyValue> GetUnitsOfMeasurement();
+
+        /// <summary>
         /// Retrieves all requisition voucher type objects as a collection of <see cref="KeyValue"/> objects.
         /// The key for each entry is the unique identifier of corresponding requisition voucher type in database.
         /// </summary>
         /// <returns>Collection of all requisition voucher type items.</returns>
         IEnumerable<KeyValue> GetRequisitionVoucherTypes();
 
-        RequisitionVoucherDependsViewModel GetRequisitionDepends();
+        VoucherDependsViewModel GetRequisitionDepends();
+
+        VoucherLineDependsViewModel GetRequisitionLineDepends();
     }
 }

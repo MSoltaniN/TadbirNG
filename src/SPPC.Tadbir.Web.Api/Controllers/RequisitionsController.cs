@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Web.Http;
 using BabakSoft.Platform.Common;
@@ -82,6 +83,26 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // POST: api/requisitions/{voucherId:int}/lines
+        [Route(RequisitionApi.RequisitionLinesUrl)]
+        public IHttpActionResult PostNewRequisitionVoucherLine(
+            int voucherId, [FromBody] RequisitionVoucherLineViewModel line)
+        {
+            if (line == null)
+            {
+                return BadRequest("Could not post new requisition line because a 'null' value was provided.");
+            }
+
+            if (voucherId < 0 || line.VoucherId < 0 || line.VoucherId != voucherId)
+            {
+                return BadRequest();
+            }
+
+            SetVoucherLineDocument(line);
+            _repository.SaveRequisitionLine(line);
+            return StatusCode(HttpStatusCode.Created);
+        }
+
         private static string GenerateNumber()
         {
             return Guid.NewGuid()
@@ -112,8 +133,30 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
             else
             {
-                var mainAction = voucher.Document.Actions[0];
+                var mainAction = voucher.Document.Actions.First();
                 mainAction.ModifiedById = _userContext.User.Id;
+            }
+        }
+
+        private void SetVoucherLineDocument(RequisitionVoucherLineViewModel line)
+        {
+            if (line.Id == 0)
+            {
+                line.Document = _repository.GetRequisitionDocument(line.VoucherId);
+                var action = new DocumentActionViewModel()
+                {
+                    CreatedById = _userContext.User.Id,
+                    ModifiedById = _userContext.User.Id,
+                    LineId = line.No
+                };
+                line.Document.Actions.Add(action);
+            }
+            else
+            {
+                var lineAction = line.Document.Actions
+                    .Where(act => act.LineId == line.No)
+                    .Single();
+                lineAction.ModifiedById = _userContext.User.Id;
             }
         }
 

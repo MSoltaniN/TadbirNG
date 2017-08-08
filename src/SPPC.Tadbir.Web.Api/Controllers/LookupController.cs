@@ -85,6 +85,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
+        // GET: api/lookup/products
+        [Route(LookupApi.ProductsUrl)]
+        public IHttpActionResult GetProductsLookup()
+        {
+            var lookup = _repository.GetProducts();
+            return Json(lookup);
+        }
+
+        // GET: api/lookup/uoms
+        [Route(LookupApi.UnitsOfMeasurementUrl)]
+        public IHttpActionResult GetUnitsOfMeasurementLookup()
+        {
+            var lookup = _repository.GetUnitsOfMeasurement();
+            return Json(lookup);
+        }
+
         // GET: api/lookup/rvtypes
         [Route(LookupApi.RequisitionVoucherTypesUrl)]
         public IHttpActionResult GetRequisitionVoucherTypesLookup()
@@ -98,6 +114,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public IHttpActionResult GetRequisitionVoucherDependencies()
         {
             var depends = _repository.GetRequisitionDepends();
+            return Json(depends);
+        }
+
+        // GET: api/lookup/rvldepends
+        [Route(LookupApi.RequisitionVoucherLineDependsUrl)]
+        public IHttpActionResult GetRequisitionVoucherLineDependencies()
+        {
+            var depends = _repository.GetRequisitionLineDepends();
             return Json(depends);
         }
 

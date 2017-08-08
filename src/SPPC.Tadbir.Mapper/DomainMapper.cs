@@ -385,6 +385,29 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.RequiredDate,
                     opts => opts.MapFrom(
                         src => JalaliDateTime.FromDateTime(src.RequiredDate).ToShortDateString()));
+            mapperConfig.CreateMap<RequisitionVoucherLineViewModel, RequisitionVoucherLine>()
+                .ForMember(
+                    dest => dest.RequiredDate,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.Parse(src.RequiredDate).ToGregorian()))
+                .ForMember(
+                    dest => dest.PromisedDate,
+                    opts => opts.MapFrom(
+                        src => !String.IsNullOrWhiteSpace(src.PromisedDate)
+                            ? JalaliDateTime.Parse(src.PromisedDate).ToGregorian()
+                            : (DateTime?)null))
+                .ForMember(
+                    dest => dest.DeliveredDate,
+                    opts => opts.MapFrom(
+                        src => !String.IsNullOrWhiteSpace(src.DeliveredDate)
+                            ? JalaliDateTime.Parse(src.DeliveredDate).ToGregorian()
+                            : (DateTime?)null))
+                .ForMember(
+                    dest => dest.LastOrderedDate,
+                    opts => opts.MapFrom(
+                        src => !String.IsNullOrWhiteSpace(src.LastOrderedDate)
+                            ? JalaliDateTime.Parse(src.LastOrderedDate).ToGregorian()
+                            : (DateTime?)null));
         }
 
         private static void MapInventoryTypes(IMapperConfigurationExpression mapperConfig)
@@ -397,6 +420,10 @@ namespace SPPC.Tadbir.Mapper
         private static void MapCoreTypes(IMapperConfigurationExpression mapperConfig)
         {
             mapperConfig.CreateMap<Model.Core.DocumentAction, DocumentActionViewModel>()
+                .ForMember(
+                    dest => dest.LineId,
+                    opts => opts.MapFrom(
+                        src => (src.LineId.HasValue) ? src.LineId.Value : 0))
                 .ForMember(
                     dest => dest.CreatedDate,
                     opts => opts.MapFrom(
@@ -418,6 +445,10 @@ namespace SPPC.Tadbir.Mapper
                             ? JalaliDateTime.FromDateTime(src.ApprovedDate.Value).ToShortDateString()
                             : String.Empty));
             mapperConfig.CreateMap<DocumentActionViewModel, Model.Core.DocumentAction>()
+                .ForMember(
+                    dest => dest.LineId,
+                    opts => opts.MapFrom(
+                        src => (src.LineId > 0) ? (int?)src.LineId : null))
                 .ForMember(
                     dest => dest.CreatedDate,
                     opts => opts.MapFrom(

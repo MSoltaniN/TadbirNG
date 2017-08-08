@@ -4,9 +4,9 @@ using SPPC.Framework.Helpers;
 
 namespace SPPC.Tadbir.ViewModel.Procurement
 {
-    public class RequisitionVoucherDependsViewModel
+    public class VoucherDependsViewModel
     {
-        public RequisitionVoucherDependsViewModel()
+        public VoucherDependsViewModel()
         {
             VoucherTypes = new List<KeyValue>();
             Accounts = new List<KeyValue>();

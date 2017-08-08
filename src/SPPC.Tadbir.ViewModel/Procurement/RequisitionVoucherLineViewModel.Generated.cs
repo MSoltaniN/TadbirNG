@@ -64,22 +64,22 @@ namespace SPPC.Tadbir.ViewModel.Procurement
         /// TODO: Add description...
         /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
-        public DateTime RequiredDate { get; set; }
+        public string RequiredDate { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        public DateTime? PromisedDate { get; set; }
+        public string PromisedDate { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        public DateTime? DeliveredDate { get; set; }
+        public string DeliveredDate { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        public DateTime? LastOrderedDate { get; set; }
+        public string LastOrderedDate { get; set; }
 
         /// <summary>
         /// TODO: Add description...

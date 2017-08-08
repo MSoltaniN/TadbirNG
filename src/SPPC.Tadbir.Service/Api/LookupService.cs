@@ -104,16 +104,34 @@ namespace SPPC.Tadbir.Service
             return lookup;
         }
 
+        public IEnumerable<KeyValue> LookupProducts()
+        {
+            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.Products);
+            return lookup;
+        }
+
+        public IEnumerable<KeyValue> LookupUnitsOfMeasurement()
+        {
+            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.UnitsOfMeasurement);
+            return lookup;
+        }
+
         public IEnumerable<KeyValue> LookupRequisitionVoucherTypes()
         {
             var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.RequisitionVoucherTypes);
             return lookup;
         }
 
-        public RequisitionVoucherDependsViewModel LookupRequisitionVoucherDepends()
+        public VoucherDependsViewModel LookupRequisitionVoucherDepends()
         {
-            var voucherDepends = _apiClient.Get<RequisitionVoucherDependsViewModel>(LookupApi.RequisitionVoucherDepends);
+            var voucherDepends = _apiClient.Get<VoucherDependsViewModel>(LookupApi.RequisitionVoucherDepends);
             return voucherDepends;
+        }
+
+        public VoucherLineDependsViewModel LookupRequisitionVoucherLineDepends()
+        {
+            var lineDepends = _apiClient.Get<VoucherLineDependsViewModel>(LookupApi.RequisitionVoucherLineDepends);
+            return lineDepends;
         }
 
         private IApiClient _apiClient;

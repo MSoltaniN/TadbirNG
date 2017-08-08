@@ -154,6 +154,26 @@ namespace SPPC.Tadbir.NHibernate
             return warehouses;
         }
 
+        public IEnumerable<KeyValue> GetProducts()
+        {
+            var repository = _unitOfWork.GetRepository<Product>();
+            var products = repository
+                .GetAll()
+                .OrderBy(p => p.Name)
+                .Select(p => _mapper.Map<KeyValue>(p));
+            return products;
+        }
+
+        public IEnumerable<KeyValue> GetUnitsOfMeasurement()
+        {
+            var repository = _unitOfWork.GetRepository<UnitOfMeasurement>();
+            var units = repository
+                .GetAll()
+                .OrderBy(uom => uom.Name)
+                .Select(uom => _mapper.Map<KeyValue>(uom));
+            return units;
+        }
+
         /// <summary>
         /// Retrieves all requisition voucher type objects as a collection of <see cref="KeyValue"/> objects.
         /// The key for each entry is the unique identifier of corresponding requisition voucher type in database.
@@ -169,9 +189,9 @@ namespace SPPC.Tadbir.NHibernate
             return voucherTypes;
         }
 
-        public RequisitionVoucherDependsViewModel GetRequisitionDepends()
+        public VoucherDependsViewModel GetRequisitionDepends()
         {
-            var depends = new RequisitionVoucherDependsViewModel();
+            var depends = new VoucherDependsViewModel();
             depends.VoucherTypes.AddRange(GetRequisitionVoucherTypes());
             depends.Accounts.AddRange(GetAccounts(1, 1));
             depends.DetailAccounts.AddRange(GetDetailAccounts());
@@ -179,6 +199,19 @@ namespace SPPC.Tadbir.NHibernate
             depends.Projects.AddRange(GetProjects());
             depends.Partners.AddRange(GetPartners());
             depends.Units.AddRange(GetBusinessUnits());
+            depends.Warehouses.AddRange(GetWarehouses());
+            return depends;
+        }
+
+        public VoucherLineDependsViewModel GetRequisitionLineDepends()
+        {
+            var depends = new VoucherLineDependsViewModel();
+            depends.Accounts.AddRange(GetAccounts(1, 1));
+            depends.DetailAccounts.AddRange(GetDetailAccounts());
+            depends.CostCenters.AddRange(GetCostCenters());
+            depends.Projects.AddRange(GetProjects());
+            depends.Products.AddRange(GetPartners());
+            depends.Units.AddRange(GetUnitsOfMeasurement());
             depends.Warehouses.AddRange(GetWarehouses());
             return depends;
         }

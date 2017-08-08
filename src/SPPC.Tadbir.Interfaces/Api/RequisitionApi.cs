@@ -43,6 +43,16 @@ namespace SPPC.Tadbir.Api
         public const string RequisitionUrl = "requisitions/{voucherId:int}";
 
         /// <summary>
+        /// API client URL for all lines in a single requisition voucher specified by identifier
+        /// </summary>
+        public const string RequisitionLines = "requisitions/{0}/lines";
+
+        /// <summary>
+        /// API server route URL for all lines in a single requisition voucher specified by identifier
+        /// </summary>
+        public const string RequisitionLinesUrl = "requisitions/{voucherId:int}/lines";
+
+        /// <summary>
         /// API client URL for details of a single requisition voucher specified by identifier
         /// </summary>
         public const string RequisitionDetails = "requisitions/{0}/details";

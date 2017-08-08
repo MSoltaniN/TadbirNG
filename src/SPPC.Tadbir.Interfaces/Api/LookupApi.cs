@@ -93,6 +93,26 @@ namespace SPPC.Tadbir.Api
         public const string WarehousesUrl = "lookup/warehouses";
 
         /// <summary>
+        /// API client URL for lookup collection of all products
+        /// </summary>
+        public const string Products = "lookup/products";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all products
+        /// </summary>
+        public const string ProductsUrl = "lookup/products";
+
+        /// <summary>
+        /// API client URL for lookup collection of all units of measurement
+        /// </summary>
+        public const string UnitsOfMeasurement = "lookup/uoms";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all units of measurement
+        /// </summary>
+        public const string UnitsOfMeasurementUrl = "lookup/uoms";
+
+        /// <summary>
         /// API client URL for lookup collections of all requisition voucher types
         /// </summary>
         public const string RequisitionVoucherTypes = "lookup/rvtypes";
@@ -111,5 +131,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for lookup collections of all dependencies required by a requisition voucher
         /// </summary>
         public const string RequisitionVoucherDependsUrl = "lookup/rvdepends";
+
+        /// <summary>
+        /// API client URL for lookup collections of all dependencies required by a requisition voucher line
+        /// </summary>
+        public const string RequisitionVoucherLineDepends = "lookup/rvldepends";
+
+        /// <summary>
+        /// API server route URL for lookup collections of all dependencies required by a requisition voucher line
+        /// </summary>
+        public const string RequisitionVoucherLineDependsUrl = "lookup/rvldepends";
     }
 }

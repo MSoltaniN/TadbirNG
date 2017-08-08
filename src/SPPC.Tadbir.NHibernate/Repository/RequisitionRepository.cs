@@ -10,6 +10,7 @@ using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Inventory;
 using SPPC.Tadbir.Model.Procurement;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.NHibernate
@@ -60,6 +61,19 @@ namespace SPPC.Tadbir.NHibernate
             return voucherDetails;
         }
 
+        public DocumentViewModel GetRequisitionDocument(int voucherId)
+        {
+            var document = default(DocumentViewModel);
+            var repository = _unitOfWork.GetRepository<RequisitionVoucher>();
+            var voucher = repository.GetByID(voucherId);
+            if (voucher != null && voucher.Document != null)
+            {
+                document = _mapper.Map<DocumentViewModel>(voucher.Document);
+            }
+
+            return document;
+        }
+
         public void SaveRequisition(RequisitionVoucherViewModel voucher)
         {
             Verify.ArgumentNotNull(voucher, "voucher");
@@ -67,7 +81,7 @@ namespace SPPC.Tadbir.NHibernate
             if (voucher.Id == 0)
             {
                 var newVoucher = _mapper.Map<RequisitionVoucher>(voucher);
-                PrepareRequisitionActions(newVoucher);
+                UpdateRequisitionAction(newVoucher);
                 repository.Insert(newVoucher);
             }
             else
@@ -81,6 +95,19 @@ namespace SPPC.Tadbir.NHibernate
             }
 
             _unitOfWork.Commit();
+        }
+
+        public void SaveRequisitionLine(RequisitionVoucherLineViewModel line)
+        {
+            Verify.ArgumentNotNull(line, "line");
+            var repository = _unitOfWork.GetRepository<RequisitionVoucherLine>();
+            if (line.Id == 0)
+            {
+                var newLine = _mapper.Map<RequisitionVoucherLine>(line);
+                UpdateRequisitionLineAction(newLine);
+                repository.Insert(newLine);
+                _unitOfWork.Commit();
+            }
         }
 
         private static void UpdateExistingVoucher(RequisitionVoucherViewModel voucher, RequisitionVoucher existing)
@@ -111,16 +138,26 @@ namespace SPPC.Tadbir.NHibernate
             mainAction.ModifiedBy = new User() { Id = voucher.Document.Actions.First().ModifiedById };
         }
 
-        private void PrepareRequisitionActions(RequisitionVoucher voucher)
+        private void UpdateRequisitionAction(RequisitionVoucher voucher)
         {
-            Array.ForEach(
-                voucher.Document.Actions.ToArray(),
-                act =>
-                {
-                    act.Document = voucher.Document;
-                    act.CreatedDate = DateTime.Now;
-                    act.ModifiedDate = DateTime.Now;
-                });
+            if (voucher.Id == 0)
+            {
+                var mainAction = voucher.Document.Actions.First();
+                mainAction.Document = voucher.Document;
+                mainAction.CreatedDate = DateTime.Now;
+            }
+        }
+
+        private void UpdateRequisitionLineAction(RequisitionVoucherLine line)
+        {
+            if (line.Id == 0)
+            {
+                var lineAction = line.Document.Actions
+                    .Where(act => act.LineId == line.No)
+                    .Single();
+                lineAction.Document = line.Document;
+                lineAction.CreatedDate = DateTime.Now;
+            }
         }
 
         private IUnitOfWork _unitOfWork;
