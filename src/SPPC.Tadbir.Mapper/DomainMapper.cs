@@ -407,12 +407,24 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.MapFrom(
                         src => !String.IsNullOrWhiteSpace(src.LastOrderedDate)
                             ? JalaliDateTime.Parse(src.LastOrderedDate).ToGregorian()
-                            : (DateTime?)null));
+                            : (DateTime?)null))
+                .AfterMap((viewModel, model) => model.Voucher.Id = viewModel.VoucherId)
+                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
+                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
+                .AfterMap((viewModel, model) => model.Uom.Id = viewModel.UomId)
+                .AfterMap((viewModel, model) => model.Product.Id = viewModel.ProductId)
+                .AfterMap((viewModel, model) => model.Warehouse.Id = viewModel.WarehouseId);
         }
 
         private static void MapInventoryTypes(IMapperConfigurationExpression mapperConfig)
         {
             mapperConfig.CreateMap<Warehouse, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+            mapperConfig.CreateMap<Product, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+            mapperConfig.CreateMap<UnitOfMeasurement, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
         }

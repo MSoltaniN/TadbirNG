@@ -6,6 +6,7 @@
 @{
     string title = String.Format(LocalStrings.EditExistingEntity, Entities.RequisitionVoucher);
     string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Requests);
+    string createTitle = String.Format(LocalStrings.CreateNewEntity, Entities.Article);
     ViewBag.Title = title;
     var htmlAttributes = new Dictionary<string, object>();
     htmlAttributes.Add("class", "form-control");
@@ -175,6 +176,10 @@
                 <h2>@Strings.RequestLines</h2>
             </div>
 
+            <p>
+                @Html.ActionLink(createTitle, "createline", new { id = Model.Voucher.Id }, new { @class = "btn btn-sm btn-primary" })
+            </p>
+
             <table class="table table-bordered table-striped table-responsive table-hover">
                 <thead>
                     <tr>
@@ -205,6 +210,10 @@
                 </tbody>
             </table>
 
+            <p>
+                @Html.ActionLink(createTitle, "createline", new { id = Model.Voucher.Id }, new { @class = "btn btn-sm btn-primary" })
+            </p>
+            <br /><br />
             <div class="form-group">
                 <input type="submit" value="@LocalStrings.Save" class="btn btn-primary" />
                 @Html.ActionLink(LocalStrings.Cancel, "index", null, new { @class = "btn btn-primary" })

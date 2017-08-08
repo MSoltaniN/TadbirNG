@@ -210,7 +210,7 @@ namespace SPPC.Tadbir.NHibernate
             depends.DetailAccounts.AddRange(GetDetailAccounts());
             depends.CostCenters.AddRange(GetCostCenters());
             depends.Projects.AddRange(GetProjects());
-            depends.Products.AddRange(GetPartners());
+            depends.Products.AddRange(GetProducts());
             depends.Units.AddRange(GetUnitsOfMeasurement());
             depends.Warehouses.AddRange(GetWarehouses());
             return depends;

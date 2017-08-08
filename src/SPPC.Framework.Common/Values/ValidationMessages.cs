@@ -32,6 +32,10 @@ namespace SPPC.Framework.Values
         /// </summary>
         public const string TextFieldHasLengthRange = "طول {0} باید بین {2} تا {1} حرف باشد.";
 
+        public const string NumberIsTooSmall = "مقدار {0} باید حداقل {1} یا بزرگتر باشد.";
+
+        public const string FieldMustBeNumeric = "مقدار {0} باید یک عدد صحیح یا اعشاری باشد.";
+
         /// <summary>
         /// Localized text for a validation message indicating that a field value is duplicate.
         /// </summary>

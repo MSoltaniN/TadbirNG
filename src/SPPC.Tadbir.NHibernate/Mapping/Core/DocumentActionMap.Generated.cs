@@ -31,6 +31,8 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Id(x => x.Id)
                 .Column("ActionID")
                 .GeneratedBy.Identity();
+            Map(x => x.LineId)
+                .Nullable();
             Map(x => x.CreatedDate)
                 .Not.Nullable();
             Map(x => x.ModifiedDate);

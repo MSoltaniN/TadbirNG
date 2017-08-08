@@ -165,7 +165,6 @@ namespace SPPC.Tadbir.Model.Procurement
             Branch = new Branch();
             FiscalPeriod = new FiscalPeriod();
             FullAccount = new FullAccount();
-            FullDetail = new FullDetail();
             Document = new Document();
         }
     }

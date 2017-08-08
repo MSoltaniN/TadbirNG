@@ -23,7 +23,5 @@ namespace SPPC.Tadbir.ViewModel.Procurement
         public string RequiredDate { get; set; }
 
         public string Description { get; set; }
-
-        //public DocumentViewModel Document { get; set; }
     }
 }

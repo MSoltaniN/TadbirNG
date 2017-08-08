@@ -12,6 +12,8 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Procurement
 {
@@ -36,66 +38,75 @@ namespace SPPC.Tadbir.ViewModel.Procurement
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
+        [Display(Name = FieldNames.NumberField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [Range(1, Int32.MaxValue, ErrorMessage = ValidationMessages.NumberIsTooSmall)]
         public int No { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
+        [Display(Name = FieldNames.OrderedQuantityField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [RegularExpression(@"^[\d]+[\.]?[\d]*$", ErrorMessage = ValidationMessages.FieldMustBeNumeric)]
         public double OrderedQuantity { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
+        [Display(Name = FieldNames.DeliveredQuantityField)]
+        [RegularExpression(@"^[\d]+[\.]?[\d]*$", ErrorMessage = ValidationMessages.FieldMustBeNumeric)]
         public double DeliveredQuantity { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
+        [Display(Name = FieldNames.ReservedQuantityField)]
+        [RegularExpression(@"^[\d]+[\.]?[\d]*$", ErrorMessage = ValidationMessages.FieldMustBeNumeric)]
         public double ReservedQuantity { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
+        [Display(Name = FieldNames.LastOrderedQuantityField)]
+        [RegularExpression(@"^[\d]+[\.]?[\d]*$", ErrorMessage = ValidationMessages.FieldMustBeNumeric)]
         public double LastOrderedQuantity { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [Display(Name = FieldNames.RequiredDateField)]
         public string RequiredDate { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
+        [Display(Name = FieldNames.PromisedDateField)]
         public string PromisedDate { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
+        [Display(Name = FieldNames.DeliveredDateField)]
         public string DeliveredDate { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
+        [Display(Name = FieldNames.LastOrderedDateField)]
         public string LastOrderedDate { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
         public bool IsActive { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        [MaxLength(256, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Display(Name = FieldNames.RemarksField)]
+        [StringLength(256, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
-
-        /// <summary>
-        /// TODO: Add description...
-        /// </summary>
-        public long Timestamp { get; set; }
     }
 }

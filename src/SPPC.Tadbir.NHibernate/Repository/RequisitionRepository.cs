@@ -6,6 +6,7 @@ using BabakSoft.Platform.Persistence;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Contact;
+using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Inventory;
@@ -101,12 +102,27 @@ namespace SPPC.Tadbir.NHibernate
         {
             Verify.ArgumentNotNull(line, "line");
             var repository = _unitOfWork.GetRepository<RequisitionVoucherLine>();
+            var documentRepository = _unitOfWork.GetRepository<Document>();
             if (line.Id == 0)
             {
-                var newLine = _mapper.Map<RequisitionVoucherLine>(line);
-                UpdateRequisitionLineAction(newLine);
-                repository.Insert(newLine);
-                _unitOfWork.Commit();
+                try
+                {
+                    var newLine = _mapper.Map<RequisitionVoucherLine>(line);
+                    UpdateRequisitionLineAction(newLine);
+                    var document = documentRepository.GetByID(line.Document.Id);
+                    var lineAction = _mapper.Map<DocumentAction>(
+                        line.Document.Actions.Where(act => act.LineId == line.No).Single());
+                    lineAction.Document = document;
+                    document.Actions.Add(lineAction);
+                    repository.Insert(newLine);
+                    documentRepository.Update(document);
+                    _unitOfWork.Commit();
+                }
+                catch (Exception ex)
+                {
+                    var msg = ex.Message;
+                    throw;
+                }
             }
         }
 

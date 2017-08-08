@@ -92,7 +92,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Not.LazyLoad();
             References(x => x.FullAccount)
                 .Column("FullAccountID")
-                .Cascade.None()
+                .Cascade.SaveUpdate()
                 .Not.LazyLoad();
             References(x => x.FullDetail)
                 .Column("FullDetailID")

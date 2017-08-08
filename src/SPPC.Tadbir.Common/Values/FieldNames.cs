@@ -293,6 +293,16 @@ namespace SPPC.Tadbir.Values
 
         public const string RemarksField = "ملاحظات";
 
+        public const string DeliveredQuantityField = "مقدار تحویلی";
+
+        public const string ReservedQuantityField = "مقدار رزرو";
+
+        public const string LastOrderedQuantityField = "مقدار درخواست قبلی";
+
+        public const string DeliveredDateField = "تاریخ تحویل";
+
+        public const string LastOrderedDateField = "تاریخ درخواست قبلی";
+
         /// <summary>
         /// Localized name of IsActive field
         /// </summary>
