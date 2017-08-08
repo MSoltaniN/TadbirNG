@@ -285,6 +285,14 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         public const string WarehouseCommentField = "نظریه انبار";
 
+        public const string ProductNameField = "نام کالا";
+
+        public const string UomField = "واحد اندازه گیری";
+
+        public const string OrderedQuantityField = "مقدار درخواستی";
+
+        public const string RemarksField = "ملاحظات";
+
         /// <summary>
         /// Localized name of IsActive field
         /// </summary>

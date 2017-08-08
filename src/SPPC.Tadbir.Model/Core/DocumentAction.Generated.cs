@@ -95,6 +95,7 @@ namespace SPPC.Tadbir.Model.Core
         {
             CreatedBy = new User();
             ModifiedBy = new User();
+            Document = new Document();
         }
     }
 }

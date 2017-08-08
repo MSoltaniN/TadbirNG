@@ -26,6 +26,7 @@
 
 <ol class="breadcrumb">
     <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Strings.Procurement</li>
     <li class="active">@title</li>
 </ol>
 
@@ -77,7 +78,9 @@
             <td>
                 @DocumentStatus.ToLocalValue(item.DocumentOperationalStatus)
             </td>
-            <td></td>
+            <td>
+                @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id })
+            </td>
         </tr>
     }
     </tbody>

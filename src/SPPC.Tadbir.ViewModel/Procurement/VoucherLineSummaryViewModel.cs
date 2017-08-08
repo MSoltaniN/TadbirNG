@@ -12,18 +12,18 @@ namespace SPPC.Tadbir.ViewModel.Procurement
 
         public int No { get; set; }
 
-        public int WarehouseId { get; set; }
+        public string WarehouseName { get; set; }
 
-        public int ProductId { get; set; }
+        public string ProductName { get; set; }
 
-        public int UomId { get; set; }
+        public string UomName { get; set; }
 
-        public float OrderedQuantity { get; set; }
+        public double OrderedQuantity { get; set; }
 
         public string RequiredDate { get; set; }
 
         public string Description { get; set; }
 
-        public DocumentViewModel Document { get; set; }
+        //public DocumentViewModel Document { get; set; }
     }
 }

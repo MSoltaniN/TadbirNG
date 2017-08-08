@@ -332,7 +332,11 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<RequisitionVoucher, RequisitionFullViewModel>()
                 .ForMember(
                     dest => dest.Voucher,
-                    opts => opts.MapFrom(src => _autoMapper.Map<RequisitionVoucherViewModel>(src)));
+                    opts => opts.MapFrom(src => _autoMapper.Map<RequisitionVoucherViewModel>(src)))
+                .ForMember(dest => dest.Lines, opts => opts.Ignore())
+                .AfterMap((model, viewModel) => Array.ForEach(
+                    model.Lines.ToArray(),
+                    line => viewModel.Lines.Add(_autoMapper.Map<VoucherLineSummaryViewModel>(line))));
             mapperConfig.CreateMap<RequisitionVoucher, RequisitionVoucherViewModel>()
                 .ForMember(
                     dest => dest.OrderedDate,

@@ -85,6 +85,18 @@ namespace SPPC.Tadbir.NHibernate
 
         private static void UpdateExistingVoucher(RequisitionVoucherViewModel voucher, RequisitionVoucher existing)
         {
+            existing.No = voucher.No;
+            existing.OrderedDate = JalaliDateTime.Parse(voucher.OrderedDate).ToGregorian();
+            existing.PromisedDate = !String.IsNullOrWhiteSpace(voucher.PromisedDate)
+                ? JalaliDateTime.Parse(voucher.PromisedDate).ToGregorian()
+                : (DateTime?)null;
+            existing.RequiredDate = !String.IsNullOrWhiteSpace(voucher.RequiredDate)
+                ? JalaliDateTime.Parse(voucher.RequiredDate).ToGregorian()
+                : (DateTime?)null;
+            existing.Reason = voucher.Reason;
+            existing.Reference = voucher.Reference;
+            existing.WarehouseComment = voucher.WarehouseComment;
+            existing.Description = voucher.Description;
             existing.Type = new RequisitionVoucherType() { Id = voucher.TypeId };
             existing.Requester = new BusinessPartner() { Id = voucher.RequesterId };
             existing.Receiver = new BusinessPartner() { Id = voucher.ReceiverId };

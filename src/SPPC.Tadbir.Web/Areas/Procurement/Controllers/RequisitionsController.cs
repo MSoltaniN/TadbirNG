@@ -68,6 +68,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
                 return RedirectToAction("notfound", "error", new { area = String.Empty });
             }
 
+            InitLookups();
             return View(requisition);
         }
 
@@ -87,6 +88,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
                 return RedirectToAction("index");
             }
 
+            InitLookups();
             return View(fullRequisition);
         }
 

@@ -1,0 +1,220 @@
+﻿@using SPPC.Framework.Helpers
+@using SPPC.Framework.Values
+@using SPPC.Tadbir.Values
+@model SPPC.Tadbir.ViewModel.Procurement.RequisitionFullViewModel
+
+@{
+    string title = String.Format(LocalStrings.EditExistingEntity, Entities.RequisitionVoucher);
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Requests);
+    ViewBag.Title = title;
+    var htmlAttributes = new Dictionary<string, object>();
+    htmlAttributes.Add("class", "form-control");
+    var types = (ViewBag.VoucherTypes as IEnumerable<KeyValue>)
+        .Select(vt => new SelectListItem() { Value = vt.Key, Text = vt.Value });
+    var accounts = (ViewBag.Accounts as IEnumerable<KeyValue>)
+        .Select(acc => new SelectListItem() { Value = acc.Key, Text = acc.Value });
+    var details = (ViewBag.DetailAccounts as IEnumerable<KeyValue>)
+        .Select(det => new SelectListItem() { Value = det.Key, Text = det.Value });
+    var costCenters = (ViewBag.CostCenters as IEnumerable<KeyValue>)
+        .Select(cc => new SelectListItem() { Value = cc.Key, Text = cc.Value });
+    var projects = (ViewBag.Projects as IEnumerable<KeyValue>)
+        .Select(prj => new SelectListItem() { Value = prj.Key, Text = prj.Value });
+    var partners = (ViewBag.Partners as IEnumerable<KeyValue>)
+        .Select(bp => new SelectListItem() { Value = bp.Key, Text = bp.Value });
+    var units = (ViewBag.Units as IEnumerable<KeyValue>)
+        .Select(bu => new SelectListItem() { Value = bu.Key, Text = bu.Value });
+    var warehouses = (ViewBag.Warehouses as IEnumerable<KeyValue>)
+        .Select(wh => new SelectListItem() { Value = wh.Key, Text = wh.Value });
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Strings.Procurement</li>
+    <li>@Html.ActionLink(indexTitle, "index")</li>
+    <li class="active">@title</li>
+</ol>
+
+<div class="col-sm-8 col-sm-offset-2 form-centered">
+    <div class="page-header">
+        <h2>@title</h2>
+    </div>
+    <div class="form-body">
+        @using (Html.BeginForm())
+        {
+            htmlAttributes.Add("data-targetselector", "#Voucher_OrderedDate");
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Voucher.Id)
+            @Html.HiddenFor(model => model.Voucher.BranchId)
+            @Html.HiddenFor(model => model.Voucher.FiscalPeriodId)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Voucher.TypeId, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.Voucher.TypeId, types, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Voucher.TypeId, "", new { @class = "text-danger" })
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Voucher.OrderedDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.Voucher.OrderedDate, htmlAttributes)
+                        @Html.ValidationMessageFor(model => model.Voucher.OrderedDate, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Voucher.WarehouseId, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.Voucher.WarehouseId, warehouses, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Voucher.WarehouseId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Voucher.ReceiverId, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.Voucher.ReceiverId, partners, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Voucher.ReceiverId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Voucher.ReceiverUnitId, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.Voucher.ReceiverUnitId, units, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Voucher.ReceiverUnitId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Voucher.No, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.Voucher.No, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Voucher.No, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Voucher.Reference, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.Voucher.Reference, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Voucher.Reference, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Voucher.RequesterId, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.Voucher.RequesterId, partners, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Voucher.RequesterId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Voucher.RequesterUnitId, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.Voucher.RequesterUnitId, units, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Voucher.RequesterUnitId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">حساب</label>
+                        <table class="table-bordered table-condensed">
+                            <tr>
+                                <td title="انتخاب حساب">
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(model => model.Voucher.FullAccount.AccountId, accounts, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Voucher.FullAccount.AccountId, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                                <td title="انتخاب تفصیلی شناور">
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(model => model.Voucher.FullAccount.DetailId, details, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Voucher.FullAccount.DetailId, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td title="انتخاب مرکز هزینه">
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(model => model.Voucher.FullAccount.CostCenterId, costCenters, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Voucher.FullAccount.CostCenterId, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                                <td title="انتخاب پروژه">
+                                    <div class="form-group">
+                                        @Html.DropDownListFor(model => model.Voucher.FullAccount.ProjectId, projects, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Voucher.FullAccount.ProjectId, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        @{ htmlAttributes["data-targetselector"] = "#Voucher_PromisedDate"; }
+                        @Html.LabelFor(model => model.Voucher.PromisedDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.Voucher.PromisedDate, htmlAttributes)
+                        @Html.ValidationMessageFor(model => model.Voucher.PromisedDate, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Voucher.Reason, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.Voucher.Reason, new { @class = "form-control", rows = "4" })
+                        @Html.ValidationMessageFor(model => model.Voucher.Reason, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        @{ htmlAttributes["data-targetselector"] = "#Voucher_RequiredDate"; }
+                        @Html.LabelFor(model => model.Voucher.RequiredDate, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.Voucher.RequiredDate, htmlAttributes)
+                        @Html.ValidationMessageFor(model => model.Voucher.RequiredDate, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Voucher.Description, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.Voucher.Description, new { @class = "form-control", rows = "4" })
+                        @Html.ValidationMessageFor(model => model.Voucher.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Voucher.WarehouseComment, htmlAttributes: new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.Voucher.WarehouseComment, new { @class = "form-control", rows = "4" })
+                @Html.ValidationMessageFor(model => model.Voucher.WarehouseComment, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="page-header">
+                <h2>@Strings.RequestLines</h2>
+            </div>
+
+            <table class="table table-bordered table-striped table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th>@FieldNames.NumberField</th>
+                        <th>@FieldNames.WarehouseField</th>
+                        <th>@FieldNames.ProductNameField</th>
+                        <th>@FieldNames.UomField</th>
+                        <th>@FieldNames.OrderedQuantityField</th>
+                        <th>@FieldNames.RequiredDateField</th>
+                        <th>@FieldNames.RemarksField</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Lines)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.No)</td>
+                        <td>@Html.DisplayFor(modelItem => item.WarehouseName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.UomName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.OrderedQuantity)</td>
+                        <td>@Html.DisplayFor(modelItem => item.RequiredDate)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                        <td></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+            <div class="form-group">
+                <input type="submit" value="@LocalStrings.Save" class="btn btn-primary" />
+                @Html.ActionLink(LocalStrings.Cancel, "index", null, new { @class = "btn btn-primary" })
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/site")
+}

@@ -32,6 +32,7 @@ namespace SPPC.Tadbir.Model.Procurement
         {
             this.Description = String.Empty;
             this.ModifiedDate = DateTime.Now;
+            this.RequiredDate = DateTime.Now;
             InitReferences();
         }
 
@@ -98,7 +99,7 @@ namespace SPPC.Tadbir.Model.Procurement
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        public virtual long Timestamp { get; set; }
+        public virtual byte[] Timestamp { get; set; }
 
         /// <summary>
         /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
@@ -157,6 +158,15 @@ namespace SPPC.Tadbir.Model.Procurement
 
         private void InitReferences()
         {
+            Voucher = new RequisitionVoucher();
+            Warehouse = new Warehouse();
+            Product = new Product();
+            Uom = new UnitOfMeasurement();
+            Branch = new Branch();
+            FiscalPeriod = new FiscalPeriod();
+            FullAccount = new FullAccount();
+            FullDetail = new FullDetail();
+            Document = new Document();
         }
     }
 }

@@ -77,6 +77,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest();
             }
 
+            SetVoucherDocument(voucher);
             _repository.SaveRequisition(voucher);
             return Ok();
         }
@@ -93,19 +94,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private void SetVoucherDocument(RequisitionVoucherViewModel voucher)
         {
-            var document = new DocumentViewModel()
+            if (voucher.Document == null)
             {
-                No = GenerateNumber(),
-                OperationalStatus = DocumentStatus.Created,
-                StatusId = (int)DocumentStatuses.Draft,
-                TypeId = (int)DocumentTypes.RequisitionVoucher
-            };
-            document.Actions.Add(new DocumentActionViewModel()
+                var document = new DocumentViewModel()
+                {
+                    No = GenerateNumber(),
+                    OperationalStatus = DocumentStatus.Created,
+                    StatusId = (int)DocumentStatuses.Draft,
+                    TypeId = (int)DocumentTypes.RequisitionVoucher
+                };
+                document.Actions.Add(new DocumentActionViewModel()
+                {
+                    CreatedById = _userContext.User.Id,
+                    ModifiedById = _userContext.User.Id
+                });
+                voucher.Document = document;
+            }
+            else
             {
-                CreatedById = _userContext.User.Id,
-                ModifiedById = _userContext.User.Id
-            });
-            voucher.Document = document;
+                var mainAction = voucher.Document.Actions[0];
+                mainAction.ModifiedById = _userContext.User.Id;
+            }
         }
 
         private IRequisitionRepository _repository;

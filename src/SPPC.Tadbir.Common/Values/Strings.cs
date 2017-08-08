@@ -120,7 +120,7 @@ namespace SPPC.Tadbir.Values
         /// <summary>
         /// Localized text for the Procurement subsystem name
         /// </summary>
-        public const string Procurement = "ندارکات";
+        public const string Procurement = "تدارکات";
 
         /// <summary>
         /// Localized text for the Cash Flow subsystem name
@@ -307,6 +307,8 @@ namespace SPPC.Tadbir.Values
         /// Localized text for Group Approve
         /// </summary>
         public const string GroupApprove = "تصویب گروهی";
+
+        public const string RequestLines = "آرتیکل های درخواست";
 
         /// <summary>
         /// Localized text for the text indicating that an account is used in financial transactions and cannot be deleted.

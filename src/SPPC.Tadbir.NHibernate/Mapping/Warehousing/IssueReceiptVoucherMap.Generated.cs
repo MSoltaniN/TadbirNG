@@ -45,7 +45,8 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Length(256)
                 .Nullable();
             Map(x => x.Timestamp)
-                .Not.Nullable();
+                .Not.Nullable()
+                .Generated.Always();
             Map(x => x.ModifiedDate);
             Map(x => x.RowGuid, "rowguid")
                 .Generated.Insert();

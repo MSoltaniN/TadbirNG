@@ -71,7 +71,7 @@ namespace SPPC.Tadbir.Model.Warehousing
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        public virtual long Timestamp { get; set; }
+        public virtual byte[] Timestamp { get; set; }
 
         /// <summary>
         /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.

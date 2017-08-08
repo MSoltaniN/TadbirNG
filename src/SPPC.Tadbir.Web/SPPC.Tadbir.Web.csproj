@@ -232,6 +232,7 @@
     <Content Include="Areas\Procurement\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Procurement\Views\Requisitions\Index.cshtml" />
     <Content Include="Areas\Procurement\Views\Requisitions\Create.cshtml" />
+    <Content Include="Areas\Procurement\Views\Requisitions\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\Staging.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
