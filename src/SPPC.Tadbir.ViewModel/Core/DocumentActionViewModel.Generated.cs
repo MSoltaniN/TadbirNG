@@ -25,8 +25,6 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// </summary>
         public DocumentActionViewModel()
         {
-            CreatedDate = "1390/09/09";
-            ModifiedDate = "1390/09/09";
         }
 
         /// <summary>

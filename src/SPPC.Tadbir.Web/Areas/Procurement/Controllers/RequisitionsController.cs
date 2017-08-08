@@ -102,7 +102,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
                 FiscalPeriodId = TempContext.CurrentFiscalPeriodId,
                 BranchId = TempContext.CurrentBranchId
             };
-            return View(voucherLine);
+            return View("LineEditor", voucherLine);
         }
 
         // POST: procurement/requisitions/createline/id
@@ -123,20 +123,20 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
             }
 
             InitLineLookups();
-            return View(line);
+            return View("LineEditor", line);
         }
 
         // GET: procurement/requisitions/editline/id?lineId={lineId}
         public ActionResult EditLine(int id, int lineId)
         {
-            var line = _service.GetDetailRequisitionLineInfo(id, lineId);
-            if (line == null)
+            var voucherLine = _service.GetDetailRequisitionLineInfo(id, lineId);
+            if (voucherLine == null)
             {
                 return RedirectToAction("notfound", "error", new { area = String.Empty });
             }
 
             InitLineLookups();
-            return View(line);
+            return View("LineEditor", voucherLine);
         }
 
         // POST: procurement/requisitions/editline/id?lineId={lineId}
@@ -157,7 +157,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
             }
 
             InitLookups();
-            return View(line);
+            return View("LineEditor", line);
         }
 
         private void InitLookups()

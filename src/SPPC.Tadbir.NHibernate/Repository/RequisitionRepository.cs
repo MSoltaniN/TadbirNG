@@ -121,8 +121,9 @@ namespace SPPC.Tadbir.NHibernate
                 var newLine = _mapper.Map<RequisitionVoucherLine>(line);
                 UpdateRequisitionLineAction(newLine);
                 var document = documentRepository.GetByID(line.Document.Id);
-                var lineAction = _mapper.Map<DocumentAction>(
-                    line.Document.Actions.Where(act => act.LineId == line.No).Single());
+                var lineAction = newLine.Document.Actions
+                    .Where(act => act.LineId == line.No)
+                    .Single();
                 lineAction.Document = document;
                 document.Actions.Add(lineAction);
                 repository.Insert(newLine);
@@ -136,9 +137,9 @@ namespace SPPC.Tadbir.NHibernate
                     UpdateExistingVoucherLine(existing, line);
                     repository.Update(existing);
                 }
-
-                _unitOfWork.Commit();
             }
+
+            _unitOfWork.Commit();
         }
 
         private static void UpdateExistingVoucher(RequisitionVoucherViewModel voucher, RequisitionVoucher existing)
@@ -224,6 +225,7 @@ namespace SPPC.Tadbir.NHibernate
                     .Single();
                 lineAction.Document = line.Document;
                 lineAction.CreatedDate = DateTime.Now;
+                lineAction.ModifiedDate = DateTime.Now;
             }
         }
 

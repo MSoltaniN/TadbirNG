@@ -27,6 +27,7 @@ namespace SPPC.Tadbir.Model.Core
         /// </summary>
         public DocumentAction()
         {
+            this.CreatedDate = DateTime.Now;
             this.ModifiedDate = DateTime.Now;
             InitReferences();
         }

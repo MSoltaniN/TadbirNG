@@ -204,7 +204,9 @@
                         <td>@Html.DisplayFor(modelItem => item.OrderedQuantity)</td>
                         <td>@Html.DisplayFor(modelItem => item.RequiredDate)</td>
                         <td>@Html.DisplayFor(modelItem => item.Description)</td>
-                        <td></td>
+                        <td>
+                            @Html.ActionLink(LocalStrings.Edit, "editline", new { id = Model.Voucher.Id, lineId = item.Id })
+                        </td>
                     </tr>
                 }
                 </tbody>

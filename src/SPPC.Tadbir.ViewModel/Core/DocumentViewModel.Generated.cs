@@ -39,15 +39,11 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
         public string No { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
         public string OperationalStatus { get; set; }
     }
 }

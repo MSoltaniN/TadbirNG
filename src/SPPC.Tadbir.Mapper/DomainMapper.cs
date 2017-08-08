@@ -518,7 +518,7 @@ namespace SPPC.Tadbir.Mapper
                         ? new User()
                             {
                                 Id = viewModel.ApprovedById
-                        }
+                            }
                         : null);
             mapperConfig.CreateMap<Document, DocumentViewModel>();
             mapperConfig.CreateMap<DocumentViewModel, Document>()

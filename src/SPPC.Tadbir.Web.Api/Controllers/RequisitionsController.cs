@@ -176,9 +176,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private void SetVoucherLineDocument(RequisitionVoucherLineViewModel line)
         {
+            line.Document = _repository.GetRequisitionDocument(line.VoucherId);
             if (line.Id == 0)
             {
-                line.Document = _repository.GetRequisitionDocument(line.VoucherId);
                 var action = new DocumentActionViewModel()
                 {
                     CreatedById = _userContext.User.Id,

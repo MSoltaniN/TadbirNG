@@ -10,6 +10,8 @@ namespace SPPC.Tadbir.ViewModel.Procurement
         {
         }
 
+        public int Id { get; set; }
+
         public int No { get; set; }
 
         public string WarehouseName { get; set; }
