@@ -98,6 +98,19 @@ namespace SPPC.Tadbir.NHibernate
             _unitOfWork.Commit();
         }
 
+        public RequisitionVoucherLineViewModel GetRequisitionLine(int lineId)
+        {
+            var line = default(RequisitionVoucherLineViewModel);
+            var repository = _unitOfWork.GetRepository<RequisitionVoucherLine>();
+            var existing = repository.GetByID(lineId);
+            if (existing != null)
+            {
+                line = _mapper.Map<RequisitionVoucherLineViewModel>(existing);
+            }
+
+            return line;
+        }
+
         public void SaveRequisitionLine(RequisitionVoucherLineViewModel line)
         {
             Verify.ArgumentNotNull(line, "line");
@@ -105,24 +118,26 @@ namespace SPPC.Tadbir.NHibernate
             var documentRepository = _unitOfWork.GetRepository<Document>();
             if (line.Id == 0)
             {
-                try
+                var newLine = _mapper.Map<RequisitionVoucherLine>(line);
+                UpdateRequisitionLineAction(newLine);
+                var document = documentRepository.GetByID(line.Document.Id);
+                var lineAction = _mapper.Map<DocumentAction>(
+                    line.Document.Actions.Where(act => act.LineId == line.No).Single());
+                lineAction.Document = document;
+                document.Actions.Add(lineAction);
+                repository.Insert(newLine);
+                documentRepository.Update(document);
+            }
+            else
+            {
+                var existing = repository.GetByID(line.Id);
+                if (existing != null)
                 {
-                    var newLine = _mapper.Map<RequisitionVoucherLine>(line);
-                    UpdateRequisitionLineAction(newLine);
-                    var document = documentRepository.GetByID(line.Document.Id);
-                    var lineAction = _mapper.Map<DocumentAction>(
-                        line.Document.Actions.Where(act => act.LineId == line.No).Single());
-                    lineAction.Document = document;
-                    document.Actions.Add(lineAction);
-                    repository.Insert(newLine);
-                    documentRepository.Update(document);
-                    _unitOfWork.Commit();
+                    UpdateExistingVoucherLine(existing, line);
+                    repository.Update(existing);
                 }
-                catch (Exception ex)
-                {
-                    var msg = ex.Message;
-                    throw;
-                }
+
+                _unitOfWork.Commit();
             }
         }
 
@@ -152,6 +167,42 @@ namespace SPPC.Tadbir.NHibernate
             existing.FullAccount.Project = new Project() { Id = voucher.FullAccount.ProjectId };
             var mainAction = existing.Document.Actions.First();
             mainAction.ModifiedBy = new User() { Id = voucher.Document.Actions.First().ModifiedById };
+        }
+
+        private void UpdateExistingVoucherLine(RequisitionVoucherLine existing, RequisitionVoucherLineViewModel line)
+        {
+            existing.No = line.No;
+            existing.OrderedQuantity = line.OrderedQuantity;
+            existing.DeliveredQuantity = line.DeliveredQuantity;
+            existing.ReservedQuantity = line.ReservedQuantity;
+            existing.LastOrderedQuantity = line.LastOrderedQuantity;
+            existing.RequiredDate = JalaliDateTime.Parse(line.RequiredDate).ToGregorian();
+            existing.PromisedDate = !String.IsNullOrWhiteSpace(line.PromisedDate)
+                ? JalaliDateTime.Parse(line.PromisedDate).ToGregorian()
+                : (DateTime?)null;
+            existing.DeliveredDate = !String.IsNullOrWhiteSpace(line.DeliveredDate)
+                ? JalaliDateTime.Parse(line.DeliveredDate).ToGregorian()
+                : (DateTime?)null;
+            existing.LastOrderedDate = !String.IsNullOrWhiteSpace(line.LastOrderedDate)
+                ? JalaliDateTime.Parse(line.LastOrderedDate).ToGregorian()
+                : (DateTime?)null;
+            existing.Description = line.Description;
+            existing.Warehouse = new Warehouse() { Id = line.WarehouseId };
+            existing.Product = new Product() { Id = line.ProductId };
+            existing.Uom = new UnitOfMeasurement() { Id = line.UomId };
+            existing.FullAccount.Account = new Account() { Id = line.FullAccount.AccountId };
+            existing.FullAccount.Detail = new DetailAccount() { Id = line.FullAccount.DetailId };
+            existing.FullAccount.CostCenter = new CostCenter() { Id = line.FullAccount.CostCenterId };
+            existing.FullAccount.Project = new Project() { Id = line.FullAccount.ProjectId };
+            var lineAction = existing.Document.Actions
+                .Where(act => act.LineId == line.No)
+                .Single();
+            lineAction.ModifiedBy = new User()
+            {
+                Id = line.Document.Actions
+                        .Where(act => act.LineId == line.No)
+                        .Single().ModifiedById
+            };
         }
 
         private void UpdateRequisitionAction(RequisitionVoucher voucher)

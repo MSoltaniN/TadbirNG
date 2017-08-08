@@ -61,6 +61,17 @@ namespace SPPC.Tadbir.Service
             {
                 _apiClient.Insert(line, RequisitionApi.RequisitionLines, line.VoucherId);
             }
+            else
+            {
+                _apiClient.Update(line, RequisitionApi.RequisitionLine, line.VoucherId, line.Id);
+            }
+        }
+
+        public RequisitionVoucherLineViewModel GetDetailRequisitionLineInfo(int voucherId, int lineId)
+        {
+            var line = _apiClient.Get<RequisitionVoucherLineViewModel>(
+                RequisitionApi.RequisitionLine, voucherId, lineId);
+            return line;
         }
 
         private IApiClient _apiClient;

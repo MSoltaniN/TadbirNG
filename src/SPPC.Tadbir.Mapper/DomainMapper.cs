@@ -385,6 +385,29 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.RequiredDate,
                     opts => opts.MapFrom(
                         src => JalaliDateTime.FromDateTime(src.RequiredDate).ToShortDateString()));
+            mapperConfig.CreateMap<RequisitionVoucherLine, RequisitionVoucherLineViewModel>()
+                .ForMember(
+                    dest => dest.RequiredDate,
+                    opts => opts.MapFrom(
+                        src => JalaliDateTime.FromDateTime(src.RequiredDate).ToShortDateString()))
+                .ForMember(
+                    dest => dest.PromisedDate,
+                    opts => opts.MapFrom(
+                        src => src.PromisedDate.HasValue
+                            ? JalaliDateTime.FromDateTime(src.PromisedDate.Value).ToShortDateString()
+                            : String.Empty))
+                .ForMember(
+                    dest => dest.DeliveredDate,
+                    opts => opts.MapFrom(
+                        src => src.DeliveredDate.HasValue
+                            ? JalaliDateTime.FromDateTime(src.DeliveredDate.Value).ToShortDateString()
+                            : String.Empty))
+                .ForMember(
+                    dest => dest.LastOrderedDate,
+                    opts => opts.MapFrom(
+                        src => src.LastOrderedDate.HasValue
+                            ? JalaliDateTime.FromDateTime(src.LastOrderedDate.Value).ToShortDateString()
+                            : String.Empty));
             mapperConfig.CreateMap<RequisitionVoucherLineViewModel, RequisitionVoucherLine>()
                 .ForMember(
                     dest => dest.RequiredDate,

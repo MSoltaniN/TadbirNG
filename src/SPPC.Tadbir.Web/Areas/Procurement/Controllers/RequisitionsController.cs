@@ -105,7 +105,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
             return View(voucherLine);
         }
 
-        // POST: procurement/requisitions/createline/voucherId
+        // POST: procurement/requisitions/createline/id
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateLine(int id, RequisitionVoucherLineViewModel line)
@@ -123,6 +123,40 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
             }
 
             InitLineLookups();
+            return View(line);
+        }
+
+        // GET: procurement/requisitions/editline/id?lineId={lineId}
+        public ActionResult EditLine(int id, int lineId)
+        {
+            var line = _service.GetDetailRequisitionLineInfo(id, lineId);
+            if (line == null)
+            {
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
+            }
+
+            InitLineLookups();
+            return View(line);
+        }
+
+        // POST: procurement/requisitions/editline/id?lineId={lineId}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditLine(int id, int lineId, RequisitionVoucherLineViewModel line)
+        {
+            if (line == null)
+            {
+                return RedirectToAction("index", "error", new { area = String.Empty });
+            }
+
+            if (ModelState.IsValid)
+            {
+                line.Id = lineId;        // MVC binds value of id route value to Id property, which is wrong.
+                _service.SaveRequisitionLine(line);
+                return RedirectToAction("edit", new { id = id });
+            }
+
+            InitLookups();
             return View(line);
         }
 

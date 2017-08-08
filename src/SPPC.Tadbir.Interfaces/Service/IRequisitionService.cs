@@ -19,6 +19,7 @@ namespace SPPC.Tadbir.Service
 
         RequisitionFullViewModel GetDetailRequisitionInfo(int id);
         void SaveRequisition(RequisitionVoucherViewModel voucher);
+        RequisitionVoucherLineViewModel GetDetailRequisitionLineInfo(int voucherId, int lineId);
         void SaveRequisitionLine(RequisitionVoucherLineViewModel line);
     }
 }

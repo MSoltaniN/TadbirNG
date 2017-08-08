@@ -52,7 +52,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/requisitions
         [Route(RequisitionApi.RequisitionsUrl)]
-        public IHttpActionResult PostNewRequisitionVoucher([FromBody] RequisitionVoucherViewModel voucher)
+        public IHttpActionResult PostNewRequisition([FromBody] RequisitionVoucherViewModel voucher)
         {
             if (voucher == null)
             {
@@ -83,6 +83,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // GET: api/requisitions/{voucherId:int}/lines/{lineId:int}
+        [Route(RequisitionApi.RequisitionLineUrl)]
+        public IHttpActionResult GetOneRequisitionLine(int voucherId, int lineId)
+        {
+            if (lineId < 0)
+            {
+                return NotFound();
+            }
+
+            var line = _repository.GetRequisitionLine(lineId);
+            var result = (line != null && line.VoucherId == voucherId)
+                ? Json(line)
+                : NotFound() as IHttpActionResult;
+            return result;
+        }
+
         // POST: api/requisitions/{voucherId:int}/lines
         [Route(RequisitionApi.RequisitionLinesUrl)]
         public IHttpActionResult PostNewRequisitionVoucherLine(
@@ -101,6 +117,26 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             SetVoucherLineDocument(line);
             _repository.SaveRequisitionLine(line);
             return StatusCode(HttpStatusCode.Created);
+        }
+
+        // PUT: api/requisitions/{voucherId:int}/lines/{lineId:int}
+        [Route(RequisitionApi.RequisitionLineUrl)]
+        public IHttpActionResult PutModifiedRequisitionLine(
+            int voucherId, int lineId, [FromBody] RequisitionVoucherLineViewModel line)
+        {
+            if (voucherId < 0 || lineId < 0)
+            {
+                return BadRequest("Could not put modified requisition line because it does not exist.");
+            }
+
+            if (line == null || line.Id != lineId || line.VoucherId != voucherId)
+            {
+                return BadRequest();
+            }
+
+            SetVoucherLineDocument(line);
+            _repository.SaveRequisitionLine(line);
+            return Ok();
         }
 
         private static string GenerateNumber()

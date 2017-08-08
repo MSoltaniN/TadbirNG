@@ -22,6 +22,8 @@ namespace SPPC.Tadbir.NHibernate
 
         DocumentViewModel GetRequisitionDocument(int voucherId);
 
+        RequisitionVoucherLineViewModel GetRequisitionLine(int lineId);
+
         void SaveRequisition(RequisitionVoucherViewModel voucher);
 
         void SaveRequisitionLine(RequisitionVoucherLineViewModel line);
