@@ -413,6 +413,9 @@ namespace SPPC.Tadbir.Mapper
                             : String.Empty));
             mapperConfig.CreateMap<RequisitionVoucherLineViewModel, RequisitionVoucherLine>()
                 .ForMember(
+                    dest => dest.Action,
+                    opts => opts.MapFrom(src => src.DocumentAction))
+                .ForMember(
                     dest => dest.RequiredDate,
                     opts => opts.MapFrom(
                         src => JalaliDateTime.Parse(src.RequiredDate).ToGregorian()))
