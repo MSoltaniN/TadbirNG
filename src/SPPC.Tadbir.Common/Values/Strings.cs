@@ -308,6 +308,9 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         public const string GroupApprove = "تصویب گروهی";
 
+        /// <summary>
+        /// Localized text for Requet Lines header text
+        /// </summary>
         public const string RequestLines = "آرتیکل های درخواست";
 
         /// <summary>

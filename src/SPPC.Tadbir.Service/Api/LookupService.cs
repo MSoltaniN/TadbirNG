@@ -13,9 +13,9 @@ namespace SPPC.Tadbir.Service
     public class LookupService : ILookupService
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LookupService"/> class.
+        /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="apiClient"></param>
+        /// <param name="apiClient">پیاده سازی اینترفیس مربوط به کار با سرویس</param>
         public LookupService(IApiClient apiClient)
         {
             _apiClient = apiClient;
@@ -35,9 +35,9 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// Retrieves existing detail accounts as a lookup collection
+        /// تفصیلی های شناور موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
         /// </summary>
-        /// <returns>Lookup collection of existing detail accounts</returns>
+        /// <returns>مجموعه تفصیلی های شناور موجود</returns>
         public IEnumerable<KeyValue> LookupDetailAccounts()
         {
             var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.DetailAccounts);
@@ -45,9 +45,9 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// Retrieves existing cost centers as a lookup collection
+        /// مراکز هزینه موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
         /// </summary>
-        /// <returns>Lookup collection of existing cost centers</returns>
+        /// <returns>مجموعه مراکز هزینه موجود</returns>
         public IEnumerable<KeyValue> LookupCostCenters()
         {
             var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.CostCenters);
@@ -55,9 +55,9 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// Retrieves existing projects as a lookup collection
+        /// پروژه های موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
         /// </summary>
-        /// <returns>Lookup collection of existing projects</returns>
+        /// <returns>مجموعه پروژه های موجود</returns>
         public IEnumerable<KeyValue> LookupProjects()
         {
             var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.Projects);
@@ -65,9 +65,9 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// Retrieves existing currencies as a lookup collection
+        /// ارزهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
         /// </summary>
-        /// <returns>Lookup collection of existing currencies</returns>
+        /// <returns>مجموعه ارزهای موجود</returns>
         public IEnumerable<KeyValue> LookupCurrencies()
         {
             var currencyLookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.CostCenters);
@@ -75,9 +75,9 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// Retrieves existing business partners as a lookup collection
+        /// شرکای تجاری موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
         /// </summary>
-        /// <returns>Lookup collection of existing business partners</returns>
+        /// <returns>مجموعه شرکای تجاری موجود</returns>
         public IEnumerable<KeyValue> LookupPartners()
         {
             var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.Partners);
@@ -85,9 +85,9 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// Retrieves existing business units as a lookup collection
+        /// واحد های سازمانی موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
         /// </summary>
-        /// <returns>Lookup collection of existing business units</returns>
+        /// <returns>مجموعه واحد های سازمانی موجود</returns>
         public IEnumerable<KeyValue> LookupBusinessUnits()
         {
             var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.Units);
@@ -95,39 +95,59 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// Retrieves existing warehouses as a lookup collection
+        /// انبارهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
         /// </summary>
-        /// <returns>Lookup collection of existing warehouses</returns>
+        /// <returns>مجموعه انبارهای موجود</returns>
         public IEnumerable<KeyValue> LookupWarehouses()
         {
             var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.Warehouses);
             return lookup;
         }
 
+        /// <summary>
+        /// کالاهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
+        /// </summary>
+        /// <returns>مجموعه کالاهای موجود</returns>
         public IEnumerable<KeyValue> LookupProducts()
         {
             var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.Products);
             return lookup;
         }
 
+        /// <summary>
+        /// واحدهای اندازه گیری موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
+        /// </summary>
+        /// <returns>مجموعه واحدهای اندازه گیری موجود</returns>
         public IEnumerable<KeyValue> LookupUnitsOfMeasurement()
         {
             var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.UnitsOfMeasurement);
             return lookup;
         }
 
+        /// <summary>
+        /// انواع درخواست کالاهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
+        /// </summary>
+        /// <returns>مجموعه انواع درخواست کالاهای موجود</returns>
         public IEnumerable<KeyValue> LookupRequisitionVoucherTypes()
         {
             var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.RequisitionVoucherTypes);
             return lookup;
         }
 
+        /// <summary>
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات درخواست کار را خوانده و برمی گرداند 
+        /// </summary>
+        /// <returns>وابستگی های مورد نیاز درخواست کار</returns>
         public VoucherDependsViewModel LookupRequisitionVoucherDepends()
         {
             var voucherDepends = _apiClient.Get<VoucherDependsViewModel>(LookupApi.RequisitionVoucherDepends);
             return voucherDepends;
         }
 
+        /// <summary>
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات سطر درخواست کار را خوانده و برمی گرداند 
+        /// </summary>
+        /// <returns>وابستگی های مورد نیاز سطر درخواست کار</returns>
         public VoucherLineDependsViewModel LookupRequisitionVoucherLineDepends()
         {
             var lineDepends = _apiClient.Get<VoucherLineDependsViewModel>(LookupApi.RequisitionVoucherLineDepends);

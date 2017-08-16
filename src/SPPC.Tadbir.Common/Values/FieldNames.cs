@@ -242,6 +242,9 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         public const string ReferenceField = "ارجاع";
 
+        /// <summary>
+        /// Localized name of Requester Voucher Type field
+        /// </summary>
         public const string RequisitionVoucherTypeField = "نوع درخواست کالا";
 
         /// <summary>
@@ -264,10 +267,19 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         public const string ReceiverUnitField = "واحد دریافت کننده";
 
+        /// <summary>
+        /// Localized name of Required Date field
+        /// </summary>
         public const string RequiredDateField = "تاریخ نیاز";
 
+        /// <summary>
+        /// Localized name of Promised Date field
+        /// </summary>
         public const string PromisedDateField = "تاریخ تحویل توافق شده";
 
+        /// <summary>
+        /// Localized name of Warehouse field
+        /// </summary>
         public const string WarehouseField = "انبار";
 
         /// <summary>
@@ -285,22 +297,49 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         public const string WarehouseCommentField = "نظریه انبار";
 
+        /// <summary>
+        /// Localized name of Product Name field
+        /// </summary>
         public const string ProductNameField = "نام کالا";
 
+        /// <summary>
+        /// Localized name of UOM (Unit of Measurement) field
+        /// </summary>
         public const string UomField = "واحد اندازه گیری";
 
+        /// <summary>
+        /// Localized name of Ordered Quantity field
+        /// </summary>
         public const string OrderedQuantityField = "مقدار درخواستی";
 
+        /// <summary>
+        /// Alternate localized name of Description field
+        /// </summary>
         public const string RemarksField = "ملاحظات";
 
+        /// <summary>
+        /// Localized name of DeliveredQuantity field
+        /// </summary>
         public const string DeliveredQuantityField = "مقدار تحویلی";
 
+        /// <summary>
+        /// Localized name of Reserved Quantity field
+        /// </summary>
         public const string ReservedQuantityField = "مقدار رزرو";
 
+        /// <summary>
+        /// Localized name of Last Ordered Quantity field
+        /// </summary>
         public const string LastOrderedQuantityField = "مقدار درخواست قبلی";
 
+        /// <summary>
+        /// Localized name of Delivered Date field
+        /// </summary>
         public const string DeliveredDateField = "تاریخ تحویل";
 
+        /// <summary>
+        /// Localized name of Last Ordered Date field
+        /// </summary>
         public const string LastOrderedDateField = "تاریخ درخواست قبلی";
 
         /// <summary>

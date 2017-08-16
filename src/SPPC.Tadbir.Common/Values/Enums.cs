@@ -74,15 +74,49 @@ namespace SPPC.Tadbir.Values
         InvoiceQuote = 12
     }
 
+    /// <summary>
+    /// نوع وضعیت های ثبتی یا ریالی را متناظر با شناسه های دیتابیسی تعریف می کند
+    /// </summary>
     public enum DocumentStatuses
     {
+        /// <summary>
+        /// وضعیت نامشخص
+        /// </summary>
         None = 0,
+
+        /// <summary>
+        /// وضعیت پیش نویس
+        /// </summary>
         Draft = 1,
+
+        /// <summary>
+        /// وضعیت ثبت نشده
+        /// </summary>
         Unchecked = 2,
+
+        /// <summary>
+        /// وضعیت ثبت شده
+        /// </summary>
         Checked = 3,
+
+        /// <summary>
+        /// وضعیت ثبت عادی
+        /// </summary>
         NormalCheck = 4,
+
+        /// <summary>
+        /// وضعیت ثبت قطعی
+        /// </summary>
         FinalCheck = 5,
+
+        /// <summary>
+        /// وضعیت ریالی نشده
+        /// </summary>
         NotPriced = 6,
+
+        /// <summary>
+        /// وضعیت ریالی شده
+        /// </summary>
         Priced = 7
     }
 }
