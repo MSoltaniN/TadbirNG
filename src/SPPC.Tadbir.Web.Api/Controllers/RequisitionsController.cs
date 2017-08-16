@@ -114,7 +114,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest();
             }
 
-            SetVoucherLineDocument(line);
+            SetVoucherLineAction(line);
             _repository.SaveRequisitionLine(line);
             return StatusCode(HttpStatusCode.Created);
         }
@@ -134,7 +134,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest();
             }
 
-            SetVoucherLineDocument(line);
+            SetVoucherLineAction(line);
             _repository.SaveRequisitionLine(line);
             return Ok();
         }
@@ -174,25 +174,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
-        private void SetVoucherLineDocument(RequisitionVoucherLineViewModel line)
+        private void SetVoucherLineAction(RequisitionVoucherLineViewModel line)
         {
-            line.Document = _repository.GetRequisitionDocument(line.VoucherId);
+            var document = _repository.GetRequisitionDocument(line.VoucherId);
             if (line.Id == 0)
             {
                 var action = new DocumentActionViewModel()
                 {
                     CreatedById = _userContext.User.Id,
-                    ModifiedById = _userContext.User.Id,
-                    LineId = line.No
+                    ModifiedById = _userContext.User.Id
                 };
-                line.Document.Actions.Add(action);
+                line.DocumentAction = action;
+                line.DocumentId = document.Id;
             }
             else
             {
-                var lineAction = line.Document.Actions
-                    .Where(act => act.LineId == line.No)
-                    .Single();
-                lineAction.ModifiedById = _userContext.User.Id;
+                line.DocumentAction.ModifiedById = _userContext.User.Id;
             }
         }
 

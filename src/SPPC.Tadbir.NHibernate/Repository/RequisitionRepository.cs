@@ -115,19 +115,16 @@ namespace SPPC.Tadbir.NHibernate
         {
             Verify.ArgumentNotNull(line, "line");
             var repository = _unitOfWork.GetRepository<RequisitionVoucherLine>();
-            var documentRepository = _unitOfWork.GetRepository<Document>();
+            var actionRepository = _unitOfWork.GetRepository<DocumentAction>();
             if (line.Id == 0)
             {
                 var newLine = _mapper.Map<RequisitionVoucherLine>(line);
                 UpdateRequisitionLineAction(newLine);
-                var document = documentRepository.GetByID(line.Document.Id);
-                var lineAction = newLine.Document.Actions
-                    .Where(act => act.LineId == line.No)
-                    .Single();
-                lineAction.Document = document;
-                document.Actions.Add(lineAction);
+                newLine.Action.Document = new Document() { Id = line.DocumentId };
+                actionRepository.Insert(newLine.Action);
                 repository.Insert(newLine);
-                documentRepository.Update(document);
+                newLine.Action.LineId = newLine.Id;
+                actionRepository.Update(newLine.Action);
             }
             else
             {
@@ -195,14 +192,10 @@ namespace SPPC.Tadbir.NHibernate
             existing.FullAccount.Detail = new DetailAccount() { Id = line.FullAccount.DetailId };
             existing.FullAccount.CostCenter = new CostCenter() { Id = line.FullAccount.CostCenterId };
             existing.FullAccount.Project = new Project() { Id = line.FullAccount.ProjectId };
-            var lineAction = existing.Document.Actions
-                .Where(act => act.LineId == line.No)
-                .Single();
-            lineAction.ModifiedBy = new User()
+            existing.Action.ModifiedDate = DateTime.Now;
+            existing.Action.ModifiedBy = new User()
             {
-                Id = line.Document.Actions
-                        .Where(act => act.LineId == line.No)
-                        .Single().ModifiedById
+                Id = line.DocumentAction.ModifiedById
             };
         }
 
@@ -213,6 +206,7 @@ namespace SPPC.Tadbir.NHibernate
                 var mainAction = voucher.Document.Actions.First();
                 mainAction.Document = voucher.Document;
                 mainAction.CreatedDate = DateTime.Now;
+                mainAction.ModifiedDate = DateTime.Now;
             }
         }
 
@@ -220,12 +214,8 @@ namespace SPPC.Tadbir.NHibernate
         {
             if (line.Id == 0)
             {
-                var lineAction = line.Document.Actions
-                    .Where(act => act.LineId == line.No)
-                    .Single();
-                lineAction.Document = line.Document;
-                lineAction.CreatedDate = DateTime.Now;
-                lineAction.ModifiedDate = DateTime.Now;
+                line.Action.CreatedDate = DateTime.Now;
+                line.Action.ModifiedDate = DateTime.Now;
             }
         }
 

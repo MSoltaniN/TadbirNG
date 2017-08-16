@@ -709,7 +709,7 @@ CREATE TABLE [Procurement].[RequisitionVoucherLine] (
     [FiscalPeriodID]        INT              NOT NULL,
     [FullAccountID]         INT              NOT NULL,
     [FullDetailID]          INT              NULL,
-	[DocumentID]            INT              NOT NULL,
+	[ActionID]              INT              NOT NULL,
     [No]                    INT              NOT NULL,
     [OrderedQuantity]       FLOAT            NOT NULL,
     [DeliveredQuantity]     FLOAT            NULL,
@@ -719,7 +719,7 @@ CREATE TABLE [Procurement].[RequisitionVoucherLine] (
     [PromisedDate]          DATETIME         NULL,
     [DeliveredDate]         DATETIME         NULL,
     [LastOrderedDate]       DATETIME         NULL,
-    [IsActive]              BIT              NOT NULL,
+    [IsActive]              BIT              CONSTRAINT [DF_Procurement_RequisitionVoucherLine_IsActive] DEFAULT (0) NOT NULL,
     [Description]           NVARCHAR(256)    NULL,
     [Timestamp]             TIMESTAMP        NOT NULL,
     [ModifiedDate]          DATETIME         CONSTRAINT [DF_Procurement_RequisitionVoucherLine_ModifiedDate] DEFAULT (getdate()) NOT NULL,
@@ -733,7 +733,7 @@ CREATE TABLE [Procurement].[RequisitionVoucherLine] (
     , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
     , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Finance_FullAccount] FOREIGN KEY ([FullAccountID]) REFERENCES [Finance].[FullAccount]([FullAccountID])
     , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Finance_FullDetail] FOREIGN KEY ([FullDetailID]) REFERENCES [Finance].[FullDetail]([FullDetailID])
-    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document]([DocumentID])
+    , CONSTRAINT [FK_Procurement_RequisitionVoucherLine_Core_DocumentAction] FOREIGN KEY ([ActionID]) REFERENCES [Core].[DocumentAction]([ActionID])
 )
 GO
 

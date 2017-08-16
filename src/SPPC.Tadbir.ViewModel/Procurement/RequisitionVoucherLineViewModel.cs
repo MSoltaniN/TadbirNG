@@ -30,6 +30,8 @@ namespace SPPC.Tadbir.ViewModel.Procurement
 
         public int BranchId { get; set; }
 
-        public DocumentViewModel Document { get; set; }
+        public int DocumentId { get; set; }
+
+        public DocumentActionViewModel DocumentAction { get; set; }
     }
 }

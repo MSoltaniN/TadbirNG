@@ -14,6 +14,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.ViewModel.Procurement
 {
@@ -27,7 +28,8 @@ namespace SPPC.Tadbir.ViewModel.Procurement
         /// </summary>
         public RequisitionVoucherLineViewModel()
         {
-            this.Description = String.Empty;
+            Description = String.Empty;
+            DocumentAction = new DocumentActionViewModel();
         }
 
         /// <summary>

@@ -173,7 +173,17 @@ INSERT INTO [Core].[DocumentAction] (ActionID, DocumentID, CreatedByID, Modified
 INSERT INTO [Core].[DocumentAction] (ActionID, DocumentID, CreatedByID, ModifiedByID, CreatedDate, ModifiedDate)
     VALUES (4, 4, 1, 1, getdate(), getdate())
 INSERT INTO [Core].[DocumentAction] (ActionID, DocumentID, CreatedByID, ModifiedByID, CreatedDate, ModifiedDate)
-    VALUES (5, 5, 1, 1, getdate(), getdate())
+    VALUES (5, 4, 1, 1, getdate(), getdate())
+INSERT INTO [Core].[DocumentAction] (ActionID, DocumentID, CreatedByID, ModifiedByID, CreatedDate, ModifiedDate)
+    VALUES (6, 4, 1, 1, getdate(), getdate())
+INSERT INTO [Core].[DocumentAction] (ActionID, DocumentID, CreatedByID, ModifiedByID, CreatedDate, ModifiedDate)
+    VALUES (7, 4, 1, 1, getdate(), getdate())
+INSERT INTO [Core].[DocumentAction] (ActionID, DocumentID, CreatedByID, ModifiedByID, CreatedDate, ModifiedDate)
+    VALUES (8, 4, 1, 1, getdate(), getdate())
+INSERT INTO [Core].[DocumentAction] (ActionID, DocumentID, CreatedByID, ModifiedByID, CreatedDate, ModifiedDate)
+    VALUES (9, 4, 1, 1, getdate(), getdate())
+INSERT INTO [Core].[DocumentAction] (ActionID, DocumentID, CreatedByID, ModifiedByID, CreatedDate, ModifiedDate)
+    VALUES (10, 5, 1, 1, getdate(), getdate())
 SET IDENTITY_INSERT [Core].[DocumentAction] OFF
 
 SET IDENTITY_INSERT [Procurement].[RequisitionVoucher] ON
@@ -196,18 +206,18 @@ SET IDENTITY_INSERT [Procurement].[RequisitionVoucher] OFF
 
 SET IDENTITY_INSERT [Procurement].[RequisitionVoucherLine] ON
 INSERT INTO [Procurement].[RequisitionVoucherLine]
-    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, DocumentID, [No], OrderedQuantity, RequiredDate)
-    VALUES (1, 4, 2, 5, 2, 1, 1, 1, 4, 1, 6.5, N'2017-08-12')
+    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, ActionID, [No], OrderedQuantity, RequiredDate)
+    VALUES (1, 4, 2, 5, 2, 1, 1, 1, 5, 1, 6.5, N'2017-08-12')
 INSERT INTO [Procurement].[RequisitionVoucherLine]
-    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, DocumentID, [No], OrderedQuantity, RequiredDate)
-    VALUES (2, 4, 1, 2, 1, 1, 1, 1, 4, 2, 1, N'2017-08-11')
+    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, ActionID, [No], OrderedQuantity, RequiredDate)
+    VALUES (2, 4, 1, 2, 1, 1, 1, 1, 6, 2, 1, N'2017-08-11')
 INSERT INTO [Procurement].[RequisitionVoucherLine]
-    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, DocumentID, [No], OrderedQuantity, RequiredDate)
-    VALUES (3, 4, 3, 3, 1, 1, 1, 1, 4, 3, 4, N'2017-08-12')
+    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, ActionID, [No], OrderedQuantity, RequiredDate)
+    VALUES (3, 4, 3, 3, 1, 1, 1, 1, 7, 3, 4, N'2017-08-12')
 INSERT INTO [Procurement].[RequisitionVoucherLine]
-    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, DocumentID, [No], OrderedQuantity, RequiredDate)
-    VALUES (4, 4, 3, 6, 3, 1, 1, 1, 4, 4, 2, N'2017-08-12')
+    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, ActionID, [No], OrderedQuantity, RequiredDate)
+    VALUES (4, 4, 3, 6, 3, 1, 1, 1, 8, 4, 2, N'2017-08-12')
 INSERT INTO [Procurement].[RequisitionVoucherLine]
-    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, DocumentID, [No], OrderedQuantity, RequiredDate)
-    VALUES (5, 4, 1, 1, 1, 1, 1, 1, 4, 5, 1, N'2017-08-13')
+    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, ActionID, [No], OrderedQuantity, RequiredDate)
+    VALUES (5, 4, 1, 1, 1, 1, 1, 1, 9, 5, 1, N'2017-08-13')
 SET IDENTITY_INSERT [Procurement].[RequisitionVoucherLine] OFF

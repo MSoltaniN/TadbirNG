@@ -35,7 +35,6 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
         public string CreatedDate { get; set; }
 
         /// <summary>

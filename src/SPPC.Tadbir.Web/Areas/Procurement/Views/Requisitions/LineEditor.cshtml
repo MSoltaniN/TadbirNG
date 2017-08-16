@@ -4,10 +4,9 @@
 @model SPPC.Tadbir.ViewModel.Procurement.RequisitionVoucherLineViewModel
 
 @{
-    string title = String.Format(LocalStrings.CreateNewEntity, Entities.Article);
+    string title = ViewBag.Title;
     string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.Requests);
     string editTitle = String.Format(LocalStrings.EditExistingEntity, Entities.Request);
-    ViewBag.Title = title;
     var htmlAttributes = new Dictionary<string, object>();
     htmlAttributes.Add("class", "form-control");
     var accounts = (ViewBag.Accounts as IEnumerable<KeyValue>)
@@ -49,6 +48,12 @@
             @Html.HiddenFor(model => model.VoucherId)
             @Html.HiddenFor(model => model.BranchId)
             @Html.HiddenFor(model => model.FiscalPeriodId)
+            @Html.HiddenFor(model => model.DocumentAction.Id)
+            @Html.HiddenFor(model => model.DocumentAction.CreatedById)
+            @Html.HiddenFor(model => model.DocumentAction.CreatedDate)
+            @Html.HiddenFor(model => model.DocumentAction.ModifiedById)
+            @Html.HiddenFor(model => model.DocumentAction.ModifiedDate)
+            @Html.HiddenFor(model => model.DocumentAction.LineId)
 
             <div class="row">
                 <div class="col-sm-6">

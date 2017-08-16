@@ -154,7 +154,7 @@ namespace SPPC.Tadbir.Model.Procurement
         /// <summary>
         /// Gets or sets the todo: add description...
         /// </summary>
-        public virtual Document Document { get; set; }
+        public virtual DocumentAction Action { get; set; }
 
         private void InitReferences()
         {
@@ -165,7 +165,7 @@ namespace SPPC.Tadbir.Model.Procurement
             Branch = new Branch();
             FiscalPeriod = new FiscalPeriod();
             FullAccount = new FullAccount();
-            Document = new Document();
+            Action = new DocumentAction();
         }
     }
 }

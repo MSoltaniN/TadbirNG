@@ -4,7 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PagedList;
+using SPPC.Framework.Values;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
@@ -95,6 +97,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
         // GET: procurement/requisitions/createline/id
         public ViewResult CreateLine(int id)
         {
+            ViewBag.Title = String.Format(LocalStrings.CreateNewEntity, Entities.Article);
             InitLineLookups();
             var voucherLine = new RequisitionVoucherLineViewModel()
             {
@@ -129,6 +132,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
         // GET: procurement/requisitions/editline/id?lineId={lineId}
         public ActionResult EditLine(int id, int lineId)
         {
+            ViewBag.Title = String.Format(LocalStrings.EditExistingEntity, Entities.Article);
             var voucherLine = _service.GetDetailRequisitionLineInfo(id, lineId);
             if (voucherLine == null)
             {
