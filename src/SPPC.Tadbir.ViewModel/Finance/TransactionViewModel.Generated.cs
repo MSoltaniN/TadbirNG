@@ -30,8 +30,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
             this.No = String.Empty;
             this.Date = "1390/09/09";
             this.Description = String.Empty;
-            this.Status = TransactionStatus.Draft;
-            this.OperationalStatus = DocumentStatus.Created;
         }
 
         /// <summary>
@@ -60,21 +58,5 @@ namespace SPPC.Tadbir.ViewModel.Finance
         [Display(Name = FieldNames.DescriptionField)]
         [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
-
-        /// <summary>
-        /// وضعیت ثبت سند مالی (مقادیر ممکن عبارتند از : پیش نویس، ثبت نشده، ثبت عادی و ثبت قطعی)
-        /// </summary>
-        [Display(Name = FieldNames.StatusField)]
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string Status { get; set; }
-
-        /// <summary>
-        /// وضعیت عملیاتی سند مالی (مقادیر ممکن عبارتند از : تنظیم شده، بررسی شده، تایید شده و تصویب شده)
-        /// </summary>
-        [Display(Name = FieldNames.OperationalStatusField)]
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string OperationalStatus { get; set; }
     }
 }

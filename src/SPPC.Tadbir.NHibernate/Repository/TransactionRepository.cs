@@ -243,12 +243,13 @@ namespace SPPC.Tadbir.NHibernate
             }
         }
 
+        // !!! WARNING : Broken functionality during refactoring
         private static void UpdateExistingTransaction(Transaction existing, TransactionViewModel transaction)
         {
             existing.No = transaction.No;
             existing.Date = JalaliDateTime.Parse(transaction.Date).ToGregorian();
             existing.Description = transaction.Description;
-            existing.ModifiedBy = new User() { Id = transaction.ModifiedById };
+            //existing.ModifiedBy = new User() { Id = transaction.ModifiedById };
         }
 
         private static void UpdateExistingArticle(TransactionLine existing, TransactionLineViewModel article)

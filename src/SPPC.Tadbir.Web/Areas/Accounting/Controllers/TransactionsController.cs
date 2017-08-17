@@ -50,6 +50,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return GetNextResult(routeValues);
         }
 
+        // !!! WARNING : Broken functionality during refactoring
         // GET: accounting/transactions/create
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
         public ViewResult Create()
@@ -59,8 +60,6 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             {
                 FiscalPeriodId = TempContext.CurrentFiscalPeriodId,
                 BranchId = TempContext.CurrentBranchId,
-                CreatedById = currentContext.User.Id,
-                ModifiedById = currentContext.User.Id,
                 Date = JalaliDateTime.Now.ToShortDateString()
             };
 
@@ -110,7 +109,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
                 return RedirectToAction("notfound", "error", new { area = String.Empty });
             }
 
-            transaction.Transaction.ModifiedById = _contextManager.CurrentContext.User.Id;
+            //transaction.Transaction.ModifiedById = _contextManager.CurrentContext.User.Id;
             return View(transaction);
         }
 

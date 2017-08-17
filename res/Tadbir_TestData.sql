@@ -30,10 +30,10 @@ INSERT INTO [Finance].[Currency] (CurrencyID, Name) VALUES (1, N'ریال')
 SET IDENTITY_INSERT [Finance].[Currency] OFF
 
 SET IDENTITY_INSERT [Finance].[Transaction] ON
-INSERT INTO [Finance].[Transaction] (TransactionID, FiscalPeriodID, BranchID, CreatedByID, ModifiedByID, [No], [Date], [Description], [Status], OperationalStatus)
-  VALUES (1, 1, 1, 1, 1, N'1', N'2017-02-14', N'سند اولیه تاسیس', N'Draft', N'Created')
-INSERT INTO [Finance].[Transaction] (TransactionID, FiscalPeriodID, BranchID, CreatedByID, ModifiedByID, [No], [Date], [Description], [Status], OperationalStatus)
-  VALUES (2, 1, 1, 1, 1, N'2', N'2017-02-17', N'خرید نقدی لوازم اداری', N'Draft', N'Created')
+INSERT INTO [Finance].[Transaction] (TransactionID, FiscalPeriodID, BranchID, DocumentID, CreatedByID, ModifiedByID, [No], [Date], [Description], [Status], OperationalStatus)
+  VALUES (1, 1, 1, 6, 1, 1, N'1', N'2017-02-14', N'سند اولیه تاسیس', N'Draft', N'Created')
+INSERT INTO [Finance].[Transaction] (TransactionID, FiscalPeriodID, BranchID, DocumentID, CreatedByID, ModifiedByID, [No], [Date], [Description], [Status], OperationalStatus)
+  VALUES (2, 1, 1, 7, 1, 1, N'2', N'2017-02-17', N'خرید نقدی لوازم اداری', N'Draft', N'Created')
 SET IDENTITY_INSERT [Finance].[Transaction] OFF
 
 SET IDENTITY_INSERT [Finance].[TransactionLine] ON
@@ -161,6 +161,8 @@ INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, [No], OperationalSt
 INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, [No], OperationalStatus) VALUES (3, 2, 1, N'3', N'Created')
 INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, [No], OperationalStatus) VALUES (4, 2, 1, N'4', N'Created')
 INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, [No], OperationalStatus) VALUES (5, 2, 1, N'5', N'Created')
+INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, [No], OperationalStatus) VALUES (6, 1, 1, N'6', N'Created')
+INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, [No], OperationalStatus) VALUES (7, 1, 1, N'7', N'Created')
 SET IDENTITY_INSERT [Core].[Document] OFF
 
 SET IDENTITY_INSERT [Core].[DocumentAction] ON
@@ -184,6 +186,10 @@ INSERT INTO [Core].[DocumentAction] (ActionID, DocumentID, CreatedByID, Modified
     VALUES (9, 4, 1, 1, getdate(), getdate())
 INSERT INTO [Core].[DocumentAction] (ActionID, DocumentID, CreatedByID, ModifiedByID, CreatedDate, ModifiedDate)
     VALUES (10, 5, 1, 1, getdate(), getdate())
+INSERT INTO [Core].[DocumentAction] (ActionID, DocumentID, CreatedByID, ModifiedByID, CreatedDate, ModifiedDate)
+    VALUES (11, 6, 1, 1, getdate(), getdate())
+INSERT INTO [Core].[DocumentAction] (ActionID, DocumentID, CreatedByID, ModifiedByID, CreatedDate, ModifiedDate)
+    VALUES (12, 7, 1, 1, getdate(), getdate())
 SET IDENTITY_INSERT [Core].[DocumentAction] OFF
 
 SET IDENTITY_INSERT [Procurement].[RequisitionVoucher] ON

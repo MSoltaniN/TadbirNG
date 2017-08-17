@@ -192,15 +192,14 @@ namespace SPPC.Tadbir.Mapper
                             .Select(line => line.Credit)
                             .Sum()));
 
+            // !!! WARNING : Broken functionality during refactoring
             mapperConfig.CreateMap<TransactionViewModel, Transaction>()
                 .ForMember(
                     dest => dest.Date,
                     opts => opts.MapFrom(
                         src => JalaliDateTime.Parse(src.Date).ToGregorian()))
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
-                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
-                .AfterMap((viewModel, model) => model.CreatedBy.Id = viewModel.CreatedById)
-                .AfterMap((viewModel, model) => model.ModifiedBy.Id = viewModel.ModifiedById);
+                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
             mapperConfig.CreateMap<TransactionLine, TransactionLineViewModel>();
             mapperConfig.CreateMap<TransactionLine, TransactionLineFullViewModel>()
                 .ForMember(

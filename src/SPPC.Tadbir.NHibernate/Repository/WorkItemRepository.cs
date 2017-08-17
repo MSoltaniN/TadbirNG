@@ -29,6 +29,7 @@ namespace SPPC.Tadbir.NHibernate
             _mapper = mapper;
         }
 
+        // !!! WARNING : Broken functionality during refactoring
         /// <summary>
         /// مجموعه کارهای موجود در کارتابل دریافتی کاربر تعیین شده را از دیتابیس می خواند.
         /// </summary>
@@ -55,7 +56,7 @@ namespace SPPC.Tadbir.NHibernate
                 {
                     var document = documentRepository.GetByID(workItem.DocumentId);
                     workItem.DocumentNo = document.No;
-                    workItem.DocumentStatus = document.OperationalStatus;
+                    //workItem.DocumentStatus = document.OperationalStatus;
                 }
             }
 
@@ -209,17 +210,17 @@ namespace SPPC.Tadbir.NHibernate
             var transaction = transactionRepository.GetByID(workItem.DocumentId);
             if (transaction != null)
             {
-                transaction.Status = workItem.Status;
-                transaction.OperationalStatus = workItem.OperationalStatus;
-                if (workItem.OperationalStatus == DocumentStatus.Confirmed)
-                {
-                    transaction.ConfirmedBy = new User() { Id = workItem.CreatedById };
-                }
+                //transaction.Status = workItem.Status;
+                //transaction.OperationalStatus = workItem.OperationalStatus;
+                //if (workItem.OperationalStatus == DocumentStatus.Confirmed)
+                //{
+                //    transaction.ConfirmedBy = new User() { Id = workItem.CreatedById };
+                //}
 
-                if (workItem.OperationalStatus == DocumentStatus.Approved)
-                {
-                    transaction.ApprovedBy = new User() { Id = workItem.CreatedById };
-                }
+                //if (workItem.OperationalStatus == DocumentStatus.Approved)
+                //{
+                //    transaction.ApprovedBy = new User() { Id = workItem.CreatedById };
+                //}
 
                 transactionRepository.Update(transaction);
                 didUpdate = true;

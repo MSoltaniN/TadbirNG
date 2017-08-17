@@ -39,12 +39,6 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Map(x => x.Description)
                 .Length(512)
                 .Nullable();
-            Map(x => x.Status)
-                .Length(64)
-                .Not.Nullable();
-            Map(x => x.OperationalStatus)
-                .Length(64)
-                .Not.Nullable();
             Map(x => x.RowGuid, "rowguid")
                 .Generated.Insert();
             Map(x => x.ModifiedDate);
@@ -62,22 +56,8 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Column("FiscalPeriodID")
                 .Not.LazyLoad()
                 .Cascade.None();
-            References(x => x.CreatedBy)
-                .Column("CreatedByID")
-                .Not.LazyLoad()
-                .Cascade.None();
-            References(x => x.ModifiedBy)
-                .Column("ModifiedByID")
-                .Not.LazyLoad()
-                .Cascade.None();
-            References(x => x.ConfirmedBy)
-                .Column("ConfirmedByID")
-                .Nullable()
-                .Not.LazyLoad()
-                .Cascade.None();
-            References(x => x.ApprovedBy)
-                .Column("ApprovedByID")
-                .Nullable()
+            References(x => x.Document)
+                .Column("DocumentID")
                 .Not.LazyLoad()
                 .Cascade.None();
             HasMany(x => x.Lines)

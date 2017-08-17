@@ -521,6 +521,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return String.Join(Environment.NewLine, messages);
         }
 
+        // !!! WARNING : Broken functionality during refactoring
         private string ValidateStateOperation(string operation, int transactionId)
         {
             string result = String.Empty;
@@ -529,14 +530,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 result = String.Format(ValidationMessages.ItemNotFound, Entities.TransactionLongName);
             }
-            else if (!StateOperationValidator.Validate(operation, summary.OperationalStatus))
+            else if (!StateOperationValidator.Validate(operation, DocumentStatus.Created))
             {
                 result = String.Format(
                     Strings.InvalidDocumentOperation,
                     Entities.TransactionLongName,
                     summary.No,
                     DocumentAction.ToLocalValue(operation),
-                    DocumentStatus.ToLocalValue(summary.OperationalStatus));
+                    DocumentStatus.ToLocalValue(DocumentStatus.Created));
             }
 
             return result;

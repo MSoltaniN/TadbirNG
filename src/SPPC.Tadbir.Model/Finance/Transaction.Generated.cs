@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
 using BabakSoft.Platform.Domain;
+using SPPC.Tadbir.Model.Core;
 
 namespace SPPC.Tadbir.Model.Finance
 {
@@ -31,8 +32,6 @@ namespace SPPC.Tadbir.Model.Finance
             this.No = String.Empty;
             this.Date = DateTime.Now;
             this.Description = String.Empty;
-            this.Status = String.Empty;
-            this.OperationalStatus = String.Empty;
             this.ModifiedDate = DateTime.Now;
             InitReferences();
         }
@@ -58,16 +57,6 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual string Description { get; set; }
 
         /// <summary>
-        /// وضعیت ثبت سند مالی (مقادیر ممکن عبارتند از : پیش نویس، ثبت نشده، ثبت عادی و ثبت قطعی)
-        /// </summary>
-        public virtual string Status { get; set; }
-
-        /// <summary>
-        /// وضعیت عملیاتی سند مالی (مقادیر ممکن عبارتند از : تنظیم شده، بررسی شده، تایید شده و تصویب شده)
-        /// </summary>
-        public virtual string OperationalStatus { get; set; }
-
-        /// <summary>
         /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
         /// </summary>
         public virtual Guid RowGuid { get; set; }
@@ -78,47 +67,31 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
-        /// دوره مالی که در آن پیشامد مالی ثبت شده است
-        /// </summary>
-        public virtual FiscalPeriod FiscalPeriod { get; set; }
-
-        /// <summary>
-        /// کاربر ایجادکننده سند مالی
-        /// </summary>
-        public virtual User CreatedBy { get; set; }
-
-        /// <summary>
-        /// کاربری که آخرین تغییرات را روی سند مالی اعمال کرده است
-        /// </summary>
-        public virtual User ModifiedBy { get; set; }
-
-        /// <summary>
-        /// کاربری که سند مالی را تایید کرده است
-        /// </summary>
-        public virtual User ConfirmedBy { get; set; }
-
-        /// <summary>
-        /// کاربری که سند مالی را تصویب کرده است
-        /// </summary>
-        public virtual User ApprovedBy { get; set; }
-
-        /// <summary>
         /// مجموعه ای از آرتیکل های موجود در سند مالی
         /// </summary>
         public virtual IList<TransactionLine> Lines { get; protected set; }
+
+        /// <summary>
+        /// دوره مالی که در آن پیشامد مالی ثبت شده است
+        /// </summary>
+        public virtual FiscalPeriod FiscalPeriod { get; set; }
 
         /// <summary>
         /// شعبه سازمانی که سند مالی برای آن ایجاد شده است
         /// </summary>
         public virtual Branch Branch { get; set; }
 
+        /// <summary>
+        /// مستند اداری مرتبط با این سند مالی
+        /// </summary>
+        public virtual Document Document { get; set; }
+
         private void InitReferences()
         {
             Lines = new List<TransactionLine>();
             FiscalPeriod = new FiscalPeriod();
             Branch = new Branch();
-            CreatedBy = new User();
-            ModifiedBy = new User();
+            Document = new Document();
         }
     }
 }
