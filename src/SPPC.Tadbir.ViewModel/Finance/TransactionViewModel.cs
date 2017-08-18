@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -39,5 +40,10 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// Gets or sets the sum of all credit values in transaction lines (articles).
         /// </summary>
         public decimal CreditSum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the document related to this transaction
+        /// </summary>
+        public DocumentViewModel Document { get; set; }
     }
 }

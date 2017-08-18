@@ -5,6 +5,7 @@ using BabakSoft.Platform.Common;
 using BabakSoft.Platform.Persistence;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Values;
@@ -44,8 +45,8 @@ namespace SPPC.Tadbir.NHibernate
                 .GetByCriteria(txn => txn.FiscalPeriod.Id == fpId
                     && txn.Branch.Id == branchId)
                 .OrderBy(txn => txn.Date)
-                .Select(item => _mapper.Map<TransactionViewModel>(item))
-                .Select(item => AddWorkItemInfo(item))
+                .Select(txn => _mapper.Map<TransactionViewModel>(txn))
+                .Select(txn => AddWorkItemInfo(txn))
                 .ToList();
             return transactions;
         }
@@ -106,6 +107,7 @@ namespace SPPC.Tadbir.NHibernate
             if (transaction.Id == 0)
             {
                 var newTransaction = _mapper.Map<Transaction>(transaction);
+                UpdateAction(newTransaction);
                 repository.Insert(newTransaction);
             }
             else
@@ -114,6 +116,7 @@ namespace SPPC.Tadbir.NHibernate
                 if (existing != null)
                 {
                     UpdateExistingTransaction(existing, transaction);
+                    UpdateAction(existing);
                     repository.Update(existing);
                 }
             }
@@ -128,9 +131,12 @@ namespace SPPC.Tadbir.NHibernate
         public bool DeleteTransaction(int transactionId)
         {
             var repository = _unitOfWork.GetRepository<Transaction>();
+            var documentRepository = _unitOfWork.GetRepository<Document>();
             var transaction = repository.GetByID(transactionId);
             if (transaction != null)
             {
+                transaction.Document.Actions.Clear();
+                documentRepository.Update(transaction.Document);
                 transaction.Lines.Clear();
                 repository.Update(transaction);
                 repository.Delete(transaction);
@@ -243,13 +249,13 @@ namespace SPPC.Tadbir.NHibernate
             }
         }
 
-        // !!! WARNING : Broken functionality during refactoring
         private static void UpdateExistingTransaction(Transaction existing, TransactionViewModel transaction)
         {
             existing.No = transaction.No;
             existing.Date = JalaliDateTime.Parse(transaction.Date).ToGregorian();
             existing.Description = transaction.Description;
-            //existing.ModifiedBy = new User() { Id = transaction.ModifiedById };
+            var mainAction = existing.Document.Actions.First();
+            mainAction.ModifiedBy = new User() { Id = transaction.Document.Actions.First().ModifiedById };
         }
 
         private static void UpdateExistingArticle(TransactionLine existing, TransactionLineViewModel article)
@@ -266,7 +272,7 @@ namespace SPPC.Tadbir.NHibernate
             var repository = _unitOfWork.GetRepository<WorkItemDocument>();
             var document = repository
                 .GetByCriteria(wid => wid.DocumentId == transaction.Id
-                    && wid.DocumentType == DocumentType.Transaction)
+                    && wid.DocumentType == Values.DocumentType.Transaction)
                 .FirstOrDefault();
             if (document != null)
             {
@@ -276,6 +282,22 @@ namespace SPPC.Tadbir.NHibernate
             }
 
             return transaction;
+        }
+
+        private void UpdateAction(Transaction transaction)
+        {
+            if (transaction.Id == 0)
+            {
+                var mainAction = transaction.Document.Actions.First();
+                mainAction.Document = transaction.Document;
+                mainAction.CreatedDate = DateTime.Now;
+                mainAction.ModifiedDate = DateTime.Now;
+            }
+            else
+            {
+                var mainAction = transaction.Document.Actions.First();
+                mainAction.ModifiedDate = DateTime.Now;
+            }
         }
 
         private IUnitOfWork _unitOfWork;

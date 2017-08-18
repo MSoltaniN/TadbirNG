@@ -56,17 +56,17 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Transaction.Status)
+            @Html.DisplayNameFor(model => model.Transaction.Document.StatusName)
         </dt>
         <dd>
-            @TransactionStatus.ToLocalValue(Model.Transaction.Status)
+            @TransactionStatus.ToLocalValue(Model.Transaction.Document.StatusName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Transaction.OperationalStatus)
+            @Html.DisplayNameFor(model => model.Transaction.Document.OperationalStatus)
         </dt>
         <dd>
-            @DocumentStatus.ToLocalValue(Model.Transaction.OperationalStatus)
+            @DocumentStatus.ToLocalValue(Model.Transaction.Document.OperationalStatus)
         </dd>
 
         <dt>
@@ -201,7 +201,7 @@
     }
     <br /><br />
     <p>
-        @if (Model.Transaction.OperationalStatus == DocumentStatus.Created && currentContext.HasPermissions(Permissions.Transaction.Prepare))
+        @if (Model.Transaction.Document.OperationalStatus == DocumentStatus.Created && currentContext.HasPermissions(Permissions.Transaction.Prepare))
         {
             @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Prepare), "prepare", new { id = Model.Transaction.Id }, new { id = "prepare-action" })<span> | </span>
         }

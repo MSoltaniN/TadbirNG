@@ -46,10 +46,11 @@
             @Html.HiddenFor(model => model.Transaction.Id)
             @Html.HiddenFor(model => model.Transaction.FiscalPeriodId)
             @Html.HiddenFor(model => model.Transaction.BranchId)
-            @Html.HiddenFor(model => model.Transaction.CreatedById)
-            @Html.HiddenFor(model => model.Transaction.ModifiedById)
-            @Html.HiddenFor(model => model.Transaction.Status)
-            @Html.HiddenFor(model => model.Transaction.OperationalStatus)
+            @Html.HiddenFor(model => model.Transaction.Document.Id)
+            @Html.HiddenFor(model => model.Transaction.Document.Actions[0].Id)
+            @Html.HiddenFor(model => model.Transaction.Document.Actions[0].CreatedById)
+            @Html.HiddenFor(model => model.Transaction.Document.Actions[0].ModifiedById)
+            @Html.HiddenFor(model => model.Transaction.Document.Actions[0].CreatedDate)
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Transaction.No, htmlAttributes: new { @class = "control-label" })

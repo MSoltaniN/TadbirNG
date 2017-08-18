@@ -9,6 +9,7 @@ using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Workflow;
 using SPPC.Tadbir.Web.Api.AppStart;
@@ -81,6 +82,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(Strings.OutOfFiscalPeriodDate);
             }
 
+            SetDocument(transaction);
             _repository.SaveTransaction(transaction);
             return StatusCode(HttpStatusCode.Created);
         }
@@ -115,6 +117,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(Strings.OutOfFiscalPeriodDate);
             }
 
+            SetDocument(transaction);
             _repository.SaveTransaction(transaction);
             return Ok();
         }
@@ -541,6 +544,30 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return result;
+        }
+
+        private void SetDocument(TransactionViewModel transaction)
+        {
+            if (transaction.Document == null)
+            {
+                var document = new DocumentViewModel()
+                {
+                    OperationalStatus = DocumentStatus.Created,
+                    StatusId = (int)DocumentStatuses.Draft,
+                    TypeId = (int)DocumentTypes.Transaction
+                };
+                document.Actions.Add(new DocumentActionViewModel()
+                {
+                    CreatedById = _contextManager.CurrentContext.User.Id,
+                    ModifiedById = _contextManager.CurrentContext.User.Id
+                });
+                transaction.Document = document;
+            }
+            else
+            {
+                var mainAction = transaction.Document.Actions.First();
+                mainAction.ModifiedById = _contextManager.CurrentContext.User.Id;
+            }
         }
 
         private ITransactionRepository _repository;

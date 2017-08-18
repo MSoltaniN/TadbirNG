@@ -58,7 +58,8 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             HasMany(x => x.Actions)
                 .KeyColumn("DocumentID")
                 .LazyLoad()
-                .Cascade.SaveUpdate();
+                .Inverse()
+                .Cascade.DeleteOrphan();
         }
     }
 }

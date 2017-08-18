@@ -74,8 +74,8 @@
                 var item = Model[i];
                 string debit = item.DebitSum.ToString("C0", persianCulture);
                 string credit = item.CreditSum.ToString("C0", persianCulture);
-                string status = TransactionStatus.ToLocalValue(item.Status);
-                string opStatus = DocumentStatus.ToLocalValue(item.OperationalStatus);
+                string status = TransactionStatus.ToLocalValue(item.Document.StatusName);
+                string opStatus = DocumentStatus.ToLocalValue(item.Document.OperationalStatus);
                 @Html.HiddenFor(modelItem => Model[i].Id);
                 <tr>
                     <td>
@@ -112,7 +112,7 @@
                         {
                             <span> | </span>@Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
                         }
-                        @if (item.OperationalStatus == DocumentStatus.Created && currentContext.HasPermissions(Permissions.Transaction.Prepare))
+                        @if (item.Document.OperationalStatus == DocumentStatus.Created && currentContext.HasPermissions(Permissions.Transaction.Prepare))
                         {
                             <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Prepare), "prepare", new { id = item.Id }, new { id = String.Format("prepare-action{0}", item.Id) })
                         }

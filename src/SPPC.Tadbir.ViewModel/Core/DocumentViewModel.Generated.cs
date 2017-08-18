@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Core
 {
@@ -26,7 +27,7 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// </summary>
         public DocumentViewModel()
         {
-            this.No = String.Empty;
+            this.No = GenerateNumber();
             this.OperationalStatus = String.Empty;
             this.Actions = new List<DocumentActionViewModel>();
         }
@@ -44,6 +45,7 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// <summary>
         /// وضعیت عملیاتی مستند اداری
         /// </summary>
+        [Display(Name = FieldNames.OperationalStatusField)]
         public string OperationalStatus { get; set; }
     }
 }

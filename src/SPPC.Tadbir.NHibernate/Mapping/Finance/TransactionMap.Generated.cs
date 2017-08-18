@@ -59,7 +59,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             References(x => x.Document)
                 .Column("DocumentID")
                 .Not.LazyLoad()
-                .Cascade.None();
+                .Cascade.All();
             HasMany(x => x.Lines)
                 .KeyColumn("TransactionID")
                 .LazyLoad()

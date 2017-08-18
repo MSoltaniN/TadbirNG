@@ -109,7 +109,6 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
                 return RedirectToAction("notfound", "error", new { area = String.Empty });
             }
 
-            //transaction.Transaction.ModifiedById = _contextManager.CurrentContext.User.Id;
             return View(transaction);
         }
 

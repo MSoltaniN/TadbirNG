@@ -139,23 +139,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private static string GenerateNumber()
-        {
-            return Guid.NewGuid()
-                .ToString()
-                .Replace("{", String.Empty)
-                .Replace("}", String.Empty)
-                .Replace("-", String.Empty)
-                .Substring(0, 8);
-        }
-
         private void SetVoucherDocument(RequisitionVoucherViewModel voucher)
         {
             if (voucher.Document == null)
             {
                 var document = new DocumentViewModel()
                 {
-                    No = GenerateNumber(),
                     OperationalStatus = DocumentStatus.Created,
                     StatusId = (int)DocumentStatuses.Draft,
                     TypeId = (int)DocumentTypes.RequisitionVoucher

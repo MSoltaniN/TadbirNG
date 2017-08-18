@@ -29,10 +29,6 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.FiscalPeriodId)
             @Html.HiddenFor(model => model.BranchId)
-            @Html.HiddenFor(model => model.CreatedById)
-            @Html.HiddenFor(model => model.ModifiedById)
-            @Html.HiddenFor(model => model.Status)
-            @Html.HiddenFor(model => model.OperationalStatus)
 
             <div class="form-group">
                 @Html.LabelFor(model => model.No, htmlAttributes: new { @class = "control-label" })

@@ -21,8 +21,7 @@ using NUnit.Framework;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Workflow;
 using SPPC.Tadbir.Service;
-using SPPC.Tadbir.Repository;
-using SPPC.Tadbir.ViewModel.Settings;
+using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 {
@@ -39,7 +38,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             _mockTrackerRepository.Setup(repo => repo.TrackDocumentWorkflowEdition(
                     It.IsAny<int>(), It.IsAny<string>()))
                 .Returns(testEdition);
+            var mockUserContext = new Mock<ISecurityContext>();
+            mockUserContext
+                .Setup(ctx => ctx.User)
+                .Returns(new UserContextViewModel() { Id = 1 });
             _mockContext = new Mock<ISecurityContextManager>();
+            _mockContext
+                .Setup(ctx => ctx.CurrentContext)
+                .Returns(mockUserContext.Object);
         }
 
         [SetUp]
