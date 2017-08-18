@@ -32,12 +32,12 @@
     </p1:TextExpression.Namespaces>
     <p1:TextExpression.References>
       <sco:Collection x:TypeArguments="p1:AssemblyReference" x:Name="__ReferenceID15">
+        <p1:AssemblyReference>BabakSoft.Platform.Interfaces</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.CSharp</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.ServiceLocation</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.Unity</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.Unity.Configuration</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.Unity.RegistrationByConvention</p1:AssemblyReference>
-        <p1:AssemblyReference>SwForAll.Platform.Persistence</p1:AssemblyReference>
         <p1:AssemblyReference>System.Activities.DurableInstancing</p1:AssemblyReference>
         <p1:AssemblyReference>System.Configuration</p1:AssemblyReference>
         <p1:AssemblyReference>System</p1:AssemblyReference>
@@ -136,7 +136,7 @@
                 </stwa:TrackWorkflowStateActivity.Operation>
                 <stwa:TrackWorkflowStateActivity.State>
                   <p1:InArgument x:TypeArguments="x:String">
-                    <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Confirmed</mca:CSharpValue>
+                    <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Confirmed</mca:CSharpValue>
                   </p1:InArgument>
                 </stwa:TrackWorkflowStateActivity.State>
                 <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -206,7 +206,7 @@
                 </stwa:TrackWorkflowStateActivity.Operation>
                 <stwa:TrackWorkflowStateActivity.State>
                   <p1:InArgument x:TypeArguments="x:String">
-                    <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Prepared</mca:CSharpValue>
+                    <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Prepared</mca:CSharpValue>
                   </p1:InArgument>
                 </stwa:TrackWorkflowStateActivity.State>
                 <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -227,7 +227,7 @@
       <p1:FlowStep.Next>
         <p1:FlowDecision x:Name="__ReferenceID9" DisplayName="WasConfirmed" sap2010:WorkflowViewState.IdRef="FlowDecision_2">
           <p1:FlowDecision.Condition>
-            <mca:CSharpValue x:TypeArguments="x:Boolean">operation.NewStatus == DocumentStatus.Confirmed</mca:CSharpValue>
+            <mca:CSharpValue x:TypeArguments="x:Boolean">operation.NewStatus == DocumentStatusName.Confirmed</mca:CSharpValue>
           </p1:FlowDecision.Condition>
           <p1:FlowDecision.True>
             <p1:FlowStep x:Name="__ReferenceID12" sap2010:WorkflowViewState.IdRef="FlowStep_14">
@@ -282,7 +282,7 @@
                   </stwa:TrackWorkflowStateActivity.Operation>
                   <stwa:TrackWorkflowStateActivity.State>
                     <p1:InArgument x:TypeArguments="x:String">
-                      <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Approved</mca:CSharpValue>
+                      <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Approved</mca:CSharpValue>
                     </p1:InArgument>
                   </stwa:TrackWorkflowStateActivity.State>
                   <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -333,60 +333,60 @@
                   </ReceiveParametersContent>
                 </Receive>
                 <p1:Flowchart DisplayName="TargetForConfirmFlowchart" sap2010:WorkflowViewState.IdRef="Flowchart_2" StartNode="{x:Reference __ReferenceID6}">
-                  <p1:FlowStep x:Name="__ReferenceID6" sap2010:WorkflowViewState.IdRef="FlowStep_16">
-                    <stw1:GetTransactionSummaryActivity DisplayName="GetTransactionSummary" sap2010:WorkflowViewState.IdRef="GetTransactionSummaryActivity_3">
-                      <stw1:GetTransactionSummaryActivity.Result>
-                        <p1:OutArgument x:TypeArguments="stvf:TransactionSummaryViewModel">
-                          <mca:CSharpReference x:TypeArguments="stvf:TransactionSummaryViewModel">txnSummary</mca:CSharpReference>
-                        </p1:OutArgument>
-                      </stw1:GetTransactionSummaryActivity.Result>
-                      <stw1:GetTransactionSummaryActivity.TransactionId>
+                  <p1:FlowDecision x:Name="__ReferenceID5" DisplayName="IsSmallAmountTransaction" sap2010:WorkflowViewState.IdRef="FlowDecision_3">
+                    <p1:FlowDecision.Condition>
+                      <mca:CSharpValue x:TypeArguments="x:Boolean">(txnSummary.DebitSum &lt;= 1000000) || (txnSummary.CreditSum &lt;= 1000000)</mca:CSharpValue>
+                    </p1:FlowDecision.Condition>
+                    <p1:FlowDecision.True>
+                      <p1:FlowStep x:Name="__ReferenceID3" sap2010:WorkflowViewState.IdRef="FlowStep_21">
+                        <stw1:ManageCartableActivity DisplayName="AddWorkItemForReview" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_11">
+                          <stw1:ManageCartableActivity.Operation>
+                            <p1:InArgument x:TypeArguments="stw:StateOperation">
+                              <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                            </p1:InArgument>
+                          </stw1:ManageCartableActivity.Operation>
+                        </stw1:ManageCartableActivity>
+                      </p1:FlowStep>
+                    </p1:FlowDecision.True>
+                    <p1:FlowDecision.False>
+                      <p1:FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_15">
+                        <p1:Assign DisplayName="TargetConfirmToCFO" sap2010:WorkflowViewState.IdRef="Assign_2">
+                          <p1:Assign.To>
+                            <p1:OutArgument x:TypeArguments="x:Int32">
+                              <mca:CSharpReference x:TypeArguments="x:Int32">operation.TargetId</mca:CSharpReference>
+                            </p1:OutArgument>
+                          </p1:Assign.To>
+                          <p1:Assign.Value>
+                            <p1:InArgument x:TypeArguments="x:Int32">
+                              <mca:CSharpValue x:TypeArguments="x:Int32">SystemRoles.CFO</mca:CSharpValue>
+                            </p1:InArgument>
+                          </p1:Assign.Value>
+                        </p1:Assign>
+                        <p1:FlowStep.Next>
+                          <x:Reference>__ReferenceID3</x:Reference>
+                        </p1:FlowStep.Next>
+                      </p1:FlowStep>
+                    </p1:FlowDecision.False>
+                  </p1:FlowDecision>
+                  <x:Reference>__ReferenceID4</x:Reference>
+                  <x:Reference>__ReferenceID3</x:Reference>
+                  <p1:FlowStep x:Name="__ReferenceID6" sap2010:WorkflowViewState.IdRef="FlowStep_22">
+                    <stwa:GetTransactionFromDocumentActivity DisplayName="GetTransactionSummary" sap2010:WorkflowViewState.IdRef="GetTransactionFromDocumentActivity_1">
+                      <stwa:GetTransactionFromDocumentActivity.DocumentId>
                         <p1:InArgument x:TypeArguments="x:Int32">
                           <mca:CSharpValue x:TypeArguments="x:Int32">operation.DocumentId</mca:CSharpValue>
                         </p1:InArgument>
-                      </stw1:GetTransactionSummaryActivity.TransactionId>
-                    </stw1:GetTransactionSummaryActivity>
+                      </stwa:GetTransactionFromDocumentActivity.DocumentId>
+                      <stwa:GetTransactionFromDocumentActivity.Result>
+                        <p1:OutArgument x:TypeArguments="stvf:TransactionSummaryViewModel">
+                          <mca:CSharpReference x:TypeArguments="stvf:TransactionSummaryViewModel">txnSummary</mca:CSharpReference>
+                        </p1:OutArgument>
+                      </stwa:GetTransactionFromDocumentActivity.Result>
+                    </stwa:GetTransactionFromDocumentActivity>
                     <p1:FlowStep.Next>
-                      <p1:FlowDecision x:Name="__ReferenceID4" DisplayName="IsSmallAmountTransaction" sap2010:WorkflowViewState.IdRef="FlowDecision_3">
-                        <p1:FlowDecision.Condition>
-                          <mca:CSharpValue x:TypeArguments="x:Boolean">(txnSummary.DebitSum &lt;= 1000000) || (txnSummary.CreditSum &lt;= 1000000)</mca:CSharpValue>
-                        </p1:FlowDecision.Condition>
-                        <p1:FlowDecision.True>
-                          <p1:FlowStep x:Name="__ReferenceID3" sap2010:WorkflowViewState.IdRef="FlowStep_21">
-                            <stw1:ManageCartableActivity DisplayName="AddWorkItemForReview" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_11">
-                              <stw1:ManageCartableActivity.Operation>
-                                <p1:InArgument x:TypeArguments="stw:StateOperation">
-                                  <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
-                                </p1:InArgument>
-                              </stw1:ManageCartableActivity.Operation>
-                            </stw1:ManageCartableActivity>
-                          </p1:FlowStep>
-                        </p1:FlowDecision.True>
-                        <p1:FlowDecision.False>
-                          <p1:FlowStep x:Name="__ReferenceID5" sap2010:WorkflowViewState.IdRef="FlowStep_15">
-                            <p1:Assign DisplayName="TargetConfirmToCFO" sap2010:WorkflowViewState.IdRef="Assign_2">
-                              <p1:Assign.To>
-                                <p1:OutArgument x:TypeArguments="x:Int32">
-                                  <mca:CSharpReference x:TypeArguments="x:Int32">operation.TargetId</mca:CSharpReference>
-                                </p1:OutArgument>
-                              </p1:Assign.To>
-                              <p1:Assign.Value>
-                                <p1:InArgument x:TypeArguments="x:Int32">
-                                  <mca:CSharpValue x:TypeArguments="x:Int32">SystemRoles.CFO</mca:CSharpValue>
-                                </p1:InArgument>
-                              </p1:Assign.Value>
-                            </p1:Assign>
-                            <p1:FlowStep.Next>
-                              <x:Reference>__ReferenceID3</x:Reference>
-                            </p1:FlowStep.Next>
-                          </p1:FlowStep>
-                        </p1:FlowDecision.False>
-                      </p1:FlowDecision>
+                      <x:Reference>__ReferenceID5</x:Reference>
                     </p1:FlowStep.Next>
                   </p1:FlowStep>
-                  <x:Reference>__ReferenceID4</x:Reference>
-                  <x:Reference>__ReferenceID5</x:Reference>
-                  <x:Reference>__ReferenceID3</x:Reference>
                 </p1:Flowchart>
                 <stwa:TrackWorkflowStateActivity DisplayName="TrackReviewedState" sap2010:WorkflowViewState.IdRef="TrackWorkflowStateActivity_2">
                   <stwa:TrackWorkflowStateActivity.EditionName>
@@ -401,7 +401,7 @@
                   </stwa:TrackWorkflowStateActivity.Operation>
                   <stwa:TrackWorkflowStateActivity.State>
                     <p1:InArgument x:TypeArguments="x:String">
-                      <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Reviewed</mca:CSharpValue>
+                      <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Reviewed</mca:CSharpValue>
                     </p1:InArgument>
                   </stwa:TrackWorkflowStateActivity.State>
                   <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -477,7 +477,7 @@
           </stwa:TrackWorkflowStateActivity.Operation>
           <stwa:TrackWorkflowStateActivity.State>
             <p1:InArgument x:TypeArguments="x:String">
-              <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Prepared</mca:CSharpValue>
+              <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Prepared</mca:CSharpValue>
             </p1:InArgument>
           </stwa:TrackWorkflowStateActivity.State>
           <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -498,7 +498,7 @@
     </p1:FlowStep>
     <x:Reference>__ReferenceID12</x:Reference>
     <x:Reference>__ReferenceID11</x:Reference>
-    <sads:DebugSymbol.Symbol>d2NEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVGQ1NlcnZpY2UueGFtbHhVEwP2AxIBAUgLSGcBCE0LTWIBAq0DB+4DFQLAArACD6IDHQLdAVUH4gERAVbmAQ3mAXsBUOoBD6sCHQEOrgMJywMTAu8CzAMJ0gMnAugC0wMJ6AMrAs8C6QMJ7QMVAsECsQIRzgIbAq0CzwIRhgMgAoUChwMRnAMzAuwBnQMRoQMdAt4BVgmbARkCmgGcAQnhARkBV+sBEYgCGwE9iQIRjwIvATaQAhGlAjMBHaYCEaoCHQEPugMPugNjAvwCyAMPyANoAvYCwQMTwQNnAvACzwMPzwNgAukC2wMP2wNgAuIC5QMP5QNVAtwC1gMP1gNUAtYC4AMP4ANkAtAC6wNJ6wNKAsICvQIXvQJrAroCywIXywJwArQCxAIbxAJvAq4C0QIV3AI6AqAC4AIb4AKlAQKaAu8CHfoCKQKNAuQCHeoCOwKGAo8DF48DaAL/AZkDF5kDXQL5AYoDF4oDXALzAZQDF5QDbALtAZ8DUZ8DUgLfAVgNmQEbApsBngEN3wEbAVj3ARf3AWsBSoUCF4UCcAFE/gEb/gFvAT6MAheMAmgBN5gCF5gCaAEwogIXogJdASqTAheTAlwBJJ0CF50CbAEeqAJRqAJSARDUAhvUAoMBAqcC2QIb2QJsAqEC9wIj9wJvApQC8gIj8gJ6Ao4C5wIj5wJ0AocCWQ92GQLKAXcPfS0CwwF+D5MBMQKqAZQBD5gBGwKcAZ8BD7wBGQKHAb0BD8MBLQKAAcQBD9kBMQFn2gEP3gEbAVllFWVpAtcBcxVzbgLRAWwZbG0CywF6FXpmAsQBhgEVhgFmAr0BkAEVkAFbArcBgQEVgQFaArEBiwEViwFrAqsBlgFPlgFQAp0BqwEVqwFpApQBuQEVuQFuAo4BsgEZsgFtAogBwAEVwAFmAoEBzAEVzAFmAXrWARXWAVsBdMcBFccBWgFu0QEV0QFqAWjcAU/cAVABWg==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2NEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVGQ1NlcnZpY2UueGFtbHhVEwP2AxIBAUgLSGcBCE0LTWIBAq0DB+4DFQLAArACD6IDHQLdAVUH4gERAVbmAQ3mAX8BUOoBD6sCHQEOrgMJywMTAu8CzAMJ0gMnAugC0wMJ6AMrAs8C6QMJ7QMVAsECsQIRzgIbAq0CzwIRhgMgAoUChwMRnAMzAuwBnQMRoQMdAt4BVgmbARkCmgGcAQnhARkBV+sBEYgCGwE9iQIRjwIvATaQAhGlAjMBHaYCEaoCHQEPugMPugNjAvwCyAMPyANoAvYCwQMTwQNnAvACzwMPzwNgAukC2wMP2wNgAuIC5QMP5QNVAtwC1gMP1gNUAtYC4AMP4ANoAtAC6wNJ6wNKAsICvQIXvQJrAroCywIXywJwArQCxAIbxAJvAq4C9gIVgQM/AqAC0gIX0gKhAQKaAuECGewCJQKNAtYCGdwCNwKGAo8DF48DaAL/AZkDF5kDXQL5AYoDF4oDXALzAZQDF5QDcALtAZ8DUZ8DUgLfAVgNmQEbApsBngEN3wEbAVj3ARf3AWsBSoUCF4UCcAFE/gEb/gFvAT6MAheMAmgBN5gCF5gCaAEwogIXogJdASqTAheTAlwBJJ0CF50CcAEeqAJRqAJSARD5Ahv5AmwCpwL+Ahv+AoMBAqEC6QIf6QJrApQC5AIf5AJ2Ao4C2QIf2QJwAocCWQ92GQLKAXcPfS0CwwF+D5MBMQKqAZQBD5gBGwKcAZ8BD7wBGQKHAb0BD8MBLQKAAcQBD9kBMQFn2gEP3gEbAVllFWVpAtcBcxVzbgLRAWwZbG0CywF6FXpmAsQBhgEVhgFmAr0BkAEVkAFbArcBgQEVgQFaArEBiwEViwFvAqsBlgFPlgFQAp0BqwEVqwFpApQBuQEVuQFuAo4BsgEZsgFtAogBwAEVwAFmAoEBzAEVzAFmAXrWARXWAVsBdMcBFccBWgFu0QEV0QFuAWjcAU/cAVABWg==</sads:DebugSymbol.Symbol>
   </p1:Flowchart>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -543,7 +543,7 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="TrackWorkflowStateActivity_5" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
       <sap2010:ViewStateData Id="SendReply_2" sap:VirtualizedContainerService.HintSize="255.2,88" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="277.6,465.6">
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="200,52.8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -559,13 +559,6 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="Receive_10" sap:VirtualizedContainerService.HintSize="255.2,88" />
-      <sap2010:ViewStateData Id="GetTransactionSummaryActivity_3" sap:VirtualizedContainerService.HintSize="200,22.4">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ManageCartableActivity_11" sap:VirtualizedContainerService.HintSize="200,22.4">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -611,29 +604,36 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_16">
+      <sap2010:ViewStateData Id="GetTransactionFromDocumentActivity_1" sap:VirtualizedContainerService.HintSize="200,22.4">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">40,138.8</av:Point>
-            <av:Size x:Key="ShapeSize">200,22.4</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">140,161.2 140,196.4</av:PointCollection>
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Flowchart_2" sap:VirtualizedContainerService.HintSize="255.2,52.8">
+      <sap2010:ViewStateData Id="FlowStep_22">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">40,118.8</av:Point>
+            <av:Size x:Key="ShapeSize">200,22.4</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">140,141.2 140,171.2 140.4,171.2 140.4,196.4</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Flowchart_2" sap:VirtualizedContainerService.HintSize="625.6,636.8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
             <av:Point x:Key="ShapeLocation">110,2.5</av:Point>
             <av:Size x:Key="ShapeSize">60,75.2</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">140,77.7 140,138.8</av:PointCollection>
+            <av:PointCollection x:Key="ConnectorLocation">140,77.7 140,118.8</av:PointCollection>
             <x:Double x:Key="Width">611.19999999999993</x:Double>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="TrackWorkflowStateActivity_2" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
       <sap2010:ViewStateData Id="SendReply_5" sap:VirtualizedContainerService.HintSize="255.2,88" />
-      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="200,52.8">
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="277.6,496">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>

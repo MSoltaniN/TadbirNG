@@ -29,12 +29,12 @@
     </p1:TextExpression.Namespaces>
     <p1:TextExpression.References>
       <sco:Collection x:TypeArguments="p1:AssemblyReference" x:Name="__ReferenceID13">
+        <p1:AssemblyReference>BabakSoft.Platform.Interfaces</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.CSharp</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.ServiceLocation</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.Unity</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.Unity.Configuration</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.Unity.RegistrationByConvention</p1:AssemblyReference>
-        <p1:AssemblyReference>SwForAll.Platform.Persistence</p1:AssemblyReference>
         <p1:AssemblyReference>System.Activities.DurableInstancing</p1:AssemblyReference>
         <p1:AssemblyReference>System.Configuration</p1:AssemblyReference>
         <p1:AssemblyReference>System</p1:AssemblyReference>
@@ -75,7 +75,7 @@
           </stwa:TrackWorkflowStateActivity.Operation>
           <stwa:TrackWorkflowStateActivity.State>
             <p1:InArgument x:TypeArguments="x:String">
-              <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Prepared</mca:CSharpValue>
+              <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Prepared</mca:CSharpValue>
             </p1:InArgument>
           </stwa:TrackWorkflowStateActivity.State>
           <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -227,7 +227,7 @@
                   </stwa:TrackWorkflowStateActivity.Operation>
                   <stwa:TrackWorkflowStateActivity.State>
                     <p1:InArgument x:TypeArguments="x:String">
-                      <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Reviewed</mca:CSharpValue>
+                      <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Reviewed</mca:CSharpValue>
                     </p1:InArgument>
                   </stwa:TrackWorkflowStateActivity.State>
                   <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -430,7 +430,7 @@
                           </stwa:TrackWorkflowStateActivity.Operation>
                           <stwa:TrackWorkflowStateActivity.State>
                             <p1:InArgument x:TypeArguments="x:String">
-                              <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Confirmed</mca:CSharpValue>
+                              <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Confirmed</mca:CSharpValue>
                             </p1:InArgument>
                           </stwa:TrackWorkflowStateActivity.State>
                           <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -504,7 +504,7 @@
                                   </stwa:TrackWorkflowStateActivity.Operation>
                                   <stwa:TrackWorkflowStateActivity.State>
                                     <p1:InArgument x:TypeArguments="x:String">
-                                      <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Approved</mca:CSharpValue>
+                                      <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Approved</mca:CSharpValue>
                                     </p1:InArgument>
                                   </stwa:TrackWorkflowStateActivity.State>
                                   <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -599,7 +599,7 @@
         </p1:Variable.Default>
       </p1:Variable>
     </p1:StateMachine.Variables>
-    <sads:DebugSymbol.Symbol>d2NEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVUT1NlcnZpY2UueGFtbHhvEgPbBBUBAdEEC9EEZwKOA9YEC9YEYAKJAz8FkQQQApIC1wENjQQYAXiiAxWJBCABPuwDHYUEKAEnlQQFywQQAQJBCVYrAvQCWw3UARcClALZARHuATMC/QHzARWeAiMC2gGmAhWfAx8BeqQDGbkDOwFjvgMd6QMrAUDuAyGDBEMBKZkEDcQEGwEESQ9JYAKEA1MPU1UC/wJED0RUAvoCTg9OZAL1AlwPiwEfAtACjAEP0wEfApUC4QEX4QFoAo0C6wEX6wFdAogC3AEX3AFcAoMC5gEX5gFsAv4B9AEXkQIhAu0BkgIXmAI1AucBmQIXnQIjAtsBpwIX1gInArYB1wIXngMnAXusAx+sA3ABc7YDH7YDZQFupwMfpwNkAWmxAx+xA3UBZL8DH9wDKQFT3QMf4wM9AU3kAx/oAysBQfYDJ/YDeAE5gAQngARtATTxAyfxA2wBL/sDJ/sDfAEqmgQPtwQZARe4BA++BC0BEb8ED8MEGwEFXhOJASEC0QKOAROSAR4CygKUARHSAR8ClgKAAh2AAnEC+AGOAh2OAnYC8wGHAiGHAnUC7gGVAh2VAm4C6AGbAlebAlgC3AGpAhvUAikCtwHZAhvdAiYCsAHfAhmdAycBfMsDJcsDeQFe2QMl2QN+AVnSAynSA30BVOADJeADdgFO5gNf5gNgAUKmBBWmBGkBIrQEFbQEbgEdrQQZrQRtARi7BBW7BGYBEsEET8EEUAEGXxV8HwLkAn0VgwEzAt4ChAEViAEhAtICkAEXkAFuAssClQETpQEzAroCpgET0QEhApcCqgIdxwInAsoByAIdzgI7AsQBzwId0wIpArgB2wIf2wJ2ArEB4AIb8AI7AqAB8QIbnAMpAX1rG2tvAu8CeRt5dALqAnIfcnMC5QKAARuAAWwC3wKGAVWGAVYC0wKYARmYAWoCxQKdARmdAW0CwAKiARmiAW4CuwKnARXEAR8CqgLFARXLATMCpALMARXQASECmAK2AiO2AncC1QHEAiPEAnwC0AG9Aie9AnsCywHLAiPLAnQCxQHRAl3RAl4CuQHjAiHjAnICqwHoAiHoAnUCpgHtAiHtAm0CoQHyAh2PAycCkAGQAx2WAzsCigGXAx2bAykBfrMBG7MBbwK1AsEBG8EBdAKwAroBH7oBcwKrAsgBG8gBbAKlAs4BVc4BVgKZAv4CI/4CdwKbAYwDI4wDfAKWAYUDJ4UDewKRAZMDI5MDdAKLAZkDXZkDXgF/</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2NEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVUT1NlcnZpY2UueGFtbHhvEgPbBBUBAdEEC9EEZwKOA9YEC9YEYAKJAz8FkQQQApIC1wENjQQYAXiiAxWJBCABPuwDHYUEKAEnlQQFywQQAQJBCVYrAvQCWw3UARcClALZARHuATMC/QHzARWeAiMC2gGmAhWfAx8BeqQDGbkDOwFjvgMd6QMrAUDuAyGDBEMBKZkEDcQEGwEESQ9JYAKEA1MPU1UC/wJED0RUAvoCTg9OaAL1AlwPiwEfAtACjAEP0wEfApUC4QEX4QFoAo0C6wEX6wFdAogC3AEX3AFcAoMC5gEX5gFwAv4B9AEXkQIhAu0BkgIXmAI1AucBmQIXnQIjAtsBpwIX1gInArYB1wIXngMnAXusAx+sA3ABc7YDH7YDZQFupwMfpwNkAWmxAx+xA3kBZL8DH9wDKQFT3QMf4wM9AU3kAx/oAysBQfYDJ/YDeAE5gAQngARtATTxAyfxA2wBL/sDJ/sDgAEBKpoED7cEGQEXuAQPvgQtARG/BA/DBBsBBV4TiQEhAtECjgETkgEeAsoClAER0gEfApYCgAIdgAJxAvgBjgIdjgJ2AvMBhwIhhwJ1Au4BlQIdlQJuAugBmwJXmwJYAtwBqQIb1AIpArcB2QIb3QImArAB3wIZnQMnAXzLAyXLA3kBXtkDJdkDfgFZ0gMp0gN9AVTgAyXgA3YBTuYDX+YDYAFCpgQVpgRpASK0BBW0BG4BHa0EGa0EbQEYuwQVuwRmARLBBE/BBFABBl8VfB8C5AJ9FYMBMwLeAoQBFYgBIQLSApABF5ABbgLLApUBE6UBMwK6AqYBE9EBIQKXAqoCHccCJwLKAcgCHc4COwLEAc8CHdMCKQK4AdsCH9sCdgKxAeACG/ACOwKgAfECG5wDKQF9axtrbwLvAnkbeXQC6gJyH3JzAuUCgAEbgAFsAt8ChgFVhgFWAtMCmAEZmAFqAsUCnQEZnQFtAsACogEZogFuArsCpwEVxAEfAqoCxQEVywEzAqQCzAEV0AEhApgCtgIjtgJ3AtUBxAIjxAJ8AtABvQInvQJ7AssBywIjywJ0AsUB0QJd0QJeArkB4wIh4wJyAqsB6AIh6AJ1AqYB7QIh7QJtAqEB8gIdjwMnApABkAMdlgM7AooBlwMdmwMpAX6zARuzAW8CtQLBARvBAXQCsAK6AR+6AXMCqwLIARvIAWwCpQLOAVXOAVYCmQL+AiP+AncCmwGMAyOMA3wClgGFAyeFA3sCkQGTAyOTA3QCiwGZA12ZA14Bfw==</sads:DebugSymbol.Symbol>
   </p1:StateMachine>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>

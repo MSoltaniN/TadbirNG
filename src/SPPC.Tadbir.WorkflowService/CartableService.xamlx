@@ -27,12 +27,12 @@
     </p1:TextExpression.Namespaces>
     <p1:TextExpression.References>
       <sco:Collection x:TypeArguments="p1:AssemblyReference" x:Name="__ReferenceID2">
+        <p1:AssemblyReference>BabakSoft.Platform.Interfaces</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.CSharp</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.ServiceLocation</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.Unity</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.Unity.Configuration</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.Unity.RegistrationByConvention</p1:AssemblyReference>
-        <p1:AssemblyReference>SwForAll.Platform.Persistence</p1:AssemblyReference>
         <p1:AssemblyReference>System.Activities.DurableInstancing</p1:AssemblyReference>
         <p1:AssemblyReference>System.Configuration</p1:AssemblyReference>
         <p1:AssemblyReference>System</p1:AssemblyReference>
@@ -106,7 +106,7 @@
             </stwa:TrackWorkflowStateActivity.Operation>
             <stwa:TrackWorkflowStateActivity.State>
               <p1:InArgument x:TypeArguments="x:String">
-                <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Prepared</mca:CSharpValue>
+                <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Prepared</mca:CSharpValue>
               </p1:InArgument>
             </stwa:TrackWorkflowStateActivity.State>
             <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -146,7 +146,7 @@
                 </stwa:TrackWorkflowStateActivity.Operation>
                 <stwa:TrackWorkflowStateActivity.State>
                   <p1:InArgument x:TypeArguments="x:String">
-                    <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Reviewed</mca:CSharpValue>
+                    <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Reviewed</mca:CSharpValue>
                   </p1:InArgument>
                 </stwa:TrackWorkflowStateActivity.State>
                 <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -186,7 +186,7 @@
                     </stwa:TrackWorkflowStateActivity.Operation>
                     <stwa:TrackWorkflowStateActivity.State>
                       <p1:InArgument x:TypeArguments="x:String">
-                        <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Prepared</mca:CSharpValue>
+                        <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Prepared</mca:CSharpValue>
                       </p1:InArgument>
                     </stwa:TrackWorkflowStateActivity.State>
                     <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -226,7 +226,7 @@
                         </stwa:TrackWorkflowStateActivity.Operation>
                         <stwa:TrackWorkflowStateActivity.State>
                           <p1:InArgument x:TypeArguments="x:String">
-                            <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Confirmed</mca:CSharpValue>
+                            <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Confirmed</mca:CSharpValue>
                           </p1:InArgument>
                         </stwa:TrackWorkflowStateActivity.State>
                         <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -266,7 +266,7 @@
                             </stwa:TrackWorkflowStateActivity.Operation>
                             <stwa:TrackWorkflowStateActivity.State>
                               <p1:InArgument x:TypeArguments="x:String">
-                                <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Approved</mca:CSharpValue>
+                                <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Approved</mca:CSharpValue>
                               </p1:InArgument>
                             </stwa:TrackWorkflowStateActivity.State>
                             <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -307,7 +307,7 @@
         <p1:InArgument x:TypeArguments="x:Int32" x:Key="resultCode">0</p1:InArgument>
       </SendParametersContent>
     </SendReply>
-    <sads:DebugSymbol.Symbol>d2FEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVTZXJ2aWNlLnhhbWx4PRADtwIRAQFBC0FnAQZGC0ZjAQJKBVAPAqIBUQWwAg0BDLECBbUCEQEKTQtNZAKjAVQLVF0BDVgJdhcCiwF5Ca4CEQERswJFswJGAQtZC18pAp0BYAt1LQKMAXwPfGABEoABDZ4BGwF0oQENrAIVARZcEVxiAp4BaBFoYgKZAXIRclcClQFjEWNWApEBbRFtZgKNAYEBD4cBLQKGAYgBD50BMQF1pAETpAFkAReoARHGAR8BXckBEaoCGQEbhAEVhAFmAocBkAEVkAFmAoIBmgEVmgFbAX6LARWLAVoBepUBFZUBagF2qQETrwExAW+wARPFATUBXswBF8wBaQEc0AEV7gEjAUbxARWoAh0BIKwBGawBagFwuAEZuAFqAWvCARnCAV8BZ7MBGbMBXgFjvQEZvQFuAV/RARfXATUBWNgBF+0BOQFH9AEb9AFtASH4ARmWAicBL5kCGaYCIQEl1AEd1AFuAVngAR3gAW4BVOoBHeoBYwFQ2wEd2wFiAUzlAR3lAXMBSPkBG/8BOQFBgAIblQI9ATCcAh+cAnQBJqACHaQCLAEq/AEh/AFyAUKIAiGIAnIBPZICIZICZwE5gwIhgwJmATWNAiGNAnYBMaICIaIC2QEBKw==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2FEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVTZXJ2aWNlLnhhbWx4PRADtwIRAQFBC0FnAQZGC0ZjAQJKBVAPAqIBUQWwAg0BDLECBbUCEQEKTQtNZAKjAVQLVF0BDVgJdhcCiwF5Ca4CEQERswJFswJGAQtZC18pAp0BYAt1LQKMAXwPfGABEoABDZ4BGwF0oQENrAIVARZcEVxiAp4BaBFoYgKZAXIRclcClQFjEWNWApEBbRFtagKNAYEBD4cBLQKGAYgBD50BMQF1pAETpAFkAReoARHGAR8BXckBEaoCGQEbhAEVhAFmAocBkAEVkAFmAoIBmgEVmgFbAX6LARWLAVoBepUBFZUBbgF2qQETrwExAW+wARPFATUBXswBF8wBaQEc0AEV7gEjAUbxARWoAh0BIKwBGawBagFwuAEZuAFqAWvCARnCAV8BZ7MBGbMBXgFjvQEZvQFyAV/RARfXATUBWNgBF+0BOQFH9AEb9AFtASH4ARmWAicBL5kCGaYCIQEl1AEd1AFuAVngAR3gAW4BVOoBHeoBYwFQ2wEd2wFiAUzlAR3lAXcBSPkBG/8BOQFBgAIblQI9ATCcAh+cAnQBJqACHaQCLAEq/AEh/AFyAUKIAiGIAnIBPZICIZICZwE5gwIhgwJmATWNAiGNAnoBMaICIaIC2QEBKw==</sads:DebugSymbol.Symbol>
   </p1:Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -350,15 +350,15 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ManageCartableActivity_20" sap:VirtualizedContainerService.HintSize="200,22.4" />
       <sap2010:ViewStateData Id="TrackWorkflowStateActivity_5" sap:VirtualizedContainerService.HintSize="200,22.4" />
-      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="222.4,209.6">
+      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="200,52.8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="WriteLine_4" sap:VirtualizedContainerService.HintSize="209.6,62.4" />
-      <sap2010:ViewStateData Id="If_19" sap:VirtualizedContainerService.HintSize="200,52.8">
+      <sap2010:ViewStateData Id="WriteLine_4" sap:VirtualizedContainerService.HintSize="210.4,62.4" />
+      <sap2010:ViewStateData Id="If_19" sap:VirtualizedContainerService.HintSize="464,214.4">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
