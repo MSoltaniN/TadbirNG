@@ -57,7 +57,7 @@ namespace SPPC.Tadbir.Workflow
                 Title = operation.Title,
                 DocumentType = operation.DocumentType,
                 DocumentId = operation.DocumentId,
-                Status = operation.Status,
+                StatusId = operation.StatusId,
                 OperationalStatus = operation.NewStatus,
                 Action = operation.NextAction,
                 PreviousAction = operation.Action,
@@ -77,14 +77,14 @@ namespace SPPC.Tadbir.Workflow
             CreateWorkItemDelegate method = null;
             switch (status)
             {
-                case DocumentStatus.Created:
+                case DocumentStatusName.Created:
                     break;
-                case DocumentStatus.Prepared:
-                    method = (fromStatus == DocumentStatus.Created)
+                case DocumentStatusName.Prepared:
+                    method = (fromStatus == DocumentStatusName.Created)
                         ? new CreateWorkItemDelegate(_repository.CreateInitialWorkItem)
                         : new CreateWorkItemDelegate(_repository.CreateWorkItem);
                     break;
-                case DocumentStatus.Approved:
+                case DocumentStatusName.Approved:
                     method = new CreateWorkItemDelegate(_repository.CreateFinalWorkItem);
                     break;
                 default:

@@ -31,11 +31,11 @@ namespace SPPC.Tadbir.Workflow
 
         private static IDictionary<string, string> _validOperations = new Dictionary<string, string>
         {
-            { DocumentAction.Prepare, DocumentStatus.Created },
-            { DocumentAction.Review, DocumentStatus.Prepared },
-            { DocumentAction.Reject, DocumentStatus.Reviewed },
-            { DocumentAction.Confirm, DocumentStatus.Reviewed },
-            { DocumentAction.Approve, DocumentStatus.Confirmed }
+            { DocumentActionName.Prepare, DocumentStatusName.Created },
+            { DocumentActionName.Review, DocumentStatusName.Prepared },
+            { DocumentActionName.Reject, DocumentStatusName.Reviewed },
+            { DocumentActionName.Confirm, DocumentStatusName.Reviewed },
+            { DocumentActionName.Approve, DocumentStatusName.Confirmed }
         };
     }
 }

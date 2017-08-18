@@ -29,5 +29,15 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// جمع مقادیر بستانکار در آرتیکل های سند
         /// </summary>
         public decimal CreditSum { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی مستند مرتبط با سند مالی
+        /// </summary>
+        public int DocumentId { get; set; }
+
+        /// <summary>
+        /// وضعیت عملیاتی مستند مرتبط با سند مالی
+        /// </summary>
+        public string DocumentOperationalStatus { get; set; }
     }
 }

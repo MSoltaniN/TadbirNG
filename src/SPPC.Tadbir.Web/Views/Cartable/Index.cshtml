@@ -85,7 +85,7 @@
                         @Html.DisplayFor(modelItem => item.Remarks)
                     </td>
                     <td>
-                        @DocumentType.ToLocalValue(item.DocumentType)
+                        @DocumentTypeName.ToLocalValue(item.DocumentType)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.DocumentNo)
@@ -96,25 +96,25 @@
                             @Html.ActionLink(LocalStrings.View, "details", controller,
                         new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
                         }
-                        @if (item.DocumentStatus == DocumentStatus.Prepared && currentContext.HasPermissions(Permissions.Transaction.Review))
+                        @if (item.DocumentStatus == DocumentStatusName.Prepared && currentContext.HasPermissions(Permissions.Transaction.Review))
                         {
                             <span> | </span>
-                            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Review), "review", controller,
+                            @Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Review), "review", controller,
                         new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("review-action{0}", item.Id) })
                         }
-                        @if (item.DocumentStatus == DocumentStatus.Reviewed && currentContext.HasPermissions(Permissions.Transaction.Confirm))
+                        @if (item.DocumentStatus == DocumentStatusName.Reviewed && currentContext.HasPermissions(Permissions.Transaction.Confirm))
                         {
                             <span> | </span>
-                            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Confirm), "confirm", controller,
+                            @Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Confirm), "confirm", controller,
                         new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("confirm-action{0}", item.Id) })
                             <span> | </span>
-                            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Reject), "reject", controller,
+                            @Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Reject), "reject", controller,
                         new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("reject-action{0}", item.Id) })
                         }
-                        @if (item.DocumentStatus == DocumentStatus.Confirmed && currentContext.HasPermissions(Permissions.Transaction.Approve))
+                        @if (item.DocumentStatus == DocumentStatusName.Confirmed && currentContext.HasPermissions(Permissions.Transaction.Approve))
                         {
                             <span> | </span>
-                            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Approve), "approve", controller,
+                            @Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Approve), "approve", controller,
                         new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("approve-action{0}", item.Id) })
                         }
                     </td>

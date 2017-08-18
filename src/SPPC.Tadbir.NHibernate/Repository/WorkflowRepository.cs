@@ -53,7 +53,7 @@ namespace SPPC.Tadbir.NHibernate
                     var latest = innerGroup
                         .OrderByDescending(inst => inst.LastActionDate)
                         .First();
-                    if (latest.State != DocumentStatus.Approved)
+                    if (latest.State != DocumentStatusName.Approved)
                     {
                         latest.LastActor = GetUserName(Int32.Parse(latest.LastActor ?? "0"));
                         runningWorkflows.Add(latest);

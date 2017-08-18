@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
 using Microsoft.Practices.Unity;
-using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Security;
@@ -279,15 +279,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not put transaction as Prepared because transaction does not exist.");
             }
 
-            string message = ValidateStateOperation(DocumentAction.Prepare, transactionId);
+            var summary = _repository.GetTransactionSummary(transactionId);
+            if (summary == null)
+            {
+                return BadRequest("Could not put transaction as Prepared because transaction does not exist.");
+            }
+
+            string message = ValidateStateOperation(DocumentActionName.Prepare, summary);
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
             }
 
             var paraph = detail?.Paraph;
-            var workflow = GetWorkflow(transactionId, _contextManager);
-            workflow.Prepare(transactionId, paraph);
+            var workflow = GetWorkflow(summary.DocumentId, _contextManager);
+            workflow.Prepare(summary.DocumentId, paraph);
             return Ok();
         }
 
@@ -301,15 +307,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not put transaction as Reviewed because transaction does not exist.");
             }
 
-            string message = ValidateStateOperation(DocumentAction.Review, transactionId);
+            var summary = _repository.GetTransactionSummary(transactionId);
+            if (summary == null)
+            {
+                return BadRequest("Could not put transaction as Reviewed because transaction does not exist.");
+            }
+
+            string message = ValidateStateOperation(DocumentActionName.Review, summary);
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
             }
 
             var paraph = detail?.Paraph;
-            var workflow = GetWorkflow(transactionId, _contextManager);
-            workflow.Review(transactionId, paraph);
+            var workflow = GetWorkflow(summary.DocumentId, _contextManager);
+            workflow.Review(summary.DocumentId, paraph);
             return Ok();
         }
 
@@ -323,15 +335,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not put transaction as Rejected because transaction does not exist.");
             }
 
-            string message = ValidateStateOperation(DocumentAction.Reject, transactionId);
+            var summary = _repository.GetTransactionSummary(transactionId);
+            if (summary == null)
+            {
+                return BadRequest("Could not put transaction as Rejected because transaction does not exist.");
+            }
+
+            string message = ValidateStateOperation(DocumentActionName.Reject, summary);
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
             }
 
             var paraph = detail?.Paraph;
-            var workflow = GetWorkflow(transactionId, _contextManager);
-            workflow.RejectReviewed(transactionId, paraph);
+            var workflow = GetWorkflow(summary.DocumentId, _contextManager);
+            workflow.RejectReviewed(summary.DocumentId, paraph);
             return Ok();
         }
 
@@ -345,15 +363,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not put transaction as Confirmed because transaction does not exist.");
             }
 
-            string message = ValidateStateOperation(DocumentAction.Confirm, transactionId);
+            var summary = _repository.GetTransactionSummary(transactionId);
+            if (summary == null)
+            {
+                return BadRequest("Could not put transaction as Confirmed because transaction does not exist.");
+            }
+
+            string message = ValidateStateOperation(DocumentActionName.Confirm, summary);
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
             }
 
             var paraph = detail?.Paraph;
-            var workflow = GetWorkflow(transactionId, _contextManager);
-            workflow.Confirm(transactionId, paraph);
+            var workflow = GetWorkflow(summary.DocumentId, _contextManager);
+            workflow.Confirm(summary.DocumentId, paraph);
             return Ok();
         }
 
@@ -367,15 +391,21 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not put transaction as Approved because transaction does not exist.");
             }
 
-            string message = ValidateStateOperation(DocumentAction.Approve, transactionId);
+            var summary = _repository.GetTransactionSummary(transactionId);
+            if (summary == null)
+            {
+                return BadRequest("Could not put transaction as Approved because transaction does not exist.");
+            }
+
+            string message = ValidateStateOperation(DocumentActionName.Approve, summary);
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
             }
 
             var paraph = detail?.Paraph;
-            var workflow = GetWorkflow(transactionId, _contextManager);
-            workflow.Approve(transactionId, paraph);
+            var workflow = GetWorkflow(summary.DocumentId, _contextManager);
+            workflow.Approve(summary.DocumentId, paraph);
             return Ok();
         }
 
@@ -389,16 +419,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not put transaction as Prepared because operation detail is null.");
             }
 
-            string message = ValidateGroupStateOperation(DocumentAction.Prepare, detail.Items.ToArray());
+            var summaries = detail.Items
+                .Select(id => _repository.GetTransactionSummary(id));
+            string message = ValidateGroupStateOperation(DocumentActionName.Prepare, summaries);
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
             }
 
-            foreach (int transactionId in detail.Items)
+            foreach (var summary in summaries)
             {
-                var workflow = GetWorkflow(transactionId, _contextManager);
-                workflow.Prepare(transactionId, detail.Paraph);
+                var workflow = GetWorkflow(summary.DocumentId, _contextManager);
+                workflow.Prepare(summary.DocumentId, detail.Paraph);
             }
 
             return Ok();
@@ -414,16 +446,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not put transaction as Reviewed because operation detail is null.");
             }
 
-            string message = ValidateGroupStateOperation(DocumentAction.Review, detail.Items.ToArray());
+            var summaries = detail.Items
+                .Select(id => _repository.GetTransactionSummary(id));
+            string message = ValidateGroupStateOperation(DocumentActionName.Review, summaries);
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
             }
 
-            foreach (int transactionId in detail.Items)
+            foreach (var summary in summaries)
             {
-                var workflow = GetWorkflow(transactionId, _contextManager);
-                workflow.Review(transactionId, detail.Paraph);
+                var workflow = GetWorkflow(summary.DocumentId, _contextManager);
+                workflow.Review(summary.DocumentId, detail.Paraph);
             }
 
             return Ok();
@@ -439,16 +473,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not put transaction as Rejected because operation detail is null.");
             }
 
-            string message = ValidateGroupStateOperation(DocumentAction.Reject, detail.Items.ToArray());
+            var summaries = detail.Items
+                .Select(id => _repository.GetTransactionSummary(id));
+            string message = ValidateGroupStateOperation(DocumentActionName.Reject, summaries);
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
             }
 
-            foreach (int transactionId in detail.Items)
+            foreach (var summary in summaries)
             {
-                var workflow = GetWorkflow(transactionId, _contextManager);
-                workflow.RejectReviewed(transactionId, detail.Paraph);
+                var workflow = GetWorkflow(summary.DocumentId, _contextManager);
+                workflow.RejectReviewed(summary.DocumentId, detail.Paraph);
             }
 
             return Ok();
@@ -464,16 +500,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not put transaction as Confirmed because operation detail is null.");
             }
 
-            string message = ValidateGroupStateOperation(DocumentAction.Confirm, detail.Items.ToArray());
+            var summaries = detail.Items
+                .Select(id => _repository.GetTransactionSummary(id));
+            string message = ValidateGroupStateOperation(DocumentActionName.Confirm, summaries);
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
             }
 
-            foreach (int transactionId in detail.Items)
+            foreach (var summary in summaries)
             {
-                var workflow = GetWorkflow(transactionId, _contextManager);
-                workflow.Confirm(transactionId, detail.Paraph);
+                var workflow = GetWorkflow(summary.DocumentId, _contextManager);
+                workflow.Confirm(summary.DocumentId, detail.Paraph);
             }
 
             return Ok();
@@ -489,16 +527,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not put transaction as Approved because operation detail is null.");
             }
 
-            string message = ValidateGroupStateOperation(DocumentAction.Approve, detail.Items.ToArray());
+            var summaries = detail.Items
+                .Select(id => _repository.GetTransactionSummary(id));
+            string message = ValidateGroupStateOperation(DocumentActionName.Approve, summaries);
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
             }
 
-            foreach (int transactionId in detail.Items)
+            foreach (var summary in summaries)
             {
-                var workflow = GetWorkflow(transactionId, _contextManager);
-                workflow.Approve(transactionId, detail.Paraph);
+                var workflow = GetWorkflow(summary.DocumentId, _contextManager);
+                workflow.Approve(summary.DocumentId, detail.Paraph);
             }
 
             return Ok();
@@ -508,39 +548,34 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private ITransactionWorkflow GetWorkflow(int transactionId, ISecurityContextManager contextManager)
         {
-            var edition = _tracker.TrackDocumentWorkflowEdition(transactionId, DocumentType.Transaction);
+            var edition = _tracker.TrackDocumentWorkflowEdition(transactionId, DocumentTypeName.Transaction);
             var workflow = UnityConfig.GetConfiguredContainer()
                 .Resolve<ITransactionWorkflow>(edition);
             workflow.ContextManager = contextManager;
             return workflow;
         }
 
-        private string ValidateGroupStateOperation(string operation, int[] transactions)
+        private string ValidateGroupStateOperation(string operation, IEnumerable<TransactionSummaryViewModel> summaries)
         {
-            var messages = transactions
-                .Select(item => ValidateStateOperation(operation, item))
+            var messages = summaries
+                .Where(summary => summary != null)
+                .Select(summary => ValidateStateOperation(operation, summary))
                 .Where(msg => !String.IsNullOrEmpty(msg))
                 .ToArray();
             return String.Join(Environment.NewLine, messages);
         }
 
-        // !!! WARNING : Broken functionality during refactoring
-        private string ValidateStateOperation(string operation, int transactionId)
+        private string ValidateStateOperation(string operation, TransactionSummaryViewModel summary)
         {
             string result = String.Empty;
-            var summary = _repository.GetTransactionSummary(transactionId);
-            if (summary == null)
-            {
-                result = String.Format(ValidationMessages.ItemNotFound, Entities.TransactionLongName);
-            }
-            else if (!StateOperationValidator.Validate(operation, DocumentStatus.Created))
+            if (!StateOperationValidator.Validate(operation, summary.DocumentOperationalStatus))
             {
                 result = String.Format(
                     Strings.InvalidDocumentOperation,
                     Entities.TransactionLongName,
                     summary.No,
-                    DocumentAction.ToLocalValue(operation),
-                    DocumentStatus.ToLocalValue(DocumentStatus.Created));
+                    DocumentActionName.ToLocalValue(operation),
+                    DocumentStatusName.ToLocalValue(summary.DocumentOperationalStatus));
             }
 
             return result;
@@ -552,7 +587,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 var document = new DocumentViewModel()
                 {
-                    OperationalStatus = DocumentStatus.Created,
+                    OperationalStatus = DocumentStatusName.Created,
                     StatusId = (int)DocumentStatuses.Draft,
                     TypeId = (int)DocumentTypes.Transaction
                 };

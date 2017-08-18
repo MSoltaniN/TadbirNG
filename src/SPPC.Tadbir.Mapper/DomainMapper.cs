@@ -281,7 +281,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.OperationalStatus,
                     opts => opts.MapFrom(
-                        src => Values.DocumentStatus.ToLocalValue(src.OperationalStatus)));
+                        src => DocumentStatusName.ToLocalValue(src.OperationalStatus)));
             mapperConfig.CreateMap<WorkItemHistory, OutboxItemViewModel>()
                 .ForMember(dest => dest.DocumentNo, opts => opts.Ignore())
                 .ForMember(
@@ -291,11 +291,11 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.DocumentType,
                     opts => opts.MapFrom(
-                        src => Values.DocumentType.ToLocalValue(src.DocumentType)))
+                        src => DocumentTypeName.ToLocalValue(src.DocumentType)))
                 .ForMember(
                     dest => dest.Action,
                     opts => opts.MapFrom(
-                        src => Values.DocumentAction.ToLocalValue(src.Action)));
+                        src => DocumentActionName.ToLocalValue(src.Action)));
 
             mapperConfig.CreateMap<Dictionary<string, object>, WorkflowInstanceViewModel>()
                 .ForMember(dest => dest.InstanceId, opts => opts.MapFrom(src => ValueOrDefault<string>(src, "InstanceId")))

@@ -271,8 +271,8 @@ namespace SPPC.Tadbir.NHibernate
         {
             var repository = _unitOfWork.GetRepository<WorkItemDocument>();
             var document = repository
-                .GetByCriteria(wid => wid.DocumentId == transaction.Id
-                    && wid.DocumentType == Values.DocumentType.Transaction)
+                .GetByCriteria(wid => wid.DocumentId == transaction.Document.Id
+                    && wid.DocumentType == DocumentTypeName.Transaction)
                 .FirstOrDefault();
             if (document != null)
             {

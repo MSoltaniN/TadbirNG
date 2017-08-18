@@ -21,14 +21,12 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         public int DocumentId { get; set; }
 
         /// <summary>
-        /// وضعیت ثبت سند مالی (مقادیر ممکن عبارتند از : پیش نویس، ثبت نشده، ثبت عادی
-        /// و ثبت قطعی)
+        /// شناسه دیتابیسی وضعیت ثبت مستند
         /// </summary>
-        public string Status { get; set; }
+        public int StatusId { get; set; }
 
         /// <summary>
-        /// وضعیت عملیاتی سند مالی (مقادیر ممکن عبارتند از : ایجاد شده، تنظیم شده، بررسی شده
-        /// ، تایید شده و تصویب شده)
+        /// وضعیت عملیاتی مستند
         /// </summary>
         public string OperationalStatus { get; set; }
 

@@ -76,7 +76,7 @@
                 @Html.DisplayFor(modelItem => item.DocumentStatusName)
             </td>
             <td>
-                @DocumentStatus.ToLocalValue(item.DocumentOperationalStatus)
+                @DocumentStatusName.ToLocalValue(item.DocumentOperationalStatus)
             </td>
             <td>
                 @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id })

@@ -66,7 +66,7 @@
             @Html.DisplayNameFor(model => model.Transaction.Document.OperationalStatus)
         </dt>
         <dd>
-            @DocumentStatus.ToLocalValue(Model.Transaction.Document.OperationalStatus)
+            @DocumentStatusName.ToLocalValue(Model.Transaction.Document.OperationalStatus)
         </dd>
 
         <dt>
@@ -178,7 +178,7 @@
                     @item.UserFullName
                 </td>
                 <td>
-                    @DocumentAction.ToLocalValue(item.Action)
+                    @DocumentActionName.ToLocalValue(item.Action)
                 </td>
                 <td>
                     @item.RoleName
@@ -201,22 +201,22 @@
     }
     <br /><br />
     <p>
-        @if (Model.Transaction.Document.OperationalStatus == DocumentStatus.Created && currentContext.HasPermissions(Permissions.Transaction.Prepare))
+        @if (Model.Transaction.Document.OperationalStatus == DocumentStatusName.Created && currentContext.HasPermissions(Permissions.Transaction.Prepare))
         {
-            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Prepare), "prepare", new { id = Model.Transaction.Id }, new { id = "prepare-action" })<span> | </span>
+            @Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Prepare), "prepare", new { id = Model.Transaction.Id }, new { id = "prepare-action" })<span> | </span>
         }
-        @if (Model.Transaction.WorkItemId > 0 && currentContext.IsInRole(Model.Transaction.WorkItemTargetId) && Model.Transaction.WorkItemAction == DocumentAction.Review)
+        @if (Model.Transaction.WorkItemId > 0 && currentContext.IsInRole(Model.Transaction.WorkItemTargetId) && Model.Transaction.WorkItemAction == DocumentActionName.Review)
         {
-            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Review), "review", new { id = Model.Transaction.Id }, new { id = "review-action" })<span> | </span>
+            @Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Review), "review", new { id = Model.Transaction.Id }, new { id = "review-action" })<span> | </span>
         }
-        @if (Model.Transaction.WorkItemId > 0 && currentContext.IsInRole(Model.Transaction.WorkItemTargetId) && Model.Transaction.WorkItemAction == DocumentAction.Confirm)
+        @if (Model.Transaction.WorkItemId > 0 && currentContext.IsInRole(Model.Transaction.WorkItemTargetId) && Model.Transaction.WorkItemAction == DocumentActionName.Confirm)
         {
-            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Confirm), "confirm", new { id = Model.Transaction.Id }, new { id = "confirm-action" })<span> | </span>
-            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Reject), "reject", new { id = Model.Transaction.Id }, new { id = "reject-action" })<span> | </span>
+            @Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Confirm), "confirm", new { id = Model.Transaction.Id }, new { id = "confirm-action" })<span> | </span>
+            @Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Reject), "reject", new { id = Model.Transaction.Id }, new { id = "reject-action" })<span> | </span>
         }
-        @if (Model.Transaction.WorkItemId > 0 && currentContext.IsInRole(Model.Transaction.WorkItemTargetId) && Model.Transaction.WorkItemAction == DocumentAction.Approve)
+        @if (Model.Transaction.WorkItemId > 0 && currentContext.IsInRole(Model.Transaction.WorkItemTargetId) && Model.Transaction.WorkItemAction == DocumentActionName.Approve)
         {
-            @Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Approve), "approve", new { id = Model.Transaction.Id }, new { id = "approve-action" })<span> | </span>
+            @Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Approve), "approve", new { id = Model.Transaction.Id }, new { id = "approve-action" })<span> | </span>
         }
         @if (currentContext.HasPermissions(Permissions.Transaction.Edit))
         {

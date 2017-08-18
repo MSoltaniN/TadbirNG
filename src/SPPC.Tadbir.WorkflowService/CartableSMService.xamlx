@@ -29,12 +29,12 @@
     </p1:TextExpression.Namespaces>
     <p1:TextExpression.References>
       <sco:Collection x:TypeArguments="p1:AssemblyReference" x:Name="__ReferenceID11">
+        <p1:AssemblyReference>BabakSoft.Platform.Interfaces</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.CSharp</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.ServiceLocation</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.Unity</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.Unity.Configuration</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.Unity.RegistrationByConvention</p1:AssemblyReference>
-        <p1:AssemblyReference>SwForAll.Platform.Persistence</p1:AssemblyReference>
         <p1:AssemblyReference>System.Activities.DurableInstancing</p1:AssemblyReference>
         <p1:AssemblyReference>System.Configuration</p1:AssemblyReference>
         <p1:AssemblyReference>System</p1:AssemblyReference>
@@ -75,7 +75,7 @@
           </stwa:TrackWorkflowStateActivity.Operation>
           <stwa:TrackWorkflowStateActivity.State>
             <p1:InArgument x:TypeArguments="x:String">
-              <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Prepared</mca:CSharpValue>
+              <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Prepared</mca:CSharpValue>
             </p1:InArgument>
           </stwa:TrackWorkflowStateActivity.State>
           <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -149,7 +149,7 @@
                   </stwa:TrackWorkflowStateActivity.Operation>
                   <stwa:TrackWorkflowStateActivity.State>
                     <p1:InArgument x:TypeArguments="x:String">
-                      <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Reviewed</mca:CSharpValue>
+                      <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Reviewed</mca:CSharpValue>
                     </p1:InArgument>
                   </stwa:TrackWorkflowStateActivity.State>
                   <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -274,7 +274,7 @@
                           </stwa:TrackWorkflowStateActivity.Operation>
                           <stwa:TrackWorkflowStateActivity.State>
                             <p1:InArgument x:TypeArguments="x:String">
-                              <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Confirmed</mca:CSharpValue>
+                              <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Confirmed</mca:CSharpValue>
                             </p1:InArgument>
                           </stwa:TrackWorkflowStateActivity.State>
                           <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -348,7 +348,7 @@
                                   </stwa:TrackWorkflowStateActivity.Operation>
                                   <stwa:TrackWorkflowStateActivity.State>
                                     <p1:InArgument x:TypeArguments="x:String">
-                                      <mca:CSharpValue x:TypeArguments="x:String">DocumentStatus.Approved</mca:CSharpValue>
+                                      <mca:CSharpValue x:TypeArguments="x:String">DocumentStatusName.Approved</mca:CSharpValue>
                                     </p1:InArgument>
                                   </stwa:TrackWorkflowStateActivity.State>
                                   <stwa:TrackWorkflowStateActivity.WorkflowName>
@@ -439,7 +439,7 @@
         </p1:Variable.Default>
       </p1:Variable>
     </p1:StateMachine.Variables>
-    <sads:DebugSymbol.Symbol>d2NEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVTTVNlcnZpY2UueGFtbHhJEgO7AxUBAbMDN7MDSgKUArYDC7YDZQKPAj8F9QIQAtUBiQEN8QIYAXiGAhXtAiABPtACHekCKAEn+QIFrwMQAQJBCVYrAvoBWw2GARsC1wGLARGgATMCwAGlARXQASMCnQHYARWDAiMBeogCGZ0COwFjogIdzQIrAUDSAiHnAkMBKf0CDagDGwEESQ9JYAKKAlMPU1UChQJED0RUAoACTg9OZAL7AVwPeRkC6gF6D4ABLQLkAYEBD4UBGwLYAZMBF5MBaALQAZ0BF50BXQLLAY4BF44BXALGAZgBF5gBbALBAaYBF8MBIQKwAcQBF8oBNQKqAcsBF88BIwKeAdkBF/YBIQKNAfcBF/0BNQKHAf4BF4ICIwF7kAIfkAJwAXOaAh+aAmUBbosCH4sCZAFplQIflQJ1AWSjAh/AAikBU8ECH8cCPQFNyAIfzAIrAUHaAifaAngBOeQCJ+QCbQE01QIn1QJsAS/fAiffAnwBKv4CD5sDGQEXnAMPogMtARGjAw+nAxsBBWgVaGkC9QF2FXZuAvABbxlvbQLrAX0VfWYC5QGDAU+DAVAC2QGyAR2yAXECuwHAAR3AAXYCtgG5ASG5AXUCsQHHAR3HAW4CqwHNAVfNAVgCnwHlAR3lAXECmAHzAR3zAXYCkwHsASHsAXUCjgH6AR36AW4CiAGAAleAAlgBfK8CJa8CeQFevQIlvQJ+AVm2Aim2An0BVMQCJcQCdgFOygJfygJgAUKKAxWKA2kBIpgDFZgDbgEdkQMZkQNtARifAxWfA2YBEqUDT6UDUAEG</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2NEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcQ2FydGFibGVTTVNlcnZpY2UueGFtbHhJEgO7AxUBAbMDN7MDSgKUArYDC7YDZQKPAj8F9QIQAtUBiQEN8QIYAXiGAhXtAiABPtACHekCKAEn+QIFrwMQAQJBCVYrAvoBWw2GARsC1wGLARGgATMCwAGlARXQASMCnQHYARWDAiMBeogCGZ0COwFjogIdzQIrAUDSAiHnAkMBKf0CDagDGwEESQ9JYAKKAlMPU1UChQJED0RUAoACTg9OaAL7AVwPeRkC6gF6D4ABLQLkAYEBD4UBGwLYAZMBF5MBaALQAZ0BF50BXQLLAY4BF44BXALGAZgBF5gBcALBAaYBF8MBIQKwAcQBF8oBNQKqAcsBF88BIwKeAdkBF/YBIQKNAfcBF/0BNQKHAf4BF4ICIwF7kAIfkAJwAXOaAh+aAmUBbosCH4sCZAFplQIflQJ5AWSjAh/AAikBU8ECH8cCPQFNyAIfzAIrAUHaAifaAngBOeQCJ+QCbQE01QIn1QJsAS/fAiffAoABASr+Ag+bAxkBF5wDD6IDLQERowMPpwMbAQVoFWhpAvUBdhV2bgLwAW8Zb20C6wF9FX1mAuUBgwFPgwFQAtkBsgEdsgFxArsBwAEdwAF2ArYBuQEhuQF1ArEBxwEdxwFuAqsBzQFXzQFYAp8B5QEd5QFxApgB8wEd8wF2ApMB7AEh7AF1Ao4B+gEd+gFuAogBgAJXgAJYAXyvAiWvAnkBXr0CJb0CfgFZtgIptgJ9AVTEAiXEAnYBTsoCX8oCYAFCigMVigNpASKYAxWYA24BHZEDGZEDbQEYnwMVnwNmARKlA0+lA1ABBg==</sads:DebugSymbol.Symbol>
   </p1:StateMachine>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -496,7 +496,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="TrackWorkflowStateActivity_4" sap:VirtualizedContainerService.HintSize="200,22.4" />
-      <sap2010:ViewStateData Id="State_9" sap:VirtualizedContainerService.HintSize="114.4,61.6">
+      <sap2010:ViewStateData Id="State_9" sap:VirtualizedContainerService.HintSize="325.6,224">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">432.8,249.2</av:Point>
@@ -514,7 +514,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="State_6" sap:VirtualizedContainerService.HintSize="114.4,61.6">
+      <sap2010:ViewStateData Id="State_6" sap:VirtualizedContainerService.HintSize="325.6,473.6">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">232.8,249.2</av:Point>
@@ -532,7 +532,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="State_7" sap:VirtualizedContainerService.HintSize="114.4,61.6">
+      <sap2010:ViewStateData Id="State_7" sap:VirtualizedContainerService.HintSize="325.6,500.8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">22.8,249.2</av:Point>
@@ -550,7 +550,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="State_8" sap:VirtualizedContainerService.HintSize="114.4,61.6">
+      <sap2010:ViewStateData Id="State_8" sap:VirtualizedContainerService.HintSize="325.6,473.6">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">22.8,139.2</av:Point>
@@ -578,7 +578,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="State_10" sap:VirtualizedContainerService.HintSize="114.4,61.6">
+      <sap2010:ViewStateData Id="State_10" sap:VirtualizedContainerService.HintSize="325.6,473.6">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">222.8,139.2</av:Point>

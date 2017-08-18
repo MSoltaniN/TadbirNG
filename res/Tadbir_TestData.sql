@@ -65,13 +65,13 @@ INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (12, N'پیش فاکتو
 SET IDENTITY_INSERT [Core].[DocumentType] OFF
 
 SET IDENTITY_INSERT [Core].[DocumentStatus] ON
-INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (1, N'پیش نویس')
-INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (2, N'ثبت نشده')
-INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (3, N'ثبت شده')
-INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (4, N'ثبت عادی')
-INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (5, N'ثبت قطعی')
-INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (6, N'ریالی نشده')
-INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (7, N'ریالی شده')
+INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (1, N'Draft')
+INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (2, N'Unchecked')
+INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (3, N'Checked')
+INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (4, N'NormalCheck')
+INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (5, N'FinalCheck')
+INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (6, N'NotPriced')
+INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (7, N'Priced')
 SET IDENTITY_INSERT [Core].[DocumentStatus] OFF
 
 SET IDENTITY_INSERT [Corporate].[BusinessUnit] ON

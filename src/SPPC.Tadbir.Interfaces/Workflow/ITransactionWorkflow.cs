@@ -17,71 +17,71 @@ namespace SPPC.Tadbir.Workflow
         /// <summary>
         /// یک سند مالی پیش نویس را در حالت ثبت نشده و وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید حالت و وضعیتش تغییر کند</param>
+        /// <param name="documentId">شناسه دیتابیسی مستند مرتبط با سند مالی که باید حالت و وضعیتش تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        void Prepare(int transactionId, string paraph = null);
+        void Prepare(int documentId, string paraph = null);
 
         /// <summary>
         /// یک سند مالی ثبت نشده و تنظیم شده را در وضعیت عملیاتی بررسی شده قرار می دهد.
         /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید وضعیتش تغییر کند</param>
+        /// <param name="documentId">شناسه دیتابیسی مستند مرتبط با سند مالی که باید وضعیتش تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        void Review(int transactionId, string paraph = null);
+        void Review(int documentId, string paraph = null);
 
         /// <summary>
         /// یک سند مالی ثبت نشده و بررسی شده را برای بررسی مجدد در وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید وضعیتش تغییر کند</param>
+        /// <param name="documentId">شناسه دیتابیسی مستند مرتبط با سند مالی که باید وضعیتش تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        void RejectReviewed(int transactionId, string paraph = null);
+        void RejectReviewed(int documentId, string paraph = null);
 
         /// <summary>
         /// یک سند مالی ثبت نشده و بررسی شده را در حالت ثبت عادی و وضعیت عملیاتی تایید شده قرار می دهد.
         /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید وضعیتش تغییر کند</param>
+        /// <param name="documentId">شناسه دیتابیسی مستند مرتبط با سند مالی که باید وضعیتش تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        void Confirm(int transactionId, string paraph = null);
+        void Confirm(int documentId, string paraph = null);
 
         /// <summary>
         /// یک سند مالی ثبت عادی و تایید شده را در حالت ثبت قطعی و وضعیت عملیاتی تصویب شده قرار می دهد.
         /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید وضعیتش تغییر کند</param>
+        /// <param name="documentId">شناسه دیتابیسی مستند مرتبط با سند مالی که باید وضعیتش تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        void Approve(int transactionId, string paraph = null);
+        void Approve(int documentId, string paraph = null);
 
         /// <summary>
         /// مجموعه ای از اسناد مالی پیش نویس را در حالت ثبت نشده و وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
-        /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
+        /// <param name="documents">مجموعه شناسه های مستندهایی که باید وضعیتشان تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        void PrepareMultiple(IEnumerable<int> transactions, string paraph = null);
+        void PrepareMultiple(IEnumerable<int> documents, string paraph = null);
 
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت نشده و تنظیم شده را در وضعیت عملیاتی بررسی شده قرار می دهد.
         /// </summary>
-        /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
+        /// <param name="documents">مجموعه شناسه های مستندهایی که باید وضعیتشان تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        void ReviewMultiple(IEnumerable<int> transactions, string paraph = null);
+        void ReviewMultiple(IEnumerable<int> documents, string paraph = null);
 
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت نشده و بررسی شده را برای بررسی مجدد در وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
-        /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
+        /// <param name="documents">مجموعه شناسه های مستندهایی که باید وضعیتشان تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        void RejectReviewedMultiple(IEnumerable<int> transactions, string paraph = null);
+        void RejectReviewedMultiple(IEnumerable<int> documents, string paraph = null);
 
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت نشده و بررسی شده را در حالت ثبت عادی و وضعیت عملیاتی تایید شده قرار می دهد.
         /// </summary>
-        /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
+        /// <param name="documents">مجموعه شناسه های مستندهایی که باید وضعیتشان تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        void ConfirmMultiple(IEnumerable<int> transactions, string paraph = null);
+        void ConfirmMultiple(IEnumerable<int> documents, string paraph = null);
 
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت عادی و تایید شده را در حالت ثبت قطعی و وضعیت عملیاتی تصویب شده قرار می دهد.
         /// </summary>
-        /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
+        /// <param name="documents">مجموعه شناسه های مستندهایی که باید وضعیتشان تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        void ApproveMultiple(IEnumerable<int> transactions, string paraph = null);
+        void ApproveMultiple(IEnumerable<int> documents, string paraph = null);
     }
 }

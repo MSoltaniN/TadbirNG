@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Workflow
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         public override void Prepare(int transactionId, string paraph = null)
         {
-            var prepare = StateOperation.Prepare(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+            var prepare = StateOperation.Prepare(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
             InvokeServiceOperation(prepare);
             LogOperation(transactionId, "Prepare", "prepared");
         }
@@ -30,7 +30,7 @@ namespace SPPC.Tadbir.Workflow
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         public override void Review(int transactionId, string paraph = null)
         {
-            var review = StateOperation.Review(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+            var review = StateOperation.Review(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
             InvokeServiceOperation(review);
             LogOperation(transactionId, "Review", "reviewed");
         }
@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.Workflow
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         public override void RejectReviewed(int transactionId, string paraph = null)
         {
-            var reject = StateOperation.RejectReview(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+            var reject = StateOperation.RejectReview(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
             InvokeServiceOperation(reject);
             LogOperation(transactionId, "Reject", "rejected");
         }
@@ -54,7 +54,7 @@ namespace SPPC.Tadbir.Workflow
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         public override void Confirm(int transactionId, string paraph = null)
         {
-            var confirm = StateOperation.Confirm(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+            var confirm = StateOperation.Confirm(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
             InvokeServiceOperation(confirm);
             LogOperation(transactionId, "Confirm", "confirmed");
         }
@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.Workflow
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         public override void Approve(int transactionId, string paraph = null)
         {
-            var approve = StateOperation.Approve(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+            var approve = StateOperation.Approve(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
             InvokeServiceOperation(approve);
             LogOperation(transactionId, "Approve", "approved");
         }
@@ -81,7 +81,7 @@ namespace SPPC.Tadbir.Workflow
             Verify.ArgumentNotNull(transactions, "transactions");
             foreach (int transactionId in transactions)
             {
-                var prepare = StateOperation.Prepare(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                var prepare = StateOperation.Prepare(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
                 InvokeServiceOperation(prepare);
                 LogOperation(transactionId, "Prepare", "prepared");
             }
@@ -97,7 +97,7 @@ namespace SPPC.Tadbir.Workflow
             Verify.ArgumentNotNull(transactions, "transactions");
             foreach (int transactionId in transactions)
             {
-                var review = StateOperation.Review(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                var review = StateOperation.Review(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
                 InvokeServiceOperation(review);
                 LogOperation(transactionId, "Review", "reviewed");
             }
@@ -113,7 +113,7 @@ namespace SPPC.Tadbir.Workflow
             Verify.ArgumentNotNull(transactions, "transactions");
             foreach (int transactionId in transactions)
             {
-                var reject = StateOperation.RejectReview(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                var reject = StateOperation.RejectReview(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
                 InvokeServiceOperation(reject);
                 LogOperation(transactionId, "Reject", "rejected");
             }
@@ -129,7 +129,7 @@ namespace SPPC.Tadbir.Workflow
             Verify.ArgumentNotNull(transactions, "transactions");
             foreach (int transactionId in transactions)
             {
-                var confirm = StateOperation.Confirm(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                var confirm = StateOperation.Confirm(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
                 InvokeServiceOperation(confirm);
                 LogOperation(transactionId, "Confirm", "confirmed");
             }
@@ -145,7 +145,7 @@ namespace SPPC.Tadbir.Workflow
             Verify.ArgumentNotNull(transactions, "transactions");
             foreach (int transactionId in transactions)
             {
-                var approve = StateOperation.Approve(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                var approve = StateOperation.Approve(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
                 InvokeServiceOperation(approve);
                 LogOperation(transactionId, "Approve", "approved");
             }

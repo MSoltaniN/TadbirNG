@@ -20,101 +20,101 @@ namespace SPPC.Tadbir.Workflow
         /// <summary>
         /// یک سند مالی پیش نویس را در حالت ثبت نشده و وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید حالت و وضعیتش تغییر کند</param>
+        /// <param name="documentId">شناسه دیتابیسی مستند مرتبط با سند مالی که باید حالت و وضعیتش تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        public virtual void Prepare(int transactionId, string paraph = null)
+        public virtual void Prepare(int documentId, string paraph = null)
         {
-            var prepare = StateOperation.Prepare(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+            var prepare = StateOperation.Prepare(CurrentUserId, documentId, DocumentTypeName.Transaction, paraph);
             using (var client = new DocumentStateClient())
             {
                 client.Prepare(prepare);
                 client.Close();
             }
 
-            LogOperation(transactionId, "Prepare", "prepared");
+            LogOperation(documentId, "Prepare", "prepared");
         }
 
         /// <summary>
         /// یک سند مالی ثبت نشده و تنظیم شده را در وضعیت عملیاتی بررسی شده قرار می دهد.
         /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید وضعیتش تغییر کند</param>
+        /// <param name="documentId">شناسه دیتابیسی مستند مرتبط با سند مالی که باید وضعیتش تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        public virtual void Review(int transactionId, string paraph = null)
+        public virtual void Review(int documentId, string paraph = null)
         {
-            var review = StateOperation.Review(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+            var review = StateOperation.Review(CurrentUserId, documentId, DocumentTypeName.Transaction, paraph);
             using (var client = new DocumentStateClient())
             {
                 client.Review(review);
                 client.Close();
             }
 
-            LogOperation(transactionId, "Review", "reviewed");
+            LogOperation(documentId, "Review", "reviewed");
         }
 
         /// <summary>
         /// یک سند مالی ثبت نشده و بررسی شده را برای بررسی مجدد در وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید وضعیتش تغییر کند</param>
+        /// <param name="documentId">شناسه دیتابیسی مستند مرتبط با سند مالی که باید وضعیتش تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        public virtual void RejectReviewed(int transactionId, string paraph = null)
+        public virtual void RejectReviewed(int documentId, string paraph = null)
         {
-            var reject = StateOperation.RejectReview(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+            var reject = StateOperation.RejectReview(CurrentUserId, documentId, DocumentTypeName.Transaction, paraph);
             using (var client = new DocumentStateClient())
             {
                 client.Reject(reject);
                 client.Close();
             }
 
-            LogOperation(transactionId, "RejectReview", "rejected");
+            LogOperation(documentId, "RejectReview", "rejected");
         }
 
         /// <summary>
         /// یک سند مالی ثبت نشده و بررسی شده را در حالت ثبت عادی و وضعیت عملیاتی تایید شده قرار می دهد.
         /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید وضعیتش تغییر کند</param>
+        /// <param name="documentId">شناسه دیتابیسی مستند مرتبط با سند مالی که باید وضعیتش تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        public virtual void Confirm(int transactionId, string paraph = null)
+        public virtual void Confirm(int documentId, string paraph = null)
         {
-            var confirm = StateOperation.Confirm(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+            var confirm = StateOperation.Confirm(CurrentUserId, documentId, DocumentTypeName.Transaction, paraph);
             using (var client = new DocumentStateClient())
             {
                 client.Confirm(confirm);
                 client.Close();
             }
 
-            LogOperation(transactionId, "Confirm", "confirmed");
+            LogOperation(documentId, "Confirm", "confirmed");
         }
 
         /// <summary>
         /// یک سند مالی ثبت عادی و تایید شده را در حالت ثبت قطعی و وضعیت عملیاتی تصویب شده قرار می دهد.
         /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی سند مالی که باید وضعیتش تغییر کند</param>
+        /// <param name="documentId">شناسه دیتابیسی مستند مرتبط با سند مالی که باید وضعیتش تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        public virtual void Approve(int transactionId, string paraph = null)
+        public virtual void Approve(int documentId, string paraph = null)
         {
-            var approve = StateOperation.Approve(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+            var approve = StateOperation.Approve(CurrentUserId, documentId, DocumentTypeName.Transaction, paraph);
             using (var client = new DocumentStateClient())
             {
                 client.Approve(approve);
                 client.Close();
             }
 
-            LogOperation(transactionId, "Approve", "approved");
+            LogOperation(documentId, "Approve", "approved");
         }
 
         /// <summary>
         /// مجموعه ای از اسناد مالی پیش نویس را در حالت ثبت نشده و وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
-        /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
+        /// <param name="documents">مجموعه شناسه های مستندهایی که باید وضعیتشان تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        public virtual void PrepareMultiple(IEnumerable<int> transactions, string paraph = null)
+        public virtual void PrepareMultiple(IEnumerable<int> documents, string paraph = null)
         {
-            Verify.ArgumentNotNull(transactions, "transactions");
+            Verify.ArgumentNotNull(documents, "documents");
             using (var client = new DocumentStateClient())
             {
-                foreach (int transactionId in transactions)
+                foreach (int transactionId in documents)
                 {
-                    var prepare = StateOperation.Prepare(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                    var prepare = StateOperation.Prepare(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
                     client.Prepare(prepare);
                     LogOperation(transactionId, "Prepare", "prepared");
                 }
@@ -126,16 +126,16 @@ namespace SPPC.Tadbir.Workflow
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت نشده و تنظیم شده را در وضعیت عملیاتی بررسی شده قرار می دهد.
         /// </summary>
-        /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
+        /// <param name="documents">مجموعه شناسه های مستندهایی که باید وضعیتشان تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        public virtual void ReviewMultiple(IEnumerable<int> transactions, string paraph = null)
+        public virtual void ReviewMultiple(IEnumerable<int> documents, string paraph = null)
         {
-            Verify.ArgumentNotNull(transactions, "transactions");
+            Verify.ArgumentNotNull(documents, "documents");
             using (var client = new DocumentStateClient())
             {
-                foreach (int transactionId in transactions)
+                foreach (int transactionId in documents)
                 {
-                    var review = StateOperation.Review(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                    var review = StateOperation.Review(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
                     client.Review(review);
                     LogOperation(transactionId, "Review", "reviewed");
                 }
@@ -147,16 +147,16 @@ namespace SPPC.Tadbir.Workflow
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت نشده و بررسی شده را برای بررسی مجدد در وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
-        /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
+        /// <param name="documents">مجموعه شناسه های مستندهایی که باید وضعیتشان تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        public virtual void RejectReviewedMultiple(IEnumerable<int> transactions, string paraph = null)
+        public virtual void RejectReviewedMultiple(IEnumerable<int> documents, string paraph = null)
         {
-            Verify.ArgumentNotNull(transactions, "transactions");
+            Verify.ArgumentNotNull(documents, "documents");
             using (var client = new DocumentStateClient())
             {
-                foreach (int transactionId in transactions)
+                foreach (int transactionId in documents)
                 {
-                    var reject = StateOperation.RejectReview(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                    var reject = StateOperation.RejectReview(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
                     client.Reject(reject);
                     LogOperation(transactionId, "Reject", "rejected");
                 }
@@ -168,16 +168,16 @@ namespace SPPC.Tadbir.Workflow
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت نشده و بررسی شده را در حالت ثبت عادی و وضعیت عملیاتی تایید شده قرار می دهد.
         /// </summary>
-        /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
+        /// <param name="documents">مجموعه شناسه های مستندهایی که باید وضعیتشان تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        public virtual void ConfirmMultiple(IEnumerable<int> transactions, string paraph = null)
+        public virtual void ConfirmMultiple(IEnumerable<int> documents, string paraph = null)
         {
-            Verify.ArgumentNotNull(transactions, "transactions");
+            Verify.ArgumentNotNull(documents, "documents");
             using (var client = new DocumentStateClient())
             {
-                foreach (int transactionId in transactions)
+                foreach (int transactionId in documents)
                 {
-                    var confirm = StateOperation.Confirm(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                    var confirm = StateOperation.Confirm(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
                     client.Confirm(confirm);
                     LogOperation(transactionId, "Confirm", "confirmed");
                 }
@@ -189,16 +189,16 @@ namespace SPPC.Tadbir.Workflow
         /// <summary>
         /// مجموعه ای از اسناد مالی ثبت عادی و تایید شده را در حالت ثبت قطعی و وضعیت عملیاتی تصویب شده قرار می دهد.
         /// </summary>
-        /// <param name="transactions">مجموعه شناسه های مالی اسنادی که باید وضعیتشان تغییر کند</param>
+        /// <param name="documents">مجموعه شناسه های مستندهایی که باید وضعیتشان تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        public virtual void ApproveMultiple(IEnumerable<int> transactions, string paraph = null)
+        public virtual void ApproveMultiple(IEnumerable<int> documents, string paraph = null)
         {
-            Verify.ArgumentNotNull(transactions, "transactions");
+            Verify.ArgumentNotNull(documents, "documents");
             using (var client = new DocumentStateClient())
             {
-                foreach (int transactionId in transactions)
+                foreach (int transactionId in documents)
                 {
-                    var approve = StateOperation.Approve(CurrentUserId, transactionId, DocumentType.Transaction, paraph);
+                    var approve = StateOperation.Approve(CurrentUserId, transactionId, DocumentTypeName.Transaction, paraph);
                     client.Approve(approve);
                     LogOperation(transactionId, "Approve", "approved");
                 }

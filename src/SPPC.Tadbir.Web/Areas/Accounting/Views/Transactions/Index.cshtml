@@ -75,7 +75,7 @@
                 string debit = item.DebitSum.ToString("C0", persianCulture);
                 string credit = item.CreditSum.ToString("C0", persianCulture);
                 string status = TransactionStatus.ToLocalValue(item.Document.StatusName);
-                string opStatus = DocumentStatus.ToLocalValue(item.Document.OperationalStatus);
+                string opStatus = DocumentStatusName.ToLocalValue(item.Document.OperationalStatus);
                 @Html.HiddenFor(modelItem => Model[i].Id);
                 <tr>
                     <td>
@@ -112,22 +112,22 @@
                         {
                             <span> | </span>@Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
                         }
-                        @if (item.Document.OperationalStatus == DocumentStatus.Created && currentContext.HasPermissions(Permissions.Transaction.Prepare))
+                        @if (item.Document.OperationalStatus == DocumentStatusName.Created && currentContext.HasPermissions(Permissions.Transaction.Prepare))
                         {
-                            <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Prepare), "prepare", new { id = item.Id }, new { id = String.Format("prepare-action{0}", item.Id) })
+                            <span> | </span>@Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Prepare), "prepare", new { id = item.Id }, new { id = String.Format("prepare-action{0}", item.Id) })
                         }
-                        @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentAction.Review)
+                        @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentActionName.Review)
                         {
-                            <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Review), "review", new { id = item.Id }, new { id = String.Format("review-action{0}", item.Id) })
+                            <span> | </span>@Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Review), "review", new { id = item.Id }, new { id = String.Format("review-action{0}", item.Id) })
                         }
-                        @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentAction.Confirm)
+                        @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentActionName.Confirm)
                         {
-                            <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Confirm), "confirm", new { id = item.Id }, new { id = String.Format("confirm-action{0}", item.Id) })
-                            <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Reject), "reject", new { id = item.Id }, new { id = String.Format("reject-action{0}", item.Id) })
+                            <span> | </span>@Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Confirm), "confirm", new { id = item.Id }, new { id = String.Format("confirm-action{0}", item.Id) })
+                            <span> | </span>@Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Reject), "reject", new { id = item.Id }, new { id = String.Format("reject-action{0}", item.Id) })
                         }
-                        @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentAction.Approve)
+                        @if (item.WorkItemId > 0 && currentContext.IsInRole(item.WorkItemTargetId) && item.WorkItemAction == DocumentActionName.Approve)
                         {
-                            <span> | </span>@Html.ActionLink(DocumentAction.ToLocalValue(DocumentAction.Approve), "approve", new { id = item.Id }, new { id = String.Format("approve-action{0}", item.Id) })
+                            <span> | </span>@Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Approve), "approve", new { id = item.Id }, new { id = String.Format("approve-action{0}", item.Id) })
                         }
                     </td>
                 </tr>

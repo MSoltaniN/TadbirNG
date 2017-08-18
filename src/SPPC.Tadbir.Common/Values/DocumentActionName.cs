@@ -11,9 +11,9 @@ namespace SPPC.Tadbir.Values
     /// برنامه، لازم است تابع استاتیک این کلاس برای بدست آوردن متن فارسی متناظر صدا زده شود. این کلاس یک نمونه از
     /// پیاده سازی های موقتی مشابه برای کار با داده های چندزبانه در برنامه به حساب می آید.
     /// </remarks>
-    public sealed class DocumentAction
+    public sealed class DocumentActionName
     {
-        private DocumentAction()
+        private DocumentActionName()
         {
         }
 

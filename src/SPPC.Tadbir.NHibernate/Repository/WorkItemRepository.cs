@@ -6,6 +6,7 @@ using BabakSoft.Platform.Common;
 using BabakSoft.Platform.Persistence;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Values;
@@ -29,7 +30,6 @@ namespace SPPC.Tadbir.NHibernate
             _mapper = mapper;
         }
 
-        // !!! WARNING : Broken functionality during refactoring
         /// <summary>
         /// مجموعه کارهای موجود در کارتابل دریافتی کاربر تعیین شده را از دیتابیس می خواند.
         /// </summary>
@@ -54,9 +54,11 @@ namespace SPPC.Tadbir.NHibernate
                 var documentRepository = _unitOfWork.GetRepository<Transaction>();
                 foreach (var workItem in workItems)
                 {
-                    var document = documentRepository.GetByID(workItem.DocumentId);
-                    workItem.DocumentNo = document.No;
-                    //workItem.DocumentStatus = document.OperationalStatus;
+                    var transaction = documentRepository
+                        .GetByCriteria(doc => doc.Document.Id == workItem.DocumentId)
+                        .First();
+                    workItem.DocumentNo = transaction.No;
+                    workItem.DocumentStatus = transaction.Document.OperationalStatus;
                 }
             }
 
@@ -79,8 +81,10 @@ namespace SPPC.Tadbir.NHibernate
             var documentRepository = _unitOfWork.GetRepository<Transaction>();
             foreach (var workItem in workItems)
             {
-                var document = documentRepository.GetByID(workItem.DocumentId);
-                workItem.DocumentNo = document.No;
+                var transaction = documentRepository
+                    .GetByCriteria(doc => doc.Document.Id == workItem.DocumentId)
+                    .First();
+                workItem.DocumentNo = transaction.No;
             }
 
             return workItems;
@@ -206,23 +210,26 @@ namespace SPPC.Tadbir.NHibernate
         private bool DidUpdateDocument(WorkItemViewModel workItem)
         {
             bool didUpdate = false;
-            var transactionRepository = _unitOfWork.GetRepository<Transaction>();
-            var transaction = transactionRepository.GetByID(workItem.DocumentId);
-            if (transaction != null)
+            var repository = _unitOfWork.GetRepository<Document>();
+            var document = repository.GetByID(workItem.DocumentId);
+            if (document != null)
             {
-                //transaction.Status = workItem.Status;
-                //transaction.OperationalStatus = workItem.OperationalStatus;
-                //if (workItem.OperationalStatus == DocumentStatus.Confirmed)
-                //{
-                //    transaction.ConfirmedBy = new User() { Id = workItem.CreatedById };
-                //}
+                var action = document.Actions.First();
+                document.Status = new DocumentStatus() { Id = workItem.StatusId };
+                document.OperationalStatus = workItem.OperationalStatus;
+                if (workItem.OperationalStatus == DocumentStatusName.Confirmed)
+                {
+                    action.ConfirmedBy = new User() { Id = workItem.CreatedById };
+                    action.ConfirmedDate = DateTime.Now;
+                }
 
-                //if (workItem.OperationalStatus == DocumentStatus.Approved)
-                //{
-                //    transaction.ApprovedBy = new User() { Id = workItem.CreatedById };
-                //}
+                if (workItem.OperationalStatus == DocumentStatusName.Approved)
+                {
+                    action.ApprovedBy = new User() { Id = workItem.CreatedById };
+                    action.ApprovedDate = DateTime.Now;
+                }
 
-                transactionRepository.Update(transaction);
+                repository.Update(document);
                 didUpdate = true;
             }
 

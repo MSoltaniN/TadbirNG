@@ -49,7 +49,7 @@
                     @String.Format("{0}", index + 1)
                 </td>
                 <td>
-                    @DocumentType.ToLocalValue(item.DocumentType)
+                    @DocumentTypeName.ToLocalValue(item.DocumentType)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DocumentId)
@@ -61,7 +61,7 @@
                     @WorkflowEdition.ToLocalValue(item.EditionName)
                 </td>
                 <td>
-                    @DocumentStatus.ToLocalValue(item.State)
+                    @DocumentStatusName.ToLocalValue(item.State)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LastActor)
