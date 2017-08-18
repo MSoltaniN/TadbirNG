@@ -57,7 +57,7 @@ namespace SPPC.Tadbir.NHibernate
                     var transaction = documentRepository
                         .GetByCriteria(doc => doc.Document.Id == workItem.DocumentId)
                         .First();
-                    workItem.DocumentNo = transaction.No;
+                    workItem.EntityNo = transaction.No;
                     workItem.DocumentStatus = transaction.Document.OperationalStatus;
                 }
             }
@@ -164,7 +164,7 @@ namespace SPPC.Tadbir.NHibernate
         {
             var documentRepository = _unitOfWork.GetRepository<WorkItemDocument>();
             var document = documentRepository
-                .GetByCriteria(wid => wid.DocumentId == documentId && wid.DocumentType == documentType)
+                .GetByCriteria(wid => wid.Document.Id == documentId && wid.DocumentType == documentType)
                 .FirstOrDefault();
             if (document != null)
             {
@@ -248,6 +248,7 @@ namespace SPPC.Tadbir.NHibernate
             var document = new WorkItemDocumentViewModel()
             {
                 WorkItemId = newWorkItem.Id,
+                EntityId = workItem.EntityId,
                 DocumentId = workItem.DocumentId,
                 DocumentType = workItem.DocumentType
             };
@@ -265,7 +266,7 @@ namespace SPPC.Tadbir.NHibernate
             // Step 3 : Correlate existing document record for transaction with new work item...
             var documentRepository = _unitOfWork.GetRepository<WorkItemDocument>();
             var document = documentRepository
-                .GetByCriteria(item => item.DocumentId == workItem.DocumentId)
+                .GetByCriteria(item => item.Document.Id == workItem.DocumentId)
                 .First();
             int pendingId = document.WorkItem.Id;
             document.WorkItem = new WorkItem() { Id = newWorkItem.Id };
@@ -281,7 +282,7 @@ namespace SPPC.Tadbir.NHibernate
             // Step 1 : Delete workflow document record, since workflow is about to be completed...
             var documentRepository = _unitOfWork.GetRepository<WorkItemDocument>();
             var document = documentRepository
-                .GetByCriteria(item => item.DocumentId == workItem.DocumentId)
+                .GetByCriteria(item => item.Document.Id == workItem.DocumentId)
                 .First();
             int pendingId = document.WorkItem.Id;
             documentRepository.Delete(document);

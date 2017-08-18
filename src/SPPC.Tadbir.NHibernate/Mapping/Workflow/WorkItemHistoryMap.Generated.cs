@@ -31,6 +31,8 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Id(x => x.Id)
                 .Column("HistoryItemID")
                 .GeneratedBy.Identity();
+            Map(x => x.EntityId)
+                .Not.Nullable();
             Map(x => x.Number)
                 .Length(16)
                 .Not.Nullable();
@@ -41,17 +43,6 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Not.Nullable();
             Map(x => x.Title)
                 .Length(128)
-                .Not.Nullable();
-            Map(x => x.DocumentType)
-                .Length(128)
-                .Not.Nullable();
-            Map(x => x.DocumentId)
-                .Not.Nullable();
-            Map(x => x.Status)
-                .Length(64)
-                .Not.Nullable();
-            Map(x => x.OperationalStatus)
-                .Length(64)
                 .Not.Nullable();
             Map(x => x.Action)
                 .Length(64)
@@ -74,6 +65,10 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Cascade.None();
             References(x => x.Role)
                 .Column("RoleID")
+                .Not.LazyLoad()
+                .Cascade.None();
+            References(x => x.Document)
+                .Column("DocumentID")
                 .Not.LazyLoad()
                 .Cascade.None();
         }

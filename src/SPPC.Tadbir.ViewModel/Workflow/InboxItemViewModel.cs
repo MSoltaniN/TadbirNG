@@ -46,22 +46,27 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         public string Title { get; set; }
 
         /// <summary>
-        /// شناسه دیتابیسی موجودیت مرتبط با کار
+        /// شناسه دیتابیسی مستند مرتبط با کار
         /// </summary>
         public int DocumentId { get; set; }
 
         /// <summary>
-        /// نوع موجودیت مرتبط با کار
+        /// نوع مستند مرتبط با کار
         /// </summary>
         public string DocumentType { get; set; }
 
         /// <summary>
-        /// شماره موجودیت مرتبط با کار
+        /// شناسه دیتابیسی موجودیت مرتبط با کار
         /// </summary>
-        public string DocumentNo { get; set; }
+        public int EntityId { get; set; }
 
         /// <summary>
-        /// وضعیت عملیاتی موجودیت مرتبط یا کار
+        /// شماره موجودیت مرتبط با کار
+        /// </summary>
+        public string EntityNo { get; set; }
+
+        /// <summary>
+        /// وضعیت عملیاتی مستند مرتبط یا کار
         /// </summary>
         public string DocumentStatus { get; set; }
 

@@ -31,7 +31,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Id(x => x.Id)
                 .Column("DocumentItemID")
                 .GeneratedBy.Identity();
-            Map(x => x.DocumentId)
+            Map(x => x.EntityId)
                 .Not.Nullable();
             Map(x => x.DocumentType)
                 .Length(128)
@@ -47,6 +47,11 @@ namespace SPPC.Tadbir.NHibernate.Mapping
         {
             References(x => x.WorkItem)
                 .Column("WorkItemID")
+                .Nullable()
+                .Not.LazyLoad()
+                .Cascade.None();
+            References(x => x.Document)
+                .Column("DocumentID")
                 .Nullable()
                 .Not.LazyLoad()
                 .Cascade.None();

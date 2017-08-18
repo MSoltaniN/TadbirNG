@@ -293,7 +293,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var paraph = detail?.Paraph;
             var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-            workflow.Prepare(summary.DocumentId, paraph);
+            workflow.Prepare(summary.Id, summary.DocumentId, paraph);
             return Ok();
         }
 
@@ -321,7 +321,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var paraph = detail?.Paraph;
             var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-            workflow.Review(summary.DocumentId, paraph);
+            workflow.Review(summary.Id, summary.DocumentId, paraph);
             return Ok();
         }
 
@@ -349,7 +349,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var paraph = detail?.Paraph;
             var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-            workflow.RejectReviewed(summary.DocumentId, paraph);
+            workflow.RejectReviewed(summary.Id, summary.DocumentId, paraph);
             return Ok();
         }
 
@@ -377,7 +377,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var paraph = detail?.Paraph;
             var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-            workflow.Confirm(summary.DocumentId, paraph);
+            workflow.Confirm(summary.Id, summary.DocumentId, paraph);
             return Ok();
         }
 
@@ -405,7 +405,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var paraph = detail?.Paraph;
             var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-            workflow.Approve(summary.DocumentId, paraph);
+            workflow.Approve(summary.Id, summary.DocumentId, paraph);
             return Ok();
         }
 
@@ -430,7 +430,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             foreach (var summary in summaries)
             {
                 var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-                workflow.Prepare(summary.DocumentId, detail.Paraph);
+                workflow.Prepare(summary.Id, summary.DocumentId, detail.Paraph);
             }
 
             return Ok();
@@ -457,7 +457,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             foreach (var summary in summaries)
             {
                 var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-                workflow.Review(summary.DocumentId, detail.Paraph);
+                workflow.Review(summary.Id, summary.DocumentId, detail.Paraph);
             }
 
             return Ok();
@@ -484,7 +484,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             foreach (var summary in summaries)
             {
                 var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-                workflow.RejectReviewed(summary.DocumentId, detail.Paraph);
+                workflow.RejectReviewed(summary.Id, summary.DocumentId, detail.Paraph);
             }
 
             return Ok();
@@ -511,7 +511,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             foreach (var summary in summaries)
             {
                 var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-                workflow.Confirm(summary.DocumentId, detail.Paraph);
+                workflow.Confirm(summary.Id, summary.DocumentId, detail.Paraph);
             }
 
             return Ok();
@@ -538,7 +538,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             foreach (var summary in summaries)
             {
                 var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-                workflow.Approve(summary.DocumentId, detail.Paraph);
+                workflow.Approve(summary.Id, summary.DocumentId, detail.Paraph);
             }
 
             return Ok();
@@ -546,9 +546,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        private ITransactionWorkflow GetWorkflow(int transactionId, ISecurityContextManager contextManager)
+        private ITransactionWorkflow GetWorkflow(int documentId, ISecurityContextManager contextManager)
         {
-            var edition = _tracker.TrackDocumentWorkflowEdition(transactionId, DocumentTypeName.Transaction);
+            var edition = _tracker.TrackDocumentWorkflowEdition(documentId, DocumentTypeName.Transaction);
             var workflow = UnityConfig.GetConfiguredContainer()
                 .Resolve<ITransactionWorkflow>(edition);
             workflow.ContextManager = contextManager;

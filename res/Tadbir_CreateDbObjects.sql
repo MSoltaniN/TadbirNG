@@ -257,12 +257,14 @@ GO
 CREATE TABLE [Workflow].[WorkItemDocument] (
     [DocumentItemID]   INT              IDENTITY (1, 1) NOT NULL,
     [WorkItemID]       INT              NULL,
+    [EntityID]         INT              NOT NULL,
     [DocumentID]       INT              NOT NULL,
     [DocumentType]     VARCHAR(128)     NOT NULL,
     [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Workflow_WorkItemDocument_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]     DATETIME         CONSTRAINT [DF_Workflow_WorkItemDocument_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_WorkItemDocument] PRIMARY KEY CLUSTERED ([DocumentItemID] ASC)
     , CONSTRAINT [FK_Workflow_WorkItemDocument_Workflow_WorkItem] FOREIGN KEY ([WorkItemID]) REFERENCES [Workflow].[WorkItem] ([WorkItemID])
+    , CONSTRAINT [FK_Workflow_WorkItemDocument_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document] ([DocumentID])
 )
 GO
 
@@ -270,14 +272,12 @@ CREATE TABLE [Workflow].[WorkItemHistory] (
     [HistoryItemID]       INT              IDENTITY (1, 1) NOT NULL,
 	[UserID]              INT              NOT NULL,
 	[RoleID]              INT              NOT NULL,
+    [DocumentID]          INT              NOT NULL,
+    [EntityID]            INT              NOT NULL,
     [Number]              NVARCHAR(16)     NOT NULL,
     [Date]                DATETIME         NOT NULL,
     [Time]                TIME(7)          NOT NULL,
     [Title]               NVARCHAR(128)    NOT NULL,
-    [DocumentType]        NVARCHAR(128)    NOT NULL,
-    [DocumentID]          INT              NOT NULL,
-    [Status]              NVARCHAR(64)     NOT NULL,
-    [OperationalStatus]   NVARCHAR(64)     NOT NULL,
     [Action]              VARCHAR(64)      NOT NULL,
     [Remarks]             NVARCHAR(1024)   NULL,
     [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Workflow_WorkItemHistory_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
@@ -285,6 +285,7 @@ CREATE TABLE [Workflow].[WorkItemHistory] (
     , CONSTRAINT [PK_WorkItemHistory] PRIMARY KEY CLUSTERED ([HistoryItemID] ASC)
     , CONSTRAINT [FK_Workflow_WorkItemHistory_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User] ([UserID])
     , CONSTRAINT [FK_Workflow_WorkItemHistory_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role] ([RoleID])
+    , CONSTRAINT [FK_Workflow_WorkItemHistory_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document] ([DocumentID])
 )
 GO
 

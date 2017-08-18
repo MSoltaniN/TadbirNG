@@ -9,5 +9,10 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         /// شناسه دیتابیسی آخرین کاری که در جریان اجرای گردش کار روی این موجودیت انجام شده است
         /// </summary>
         public int WorkItemId { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی موجودیت مرتبط (ضمیمه) این کار
+        /// </summary>
+        public int EntityId { get; set; }
     }
 }

@@ -244,7 +244,11 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.DocumentId,
                     opts => opts.MapFrom(
-                        src => (src.Documents.Count > 0) ? src.Documents[0].DocumentId : 0))
+                        src => (src.Documents.Count > 0) ? src.Documents[0].Document.Id : 0))
+                .ForMember(
+                    dest => dest.EntityId,
+                    opts => opts.MapFrom(
+                        src => (src.Documents.Count > 0) ? src.Documents[0].EntityId : 0))
                 .ForMember(
                     dest => dest.Date,
                     opts => opts.MapFrom(
@@ -253,10 +257,12 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.CreatedBy.Id = viewModel.CreatedById)
                 .AfterMap((viewModel, model) => model.Target.Id = viewModel.TargetId);
             mapperConfig.CreateMap<WorkItemDocumentViewModel, WorkItemDocument>()
-                .AfterMap((viewModel, model) => model.WorkItem.Id = viewModel.WorkItemId);
+                .AfterMap((viewModel, model) => model.WorkItem.Id = viewModel.WorkItemId)
+                .AfterMap((viewModel, model) => model.Document.Id = viewModel.DocumentId);
             mapperConfig.CreateMap<WorkItemViewModel, WorkItemHistory>()
                 .ForMember(dest => dest.Id, opts => opts.Ignore())
                 .ForMember(dest => dest.Action, opts => opts.MapFrom(src => src.PreviousAction))
+                .AfterMap((viewModel, model) => model.Document.Id = viewModel.DocumentId)
                 .AfterMap((viewModel, model) => model.User.Id = viewModel.CreatedById)
                 .AfterMap((viewModel, model) =>
                     model.Role = (viewModel.TargetId > 0)
@@ -277,11 +283,11 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.Status,
                     opts => opts.MapFrom(
-                        src => TransactionStatus.ToLocalValue(src.Status)))
+                        src => TransactionStatus.ToLocalValue(src.Document.Status.Name)))
                 .ForMember(
                     dest => dest.OperationalStatus,
                     opts => opts.MapFrom(
-                        src => DocumentStatusName.ToLocalValue(src.OperationalStatus)));
+                        src => DocumentStatusName.ToLocalValue(src.Document.OperationalStatus)));
             mapperConfig.CreateMap<WorkItemHistory, OutboxItemViewModel>()
                 .ForMember(dest => dest.DocumentNo, opts => opts.Ignore())
                 .ForMember(
@@ -291,7 +297,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.DocumentType,
                     opts => opts.MapFrom(
-                        src => DocumentTypeName.ToLocalValue(src.DocumentType)))
+                        src => DocumentTypeName.ToLocalValue(src.Document.Type.Name)))
                 .ForMember(
                     dest => dest.Action,
                     opts => opts.MapFrom(

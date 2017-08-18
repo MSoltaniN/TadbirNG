@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using BabakSoft.Platform.Domain;
+using SPPC.Tadbir.Model.Core;
 
 namespace SPPC.Tadbir.Model.Workflow
 {
@@ -38,7 +39,7 @@ namespace SPPC.Tadbir.Model.Workflow
         /// <summary>
         /// شناسه دیتابیسی موجودیت مرتبط با کار
         /// </summary>
-        public virtual int DocumentId { get; set; }
+        public virtual int EntityId { get; set; }
 
         /// <summary>
         /// نوع موجودیت مرتبط با کار
@@ -60,9 +61,15 @@ namespace SPPC.Tadbir.Model.Workflow
         /// </summary>
         public virtual WorkItem WorkItem { get; set; }
 
+        /// <summary>
+        /// مستند مرتبط با کار
+        /// </summary>
+        public virtual Document Document { get; set; }
+
         private void InitReferences()
         {
             WorkItem = new WorkItem();
+            Document = new Document();
         }
     }
 }

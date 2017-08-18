@@ -55,6 +55,7 @@ namespace SPPC.Tadbir.Workflow
                 Date = current.Date,
                 Time = current.TimeOfDay,
                 Title = operation.Title,
+                EntityId = operation.EntityId,
                 DocumentType = operation.DocumentType,
                 DocumentId = operation.DocumentId,
                 StatusId = operation.StatusId,

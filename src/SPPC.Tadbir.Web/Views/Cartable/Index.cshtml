@@ -63,7 +63,7 @@
                 string controller = String.Format("{0}s", item.DocumentType.ToLower());
                 <tr>
                     <td>
-                        <input type="hidden" name="@String.Format("[{0}].Id", i)" value="@item.DocumentId" />
+                        <input type="hidden" name="@String.Format("[{0}].Id", i)" value="@item.EntityId" />
                         <input type="checkbox" name="@String.Format("[{0}].IsSelected", i)" />
                     </td>
                     <td>
@@ -88,34 +88,34 @@
                         @DocumentTypeName.ToLocalValue(item.DocumentType)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DocumentNo)
+                        @Html.DisplayFor(modelItem => item.EntityNo)
                     </td>
                     <td>
                         @if (currentContext.HasPermissions(Permissions.Transaction.View))
                         {
                             @Html.ActionLink(LocalStrings.View, "details", controller,
-                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, null)
+                        new { area = area, id = item.EntityId, returnUrl = "/cartable" }, null)
                         }
                         @if (item.DocumentStatus == DocumentStatusName.Prepared && currentContext.HasPermissions(Permissions.Transaction.Review))
                         {
                             <span> | </span>
                             @Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Review), "review", controller,
-                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("review-action{0}", item.Id) })
+                        new { area = area, id = item.EntityId, returnUrl = "/cartable" }, new { id = String.Format("review-action{0}", item.Id) })
                         }
                         @if (item.DocumentStatus == DocumentStatusName.Reviewed && currentContext.HasPermissions(Permissions.Transaction.Confirm))
                         {
                             <span> | </span>
                             @Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Confirm), "confirm", controller,
-                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("confirm-action{0}", item.Id) })
+                        new { area = area, id = item.EntityId, returnUrl = "/cartable" }, new { id = String.Format("confirm-action{0}", item.Id) })
                             <span> | </span>
                             @Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Reject), "reject", controller,
-                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("reject-action{0}", item.Id) })
+                        new { area = area, id = item.EntityId, returnUrl = "/cartable" }, new { id = String.Format("reject-action{0}", item.Id) })
                         }
                         @if (item.DocumentStatus == DocumentStatusName.Confirmed && currentContext.HasPermissions(Permissions.Transaction.Approve))
                         {
                             <span> | </span>
                             @Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Approve), "approve", controller,
-                        new { area = area, id = item.DocumentId, returnUrl = "/cartable" }, new { id = String.Format("approve-action{0}", item.Id) })
+                        new { area = area, id = item.EntityId, returnUrl = "/cartable" }, new { id = String.Format("approve-action{0}", item.Id) })
                         }
                     </td>
                 </tr>

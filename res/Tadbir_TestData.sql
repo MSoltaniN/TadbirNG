@@ -50,18 +50,18 @@ INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, 
 SET IDENTITY_INSERT [Finance].[TransactionLine] OFF
 
 SET IDENTITY_INSERT [Core].[DocumentType] ON
-INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (1, N'سند مالی')
-INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (2, N'درخواست کالا')
-INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (3, N'سفارش خرید')
-INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (4, N'حواله انبار مقداری')
-INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (5, N'حواله انبار ریالی')
-INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (6, N'رسید انبار مقداری')
-INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (7, N'رسید انبار ریالی')
-INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (8, N'فاکتور خرید')
-INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (9, N'فاکتور فروش')
-INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (10, N'فاکتور برگشت از خرید')
-INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (11, N'فاکتور برگشت از فروش')
-INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (12, N'پیش فاکتور')
+INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (1, N'Transaction')
+INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (2, N'RequisitionVoucher')
+INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (3, N'PurchaseOrder')
+INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (4, N'IssueVoucher')
+INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (5, N'PricedIssueVoucher')
+INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (6, N'ReceiptVoucher')
+INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (7, N'PricedReceiptVoucher')
+INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (8, N'PurchaseInvoice')
+INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (9, N'SalesInvoice')
+INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (10, N'PurchaseRefundInvoice')
+INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (11, N'SalesRefundInvoice')
+INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (12, N'SalesQuote')
 SET IDENTITY_INSERT [Core].[DocumentType] OFF
 
 SET IDENTITY_INSERT [Core].[DocumentStatus] ON

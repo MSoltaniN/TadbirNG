@@ -16,6 +16,11 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         public int TargetId { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی موجودیت مرتبط (ضمیمه) این کار
+        /// </summary>
+        public int EntityId { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی مستند مرتبط (ضمیمه) این کار
         /// </summary>
         public int DocumentId { get; set; }

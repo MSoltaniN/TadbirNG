@@ -16,6 +16,10 @@ GO
 DBCC CHECKIDENT ('[Workflow].[WorkItemHistory]', RESEED, 0)
 GO
 
-UPDATE [Finance].[Transaction]
-SET [Status] = N'Draft', [OperationalStatus] = N'Created', ConfirmedByID = NULL, ApprovedByID = NULL
+UPDATE [Core].[Document]
+SET [StatusID] = 1, [OperationalStatus] = N'Created'
+GO
+
+UPDATE [Core].[DocumentAction]
+SET ConfirmedByID = NULL, ApprovedByID = NULL, ConfirmedDate = NULL, ApprovedDate = NULL
 GO

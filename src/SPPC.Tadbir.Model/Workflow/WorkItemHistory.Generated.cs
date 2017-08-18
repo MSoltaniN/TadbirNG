@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using SPPC.Tadbir.Model.Auth;
 using BabakSoft.Platform.Domain;
+using SPPC.Tadbir.Model.Core;
 
 namespace SPPC.Tadbir.Model.Workflow
 {
@@ -30,10 +31,7 @@ namespace SPPC.Tadbir.Model.Workflow
             this.Number = String.Empty;
             this.Date = DateTime.Now;
             this.Title = String.Empty;
-            this.DocumentType = String.Empty;
             this.Remarks = String.Empty;
-            this.Status = String.Empty;
-            this.OperationalStatus = String.Empty;
             this.ModifiedDate = DateTime.Now;
             InitReferences();
         }
@@ -42,6 +40,11 @@ namespace SPPC.Tadbir.Model.Workflow
         /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
         /// </summary>
         public virtual int Id { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی موجودیت عملیاتی
+        /// </summary>
+        public virtual int EntityId { get; set; }
 
         /// <summary>
         /// شماره سری کار که می تواند شامل اعداد و حروف باشد
@@ -64,16 +67,6 @@ namespace SPPC.Tadbir.Model.Workflow
         public virtual string Title { get; set; }
 
         /// <summary>
-        /// نوع موجودیت مرتبط با کار
-        /// </summary>
-        public virtual string DocumentType { get; set; }
-
-        /// <summary>
-        /// شناسه دیتابیسی موجودیت مرتبط با کار
-        /// </summary>
-        public virtual int DocumentId { get; set; }
-
-        /// <summary>
         /// نوع اقدامی که در نتیجه این سابقه عملیاتی انجام شده است
         /// </summary>
         public virtual string Action { get; set; }
@@ -94,16 +87,6 @@ namespace SPPC.Tadbir.Model.Workflow
         public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
-        /// وضعیت ثبتی موجودیت عملیاتی
-        /// </summary>
-        public virtual string Status { get; set; }
-
-        /// <summary>
-        /// وضعیت موجودیت عملیاتی در گردش کار (مقادیر ممکن عبارتند از : ایجاد شده، تنظیم شده، بررسی شده، تایید شده و تصویب شده)
-        /// </summary>
-        public virtual string OperationalStatus { get; set; }
-
-        /// <summary>
         /// کاربر ایجاد کننده کار
         /// </summary>
         public virtual User User { get; set; }
@@ -113,10 +96,16 @@ namespace SPPC.Tadbir.Model.Workflow
         /// </summary>
         public virtual Role Role { get; set; }
 
+        /// <summary>
+        /// مستند مرتبط با کار
+        /// </summary>
+        public virtual Document Document { get; set; }
+
         private void InitReferences()
         {
             User = new User();
             Role = new Role();
+            Document = new Document();
         }
     }
 }

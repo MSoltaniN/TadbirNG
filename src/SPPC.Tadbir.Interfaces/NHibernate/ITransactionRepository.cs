@@ -32,6 +32,13 @@ namespace SPPC.Tadbir.NHibernate
         TransactionSummaryViewModel GetTransactionSummary(int transactionId);
 
         /// <summary>
+        /// Retrieves summary information for an existing transaction.
+        /// </summary>
+        /// <param name="documentId">Unique identifier of the document related to an existing transaction</param>
+        /// <returns>The transaction summary retrieved from repository as a <see cref="TransactionSummaryViewModel"/> object</returns>
+        TransactionSummaryViewModel GetTransactionSummaryFromDocument(int documentId);
+
+        /// <summary>
         /// Inserts or updates a single transaction in repository.
         /// </summary>
         /// <param name="transaction">Item to insert or update</param>

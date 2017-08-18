@@ -30,6 +30,12 @@ namespace SPPC.Tadbir.Workflow
         public string Title { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی موجودیت عملیاتی که اقدام جاری برای آن انجام می شود
+        /// </summary>
+        [DataMember]
+        public int EntityId { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی مستند مرتبط با موجودیت عملیاتی که اقدام جاری برای آن انجام می شود
         /// </summary>
         [DataMember]
@@ -129,17 +135,20 @@ namespace SPPC.Tadbir.Workflow
         /// تابع سازنده برای ایجاد یک اقدام جدید از نوع تنظیم
         /// </summary>
         /// <param name="userId">شناسه دیتابیسی کاربر تنظیم کننده</param>
+        /// <param name="entityId">شناسه دیتابیسی موجودیت</param>
         /// <param name="documentId">شناسه دیتابیسی مستند مورد نظر برای تنظیم</param>
         /// <param name="documentType">نوع مستند مورد نظر برای تنظیم</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         /// <returns></returns>
-        public static StateOperation Prepare(int userId, int documentId, string documentType, string paraph = null)
+        public static StateOperation Prepare(
+            int userId, int entityId, int documentId, string documentType, string paraph = null)
         {
             return new StateOperation()
             {
                 CreatedById = userId,
                 TargetId = SystemRoles.LeadAccountant,
                 Title = WorkItemTitle.ReviewDocument,
+                EntityId = entityId,
                 DocumentId = documentId,
                 DocumentType = documentType,
                 StatusId = (int)DocumentStatuses.Unchecked,
@@ -155,17 +164,20 @@ namespace SPPC.Tadbir.Workflow
         /// تابع سازنده برای ایجاد یک اقدام جدید از نوع بررسی
         /// </summary>
         /// <param name="userId">شناسه دیتابیسی کاربر بررسی کننده</param>
+        /// <param name="entityId">شناسه دیتابیسی موجودیت</param>
         /// <param name="documentId">شناسه دیتابیسی مستند مورد نظر برای بررسی</param>
         /// <param name="documentType">نوع مستند مورد نظر برای بررسی</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         /// <returns></returns>
-        public static StateOperation Review(int userId, int documentId, string documentType, string paraph = null)
+        public static StateOperation Review(
+            int userId, int entityId, int documentId, string documentType, string paraph = null)
         {
             return new StateOperation()
             {
                 CreatedById = userId,
                 TargetId = SystemRoles.CFOAssistant,
                 Title = WorkItemTitle.ConfirmDocument,
+                EntityId = entityId,
                 DocumentId = documentId,
                 DocumentType = documentType,
                 StatusId = (int)DocumentStatuses.NormalCheck,
@@ -181,17 +193,20 @@ namespace SPPC.Tadbir.Workflow
         /// تابع سازنده برای ایجاد یک اقدام جدید از نوع بررسی مجدد
         /// </summary>
         /// <param name="userId">شناسه دیتابیسی کاربر اقدام کننده</param>
+        /// <param name="entityId">شناسه دیتابیسی موجودیت</param>
         /// <param name="documentId">شناسه دیتابیسی مستند مورد نظر برای اقدام</param>
         /// <param name="documentType">نوع مستند مورد نظر برای اقدام</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         /// <returns></returns>
-        public static StateOperation RejectReview(int userId, int documentId, string documentType, string paraph = null)
+        public static StateOperation RejectReview(
+            int userId, int entityId, int documentId, string documentType, string paraph = null)
         {
             return new StateOperation()
             {
                 CreatedById = userId,
                 TargetId = SystemRoles.LeadAccountant,
                 Title = WorkItemTitle.ReviewDocument,
+                EntityId = entityId,
                 DocumentId = documentId,
                 DocumentType = documentType,
                 StatusId = (int)DocumentStatuses.Unchecked,
@@ -207,17 +222,20 @@ namespace SPPC.Tadbir.Workflow
         /// تابع سازنده برای ایجاد یک اقدام جدید از نوع تایید
         /// </summary>
         /// <param name="userId">شناسه دیتابیسی کاربر تایید کننده</param>
+        /// <param name="entityId">شناسه دیتابیسی موجودیت</param>
         /// <param name="documentId">شناسه دیتابیسی مستند مورد نظر برای تایید</param>
         /// <param name="documentType">نوع مستند مورد نظر برای تایید</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         /// <returns></returns>
-        public static StateOperation Confirm(int userId, int documentId, string documentType, string paraph = null)
+        public static StateOperation Confirm(
+            int userId, int entityId, int documentId, string documentType, string paraph = null)
         {
             return new StateOperation()
             {
                 CreatedById = userId,
                 TargetId = SystemRoles.CFO,
                 Title = WorkItemTitle.ApproveDocument,
+                EntityId = entityId,
                 DocumentId = documentId,
                 DocumentType = documentType,
                 StatusId = (int)DocumentStatuses.NormalCheck,
@@ -233,17 +251,20 @@ namespace SPPC.Tadbir.Workflow
         /// تابع سازنده برای ایجاد یک اقدام جدید از نوع تصویب
         /// </summary>
         /// <param name="userId">شناسه دیتابیسی کاربر تصویب کننده</param>
+        /// <param name="entityId">شناسه دیتابیسی موجودیت</param>
         /// <param name="documentId">شناسه دیتابیسی مستند مورد نظر برای تصویب</param>
         /// <param name="documentType">نوع مستند مورد نظر برای تصویب</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
         /// <returns></returns>
-        public static StateOperation Approve(int userId, int documentId, string documentType, string paraph = null)
+        public static StateOperation Approve(
+            int userId, int entityId, int documentId, string documentType, string paraph = null)
         {
             return new StateOperation()
             {
                 CreatedById = userId,
                 TargetId = 0,
                 Title = WorkItemTitle.DocumentApproved,
+                EntityId = entityId,
                 DocumentId = documentId,
                 DocumentType = documentType,
                 StatusId = (int)DocumentStatuses.FinalCheck,

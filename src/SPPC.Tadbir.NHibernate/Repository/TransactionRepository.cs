@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.NHibernate
                 transactionDetail = _mapper.Map<TransactionFullViewModel>(transaction);
                 var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
                 var history = historyRepository
-                    .GetByCriteria(hist => hist.DocumentId == transactionId)
+                    .GetByCriteria(hist => hist.EntityId == transactionId)
                     .OrderByDescending(hist => hist.Date)
                     .OrderByDescending(hist => hist.Time)
                     .Select(hist => _mapper.Map<HistoryItemViewModel>(hist));
@@ -87,6 +87,27 @@ namespace SPPC.Tadbir.NHibernate
             TransactionSummaryViewModel summary = default(TransactionSummaryViewModel);
             var repository = _unitOfWork.GetRepository<Transaction>();
             var transaction = repository.GetByID(transactionId);
+            if (transaction != null)
+            {
+                summary = _mapper.Map<TransactionSummaryViewModel>(transaction);
+            }
+
+            _unitOfWork.Commit();
+            return summary;
+        }
+
+        /// <summary>
+        /// Retrieves summary information for an existing transaction.
+        /// </summary>
+        /// <param name="documentId">Unique identifier of the document related to an existing transaction</param>
+        /// <returns>The transaction summary retrieved from repository as a <see cref="TransactionSummaryViewModel"/> object</returns>
+        public TransactionSummaryViewModel GetTransactionSummaryFromDocument(int documentId)
+        {
+            TransactionSummaryViewModel summary = default(TransactionSummaryViewModel);
+            var repository = _unitOfWork.GetRepository<Transaction>();
+            var transaction = repository
+                .GetByCriteria(txn => txn.Document.Id == documentId)
+                .FirstOrDefault();
             if (transaction != null)
             {
                 summary = _mapper.Map<TransactionSummaryViewModel>(transaction);
@@ -271,7 +292,7 @@ namespace SPPC.Tadbir.NHibernate
         {
             var repository = _unitOfWork.GetRepository<WorkItemDocument>();
             var document = repository
-                .GetByCriteria(wid => wid.DocumentId == transaction.Document.Id
+                .GetByCriteria(wid => wid.Document.Id == transaction.Document.Id
                     && wid.DocumentType == DocumentTypeName.Transaction)
                 .FirstOrDefault();
             if (document != null)
