@@ -53,7 +53,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             MapReferences();
         }
 
-        private void MapReferences()
+        private static void MapReferences()
         {
         }
     }

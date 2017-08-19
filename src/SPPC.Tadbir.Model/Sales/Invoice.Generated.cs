@@ -58,7 +58,7 @@ namespace SPPC.Tadbir.Model.Sales
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        public virtual bool IsCancelled { get; set; }
+        public virtual bool IsCanceled { get; set; }
 
         /// <summary>
         /// TODO: Add description...

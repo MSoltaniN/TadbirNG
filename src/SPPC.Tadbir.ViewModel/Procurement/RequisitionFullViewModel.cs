@@ -12,6 +12,6 @@ namespace SPPC.Tadbir.ViewModel.Procurement
 
         public RequisitionVoucherViewModel Voucher { get; set; }
 
-        public IList<VoucherLineSummaryViewModel> Lines { get; protected set; }
+        public IList<VoucherLineSummaryViewModel> Lines { get; private set; }
     }
 }

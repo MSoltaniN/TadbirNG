@@ -146,8 +146,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 var document = new DocumentViewModel()
                 {
                     OperationalStatus = DocumentStatusName.Created,
-                    StatusId = (int)DocumentStatuses.Draft,
-                    TypeId = (int)DocumentTypes.RequisitionVoucher
+                    StatusId = (int)DocumentStatusId.Draft,
+                    TypeId = (int)DocumentTypeId.RequisitionVoucher
                 };
                 document.Actions.Add(new DocumentActionViewModel()
                 {

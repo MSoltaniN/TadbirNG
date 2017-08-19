@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Not.Nullable();
             Map(x => x.IsActive)
                 .Not.Nullable();
-            Map(x => x.IsCancelled)
+            Map(x => x.IsCanceled)
                 .Not.Nullable();
             Map(x => x.Type)
                 .Not.Nullable();

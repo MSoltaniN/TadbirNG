@@ -196,7 +196,7 @@ namespace SPPC.Tadbir.NHibernate
             mainAction.ModifiedBy = new User() { Id = voucher.Document.Actions.First().ModifiedById };
         }
 
-        private void UpdateExistingVoucherLine(RequisitionVoucherLine existing, RequisitionVoucherLineViewModel line)
+        private static void UpdateExistingVoucherLine(RequisitionVoucherLine existing, RequisitionVoucherLineViewModel line)
         {
             existing.No = line.No;
             existing.OrderedQuantity = line.OrderedQuantity;
@@ -224,7 +224,7 @@ namespace SPPC.Tadbir.NHibernate
             };
         }
 
-        private void UpdateRequisitionAction(RequisitionVoucher voucher)
+        private static void UpdateRequisitionAction(RequisitionVoucher voucher)
         {
             if (voucher.Id == 0)
             {
@@ -235,7 +235,7 @@ namespace SPPC.Tadbir.NHibernate
             }
         }
 
-        private void UpdateRequisitionLineAction(RequisitionVoucherLine line)
+        private static void UpdateRequisitionLineAction(RequisitionVoucherLine line)
         {
             if (line.Id == 0)
             {

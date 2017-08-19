@@ -7,6 +7,8 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Scope = "member", Target = "SPPC.Tadbir.ViewModel.Auth.PermissionEqualityComparer.#GetHashCode(SPPC.Tadbir.ViewModel.Auth.PermissionBriefViewModel)", Justification = "Parameter is checked by Verify utility class.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Flags", Scope = "member", Target = "SPPC.Tadbir.ViewModel.Auth.PermissionBriefViewModel.#Flags", Justification = "Flags is the most appropriate name considering current design and intended usage.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "flags", Scope = "member", Target = "SPPC.Tadbir.ViewModel.Auth.PermissionBriefViewModel.#.ctor(System.String,System.Int32)", Justification = "Flags is the most appropriate name considering current design and intended usage.")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Scope = "member", Target = "SPPC.Tadbir.ViewModel.Sales.InvoiceViewModel.#Type")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Scope = "member", Target = "SPPC.Tadbir.ViewModel.Warehousing.IssueReceiptVoucherViewModel.#Type")]
 
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.

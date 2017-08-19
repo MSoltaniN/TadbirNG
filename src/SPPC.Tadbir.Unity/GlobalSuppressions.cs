@@ -1,4 +1,5 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Scope = "member", Target = "SPPC.Tadbir.Unity.TypeContainer.#RegisterServiceTypes()", Justification = "By Design")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Scope = "member", Target = "SPPC.Tadbir.Unity.TypeContainer.#RegisterPersistenceTypes()", Justification = "By design")]
 
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.

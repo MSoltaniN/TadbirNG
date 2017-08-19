@@ -64,15 +64,7 @@ namespace SPPC.Tadbir.Mapper
         /// <returns>The target object mapped from the source object</returns>
         public T Map<T>(object source)
         {
-            try
-            {
-                return _autoMapper.Map<T>(source);
-            }
-            catch (Exception ex)
-            {
-                string message = ex.Message;
-                return default(T);
-            }
+            return _autoMapper.Map<T>(source);
         }
 
         private static void RegisterMappings(IMapperConfigurationExpression mapperConfig)

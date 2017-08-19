@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// <summary>
         /// مجموعه ای از اقدامات انجام شده روی مستند اداری
         /// </summary>
-        public IList<DocumentActionViewModel> Actions { get; protected set; }
+        public IList<DocumentActionViewModel> Actions { get; private set; }
 
         private static string GenerateNumber()
         {

@@ -22,6 +22,7 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Workflow;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 {
@@ -54,6 +55,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             _controller = new TransactionsController(
                 _mockRepository.Object, _mockTrackerRepository.Object, _mockContext.Object);
             _existingTransaction = new TransactionViewModel() { Id = _existingTransactionId };
+            _existingTransaction.Document.Actions.Add(new DocumentActionViewModel());
             _existingArticle = new TransactionLineViewModel()
             {
                 Id = _existingArticleId,
@@ -150,7 +152,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         public void PostNewTransaction_GivenValidModel_CallsRepositoryWithModel()
         {
             // Arrange
-            var newTransaction = new TransactionViewModel();
+            var newTransaction = GetNewTransaction();
             _mockRepository.Setup(repo => repo.IsValidTransaction(newTransaction))
                 .Returns(true);
 
@@ -165,7 +167,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         public void PostNewTransaction_GivenValidModel_ReturnsCreatedStatusCodeResult()
         {
             // Arrange
-            var newTransaction = new TransactionViewModel();
+            var newTransaction = GetNewTransaction();
             _mockRepository.Setup(repo => repo.IsValidTransaction(newTransaction))
                 .Returns(true);
 
@@ -605,6 +607,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         }
 
         #endregion
+
+        private TransactionViewModel GetNewTransaction()
+        {
+            var newTransaction = new TransactionViewModel();
+            newTransaction.Document.Actions.Add(new DocumentActionViewModel());
+            return newTransaction;
+        }
 
         private Mock<ITransactionRepository> _mockRepository;
         private Mock<IWorkflowTracker> _mockTrackerRepository;

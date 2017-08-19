@@ -14,6 +14,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -27,9 +28,10 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public TransactionViewModel()
         {
-            this.No = String.Empty;
-            this.Date = "1390/09/09";
-            this.Description = String.Empty;
+            No = String.Empty;
+            Date = "1390/09/09";
+            Description = String.Empty;
+            Document = new DocumentViewModel();
         }
 
         /// <summary>

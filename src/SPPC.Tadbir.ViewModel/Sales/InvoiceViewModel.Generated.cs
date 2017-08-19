@@ -54,7 +54,7 @@ namespace SPPC.Tadbir.ViewModel.Sales
         /// TODO: Add description...
         /// </summary>
         [Required(ErrorMessage = "{0} is required.")]
-        public bool IsCancelled { get; set; }
+        public bool IsCanceled { get; set; }
 
         /// <summary>
         /// TODO: Add description...

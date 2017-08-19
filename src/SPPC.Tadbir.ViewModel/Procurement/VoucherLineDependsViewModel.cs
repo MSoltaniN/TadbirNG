@@ -26,36 +26,36 @@ namespace SPPC.Tadbir.ViewModel.Procurement
         /// <summary>
         /// سرفصل های حسابداری به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> Accounts { get; protected set; }
+        public IList<KeyValue> Accounts { get; private set; }
 
         /// <summary>
         /// تفصیلی های شناور به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> DetailAccounts { get; protected set; }
+        public IList<KeyValue> DetailAccounts { get; private set; }
 
         /// <summary>
         /// مراکز هزینه به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> CostCenters { get; protected set; }
+        public IList<KeyValue> CostCenters { get; private set; }
 
         /// <summary>
         /// پروژه ها به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> Projects { get; protected set; }
+        public IList<KeyValue> Projects { get; private set; }
 
         /// <summary>
         /// کالاها به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> Products { get; protected set; }
+        public IList<KeyValue> Products { get; private set; }
 
         /// <summary>
         /// واحدهای اندازه گیری به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> Units { get; protected set; }
+        public IList<KeyValue> Units { get; private set; }
 
         /// <summary>
         /// انبار ها به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> Warehouses { get; protected set; }
+        public IList<KeyValue> Warehouses { get; private set; }
     }
 }

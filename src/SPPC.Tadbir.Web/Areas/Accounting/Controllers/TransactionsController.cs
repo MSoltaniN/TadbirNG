@@ -17,10 +17,9 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 {
     public class TransactionsController : Controller
     {
-        public TransactionsController(ITransactionService service, ISecurityContextManager contextManager)
+        public TransactionsController(ITransactionService service)
         {
             _service = service;
-            _contextManager = contextManager;
         }
 
         // GET: accounting/transactions[?page={page}]
@@ -50,12 +49,10 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return GetNextResult(routeValues);
         }
 
-        // !!! WARNING : Broken functionality during refactoring
         // GET: accounting/transactions/create
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
         public ViewResult Create()
         {
-            var currentContext = _contextManager.CurrentContext;
             var transaction = new TransactionViewModel()
             {
                 FiscalPeriodId = TempContext.CurrentFiscalPeriodId,
@@ -320,6 +317,5 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         private ITransactionService _service;
-        private ISecurityContextManager _contextManager;
     }
 }

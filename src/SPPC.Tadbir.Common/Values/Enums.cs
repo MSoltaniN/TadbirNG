@@ -6,7 +6,7 @@ namespace SPPC.Tadbir.Values
     /// <summary>
     /// نوع اسناد اداری در برنامه را متناظر با شناسه های دیتابیسی تعریف می کند
     /// </summary>
-    public enum DocumentTypes
+    public enum DocumentTypeId
     {
         /// <summary>
         /// سند نامشخص
@@ -77,7 +77,7 @@ namespace SPPC.Tadbir.Values
     /// <summary>
     /// نوع وضعیت های ثبتی یا ریالی را متناظر با شناسه های دیتابیسی تعریف می کند
     /// </summary>
-    public enum DocumentStatuses
+    public enum DocumentStatusId
     {
         /// <summary>
         /// وضعیت نامشخص

@@ -546,16 +546,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        private ITransactionWorkflow GetWorkflow(int documentId, ISecurityContextManager contextManager)
-        {
-            var edition = _tracker.TrackDocumentWorkflowEdition(documentId, DocumentTypeName.Transaction);
-            var workflow = UnityConfig.GetConfiguredContainer()
-                .Resolve<ITransactionWorkflow>(edition);
-            workflow.ContextManager = contextManager;
-            return workflow;
-        }
-
-        private string ValidateGroupStateOperation(string operation, IEnumerable<TransactionSummaryViewModel> summaries)
+        private static string ValidateGroupStateOperation(string operation, IEnumerable<TransactionSummaryViewModel> summaries)
         {
             var messages = summaries
                 .Where(summary => summary != null)
@@ -565,7 +556,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return String.Join(Environment.NewLine, messages);
         }
 
-        private string ValidateStateOperation(string operation, TransactionSummaryViewModel summary)
+        private static string ValidateStateOperation(string operation, TransactionSummaryViewModel summary)
         {
             string result = String.Empty;
             if (!StateOperationValidator.Validate(operation, summary.DocumentOperationalStatus))
@@ -581,6 +572,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
+        private ITransactionWorkflow GetWorkflow(int documentId, ISecurityContextManager contextManager)
+        {
+            var edition = _tracker.TrackDocumentWorkflowEdition(documentId, DocumentTypeName.Transaction);
+            var workflow = UnityConfig.GetConfiguredContainer()
+                .Resolve<ITransactionWorkflow>(edition);
+            workflow.ContextManager = contextManager;
+            return workflow;
+        }
+
         private void SetDocument(TransactionViewModel transaction)
         {
             if (transaction.Document == null)
@@ -588,8 +588,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 var document = new DocumentViewModel()
                 {
                     OperationalStatus = DocumentStatusName.Created,
-                    StatusId = (int)DocumentStatuses.Draft,
-                    TypeId = (int)DocumentTypes.Transaction
+                    StatusId = (int)DocumentStatusId.Draft,
+                    TypeId = (int)DocumentTypeId.Transaction
                 };
                 document.Actions.Add(new DocumentActionViewModel()
                 {

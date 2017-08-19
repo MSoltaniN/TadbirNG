@@ -192,28 +192,33 @@ namespace SPPC.Tadbir.NHibernate
         public VoucherDependsViewModel GetRequisitionDepends()
         {
             var depends = new VoucherDependsViewModel();
-            depends.VoucherTypes.AddRange(GetRequisitionVoucherTypes());
-            depends.Accounts.AddRange(GetAccounts(1, 1));
-            depends.DetailAccounts.AddRange(GetDetailAccounts());
-            depends.CostCenters.AddRange(GetCostCenters());
-            depends.Projects.AddRange(GetProjects());
-            depends.Partners.AddRange(GetPartners());
-            depends.Units.AddRange(GetBusinessUnits());
-            depends.Warehouses.AddRange(GetWarehouses());
+            CopyCollection(GetRequisitionVoucherTypes(), depends.VoucherTypes);
+            CopyCollection(GetAccounts(1, 1), depends.Accounts);
+            CopyCollection(GetDetailAccounts(), depends.DetailAccounts);
+            CopyCollection(GetCostCenters(), depends.CostCenters);
+            CopyCollection(GetProjects(), depends.Projects);
+            CopyCollection(GetPartners(), depends.Partners);
+            CopyCollection(GetBusinessUnits(), depends.Units);
+            CopyCollection(GetWarehouses(), depends.Warehouses);
             return depends;
         }
 
         public VoucherLineDependsViewModel GetRequisitionLineDepends()
         {
             var depends = new VoucherLineDependsViewModel();
-            depends.Accounts.AddRange(GetAccounts(1, 1));
-            depends.DetailAccounts.AddRange(GetDetailAccounts());
-            depends.CostCenters.AddRange(GetCostCenters());
-            depends.Projects.AddRange(GetProjects());
-            depends.Products.AddRange(GetProducts());
-            depends.Units.AddRange(GetUnitsOfMeasurement());
-            depends.Warehouses.AddRange(GetWarehouses());
+            CopyCollection(GetAccounts(1, 1), depends.Accounts);
+            CopyCollection(GetDetailAccounts(), depends.DetailAccounts);
+            CopyCollection(GetCostCenters(), depends.CostCenters);
+            CopyCollection(GetProjects(), depends.Projects);
+            CopyCollection(GetProducts(), depends.Products);
+            CopyCollection(GetUnitsOfMeasurement(), depends.Units);
+            CopyCollection(GetWarehouses(), depends.Warehouses);
             return depends;
+        }
+
+        private static void CopyCollection(IEnumerable<KeyValue> source, IList<KeyValue> destination)
+        {
+            Array.ForEach(source.ToArray(), item => destination.Add(item));
         }
 
         private IUnitOfWork _unitOfWork;

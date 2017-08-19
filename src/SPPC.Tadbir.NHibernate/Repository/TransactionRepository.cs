@@ -288,6 +288,22 @@ namespace SPPC.Tadbir.NHibernate
             existing.Description = article.Description;
         }
 
+        private static void UpdateAction(Transaction transaction)
+        {
+            if (transaction.Id == 0)
+            {
+                var mainAction = transaction.Document.Actions.First();
+                mainAction.Document = transaction.Document;
+                mainAction.CreatedDate = DateTime.Now;
+                mainAction.ModifiedDate = DateTime.Now;
+            }
+            else
+            {
+                var mainAction = transaction.Document.Actions.First();
+                mainAction.ModifiedDate = DateTime.Now;
+            }
+        }
+
         private TransactionViewModel AddWorkItemInfo(TransactionViewModel transaction)
         {
             var repository = _unitOfWork.GetRepository<WorkItemDocument>();
@@ -303,22 +319,6 @@ namespace SPPC.Tadbir.NHibernate
             }
 
             return transaction;
-        }
-
-        private void UpdateAction(Transaction transaction)
-        {
-            if (transaction.Id == 0)
-            {
-                var mainAction = transaction.Document.Actions.First();
-                mainAction.Document = transaction.Document;
-                mainAction.CreatedDate = DateTime.Now;
-                mainAction.ModifiedDate = DateTime.Now;
-            }
-            else
-            {
-                var mainAction = transaction.Document.Actions.First();
-                mainAction.ModifiedDate = DateTime.Now;
-            }
         }
 
         private IUnitOfWork _unitOfWork;

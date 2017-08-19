@@ -27,41 +27,41 @@ namespace SPPC.Tadbir.ViewModel.Procurement
         /// <summary>
         /// انواع تعریف شده برای درخواست کالا به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> VoucherTypes { get; protected set; }
+        public IList<KeyValue> VoucherTypes { get; private set; }
 
         /// <summary>
         /// سرفصل های حسابداری به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> Accounts { get; protected set; }
+        public IList<KeyValue> Accounts { get; private set; }
 
         /// <summary>
         /// تفصیلی های شناور به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> DetailAccounts { get; protected set; }
+        public IList<KeyValue> DetailAccounts { get; private set; }
 
         /// <summary>
         /// مراکز هزینه به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> CostCenters { get; protected set; }
+        public IList<KeyValue> CostCenters { get; private set; }
 
         /// <summary>
         /// پروژه ها به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> Projects { get; protected set; }
+        public IList<KeyValue> Projects { get; private set; }
 
         /// <summary>
         /// شرکای تجاری به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> Partners { get; protected set; }
+        public IList<KeyValue> Partners { get; private set; }
 
         /// <summary>
         /// واحدهای سازمانی به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> Units { get; protected set; }
+        public IList<KeyValue> Units { get; private set; }
 
         /// <summary>
         /// انبارها به صورت مجموعه ای از کد و نام
         /// </summary>
-        public List<KeyValue> Warehouses { get; protected set; }
+        public IList<KeyValue> Warehouses { get; private set; }
     }
 }
