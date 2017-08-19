@@ -154,6 +154,11 @@ namespace SPPC.Tadbir.NHibernate
             return warehouses;
         }
 
+        /// <summary>
+        /// Retrieves all product objects as a collection of <see cref="KeyValue"/> objects. The key for each
+        /// entry is the unique identifier of corresponding product in data store.
+        /// </summary>
+        /// <returns>Collection of all product items.</returns>
         public IEnumerable<KeyValue> GetProducts()
         {
             var repository = _unitOfWork.GetRepository<Product>();
@@ -164,6 +169,11 @@ namespace SPPC.Tadbir.NHibernate
             return products;
         }
 
+        /// <summary>
+        /// Retrieves all unit of measurement (UOM) objects as a collection of <see cref="KeyValue"/> objects.
+        /// The key for each entry is the unique identifier of corresponding unit of measurement (UOM) in data store.
+        /// </summary>
+        /// <returns>Collection of all unit of measurement (UOM) items.</returns>
         public IEnumerable<KeyValue> GetUnitsOfMeasurement()
         {
             var repository = _unitOfWork.GetRepository<UnitOfMeasurement>();
@@ -189,6 +199,10 @@ namespace SPPC.Tadbir.NHibernate
             return voucherTypes;
         }
 
+        /// <summary>
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات یک درخواست کالا را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات پایه مورد نیاز درخواست کالا</returns>
         public VoucherDependsViewModel GetRequisitionDepends()
         {
             var depends = new VoucherDependsViewModel();
@@ -203,6 +217,10 @@ namespace SPPC.Tadbir.NHibernate
             return depends;
         }
 
+        /// <summary>
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات یک سطر درخواست کالا را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات پایه مورد نیاز سطر درخواست کالا</returns>
         public VoucherLineDependsViewModel GetRequisitionLineDepends()
         {
             var depends = new VoucherLineDependsViewModel();

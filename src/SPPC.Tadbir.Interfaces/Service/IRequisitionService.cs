@@ -17,9 +17,31 @@ namespace SPPC.Tadbir.Service
         /// <returns>مجموعه ای از درخواست های کالا در یک دوره مالی و شعبه خاص</returns>
         IEnumerable<VoucherSummaryViewModel> GetRequisitions(int fpId, int branchId);
 
+        /// <summary>
+        /// اطلاعات کامل یک درخواست کالا (شامل اطلاعات آرتیکل ها) را برمی گرداند
+        /// </summary>
+        /// <param name="id">شناسه دیتابیسی یک درخواست کالای موجود</param>
+        /// <returns>اطلاعات کامل درخواست کالا</returns>
         RequisitionFullViewModel GetDetailRequisitionInfo(int id);
-        void SaveRequisition(RequisitionVoucherViewModel voucher);
+
+        /// <summary>
+        /// اطلاعات کامل یک سطر درخواست کالا را برمی گرداند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی یک درخواست کالای موجود</param>
+        /// <param name="lineId">شناسه دیتابیسی سطر مورد نظر در درخواست کالا</param>
+        /// <returns>اطلاعات کامل سطر درخواست کالا</returns>
         RequisitionVoucherLineViewModel GetDetailRequisitionLineInfo(int voucherId, int lineId);
+
+        /// <summary>
+        /// یک درخواست کالا را ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="voucher">اطلاعات درخواست کالا</param>
+        void SaveRequisition(RequisitionVoucherViewModel voucher);
+
+        /// <summary>
+        /// یک سطر درخواست کالا را ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="line">اطلاعات سطر درخواست کالا</param>
         void SaveRequisitionLine(RequisitionVoucherLineViewModel line);
     }
 }

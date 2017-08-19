@@ -52,12 +52,24 @@ namespace SPPC.Tadbir.ViewModel.Procurement
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public int WarehouseId { get; set; }
 
+        /// <summary>
+        /// اطلاعات نمایشی بردار حساب این درخواست کالا
+        /// </summary>
         public FullAccountViewModel FullAccount { get; set; }
 
+        /// <summary>
+        /// اطلاعات نمایشی مستند مرتبط با این درخواست کالا
+        /// </summary>
         public DocumentViewModel Document { get; set; }
 
+        /// <summary>
+        /// شناسه دیتابیسی دوره مالی
+        /// </summary>
         public int FiscalPeriodId { get; set; }
 
+        /// <summary>
+        /// شناسه دیتابیسی شعبه سازمانی
+        /// </summary>
         public int BranchId { get; set; }
     }
 }

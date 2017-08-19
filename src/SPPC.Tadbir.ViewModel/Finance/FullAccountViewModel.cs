@@ -3,17 +3,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
+    /// <summary>
+    /// اطلاعات نمایشی یک بردار حساب را نشان می دهد
+    /// </summary>
     public partial class FullAccountViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FullAccountViewModel"/> class.
+        /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         public FullAccountViewModel()
         {
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity.
+        /// شناسه دیتابیسی این موجودیت
         /// </summary>
         public int Id { get; set; }
 

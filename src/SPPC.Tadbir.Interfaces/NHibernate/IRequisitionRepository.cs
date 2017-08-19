@@ -18,14 +18,37 @@ namespace SPPC.Tadbir.NHibernate
         /// <returns>مجموعه ای از درخواست های کالا در یک دوره مالی و شعبه خاص</returns>
         IList<VoucherSummaryViewModel> GetRequisitions(int fpId, int branchId);
 
+        /// <summary>
+        /// اطلاعات کامل یک درخواست کالا را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherId"></param>
+        /// <returns></returns>
         RequisitionFullViewModel GetRequisitionDetails(int voucherId);
 
+        /// <summary>
+        /// اطلاعات مستند مرتبط با یک درخواست کالا را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherId"></param>
+        /// <returns></returns>
         DocumentViewModel GetRequisitionDocument(int voucherId);
 
+        /// <summary>
+        /// اطلاعات یک سطر درخواست کالا را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="lineId"></param>
+        /// <returns></returns>
         RequisitionVoucherLineViewModel GetRequisitionLine(int lineId);
 
+        /// <summary>
+        /// آخرین اطلاعات یک درخواست کالا را در دیتابیس ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="voucher">اطلاعات وارد شده برای درخواست کالا</param>
         void SaveRequisition(RequisitionVoucherViewModel voucher);
 
+        /// <summary>
+        /// آخرین اطلاعات یک سطر درخواست کالا را در دیتابیس ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="line">اطلاعات وارد شده برای سطر درخواست کالا</param>
         void SaveRequisitionLine(RequisitionVoucherLineViewModel line);
     }
 }

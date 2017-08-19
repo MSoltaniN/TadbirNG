@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using BabakSoft.Platform.Common;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Api;
@@ -35,12 +34,34 @@ namespace SPPC.Tadbir.Service
             return requisitions;
         }
 
+        /// <summary>
+        /// اطلاعات کامل یک درخواست کالا (شامل اطلاعات آرتیکل ها) را برمی گرداند
+        /// </summary>
+        /// <param name="id">شناسه دیتابیسی یک درخواست کالای موجود</param>
+        /// <returns>اطلاعات کامل درخواست کالا</returns>
         public RequisitionFullViewModel GetDetailRequisitionInfo(int id)
         {
             var requisition = _apiClient.Get<RequisitionFullViewModel>(RequisitionApi.RequisitionDetails, id);
             return requisition;
         }
 
+        /// <summary>
+        /// اطلاعات کامل یک سطر درخواست کالا را برمی گرداند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی یک درخواست کالای موجود</param>
+        /// <param name="lineId">شناسه دیتابیسی سطر مورد نظر در درخواست کالا</param>
+        /// <returns>اطلاعات کامل سطر درخواست کالا</returns>
+        public RequisitionVoucherLineViewModel GetDetailRequisitionLineInfo(int voucherId, int lineId)
+        {
+            var line = _apiClient.Get<RequisitionVoucherLineViewModel>(
+                RequisitionApi.RequisitionLine, voucherId, lineId);
+            return line;
+        }
+
+        /// <summary>
+        /// یک درخواست کالا را ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="voucher">اطلاعات درخواست کالا</param>
         public void SaveRequisition(RequisitionVoucherViewModel voucher)
         {
             Verify.ArgumentNotNull(voucher, "voucher");
@@ -54,6 +75,10 @@ namespace SPPC.Tadbir.Service
             }
         }
 
+        /// <summary>
+        /// یک سطر درخواست کالا را ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="line">اطلاعات سطر درخواست کالا</param>
         public void SaveRequisitionLine(RequisitionVoucherLineViewModel line)
         {
             Verify.ArgumentNotNull(line, "line");
@@ -65,13 +90,6 @@ namespace SPPC.Tadbir.Service
             {
                 _apiClient.Update(line, RequisitionApi.RequisitionLine, line.VoucherId, line.Id);
             }
-        }
-
-        public RequisitionVoucherLineViewModel GetDetailRequisitionLineInfo(int voucherId, int lineId)
-        {
-            var line = _apiClient.Get<RequisitionVoucherLineViewModel>(
-                RequisitionApi.RequisitionLine, voucherId, lineId);
-            return line;
         }
 
         private IApiClient _apiClient;

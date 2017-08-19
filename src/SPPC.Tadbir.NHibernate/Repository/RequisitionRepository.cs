@@ -50,6 +50,11 @@ namespace SPPC.Tadbir.NHibernate
             return requisitions;
         }
 
+        /// <summary>
+        /// اطلاعات کامل یک درخواست کالا را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherId"></param>
+        /// <returns></returns>
         public RequisitionFullViewModel GetRequisitionDetails(int voucherId)
         {
             var voucherDetails = default(RequisitionFullViewModel);
@@ -63,6 +68,11 @@ namespace SPPC.Tadbir.NHibernate
             return voucherDetails;
         }
 
+        /// <summary>
+        /// اطلاعات مستند مرتبط با یک درخواست کالا را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherId"></param>
+        /// <returns></returns>
         public DocumentViewModel GetRequisitionDocument(int voucherId)
         {
             var document = default(DocumentViewModel);
@@ -76,6 +86,28 @@ namespace SPPC.Tadbir.NHibernate
             return document;
         }
 
+        /// <summary>
+        /// اطلاعات یک سطر درخواست کالا را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="lineId"></param>
+        /// <returns></returns>
+        public RequisitionVoucherLineViewModel GetRequisitionLine(int lineId)
+        {
+            var line = default(RequisitionVoucherLineViewModel);
+            var repository = _unitOfWork.GetRepository<RequisitionVoucherLine>();
+            var existing = repository.GetByID(lineId);
+            if (existing != null)
+            {
+                line = _mapper.Map<RequisitionVoucherLineViewModel>(existing);
+            }
+
+            return line;
+        }
+
+        /// <summary>
+        /// آخرین اطلاعات یک درخواست کالا را در دیتابیس ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="voucher">اطلاعات وارد شده برای درخواست کالا</param>
         public void SaveRequisition(RequisitionVoucherViewModel voucher)
         {
             Verify.ArgumentNotNull(voucher, "voucher");
@@ -115,19 +147,10 @@ namespace SPPC.Tadbir.NHibernate
             _unitOfWork.Commit();
         }
 
-        public RequisitionVoucherLineViewModel GetRequisitionLine(int lineId)
-        {
-            var line = default(RequisitionVoucherLineViewModel);
-            var repository = _unitOfWork.GetRepository<RequisitionVoucherLine>();
-            var existing = repository.GetByID(lineId);
-            if (existing != null)
-            {
-                line = _mapper.Map<RequisitionVoucherLineViewModel>(existing);
-            }
-
-            return line;
-        }
-
+        /// <summary>
+        /// آخرین اطلاعات یک سطر درخواست کالا را در دیتابیس ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="line">اطلاعات وارد شده برای سطر درخواست کالا</param>
         public void SaveRequisitionLine(RequisitionVoucherLineViewModel line)
         {
             Verify.ArgumentNotNull(line, "line");

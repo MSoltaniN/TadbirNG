@@ -90,8 +90,16 @@ namespace SPPC.Tadbir.NHibernate
         /// <returns>Collection of all requisition voucher type items.</returns>
         IEnumerable<KeyValue> GetRequisitionVoucherTypes();
 
+        /// <summary>
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات یک درخواست کالا را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات پایه مورد نیاز درخواست کالا</returns>
         VoucherDependsViewModel GetRequisitionDepends();
 
+        /// <summary>
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات یک سطر درخواست کالا را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات پایه مورد نیاز سطر درخواست کالا</returns>
         VoucherLineDependsViewModel GetRequisitionLineDepends();
     }
 }
