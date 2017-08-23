@@ -1,4 +1,4 @@
-﻿USE [TadbirDemo]
+﻿USE [TadbirTest2]
 GO
 
 /****** Object: Table [dbo].[User] Script Date: 2017-02-15 2:44:12 PM ******/
@@ -117,6 +117,60 @@ CREATE TABLE [Auth].[RolePermission] (
     , CONSTRAINT [PK_Auth_RolePermission] PRIMARY KEY CLUSTERED ([RolePermissionID] ASC)
     , CONSTRAINT [FK_Auth_RolePermission_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role] ([RoleID])
     , CONSTRAINT [FK_Auth_RolePermission_Auth_Permission] FOREIGN KEY ([PermissionID]) REFERENCES [Auth].[Permission] ([PermissionID])
+)
+GO
+
+CREATE TABLE [Core].[DocumentType] (
+    [TypeID]                INT              IDENTITY (1, 1) NOT NULL,
+    [Name]                  NVARCHAR(64)     NOT NULL,
+    [rowguid]               UNIQUEIDENTIFIER CONSTRAINT [DF_Core_DocumentType_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]          DATETIME         CONSTRAINT [DF_Core_DocumentType_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_DocumentType] PRIMARY KEY CLUSTERED ([TypeID] ASC)
+)
+GO
+
+CREATE TABLE [Core].[DocumentStatus] (
+    [StatusID]              INT              IDENTITY (1, 1) NOT NULL,
+    [Name]                  NVARCHAR(64)     NOT NULL,
+    [rowguid]               UNIQUEIDENTIFIER CONSTRAINT [DF_Core_DocumentStatus_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]          DATETIME         CONSTRAINT [DF_Core_DocumentStatus_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_DocumentStatus] PRIMARY KEY CLUSTERED ([StatusID] ASC)
+)
+GO
+
+CREATE TABLE [Core].[Document] (
+    [DocumentID]          INT              IDENTITY (1, 1) NOT NULL,
+    [TypeID]              INT              NOT NULL,
+    [StatusID]            INT              NOT NULL,
+    [No]                  NVARCHAR(64)     NOT NULL,
+    [OperationalStatus]   NVARCHAR(64)     NOT NULL,
+    [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Core_Document_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Core_Document_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_Document] PRIMARY KEY CLUSTERED ([DocumentID] ASC)
+    , CONSTRAINT [FK_Core_Document_Core_DocumentType] FOREIGN KEY ([TypeID]) REFERENCES [Core].[DocumentType]([TypeID])
+    , CONSTRAINT [FK_Core_Document_Core_DocumentStatus] FOREIGN KEY ([StatusID]) REFERENCES [Core].[DocumentStatus]([StatusID])
+)
+GO
+
+CREATE TABLE [Core].[DocumentAction] (
+    [ActionID]           INT              IDENTITY (1, 1) NOT NULL,
+	[DocumentID]         INT              NOT NULL,
+	[LineID]             INT              NULL,
+    [CreatedByID]        INT              NOT NULL,
+    [ModifiedByID]       INT              NOT NULL,
+    [ConfirmedByID]      INT              NULL,
+    [ApprovedByID]       INT              NULL,
+    [CreatedDate]        DATETIME         NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Core_DocumentAction_ModifiedDate] DEFAULT (getdate()) NOT NULL,
+    [ConfirmedDate]      DATETIME         NULL,
+    [ApprovedDate]       DATETIME         NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Core_DocumentAction_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL
+    , CONSTRAINT [PK_Core_DocumentAction] PRIMARY KEY CLUSTERED ([ActionID] ASC)
+    , CONSTRAINT [FK_Core_DocumentAction_Auth_CreatedBy] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Core_DocumentAction_Auth_ModifiedBy] FOREIGN KEY ([ModifiedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Core_DocumentAction_Auth_ConfirmedBy] FOREIGN KEY ([ConfirmedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Core_DocumentAction_Auth_ApprovedBy] FOREIGN KEY ([ApprovedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Core_DocumentAction_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document]([DocumentID])
 )
 GO
 
@@ -418,60 +472,6 @@ CREATE TABLE [Contact].[Customer] (
 )
 GO
 
-CREATE TABLE [Core].[DocumentType] (
-    [TypeID]                INT              IDENTITY (1, 1) NOT NULL,
-    [Name]                  NVARCHAR(64)     NOT NULL,
-    [rowguid]               UNIQUEIDENTIFIER CONSTRAINT [DF_Core_DocumentType_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]          DATETIME         CONSTRAINT [DF_Core_DocumentType_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Core_DocumentType] PRIMARY KEY CLUSTERED ([TypeID] ASC)
-)
-GO
-
-CREATE TABLE [Core].[DocumentStatus] (
-    [StatusID]              INT              IDENTITY (1, 1) NOT NULL,
-    [Name]                  NVARCHAR(64)     NOT NULL,
-    [rowguid]               UNIQUEIDENTIFIER CONSTRAINT [DF_Core_DocumentStatus_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]          DATETIME         CONSTRAINT [DF_Core_DocumentStatus_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Core_DocumentStatus] PRIMARY KEY CLUSTERED ([StatusID] ASC)
-)
-GO
-
-CREATE TABLE [Core].[DocumentAction] (
-    [ActionID]           INT              IDENTITY (1, 1) NOT NULL,
-	[DocumentID]         INT              NOT NULL,
-	[LineID]             INT              NULL,
-    [CreatedByID]        INT              NOT NULL,
-    [ModifiedByID]       INT              NOT NULL,
-    [ConfirmedByID]      INT              NULL,
-    [ApprovedByID]       INT              NULL,
-    [CreatedDate]        DATETIME         NOT NULL,
-    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Core_DocumentAction_ModifiedDate] DEFAULT (getdate()) NOT NULL,
-    [ConfirmedDate]      DATETIME         NULL,
-    [ApprovedDate]       DATETIME         NULL,
-    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Core_DocumentAction_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL
-    , CONSTRAINT [PK_Core_DocumentAction] PRIMARY KEY CLUSTERED ([ActionID] ASC)
-    , CONSTRAINT [FK_Core_DocumentAction_Auth_CreatedBy] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User]([UserID])
-    , CONSTRAINT [FK_Core_DocumentAction_Auth_ModifiedBy] FOREIGN KEY ([ModifiedByID]) REFERENCES [Auth].[User]([UserID])
-    , CONSTRAINT [FK_Core_DocumentAction_Auth_ConfirmedBy] FOREIGN KEY ([ConfirmedByID]) REFERENCES [Auth].[User]([UserID])
-    , CONSTRAINT [FK_Core_DocumentAction_Auth_ApprovedBy] FOREIGN KEY ([ApprovedByID]) REFERENCES [Auth].[User]([UserID])
-    , CONSTRAINT [FK_Core_DocumentAction_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document]([DocumentID])
-)
-GO
-
-CREATE TABLE [Core].[Document] (
-    [DocumentID]          INT              IDENTITY (1, 1) NOT NULL,
-    [TypeID]              INT              NOT NULL,
-    [StatusID]            INT              NOT NULL,
-    [No]                  NVARCHAR(64)     NOT NULL,
-    [OperationalStatus]   NVARCHAR(64)     NOT NULL,
-    [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Core_Document_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Core_Document_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Core_Document] PRIMARY KEY CLUSTERED ([DocumentID] ASC)
-    , CONSTRAINT [FK_Core_Document_Core_DocumentType] FOREIGN KEY ([TypeID]) REFERENCES [Core].[DocumentType]([TypeID])
-    , CONSTRAINT [FK_Core_Document_Core_DocumentStatus] FOREIGN KEY ([StatusID]) REFERENCES [Core].[DocumentStatus]([StatusID])
-)
-GO
-
 CREATE TABLE [Core].[ServiceJob] (
     [JobID]                INT              IDENTITY (1, 1) NOT NULL,
     [rowguid]              UNIQUEIDENTIFIER CONSTRAINT [DF_Core_ServiceJob_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
@@ -670,7 +670,7 @@ CREATE TABLE [Procurement].[RequisitionVoucher] (
     [PromisedDate]       DATETIME         NULL,
     [Reason]             NVARCHAR(256)    NULL,
     [WarehouseComment]   NVARCHAR(256)    NULL,
-    [IsActive]           BIT              NOT NULL,
+    [IsActive]           BIT              CONSTRAINT [DF_Procurement_RequisitionVoucher_IsActive] DEFAULT (0) NOT NULL,
     [Description]        NVARCHAR(256)    NULL,
     [Timestamp]          TIMESTAMP        NOT NULL,
     [ModifiedDate]       DATETIME         CONSTRAINT [DF_Procurement_RequisitionVoucher_ModifiedDate] DEFAULT (getdate()) NOT NULL,
@@ -740,7 +740,7 @@ CREATE TABLE [Warehousing].[IssueReceiptVoucher] (
     [PartnerFullDetailID]  INT              NULL,
     [DocumentID]           INT              NOT NULL,
     [No]                   NVARCHAR(64)     NOT NULL,
-    [IsActive]             BIT              NOT NULL,
+    [IsActive]             BIT              CONSTRAINT [DF_Warehousing_IssueReceiptVoucher_IsActive] DEFAULT (0) NOT NULL,
     [Reference]            NVARCHAR(64)     NULL,
     [Type]                 SMALLINT         NOT NULL,
     [Description]          NVARCHAR(256)    NULL,
@@ -776,7 +776,7 @@ CREATE TABLE [Warehousing].[IssueReceiptVoucherLine] (
     [UnitPrice]            FLOAT            NOT NULL,
     [CurrencyUnitPrice]    FLOAT            NULL,
     [Remainder]            FLOAT            NULL,
-    [IsActive]             BIT              NOT NULL,
+    [IsActive]             BIT              CONSTRAINT [DF_Warehousing_IssueReceiptVoucherLine_IsActive] DEFAULT (0) NOT NULL,
     [Description]          NVARCHAR(256)    NULL,
     [Timestamp]            TIMESTAMP        NOT NULL,
     [ModifiedDate]         DATETIME         CONSTRAINT [DF_Warehousing_IssueReceiptVoucherLine_ModifiedDate] DEFAULT (getdate()) NOT NULL,
@@ -809,7 +809,7 @@ CREATE TABLE [Sales].[Invoice] (
     [PartnerFullDetailID]   INT              NULL,
     [DocumentID]            INT              NOT NULL,
     [No]                    NVARCHAR(64)     NOT NULL,
-    [IsActive]              BIT              NOT NULL,
+    [IsActive]              BIT              CONSTRAINT [DF_Sales_Invoice_IsActive] DEFAULT (0) NOT NULL,
     [IsCancelled]           BIT              NOT NULL,
     [Type]                  SMALLINT         NOT NULL,
     [Reference]             NVARCHAR(64)     NULL,
@@ -855,7 +855,7 @@ CREATE TABLE [Sales].[InvoiceLine] (
     [CurrencyUnitPrice]    FLOAT            NULL,
     [Discount]             FLOAT            NULL,
     [UnitCost]             FLOAT            NULL,
-    [IsActive]             BIT              NOT NULL,
+    [IsActive]             BIT              CONSTRAINT [DF_Sales_InvoiceLine_IsActive] DEFAULT (0) NOT NULL,
     [Description]          NVARCHAR(256)    NULL,
     [Timestamp]            TIMESTAMP        NOT NULL,
     [ModifiedDate]         DATETIME         CONSTRAINT [DF_Sales_InvoiceLine_ModifiedDate] DEFAULT (getdate()) NOT NULL,

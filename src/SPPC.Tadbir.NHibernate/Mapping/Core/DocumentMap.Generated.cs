@@ -59,7 +59,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .KeyColumn("DocumentID")
                 .LazyLoad()
                 .Inverse()
-                .Cascade.DeleteOrphan();
+                .Cascade.All();
         }
     }
 }

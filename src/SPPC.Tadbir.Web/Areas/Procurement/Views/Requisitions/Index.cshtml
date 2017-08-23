@@ -73,7 +73,7 @@
                 @item.Description.AutoEllipsis(60)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DocumentStatusName)
+                @TransactionStatus.ToLocalValue(item.DocumentStatusName)
             </td>
             <td>
                 @DocumentStatusName.ToLocalValue(item.DocumentOperationalStatus)

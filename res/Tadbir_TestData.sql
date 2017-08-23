@@ -1,4 +1,4 @@
-﻿USE [TadbirDemo]
+﻿USE [TadbirTest2]
 GO
 
 SET IDENTITY_INSERT [Corporate].[Company] ON
@@ -28,26 +28,6 @@ SET IDENTITY_INSERT [Finance].[Account] OFF
 SET IDENTITY_INSERT [Finance].[Currency] ON
 INSERT INTO [Finance].[Currency] (CurrencyID, Name) VALUES (1, N'ریال')
 SET IDENTITY_INSERT [Finance].[Currency] OFF
-
-SET IDENTITY_INSERT [Finance].[Transaction] ON
-INSERT INTO [Finance].[Transaction] (TransactionID, FiscalPeriodID, BranchID, DocumentID, CreatedByID, ModifiedByID, [No], [Date], [Description], [Status], OperationalStatus)
-  VALUES (1, 1, 1, 6, 1, 1, N'1', N'2017-02-14', N'سند اولیه تاسیس', N'Draft', N'Created')
-INSERT INTO [Finance].[Transaction] (TransactionID, FiscalPeriodID, BranchID, DocumentID, CreatedByID, ModifiedByID, [No], [Date], [Description], [Status], OperationalStatus)
-  VALUES (2, 1, 1, 7, 1, 1, N'2', N'2017-02-17', N'خرید نقدی لوازم اداری', N'Draft', N'Created')
-SET IDENTITY_INSERT [Finance].[Transaction] OFF
-
-SET IDENTITY_INSERT [Finance].[TransactionLine] ON
-INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
-  VALUES (1, 1, 1, 1, 4, 1, N'ثبت موجودی نقدی اولیه در حساب بانکی', 100000000, 0)
-INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
-  VALUES (2, 1, 1, 1, 5, 1, N'ثبت موجودی نقدی اولیه صندوق', 5000000, 0)
-INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
-  VALUES (3, 1, 1, 1, 6, 1, N'ثبت سرمایه اولیه', 0, 105000000)
-INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
-  VALUES (4, 2, 1, 1, 5, 1, N'خرید نقدی لوازم اداری مصرفی', 850000, 0)
-INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
-  VALUES (5, 2, 1, 1, 7, 1, N'خرید نقدی لوازم اداری مصرفی', 0, 850000)
-SET IDENTITY_INSERT [Finance].[TransactionLine] OFF
 
 SET IDENTITY_INSERT [Core].[DocumentType] ON
 INSERT INTO [Core].[DocumentType] (TypeID, Name) VALUES (1, N'Transaction')
@@ -192,22 +172,42 @@ INSERT INTO [Core].[DocumentAction] (ActionID, DocumentID, CreatedByID, Modified
     VALUES (12, 7, 1, 1, getdate(), getdate())
 SET IDENTITY_INSERT [Core].[DocumentAction] OFF
 
+SET IDENTITY_INSERT [Finance].[Transaction] ON
+INSERT INTO [Finance].[Transaction] (TransactionID, FiscalPeriodID, BranchID, DocumentID, [No], [Date], [Description])
+  VALUES (1, 1, 1, 6, N'1', N'2017-02-14', N'سند اولیه تاسیس')
+INSERT INTO [Finance].[Transaction] (TransactionID, FiscalPeriodID, BranchID, DocumentID, [No], [Date], [Description])
+  VALUES (2, 1, 1, 7, N'2', N'2017-02-17', N'خرید نقدی لوازم اداری')
+SET IDENTITY_INSERT [Finance].[Transaction] OFF
+
+SET IDENTITY_INSERT [Finance].[TransactionLine] ON
+INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
+  VALUES (1, 1, 1, 1, 4, 1, N'ثبت موجودی نقدی اولیه در حساب بانکی', 100000000, 0)
+INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
+  VALUES (2, 1, 1, 1, 5, 1, N'ثبت موجودی نقدی اولیه صندوق', 5000000, 0)
+INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
+  VALUES (3, 1, 1, 1, 6, 1, N'ثبت سرمایه اولیه', 0, 105000000)
+INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
+  VALUES (4, 2, 1, 1, 5, 1, N'خرید نقدی لوازم اداری مصرفی', 850000, 0)
+INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
+  VALUES (5, 2, 1, 1, 7, 1, N'خرید نقدی لوازم اداری مصرفی', 0, 850000)
+SET IDENTITY_INSERT [Finance].[TransactionLine] OFF
+
 SET IDENTITY_INSERT [Procurement].[RequisitionVoucher] ON
 INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
-    VALUES (1, 2, 1, 1, 1, 7, 1, 5, 2, 1, 1, N'1', N'شرح یک')
+    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], OrderedDate, [Description])
+    VALUES (1, 2, 1, 1, 1, 7, 1, 5, 2, 1, 1, N'1', getdate(), N'شرح یک')
 INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
-    VALUES (2, 3, 1, 1, 5, 7, 2, 4, 1, 1, 2, N'2', N'شرح دو')
+    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], OrderedDate, [Description])
+    VALUES (2, 3, 1, 1, 5, 7, 2, 4, 1, 1, 2, N'2', getdate(), N'شرح دو')
 INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
-    VALUES (3, 2, 1, 1, 4, 7, 3, 3, 3, 1, 3, N'3', N'شرح سه')
+    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], OrderedDate, [Description])
+    VALUES (3, 2, 1, 1, 4, 7, 3, 3, 3, 1, 3, N'3', getdate(), N'شرح سه')
 INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
-    VALUES (4, 4, 1, 1, 2, 7, 4, 2, 1, 1, 4, N'4', N'شرح چهار')
+    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], OrderedDate, [Description])
+    VALUES (4, 4, 1, 1, 2, 7, 4, 2, 1, 1, 4, N'4', getdate(), N'شرح چهار')
 INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], [Description])
-    VALUES (5, 1, 1, 1, 8, 7, 5, 1, 2, 1, 5, N'5', N'شرح پنج')
+    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], OrderedDate, [Description])
+    VALUES (5, 1, 1, 1, 8, 7, 5, 1, 2, 1, 5, N'5', getdate(), N'شرح پنج')
 SET IDENTITY_INSERT [Procurement].[RequisitionVoucher] OFF
 
 SET IDENTITY_INSERT [Procurement].[RequisitionVoucherLine] ON
