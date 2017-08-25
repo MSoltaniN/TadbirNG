@@ -70,7 +70,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>مجموعه ارزهای موجود</returns>
         public IEnumerable<KeyValue> LookupCurrencies()
         {
-            var currencyLookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.CostCenters);
+            var currencyLookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.Currencies);
             return currencyLookup;
         }
 

@@ -583,7 +583,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private void SetDocument(TransactionViewModel transaction)
         {
-            if (transaction.Document == null)
+            if (transaction.Document.Id == 0)
             {
                 var document = new DocumentViewModel()
                 {
