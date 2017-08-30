@@ -12,7 +12,6 @@ using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Inventory;
 using SPPC.Tadbir.Model.Procurement;
 using SPPC.Tadbir.ViewModel.Core;
-using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.NHibernate
@@ -116,12 +115,6 @@ namespace SPPC.Tadbir.NHibernate
             {
                 var newVoucher = _mapper.Map<RequisitionVoucher>(voucher);
                 UpdateRequisitionAction(newVoucher);
-                var fullAccount = GetFullAccount(voucher.FullAccount);
-                if (fullAccount != null)
-                {
-                    newVoucher.FullAccount = fullAccount;
-                }
-
                 repository.Insert(newVoucher);
             }
             else
@@ -130,16 +123,6 @@ namespace SPPC.Tadbir.NHibernate
                 if (existing != null)
                 {
                     UpdateExistingVoucher(voucher, existing);
-                    var fullAccount = GetFullAccount(voucher.FullAccount);
-                    if (fullAccount != null)
-                    {
-                        existing.FullAccount = fullAccount;
-                    }
-                    else
-                    {
-                        existing.FullAccount = _mapper.Map<FullAccount>(voucher.FullAccount);
-                    }
-
                     repository.Update(existing);
                 }
             }
@@ -160,12 +143,6 @@ namespace SPPC.Tadbir.NHibernate
             {
                 var newLine = _mapper.Map<RequisitionVoucherLine>(line);
                 UpdateRequisitionLineAction(newLine);
-                var fullAccount = GetFullAccount(line.FullAccount);
-                if (fullAccount != null)
-                {
-                    newLine.FullAccount = fullAccount;
-                }
-
                 newLine.Action.Document = new Document() { Id = line.DocumentId };
                 actionRepository.Insert(newLine.Action);
                 repository.Insert(newLine);
@@ -178,16 +155,6 @@ namespace SPPC.Tadbir.NHibernate
                 if (existing != null)
                 {
                     UpdateExistingVoucherLine(existing, line);
-                    var fullAccount = GetFullAccount(line.FullAccount);
-                    if (fullAccount != null)
-                    {
-                        existing.FullAccount = fullAccount;
-                    }
-                    else
-                    {
-                        existing.FullAccount = _mapper.Map<FullAccount>(line.FullAccount);
-                    }
-
                     repository.Update(existing);
                 }
             }
@@ -215,6 +182,10 @@ namespace SPPC.Tadbir.NHibernate
             existing.RequesterUnit = new BusinessUnit() { Id = voucher.RequesterUnitId };
             existing.ReceiverUnit = new BusinessUnit() { Id = voucher.ReceiverUnitId };
             existing.Warehouse = new Warehouse() { Id = voucher.WarehouseId };
+            existing.FullAccount.Account = new Account() { Id = voucher.FullAccount.AccountId };
+            existing.FullAccount.Detail = new DetailAccount() { Id = voucher.FullAccount.DetailId };
+            existing.FullAccount.CostCenter = new CostCenter() { Id = voucher.FullAccount.CostCenterId };
+            existing.FullAccount.Project = new Project() { Id = voucher.FullAccount.ProjectId };
             var mainAction = existing.Document.Actions.First();
             mainAction.ModifiedBy = new User() { Id = voucher.Document.Actions.First().ModifiedById };
         }
@@ -240,6 +211,10 @@ namespace SPPC.Tadbir.NHibernate
             existing.Warehouse = new Warehouse() { Id = line.WarehouseId };
             existing.Product = new Product() { Id = line.ProductId };
             existing.Uom = new UnitOfMeasurement() { Id = line.UomId };
+            existing.FullAccount.Account = new Account() { Id = line.FullAccount.AccountId };
+            existing.FullAccount.Detail = new DetailAccount() { Id = line.FullAccount.DetailId };
+            existing.FullAccount.CostCenter = new CostCenter() { Id = line.FullAccount.CostCenterId };
+            existing.FullAccount.Project = new Project() { Id = line.FullAccount.ProjectId };
             existing.Action.ModifiedDate = DateTime.Now;
             existing.Action.ModifiedBy = new User()
             {
@@ -265,19 +240,6 @@ namespace SPPC.Tadbir.NHibernate
                 line.Action.CreatedDate = DateTime.Now;
                 line.Action.ModifiedDate = DateTime.Now;
             }
-        }
-
-        private FullAccount GetFullAccount(FullAccountViewModel fullAccount)
-        {
-            var repository = _unitOfWork.GetRepository<FullAccount>();
-            var existing = repository
-                .GetByCriteria(acc =>
-                    acc.Account.Id == fullAccount.AccountId &&
-                    acc.Detail.Id == fullAccount.DetailId &&
-                    acc.CostCenter.Id == fullAccount.CostCenterId &&
-                    acc.Project.Id == fullAccount.ProjectId)
-                .FirstOrDefault();
-            return existing;
         }
 
         private IUnitOfWork _unitOfWork;

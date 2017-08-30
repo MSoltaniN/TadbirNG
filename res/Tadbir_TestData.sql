@@ -1,4 +1,4 @@
-﻿USE [TadbirTest2]
+﻿USE [TadbirDemo]
 GO
 
 SET IDENTITY_INSERT [Corporate].[Company] ON
