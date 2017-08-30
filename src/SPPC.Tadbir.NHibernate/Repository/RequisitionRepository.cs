@@ -162,6 +162,26 @@ namespace SPPC.Tadbir.NHibernate
             _unitOfWork.Commit();
         }
 
+        /// <summary>
+        /// اطلاعات یک درخواست کالای موجود را از دیتابیس حذف می کند.
+        /// </summary>
+        /// <param name="voucherId">شناسه یک درخواست کالای موجود</param>
+        public void DeleteRequisition(int voucherId)
+        {
+            var repository = _unitOfWork.GetRepository<RequisitionVoucher>();
+            var documentRepository = _unitOfWork.GetRepository<Document>();
+            var voucher = repository.GetByID(voucherId);
+            if (voucher != null)
+            {
+                voucher.Document.Actions.Clear();
+                documentRepository.Update(voucher.Document);
+                voucher.Lines.Clear();
+                repository.Update(voucher);
+                repository.Delete(voucher);
+                _unitOfWork.Commit();
+            }
+        }
+
         private static void UpdateExistingVoucher(RequisitionVoucherViewModel voucher, RequisitionVoucher existing)
         {
             existing.No = voucher.No;

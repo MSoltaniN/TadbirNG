@@ -43,5 +43,11 @@ namespace SPPC.Tadbir.Service
         /// </summary>
         /// <param name="line">اطلاعات سطر درخواست کالا</param>
         void SaveRequisitionLine(RequisitionVoucherLineViewModel line);
+
+        /// <summary>
+        /// اطلاعات یک درخواست کالای موجود را حذف می کند.
+        /// </summary>
+        /// <param name="id">شناسه دیتابیسی یک درخواست کالای موجود</param>
+        void DeleteRequisition(int id);
     }
 }

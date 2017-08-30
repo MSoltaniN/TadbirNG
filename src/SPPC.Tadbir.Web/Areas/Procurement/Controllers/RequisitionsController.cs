@@ -94,6 +94,13 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
             return View(fullRequisition);
         }
 
+        // GET: procurement/requisitions/delete/id
+        public ActionResult Delete(int id)
+        {
+            _service.DeleteRequisition(id);
+            return RedirectToAction("index");
+        }
+
         // GET: procurement/requisitions/createline/id
         public ViewResult CreateLine(int id)
         {

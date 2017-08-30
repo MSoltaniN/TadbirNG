@@ -104,7 +104,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Not.LazyLoad();
             References(x => x.FullAccount)
                 .Column("FullAccountID")
-                .Cascade.SaveUpdate()
+                .Cascade.All()
                 .Not.LazyLoad();
             References(x => x.FullDetail)
                 .Column("FullDetailID")
@@ -112,7 +112,7 @@ namespace SPPC.Tadbir.NHibernate.Mapping
                 .Not.LazyLoad();
             References(x => x.Document)
                 .Column("DocumentID")
-                .Cascade.SaveUpdate()
+                .Cascade.All()
                 .Not.LazyLoad();
             HasMany(x => x.Lines)
                 .KeyColumn("VoucherID")

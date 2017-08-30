@@ -79,7 +79,8 @@
                 @DocumentStatusName.ToLocalValue(item.DocumentOperationalStatus)
             </td>
             <td>
-                @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id })
+                @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id }) |
+                @Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
             </td>
         </tr>
     }
@@ -92,3 +93,7 @@
 <p>
     @Html.ActionLink(createTitle, "create", "requisitions", new { }, new { @class = "btn btn-sm btn-primary" })
 </p>
+
+@section scripts {
+    @Scripts.Render("~/bundles/site")
+}

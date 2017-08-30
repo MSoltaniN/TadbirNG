@@ -92,6 +92,15 @@ namespace SPPC.Tadbir.Service
             }
         }
 
+        /// <summary>
+        /// اطلاعات یک درخواست کالای موجود را حذف می کند.
+        /// </summary>
+        /// <param name="id">شناسه دیتابیسی یک درخواست کالای موجود</param>
+        public void DeleteRequisition(int id)
+        {
+            _apiClient.Delete(RequisitionApi.Requisition, id);
+        }
+
         private IApiClient _apiClient;
     }
 }
