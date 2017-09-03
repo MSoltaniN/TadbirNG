@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.Security
 {
     /// <summary>
-    /// Provides strongly-types values for all entities for which one or more permissions are defined.
+    /// نام موجودیت هایی را که یک یا چند دسترسی امنیتی برای آنها تعریف شده مشخص می کند
     /// </summary>
     public sealed class SecureEntity
     {
@@ -13,23 +13,28 @@ namespace SPPC.Tadbir.Security
         }
 
         /// <summary>
-        /// Represents the entity name for a financial account.
+        /// نام موجودیت سرفصل حسابداری
         /// </summary>
         public const string Account = "Account";
 
         /// <summary>
-        /// Represents the entity name for a financial transaction.
+        /// نام موجودیت سند مالی
         /// </summary>
         public const string Transaction = "Transaction";
 
         /// <summary>
-        /// Represents the entity name for an application user.
+        /// نام موجودیت کاربر برنامه
         /// </summary>
         public const string User = "User";
 
         /// <summary>
-        /// Represents the entity name for an application role.
+        /// نام موجودیت نقش سازمانی
         /// </summary>
         public const string Role = "Role";
+
+        /// <summary>
+        /// نام موجودیت درخواست کالا
+        /// </summary>
+        public const string Requisition = "RequisitionVoucher";
     }
 }

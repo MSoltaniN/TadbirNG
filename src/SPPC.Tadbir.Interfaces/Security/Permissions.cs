@@ -31,5 +31,10 @@ namespace SPPC.Tadbir.Security
         /// Exposes all permissions currently applicable to managing an application role.
         /// </summary>
         public static RolePermission Role = RolePermission.Instance;
+
+        /// <summary>
+        /// Exposes all permissions currently applicable to managing a requisition voucher.
+        /// </summary>
+        public static RequisitionPermission Requisition = RequisitionPermission.Instance;
     }
 }

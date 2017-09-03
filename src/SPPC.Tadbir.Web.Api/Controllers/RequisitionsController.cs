@@ -5,10 +5,12 @@ using System.Web.Http;
 using BabakSoft.Platform.Common;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Procurement;
+using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -23,6 +25,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/requisitions/fp/{fpId:int}/branch/{branchId:int}
         [Route(RequisitionApi.FiscalPeriodBranchRequisitionsUrl)]
+        [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.View)]
         public IHttpActionResult GetRequisitions(int fpId, int branchId)
         {
             if (fpId <= 0 || branchId <= 0)
@@ -36,6 +39,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/requisitions/{voucherId:int}/details
         [Route(RequisitionApi.RequisitionDetailsUrl)]
+        [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.View)]
         public IHttpActionResult GetRequisitionDetails(int voucherId)
         {
             if (voucherId < 0)
@@ -52,6 +56,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/requisitions
         [Route(RequisitionApi.RequisitionsUrl)]
+        [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Create)]
         public IHttpActionResult PostNewRequisition([FromBody] RequisitionVoucherViewModel voucher)
         {
             if (voucher == null)
@@ -66,6 +71,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/requisitions/{voucherId:int}
         [Route(RequisitionApi.RequisitionUrl)]
+        [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public IHttpActionResult PutModifiedRequisition(int voucherId, [FromBody] RequisitionVoucherViewModel voucher)
         {
             if (voucherId < 0)
@@ -85,6 +91,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // DELETE: api/requisitions/{voucherId:int}
         [Route(RequisitionApi.RequisitionUrl)]
+        [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Delete)]
         public IHttpActionResult DeleteExistingRequisition(int voucherId)
         {
             if (voucherId <= 0)
@@ -98,6 +105,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/requisitions/{voucherId:int}/lines/{lineId:int}
         [Route(RequisitionApi.RequisitionLineUrl)]
+        [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.View)]
         public IHttpActionResult GetOneRequisitionLine(int voucherId, int lineId)
         {
             if (lineId < 0)
@@ -114,8 +122,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/requisitions/{voucherId:int}/lines
         [Route(RequisitionApi.RequisitionLinesUrl)]
-        public IHttpActionResult PostNewRequisitionVoucherLine(
-            int voucherId, [FromBody] RequisitionVoucherLineViewModel line)
+        [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
+        public IHttpActionResult PostNewRequisitionLine(int voucherId, [FromBody] RequisitionVoucherLineViewModel line)
         {
             if (line == null)
             {
@@ -134,6 +142,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/requisitions/{voucherId:int}/lines/{lineId:int}
         [Route(RequisitionApi.RequisitionLineUrl)]
+        [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public IHttpActionResult PutModifiedRequisitionLine(
             int voucherId, int lineId, [FromBody] RequisitionVoucherLineViewModel line)
         {

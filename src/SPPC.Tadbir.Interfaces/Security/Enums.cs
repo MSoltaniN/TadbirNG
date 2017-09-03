@@ -175,4 +175,56 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         All = 0x3f
     }
+
+    /// <summary>
+    /// مقادیر فلگ مربوط به دسترسی های درخواست کالا را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum RequisitionPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به عملیات درخواست کالا
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده فهرست درخواست های کالا یا جزییات یک درخواست کالا
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی ایجاد درخواست کالای جدید
+        /// </summary>
+        Create = 0x2,
+
+        /// <summary>
+        /// دسترسی اصلاح درخواست کالای موجود
+        /// </summary>
+        Edit = 0x4,
+
+        /// <summary>
+        /// دسترسی حذف درخواست کالای موجود
+        /// </summary>
+        Delete = 0x8,
+
+        /// <summary>
+        /// دسترسی تنظیم درخواست کالا
+        /// </summary>
+        Prepare = 0x10,
+
+        /// <summary>
+        /// دسترسی تایید درخواست کالا
+        /// </summary>
+        Confirm = 0x20,
+
+        /// <summary>
+        /// دسترسی تصویب درخواست کالا
+        /// </summary>
+        Approve = 0x40,
+
+        /// <summary>
+        /// دسترسی به تمام عملیات درخواست کالا
+        /// </summary>
+        All = 0x7f
+    }
 }

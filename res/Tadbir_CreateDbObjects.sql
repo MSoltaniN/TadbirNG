@@ -887,6 +887,8 @@ INSERT INTO [Auth].[Role] (RoleID, Name, [Description]) VALUES (2, N'کارشن�
 INSERT INTO [Auth].[Role] (RoleID, Name, [Description]) VALUES (3, N'رییس حسابداری', NULL)
 INSERT INTO [Auth].[Role] (RoleID, Name, [Description]) VALUES (4, N'معاون مالی', NULL)
 INSERT INTO [Auth].[Role] (RoleID, Name, [Description]) VALUES (5, N'مدیر مالی', NULL)
+INSERT INTO [Auth].[Role] (RoleID, Name, [Description]) VALUES (6, N'سرپرست واحد', NULL)
+INSERT INTO [Auth].[Role] (RoleID, Name, [Description]) VALUES (7, N'مدیر واحد', NULL)
 SET IDENTITY_INSERT [Auth].[Role] OFF
 
 SET IDENTITY_INSERT [Auth].[UserRole] ON
@@ -898,6 +900,7 @@ INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUE
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (2, N'مدیریت اسناد مالی', N'Transaction')
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (3, N'مدیریت کاربران', N'User')
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (4, N'مدیریت نقش ها', N'Role')
+INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (5, N'مدیریت درخواست های کالا', N'RequisitionVoucher')
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON
@@ -922,6 +925,13 @@ INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (18, 
 INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (19, 4, N'حذف نقش', 8)
 INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (20, 4, N'تخصیص کاربر به نقش', 16)
 INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (21, 4, N'تخصیص شعبه به نقش', 32)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (22, 5, N'مشاهده درخواست های کالا', 1)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (23, 5, N'ایجاد درخواست کالا', 2)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (24, 5, N'اصلاح درخواست کالا', 4)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (25, 5, N'حذف درخواست کالا', 8)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (26, 5, N'تنظیم درخواست کالا', 16)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (27, 5, N'تایید درخواست کالا', 32)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (28, 5, N'تصویب درخواست کالا', 64)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 SET IDENTITY_INSERT [Auth].[RolePermission] ON
@@ -964,6 +974,13 @@ INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VAL
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (37, 5, 1)
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (38, 5, 5)
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (39, 5, 12)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (40, 1, 22)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (41, 1, 23)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (42, 1, 24)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (43, 1, 25)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (44, 1, 26)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (45, 1, 27)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (46, 1, 28)
 SET IDENTITY_INSERT [Auth].[RolePermission] OFF
 
 SET ANSI_NULLS OFF

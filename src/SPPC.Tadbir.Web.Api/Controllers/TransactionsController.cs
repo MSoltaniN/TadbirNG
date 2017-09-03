@@ -247,7 +247,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // DELETE: api/transactions/articles/{articleId:int}
         [Route(TransactionApi.TransactionArticleUrl)]
-        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
         public IHttpActionResult DeleteExistingArticle(int articleId)
         {
             if (articleId <= 0)

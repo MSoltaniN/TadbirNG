@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using SPPC.Framework.Values;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Procurement;
+using SPPC.Tadbir.Web.Filters;
 
 namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
 {
@@ -20,6 +20,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
         }
 
         // GET: procurement/requisitions[?page={no}]
+        [AppAuthorize(SecureEntity.Requisition, (int)RequisitionPermissions.View)]
         public ActionResult Index(int? page = null)
         {
             var requisitions = _service.GetRequisitions(TempContext.CurrentFiscalPeriodId, TempContext.CurrentBranchId);
@@ -29,6 +30,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
         }
 
         // GET: procurement/requisitions/create
+        [AppAuthorize(SecureEntity.Requisition, (int)RequisitionPermissions.Create)]
         public ViewResult Create()
         {
             InitLookups();
@@ -44,6 +46,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
         // POST: procurement/requisitions/create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.Requisition, (int)RequisitionPermissions.Create)]
         public ActionResult Create(RequisitionVoucherViewModel voucher)
         {
             if (voucher == null)
@@ -62,6 +65,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
         }
 
         // GET: procurement/requisitions/edit/id
+        [AppAuthorize(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public ActionResult Edit(int id)
         {
             var requisition = _service.GetDetailRequisitionInfo(id);
@@ -77,6 +81,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
         // POST: procurement/requisitions/edit/id
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public ActionResult Edit(RequisitionFullViewModel fullRequisition)
         {
             if (fullRequisition == null)
@@ -95,6 +100,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
         }
 
         // GET: procurement/requisitions/delete/id
+        [AppAuthorize(SecureEntity.Requisition, (int)RequisitionPermissions.Delete)]
         public ActionResult Delete(int id)
         {
             _service.DeleteRequisition(id);
@@ -102,6 +108,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
         }
 
         // GET: procurement/requisitions/createline/id
+        [AppAuthorize(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public ViewResult CreateLine(int id)
         {
             ViewBag.Title = String.Format(LocalStrings.CreateNewEntity, Entities.Article);
@@ -118,6 +125,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
         // POST: procurement/requisitions/createline/id
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public ActionResult CreateLine(int id, RequisitionVoucherLineViewModel line)
         {
             if (line == null)
@@ -137,6 +145,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
         }
 
         // GET: procurement/requisitions/editline/id?lineId={lineId}
+        [AppAuthorize(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public ActionResult EditLine(int id, int lineId)
         {
             ViewBag.Title = String.Format(LocalStrings.EditExistingEntity, Entities.Article);
@@ -153,6 +162,7 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
         // POST: procurement/requisitions/editline/id?lineId={lineId}
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public ActionResult EditLine(int id, int lineId, RequisitionVoucherLineViewModel line)
         {
             if (line == null)
