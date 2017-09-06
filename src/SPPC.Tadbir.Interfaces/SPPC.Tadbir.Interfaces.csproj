@@ -89,6 +89,7 @@
     <Compile Include="NHibernate\IWorkItemRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\AccountPermission.cs" />
+    <Compile Include="Security\ProductInventoryPermission.cs" />
     <Compile Include="Security\RequisitionPermission.cs" />
     <Compile Include="Security\SecureEntity.cs" />
     <Compile Include="Security\Enums.cs" />

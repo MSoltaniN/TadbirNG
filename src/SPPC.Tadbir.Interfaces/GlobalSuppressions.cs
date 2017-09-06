@@ -16,6 +16,8 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1724:TypeNamesShouldNotMatchNamespaces", Scope = "type", Target = "SPPC.Tadbir.Security.Permissions", Justification = "This class is part of a private API and will not conflict with .NET Security API.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible", Scope = "member", Target = "SPPC.Tadbir.Security.Permissions.#Requisition", Justification = "This type implements a fluent API for application use.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Scope = "type", Target = "SPPC.Tadbir.Security.RequisitionPermission", Justification = "This type is for internal application use.")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible", Scope = "member", Target = "SPPC.Tadbir.Security.Permissions.#ProductInventory", Justification = "This type implements a fluent API for application use.")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Scope = "type", Target = "SPPC.Tadbir.Security.ProductInventoryPermission", Justification = "This type is for internal application use.")]
 
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.

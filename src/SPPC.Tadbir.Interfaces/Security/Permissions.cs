@@ -33,6 +33,11 @@ namespace SPPC.Tadbir.Security
         public static RolePermission Role = RolePermission.Instance;
 
         /// <summary>
+        /// Exposes all permissions currently applicable to managing a product inventory.
+        /// </summary>
+        public static ProductInventoryPermission ProductInventory = ProductInventoryPermission.Instance;
+
+        /// <summary>
         /// Exposes all permissions currently applicable to managing a requisition voucher.
         /// </summary>
         public static RequisitionPermission Requisition = RequisitionPermission.Instance;

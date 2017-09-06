@@ -33,6 +33,11 @@ namespace SPPC.Tadbir.Security
         public const string Role = "Role";
 
         /// <summary>
+        /// نام موجودیت موجودی کالا
+        /// </summary>
+        public const string ProductInventory = "ProductInventory";
+
+        /// <summary>
         /// نام موجودیت درخواست کالا
         /// </summary>
         public const string Requisition = "RequisitionVoucher";

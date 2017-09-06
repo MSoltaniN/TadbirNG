@@ -47,6 +47,15 @@
                         </ul>
                     </li>
                     <li class="dropdown" style="float:right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Strings.InventoryControl <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            @if (currentContext.HasPermissions(Permissions.ProductInventory.View))
+                            {
+                                <li>@Html.ActionLink(Strings.ProductInventoryInWarehouse, "index", "inventories", new { area = "inventory" }, null)</li>
+                            }
+                        </ul>
+                    </li>
+                    <li class="dropdown" style="float:right">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Strings.Procurement <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                         @if (currentContext.HasPermissions(Permissions.Requisition.View))

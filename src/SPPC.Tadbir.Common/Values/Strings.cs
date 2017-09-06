@@ -133,6 +133,16 @@ namespace SPPC.Tadbir.Values
         public const string SalesPurchase = "خرید و فروش";
 
         /// <summary>
+        /// Localized text for the Inventory Control subsystem name
+        /// </summary>
+        public const string InventoryControl = "کنترل موجودی";
+
+        /// <summary>
+        /// Localized text for the Product Inventory in Warehouse menu item
+        /// </summary>
+        public const string ProductInventoryInWarehouse = "موجودی کالا در انبار";
+
+        /// <summary>
         /// Localized text for the Inventory and Warehousing subsystem name
         /// </summary>
         public const string WarehousingInventory = "کنترل موجودی و انبار";

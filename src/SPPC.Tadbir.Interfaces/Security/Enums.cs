@@ -177,6 +177,43 @@ namespace SPPC.Tadbir.Security
     }
 
     /// <summary>
+    /// Provides flag values for permissions currently defined for managing a product inventory.
+    /// </summary>
+    [Flags]
+    public enum ProductInventoryPermissions
+    {
+        /// <summary>
+        /// Indicates no permission for managing a product inventory
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// Indicates permission to view product inventory list or details of a product inventory
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// Indicates permission to create a new product inventory
+        /// </summary>
+        Create = 0x2,
+
+        /// <summary>
+        /// Indicates permission to edit an existing product inventory
+        /// </summary>
+        Edit = 0x4,
+
+        /// <summary>
+        /// Indicates permission to delete an existing product inventory
+        /// </summary>
+        Delete = 0x8,
+
+        /// <summary>
+        /// Indicates all permissions available for managing a product inventory
+        /// </summary>
+        All = 0xf
+    }
+
+    /// <summary>
     /// مقادیر فلگ مربوط به دسترسی های درخواست کالا را تعریف می کند
     /// </summary>
     [Flags]
