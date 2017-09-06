@@ -110,6 +110,7 @@
     <Compile Include="Mapping\Finance\TransactionLineMap.Generated.cs" />
     <Compile Include="Mapping\Finance\TransactionMap.Generated.cs" />
     <Compile Include="Mapping\Inventory\ProductCategoryMap.Generated.cs" />
+    <Compile Include="Mapping\Inventory\ProductInventoryMap.Generated.cs" />
     <Compile Include="Mapping\Inventory\ProductMap.Generated.cs" />
     <Compile Include="Mapping\Inventory\UnitOfMeasurementMap.Generated.cs" />
     <Compile Include="Mapping\Inventory\WarehouseMap.Generated.cs" />

@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="Auth\PermissionEqualityComparer.cs" />
     <Compile Include="Inventory\ProductCategoryViewModel.Generated.cs" />
+    <Compile Include="Inventory\ProductInventoryViewModel.Generated.cs" />
     <Compile Include="Inventory\ProductViewModel.Generated.cs" />
     <Compile Include="Inventory\UnitOfMeasurementViewModel.Generated.cs" />
     <Compile Include="Inventory\WarehouseViewModel.Generated.cs" />

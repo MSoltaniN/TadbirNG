@@ -98,6 +98,7 @@
     </Compile>
     <Compile Include="Inventory\Product.Generated.cs" />
     <Compile Include="Inventory\ProductCategory.Generated.cs" />
+    <Compile Include="Inventory\ProductInventory.Generated.cs" />
     <Compile Include="Inventory\UnitOfMeasurement.Generated.cs" />
     <Compile Include="Inventory\Warehouse.Generated.cs" />
     <Compile Include="Procurement\RequisitionVoucher.Generated.cs" />
