@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="Api\AccountApi.cs" />
     <Compile Include="Api\CartableApi.cs" />
+    <Compile Include="Api\InventoryApi.cs" />
     <Compile Include="Api\LookupApi.cs" />
     <Compile Include="Api\RequisitionApi.cs" />
     <Compile Include="Api\SecurityApi.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="NHibernate\IInventoryRepository.cs" />
     <Compile Include="NHibernate\IRequisitionRepository.cs" />
     <Compile Include="NHibernate\IWorkflowRepository.cs" />
     <Compile Include="Repository\ISettingsRepository.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="Security\UserPermission.cs" />
     <Compile Include="Service\IAccountService.cs" />
     <Compile Include="Service\ICartableService.cs" />
+    <Compile Include="Service\IInventoryService.cs" />
     <Compile Include="Service\IRequisitionService.cs" />
     <Compile Include="Service\ISecurityContext.cs" />
     <Compile Include="Service\ILookupService.cs" />

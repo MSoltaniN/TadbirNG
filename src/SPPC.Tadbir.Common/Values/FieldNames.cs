@@ -298,9 +298,19 @@ namespace SPPC.Tadbir.Values
         public const string WarehouseCommentField = "نظریه انبار";
 
         /// <summary>
+        /// Localized name of Product Code field
+        /// </summary>
+        public const string ProductCodeField = "کد کالا";
+
+        /// <summary>
         /// Localized name of Product Name field
         /// </summary>
         public const string ProductNameField = "نام کالا";
+
+        /// <summary>
+        /// Localized name of Initial Inventory field
+        /// </summary>
+        public const string InitialInventory = "موجودی اولیه";
 
         /// <summary>
         /// Localized name of UOM (Unit of Measurement) field

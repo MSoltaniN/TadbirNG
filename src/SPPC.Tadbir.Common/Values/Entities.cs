@@ -73,6 +73,21 @@ namespace SPPC.Tadbir.Values
         public const string Transactions = "اسناد";
 
         /// <summary>
+        /// Localized name of ProductInventory entity.
+        /// </summary>
+        public const string ProductInventory = "موجودی کالا";
+
+        /// <summary>
+        /// Localized name of ProductInventory entity (plural form).
+        /// </summary>
+        public const string ProductInventories = "موجودی های کالا";
+
+        /// <summary>
+        /// Localized name of ProductInventory entity (unknown).
+        /// </summary>
+        public const string AProductInventory = "موجودی کالایی";
+
+        /// <summary>
         /// Localized name for Request.
         /// </summary>
         public const string Request = "درخواست";

@@ -159,6 +159,7 @@
     <Compile Include="Areas\Admin\Controllers\RolesController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Inventory\Controllers\InventoriesController.cs" />
     <Compile Include="Areas\Inventory\InventoryAreaRegistration.cs" />
     <Compile Include="Areas\Procurement\Controllers\RequisitionsController.cs" />
     <Compile Include="Areas\Procurement\ProcurementAreaRegistration.cs" />
@@ -237,6 +238,7 @@
     <Content Include="Areas\Procurement\Views\Requisitions\LineEditor.cshtml" />
     <Content Include="Areas\Inventory\Views\web.config" />
     <Content Include="Areas\Inventory\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Inventory\Views\Inventories\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Staging.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -292,7 +294,6 @@
   <ItemGroup>
     <Folder Include="Areas\Accounting\Views\Shared\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
-    <Folder Include="Areas\Inventory\Controllers\" />
     <Folder Include="Areas\Inventory\Views\Shared\" />
     <Folder Include="Areas\Procurement\Views\Shared\" />
   </ItemGroup>

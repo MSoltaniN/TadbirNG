@@ -20,6 +20,7 @@ using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Inventory;
 using SPPC.Tadbir.ViewModel.Procurement;
 using SPPC.Tadbir.ViewModel.Settings;
 using SPPC.Tadbir.ViewModel.Workflow;
@@ -453,6 +454,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<UnitOfMeasurement, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+            mapperConfig.CreateMap<ProductInventory, ProductInventoryViewModel>();
         }
 
         private static void MapCoreTypes(IMapperConfigurationExpression mapperConfig)

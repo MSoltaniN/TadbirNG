@@ -128,6 +128,19 @@ INSERT INTO [Inventory].[Warehouse] (WarehouseID, Code, Name) VALUES (2, N'WRHS4
 INSERT INTO [Inventory].[Warehouse] (WarehouseID, Code, Name) VALUES (3, N'WRHS7890', N'انبار 3')
 SET IDENTITY_INSERT [Inventory].[Warehouse] OFF
 
+SET IDENTITY_INSERT [Inventory].[ProductInventory] ON
+INSERT INTO [Inventory].[ProductInventory] (ProductInventoryID, ProductID, UomID, WarehouseID, FiscalPeriodID, BranchID, Quantity)
+    VALUES (1, 4, 2, 2, 1, 1, 10)
+INSERT INTO [Inventory].[ProductInventory] (ProductInventoryID, ProductID, UomID, WarehouseID, FiscalPeriodID, BranchID, Quantity)
+    VALUES (2, 1, 1, 2, 1, 1, 10)
+INSERT INTO [Inventory].[ProductInventory] (ProductInventoryID, ProductID, UomID, WarehouseID, FiscalPeriodID, BranchID, Quantity)
+    VALUES (3, 7, 2, 3, 1, 1, 10)
+INSERT INTO [Inventory].[ProductInventory] (ProductInventoryID, ProductID, UomID, WarehouseID, FiscalPeriodID, BranchID, Quantity)
+    VALUES (4, 5, 4, 1, 1, 1, 10)
+INSERT INTO [Inventory].[ProductInventory] (ProductInventoryID, ProductID, UomID, WarehouseID, FiscalPeriodID, BranchID, Quantity)
+    VALUES (5, 4, 4, 1, 1, 1, 10)
+SET IDENTITY_INSERT [Inventory].[ProductInventory] OFF
+
 SET IDENTITY_INSERT [Procurement].[RequisitionVoucherType] ON
 INSERT INTO [Procurement].[RequisitionVoucherType] (VoucherTypeID, Name) VALUES (1, N'درخواست کالای نوع اول')
 INSERT INTO [Procurement].[RequisitionVoucherType] (VoucherTypeID, Name) VALUES (2, N'درخواست کالای نوع دوم')

@@ -633,12 +633,16 @@ CREATE TABLE [Inventory].[ProductInventory] (
     [ProductInventoryID]   INT              IDENTITY (1, 1) NOT NULL,
     [ProductID]            INT              NOT NULL,
     [WarehouseID]          INT              NOT NULL,
+    [FiscalPeriodID]       INT              NOT NULL,
+    [BranchID]             INT              NOT NULL,
     [Quantity]             FLOAT            NOT NULL,
     [rowguid]              UNIQUEIDENTIFIER CONSTRAINT [DF_Inventory_ProductInventory_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]         DATETIME         CONSTRAINT [DF_Inventory_ProductInventory_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Inventory_ProductInventory] PRIMARY KEY CLUSTERED ([ProductInventoryID] ASC)
     , CONSTRAINT [FK_Inventory_ProductInventory_Inventory_Product] FOREIGN KEY ([ProductID]) REFERENCES [Inventory].[Product]([ProductID])
     , CONSTRAINT [FK_Inventory_ProductInventory_Inventory_Warehouse] FOREIGN KEY ([WarehouseID]) REFERENCES [Inventory].[Warehouse]([WarehouseID])
+    , CONSTRAINT [FK_Inventory_ProductInventory_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod]([FiscalPeriodID])
+    , CONSTRAINT [FK_Inventory_ProductInventory_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch]([BranchID])
 )
 GO
 

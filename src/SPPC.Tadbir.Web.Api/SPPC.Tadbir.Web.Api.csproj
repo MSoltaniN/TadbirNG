@@ -188,6 +188,7 @@
     <Compile Include="Controllers\AccountsController.Generated.cs" />
     <Compile Include="Controllers\CartableController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InventoriesController.cs" />
     <Compile Include="Controllers\LookupController.cs" />
     <Compile Include="Controllers\RequisitionsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
