@@ -11,5 +11,7 @@ namespace SPPC.Tadbir.NHibernate
         ProductInventoryViewModel GetProductInventory(int inventoryId);
 
         void SaveProductInventory(ProductInventoryViewModel inventory);
+
+        void DeleteProductInventory(int inventoryId);
     }
 }

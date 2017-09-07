@@ -40,6 +40,11 @@ namespace SPPC.Tadbir.Service
             }
         }
 
+        public void DeleteProductInventory(int id)
+        {
+            _apiClient.Delete(InventoryApi.Inventory, id);
+        }
+
         private IApiClient _apiClient;
     }
 }

@@ -79,6 +79,14 @@
                 {
                     @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id })
                 }
+                @if (currentContext.HasPermissions(Permissions.ProductInventory.Edit, Permissions.ProductInventory.Delete))
+                {
+                    <span> | </span>
+                }
+                @if (currentContext.HasPermissions(Permissions.ProductInventory.Delete))
+                {
+                    @Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
+                }
                 </td>
             </tr>
         }
@@ -92,4 +100,8 @@
     <p>
         @Html.ActionLink(createTitle, "create", "inventories", new { }, new { @class = "btn btn-sm btn-primary" })
     </p>
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/site")
 }

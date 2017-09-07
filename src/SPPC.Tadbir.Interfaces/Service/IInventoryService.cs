@@ -11,5 +11,7 @@ namespace SPPC.Tadbir.Service
         ProductInventoryViewModel GetProductInventory(int id);
 
         void SaveProductInventory(ProductInventoryViewModel inventory);
+
+        void DeleteProductInventory(int id);
     }
 }

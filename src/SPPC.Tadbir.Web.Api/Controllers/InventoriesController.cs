@@ -89,6 +89,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(HttpStatusCode.OK);
         }
 
+        // DELETE: api/inventories/{inventoryId:int}
+        [Route(InventoryApi.InventoryUrl)]
+        [AuthorizeRequest(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.Delete)]
+        public IHttpActionResult DeleteExistingProductInventory(int inventoryId)
+        {
+            if (inventoryId <= 0)
+            {
+                return BadRequest("Could not delete product inventory because it does not exist.");
+            }
+
+            _repository.DeleteProductInventory(inventoryId);
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
         private IInventoryRepository _repository;
     }
 }

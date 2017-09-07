@@ -62,6 +62,18 @@ namespace SPPC.Tadbir.NHibernate
             _unitOfWork.Commit();
         }
 
+        public void DeleteProductInventory(int inventoryId)
+        {
+            var repository = _unitOfWork.GetRepository<ProductInventory>();
+            var existing = repository.GetByID(inventoryId);
+            if (existing != null)
+            {
+                repository.Delete(existing);
+            }
+
+            _unitOfWork.Commit();
+        }
+
         private static void UpdateExistingInventory(ProductInventory existing, ProductInventoryViewModel inventory)
         {
             existing.Quantity = inventory.Quantity;

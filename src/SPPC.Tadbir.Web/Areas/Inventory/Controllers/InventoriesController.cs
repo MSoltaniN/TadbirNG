@@ -102,6 +102,14 @@ namespace SPPC.Tadbir.Web.Areas.Inventory.Controllers
             return View("Editor", inventory);
         }
 
+        // GET: inventory/inventories/delete/id
+        [AppAuthorize(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.Delete)]
+        public ActionResult Delete(int id)
+        {
+            _service.DeleteProductInventory(id);
+            return RedirectToAction("index");
+        }
+
         private void InitLookups()
         {
             var depends = _lookupService.LookupProductInventoryDepends();
