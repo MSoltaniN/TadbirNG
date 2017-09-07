@@ -78,6 +78,11 @@ namespace SPPC.Tadbir.Values
         public const string ProductInventory = "موجودی کالا";
 
         /// <summary>
+        /// Localized name of ProductInventory entity (alternative form).
+        /// </summary>
+        public const string ProductInventoryAlt = "موجودی کالای";
+
+        /// <summary>
         /// Localized name of ProductInventory entity (plural form).
         /// </summary>
         public const string ProductInventories = "موجودی های کالا";

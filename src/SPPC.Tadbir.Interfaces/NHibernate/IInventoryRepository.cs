@@ -7,5 +7,7 @@ namespace SPPC.Tadbir.NHibernate
     public interface IInventoryRepository
     {
         IList<ProductInventoryViewModel> GetProductInventories(int fpId, int branchId);
+
+        void SaveProductInventory(ProductInventoryViewModel inventory);
     }
 }

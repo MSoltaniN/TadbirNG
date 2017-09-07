@@ -120,6 +120,7 @@
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Auth\PermissionEqualityComparer.cs" />
+    <Compile Include="Inventory\InventoryDependsViewModel.cs" />
     <Compile Include="Inventory\ProductCategoryViewModel.Generated.cs" />
     <Compile Include="Inventory\ProductInventoryViewModel.cs" />
     <Compile Include="Inventory\ProductInventoryViewModel.Generated.cs" />

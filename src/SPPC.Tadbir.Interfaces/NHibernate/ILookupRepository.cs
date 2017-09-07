@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.ViewModel.Inventory;
 using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.NHibernate
@@ -101,5 +102,11 @@ namespace SPPC.Tadbir.NHibernate
         /// </summary>
         /// <returns>اطلاعات پایه مورد نیاز سطر درخواست کالا</returns>
         VoucherLineDependsViewModel GetRequisitionLineDepends();
+
+        /// <summary>
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات یک سطر موجودی کالا را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات پایه مورد نیاز سطر موجودی کالا</returns>
+        InventoryDependsViewModel GetInventoryDepends();
     }
 }

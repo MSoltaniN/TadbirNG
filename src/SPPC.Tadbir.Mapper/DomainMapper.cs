@@ -455,6 +455,12 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
             mapperConfig.CreateMap<ProductInventory, ProductInventoryViewModel>();
+            mapperConfig.CreateMap<ProductInventoryViewModel, ProductInventory>()
+                .AfterMap((viewModel, model) => model.Product.Id = viewModel.ProductId)
+                .AfterMap((viewModel, model) => model.Uom.Id = viewModel.UomId)
+                .AfterMap((viewModel, model) => model.Warehouse.Id = viewModel.WarehouseId)
+                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
+                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
         }
 
         private static void MapCoreTypes(IMapperConfigurationExpression mapperConfig)

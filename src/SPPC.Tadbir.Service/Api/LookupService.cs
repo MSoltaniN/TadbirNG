@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.ViewModel.Inventory;
 using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.Service
@@ -152,6 +153,16 @@ namespace SPPC.Tadbir.Service
         {
             var lineDepends = _apiClient.Get<VoucherLineDependsViewModel>(LookupApi.RequisitionVoucherLineDepends);
             return lineDepends;
+        }
+
+        /// <summary>
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات سطر موجودی کالا را خوانده و برمی گرداند 
+        /// </summary>
+        /// <returns>وابستگی های مورد نیاز سطر موجودی کالا</returns>
+        public InventoryDependsViewModel LookupProductInventoryDepends()
+        {
+            var depends = _apiClient.Get<InventoryDependsViewModel>(LookupApi.ProductInventoryDepends);
+            return depends;
         }
 
         private IApiClient _apiClient;

@@ -1,0 +1,68 @@
+﻿@using SPPC.Framework.Helpers
+@using SPPC.Framework.Values
+@using SPPC.Tadbir.Values
+@model SPPC.Tadbir.ViewModel.Inventory.ProductInventoryViewModel
+
+@{
+    string title = ViewBag.Title;
+    string indexTitle = String.Format(LocalStrings.IndexTitle, Entities.ProductInventories);
+
+    var products = (ViewBag.Products as IEnumerable<KeyValue>)
+        .Select(p => new SelectListItem() { Value = p.Key, Text = p.Value });
+    var units = (ViewBag.Units as IEnumerable<KeyValue>)
+        .Select(uom => new SelectListItem() { Value = uom.Key, Text = uom.Value });
+    var warehouses = (ViewBag.Warehouses as IEnumerable<KeyValue>)
+        .Select(wh => new SelectListItem() { Value = wh.Key, Text = wh.Value });
+}
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink(LocalStrings.HomePage, "index", "home", new { area = "" }, null)</li>
+    <li>@Html.ActionLink(indexTitle, "index", "inventories", new { area = "inventory" }, null)</li>
+    <li class="active">@title</li>
+</ol>
+
+<div class="col-sm-8 col-sm-offset-2 form-centered">
+    <div class="page-header">
+        <h2>@title</h2>
+    </div>
+    <div class="form-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.BranchId)
+            @Html.HiddenFor(model => model.FiscalPeriodId)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.ProductId, products, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.UomId, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.UomId, units, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UomId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.WarehouseId, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.WarehouseId, warehouses, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.WarehouseId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <input type="submit" value="@LocalStrings.Save" class="btn btn-primary" />
+                @Html.ActionLink(LocalStrings.Cancel, "index", "inventories", new { area = "inventory" }, new { @class = "btn btn-primary" })
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

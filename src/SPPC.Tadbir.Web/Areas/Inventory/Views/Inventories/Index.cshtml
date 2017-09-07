@@ -1,12 +1,17 @@
-﻿@using PagedList.Mvc
+﻿@using Microsoft.Practices.Unity
+@using PagedList.Mvc
 @using SPPC.Framework.Values
+@using SPPC.Tadbir.Security
+@using SPPC.Tadbir.Service
 @using SPPC.Tadbir.Values
+@using SPPC.Tadbir.Web.AppStart
 
 
 @model PagedList.IPagedList<SPPC.Tadbir.ViewModel.Inventory.ProductInventoryViewModel>
 
 @{
     string title = String.Format(LocalStrings.IndexTitle, Entities.ProductInventories);
+    string createTitle = String.Format(LocalStrings.CreateNewEntity, Entities.ProductInventoryAlt);
     ViewBag.Title = title;
     string pageInfo = String.Format(LocalStrings.NoRecords, Entities.AProductInventory);
     if (Model.Count > 0)
@@ -15,6 +20,11 @@
             LocalStrings.CurrentPageInfo,
             Model.TotalItemCount, Entities.ProductInventory, Model.PageNumber, Model.PageCount);
     }
+
+    var contextManager = UnityConfig
+        .GetConfiguredContainer()
+        .Resolve<ISecurityContextManager>();
+    var currentContext = contextManager.CurrentContext;
 }
 
 <ol class="breadcrumb">
@@ -25,6 +35,13 @@
 <div class="page-header">
     <h3>@title</h3>
 </div>
+
+@if (currentContext.HasPermissions(Permissions.ProductInventory.Create))
+{
+    <p>
+        @Html.ActionLink(createTitle, "create", "inventories", new { }, new { @class = "btn btn-sm btn-primary" })
+    </p>
+}
 <span class="pull-left">@pageInfo</span>
 
 <table class="table table-bordered table-striped table-responsive table-hover">
@@ -65,3 +82,10 @@
 </table>
 
 @Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+@if (currentContext.HasPermissions(Permissions.ProductInventory.Create))
+{
+    <p>
+        @Html.ActionLink(createTitle, "create", "inventories", new { }, new { @class = "btn btn-sm btn-primary" })
+    </p>
+}

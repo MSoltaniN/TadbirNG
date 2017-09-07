@@ -9,6 +9,7 @@ using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Inventory;
 using SPPC.Tadbir.Model.Procurement;
+using SPPC.Tadbir.ViewModel.Inventory;
 using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.NHibernate
@@ -230,6 +231,19 @@ namespace SPPC.Tadbir.NHibernate
             CopyCollection(GetProjects(), depends.Projects);
             CopyCollection(GetProducts(), depends.Products);
             CopyCollection(GetUnitsOfMeasurement(), depends.Units);
+            CopyCollection(GetWarehouses(), depends.Warehouses);
+            return depends;
+        }
+
+        /// <summary>
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات یک سطر موجودی کالا را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات پایه مورد نیاز سطر موجودی کالا</returns>
+        public InventoryDependsViewModel GetInventoryDepends()
+        {
+            var depends = new InventoryDependsViewModel();
+            CopyCollection(GetUnitsOfMeasurement(), depends.Units);
+            CopyCollection(GetProducts(), depends.Products);
             CopyCollection(GetWarehouses(), depends.Warehouses);
             return depends;
         }

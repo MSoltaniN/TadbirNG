@@ -7,5 +7,7 @@ namespace SPPC.Tadbir.Service
     public interface IInventoryService
     {
         IEnumerable<ProductInventoryViewModel> GetProductInventories(int fpId, int branchId);
+
+        void SaveProductInventory(ProductInventoryViewModel inventory);
     }
 }

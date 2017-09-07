@@ -125,6 +125,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(depends);
         }
 
+        // GET: api/lookup/rvdepends
+        [Route(LookupApi.ProductInventoryDependsUrl)]
+        public IHttpActionResult GetProductInventoryDependencies()
+        {
+            var depends = _repository.GetInventoryDepends();
+            return Json(depends);
+        }
+
         private ILookupRepository _repository;
     }
 }

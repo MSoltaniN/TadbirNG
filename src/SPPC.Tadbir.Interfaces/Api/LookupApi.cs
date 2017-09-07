@@ -141,5 +141,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for lookup collections of all dependencies required by a requisition voucher line
         /// </summary>
         public const string RequisitionVoucherLineDependsUrl = "lookup/rvldepends";
+
+        /// <summary>
+        /// API client URL for lookup collections of all dependencies required by a product inventory
+        /// </summary>
+        public const string ProductInventoryDepends = "lookup/invdepends";
+
+        /// <summary>
+        /// API server route URL for lookup collections of all dependencies required by a product inventory
+        /// </summary>
+        public const string ProductInventoryDependsUrl = "lookup/invdepends";
     }
 }

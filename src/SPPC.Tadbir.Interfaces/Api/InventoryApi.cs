@@ -9,7 +9,9 @@ namespace SPPC.Tadbir.Api
         {
         }
 
-        public const string ProductInventories = "inventories/fp/{0}/branch/{1}";
-        public const string ProductInventoriesUrl = "inventories/fp/{fpId:int}/branch/{branchId:int}";
+        public const string FiscalPeriodBranchInventories = "inventories/fp/{0}/branch/{1}";
+        public const string FiscalPeriodBranchInventoriesUrl = "inventories/fp/{fpId:int}/branch/{branchId:int}";
+        public const string Inventories = "inventories";
+        public const string InventoriesUrl = "inventories";
     }
 }

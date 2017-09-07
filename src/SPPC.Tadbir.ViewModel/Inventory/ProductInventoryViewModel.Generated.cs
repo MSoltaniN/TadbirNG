@@ -13,6 +13,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Inventory
 {
@@ -36,6 +37,7 @@ namespace SPPC.Tadbir.ViewModel.Inventory
         /// <summary>
         /// مقدار موجودی اولیه کالای مورد نظر در انبار
         /// </summary>
+        [Display(Name = FieldNames.InitialInventory)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public double Quantity { get; set; }
     }

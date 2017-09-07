@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.ViewModel.Inventory;
 using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.Service
@@ -79,15 +80,21 @@ namespace SPPC.Tadbir.Service
         IEnumerable<KeyValue> LookupRequisitionVoucherTypes();
 
         /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات درخواست کار را خوانده و برمی گرداند 
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات درخواست کالا را خوانده و برمی گرداند 
         /// </summary>
         /// <returns>وابستگی های مورد نیاز درخواست کار</returns>
         VoucherDependsViewModel LookupRequisitionVoucherDepends();
 
         /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات سطر درخواست کار را خوانده و برمی گرداند 
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات سطر درخواست کالا را خوانده و برمی گرداند 
         /// </summary>
         /// <returns>وابستگی های مورد نیاز سطر درخواست کار</returns>
         VoucherLineDependsViewModel LookupRequisitionVoucherLineDepends();
+
+        /// <summary>
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات سطر موجودی کالا را خوانده و برمی گرداند 
+        /// </summary>
+        /// <returns>وابستگی های مورد نیاز سطر موجودی کالا</returns>
+        InventoryDependsViewModel LookupProductInventoryDepends();
     }
 }

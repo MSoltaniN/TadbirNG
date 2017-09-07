@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Inventory
 {
@@ -8,6 +11,8 @@ namespace SPPC.Tadbir.ViewModel.Inventory
         /// <summary>
         /// شناسه دیتابیسی کالایی که موجودی برای آن تعریف شده
         /// </summary>
+        [Display(Name = FieldNames.ProductNameField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public int ProductId { get; set; }
 
         /// <summary>
@@ -23,6 +28,8 @@ namespace SPPC.Tadbir.ViewModel.Inventory
         /// <summary>
         /// شناسه دیتابیسی واحد اندازه گیری کالا برای این موجودی
         /// </summary>
+        [Display(Name = FieldNames.UomField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public int UomId { get; set; }
 
         /// <summary>
@@ -33,6 +40,8 @@ namespace SPPC.Tadbir.ViewModel.Inventory
         /// <summary>
         /// شناسه دیتابیسی انباری که موجودی کالا برای آن تعریف شده
         /// </summary>
+        [Display(Name = FieldNames.WarehouseField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public int WarehouseId { get; set; }
 
         /// <summary>

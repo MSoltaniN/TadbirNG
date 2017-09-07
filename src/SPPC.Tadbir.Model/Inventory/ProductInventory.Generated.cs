@@ -79,6 +79,11 @@ namespace SPPC.Tadbir.Model.Inventory
 
         private void InitReferences()
         {
+            Product = new Product();
+            Uom = new UnitOfMeasurement();
+            Warehouse = new Warehouse();
+            FiscalPeriod = new FiscalPeriod();
+            Branch = new Branch();
         }
     }
 }

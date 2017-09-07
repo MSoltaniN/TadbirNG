@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BabakSoft.Platform.Common;
 using BabakSoft.Platform.Persistence;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Inventory;
@@ -24,6 +25,18 @@ namespace SPPC.Tadbir.NHibernate
                 .Select(inv => _mapper.Map<ProductInventoryViewModel>(inv))
                 .ToList();
             return inventories;
+        }
+
+        public void SaveProductInventory(ProductInventoryViewModel inventory)
+        {
+            Verify.ArgumentNotNull(inventory, "inventory");
+            var repository = _unitOfWork.GetRepository<ProductInventory>();
+            if (inventory.Id == 0)
+            {
+                var newInventory = _mapper.Map<ProductInventory>(inventory);
+                repository.Insert(newInventory);
+                _unitOfWork.Commit();
+            }
         }
 
         private IUnitOfWork _unitOfWork;
