@@ -49,5 +49,7 @@ namespace SPPC.Tadbir.Service
         /// </summary>
         /// <param name="id">شناسه دیتابیسی یک درخواست کالای موجود</param>
         void DeleteRequisition(int id);
+
+        void DeleteRequisitionLine(int id, int lineId);
     }
 }

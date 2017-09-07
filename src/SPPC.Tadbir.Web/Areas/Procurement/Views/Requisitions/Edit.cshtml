@@ -1,6 +1,10 @@
-﻿@using SPPC.Framework.Helpers
+﻿@using Microsoft.Practices.Unity
+@using SPPC.Framework.Helpers
 @using SPPC.Framework.Values
+@using SPPC.Tadbir.Security
+@using SPPC.Tadbir.Service
 @using SPPC.Tadbir.Values
+@using SPPC.Tadbir.Web.AppStart
 @model SPPC.Tadbir.ViewModel.Procurement.RequisitionFullViewModel
 
 @{
@@ -26,6 +30,11 @@
         .Select(bu => new SelectListItem() { Value = bu.Key, Text = bu.Value });
     var warehouses = (ViewBag.Warehouses as IEnumerable<KeyValue>)
         .Select(wh => new SelectListItem() { Value = wh.Key, Text = wh.Value });
+
+    var contextManager = UnityConfig
+        .GetConfiguredContainer()
+        .Resolve<ISecurityContextManager>();
+    var currentContext = contextManager.CurrentContext;
 }
 
 <ol class="breadcrumb">
@@ -206,6 +215,10 @@
                         <td>@Html.DisplayFor(modelItem => item.Description)</td>
                         <td>
                             @Html.ActionLink(LocalStrings.Edit, "editline", new { id = Model.Voucher.Id, lineId = item.Id })
+                        @if (currentContext.HasPermissions(Permissions.Requisition.Delete))
+                        {
+                            <span> | </span>@Html.ActionLink(LocalStrings.Delete, "deleteline", new { id = Model.Voucher.Id, lineId = item.Id })
+                        }
                         </td>
                     </tr>
                 }

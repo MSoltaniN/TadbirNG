@@ -56,5 +56,7 @@ namespace SPPC.Tadbir.NHibernate
         /// </summary>
         /// <param name="voucherId">شناسه یک درخواست کالای موجود</param>
         void DeleteRequisition(int voucherId);
+
+        void DeleteRequisitionLine(int lineId);
     }
 }

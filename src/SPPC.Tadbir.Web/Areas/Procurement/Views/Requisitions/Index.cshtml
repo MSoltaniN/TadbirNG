@@ -95,9 +95,13 @@
             {
                 @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id })
             }
+            @if (currentContext.HasPermissions(Permissions.Requisition.Edit, Permissions.Requisition.Delete))
+            {
+                <span> | </span>
+            }
             @if (currentContext.HasPermissions(Permissions.Requisition.Delete))
             {
-                <span> | </span>@Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
+                @Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
             }
             </td>
         </tr>

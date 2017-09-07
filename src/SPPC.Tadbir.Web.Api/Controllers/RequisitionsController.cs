@@ -161,6 +161,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // DELETE: api/requisitions/{voucherId:int}/lines/{lineId:int}
+        [Route(RequisitionApi.RequisitionLineUrl)]
+        [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Delete)]
+        public IHttpActionResult DeleteExistingRequisitionLine(int voucherId, int lineId)
+        {
+            if (voucherId <= 0 || lineId <= 0)
+            {
+                BadRequest("Could not delete requisition line because it does not exist.");
+            }
+
+            _repository.DeleteRequisitionLine(lineId);
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
         private void SetVoucherDocument(RequisitionVoucherViewModel voucher)
         {
             if (voucher.Document == null)

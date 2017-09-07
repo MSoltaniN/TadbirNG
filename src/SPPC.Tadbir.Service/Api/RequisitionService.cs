@@ -101,6 +101,11 @@ namespace SPPC.Tadbir.Service
             _apiClient.Delete(RequisitionApi.Requisition, id);
         }
 
+        public void DeleteRequisitionLine(int id, int lineId)
+        {
+            _apiClient.Delete(RequisitionApi.RequisitionLine, id, lineId);
+        }
+
         private IApiClient _apiClient;
     }
 }

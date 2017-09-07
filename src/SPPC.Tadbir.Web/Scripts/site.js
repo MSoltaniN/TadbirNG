@@ -1,6 +1,6 @@
 ﻿// Initialize all client-side logic using jQuery...
 $(function () {
-    $('[href*="/delete/"]').click(confirmDelete);
+    $('[href*="/delete"]').click(confirmDelete);
     $('a[id*="action"]').click(promptForParaph);
     $('form[name="selectForm"]').submit(handleGroupParaph);
 

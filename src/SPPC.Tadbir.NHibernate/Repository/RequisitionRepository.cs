@@ -182,6 +182,20 @@ namespace SPPC.Tadbir.NHibernate
             }
         }
 
+        public void DeleteRequisitionLine(int lineId)
+        {
+            var repository = _unitOfWork.GetRepository<RequisitionVoucherLine>();
+            var actionRepository = _unitOfWork.GetRepository<DocumentAction>();
+            var line = repository.GetByID(lineId);
+            if (line != null)
+            {
+                var action = line.Action;
+                repository.Delete(line);
+                actionRepository.Delete(action);
+                _unitOfWork.Commit();
+            }
+        }
+
         private static void UpdateExistingVoucher(RequisitionVoucherViewModel voucher, RequisitionVoucher existing)
         {
             existing.No = voucher.No;

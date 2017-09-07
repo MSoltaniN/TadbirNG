@@ -181,6 +181,14 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
             return View("LineEditor", line);
         }
 
+        // GET: procurement/requisitions/deleteline/id?lineId={lineId}
+        [AppAuthorize(SecureEntity.Requisition, (int)RequisitionPermissions.Delete)]
+        public ActionResult DeleteLine(int id, int lineId)
+        {
+            _service.DeleteRequisitionLine(id, lineId);
+            return RedirectToAction("edit", "requisitions", new { area = "procurement", id = id });
+        }
+
         private void InitLookups()
         {
             var depends = _lookupService.LookupRequisitionVoucherDepends();
