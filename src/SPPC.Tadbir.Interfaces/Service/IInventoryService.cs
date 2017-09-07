@@ -8,6 +8,8 @@ namespace SPPC.Tadbir.Service
     {
         IEnumerable<ProductInventoryViewModel> GetProductInventories(int fpId, int branchId);
 
+        ProductInventoryViewModel GetProductInventory(int id);
+
         void SaveProductInventory(ProductInventoryViewModel inventory);
     }
 }

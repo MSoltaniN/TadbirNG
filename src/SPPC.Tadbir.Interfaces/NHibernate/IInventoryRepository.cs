@@ -8,6 +8,8 @@ namespace SPPC.Tadbir.NHibernate
     {
         IList<ProductInventoryViewModel> GetProductInventories(int fpId, int branchId);
 
+        ProductInventoryViewModel GetProductInventory(int inventoryId);
+
         void SaveProductInventory(ProductInventoryViewModel inventory);
     }
 }

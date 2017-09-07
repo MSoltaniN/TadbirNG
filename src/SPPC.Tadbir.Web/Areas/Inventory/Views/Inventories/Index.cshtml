@@ -75,6 +75,10 @@
                     @Html.DisplayFor(modelItem => item.UomName)
                 </td>
                 <td>
+                @if (currentContext.HasPermissions(Permissions.ProductInventory.Edit))
+                {
+                    @Html.ActionLink(LocalStrings.Edit, "edit", new { id = item.Id })
+                }
                 </td>
             </tr>
         }

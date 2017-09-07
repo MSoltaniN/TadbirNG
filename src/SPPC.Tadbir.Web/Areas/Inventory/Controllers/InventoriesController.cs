@@ -65,6 +65,43 @@ namespace SPPC.Tadbir.Web.Areas.Inventory.Controllers
             return View("Editor", inventory);
         }
 
+        // GET: inventory/inventories/edit/id
+        [AppAuthorize(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.Edit)]
+        public ActionResult Edit(int id)
+        {
+            var inventory = _service.GetProductInventory(id);
+            if (inventory == null)
+            {
+                return RedirectToAction("notfound", "error", new { area = String.Empty });
+            }
+
+            ViewBag.Title = String.Format(LocalStrings.EditExistingEntity, Entities.ProductInventory);
+            InitLookups();
+            return View("Editor", inventory);
+        }
+
+        // POST: inventory/inventories/edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AppAuthorize(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.Edit)]
+        public ActionResult Edit(ProductInventoryViewModel inventory)
+        {
+            if (inventory == null)
+            {
+                return RedirectToAction("index", "error", new { area = String.Empty });
+            }
+
+            if (ModelState.IsValid)
+            {
+                _service.SaveProductInventory(inventory);
+                return RedirectToAction("index");
+            }
+
+            ViewBag.Title = String.Format(LocalStrings.EditExistingEntity, Entities.ProductInventory);
+            InitLookups();
+            return View("Editor", inventory);
+        }
+
         private void InitLookups()
         {
             var depends = _lookupService.LookupProductInventoryDepends();

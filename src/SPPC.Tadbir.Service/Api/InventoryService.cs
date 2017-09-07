@@ -21,12 +21,22 @@ namespace SPPC.Tadbir.Service
             return inventories;
         }
 
+        public ProductInventoryViewModel GetProductInventory(int id)
+        {
+            var inventory = _apiClient.Get<ProductInventoryViewModel>(InventoryApi.Inventory, id);
+            return inventory;
+        }
+
         public void SaveProductInventory(ProductInventoryViewModel inventory)
         {
             Verify.ArgumentNotNull(inventory, "inventory");
             if (inventory.Id == 0)
             {
                 _apiClient.Insert(inventory, InventoryApi.Inventories);
+            }
+            else
+            {
+                _apiClient.Update(inventory, InventoryApi.Inventory, inventory.Id);
             }
         }
 

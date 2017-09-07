@@ -27,6 +27,19 @@ namespace SPPC.Tadbir.NHibernate
             return inventories;
         }
 
+        public ProductInventoryViewModel GetProductInventory(int inventoryId)
+        {
+            ProductInventoryViewModel inventory = default(ProductInventoryViewModel);
+            var repository = _unitOfWork.GetRepository<ProductInventory>();
+            var existing = repository.GetByID(inventoryId);
+            if (existing != null)
+            {
+                inventory = _mapper.Map<ProductInventoryViewModel>(existing);
+            }
+
+            return inventory;
+        }
+
         public void SaveProductInventory(ProductInventoryViewModel inventory)
         {
             Verify.ArgumentNotNull(inventory, "inventory");
@@ -35,8 +48,26 @@ namespace SPPC.Tadbir.NHibernate
             {
                 var newInventory = _mapper.Map<ProductInventory>(inventory);
                 repository.Insert(newInventory);
-                _unitOfWork.Commit();
             }
+            else
+            {
+                var existing = repository.GetByID(inventory.Id);
+                if (existing != null)
+                {
+                    UpdateExistingInventory(existing, inventory);
+                    repository.Update(existing);
+                }
+            }
+
+            _unitOfWork.Commit();
+        }
+
+        private static void UpdateExistingInventory(ProductInventory existing, ProductInventoryViewModel inventory)
+        {
+            existing.Quantity = inventory.Quantity;
+            existing.Product = new Product() { Id = inventory.ProductId };
+            existing.Uom = new UnitOfMeasurement() { Id = inventory.UomId };
+            existing.Warehouse = new Warehouse() { Id = inventory.WarehouseId };
         }
 
         private IUnitOfWork _unitOfWork;
