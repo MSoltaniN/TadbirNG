@@ -78,6 +78,7 @@
       <Link>TadbirSolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Activities\GetTransactionFromDocumentActivity.cs" />
+    <Compile Include="Activities\GetWorkflowMetadataActivity.cs" />
     <Compile Include="Activities\TrackWorkflowStateActivity.cs" />
     <Compile Include="Client\CartableFCService.cs" />
     <Compile Include="Client\CartableService.cs" />

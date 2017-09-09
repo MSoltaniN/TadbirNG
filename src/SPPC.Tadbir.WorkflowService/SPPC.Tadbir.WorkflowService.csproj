@@ -148,6 +148,9 @@
     <Content Include="SalesInvoiceService.xamlx">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="DocumentStateService.xamlx">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>

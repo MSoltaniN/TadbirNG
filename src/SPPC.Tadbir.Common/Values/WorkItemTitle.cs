@@ -18,6 +18,11 @@ namespace SPPC.Tadbir.Values
         }
 
         /// <summary>
+        /// عنوان کار : لطفا روی مستند ضمیمه اقدام فرمایید
+        /// </summary>
+        public const string ActOnDocument = "Please act on attached document";
+
+        /// <summary>
         /// عنوان کار : لطفا مستند ضمیمه را بررسی فرمایید
         /// </summary>
         public const string ReviewDocument = "Please review attached document";
@@ -54,12 +59,14 @@ namespace SPPC.Tadbir.Values
             return local;
         }
 
+        private const string _ActOnDocument = "لطفا روی مستند ضمیمه اقدام فرمایید";
         private const string _ReviewDocument = "لطفا مستند ضمیمه را بررسی فرمایید";
         private const string _ConfirmDocument = "لطفا مستند ضمیمه را تایید فرمایید";
         private const string _ApproveDocument = "لطفا مستند ضمیمه را تصویب فرمایید";
         private const string _DocumentApproved = "مستند ضمیمه تصویب شد";
         private static IDictionary<string, string> _localValues = new Dictionary<string, string>
             {
+                { ActOnDocument, _ActOnDocument },
                 { ReviewDocument, _ReviewDocument },
                 { ConfirmDocument, _ConfirmDocument },
                 { ApproveDocument, _ApproveDocument },
