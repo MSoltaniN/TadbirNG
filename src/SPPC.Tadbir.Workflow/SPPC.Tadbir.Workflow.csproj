@@ -119,6 +119,10 @@
       <Project>{10837CB4-3C60-42EF-9806-D312C17B9F2F}</Project>
       <Name>SPPC.Tadbir.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tadbir.Metadata\SPPC.Tadbir.Metadata.csproj">
+      <Project>{16CB45AF-456F-440F-AC61-F02BC9C50761}</Project>
+      <Name>SPPC.Tadbir.Metadata</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.ViewModel\SPPC.Tadbir.ViewModel.csproj">
       <Project>{C3445A49-084D-4FC2-B1BB-DCE676B52618}</Project>
       <Name>SPPC.Tadbir.ViewModel</Name>

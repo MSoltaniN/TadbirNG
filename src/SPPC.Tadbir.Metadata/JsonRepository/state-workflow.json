@@ -1,0 +1,53 @@
+﻿[
+  {
+    "DocumentTypeId": 1,
+    "DocumentType": "Transaction",
+    "FirstAction": {
+      "Name": "Prepare",
+      "FromStatus": 1,
+      "ToStatus": 2,
+      "FromDocumentStatus": "Created",
+      "ToDocumentStatus": "Prepared",
+      "WorkTitle": "Please review attached document",
+      "TargetId": 3
+    },
+    "NextActions": [
+      {
+        "Name": "Review",
+        "FromStatus": 2,
+        "ToStatus": 4,
+        "FromDocumentStatus": "Prepared",
+        "ToDocumentStatus": "Reviewed",
+        "WorkTitle": "Please confirm attached document",
+        "TargetId": 4
+      },
+      {
+        "Name": "Reject",
+        "FromStatus": 4,
+        "ToStatus": 2,
+        "FromDocumentStatus": "Reviewed",
+        "ToDocumentStatus": "Prepared",
+        "WorkTitle": "Please review attached document",
+        "TargetId": 3
+      },
+      {
+        "Name": "Confirm",
+        "FromStatus": 4,
+        "ToStatus": 4,
+        "FromDocumentStatus": "Reviewed",
+        "ToDocumentStatus": "Confirmed",
+        "WorkTitle": "Please approve attached document",
+        "TargetId": 5
+      }
+    ],
+    "LastAction": {
+      "Name": "Approve",
+      "FromStatus": 4,
+      "ToStatus": 5,
+      "FromDocumentStatus": "Confirmed",
+      "ToDocumentStatus": "Approved",
+      "WorkTitle": "",
+      "TargetId": 0
+    }
+  }
+]

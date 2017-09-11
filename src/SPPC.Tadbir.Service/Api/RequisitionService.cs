@@ -101,6 +101,11 @@ namespace SPPC.Tadbir.Service
             _apiClient.Delete(RequisitionApi.Requisition, id);
         }
 
+        /// <summary>
+        /// اطلاعات یک سطر درخواست کالای موجود را حذف می کند.
+        /// </summary>
+        /// <param name="id">شناسه دیتابیسی یک درخواست کالای موجود</param>
+        /// <param name="lineId">شناسه دیتابیسی یک سطر درخواست کالای موجود</param>
         public void DeleteRequisitionLine(int id, int lineId)
         {
             _apiClient.Delete(RequisitionApi.RequisitionLine, id, lineId);

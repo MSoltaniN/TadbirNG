@@ -102,6 +102,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<IWorkflowRepository, WorkflowRepository>();
             _container.RegisterType<IRequisitionRepository, RequisitionRepository>();
             _container.RegisterType<IInventoryRepository, InventoryRepository>();
+            _container.RegisterType<IMetadataRepository, JsonMetadataRepository>();
         }
 
         /// <summary>

@@ -182,6 +182,10 @@ namespace SPPC.Tadbir.NHibernate
             }
         }
 
+        /// <summary>
+        /// اطلاعات یک سطر درخواست کالای موجود را از محل ذخیره حذف می کند.
+        /// </summary>
+        /// <param name="lineId">شناسه یک سطر درخواست کالای موجود</param>
         public void DeleteRequisitionLine(int lineId)
         {
             var repository = _unitOfWork.GetRepository<RequisitionVoucherLine>();

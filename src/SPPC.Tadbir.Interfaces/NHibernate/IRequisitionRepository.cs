@@ -57,6 +57,10 @@ namespace SPPC.Tadbir.NHibernate
         /// <param name="voucherId">شناسه یک درخواست کالای موجود</param>
         void DeleteRequisition(int voucherId);
 
+        /// <summary>
+        /// اطلاعات یک سطر درخواست کالای موجود را از محل ذخیره حذف می کند.
+        /// </summary>
+        /// <param name="lineId">شناسه یک سطر درخواست کالای موجود</param>
         void DeleteRequisitionLine(int lineId);
     }
 }

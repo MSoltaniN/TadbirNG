@@ -9,14 +9,28 @@ using SPPC.Tadbir.ViewModel.Inventory;
 
 namespace SPPC.Tadbir.NHibernate
 {
+    /// <summary>
+    /// عملیات دیتابیسی مربوط به مدیریت موجودی های کالا در انبار را پیاده سازی می کند
+    /// </summary>
     public class InventoryRepository : IInventoryRepository
     {
+        /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
+        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         public InventoryRepository(IUnitOfWork unitOfWork, IDomainMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// اطلاعات موجودی های کالا در انبار را در یک دوره مالی و یک شعبه خاص از دیتابیس خوانده و بر می گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعبه های موجود</param>
+        /// <returns>مجموعه ای از اطلاعات نمایشی موجودی های کالا</returns>
         public IList<ProductInventoryViewModel> GetProductInventories(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetRepository<ProductInventory>();
@@ -27,6 +41,11 @@ namespace SPPC.Tadbir.NHibernate
             return inventories;
         }
 
+        /// <summary>
+        /// اطلاعات موجودی یک کالا در یک انبار را از دیتابیس خوانده و بر می گرداند
+        /// </summary>
+        /// <param name="inventoryId">شناسه دیتابیسی موجودی کالا در انبار</param>
+        /// <returns>اطلاعات نمایشی موجودی کالا در انبار</returns>
         public ProductInventoryViewModel GetProductInventory(int inventoryId)
         {
             ProductInventoryViewModel inventory = default(ProductInventoryViewModel);
@@ -40,6 +59,10 @@ namespace SPPC.Tadbir.NHibernate
             return inventory;
         }
 
+        /// <summary>
+        /// اطلاعات موجودی یک کالا در یک انبار را درون دیتابیس ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="inventory">اطلاعات نمایشی موجودی یک کالا در یک انبار</param>
         public void SaveProductInventory(ProductInventoryViewModel inventory)
         {
             Verify.ArgumentNotNull(inventory, "inventory");
@@ -62,6 +85,10 @@ namespace SPPC.Tadbir.NHibernate
             _unitOfWork.Commit();
         }
 
+        /// <summary>
+        /// اطلاعات موجودی یک کالا در یک انبار را از دیتابیس حذف می کند
+        /// </summary>
+        /// <param name="inventoryId">شناسه دیتابیسی موجودی کالا در انبار</param>
         public void DeleteProductInventory(int inventoryId)
         {
             var repository = _unitOfWork.GetRepository<ProductInventory>();
