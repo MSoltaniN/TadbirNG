@@ -27,6 +27,19 @@ namespace SPPC.Tadbir.Metadata.Workflow
         public string DocumentType { get; set; }
 
         /// <summary>
+        /// اطلاعات فراداده ای تمام اقدامات تعریف شده برای مستند اداری
+        /// </summary>
+        public IList<StateAction> AllActions
+        {
+            get
+            {
+                var allActions = new List<StateAction>(NextActions);
+                allActions.Insert(0, FirstAction);
+                return allActions;
+            }
+        }
+
+        /// <summary>
         /// اطلاعات فراداده ای اولین اقدام تعریف شده برای مستند اداری
         /// </summary>
         public StateAction FirstAction { get; set; }
@@ -35,10 +48,5 @@ namespace SPPC.Tadbir.Metadata.Workflow
         /// مجموعه ای از اطلاعات فراداده ای اقدامات بعدی برای مستند اداری
         /// </summary>
         public IList<StateAction> NextActions { get; private set; }
-
-        /// <summary>
-        /// اطلاعات فراداده ای آخرین اقدام تعریف شده برای مستند اداری
-        /// </summary>
-        public StateAction LastAction { get; set; }
     }
 }

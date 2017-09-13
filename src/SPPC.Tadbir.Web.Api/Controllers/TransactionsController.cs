@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Http;
-using Microsoft.Practices.Unity;
+using BabakSoft.Platform.Common;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Security;
@@ -12,7 +12,6 @@ using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Workflow;
-using SPPC.Tadbir.Web.Api.AppStart;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Workflow;
 
@@ -20,12 +19,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 {
     public class TransactionsController : ApiController
     {
-        public TransactionsController(ITransactionRepository repository, IWorkflowTracker tracker,
+        public TransactionsController(ITransactionRepository repository, IDocumentWorkflow workflow,
             ISecurityContextManager contextManager)
         {
+            Verify.ArgumentNotNull(contextManager, "contextManager");
             _repository = repository;
-            _tracker = tracker;
             _contextManager = contextManager;
+            _workflow = workflow;
+            _workflow.CurrentContext = _contextManager.CurrentContext;
         }
 
         #region Transaction CRUD Operations
@@ -292,8 +293,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var paraph = detail?.Paraph;
-            var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-            workflow.Prepare(summary.Id, summary.DocumentId, paraph);
+            _workflow.Prepare(summary.DocumentId, DocumentTypeName.Transaction, paraph);
             return Ok();
         }
 
@@ -320,8 +320,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var paraph = detail?.Paraph;
-            var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-            workflow.Review(summary.Id, summary.DocumentId, paraph);
             return Ok();
         }
 
@@ -348,8 +346,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var paraph = detail?.Paraph;
-            var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-            workflow.RejectReviewed(summary.Id, summary.DocumentId, paraph);
             return Ok();
         }
 
@@ -376,8 +372,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var paraph = detail?.Paraph;
-            var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-            workflow.Confirm(summary.Id, summary.DocumentId, paraph);
             return Ok();
         }
 
@@ -404,8 +398,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var paraph = detail?.Paraph;
-            var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-            workflow.Approve(summary.Id, summary.DocumentId, paraph);
             return Ok();
         }
 
@@ -425,12 +417,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
-            }
-
-            foreach (var summary in summaries)
-            {
-                var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-                workflow.Prepare(summary.Id, summary.DocumentId, detail.Paraph);
             }
 
             return Ok();
@@ -454,12 +440,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            foreach (var summary in summaries)
-            {
-                var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-                workflow.Review(summary.Id, summary.DocumentId, detail.Paraph);
-            }
-
             return Ok();
         }
 
@@ -479,12 +459,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
-            }
-
-            foreach (var summary in summaries)
-            {
-                var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-                workflow.RejectReviewed(summary.Id, summary.DocumentId, detail.Paraph);
             }
 
             return Ok();
@@ -508,12 +482,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            foreach (var summary in summaries)
-            {
-                var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-                workflow.Confirm(summary.Id, summary.DocumentId, detail.Paraph);
-            }
-
             return Ok();
         }
 
@@ -535,18 +503,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            foreach (var summary in summaries)
-            {
-                var workflow = GetWorkflow(summary.DocumentId, _contextManager);
-                workflow.Approve(summary.Id, summary.DocumentId, detail.Paraph);
-            }
-
             return Ok();
         }
 
         #endregion
 
-        private static string ValidateGroupStateOperation(string operation, IEnumerable<TransactionSummaryViewModel> summaries)
+        private string ValidateGroupStateOperation(string operation, IEnumerable<TransactionSummaryViewModel> summaries)
         {
             var messages = summaries
                 .Where(summary => summary != null)
@@ -556,10 +518,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return String.Join(Environment.NewLine, messages);
         }
 
-        private static string ValidateStateOperation(string operation, TransactionSummaryViewModel summary)
+        private string ValidateStateOperation(string operation, TransactionSummaryViewModel summary)
         {
             string result = String.Empty;
-            if (!StateOperationValidator.Validate(operation, summary.DocumentOperationalStatus))
+            if (!_workflow.ValidateAction(DocumentTypeName.Transaction, summary.DocumentOperationalStatus, operation))
             {
                 result = String.Format(
                     Strings.InvalidDocumentOperation,
@@ -570,15 +532,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return result;
-        }
-
-        private ITransactionWorkflow GetWorkflow(int documentId, ISecurityContextManager contextManager)
-        {
-            var edition = _tracker.TrackDocumentWorkflowEdition(documentId, DocumentTypeName.Transaction);
-            var workflow = UnityConfig.GetConfiguredContainer()
-                .Resolve<ITransactionWorkflow>(edition);
-            workflow.ContextManager = contextManager;
-            return workflow;
         }
 
         private void SetDocument(TransactionViewModel transaction)
@@ -606,7 +559,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private ITransactionRepository _repository;
-        private IWorkflowTracker _tracker;
+        private IDocumentWorkflow _workflow;
         private ISecurityContextManager _contextManager;
     }
 }

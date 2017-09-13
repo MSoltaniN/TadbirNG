@@ -22,6 +22,8 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             _service = service;
         }
 
+        #region Transaction CRUD Actions
+
         // GET: accounting/transactions[?page={page}]
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public ViewResult Index(int? page = null)
@@ -163,6 +165,10 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return RedirectToAction("index");
         }
 
+        #endregion
+
+        #region Transaction Workflow Actions
+
         // GET: accounting/transactions/prepare/id[?paraph={encoded-text}]
         [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
         public ActionResult Prepare(int id, string paraph = null)
@@ -252,6 +258,8 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             var response = _service.ApproveTransactions(items, paraph);
             return GetNextResult(response);
         }
+
+        #endregion
 
         private static RouteValueDictionary GetGroupOperationRouteValues(IList<SelectedItemViewModel> allItems)
         {

@@ -4,50 +4,65 @@
     "DocumentType": "Transaction",
     "FirstAction": {
       "Name": "Prepare",
+      "NextAction": "Review",
       "FromStatus": 1,
       "ToStatus": 2,
       "FromDocumentStatus": "Created",
       "ToDocumentStatus": "Prepared",
       "WorkTitle": "Please review attached document",
-      "TargetId": 3
+      "TargetId": 3,
+      "IsReverse": false,
+      "IsFinal": false
     },
     "NextActions": [
       {
         "Name": "Review",
+        "NextAction": "Confirm",
         "FromStatus": 2,
         "ToStatus": 4,
         "FromDocumentStatus": "Prepared",
         "ToDocumentStatus": "Reviewed",
         "WorkTitle": "Please confirm attached document",
-        "TargetId": 4
+        "TargetId": 4,
+        "IsReverse": false,
+        "IsFinal": false
       },
       {
         "Name": "Reject",
+        "NextAction": "Review",
         "FromStatus": 4,
         "ToStatus": 2,
         "FromDocumentStatus": "Reviewed",
         "ToDocumentStatus": "Prepared",
         "WorkTitle": "Please review attached document",
-        "TargetId": 3
+        "TargetId": 3,
+        "IsReverse": true,
+        "IsFinal": false
       },
       {
         "Name": "Confirm",
+        "NextAction": "Approve",
         "FromStatus": 4,
         "ToStatus": 4,
         "FromDocumentStatus": "Reviewed",
         "ToDocumentStatus": "Confirmed",
         "WorkTitle": "Please approve attached document",
-        "TargetId": 5
+        "TargetId": 5,
+        "IsReverse": false,
+        "IsFinal": false
+      },
+      {
+        "Name": "Approve",
+        "NextAction": "",
+        "FromStatus": 4,
+        "ToStatus": 5,
+        "FromDocumentStatus": "Confirmed",
+        "ToDocumentStatus": "Approved",
+        "WorkTitle": "",
+        "TargetId": 0,
+        "IsReverse": false,
+        "IsFinal": true
       }
-    ],
-    "LastAction": {
-      "Name": "Approve",
-      "FromStatus": 4,
-      "ToStatus": 5,
-      "FromDocumentStatus": "Confirmed",
-      "ToDocumentStatus": "Approved",
-      "WorkTitle": "",
-      "TargetId": 0
-    }
+    ]
   }
 ]

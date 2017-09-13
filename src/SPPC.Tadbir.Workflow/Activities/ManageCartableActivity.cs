@@ -2,6 +2,7 @@
 using System.Activities;
 using BabakSoft.Platform.Common;
 using SPPC.Framework.Unity.WF;
+using SPPC.Tadbir.Metadata.Workflow;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Workflow;
@@ -21,6 +22,12 @@ namespace SPPC.Tadbir.Workflow
         public InArgument<StateOperation> Operation { get; set; }
 
         /// <summary>
+        /// آرگومان اجباری برای نگهداری اطلاعات فراداده ای اقدام جاری روی مستند
+        /// </summary>
+        [RequiredArgument]
+        public InArgument<StateAction> Metadata { get; set; }
+
+        /// <summary>
         /// فعالیت را با استفاده از اطلاعات جاری محیطی اجرا می کند.
         /// </summary>
         /// <param name="context">اطلاعات محیط اجرایی فعالیت در زمان اجرای آن</param>
@@ -29,8 +36,9 @@ namespace SPPC.Tadbir.Workflow
             Verify.ArgumentNotNull(context, "context");
             InitializeDependencies(context);
             var operation = context.GetValue(Operation);
-            var workItem = GetNewWorkItem(operation);
-            var createDelegate = GetWorkItemDelegate(operation.NewStatus, operation.CurrentStatus);
+            var metadata = context.GetValue(Metadata);
+            var workItem = GetNewWorkItem(operation, metadata);
+            var createDelegate = GetWorkItemDelegate(metadata.ToDocumentStatus, metadata.FromDocumentStatus);
             createDelegate(workItem);
         }
 
@@ -44,24 +52,24 @@ namespace SPPC.Tadbir.Workflow
                 .Substring(0, 8);
         }
 
-        private static WorkItemViewModel GetNewWorkItem(StateOperation operation)
+        private static WorkItemViewModel GetNewWorkItem(StateOperation operation, StateAction metadata)
         {
             DateTime current = DateTime.Now;
             var workItem = new WorkItemViewModel()
             {
                 CreatedById = operation.CreatedById,
-                TargetId = operation.TargetId,
-                Number = GenerateNumber(),
-                Date = current.Date,
-                Time = current.TimeOfDay,
-                Title = operation.Title,
                 EntityId = operation.EntityId,
                 DocumentType = operation.DocumentType,
                 DocumentId = operation.DocumentId,
-                StatusId = operation.StatusId,
-                OperationalStatus = operation.NewStatus,
-                Action = operation.NextAction,
-                PreviousAction = operation.Action,
+                TargetId = metadata.TargetId,
+                Number = GenerateNumber(),
+                Date = current.Date,
+                Time = current.TimeOfDay,
+                Title = metadata.WorkTitle,
+                StatusId = metadata.ToStatus,
+                OperationalStatus = metadata.ToDocumentStatus,
+                Action = metadata.NextAction,
+                PreviousAction = metadata.Name,
                 Remarks = operation.Remarks
             };
 

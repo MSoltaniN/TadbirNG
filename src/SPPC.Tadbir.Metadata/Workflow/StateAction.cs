@@ -23,6 +23,11 @@ namespace SPPC.Tadbir.Metadata.Workflow
         public string Name { get; set; }
 
         /// <summary>
+        /// نام اقدام بعدی
+        /// </summary>
+        public string NextAction { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی وضعیت ثبتی مستند اداری پیش از تکمیل اقدام
         /// </summary>
         public int FromStatus { get; set; }
@@ -51,5 +56,15 @@ namespace SPPC.Tadbir.Metadata.Workflow
         /// شناسه دیتابیسی نقش سازمانی گیرنده کار ایجاد شده پس از تکمیل اقدام
         /// </summary>
         public int TargetId { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که آیا این اقدام مستند را به یکی از وضعیت های قبلی می برد یا نه؟
+        /// </summary>
+        public bool IsReverse { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که آیا این اقدام آخرین اقدام ممکن روی مستند است یا نه؟
+        /// </summary>
+        public bool IsFinal { get; set; }
     }
 }

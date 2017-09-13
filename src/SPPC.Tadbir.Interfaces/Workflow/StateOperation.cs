@@ -146,16 +146,9 @@ namespace SPPC.Tadbir.Workflow
             return new StateOperation()
             {
                 CreatedById = userId,
-                TargetId = SystemRoles.LeadAccountant,
-                Title = WorkItemTitle.ReviewDocument,
-                EntityId = entityId,
                 DocumentId = documentId,
                 DocumentType = documentType,
-                StatusId = (int)DocumentStatusId.Unchecked,
-                CurrentStatus = DocumentStatusName.Created,
-                NewStatus = DocumentStatusName.Prepared,
                 Action = DocumentActionName.Prepare,
-                NextAction = DocumentActionName.Review,
                 Remarks = paraph
             };
         }
@@ -175,16 +168,9 @@ namespace SPPC.Tadbir.Workflow
             return new StateOperation()
             {
                 CreatedById = userId,
-                TargetId = SystemRoles.CFOAssistant,
-                Title = WorkItemTitle.ConfirmDocument,
-                EntityId = entityId,
                 DocumentId = documentId,
                 DocumentType = documentType,
-                StatusId = (int)DocumentStatusId.NormalCheck,
-                CurrentStatus = DocumentStatusName.Prepared,
-                NewStatus = DocumentStatusName.Reviewed,
                 Action = DocumentActionName.Review,
-                NextAction = DocumentActionName.Confirm,
                 Remarks = paraph
             };
         }
@@ -204,16 +190,9 @@ namespace SPPC.Tadbir.Workflow
             return new StateOperation()
             {
                 CreatedById = userId,
-                TargetId = SystemRoles.LeadAccountant,
-                Title = WorkItemTitle.ReviewDocument,
-                EntityId = entityId,
                 DocumentId = documentId,
                 DocumentType = documentType,
-                StatusId = (int)DocumentStatusId.Unchecked,
-                CurrentStatus = DocumentStatusName.Reviewed,
-                NewStatus = DocumentStatusName.Prepared,
                 Action = DocumentActionName.Reject,
-                NextAction = DocumentActionName.Review,
                 Remarks = paraph
             };
         }
@@ -233,16 +212,9 @@ namespace SPPC.Tadbir.Workflow
             return new StateOperation()
             {
                 CreatedById = userId,
-                TargetId = SystemRoles.CFO,
-                Title = WorkItemTitle.ApproveDocument,
-                EntityId = entityId,
                 DocumentId = documentId,
                 DocumentType = documentType,
-                StatusId = (int)DocumentStatusId.NormalCheck,
-                CurrentStatus = DocumentStatusName.Reviewed,
-                NewStatus = DocumentStatusName.Confirmed,
                 Action = DocumentActionName.Confirm,
-                NextAction = DocumentActionName.Approve,
                 Remarks = paraph
             };
         }
@@ -262,16 +234,9 @@ namespace SPPC.Tadbir.Workflow
             return new StateOperation()
             {
                 CreatedById = userId,
-                TargetId = 0,
-                Title = WorkItemTitle.DocumentApproved,
-                EntityId = entityId,
                 DocumentId = documentId,
                 DocumentType = documentType,
-                StatusId = (int)DocumentStatusId.FinalCheck,
-                CurrentStatus = DocumentStatusName.Confirmed,
-                NewStatus = DocumentStatusName.Approved,
                 Action = DocumentActionName.Approve,
-                NextAction = String.Empty,
                 Remarks = paraph
             };
         }

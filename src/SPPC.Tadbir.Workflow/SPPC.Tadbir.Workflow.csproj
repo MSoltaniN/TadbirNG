@@ -85,12 +85,14 @@
     <Compile Include="Client\CartableSMService.cs" />
     <Compile Include="Client\CartableTOService.cs" />
     <Compile Include="Activities\GetTransactionSummaryActivity.cs" />
+    <Compile Include="Client\DocumentStateService.cs" />
     <Compile Include="GlobalSuppressions.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Activities\ManageCartableActivity.cs" />
     <Compile Include="Activities\MoveCartableItemActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provider\DocumentWorkflow.cs" />
     <Compile Include="Provider\TransactionBasicWorkflow.cs" />
     <Compile Include="Provider\TransactionDecisionWorkflow.cs" />
     <Compile Include="Provider\TransactionTimeoutWorkflow.cs" />

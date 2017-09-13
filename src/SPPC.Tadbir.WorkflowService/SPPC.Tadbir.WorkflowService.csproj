@@ -110,6 +110,10 @@
       <Project>{10837cb4-3c60-42ef-9806-d312c17b9f2f}</Project>
       <Name>SPPC.Tadbir.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SPPC.Tadbir.Metadata\SPPC.Tadbir.Metadata.csproj">
+      <Project>{16cb45af-456f-440f-ac61-f02bc9c50761}</Project>
+      <Name>SPPC.Tadbir.Metadata</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.Unity\SPPC.Tadbir.Unity.csproj">
       <Project>{2788a1da-3298-4635-8aab-064b5ea773c8}</Project>
       <Name>SPPC.Tadbir.Unity</Name>

@@ -120,6 +120,7 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<ISecurityContextManager, SecurityContextManager>();
             _container.RegisterType<ISecurityContextManager, ServiceContextManager>("API");
             _container.RegisterType<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
+            _container.RegisterType<IDocumentWorkflow, DocumentWorkflow>();
             _container.RegisterType<ITransactionWorkflow, TransactionWorkflow>(WorkflowEdition.StateMachine);
             _container.RegisterType<ITransactionWorkflow, TransactionDecisionWorkflow>(WorkflowEdition.Flowchart);
             _container.RegisterType<ITransactionWorkflow, TransactionTimeoutWorkflow>(WorkflowEdition.Timeout);
