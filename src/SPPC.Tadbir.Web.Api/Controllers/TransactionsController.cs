@@ -293,7 +293,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var paraph = detail?.Paraph;
-            _workflow.Prepare(summary.DocumentId, DocumentTypeName.Transaction, paraph);
+            _workflow.Prepare(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, paraph);
             return Ok();
         }
 
@@ -320,6 +320,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var paraph = detail?.Paraph;
+            _workflow.Review(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, paraph);
             return Ok();
         }
 
@@ -346,6 +347,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var paraph = detail?.Paraph;
+            _workflow.Reject(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, paraph);
             return Ok();
         }
 
@@ -372,6 +374,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var paraph = detail?.Paraph;
+            _workflow.Confirm(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, paraph);
             return Ok();
         }
 
@@ -398,6 +401,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var paraph = detail?.Paraph;
+            _workflow.Approve(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, paraph);
             return Ok();
         }
 
@@ -417,6 +421,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
+            }
+
+            foreach (var summary in summaries)
+            {
+                _workflow.Prepare(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, detail.Paraph);
             }
 
             return Ok();
@@ -440,6 +449,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
+            foreach (var summary in summaries)
+            {
+                _workflow.Review(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, detail.Paraph);
+            }
+
             return Ok();
         }
 
@@ -459,6 +473,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
+            }
+
+            foreach (var summary in summaries)
+            {
+                _workflow.Reject(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, detail.Paraph);
             }
 
             return Ok();
@@ -482,6 +501,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
+            foreach (var summary in summaries)
+            {
+                _workflow.Confirm(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, detail.Paraph);
+            }
+
             return Ok();
         }
 
@@ -501,6 +525,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (!String.IsNullOrEmpty(message))
             {
                 return BadRequest(message);
+            }
+
+            foreach (var summary in summaries)
+            {
+                _workflow.Approve(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, detail.Paraph);
             }
 
             return Ok();

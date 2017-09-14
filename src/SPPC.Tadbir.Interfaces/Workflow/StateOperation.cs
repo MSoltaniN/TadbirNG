@@ -145,6 +145,7 @@ namespace SPPC.Tadbir.Workflow
         {
             return new StateOperation()
             {
+                EntityId = entityId,
                 CreatedById = userId,
                 DocumentId = documentId,
                 DocumentType = documentType,
@@ -167,6 +168,7 @@ namespace SPPC.Tadbir.Workflow
         {
             return new StateOperation()
             {
+                EntityId = entityId,
                 CreatedById = userId,
                 DocumentId = documentId,
                 DocumentType = documentType,
@@ -189,6 +191,7 @@ namespace SPPC.Tadbir.Workflow
         {
             return new StateOperation()
             {
+                EntityId = entityId,
                 CreatedById = userId,
                 DocumentId = documentId,
                 DocumentType = documentType,
@@ -211,6 +214,7 @@ namespace SPPC.Tadbir.Workflow
         {
             return new StateOperation()
             {
+                EntityId = entityId,
                 CreatedById = userId,
                 DocumentId = documentId,
                 DocumentType = documentType,
@@ -233,6 +237,7 @@ namespace SPPC.Tadbir.Workflow
         {
             return new StateOperation()
             {
+                EntityId = entityId,
                 CreatedById = userId,
                 DocumentId = documentId,
                 DocumentType = documentType,

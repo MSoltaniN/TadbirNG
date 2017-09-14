@@ -30,10 +30,10 @@ namespace SPPC.Tadbir.Workflow
             return (existing != null);
         }
 
-        public void Prepare(int documentId, string documentType, string paraph)
+        public void Prepare(int entityId, int documentId, string documentType, string paraph)
         {
             var metadata = _repository.GetStateWorkflow(documentType);
-            var prepare = StateOperation.Prepare(CurrentUserId, 0, documentId, documentType, paraph);
+            var prepare = StateOperation.Prepare(CurrentUserId, entityId, documentId, documentType, paraph);
             using (var client = new DocumentStateServiceClient())
             {
                 var workflowAction = GetWorkflowAction(DocumentActionName.Prepare, metadata, client);
@@ -44,10 +44,10 @@ namespace SPPC.Tadbir.Workflow
             LogOperation(documentId, DocumentActionName.Prepare, "prepared");
         }
 
-        public void Review(int documentId, string documentType, string paraph)
+        public void Review(int entityId, int documentId, string documentType, string paraph)
         {
             var metadata = _repository.GetStateWorkflow(documentType);
-            var review = StateOperation.Review(CurrentUserId, 0, documentId, documentType, paraph);
+            var review = StateOperation.Review(CurrentUserId, entityId, documentId, documentType, paraph);
             using (var client = new DocumentStateServiceClient())
             {
                 var workflowAction = GetWorkflowAction(DocumentActionName.Review, metadata, client);
@@ -58,10 +58,10 @@ namespace SPPC.Tadbir.Workflow
             LogOperation(documentId, DocumentActionName.Review, "reviewed");
         }
 
-        public void Reject(int documentId, string documentType, string paraph)
+        public void Reject(int entityId, int documentId, string documentType, string paraph)
         {
             var metadata = _repository.GetStateWorkflow(documentType);
-            var reject = StateOperation.RejectReview(CurrentUserId, 0, documentId, documentType, paraph);
+            var reject = StateOperation.RejectReview(CurrentUserId, entityId, documentId, documentType, paraph);
             using (var client = new DocumentStateServiceClient())
             {
                 var workflowAction = GetWorkflowAction(DocumentActionName.Reject, metadata, client);
@@ -72,10 +72,10 @@ namespace SPPC.Tadbir.Workflow
             LogOperation(documentId, DocumentActionName.Reject, "rejected");
         }
 
-        public void Confirm(int documentId, string documentType, string paraph)
+        public void Confirm(int entityId, int documentId, string documentType, string paraph)
         {
             var metadata = _repository.GetStateWorkflow(documentType);
-            var confirm = StateOperation.Confirm(CurrentUserId, 0, documentId, documentType, paraph);
+            var confirm = StateOperation.Confirm(CurrentUserId, entityId, documentId, documentType, paraph);
             using (var client = new DocumentStateServiceClient())
             {
                 var workflowAction = GetWorkflowAction(DocumentActionName.Confirm, metadata, client);
@@ -86,10 +86,10 @@ namespace SPPC.Tadbir.Workflow
             LogOperation(documentId, DocumentActionName.Confirm, "confirmed");
         }
 
-        public void Approve(int documentId, string documentType, string paraph)
+        public void Approve(int entityId, int documentId, string documentType, string paraph)
         {
             var metadata = _repository.GetStateWorkflow(documentType);
-            var approve = StateOperation.Approve(CurrentUserId, 0, documentId, documentType, paraph);
+            var approve = StateOperation.Approve(CurrentUserId, entityId, documentId, documentType, paraph);
             using (var client = new DocumentStateServiceClient())
             {
                 var workflowAction = GetWorkflowAction(DocumentActionName.Approve, metadata, client);

@@ -10,14 +10,14 @@ namespace SPPC.Tadbir.Workflow
 
         bool ValidateAction(string documentType, string status, string action);
 
-        void Prepare(int documentId, string documentType, string paraph);
+        void Prepare(int entityId, int documentId, string documentType, string paraph);
 
-        void Review(int documentId, string documentType, string paraph);
+        void Review(int entityId, int documentId, string documentType, string paraph);
 
-        void Reject(int documentId, string documentType, string paraph);
+        void Reject(int entityId, int documentId, string documentType, string paraph);
 
-        void Confirm(int documentId, string documentType, string paraph);
+        void Confirm(int entityId, int documentId, string documentType, string paraph);
 
-        void Approve(int documentId, string documentType, string paraph);
+        void Approve(int entityId, int documentId, string documentType, string paraph);
     }
 }

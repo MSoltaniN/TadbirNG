@@ -55,10 +55,10 @@
         <p1:AssemblyReference>SPPC.Framework.Workflow</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.Common</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.Interfaces</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Tadbir.Metadata</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.Unity</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.ViewModel</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.Workflow</p1:AssemblyReference>
-        <p1:AssemblyReference>SPPC.Tadbir.Metadata</p1:AssemblyReference>
         <p1:AssemblyReference>mscorlib</p1:AssemblyReference>
         <p1:AssemblyReference>SPPC.Tadbir.WorkflowService</p1:AssemblyReference>
       </sco:Collection>
@@ -74,9 +74,6 @@
     </p1:Flowchart.StartNode>
     <p1:FlowStep x:Name="__ReferenceID5" sap2010:WorkflowViewState.IdRef="FlowStep_2">
       <p1:Sequence DisplayName="WaitForFirstAction" sap2010:WorkflowViewState.IdRef="Sequence_1">
-        <p1:Sequence.Variables>
-          <p1:Variable x:TypeArguments="CorrelationHandle" Name="__handle1" />
-        </p1:Sequence.Variables>
         <Receive x:Name="__ReferenceID0" CanCreateInstance="True" DisplayName="ReceiveFirstActionRequest" sap2010:WorkflowViewState.IdRef="Receive_1" OperationName="FirstAction" ServiceContractName="p:IDocumentStateService">
           <Receive.CorrelatesOn>
             <XPathMessageQuery x:Key="docId">
@@ -143,11 +140,6 @@
             </p1:InArgument>
           </stwa:TrackWorkflowStateActivity.State>
         </stwa:TrackWorkflowStateActivity>
-        <SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendFirstActionReply" sap2010:WorkflowViewState.IdRef="SendReply_1" PersistBeforeSend="True">
-          <SendParametersContent>
-            <p1:InArgument x:TypeArguments="x:Int32" x:Key="result">0</p1:InArgument>
-          </SendParametersContent>
-        </SendReply>
         <p1:Assign sap2010:WorkflowViewState.IdRef="Assign_4">
           <p1:Assign.To>
             <p1:OutArgument x:TypeArguments="stmw:StateAction">
@@ -160,6 +152,11 @@
             </p1:InArgument>
           </p1:Assign.Value>
         </p1:Assign>
+        <SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendFirstActionReply" sap2010:WorkflowViewState.IdRef="SendReply_1" PersistBeforeSend="True">
+          <SendParametersContent>
+            <p1:InArgument x:TypeArguments="x:Int32" x:Key="result">0</p1:InArgument>
+          </SendParametersContent>
+        </SendReply>
       </p1:Sequence>
       <p1:FlowStep.Next>
         <p1:FlowDecision x:Name="__ReferenceID3" DisplayName="HasNextAction" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
@@ -173,9 +170,6 @@
                   <p1:PickBranch DisplayName="DoNextAction" sap2010:WorkflowViewState.IdRef="PickBranch_1">
                     <p1:PickBranch.Trigger>
                       <p1:Sequence DisplayName="WaitForNextAction" sap2010:WorkflowViewState.IdRef="Sequence_6">
-                        <p1:Sequence.Variables>
-                          <p1:Variable x:TypeArguments="CorrelationHandle" Name="__handle1" />
-                        </p1:Sequence.Variables>
                         <Receive x:Name="__ReferenceID1" CanCreateInstance="True" DisplayName="ReceiveNextActionRequest" sap2010:WorkflowViewState.IdRef="Receive_5" OperationName="NextAction" ServiceContractName="p:IDocumentStateService">
                           <Receive.CorrelatesOn>
                             <XPathMessageQuery x:Key="docId">
@@ -339,7 +333,7 @@
     </p1:FlowStep>
     <x:Reference>__ReferenceID3</x:Reference>
     <x:Reference>__ReferenceID4</x:Reference>
-    <sads:DebugSymbol.Symbol>d2ZEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcRG9jdW1lbnRTdGF0ZVNlcnZpY2UueGFtbHg/EwPXAhIBAUwHowEVApYBpwENpwFbApEBqwEPywIdAQJQCW0TAtsBbgl5LALOAXoJhQEnAsEBhgEJkQErArIBkgEJlgEVAqQBlwEJogEVApcBrAERygIbAQNcD1xhAugBag9qaALiAWMTY2UC3AF2D3ZnAtUBcQ9xYwLPAX0PfWkCyAGCAQ+CAWACwgGJAQ+JAWACuwGGAbIBhgHBAQK6AYYBXIYBZQK5AY4BD44BcgKzAZQBRZQBRgKlAZ8BD58BaQKeAZoBD5oBYwKYAa0BE/wBIwFF/QETyQIjAQSvARf6ASUBRv8BF8cCJQEFswEZ0AEjAX7RARncASUBcd0BGegBNwFk6QEZ9AE7AVX1ARn5ASUBR4ACGZ0CIwE1ngIZqQIlASqqAhm1AjcBH7YCGcECOwESwgIZxgIlAQa/AR+/AXECiwHNAR/NAXgChQHGASPGAXUBf9kBH9kBrwEBeNQBH9QBcwFy4AEf4AFrAWvlAR/lAXABZewBH+wBcAFe6QG/AekBzgEBXekBaekBcgFc8QEf8QF0AVb3AVX3AVYBSIwCH4wCcQFAmgIfmgJ4ATuTAiOTAnUBNqYCH6YCrwEBMKECH6ECcwErrQIfrQJrASWyAh+yAnABILkCH7kCcAEatgLCAbYC0QEBGbYCbLYCdQEYvgIfvgJ0ARPEAlXEAlYBBw==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2ZEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcRG9jdW1lbnRTdGF0ZVNlcnZpY2UueGFtbHg/EwPRAhIBAUwHoAEVAosBpAENpAFbAoYBqAEPxQIdAQJNCWoTAsYBawl2LAK7AXcJggEnArABgwEJjgErAqMBjwEJmgEVApgBmwEJnwEVAowBqQERxAIbAQNZD1lhAtEBZw9naALMAWATYGUCxwFzD3NnAsEBbg9uYwK8AXoPemkCtgF/D39gArEBhgEPhgFgAqsBgwGyAYMBwQECqgGDAVyDAWUCqQGLAQ+LAXICpAGXAQ+XAWkCngGSAQ+SAWMCmQGdAUWdAUYCjQGqARP2ASMBRfcBE8MCIwEErAEX9AElAUb5ARfBAiUBBa0BGcoBIwF2ywEZ1gElAWvXARniATcBYOMBGe4BOwFT7wEZ8wElAUf6ARmXAiMBNZgCGaMCJQEqpAIZrwI3AR+wAhm7AjsBErwCGcACJQEGuQEfuQFxAoEBxwEfxwF4AXzAASPAAXUBd9MBH9MBrwEBcc4BH84BcwFs2gEf2gFrAWbfAR/fAXABYeYBH+YBcAFb4wG/AeMBzgEBWuMBaeMBcgFZ6wEf6wF0AVTxAVXxAVYBSIYCH4YCcQFAlAIflAJ4ATuNAiONAnUBNqACH6ACrwEBMJsCH5sCcwErpwIfpwJrASWsAh+sAnABILMCH7MCcAEasALCAbAC0QEBGbACbLACdQEYuAIfuAJ0ARO+AlW+AlYBBw==</sads:DebugSymbol.Symbol>
   </p1:Flowchart>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -347,9 +341,9 @@
       <sap2010:ViewStateData Id="GetWorkflowMetadataActivity_4" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
       <sap2010:ViewStateData Id="ManageCartableActivity_1" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
       <sap2010:ViewStateData Id="TrackWorkflowStateActivity_1" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
-      <sap2010:ViewStateData Id="SendReply_1" sap:VirtualizedContainerService.HintSize="255.2,88" />
       <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="255.2,62.4" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="200,52.8">
+      <sap2010:ViewStateData Id="SendReply_1" sap:VirtualizedContainerService.HintSize="255.2,88" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="277.6,630.4">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -390,7 +384,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="792.8,999.2">
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="200,52.8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
