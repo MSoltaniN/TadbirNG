@@ -50,6 +50,24 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
+        /// اطلاعات خلاصه یک درخواست کالا را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی یک درخواست کالای موجود</param>
+        /// <returns>اطلاعات نمایشی خلاصه برای درخواست کالا</returns>
+        public VoucherSummaryViewModel GetRequisitionSummary(int voucherId)
+        {
+            var summary = default(VoucherSummaryViewModel);
+            var repository = _unitOfWork.GetRepository<RequisitionVoucher>();
+            var voucher = repository.GetByID(voucherId);
+            if (voucher != null)
+            {
+                summary = _mapper.Map<VoucherSummaryViewModel>(voucher);
+            }
+
+            return summary;
+        }
+
+        /// <summary>
         /// اطلاعات کامل یک درخواست کالا را از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <param name="voucherId"></param>

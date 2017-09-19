@@ -48,6 +48,11 @@ namespace SPPC.Tadbir.ViewModel.Procurement
         /// <summary>
         /// TODO: Add description...
         /// </summary>
+        public int DocumentId { get; set; }
+
+        /// <summary>
+        /// TODO: Add description...
+        /// </summary>
         public string DocumentStatusName { get; set; }
 
         /// <summary>

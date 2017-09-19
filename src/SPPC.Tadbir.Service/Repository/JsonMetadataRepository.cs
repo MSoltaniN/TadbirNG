@@ -30,7 +30,7 @@ namespace SPPC.Tadbir.Service
                     string json = reader.ReadToEnd();
                     var allMetadata = Json.To<List<StateWorkflow>>(json);
                     metadata = allMetadata
-                        .Where(swf => swf.DocumentType == DocumentTypeName.Transaction)
+                        .Where(swf => swf.DocumentType == documentType)
                         .FirstOrDefault();
                 }
             }

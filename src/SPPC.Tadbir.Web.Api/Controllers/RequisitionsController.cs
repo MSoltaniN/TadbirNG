@@ -10,16 +10,22 @@ using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Procurement;
+using SPPC.Tadbir.ViewModel.Workflow;
 using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.Workflow;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     public class RequisitionsController : ApiController
     {
-        public RequisitionsController(IRequisitionRepository repository, ISecurityContextManager contextManager)
+        public RequisitionsController(IRequisitionRepository repository, IDocumentWorkflow workflow,
+            ISecurityContextManager contextManager)
         {
             Verify.ArgumentNotNull(contextManager, "contextManager");
+            Verify.ArgumentNotNull(workflow, "workflow");
             _repository = repository;
+            _workflow = workflow;
+            _workflow.CurrentContext = contextManager.CurrentContext;
             _userContext = contextManager.CurrentContext;
         }
 
@@ -175,6 +181,33 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        // PUT: api/requisitions/{voucherId:int}/prepare
+        [Route(RequisitionApi.PrepareUrl)]
+        [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Prepare)]
+        public IHttpActionResult PutRequisitionAsPrepared(int voucherId, [FromBody] ActionDetailViewModel detail)
+        {
+            if (voucherId <= 0)
+            {
+                return BadRequest("Could not put requisition as Prepared because requisition does not exist.");
+            }
+
+            var summary = _repository.GetRequisitionSummary(voucherId);
+            if (summary == null)
+            {
+                return BadRequest("Could not put requisition as Prepared because requisition does not exist.");
+            }
+
+            string message = ValidateStateOperation(DocumentActionName.Prepare, summary);
+            if (!String.IsNullOrEmpty(message))
+            {
+                return BadRequest(message);
+            }
+
+            var paraph = detail?.Paraph;
+            _workflow.Prepare(summary.Id, summary.DocumentId, DocumentTypeName.RequisitionVoucher, paraph);
+            return Ok();
+        }
+
         private void SetVoucherDocument(RequisitionVoucherViewModel voucher)
         {
             if (voucher.Document == null)
@@ -219,7 +252,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
         }
 
+        private string ValidateStateOperation(string operation, VoucherSummaryViewModel summary)
+        {
+            string result = String.Empty;
+            if (!_workflow.ValidateAction(DocumentTypeName.RequisitionVoucher, summary.DocumentOperationalStatus, operation))
+            {
+                result = String.Format(
+                    Strings.InvalidDocumentOperation,
+                    Entities.RequisitionVoucherAlt,
+                    summary.No,
+                    DocumentActionName.ToLocalValue(operation),
+                    DocumentStatusName.ToLocalValue(summary.DocumentOperationalStatus));
+            }
+
+            return result;
+        }
+
         private IRequisitionRepository _repository;
+        private IDocumentWorkflow _workflow;
         private ISecurityContext _userContext;
     }
 }

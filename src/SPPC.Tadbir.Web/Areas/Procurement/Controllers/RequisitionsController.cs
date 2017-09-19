@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using PagedList;
+using SPPC.Framework.Service;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
@@ -18,6 +20,8 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
             _service = service;
             _lookupService = lookupService;
         }
+
+        #region CRUD Actions
 
         // GET: procurement/requisitions[?page={no}]
         [AppAuthorize(SecureEntity.Requisition, (int)RequisitionPermissions.View)]
@@ -107,6 +111,10 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
             return RedirectToAction("index");
         }
 
+        #endregion
+
+        #region Line CRUD Actions
+
         // GET: procurement/requisitions/createline/id
         [AppAuthorize(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public ViewResult CreateLine(int id)
@@ -189,6 +197,20 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
             return RedirectToAction("edit", "requisitions", new { area = "procurement", id = id });
         }
 
+        #endregion
+
+        #region Workflow Actions
+
+        // GET: procurement/requisitions/prepare/id[?paraph={encoded-text}]
+        [AppAuthorize(SecureEntity.Requisition, (int)RequisitionPermissions.Prepare)]
+        public ActionResult Prepare(int id, string paraph = null)
+        {
+            var response = _service.Prepare(id, paraph);
+            return GetNextResult(response);
+        }
+
+        #endregion
+
         private void InitLookups()
         {
             var depends = _lookupService.LookupRequisitionVoucherDepends();
@@ -212,6 +234,21 @@ namespace SPPC.Tadbir.Web.Areas.Procurement.Controllers
             ViewBag.Warehouses = depends.Warehouses;
             ViewBag.Products = depends.Products;
             ViewBag.Units = depends.Units;
+        }
+
+        private ActionResult GetNextResult(ServiceResponse response)
+        {
+            ActionResult nextResult = RedirectToAction("index");
+            if (!response.Succeeded)
+            {
+                nextResult = View("error", response);
+            }
+            else if (Request.QueryString.AllKeys.Contains("returnUrl"))
+            {
+                nextResult = RedirectToAction("index", "cartable", new { area = String.Empty });
+            }
+
+            return nextResult;
         }
 
         private IRequisitionService _service;

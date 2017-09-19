@@ -23,6 +23,11 @@ namespace SPPC.Tadbir.Values
         public const string Transaction = "Transaction";
 
         /// <summary>
+        /// مستند عملیاتی درخواست کالا
+        /// </summary>
+        public const string RequisitionVoucher = "RequisitionVoucher";
+
+        /// <summary>
         /// متن فارسی متناظر با نوع مستند داده شده را بدست آورده و برمی گرداند
         /// </summary>
         /// <param name="value">یکی از انواع مستند های عملیاتی</param>
@@ -40,9 +45,11 @@ namespace SPPC.Tadbir.Values
         }
 
         private const string _Transaction = "سند مالی";
+        private const string _RequisitionVoucher = "درخواست کالا";
         private static IDictionary<string, string> _localValues = new Dictionary<string, string>
             {
-                { Transaction, _Transaction }
+                { Transaction, _Transaction },
+                { RequisitionVoucher, _RequisitionVoucher }
             };
     }
 }

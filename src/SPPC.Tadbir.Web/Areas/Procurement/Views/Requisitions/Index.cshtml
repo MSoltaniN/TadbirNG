@@ -103,6 +103,10 @@
             {
                 @Html.ActionLink(LocalStrings.Delete, "delete", new { id = item.Id })
             }
+            @if (item.DocumentOperationalStatus == DocumentStatusName.Created && currentContext.HasPermissions(Permissions.Requisition.Prepare))
+            {
+                <span> | </span>@Html.ActionLink(DocumentActionName.ToLocalValue(DocumentActionName.Prepare), "prepare", new { id = item.Id }, new { id = String.Format("prepare-action{0}", item.Id) })
+            }
             </td>
         </tr>
     }

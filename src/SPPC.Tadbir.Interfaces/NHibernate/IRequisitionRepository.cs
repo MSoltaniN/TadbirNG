@@ -19,6 +19,13 @@ namespace SPPC.Tadbir.NHibernate
         IList<VoucherSummaryViewModel> GetRequisitions(int fpId, int branchId);
 
         /// <summary>
+        /// اطلاعات خلاصه یک درخواست کالا را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی یک درخواست کالای موجود</param>
+        /// <returns>اطلاعات نمایشی خلاصه برای درخواست کالا</returns>
+        VoucherSummaryViewModel GetRequisitionSummary(int voucherId);
+
+        /// <summary>
         /// اطلاعات کامل یک درخواست کالا را از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <param name="voucherId"></param>

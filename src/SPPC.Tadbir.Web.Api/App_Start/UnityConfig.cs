@@ -70,6 +70,7 @@ namespace SPPC.Tadbir.Web.Api.AppStart
             container.RegisterType<RequisitionsController>(
                 new InjectionConstructor(
                     new ResolvedParameter<IRequisitionRepository>(),
+                    new ResolvedParameter<IDocumentWorkflow>(),
                     new ResolvedParameter<ISecurityContextManager>("API")));
 
             _unityWrapper = new TypeContainer(container);

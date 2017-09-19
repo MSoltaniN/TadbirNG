@@ -4,6 +4,7 @@ using BabakSoft.Platform.Common;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.ViewModel.Procurement;
+using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Service
 {
@@ -109,6 +110,13 @@ namespace SPPC.Tadbir.Service
         public void DeleteRequisitionLine(int id, int lineId)
         {
             _apiClient.Delete(RequisitionApi.RequisitionLine, id, lineId);
+        }
+
+        public ServiceResponse Prepare(int id, string paraph = null)
+        {
+            var detail = new ActionDetailViewModel() { Paraph = paraph };
+            var response = _apiClient.Update(detail, RequisitionApi.Prepare, id);
+            return response;
         }
 
         private IApiClient _apiClient;

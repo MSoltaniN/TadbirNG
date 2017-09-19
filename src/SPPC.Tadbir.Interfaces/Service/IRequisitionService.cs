@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPPC.Framework.Service;
 using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.Service
@@ -56,5 +57,7 @@ namespace SPPC.Tadbir.Service
         /// <param name="id">شناسه دیتابیسی یک درخواست کالای موجود</param>
         /// <param name="lineId">شناسه دیتابیسی یک سطر درخواست کالای موجود</param>
         void DeleteRequisitionLine(int id, int lineId);
+
+        ServiceResponse Prepare(int id, string paraph = null);
     }
 }
