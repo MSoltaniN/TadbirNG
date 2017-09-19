@@ -571,7 +571,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 {
                     OperationalStatus = DocumentStatusName.Created,
                     StatusId = (int)DocumentStatusId.Draft,
-                    TypeId = (int)DocumentTypeId.Transaction
+                    TypeId = (int)DocumentTypeId.Transaction,
+                    EntityNo = transaction.No
                 };
                 document.Actions.Add(new DocumentActionViewModel()
                 {

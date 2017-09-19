@@ -142,6 +142,7 @@ CREATE TABLE [Core].[Document] (
     [DocumentID]          INT              IDENTITY (1, 1) NOT NULL,
     [TypeID]              INT              NOT NULL,
     [StatusID]            INT              NOT NULL,
+    [EntityNo]            NVARCHAR(64)     NOT NULL,
     [No]                  NVARCHAR(64)     NOT NULL,
     [OperationalStatus]   NVARCHAR(64)     NOT NULL,
     [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Core_Document_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,

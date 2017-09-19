@@ -31,6 +31,9 @@ namespace SPPC.Tadbir.NHibernate.Mapping
             Id(x => x.Id)
                 .Column("DocumentID")
                 .GeneratedBy.Identity();
+            Map(x => x.EntityNo)
+                .Length(64)
+                .Not.Nullable();
             Map(x => x.No)
                 .Column("[No]")
                 .Length(64)

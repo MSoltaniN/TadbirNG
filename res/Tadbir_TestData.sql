@@ -149,13 +149,13 @@ INSERT INTO [Procurement].[RequisitionVoucherType] (VoucherTypeID, Name) VALUES 
 SET IDENTITY_INSERT [Procurement].[RequisitionVoucherType] OFF
 
 SET IDENTITY_INSERT [Core].[Document] ON
-INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, [No], OperationalStatus) VALUES (1, 2, 1, N'1', N'Created')
-INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, [No], OperationalStatus) VALUES (2, 2, 1, N'2', N'Created')
-INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, [No], OperationalStatus) VALUES (3, 2, 1, N'3', N'Created')
-INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, [No], OperationalStatus) VALUES (4, 2, 1, N'4', N'Created')
-INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, [No], OperationalStatus) VALUES (5, 2, 1, N'5', N'Created')
-INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, [No], OperationalStatus) VALUES (6, 1, 1, N'6', N'Created')
-INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, [No], OperationalStatus) VALUES (7, 1, 1, N'7', N'Created')
+INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, EntityNo, [No], OperationalStatus) VALUES (1, 2, 1, N'1', N'1', N'Created')
+INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, EntityNo, [No], OperationalStatus) VALUES (2, 2, 1, N'2', N'2', N'Created')
+INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, EntityNo, [No], OperationalStatus) VALUES (3, 2, 1, N'3', N'3', N'Created')
+INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, EntityNo, [No], OperationalStatus) VALUES (4, 2, 1, N'4', N'4', N'Created')
+INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, EntityNo, [No], OperationalStatus) VALUES (5, 2, 1, N'5', N'5', N'Created')
+INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, EntityNo, [No], OperationalStatus) VALUES (6, 1, 1, N'1', N'6', N'Created')
+INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, EntityNo, [No], OperationalStatus) VALUES (7, 1, 1, N'2', N'7', N'Created')
 SET IDENTITY_INSERT [Core].[Document] OFF
 
 SET IDENTITY_INSERT [Core].[DocumentAction] ON

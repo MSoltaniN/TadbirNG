@@ -36,9 +36,9 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         public string DocumentType { get; set; }
 
         /// <summary>
-        /// شماره مستند مرتبط با کار
+        /// شماره موجودیت مرتبط با کار
         /// </summary>
-        public string DocumentNo { get; set; }
+        public string EntityNo { get; set; }
 
         /// <summary>
         /// نوع اقدامی که در نتیجه این سابقه عملیاتی انجام شده است

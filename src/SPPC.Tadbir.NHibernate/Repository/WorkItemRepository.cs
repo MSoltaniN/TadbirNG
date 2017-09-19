@@ -7,7 +7,6 @@ using BabakSoft.Platform.Persistence;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Core;
-using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Workflow;
@@ -51,14 +50,14 @@ namespace SPPC.Tadbir.NHibernate
                     .Select(wi => _mapper.Map<InboxItemViewModel>(wi))
                     .ToList();
 
-                var documentRepository = _unitOfWork.GetRepository<Transaction>();
+                var documentRepository = _unitOfWork.GetRepository<Document>();
                 foreach (var workItem in workItems)
                 {
-                    var transaction = documentRepository
-                        .GetByCriteria(doc => doc.Document.Id == workItem.DocumentId)
+                    var document = documentRepository
+                        .GetByCriteria(doc => doc.Id == workItem.DocumentId)
                         .First();
-                    workItem.EntityNo = transaction.No;
-                    workItem.DocumentStatus = transaction.Document.OperationalStatus;
+                    workItem.EntityNo = document.EntityNo;
+                    workItem.DocumentStatus = document.OperationalStatus;
                 }
             }
 
@@ -78,13 +77,13 @@ namespace SPPC.Tadbir.NHibernate
                 .Select(wih => _mapper.Map<OutboxItemViewModel>(wih))
                 .ToList();
 
-            var documentRepository = _unitOfWork.GetRepository<Transaction>();
+            var documentRepository = _unitOfWork.GetRepository<Document>();
             foreach (var workItem in workItems)
             {
-                var transaction = documentRepository
-                    .GetByCriteria(doc => doc.Document.Id == workItem.DocumentId)
+                var document = documentRepository
+                    .GetByCriteria(doc => doc.Id == workItem.DocumentId)
                     .First();
-                workItem.DocumentNo = transaction.No;
+                workItem.EntityNo = document.EntityNo;
             }
 
             return workItems;

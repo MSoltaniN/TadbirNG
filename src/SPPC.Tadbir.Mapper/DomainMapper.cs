@@ -226,6 +226,7 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<WorkItem, WorkItemViewModel>();
             mapperConfig.CreateMap<WorkItem, InboxItemViewModel>()
+                .ForMember(dest => dest.EntityNo, opts => opts.Ignore())
                 .ForMember(
                     dest => dest.CreatedBy,
                     opts => opts.MapFrom(
@@ -282,7 +283,7 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.MapFrom(
                         src => DocumentStatusName.ToLocalValue(src.Document.OperationalStatus)));
             mapperConfig.CreateMap<WorkItemHistory, OutboxItemViewModel>()
-                .ForMember(dest => dest.DocumentNo, opts => opts.Ignore())
+                .ForMember(dest => dest.EntityNo, opts => opts.Ignore())
                 .ForMember(
                     dest => dest.Date,
                     opts => opts.MapFrom(

@@ -38,6 +38,12 @@ namespace SPPC.Tadbir.ViewModel.Core
         public int Id { get; set; }
 
         /// <summary>
+        /// شماره موجودیت عملیاتی مرتبط با این مستند اداری
+        /// </summary>
+        [Display(Name = FieldNames.NumberField)]
+        public string EntityNo { get; set; }
+
+        /// <summary>
         /// شماره یکتای مشخص کننده این مستند اداری در گردش کار
         /// </summary>
         public string No { get; set; }
