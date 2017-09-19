@@ -61,4 +61,4 @@
     </tbody>
 </table>
 
-@Html.PagedListPager(Model, page => Url.Action("index", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+@Html.PagedListPager(Model, page => Url.Action("outbox", new { page = page }), PagedListRenderOptions.ClassicPlusFirstAndLast)

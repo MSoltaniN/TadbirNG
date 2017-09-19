@@ -116,10 +116,22 @@
             </p1:OutArgument>
           </stwa:GetWorkflowMetadataActivity.Result>
         </stwa:GetWorkflowMetadataActivity>
+        <p1:Assign sap2010:WorkflowViewState.IdRef="Assign_4">
+          <p1:Assign.To>
+            <p1:OutArgument x:TypeArguments="stmw:StateAction">
+              <mca:CSharpReference x:TypeArguments="stmw:StateAction">action</mca:CSharpReference>
+            </p1:OutArgument>
+          </p1:Assign.To>
+          <p1:Assign.Value>
+            <p1:InArgument x:TypeArguments="stmw:StateAction">
+              <mca:CSharpValue x:TypeArguments="stmw:StateAction">metadata.FirstAction</mca:CSharpValue>
+            </p1:InArgument>
+          </p1:Assign.Value>
+        </p1:Assign>
         <stw1:ManageCartableActivity DisplayName="AddWorkItemForFirstAction" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_1">
           <stw1:ManageCartableActivity.Metadata>
             <p1:InArgument x:TypeArguments="stmw:StateAction">
-              <mca:CSharpValue x:TypeArguments="stmw:StateAction">metadata.FirstAction</mca:CSharpValue>
+              <mca:CSharpValue x:TypeArguments="stmw:StateAction">action</mca:CSharpValue>
             </p1:InArgument>
           </stw1:ManageCartableActivity.Metadata>
           <stw1:ManageCartableActivity.Operation>
@@ -136,22 +148,10 @@
           </stwa:TrackWorkflowStateActivity.Operation>
           <stwa:TrackWorkflowStateActivity.State>
             <p1:InArgument x:TypeArguments="x:String">
-              <mca:CSharpValue x:TypeArguments="x:String">metadata.FirstAction.ToDocumentStatus</mca:CSharpValue>
+              <mca:CSharpValue x:TypeArguments="x:String">action.ToDocumentStatus</mca:CSharpValue>
             </p1:InArgument>
           </stwa:TrackWorkflowStateActivity.State>
         </stwa:TrackWorkflowStateActivity>
-        <p1:Assign sap2010:WorkflowViewState.IdRef="Assign_4">
-          <p1:Assign.To>
-            <p1:OutArgument x:TypeArguments="stmw:StateAction">
-              <mca:CSharpReference x:TypeArguments="stmw:StateAction">action</mca:CSharpReference>
-            </p1:OutArgument>
-          </p1:Assign.To>
-          <p1:Assign.Value>
-            <p1:InArgument x:TypeArguments="stmw:StateAction">
-              <mca:CSharpValue x:TypeArguments="stmw:StateAction">metadata.FirstAction</mca:CSharpValue>
-            </p1:InArgument>
-          </p1:Assign.Value>
-        </p1:Assign>
         <SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendFirstActionReply" sap2010:WorkflowViewState.IdRef="SendReply_1" PersistBeforeSend="True">
           <SendParametersContent>
             <p1:InArgument x:TypeArguments="x:Int32" x:Key="result">0</p1:InArgument>
@@ -165,9 +165,9 @@
           </p1:FlowDecision.Condition>
           <p1:FlowDecision.True>
             <p1:FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_6">
-              <p1:Sequence DisplayName="PickNextAction" sap2010:WorkflowViewState.IdRef="Sequence_5">
+              <p1:Sequence DisplayName="WaitForNextOrReverseAction" sap2010:WorkflowViewState.IdRef="Sequence_5">
                 <p1:Pick DisplayName="PickNextOrReverseAction" sap2010:WorkflowViewState.IdRef="Pick_1">
-                  <p1:PickBranch DisplayName="DoNextAction" sap2010:WorkflowViewState.IdRef="PickBranch_1">
+                  <p1:PickBranch DisplayName="PickNextAction" sap2010:WorkflowViewState.IdRef="PickBranch_1">
                     <p1:PickBranch.Trigger>
                       <p1:Sequence DisplayName="WaitForNextAction" sap2010:WorkflowViewState.IdRef="Sequence_6">
                         <Receive x:Name="__ReferenceID1" CanCreateInstance="True" DisplayName="ReceiveNextActionRequest" sap2010:WorkflowViewState.IdRef="Receive_5" OperationName="NextAction" ServiceContractName="p:IDocumentStateService">
@@ -244,7 +244,7 @@
                       </p1:Sequence>
                     </p1:PickBranch.Trigger>
                   </p1:PickBranch>
-                  <p1:PickBranch DisplayName="DoReverseAction" sap2010:WorkflowViewState.IdRef="PickBranch_2">
+                  <p1:PickBranch DisplayName="PickReverseAction" sap2010:WorkflowViewState.IdRef="PickBranch_2">
                     <p1:PickBranch.Trigger>
                       <p1:Sequence DisplayName="WaitForReverseAction" sap2010:WorkflowViewState.IdRef="Sequence_7">
                         <Receive x:Name="__ReferenceID2" CanCreateInstance="True" DisplayName="ReceiveReverseActionRequest" sap2010:WorkflowViewState.IdRef="Receive_6" OperationName="ReverseAction" ServiceContractName="p:IDocumentStateService">
@@ -333,17 +333,17 @@
     </p1:FlowStep>
     <x:Reference>__ReferenceID3</x:Reference>
     <x:Reference>__ReferenceID4</x:Reference>
-    <sads:DebugSymbol.Symbol>d2ZEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcRG9jdW1lbnRTdGF0ZVNlcnZpY2UueGFtbHg/EwPRAhIBAUwHoAEVAosBpAENpAFbAoYBqAEPxQIdAQJNCWoTAsYBawl2LAK7AXcJggEnArABgwEJjgErAqMBjwEJmgEVApgBmwEJnwEVAowBqQERxAIbAQNZD1lhAtEBZw9naALMAWATYGUCxwFzD3NnAsEBbg9uYwK8AXoPemkCtgF/D39gArEBhgEPhgFgAqsBgwGyAYMBwQECqgGDAVyDAWUCqQGLAQ+LAXICpAGXAQ+XAWkCngGSAQ+SAWMCmQGdAUWdAUYCjQGqARP2ASMBRfcBE8MCIwEErAEX9AElAUb5ARfBAiUBBa0BGcoBIwF2ywEZ1gElAWvXARniATcBYOMBGe4BOwFT7wEZ8wElAUf6ARmXAiMBNZgCGaMCJQEqpAIZrwI3AR+wAhm7AjsBErwCGcACJQEGuQEfuQFxAoEBxwEfxwF4AXzAASPAAXUBd9MBH9MBrwEBcc4BH84BcwFs2gEf2gFrAWbfAR/fAXABYeYBH+YBcAFb4wG/AeMBzgEBWuMBaeMBcgFZ6wEf6wF0AVTxAVXxAVYBSIYCH4YCcQFAlAIflAJ4ATuNAiONAnUBNqACH6ACrwEBMJsCH5sCcwErpwIfpwJrASWsAh+sAnABILMCH7MCcAEasALCAbAC0QEBGbACbLACdQEYuAIfuAJ0ARO+AlW+AlYBBw==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d2ZEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcRG9jdW1lbnRTdGF0ZVNlcnZpY2UueGFtbHg/EwPRAhIBAUwHoAEVAosBpAENpAFbAoYBqAEPxQIdAQJNCWoTAsYBawl2LAK7AXcJggEVArABgwEJjgEnAqUBjwEJmgErApgBmwEJnwEVAowBqQERxAIbAQNZD1lhAtEBZw9naALMAWATYGUCxwFzD3NnAsEBbg9uYwK8AX8Pf2kCtgF6D3pjArEBhgEPhgFbAqsBiwEPiwFgAqYBkgEPkgFgAqABjwGyAY8BwQECnwGPAVyPAWUCngGXAQ+XAWQCmQGdAUWdAUYCjQGqARP2ASMBRfcBE8MCIwEErAEX9AElAUb5ARfBAiUBBa0BGcoBIwF2ywEZ1gElAWvXARniATcBYOMBGe4BOwFT7wEZ8wElAUf6ARmXAiMBNZgCGaMCJQEqpAIZrwI3AR+wAhm7AjsBErwCGcACJQEGuQEfuQFxAoEBxwEfxwF4AXzAASPAAXUBd9MBH9MBrwEBcc4BH84BcwFs2gEf2gFrAWbfAR/fAXABYeYBH+YBcAFb4wG/AeMBzgEBWuMBaeMBcgFZ6wEf6wF0AVTxAVXxAVYBSIYCH4YCcQFAlAIflAJ4ATuNAiONAnUBNqACH6ACrwEBMJsCH5sCcwErpwIfpwJrASWsAh+sAnABILMCH7MCcAEasALCAbAC0QEBGbACbLACdQEYuAIfuAJ0ARO+AlW+AlYBBw==</sads:DebugSymbol.Symbol>
   </p1:Flowchart>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
       <sap2010:ViewStateData Id="Receive_1" sap:VirtualizedContainerService.HintSize="255.2,88" />
       <sap2010:ViewStateData Id="GetWorkflowMetadataActivity_4" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
+      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="255.2,62.4" />
       <sap2010:ViewStateData Id="ManageCartableActivity_1" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
       <sap2010:ViewStateData Id="TrackWorkflowStateActivity_1" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
-      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="255.2,62.4" />
       <sap2010:ViewStateData Id="SendReply_1" sap:VirtualizedContainerService.HintSize="255.2,88" />
-      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="277.6,630.4">
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="200,52.8">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -384,7 +384,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="200,52.8">
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="792.8,999.2">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>

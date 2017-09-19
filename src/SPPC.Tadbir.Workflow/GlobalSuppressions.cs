@@ -24,6 +24,7 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Scope = "member", Target = "SPPC.Tadbir.Workflow.Activities.TrackWorkflowStateActivity.#Execute(System.Activities.CodeActivityContext)", Justification = "Parameter is validated using Verify utility class.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Scope = "member", Target = "SPPC.Tadbir.Workflow.Activities.GetTransactionFromDocumentActivity.#Execute(System.Activities.CodeActivityContext)", Justification = "Argument is checked using Verify utility class.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Req", Scope = "type", Target = "SPPC.Tadbir.Workflow.Workflows.ReqVoucherStateWorkflow", Justification = "Generated code")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Scope = "member", Target = "SPPC.Tadbir.Workflow.Activities.GetWorkflowMetadataActivity.#Execute(System.Activities.CodeActivityContext)", Justification = "Argument is checked using Verify utility class.")]
 
 // This file is used by Code Analysis to maintain SuppressMessage 
 // attributes that are applied to this project.

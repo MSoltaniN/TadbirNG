@@ -126,7 +126,7 @@ namespace SPPC.Tadbir.Workflow
             return (reverseAction != null);
         }
 
-        private WorkflowAction GetWorkflowAction(
+        private static WorkflowAction GetWorkflowAction(
             string action, StateWorkflow metadata, DocumentStateServiceClient client)
         {
             WorkflowAction workflowAction;

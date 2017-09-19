@@ -38,6 +38,6 @@ namespace SPPC.Tadbir.Service
             return metadata;
         }
 
-        private static readonly string ResourceName = "SPPC.Tadbir.Metadata.JsonRepository.state-workflow.json";
+        private const string ResourceName = "SPPC.Tadbir.Metadata.JsonRepository.state-workflow.json";
     }
 }
