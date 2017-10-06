@@ -23,6 +23,57 @@
     <Content Remove="ClientApp\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="ClientApp\app\model\account.ts" />
+    <None Remove="ClientApp\app\model\index.ts" />
+    <None Remove="ClientApp\app\service\index.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\resources\themes\cruze\theme.css.map" />
+    <None Include="wwwroot\resources\themes\cruze\theme.scss" />
+    <None Include="wwwroot\resources\themes\cupertino\theme.css.map" />
+    <None Include="wwwroot\resources\themes\cupertino\theme.scss" />
+    <None Include="wwwroot\resources\themes\darkness\theme.css.map" />
+    <None Include="wwwroot\resources\themes\darkness\theme.scss" />
+    <None Include="wwwroot\resources\themes\flick\theme.css.map" />
+    <None Include="wwwroot\resources\themes\flick\theme.scss" />
+    <None Include="wwwroot\resources\themes\home\theme.css.map" />
+    <None Include="wwwroot\resources\themes\home\theme.scss" />
+    <None Include="wwwroot\resources\themes\kasper\theme.css.map" />
+    <None Include="wwwroot\resources\themes\kasper\theme.scss" />
+    <None Include="wwwroot\resources\themes\lightness\theme.css.map" />
+    <None Include="wwwroot\resources\themes\lightness\theme.scss" />
+    <None Include="wwwroot\resources\themes\ludvig\theme.css.map" />
+    <None Include="wwwroot\resources\themes\ludvig\theme.scss" />
+    <None Include="wwwroot\resources\themes\omega\fonts\roboto-v15-latin-regular.svg" />
+    <None Include="wwwroot\resources\themes\omega\fonts\roboto-v15-latin-regular.woff2" />
+    <None Include="wwwroot\resources\themes\omega\theme.css.map" />
+    <None Include="wwwroot\resources\themes\omega\theme.scss" />
+    <None Include="wwwroot\resources\themes\pepper-grinder\theme.css.map" />
+    <None Include="wwwroot\resources\themes\pepper-grinder\theme.scss" />
+    <None Include="wwwroot\resources\themes\redmond\theme.css.map" />
+    <None Include="wwwroot\resources\themes\redmond\theme.scss" />
+    <None Include="wwwroot\resources\themes\rocket\theme.css.map" />
+    <None Include="wwwroot\resources\themes\rocket\theme.scss" />
+    <None Include="wwwroot\resources\themes\south-street\theme.css.map" />
+    <None Include="wwwroot\resources\themes\south-street\theme.scss" />
+    <None Include="wwwroot\resources\themes\start\theme.css.map" />
+    <None Include="wwwroot\resources\themes\start\theme.scss" />
+    <None Include="wwwroot\resources\themes\trontastic\theme.css.map" />
+    <None Include="wwwroot\resources\themes\trontastic\theme.scss" />
+    <None Include="wwwroot\resources\themes\voclain\theme.css.map" />
+    <None Include="wwwroot\resources\themes\voclain\theme.scss" />
+    <None Include="wwwroot\resources\themes\_theme.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\components\account\account.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\index.ts" />
+  </ItemGroup>
+
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

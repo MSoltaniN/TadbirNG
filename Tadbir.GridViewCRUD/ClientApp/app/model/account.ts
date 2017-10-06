@@ -1,0 +1,11 @@
+﻿
+/** define account interface */
+
+export interface Account {
+    id: number;
+    code: string;
+    name: string;
+    description?: string;
+    fiscalPeriodId: number;
+}
+
