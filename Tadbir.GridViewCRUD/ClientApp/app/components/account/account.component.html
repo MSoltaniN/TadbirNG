@@ -14,8 +14,8 @@
             <td>
                 <br />
                 <div class="ContentSideSections Implementation">
-                    <p-dataTable [value]="rowData" [rows]="10"  [paginator]="true" [editable]="true"
-                 resizableColumns="true"   columnResizeMode="expand" [pageLinks]="3" [rowsPerPageOptions]="[5,10,20]">
+                    <p-dataTable [value]="rowData" [rows]="10" [lazy]="true" [paginator]="true" [editable]="true"
+                 resizableColumns="true" [totalRecords]="totalRecords" (onLazyLoad)="loadAccountLazy($event)"  columnResizeMode="expand"  [rowsPerPageOptions]="[5,10,20]">
         <header>لیست حساب ها</header>
         <p-column field="code" [filter]="true" [editable]="true" [style]="{'width':'50px'}" header="کد حساب" [sortable]="true"></p-column>
         <p-column field="name" [filter]="true" [editable]="true" header="نام حساب" [sortable]="true"></p-column>        
