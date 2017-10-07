@@ -14,11 +14,23 @@ class AccountInfo implements Account
 @Injectable()
 export class AccountService 
 {
-    private _getAccountsUrl = "/Account/GetAccounts";
+    private _getAccountsUrl = "/Account/GetLazyAccounts";
 
     private _getTotalCountUrl = "/Account/GetTotalCount";
 
-    constructor(private http: Http) { }
+
+    headers: Headers;
+    options: RequestOptions;
+
+    constructor(private http: Http)
+    {
+
+        this.headers = new Headers({
+            'Content-Type': 'application/json'            
+        });
+        this.options = new RequestOptions({ headers: this.headers });
+
+    }
 
     getAccounts() {
         var headers = new Headers();
@@ -38,29 +50,44 @@ export class AccountService
             
     }
 
-    search(start? :number , count? :number , order?:string,filter?:string  ) {
+    search(start? :number , count? :number , orderby?:string,filters?:string  ) {
         var headers = new Headers();
         headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
+
+
         var url = this._getAccountsUrl;
 
-        
+        let params: URLSearchParams = new URLSearchParams();
+
+              
         if(start != undefined && count != undefined)
-            url+= "/" + start.toString() + "/" + count.toString();
+        {
+            params.append("start", start.toString());
+            params.append("count", count.toString());    
+        }        
+
+        
+        if(filters)
+        {
+            params.set("filter", JSON.stringify(filters));     
+        }
+
+
+
+        if(orderby)
+        {
+            params.set("filter", orderby);     
+        }
+
+        var postItem = { start: start, count: count, filter: filters, order: orderby };
+
         
 
-        if(filter)
-        {
-            url+= "/filter/" + JSON.stringify(filter);
-        }
+        this.options = new RequestOptions({ headers: this.headers });
 
 
-        if(order)
-        {
-            url+= "/order/" + order;
-        }
 
-
-        return this.http.get(url, { headers: headers })
+        return this.http.get(url + "/" + JSON.stringify(postItem), Option)
             .map(response => <any>(<Response>response).json());
     }
 
