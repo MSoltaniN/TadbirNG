@@ -9,7 +9,23 @@ using Newtonsoft.Json;
 
 namespace Tadbir.GridViewCRUD.Controllers
 {
-    
+
+    public class Filter
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
+    }
+
+
+    public class Options
+    {
+        public int Start { get; set; }
+        public int Count { get; set; }
+
+        public IList<Filter> Filters { get; set; }
+        public string Order { get; set; }
+    }
+
     public class AccountController : Controller
     {
         public IAccountRepository AccountRepo;
@@ -18,14 +34,7 @@ namespace Tadbir.GridViewCRUD.Controllers
         {
             AccountRepo = Repo;
         }
-
-        [HttpGet, Produces("application/json")]
-        public async Task<IActionResult> GetAccounts()
-        {
-
-            var data = await AccountRepo.GetAllAccount();
-            return Json(new { result = data });
-        }
+               
 
 
         [HttpGet, Produces("application/json")]
@@ -35,55 +44,23 @@ namespace Tadbir.GridViewCRUD.Controllers
             var data = await AccountRepo.GetAllAccount();
             return Json(new { result = data.Count });
         }
+              
 
-        [HttpGet, Produces("application/json")]
-        [Route("/Account/GetAccounts/{start}/{count}")]
-        public async Task<IActionResult> GetAccounts(int start,int count)
-        {
-            var data = await AccountRepo.GetAllAccount();
-            return Json(new { result = data.Skip(start).Take(count)});
-        }
-
-        //[HttpGet, Produces("application/json")]
-        //[Route("/Account/GetAccounts/{start}/{count}/order/{order}")]
-        //public async Task<IActionResult> GetOrderedAccounts(int start, int count,string order)
-        //{
-        //    var data = await AccountRepo.GetAllAccount();
-        //    return Json(new { result = data.Skip(start).Take(count) });
-        //}
-
-        //[HttpGet, Produces("application/json")]
-        //[Route("/Account/GetAccounts/{start}/{count}/filter/{filter}")]
-        //public async Task<IActionResult> GetFilteredAccounts(int start, int count, string filter)
-        //{
-        //    var data = await AccountRepo.GetAllAccount();
-        //    return Json(new { result = data.Skip(start).Take(count) });
-        //}
-
-        public class Options
-        {
-            public int start { get; set; }
-            public int count { get; set; }
-            public string filter { get; set; }
-            public string order { get; set; }
-        }
+        
+        
         
 
 
 
-        [HttpGet, Produces("application/json")]
-        //[Route("/Account/GetAccounts/{start}/{count}/order/{order}")]
-        //[Route("/Account/GetAccounts/{start}/{count}/filter/{filter}")]
-        [Route("/Account/GetLazyAccounts/{option}")]
-        public async Task<IActionResult> GetLazyAccounts(string option)
-        {
-            //var filterItems = JsonConvert.DeserializeObject<Dictionary<string, string>>(filter);
-            var jsonString = option.ToString();
-            Options result = JsonConvert.DeserializeObject<Options>(jsonString);
+        [HttpPost, Produces("application/json")]       
+        [Route("/Account/GetLazyAccounts")]
+        public async Task<IActionResult> GetLazyAccounts([FromBody] Options option)
+        { 
+           
 
 
             var data = await AccountRepo.GetAllAccount();
-            return Json(new { result = data.Skip(result.start).Take(result.count) });
+            return Json(new { result = data.Skip(option.Start).Take(option.Count) });
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿
 //*** this class add for filter values for gridview */
 
-export class Filter{
-    name : string;
-    value: string;
+export class Filter{    
 
-    constructor(private filterName : string,private filterValue: string){}
+    constructor(private Name: string, private Value: string)
+    {     
+    }
 }

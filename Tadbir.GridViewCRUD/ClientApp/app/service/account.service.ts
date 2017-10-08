@@ -79,7 +79,7 @@ export class AccountService
             params.set("filter", orderby);     
         }
 
-        var postItem = { start: start, count: count, filter: filters, order: orderby };
+        var postItem = { Start: start, Count: count, Filters: filters, Order: orderby };
 
         
 
@@ -87,7 +87,7 @@ export class AccountService
 
 
 
-        return this.http.get(url + "/" + JSON.stringify(postItem), Option)
+        return this.http.post(url,JSON.stringify(postItem), Option)
             .map(response => <any>(<Response>response).json());
     }
 
