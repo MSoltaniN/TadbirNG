@@ -60,17 +60,30 @@ namespace Tadbir.GridViewCRUD.Controllers
         //    return Json(new { result = data.Skip(start).Take(count) });
         //}
 
+        public class Options
+        {
+            public int start { get; set; }
+            public int count { get; set; }
+            public string filter { get; set; }
+            public string order { get; set; }
+        }
+        
+
+
 
         [HttpGet, Produces("application/json")]
-        [Route("/Account/GetAccounts/{start}/{count}/order/{order}")]
-        [Route("/Account/GetAccounts/{start}/{count}/filter/{filter}")]
-        [Route("/Account/GetAccounts/{start}/{count}/filter/{filter}/order/{order}")]
-        public async Task<IActionResult> GetFilteredAccounts(int start, int count, string filter = null,string order = null)
+        //[Route("/Account/GetAccounts/{start}/{count}/order/{order}")]
+        //[Route("/Account/GetAccounts/{start}/{count}/filter/{filter}")]
+        [Route("/Account/GetLazyAccounts/{option}")]
+        public async Task<IActionResult> GetLazyAccounts(string option)
         {
-            var filterItems = JsonConvert.DeserializeObject<Dictionary<string, string>>(filter);
+            //var filterItems = JsonConvert.DeserializeObject<Dictionary<string, string>>(filter);
+            var jsonString = option.ToString();
+            Options result = JsonConvert.DeserializeObject<Options>(jsonString);
+
 
             var data = await AccountRepo.GetAllAccount();
-            return Json(new { result = data.Skip(start).Take(count) });
+            return Json(new { result = data.Skip(result.start).Take(result.count) });
         }
     }
 }

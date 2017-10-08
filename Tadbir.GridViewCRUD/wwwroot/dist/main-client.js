@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ed6497c04c8dfa8bcd70"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "d7d9c7afee6d38c90c64"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -13305,8 +13305,12 @@ var AccountInfo = (function () {
 var AccountService = (function () {
     function AccountService(http) {
         this.http = http;
-        this._getAccountsUrl = "/Account/GetAccounts";
+        this._getAccountsUrl = "/Account/GetLazyAccounts";
         this._getTotalCountUrl = "/Account/GetTotalCount";
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]({
+            'Content-Type': 'application/json'
+        });
+        this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["RequestOptions"]({ headers: this.headers });
     }
     AccountService.prototype.getAccounts = function () {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
@@ -13323,19 +13327,24 @@ var AccountService = (function () {
             .map(function (response) { return response.json(); });
         ;
     };
-    AccountService.prototype.search = function (start, count, order, filter) {
+    AccountService.prototype.search = function (start, count, orderby, filters) {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
         var url = this._getAccountsUrl;
-        if (start != undefined && count != undefined)
-            url += "/" + start.toString() + "/" + count.toString();
-        if (filter) {
-            url += "/filter/" + JSON.stringify(filter);
+        var params = new URLSearchParams();
+        if (start != undefined && count != undefined) {
+            params.append("start", start.toString());
+            params.append("count", count.toString());
         }
-        if (order) {
-            url += "/order/" + order;
+        if (filters) {
+            params.set("filter", JSON.stringify(filters));
         }
-        return this.http.get(url, { headers: headers })
+        if (orderby) {
+            params.set("filter", orderby);
+        }
+        var postItem = { start: start, count: count, filter: filters, order: orderby };
+        this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["RequestOptions"]({ headers: this.headers });
+        return this.http.get(url + "/" + JSON.stringify(postItem), Option)
             .map(function (response) { return response.json(); });
     };
     AccountService = __decorate([
