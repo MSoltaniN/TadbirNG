@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "3dab06a9c41886f00919"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "951a02aedeee46f72e30"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -13194,13 +13194,12 @@ var AccountComponent = (function () {
     };
     AccountComponent.prototype.loadData = function () {
         var _this = this;
+        //evaluate total row counts for gird paging 
         this.accountService.getTotalCount().subscribe(function (res) {
             _this.totalRecords = res.result;
         });
-        //this.accountService.search(0,10,"","").subscribe(res => {
-        //        this.rowData = res.result;
-        //    });           
     };
+    //LoadAccount
     AccountComponent.prototype.getFilters = function (event) {
         var filters = [];
         if (Object.keys(event.filters).length > 0) {
@@ -13228,6 +13227,24 @@ var AccountComponent = (function () {
         this.accountService.search(event.first, event.rows, order, filter).subscribe(function (res) {
             _this.rowData = res.result;
         });
+    };
+    //LoadAccount
+    //Delete Account 
+    AccountComponent.prototype.showDialogToDelete = function (account) {
+        this.fullname = account.name;
+        this.deleteAccountId = account.id;
+        this.displayDeleteDialog = true;
+    };
+    AccountComponent.prototype.deleteAccount = function (confirm) {
+        var _this = this;
+        if (confirm) {
+            this.accountService.delete(this.deleteAccountId).subscribe(function (response) {
+                _this.deleteAccountId = 0;
+                _this.loadData();
+            });
+        }
+        //hide confirm dialog
+        this.displayDeleteDialog = false;
     };
     AccountComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -13278,8 +13295,10 @@ var NavMenuComponent = (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AccountService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13289,6 +13308,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -13307,6 +13327,7 @@ var AccountService = (function () {
         this.http = http;
         this._getAccountsUrl = "/Account/GetLazyAccounts";
         this._getTotalCountUrl = "/Account/GetTotalCount";
+        this._deleteAccountsUrl = "/Account/DeleteAccount";
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]({
             'Content-Type': 'application/json'
         });
@@ -13346,6 +13367,16 @@ var AccountService = (function () {
         this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["RequestOptions"]({ headers: this.headers });
         return this.http.post(url, JSON.stringify(postItem), Option)
             .map(function (response) { return response.json(); });
+    };
+    AccountService.prototype.delete = function (accountId) {
+        //ToDo : call api for delete entity
+        var deleteByIdUrl = this._deleteAccountsUrl + '/' + accountId;
+        return this.http.post(deleteByIdUrl, this.options)
+            .map(function (response) { return response.json().message; })
+            .catch(this.handleError);
+    };
+    AccountService.prototype.handleError = function (error) {
+        return __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__["Observable"].throw(error.json().error || 'Opps!! Server error');
     };
     AccountService = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
@@ -13714,7 +13745,7 @@ module.exports = XmlEntities;
 /* 108 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"ui-rtl\" dir=\"rtl\">\r\n    <table style=\"width:80%;margin-left: 100px\">\r\n        <tr>\r\n            <td>\r\n                <h2></h2>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <!--<button type=\"button\" pButton icon=\"fa-plus\" style=\"float:left\" (click)=\"showDialogToAdd()\" label=\"Add\"></button>-->\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <br />\r\n                <div class=\"ContentSideSections Implementation\">\r\n                    <p-dataTable [value]=\"rowData\" [rows]=\"10\" [lazy]=\"true\" [paginator]=\"true\" [editable]=\"true\"\r\n                 resizableColumns=\"true\" [totalRecords]=\"totalRecords\" (onLazyLoad)=\"loadAccountLazy($event)\"  columnResizeMode=\"expand\"  [rowsPerPageOptions]=\"[5,10,20]\">\r\n        <header>لیست حساب ها</header>\r\n        <p-column field=\"code\" [filter]=\"true\" [editable]=\"true\" [style]=\"{'width':'50px'}\" header=\"کد حساب\" [sortable]=\"true\"></p-column>\r\n        <p-column field=\"name\" [filter]=\"true\" [editable]=\"true\" header=\"نام حساب\" [sortable]=\"true\"></p-column>        \r\n        <p-column field=\"fiscalPeriodId\" [filter]=\"true\" [style]=\"{'width':'200px'}\" header=\"کد دوره\" [sortable]=\"true\"></p-column>\r\n        <p-column field=\"description\"  [editable]=\"true\" header=\"توضیحات\" [sortable]=\"true\"></p-column>\r\n        <p-column header=\"Edit\">\r\n            <ng-template let-col let-contact=\"rowData\" pTemplate type=\"body\">\r\n                <button type=\"button\" pButton icon=\"fa-check\" (click)=\"showDialogToEdit(contact)\" label=\"Edit\"></button>\r\n            </ng-template>\r\n        </p-column>\r\n        <p-column header=\"Delete\">\r\n            <ng-template let-col let-contact=\"rowData\" pTemplate type=\"body\">\r\n                <button type=\"button\" pButton icon=\"fa-close\" (click)=\"showDialogToDelete(contact)\" label=\"Delete\"></button>\r\n            </ng-template>\r\n        </p-column>\r\n        <footer><div class=\"ui-helper-clearfix\" style=\"width:100%\"></div></footer>\r\n    </p-dataTable>\r\n    \r\n                    <!--<p-dialog header=\"Contact Details\" [(visible)]=\"displayDialog\" [responsive]=\"true\" showEffect=\"fade\" [modal]=\"true\">\r\n        <div class=\"ui-grid ui-grid-responsive ui-fluid ui-grid-pad\">\r\n            <div class=\"ui-grid-row\">\r\n                <div class=\"ui-grid-col-4\"><label for=\"firstname\">FirstName</label></div>\r\n                <div class=\"ui-grid-col-8\"><input pInputText id=\"vin\" [(ngModel)]=\"contact.firstName\" /></div>\r\n            </div>\r\n            <div class=\"ui-grid-row\">\r\n                <div class=\"ui-grid-col-4\"><label for=\"lastname\">LastName</label></div>\r\n                <div class=\"ui-grid-col-8\"><input pInputText id=\"lastname\" [(ngModel)]=\"contact.lastName\" /></div>\r\n            </div>\r\n            <div class=\"ui-grid-row\">\r\n                <div class=\"ui-grid-col-4\"><label for=\"email\">Email</label></div>\r\n                <div class=\"ui-grid-col-8\"><input type=\"email\" pInputText id=\"email\" [(ngModel)]=\"contact.email\" /></div>\r\n            </div>\r\n            <div class=\"ui-grid-row\">\r\n                <div class=\"ui-grid-col-4\"><label for=\"mobile\">Phone</label></div>\r\n                <div class=\"ui-grid-col-8\"><input pInputText id=\"mobile\" [(ngModel)]=\"contact.phone\" /></div>\r\n            </div>\r\n        </div>\r\n        <footer>\r\n            <div class=\"ui-dialog-buttonpane ui-widget-content ui-helper-clearfix\">\r\n                <button type=\"button\" pButton icon=\"fa-close\" (click)=\"cancel()\" label=\"Cancel\"></button>\r\n                <button type=\"button\" pButton icon=\"fa-check\" (click)=\"save()\" *ngIf=\"newContact\" label=\"Save\"></button>\r\n                <button type=\"button\" pButton icon=\"fa-check\" (click)=\"save()\" *ngIf=\"!newContact\" label=\"Update\"></button>\r\n            </div>\r\n        </footer>\r\n    </p-dialog>\r\n    <p-dialog header=\"Confirm Deletion\" [(visible)]=\"displayDeleteDialog\" modal=\"modal\" showEffect=\"fade\">\r\n        <p>\r\n            Are you sure to delete the following contact?\r\n        </p>\r\n        <p>\r\n            <strong>{{ fullname }}</strong><br />\r\n        </p>\r\n        <footer>\r\n            <div class=\"ui-dialog-buttonpane ui-widget-content ui-helper-clearfix\">\r\n                <button type=\"button\" pButton icon=\"fa-close\" (click)=\"okDelete(false)\" label=\"No\"></button>\r\n                <button type=\"button\" pButton icon=\"fa-check\" (click)=\"okDelete(true)\" label=\"Yes\"></button>\r\n            </div>\r\n        </footer>\r\n    </p-dialog>-->\r\n\r\n                </div>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>";
+module.exports = "<div class=\"ui-rtl\" dir=\"rtl\">\r\n    <table style=\"width:80%;margin-left: 100px\">\r\n        <tr>\r\n            <td>\r\n                <h2></h2>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <!--<button type=\"button\" pButton icon=\"fa-plus\" style=\"float:left\" (click)=\"showDialogToAdd()\" label=\"Add\"></button>-->\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>\r\n                <br />\r\n                <div class=\"ContentSideSections Implementation\">\r\n                    <p-dataTable [value]=\"rowData\" [rows]=\"10\" [lazy]=\"true\" [paginator]=\"true\" [editable]=\"true\"\r\n                 resizableColumns=\"true\" [totalRecords]=\"totalRecords\" (onLazyLoad)=\"loadAccountLazy($event)\"  columnResizeMode=\"expand\"  [rowsPerPageOptions]=\"[5,10,20]\">\r\n        <header>لیست حساب ها</header>\r\n        <p-column field=\"code\" [filter]=\"true\" [editable]=\"true\" [style]=\"{'width':'50px'}\" header=\"کد حساب\" [sortable]=\"true\"></p-column>\r\n        <p-column field=\"name\" [filter]=\"true\" [editable]=\"true\" header=\"نام حساب\" [sortable]=\"true\"></p-column>        \r\n        <p-column field=\"fiscalPeriodId\" [filter]=\"true\" [style]=\"{'width':'200px'}\" header=\"کد دوره\" [sortable]=\"true\"></p-column>\r\n        <p-column field=\"description\"  [editable]=\"true\" header=\"توضیحات\" [sortable]=\"true\"></p-column>\r\n        <p-column header=\"Edit\">\r\n            <ng-template let-col let-contact=\"rowData\" pTemplate type=\"body\">\r\n                <button type=\"button\" pButton icon=\"fa-check\" (click)=\"showDialogToEdit(contact)\" label=\"Edit\"></button>\r\n            </ng-template>\r\n        </p-column>\r\n        <p-column header=\"Delete\">\r\n            <ng-template let-col let-contact=\"rowData\" pTemplate type=\"body\">\r\n                <button type=\"button\" pButton icon=\"fa-close\" (click)=\"showDialogToDelete(contact)\" label=\"حذف\"></button>\r\n            </ng-template>\r\n        </p-column>\r\n        <footer><div class=\"ui-helper-clearfix\" style=\"width:100%\"></div></footer>\r\n    </p-dataTable>\r\n    \r\n                    <!--<p-dialog header=\"Contact Details\" [(visible)]=\"displayDialog\" [responsive]=\"true\" showEffect=\"fade\" [modal]=\"true\">\r\n        <div class=\"ui-grid ui-grid-responsive ui-fluid ui-grid-pad\">\r\n            <div class=\"ui-grid-row\">\r\n                <div class=\"ui-grid-col-4\"><label for=\"firstname\">FirstName</label></div>\r\n                <div class=\"ui-grid-col-8\"><input pInputText id=\"vin\" [(ngModel)]=\"contact.firstName\" /></div>\r\n            </div>\r\n            <div class=\"ui-grid-row\">\r\n                <div class=\"ui-grid-col-4\"><label for=\"lastname\">LastName</label></div>\r\n                <div class=\"ui-grid-col-8\"><input pInputText id=\"lastname\" [(ngModel)]=\"contact.lastName\" /></div>\r\n            </div>\r\n            <div class=\"ui-grid-row\">\r\n                <div class=\"ui-grid-col-4\"><label for=\"email\">Email</label></div>\r\n                <div class=\"ui-grid-col-8\"><input type=\"email\" pInputText id=\"email\" [(ngModel)]=\"contact.email\" /></div>\r\n            </div>\r\n            <div class=\"ui-grid-row\">\r\n                <div class=\"ui-grid-col-4\"><label for=\"mobile\">Phone</label></div>\r\n                <div class=\"ui-grid-col-8\"><input pInputText id=\"mobile\" [(ngModel)]=\"contact.phone\" /></div>\r\n            </div>\r\n        </div>\r\n        <footer>\r\n            <div class=\"ui-dialog-buttonpane ui-widget-content ui-helper-clearfix\">\r\n                <button type=\"button\" pButton icon=\"fa-close\" (click)=\"cancel()\" label=\"Cancel\"></button>\r\n                <button type=\"button\" pButton icon=\"fa-check\" (click)=\"save()\" *ngIf=\"newContact\" label=\"Save\"></button>\r\n                <button type=\"button\" pButton icon=\"fa-check\" (click)=\"save()\" *ngIf=\"!newContact\" label=\"Update\"></button>\r\n            </div>\r\n        </footer>\r\n    </p-dialog>-->\r\n    <p-dialog header=\"Confirm Deletion\" [(visible)]=\"displayDeleteDialog\" modal=\"modal\" showEffect=\"fade\">\r\n        <p>\r\n            آیا برای حدف رکورد اطمینان دارید؟\r\n        </p>\r\n        <p>\r\n            <strong>{{ fullname }}</strong><br />\r\n        </p>\r\n        <footer>\r\n            <div class=\"ui-dialog-buttonpane ui-widget-content ui-helper-clearfix\">\r\n                <button type=\"button\" pButton icon=\"fa-close\" (click)=\"okDelete(false)\" label=\"No\"></button>\r\n                <button type=\"button\" pButton icon=\"fa-check\" (click)=\"okDelete(true)\" label=\"Yes\"></button>\r\n            </div>\r\n        </footer>\r\n    </p-dialog>\r\n\r\n                </div>\r\n            </td>\r\n        </tr>\r\n    </table>\r\n</div>";
 
 /***/ }),
 /* 109 */

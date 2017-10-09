@@ -18,6 +18,7 @@ export class AccountService
 
     private _getTotalCountUrl = "/Account/GetTotalCount";
 
+    private _deleteAccountsUrl = "/Account/DeleteAccount";
 
     headers: Headers;
     options: RequestOptions;
@@ -91,7 +92,20 @@ export class AccountService
             .map(response => <any>(<Response>response).json());
     }
 
+    delete(accountId: number) : Observable<string>
+    {
+        //ToDo : call api for delete entity
 
+        var deleteByIdUrl = this._deleteAccountsUrl + '/' + accountId
+
+        return this.http.post(deleteByIdUrl,this.options)
+            .map(response => response.json().message)
+            .catch(this.handleError);
+    }
+
+    private handleError(error: Response) {
+        return Observable.throw(error.json().error || 'Opps!! Server error');
+    }
 
 
 }

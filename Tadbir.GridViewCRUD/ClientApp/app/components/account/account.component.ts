@@ -1,6 +1,9 @@
 ﻿import { Component, OnInit } from '@angular/core';
 
 import { AccountService } from '../../service/index';
+
+import { Account } from '../../model/index';
+
 import { InputTextModule, DataTableModule, ButtonModule, DialogModule } from 'primeng/primeng'; /** add components for test DataGrid functionality */
 import { ToastrService } from 'toastr-ng2'; /** add this component for message in client side */
 import {LazyLoadEvent,FilterMetadata} from 'primeng/primeng';
@@ -22,27 +25,37 @@ export class AccountComponent  implements OnInit {
 
     public totalRecords: number;
 
+    //variable for visible delete confirm dialog
+    displayDeleteDialog: boolean;
+    deleteAccountId: number;
+    //for add in delete messageText
+    fullname: string;
+
+
+
     ngOnInit()
     {
         this.loadData();
     }   
 
     constructor(private accountService : AccountService,private toastrService: ToastrService){}
-
-
+    
 
     loadData() {
 
+        //evaluate total row counts for gird paging 
         this.accountService.getTotalCount().subscribe(res => {
                 this.totalRecords = res.result;
             });           
-
-        //this.accountService.search(0,10,"","").subscribe(res => {
-        //        this.rowData = res.result;
-        //    });           
+        
     }
+
+
     
-   getFilters(event: LazyLoadEvent) : Filter[]
+
+    //LoadAccount
+
+    getFilters(event: LazyLoadEvent) : Filter[]
    {
        let filters : Filter[] = [];
 
@@ -80,8 +93,36 @@ export class AccountComponent  implements OnInit {
          this.accountService.search(event.first,event.rows,order,filter).subscribe(res => {
                 this.rowData = res.result;
             });        
+    }  
+
+    //LoadAccount
+        
+
+    //Delete Account 
+
+    showDialogToDelete(account: Account) {
+        this.fullname = account.name;
+        this.deleteAccountId = account.id;
+        this.displayDeleteDialog = true;
     }
-  
+
+    deleteAccount(confirm : boolean)
+    {
+        if (confirm)
+        {
+            this.accountService.delete(this.deleteAccountId).subscribe(response => {
+                this.deleteAccountId = 0;
+                this.loadData();
+            });
+        }
+
+        //hide confirm dialog
+        this.displayDeleteDialog = false;
+    }
+
+    //Delete Account
+
+
 }
 
 

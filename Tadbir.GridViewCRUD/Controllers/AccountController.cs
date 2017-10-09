@@ -44,11 +44,18 @@ namespace Tadbir.GridViewCRUD.Controllers
             var data = await AccountRepo.GetAllAccount();
             return Json(new { result = data.Count });
         }
-              
 
-        
-        
-        
+
+
+
+
+        [HttpPost, Produces("application/json")]
+        [Route("/Account/GetLazyAccounts/{id}")]
+        public async Task<IActionResult> DeleteAccount(int id)
+        {
+            var data = await AccountRepo.DeleteAccount(id);
+            return Json(new { result = data });
+        }
 
 
 

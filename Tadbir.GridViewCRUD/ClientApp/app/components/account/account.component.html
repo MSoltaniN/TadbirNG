@@ -28,7 +28,7 @@
         </p-column>
         <p-column header="Delete">
             <ng-template let-col let-contact="rowData" pTemplate type="body">
-                <button type="button" pButton icon="fa-close" (click)="showDialogToDelete(contact)" label="Delete"></button>
+                <button type="button" pButton icon="fa-close" (click)="showDialogToDelete(contact)" label="حذف"></button>
             </ng-template>
         </p-column>
         <footer><div class="ui-helper-clearfix" style="width:100%"></div></footer>
@@ -60,10 +60,10 @@
                 <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="!newContact" label="Update"></button>
             </div>
         </footer>
-    </p-dialog>
+    </p-dialog>-->
     <p-dialog header="Confirm Deletion" [(visible)]="displayDeleteDialog" modal="modal" showEffect="fade">
         <p>
-            Are you sure to delete the following contact?
+            آیا برای حدف رکورد اطمینان دارید؟
         </p>
         <p>
             <strong>{{ fullname }}</strong><br />
@@ -74,7 +74,7 @@
                 <button type="button" pButton icon="fa-check" (click)="okDelete(true)" label="Yes"></button>
             </div>
         </footer>
-    </p-dialog>-->
+    </p-dialog>
 
                 </div>
             </td>

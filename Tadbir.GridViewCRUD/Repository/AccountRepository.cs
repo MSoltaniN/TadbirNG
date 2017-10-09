@@ -9,6 +9,13 @@ namespace Tadbir.GridViewCRUD
 {
     public class AccountRepository : IAccountRepository
     {
+        public async Task<bool> DeleteAccount(int id)
+        {
+            
+
+            return 1 > 0;
+        }
+
         public async Task<List<AccountViewModel>> GetAllAccount()
         {
             List<AccountViewModel> accounts = new List<AccountViewModel>();

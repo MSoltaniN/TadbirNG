@@ -7,6 +7,8 @@ namespace Tadbir.GridViewCRUD
     public interface IAccountRepository
     {
         Task<List<AccountViewModel>> GetAllAccount();
-        
+
+        Task<bool> DeleteAccount(int id);
+
     }
 }
