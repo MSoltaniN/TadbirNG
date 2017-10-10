@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 
-import { AccountService } from '../../service/index';
+import { AccountService, AccountInfo } from '../../service/index';
 
 import { Account } from '../../model/index';
 
@@ -8,6 +8,8 @@ import { InputTextModule, DataTableModule, ButtonModule, DialogModule } from 'pr
 import { ToastrService } from 'toastr-ng2'; /** add this component for message in client side */
 import {LazyLoadEvent,FilterMetadata} from 'primeng/primeng';
 import {Filter} from '../../class/filter';
+
+
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -28,10 +30,16 @@ export class AccountComponent  implements OnInit {
     //variable for visible delete confirm dialog
     displayDeleteDialog: boolean;
     deleteAccountId: number;
+
     //for add in delete messageText
     fullname: string;
 
+    //variable for edit dialog
+    displayEditDialog: boolean;
 
+
+    newAccount : boolean;
+    account : Account = new AccountInfo
 
     ngOnInit()
     {
@@ -46,7 +54,9 @@ export class AccountComponent  implements OnInit {
         //evaluate total row counts for gird paging 
         this.accountService.getTotalCount().subscribe(res => {
                 this.totalRecords = res.result;
-            });           
+        });
+
+      
         
     }
 
@@ -96,7 +106,29 @@ export class AccountComponent  implements OnInit {
     }  
 
     //LoadAccount
-        
+
+    //Edit Account
+
+    cancel() {
+        this.account = new AccountInfo();
+        this.displayEditDialog = false;
+    }
+
+    showDialogToEdit(acc: Account)
+    {
+        this.newAccount = false;
+        this.account = new AccountInfo();
+        this.account.id = acc.id;
+        this.account.code = acc.code;
+        this.account.name = acc.name;
+        this.account.description = acc.description;
+        this.account.fiscalPeriodId = acc.fiscalPeriodId;
+
+        this.displayEditDialog = true; 
+    }
+
+    //Edit Account
+
 
     //Delete Account 
 
@@ -122,6 +154,12 @@ export class AccountComponent  implements OnInit {
 
     //Delete Account
 
+    
+
+    //Add Account
+
+
+    //Add Account
 
 }
 

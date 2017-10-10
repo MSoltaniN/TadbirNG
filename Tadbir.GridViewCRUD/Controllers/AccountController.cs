@@ -44,10 +44,7 @@ namespace Tadbir.GridViewCRUD.Controllers
             var data = await AccountRepo.GetAllAccount();
             return Json(new { result = data.Count });
         }
-
-
-
-
+        
 
         [HttpPost, Produces("application/json")]
         [Route("/Account/GetLazyAccounts/{id}")]
@@ -62,10 +59,7 @@ namespace Tadbir.GridViewCRUD.Controllers
         [HttpPost, Produces("application/json")]       
         [Route("/Account/GetLazyAccounts")]
         public async Task<IActionResult> GetLazyAccounts([FromBody] Options option)
-        { 
-           
-
-
+        {            
             var data = await AccountRepo.GetAllAccount();
             return Json(new { result = data.Skip(option.Start).Take(option.Count) });
         }
