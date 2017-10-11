@@ -15,6 +15,10 @@ import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 
 
+declare var jquery: any;
+declare var $: any;
+
+
 @Component({
     selector: 'account',
     templateUrl: './account.component.html'
@@ -155,7 +159,6 @@ export class AccountComponent  implements OnInit {
     //Delete Account
 
     
-
     //Add Account
 
 
