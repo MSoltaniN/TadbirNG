@@ -15,11 +15,11 @@
                 <br />
                 <div class="ContentSideSections Implementation">
                     <p-dataTable [value]="rowData" [rows]="10" [lazy]="true" [paginator]="true" [editable]="true"
-                 resizableColumns="true" [totalRecords]="totalRecords" [responsive]="true" (onLazyLoad)="loadAccountLazy($event)"  columnResizeMode="expand"  [rowsPerPageOptions]="[5,10,20]">
+                 resizableColumns="true" [totalRecords]="totalRecords" [responsive]="true" [stacked]="stacked" (onLazyLoad)="loadAccountLazy($event)"  columnResizeMode="expand"  [rowsPerPageOptions]="[5,10,20]">
         <header>لیست حساب ها</header>
-        <p-column field="code" [filter]="true" [editable]="true" [style]="{'width':'50px'}" header="کد حساب" [sortable]="true"></p-column>
+        <p-column field="code" [filter]="true" [editable]="true" header="کد حساب" [sortable]="true"></p-column>
         <p-column field="name" [filter]="true" [editable]="true" header="نام حساب" [sortable]="true"></p-column>        
-        <p-column field="fiscalPeriodId" [filter]="true" [style]="{'width':'200px'}" header="کد دوره" [sortable]="true"></p-column>
+        <p-column field="fiscalPeriodId" [filter]="true"  header="کد دوره" [sortable]="true"></p-column>
         <p-column field="description"  [editable]="true" header="توضیحات" [sortable]="true"></p-column>
         <p-column header="ویرایش">
             <ng-template let-col let-account="rowData" pTemplate type="body">

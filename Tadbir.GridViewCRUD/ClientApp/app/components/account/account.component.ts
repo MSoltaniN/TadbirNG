@@ -123,7 +123,7 @@ export class AccountComponent  implements OnInit {
         this.account.name = acc.name;
         this.account.description = acc.description;
         this.account.fiscalPeriodId = acc.fiscalPeriodId;
-
+        
         this.displayEditDialog = true; 
     }
 
