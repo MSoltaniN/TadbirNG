@@ -48,7 +48,8 @@
     "webpack-merge": "4.1.0",
     "zone.js": "0.8.12",
     "primeng": "4.2.1",
-    "toastr-ng2": "4.1.1"
+    "toastr-ng2": "4.1.1",
+    "angular-footable": "0.0.3"
   },
   "devDependencies": {
     "@types/chai": "4.0.1",

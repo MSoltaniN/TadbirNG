@@ -15,9 +15,6 @@ import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 
 
-declare var jquery: any;
-declare var $: any;
-
 
 @Component({
     selector: 'account',
@@ -48,7 +45,11 @@ export class AccountComponent  implements OnInit {
     ngOnInit()
     {
         this.loadData();
+        
     }   
+
+
+    
 
     constructor(private accountService : AccountService,private toastrService: ToastrService){}
     
@@ -118,18 +119,21 @@ export class AccountComponent  implements OnInit {
         this.displayEditDialog = false;
     }
 
-    showDialogToEdit(acc: Account)
+    save()
     {
-        this.newAccount = false;
-        this.account = new AccountInfo();
-        this.account.id = acc.id;
-        this.account.code = acc.code;
-        this.account.name = acc.name;
-        this.account.description = acc.description;
-        this.account.fiscalPeriodId = acc.fiscalPeriodId;
 
-        this.displayEditDialog = true; 
+        this.accountService.saveAccount(this.account)
+            .subscribe(response => {
+                this.account.id > 0 ? this.toastrService.success('اطلاعات حساب با موفقیت ثبت شد') :
+                    this.toastrService.success('اطلاعات حساب با موفقیت ویرایش شد');
+                this.loadData();
+            });
+        
+        this.displayEditDialog = false;
     }
+
+    
+    
 
     //Edit Account
 
@@ -160,6 +164,18 @@ export class AccountComponent  implements OnInit {
 
     
     //Add Account
+
+    showDialogToAdd(acc: Account) {
+        this.newAccount = false;
+        this.account = new AccountInfo();
+        this.account.id = acc.id;
+        this.account.code = acc.code;
+        this.account.name = acc.name;
+        this.account.description = acc.description;
+        this.account.fiscalPeriodId = acc.fiscalPeriodId;
+
+        this.displayEditDialog = true;
+    }
 
 
     //Add Account

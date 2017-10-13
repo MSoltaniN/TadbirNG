@@ -13,6 +13,9 @@ import { InputTextModule, DataTableModule, ButtonModule, DialogModule } from 'pr
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { AccountComponent } from './components/account/account.component';
+
+
+
 //import { InputComponent } from './components/input/input.component';
 
 import { AccountService } from './service/index';
@@ -26,6 +29,7 @@ class AppBaseRequestOptions extends BaseRequestOptions {
     }
 }
 
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -36,7 +40,7 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: RequestOptions, useClass: AppBaseRequestOptions }],
     imports: [
-        CommonModule,
+        CommonModule,         
         HttpModule,
         FormsModule,
         BrowserAnimationsModule,

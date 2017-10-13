@@ -26,6 +26,8 @@ export class AccountService
 
     private _deleteAccountsUrl = "/Account/DeleteAccount";
 
+    private _saveAccountsUrl = "/Account/SaveAccount";
+
     headers: Headers;
     options: RequestOptions;
 
@@ -96,6 +98,17 @@ export class AccountService
 
         return this.http.post(url,JSON.stringify(postItem), Option)
             .map(response => <any>(<Response>response).json());
+    }
+
+    
+    saveAccount(account: Account): Observable<string> {
+        let body = JSON.stringify(account);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.post(this._saveAccountsUrl, body, options)
+            .map(res => res.json().message)
+            .catch(this.handleError);
     }
 
     delete(accountId: number) : Observable<string>

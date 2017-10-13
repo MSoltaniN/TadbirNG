@@ -13,7 +13,15 @@ namespace Tadbir.GridViewCRUD
         {
             
 
-            return 1 > 0;
+            return true;
+        }
+
+
+        public async Task<bool> SaveAccount(AccountViewModel account)
+        {
+
+
+            return true;
         }
 
         public async Task<List<AccountViewModel>> GetAllAccount()

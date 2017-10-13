@@ -41,8 +41,11 @@ namespace Tadbir.GridViewCRUD.Controllers
         [Route("/Account/GetTotalCount")]
         public async Task<IActionResult> GetTotalCount()
         {
+            
             var data = await AccountRepo.GetAllAccount();
             return Json(new { result = data.Count });
+
+            
         }
         
 
@@ -54,6 +57,14 @@ namespace Tadbir.GridViewCRUD.Controllers
             return Json(new { result = data });
         }
 
+
+        [HttpPost, Produces("application/json")]
+        [Route("/Account/SaveAccount")]
+        public async Task<IActionResult> SaveAccount([FromBody] AccountViewModel account)
+        {
+            var data = await AccountRepo.SaveAccount(account);
+            return Json(new { result = data });
+        }
 
 
         [HttpPost, Produces("application/json")]       

@@ -10,5 +10,7 @@ namespace Tadbir.GridViewCRUD
 
         Task<bool> DeleteAccount(int id);
 
+        Task<bool> SaveAccount(AccountViewModel account);
+
     }
 }
