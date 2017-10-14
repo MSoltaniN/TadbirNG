@@ -3,8 +3,9 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Account } from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
- 
 
+
+import { string } from "string-format";
 
 export class AccountInfo implements Account
 {
@@ -20,13 +21,15 @@ export class AccountInfo implements Account
 @Injectable()
 export class AccountService 
 {
-    private _getAccountsUrl = "/Account/GetLazyAccounts";
+    private _getAccountsUrl = "/accounts/fp/{0}/branch/{1}";
 
     private _getTotalCountUrl = "/Account/GetTotalCount";
 
-    private _deleteAccountsUrl = "/Account/DeleteAccount";
+    private _deleteAccountsUrl = "/accounts/";
 
-    private _saveAccountsUrl = "/Account/SaveAccount";
+    private _postNewAccountsUrl = "/accounts/PostNewAccount";
+
+    private _postModifiedAccountsUrl = "/accounts/PutModifiedAccount";
 
     headers: Headers;
     options: RequestOptions;
@@ -66,6 +69,7 @@ export class AccountService
 
         var url = this._getAccountsUrl;
 
+        
         let params: URLSearchParams = new URLSearchParams();
 
               
@@ -94,7 +98,7 @@ export class AccountService
 
         this.options = new RequestOptions({ headers: this.headers });
 
-
+        var test = string.format('test {0}', '1');
 
         return this.http.post(url,JSON.stringify(postItem), Option)
             .map(response => <any>(<Response>response).json());
@@ -106,7 +110,7 @@ export class AccountService
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
 
-        return this.http.post(this._saveAccountsUrl, body, options)
+        return this.http.post(this._postNewAccountsUrl, body, options)
             .map(res => res.json().message)
             .catch(this.handleError);
     }
