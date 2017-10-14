@@ -112,6 +112,12 @@ namespace SPPC.Tadbir.Service
             _apiClient.Delete(RequisitionApi.RequisitionLine, id, lineId);
         }
 
+        /// <summary>
+        /// یک درخواست کالای موجود را به وضعیت تنظیم شده می برد
+        /// </summary>
+        /// <param name="id">شناسه دیتابیسی یک درخواست کالای موجود</param>
+        /// <param name="paraph">پاراف متنی اختیاری برای گیرنده کار</param>
+        /// <returns>اطلاعات پاسخ دریافت شده از سرویس</returns>
         public ServiceResponse Prepare(int id, string paraph = null)
         {
             var detail = new ActionDetailViewModel() { Paraph = paraph };

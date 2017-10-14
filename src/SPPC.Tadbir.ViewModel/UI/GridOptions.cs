@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace SPPC.Tadbir.ViewModel.UI
+{
+    /// <summary>
+    /// گزینه های مختلف برای کنترل سطرهای اطلاعاتی نمایش داده شده در یک نمای جدولی را نگهداری می کند
+    /// </summary>
+    public class GridOptions
+    {
+        /// <summary>
+        /// شماره اولین سطر اطلاعاتی در نمای جدولی بر اساس صفحه بندی جاری
+        /// </summary>
+        public int Start { get; set; }
+
+        /// <summary>
+        /// تعداد سطرهای اطلاعاتی مورد نیاز بر اساس صفحه بندی جاری
+        /// </summary>
+        public int Count { get; set; }
+
+        /// <summary>
+        /// مجموعه ای از فیلترهای فعال در نمای جدولی اطلاعات
+        /// </summary>
+        public IList<GridFilter> Filters { get; set; }
+
+        /// <summary>
+        /// اطلاعات مربوط به نحوه مرتب سازی سطرهای داده ای در نمای جدولی
+        /// </summary>
+        public string Order { get; set; }
+    }
+}

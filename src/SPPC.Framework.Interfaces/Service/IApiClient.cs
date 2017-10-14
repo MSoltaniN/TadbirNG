@@ -18,6 +18,17 @@ namespace SPPC.Framework.Service
         T Get<T>(string apiUrl, params object[] apiUrlArgs);
 
         /// <summary>
+        /// Retrieves data by sending an HTTP GET request to a Web API service.
+        /// </summary>
+        /// <typeparam name="T">Type of data to retrieve</typeparam>
+        /// <typeparam name="TData">Type of request data to pass</typeparam>
+        /// <param name="data">Additional data used by service request</param>
+        /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
+        /// <param name="apiUrlArgs">Variable array of arguments required by the API URL</param>
+        /// <returns>Requested data deserialized from the API Service response</returns>
+        T Get<T, TData>(TData data, string apiUrl, params object[] apiUrlArgs);
+
+        /// <summary>
         /// Inserts data by sending an HTTP POST request to a Web API service.
         /// </summary>
         /// <typeparam name="T">Type of data to insert</typeparam>

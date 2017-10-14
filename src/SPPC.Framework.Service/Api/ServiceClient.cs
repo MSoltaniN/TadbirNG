@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using BabakSoft.Platform.Configuration;
 using SPPC.Framework.Helpers;
@@ -38,6 +39,32 @@ namespace SPPC.Framework.Service
             T value = default(T);
             var url = GetApiResourceUrl(apiUrl, apiUrlArgs);
             var response = _httpClient.GetAsync(url).Result;
+            var serviceResponse = GetResponse(response);
+            if (serviceResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
+            {
+                value = Json.To<T>(response.Content.ReadAsStringAsync().Result);
+            }
+
+            return value;
+        }
+
+        /// <summary>
+        /// Retrieves data by sending an HTTP GET request to a Web API service.
+        /// </summary>
+        /// <typeparam name="T">Type of data to retrieve</typeparam>
+        /// <typeparam name="TData">Type of request data to pass</typeparam>
+        /// <param name="data">Additional data used by service request</param>
+        /// <param name="apiUrl">A URL value understandable by the underlying API controller</param>
+        /// <param name="apiUrlArgs">Variable array of arguments required by the API URL</param>
+        /// <returns>Requested data deserialized from the API Service response</returns>
+        public T Get<T, TData>(TData data, string apiUrl, params object[] apiUrlArgs)
+        {
+            T value = default(T);
+            var request = new HttpRequestMessage(HttpMethod.Get, GetApiResourceUrl(apiUrl, apiUrlArgs))
+            {
+                Content = new StringContent(Json.From(data, false), Encoding.UTF8, "application/json")
+            };
+            var response = _httpClient.SendAsync(request).Result;
             var serviceResponse = GetResponse(response);
             if (serviceResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
             {
@@ -143,7 +170,7 @@ namespace SPPC.Framework.Service
         {
             var resourceUrl = String.Format(apiResource, args);
             return new Uri(String.Format("{0}{1}", _httpClient.BaseAddress.ToString(), resourceUrl));
-        } 
+        }
 
         /// <summary>
         /// Internal object used for sending HTTP requests

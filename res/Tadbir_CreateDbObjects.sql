@@ -633,6 +633,7 @@ GO
 CREATE TABLE [Inventory].[ProductInventory] (
     [ProductInventoryID]   INT              IDENTITY (1, 1) NOT NULL,
     [ProductID]            INT              NOT NULL,
+    [UomID]                INT              NOT NULL,
     [WarehouseID]          INT              NOT NULL,
     [FiscalPeriodID]       INT              NOT NULL,
     [BranchID]             INT              NOT NULL,

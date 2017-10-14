@@ -10,4 +10,5 @@ lib/
 
 # Ignore generated files
 res/_codegen_
-/doc/~$mplete-Workflow.docx
+doc/~$mplete-Workflow.docx
+.vs/

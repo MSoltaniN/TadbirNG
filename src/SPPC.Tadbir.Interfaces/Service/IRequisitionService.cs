@@ -58,6 +58,12 @@ namespace SPPC.Tadbir.Service
         /// <param name="lineId">شناسه دیتابیسی یک سطر درخواست کالای موجود</param>
         void DeleteRequisitionLine(int id, int lineId);
 
+        /// <summary>
+        /// یک درخواست کالای موجود را به وضعیت تنظیم شده می برد
+        /// </summary>
+        /// <param name="id">شناسه دیتابیسی یک درخواست کالای موجود</param>
+        /// <param name="paraph">پاراف متنی اختیاری برای گیرنده کار</param>
+        /// <returns>اطلاعات پاسخ دریافت شده از سرویس</returns>
         ServiceResponse Prepare(int id, string paraph = null);
     }
 }

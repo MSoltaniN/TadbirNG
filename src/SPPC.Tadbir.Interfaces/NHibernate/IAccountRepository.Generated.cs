@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.UI;
 
 namespace SPPC.Tadbir.NHibernate
 {
@@ -26,8 +27,9 @@ namespace SPPC.Tadbir.NHibernate
         /// </summary>
         /// <param name="fpId">Identifier of an existing fiscal period</param>
         /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <param name="options">Options used for displaying data in a tabular grid view</param>
         /// <returns>A collection of <see cref="AccountViewModel"/> objects retrieved from repository</returns>
-        IList<AccountViewModel> GetAccounts(int fpId, int branchId);
+        IList<AccountViewModel> GetAccounts(int fpId, int branchId, GridOptions options = null);
 
         /// <summary>
         /// Retrieves a single account specified by Id from repository.

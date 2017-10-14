@@ -72,8 +72,14 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string RequisitionDetailsUrl = "requisitions/{voucherId:int}/details";
 
+        /// <summary>
+        /// API client URL for preparing a requisition voucher
+        /// </summary>
         public const string Prepare = "requisitions/{0}/prepare";
 
+        /// <summary>
+        /// API server route URL for preparing a requisition voucher
+        /// </summary>
         public const string PrepareUrl = "requisitions/{voucherId:int}/prepare";
     }
 }

@@ -71,7 +71,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             _controller.GetAccounts(_fpId, _branchId);
 
             // Assert
-            _mockRepository.Verify(repo => repo.GetAccounts(_fpId, _branchId));
+            _mockRepository.Verify(repo => repo.GetAccounts(_fpId, _branchId, null));
         }
 
         [Test]

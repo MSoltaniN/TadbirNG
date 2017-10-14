@@ -13,13 +13,14 @@
 using System;
 using System.Net;
 using System.Web.Http;
-using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.NHibernate;
-using SPPC.Tadbir.Values;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
-using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.UI;
+using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -33,7 +34,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accounts/fp/{fpId:int}/branch/{branchId:int}
         [Route(AccountApi.FiscalPeriodBranchAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public IHttpActionResult GetAccounts(int fpId, int branchId)
+        public IHttpActionResult GetAccounts(int fpId, int branchId, [FromBody] GridOptions options = null)
         {
             if (fpId <= 0 || branchId <= 0)
             {

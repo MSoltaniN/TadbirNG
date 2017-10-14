@@ -144,6 +144,8 @@
     <Compile Include="Settings\WorkflowEditionViewModel.cs" />
     <Compile Include="Settings\WorkflowSettingsViewModel.cs" />
     <Compile Include="Settings\WorkflowViewModel.cs" />
+    <Compile Include="UI\GridFilter.cs" />
+    <Compile Include="UI\GridOptions.cs" />
     <Compile Include="Warehousing\IssueReceiptVoucherLineViewModel.Generated.cs" />
     <Compile Include="Warehousing\IssueReceiptVoucherTypeViewModel.Generated.cs" />
     <Compile Include="Warehousing\IssueReceiptVoucherViewModel.Generated.cs" />

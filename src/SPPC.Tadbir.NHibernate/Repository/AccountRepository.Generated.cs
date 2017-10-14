@@ -18,6 +18,7 @@ using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
 using BabakSoft.Platform.Common;
 using BabakSoft.Platform.Persistence;
+using SPPC.Tadbir.ViewModel.UI;
 
 namespace SPPC.Tadbir.NHibernate
 {
@@ -44,8 +45,9 @@ namespace SPPC.Tadbir.NHibernate
         /// </summary>
         /// <param name="fpId">Identifier of an existing fiscal period</param>
         /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <param name="options">Options used for displaying data in a tabular grid view</param>
         /// <returns>A collection of <see cref="AccountViewModel"/> objects retrieved from database</returns>
-        public IList<AccountViewModel> GetAccounts(int fpId, int branchId)
+        public IList<AccountViewModel> GetAccounts(int fpId, int branchId, GridOptions options = null)
         {
             var repository = _unitOfWork.GetRepository<Account>();
             var accounts = repository
