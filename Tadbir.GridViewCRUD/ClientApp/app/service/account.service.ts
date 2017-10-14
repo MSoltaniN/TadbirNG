@@ -5,7 +5,10 @@ import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 
 
-import { string } from "string-format";
+import { String } from 'typescript-string-operations/source/source';
+import { expect } from 'chai';
+import 'mocha';
+
 
 export class AccountInfo implements Account
 {
@@ -98,7 +101,11 @@ export class AccountService
 
         this.options = new RequestOptions({ headers: this.headers });
 
-        var test = string.format('test {0}', '1');
+        let template = "{0:s}";
+        let valueToInsert = new Date(2017, 4, 13);
+
+        let expectedValue = "2017-04-13";
+        let result = String.Format(template, valueToInsert);
 
         return this.http.post(url,JSON.stringify(postItem), Option)
             .map(response => <any>(<Response>response).json());

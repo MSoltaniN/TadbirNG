@@ -31,7 +31,7 @@ namespace Tadbir.GridViewCRUD.Controllers
 
 
         [HttpGet, Produces("application/json")]
-        [Route("accounts/")]
+        [Route("accounts/GetTotalCount")]
         public async Task<IActionResult> GetTotalCount()
         {
             
