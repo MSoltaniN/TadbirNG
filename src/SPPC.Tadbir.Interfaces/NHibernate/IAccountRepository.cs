@@ -36,5 +36,13 @@ namespace SPPC.Tadbir.NHibernate
         /// </summary>
         /// <param name="accountId">Identifier of the account to delete</param>
         void DeleteAccount(int accountId);
+
+        /// <summary>
+        /// Retrieves the count of all account items in a specified fiscal period and branch
+        /// </summary>
+        /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <returns>Count of all account items</returns>
+        int GetCount(int fpId, int branchId);
     }
 }

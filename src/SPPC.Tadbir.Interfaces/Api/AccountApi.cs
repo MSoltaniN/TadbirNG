@@ -23,6 +23,16 @@ namespace SPPC.Tadbir.Api
         public const string FiscalPeriodBranchAccountsUrl = "accounts/fp/{fpId:int}/branch/{branchId:int}";
 
         /// <summary>
+        /// API client URL for count of all accounts defined in a fiscal period and a corporate branch
+        /// </summary>
+        public const string FiscalPeriodBranchItemCount = "accounts/fp/{0}/branch/{1}/count";
+
+        /// <summary>
+        /// API server route URL for count of all accounts defined in a fiscal period and a corporate branch
+        /// </summary>
+        public const string FiscalPeriodBranchItemCountUrl = "accounts/fp/{fpId:int}/branch/{branchId:int}/count";
+
+        /// <summary>
         /// API client URL for a single account specified by identifier
         /// </summary>
         public const string Account = "accounts/{0}";

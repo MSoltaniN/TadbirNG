@@ -77,6 +77,21 @@ namespace SPPC.Tadbir.NHibernate
             }
         }
 
+        /// <summary>
+        /// Retrieves the count of all account items in a specified fiscal period and branch
+        /// </summary>
+        /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <returns>Count of all account items</returns>
+        public int GetCount(int fpId, int branchId)
+        {
+            var repository = _unitOfWork.GetRepository<Account>();
+            int count = repository
+                .GetByCriteria(acc => acc.FiscalPeriod.Id == fpId && acc.Branch.Id == branchId)
+                .Count();
+            return count;
+        }
+
         static partial void UpdateExistingAccount(AccountViewModel accountViewModel, Account account)
         {
             account.Code = accountViewModel.Code;
