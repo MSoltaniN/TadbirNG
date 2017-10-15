@@ -4,20 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Values;
 using System.Net;
-using SPPC.Framework.Values;
+
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.UI;
+using SPPC.Framework.Values;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Tadbir.GridViewCRUD.Controllers
 {
+    
 
-   
 
     public class AccountController : Controller
     {
@@ -27,18 +29,18 @@ namespace Tadbir.GridViewCRUD.Controllers
         {
             _repository = Repo;
         }
-               
+
 
 
         [HttpGet, Produces("application/json")]
         [Route("accounts/GetTotalCount")]
         public async Task<IActionResult> GetTotalCount()
         {
-            
+
             //var data = await _repository.GetAllAccount();
             return Json(new { result = 50 });
 
-            
+
         }
 
 

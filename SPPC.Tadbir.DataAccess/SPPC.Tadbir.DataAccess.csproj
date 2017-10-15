@@ -32,15 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BabakSoft.Platform.Common">
-      <HintPath>..\asm\BabakSoft.Platform.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="BabakSoft.Platform.Configuration">
-      <HintPath>..\asm\BabakSoft.Platform.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="BabakSoft.Platform.Interfaces">
-      <HintPath>..\asm\BabakSoft.Platform.Interfaces.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.2.0.0\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
     </Reference>
@@ -88,15 +79,6 @@
     </Reference>
     <Reference Include="Remotion.Linq, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.2.1.1\lib\net45\Remotion.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="SPPC.Framework.Common">
-      <HintPath>..\asm\SPPC.Framework.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="SPPC.Framework.Interfaces">
-      <HintPath>..\asm\SPPC.Framework.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="SPPC.Framework.Service">
-      <HintPath>..\asm\SPPC.Framework.Service.dll</HintPath>
     </Reference>
     <Reference Include="SPPC.Tadbir.Common">
       <HintPath>..\asm\SPPC.Tadbir.Common.dll</HintPath>
