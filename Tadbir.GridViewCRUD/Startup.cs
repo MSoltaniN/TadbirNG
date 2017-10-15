@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tadbir.GridViewCRUD;
-using SPPC.Tadbir.NHibernate;
+using SPPC.Tadbir.Business;
 
 namespace Tadbir_GridViewCRUD
 {

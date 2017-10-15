@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "862b8dd0dc29de1521d9"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "e5eb19a761ef815b58cd"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -13332,7 +13332,6 @@ var NavMenuComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_typescript_string_operations_source_source__ = __webpack_require__(450);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_typescript_string_operations_source_source___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_typescript_string_operations_source_source__);
-throw new Error("Cannot find module \"mocha\"");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13342,7 +13341,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
 
 
 
@@ -13367,11 +13365,11 @@ var AccountInfo = (function () {
 var AccountService = (function () {
     function AccountService(http) {
         this.http = http;
-        this._getAccountsUrl = "/accounts/fp/{0}/branch/{1}";
-        this._getTotalCountUrl = "/Account/GetTotalCount";
-        this._deleteAccountsUrl = "/accounts/";
-        this._postNewAccountsUrl = "/accounts/PostNewAccount";
-        this._postModifiedAccountsUrl = "/accounts/PutModifiedAccount";
+        this._getAccountsUrl = "/Account/fp/{0}/branch/{1}";
+        this._getTotalCountUrl = "/Account/Count";
+        this._deleteAccountsUrl = "/Account/Delete";
+        this._postNewAccountsUrl = "/Account/Insert";
+        this._postModifiedAccountsUrl = "/Account/Edit";
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]({
             'Content-Type': 'application/json'
         });
@@ -13409,10 +13407,12 @@ var AccountService = (function () {
         }
         var postItem = { Start: start, Count: count, Filters: filters, Order: orderby };
         this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["RequestOptions"]({ headers: this.headers });
-        var template = "{0:s}";
-        var valueToInsert = new Date(2017, 4, 13);
-        var expectedValue = "2017-04-13";
-        var result = __WEBPACK_IMPORTED_MODULE_4_typescript_string_operations_source_source__["String"].Format(template, valueToInsert);
+        //let template = "{0:s}";
+        //let valueToInsert = new Date(2017, 4, 13);
+        //let expectedValue = "2017-04-13";
+        var fpId = '1';
+        var branchId = '1';
+        var newUrl = __WEBPACK_IMPORTED_MODULE_4_typescript_string_operations_source_source__["String"].Format('{0}pp{1}', '1111', '222');
         return this.http.post(url, JSON.stringify(postItem), Option)
             .map(function (response) { return response.json(); });
     };
@@ -47558,7 +47558,7 @@ var ToastrModule = (function () {
 /* 450 */
 /***/ (function(module, exports) {
 
-throw new Error("Module parse failed: E:\\Tadbir.GridViewCRUD\\Tadbir.GridViewCRUD\\Tadbir.GridViewCRUD\\node_modules\\typescript-string-operations\\source\\source.ts Unexpected token (2:11)\nYou may need an appropriate loader to handle this file type.\n| export class StringBuilder {\n|     public Values: string[] = [];\n| \n|     constructor(value: string = String.Empty) {");
+throw new Error("Module parse failed: C:\\Users\\Nouri\\Documents\\Visual Studio 2017\\Projects\\Tadbir.GridViewCRUD\\Tadbir.GridViewCRUD\\node_modules\\typescript-string-operations\\source\\source.ts Unexpected token (2:11)\nYou may need an appropriate loader to handle this file type.\n| export class StringBuilder {\n|     public Values: string[] = [];\n| \n|     constructor(value: string = String.Empty) {");
 
 /***/ }),
 /* 451 */

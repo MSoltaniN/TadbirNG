@@ -7,7 +7,8 @@ import "rxjs/Rx";
 
 import { String } from 'typescript-string-operations/source/source';
 import { expect } from 'chai';
-import 'mocha';
+
+
 
 
 export class AccountInfo implements Account
@@ -24,15 +25,15 @@ export class AccountInfo implements Account
 @Injectable()
 export class AccountService 
 {
-    private _getAccountsUrl = "/accounts/fp/{0}/branch/{1}";
+    private _getAccountsUrl = "/Account/fp/{0}/branch/{1}";
 
-    private _getTotalCountUrl = "/Account/GetTotalCount";
+    private _getTotalCountUrl = "/Account/Count";
 
-    private _deleteAccountsUrl = "/accounts/";
+    private _deleteAccountsUrl = "/Account/Delete";
 
-    private _postNewAccountsUrl = "/accounts/PostNewAccount";
+    private _postNewAccountsUrl = "/Account/Insert";
 
-    private _postModifiedAccountsUrl = "/accounts/PutModifiedAccount";
+    private _postModifiedAccountsUrl = "/Account/Edit";
 
     headers: Headers;
     options: RequestOptions;
@@ -101,11 +102,14 @@ export class AccountService
 
         this.options = new RequestOptions({ headers: this.headers });
 
-        let template = "{0:s}";
-        let valueToInsert = new Date(2017, 4, 13);
+        //let template = "{0:s}";
+        //let valueToInsert = new Date(2017, 4, 13);
 
-        let expectedValue = "2017-04-13";
-        let result = String.Format(template, valueToInsert);
+        //let expectedValue = "2017-04-13";
+        let fpId = '1';
+        let branchId = '1';
+
+        let newUrl = String.Format('{0}pp{1}', '1111','222');
 
         return this.http.post(url,JSON.stringify(postItem), Option)
             .map(response => <any>(<Response>response).json());
