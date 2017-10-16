@@ -1,82 +1,101 @@
-﻿body {
-    background-color: #222;
+﻿
+tbutton 
+{   
+    float:right;
 }
 
-#preloader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+.divContainer {
+    width: 100%
 }
 
-#loader {
-    display: block;
-    position: relative;
-    left: 50%;
-    top: 50%;
-    width: 150px;
-    height: 150px;
-    margin: -75px 0 0 -75px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #9370db;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
+.tbody {
+    background-color: #2c3e50;
 }
 
-    #loader:before {
-        content: "";
-        position: absolute;
-        top: 5px;
-        left: 5px;
-        right: 5px;
-        bottom: 5px;
-        border-radius: 50%;
-        border: 3px solid transparent;
-        border-top-color: #ba55d3;
-        -webkit-animation: spin 3s linear infinite;
-        animation: spin 3s linear infinite;
+.sk-cube-grid {
+    width: 80px;
+    height: 80px;
+    /*margin: 500px auto;*/
+    position: fixed; /* or absolute */
+    top: 42%;
+    left: 48%;
+
+}
+
+    .sk-cube-grid .sk-cube {
+        width: 33%;
+        height: 33%;
+        background-color: #fff;
+        float: left;
+        -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+        animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
     }
 
-    #loader:after {
-        content: "";
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        right: 15px;
-        bottom: 15px;
-        border-radius: 50%;
-        border: 3px solid transparent;
-        border-top-color: #ff00ff;
-        -webkit-animation: spin 1.5s linear infinite;
-        animation: spin 1.5s linear infinite;
+    .sk-cube-grid .sk-cube1 {
+        -webkit-animation-delay: 0.2s;
+        animation-delay: 0.2s;
     }
 
-@-webkit-keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
+    .sk-cube-grid .sk-cube2 {
+        -webkit-animation-delay: 0.3s;
+        animation-delay: 0.3s;
     }
 
-    100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
+    .sk-cube-grid .sk-cube3 {
+        -webkit-animation-delay: 0.4s;
+        animation-delay: 0.4s;
+    }
+
+    .sk-cube-grid .sk-cube4 {
+        -webkit-animation-delay: 0.1s;
+        animation-delay: 0.1s;
+    }
+
+    .sk-cube-grid .sk-cube5 {
+        -webkit-animation-delay: 0.2s;
+        animation-delay: 0.2s;
+    }
+
+    .sk-cube-grid .sk-cube6 {
+        -webkit-animation-delay: 0.3s;
+        animation-delay: 0.3s;
+    }
+
+    .sk-cube-grid .sk-cube7 {
+        -webkit-animation-delay: 0s;
+        animation-delay: 0s;
+    }
+
+    .sk-cube-grid .sk-cube8 {
+        -webkit-animation-delay: 0.1s;
+        animation-delay: 0.1s;
+    }
+
+    .sk-cube-grid .sk-cube9 {
+        -webkit-animation-delay: 0.2s;
+        animation-delay: 0.2s;
+    }
+
+@-webkit-keyframes sk-cubeGridScaleDelay {
+    0%, 70%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+    }
+
+    35% {
+        -webkit-transform: scale3D(0, 0, 1);
+        transform: scale3D(0, 0, 1);
     }
 }
 
-@keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
+@keyframes sk-cubeGridScaleDelay {
+    0%, 70%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
     }
 
-    100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
+    35% {
+        -webkit-transform: scale3D(0, 0, 1);
+        transform: scale3D(0, 0, 1);
     }
 }

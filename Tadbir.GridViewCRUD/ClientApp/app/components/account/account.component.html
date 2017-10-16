@@ -1,81 +1,68 @@
 ﻿<div class="ui-rtl" dir="rtl">
-    <table>
-        <tr>
-            <td>
-                <h2></h2>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <br />
-                <div class="ContentSideSections Implementation divContainer row" style="width:100%">
-                    <p-dataTable [value]="rowData" [rows]="10" [lazy]="true" [paginator]="true"  [editable]="true"
-                                 resizableColumns="true" [totalRecords]="totalRecords" [responsive]="true" 
-                                 (onLazyLoad)="loadAccountLazy($event)" columnResizeMode="expand" [rowsPerPageOptions]="[5,10,20]">
-                        <header>لیست حساب ها</header>
-                        <p-column field="code" [filter]="true" [editable]="true" header="کد حساب" [sortable]="true"></p-column>
-                        <p-column field="name" [filter]="true" [editable]="true" header="نام حساب" [sortable]="true"></p-column>
-                        <p-column field="fiscalPeriodId" [filter]="true" header="کد دوره" [sortable]="true"></p-column>
-                        <p-column field="description" [editable]="true" header="توضیحات" [sortable]="true"></p-column>
-                        <p-column header="ویرایش">
-                            <ng-template let-col let-account="rowData" pTemplate type="body">
-                                <button type="button" pButton icon="fa-check" (click)="showDialogToEdit(account)" label="ویرایش"></button>
-                            </ng-template>
-                        </p-column>
-                        <p-column header="حذف">
-                            <ng-template let-col let-account="rowData" pTemplate type="body">
-                                <button type="button" pButton icon="fa-close" (click)="showDialogToDelete(account)" label="حذف"></button>
-                            </ng-template>
-                        </p-column>
-                        <footer><div class="ui-helper-clearfix" style="width:100%"></div></footer>
-                    </p-dataTable>
+    <div>
+        <button type="button" pButton icon="fa-plus" class="tbutton" (click)="showDialogToAdd()" label="Add"></button>
+    </div>
+    <div class="ContentSideSections Implementation divContainer" >
+        <p-dataTable [style]="{'margin-top':'20px'}" [value]="rowData" [rows]="10" [lazy]="true" [paginator]="true" [editable]="true"
+                     resizableColumns="true" [totalRecords]="totalRecords" [responsive]="true"
+                     (onLazyLoad)="loadAccountLazy($event)" columnResizeMode="expand" [rowsPerPageOptions]="[5,10,20]">
+            <header>لیست حساب ها</header>
+            <p-column field="code" [filter]="true" [editable]="true" header="کد حساب" [sortable]="true"></p-column>
+            <p-column field="name" [filter]="true" [editable]="true" header="نام حساب" [sortable]="true"></p-column>
+            <p-column field="fiscalPeriodId" [filter]="true" header="کد دوره" [sortable]="true"></p-column>
+            <p-column field="description" [editable]="true" header="توضیحات" [sortable]="true"></p-column>
+            <p-column header="ویرایش">
+                <ng-template let-col let-account="rowData" pTemplate type="body">
+                    <button type="button" pButton icon="fa-check" (click)="showDialogToEdit(account)" label="ویرایش"></button>
+                </ng-template>
+            </p-column>
+            <p-column header="حذف">
+                <ng-template let-col let-account="rowData" pTemplate type="body">
+                    <button type="button" pButton icon="fa-close" (click)="showDialogToDelete(account)" label="حذف"></button>
+                </ng-template>
+            </p-column>
+            <footer><div class="ui-helper-clearfix" style="width:100%"></div></footer>
+        </p-dataTable>
 
-                    <p-dialog header="Contact Details" [(visible)]="displayEditDialog" [responsive]="true" showEffect="fade" [modal]="true">
-                        <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad">
-                            <div class="ui-grid-row">
-                                <div class="ui-grid-col-4"><label for="code">کد</label></div>
-                                <div class="ui-grid-col-8"><input pInputText id="code" [(ngModel)]="account.code" /></div>
-                            </div>
-                            <div class="ui-grid-row">
-                                <div class="ui-grid-col-4"><label for="name">نام</label></div>
-                                <div class="ui-grid-col-8"><input pInputText id="name" [(ngModel)]="account.name" /></div>
-                            </div>
-                            <div class="ui-grid-row">
-                                <div class="ui-grid-col-4"><label for="fiscalPeriodId">دوره مالی</label></div>
-                                <div class="ui-grid-col-8"><input pInputText id="fiscalPeriodId" [(ngModel)]="account.fiscalPeriodId" /></div>
-                            </div>
-                            <div class="ui-grid-row">
-                                <div class="ui-grid-col-4"><label for="description">توضیحات</label></div>
-                                <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="account.description" /></div>
-                            </div>
-                        </div>
-                        <footer>
-                            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                                <button type="button" pButton icon="fa-close" (click)="cancel()" label="انصراف"></button>
-                                <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="newAccount" label="تایید"></button>
-                                <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="!newAccount" label="ویرایش"></button>
-                            </div>
-                        </footer>
-                    </p-dialog>
-                    <p-dialog header="Confirm Deletion" [(visible)]="displayDeleteDialog" modal="modal" showEffect="fade">
-                        <p>
-                            آیا برای حدف <strong>{{ fullname }}</strong> اطمینان دارید؟
-                        </p>
-                        <footer>
-                            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                                <button type="button" pButton icon="fa-close" (click)="deleteAccount(false)" label="خیر"></button>
-                                <button type="button" pButton icon="fa-check" (click)="deleteAccount(true)" label="بله"></button>
-                            </div>
-                        </footer>
-                    </p-dialog>
-
+        <p-dialog header="Contact Details" [(visible)]="displayEditDialog" [responsive]="true" showEffect="fade" [modal]="true">
+            <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad">
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-4"><label for="code">کد</label></div>
+                    <div class="ui-grid-col-8"><input pInputText id="code" [(ngModel)]="account.code" /></div>
                 </div>
-            </td>
-        </tr>
-    </table>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-4"><label for="name">نام</label></div>
+                    <div class="ui-grid-col-8"><input pInputText id="name" [(ngModel)]="account.name" /></div>
+                </div>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-4"><label for="fiscalPeriodId">دوره مالی</label></div>
+                    <div class="ui-grid-col-8"><input pInputText id="fiscalPeriodId" [(ngModel)]="account.fiscalPeriodId" /></div>
+                </div>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-4"><label for="description">توضیحات</label></div>
+                    <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="account.description" /></div>
+                </div>
+            </div>
+            <footer>
+                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                    <button type="button" pButton icon="fa-close" (click)="cancel()" label="انصراف"></button>
+                    <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="newAccount" label="تایید"></button>
+                    <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="!newAccount" label="ویرایش"></button>
+                </div>
+            </footer>
+        </p-dialog>
+        <p-dialog header="Confirm Deletion" [(visible)]="displayDeleteDialog" modal="modal" showEffect="fade">
+            <p>
+                آیا برای حدف <strong>{{ fullname }}</strong> اطمینان دارید؟
+            </p>
+            <footer>
+                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                    <button type="button" pButton icon="fa-close" (click)="deleteAccount(false)" label="خیر"></button>
+                    <button type="button" pButton icon="fa-check" (click)="deleteAccount(true)" label="بله"></button>
+                </div>
+            </footer>
+        </p-dialog>
+
+    </div>
+
 </div>

@@ -5,20 +5,16 @@ import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 
 
-import { String } from 'typescript-string-operations/source/source';
+import { String } from '../class/source';
 import { expect } from 'chai';
 
 
 
 
 export class AccountInfo implements Account
-{
-
-
-
+{    
     constructor(public id: number = 0,public code: string = "",public name: string = "",public fiscalPeriodId : number = 0,public description: string = "")
     { }
-
     
 }
 
@@ -106,12 +102,12 @@ export class AccountService
         //let valueToInsert = new Date(2017, 4, 13);
 
         //let expectedValue = "2017-04-13";
-        let fpId = '1';
-        let branchId = '1';
+        var fpId = '1';
+        var branchId = '1';
 
-        let newUrl = String.Format('{0}pp{1}', '1111','222');
+        var newUrl = String.Format(this._getAccountsUrl, '1111', '222');
 
-        return this.http.post(url,JSON.stringify(postItem), Option)
+        return this.http.post(newUrl,JSON.stringify(postItem), Option)
             .map(response => <any>(<Response>response).json());
     }
 

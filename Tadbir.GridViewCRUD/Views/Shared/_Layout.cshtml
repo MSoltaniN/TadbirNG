@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - سیستم جدید تدبیر</title>    
     
     
-    
+    <link rel="stylesheet" href="~/resources/css/bootstrap-rtl.min.css">
 
     <link rel="stylesheet" type="text/css" href="~/resources/themes/omega/theme.css" />    
     <link rel="stylesheet" type="text/css" href="~/resources/primeng.min.css" />
@@ -14,10 +14,10 @@
     <link href="~/resources/main.css" rel="stylesheet" type="text/css" />
     <base href="~/" />
 
-    <link rel="stylesheet" href="~/resources/css/bootstrap-rtl.min.css">
+    
     <link rel="stylesheet" href="~/dist/vendor.css" asp-append-version="true" />
 </head>
-<body >
+<body class="tbody">
     @RenderBody()
 
     @RenderSection("scripts", required: false)

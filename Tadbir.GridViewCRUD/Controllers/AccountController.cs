@@ -150,7 +150,7 @@ namespace Tadbir.GridViewCRUD.Controllers
 
         
         // GET: api/accounts/fp/{fpId:int}/branch/{branchId:int}
-        [Route("/Account/{fpId:int}/{branchId:int}")]
+        [Route("/Account/fp/{fpId}/branch/{branchId}")]
         [HttpPost, Produces("application/json")]
         public  IActionResult List(int fpId, int branchId, [FromBody] GridOption options = null)
         {

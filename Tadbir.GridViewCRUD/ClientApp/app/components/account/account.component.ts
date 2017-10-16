@@ -4,7 +4,7 @@ import { AccountService, AccountInfo } from '../../service/index';
 
 import { Account } from '../../model/index';
 
-import { InputTextModule, DataTableModule, ButtonModule, DialogModule } from 'primeng/primeng'; /** add components for test DataGrid functionality */
+import { InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule } from 'primeng/primeng'; /** add components for test DataGrid functionality */
 import { ToastrService } from 'toastr-ng2'; /** add this component for message in client side */
 import {LazyLoadEvent,FilterMetadata} from 'primeng/primeng';
 import {Filter} from '../../class/filter';
