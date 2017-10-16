@@ -24,7 +24,7 @@ import "rxjs/Rx";
 
 export class AccountComponent  implements OnInit {
 
-    private rowData: string;
+    private rowData: any[];
 
     public totalRecords: number;
 
@@ -106,7 +106,7 @@ export class AccountComponent  implements OnInit {
             order = event.sortField + ' ' + sortAscDesc;
 
          this.accountService.search(event.first,event.rows,order,filter).subscribe(res => {
-                this.rowData = res.result;
+                this.rowData = res;
             });        
     }  
 
@@ -121,19 +121,41 @@ export class AccountComponent  implements OnInit {
 
     save()
     {
-
-        this.accountService.saveAccount(this.account)
-            .subscribe(response => {
-                this.account.id > 0 ? this.toastrService.success('اطلاعات حساب با موفقیت ثبت شد') :
+        if (!this.newAccount)
+        {
+            this.accountService.editAccount(this.account)
+                .subscribe(response => {                    
                     this.toastrService.success('اطلاعات حساب با موفقیت ویرایش شد');
-                this.loadData();
-            });
-        
-        this.displayEditDialog = false;
+                    this.loadData();
+                });
+
+            this.displayEditDialog = false;
+        }
+        else
+        {
+            this.accountService.editAccount(this.account)
+                .subscribe(response => {
+                    this.toastrService.success('اطلاعات حساب با موفقیت ثبت شد');
+                    this.loadData();
+                });
+
+            this.newAccount = false;
+        }
     }
 
     
-    
+    showDialogToEdit(acc: Account) {
+        this.newAccount = false;
+        this.account = new AccountInfo();
+        this.account.accountId = acc.accountId;
+        this.account.code = acc.code;
+        this.account.name = acc.name;
+        this.account.description = acc.description;
+        this.account.fiscalPeriodId = acc.fiscalPeriodId;
+        this.account.branchId = acc.branchId;
+
+        this.displayEditDialog = true;
+    }
 
     //Edit Account
 
@@ -142,7 +164,7 @@ export class AccountComponent  implements OnInit {
 
     showDialogToDelete(account: Account) {
         this.fullname = account.name;
-        this.deleteAccountId = account.id;
+        this.deleteAccountId = account.accountId;
         this.displayDeleteDialog = true;
     }
 
@@ -166,13 +188,9 @@ export class AccountComponent  implements OnInit {
     //Add Account
 
     showDialogToAdd(acc: Account) {
-        this.newAccount = false;
+        this.newAccount = true;
+
         this.account = new AccountInfo();
-        this.account.id = acc.id;
-        this.account.code = acc.code;
-        this.account.name = acc.name;
-        this.account.description = acc.description;
-        this.account.fiscalPeriodId = acc.fiscalPeriodId;
 
         this.displayEditDialog = true;
     }

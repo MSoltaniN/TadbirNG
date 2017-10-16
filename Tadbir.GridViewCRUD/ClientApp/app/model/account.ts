@@ -2,10 +2,11 @@
 /** define account interface */
 
 export interface Account {
-    id: number;
+    accountId: number;
     code: string;
     name: string;
     description?: string;
     fiscalPeriodId: number;
+    branchId: number;
 }
 

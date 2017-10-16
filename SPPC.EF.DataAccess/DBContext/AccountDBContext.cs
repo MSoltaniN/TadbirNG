@@ -23,28 +23,9 @@ namespace SPPC.Tadbir.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AccountViewModel>(entity =>
-            {
-                entity.HasKey(e => e.Id);
+            modelBuilder.Entity<AccountViewModel>().ToTable("Account","Finance");
 
-                entity.Property(e => e.Name)
-                    .HasMaxLength(50)
-                    .IsUnicode(true);
-
-                entity.Property(e => e.Description)
-                    .HasMaxLength(256)
-                    .IsUnicode(true);
-
-                entity.Property(e => e.Code)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.BranchId);                    
-
-                entity.Property(e => e.FiscalPeriodId);
-                    
-
-            });
+           
         }
     }
 }

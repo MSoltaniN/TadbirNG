@@ -13,9 +13,11 @@ namespace SPPC.Tadbir.Business
 
         Task<bool> DeleteAccount(int id);
 
-        Task<bool> SaveAccount(AccountViewModel account);
+        Task<bool> EditAccount(AccountViewModel account);
 
         Task<bool> InsertAccount(AccountViewModel account);
+
+        Task<int> GetCount();
 
     }
 }

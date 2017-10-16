@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SPPC.Tadbir.DataAccess
 {
+
     public partial class AccountViewModel
     {
-        public int Id { get; set; }
+
+        [Key]
+        public int AccountId { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the fiscal period in which this financial account is defined.

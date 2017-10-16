@@ -1,22 +1,25 @@
-﻿<div class="ui-rtl" dir="rtl">
-    <div>
-        <button type="button" pButton icon="fa-plus" class="tbutton" (click)="showDialogToAdd()" label="Add"></button>
+﻿<div class="ui-rtl" dir="rtl"  >
+    <div class="containerBtn">
+        <div class="ui-md-12 ui-sm-12">
+            <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="حساب جدید"></button>
+        </div>
     </div>
-    <div class="ContentSideSections Implementation divContainer" >
+    <div class="ContentSideSections Implementation divContainer ui-md-12 ui-sm-6" >
         <p-dataTable [style]="{'margin-top':'20px'}" [value]="rowData" [rows]="10" [lazy]="true" [paginator]="true" [editable]="true"
                      resizableColumns="true" [totalRecords]="totalRecords" [responsive]="true"
                      (onLazyLoad)="loadAccountLazy($event)" columnResizeMode="expand" [rowsPerPageOptions]="[5,10,20]">
-            <header>لیست حساب ها</header>
+            <header>لیست حساب ها</header>            
             <p-column field="code" [filter]="true" [editable]="true" header="کد حساب" [sortable]="true"></p-column>
             <p-column field="name" [filter]="true" [editable]="true" header="نام حساب" [sortable]="true"></p-column>
-            <p-column field="fiscalPeriodId" [filter]="true" header="کد دوره" [sortable]="true"></p-column>
+            <p-column field="fiscalPeriodId" [filter]="true" header="دوره مالی" [sortable]="true"></p-column>
+            <p-column field="branchId" [filter]="true" header="شعبه" [sortable]="true"></p-column>
             <p-column field="description" [editable]="true" header="توضیحات" [sortable]="true"></p-column>
-            <p-column header="ویرایش">
+            <p-column header="">
                 <ng-template let-col let-account="rowData" pTemplate type="body">
                     <button type="button" pButton icon="fa-check" (click)="showDialogToEdit(account)" label="ویرایش"></button>
                 </ng-template>
             </p-column>
-            <p-column header="حذف">
+            <p-column header="">
                 <ng-template let-col let-account="rowData" pTemplate type="body">
                     <button type="button" pButton icon="fa-close" (click)="showDialogToDelete(account)" label="حذف"></button>
                 </ng-template>
@@ -24,7 +27,7 @@
             <footer><div class="ui-helper-clearfix" style="width:100%"></div></footer>
         </p-dataTable>
 
-        <p-dialog header="Contact Details" [(visible)]="displayEditDialog" [responsive]="true" showEffect="fade" [modal]="true">
+        <p-dialog header="ویرایش حساب" [(visible)]="displayEditDialog" [responsive]="true" showEffect="fade" [modal]="true">
             <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad">
                 <div class="ui-grid-row">
                     <div class="ui-grid-col-4"><label for="code">کد</label></div>
@@ -44,14 +47,14 @@
                 </div>
             </div>
             <footer>
-                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                    <button type="button" pButton icon="fa-close" (click)="cancel()" label="انصراف"></button>
+                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">                    
                     <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="newAccount" label="تایید"></button>
                     <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="!newAccount" label="ویرایش"></button>
+                    <button type="button" pButton icon="fa-close" (click)="cancel()" label="انصراف"></button>
                 </div>
             </footer>
         </p-dialog>
-        <p-dialog header="Confirm Deletion" [(visible)]="displayDeleteDialog" modal="modal" showEffect="fade">
+        <p-dialog header="حذف حساب" [(visible)]="displayDeleteDialog" modal="modal" showEffect="fade">
             <p>
                 آیا برای حدف <strong>{{ fullname }}</strong> اطمینان دارید؟
             </p>

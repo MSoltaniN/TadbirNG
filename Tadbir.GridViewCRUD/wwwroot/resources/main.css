@@ -8,6 +8,10 @@ tbutton
     width: 100%
 }
 
+.containerBtn {
+    margin-top:15px;
+}
+
 .tbody {
     background-color: #2c3e50;
 }

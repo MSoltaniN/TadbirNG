@@ -13,7 +13,8 @@ import { expect } from 'chai';
 
 export class AccountInfo implements Account
 {    
-    constructor(public id: number = 0,public code: string = "",public name: string = "",public fiscalPeriodId : number = 0,public description: string = "")
+    constructor(public accountId: number = 0, public code: string = "", public name: string = "",
+        public fiscalPeriodId: number = 0, public description: string = "",public branchId:number = 0)
     { }
     
 }
@@ -98,21 +99,27 @@ export class AccountService
 
         this.options = new RequestOptions({ headers: this.headers });
 
-        //let template = "{0:s}";
-        //let valueToInsert = new Date(2017, 4, 13);
-
-        //let expectedValue = "2017-04-13";
         var fpId = '1';
         var branchId = '1';
 
-        var newUrl = String.Format(this._getAccountsUrl, '1111', '222');
+        var newUrl = String.Format(this._getAccountsUrl, fpId, branchId);
 
         return this.http.post(newUrl,JSON.stringify(postItem), Option)
             .map(response => <any>(<Response>response).json());
     }
 
     
-    saveAccount(account: Account): Observable<string> {
+    editAccount(account: Account): Observable<string> {
+        let body = JSON.stringify(account);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.post(this._postModifiedAccountsUrl, body, options)
+            .map(res => res.json().message)
+            .catch(this.handleError);
+    }
+
+    insertAccount(account: Account): Observable<string> {
         let body = JSON.stringify(account);
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });

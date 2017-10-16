@@ -17,7 +17,7 @@ using SPPC.Tadbir.DataAccess;
 //using SPPC.Tadbir.ViewModel.UI;
 //using SPPC.Framework.Values;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
 
 namespace Tadbir.GridViewCRUD.Controllers
 {
@@ -37,13 +37,10 @@ namespace Tadbir.GridViewCRUD.Controllers
 
         [HttpGet, Produces("application/json")]
         [Route("/Account/Count")]
-        public IActionResult Count()
+        public async Task<IActionResult> Count()
         {
-
-            //var data = await _repository.GetAllAccount();
-            return Json(new { result = 50 });
-
-
+            return Json(await _repository.GetCount());
+            
         }
 
 
@@ -55,7 +52,7 @@ namespace Tadbir.GridViewCRUD.Controllers
 
         [HttpPost, Produces("application/json")]
         [Route("/Account/Delete/{id}")]
-        public IActionResult Delete(int accountId)
+        public async Task<IActionResult> Delete(int accountId)
         {
             //var data = await AccountRepo.DeleteAccount(id);
             //return Json(new { result = data });
@@ -78,8 +75,8 @@ namespace Tadbir.GridViewCRUD.Controllers
             //    return BadRequest(message);
             //}
 
-            _repository.DeleteAccount(accountId);
-            return StatusCode((int)HttpStatusCode.NoContent);
+            
+            return Json(await _repository.DeleteAccount(accountId));
         }
 
 
@@ -88,7 +85,7 @@ namespace Tadbir.GridViewCRUD.Controllers
         [Route("/Account/Edit")]
         [HttpPost, Produces("application/json")]        
         //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
-        public IActionResult Edit([FromBody] AccountViewModel account)
+        public async Task<IActionResult> Edit([FromBody] AccountViewModel account)
         {
             //var data = await AccountRepo.SaveAccount(account);
             //return Json(new { result = data });
@@ -109,8 +106,9 @@ namespace Tadbir.GridViewCRUD.Controllers
             //    return BadRequest(message);
             //}
 
-            _repository.SaveAccount(account);
-            return StatusCode((int)HttpStatusCode.Created);
+
+            return Json(await _repository.EditAccount(account));
+            
 
         }
 
@@ -118,7 +116,7 @@ namespace Tadbir.GridViewCRUD.Controllers
         //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         [HttpPost, Produces("application/json")]
         [Route("/Account/Insert/{id}")]
-        public IActionResult Insert([FromBody] AccountViewModel account)
+        public async Task<IActionResult> Insert([FromBody] AccountViewModel account)
         {
             //var data = await AccountRepo.SaveAccount(account);
             //return Json(new { result = data });
@@ -139,8 +137,8 @@ namespace Tadbir.GridViewCRUD.Controllers
             //    return BadRequest(message);
             //}
 
-            _repository.InsertAccount(account);
-            return StatusCode((int)HttpStatusCode.Created);
+            
+            return Json(await _repository.InsertAccount(account));
 
         }
 
@@ -152,14 +150,14 @@ namespace Tadbir.GridViewCRUD.Controllers
         // GET: api/accounts/fp/{fpId:int}/branch/{branchId:int}
         [Route("/Account/fp/{fpId}/branch/{branchId}")]
         [HttpPost, Produces("application/json")]
-        public  IActionResult List(int fpId, int branchId, [FromBody] GridOption options = null)
+        public async Task<IActionResult> List(int fpId, int branchId, [FromBody] GridOption options = null)
         {
             if (fpId <= 0 || branchId <= 0)
             {
                 return NotFound();
             }
 
-            var accounts = _repository.GetAccounts(fpId, branchId,options);
+            var accounts = await _repository.GetAccounts(fpId, branchId,options);
             return Json(accounts);
         }
     }
