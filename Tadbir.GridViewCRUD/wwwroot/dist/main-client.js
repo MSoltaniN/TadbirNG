@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "0e4fc0971f01c656d674"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "ffc730dd484ff6cacf00"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -13410,14 +13410,36 @@ var AccountComponent = (function () {
         this.account = new __WEBPACK_IMPORTED_MODULE_1__service_index__["b" /* AccountInfo */];
     }
     AccountComponent.prototype.ngOnInit = function () {
-        this.loadData();
+        this.getCount();
     };
-    AccountComponent.prototype.loadData = function () {
+    AccountComponent.prototype.getCount = function () {
         var _this = this;
         //evaluate total row counts for gird paging 
         this.accountService.getTotalCount().subscribe(function (res) {
             _this.totalRecords = res.result;
         });
+    };
+    AccountComponent.prototype.reloadGrid = function () {
+        var _this = this;
+        //evaluate total row counts for gird paging 
+        this.accountService.getTotalCount().subscribe(function (res) {
+            _this.totalRecords = res.result;
+        });
+        this.accountService.search(this.pageIndex, this.count, '', '').subscribe(function (res) {
+            _this.rowData = res;
+        });
+    };
+    AccountComponent.prototype.onEditComplete = function () {
+        var _this = this;
+        console.log(arguments);
+        if (arguments.length > 0) {
+            var acc = arguments[0].data;
+            this.accountService.editAccount(acc)
+                .subscribe(function (response) {
+                _this.toastrService.success('اطلاعات حساب با موفقیت ویرایش شد');
+                _this.reloadGrid();
+            });
+        }
     };
     //LoadAccount
     AccountComponent.prototype.getFilters = function (event) {
@@ -13444,6 +13466,8 @@ var AccountComponent = (function () {
             filter = this.getFilters(event);
         if (event.sortField)
             order = event.sortField + ' ' + sortAscDesc;
+        this.pageIndex = event.first;
+        this.count = event.rows;
         this.accountService.search(event.first, event.rows, order, filter).subscribe(function (res) {
             _this.rowData = res;
         });
@@ -13452,7 +13476,8 @@ var AccountComponent = (function () {
     //Edit Account
     AccountComponent.prototype.cancel = function () {
         this.account = new __WEBPACK_IMPORTED_MODULE_1__service_index__["b" /* AccountInfo */]();
-        this.displayEditDialog = false;
+        this.displayDialog = false;
+        this.newAccount = false;
     };
     AccountComponent.prototype.save = function () {
         var _this = this;
@@ -13460,17 +13485,18 @@ var AccountComponent = (function () {
             this.accountService.editAccount(this.account)
                 .subscribe(function (response) {
                 _this.toastrService.success('اطلاعات حساب با موفقیت ویرایش شد');
-                _this.loadData();
+                _this.reloadGrid();
             });
-            this.displayEditDialog = false;
+            this.displayDialog = false;
         }
         else {
-            this.accountService.editAccount(this.account)
+            this.accountService.insertAccount(this.account)
                 .subscribe(function (response) {
                 _this.toastrService.success('اطلاعات حساب با موفقیت ثبت شد');
-                _this.loadData();
+                _this.reloadGrid();
             });
             this.newAccount = false;
+            this.displayDialog = false;
         }
     };
     AccountComponent.prototype.showDialogToEdit = function (acc) {
@@ -13482,7 +13508,7 @@ var AccountComponent = (function () {
         this.account.description = acc.description;
         this.account.fiscalPeriodId = acc.fiscalPeriodId;
         this.account.branchId = acc.branchId;
-        this.displayEditDialog = true;
+        this.displayDialog = true;
     };
     //Edit Account
     //Delete Account 
@@ -13496,7 +13522,7 @@ var AccountComponent = (function () {
         if (confirm) {
             this.accountService.delete(this.deleteAccountId).subscribe(function (response) {
                 _this.deleteAccountId = 0;
-                _this.loadData();
+                _this.reloadGrid();
             });
         }
         //hide confirm dialog
@@ -13506,8 +13532,8 @@ var AccountComponent = (function () {
     //Add Account
     AccountComponent.prototype.showDialogToAdd = function (acc) {
         this.newAccount = true;
+        this.displayDialog = true;
         this.account = new __WEBPACK_IMPORTED_MODULE_1__service_index__["b" /* AccountInfo */]();
-        this.displayEditDialog = true;
     };
     AccountComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -13601,7 +13627,7 @@ var AccountService = (function () {
         this.http = http;
         this._getAccountsUrl = "/Account/fp/{0}/branch/{1}";
         this._getTotalCountUrl = "/Account/Count";
-        this._deleteAccountsUrl = "/Account/Delete";
+        this._deleteAccountsUrl = "/Account/Delete/{0}";
         this._postNewAccountsUrl = "/Account/Insert";
         this._postModifiedAccountsUrl = "/Account/Edit";
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]({
@@ -13628,18 +13654,29 @@ var AccountService = (function () {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["Headers"]();
         headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
         var url = this._getAccountsUrl;
-        var params = new URLSearchParams();
-        if (start != undefined && count != undefined) {
+        /*
+        let params: URLSearchParams = new URLSearchParams();
+
+              
+        if(start != undefined && count != undefined)
+        {
             params.append("start", start.toString());
             params.append("count", count.toString());
         }
-        if (filters) {
+
+        
+        if(filters)
+        {
             params.set("filter", JSON.stringify(filters));
         }
-        if (orderby) {
+
+
+
+        if(orderby)
+        {
             params.set("filter", orderby);
-        }
-        var postItem = { Start: start, Count: count, Filters: filters, Order: orderby };
+        }*/
+        var postItem = { Start: start, Count: count, Filters: filters, OrderBy: orderby };
         this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["RequestOptions"]({ headers: this.headers });
         var fpId = '1';
         var branchId = '1';
@@ -13665,7 +13702,7 @@ var AccountService = (function () {
     };
     AccountService.prototype.delete = function (accountId) {
         //ToDo : call api for delete entity
-        var deleteByIdUrl = this._deleteAccountsUrl + '/' + accountId;
+        var deleteByIdUrl = __WEBPACK_IMPORTED_MODULE_4__class_source__["a" /* String */].Format(this._deleteAccountsUrl, accountId.toString());
         return this.http.post(deleteByIdUrl, this.options)
             .map(function (response) { return response.json().message; })
             .catch(this.handleError);
@@ -14040,7 +14077,7 @@ module.exports = XmlEntities;
 /* 109 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"ui-rtl\" dir=\"rtl\"  >\r\n    <div class=\"containerBtn\">\r\n        <div class=\"ui-md-12 ui-sm-12\">\r\n            <button type=\"button\" pButton icon=\"fa-plus\" (click)=\"showDialogToAdd()\" label=\"حساب جدید\"></button>\r\n        </div>\r\n    </div>\r\n    <div class=\"ContentSideSections Implementation divContainer ui-md-12 ui-sm-6\" >\r\n        <p-dataTable [style]=\"{'margin-top':'20px'}\" [value]=\"rowData\" [rows]=\"10\" [lazy]=\"true\" [paginator]=\"true\" [editable]=\"true\"\r\n                     resizableColumns=\"true\" [totalRecords]=\"totalRecords\" [responsive]=\"true\"\r\n                     (onLazyLoad)=\"loadAccountLazy($event)\" columnResizeMode=\"expand\" [rowsPerPageOptions]=\"[5,10,20]\">\r\n            <header>لیست حساب ها</header>            \r\n            <p-column field=\"code\" [filter]=\"true\" [editable]=\"true\" header=\"کد حساب\" [sortable]=\"true\"></p-column>\r\n            <p-column field=\"name\" [filter]=\"true\" [editable]=\"true\" header=\"نام حساب\" [sortable]=\"true\"></p-column>\r\n            <p-column field=\"fiscalPeriodId\" [filter]=\"true\" header=\"دوره مالی\" [sortable]=\"true\"></p-column>\r\n            <p-column field=\"branchId\" [filter]=\"true\" header=\"شعبه\" [sortable]=\"true\"></p-column>\r\n            <p-column field=\"description\" [editable]=\"true\" header=\"توضیحات\" [sortable]=\"true\"></p-column>\r\n            <p-column header=\"\">\r\n                <ng-template let-col let-account=\"rowData\" pTemplate type=\"body\">\r\n                    <button type=\"button\" pButton icon=\"fa-check\" (click)=\"showDialogToEdit(account)\" label=\"ویرایش\"></button>\r\n                </ng-template>\r\n            </p-column>\r\n            <p-column header=\"\">\r\n                <ng-template let-col let-account=\"rowData\" pTemplate type=\"body\">\r\n                    <button type=\"button\" pButton icon=\"fa-close\" (click)=\"showDialogToDelete(account)\" label=\"حذف\"></button>\r\n                </ng-template>\r\n            </p-column>\r\n            <footer><div class=\"ui-helper-clearfix\" style=\"width:100%\"></div></footer>\r\n        </p-dataTable>\r\n\r\n        <p-dialog header=\"ویرایش حساب\" [(visible)]=\"displayEditDialog\" [responsive]=\"true\" showEffect=\"fade\" [modal]=\"true\">\r\n            <div class=\"ui-grid ui-grid-responsive ui-fluid ui-grid-pad\">\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-4\"><label for=\"code\">کد</label></div>\r\n                    <div class=\"ui-grid-col-8\"><input pInputText id=\"code\" [(ngModel)]=\"account.code\" /></div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-4\"><label for=\"name\">نام</label></div>\r\n                    <div class=\"ui-grid-col-8\"><input pInputText id=\"name\" [(ngModel)]=\"account.name\" /></div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-4\"><label for=\"fiscalPeriodId\">دوره مالی</label></div>\r\n                    <div class=\"ui-grid-col-8\"><input pInputText id=\"fiscalPeriodId\" [(ngModel)]=\"account.fiscalPeriodId\" /></div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-4\"><label for=\"description\">توضیحات</label></div>\r\n                    <div class=\"ui-grid-col-8\"><input pInputText id=\"description\" [(ngModel)]=\"account.description\" /></div>\r\n                </div>\r\n            </div>\r\n            <footer>\r\n                <div class=\"ui-dialog-buttonpane ui-widget-content ui-helper-clearfix\">                    \r\n                    <button type=\"button\" pButton icon=\"fa-check\" (click)=\"save()\" *ngIf=\"newAccount\" label=\"تایید\"></button>\r\n                    <button type=\"button\" pButton icon=\"fa-check\" (click)=\"save()\" *ngIf=\"!newAccount\" label=\"ویرایش\"></button>\r\n                    <button type=\"button\" pButton icon=\"fa-close\" (click)=\"cancel()\" label=\"انصراف\"></button>\r\n                </div>\r\n            </footer>\r\n        </p-dialog>\r\n        <p-dialog header=\"حذف حساب\" [(visible)]=\"displayDeleteDialog\" modal=\"modal\" showEffect=\"fade\">\r\n            <p>\r\n                آیا برای حدف <strong>{{ fullname }}</strong> اطمینان دارید؟\r\n            </p>\r\n            <footer>\r\n                <div class=\"ui-dialog-buttonpane ui-widget-content ui-helper-clearfix\">\r\n                    <button type=\"button\" pButton icon=\"fa-close\" (click)=\"deleteAccount(false)\" label=\"خیر\"></button>\r\n                    <button type=\"button\" pButton icon=\"fa-check\" (click)=\"deleteAccount(true)\" label=\"بله\"></button>\r\n                </div>\r\n            </footer>\r\n        </p-dialog>\r\n\r\n    </div>\r\n\r\n</div>\r\n";
+module.exports = "<div class=\"ui-rtl\" dir=\"rtl\"  >\r\n    <div class=\"containerBtn\">\r\n        <div class=\"ui-md-12 ui-sm-12\">\r\n            <button type=\"button\" pButton icon=\"fa-plus\" (click)=\"showDialogToAdd()\" label=\"حساب جدید\"></button>\r\n        </div>\r\n    </div>\r\n    <div class=\"ContentSideSections Implementation divContainer ui-md-12 ui-sm-6\" >\r\n        <p-dataTable [style]=\"{'margin-top':'20px'}\" [value]=\"rowData\" [rows]=\"10\" [lazy]=\"true\" [paginator]=\"true\" [editable]=\"true\"\r\n                     resizableColumns=\"true\" [totalRecords]=\"totalRecords\" [responsive]=\"true\"\r\n                     (onLazyLoad)=\"loadAccountLazy($event)\" (onEditComplete)=\"onEditComplete($event)\" columnResizeMode=\"expand\" [rowsPerPageOptions]=\"[5,10,20]\">\r\n            <header>لیست حساب ها</header>            \r\n            <p-column field=\"code\" [filter]=\"true\" [editable]=\"true\" header=\"کد حساب\" [sortable]=\"true\"></p-column>\r\n            <p-column field=\"name\" [filter]=\"true\" [editable]=\"true\" header=\"نام حساب\" [sortable]=\"true\"></p-column>\r\n            <p-column field=\"fiscalPeriodId\" [filter]=\"true\" header=\"دوره مالی\" [sortable]=\"true\"></p-column>\r\n            <p-column field=\"branchId\" [filter]=\"true\" header=\"شعبه\" [sortable]=\"true\"></p-column>\r\n            <p-column field=\"description\" [editable]=\"false\" header=\"توضیحات\" [sortable]=\"false\"></p-column>\r\n            <p-column header=\"\">\r\n                <ng-template let-col let-account=\"rowData\" pTemplate type=\"body\">\r\n                    <button type=\"button\" pButton icon=\"fa-check\" (click)=\"showDialogToEdit(account)\" label=\"ویرایش\"></button>\r\n                </ng-template>\r\n            </p-column>\r\n            <p-column header=\"\">\r\n                <ng-template let-col let-account=\"rowData\" pTemplate type=\"body\">\r\n                    <button type=\"button\" pButton icon=\"fa-close\" (click)=\"showDialogToDelete(account)\" label=\"حذف\"></button>\r\n                </ng-template>\r\n            </p-column>\r\n            <footer><div class=\"ui-helper-clearfix\" style=\"width:100%\"></div></footer>\r\n        </p-dataTable>\r\n\r\n        <p-dialog header=\"{{!newAccount ? 'ویرایش حساب' : 'حساب جدید'}}\" [(visible)]=\"displayDialog\" [responsive]=\"true\" showEffect=\"fade\" [modal]=\"true\">\r\n            <div class=\"ui-grid ui-grid-responsive ui-fluid ui-grid-pad\">\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-4\"><label for=\"code\">کد</label></div>\r\n                    <div class=\"ui-grid-col-8\"><input pInputText id=\"code\" [(ngModel)]=\"account.code\" /></div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-4\"><label for=\"name\">نام</label></div>\r\n                    <div class=\"ui-grid-col-8\"><input pInputText id=\"name\" [(ngModel)]=\"account.name\" /></div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-4\"><label for=\"fiscalPeriodId\">دوره مالی</label></div>\r\n                    <div class=\"ui-grid-col-8\"><input pInputText id=\"fiscalPeriodId\" [(ngModel)]=\"account.fiscalPeriodId\" /></div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-4\"><label for=\"branchId\">شعبه</label></div>\r\n                    <div class=\"ui-grid-col-8\"><input pInputText id=\"branchId\" [(ngModel)]=\"account.branchId\" /></div>\r\n                </div>\r\n                <div class=\"ui-grid-row\">\r\n                    <div class=\"ui-grid-col-4\"><label for=\"description\">توضیحات</label></div>\r\n                    <div class=\"ui-grid-col-8\"><input pInputText id=\"description\" [(ngModel)]=\"account.description\" /></div>\r\n                </div>\r\n            </div>\r\n            <footer>\r\n                <div class=\"ui-dialog-buttonpane ui-widget-content ui-helper-clearfix\">                    \r\n                    <button type=\"button\" pButton icon=\"fa-check\" (click)=\"save()\" *ngIf=\"newAccount\" label=\"تایید\"></button>\r\n                    <button type=\"button\" pButton icon=\"fa-check\" (click)=\"save()\" *ngIf=\"!newAccount\" label=\"ویرایش\"></button>\r\n                    <button type=\"button\" pButton icon=\"fa-close\" (click)=\"cancel()\" label=\"انصراف\"></button>\r\n                </div>\r\n            </footer>\r\n        </p-dialog>\r\n        <p-dialog header=\"حذف حساب\" [(visible)]=\"displayDeleteDialog\" modal=\"modal\" showEffect=\"fade\">\r\n            <p>\r\n                آیا برای حدف <strong>{{ fullname }}</strong> اطمینان دارید؟\r\n            </p>\r\n            <footer>\r\n                <div class=\"ui-dialog-buttonpane ui-widget-content ui-helper-clearfix\">\r\n                    <button type=\"button\" pButton icon=\"fa-close\" (click)=\"deleteAccount(false)\" label=\"خیر\"></button>\r\n                    <button type=\"button\" pButton icon=\"fa-check\" (click)=\"deleteAccount(true)\" label=\"بله\"></button>\r\n                </div>\r\n            </footer>\r\n        </p-dialog>\r\n\r\n    </div>\r\n\r\n</div>\r\n";
 
 /***/ }),
 /* 110 */

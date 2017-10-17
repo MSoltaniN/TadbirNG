@@ -52,21 +52,21 @@ namespace Tadbir.GridViewCRUD.Controllers
 
         [HttpPost, Produces("application/json")]
         [Route("/Account/Delete/{id}")]
-        public async Task<IActionResult> Delete(int accountId)
+        public async Task<IActionResult> Delete(int id)
         {
             //var data = await AccountRepo.DeleteAccount(id);
             //return Json(new { result = data });
 
-            if (accountId <= 0)
+            if (id <= 0)
             {
                 return BadRequest("Could not delete account because it does not exist.");
             }
 
-            var account = _repository.GetAccount(accountId);
-            if (account == null)
-            {
-                return BadRequest("Could not delete account because it does not exist.");
-            }
+            //var account = _repository.GetAccount(id);
+            //if (account == null)
+            //{
+            //    return BadRequest("Could not delete account because it does not exist.");
+            //}
 
             //if (_repository.IsUsedAccount(accountId))
             //{
@@ -76,7 +76,7 @@ namespace Tadbir.GridViewCRUD.Controllers
             //}
 
             
-            return Json(await _repository.DeleteAccount(accountId));
+            return Json(await _repository.DeleteAccount(id));
         }
 
 
@@ -115,7 +115,7 @@ namespace Tadbir.GridViewCRUD.Controllers
 
         //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         [HttpPost, Produces("application/json")]
-        [Route("/Account/Insert/{id}")]
+        [Route("/Account/Insert")]
         public async Task<IActionResult> Insert([FromBody] AccountViewModel account)
         {
             //var data = await AccountRepo.SaveAccount(account);

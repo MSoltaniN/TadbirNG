@@ -7,7 +7,7 @@ using System.Linq;
 using SPPC.Tadbir.DataAccess;
 using Microsoft.EntityFrameworkCore;
 
-
+using System.Linq.Dynamic.Core;
 
 //using SPPC.Tadbir.NHibernate;
 //using SPPC.Tadbir.ViewModel.Finance;
@@ -39,20 +39,52 @@ namespace SPPC.Tadbir.Business
 
         public async Task<List<AccountViewModel>> GetAccounts(int fpId, int branchId, GridOption gridOption)
         {
-            using (AccountDBContext db = new AccountDBContext())
+            try
             {
-                return await (from a in db.AccountViewModels
-                              where a.BranchId == branchId && a.FiscalPeriodId == fpId
-                              select new AccountViewModel
-                                {
-                                    BranchId = a.BranchId,
-                                    Code = a.Code,
-                                    Description = a.Description,
-                                    FiscalPeriodId = a.FiscalPeriodId,
-                                    AccountId = a.AccountId,
-                                    Name = a.Name
-                                }).ToListAsync();
+                using (AccountDBContext db = new AccountDBContext())
+                {
+                    var result = from a in db.AccountViewModels
+                                 where a.BranchId == branchId && a.FiscalPeriodId == fpId
+                                 select new AccountViewModel
+                                 {
+                                     BranchId = a.BranchId,
+                                     Code = a.Code,
+                                     Description = a.Description,
+                                     FiscalPeriodId = a.FiscalPeriodId,
+                                     AccountId = a.AccountId,
+                                     Name = a.Name
+                                 };
 
+                    //var result = db.AccountViewModels.Where("City == @0 and Orders.Count >= @1", "London", 10)
+                    //.OrderBy("CompanyName")
+                    //.Select("new(CompanyName as Name, Phone)");
+
+                    //add where clause
+                    if (gridOption.Filters != null)
+                    {
+                        foreach (var item in gridOption.Filters)
+                        {
+                            string whereClause = string.Format("({0}).ToString() == \"{1}\"", item.Name, item.Value);
+                            result = result.Where(whereClause);
+                        }
+                    }
+
+                    if(!string.IsNullOrEmpty(gridOption.OrderBy))
+                    {
+                        result = result.OrderBy(gridOption.OrderBy);                        
+                    }
+
+                    return await result.Skip(gridOption.StartIndex).Take(gridOption.Count).ToListAsync();
+
+                }
+
+
+
+            }
+            catch(Exception ex)
+            {
+                //TODO: log exception 
+                return null;
             }
             
         }

@@ -26,7 +26,7 @@ export class AccountService
 
     private _getTotalCountUrl = "/Account/Count";
 
-    private _deleteAccountsUrl = "/Account/Delete";
+    private _deleteAccountsUrl = "/Account/Delete/{0}";
 
     private _postNewAccountsUrl = "/Account/Insert";
 
@@ -70,7 +70,7 @@ export class AccountService
 
         var url = this._getAccountsUrl;
 
-        
+        /*
         let params: URLSearchParams = new URLSearchParams();
 
               
@@ -91,9 +91,9 @@ export class AccountService
         if(orderby)
         {
             params.set("filter", orderby);     
-        }
+        }*/
 
-        var postItem = { Start: start, Count: count, Filters: filters, Order: orderby };
+        var postItem = { Start: start, Count: count, Filters: filters, OrderBy: orderby };
 
         
 
@@ -133,7 +133,7 @@ export class AccountService
     {
         //ToDo : call api for delete entity
 
-        var deleteByIdUrl = this._deleteAccountsUrl + '/' + accountId
+        var deleteByIdUrl = String.Format(this._deleteAccountsUrl, accountId.toString());
 
         return this.http.post(deleteByIdUrl,this.options)
             .map(response => response.json().message)

@@ -22,7 +22,7 @@ import "rxjs/Rx";
 })
 
 
-export class AccountComponent  implements OnInit {
+export class AccountComponent implements OnInit {
 
     private rowData: any[];
 
@@ -35,26 +35,26 @@ export class AccountComponent  implements OnInit {
     //for add in delete messageText
     fullname: string;
 
-    //variable for edit dialog
-    displayEditDialog: boolean;
+    //variable for dialog
+    displayDialog: boolean;
 
 
-    newAccount : boolean;
-    account : Account = new AccountInfo
+    newAccount: boolean;
+    account: Account = new AccountInfo
 
-    ngOnInit()
-    {
-        this.loadData();
-        
-    }   
+    ngOnInit() {
+        this.getCount();
+
+    }
 
 
-    
+    pageIndex?: number;
+    count?: number;
 
     constructor(private accountService : AccountService,private toastrService: ToastrService){}
     
 
-    loadData() {
+    getCount() {
 
         //evaluate total row counts for gird paging 
         this.accountService.getTotalCount().subscribe(res => {
@@ -65,8 +65,35 @@ export class AccountComponent  implements OnInit {
         
     }
 
+    reloadGrid() {
 
-    
+        //evaluate total row counts for gird paging 
+        this.accountService.getTotalCount().subscribe(res => {
+            this.totalRecords = res.result;
+        });
+
+        this.accountService.search(this.pageIndex, this.count, '', '').subscribe(res => {
+            this.rowData = res;
+        });
+
+    }
+
+    onEditComplete()
+    {
+        console.log(arguments);
+
+
+        if (arguments.length > 0)
+        {
+            var acc = arguments[0].data;
+            this.accountService.editAccount(acc)
+                .subscribe(response => {
+                    this.toastrService.success('اطلاعات حساب با موفقیت ویرایش شد');
+                    this.reloadGrid();
+                });
+        }
+        
+    }
 
     //LoadAccount
 
@@ -105,6 +132,10 @@ export class AccountComponent  implements OnInit {
         if(event.sortField)
             order = event.sortField + ' ' + sortAscDesc;
 
+
+        this.pageIndex = event.first;
+        this.count = event.rows;
+
          this.accountService.search(event.first,event.rows,order,filter).subscribe(res => {
                 this.rowData = res;
             });        
@@ -116,7 +147,8 @@ export class AccountComponent  implements OnInit {
 
     cancel() {
         this.account = new AccountInfo();
-        this.displayEditDialog = false;
+        this.displayDialog = false;
+        this.newAccount = false;
     }
 
     save()
@@ -126,20 +158,21 @@ export class AccountComponent  implements OnInit {
             this.accountService.editAccount(this.account)
                 .subscribe(response => {                    
                     this.toastrService.success('اطلاعات حساب با موفقیت ویرایش شد');
-                    this.loadData();
+                    this.reloadGrid();
                 });
 
-            this.displayEditDialog = false;
+            this.displayDialog = false;
         }
         else
         {
-            this.accountService.editAccount(this.account)
+            this.accountService.insertAccount(this.account)
                 .subscribe(response => {
                     this.toastrService.success('اطلاعات حساب با موفقیت ثبت شد');
-                    this.loadData();
+                    this.reloadGrid();
                 });
 
             this.newAccount = false;
+            this.displayDialog = false;
         }
     }
 
@@ -154,7 +187,7 @@ export class AccountComponent  implements OnInit {
         this.account.fiscalPeriodId = acc.fiscalPeriodId;
         this.account.branchId = acc.branchId;
 
-        this.displayEditDialog = true;
+        this.displayDialog = true;
     }
 
     //Edit Account
@@ -174,7 +207,7 @@ export class AccountComponent  implements OnInit {
         {
             this.accountService.delete(this.deleteAccountId).subscribe(response => {
                 this.deleteAccountId = 0;
-                this.loadData();
+                this.reloadGrid();
             });
         }
 
@@ -189,10 +222,10 @@ export class AccountComponent  implements OnInit {
 
     showDialogToAdd(acc: Account) {
         this.newAccount = true;
-
+        this.displayDialog = true;
         this.account = new AccountInfo();
 
-        this.displayEditDialog = true;
+        
     }
 
 
