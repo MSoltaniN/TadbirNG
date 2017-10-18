@@ -20,14 +20,14 @@ import { AccountComponent } from './components/account/account.component';
 
 import { AccountService } from './service/index';
 
-class AppBaseRequestOptions extends BaseRequestOptions {
-    headers: Headers = new Headers();
-    constructor() {
-        super();
-        this.headers.append('Content-Type', 'application/json');
-        this.body = '';
-    }
-}
+//class AppBaseRequestOptions extends BaseRequestOptions {
+//    headers: Headers = new Headers();
+//    constructor() {
+//        super();
+//        this.headers.append('Content-Type', 'application/json');
+//        this.body = '';
+//    }
+//}
 
 
 @NgModule({
@@ -37,8 +37,8 @@ class AppBaseRequestOptions extends BaseRequestOptions {
         AccountComponent        
     ],
     providers: [AccountService,
-        { provide: LocationStrategy, useClass: HashLocationStrategy },
-        { provide: RequestOptions, useClass: AppBaseRequestOptions }],
+        { provide: LocationStrategy, useClass: HashLocationStrategy }],
+        //{ provide: RequestOptions, useClass: AppBaseRequestOptions }],
     imports: [
         CommonModule,         
         HttpModule,
