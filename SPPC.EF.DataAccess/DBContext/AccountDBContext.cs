@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.DataAccess
             if (!optionsBuilder.IsConfigured)
             {
                 // #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer(@"Data Source=WIN-RI0552N08OB\MSSQLSERVER2;Initial Catalog=TadbirDemo;Persist Security Info=True;User ID=sa;Password=123456@aA;Enlist=False;Network Library=dbmssocn;Application Name=Pafco MIS Systemdemo1;Connect Timeout=120;MultipleActiveResultSets=True");
+                optionsBuilder.UseSqlServer(@"Data Source=ASUS-PC;Initial Catalog=TadbirDemo;Persist Security Info=True;User ID=sa;Password=123456aA;Enlist=False;Network Library=dbmssocn;Application Name=Pafco MIS Systemdemo1;Connect Timeout=120;MultipleActiveResultSets=True");
             }
         }
 

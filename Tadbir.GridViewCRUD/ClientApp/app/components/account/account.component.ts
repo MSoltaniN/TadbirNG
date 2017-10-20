@@ -5,7 +5,7 @@ import { AccountService, AccountInfo } from '../../service/index';
 import { Account } from '../../model/index';
 
 import { InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule } from 'primeng/primeng'; /** add components for test DataGrid functionality */
-import { ToastrService } from 'toastr-ng2'; /** add this component for message in client side */
+import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component for message in client side */
 import {LazyLoadEvent,FilterMetadata} from 'primeng/primeng';
 import {Filter} from '../../class/filter';
 
@@ -38,6 +38,7 @@ export class AccountComponent implements OnInit {
     //variable for dialog
     displayDialog: boolean;
 
+    config: ToastConfig;
 
     newAccount: boolean;
     account: Account = new AccountInfo
@@ -47,6 +48,7 @@ export class AccountComponent implements OnInit {
 
     }
 
+    
 
     pageIndex?: number;
     count?: number;
@@ -58,7 +60,7 @@ export class AccountComponent implements OnInit {
 
         //evaluate total row counts for gird paging 
         this.accountService.getTotalCount().subscribe(res => {
-                this.totalRecords = res.result;
+                this.totalRecords = res;
         });
 
       
@@ -69,7 +71,7 @@ export class AccountComponent implements OnInit {
 
         //evaluate total row counts for gird paging 
         this.accountService.getTotalCount().subscribe(res => {
-            this.totalRecords = res.result;
+            this.totalRecords = res;
         });
 
         this.accountService.search(this.pageIndex, this.count, '', '').subscribe(res => {
@@ -88,7 +90,7 @@ export class AccountComponent implements OnInit {
             var acc = arguments[0].data;
             this.accountService.editAccount(acc)
                 .subscribe(response => {
-                    this.toastrService.success('اطلاعات حساب با موفقیت ویرایش شد');
+                    this.toastrService.success('اطلاعات حساب با موفقیت ویرایش شد', '', { positionClass: 'toast-top-left' } );
                     this.reloadGrid();
                 });
         }
@@ -157,7 +159,7 @@ export class AccountComponent implements OnInit {
         {
             this.accountService.editAccount(this.account)
                 .subscribe(response => {                    
-                    this.toastrService.success('اطلاعات حساب با موفقیت ویرایش شد');
+                    this.toastrService.success('اطلاعات حساب با موفقیت ویرایش شد', '', { positionClass: 'toast-top-left' });
                     this.reloadGrid();
                 });
 
@@ -167,7 +169,7 @@ export class AccountComponent implements OnInit {
         {
             this.accountService.insertAccount(this.account)
                 .subscribe(response => {
-                    this.toastrService.success('اطلاعات حساب با موفقیت ثبت شد');
+                    this.toastrService.success('اطلاعات حساب با موفقیت ثبت شد', '', { positionClass: 'toast-top-left' });
                     this.reloadGrid();
                 });
 

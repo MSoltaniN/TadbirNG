@@ -50,6 +50,7 @@
     "primeng": "4.2.1",
     "toastr-ng2": "4.1.1",
     "typescript-string-operations": "1.1.0"
+    
   },
   "devDependencies": {
     "@types/chai": "4.0.1",

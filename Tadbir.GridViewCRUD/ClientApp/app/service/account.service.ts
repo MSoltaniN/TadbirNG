@@ -24,6 +24,8 @@ export class AccountService
 {
     private _getAccountsUrl = "/Account/fp/{0}/branch/{1}";
 
+    private _getAllAccountsUrl = "/Account/List";
+
     private _getTotalCountUrl = "/Account/Count";
 
     private _deleteAccountsUrl = "/Account/Delete/{0}";
@@ -64,11 +66,17 @@ export class AccountService
     }
 
     search(start? :number , count? :number , orderby?:string,filters?:string  ) {
-        var headers = new Headers();
-        headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
+        var headers = new Headers({ 'Content-Type': 'application/json' });
+        var options = new RequestOptions({ headers: headers });
+
+        //this path for filter branch and fiscalpriod
+        //var url = this._getAccountsUrl;  
+
+        var url = this._getAllAccountsUrl;
 
 
-        var url = this._getAccountsUrl;
+
+
 
         /*
         let params: URLSearchParams = new URLSearchParams();
@@ -93,18 +101,19 @@ export class AccountService
             params.set("filter", orderby);     
         }*/
 
-        var postItem = { Start: start, Count: count, Filters: filters, OrderBy: orderby };
-
+        var postItem = { StartIndex: start, Count: count, Filters: filters, OrderBy: orderby };
         
 
-        this.options = new RequestOptions({ headers: this.headers });
-
+        /*
         var fpId = '1';
         var branchId = '1';
 
         var newUrl = String.Format(this._getAccountsUrl, fpId, branchId);
+        */
 
-        return this.http.post(newUrl,JSON.stringify(postItem), Option)
+        var newUrl = this._getAllAccountsUrl;
+
+        return this.http.post(newUrl, JSON.stringify(postItem), options)
             .map(response => <any>(<Response>response).json());
     }
 
@@ -128,7 +137,7 @@ export class AccountService
             .map(res => res.json().message)
             .catch(this.handleError);
     }
-
+    
     delete(accountId: number) : Observable<string>
     {
         //ToDo : call api for delete entity

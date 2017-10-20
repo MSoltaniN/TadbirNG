@@ -160,5 +160,16 @@ namespace Tadbir.GridViewCRUD.Controllers
             var accounts = await _repository.GetAccounts(fpId, branchId,options);
             return Json(accounts);
         }
+
+        
+        [Route("/Account/List")]
+        [HttpPost, Produces("application/json")]
+        public async Task<IActionResult> List([FromBody] GridOption options = null)
+        {
+            
+
+            var accounts = await _repository.GetAccounts(options);
+            return Json(accounts);
+        }
     }
 }

@@ -81,9 +81,10 @@ namespace SPPC.Tadbir.Business
 
 
             }
-            catch(Exception ex)
+            catch
             {
                 //TODO: log exception 
+
                 return null;
             }
             
@@ -120,6 +121,11 @@ namespace SPPC.Tadbir.Business
             }
         }
 
+        /// <summary>
+        /// edit selected account
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
         public async Task<bool> EditAccount(AccountViewModel account)
         {
             using (AccountDBContext db = new AccountDBContext())
@@ -135,6 +141,58 @@ namespace SPPC.Tadbir.Business
                 editAccount.Name = account.Name;
                 
                 return await db.SaveChangesAsync() >= 1;
+            }
+        }
+
+
+        /// <summary>
+        /// Get all accounts
+        /// </summary>
+        /// <param name="gridOption"></param>
+        /// <returns></returns>
+        public async Task<List<AccountViewModel>> GetAccounts(GridOption gridOption)
+        {
+            try
+            {
+                using (AccountDBContext db = new AccountDBContext())
+                {
+                    var result = from a in db.AccountViewModels                                 
+                                 select new AccountViewModel
+                                 {
+                                     BranchId = a.BranchId,
+                                     Code = a.Code,
+                                     Description = a.Description,
+                                     FiscalPeriodId = a.FiscalPeriodId,
+                                     AccountId = a.AccountId,
+                                     Name = a.Name
+                                 };
+
+                    if (gridOption.Filters != null)
+                    {
+                        foreach (var item in gridOption.Filters)
+                        {
+                            string whereClause = string.Format("({0}).ToString() == \"{1}\"", item.Name, item.Value);
+                            result = result.Where(whereClause);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(gridOption.OrderBy))
+                    {
+                        result = result.OrderBy(gridOption.OrderBy);
+                    }
+
+                    return await result.Skip(gridOption.StartIndex).Take(gridOption.Count).ToListAsync();
+
+                }
+
+
+
+            }
+            catch
+            {
+                //TODO: log exception 
+
+                return null;
             }
         }
     }

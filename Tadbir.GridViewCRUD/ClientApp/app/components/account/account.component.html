@@ -9,17 +9,17 @@
                      resizableColumns="true" [totalRecords]="totalRecords" [responsive]="true"
                      (onLazyLoad)="loadAccountLazy($event)" (onEditComplete)="onEditComplete($event)" columnResizeMode="expand" [rowsPerPageOptions]="[5,10,20]">
             <header>لیست حساب ها</header>            
-            <p-column field="code" [filter]="true" [editable]="true" header="کد حساب" [sortable]="true"></p-column>
-            <p-column field="name" [filter]="true" [editable]="true" header="نام حساب" [sortable]="true"></p-column>
-            <p-column field="fiscalPeriodId" [filter]="true" header="دوره مالی" [sortable]="true"></p-column>
-            <p-column field="branchId" [filter]="true" header="شعبه" [sortable]="true"></p-column>
+            <p-column field="code" [filter]="true" class="ui-md-6" [editable]="true" header="کد حساب"  [sortable]="true"></p-column>
+            <p-column field="name" [filter]="true" [editable]="true" header="نام حساب"  [style]="{'width':'25%'}" [sortable]="true"></p-column>
+            <p-column field="fiscalPeriodId" [filter]="true" header="دوره مالی" [style]="{'text-align':'center'}"  [sortable]="true"></p-column>
+            <p-column field="branchId" [filter]="true" header="شعبه" [style]="{'text-align':'center'}" [sortable]="true"></p-column>
             <p-column field="description" [editable]="false" header="توضیحات" [sortable]="false"></p-column>
-            <p-column header="">
+            <p-column header="" [style]="{'text-align':'center'}">
                 <ng-template let-col let-account="rowData" pTemplate type="body">
                     <button type="button" pButton icon="fa-check" (click)="showDialogToEdit(account)" label="ویرایش"></button>
                 </ng-template>
             </p-column>
-            <p-column header="">
+            <p-column header="" [style]="{'text-align':'center'}">
                 <ng-template let-col let-account="rowData" pTemplate type="body">
                     <button type="button" pButton icon="fa-close" (click)="showDialogToDelete(account)" label="حذف"></button>
                 </ng-template>

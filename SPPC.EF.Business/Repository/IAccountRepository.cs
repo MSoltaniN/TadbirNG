@@ -9,6 +9,8 @@ namespace SPPC.Tadbir.Business
     {
         Task<List<AccountViewModel>> GetAccounts(int fpId,int branchId,GridOption gridOption);
 
+        Task<List<AccountViewModel>> GetAccounts(GridOption gridOption);
+
         Task<AccountViewModel> GetAccount(int id);
 
         Task<bool> DeleteAccount(int id);
