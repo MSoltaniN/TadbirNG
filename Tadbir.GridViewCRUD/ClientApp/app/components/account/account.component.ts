@@ -105,9 +105,9 @@ export class AccountComponent implements OnInit {
 
        if(Object.keys(event.filters).length > 0)
        {
-                Object.keys(event.filters).forEach(routeKey => {                        
-                     filters.push(new Filter(routeKey,  event.filters[routeKey].value))                    
-                });
+                //Object.keys(event.filters).forEach(routeKey => {                        
+                //     filters.push(new Filter(routeKey,  event.filters[routeKey].value))                    
+                //});
             
         }
 
