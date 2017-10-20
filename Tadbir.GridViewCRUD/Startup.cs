@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tadbir.GridViewCRUD;
 using SPPC.Tadbir.Business;
+using SPPC.Tadbir.DataAccess;
 
 namespace Tadbir_GridViewCRUD
 {
@@ -27,6 +28,8 @@ namespace Tadbir_GridViewCRUD
             services.AddMvc();
 
             services.AddTransient<IAccountRepository, AccountRepository>();
+
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

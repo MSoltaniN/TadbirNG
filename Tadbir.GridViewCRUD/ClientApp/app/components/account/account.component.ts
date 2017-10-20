@@ -103,13 +103,15 @@ export class AccountComponent implements OnInit {
    {
        let filters : Filter[] = [];
 
-       if(Object.keys(event.filters).length > 0)
-       {
-                //Object.keys(event.filters).forEach(routeKey => {                        
-                //     filters.push(new Filter(routeKey,  event.filters[routeKey].value))                    
-                //});
-            
-        }
+       if (event.filters) {
+           if (Object.keys(event.filters).length > 0) {
+               Object.keys(event.filters).forEach(routeKey => {
+                   if (event.filters)
+                       filters.push(new Filter(routeKey, event.filters[routeKey].value))
+               });
+
+           }
+       }
 
         return filters;
     }
@@ -124,12 +126,13 @@ export class AccountComponent implements OnInit {
          if(event.sortOrder === -1){
           sortAscDesc = "DESC";
          }
-          else if(event.sortOrder === 1){
+         else if(event.sortOrder === 1)
             sortAscDesc = "ASC";
-          }
-        
-        if(Object.keys(event.filters).length > 0)
-            filter = this.getFilters(event);
+          
+
+         
+        if (event.filters && Object.keys(event.filters).length > 0)
+                filter = this.getFilters(event);
 
         if(event.sortField)
             order = event.sortField + ' ' + sortAscDesc;
