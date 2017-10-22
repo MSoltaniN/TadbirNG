@@ -24,7 +24,7 @@ import "rxjs/Rx";
 
 export class AccountComponent implements OnInit {
 
-    private rowData: any[];
+    public rowData: any[];
 
     public totalRecords: number;
 
@@ -225,7 +225,7 @@ export class AccountComponent implements OnInit {
     
     //Add Account
 
-    showDialogToAdd(acc: Account) {
+    showDialogToAdd() {
         this.newAccount = true;
         this.displayDialog = true;
         this.account = new AccountInfo();
