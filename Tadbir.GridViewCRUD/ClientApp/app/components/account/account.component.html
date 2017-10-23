@@ -7,7 +7,7 @@
     <div class="ContentSideSections Implementation divContainer ui-md-12 ui-sm-6" >
         <p-dataTable [style]="{'margin-top':'20px'}" [value]="rowData" [rows]="10" [lazy]="true" [paginator]="true" [editable]="true"
                      resizableColumns="true" [totalRecords]="totalRecords" [responsive]="true"
-                     (onLazyLoad)="loadAccountLazy($event)" (onEditComplete)="onEditComplete($event)" columnResizeMode="expand" [rowsPerPageOptions]="[5,10,20]">
+                     (onLazyLoad)="loadAccountLazy($event)" (onEditComplete)="onEditComplete()" columnResizeMode="expand" [rowsPerPageOptions]="[5,10,20]">
             <header>لیست حساب ها</header>            
             <p-column field="code" [filter]="true" class="ui-md-6" [editable]="true" header="کد حساب"  [sortable]="true"></p-column>
             <p-column field="name" [filter]="true" [editable]="true" header="نام حساب"  [style]="{'width':'25%'}" [sortable]="true"></p-column>
