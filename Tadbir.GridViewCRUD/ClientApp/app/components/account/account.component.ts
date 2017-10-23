@@ -28,6 +28,10 @@ export class AccountComponent implements OnInit {
 
     public totalRecords: number;
 
+
+    currentFilter: Filter[] = [];
+    currentOrder: string = "";
+
     //variable for visible delete confirm dialog
     displayDeleteDialog: boolean;
     deleteAccountId: number;
@@ -40,12 +44,16 @@ export class AccountComponent implements OnInit {
 
     config: ToastConfig;
 
+    showloadingMessage: boolean = true;
+
     newAccount: boolean;
     account: Account = new AccountInfo
 
-    ngOnInit() {
-        this.getCount();
+    
 
+    ngOnInit() {
+        //this.getRowsCount();
+        
     }
 
     
@@ -56,23 +64,26 @@ export class AccountComponent implements OnInit {
     constructor(private accountService : AccountService,private toastrService: ToastrService){}
     
 
-    getCount() {
+    getRowsCount() {
 
-        //evaluate total row counts for gird paging 
-        this.accountService.getTotalCount().subscribe(res => {
+        
+            this.accountService.getCount(this.currentOrder, this.currentFilter).subscribe(res => {
                 this.totalRecords = res;
-        });
-
-      
+            });
         
     }
 
+    
+    //getCount(orderby?: string, filters?: string) {
+     
+    //    this.accountService.getCount(orderby,filters).subscribe(res => {
+    //        this.totalRecords = res;
+    //    });
+    //}
+
     reloadGrid() {
 
-        //evaluate total row counts for gird paging 
-        this.accountService.getTotalCount().subscribe(res => {
-            this.totalRecords = res;
-        });
+        this.getRowsCount();
 
         this.accountService.search(this.pageIndex, this.count, '', '').subscribe(res => {
             this.rowData = res;
@@ -118,7 +129,7 @@ export class AccountComponent implements OnInit {
     
     loadAccountLazy(event: LazyLoadEvent) {
         
-        var filter : any = "";
+        var filter : any = null;
         var order : string = "";
 
          var sortAscDesc: string = "";
@@ -137,12 +148,19 @@ export class AccountComponent implements OnInit {
         if(event.sortField)
             order = event.sortField + ' ' + sortAscDesc;
 
+        this.currentFilter = filter;
+        this.currentOrder = order;
 
         this.pageIndex = event.first;
         this.count = event.rows;
 
+        this.getRowsCount();
+
          this.accountService.search(event.first,event.rows,order,filter).subscribe(res => {
-                this.rowData = res;
+             this.rowData = res;
+             
+             this.showloadingMessage = !(res.length == 0);
+
             });        
     }  
 

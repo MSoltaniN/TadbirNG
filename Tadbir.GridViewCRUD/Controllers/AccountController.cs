@@ -36,18 +36,26 @@ namespace Tadbir.GridViewCRUD.Controllers
 
 
         [HttpGet, Produces("application/json")]
-        [Route("/Account/Count")]
-        public async Task<IActionResult> Count()
+        [Route("/Account/TotalCount")]
+        public async Task<IActionResult> TotalCount()
         {
             return Json(await _repository.GetCount());
             
         }
 
+        [HttpPost, Produces("application/json")]
+        [Route("/Account/Count")]
+        public async Task<IActionResult> Count([FromBody] GridOption options = null)
+        {
+            return Json(await _repository.GetCount(options));
+
+        }
+
 
         //[HttpPost, Produces("application/json")]
         //[Route("/Account/GetLazyAccounts/{id}")]
-        
-        
+
+
         //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
 
         [HttpPost, Produces("application/json")]

@@ -69,12 +69,12 @@ namespace SPPC.Tadbir.Business
                         }
                     }
 
-                    if(!string.IsNullOrEmpty(gridOption.OrderBy))
+                    if (!string.IsNullOrEmpty(gridOption.OrderBy))
                     {
-                        result = result.OrderBy(gridOption.OrderBy);                        
+                        result = result.OrderBy(gridOption.OrderBy);
                     }
 
-                    return await result.Skip(gridOption.StartIndex).Take(gridOption.Count).ToListAsync();
+                    return await result.Skip(gridOption.StartIndex.Value).Take(gridOption.Count.Value).ToListAsync();
 
                 }
 
@@ -87,15 +87,15 @@ namespace SPPC.Tadbir.Business
 
                 return null;
             }
-            
+
         }
 
         public async Task<int> GetCount()
         {
             using (AccountDBContext db = new AccountDBContext())
             {
-                return await(from a in db.AccountViewModels
-                             select a
+                return await (from a in db.AccountViewModels
+                              select a
                              ).CountAsync();
 
             }
@@ -105,8 +105,8 @@ namespace SPPC.Tadbir.Business
         {
             using (AccountDBContext db = new AccountDBContext())
             {
-                
-                
+
+
                 AccountViewModel newAccount = new AccountViewModel()
                 {
                     BranchId = account.BranchId,
@@ -116,7 +116,7 @@ namespace SPPC.Tadbir.Business
                     Name = account.Name
                 };
                 db.AccountViewModels.Add(newAccount);
-                
+
                 return await db.SaveChangesAsync() >= 1;
             }
         }
@@ -139,7 +139,7 @@ namespace SPPC.Tadbir.Business
                 editAccount.Description = account.Description;
                 editAccount.FiscalPeriodId = account.FiscalPeriodId;
                 editAccount.Name = account.Name;
-                
+
                 return await db.SaveChangesAsync() >= 1;
             }
         }
@@ -156,7 +156,7 @@ namespace SPPC.Tadbir.Business
             {
                 using (AccountDBContext db = new AccountDBContext())
                 {
-                    var result = from a in db.AccountViewModels                                 
+                    var result = from a in db.AccountViewModels
                                  select new AccountViewModel
                                  {
                                      BranchId = a.BranchId,
@@ -181,7 +181,7 @@ namespace SPPC.Tadbir.Business
                         result = result.OrderBy(gridOption.OrderBy);
                     }
 
-                    return await result.Skip(gridOption.StartIndex).Take(gridOption.Count).ToListAsync();
+                    return await result.Skip(gridOption.StartIndex.Value).Take(gridOption.Count.Value).ToListAsync();
 
                 }
 
@@ -195,6 +195,37 @@ namespace SPPC.Tadbir.Business
                 return null;
             }
         }
-    }
 
+        public async Task<int> GetCount(GridOption gridOption)
+        {
+            using (AccountDBContext db = new AccountDBContext())
+            {
+                var result = from a in db.AccountViewModels
+                             select new AccountViewModel
+                             {
+                                 BranchId = a.BranchId,
+                                 Code = a.Code,
+                                 Description = a.Description,
+                                 FiscalPeriodId = a.FiscalPeriodId,
+                                 AccountId = a.AccountId,
+                                 Name = a.Name
+                             };
+
+                if (gridOption.Filters != null)
+                {
+                    foreach (var item in gridOption.Filters)
+                    {
+                        string whereClause = string.Format("({0}).ToString() == \"{1}\"", item.Name, item.Value);
+                        result = result.Where(whereClause);
+                    }
+                }
+
+
+
+                return await result.CountAsync();
+
+            }
+        }
+
+    }
 }

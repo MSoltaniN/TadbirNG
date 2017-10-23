@@ -26,7 +26,9 @@ export class AccountService
 
     private _getAllAccountsUrl = "/Account/List";
 
-    private _getTotalCountUrl = "/Account/Count";
+    private _getTotalCountUrl = "/Account/TotalCount";
+
+    private _getCountUrl = "/Account/Count";
 
     private _deleteAccountsUrl = "/Account/Delete/{0}";
 
@@ -65,6 +67,22 @@ export class AccountService
             
     }
 
+    //get count of records base on Grid filters and order value
+    getCount(orderby?: string, filters?: any[]) {
+        var headers = new Headers();
+        headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
+        var url = this._getCountUrl;
+
+        var postItem = { Filters: filters, OrderBy: orderby };
+
+        return this.http.post(url,postItem, { headers: headers })
+            .map(response => <any>(<Response>response).json());;
+
+
+    }
+
+    
+    
     search(start? :number , count? :number , orderby?:string,filters?:string  ) {
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var options = new RequestOptions({ headers: headers });

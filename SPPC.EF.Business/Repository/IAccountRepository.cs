@@ -21,5 +21,7 @@ namespace SPPC.Tadbir.Business
 
         Task<int> GetCount();
 
+        Task<int> GetCount(GridOption gridOption);
+
     }
 }
