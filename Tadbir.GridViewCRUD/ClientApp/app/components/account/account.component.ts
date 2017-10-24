@@ -14,6 +14,8 @@ import {Filter} from '../../class/filter';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 
+import {TranslateService} from 'ng2-translate';
+
 
 
 @Component({
@@ -61,7 +63,14 @@ export class AccountComponent implements OnInit {
     pageIndex?: number;
     count?: number;
 
-    constructor(private accountService : AccountService,private toastrService: ToastrService){}
+    constructor(private accountService: AccountService, private toastrService: ToastrService, private translate: TranslateService)
+    {
+        translate.addLangs(["en", "fa"]);
+        translate.setDefaultLang('fa');
+
+        var browserLang = 'fa';//translate.getBrowserLang();
+        translate.use(browserLang);
+    }
     
 
     getRowsCount() {

@@ -1,17 +1,23 @@
-﻿<div class="ui-rtl" dir="rtl"  >
-    <div class="containerBtn">
-        <div class="ui-md-12 ui-sm-12">
+﻿<div class="ui-rtl" dir="rtl">
+    <div class="containerBtn ui-md-12 ui-sm-12">
+        <div class="ui-md-6 ui-sm-12">
             <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="حساب جدید"></button>
+            <div style="color:white">{{ 'HOME.TITLE' | translate }}</div>
+        </div>
+        <div class="ui-md-6 ui-sm-6">
+            <select #langSelect (change)="translate.use(langSelect.value)">
+                <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+            </select>
         </div>
     </div>
-    <div class="ContentSideSections Implementation divContainer ui-md-12 ui-sm-6" >
+    <div class="ContentSideSections Implementation divContainer ui-md-12 ui-sm-6">
         <p-dataTable [style]="{'margin-top':'20px'}" [value]="rowData" [rows]="10" [lazy]="true" [paginator]="true" [editable]="true"
                      resizableColumns="true" [totalRecords]="totalRecords" [responsive]="true"
                      (onLazyLoad)="loadAccountLazy($event)" (onEditComplete)="onEditComplete()" columnResizeMode="expand" [rowsPerPageOptions]="[5,10,20]">
-            <header>لیست حساب ها</header>            
-            <p-column field="code" [filter]="true" class="ui-md-6" [editable]="true" header="کد حساب"  [sortable]="true"></p-column>
-            <p-column field="name" [filter]="true" [editable]="true" header="نام حساب"  [style]="{'width':'25%'}" [sortable]="true"></p-column>
-            <p-column field="fiscalPeriodId" [filter]="true" header="دوره مالی" [style]="{'text-align':'center'}"  [sortable]="true"></p-column>
+            <header>لیست حساب ها</header>
+            <p-column field="code" [filter]="true" class="ui-md-6" [editable]="true" header="کد حساب" [sortable]="true"></p-column>
+            <p-column field="name" [filter]="true" [editable]="true" header="نام حساب" [style]="{'width':'25%'}" [sortable]="true"></p-column>
+            <p-column field="fiscalPeriodId" [filter]="true" header="دوره مالی" [style]="{'text-align':'center'}" [sortable]="true"></p-column>
             <p-column field="branchId" [filter]="true" header="شعبه" [style]="{'text-align':'center'}" [sortable]="true"></p-column>
             <p-column field="description" [editable]="false" header="توضیحات" [sortable]="false"></p-column>
             <p-column header="" [style]="{'text-align':'center'}">
@@ -25,7 +31,7 @@
                 </ng-template>
             </p-column>
             <ng-template pTemplate="emptymessage">
-                 {{showloadingMessage  ? 'در حال بارگذاری ...' : 'هیچ رکوردی یافت نشد!'}}
+                {{showloadingMessage  ? 'در حال بارگذاری ...' : 'هیچ رکوردی یافت نشد!'}}
             </ng-template>
             <footer><div class="ui-helper-clearfix" style="width:100%"></div></footer>
         </p-dataTable>
@@ -54,7 +60,7 @@
                 </div>
             </div>
             <footer>
-                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">                    
+                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
                     <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="newAccount" label="تایید"></button>
                     <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="!newAccount" label="ویرایش"></button>
                     <button type="button" pButton icon="fa-close" (click)="cancel()" label="انصراف"></button>

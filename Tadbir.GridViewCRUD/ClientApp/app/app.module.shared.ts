@@ -14,9 +14,9 @@ import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { AccountComponent } from './components/account/account.component';
 
+import {BrowserModule} from "@angular/platform-browser";
 
-
-//import { InputComponent } from './components/input/input.component';
+import { TranslateModule } from "ng2-translate";
 
 import { AccountService } from './service/index';
 
@@ -46,6 +46,8 @@ import { AccountService } from './service/index';
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
         InputTextModule, DataTableModule, ButtonModule, DialogModule,
+        BrowserModule,
+        TranslateModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'account', pathMatch: 'full' },
             { path: 'account', component: AccountComponent },
