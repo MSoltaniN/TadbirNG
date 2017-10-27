@@ -1,6 +1,32 @@
 ﻿{
   "HOME": {
     "TITLE": "به سیستم جدید تدبیر خوش آمدید!",
-    "SELECT": "Changer la langue"
+    "SELECT": "Changer la langue",
+    "Loading": "در حال بارگذاری ...",
+    "RecordNotFound": "هیچ رکوردی یافت نشد!"
+  },
+
+  "Messages": {
+    "Inserted": "{0} با موفقیت ثبت شد",
+    "Updated": "{0} با موفقیت ویرایش شد",
+    "Deleted": "{0} با موفقیت حذف شد"
+  },
+  "Entity": {
+    "Account": "اطلاعات حساب"
+  },
+  "Account": {
+    "New": "حساب جدید",
+    "Edit": "ویرایش",
+    "Delete": "حذف",
+    "Code": "کد حساب",
+    "Name": "نام حساب",
+    "Fiscal": "دوره مالی",
+    "Branch": "شعبه",
+    "Description": "توضیحات",
+    "List": "لیست حساب ها",
+    "Ok": "تایید",
+    "Cancel": "انصراف"
   }
+
+
 }

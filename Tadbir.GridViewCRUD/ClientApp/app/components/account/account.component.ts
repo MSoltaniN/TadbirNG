@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 
 import {TranslateService} from 'ng2-translate';
-
+import { String } from '../../class/source';
 
 
 @Component({
@@ -51,7 +51,9 @@ export class AccountComponent implements OnInit {
     newAccount: boolean;
     account: Account = new AccountInfo
 
-    
+    updateMsg: string;
+    insertMsg: string;
+    deleteMsg: string;
 
     ngOnInit() {
         //this.getRowsCount();
@@ -70,6 +72,26 @@ export class AccountComponent implements OnInit {
 
         var browserLang = 'fa';//translate.getBrowserLang();
         translate.use(browserLang);
+        
+        // read message format for crud operations
+        var entityType = '';
+        translate.get("Entity.Account").subscribe((msg: string) => {
+            entityType = msg;
+        });
+
+        translate.get("Messages.Inserted").subscribe((msg: string) => {
+            this.insertMsg = String.Format(msg,entityType);
+        });
+
+        translate.get("Messages.Updated").subscribe((msg: string) => {
+            this.updateMsg = String.Format(msg, entityType);;
+        });
+
+        translate.get("Messages.Deleted").subscribe((msg: string) => {
+            this.deleteMsg = String.Format(msg, entityType);;
+        });
+
+        
     }
     
 
@@ -100,7 +122,7 @@ export class AccountComponent implements OnInit {
 
     }
 
-    onEditComplete()
+    onEditComplete(event : any)
     {
         console.log(arguments);
 
@@ -110,7 +132,9 @@ export class AccountComponent implements OnInit {
             var acc = arguments[0].data;
             this.accountService.editAccount(acc)
                 .subscribe(response => {
-                    this.toastrService.success('اطلاعات حساب با موفقیت ویرایش شد', '', { positionClass: 'toast-top-left' } );
+
+                    
+                    this.toastrService.success(this.updateMsg, '', { positionClass: 'toast-top-left' } );
                     this.reloadGrid();
                 });
         }
@@ -189,7 +213,7 @@ export class AccountComponent implements OnInit {
         {
             this.accountService.editAccount(this.account)
                 .subscribe(response => {                    
-                    this.toastrService.success('اطلاعات حساب با موفقیت ویرایش شد', '', { positionClass: 'toast-top-left' });
+                    this.toastrService.success(this.updateMsg, '', { positionClass: 'toast-top-left' });
                     this.reloadGrid();
                 });
 
@@ -199,7 +223,7 @@ export class AccountComponent implements OnInit {
         {
             this.accountService.insertAccount(this.account)
                 .subscribe(response => {
-                    this.toastrService.success('اطلاعات حساب با موفقیت ثبت شد', '', { positionClass: 'toast-top-left' });
+                    this.toastrService.success(this.insertMsg, '', { positionClass: 'toast-top-left' });
                     this.reloadGrid();
                 });
 
@@ -239,6 +263,7 @@ export class AccountComponent implements OnInit {
         {
             this.accountService.delete(this.deleteAccountId).subscribe(response => {
                 this.deleteAccountId = 0;
+                this.toastrService.info(this.deleteMsg, '', { positionClass: 'toast-top-left' });
                 this.reloadGrid();
             });
         }
