@@ -2,12 +2,12 @@
     <div class="containerBtn ui-g-12">       
         <div class="ui-g-6">
             <div style="color:white">{{ 'HOME.TITLE' | translate }}</div>
-            <select #langSelect (change)="translate.use(langSelect.value)">
+            <select #langSelect (change)="languageChange(langSelect.value)">
                 <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
             </select>
         </div>
         <div class="ui-g-6">
-            <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="حساب جدید"></button>
+            <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="{{ 'Account.New' | translate }}"></button>
         </div>
     </div>
     <div class="ContentSideSections Implementation divContainer ui-g-12">

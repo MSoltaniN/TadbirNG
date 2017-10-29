@@ -60,7 +60,7 @@ export class AccountComponent implements OnInit {
         
     }
 
-    
+    private translateService: TranslateService
 
     pageIndex?: number;
     count?: number;
@@ -73,27 +73,38 @@ export class AccountComponent implements OnInit {
         var browserLang = 'fa';//translate.getBrowserLang();
         translate.use(browserLang);
         
+        this.translateService = translate;
+
+        this.localizeMsg();
+    }
+
+    languageChange(value:string)
+    {
+        this.translateService.use(value);
+        this.localizeMsg();
+    }
+
+
+    localizeMsg()
+    {
         // read message format for crud operations
         var entityType = '';
-        translate.get("Entity.Account").subscribe((msg: string) => {
+        this.translateService.get("Entity.Account").subscribe((msg: string) => {
             entityType = msg;
         });
 
-        translate.get("Messages.Inserted").subscribe((msg: string) => {
-            this.insertMsg = String.Format(msg,entityType);
+        this.translateService.get("Messages.Inserted").subscribe((msg: string) => {
+            this.insertMsg = String.Format(msg, entityType);
         });
 
-        translate.get("Messages.Updated").subscribe((msg: string) => {
+        this.translateService.get("Messages.Updated").subscribe((msg: string) => {
             this.updateMsg = String.Format(msg, entityType);;
         });
 
-        translate.get("Messages.Deleted").subscribe((msg: string) => {
+        this.translateService.get("Messages.Deleted").subscribe((msg: string) => {
             this.deleteMsg = String.Format(msg, entityType);;
         });
-
-        
     }
-    
 
     getRowsCount() {
 
