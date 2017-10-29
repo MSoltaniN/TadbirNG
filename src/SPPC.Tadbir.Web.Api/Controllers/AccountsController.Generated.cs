@@ -34,7 +34,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accounts/fp/{fpId:int}/branch/{branchId:int}
         [Route(AccountApi.FiscalPeriodBranchAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public IHttpActionResult GetAccounts(int fpId, int branchId, [FromBody] GridOptions options = null)
+        public IHttpActionResult GetAccounts(int fpId, int branchId, [FromBody] GridOptions options)
         {
             if (fpId <= 0 || branchId <= 0)
             {
