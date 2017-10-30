@@ -7,7 +7,7 @@
             </select>
         </div>
         <div class="ui-g-6">
-            <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="{{ 'Account.New' | translate }}"></button>
+            <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="{{ 'Buttons.New' | translate }}"></button>
         </div>
     </div>
     <div class="ContentSideSections Implementation divContainer ui-g-12">
@@ -22,12 +22,12 @@
             <p-column field="description" [editable]="false" header="{{ 'Account.Description' | translate }}" [sortable]="false"></p-column>
             <p-column header="" [style]="{'text-align':'center'}">
                 <ng-template let-col let-account="rowData" pTemplate type="body">
-                    <button type="button" pButton icon="fa-check" (click)="showDialogToEdit(account)" label="{{ 'Account.Edit' | translate }}"></button>
+                    <button type="button" pButton icon="fa-check" (click)="showDialogToEdit(account)" label="{{ 'Buttons.Edit' | translate }}"></button>
                 </ng-template>
             </p-column>
             <p-column header="" [style]="{'text-align':'center'}">
                 <ng-template let-col let-account="rowData" pTemplate type="body">
-                    <button type="button" pButton icon="fa-close" (click)="showDialogToDelete(account)" label="{{ 'Account.Delete' | translate }}"></button>
+                    <button type="button" pButton icon="fa-close" (click)="showDialogToDelete(account)" label="{{ 'Buttons.Delete' | translate }}"></button>
                 </ng-template>
             </p-column>
             <ng-template pTemplate="emptymessage">
@@ -36,7 +36,7 @@
             <footer><div class="ui-helper-clearfix" style="width:100%"></div></footer>
         </p-dataTable>
 
-        <p-dialog header="{{!newAccount ? 'ویرایش حساب' : 'حساب جدید'}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+        <p-dialog header="{{!newAccount ? 'Account.Code | translate'  : 'جدید' }}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
             <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad">
                 <div class="ui-grid-row">
                     <div class="ui-grid-col-4"><label for="code">{{ 'Account.Code' | translate }}</label></div>
@@ -61,20 +61,20 @@
             </div>
             <footer>
                 <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                    <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="newAccount" label="{{ 'Account.Ok' | translate }}"></button>
-                    <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="!newAccount" label="{{ 'Account.Edit' | translate }}"></button>
-                    <button type="button" pButton icon="fa-close" (click)="cancel()" label="{{ 'Account.Cancel' | translate }}"></button>
+                    <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="newAccount" label="{{ 'Buttons.Ok' | translate }}"></button>
+                    <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="!newAccount" label="{{ 'Buttons.Edit' | translate }}"></button>
+                    <button type="button" pButton icon="fa-close" (click)="cancel()" label="{{ 'Buttons.Cancel' | translate }}"></button>
                 </div>
             </footer>
         </p-dialog>
-        <p-dialog header="حذف حساب" [(visible)]="displayDeleteDialog" modal="modal" showEffect="fade">
+        <p-dialog header="{{'Account.Delete' | translate}}" [(visible)]="displayDeleteDialog" modal="modal" showEffect="fade">
             <p>
-                آیا برای حذف <strong>{{ fullname }}</strong> اطمینان دارید؟
+                {{ Message }}
             </p>
             <footer>
                 <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                    <button type="button" pButton icon="fa-close" (click)="deleteAccount(false)" label="خیر"></button>
-                    <button type="button" pButton icon="fa-check" (click)="deleteAccount(true)" label="بله"></button>
+                    <button type="button" pButton icon="fa-close" (click)="deleteAccount(false)" label="{{ 'Buttons.No' | translate }}"></button>
+                    <button type="button" pButton icon="fa-check" (click)="deleteAccount(true)" label="{{ 'Buttons.Yes' | translate }}"></button>
                 </div>
             </footer>
         </p-dialog>

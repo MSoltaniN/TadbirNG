@@ -8,7 +8,17 @@
   "Messages": {
     "Inserted": "{0} inserted successfully",
     "Updated": "{0} updated successfully",
-    "Deleted": "{0} deleted successfully"
+    "Deleted": "{0} deleted successfully",
+    "DeleteConfirm": "are you sure to delete <strong>{0}</strong> ?"
+  },
+  "Buttons": {
+    "Ok": "Ok",
+    "Cancel": "Cancel",
+    "Yes": "Yes",
+    "No": "No",
+    "New": "New Account",
+    "Edit": "Edit",
+    "Delete": "Delete"
   },
   "Entity": {
     "Account": "Account"
@@ -22,11 +32,11 @@
     "Fiscal": "Fiscal",
     "Branch": "Branch",
     "Description": "Description",
-    "List": "Account list",
-    "Ok": "Ok",
-    "Cancel": "Cancel"
+    "List": "Account list"
+    
+
   }
-  
+
 
 
 

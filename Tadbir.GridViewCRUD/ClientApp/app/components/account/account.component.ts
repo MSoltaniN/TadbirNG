@@ -39,7 +39,7 @@ export class AccountComponent implements OnInit {
     deleteAccountId: number;
 
     //for add in delete messageText
-    fullname: string;
+    deleteConfirm: string;
 
     //variable for dialog
     displayDialog: boolean;
@@ -263,7 +263,12 @@ export class AccountComponent implements OnInit {
     //Delete Account 
 
     showDialogToDelete(account: Account) {
-        this.fullname = account.name;
+
+        this.translateService.get("Messages.DeleteConfirm").subscribe((msg: string) => {
+            this.deleteConfirm = String.Format(msg,account.name);
+        });
+
+        
         this.deleteAccountId = account.accountId;
         this.displayDeleteDialog = true;
     }
