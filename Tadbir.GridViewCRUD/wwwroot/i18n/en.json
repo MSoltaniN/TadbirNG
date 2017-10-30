@@ -1,6 +1,6 @@
 ﻿{
-  "HOME": {
-    "TITLE": "Wellcome to Tabir New System",
+  "App": {
+    "Title": "Wellcome to Tabir New System",
     "SELECT": "Change language",
     "Loading": "loading ...",
     "RecordNotFound": "Record not found!"

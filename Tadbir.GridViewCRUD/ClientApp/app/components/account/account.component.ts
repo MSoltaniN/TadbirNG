@@ -55,6 +55,9 @@ export class AccountComponent implements OnInit {
     insertMsg: string;
     deleteMsg: string;
 
+    rtlClass: string = "ui-rtl";
+    rtlUse: string = "rtl";
+
     ngOnInit() {
         //this.getRowsCount();
         
@@ -82,6 +85,23 @@ export class AccountComponent implements OnInit {
     {
         this.translateService.use(value);
         this.localizeMsg();
+        switch (value)
+        {
+            case "fa":
+            {
+                this.rtlUse = "rtl";
+                this.rtlClass = "ui-rtl"
+                break;
+            }
+            case "en":
+            {
+                this.rtlUse = "ltr";
+                this.rtlClass = ""
+                break;
+            }
+        }
+            
+        
     }
 
 
