@@ -6,7 +6,7 @@ import { Account } from '../../model/index';
 
 import { InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule } from 'primeng/primeng'; /** add components for test DataGrid functionality */
 import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component for message in client side */
-import {LazyLoadEvent,FilterMetadata} from 'primeng/primeng';
+import { LazyLoadEvent, FilterMetadata} from 'primeng/primeng';
 import {Filter} from '../../class/filter';
 
 
@@ -16,6 +16,11 @@ import "rxjs/Rx";
 
 import {TranslateService} from 'ng2-translate';
 import { String } from '../../class/source';
+
+
+
+
+
 
 
 @Component({

@@ -8,7 +8,7 @@ import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationSt
 // third party module to display toast 
 import { ToastrModule } from 'toastr-ng2';
 //PRIMENG - Third party module
-import { InputTextModule, DataTableModule, ButtonModule, DialogModule } from 'primeng/primeng';
+import { InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule } from 'primeng/primeng';
 
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
@@ -45,7 +45,7 @@ import { AccountService } from './service/index';
         FormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        InputTextModule, DataTableModule, ButtonModule, DialogModule,
+        InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule,
         BrowserModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
