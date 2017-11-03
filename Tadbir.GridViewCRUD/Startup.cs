@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Tadbir.GridViewCRUD;
 using SPPC.Tadbir.Business;
 using SPPC.Tadbir.DataAccess;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace Tadbir_GridViewCRUD
 {
@@ -47,6 +48,16 @@ namespace Tadbir_GridViewCRUD
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+
+            StaticFileOptions options = new StaticFileOptions();
+            FileExtensionContentTypeProvider typeProvider = new FileExtensionContentTypeProvider();
+            if (!typeProvider.Mappings.ContainsKey(".woff2"))
+            {
+                typeProvider.Mappings.Add(".woff2", "application/font-woff2");
+            }
+            options.ContentTypeProvider = typeProvider;
+            app.UseStaticFiles(options);
 
             app.UseStaticFiles();
 

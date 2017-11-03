@@ -19,11 +19,15 @@
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Compile Remove="ClientApp\app\components\counter\**" />
     <Compile Remove="ClientApp\app\components\fetchdata\**" />
+    <Compile Remove="wwwroot\resources\js\**" />
     <Content Remove="ClientApp\**" />
+    <Content Remove="wwwroot\resources\js\**" />
     <EmbeddedResource Remove="ClientApp\app\components\counter\**" />
     <EmbeddedResource Remove="ClientApp\app\components\fetchdata\**" />
+    <EmbeddedResource Remove="wwwroot\resources\js\**" />
     <None Remove="ClientApp\app\components\counter\**" />
     <None Remove="ClientApp\app\components\fetchdata\**" />
+    <None Remove="wwwroot\resources\js\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -91,14 +95,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\resources\js\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
+    <PackageReference Include="StyleCop.MSBuild" Version="5.0.0" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

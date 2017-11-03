@@ -1,5 +1,5 @@
 ﻿<div [ngClass]="rtlClass" class="ui-g-12 tform" [dir]="rtlUse">
-    <p-panel header="{{ 'Account.List' | translate }}">
+    <!--<p-panel header="{{ 'Account.List' | translate }}">-->
         <!--<div class="containerBtn ui-g-12">
             <div class="ui-g-6">
                 <div style="color:white">{{ 'App.Title' | translate }}</div>
@@ -21,12 +21,12 @@
                 <p-column field="description" [editable]="false" header="{{ 'Account.Description' | translate }}" [sortable]="false"></p-column>
                 <p-column header="" [style]="{'text-align':'center'}">
                     <ng-template let-col let-account="rowData" pTemplate type="body">
-                        <button type="button" pButton icon="fa-check" (click)="showDialogToEdit(account)" label="{{ 'Buttons.Edit' | translate }}"></button>
+                        <button type="button" pButton icon="fa fa-edit" (click)="showDialogToEdit(account)" label="{{ 'Buttons.Edit' | translate }}"></button>
                     </ng-template>
                 </p-column>
                 <p-column header="" [style]="{'text-align':'center'}">
                     <ng-template let-col let-account="rowData" pTemplate type="body">
-                        <button type="button" pButton icon="fa-close" (click)="showDialogToDelete(account)" label="{{ 'Buttons.Delete' | translate }}"></button>
+                        <button type="button" pButton icon="fa fa-close" (click)="showDialogToDelete(account)" label="{{ 'Buttons.Delete' | translate }}"></button>
                     </ng-template>
                 </p-column>
                 <ng-template pTemplate="emptymessage">
@@ -82,5 +82,5 @@
         <p-footer>
             <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="{{ 'Buttons.New' | translate }}"></button>
         </p-footer>
-    </p-panel>
+    <!--</p-panel>-->
 </div>

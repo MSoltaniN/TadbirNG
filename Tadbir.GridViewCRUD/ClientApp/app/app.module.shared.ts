@@ -20,6 +20,8 @@ import { TranslateModule } from "ng2-translate";
 
 import { AccountService } from './service/index';
 
+
+
 //class AppBaseRequestOptions extends BaseRequestOptions {
 //    headers: Headers = new Headers();
 //    constructor() {
