@@ -11,7 +11,7 @@
 
         <div class="ContentSideSections Implementation divContainer ui-g-12">
             <p-dataTable [style]="{'margin-top':'20px'}" [value]="rowData" [rows]="10" [lazy]="true" [paginator]="true" [editable]="true"
-                         resizableColumns="true" [totalRecords]="totalRecords" [responsive]="true"
+                         resizableColumns="true" [totalRecords]="totalRecords" [responsive]="true" 
                          (onLazyLoad)="loadAccountLazy($event)" (onEditComplete)="onEditComplete($event)" columnResizeMode="expand" [rowsPerPageOptions]="[5,10,20]">
                 <header>{{ 'Account.List' | translate }}</header>
                 <p-column field="code" [filter]="true" class="ui-md-6" [editable]="true" header="{{ 'Account.Code' | translate }}" [sortable]="true"></p-column>
