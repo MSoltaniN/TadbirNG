@@ -1,7 +1,7 @@
 using System;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Configuration;
 using SPPC.Tadbir.Unity;
+using Unity;
+using Unity.Configuration;
 
 namespace SPPC.Tadbir.Web.AppStart
 {

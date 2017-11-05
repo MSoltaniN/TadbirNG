@@ -1,12 +1,13 @@
 using System;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Configuration;
 using SPPC.Tadbir.NHibernate;
 using SPPC.Tadbir.Repository;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Unity;
 using SPPC.Tadbir.Web.Api.Controllers;
 using SPPC.Tadbir.Workflow;
+using Unity;
+using Unity.Configuration;
+using Unity.Injection;
 
 namespace SPPC.Tadbir.Web.Api.AppStart
 {

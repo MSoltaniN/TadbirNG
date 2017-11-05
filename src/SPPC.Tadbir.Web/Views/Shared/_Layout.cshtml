@@ -1,9 +1,9 @@
-﻿@using Microsoft.Practices.Unity
-@using SPPC.Tadbir.Security
+﻿@using SPPC.Tadbir.Security
 @using SPPC.Tadbir.Service
 @using SPPC.Tadbir.Values
 @using SPPC.Tadbir.Web.AppStart
-@{ 
+@using Unity
+@{
     var contextManager = UnityConfig
         .GetConfiguredContainer()
         .Resolve<ISecurityContextManager>();

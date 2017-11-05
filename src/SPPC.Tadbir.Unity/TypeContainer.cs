@@ -2,7 +2,6 @@ using System;
 using System.Web;
 using BabakSoft.Platform.Persistence;
 using BabakSoft.Platform.Persistence.NHibernate;
-using Microsoft.Practices.Unity;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.NHibernate;
 using SPPC.Framework.Service;
@@ -13,6 +12,8 @@ using SPPC.Tadbir.Repository;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.Workflow;
+using Unity;
+using Unity.Injection;
 
 namespace SPPC.Tadbir.Unity
 {
