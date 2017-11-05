@@ -22,12 +22,21 @@ tbutton {
 }
 
 .ui-widget {
-    font-family: SPPC !important;
+    font-family: SPPC !important;    
 }
 
 .main-nav {
     font-family: SPPC !important;
+    font-size: 18px;
 }
+
+.ui-datatable table {
+    table-layout: fixed;
+}
+
+    .ui-datatable table thead th {
+        white-space: normal
+    }
 
 
 .sk-cube-grid {
