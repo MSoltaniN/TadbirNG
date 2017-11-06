@@ -30,13 +30,46 @@ tbutton {
     font-size: 18px;
 }
 
-.ui-datatable table {
-    table-layout: fixed;
+.ui-datatable-resizable {
+    overflow: visible;
 }
 
-    .ui-datatable table thead th {
-        white-space: normal
+@media (max-width: 1024px) /* I want the datatable to be stacked at at least iPad Pro portrait mode, this depends on your data */ {
+    /* Data in responsive mode */
+    .ui-datatable-reflow .ui-datatable-data > tr > td {
+        width: 100% !important;
+        text-align: right !important;
+        border: 0;
+        box-sizing: border-box;
+        float: right;
+        clear: left;
     }
+
+
+    .ui-datatable-reflow .ui-datatable-data tr.ui-widget-content {
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .ui-datatable-reflow .ui-datatable-data.ui-widget-content {
+        border: 0;
+    }
+
+    /*Hide the headers in responsive mode*/
+    .ui-datatable-reflow thead th {
+        display: none !important;
+    }
+
+    /*Display the headers inline with the data in responsive mode */
+    .ui-datatable-reflow .ui-datatable-data td .ui-column-title {
+        padding: .4em;
+        min-width: 30%;
+        display: inline-block;
+        margin: -.4em 1em -.4em -.4em;
+        font-weight: bold;
+    }
+}
+
 
 
 .sk-cube-grid {
@@ -46,7 +79,6 @@ tbutton {
     position: fixed; /* or absolute */
     top: 42%;
     left: 48%;
-
 }
 
     .sk-cube-grid .sk-cube {
