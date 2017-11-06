@@ -1,15 +1,14 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SPPC.Tadbir.DataAccess
 {
-    public partial class AccountDBContext : DbContext,IDisposable
+    public partial class AccountDBContext : DbContext, IDisposable
     {
         public virtual DbSet<AccountViewModel> AccountViewModels { get; set; }
 
@@ -26,16 +25,14 @@ namespace SPPC.Tadbir.DataAccess
                 }
                 catch
                 {
-                    //TODO: Log error exception
+                    ////TODO: Log error exception
                 }
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AccountViewModel>().ToTable("Account","Finance");
-
-           
+            modelBuilder.Entity<AccountViewModel>().ToTable("Account", "Finance");
         }
     }
 }

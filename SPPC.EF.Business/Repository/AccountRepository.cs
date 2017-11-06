@@ -1,18 +1,10 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-
 using System.Linq;
-using SPPC.Tadbir.DataAccess;
-using Microsoft.EntityFrameworkCore;
-
 using System.Linq.Dynamic.Core;
-
-//using SPPC.Tadbir.NHibernate;
-//using SPPC.Tadbir.ViewModel.Finance;
-//using SPPC.Tadbir.ViewModel.UI;
-
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using SPPC.Tadbir.DataAccess;
 
 namespace SPPC.Tadbir.Business
 {
@@ -22,12 +14,12 @@ namespace SPPC.Tadbir.Business
         {
             using (AccountDBContext db = new AccountDBContext())
             {
-
                 AccountViewModel account = db.AccountViewModels.Where(x => x.AccountId == id).FirstOrDefault();
                 if (account != null)
                 {
                     db.AccountViewModels.Remove(account);
                 }
+                
                 return await db.SaveChangesAsync() >= 1;
             }
         }
@@ -53,13 +45,9 @@ namespace SPPC.Tadbir.Business
                                      FiscalPeriodId = a.FiscalPeriodId,
                                      AccountId = a.AccountId,
                                      Name = a.Name
-                                 };
+                                 };                   
 
-                    //var result = db.AccountViewModels.Where("City == @0 and Orders.Count >= @1", "London", 10)
-                    //.OrderBy("CompanyName")
-                    //.Select("new(CompanyName as Name, Phone)");
-
-                    //add where clause
+                    ////add where clause
                     if (gridOption.Filters != null)
                     {
                         foreach (var item in gridOption.Filters)
@@ -75,29 +63,21 @@ namespace SPPC.Tadbir.Business
                     }
 
                     return await result.Skip(gridOption.StartIndex.Value).Take(gridOption.Count.Value).ToListAsync();
-
                 }
-
-
-
             }
             catch
             {
-                //TODO: log exception 
-
+                ////TODO: log exception
                 return null;
             }
-
         }
 
         public async Task<int> GetCount()
         {
             using (AccountDBContext db = new AccountDBContext())
             {
-                return await (from a in db.AccountViewModels
-                              select a
-                             ).CountAsync();
-
+                return await(from a in db.AccountViewModels
+                              select a).CountAsync();
             }
         }
 
@@ -105,8 +85,6 @@ namespace SPPC.Tadbir.Business
         {
             using (AccountDBContext db = new AccountDBContext())
             {
-
-
                 AccountViewModel newAccount = new AccountViewModel()
                 {
                     BranchId = account.BranchId,
@@ -130,9 +108,7 @@ namespace SPPC.Tadbir.Business
         {
             using (AccountDBContext db = new AccountDBContext())
             {
-
                 AccountViewModel editAccount = db.AccountViewModels.Where(x => x.AccountId == account.AccountId).FirstOrDefault();
-
 
                 editAccount.BranchId = account.BranchId;
                 editAccount.Code = account.Code;
@@ -143,7 +119,6 @@ namespace SPPC.Tadbir.Business
                 return await db.SaveChangesAsync() >= 1;
             }
         }
-
 
         /// <summary>
         /// Get all accounts
@@ -182,16 +157,11 @@ namespace SPPC.Tadbir.Business
                     }
 
                     return await result.Skip(gridOption.StartIndex.Value).Take(gridOption.Count.Value).ToListAsync();
-
                 }
-
-
-
             }
             catch
             {
-                //TODO: log exception 
-
+                ////TODO: log exception 
                 return null;
             }
         }
@@ -220,12 +190,8 @@ namespace SPPC.Tadbir.Business
                     }
                 }
 
-
-
                 return await result.CountAsync();
-
             }
         }
-
     }
 }

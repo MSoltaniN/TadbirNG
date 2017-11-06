@@ -1,13 +1,12 @@
-﻿
-using SPPC.Tadbir.DataAccess;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Tadbir.DataAccess;
 
 namespace SPPC.Tadbir.Business
 {
     public interface IAccountRepository
     {
-        Task<List<AccountViewModel>> GetAccounts(int fpId,int branchId,GridOption gridOption);
+        Task<List<AccountViewModel>> GetAccounts(int fpId, int branchId, GridOption gridOption);
 
         Task<List<AccountViewModel>> GetAccounts(GridOption gridOption);
 
@@ -22,6 +21,5 @@ namespace SPPC.Tadbir.Business
         Task<int> GetCount();
 
         Task<int> GetCount(GridOption gridOption);
-
     }
 }

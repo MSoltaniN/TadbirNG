@@ -9,7 +9,7 @@ namespace Tadbir_GridViewCRUD.Controllers
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        private static string[] Summaries = new[]
+        private static string[] summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
@@ -22,7 +22,7 @@ namespace Tadbir_GridViewCRUD.Controllers
             {
                 DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
                 TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
+                Summary = summaries[rng.Next(summaries.Length)]
             });
         }
 

@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SPPC.Tadbir.DataAccess
 {
-
     public partial class AccountViewModel
     {
-
         [Key]
         public int AccountId { get; set; }
 
@@ -15,7 +13,6 @@ namespace SPPC.Tadbir.DataAccess
         /// Gets or sets the identifier of the fiscal period in which this financial account is defined.
         /// </summary>
         public int FiscalPeriodId { get; set; }
-
 
         public int BranchId { get; set; }
 

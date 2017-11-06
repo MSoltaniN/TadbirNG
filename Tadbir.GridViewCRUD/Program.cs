@@ -11,8 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace Tadbir_GridViewCRUD
 {
     public class Program
-    {
-        //main  method
+    {      
         public static void Main(string[] args)
         {
             BuildWebHost(args).Run();
