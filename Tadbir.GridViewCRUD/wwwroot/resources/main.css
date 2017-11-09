@@ -23,51 +23,12 @@ tbutton {
 
 .ui-widget {
     font-family: SPPC !important;    
+    font-size:15px;
 }
 
 .main-nav {
     font-family: SPPC !important;
     font-size: 18px;
-}
-
-.ui-datatable-resizable {
-    overflow: visible;
-}
-
-@media (max-width: 1024px) /* I want the datatable to be stacked at at least iPad Pro portrait mode, this depends on your data */ {
-    /* Data in responsive mode */
-    .ui-datatable-reflow .ui-datatable-data > tr > td {
-        width: 100% !important;
-        text-align: right !important;
-        border: 0;
-        box-sizing: border-box;
-        float: right;
-        clear: left;
-    }
-
-
-    .ui-datatable-reflow .ui-datatable-data tr.ui-widget-content {
-        border-left: 0;
-        border-right: 0;
-    }
-
-    .ui-datatable-reflow .ui-datatable-data.ui-widget-content {
-        border: 0;
-    }
-
-    /*Hide the headers in responsive mode*/
-    .ui-datatable-reflow thead th {
-        display: none !important;
-    }
-
-    /*Display the headers inline with the data in responsive mode */
-    .ui-datatable-reflow .ui-datatable-data td .ui-column-title {
-        padding: .4em;
-        min-width: 30%;
-        display: inline-block;
-        margin: -.4em 1em -.4em -.4em;
-        font-weight: bold;
-    }
 }
 
 
@@ -135,6 +96,25 @@ tbutton {
         animation-delay: 0.2s;
     }
 
+
+
+    .templateColumn{
+        text-align:center;
+        width:5%;
+    }
+
+    .ui-paginator
+    {
+        direction:ltr!important;
+    }
+
+    .ui-datatable-footer {
+        text-align: unset !important;
+    }
+
+
+
+
 @-webkit-keyframes sk-cubeGridScaleDelay {
     0%, 70%, 100% {
         -webkit-transform: scale3D(1, 1, 1);
@@ -159,6 +139,42 @@ tbutton {
     }
 }
 
+
+@media (max-width: 1024px) /* I want the datatable to be stacked at at least iPad Pro portrait mode, this depends on your data */ {
+    /* Data in responsive mode */
+    .ui-datatable-reflow .ui-datatable-data > tr > td {
+        width: 100% !important;
+        text-align: right !important;
+        border: 0;
+        box-sizing: border-box;
+        float: right;
+        clear: left;
+    }
+
+
+    .ui-datatable-reflow .ui-datatable-data tr.ui-widget-content {
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .ui-datatable-reflow .ui-datatable-data.ui-widget-content {
+        border: 0;
+    }
+
+    /*Hide the headers in responsive mode*/
+    .ui-datatable-reflow thead th {
+        display: none !important;
+    }
+
+    /*Display the headers inline with the data in responsive mode */
+    .ui-datatable-reflow .ui-datatable-data td .ui-column-title {
+        padding: .4em;
+        min-width: 30%;
+        display: inline-block;
+        margin: -.4em 1em -.4em -.4em;
+        font-weight: bold;
+    }
+}
 
 
 

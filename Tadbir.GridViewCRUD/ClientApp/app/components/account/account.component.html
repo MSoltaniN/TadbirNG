@@ -1,38 +1,37 @@
 ﻿<div [ngClass]="rtlClass" class="ui-g tform" [dir]="rtlUse">
-    <!--<p-panel header="{{ 'Account.List' | translate }}">-->
-        <!--<div class="containerBtn ui-g-12">
-            <div class="ui-g-6">
-                <div style="color:white">{{ 'App.Title' | translate }}</div>
-                <select #langSelect (change)="languageChange(langSelect.value)">
-                    <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
-                </select>
-            </div>
-        </div>-->
-
-        <div class="ContentSideSections implementation divContainer ui-g-12">
-            <p-dataTable [style]="{'margin-top':'20px'}"  [value]="rowData" [rows]="10" [lazy]="true" [paginator]="true" [editable]="true"
-                         resizableColumns="true" [totalRecords]="totalRecords" [responsive]="true" 
-                         (onLazyLoad)="loadAccountLazy($event)" (onEditComplete)="onEditComplete($event)" columnResizeMode="expand" [rowsPerPageOptions]="[5,10,20]">
-                <header>{{ 'Account.List' | translate }}</header>
-                <p-column field="code"  [filter]="true"  [editable]="true" [style]="{'width':'20%'}"  header="{{ 'Account.Code' | translate }}" [sortable]="true"></p-column>
-                <p-column field="name"  [filter]="true"  [editable]="true" header="{{ 'Account.Name' | translate }}"  [sortable]="true"></p-column>
-                <p-column field="fiscalPeriodId" [filter]="true"  header="{{ 'Account.Fiscal' | translate }}" [style]="{'text-align':'center'}" [sortable]="true"></p-column>
-                <p-column field="branchId"  [filter]="true" header="{{ 'Account.Branch' | translate }}" [style]="{'text-align':'center'}" [sortable]="true"></p-column>
-                <p-column field="description"  [editable]="false" header="{{ 'Account.Description' | translate }}" [sortable]="false"></p-column>
-                <p-column header="" [style]="{'text-align':'center'}">
+     <div class="content-section implementation ui-g-12 ui-md-12">
+            <p-dataTable [style]="{'margin-top':'20px'}"  [value]="rowData" [loading]="loading" [rows]="10" [lazy]="true" [paginator]="true" [editable]="true"
+                         resizableColumns="true"  [responsive]="true"  [totalRecords]="totalRecords" [rowsPerPageOptions]="[10,20,30]" 
+                         (onLazyLoad)="loadAccountLazy($event)" (onEditComplete)="onEditComplete($event)" columnResizeMode="expand" >
+                
+               
+                <p-column field="code"  [filter]="true"  [editable]="true" [style]="{'width':'10%'}"  header="{{ 'Account.Code' | translate }}" [sortable]="true"></p-column>
+                <p-column field="name"  [filter]="true"  [editable]="true" [style]="{'width':'20%'}" header="{{ 'Account.Name' | translate }}"  [sortable]="true"></p-column>
+                <p-column field="fiscalPeriodId" [filter]="true" [style]="{'width':'10%'}"  header="{{ 'Account.Fiscal' | translate }}" [style]="{'text-align':'center'}" [sortable]="true"></p-column>
+                <p-column field="branchId"  [filter]="true" [style]="{'width':'10%'}" header="{{ 'Account.Branch' | translate }}" [style]="{'text-align':'center'}" [sortable]="true"></p-column>
+                <p-column field="description"  [editable]="false" [style]="{'width':'10%'}" header="{{ 'Account.Description' | translate }}" [sortable]="false"></p-column>
+                <p-column header="" styleClass="templateColumn">
                     <ng-template let-col let-account="rowData" pTemplate type="body">
-                        <button type="button" pButton icon="fa fa-edit" (click)="showDialogToEdit(account)" label="{{ 'Buttons.Edit' | translate }}"></button>
+                        <button type="button" pButton icon="fa fa-edit" (click)="showDialogToEdit(account)" ></button>
                     </ng-template>
                 </p-column>
-                <p-column header=""  [style]="{'text-align':'center'}">
+                <p-column header="" styleClass="templateColumn" >
+                    <ng-template pTemplate="header">
+                        <select #langSelect (change)="languageChange(langSelect.value)">
+                            <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+                        </select>
+                    </ng-template>
                     <ng-template let-col let-account="rowData" pTemplate type="body">
-                        <button type="button" pButton icon="fa fa-close" (click)="showDialogToDelete(account)" label="{{ 'Buttons.Delete' | translate }}"></button>
+                        <button type="button" pButton icon="fa fa-close" (click)="showDialogToDelete(account)" ></button>
                     </ng-template>
                 </p-column>
                 <ng-template pTemplate="emptymessage">
                     {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
-                </ng-template>
-                <footer><div class="ui-helper-clearfix" style="width:100%"></div></footer>
+                </ng-template>                               
+                <p-footer styleClass="footer">
+                    <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="{{ 'Buttons.New' | translate }}"></button>
+                </p-footer>
+
             </p-dataTable>
 
             <p-dialog header=" {{ !newAccount ? ('Buttons.Edit' | translate) : ('Buttons.New' | translate)}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
@@ -79,8 +78,6 @@
             </p-dialog>
 
         </div>
-        <p-footer>
-            <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="{{ 'Buttons.New' | translate }}"></button>
-        </p-footer>
+        
     <!--</p-panel>-->
 </div>

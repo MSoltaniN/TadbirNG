@@ -20,10 +20,7 @@ using SPPC.Tadbir.DataAccess;
 
 
 namespace Tadbir.GridViewCRUD.Controllers
-{
-    
-
-    
+{   
     public class AccountController : Controller
     {
         private IAccountRepository _repository;
@@ -32,8 +29,6 @@ namespace Tadbir.GridViewCRUD.Controllers
         {
             _repository = Repo;
         }
-
-
 
         [HttpGet, Produces("application/json")]
         [Route("/Account/TotalCount")]
@@ -50,14 +45,8 @@ namespace Tadbir.GridViewCRUD.Controllers
             return Json(await _repository.GetCount(options));
 
         }
-
-
-        //[HttpPost, Produces("application/json")]
-        //[Route("/Account/GetLazyAccounts/{id}")]
-
-
+        
         //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
-
         [HttpPost, Produces("application/json")]
         [Route("/Account/Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
@@ -93,7 +82,7 @@ namespace Tadbir.GridViewCRUD.Controllers
         [Route("/Account/Edit")]
         [HttpPost, Produces("application/json")]        
         //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
-        public async Task<IActionResult> Edit([FromBody] AccountViewModel account)
+        public async Task<IActionResult> Edit([FromBody] Account account)
         {
             //var data = await AccountRepo.SaveAccount(account);
             //return Json(new { result = data });
@@ -124,7 +113,7 @@ namespace Tadbir.GridViewCRUD.Controllers
         //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         [HttpPost, Produces("application/json")]
         [Route("/Account/Insert")]
-        public async Task<IActionResult> Insert([FromBody] AccountViewModel account)
+        public async Task<IActionResult> Insert([FromBody] Account account)
         {
             //var data = await AccountRepo.SaveAccount(account);
             //return Json(new { result = data });

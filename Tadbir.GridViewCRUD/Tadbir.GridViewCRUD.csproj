@@ -17,14 +17,17 @@
 
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
+    <Compile Remove="ClientApp\app\components\complexAccount\**" />
     <Compile Remove="ClientApp\app\components\counter\**" />
     <Compile Remove="ClientApp\app\components\fetchdata\**" />
     <Compile Remove="wwwroot\resources\js\**" />
     <Content Remove="ClientApp\**" />
     <Content Remove="wwwroot\resources\js\**" />
+    <EmbeddedResource Remove="ClientApp\app\components\complexAccount\**" />
     <EmbeddedResource Remove="ClientApp\app\components\counter\**" />
     <EmbeddedResource Remove="ClientApp\app\components\fetchdata\**" />
     <EmbeddedResource Remove="wwwroot\resources\js\**" />
+    <None Remove="ClientApp\app\components\complexAccount\**" />
     <None Remove="ClientApp\app\components\counter\**" />
     <None Remove="ClientApp\app\components\fetchdata\**" />
     <None Remove="wwwroot\resources\js\**" />
@@ -32,6 +35,8 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\class\filter.ts" />
+    <None Remove="ClientApp\app\components\project\complexAccount.component.ts" />
+    <None Remove="ClientApp\app\components\project\project.component.ts" />
     <None Remove="ClientApp\app\model\account.ts" />
     <None Remove="ClientApp\app\model\index.ts" />
     <None Remove="ClientApp\app\service\index.ts" />
@@ -89,6 +94,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\class\filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\account\account.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\project\project.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\index.ts" />
@@ -99,6 +105,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" />
     <PackageReference Include="StyleCop.MSBuild" Version="5.0.0" />
   </ItemGroup>
 

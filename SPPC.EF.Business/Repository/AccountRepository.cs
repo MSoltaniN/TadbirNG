@@ -23,29 +23,29 @@ namespace SPPC.Tadbir.Business
             using (AccountDBContext db = new AccountDBContext())
             {
 
-                AccountViewModel account = db.AccountViewModels.Where(x => x.AccountId == id).FirstOrDefault();
+                Account account = db.Account.Where(x => x.AccountId == id).FirstOrDefault();
                 if (account != null)
                 {
-                    db.AccountViewModels.Remove(account);
+                    db.Account.Remove(account);
                 }
                 return await db.SaveChangesAsync() >= 1;
             }
         }
 
-        public Task<AccountViewModel> GetAccount(int id)
+        public Task<Account> GetAccount(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<AccountViewModel>> GetAccounts(int fpId, int branchId, GridOption gridOption)
+        public async Task<List<Account>> GetAccounts(int fpId, int branchId, GridOption gridOption)
         {
             try
             {
                 using (AccountDBContext db = new AccountDBContext())
                 {
-                    var result = from a in db.AccountViewModels
+                    var result = from a in db.Account
                                  where a.BranchId == branchId && a.FiscalPeriodId == fpId
-                                 select new AccountViewModel
+                                 select new Account
                                  {
                                      BranchId = a.BranchId,
                                      Code = a.Code,
@@ -94,20 +94,20 @@ namespace SPPC.Tadbir.Business
         {
             using (AccountDBContext db = new AccountDBContext())
             {
-                return await (from a in db.AccountViewModels
+                return await (from a in db.Account
                               select a
                              ).CountAsync();
 
             }
         }
 
-        public async Task<bool> InsertAccount(AccountViewModel account)
+        public async Task<bool> InsertAccount(Account account)
         {
             using (AccountDBContext db = new AccountDBContext())
             {
 
 
-                AccountViewModel newAccount = new AccountViewModel()
+                Account newAccount = new Account()
                 {
                     BranchId = account.BranchId,
                     Code = account.Code,
@@ -115,7 +115,7 @@ namespace SPPC.Tadbir.Business
                     FiscalPeriodId = account.FiscalPeriodId,
                     Name = account.Name
                 };
-                db.AccountViewModels.Add(newAccount);
+                db.Account.Add(newAccount);
 
                 return await db.SaveChangesAsync() >= 1;
             }
@@ -126,12 +126,12 @@ namespace SPPC.Tadbir.Business
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        public async Task<bool> EditAccount(AccountViewModel account)
+        public async Task<bool> EditAccount(Account account)
         {
             using (AccountDBContext db = new AccountDBContext())
             {
 
-                AccountViewModel editAccount = db.AccountViewModels.Where(x => x.AccountId == account.AccountId).FirstOrDefault();
+                Account editAccount = db.Account.Where(x => x.AccountId == account.AccountId).FirstOrDefault();
 
 
                 editAccount.BranchId = account.BranchId;
@@ -150,14 +150,14 @@ namespace SPPC.Tadbir.Business
         /// </summary>
         /// <param name="gridOption"></param>
         /// <returns></returns>
-        public async Task<List<AccountViewModel>> GetAccounts(GridOption gridOption)
+        public async Task<List<Account>> GetAccounts(GridOption gridOption)
         {
             try
             {
                 using (AccountDBContext db = new AccountDBContext())
                 {
-                    var result = from a in db.AccountViewModels
-                                 select new AccountViewModel
+                    var result = from a in db.Account
+                                 select new Account
                                  {
                                      BranchId = a.BranchId,
                                      Code = a.Code,
@@ -200,8 +200,8 @@ namespace SPPC.Tadbir.Business
         {
             using (AccountDBContext db = new AccountDBContext())
             {
-                var result = from a in db.AccountViewModels
-                             select new AccountViewModel
+                var result = from a in db.Account
+                             select new Account
                              {
                                  BranchId = a.BranchId,
                                  Code = a.Code,

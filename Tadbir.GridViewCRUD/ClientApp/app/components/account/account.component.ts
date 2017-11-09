@@ -19,6 +19,8 @@ import { String } from '../../class/source';
 
 
 
+declare var jquery: any;
+declare var $: any;
 
 
 
@@ -53,6 +55,7 @@ export class AccountComponent implements OnInit {
 
     showloadingMessage: boolean = true;
 
+    loading: boolean = false;
     newAccount: boolean;
     account: Account = new AccountInfo
 
@@ -64,7 +67,19 @@ export class AccountComponent implements OnInit {
     rtlUse: string = "rtl";
 
     ngOnInit() {
-        //this.getRowsCount();
+
+
+        ////how to call jquery in angular 4
+        /*
+        $(document).ready(function () {
+            $('p-datatable table').addClass('table');
+
+            $('p-datatable table th:first').attr('data-breakpoints' , 'xs sm md');
+            
+            $('p-datatable table').footable()
+            //alert($('p-datatable > table').length);
+        });
+        */
         
     }
 
@@ -223,12 +238,16 @@ export class AccountComponent implements OnInit {
         this.pageIndex = event.first;
         this.count = event.rows;
 
+        this.loading = true;
+
         this.getRowsCount();
 
          this.accountService.search(event.first,event.rows,order,filter).subscribe(res => {
              this.rowData = res;
              
              this.showloadingMessage = !(res.length == 0);
+
+             this.loading = false;
 
             });        
     }  
