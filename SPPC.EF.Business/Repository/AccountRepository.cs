@@ -1,50 +1,67 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-using System.Linq;
-using SPPC.Tadbir.DataAccess;
-using Microsoft.EntityFrameworkCore;
-
-using System.Linq.Dynamic.Core;
-
-//using SPPC.Tadbir.NHibernate;
-//using SPPC.Tadbir.ViewModel.Finance;
-//using SPPC.Tadbir.ViewModel.UI;
-
+﻿//-----------------------------------------------------------------------
+// <copyright file="AccountRepository.cs" company="SPPC">
+//     Copyright (c) SPPC. All rights reserved.
+// </copyright>
 
 namespace SPPC.Tadbir.Business
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Dynamic.Core;
+    using System.Threading.Tasks;
+    using Microsoft.EntityFrameworkCore;
+    using SPPC.Tadbir.DataAccess;
+    
+    /// <summary>
+    /// account repository
+    /// </summary>
     public class AccountRepository : IAccountRepository
     {
+        /// <summary>
+        /// delete a account
+        /// </summary>
+        /// <param name="id">id is AccountID</param>
+        /// <returns>return bool type</returns>
         public async Task<bool> DeleteAccount(int id)
         {
             using (AccountDBContext db = new AccountDBContext())
             {
-
                 Account account = db.Account.Where(x => x.AccountId == id).FirstOrDefault();
                 if (account != null)
                 {
                     db.Account.Remove(account);
                 }
+                
                 return await db.SaveChangesAsync() >= 1;
             }
         }
 
+        /// <summary>
+        /// get a account by id 
+        /// </summary>
+        /// <param name="id">account id</param>
+        /// <returns>Not Implemented method</returns>
         public Task<Account> GetAccount(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<Account>> GetAccounts(int fpId, int branchId, GridOption gridOption)
+        /// <summary>
+        /// get account by id and branchid 
+        /// </summary>
+        /// <param name="fId">fiscal period id</param>
+        /// <param name="branchId">branch id</param>
+        /// <param name="gridOption">grid option {start , count , filter , order }</param>
+        /// <returns>return accounts list </returns>
+        public async Task<List<Account>> GetAccounts(int fId, int branchId, GridOption gridOption)
         {
             try
             {
                 using (AccountDBContext db = new AccountDBContext())
                 {
                     var result = from a in db.Account
-                                 where a.BranchId == branchId && a.FiscalPeriodId == fpId
+                                 where a.BranchId == branchId && a.FiscalPeriodId == fId
                                  select new Account
                                  {
                                      BranchId = a.BranchId,
@@ -54,12 +71,7 @@ namespace SPPC.Tadbir.Business
                                      AccountId = a.AccountId,
                                      Name = a.Name
                                  };
-
-                    //var result = db.AccountViewModels.Where("City == @0 and Orders.Count >= @1", "London", 10)
-                    //.OrderBy("CompanyName")
-                    //.Select("new(CompanyName as Name, Phone)");
-
-                    //add where clause
+                    
                     if (gridOption.Filters != null)
                     {
                         foreach (var item in gridOption.Filters)
@@ -75,38 +87,36 @@ namespace SPPC.Tadbir.Business
                     }
 
                     return await result.Skip(gridOption.StartIndex.Value).Take(gridOption.Count.Value).ToListAsync();
-
                 }
-
-
-
             }
             catch
             {
-                //TODO: log exception 
-
+                ////TODO: log exception 
                 return null;
             }
-
         }
 
+        /// <summary>
+        /// get accounts count 
+        /// </summary>
+        /// <returns>return count of accounts</returns>
         public async Task<int> GetCount()
         {
             using (AccountDBContext db = new AccountDBContext())
             {
-                return await (from a in db.Account
-                              select a
-                             ).CountAsync();
-
+                return await(from a in db.Account select a).CountAsync();
             }
         }
 
+        /// <summary>
+        /// insert account in db
+        /// </summary>
+        /// <param name="account">account entity</param>
+        /// <returns>return true if account inserted in db</returns>
         public async Task<bool> InsertAccount(Account account)
         {
             using (AccountDBContext db = new AccountDBContext())
             {
-
-
                 Account newAccount = new Account()
                 {
                     BranchId = account.BranchId,
@@ -124,15 +134,13 @@ namespace SPPC.Tadbir.Business
         /// <summary>
         /// edit selected account
         /// </summary>
-        /// <param name="account"></param>
-        /// <returns></returns>
+        /// <param name="account">account entity</param>
+        /// <returns>return true if account edited</returns>
         public async Task<bool> EditAccount(Account account)
         {
             using (AccountDBContext db = new AccountDBContext())
             {
-
                 Account editAccount = db.Account.Where(x => x.AccountId == account.AccountId).FirstOrDefault();
-
 
                 editAccount.BranchId = account.BranchId;
                 editAccount.Code = account.Code;
@@ -144,12 +152,11 @@ namespace SPPC.Tadbir.Business
             }
         }
 
-
         /// <summary>
         /// Get all accounts
         /// </summary>
-        /// <param name="gridOption"></param>
-        /// <returns></returns>
+        /// <param name="gridOption">grid option {start , count , filter , order }</param>
+        /// <returns>return accounts list </returns>
         public async Task<List<Account>> GetAccounts(GridOption gridOption)
         {
             try
@@ -182,20 +189,21 @@ namespace SPPC.Tadbir.Business
                     }
 
                     return await result.Skip(gridOption.StartIndex.Value).Take(gridOption.Count.Value).ToListAsync();
-
                 }
-
-
-
             }
             catch
             {
-                //TODO: log exception 
+                ////TODO: log exception 
 
                 return null;
             }
         }
 
+        /// <summary>
+        /// get account count
+        /// </summary>
+        /// <param name="gridOption">grid option {start , count , filter , order }</param>
+        /// <returns>return accounts count</returns>
         public async Task<int> GetCount(GridOption gridOption)
         {
             using (AccountDBContext db = new AccountDBContext())
@@ -220,12 +228,8 @@ namespace SPPC.Tadbir.Business
                     }
                 }
 
-
-
                 return await result.CountAsync();
-
             }
         }
-
     }
 }

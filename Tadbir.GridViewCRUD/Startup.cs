@@ -1,16 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tadbir.GridViewCRUD;
 using SPPC.Tadbir.Business;
-using SPPC.Tadbir.DataAccess;
-using Microsoft.AspNetCore.StaticFiles;
 
 namespace Tadbir_GridViewCRUD
 {
@@ -28,9 +22,7 @@ namespace Tadbir_GridViewCRUD
         {
             services.AddMvc();
 
-            services.AddTransient<IAccountRepository, AccountRepository>();
-
-           
+            services.AddTransient<IAccountRepository, AccountRepository>();           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,13 +41,13 @@ namespace Tadbir_GridViewCRUD
                 app.UseExceptionHandler("/Home/Error");
             }
 
-
             StaticFileOptions options = new StaticFileOptions();
             FileExtensionContentTypeProvider typeProvider = new FileExtensionContentTypeProvider();
             if (!typeProvider.Mappings.ContainsKey(".woff2"))
             {
                 typeProvider.Mappings.Add(".woff2", "application/font-woff2");
             }
+
             options.ContentTypeProvider = typeProvider;
             app.UseStaticFiles(options);
 
