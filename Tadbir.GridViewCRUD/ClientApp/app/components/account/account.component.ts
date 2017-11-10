@@ -55,7 +55,7 @@ export class AccountComponent implements OnInit {
 
     showloadingMessage: boolean = true;
 
-    loading: boolean = false;
+   
     newAccount: boolean;
     account: Account = new AccountInfo
 
@@ -80,7 +80,9 @@ export class AccountComponent implements OnInit {
             //alert($('p-datatable > table').length);
         });
         */
+
         
+
     }
 
     private translateService: TranslateService
@@ -237,18 +239,14 @@ export class AccountComponent implements OnInit {
 
         this.pageIndex = event.first;
         this.count = event.rows;
-
-        this.loading = true;
-
+        
         this.getRowsCount();
 
          this.accountService.search(event.first,event.rows,order,filter).subscribe(res => {
              this.rowData = res;
              
              this.showloadingMessage = !(res.length == 0);
-
-             this.loading = false;
-
+             
             });        
     }  
 

@@ -7,8 +7,8 @@ namespace Tadbir.GridViewCRUD.Controllers
 {
     public class AccountController : Controller
     {
-        private IAccountRepository _repository;
-        public AccountController(IAccountRepository repo)
+        private IRepository<Account> _repository;
+        public AccountController(IRepository<Account> repo)
         {
             _repository = repo;
         }
@@ -37,7 +37,7 @@ namespace Tadbir.GridViewCRUD.Controllers
                 return BadRequest("Could not delete account because it does not exist.");
             }
 
-            return Json(await _repository.DeleteAccount(id));
+            return Json(await _repository.Delete(id));
         }
 
         // POST: api/accounts
@@ -56,7 +56,7 @@ namespace Tadbir.GridViewCRUD.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Json(await _repository.EditAccount(account));
+            return Json(await _repository.Edit(account));
         }
 
         ////[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
@@ -74,7 +74,7 @@ namespace Tadbir.GridViewCRUD.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Json(await _repository.InsertAccount(account));
+            return Json(await _repository.Insert(account));
         }
 
         // GET: api/accounts/fp/{fpId:int}/branch/{branchId:int}
@@ -87,7 +87,7 @@ namespace Tadbir.GridViewCRUD.Controllers
                 return NotFound();
             }
 
-            var accounts = await _repository.GetAccounts(fpId, branchId, options);
+            var accounts = await _repository.Get(fpId, branchId, options);
             return Json(accounts);
         }
 
@@ -95,7 +95,7 @@ namespace Tadbir.GridViewCRUD.Controllers
         [HttpPost, Produces("application/json")]
         public async Task<IActionResult> List([FromBody] GridOption options = null)
         {
-            var accounts = await _repository.GetAccounts(options);
+            var accounts = await _repository.Get(options);
             return Json(accounts);
         }
     }

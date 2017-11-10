@@ -7,22 +7,22 @@
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using SPPC.Tadbir.DataAccess;
-    
+
     /// <summary>
     /// account repository
     /// </summary>
-    public class AccountRepository : IAccountRepository
+    public class AccountRepository : IRepository<Account>
     {
         /// <summary>
         /// delete a account
         /// </summary>
         /// <param name="id">id is AccountID</param>
         /// <returns>return bool type</returns>
-        public async Task<bool> DeleteAccount(int id)
+        public async Task<bool> Delete(int id)
         {
             using (AccountDBContext db = new AccountDBContext())
             {
-                Account account = db.Account.Where(x => x.AccountId == id).FirstOrDefault();
+                var account = db.Account.Where(x => x.AccountId == id).FirstOrDefault();
                 if (account != null)
                 {
                     db.Account.Remove(account);
@@ -37,7 +37,7 @@
         /// </summary>
         /// <param name="id">account id</param>
         /// <returns>Not Implemented method</returns>
-        public Task<Account> GetAccount(int id)
+        public Task<Account> Get(int id)
         {
             throw new NotImplementedException();
         }
@@ -49,7 +49,7 @@
         /// <param name="branchId">branch id</param>
         /// <param name="gridOption">grid option {start , count , filter , order }</param>
         /// <returns>return accounts list </returns>
-        public async Task<List<Account>> GetAccounts(int fId, int branchId, GridOption gridOption)
+        public async Task<List<Account>> Get(int fId, int branchId, GridOption gridOption)
         {
             try
             {
@@ -108,17 +108,17 @@
         /// </summary>
         /// <param name="account">account entity</param>
         /// <returns>return true if account inserted in db</returns>
-        public async Task<bool> InsertAccount(Account account)
+        public async Task<bool> Insert(Account entity)
         {
             using (AccountDBContext db = new AccountDBContext())
             {
                 Account newAccount = new Account()
                 {
-                    BranchId = account.BranchId,
-                    Code = account.Code,
-                    Description = account.Description,
-                    FiscalPeriodId = account.FiscalPeriodId,
-                    Name = account.Name
+                    BranchId = entity.BranchId,
+                    Code = entity.Code,
+                    Description = entity.Description,
+                    FiscalPeriodId = entity.FiscalPeriodId,
+                    Name = entity.Name
                 };
                 db.Account.Add(newAccount);
 
@@ -131,17 +131,17 @@
         /// </summary>
         /// <param name="account">account entity</param>
         /// <returns>return true if account edited</returns>
-        public async Task<bool> EditAccount(Account account)
+        public async Task<bool> Edit(Account entity)
         {
             using (AccountDBContext db = new AccountDBContext())
             {
-                Account editAccount = db.Account.Where(x => x.AccountId == account.AccountId).FirstOrDefault();
+                Account editAccount = db.Account.Where(x => x.AccountId == entity.AccountId).FirstOrDefault();
 
-                editAccount.BranchId = account.BranchId;
-                editAccount.Code = account.Code;
-                editAccount.Description = account.Description;
-                editAccount.FiscalPeriodId = account.FiscalPeriodId;
-                editAccount.Name = account.Name;
+                editAccount.BranchId = entity.BranchId;
+                editAccount.Code = entity.Code;
+                editAccount.Description = entity.Description;
+                editAccount.FiscalPeriodId = entity.FiscalPeriodId;
+                editAccount.Name = entity.Name;
 
                 return await db.SaveChangesAsync() >= 1;
             }
@@ -152,7 +152,7 @@
         /// </summary>
         /// <param name="gridOption">grid option {start , count , filter , order }</param>
         /// <returns>return accounts list </returns>
-        public async Task<List<Account>> GetAccounts(GridOption gridOption)
+        public async Task<List<Account>> Get(GridOption gridOption)
         {
             try
             {
@@ -225,6 +225,6 @@
 
                 return await result.CountAsync();
             }
-        }
+        }        
     }
 }

@@ -26,12 +26,37 @@ tbutton {
     font-size:15px;
 }
 
-.main-nav {
-    font-family: SPPC !important;
-    font-size: 18px;
+.fa-chevron-circle-right:before {
+    content: "\f055"!important;
 }
 
+.fa-chevron-circle-down:before {
+    content: "\f056"!important;
+}
 
+.toast {
+    font-family: SPPC !important;
+}
+
+.labelTemplate {
+    font-size: 16px;
+    color: black;
+}
+
+.valueTemplate {
+    font-size: 14px;
+    color: darkblue;
+}
+
+.main-nav
+{
+    font-family:SPPC!important;
+    font-size:18px;
+}
+
+.panel {
+    font-family: SPPC !important;    
+}
 
 .sk-cube-grid {
     width: 80px;

@@ -39,6 +39,7 @@
     <None Remove="ClientApp\app\components\project\project.component.ts" />
     <None Remove="ClientApp\app\model\account.ts" />
     <None Remove="ClientApp\app\model\index.ts" />
+    <None Remove="ClientApp\app\service\fiscal-period.service.ts" />
     <None Remove="ClientApp\app\service\index.ts" />
   </ItemGroup>
 
@@ -97,6 +98,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\project\project.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\fiscal-period.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\index.ts" />
   </ItemGroup>
 
