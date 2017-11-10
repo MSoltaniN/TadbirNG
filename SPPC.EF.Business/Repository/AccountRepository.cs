@@ -1,9 +1,4 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="AccountRepository.cs" company="SPPC">
-//     Copyright (c) SPPC. All rights reserved.
-// </copyright>
-
-namespace SPPC.Tadbir.Business
+﻿namespace SPPC.Tadbir.Business
 {
     using System;
     using System.Collections.Generic;

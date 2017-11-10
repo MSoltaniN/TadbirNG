@@ -1,11 +1,4 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="GridOption.cs" company="SPPC">
-//     Copyright (c) SPPC. All rights reserved.
-// </copyright>
-// <author>Saeed Nouri</author>
-//-----------------------------------------------------------------------
-
-namespace SPPC.Tadbir.Business
+﻿namespace SPPC.Tadbir.Business
 {
     using System.Collections.Generic;
 
