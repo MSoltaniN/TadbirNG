@@ -23,7 +23,8 @@ namespace Tadbir_GridViewCRUD
         {
             services.AddMvc();
 
-            services.AddTransient<IRepository<Account>, AccountRepository>();           
+            services.AddTransient<IAccountRepository, AccountRepository>();
+            services.AddTransient<IFullAccountRepository, FullAccountRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

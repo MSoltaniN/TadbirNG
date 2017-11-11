@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using SPPC.Tadbir.Business;
 using SPPC.Tadbir.DataAccess;
 
+
 namespace Tadbir.GridViewCRUD.Controllers
 {
     public class AccountController : Controller
     {
-        private IRepository<Account> _repository;
-        public AccountController(IRepository<Account> repo)
+        private IAccountRepository _repository;
+        public AccountController(IAccountRepository repo)
         {
             _repository = repo;
         }
@@ -89,7 +90,7 @@ namespace Tadbir.GridViewCRUD.Controllers
 
             var accounts = await _repository.Get(fpId, branchId, options);
             return Json(accounts);
-        }
+        }        
 
         [Route("/Account/List")]
         [HttpPost, Produces("application/json")]

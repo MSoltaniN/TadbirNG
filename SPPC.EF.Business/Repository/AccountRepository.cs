@@ -11,7 +11,7 @@
     /// <summary>
     /// account repository
     /// </summary>
-    public class AccountRepository : IRepository<Account>
+    public class AccountRepository : IAccountRepository
     {
         /// <summary>
         /// delete a account
@@ -20,7 +20,7 @@
         /// <returns>return bool type</returns>
         public async Task<bool> Delete(int id)
         {
-            using (AccountDBContext db = new AccountDBContext())
+            using (SppcDBContext db = new SppcDBContext())
             {
                 var account = db.Account.Where(x => x.AccountId == id).FirstOrDefault();
                 if (account != null)
@@ -53,7 +53,7 @@
         {
             try
             {
-                using (AccountDBContext db = new AccountDBContext())
+                using (SppcDBContext db = new SppcDBContext())
                 {
                     var result = from a in db.Account
                                  where a.BranchId == branchId && a.FiscalPeriodId == fId
@@ -97,7 +97,7 @@
         /// <returns>return count of accounts</returns>
         public async Task<int> GetCount()
         {
-            using (AccountDBContext db = new AccountDBContext())
+            using (SppcDBContext db = new SppcDBContext())
             {
                 return await(from a in db.Account select a).CountAsync();
             }
@@ -110,7 +110,7 @@
         /// <returns>return true if account inserted in db</returns>
         public async Task<bool> Insert(Account entity)
         {
-            using (AccountDBContext db = new AccountDBContext())
+            using (SppcDBContext db = new SppcDBContext())
             {
                 Account newAccount = new Account()
                 {
@@ -133,7 +133,7 @@
         /// <returns>return true if account edited</returns>
         public async Task<bool> Edit(Account entity)
         {
-            using (AccountDBContext db = new AccountDBContext())
+            using (SppcDBContext db = new SppcDBContext())
             {
                 Account editAccount = db.Account.Where(x => x.AccountId == entity.AccountId).FirstOrDefault();
 
@@ -156,7 +156,7 @@
         {
             try
             {
-                using (AccountDBContext db = new AccountDBContext())
+                using (SppcDBContext db = new SppcDBContext())
                 {
                     var result = from a in db.Account
                                  select new Account
@@ -201,7 +201,7 @@
         /// <returns>return accounts count</returns>
         public async Task<int> GetCount(GridOption gridOption)
         {
-            using (AccountDBContext db = new AccountDBContext())
+            using (SppcDBContext db = new SppcDBContext())
             {
                 var result = from a in db.Account
                              select new Account

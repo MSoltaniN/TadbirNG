@@ -3,13 +3,8 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Account } from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
-
-
 import { String } from '../class/source';
 import { expect } from 'chai';
-
-
-
 
 export class AccountInfo implements Account
 {    

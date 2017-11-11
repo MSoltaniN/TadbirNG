@@ -1,8 +1,8 @@
 ﻿import { Component, OnInit } from '@angular/core';
 
-import { AccountService, AccountInfo } from '../../service/index';
+import { AccountService, AccountInfo, FullAccountService, FullAccountInfo } from '../../service/index';
 
-import { Account } from '../../model/index';
+import { Account,FullAccount } from '../../model/index';
 
 import { InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule } from 'primeng/primeng'; /** add components for test DataGrid functionality */
 import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component for message in client side */
@@ -17,12 +17,8 @@ import "rxjs/Rx";
 import {TranslateService} from 'ng2-translate';
 import { String } from '../../class/source';
 
-
-
 declare var jquery: any;
 declare var $: any;
-
-
 
 
 @Component({
@@ -35,8 +31,9 @@ export class AccountComponent implements OnInit {
 
     public rowData: any[];
 
-    public totalRecords: number;
+    public projectRows: any[];
 
+    public totalRecords: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
@@ -54,7 +51,6 @@ export class AccountComponent implements OnInit {
     config: ToastConfig;
 
     showloadingMessage: boolean = true;
-
    
     newAccount: boolean;
     account: Account = new AccountInfo
@@ -65,6 +61,12 @@ export class AccountComponent implements OnInit {
 
     rtlClass: string = "ui-rtl";
     rtlUse: string = "rtl";
+
+    private translateService: TranslateService
+
+    pageIndex?: number;
+    count?: number;
+
 
     ngOnInit() {
 
@@ -85,12 +87,9 @@ export class AccountComponent implements OnInit {
 
     }
 
-    private translateService: TranslateService
-
-    pageIndex?: number;
-    count?: number;
-
-    constructor(private accountService: AccountService, private toastrService: ToastrService, private translate: TranslateService)
+    
+    constructor(private accountService: AccountService, private fullAccountService: FullAccountService,
+        private toastrService: ToastrService, private translate: TranslateService)
     {
         translate.addLangs(["en", "fa"]);
         translate.setDefaultLang('fa');
@@ -345,6 +344,14 @@ export class AccountComponent implements OnInit {
 
 
     //Add Account
+
+
+    lazyProjectLoad(account:any)
+    {
+        this.fullAccountService.getFullAccounts(account.accountId).subscribe(res => {
+            this.projectRows = res;
+        });
+    }
 
 }
 

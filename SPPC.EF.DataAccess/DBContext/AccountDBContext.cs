@@ -8,7 +8,7 @@ namespace SPPC.Tadbir.DataAccess
     /// <summary>
     /// account dbcontext
     /// </summary>
-    public partial class AccountDBContext : DbContext
+    public partial class SppcDBContext : DbContext
     {
         public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<ActivityInstanceEvent> ActivityInstanceEvent { get; set; }
