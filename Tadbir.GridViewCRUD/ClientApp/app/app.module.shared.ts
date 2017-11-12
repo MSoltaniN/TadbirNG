@@ -18,7 +18,7 @@ import {BrowserModule} from "@angular/platform-browser";
 
 import { TranslateModule } from "ng2-translate";
 
-import { AccountService,FullAccountService } from './service/index';
+import { AccountService,TransactionLineService } from './service/index';
 
 @NgModule({
     declarations: [
@@ -26,7 +26,7 @@ import { AccountService,FullAccountService } from './service/index';
         NavMenuComponent,
         AccountComponent        
     ],
-    providers: [AccountService,FullAccountService,
+    providers: [AccountService,TransactionLineService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }],        
     imports: [
         CommonModule,         

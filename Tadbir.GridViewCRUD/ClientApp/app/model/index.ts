@@ -1,3 +1,3 @@
 ﻿export * from './account';
 
-export * from './full-account';
+export * from './transaction-line';

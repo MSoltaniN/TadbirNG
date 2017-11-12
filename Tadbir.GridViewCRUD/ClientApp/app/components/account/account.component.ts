@@ -1,15 +1,13 @@
 ﻿import { Component, OnInit } from '@angular/core';
 
-import { AccountService, AccountInfo, FullAccountService, FullAccountInfo } from '../../service/index';
+import { AccountService, AccountInfo, TransactionLineService, TransactionLineInfo } from '../../service/index';
 
-import { Account,FullAccount } from '../../model/index';
+import { Account,TransactionLine } from '../../model/index';
 
 import { InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule } from 'primeng/primeng'; /** add components for test DataGrid functionality */
 import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component for message in client side */
 import { LazyLoadEvent, FilterMetadata} from 'primeng/primeng';
 import {Filter} from '../../class/filter';
-
-
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -31,7 +29,7 @@ export class AccountComponent implements OnInit {
 
     public rowData: any[];
 
-    public projectRows: any[];
+    public accountArticleRows: any[];
 
     public totalRecords: number;
 
@@ -88,7 +86,7 @@ export class AccountComponent implements OnInit {
     }
 
     
-    constructor(private accountService: AccountService, private fullAccountService: FullAccountService,
+    constructor(private accountService: AccountService, private transactionLineService: TransactionLineService,
         private toastrService: ToastrService, private translate: TranslateService)
     {
         translate.addLangs(["en", "fa"]);
@@ -348,8 +346,8 @@ export class AccountComponent implements OnInit {
 
     lazyProjectLoad(account:any)
     {
-        this.fullAccountService.getFullAccounts(account.accountId).subscribe(res => {
-            this.projectRows = res;
+        this.transactionLineService.getAccountArticles(account.data.accountId).subscribe(res => {
+            this.accountArticleRows = res;
         });
     }
 

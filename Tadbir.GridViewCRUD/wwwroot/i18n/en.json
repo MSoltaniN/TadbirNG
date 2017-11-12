@@ -33,9 +33,16 @@
     "Branch": "Branch",
     "Description": "Description",
     "List": "Account list"
-    
+
+
+  },
+  "TransactionLine": {
+    "Debit": "Debit",
+    "Credit": "Credit",
+    "Description": "Description"
 
   }
+
 
 
 
