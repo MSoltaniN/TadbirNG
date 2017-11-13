@@ -88,7 +88,7 @@
         <div class="panel-body">
             <div class="ui-g-4 ui-md-4">
                 <!--(onChange)="onFiscalPeriodSelect($event)"-->  
-                <p-dropdown [options]="fiscalPeriodRows" [style]="{'width':'100%'}"
+                <p-dropdown [options]="fiscalPeriodRows" [autoWidth]="false" [style]="{'width':'100%'}"
                             placeholder="{{ 'Fiscal.FiscalPeriod' | translate }}" >
                     <ng-template let-item pTemplate="item">
                         <span><strong> {{ item.Value }} </strong></span>
