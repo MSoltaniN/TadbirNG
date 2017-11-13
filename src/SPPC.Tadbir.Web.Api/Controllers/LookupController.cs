@@ -61,6 +61,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(currencyLookup);
         }
 
+        // GET: api/lookup/fps
+        [Route(LookupApi.FiscalPeriodsUrl)]
+        public IHttpActionResult GetFiscalPeriodsLookup()
+        {
+            var fiscalPeriodLookup = _repository.GetFiscalPeriods();
+            return Json(fiscalPeriodLookup);
+        }
+
         // GET: api/lookup/partners
         [Route(LookupApi.PartnersUrl)]
         public IHttpActionResult GetPartnersLookup()

@@ -9,6 +9,14 @@ namespace SPPC.Tadbir.ViewModel.UI
     public class GridOptions
     {
         /// <summary>
+        /// یک نمونه جدید از این کلاس می سازد
+        /// </summary>
+        public GridOptions()
+        {
+            Filters = new List<GridFilter>();
+        }
+
+        /// <summary>
         /// شماره اولین سطر اطلاعاتی در نمای جدولی بر اساس صفحه بندی جاری
         /// </summary>
         public int Start { get; set; }
@@ -21,7 +29,7 @@ namespace SPPC.Tadbir.ViewModel.UI
         /// <summary>
         /// مجموعه ای از فیلترهای فعال در نمای جدولی اطلاعات
         /// </summary>
-        public IList<GridFilter> Filters { get; set; }
+        public IList<GridFilter> Filters { get; private set; }
 
         /// <summary>
         /// اطلاعات مربوط به نحوه مرتب سازی سطرهای داده ای در نمای جدولی

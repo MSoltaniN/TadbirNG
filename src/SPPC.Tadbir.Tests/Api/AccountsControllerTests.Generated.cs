@@ -56,7 +56,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            var result = _controller.GetAccounts(_fpId, _branchId, null);
+            var result = _controller.GetAccounts(_fpId, _branchId);
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            _controller.GetAccounts(_fpId, _branchId, null);
+            _controller.GetAccounts(_fpId, _branchId);
 
             // Assert
             _mockRepository.Verify(repo => repo.GetAccounts(_fpId, _branchId, null));
@@ -80,7 +80,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act
-            var result = _controller.GetAccounts(_fpId, _branchId, null) as JsonResult<IList<AccountViewModel>>;
+            var result = _controller.GetAccounts(_fpId, _branchId) as JsonResult<IList<AccountViewModel>>;
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -93,7 +93,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             int invalidFpId = -2;
 
             // Act
-            var result = _controller.GetAccounts(invalidFpId, _branchId, null) as NotFoundResult;
+            var result = _controller.GetAccounts(invalidFpId, _branchId) as NotFoundResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);

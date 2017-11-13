@@ -209,6 +209,10 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Currency, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+
+            mapperConfig.CreateMap<FiscalPeriod, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
         }
 
         private static void MapCorporateTypes(IMapperConfigurationExpression mapperConfig)

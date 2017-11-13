@@ -32,6 +32,13 @@ namespace SPPC.Tadbir.NHibernate
         AccountFullViewModel GetAccountDetail(int accountId);
 
         /// <summary>
+        /// Retrieves all transaction lines (articles) that use the financial account specified by given unique identifier.
+        /// </summary>
+        /// <param name="accountId">Unique identifier of an existing financial account</param>
+        /// <returns>Collection of all transaction lines (articles) for specified account</returns>
+        IList<TransactionLineViewModel> GetAccountArticles(int accountId); 
+
+        /// <summary>
         /// Deletes an existing financial account from repository.
         /// </summary>
         /// <param name="accountId">Identifier of the account to delete</param>

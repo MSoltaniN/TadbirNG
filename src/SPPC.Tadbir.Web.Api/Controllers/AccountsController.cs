@@ -28,6 +28,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
+        // GET: api/accounts/{accountId:int}/articles
+        [Route("accounts/{accountId:int}/articles")]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        public IHttpActionResult GetAccountArticles(int accountId)
+        {
+            if (accountId <= 0)
+            {
+                return NotFound();
+            }
+
+            var articles = _repository.GetAccountArticles(accountId);
+            var result = (articles != null)
+                ? Json(articles)
+                : NotFound() as IHttpActionResult;
+
+            return result;
+        }
+
         // DELETE: api/accounts/{accountId:int}
         [Route(AccountApi.AccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]

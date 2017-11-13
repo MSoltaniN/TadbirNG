@@ -111,6 +111,21 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
+        /// Retrieves all fiscal period objects as a collection of <see cref="KeyValue"/> objects. The key for each
+        /// entry is the unique identifier of corresponding fiscal period in data store.
+        /// </summary>
+        /// <returns>Collection of all fiscal period items.</returns>
+        public IEnumerable<KeyValue> GetFiscalPeriods()
+        {
+            var repository = _unitOfWork.GetRepository<FiscalPeriod>();
+            var fiscalPeriods = repository
+                .GetAll()
+                .OrderBy(fp => fp.Name)
+                .Select(fp => _mapper.Map<KeyValue>(fp));
+            return fiscalPeriods;
+        }
+
+        /// <summary>
         /// Retrieves all business partner objects as a collection of <see cref="KeyValue"/> objects. The key for each
         /// entry is the unique identifier of corresponding business partner in database.
         /// </summary>

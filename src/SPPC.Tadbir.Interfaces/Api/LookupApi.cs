@@ -33,6 +33,16 @@ namespace SPPC.Tadbir.Api
         public const string CurrenciesUrl = "lookup/currencies";
 
         /// <summary>
+        /// API client URL for lookup collection of all fiscal periods
+        /// </summary>
+        public const string FiscalPeriods = "lookup/fps";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all fiscal periods
+        /// </summary>
+        public const string FiscalPeriodsUrl = "lookup/fps";
+
+        /// <summary>
         /// API client URL for lookup collection of all floating (detail) accounts
         /// </summary>
         public const string DetailAccounts = "lookup/faccounts";

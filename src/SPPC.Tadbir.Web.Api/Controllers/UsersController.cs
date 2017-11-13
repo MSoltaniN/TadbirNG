@@ -203,7 +203,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route("users/{userId:int}/ticket")]
         public IHttpActionResult GetUserTicket(int userId)
         {
-#if DEBUG
+////#if DEBUG
             if (userId <= 0)
             {
                 return NotFound();
@@ -223,9 +223,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 ? Json(ticket)
                 : NotFound() as IHttpActionResult;
             return result;
-#else
-            return NotFound();
-#endif
+////#else
+            ////return NotFound();
+////#endif
         }
 
         private ISecurityRepository _repository;

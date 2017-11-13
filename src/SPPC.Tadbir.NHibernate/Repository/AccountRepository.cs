@@ -63,6 +63,26 @@ namespace SPPC.Tadbir.NHibernate
         }
 
         /// <summary>
+        /// Retrieves all transaction lines (articles) that use the financial account specified by given unique identifier.
+        /// </summary>
+        /// <param name="accountId">Unique identifier of an existing financial account</param>
+        /// <returns>Collection of all transaction lines (articles) for specified account</returns>
+        public IList<TransactionLineViewModel> GetAccountArticles(int accountId)
+        {
+            IList<TransactionLineViewModel> articles = null;
+            var repository = _unitOfWork.GetRepository<Account>();
+            var account = repository.GetByID(accountId);
+            if (account != null)
+            {
+                articles = account.TransactionLines
+                    .Select(line => _mapper.Map<TransactionLineViewModel>(line))
+                    .ToList();
+            }
+
+            return articles;
+        }
+
+        /// <summary>
         /// Deletes an existing financial account from repository.
         /// </summary>
         /// <param name="accountId">Identifier of the account to delete</param>
