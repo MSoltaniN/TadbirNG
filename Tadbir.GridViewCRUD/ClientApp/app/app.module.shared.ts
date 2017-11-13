@@ -18,17 +18,7 @@ import {BrowserModule} from "@angular/platform-browser";
 
 import { TranslateModule } from "ng2-translate";
 
-import { AccountService } from './service/index';
-
-//class AppBaseRequestOptions extends BaseRequestOptions {
-//    headers: Headers = new Headers();
-//    constructor() {
-//        super();
-//        this.headers.append('Content-Type', 'application/json');
-//        this.body = '';
-//    }
-//}
-
+import { AccountService,TransactionLineService } from './service/index';
 
 @NgModule({
     declarations: [
@@ -36,9 +26,8 @@ import { AccountService } from './service/index';
         NavMenuComponent,
         AccountComponent        
     ],
-    providers: [AccountService,
-        { provide: LocationStrategy, useClass: HashLocationStrategy }],
-        //{ provide: RequestOptions, useClass: AppBaseRequestOptions }],
+    providers: [AccountService,TransactionLineService,
+        { provide: LocationStrategy, useClass: HashLocationStrategy }],        
     imports: [
         CommonModule,         
         HttpModule,

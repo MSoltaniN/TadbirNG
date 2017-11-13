@@ -1,86 +1,291 @@
-﻿<div [ngClass]="rtlClass" class="ui-g-12 tform" [dir]="rtlUse">
-    <p-panel header="{{ 'Account.List' | translate }}">
-        <!--<div class="containerBtn ui-g-12">
-            <div class="ui-g-6">
-                <div style="color:white">{{ 'App.Title' | translate }}</div>
-                <select #langSelect (change)="languageChange(langSelect.value)">
-                    <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
-                </select>
+﻿<div [ngClass]="rtlClass" class="ui-g tform" [dir]="rtlUse">
+    <div class="panel panel-primary">
+        <div class="panel-heading">لیست حساب</div>
+        <div class="panel-body">
+            <div class="content-section implementation ui-g-12 ui-md-12">
+                <p-dataTable [value]="rowData"  [rows]="10" [lazy]="true" [paginator]="true" [editable]="true"
+                             resizableColumns="true" [responsive]="true" [totalRecords]="totalRecords" [rowsPerPageOptions]="[10,20,30]"
+                             (onLazyLoad)="loadAccountLazy($event)" (onEditComplete)="onEditComplete($event)" columnResizeMode="expand">
+
+                    <p-column field="code" [filter]="true" [editable]="true" [style]="{'width':'10%'}" header="{{ 'Account.Code' | translate }}" [sortable]="true"></p-column>
+                    <p-column field="name" [filter]="true" [editable]="true" [style]="{'width':'20%'}" header="{{ 'Account.Name' | translate }}" [sortable]="true"></p-column>
+                    <p-column field="fiscalPeriodId" [filter]="true" [style]="{'width':'10%','text-align':'center'}" header="{{ 'Account.Fiscal' | translate }}" [sortable]="true"></p-column>
+                    <p-column field="branchId" [filter]="true" [style]="{'width':'10%'}" header="{{ 'Account.Branch' | translate }}" [sortable]="true"></p-column>
+                    <p-column field="description" [editable]="false" [style]="{'width':'10%'}" header="{{ 'Account.Description' | translate }}" [sortable]="false"></p-column>
+                    <p-column header="" styleClass="templateColumn">
+                        <ng-template let-col let-account="rowData" pTemplate type="body">
+                            <button type="button" pButton icon="fa fa-edit" (click)="showDialogToEdit(account)"></button>
+                        </ng-template>
+                    </p-column>
+                    <p-column header="" styleClass="templateColumn">
+                        <ng-template pTemplate="header">
+                            <select #langSelect (change)="languageChange(langSelect.value)">
+                                <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+                            </select>
+                        </ng-template>
+                        <ng-template let-col let-account="rowData" pTemplate type="body">
+                            <button type="button" pButton icon="fa fa-close" (click)="showDialogToDelete(account)"></button>
+                        </ng-template>
+                    </p-column>
+                    <ng-template pTemplate="emptymessage">
+                        {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+                    </ng-template>
+                    <p-footer styleClass="footer">
+                        <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="{{ 'Buttons.New' | translate }}"></button>
+                    </p-footer>
+
+                </p-dataTable>
+
+                <p-dialog header=" {{ !newAccount ? ('Buttons.Edit' | translate) : ('Buttons.New' | translate)}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+                    <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="code">{{ 'Account.Code' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="code" [(ngModel)]="account.code" /></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="name">{{ 'Account.Name' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="name" [(ngModel)]="account.name" /></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="fiscalPeriodId">{{ 'Account.Fiscal' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="fiscalPeriodId" [(ngModel)]="account.fiscalPeriodId" /></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="branchId">{{ 'Account.Branch' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="branchId" [(ngModel)]="account.branchId" /></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="description">{{ 'Account.Description' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="account.description" /></div>
+                        </div>
+                    </div>
+                    <footer>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="newAccount" label="{{ 'Buttons.Ok' | translate }}"></button>
+                            <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="!newAccount" label="{{ 'Buttons.Edit' | translate }}"></button>
+                            <button type="button" pButton icon="fa-close" (click)="cancel()" label="{{ 'Buttons.Cancel' | translate }}"></button>
+                        </div>
+                    </footer>
+                </p-dialog>
+                <p-dialog header="{{'Account.Delete' | translate}}" [(visible)]="displayDeleteDialog" modal="modal" showEffect="fade">
+                    <p>
+                        {{ deleteConfirm }}
+                    </p>
+                    <footer>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <button type="button" pButton icon="fa-close" (click)="deleteAccount(false)" label="{{ 'Buttons.No' | translate }}"></button>
+                            <button type="button" pButton icon="fa-check" (click)="deleteAccount(true)" label="{{ 'Buttons.Yes' | translate }}"></button>
+                        </div>
+                    </footer>
+                </p-dialog>
+
             </div>
-        </div>-->
-
-        <div class="ContentSideSections Implementation divContainer ui-g-12">
-            <p-dataTable [style]="{'margin-top':'20px'}" [value]="rowData" [rows]="10" [lazy]="true" [paginator]="true" [editable]="true"
-                         resizableColumns="true" [totalRecords]="totalRecords" [responsive]="true"
-                         (onLazyLoad)="loadAccountLazy($event)" (onEditComplete)="onEditComplete($event)" columnResizeMode="expand" [rowsPerPageOptions]="[5,10,20]">
-                <header>{{ 'Account.List' | translate }}</header>
-                <p-column field="code" [filter]="true" class="ui-md-6" [editable]="true" header="{{ 'Account.Code' | translate }}" [sortable]="true"></p-column>
-                <p-column field="name" [filter]="true" [editable]="true" header="{{ 'Account.Name' | translate }}" [style]="{'width':'25%'}" [sortable]="true"></p-column>
-                <p-column field="fiscalPeriodId" [filter]="true" header="{{ 'Account.Fiscal' | translate }}" [style]="{'text-align':'center'}" [sortable]="true"></p-column>
-                <p-column field="branchId" [filter]="true" header="{{ 'Account.Branch' | translate }}" [style]="{'text-align':'center'}" [sortable]="true"></p-column>
-                <p-column field="description" [editable]="false" header="{{ 'Account.Description' | translate }}" [sortable]="false"></p-column>
-                <p-column header="" [style]="{'text-align':'center'}">
-                    <ng-template let-col let-account="rowData" pTemplate type="body">
-                        <button type="button" pButton icon="fa-check" (click)="showDialogToEdit(account)" label="{{ 'Buttons.Edit' | translate }}"></button>
-                    </ng-template>
-                </p-column>
-                <p-column header="" [style]="{'text-align':'center'}">
-                    <ng-template let-col let-account="rowData" pTemplate type="body">
-                        <button type="button" pButton icon="fa-close" (click)="showDialogToDelete(account)" label="{{ 'Buttons.Delete' | translate }}"></button>
-                    </ng-template>
-                </p-column>
-                <ng-template pTemplate="emptymessage">
-                    {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
-                </ng-template>
-                <footer><div class="ui-helper-clearfix" style="width:100%"></div></footer>
-            </p-dataTable>
-
-            <p-dialog header=" {{ !newAccount ? ('Buttons.Edit' | translate) : ('Buttons.New' | translate)}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
-                <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad">
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="code">{{ 'Account.Code' | translate }}</label></div>
-                        <div class="ui-grid-col-8"><input pInputText id="code" [(ngModel)]="account.code" /></div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="name">{{ 'Account.Name' | translate }}</label></div>
-                        <div class="ui-grid-col-8"><input pInputText id="name" [(ngModel)]="account.name" /></div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="fiscalPeriodId">{{ 'Account.Fiscal' | translate }}</label></div>
-                        <div class="ui-grid-col-8"><input pInputText id="fiscalPeriodId" [(ngModel)]="account.fiscalPeriodId" /></div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="branchId">{{ 'Account.Branch' | translate }}</label></div>
-                        <div class="ui-grid-col-8"><input pInputText id="branchId" [(ngModel)]="account.branchId" /></div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="description">{{ 'Account.Description' | translate }}</label></div>
-                        <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="account.description" /></div>
-                    </div>
-                </div>
-                <footer>
-                    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                        <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="newAccount" label="{{ 'Buttons.Ok' | translate }}"></button>
-                        <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="!newAccount" label="{{ 'Buttons.Edit' | translate }}"></button>
-                        <button type="button" pButton icon="fa-close" (click)="cancel()" label="{{ 'Buttons.Cancel' | translate }}"></button>
-                    </div>
-                </footer>
-            </p-dialog>
-            <p-dialog header="{{'Account.Delete' | translate}}" [(visible)]="displayDeleteDialog" modal="modal" showEffect="fade">
-                <p>
-                    {{ deleteConfirm }}
-                </p>
-                <footer>
-                    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                        <button type="button" pButton icon="fa-close" (click)="deleteAccount(false)" label="{{ 'Buttons.No' | translate }}"></button>
-                        <button type="button" pButton icon="fa-check" (click)="deleteAccount(true)" label="{{ 'Buttons.Yes' | translate }}"></button>
-                    </div>
-                </footer>
-            </p-dialog>
-
         </div>
-        <p-footer>
-            <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="{{ 'Buttons.New' | translate }}"></button>
-        </p-footer>
-    </p-panel>
+    </div>
+    <br />
+    <div class="panel panel-primary">
+        <div class="panel-heading">حساب ها</div>
+        <div class="panel-body">
+            <div class="content-section implementation ui-g-12 ui-md-12">
+                <p-dataTable [value]="rowData" [rows]="10" [lazy]="true" [paginator]="true" [editable]="true"
+                             resizableColumns="true" [responsive]="true" [totalRecords]="totalRecords" [rowsPerPageOptions]="[10,20,30]"
+                             (onLazyLoad)="loadAccountLazy($event)" (onEditComplete)="onEditComplete($event)" columnResizeMode="expand" expandableRows="true">
+                    <p-column expander="true" [style]="{'width':'2%'}" [dir]="rtlUse" styleClass=""></p-column>
+                    <p-column field="code" [filter]="true" [editable]="true" [style]="{'width':'10%'}" header="{{ 'Account.Code' | translate }}" [sortable]="true"></p-column>
+                    <p-column field="name" [filter]="true" [editable]="true" [style]="{'width':'30%'}" header="{{ 'Account.Name' | translate }}" [sortable]="true"></p-column>
+                    <ng-template let-row pTemplate="rowexpansion">
+                        <div class="ui-grid ui-grid-responsive ui-fluid">
+                            <div class="ui-grid-row">
+                                <div class="ui-grid-col-12">
+                                    <div class="ui-grid ui-grid-responsive ui-grid-pad">
+                                        <div class="ui-grid-row">
+                                            <div class="ui-grid-col-2 ui-g-6 labelTemplate">{{ 'Account.Fiscal' | translate }} : </div>
+                                            <div class="ui-grid-col-10 ui-g-6 valueTemplate">{{row.fiscalPeriodId}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui-grid-col-12">
+                                    <div class="ui-grid ui-grid-responsive ui-grid-pad">
+                                        <div class="ui-grid-row">
+                                            <div class="ui-grid-col-2 ui-g-6  labelTemplate">{{ 'Account.Branch' | translate }} : </div>
+                                            <div class="ui-grid-col-10 ui-g-6  valueTemplate">{{row.branchId}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-grid-row">
+                                <div class="ui-grid-col-12">
+                                    <div class="ui-grid ui-grid-responsive ui-grid-pad">
+                                        <div class="ui-grid-row">
+                                            <div class="ui-grid-col-2  ui-g-4 labelTemplate">{{ 'Account.Description' | translate }} : </div>
+                                            <div class="ui-grid-col-10 ui-g-8 valueTemplate">{{row.description}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <p-column header="" styleClass="templateColumn">
+                        <ng-template let-col let-account="rowData" pTemplate type="body">
+                            <button type="button" pButton icon="fa fa-edit" (click)="showDialogToEdit(account)"></button>
+                        </ng-template>
+                    </p-column>
+                    <p-column header="" styleClass="templateColumn">
+                        <ng-template pTemplate="header">
+                            <select #langSelect (change)="languageChange(langSelect.value)">
+                                <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+                            </select>
+                        </ng-template>
+                        <ng-template let-col let-account="rowData" pTemplate type="body">
+                            <button type="button" pButton icon="fa fa-close" (click)="showDialogToDelete(account)"></button>
+                        </ng-template>
+                    </p-column>
+                    <ng-template pTemplate="emptymessage">
+                        {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+                    </ng-template>
+                    <p-footer styleClass="footer">
+                        <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="{{ 'Buttons.New' | translate }}"></button>
+                    </p-footer>
+
+                </p-dataTable>
+
+                <p-dialog header=" {{ !newAccount ? ('Buttons.Edit' | translate) : ('Buttons.New' | translate)}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+                    <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="code">{{ 'Account.Code' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="code" [(ngModel)]="account.code" /></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="name">{{ 'Account.Name' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="name" [(ngModel)]="account.name" /></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="fiscalPeriodId">{{ 'Account.Fiscal' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="fiscalPeriodId" [(ngModel)]="account.fiscalPeriodId" /></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="branchId">{{ 'Account.Branch' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="branchId" [(ngModel)]="account.branchId" /></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="description">{{ 'Account.Description' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="account.description" /></div>
+                        </div>
+                    </div>
+                    <footer>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="newAccount" label="{{ 'Buttons.Ok' | translate }}"></button>
+                            <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="!newAccount" label="{{ 'Buttons.Edit' | translate }}"></button>
+                            <button type="button" pButton icon="fa-close" (click)="cancel()" label="{{ 'Buttons.Cancel' | translate }}"></button>
+                        </div>
+                    </footer>
+                </p-dialog>
+                <p-dialog header="{{'Account.Delete' | translate}}" [(visible)]="displayDeleteDialog" modal="modal" showEffect="fade">
+                    <p>
+                        {{ deleteConfirm }}
+                    </p>
+                    <footer>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <button type="button" pButton icon="fa-close" (click)="deleteAccount(false)" label="{{ 'Buttons.No' | translate }}"></button>
+                            <button type="button" pButton icon="fa-check" (click)="deleteAccount(true)" label="{{ 'Buttons.Yes' | translate }}"></button>
+                        </div>
+                    </footer>
+                </p-dialog>
+
+            </div>
+        </div>
+
+    </div>
+    <br />
+    <div class="panel panel-primary">
+        <div class="panel-heading">حساب حالت پیچیده</div>
+        <div class="panel-body">
+            <div class="content-section implementation ui-g-12 ui-md-12">
+                <p-dataTable [value]="rowData" [rows]="10" [lazy]="true" [paginator]="true" [editable]="true" (onRowExpand)="lazyProjectLoad($event)" 
+                             resizableColumns="true" [responsive]="true" [totalRecords]="totalRecords" [rowsPerPageOptions]="[10,20,30]"
+                             (onLazyLoad)="loadAccountLazy($event)" (onEditComplete)="onEditComplete($event)" columnResizeMode="expand" expandableRows="true">
+                    <p-column expander="true" [style]="{'width':'2%'}" [dir]="rtlUse"  styleClass="" ></p-column>
+                    <p-column field="code" [filter]="true" [editable]="true" [style]="{'width':'10%'}" header="{{ 'Account.Code' | translate }}" [sortable]="true"></p-column>
+                    <p-column field="name" [filter]="true" [editable]="true" [style]="{'width':'30%'}" header="{{ 'Account.Name' | translate }}" [sortable]="true"></p-column>
+                    <ng-template let-row pTemplate="rowexpansion">
+                        <p-dataTable [value]="accountArticleRows" styleClass="ui-datatable" [responsive]="true">
+                            <p-column field="Debit" [style]="{'width':'10%'}" header="{{ 'TransactionLine.Debit' | translate }}"></p-column>
+                            <p-column field="Credit"  [style]="{'width':'10%'}" header="{{ 'TransactionLine.Credit' | translate }}" ></p-column>                            
+                            <p-column field="Description" [style]="{'width':'30%'}" header="{{ 'TransactionLine.Description' | translate }}"></p-column>
+                            <ng-template pTemplate="emptymessage">
+                                {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+                            </ng-template>
+                        </p-dataTable>
+                    </ng-template>
+                    <p-column header="" styleClass="templateColumn">
+                        <ng-template let-col let-account="rowData" pTemplate type="body">
+                            <button type="button" pButton icon="fa fa-edit" (click)="showDialogToEdit(account)"></button>
+                        </ng-template>
+                    </p-column>
+                    <p-column header="" styleClass="templateColumn">
+                        <ng-template pTemplate="header">
+                            <select #langSelect (change)="languageChange(langSelect.value)">
+                                <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+                            </select>
+                        </ng-template>
+                        <ng-template let-col let-account="rowData" pTemplate type="body">
+                            <button type="button" pButton icon="fa fa-close" (click)="showDialogToDelete(account)"></button>
+                        </ng-template>
+                    </p-column>
+                    <ng-template pTemplate="emptymessage">
+                        {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+                    </ng-template>
+                    <p-footer styleClass="footer">
+                        <button type="button" pButton icon="fa-plus" (click)="showDialogToAdd()" label="{{ 'Buttons.New' | translate }}"></button>
+                    </p-footer>
+
+                </p-dataTable>
+
+                <p-dialog header=" {{ !newAccount ? ('Buttons.Edit' | translate) : ('Buttons.New' | translate)}}" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+                    <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="code">{{ 'Account.Code' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="code" [(ngModel)]="account.code" /></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="name">{{ 'Account.Name' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="name" [(ngModel)]="account.name" /></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="fiscalPeriodId">{{ 'Account.Fiscal' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="fiscalPeriodId" [(ngModel)]="account.fiscalPeriodId" /></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="branchId">{{ 'Account.Branch' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="branchId" [(ngModel)]="account.branchId" /></div>
+                        </div>
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-4"><label for="description">{{ 'Account.Description' | translate }}</label></div>
+                            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="account.description" /></div>
+                        </div>
+                    </div>
+                    <footer>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="newAccount" label="{{ 'Buttons.Ok' | translate }}"></button>
+                            <button type="button" pButton icon="fa-check" (click)="save()" *ngIf="!newAccount" label="{{ 'Buttons.Edit' | translate }}"></button>
+                            <button type="button" pButton icon="fa-close" (click)="cancel()" label="{{ 'Buttons.Cancel' | translate }}"></button>
+                        </div>
+                    </footer>
+                </p-dialog>
+                <p-dialog header="{{'Account.Delete' | translate}}" [(visible)]="displayDeleteDialog" modal="modal" showEffect="fade">
+                    <p>
+                        {{ deleteConfirm }}
+                    </p>
+                    <footer>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <button type="button" pButton icon="fa-close" (click)="deleteAccount(false)" label="{{ 'Buttons.No' | translate }}"></button>
+                            <button type="button" pButton icon="fa-check" (click)="deleteAccount(true)" label="{{ 'Buttons.Yes' | translate }}"></button>
+                        </div>
+                    </footer>
+                </p-dialog>
+
+            </div>
+        </div>
+
+    </div>
 </div>

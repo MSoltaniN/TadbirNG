@@ -1,12 +1,14 @@
 ﻿
-.tform
-{
-    margin-top : 20px;
+@import url(IranSans.css);
+
+
+/*#region public classes */
+.tform {
+    margin-top: 20px;
 }
 
-tbutton 
-{   
-    float:right;
+tbutton {
+    float: right;
 }
 
 .divContainer {
@@ -14,16 +16,78 @@ tbutton
 }
 
 .containerBtn {
-    margin-top:15px;
+    margin-top: 15px;
 }
 
 .tbody {
-    background-color: #2c3e50;    
+    background-color: #2c3e50;
 }
 
-* {
-    font-family: TF !important;
+/*#endregion public classes */
+
+/*#region add class for sppc font*/
+
+.ui-widget {
+    font-family: SPPC !important;
+    font-size: 15px;
 }
+
+.fa-chevron-circle-right:before {
+    content: "\f055" !important;
+}
+
+.fa-chevron-circle-down:before {
+    content: "\f056" !important;
+}
+
+.toast {
+    font-family: SPPC !important;
+}
+
+.labelTemplate {
+    font-size: 16px;
+    color: black;
+}
+
+.valueTemplate {
+    font-size: 14px;
+    color: darkblue;
+}
+
+.main-nav {
+    font-family: SPPC !important;
+    font-size: 18px;
+}
+
+.panel {
+    font-family: SPPC !important;
+}
+
+
+/*#endregion */
+
+/*#region override class for primeng datatable*/
+
+.templateColumn {
+    text-align: center;
+    width: 5%;
+}
+
+.ui-paginator {
+    direction: ltr !important;
+}
+
+.ui-datatable-footer {
+    text-align: unset !important;
+}
+
+table thead tr th span.ui-column-title {
+    display: inline !important;
+}
+
+/*#endregion */
+
+/*#region loading sppiner in page load*/
 
 .sk-cube-grid {
     width: 80px;
@@ -32,7 +96,6 @@ tbutton
     position: fixed; /* or absolute */
     top: 42%;
     left: 48%;
-
 }
 
     .sk-cube-grid .sk-cube {
@@ -88,7 +151,7 @@ tbutton
         -webkit-animation-delay: 0.2s;
         animation-delay: 0.2s;
     }
-
+    
 @-webkit-keyframes sk-cubeGridScaleDelay {
     0%, 70%, 100% {
         -webkit-transform: scale3D(1, 1, 1);
@@ -113,48 +176,46 @@ tbutton
     }
 }
 
+/*#endregion loading sppiner in page load*/
+
+/*#region for better responsive in primeng datatable*/
+
+@media (max-width: 1024px) /* I want the datatable to be stacked at at least iPad Pro portrait mode, this depends on your data */ {
+    /* Data in responsive mode */
+    .ui-datatable-reflow .ui-datatable-data > tr > td {
+        width: 100% !important;
+        text-align: right !important;
+        border: 0;
+        box-sizing: border-box;
+        float: right;
+        clear: left;
+    }
 
 
-@font-face {
-    font-family: "TF";
-    font-style: normal;
-    font-weight: bold;
-    src: url("/resources/fonts/IranSans/eot/IRANSansWeb_Bold.eot");
-    src: url("/resources/fonts/IranSans/eot/IRANSansWeb_Bold.eot?#iefix") format("embedded-opentype"), /* IE6-8 */
-    url("/resources/fonts/IranSans/woff2/IRANSansWeb_Bold.woff2") format("woff2"), /* FF39+,Chrome36+, Opera24+*/
-    url("/resources/fonts/IranSans/woff/IRANSansWeb_Bold.woff") format("woff"), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
-    url("/resources/fonts/IranSans/ttf/IRANSansWeb_Bold.ttf") format("truetype");
+    .ui-datatable-reflow .ui-datatable-data tr.ui-widget-content {
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .ui-datatable-reflow .ui-datatable-data.ui-widget-content {
+        border: 0;
+    }
+
+    /*Hide the headers in responsive mode*/
+    .ui-datatable-reflow thead th {
+        display: none !important;
+    }
+
+    /*Display the headers inline with the data in responsive mode */
+    .ui-datatable-reflow .ui-datatable-data td .ui-column-title {
+        padding: .4em;
+        min-width: 30%;
+        display: inline-block;
+        margin: -.4em 1em -.4em -.4em;
+        font-weight: bold;
+    }
 }
 
-@font-face {
-    font-family: "TF";
-    font-style: normal;
-    font-weight: 500;
-    src: url("/resources/fonts/IranSans/eot/IRANSansWeb_Medium.eot");
-    src: url("/resources/fonts/IranSans/eot/IRANSansWeb_Medium.eot?#iefix") format("embedded-opentype"), /* IE6-8 */
-    url("/resources/fonts/IranSans/woff2/IRANSansWeb_Medium.woff2") format("woff2"), /* FF39+,Chrome36+, Opera24+*/
-    url("/resources/fonts/IranSans/woff/IRANSansWeb_Medium.woff") format("woff"), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
-    url("/resources/fonts/IranSans/ttf/IRANSansWeb_Medium.ttf") format("truetype");
-}
+/*#endregion for better responsive in primeng datatable*/
 
-@font-face {
-    font-family: "TF";
-    font-style: normal;
-    font-weight: 200;
-    src: url("/resources/fonts/IranSans/eot/IRANSansWeb_UltraLight.eot");
-    src: url("/resources/fonts/IranSans/eot/IRANSansWeb_UltraLight.eot?#iefix") format("embedded-opentype"), /* IE6-8 */
-    url("/resources/fonts/IranSans/woff2/IRANSansWeb_UltraLight.woff2") format("woff2"), /* FF39+,Chrome36+, Opera24+*/
-    url("/resources/fonts/IranSans/woff/IRANSansWeb_UltraLight.woff") format("woff"), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
-    url("/resources/fonts/IranSans/ttf/IRANSansWeb_UltraLight.ttf") format("truetype");
-}
 
-@font-face {
-    font-family: "TF";
-    font-style: normal;
-    font-weight: normal;
-    src: url("/resources/fonts/IranSans/eot/IRANSansWeb.eot");
-    src: url("/resources/fonts/IranSans/eot/IRANSansWeb.eot?#iefix") format("embedded-opentype"), /* IE6-8 */
-    url("/resources/fonts/IranSans/woff2/IRANSansWeb.woff2") format("woff2"), /* FF39+,Chrome36+, Opera24+*/
-    url("/resources/fonts/IranSans/woff/IRANSansWeb.woff") format("woff"), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
-    url("/resources/fonts/IranSans/ttf/IRANSansWeb.ttf") format("truetype");
-}

@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using SPPC.Tadbir.Business;
 using SPPC.Tadbir.DataAccess;
 
+
 namespace Tadbir.GridViewCRUD.Controllers
 {
     public class AccountController : Controller
     {
         private IAccountRepository _repository;
-
         public AccountController(IAccountRepository repo)
         {
             _repository = repo;
@@ -38,14 +38,14 @@ namespace Tadbir.GridViewCRUD.Controllers
                 return BadRequest("Could not delete account because it does not exist.");
             }
 
-            return Json(await _repository.DeleteAccount(id));
+            return Json(await _repository.Delete(id));
         }
 
         // POST: api/accounts
         [Route("/Account/Edit")]
         [HttpPost, Produces("application/json")]
         ////[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
-        public async Task<IActionResult> Edit([FromBody] AccountViewModel account)
+        public async Task<IActionResult> Edit([FromBody] Account account)
         {
             if (account == null)
             {
@@ -57,14 +57,14 @@ namespace Tadbir.GridViewCRUD.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Json(await _repository.EditAccount(account));
+            return Json(await _repository.Edit(account));
         }
 
         ////[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         [HttpPost, Produces("application/json")]
         [Route("/Account/Insert")]
-        public async Task<IActionResult> Insert([FromBody] AccountViewModel account)
-        {          
+        public async Task<IActionResult> Insert([FromBody] Account account)
+        {
             if (account == null)
             {
                 return BadRequest("Could not post new account because a 'null' value was provided.");
@@ -74,10 +74,10 @@ namespace Tadbir.GridViewCRUD.Controllers
             {
                 return BadRequest(ModelState);
             }
-         
-            return Json(await _repository.InsertAccount(account));
+
+            return Json(await _repository.Insert(account));
         }
-        
+
         // GET: api/accounts/fp/{fpId:int}/branch/{branchId:int}
         [Route("/Account/fp/{fpId}/branch/{branchId}")]
         [HttpPost, Produces("application/json")]
@@ -88,15 +88,15 @@ namespace Tadbir.GridViewCRUD.Controllers
                 return NotFound();
             }
 
-            var accounts = await _repository.GetAccounts(fpId, branchId, options);
+            var accounts = await _repository.Get(fpId, branchId, options);
             return Json(accounts);
-        }
+        }        
 
         [Route("/Account/List")]
         [HttpPost, Produces("application/json")]
         public async Task<IActionResult> List([FromBody] GridOption options = null)
-        {            
-            var accounts = await _repository.GetAccounts(options);
+        {
+            var accounts = await _repository.Get(options);
             return Json(accounts);
         }
     }

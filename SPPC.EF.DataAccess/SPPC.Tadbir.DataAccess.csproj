@@ -116,7 +116,56 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBContext\AccountDBContext.cs" />
-    <Compile Include="Model\AccountViewModel.cs" />
+    <Compile Include="Model\Account.cs" />
+    <Compile Include="Model\ActivityInstanceEvent.cs" />
+    <Compile Include="Model\BookmarkResumptionEvent.cs" />
+    <Compile Include="Model\Branch.cs" />
+    <Compile Include="Model\BusinessPartner.cs" />
+    <Compile Include="Model\BusinessUnit.cs" />
+    <Compile Include="Model\Company.cs" />
+    <Compile Include="Model\CostCenter.cs" />
+    <Compile Include="Model\Currency.cs" />
+    <Compile Include="Model\Customer.cs" />
+    <Compile Include="Model\CustomTrackingEvent.cs" />
+    <Compile Include="Model\DetailAccount.cs" />
+    <Compile Include="Model\Document.cs" />
+    <Compile Include="Model\DocumentAction.cs" />
+    <Compile Include="Model\DocumentStatus.cs" />
+    <Compile Include="Model\DocumentType.cs" />
+    <Compile Include="Model\ExtendedActivityEvent.cs" />
+    <Compile Include="Model\FiscalPeriod.cs" />
+    <Compile Include="Model\FullAccount.cs" />
+    <Compile Include="Model\FullDetail.cs" />
+    <Compile Include="Model\FullDetailType.cs" />
+    <Compile Include="Model\Invoice.cs" />
+    <Compile Include="Model\InvoiceLine.cs" />
+    <Compile Include="Model\IssueReceiptVoucher.cs" />
+    <Compile Include="Model\IssueReceiptVoucherLine.cs" />
+    <Compile Include="Model\IssueReceiptVoucherType.cs" />
+    <Compile Include="Model\Permission.cs" />
+    <Compile Include="Model\PermissionGroup.cs" />
+    <Compile Include="Model\Person.cs" />
+    <Compile Include="Model\Product.cs" />
+    <Compile Include="Model\ProductCategory.cs" />
+    <Compile Include="Model\ProductInventory.cs" />
+    <Compile Include="Model\Project.cs" />
+    <Compile Include="Model\RequisitionVoucher.cs" />
+    <Compile Include="Model\RequisitionVoucherLine.cs" />
+    <Compile Include="Model\RequisitionVoucherType.cs" />
+    <Compile Include="Model\Role.cs" />
+    <Compile Include="Model\RoleBranch.cs" />
+    <Compile Include="Model\RolePermission.cs" />
+    <Compile Include="Model\ServiceJob.cs" />
+    <Compile Include="Model\Transaction.cs" />
+    <Compile Include="Model\TransactionLine.cs" />
+    <Compile Include="Model\Uom.cs" />
+    <Compile Include="Model\User.cs" />
+    <Compile Include="Model\UserRole.cs" />
+    <Compile Include="Model\Warehouse.cs" />
+    <Compile Include="Model\WorkflowInstanceEvent.cs" />
+    <Compile Include="Model\WorkItem.cs" />
+    <Compile Include="Model\WorkItemDocument.cs" />
+    <Compile Include="Model\WorkItemHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

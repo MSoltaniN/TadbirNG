@@ -1,15 +1,13 @@
 ﻿import { Component, OnInit } from '@angular/core';
 
-import { AccountService, AccountInfo } from '../../service/index';
+import { AccountService, AccountInfo, TransactionLineService, TransactionLineInfo } from '../../service/index';
 
-import { Account } from '../../model/index';
+import { Account,TransactionLine } from '../../model/index';
 
 import { InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule } from 'primeng/primeng'; /** add components for test DataGrid functionality */
 import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component for message in client side */
 import { LazyLoadEvent, FilterMetadata} from 'primeng/primeng';
 import {Filter} from '../../class/filter';
-
-
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -17,10 +15,8 @@ import "rxjs/Rx";
 import {TranslateService} from 'ng2-translate';
 import { String } from '../../class/source';
 
-
-
-
-
+declare var jquery: any;
+declare var $: any;
 
 
 @Component({
@@ -33,8 +29,9 @@ export class AccountComponent implements OnInit {
 
     public rowData: any[];
 
-    public totalRecords: number;
+    public accountArticleRows: any[];
 
+    public totalRecords: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
@@ -52,7 +49,7 @@ export class AccountComponent implements OnInit {
     config: ToastConfig;
 
     showloadingMessage: boolean = true;
-
+   
     newAccount: boolean;
     account: Account = new AccountInfo
 
@@ -63,17 +60,34 @@ export class AccountComponent implements OnInit {
     rtlClass: string = "ui-rtl";
     rtlUse: string = "rtl";
 
-    ngOnInit() {
-        //this.getRowsCount();
-        
-    }
-
     private translateService: TranslateService
 
     pageIndex?: number;
     count?: number;
 
-    constructor(private accountService: AccountService, private toastrService: ToastrService, private translate: TranslateService)
+
+    ngOnInit() {
+
+
+        ////how to call jquery in angular 4
+        /*
+        $(document).ready(function () {
+            $('p-datatable table').addClass('table');
+
+            $('p-datatable table th:first').attr('data-breakpoints' , 'xs sm md');
+            
+            $('p-datatable table').footable()
+            //alert($('p-datatable > table').length);
+        });
+        */
+
+        
+
+    }
+
+    
+    constructor(private accountService: AccountService, private transactionLineService: TransactionLineService,
+        private toastrService: ToastrService, private translate: TranslateService)
     {
         translate.addLangs(["en", "fa"]);
         translate.setDefaultLang('fa');
@@ -222,14 +236,14 @@ export class AccountComponent implements OnInit {
 
         this.pageIndex = event.first;
         this.count = event.rows;
-
+        
         this.getRowsCount();
 
          this.accountService.search(event.first,event.rows,order,filter).subscribe(res => {
              this.rowData = res;
              
              this.showloadingMessage = !(res.length == 0);
-
+             
             });        
     }  
 
@@ -328,6 +342,14 @@ export class AccountComponent implements OnInit {
 
 
     //Add Account
+
+
+    lazyProjectLoad(account:any)
+    {
+        this.transactionLineService.getAccountArticles(account.data.accountId).subscribe(res => {
+            this.accountArticleRows = res;
+        });
+    }
 
 }
 

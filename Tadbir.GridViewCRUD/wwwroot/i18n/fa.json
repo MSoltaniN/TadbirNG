@@ -20,18 +20,24 @@
     "New": "جدید",
     "Edit": "ویرایش",
     "Delete": "حذف"
-  },  
+  },
   "Entity": {
     "Account": "اطلاعات حساب"
   },
-  "Account": {    
+  "Account": {
     "Code": "کد حساب",
     "Name": "نام حساب",
     "Fiscal": "دوره مالی",
     "Branch": "شعبه",
     "Description": "توضیحات",
     "List": "لیست حساب ها"
-    
+
+  },
+  "TransactionLine": {
+    "Debit": "بدهکار",
+    "Credit": "بستانکار",
+    "Description": "توضیحات"
+
   }
 
 }
