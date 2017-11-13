@@ -38,6 +38,9 @@
     "Credit": "بستانکار",
     "Description": "توضیحات"
 
+  },
+  "Fiscal": {
+    "FiscalPeriod": "دوره مالی"
   }
 
 }

@@ -14,8 +14,7 @@ export class TransactionLineInfo implements TransactionLine {
 
 @Injectable()
 export class TransactionLineService {
-
-    //private getFullAccountsUrl = "/FullAccount/{0}";
+    
     private getAccountArticlesUrl = "http://37.59.93.7:8080/accounts/{0}/articles";    
 
     constructor(private http: Http) {
@@ -25,12 +24,6 @@ export class TransactionLineService {
 
     getAccountArticles(accountId: number) {
         var headers = new Headers();
-        
-        //headers.append("Access-Control-Allow-Origin", "*");
-        //headers.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH,OPTIONS');
-        //headers.append('Access-Control-Allow-Headers', 'Content-Type');
-        
-        //headers.append('Access-Control-Allow-Headers', 'Content-Type,X-Tadbir-AuthTicket');
         
         headers.append("Content-Type", "application/json");
         

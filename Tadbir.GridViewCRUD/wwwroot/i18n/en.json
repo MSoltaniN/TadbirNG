@@ -41,6 +41,9 @@
     "Credit": "Credit",
     "Description": "Description"
 
+  },
+  "Fiscal": {
+    "FiscalPeriod": "Fiscal Period"
   }
 
 

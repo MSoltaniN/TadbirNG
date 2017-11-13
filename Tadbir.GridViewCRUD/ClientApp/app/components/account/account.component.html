@@ -86,8 +86,17 @@
     <div class="panel panel-primary">
         <div class="panel-heading">حساب ها</div>
         <div class="panel-body">
+            <div class="ui-g-4 ui-md-4">
+                <!--(onChange)="onFiscalPeriodSelect($event)"-->  
+                <p-dropdown [options]="fiscalPeriodRows" [style]="{'width':'100%'}"
+                            placeholder="{{ 'Fiscal.FiscalPeriod' | translate }}" >
+                    <ng-template let-item pTemplate="item">
+                        <span><strong> {{ item.Value }} </strong></span>
+                    </ng-template>
+                </p-dropdown> 
+            </div>
             <div class="content-section implementation ui-g-12 ui-md-12">
-                <p-dataTable [value]="rowData" [rows]="10" [lazy]="true" [paginator]="true" [editable]="true"
+                <p-dataTable #gridView [value]="rowData" [rows]="10" [lazy]="true" [paginator]="true" [editable]="true"
                              resizableColumns="true" [responsive]="true" [totalRecords]="totalRecords" [rowsPerPageOptions]="[10,20,30]"
                              (onLazyLoad)="loadAccountLazy($event)" (onEditComplete)="onEditComplete($event)" columnResizeMode="expand" expandableRows="true">
                     <p-column expander="true" [style]="{'width':'2%'}" [dir]="rtlUse" styleClass=""></p-column>
@@ -286,6 +295,5 @@
 
             </div>
         </div>
-
     </div>
 </div>

@@ -63,11 +63,13 @@ tbutton {
     font-family: SPPC !important;
 }
 
+.ui-dropdown
+{
+    font-family:SPPC !important;
+}
 
 /*#endregion */
-
 /*#region override class for primeng datatable*/
-
 .templateColumn {
     text-align: center;
     width: 5%;
@@ -83,6 +85,9 @@ tbutton {
 
 table thead tr th span.ui-column-title {
     display: inline !important;
+}
+.ui-helper-hidden {
+    display: inline !important; 
 }
 
 /*#endregion */

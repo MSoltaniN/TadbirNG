@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
@@ -8,7 +8,7 @@ import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationSt
 // third party module to display toast 
 import { ToastrModule } from 'toastr-ng2';
 //PRIMENG - Third party module
-import { InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule } from 'primeng/primeng';
+import { InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule, DropdownModule } from 'primeng/primeng';
 
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
@@ -18,7 +18,7 @@ import {BrowserModule} from "@angular/platform-browser";
 
 import { TranslateModule } from "ng2-translate";
 
-import { AccountService,TransactionLineService } from './service/index';
+import { AccountService, TransactionLineService, FiscalPeriodService } from './service/index';
 
 @NgModule({
     declarations: [
@@ -26,7 +26,7 @@ import { AccountService,TransactionLineService } from './service/index';
         NavMenuComponent,
         AccountComponent        
     ],
-    providers: [AccountService,TransactionLineService,
+    providers: [AccountService, TransactionLineService, FiscalPeriodService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }],        
     imports: [
         CommonModule,         
@@ -34,15 +34,16 @@ import { AccountService,TransactionLineService } from './service/index';
         FormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule,
+        InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule, DropdownModule,
         BrowserModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'account', pathMatch: 'full' },
             { path: 'account', component: AccountComponent },
             { path: '**', redirectTo: 'account' }
-        ])
-    ]
+        ])        
+    ],
+    schemas: [NO_ERRORS_SCHEMA]
 })
 export class AppModuleShared {
 }

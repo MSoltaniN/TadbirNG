@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
 
-import { AccountService, AccountInfo, TransactionLineService, TransactionLineInfo } from '../../service/index';
+import { AccountService, AccountInfo, TransactionLineService, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
 
 import { Account,TransactionLine } from '../../model/index';
 
@@ -31,7 +31,11 @@ export class AccountComponent implements OnInit {
 
     public accountArticleRows: any[];
 
+    public fiscalPeriodRows: any[];
+
     public totalRecords: number;
+
+    public fpId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
@@ -80,13 +84,11 @@ export class AccountComponent implements OnInit {
             //alert($('p-datatable > table').length);
         });
         */
-
         
-
     }
 
     
-    constructor(private accountService: AccountService, private transactionLineService: TransactionLineService,
+    constructor(private accountService: AccountService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
         private toastrService: ToastrService, private translate: TranslateService)
     {
         translate.addLangs(["en", "fa"]);
@@ -98,6 +100,8 @@ export class AccountComponent implements OnInit {
         this.translateService = translate;
 
         this.localizeMsg();
+
+        this.getFiscalPeriod();
     }
 
     languageChange(value:string)
@@ -153,15 +157,7 @@ export class AccountComponent implements OnInit {
             });
         
     }
-
     
-    //getCount(orderby?: string, filters?: string) {
-     
-    //    this.accountService.getCount(orderby,filters).subscribe(res => {
-    //        this.totalRecords = res;
-    //    });
-    //}
-
     reloadGrid() {
 
         this.getRowsCount();
@@ -343,12 +339,24 @@ export class AccountComponent implements OnInit {
 
     //Add Account
 
-
+    /* lazy loading for account articles */
     lazyProjectLoad(account:any)
     {
         this.transactionLineService.getAccountArticles(account.data.accountId).subscribe(res => {
             this.accountArticleRows = res;
         });
+    }
+
+    /* lazy loading for account articles */
+    getFiscalPeriod() {
+        this.fiscalPeriodService.getFiscalPeriods().subscribe(res => {
+            this.fiscalPeriodRows = res;            
+        });
+    }
+    
+    onFiscalPeriodChange(arg: any)
+    {
+
     }
 
 }
