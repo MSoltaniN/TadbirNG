@@ -347,7 +347,7 @@ export class AccountComponent implements OnInit {
         });
     }
 
-    /* lazy loading for account articles */
+    /* load fiscal periods */
     getFiscalPeriod() {
         this.fiscalPeriodService.getFiscalPeriods().subscribe(res => {
             this.fiscalPeriodRows = res;            
