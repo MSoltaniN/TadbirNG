@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>SPPC.Framework</RootNamespace>
+    <Version>1.1.0</Version>
+    <Authors>Babak Eslamieh</Authors>
+    <Company>SPPC</Company>
+    <Product>Framework</Product>
+    <Description>TODO: Add product description</Description>
+    <Copyright>TODO: Add copyright notice</Copyright>
+    <AssemblyVersion>1.1.168.0</AssemblyVersion>
+    <FileVersion>1.1.168.0</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Framework.Interfaces.xml</DocumentationFile>
+    <OutputPath>..\..\..\bin\Debug\netstandard2.0\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Domain\" />
+  </ItemGroup>
+
+</Project>
