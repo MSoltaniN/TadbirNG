@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Framework.Interfaces",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Tadbir.ViewModel", "SPPC.Tadbir.ViewModel\SPPC.Tadbir.ViewModel.csproj", "{1359A987-13F0-4013-BE47-017287889165}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Tadbir.Mapper", "SPPC.Tadbir.Mapper\SPPC.Tadbir.Mapper.csproj", "{265B5EBE-29F6-4DFE-B247-B4E656FCB1E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{1359A987-13F0-4013-BE47-017287889165}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1359A987-13F0-4013-BE47-017287889165}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1359A987-13F0-4013-BE47-017287889165}.Release|Any CPU.Build.0 = Release|Any CPU
+		{265B5EBE-29F6-4DFE-B247-B4E656FCB1E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{265B5EBE-29F6-4DFE-B247-B4E656FCB1E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{265B5EBE-29F6-4DFE-B247-B4E656FCB1E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{265B5EBE-29F6-4DFE-B247-B4E656FCB1E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 		{332E0AFE-EC57-480C-9F93-E2A48167FC6D} = {7B165F9B-3076-4F08-9274-CB216DAFC592}
 		{10A16ED5-F293-471C-8790-73122CFA1E56} = {CCBE656B-1044-40EC-A241-6D8E72E4459F}
 		{1359A987-13F0-4013-BE47-017287889165} = {7B165F9B-3076-4F08-9274-CB216DAFC592}
+		{265B5EBE-29F6-4DFE-B247-B4E656FCB1E2} = {7B165F9B-3076-4F08-9274-CB216DAFC592}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1D717D5C-5BCF-401B-A4A8-D0B263F70830}
