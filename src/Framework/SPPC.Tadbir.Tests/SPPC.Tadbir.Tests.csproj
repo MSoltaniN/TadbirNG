@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>SPPC.Tadbir</RootNamespace>
+    <Version>1.1.0</Version>
+    <Authors>Babak Eslamieh</Authors>
+    <Company>SPPC</Company>
+    <Product>Framework</Product>
+    <Description>TODO: Add product description</Description>
+    <Copyright>TODO: Add copyright notice</Copyright>
+    <AssemblyVersion>1.1.168.0</AssemblyVersion>
+    <FileVersion>1.1.168.0</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\bin\Debug\netstandard2.0\</OutputPath>
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.2.0" />
+    <PackageReference Include="Moq" Version="4.7.145" />
+    <PackageReference Include="NUnit" Version="3.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SPPC.Tadbir.Mapper\SPPC.Tadbir.Mapper.csproj" />
+  </ItemGroup>
+
+</Project>
