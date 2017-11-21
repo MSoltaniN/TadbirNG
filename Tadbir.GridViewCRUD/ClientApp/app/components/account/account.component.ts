@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, Input } from '@angular/core';
 
 import { AccountService, AccountInfo, TransactionLineService, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
 
@@ -28,9 +28,11 @@ declare var $: any;
 export class AccountComponent implements OnInit {
 
     public rowData: any[];
-
+    //public accountArticleRows: Map<number, any[]> = new Map<number, any[]>();
+    
     public accountArticleRows: any[];
 
+    
     public fiscalPeriodRows: any[];
 
     public totalRecords: number;
@@ -344,13 +346,19 @@ export class AccountComponent implements OnInit {
     {
         this.transactionLineService.getAccountArticles(account.data.accountId).subscribe(res => {
             this.accountArticleRows = res;
+            //this.accountArticleRows.set(account.data.accountId, res);
+
+            if (res.length == 0)
+                this.showloadingMessage = !(res.length == 0);
         });
     }
-
+    
     /* load fiscal periods */
     getFiscalPeriod() {
+        this.showloadingMessage = true;
         this.fiscalPeriodService.getFiscalPeriods().subscribe(res => {
-            this.fiscalPeriodRows = res;            
+            this.fiscalPeriodRows = res; 
+            this.showloadingMessage = !(res.length == 0);
         });
     }
     
