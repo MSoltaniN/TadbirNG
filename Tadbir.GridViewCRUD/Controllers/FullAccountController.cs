@@ -23,6 +23,5 @@ namespace Tadbir.GridViewCRUD.Controllers
             var accounts = await _repository.GetFullAccount(accountId);
             return Json(accounts);
         }
-
     }
 }

@@ -27,6 +27,11 @@ tbutton {
 
 /*#region add class for sppc font*/
 
+tgrid {
+    font-family: SPPC !important;
+    font-size: 15px;
+}
+
 .ui-widget {
     font-family: SPPC !important;
     font-size: 15px;

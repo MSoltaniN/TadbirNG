@@ -1,0 +1,19 @@
+﻿<div  dir="rtl">
+    <div class="panel panel-primary">
+        <div class="panel-heading">لیست حساب</div>
+        <div class="panel-body">
+            <kendo-grid [data]="rowData" [dir]="rtl"  class='tgrid'
+                        [pageSize]="pageSize"
+                        [skip]="skip"
+                        [sortable]="true"
+                        [pageable]="true"
+                        [scrollable]="'none'"
+                        (pageChange)="pageChange($event)" >
+                <kendo-grid-column field="code" title="code" width="130" ></kendo-grid-column>
+                <kendo-grid-column field="name" title="name" width="200" ></kendo-grid-column>
+                <kendo-grid-column field="fiscalPeriodId" title="fiscalPeriodId" [sortable]="false" ></kendo-grid-column>
+                <kendo-grid-column field="description" title="description" [sortable]="false" ></kendo-grid-column>                             
+            </kendo-grid>
+        </div>
+    </div>    
+</div>

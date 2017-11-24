@@ -14,9 +14,16 @@ import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { AccountComponent } from './components/account/account.component';
 
+import { Account2Component } from './components/account2/account2.component';
+
 import {BrowserModule} from "@angular/platform-browser";
 
 import { TranslateModule } from "ng2-translate";
+
+import { GridModule } from '@progress/kendo-angular-grid';
+
+import { RTL } from '@progress/kendo-angular-l10n';
+
 
 import { AccountService, TransactionLineService, FiscalPeriodService } from './service/index';
 
@@ -24,22 +31,24 @@ import { AccountService, TransactionLineService, FiscalPeriodService } from './s
     declarations: [
         AppComponent,
         NavMenuComponent,
-        AccountComponent        
+        AccountComponent,
+        Account2Component
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService,
-        { provide: LocationStrategy, useClass: HashLocationStrategy }],        
+        { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true }],        
     imports: [
         CommonModule,         
         HttpModule,
         FormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule, DropdownModule,
+        InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule, DropdownModule, GridModule ,
         BrowserModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
-            { path: '', redirectTo: 'account', pathMatch: 'full' },
+            { path: '', redirectTo: 'account2', pathMatch: 'full' },
             { path: 'account', component: AccountComponent },
+            { path: 'account2', component: Account2Component },
             { path: '**', redirectTo: 'account' }
         ])        
     ],
