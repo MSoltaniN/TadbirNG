@@ -80,7 +80,8 @@ namespace SPPC.Tadbir.Model.Inventory
 
         private void InitReferences()
         {
-            this.Products = new List<Product>();
+            Products = new List<Product>();
+            Children = new List<ProductCategory>();
         }
     }
 }

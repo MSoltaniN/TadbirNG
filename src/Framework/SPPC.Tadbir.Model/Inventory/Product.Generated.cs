@@ -57,7 +57,6 @@ namespace SPPC.Tadbir.Model.Inventory
         /// </summary>
         public virtual DateTime ModifiedDate { get; set; }
 
-
         /// <summary>
         /// گروه یا طبقه بندی موجود برای این کالا
         /// </summary>

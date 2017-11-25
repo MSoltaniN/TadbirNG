@@ -75,6 +75,7 @@ namespace SPPC.Tadbir.Model.Finance
 
         private void InitReferences()
         {
+            Children = new List<CostCenter>();
         }
     }
 }
