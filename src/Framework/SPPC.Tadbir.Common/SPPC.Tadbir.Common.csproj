@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>SPPC.Tadbir</RootNamespace>
-    <AssemblyVersion>1.1.175.0</AssemblyVersion>
-    <FileVersion>1.1.175.0</FileVersion>
+    <AssemblyVersion>1.1.176.0</AssemblyVersion>
+    <FileVersion>1.1.176.0</FileVersion>
     <Company>SPPC</Company>
     <Product>Framework</Product>
     <Authors>Babak Eslamieh</Authors>

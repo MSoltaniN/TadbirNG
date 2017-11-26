@@ -43,6 +43,15 @@ namespace SPPC.Tadbir.Values
         public const string ContextHeaderName = "X-Tadbir-AuthTicket";
 
         /// <summary>
+        /// Default connection string used for connecting to SQL Server database
+        /// </summary>
+        /// <remarks>
+        /// This value must be read from the application configuration file. During .NET Core migration,
+        /// this constant field can temporarily be used.
+        /// </remarks>
+        public const string ConnectionString = "Data Source=DB-SERVER;Initial Catalog=TadbirDemo;User ID=sa;Password=Liberty@1447xYz;Integrated Security=False;";
+
+        /// <summary>
         /// اندازه پیش فرض صفحه در فهرست های اطلاعاتی
         /// </summary>
         public const int DefaultPageSize = 10;

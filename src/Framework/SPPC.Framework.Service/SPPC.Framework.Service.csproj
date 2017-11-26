@@ -6,28 +6,22 @@
     <Authors>Babak Eslamieh</Authors>
     <Company>SPPC</Company>
     <Product>Framework</Product>
-    <Copyright>TODO: Add copyright notice</Copyright>
     <Description>TODO: Add product description</Description>
+    <Copyright>TODO: Add copyright notice</Copyright>
     <AssemblyVersion>1.1.176.0</AssemblyVersion>
     <FileVersion>1.1.176.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.Model.xml</DocumentationFile>
     <OutputPath>..\..\..\bin\Debug\netstandard2.0\</OutputPath>
+    <DocumentationFile>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Framework.Service.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Class1.cs" />
-    <Compile Remove="Core\DocumentStatus.cs" />
-    <Compile Remove="Core\DocumentType.cs" />
-    <Compile Remove="Corporate\Branch.cs" />
-    <Compile Remove="Finance\Account.cs" />
-    <Compile Remove="Finance\FullAccount.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj" />
   </ItemGroup>
 

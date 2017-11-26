@@ -34,7 +34,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(d => d.User)
                 .WithOne(p => p.Person)
-                .HasForeignKey("UserID")
+                .HasForeignKey<Person>("UserID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Contact_Person_Auth_User");
         }
