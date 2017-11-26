@@ -1,11 +1,37 @@
 using System;
 using System.Collections.Generic;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.UI;
 
-namespace SPPC.Tadbir.NHibernate
+namespace SPPC.Tadbir.Persistence
 {
-    public partial interface IAccountRepository
+    /// <summary>
+    /// Defines repository operations for managing a financial account.
+    /// </summary>
+    public interface IAccountRepository
     {
+        /// <summary>
+        /// Retrieves all accounts in specified fiscal period and branch from repository.
+        /// </summary>
+        /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <param name="options">Options used for displaying data in a tabular grid view</param>
+        /// <returns>A collection of <see cref="AccountViewModel"/> objects retrieved from repository</returns>
+        IList<AccountViewModel> GetAccounts(int fpId, int branchId, GridOptions options = null);
+
+        /// <summary>
+        /// Retrieves a single account specified by Id from repository.
+        /// </summary>
+        /// <param name="accountId">Identifier of an existing account</param>
+        /// <returns>The account retrieved from repository as a <see cref="AccountViewModel"/> object</returns>
+        AccountViewModel GetAccount(int accountId);
+
+        /// <summary>
+        /// Inserts or updates a single account in repository.
+        /// </summary>
+        /// <param name="account">Item to insert or update</param>
+        void SaveAccount(AccountViewModel account);
+
         /// <summary>
         /// Determines if the specified <see cref="AccountViewModel"/> instance uses a code that is already used
         /// in a different account item.

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SPPC.Tadbir.ViewModel.Workflow;
 
-namespace SPPC.Tadbir.NHibernate
+namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// عملیات دیتابیسی مربوط به مدیریت کارهای یک فرآیند کسب و کار را تعریف می کند.

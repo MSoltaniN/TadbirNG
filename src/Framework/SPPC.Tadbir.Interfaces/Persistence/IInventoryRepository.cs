@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SPPC.Tadbir.ViewModel.Inventory;
 
-namespace SPPC.Tadbir.NHibernate
+namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// عملیات دیتابیسی مربوط به مدیریت موجودی های کالا در انبار را تعریف می کند

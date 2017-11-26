@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Procurement;
 
-namespace SPPC.Tadbir.NHibernate
+namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// عملیات دیتابیسی مربوط به مدیریت درخواست های کار را در زیرسیستم تدارکات تعریف می کند.

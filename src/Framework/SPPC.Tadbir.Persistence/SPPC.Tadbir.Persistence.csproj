@@ -8,8 +8,8 @@
     <Product>Framework</Product>
     <Description>TODO: Add product description</Description>
     <Copyright>TODO: Add copyright notice</Copyright>
-    <AssemblyVersion>1.1.174.0</AssemblyVersion>
-    <FileVersion>1.1.174.0</FileVersion>
+    <AssemblyVersion>1.1.175.0</AssemblyVersion>
+    <FileVersion>1.1.175.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Model\SPPC.Tadbir.Model.csproj" />
   </ItemGroup>
 

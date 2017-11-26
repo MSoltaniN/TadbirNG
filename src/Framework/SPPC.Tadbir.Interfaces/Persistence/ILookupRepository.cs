@@ -4,7 +4,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Tadbir.ViewModel.Inventory;
 using SPPC.Tadbir.ViewModel.Procurement;
 
-namespace SPPC.Tadbir.NHibernate
+namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// Defines repository operations for getting different types of key/value collections (lookups).

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SPPC.Tadbir.ViewModel.Auth;
 
-namespace SPPC.Tadbir.NHibernate
+namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// Defines repository operations related to security administration.

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SPPC.Tadbir.ViewModel.Workflow;
 
-namespace SPPC.Tadbir.NHibernate
+namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// عملیات مرتبط با خواندن اطلاعات گردش های کاری را تعریف می کند.

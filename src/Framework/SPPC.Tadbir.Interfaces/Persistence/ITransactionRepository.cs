@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SPPC.Tadbir.ViewModel.Finance;
 
-namespace SPPC.Tadbir.NHibernate
+namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// Defines repository operations for managing a transaction and its child items.
