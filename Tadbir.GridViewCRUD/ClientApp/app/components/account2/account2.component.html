@@ -2,17 +2,24 @@
     <div class="panel panel-primary">
         <div class="panel-heading">لیست حساب</div>
         <div class="panel-body">
-            <kendo-grid [data]="rowData" [dir]="rtl"  class='tgrid'
+            <kendo-grid [data]="rowData" [dir]="rtl" class='tgrid'
                         [pageSize]="pageSize"
-                        [skip]="skip"
+                        [skip]="skip"                  
+                        [filter]="state.filter"
                         [sortable]="true"
                         [pageable]="true"
+                        [filterable]="true"
                         [scrollable]="'none'"
-                        (pageChange)="pageChange($event)" >
-                <kendo-grid-column field="code" title="code" width="130" ></kendo-grid-column>
-                <kendo-grid-column field="name" title="name" width="200" ></kendo-grid-column>
-                <kendo-grid-column field="fiscalPeriodId" title="fiscalPeriodId" [sortable]="false" ></kendo-grid-column>
-                <kendo-grid-column field="description" title="description" [sortable]="false" ></kendo-grid-column>                             
+                        (pageChange)="pageChange($event)" 
+                        (dataStateChange)="dataStateChange($event)" >
+                <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                                     pagerOf="{{ 'Paging.Of' | translate }}"
+                                     pagerItems="{{ 'Paging.Record' | translate }}" >
+                </kendo-grid-messages>
+                <kendo-grid-column field="code" [filterable]="true"  title="{{ 'Account.Code' | translate }}" width="130" ></kendo-grid-column>
+                <kendo-grid-column field="name" [filterable]="true" title="{{ 'Account.Name' | translate }}" width="200" ></kendo-grid-column>
+                <kendo-grid-column field="fiscalPeriodId" [filterable]="true" title="{{ 'Account.Fiscal' | translate }}" [sortable]="false" ></kendo-grid-column>
+                <kendo-grid-column field="description" [filterable]="false" title="{{ 'Account.Description' | translate }}" [sortable]="false" ></kendo-grid-column>                             
             </kendo-grid>
         </div>
     </div>    

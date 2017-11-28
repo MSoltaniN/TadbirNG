@@ -44,8 +44,11 @@
   },
   "Fiscal": {
     "FiscalPeriod": "Fiscal Period"
+  },
+  "Paging": {
+    "Record": "Record",
+    "Of": "Of"
   }
-
 
 
 

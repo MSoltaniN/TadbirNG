@@ -1,6 +1,7 @@
 ﻿
 @import url(IranSans.css);
 
+ @import "~@progress/kendo-theme-default/scss/all";
 
 /*#region public classes */
 .tform {

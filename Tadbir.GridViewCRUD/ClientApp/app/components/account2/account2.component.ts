@@ -20,7 +20,7 @@ import "rxjs/Rx";
 import { TranslateService } from 'ng2-translate';
 import { String } from '../../class/source';
 
-import { State } from '@progress/kendo-data-query';
+import { State  } from '@progress/kendo-data-query';
 
 declare var jquery: any;
 declare var $: any;
@@ -73,7 +73,12 @@ export class Account2Component implements OnInit {
 
     public state: State = {
         skip: 0,
-        take: 5
+        take: 5,
+        // Initial filter descriptor
+        filter: {
+            logic: "and",
+            filters: [{ field: "code", operator: "contains", value: "" }]
+        }
     };
 
     ngOnInit() {
@@ -174,6 +179,10 @@ export class Account2Component implements OnInit {
             }
         });
 
+    }
+
+    protected dataStateChange(state: DataStateChangeEvent): void {
+        
     }
 
     protected pageChange(event: PageChangeEvent): void {

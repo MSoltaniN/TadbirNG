@@ -41,6 +41,10 @@
   },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی"
+  },
+  "Paging" :
+  {
+    "Record": "رکورد",
+    "Of" : "از"
   }
-
 }
