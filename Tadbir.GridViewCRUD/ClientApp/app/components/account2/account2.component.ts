@@ -81,6 +81,10 @@ export class Account2Component implements OnInit {
         }
     };
 
+
+    private editDataItem ? : Account = new AccountInfo;
+    private isNew: boolean;
+
     ngOnInit() {
 
 
@@ -213,6 +217,36 @@ export class Account2Component implements OnInit {
     onFiscalPeriodChange(arg: any) {
 
     }
+
+
+    //account form events
+
+    public cancelHandler() {
+        this.editDataItem = undefined;
+    }
+
+    public saveHandler(product: Account) {
+
+        if (!this.newAccount) {
+            this.accountService.editAccount(this.account)
+                .subscribe(response => {
+                    this.toastrService.success(this.updateMsg, '', { positionClass: 'toast-top-left' });
+                    this.reloadGrid();
+                });            
+        }
+        else {
+            this.accountService.insertAccount(this.account)
+                .subscribe(response => {
+                    this.toastrService.success(this.insertMsg, '', { positionClass: 'toast-top-left' });
+                    this.reloadGrid();
+                });
+            
+        }
+
+        this.editDataItem = undefined;
+    }
+
+    //
 
 }
 

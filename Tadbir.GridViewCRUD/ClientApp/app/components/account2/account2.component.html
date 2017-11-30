@@ -11,6 +11,7 @@
                         [filterable]="true"
                         [scrollable]="'none'"
                         (pageChange)="pageChange($event)" 
+                        (edit)="editHandler($event)"
                         (dataStateChange)="dataStateChange($event)" >
                 <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                                      pagerOf="{{ 'Paging.Of' | translate }}"
@@ -20,7 +21,17 @@
                 <kendo-grid-column field="name" [filterable]="true" title="{{ 'Account.Name' | translate }}" width="200" ></kendo-grid-column>
                 <kendo-grid-column field="fiscalPeriodId" [filterable]="true" title="{{ 'Account.Fiscal' | translate }}" [sortable]="false" ></kendo-grid-column>
                 <kendo-grid-column field="description" [filterable]="false" title="{{ 'Account.Description' | translate }}" [sortable]="false" ></kendo-grid-column>                             
+                <kendo-grid-command-column title="" >
+                    <ng-template kendoGridCellTemplate>
+                        <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                        <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-command-column>
             </kendo-grid>
+            <account-form-component [model]="editDataItem" [isNew]="isNew"
+          (save)="saveHandler($event)"
+          (cancel)="cancelHandler()" >
+            </account-form-component>
         </div>
     </div>    
 </div>
