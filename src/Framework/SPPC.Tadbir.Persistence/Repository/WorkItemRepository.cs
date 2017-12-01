@@ -41,8 +41,9 @@ namespace SPPC.Tadbir.Persistence
             var user = userRepository.GetByID(userId);
             if (user != null)
             {
-                var roleIds = user.Roles
-                    .Select(role => role.Id)
+                // NOTE: EF Core workaround
+                var roleIds = user.UserRoles
+                    .Select(ur => ur.Role.Id)
                     .ToArray();
                 var repository = _unitOfWork.GetRepository<WorkItem>();
                 workItems = repository

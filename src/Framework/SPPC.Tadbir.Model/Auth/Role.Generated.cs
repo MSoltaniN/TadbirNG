@@ -12,7 +12,6 @@
 
 using System;
 using System.Collections.Generic;
-using SPPC.Tadbir.Model.Corporate;
 using SPPC.Framework.Domain;
 
 namespace SPPC.Tadbir.Model.Auth
@@ -58,31 +57,32 @@ namespace SPPC.Tadbir.Model.Auth
         /// </summary>
         public virtual DateTime ModifiedDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the collection of all application users that this role is assigned to them
-        /// </summary>
-        public virtual IList<User> Users { get; protected set; }
+        // Temporarily disabled, due to EF Core's lack of support for direct many-to-many relationships.
+        ///// <summary>
+        ///// Gets or sets the collection of all application users that this role is assigned to them
+        ///// </summary>
+        ////public virtual IList<User> Users { get; protected set; }
 
-        /// <summary>
-        /// Gets or sets the collection of all operational permissions that are enabled for this role
-        /// </summary>
-        public virtual IList<Permission> Permissions { get; protected set; }
+        // Temporarily disabled, due to EF Core's lack of support for direct many-to-many relationships.
+        ///// <summary>
+        ///// Gets or sets the collection of all operational permissions that are enabled for this role
+        ///// </summary>
+        ////public virtual IList<Permission> Permissions { get; protected set; }
 
-        /// <summary>
-        /// Gets or sets the collection of all branches that this role can access
-        /// </summary>
-        public virtual IList<Branch> Branches { get; protected set; }
+        // Temporarily disabled, due to EF Core's lack of support for direct many-to-many relationships.
+        ///// <summary>
+        ///// Gets or sets the collection of all branches that this role can access
+        ///// </summary>
+        ////public virtual IList<Branch> Branches { get; protected set; }
 
         private void InitReferences()
         {
-            this.Users = new List<User>();
-            this.Permissions = new List<Permission>();
-            this.Branches = new List<Branch>();
-
-            //// IMPORTANT NOTE: DO NOT add initialization statements for one-to-one and many-to-one relationships.
-            //// 1. Initializing one-to-one associations causes StackOverflowException (A initializes B and B initializes A)
-            //// 2. Initializing many-to-one associations causes most mapping tests to fail, because they will trigger many
-            //// unnecessary operations (INSERT and UPDATE) by in-memory SQLite database.
+            ////this.Users = new List<User>();
+            ////Branches = new List<Branch>();
+            ////Permissions = new List<Permission>();
+            UserRoles = new List<UserRole>();
+            RoleBranches = new List<RoleBranch>();
+            RolePermissions = new List<RolePermission>();
         }
     }
 }

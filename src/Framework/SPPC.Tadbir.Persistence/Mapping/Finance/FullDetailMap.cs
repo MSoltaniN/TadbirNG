@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasConstraintName("FK_Finance_FullDetail_Finance_Detail9");
             builder.HasOne(d => d.Type)
                 .WithOne(p => p.FullDetail)
-                .HasForeignKey("TypeID")
+                .HasForeignKey<FullDetail>("TypeID")
                 .HasConstraintName("FK_Finance_FullDetail_Finance_FullDetailType");
         }
     }

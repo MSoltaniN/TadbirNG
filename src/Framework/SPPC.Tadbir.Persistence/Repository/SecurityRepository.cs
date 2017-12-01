@@ -80,17 +80,21 @@ namespace SPPC.Tadbir.Persistence
             var user = repository.GetByID(userId);
             if (user != null)
             {
+                // EF Core workaround
+                var roles = user.UserRoles
+                    .Select(ur => ur.Role);
                 userContext = _mapper.Map<UserContextViewModel>(user);
                 var branches = new List<int>();
-                Array.ForEach(user.Roles.ToArray(), role => branches.AddRange(role.Branches.Select(br => br.Id)));
+                Array.ForEach(roles.ToArray(), role => branches.AddRange(role.RoleBranches.Select(rb => rb.BranchId)));
                 Array.ForEach(branches.Distinct().ToArray(), br => userContext.Branches.Add(br));
-                Array.ForEach(user.Roles.Select(role => role.Id).ToArray(), roleId => userContext.Roles.Add(roleId));
+                Array.ForEach(roles.Select(role => role.Id).ToArray(), roleId => userContext.Roles.Add(roleId));
 
                 var permissions = new List<PermissionBriefViewModel>();
                 Array.ForEach(
-                    user.Roles.ToArray(),
-                    role => permissions.AddRange(
-                        role.Permissions.Select(perm => _mapper.Map<PermissionBriefViewModel>(perm))));
+                    roles.ToArray(),
+                    role => permissions.AddRange(role.RolePermissions
+                        .Select(rp => rp.Permission)
+                        .Select(perm => _mapper.Map<PermissionBriefViewModel>(perm))));
                 var groups = permissions
                     .Distinct(new PermissionEqualityComparer())
                     .GroupBy(perm => perm.EntityName);
@@ -257,7 +261,8 @@ namespace SPPC.Tadbir.Persistence
             var existing = repository.GetByID(roleId);
             if (existing != null)
             {
-                var enabledPermissions = existing.Permissions
+                var enabledPermissions = existing.RolePermissions
+                    .Select(rp => rp.Permission)
                     .Select(perm => _mapper.Map<PermissionViewModel>(perm));
                 var permissionRepository = _unitOfWork.GetRepository<Permission>();
                 var disabledPermissions = permissionRepository
@@ -298,13 +303,13 @@ namespace SPPC.Tadbir.Persistence
                     Role = _mapper.Map<RoleViewModel>(existing)
                 };
                 Array.ForEach(
-                    existing.Permissions.ToArray(),
+                    existing.RolePermissions.Select(rp => rp.Permission).ToArray(),
                     perm => role.Permissions.Add(_mapper.Map<PermissionViewModel>(perm)));
                 Array.ForEach(
-                    existing.Branches.ToArray(),
+                    existing.RoleBranches.Select(rb => rb.Branch).ToArray(),
                     br => role.Branches.Add(_mapper.Map<BranchViewModel>(br)));
                 Array.ForEach(
-                    existing.Users.ToArray(),
+                    existing.UserRoles.Select(ur => ur.User).ToArray(),
                     usr => role.Users.Add(_mapper.Map<UserBriefViewModel>(usr)));
             }
 
@@ -352,7 +357,7 @@ namespace SPPC.Tadbir.Persistence
                 {
                     if (ArePermissionsModified(existing, role))
                     {
-                        if (existing.Permissions.Count > 0)
+                        if (existing.RolePermissions.Count > 0)
                         {
                             RemoveDisabledPermissions(existing, role);
                         }
@@ -379,7 +384,7 @@ namespace SPPC.Tadbir.Persistence
             var role = repository.GetByID(roleId);
             if (role != null)
             {
-                role.Permissions.Clear();
+                role.RolePermissions.Clear();
                 repository.Update(role);
                 repository.Delete(role);
                 _unitOfWork.Commit();
@@ -399,7 +404,7 @@ namespace SPPC.Tadbir.Persistence
             var role = repository.GetByID(roleId);
             if (role != null)
             {
-                isAssigned = (role.Users.Count > 0);
+                isAssigned = (role.UserRoles.Count > 0);
             }
 
             return isAssigned;
@@ -417,7 +422,8 @@ namespace SPPC.Tadbir.Persistence
             var existing = repository.GetByID(roleId);
             if (existing != null)
             {
-                var enabledBranches = existing.Branches
+                var enabledBranches = existing.RoleBranches
+                    .Select(rb => rb.Branch)
                     .Select(br => _mapper.Map<BranchViewModel>(br));
                 var branchRepository = _unitOfWork.GetRepository<Branch>();
                 var disabledBranches = branchRepository
@@ -449,7 +455,7 @@ namespace SPPC.Tadbir.Persistence
             var existing = repository.GetByID(role.Id);
             if (existing != null && AreBranchesModified(existing, role))
             {
-                if (existing.Branches.Count > 0)
+                if (existing.RoleBranches.Count > 0)
                 {
                     RemoveInaccessibleBranches(existing, role);
                 }
@@ -472,7 +478,8 @@ namespace SPPC.Tadbir.Persistence
             var existing = repository.GetByID(roleId);
             if (existing != null)
             {
-                var enabledUsers = existing.Users
+                var enabledUsers = existing.UserRoles
+                    .Select(ur => ur.User)
                     .Select(usr => _mapper.Map<UserBriefViewModel>(usr));
                 var userRepository = _unitOfWork.GetRepository<User>();
                 var disabledUsers = userRepository
@@ -504,7 +511,7 @@ namespace SPPC.Tadbir.Persistence
             var existing = repository.GetByID(role.Id);
             if (existing != null && AreUsersModified(existing, role))
             {
-                if (existing.Users.Count > 0)
+                if (existing.UserRoles.Count > 0)
                 {
                     RemoveUnassignedUsers(existing, role);
                 }
@@ -522,14 +529,14 @@ namespace SPPC.Tadbir.Persistence
             var currentItems = role.Permissions
                 .Where(perm => perm.IsEnabled)
                 .Select(perm => perm.Id);
-            var removedItems = existing.Permissions
-                .Select(perm => perm.Id)
+            var removedItems = existing.RolePermissions
+                .Select(rp => rp.PermissionId)
                 .Where(id => !currentItems.Contains(id))
                 .ToArray();
             foreach (int id in removedItems)
             {
-                existing.Permissions.Remove(existing.Permissions
-                    .Where(perm => perm.Id == id)
+                existing.RolePermissions.Remove(existing.RolePermissions
+                    .Where(rp => rp.PermissionId == id)
                     .Single());
             }
         }
@@ -542,8 +549,8 @@ namespace SPPC.Tadbir.Persistence
 
         private static bool ArePermissionsModified(Role existing, RoleFullViewModel role)
         {
-            var existingItems = existing.Permissions
-                .Select(perm => perm.Id)
+            var existingItems = existing.RolePermissions
+                .Select(rp => rp.PermissionId)
                 .ToArray();
             var enabledItems = role.Permissions
                 .Where(perm => perm.IsEnabled)
@@ -554,8 +561,8 @@ namespace SPPC.Tadbir.Persistence
 
         private static bool AreBranchesModified(Role existing, RoleBranchesViewModel role)
         {
-            var existingItems = existing.Branches
-                .Select(br => br.Id)
+            var existingItems = existing.RoleBranches
+                .Select(rb => rb.BranchId)
                 .ToArray();
             var enabledItems = role.Branches
                 .Where(br => br.IsAccessible)
@@ -566,8 +573,8 @@ namespace SPPC.Tadbir.Persistence
 
         private static bool AreUsersModified(Role existing, RoleUsersViewModel role)
         {
-            var existingItems = existing.Users
-                .Select(usr => usr.Id)
+            var existingItems = existing.UserRoles
+                .Select(ur => ur.UserId)
                 .ToArray();
             var enabledItems = role.Users
                 .Where(usr => usr.HasRole)
@@ -581,14 +588,14 @@ namespace SPPC.Tadbir.Persistence
             var currentItems = role.Branches
                 .Where(br => br.IsAccessible)
                 .Select(br => br.Id);
-            var removedItems = existing.Branches
-                .Select(br => br.Id)
+            var removedItems = existing.RoleBranches
+                .Select(rb => rb.BranchId)
                 .Where(id => !currentItems.Contains(id))
                 .ToArray();
             foreach (int id in removedItems)
             {
-                existing.Branches.Remove(existing.Branches
-                    .Where(br => br.Id == id)
+                existing.RoleBranches.Remove(existing.RoleBranches
+                    .Where(rb => rb.BranchId == id)
                     .Single());
             }
         }
@@ -598,14 +605,14 @@ namespace SPPC.Tadbir.Persistence
             var currentItems = role.Users
                 .Where(usr => usr.HasRole)
                 .Select(usr => usr.Id);
-            var removedItems = existing.Users
-                .Select(usr => usr.Id)
+            var removedItems = existing.UserRoles
+                .Select(ur => ur.UserId)
                 .Where(id => !currentItems.Contains(id))
                 .ToArray();
             foreach (int id in removedItems)
             {
-                existing.Users.Remove(existing.Users
-                    .Where(usr => usr.Id == id)
+                existing.UserRoles.Remove(existing.UserRoles
+                    .Where(ur => ur.UserId == id)
                     .Single());
             }
         }
@@ -645,45 +652,83 @@ namespace SPPC.Tadbir.Persistence
 
         private void AddNewPermissions(Role existing, RoleFullViewModel role)
         {
-            var currentItems = existing.Permissions.Select(perm => perm.Id);
+            var currentItems = existing.RolePermissions.Select(rp => rp.PermissionId);
             var newItems = role.Permissions
                 .Where(perm => perm.IsEnabled
                     && !currentItems.Contains(perm.Id));
             foreach (var item in newItems)
             {
-                existing.Permissions.Add(_mapper.Map<Permission>(item));
+                var permission = _mapper.Map<Permission>(item);
+                var rolePermission = new RolePermission()
+                {
+                    Permission = permission,
+                    PermissionId = permission.Id,
+                    Role = existing,
+                    RoleId = existing.Id
+                };
+                existing.RolePermissions.Add(rolePermission);
             }
         }
 
         private void AddNewBranches(Role existing, RoleBranchesViewModel role)
         {
-            var currentItems = existing.Branches.Select(br => br.Id);
+            var currentItems = existing.RoleBranches.Select(rb => rb.BranchId);
             var newItems = role.Branches
                 .Where(br => br.IsAccessible
                     && !currentItems.Contains(br.Id));
             foreach (var item in newItems)
             {
-                existing.Branches.Add(_mapper.Map<Branch>(item));
+                var branch = _mapper.Map<Branch>(item);
+                var roleBranch = new RoleBranch()
+                {
+                    Branch = branch,
+                    BranchId = branch.Id,
+                    Role = existing,
+                    RoleId = existing.Id
+                };
+                existing.RoleBranches.Add(roleBranch);
             }
         }
 
         private void AddNewUsers(Role existing, RoleUsersViewModel role)
         {
-            var currentItems = existing.Users.Select(usr => usr.Id);
+            var currentItems = existing.UserRoles.Select(ur => ur.UserId);
             var newItems = role.Users
                 .Where(usr => usr.HasRole
                     && !currentItems.Contains(usr.Id));
             foreach (var item in newItems)
             {
-                existing.Users.Add(_mapper.Map<User>(item));
+                var user = _mapper.Map<User>(item);
+                var userRole = new UserRole()
+                {
+                    User = user,
+                    UserId = user.Id,
+                    Role = existing,
+                    RoleId = existing.Id
+                };
+                existing.UserRoles.Add(userRole);
             }
         }
 
         private void AddRolePermissions(Role role, RoleFullViewModel roleViewModel)
         {
-            Array.ForEach(roleViewModel.Permissions
-                .Where(perm => perm.IsEnabled)
-                .ToArray(), perm => role.Permissions.Add(_mapper.Map<Permission>(perm)));
+            Array.ForEach(
+                roleViewModel.Permissions
+                    .Where(perm => perm.IsEnabled)
+                    .ToArray(),
+                perm => role.RolePermissions.Add(GetNewRolePermission(perm, role)));
+        }
+
+        private RolePermission GetNewRolePermission(PermissionViewModel perm, Role role)
+        {
+            var permission = _mapper.Map<Permission>(perm);
+            return new RolePermission()
+            {
+                Role = role,
+                RoleId = role.Id,
+                Permission = permission,
+                PermissionId = permission.Id
+            };
         }
 
         private IUnitOfWork _unitOfWork;

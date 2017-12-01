@@ -69,10 +69,11 @@ namespace SPPC.Tadbir.Model.Corporate
         /// </summary>
         public virtual Company Company { get; set; }
 
-        /// <summary>
-        /// Gets or sets the collection of all roles that can access this branch
-        /// </summary>
-        public virtual IList<Role> Roles { get; protected set; }
+        // Temporarily disabled, due to EF Core's lack of support for direct many-to-many relationships.
+        ///// <summary>
+        ///// Gets or sets the collection of all roles that can access this branch
+        ///// </summary>
+        ////public virtual IList<Role> Roles { get; protected set; }
 
         /// <summary>
         /// Gets or sets the parent of this branch in the main branch hierarchy
@@ -81,8 +82,9 @@ namespace SPPC.Tadbir.Model.Corporate
 
         private void InitReferences()
         {
-            Roles = new List<Role>();
+            ////Roles = new List<Role>();
             Company = new Company();
+            RoleBranches = new List<RoleBranch>();
         }
     }
 }

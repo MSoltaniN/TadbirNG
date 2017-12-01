@@ -95,10 +95,11 @@ namespace SPPC.Tadbir.Model.Auth
         /// </summary>
         public virtual Person Person { get; set; }
 
-        /// <summary>
-        /// Gets or sets the collection of all application-defined roles that are assigned to this user
-        /// </summary>
-        public virtual IList<Role> Roles { get; protected set; }
+        // Temporarily disabled, due to EF Core's lack of support for direct many-to-many relationships.
+        ///// <summary>
+        ///// Gets or sets the collection of all application-defined roles that are assigned to this user
+        ///// </summary>
+        ////public virtual IList<Role> Roles { get; protected set; }
 
         private void InitReferences()
         {
@@ -107,7 +108,8 @@ namespace SPPC.Tadbir.Model.Auth
             ModifiedActions = new List<DocumentAction>();
             ConfirmedActions = new List<DocumentAction>();
             ApprovedActions = new List<DocumentAction>();
-            Roles = new List<Role>();
+            UserRoles = new List<UserRole>();
+            ////Roles = new List<Role>();
         }
     }
 }

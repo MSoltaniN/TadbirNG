@@ -71,11 +71,6 @@ namespace SPPC.Tadbir.Model.Auth
         private void InitReferences()
         {
             this.Permissions = new List<Permission>();
-
-            //// IMPORTANT NOTE: DO NOT add initialization statements for one-to-one and many-to-one relationships.
-            //// 1. Initializing one-to-one associations causes StackOverflowException (A initializes B and B initializes A)
-            //// 2. Initializing many-to-one associations causes most mapping tests to fail, because they will trigger many
-            //// unnecessary operations (INSERT and UPDATE) by in-memory SQLite database.
         }
     }
 }

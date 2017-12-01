@@ -8,8 +8,8 @@
     <Product>Framework</Product>
     <Description>TODO: Add product description</Description>
     <Copyright>TODO: Add copyright notice</Copyright>
-    <AssemblyVersion>1.1.176.0</AssemblyVersion>
-    <FileVersion>1.1.176.0</FileVersion>
+    <AssemblyVersion>1.1.177.0</AssemblyVersion>
+    <FileVersion>1.1.177.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Compile Remove="Class1.cs" />
+    <Compile Remove="Mapping\Corporate\Branch.cs" />
   </ItemGroup>
 
   <ItemGroup>

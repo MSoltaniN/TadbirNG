@@ -19,7 +19,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("ActionID");
-
             builder.Property(e => e.ApprovedDate)
                 .HasColumnType("datetime");
             builder.Property(e => e.ConfirmedDate)

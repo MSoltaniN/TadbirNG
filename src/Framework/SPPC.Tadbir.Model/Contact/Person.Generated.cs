@@ -65,7 +65,6 @@ namespace SPPC.Tadbir.Model.Contact
 
         private void InitReferences()
         {
-
             //// IMPORTANT NOTE: DO NOT add initialization statements for one-to-one and many-to-one relationships.
             //// 1. Initializing one-to-one associations causes StackOverflowException (A initializes B and B initializes A)
             //// 2. Initializing many-to-one associations causes most mapping tests to fail, because they will trigger many
