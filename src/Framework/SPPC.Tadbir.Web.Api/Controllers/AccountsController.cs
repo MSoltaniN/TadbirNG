@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/accounts/{accountId:int}
-        [Route(AccountApi.AccountUrl)]
+        [Route("/accounts/{accountId:int}")]
         //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IActionResult GetAccount(int accountId)
         {
@@ -54,7 +54,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/accounts
-        [Route(AccountApi.AccountsUrl)]
+        [Route("/accounts")]
         //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         public IActionResult PostNewAccount([FromBody] AccountViewModel account)
         {

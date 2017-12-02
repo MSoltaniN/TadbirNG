@@ -18,6 +18,8 @@ namespace SPPC.Tadbir.Persistence
 {
     public partial class TadbirContext : DbContext
     {
+        public DbSet<Account> Accounts { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
