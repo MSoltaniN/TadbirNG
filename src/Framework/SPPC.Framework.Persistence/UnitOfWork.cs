@@ -28,7 +28,7 @@ namespace SPPC.Framework.Persistence
         public IRepository<TEntity> GetRepository<TEntity>()
             where TEntity : class, IEntity
         {
-            var repository = new Repository<TEntity>(_dataContext.Set<TEntity>());
+            var repository = new Repository<TEntity>(_dataContext);
             return repository;
         }
 

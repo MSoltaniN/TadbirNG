@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for accounts defined in a fiscal period and a corporate branch
         /// </summary>
-        public const string FiscalPeriodBranchAccountsUrl = "accounts/fp/{fpId:int}/branch/{branchId:int}";
+        public const string FiscalPeriodBranchAccountsUrl = "/accounts/fp/{fpId:int}/branch/{branchId:int}";
 
         /// <summary>
         /// API client URL for count of all accounts defined in a fiscal period and a corporate branch
@@ -30,7 +30,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for count of all accounts defined in a fiscal period and a corporate branch
         /// </summary>
-        public const string FiscalPeriodBranchItemCountUrl = "accounts/fp/{fpId:int}/branch/{branchId:int}/count";
+        public const string FiscalPeriodBranchItemCountUrl = "/accounts/fp/{fpId:int}/branch/{branchId:int}/count";
 
         /// <summary>
         /// API client URL for a single account specified by identifier
@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for a single account specified by identifier
         /// </summary>
-        public const string AccountUrl = "accounts/{accountId:int}";
+        public const string AccountUrl = "/accounts/{accountId:int}";
 
         /// <summary>
         /// API client URL for all accounts
@@ -50,7 +50,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for all accounts
         /// </summary>
-        public const string AccountsUrl = "accounts";
+        public const string AccountsUrl = "/accounts";
 
         /// <summary>
         /// API client URL for details of an account specified by identifier
@@ -60,6 +60,16 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for details of an account specified by identifier
         /// </summary>
-        public const string AccountDetailsUrl = "accounts/{accountId:int}/details";
+        public const string AccountDetailsUrl = "/accounts/{accountId:int}/details";
+
+        /// <summary>
+        /// API client URL for transaction articles that reference an account specified by identifier
+        /// </summary>
+        public const string AccountArticles = "accounts/{0}/articles";
+
+        /// <summary>
+        /// API server route URL for transaction articles that reference an account specified by identifier
+        /// </summary>
+        public const string AccountArticlesUrl = "/accounts/{accountId:int}/articles";
     }
 }

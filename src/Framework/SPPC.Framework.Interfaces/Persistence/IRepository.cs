@@ -23,7 +23,20 @@ namespace SPPC.Framework.Persistence
         /// </summary>
         /// <param name="id">Identifier of an existing entity</param>
         /// <returns>Entity instance having the specified identifier</returns>
+        /// <remarks>
+        /// When implemented using EF Core, thid overload WILL NOT load any navigation property.
+        /// </remarks>
         TEntity GetByID(int id);
+
+        /// <summary>
+        /// Retrieves a single entity instance with the specified unique identifier, including specified
+        /// navigation properties, if any.
+        /// </summary>
+        /// <param name="id">Identifier of an existing entity</param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Entity instance having the specified identifier</returns>
+        TEntity GetByID(int id, params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>
         /// Retrieves complete information for a subset of existing entities, as defined by the specified criteria
@@ -31,6 +44,17 @@ namespace SPPC.Framework.Persistence
         /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
         /// <returns>Filtered collection of existing entities</returns>
         IList<TEntity> GetByCriteria(Expression<Func<TEntity, bool>> criteria);
+
+        /// <summary>
+        /// Retrieves complete information for a subset of existing entities, as defined by the specified criteria,
+        /// including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns></returns>
+        IList<TEntity> GetByCriteria(Expression<Func<TEntity, bool>> criteria,
+            params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>
         /// Retrieves a single entity instance with the specified row identifier

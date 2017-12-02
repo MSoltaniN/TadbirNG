@@ -56,7 +56,7 @@ namespace SPPC.Tadbir.Persistence
         {
             AccountViewModel accountViewModel = null;
             var repository = _unitOfWork.GetRepository<Account>();
-            var account = repository.GetByID(accountId);
+            var account = repository.GetByID(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
             if (account != null)
             {
                 accountViewModel = _mapper.Map<AccountViewModel>(account);
@@ -135,7 +135,7 @@ namespace SPPC.Tadbir.Persistence
         {
             AccountFullViewModel accountViewModel = null;
             var repository = _unitOfWork.GetRepository<Account>();
-            var account = repository.GetByID(accountId);
+            var account = repository.GetByID(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
             if (account != null)
             {
                 accountViewModel = _mapper.Map<AccountFullViewModel>(account);
@@ -151,15 +151,14 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>Collection of all transaction lines (articles) for specified account</returns>
         public IList<TransactionLineViewModel> GetAccountArticles(int accountId)
         {
-            IList<TransactionLineViewModel> articles = null;
-            var repository = _unitOfWork.GetRepository<Account>();
-            var account = repository.GetByID(accountId);
-            if (account != null)
-            {
-                articles = account.TransactionLines
-                    .Select(line => _mapper.Map<TransactionLineViewModel>(line))
-                    .ToList();
-            }
+            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            var articles = repository
+                .GetByCriteria(
+                    line => line.Account.Id == accountId,
+                    line => line.Account, line => line.Branch, line => line.Currency, line => line.FiscalPeriod,
+                    line => line.Transaction)
+                .Select(line => _mapper.Map<TransactionLineViewModel>(line))
+                .ToList();
 
             return articles;
         }

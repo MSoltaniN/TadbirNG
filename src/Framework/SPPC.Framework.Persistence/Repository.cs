@@ -16,12 +16,13 @@ namespace SPPC.Framework.Persistence
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Repository{TEntity}"/> using an Entity Framework Core
-        /// <see cref="DbSet{TEntity}"/> object.
+        /// <see cref="DbContext"/> object.
         /// </summary>
-        /// <param name="dataSet">A <see cref="DbSet{TEntity}"/> instance used for implementing operations</param>
-        public Repository(DbSet<TEntity> dataSet)
+        /// <param name="dataContext">A <see cref="DbContext"/> instance used for implementing operations</param>
+        public Repository(DbContext dataContext)
         {
-            _dataSet = dataSet;
+            _dataContext = dataContext;
+            _dataSet = dataContext.Set<TEntity>();
         }
 
         /// <summary>
@@ -44,6 +45,26 @@ namespace SPPC.Framework.Persistence
         }
 
         /// <summary>
+        /// Retrieves a single entity instance with the specified unique identifier, including specified
+        /// navigation properties, if any.
+        /// </summary>
+        /// <typeparam name="TProperty">Type of navigation property that should be loaded</typeparam>
+        /// <param name="id">Identifier of an existing entity</param>
+        /// <param name="relatedProperties">Variable array of expressions the specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Entity instance having the specified identifier</returns>
+        public TEntity GetByID(int id, params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = _dataSet.Where(e => e.Id == id);
+            foreach (var property in relatedProperties)
+            {
+                query = query.Include(property);
+            }
+
+            return query.SingleOrDefault();
+        }
+
+        /// <summary>
         /// Retrieves complete information for a subset of existing entities, as defined by the specified criteria
         /// </summary>
         /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
@@ -53,6 +74,26 @@ namespace SPPC.Framework.Persistence
             var list = _dataSet.Where(criteria)
                 .ToList();
             return list;
+        }
+
+        /// <summary>
+        /// Retrieves complete information for a subset of existing entities, as defined by the specified criteria,
+        /// including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns></returns>
+        public IList<TEntity> GetByCriteria(Expression<Func<TEntity, bool>> criteria,
+            params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = _dataSet.Where(criteria);
+            foreach (var property in relatedProperties)
+            {
+                query = query.Include(property);
+            }
+
+            return query.ToList();
         }
 
         /// <summary>
@@ -74,6 +115,7 @@ namespace SPPC.Framework.Persistence
         /// <param name="entity">Entity to insert</param>
         public void Insert(TEntity entity)
         {
+            _dataContext.Attach(entity);
             _dataSet.Add(entity);
         }
 
@@ -95,6 +137,7 @@ namespace SPPC.Framework.Persistence
             _dataSet.Remove(entity);
         }
 
+        private DbContext _dataContext;
         private DbSet<TEntity> _dataSet;
     }
 }

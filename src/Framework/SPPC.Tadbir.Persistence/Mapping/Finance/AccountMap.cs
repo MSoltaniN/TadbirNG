@@ -33,6 +33,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
+
             builder.HasOne(d => d.Branch)
                 .WithMany()
                 .HasForeignKey("BranchID")
