@@ -26,8 +26,8 @@
             <label for="fiscalPeriodId" class="control-label">{{ 'Account.FiscalPeriodId' | translate }}</label>
 
             <input type="text" class="k-textbox" formControlName="fiscalPeriodId" />
-            <kendo-dropdownlist [data]="fpItems"  [textField]="text"  [valueField]="value" [(ngModel)]="selectedfp" >
-            </kendo-dropdownlist>
+            <!--<kendo-dropdownlist [data]="fpItems"  [textField]="text"  [valueField]="value" [(ngModel)]="selectedfp" >
+            </kendo-dropdownlist>-->
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fiscalPeriodId.valid || editForm.controls.fiscalPeriodId.pristine">
                 fiscalPeriodId is required
@@ -37,8 +37,8 @@
             <label for="branchId" class="control-label">{{ 'Account.branchId' | translate }}</label>
 
             <input type="text" class="k-textbox" formControlName="branchId" />
-            <kendo-dropdownlist [data]="branchItems" [textField]="text" [valueField]="value" [(ngModel)]="selectedbranch">
-            </kendo-dropdownlist>
+            <!--<kendo-dropdownlist [data]="branchItems" [textField]="text" [valueField]="value" [(ngModel)]="selectedbranch">
+            </kendo-dropdownlist>-->
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.branchId.valid || editForm.controls.branchId.pristine">
                 branchId is required

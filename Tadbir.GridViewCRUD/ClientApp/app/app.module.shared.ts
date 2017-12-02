@@ -8,22 +8,22 @@ import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationSt
 // third party module to display toast 
 import { ToastrModule } from 'toastr-ng2';
 //PRIMENG - Third party module
-import { InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule, DropdownModule } from 'primeng/primeng';
+import { InputTextModule, DataTableModule, ButtonModule, /*DialogModule,*/ PanelModule, DropdownModule } from 'primeng/primeng';
+
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { AccountComponent } from './components/account/account.component';
-
 import { Account2Component } from './components/account2/account2.component';
+import { AccountFormComponent } from './components/account2/account2-form.component';
 
 import {BrowserModule} from "@angular/platform-browser";
-
 import { TranslateModule } from "ng2-translate";
-
 import { GridModule } from '@progress/kendo-angular-grid';
-
 import { RTL } from '@progress/kendo-angular-l10n';
-
+import { DialogModule } from '@progress/kendo-angular-dialog';
 
 import { AccountService, TransactionLineService, FiscalPeriodService } from './service/index';
 
@@ -32,7 +32,8 @@ import { AccountService, TransactionLineService, FiscalPeriodService } from './s
         AppComponent,
         NavMenuComponent,
         AccountComponent,
-        Account2Component
+        Account2Component,
+        AccountFormComponent
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true }],        
@@ -40,9 +41,10 @@ import { AccountService, TransactionLineService, FiscalPeriodService } from './s
         CommonModule,         
         HttpModule,
         FormsModule,
+        ReactiveFormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule, DropdownModule, GridModule ,
+        InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule, DropdownModule, GridModule,
         BrowserModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([

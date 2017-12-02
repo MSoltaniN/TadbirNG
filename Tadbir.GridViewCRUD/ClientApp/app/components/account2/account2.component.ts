@@ -82,7 +82,7 @@ export class Account2Component implements OnInit {
     };
 
 
-    private editDataItem ? : Account = new AccountInfo;
+    private editDataItem ? : Account = undefined;
     private isNew: boolean;
 
     ngOnInit() {
@@ -220,6 +220,12 @@ export class Account2Component implements OnInit {
 
 
     //account form events
+
+    public editHandler(arg: any) {
+        this.editDataItem = arg.dataItem;
+        this.isNew = false;
+    }
+
 
     public cancelHandler() {
         this.editDataItem = undefined;
