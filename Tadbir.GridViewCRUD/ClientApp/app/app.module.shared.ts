@@ -8,7 +8,7 @@ import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationSt
 // third party module to display toast 
 import { ToastrModule } from 'toastr-ng2';
 //PRIMENG - Third party module
-import { InputTextModule, DataTableModule, ButtonModule, /*DialogModule,*/ PanelModule, DropdownModule } from 'primeng/primeng';
+import { InputTextModule, DataTableModule, ButtonModule, /*DialogModule,*/ PanelModule, /*DropdownModule*/ } from 'primeng/primeng';
 
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -24,6 +24,7 @@ import { TranslateModule } from "ng2-translate";
 import { GridModule } from '@progress/kendo-angular-grid';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { DialogModule } from '@progress/kendo-angular-dialog';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 
 import { AccountService, TransactionLineService, FiscalPeriodService } from './service/index';
 
@@ -44,7 +45,7 @@ import { AccountService, TransactionLineService, FiscalPeriodService } from './s
         ReactiveFormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule, DropdownModule, GridModule,
+        InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule, DropDownsModule, GridModule,
         BrowserModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([

@@ -1,6 +1,10 @@
 ﻿import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { Account } from '../../model/index';
+import { AccountService, AccountInfo, TransactionLineService, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
+
+import { Account, TransactionLine } from '../../model/index';
+import { TranslateService } from "ng2-translate";
+import { ToastrService, ToastConfig } from 'toastr-ng2'; 
 
 @Component({
     selector: 'account-form-component',
@@ -11,6 +15,8 @@ import { Account } from '../../model/index';
 })
 
 export class AccountFormComponent {
+
+    //create a form controls
     private editForm = new FormGroup({
         'accountId': new FormControl("", Validators.required),
         'code': new FormControl("", Validators.required),
@@ -20,6 +26,7 @@ export class AccountFormComponent {
         'branchId': new FormControl("", Validators.required)
     });
 
+    //create properties
     private active: boolean = false;
     @Input() public isNew: boolean = false;
 
@@ -31,7 +38,13 @@ export class AccountFormComponent {
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
     @Output() save: EventEmitter<Account> = new EventEmitter();
+    //create properties
 
+    public placeHolder: { Key: string, Value: string } = { Key: "-1" , Value: "---" };
+    public fiscalPeriodRows: Array<any> = [];
+    public selectedfp: string = "1";
+
+    //Events
     public onSave(e : any): void {
         e.preventDefault();
         this.save.emit(this.editForm.value);
@@ -46,5 +59,25 @@ export class AccountFormComponent {
     private closeForm(): void {
         this.active = false;
         this.cancel.emit();
+    }
+    //Events
+
+    constructor(private accountService: AccountService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
+        private toastrService: ToastrService, private translate: TranslateService) {
+        translate.addLangs(["en", "fa"]);
+        translate.setDefaultLang('fa');
+
+        var browserLang = 'fa';//translate.getBrowserLang();
+        translate.use(browserLang);
+        
+        this.getFiscalPeriod();
+    }
+
+    /* load fiscal periods */
+    getFiscalPeriod() {
+        
+        this.fiscalPeriodService.getFiscalPeriods().subscribe(res => {
+            this.fiscalPeriodRows = res;            
+        });
     }
 }
