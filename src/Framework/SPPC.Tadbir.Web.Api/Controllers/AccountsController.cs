@@ -11,7 +11,6 @@ using SPPC.Tadbir.ViewModel.Finance;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
     public class AccountsController : Controller
     {
         public AccountsController(IAccountRepository repository)
@@ -52,7 +51,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/accounts
-        [Route(AccountApi.AccountsUrl)]
+        [HttpPost, Route(AccountApi.AccountsUrl)]
         //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         public IActionResult PostNewAccount([FromBody] AccountViewModel account)
         {

@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
-//using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    [Produces("application/json")]
     public class LookupController : Controller
     {
         public LookupController(ILookupRepository repository)

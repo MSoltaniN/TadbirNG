@@ -35,7 +35,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<ProductInventory>();
             var inventories = repository
-                .GetByCriteria(inv => inv.FiscalPeriod.Id == fpId && inv.Branch.Id == branchId)
+                .GetByCriteria(
+                    inv => inv.FiscalPeriod.Id == fpId && inv.Branch.Id == branchId,
+                    inv => inv.Product, inv => inv.Uom, inv => inv.Warehouse, inv => inv.FiscalPeriod, inv => inv.Branch)
                 .Select(inv => _mapper.Map<ProductInventoryViewModel>(inv))
                 .ToList();
             return inventories;
@@ -50,7 +52,9 @@ namespace SPPC.Tadbir.Persistence
         {
             ProductInventoryViewModel inventory = default(ProductInventoryViewModel);
             var repository = _unitOfWork.GetRepository<ProductInventory>();
-            var existing = repository.GetByID(inventoryId);
+            var existing = repository.GetByID(
+                inventoryId,
+                inv => inv.Product, inv => inv.Uom, inv => inv.Warehouse, inv => inv.FiscalPeriod, inv => inv.Branch);
             if (existing != null)
             {
                 inventory = _mapper.Map<ProductInventoryViewModel>(existing);
@@ -74,7 +78,9 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                var existing = repository.GetByID(inventory.Id);
+                var existing = repository.GetByID(
+                    inventory.Id,
+                    inv => inv.Product, inv => inv.Uom, inv => inv.Warehouse, inv => inv.FiscalPeriod, inv => inv.Branch);
                 if (existing != null)
                 {
                     UpdateExistingInventory(existing, inventory);
@@ -101,12 +107,12 @@ namespace SPPC.Tadbir.Persistence
             _unitOfWork.Commit();
         }
 
-        private static void UpdateExistingInventory(ProductInventory existing, ProductInventoryViewModel inventory)
+        private void UpdateExistingInventory(ProductInventory existing, ProductInventoryViewModel inventory)
         {
             existing.Quantity = inventory.Quantity;
-            existing.Product = new Product() { Id = inventory.ProductId };
-            existing.Uom = new UnitOfMeasurement() { Id = inventory.UomId };
-            existing.Warehouse = new Warehouse() { Id = inventory.WarehouseId };
+            existing.Product = _unitOfWork.GetRepository<Product>().GetByID(inventory.ProductId);
+            existing.Uom = _unitOfWork.GetRepository<UnitOfMeasurement>().GetByID(inventory.UomId);
+            existing.Warehouse = _unitOfWork.GetRepository<Warehouse>().GetByID(inventory.WarehouseId);
         }
 
         private IUnitOfWork _unitOfWork;

@@ -19,6 +19,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("ProductInventoryID");
+            builder.Property(e => e.Quantity)
+                .IsRequired();
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
@@ -31,24 +33,26 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey("BranchID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Inventory_ProductInventory_Corporate_Branch");
-
             builder.HasOne(d => d.FiscalPeriod)
                 .WithMany()
                 .HasForeignKey("FiscalPeriodID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Inventory_ProductInventory_Finance_FiscalPeriod");
-
             builder.HasOne(d => d.Product)
                 .WithMany()
                 .HasForeignKey("ProductID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Inventory_ProductInventory_Inventory_Product");
-
             builder.HasOne(d => d.Warehouse)
                 .WithMany()
                 .HasForeignKey("WarehouseID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Inventory_ProductInventory_Inventory_Warehouse");
+            builder.HasOne(d => d.Uom)
+                .WithMany()
+                .HasForeignKey("UomID")
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Inventory_ProductInventory_Inventory_Uom");
         }
     }
 }

@@ -48,7 +48,6 @@ namespace SPPC.Framework.Persistence
         /// Retrieves a single entity instance with the specified unique identifier, including specified
         /// navigation properties, if any.
         /// </summary>
-        /// <typeparam name="TProperty">Type of navigation property that should be loaded</typeparam>
         /// <param name="id">Identifier of an existing entity</param>
         /// <param name="relatedProperties">Variable array of expressions the specify navigation
         /// properties that must be loaded in the main entity</param>
@@ -125,6 +124,7 @@ namespace SPPC.Framework.Persistence
         /// <param name="entity">Entity to update</param>
         public void Update(TEntity entity)
         {
+            _dataContext.Attach(entity);
             _dataSet.Update(entity);
         }
 

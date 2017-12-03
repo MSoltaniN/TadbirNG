@@ -39,8 +39,10 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<Account>();
             var accounts = repository
-                .GetByCriteria(acc => acc.FiscalPeriod.Id == fpId
-                    && acc.Branch.Id == branchId)
+                .GetByCriteria(
+                    acc => acc.FiscalPeriod.Id == fpId
+                        && acc.Branch.Id == branchId,
+                    acc => acc.FiscalPeriod, acc => acc.Branch)
                 .OrderBy(acc => acc.Code)
                 .Select(item => _mapper.Map<AccountViewModel>(item))
                 .ToList();
