@@ -6,6 +6,8 @@ import { Account, TransactionLine } from '../../model/index';
 import { TranslateService } from "ng2-translate";
 import { ToastrService, ToastConfig } from 'toastr-ng2'; 
 
+import { Observable } from 'rxjs/Observable';
+
 @Component({
     selector: 'account-form-component',
     styles: [
@@ -13,7 +15,7 @@ import { ToastrService, ToastConfig } from 'toastr-ng2';
     ],
     templateUrl: './account2-form.component.html'
 })
-
+        
 export class AccountFormComponent {
 
     //create a form controls
@@ -31,18 +33,21 @@ export class AccountFormComponent {
     @Input() public isNew: boolean = false;
 
     @Input() public set model(account: Account) {
+        
         this.editForm.reset(account);
 
         this.active = account !== undefined;
+
+        this.fiscalPeriodId = this.fiscalPeriodRows[0];
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
     @Output() save: EventEmitter<Account> = new EventEmitter();
     //create properties
 
-    public placeHolder: { Key: string, Value: string } = { Key: "-1" , Value: "---" };
+    //public placeHolder: { Key: string, Value: string } = { Key: "-1" , Value: "---" };
     public fiscalPeriodRows: Array<any> = [];
-    public selectedfp: string = "1";
+    public fiscalPeriodId: { Key: string, Value: string };
 
     //Events
     public onSave(e : any): void {
@@ -69,8 +74,9 @@ export class AccountFormComponent {
 
         var browserLang = 'fa';//translate.getBrowserLang();
         translate.use(browserLang);
-        
+
         this.getFiscalPeriod();
+        
     }
 
     /* load fiscal periods */
