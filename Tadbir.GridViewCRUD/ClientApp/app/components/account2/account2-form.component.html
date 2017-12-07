@@ -27,8 +27,9 @@
 
             <!--<input type="text" class="k-textbox" formControlName="fiscalPeriodId" />-->
             <kendo-dropdownlist [data]="fiscalPeriodRows"  [valuePrimitive]="true"        
-             [textField]="'Key'"  formControlName="fiscalPeriodId" [value]="fiscalPeriodId"  [valueField]="'Value'"  >
+             [textField]="'Value'"  formControlName="fiscalPeriodId" [value]="fiscalPeriodId" [valueField]="'Key'" >
             </kendo-dropdownlist>
+       
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fiscalPeriodId.valid || editForm.controls.fiscalPeriodId.pristine">
                 fiscalPeriodId is required

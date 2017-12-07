@@ -164,7 +164,7 @@ export class AccountComponent implements OnInit {
 
         this.getRowsCount();
 
-        this.accountService.search(this.pageIndex, this.count, '', '').subscribe(res => {
+        this.accountService.search(this.pageIndex, this.count, '', undefined).subscribe(res => {
             this.rowData = res;
         });
 
@@ -199,7 +199,7 @@ export class AccountComponent implements OnInit {
            if (Object.keys(event.filters).length > 0) {
                Object.keys(event.filters).forEach(routeKey => {
                    if (event.filters)
-                       filters.push(new Filter(routeKey, event.filters[routeKey].value))
+                       filters.push(new Filter(routeKey, event.filters[routeKey].value,"Equal"))
                });
 
            }

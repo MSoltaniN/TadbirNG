@@ -2938,69 +2938,6 @@ kendo-sortable,
   padding-top: 0;
   padding-bottom: 0; }
 
-.k-scrollbar {
-  position: absolute;
-  overflow: scroll; }
-
-.k-scrollbar-vertical {
-  top: 0;
-  right: 0;
-  width: 17px;
-  /* scrollbar width */
-  height: 100%;
-  overflow-x: hidden; }
-
-.k-touch-scrollbar {
-  display: none;
-  position: absolute;
-  z-index: 200000;
-  height: 8px;
-  width: 8px;
-  border: 1px solid #8a8a8a;
-  background-color: #858585; }
-
-.k-scrollbar {
-  position: absolute;
-  overflow: scroll; }
-
-.k-scrollbar-vertical {
-  top: 0;
-  right: 0;
-  width: 17px;
-  /* scrollbar width */
-  height: 100%;
-  overflow-x: hidden; }
-
-.k-touch-scrollbar {
-  display: none;
-  position: absolute;
-  z-index: 200000;
-  height: 8px;
-  width: 8px;
-  border: 1px solid #8a8a8a;
-  background-color: #858585; }
-
-.k-scrollbar {
-  position: absolute;
-  overflow: scroll; }
-
-.k-scrollbar-vertical {
-  top: 0;
-  right: 0;
-  width: 17px;
-  /* scrollbar width */
-  height: 100%;
-  overflow-x: hidden; }
-
-.k-touch-scrollbar {
-  display: none;
-  position: absolute;
-  z-index: 200000;
-  height: 8px;
-  width: 8px;
-  border: 1px solid #8a8a8a;
-  background-color: #858585; }
-
 .k-button {
   border-radius: 2px;
   padding: 4px 8px;
@@ -3300,6 +3237,90 @@ kendo-sortable,
 
 .k-button.k-primary.k-bare {
   color: #ff6358; }
+
+.k-scrollbar {
+  position: absolute;
+  overflow: scroll; }
+
+.k-scrollbar-vertical {
+  top: 0;
+  right: 0;
+  width: 17px;
+  /* scrollbar width */
+  height: 100%;
+  overflow-x: hidden; }
+
+.k-touch-scrollbar {
+  display: none;
+  position: absolute;
+  z-index: 200000;
+  height: 8px;
+  width: 8px;
+  border: 1px solid #8a8a8a;
+  background-color: #858585; }
+
+.k-scrollbar {
+  position: absolute;
+  overflow: scroll; }
+
+.k-scrollbar-vertical {
+  top: 0;
+  right: 0;
+  width: 17px;
+  /* scrollbar width */
+  height: 100%;
+  overflow-x: hidden; }
+
+.k-touch-scrollbar {
+  display: none;
+  position: absolute;
+  z-index: 200000;
+  height: 8px;
+  width: 8px;
+  border: 1px solid #8a8a8a;
+  background-color: #858585; }
+
+.k-scrollbar {
+  position: absolute;
+  overflow: scroll; }
+
+.k-scrollbar-vertical {
+  top: 0;
+  right: 0;
+  width: 17px;
+  /* scrollbar width */
+  height: 100%;
+  overflow-x: hidden; }
+
+.k-touch-scrollbar {
+  display: none;
+  position: absolute;
+  z-index: 200000;
+  height: 8px;
+  width: 8px;
+  border: 1px solid #8a8a8a;
+  background-color: #858585; }
+
+.k-scrollbar {
+  position: absolute;
+  overflow: scroll; }
+
+.k-scrollbar-vertical {
+  top: 0;
+  right: 0;
+  width: 17px;
+  /* scrollbar width */
+  height: 100%;
+  overflow-x: hidden; }
+
+.k-touch-scrollbar {
+  display: none;
+  position: absolute;
+  z-index: 200000;
+  height: 8px;
+  width: 8px;
+  border: 1px solid #8a8a8a;
+  background-color: #858585; }
 
 .k-scrollbar {
   position: absolute;
@@ -3940,10 +3961,13 @@ kendo-sortable,
   .k-rtl .k-grid .k-drag-clue .k-link .k-icon {
     margin-left: 4px;
     margin-right: -2px; }
+  .k-grid[dir="rtl"] .k-group-indicator,
+  .k-rtl .k-grid .k-group-indicator {
+    margin-right: 0;
+    margin-left: 4px; }
   .k-grid[dir="rtl"] .k-group-indicator + .k-group-indicator,
   .k-rtl .k-grid .k-group-indicator + .k-group-indicator {
-    margin-left: 0;
-    margin-right: 8px; }
+    margin-right: 4px; }
   .k-grid[dir="rtl"] .k-grid-content-locked,
   .k-grid[dir="rtl"] .k-grid-footer-locked,
   .k-grid[dir="rtl"] .k-grid-header-locked,
@@ -4077,8 +4101,11 @@ kendo-sortable,
     .k-drag-clue .k-button.k-bare:hover {
       opacity: 1; }
 
+.k-group-indicator {
+  margin-right: 4px; }
+
 .k-group-indicator + .k-group-indicator {
-  margin-left: 8px; }
+  margin-left: 4px; }
 
 .k-grouping-dropclue {
   width: 12px;

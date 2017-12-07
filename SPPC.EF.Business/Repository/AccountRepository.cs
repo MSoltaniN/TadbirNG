@@ -173,7 +173,17 @@
                     {
                         foreach (var item in gridOption.Filters)
                         {
-                            string whereClause = string.Format("({0}).ToString() == \"{1}\"", item.Name, item.Value);
+                            string whereClause = "";
+                            switch (item.Operator)
+                            {
+                                case "contains":
+                                    whereClause = string.Format("({0}).ToString().Contains(\"{1}\")", item.Name, item.Value);                                    
+                                    break;
+                                case "eq":
+                                    whereClause = string.Format("({0}).ToString() == \"{1}\"", item.Name, item.Value);
+                                    break;
+                            }
+                            
                             result = result.Where(whereClause);
                         }
                     }

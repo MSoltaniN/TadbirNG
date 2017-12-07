@@ -20,7 +20,8 @@ import "rxjs/Rx";
 import { TranslateService } from 'ng2-translate';
 import { String } from '../../class/source';
 
-import { State  } from '@progress/kendo-data-query';
+import { State, CompositeFilterDescriptor  } from '@progress/kendo-data-query';
+import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 
 declare var jquery: any;
 declare var $: any;
@@ -53,6 +54,7 @@ export class Account2Component implements OnInit {
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
+    public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
 
@@ -175,7 +177,10 @@ export class Account2Component implements OnInit {
 
         this.getRowsCount();
 
-        this.accountService.search(this.skip, this.pageSize, '', '').subscribe(res => {
+        var filter = this.currentFilter;
+        var order = this.currentOrder;
+
+        this.accountService.search(this.skip, this.pageSize, order, filter).subscribe(res => {
             //this.rowData = res;
             this.rowData = {
                 data: res,
@@ -185,9 +190,41 @@ export class Account2Component implements OnInit {
 
     }
 
-    protected dataStateChange(state: DataStateChangeEvent): void {
-        
+    getFilters(filter: any): Filter[] {
+        let filters: Filter[] = [];
+
+        if (filter.filters.length) {
+            for (let i = 0; i < filter.filters.length; i++)
+            {
+                if (filter.filters[i].value != "")
+                {
+                    filters.push(new Filter(filter.filters[i].field, filter.filters[i].value, filter.filters[i].operator))
+
+                }
+            }
+              
+        }
+
+        return filters;
     }
+
+    protected dataStateChange(state: DataStateChangeEvent): void {
+        this.currentFilter = this.getFilters(state.filter);
+        if (state.sort)
+            this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
+
+        this.skip = state.skip;
+        this.reloadGrid();
+    }
+
+
+    public sortChange(sort: SortDescriptor[]): void {
+        if (sort)
+            this.currentOrder = sort[0].field + " " + sort[0].dir;
+
+        this.reloadGrid();
+    }
+
 
     protected pageChange(event: PageChangeEvent): void {
         this.skip = event.skip;

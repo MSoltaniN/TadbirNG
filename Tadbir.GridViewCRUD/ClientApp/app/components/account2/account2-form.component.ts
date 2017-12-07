@@ -20,12 +20,12 @@ export class AccountFormComponent {
 
     //create a form controls
     private editForm = new FormGroup({
-        'accountId': new FormControl("", Validators.required),
-        'code': new FormControl("", Validators.required),
-        'name': new FormControl("", Validators.required),   
-        'description': new FormControl(),
-        'fiscalPeriodId': new FormControl("", Validators.required),
-        'branchId': new FormControl("", Validators.required)
+        accountId : new FormControl("", Validators.required),
+        code: new FormControl("", Validators.required),
+        name: new FormControl("", Validators.required),   
+        description: new FormControl(),
+        fiscalPeriodId: new FormControl("", Validators.required),
+        branchId: new FormControl("", Validators.required)
     });
 
     //create properties
@@ -38,7 +38,7 @@ export class AccountFormComponent {
 
         this.active = account !== undefined;
 
-        this.fiscalPeriodId = this.fiscalPeriodRows[0];
+        //this.editForm.setValue({ fiscalPeriodId: account.fiscalPeriodId });
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -47,7 +47,7 @@ export class AccountFormComponent {
 
     //public placeHolder: { Key: string, Value: string } = { Key: "-1" , Value: "---" };
     public fiscalPeriodRows: Array<any> = [];
-    public fiscalPeriodId: { Key: string, Value: string };
+    public fiscalPeriodId: any;
 
     //Events
     public onSave(e : any): void {

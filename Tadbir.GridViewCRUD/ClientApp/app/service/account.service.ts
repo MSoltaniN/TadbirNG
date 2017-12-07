@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
 import { expect } from 'chai';
+import { Filter } from "../class/filter";
 
 export class AccountInfo implements Account
 {    
@@ -78,7 +79,7 @@ export class AccountService
 
     
     
-    search(start? :number , count? :number , orderby?:string,filters?:string  ) {
+    search(start? :number , count? :number , orderby?:string,filters?:Filter[]  ) {
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var options = new RequestOptions({ headers: headers });
 
