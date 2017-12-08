@@ -297,17 +297,17 @@ export class Account2Component implements OnInit {
         this.editDataItem = undefined;
     }
 
-    public saveHandler(product: Account) {
+    public saveHandler(account: Account) {
 
-        if (!this.newAccount) {
-            this.accountService.editAccount(this.account)
+        if (!this.isNew) {
+            this.accountService.editAccount(account)
                 .subscribe(response => {
                     this.toastrService.success(this.updateMsg, '', { positionClass: 'toast-top-left' });
                     this.reloadGrid();
                 });            
         }
         else {
-            this.accountService.insertAccount(this.account)
+            this.accountService.insertAccount(account)
                 .subscribe(response => {
                     this.toastrService.success(this.insertMsg, '', { positionClass: 'toast-top-left' });
                     this.reloadGrid();

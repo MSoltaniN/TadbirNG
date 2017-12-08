@@ -30,8 +30,8 @@
     "Fiscal": "دوره مالی",
     "Branch": "شعبه",
     "Description": "توضیحات",
+    "Delete": "حذف حساب",
     "List": "لیست حساب ها"
-
   },
   "TransactionLine": {
     "Debit": "بدهکار",

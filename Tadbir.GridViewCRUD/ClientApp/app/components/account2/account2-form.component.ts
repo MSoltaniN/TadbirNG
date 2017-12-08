@@ -8,6 +8,12 @@ import { ToastrService, ToastConfig } from 'toastr-ng2';
 
 import { Observable } from 'rxjs/Observable';
 
+interface Item {
+    Key: string,
+    Value: string
+}
+
+
 @Component({
     selector: 'account-form-component',
     styles: [
@@ -37,7 +43,13 @@ export class AccountFormComponent {
         this.editForm.reset(account);
 
         this.active = account !== undefined;
-
+        if (account != undefined)
+        {
+            //var index = this.fiscalPeriodRows.find(p => p.Key == account.fiscalPeriodId.toString());
+            this.selectedValue = account.fiscalPeriodId.toString();
+            if (this.fiscalPeriodRows == undefined) this.getFiscalPeriod();
+        }
+            
         //this.editForm.setValue({ fiscalPeriodId: account.fiscalPeriodId });
     }
 
@@ -46,8 +58,8 @@ export class AccountFormComponent {
     //create properties
 
     //public placeHolder: { Key: string, Value: string } = { Key: "-1" , Value: "---" };
-    public fiscalPeriodRows: Array<any> = [];
-    public fiscalPeriodId: any;
+    public fiscalPeriodRows : Array<Item>;
+    public selectedValue : string = '1';
 
     //Events
     public onSave(e : any): void {

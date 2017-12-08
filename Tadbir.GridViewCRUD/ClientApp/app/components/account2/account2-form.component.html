@@ -26,8 +26,8 @@
             <label for="fiscalPeriodId" class="control-label">{{ 'Account.Fiscal' | translate }}</label>
 
             <!--<input type="text" class="k-textbox" formControlName="fiscalPeriodId" />-->
-            <kendo-dropdownlist [data]="fiscalPeriodRows"  [valuePrimitive]="true"        
-             [textField]="'Value'"  formControlName="fiscalPeriodId" [value]="fiscalPeriodId" [valueField]="'Key'" >
+            <kendo-dropdownlist [data]="fiscalPeriodRows"    [valuePrimitive]="true"
+             [textField]="'Value'"  formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'Key'" >
             </kendo-dropdownlist>
        
 
@@ -48,8 +48,8 @@
         </div>
     </form>
 
-    <kendo-dialog-actions>
-        <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+    <kendo-dialog-actions>        
         <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+        <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
     </kendo-dialog-actions>
 </kendo-dialog>

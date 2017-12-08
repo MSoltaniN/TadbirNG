@@ -40,9 +40,9 @@
             <p>
                 {{ deleteConfirmMsg }}
             </p>
-            <kendo-dialog-actions>
-                <button kendoButton (click)="deleteAccount(false)">{{ 'Buttons.No' | translate }}</button>
-                <button kendoButton (click)="deleteAccount(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+            <kendo-dialog-actions>                
+                <button class="k-button" (click)="deleteAccount(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+                <button class="k-button" (click)="deleteAccount(false)">{{ 'Buttons.No' | translate }}</button>
             </kendo-dialog-actions>
         </kendo-dialog>
     </div>    
