@@ -6,6 +6,6 @@ namespace SPPC.Tadbir.Model.Corporate
 {
     public partial class Branch
     {
-        public IList<RoleBranch> RoleBranches { get; protected set; }
+        public virtual IList<RoleBranch> RoleBranches { get; protected set; }
     }
 }

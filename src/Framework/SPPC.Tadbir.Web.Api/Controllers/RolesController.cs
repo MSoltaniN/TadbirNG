@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Tadbir.Api;
@@ -7,10 +6,10 @@ using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
-//using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    [Produces("application/json")]
     public class RolesController : Controller
     {
         public RolesController(ISecurityRepository repository)
@@ -70,7 +69,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/roles
-        [Route(SecurityApi.RolesUrl)]
+        [HttpPost, Route(SecurityApi.RolesUrl)]
         //[AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Create)]
         public IActionResult PostNewRole([FromBody] RoleFullViewModel role)
         {
@@ -89,7 +88,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/roles/{roleId:int}
-        [Route(SecurityApi.RoleUrl)]
+        [HttpPut, Route(SecurityApi.RoleUrl)]
         //[AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Edit)]
         public IActionResult PutModifiedRole(int roleId, [FromBody] RoleFullViewModel role)
         {
@@ -123,7 +122,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // DELETE: api/roles/{roleId:int}
-        [Route(SecurityApi.RoleUrl)]
+        [HttpDelete, Route(SecurityApi.RoleUrl)]
         //[AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Delete)]
         public IActionResult DeleteExistingRole(int roleId)
         {
@@ -171,7 +170,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/roles/{roleId:int}/branches
-        [Route(SecurityApi.RoleBranchesUrl)]
+        [HttpPut, Route(SecurityApi.RoleBranchesUrl)]
         //[AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.AssignBranches)]
         public IActionResult PutModifiedRoleBranches(int roleId, RoleBranchesViewModel branches)
         {
@@ -217,7 +216,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/roles/{roleId:int}/users
-        [Route(SecurityApi.RoleUsersUrl)]
+        [HttpPut, Route(SecurityApi.RoleUsersUrl)]
         //[AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.AssignUsers)]
         public IActionResult PutModifiedRoleUsers(int roleId, RoleUsersViewModel users)
         {

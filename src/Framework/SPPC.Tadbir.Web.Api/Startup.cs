@@ -34,6 +34,7 @@ namespace SPPC.Tadbir.Web.Api
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<ILookupRepository, LookupRepository>();
             services.AddTransient<IInventoryRepository, InventoryRepository>();
+            services.AddTransient<ISecurityRepository, SecurityRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IDomainMapper, DomainMapper>();
             services.AddTransient<DbContext, TadbirContext>();

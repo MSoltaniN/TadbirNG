@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Mapper;
@@ -40,7 +41,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<User>();
             var users = repository
-                .GetAll()
+                .GetAll(u => u.Person)
                 .Select(user => _mapper.Map<UserViewModel>(user))
                 .ToList();
             return users;
@@ -57,7 +58,7 @@ namespace SPPC.Tadbir.Persistence
             UserViewModel userViewModel = null;
             var repository = _unitOfWork.GetRepository<User>();
             var user = repository
-                .GetByCriteria(usr => usr.UserName == userName)
+                .GetByCriteria(usr => usr.UserName == userName, usr => usr.Person)
                 .FirstOrDefault();
             if (user != null)
             {
@@ -122,7 +123,7 @@ namespace SPPC.Tadbir.Persistence
         {
             UserViewModel userViewModel = null;
             var repository = _unitOfWork.GetRepository<User>();
-            var user = repository.GetByID(userId);
+            var user = repository.GetByID(userId, usr => usr.Person);
             if (user != null)
             {
                 userViewModel = _mapper.Map<UserViewModel>(user);
@@ -141,12 +142,21 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetRepository<User>();
             if (user.Id == 0)
             {
-                var newUser = GetNewUser(user);
+                var newUser = _mapper.Map<User>(user);
                 repository.Insert(newUser);
+                var person = new Person()
+                {
+                    FirstName = user.PersonFirstName,
+                    LastName = user.PersonLastName,
+                    User = newUser
+                };
+
+                newUser.Person = person;
+                repository.Update(newUser);
             }
             else
             {
-                var existing = repository.GetByID(user.Id);
+                var existing = repository.GetByID(user.Id, u => u.Person);
                 if (existing != null)
                 {
                     UpdateExistingUser(existing, user);
@@ -219,12 +229,22 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>A collection of <see cref="RoleViewModel"/> objects retrieved from repository</returns>
         public IList<RoleViewModel> GetRoles()
         {
+            //var repository = _unitOfWork.GetRepository<RolePermission>();
+            //var roles = repository
+            //    .GetAll(rp => rp.Role, rp => rp.Permission)
+            //    .Select(rp => rp.Role)
+            //    .Select(r => _mapper.Map<RoleViewModel>(r))
+            //    .ToList();
+            //return roles;
             var repository = _unitOfWork.GetRepository<Role>();
             var roles = repository
-                .GetAll()
-                .Select(user => _mapper.Map<RoleViewModel>(user))
+                .GetAllAsQuery()
+                .Include(r => r.RolePermissions)
+                    .ThenInclude(rp => rp.Permission)
                 .ToList();
-            return roles;
+            return roles
+                .Select(r => _mapper.Map<RoleViewModel>(r))
+                .ToList();
         }
 
         /// <summary>
@@ -236,7 +256,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<Permission>();
             var all = repository
-                .GetAll()
+                .GetAll(perm => perm.Group)
                 .Select(perm => _mapper.Map<PermissionViewModel>(perm))
                 .ToArray();
             var role = new RoleFullViewModel();
@@ -258,7 +278,7 @@ namespace SPPC.Tadbir.Persistence
         {
             RoleFullViewModel role = null;
             var repository = _unitOfWork.GetRepository<Role>();
-            var existing = repository.GetByID(roleId);
+            var existing = repository.GetByID(roleId, r => r.RolePermissions);
             if (existing != null)
             {
                 var enabledPermissions = existing.RolePermissions
@@ -266,7 +286,7 @@ namespace SPPC.Tadbir.Persistence
                     .Select(perm => _mapper.Map<PermissionViewModel>(perm));
                 var permissionRepository = _unitOfWork.GetRepository<Permission>();
                 var disabledPermissions = permissionRepository
-                    .GetAll()
+                    .GetAll(perm => perm.Group)
                     .Select(perm => _mapper.Map<PermissionViewModel>(perm))
                     .Except(enabledPermissions, new EntityEqualityComparer<PermissionViewModel>())
                     .ToArray();

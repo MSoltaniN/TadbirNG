@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Framework.Values;
@@ -9,12 +8,10 @@ using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
-//using SPPC.Tadbir.Web.Api.AppStart;
-//using SPPC.Tadbir.Web.Api.Filters;
-//using Unity;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    [Produces("application/json")]
     public class UsersController : Controller
     {
         public UsersController(ISecurityRepository repository)
@@ -66,7 +63,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/users
-        [Route(SecurityApi.UsersUrl)]
+        [HttpPost, Route(SecurityApi.UsersUrl)]
         //[AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Create)]
         public IActionResult PostNewUser([FromBody] UserViewModel user)
         {
@@ -91,7 +88,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/users/{userId:int}
-        [Route(SecurityApi.UserUrl)]
+        [HttpPut, Route(SecurityApi.UserUrl)]
         //[AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Edit)]
         public IActionResult PutModifiedUser(int userId, [FromBody] UserViewModel user)
         {
@@ -136,7 +133,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/users/{userId:int}/login
-        [Route(SecurityApi.UserLastLoginUrl)]
+        [HttpPut, Route(SecurityApi.UserLastLoginUrl)]
         public IActionResult PutUserLastLogin(int userId)
         {
             if (userId <= 0)
@@ -149,7 +146,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/users/{userName}/password
-        [Route(SecurityApi.UserPasswordUrl)]
+        [HttpPut, Route(SecurityApi.UserPasswordUrl)]
         public IActionResult PutUserPassword(string userName, [FromBody] UserProfileViewModel profile)
         {
             if (profile == null)

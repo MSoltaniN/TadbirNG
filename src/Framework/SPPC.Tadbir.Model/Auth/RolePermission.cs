@@ -25,27 +25,27 @@ namespace SPPC.Tadbir.Model.Auth
         /// <summary>
         /// Gets or sets the unique identifier for this entity. This property is auto-generated.
         /// </summary>
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier for the role
         /// </summary>
-        public int RoleId { get; set; }
+        public virtual int RoleId { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier for the permission
         /// </summary>
-        public int PermissionId { get; set; }
+        public virtual int PermissionId { get; set; }
 
         /// <summary>
         /// Gets or sets the Role instance
         /// </summary>
-        public Role Role { get; set; }
+        public virtual Role Role { get; set; }
 
         /// <summary>
         /// Gets or sets the Permission instance
         /// </summary>
-        public Permission Permission { get; set; }
+        public virtual Permission Permission { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.

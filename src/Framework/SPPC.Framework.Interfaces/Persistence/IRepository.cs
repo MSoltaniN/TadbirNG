@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using SPPC.Framework.Domain;
 
@@ -12,11 +13,22 @@ namespace SPPC.Framework.Persistence
     public interface IRepository<TEntity>
         where TEntity : class, IEntity
     {
+        IQueryable<TEntity> GetAllAsQuery();
+
         /// <summary>
         /// Retrieves complete information for all existing entities in data store
         /// </summary>
         /// <returns>Collection of all existing entities</returns>
         IList<TEntity> GetAll();
+
+        /// <summary>
+        /// Retrieves complete information for all existing entities in data store, including specified
+        /// navigation properties, if any.
+        /// </summary>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Collection of all existing entities</returns>
+        IList<TEntity> GetAll(params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>
         /// Retrieves a single entity instance with the specified unique identifier

@@ -6,6 +6,6 @@ namespace SPPC.Tadbir.Model.Auth
 {
     public partial class User
     {
-        public IList<UserRole> UserRoles { get; protected set; }
+        public virtual IList<UserRole> UserRoles { get; protected set; }
     }
 }

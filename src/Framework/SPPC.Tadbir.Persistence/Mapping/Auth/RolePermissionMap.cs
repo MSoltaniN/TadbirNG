@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Auth;
 
-namespace SPPC.Tadbir.Persistence.Mapping.Auth
+namespace SPPC.Tadbir.Persistence.Mapping
 {
     internal sealed class RolePermissionMap
     {
@@ -17,6 +15,18 @@ namespace SPPC.Tadbir.Persistence.Mapping.Auth
         {
             builder.ToTable("RolePermission", "Auth");
             builder.HasKey(e => new { e.RoleId, e.PermissionId });
+            builder.Property(e => e.Id)
+                .HasColumnName("RolePermissionID");
+            builder.Property(e => e.RoleId)
+                .HasColumnName("RoleID");
+            builder.Property(e => e.PermissionId)
+                .HasColumnName("PermissionID");
+            builder.Property(e => e.ModifiedDate)
+                .HasColumnType("datetime")
+                .HasDefaultValueSql("(getdate())");
+            builder.Property(e => e.RowGuid)
+                .HasColumnName("rowguid")
+                .HasDefaultValueSql("(newid())");
 
             builder.HasOne(d => d.Role)
                 .WithMany(p => p.RolePermissions)

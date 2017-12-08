@@ -25,6 +25,11 @@ namespace SPPC.Framework.Persistence
             _dataSet = dataContext.Set<TEntity>();
         }
 
+        public IQueryable<TEntity> GetAllAsQuery()
+        {
+            return _dataSet.AsQueryable();
+        }
+
         /// <summary>
         /// Retrieves complete information for all existing entities in data store
         /// </summary>
@@ -32,6 +37,24 @@ namespace SPPC.Framework.Persistence
         public IList<TEntity> GetAll()
         {
             return _dataSet.ToList();
+        }
+
+        /// <summary>
+        /// Retrieves complete information for all existing entities in data store, including specified
+        /// navigation properties, if any.
+        /// </summary>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Collection of all existing entities</returns>
+        public IList<TEntity> GetAll(params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = _dataSet.AsQueryable();
+            foreach (var property in relatedProperties)
+            {
+                query = query.Include(property);
+            }
+
+            return query.ToList();
         }
 
         /// <summary>

@@ -34,6 +34,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.UserName)
                 .IsRequired()
                 .HasMaxLength(64);
+
+            builder.HasOne(d => d.Person)
+                .WithOne(p => p.User)
+                .HasForeignKey<User>()
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Contact_Person_Auth_User");
         }
     }
 }

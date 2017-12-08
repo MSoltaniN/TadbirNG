@@ -18,6 +18,7 @@ using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    [Produces("application/json")]
     public class TransactionsController : Controller
     {
         public TransactionsController(ITransactionRepository repository, ISecurityContextManager contextManager)
