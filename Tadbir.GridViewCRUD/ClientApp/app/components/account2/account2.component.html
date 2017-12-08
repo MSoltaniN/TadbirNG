@@ -13,6 +13,7 @@
                         (pageChange)="pageChange($event)" 
                         (sortChange)="sortChange($event)"
                         (edit)="editHandler($event)"
+                        (remove)="removeHandler($event)"
                         [sort]="sort"
                         (dataStateChange)="dataStateChange($event)" >
                 <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
@@ -26,7 +27,7 @@
                 <kendo-grid-command-column title="" >
                     <ng-template kendoGridCellTemplate>
                         <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                        <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                        <button kendoGridRemoveCommand >{{ 'Buttons.Delete' | translate }}</button>
                     </ng-template>
                 </kendo-grid-command-column>
             </kendo-grid>
@@ -35,5 +36,14 @@
           (cancel)="cancelHandler()" >
             </account-form-component>
         </div>
+        <kendo-dialog title="{{'Account.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteAccount(false)" [minWidth]="250" [width]="450">
+            <p>
+                {{ deleteConfirmMsg }}
+            </p>
+            <kendo-dialog-actions>
+                <button kendoButton (click)="deleteAccount(false)">{{ 'Buttons.No' | translate }}</button>
+                <button kendoButton (click)="deleteAccount(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+            </kendo-dialog-actions>
+        </kendo-dialog>
     </div>    
 </div>

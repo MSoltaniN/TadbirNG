@@ -48,6 +48,11 @@ export class Account2Component implements OnInit {
     public totalRecords: number;
 
     public fpId: number;
+
+    //for add in delete messageText
+    deleteConfirmMsg: string;
+    deleteConfirm: boolean;
+    deleteAccountId: number;
     
     config: ToastConfig;
 
@@ -142,27 +147,7 @@ export class Account2Component implements OnInit {
 
 
     }
-
-
-    localizeMsg() {
-        // read message format for crud operations
-        var entityType = '';
-        this.translateService.get("Entity.Account").subscribe((msg: string) => {
-            entityType = msg;
-        });
-
-        this.translateService.get("Messages.Inserted").subscribe((msg: string) => {
-            this.insertMsg = String.Format(msg, entityType);
-        });
-
-        this.translateService.get("Messages.Updated").subscribe((msg: string) => {
-            this.updateMsg = String.Format(msg, entityType);;
-        });
-
-        this.translateService.get("Messages.Deleted").subscribe((msg: string) => {
-            this.deleteMsg = String.Format(msg, entityType);;
-        });
-    }
+    
 
     getRowsCount() {
 
@@ -241,6 +226,50 @@ export class Account2Component implements OnInit {
                 this.showloadingMessage = !(res.length == 0);
         });
     }
+
+    localizeMsg() {
+        // read message format for crud operations
+        var entityType = '';
+        this.translateService.get("Entity.Account").subscribe((msg: string) => {
+            entityType = msg;
+        });
+
+        this.translateService.get("Messages.Inserted").subscribe((msg: string) => {
+            this.insertMsg = String.Format(msg, entityType);
+        });
+
+        this.translateService.get("Messages.Updated").subscribe((msg: string) => {
+            this.updateMsg = String.Format(msg, entityType);;
+        });
+
+        this.translateService.get("Messages.Deleted").subscribe((msg: string) => {
+            this.deleteMsg = String.Format(msg, entityType);;
+        });
+    }
+
+    deleteAccount(confirm: boolean) {
+        if (confirm) {
+            this.accountService.delete(this.deleteAccountId).subscribe(response => {
+                this.deleteAccountId = 0;
+                this.toastrService.info(this.deleteMsg, '', { positionClass: 'toast-top-left' });
+                this.reloadGrid();
+            });
+        }
+
+        //hide confirm dialog
+        this.deleteConfirm = false;
+    }
+
+    protected removeHandler(arg: any) {
+
+        this.translateService.get("Messages.DeleteConfirm").subscribe((msg: string) => {
+            this.deleteConfirmMsg = String.Format(msg, arg.dataItem.name);
+        });
+
+        this.deleteAccountId = arg.dataItem.accountId;
+        this.deleteConfirm = true;
+    }
+
 
     /* load fiscal periods */
     getFiscalPeriod() {
