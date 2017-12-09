@@ -9,7 +9,8 @@ import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component 
 import {
     GridDataResult,
     DataStateChangeEvent,
-    PageChangeEvent
+    PageChangeEvent,
+    RowArgs
 } from '@progress/kendo-angular-grid';
 
 import { Filter } from '../../class/filter';
@@ -39,7 +40,7 @@ export class Account2Component implements OnInit {
 
     public rowData: GridDataResult;
     
-
+    private selectedRows: string[] = [];
     public accountArticleRows: any[];
 
 
@@ -158,6 +159,10 @@ export class Account2Component implements OnInit {
 
     }
 
+    private selectionKey(context: RowArgs): string {
+        return context.dataItem.accountId + " " + context.index;
+    }
+
     reloadGrid() {
 
         this.getRowsCount();
@@ -171,6 +176,8 @@ export class Account2Component implements OnInit {
                 data: res,
                 total: this.totalRecords
             }
+
+            this.showloadingMessage = !(res.length == 0);
         });
 
     }
@@ -195,7 +202,8 @@ export class Account2Component implements OnInit {
 
     protected dataStateChange(state: DataStateChangeEvent): void {
         this.currentFilter = this.getFilters(state.filter);
-        if (state.sort)
+        if(state.sort)
+        if (state.sort.length > 0)
             this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
 
         this.skip = state.skip;

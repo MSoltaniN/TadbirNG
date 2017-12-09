@@ -1,8 +1,9 @@
-﻿<div  dir="rtl">
+﻿
+<div  dir="rtl">
     <div class="panel panel-primary">
         <div class="panel-heading">لیست حساب</div>
         <div class="panel-body">
-            <kendo-grid [data]="rowData" [dir]="rtl" 
+            <kendo-grid #GridID [data]="rowData" [dir]="rtl" 
                         [pageSize]="pageSize"
                         [skip]="skip"                  
                         [filter]="state.filter"
@@ -14,12 +15,19 @@
                         (sortChange)="sortChange($event)"
                         (edit)="editHandler($event)"
                         (remove)="removeHandler($event)"
-                        [sort]="sort"
+                        [sort]="sort"                    
+                        [selectable]="true"
+                        [selectedKeys]="selectedRows"
+                        [kendoGridSelectBy]="selectionKey"
                         (dataStateChange)="dataStateChange($event)" >
                 <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                                      pagerOf="{{ 'Paging.Of' | translate }}"
                                      pagerItems="{{ 'Paging.Record' | translate }}" >
                 </kendo-grid-messages>
+                <ng-template kendoGridNoRecordsTemplate>
+                    {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+                </ng-template>
+                <kendo-grid-checkbox-column showSelectAll="true"></kendo-grid-checkbox-column>
                 <kendo-grid-column field="code" [sortable]="true" [filterable]="true"  title="{{ 'Account.Code' | translate }}" width="130" ></kendo-grid-column>
                 <kendo-grid-column field="name" [sortable]="true" [filterable]="true" title="{{ 'Account.Name' | translate }}" width="200" ></kendo-grid-column>
                 <kendo-grid-column field="fiscalPeriodId" [filterable]="true" title="{{ 'Account.Fiscal' | translate }}" [sortable]="false" ></kendo-grid-column>
