@@ -1,5 +1,5 @@
 ﻿
-<div  dir="rtl">
+<div class="col-xs-12 col-md-12 col-sm-12" dir="rtl">
     <div class="panel panel-primary">
         <div class="panel-heading">لیست حساب</div>
         <div class="panel-body">
@@ -27,17 +27,60 @@
                 <ng-template kendoGridNoRecordsTemplate>
                     {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
                 </ng-template>
-                <kendo-grid-checkbox-column showSelectAll="true"></kendo-grid-checkbox-column>
-                <kendo-grid-column field="code" [sortable]="true" [filterable]="true"  title="{{ 'Account.Code' | translate }}" width="130" ></kendo-grid-column>
-                <kendo-grid-column field="name" [sortable]="true" [filterable]="true" title="{{ 'Account.Name' | translate }}" width="200" ></kendo-grid-column>
-                <kendo-grid-column field="fiscalPeriodId" [filterable]="true" title="{{ 'Account.Fiscal' | translate }}" [sortable]="false" ></kendo-grid-column>
-                <kendo-grid-column field="description" [filterable]="false" title="{{ 'Account.Description' | translate }}" [sortable]="false" ></kendo-grid-column>                             
-                <kendo-grid-command-column title="" >
-                    <ng-template kendoGridCellTemplate>
+                
+                <!-- template for mobile -->
+                <kendo-grid-column media="(max-width: 450px)" title="">
+                    <ng-template kendoGridCellTemplate let-account>
+                        <!-- template for mobile -->
+                        <h4>
+                            {{ account.name }}
+                        </h4>
+                        <dl>
+                            <dt>{{ 'Account.Code' | translate }}</dt>
+                            <dd>{{ account.code }}</dd>                            
+                            <dt>{{ 'Account.Fiscal' | translate }}</dt>
+                            <dd>{{ account.fiscalPeriodId }}</dd>
+                            <dt>{{ 'Account.Branch' | translate }}</dt>
+                            <dd>{{ account.branch }}</dd>
+                            <dt>{{ 'Account.Description' | translate }}</dt>
+                            <dd>{{ account.description }}</dd>
+                        </dl>
                         <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                        <button kendoGridRemoveCommand >{{ 'Buttons.Delete' | translate }}</button>
+                        <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-column>
+                <!-- template for mid-size devices -->
+                <kendo-grid-checkbox-column showSelectAll="true" width="10"  media="(min-width: 450px) and (max-width: 1024px)" ></kendo-grid-checkbox-column>
+                <kendo-grid-column field="code" [sortable]="true" width="150" media="(min-width: 450px) and (max-width: 1024px)"  [filterable]="true" title="{{ 'Account.Code' | translate }}" ></kendo-grid-column>
+                <kendo-grid-column field="name" [sortable]="true" width="250" media="(min-width: 450px) and (max-width: 1024px)" [filterable]="true" title="{{ 'Account.Name' | translate }}" ></kendo-grid-column>
+                <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
+                    <ng-template kendoGridCellTemplate>
+                        <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>                        
                     </ng-template>
                 </kendo-grid-command-column>
+                <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Delete' | translate }}  ">
+                    <ng-template kendoGridCellTemplate>
+                        <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-command-column>                
+                <!-- template for mid-size devices -->
+
+                <!-- additional columns on large devices -->
+                <kendo-grid-checkbox-column showSelectAll="true" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
+                <kendo-grid-column field="code" [sortable]="true" media="(min-width: 1024px)" [filterable]="true"  title="{{ 'Account.Code' | translate }}" width="130" ></kendo-grid-column>
+                <kendo-grid-column field="name" [sortable]="true" media="(min-width: 1024px)" [filterable]="true" title="{{ 'Account.Name' | translate }}" width="200" ></kendo-grid-column>
+                <kendo-grid-column field="fiscalPeriodId" [filterable]="true" media="(min-width: 1024px)" title="{{ 'Account.Fiscal' | translate }}" [sortable]="false" ></kendo-grid-column>
+                <kendo-grid-column field="description" [filterable]="false" media="(min-width: 1024px)" title="{{ 'Account.Description' | translate }}" [sortable]="false" ></kendo-grid-column>                             
+                <kendo-grid-command-column media="(min-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
+                    <ng-template kendoGridCellTemplate>
+                        <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-command-column>
+                <kendo-grid-command-column media="(min-width: 1024px)" title="{{ 'Buttons.Delete' | translate }}  ">
+                    <ng-template kendoGridCellTemplate>
+                        <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-command-column>                
             </kendo-grid>
             <account-form-component [model]="editDataItem" [isNew]="isNew"
           (save)="saveHandler($event)"
