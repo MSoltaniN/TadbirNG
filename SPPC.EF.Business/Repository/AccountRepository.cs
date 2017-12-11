@@ -173,7 +173,7 @@
                     {
                         foreach (var item in gridOption.Filters)
                         {
-                            string whereClause = "";
+                            string whereClause = string.Empty;
                             switch (item.Operator)
                             {
                                 case "contains":

@@ -6,8 +6,6 @@
 
     public interface IRepository<EntityType>
     {
-        //Task<List<EntityType>> Get(int fpId, int branchId, GridOption gridOption);
-
         Task<List<EntityType>> Get(GridOption gridOption);
 
         Task<EntityType> Get(int id);

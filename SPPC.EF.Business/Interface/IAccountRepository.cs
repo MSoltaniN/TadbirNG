@@ -1,10 +1,6 @@
-﻿using SPPC.Tadbir.Business;
-using SPPC.Tadbir.DataAccess;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Tadbir.DataAccess;
 
 namespace SPPC.Tadbir.Business
 {

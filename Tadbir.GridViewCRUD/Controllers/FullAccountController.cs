@@ -1,9 +1,6 @@
-﻿
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Tadbir.Business;
-using SPPC.Tadbir.DataAccess;
-
 
 namespace Tadbir.GridViewCRUD.Controllers
 {

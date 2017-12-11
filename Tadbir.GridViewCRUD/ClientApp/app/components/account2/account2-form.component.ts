@@ -35,7 +35,7 @@ export class AccountFormComponent {
     });
 
     //create properties
-    private active: boolean = false;
+    active: boolean = false;
     @Input() public isNew: boolean = false;
 
     @Input() public set model(account: Account) {

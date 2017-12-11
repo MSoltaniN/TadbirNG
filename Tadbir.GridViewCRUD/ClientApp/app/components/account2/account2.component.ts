@@ -40,7 +40,7 @@ export class Account2Component implements OnInit {
 
     public rowData: GridDataResult;
     
-    private selectedRows: string[] = [];
+    public selectedRows: string[] = [];
     public accountArticleRows: any[];
 
 
@@ -76,8 +76,8 @@ export class Account2Component implements OnInit {
 
     private translateService: TranslateService
 
-    private pageSize: number = 10;
-    private skip: number = 0;
+    pageSize: number = 10;
+    skip: number = 0;
 
     public state: State = {
         skip: 0,
@@ -90,8 +90,8 @@ export class Account2Component implements OnInit {
     };
 
 
-    private editDataItem ? : Account = undefined;
-    private isNew: boolean;
+    editDataItem ? : Account = undefined;
+    isNew: boolean;
 
     ngOnInit() {
 
@@ -159,7 +159,7 @@ export class Account2Component implements OnInit {
 
     }
 
-    private selectionKey(context: RowArgs): string {
+    selectionKey(context: RowArgs): string {
         return context.dataItem.accountId + " " + context.index;
     }
 
@@ -200,7 +200,7 @@ export class Account2Component implements OnInit {
         return filters;
     }
 
-    protected dataStateChange(state: DataStateChangeEvent): void {
+    dataStateChange(state: DataStateChangeEvent): void {
         this.currentFilter = this.getFilters(state.filter);
         if(state.sort)
         if (state.sort.length > 0)
@@ -219,7 +219,7 @@ export class Account2Component implements OnInit {
     }
 
 
-    protected pageChange(event: PageChangeEvent): void {
+    pageChange(event: PageChangeEvent): void {
         this.skip = event.skip;
         this.reloadGrid();
     }
@@ -268,7 +268,7 @@ export class Account2Component implements OnInit {
         this.deleteConfirm = false;
     }
 
-    protected removeHandler(arg: any) {
+    removeHandler(arg: any) {
 
         this.translateService.get("Messages.DeleteConfirm").subscribe((msg: string) => {
             this.deleteConfirmMsg = String.Format(msg, arg.dataItem.name);
