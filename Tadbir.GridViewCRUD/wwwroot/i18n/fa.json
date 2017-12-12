@@ -19,7 +19,8 @@
     "No": "خیر",
     "New": "جدید",
     "Edit": "ویرایش",
-    "Delete": "حذف"
+    "Delete": "حذف",
+    "GroupDelete": "حذف گروهی"
   },
   "Entity": {
     "Account": "اطلاعات حساب"

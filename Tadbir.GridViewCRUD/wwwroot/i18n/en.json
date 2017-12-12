@@ -18,7 +18,8 @@
     "No": "No",
     "New": "New Account",
     "Edit": "Edit",
-    "Delete": "Delete"
+    "Delete": "Delete",
+    "GroupDelete": "Delete"
   },
   "Entity": {
     "Account": "Account"
