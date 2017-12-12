@@ -196,7 +196,7 @@
                     return await result.Skip(gridOption.StartIndex.Value).Take(gridOption.Count.Value).ToListAsync();
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 ////TODO: log exception 
 

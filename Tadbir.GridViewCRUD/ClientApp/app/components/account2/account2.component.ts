@@ -10,7 +10,8 @@ import {
     GridDataResult,
     DataStateChangeEvent,
     PageChangeEvent,
-    RowArgs
+    RowArgs,
+    SelectAllCheckboxState
 } from '@progress/kendo-angular-grid';
 
 import { Filter } from '../../class/filter';
@@ -23,6 +24,7 @@ import { String } from '../../class/source';
 
 import { State, CompositeFilterDescriptor  } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
+import { FormGroup, FormControl, Validators } from "@angular/forms/forms";
 
 declare var jquery: any;
 declare var $: any;
@@ -92,6 +94,9 @@ export class Account2Component implements OnInit {
 
     editDataItem ? : Account = undefined;
     isNew: boolean;
+    groupDelete: boolean = false;
+
+    public formGroup: FormGroup;
 
     ngOnInit() {
 
@@ -159,8 +164,16 @@ export class Account2Component implements OnInit {
 
     }
 
-    selectionKey(context: RowArgs): string {
+    selectionKey(context: RowArgs): string {        
+
         return context.dataItem.accountId + " " + context.index;
+    }
+
+    onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
+        if (this.selectedRows.length > 0)        
+            this.groupDelete = true;
+        else
+            this.groupDelete = false;
     }
 
     reloadGrid() {
@@ -298,8 +311,7 @@ export class Account2Component implements OnInit {
     public editHandler(arg: any) {
         this.editDataItem = arg.dataItem;
         this.isNew = false;
-    }
-
+    }    
 
     public cancelHandler() {
         this.editDataItem = undefined;

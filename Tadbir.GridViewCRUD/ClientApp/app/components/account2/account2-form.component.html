@@ -1,55 +1,55 @@
-﻿<kendo-dialog *ngIf="active" (close)="closeForm()">
-    <kendo-dialog-titlebar>
-        {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
-    </kendo-dialog-titlebar>
+﻿<kendo-dialog *ngIf="active" (close)="closeForm()" [minWidth]="250" [width]="450">
+        <kendo-dialog-titlebar>
+            {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
+        </kendo-dialog-titlebar>
 
-    <form novalidate [formGroup]="editForm">
-        <div class="form-group">
-            <label for="code" class="control-label">{{ 'Account.Code' | translate }}</label>
+        <form novalidate [formGroup]="editForm"  >
+            <div class="form-group">
+                <label for="code" class="control-label">{{ 'Account.Code' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="code" />
+                <input type="text" class="k-textbox" formControlName="code" />
 
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
-                code is required
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
+                    code is required
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="name" class="control-label">{{ 'Account.Name' | translate }}</label>
+            <div class="form-group">
+                <label for="name" class="control-label">{{ 'Account.Name' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="name" />
+                <input type="text" class="k-textbox" formControlName="name" />
 
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-                name is required
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
+                    name is required
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="fiscalPeriodId" class="control-label">{{ 'Account.Fiscal' | translate }}</label>
+            <div class="form-group">
+                <label for="fiscalPeriodId" class="control-label">{{ 'Account.Fiscal' | translate }}</label>
 
-            <!--<input type="text" class="k-textbox" formControlName="fiscalPeriodId" />-->
-            <kendo-dropdownlist [data]="fiscalPeriodRows"    [valuePrimitive]="true"
-             [textField]="'Value'"  formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'Key'" >
-            </kendo-dropdownlist>
-       
+                <!--<input type="text" class="k-textbox" formControlName="fiscalPeriodId" />-->
+                <kendo-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
+                                    [textField]="'Value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'Key'">
+                </kendo-dropdownlist>
 
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fiscalPeriodId.valid || editForm.controls.fiscalPeriodId.pristine">
-                fiscalPeriodId is required
+
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fiscalPeriodId.valid || editForm.controls.fiscalPeriodId.pristine">
+                    fiscalPeriodId is required
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="branchId" class="control-label">{{ 'Account.Branch' | translate }}</label>
+            <div class="form-group">
+                <label for="branchId" class="control-label">{{ 'Account.Branch' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="branchId" />
-            <!--<kendo-dropdownlist [data]="branchItems" [textField]="text" [valueField]="value" [(ngModel)]="selectedbranch">
-            </kendo-dropdownlist>-->
+                <input type="text" class="k-textbox" formControlName="branchId" />
+                <!--<kendo-dropdownlist [data]="branchItems" [textField]="text" [valueField]="value" [(ngModel)]="selectedbranch">
+                </kendo-dropdownlist>-->
 
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.branchId.valid || editForm.controls.branchId.pristine">
-                branchId is required
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.branchId.valid || editForm.controls.branchId.pristine">
+                    branchId is required
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
 
-    <kendo-dialog-actions>        
-        <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
-        <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
-    </kendo-dialog-actions>
-</kendo-dialog>
+        <kendo-dialog-actions>
+            <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+            <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+        </kendo-dialog-actions>
+    </kendo-dialog>

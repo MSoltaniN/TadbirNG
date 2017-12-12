@@ -129,6 +129,179 @@
         }
       }
     },
+    "@progress/kendo-angular-dateinputs": {
+      "version": "1.4.1",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-angular-dateinputs/-/kendo-angular-dateinputs-1.4.1.tgz",
+      "integrity": "sha1-QDXa/qLEi7lkDkZTTbl2dD06dCU=",
+      "requires": {
+        "@progress/kendo-angular-popup": "1.3.0",
+        "@progress/kendo-date-math": "1.1.0",
+        "tslib": "1.8.0"
+      }
+    },
+    "@progress/kendo-angular-dialog": {
+      "version": "1.3.0",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-angular-dialog/-/kendo-angular-dialog-1.3.0.tgz",
+      "integrity": "sha1-Jax1WqQNty6TptkQA1kp1KjZDp0=",
+      "requires": {
+        "tslib": "1.8.0"
+      }
+    },
+    "@progress/kendo-angular-dropdowns": {
+      "version": "1.3.0",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-angular-dropdowns/-/kendo-angular-dropdowns-1.3.0.tgz",
+      "integrity": "sha1-F8P/8ACsxUTAyYJ1JPir1/KYibA=",
+      "requires": {
+        "@progress/kendo-angular-popup": "1.3.0",
+        "@progress/kendo-angular-resize-sensor": "1.0.5",
+        "tslib": "1.8.0"
+      }
+    },
+    "@progress/kendo-angular-excel-export": {
+      "version": "1.0.5",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-angular-excel-export/-/kendo-angular-excel-export-1.0.5.tgz",
+      "integrity": "sha1-38QJrTebI6j1w8Vg7q1rBIoH+os=",
+      "requires": {
+        "@progress/kendo-file-saver": "1.0.4",
+        "@progress/kendo-ooxml": "1.0.2",
+        "tslib": "1.8.0"
+      }
+    },
+    "@progress/kendo-angular-grid": {
+      "version": "1.6.2",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-angular-grid/-/kendo-angular-grid-1.6.2.tgz",
+      "integrity": "sha1-sG1pU5Ayj/F0h24IFg//nInJ1Og=",
+      "requires": {
+        "@progress/kendo-angular-pdf-export": "1.0.1",
+        "@progress/kendo-angular-resize-sensor": "1.0.5",
+        "@progress/kendo-file-saver": "1.0.4",
+        "@telerik/kendo-draggable": "1.6.0",
+        "tslib": "1.8.0"
+      }
+    },
+    "@progress/kendo-angular-inputs": {
+      "version": "1.3.3",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-angular-inputs/-/kendo-angular-inputs-1.3.3.tgz",
+      "integrity": "sha1-gi9gogtIy8K2U3/Lj0HTXth6VYQ=",
+      "requires": {
+        "@progress/kendo-angular-resize-sensor": "1.0.5",
+        "@telerik/kendo-draggable": "1.6.0",
+        "@telerik/kendo-inputs-common": "2.2.2",
+        "tslib": "1.8.0"
+      }
+    },
+    "@progress/kendo-angular-intl": {
+      "version": "1.3.0",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-angular-intl/-/kendo-angular-intl-1.3.0.tgz",
+      "integrity": "sha1-DHgnjVlj8q3zv9xko9qDlrDEuFc=",
+      "requires": {
+        "@telerik/kendo-intl": "1.3.1",
+        "tslib": "1.8.0"
+      }
+    },
+    "@progress/kendo-angular-l10n": {
+      "version": "1.0.5",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-angular-l10n/-/kendo-angular-l10n-1.0.5.tgz",
+      "integrity": "sha1-nKgoz+Ra467WNCI7nLE9yyyHUDE=",
+      "requires": {
+        "tslib": "1.8.0"
+      }
+    },
+    "@progress/kendo-angular-pdf-export": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-angular-pdf-export/-/kendo-angular-pdf-export-1.0.1.tgz",
+      "integrity": "sha1-VuBhoClkiitDPQXdj9/+71C1ZIc=",
+      "requires": {
+        "@progress/kendo-file-saver": "1.0.4",
+        "tslib": "1.8.0"
+      }
+    },
+    "@progress/kendo-angular-popup": {
+      "version": "1.3.0",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-angular-popup/-/kendo-angular-popup-1.3.0.tgz",
+      "integrity": "sha1-Zv11Rn1yQchVK+g1xJfFLU9k7bs=",
+      "requires": {
+        "@progress/kendo-popup-common": "1.2.3",
+        "tslib": "1.8.0"
+      }
+    },
+    "@progress/kendo-angular-resize-sensor": {
+      "version": "1.0.5",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-angular-resize-sensor/-/kendo-angular-resize-sensor-1.0.5.tgz",
+      "integrity": "sha1-Su1YQD84tkYS9aIWwsyVCGJXjzk=",
+      "requires": {
+        "tslib": "1.8.0"
+      }
+    },
+    "@progress/kendo-data-query": {
+      "version": "1.1.2",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-data-query/-/kendo-data-query-1.1.2.tgz",
+      "integrity": "sha512-CQLqK4/dMEzw8e4YQxMphe7Q5IPG/cCFm9TbTSo1TcNQpkYm+W6ACZtOZAv8+vE/CvBUob+BuQoj/EWsdn+pug==",
+      "requires": {
+        "tslib": "1.8.0"
+      }
+    },
+    "@progress/kendo-date-math": {
+      "version": "1.1.0",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-date-math/-/kendo-date-math-1.1.0.tgz",
+      "integrity": "sha1-XgmNXoMCpV3Yri01kZwuVJfNLro=",
+      "requires": {
+        "tslib": "1.8.0"
+      }
+    },
+    "@progress/kendo-drawing": {
+      "version": "1.4.0",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-drawing/-/kendo-drawing-1.4.0.tgz",
+      "integrity": "sha1-4LvVCa4GnzmbJDtNImDR+3xtbX4=",
+      "requires": {
+        "pako": "1.0.6"
+      },
+      "dependencies": {
+        "pako": {
+          "version": "1.0.6",
+          "resolved": "https://registry.npmjs.org/pako/-/pako-1.0.6.tgz",
+          "integrity": "sha512-lQe48YPsMJAig+yngZ87Lus+NF+3mtu7DVOBu6b/gHO1YpKwIj5AWjZ/TOS7i46HD/UixzWb1zeWDZfGZ3iYcg=="
+        }
+      }
+    },
+    "@progress/kendo-file-saver": {
+      "version": "1.0.4",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-file-saver/-/kendo-file-saver-1.0.4.tgz",
+      "integrity": "sha1-pwI8IlHwSnVquGxW9xxO7LGjVr4="
+    },
+    "@progress/kendo-ooxml": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-ooxml/-/kendo-ooxml-1.0.2.tgz",
+      "integrity": "sha1-aO9/ZeTocg2ELMvabdg0FAIKlOM=",
+      "requires": {
+        "jszip": "3.1.5"
+      }
+    },
+    "@progress/kendo-popup-common": {
+      "version": "1.2.3",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-popup-common/-/kendo-popup-common-1.2.3.tgz",
+      "integrity": "sha1-S6Cb/9+IbqvtQSani1ONmP4yEcY="
+    },
+    "@progress/kendo-theme-default": {
+      "version": "2.45.2",
+      "resolved": "https://registry.npmjs.org/@progress/kendo-theme-default/-/kendo-theme-default-2.45.2.tgz",
+      "integrity": "sha1-lWxtx9DjDQjvbdkn23Z7iJOnN9M="
+    },
+    "@telerik/kendo-draggable": {
+      "version": "1.6.0",
+      "resolved": "https://registry.npmjs.org/@telerik/kendo-draggable/-/kendo-draggable-1.6.0.tgz",
+      "integrity": "sha1-aVHSOCibCTIrYwbMugfTieXUeEo="
+    },
+    "@telerik/kendo-inputs-common": {
+      "version": "2.2.2",
+      "resolved": "https://registry.npmjs.org/@telerik/kendo-inputs-common/-/kendo-inputs-common-2.2.2.tgz",
+      "integrity": "sha1-hOWlADBkeMZX7YbzrypA3KDXT8E="
+    },
+    "@telerik/kendo-intl": {
+      "version": "1.3.1",
+      "resolved": "https://registry.npmjs.org/@telerik/kendo-intl/-/kendo-intl-1.3.1.tgz",
+      "integrity": "sha1-8ehxkbH9PlIuSHc0o6cfwLxmTG8="
+    },
     "@types/chai": {
       "version": "4.0.4",
       "resolved": "https://registry.npmjs.org/@types/chai/-/chai-4.0.4.tgz",
@@ -2412,6 +2585,11 @@
       "resolved": "https://registry.npmjs.org/ieee754/-/ieee754-1.1.8.tgz",
       "integrity": "sha1-vjPUCsEO8ZJnAfbwii2G+/0a0+Q="
     },
+    "immediate": {
+      "version": "3.0.6",
+      "resolved": "https://registry.npmjs.org/immediate/-/immediate-3.0.6.tgz",
+      "integrity": "sha1-nbHb0Pr43m++D13V5Wu2BigN5ps="
+    },
     "indexes-of": {
       "version": "1.0.1",
       "resolved": "https://registry.npmjs.org/indexes-of/-/indexes-of-1.0.1.tgz",
@@ -2724,6 +2902,53 @@
       "resolved": "https://registry.npmjs.org/jsonify/-/jsonify-0.0.0.tgz",
       "integrity": "sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM="
     },
+    "jszip": {
+      "version": "3.1.5",
+      "resolved": "https://registry.npmjs.org/jszip/-/jszip-3.1.5.tgz",
+      "integrity": "sha1-48KmxtcGrG5gMxQDbUPNQL7v3zc=",
+      "requires": {
+        "core-js": "2.3.0",
+        "es6-promise": "3.0.2",
+        "lie": "3.1.1",
+        "pako": "1.0.6",
+        "readable-stream": "2.0.6"
+      },
+      "dependencies": {
+        "core-js": {
+          "version": "2.3.0",
+          "resolved": "https://registry.npmjs.org/core-js/-/core-js-2.3.0.tgz",
+          "integrity": "sha1-+rg/uwstjchfpjbEudNMdUIMbWU="
+        },
+        "es6-promise": {
+          "version": "3.0.2",
+          "resolved": "https://registry.npmjs.org/es6-promise/-/es6-promise-3.0.2.tgz",
+          "integrity": "sha1-AQ1YWEI6XxGJeWZfRkhqlcbuK7Y="
+        },
+        "pako": {
+          "version": "1.0.6",
+          "resolved": "https://registry.npmjs.org/pako/-/pako-1.0.6.tgz",
+          "integrity": "sha512-lQe48YPsMJAig+yngZ87Lus+NF+3mtu7DVOBu6b/gHO1YpKwIj5AWjZ/TOS7i46HD/UixzWb1zeWDZfGZ3iYcg=="
+        },
+        "readable-stream": {
+          "version": "2.0.6",
+          "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-2.0.6.tgz",
+          "integrity": "sha1-j5A0HmilPMySh4jaz80Rs265t44=",
+          "requires": {
+            "core-util-is": "1.0.2",
+            "inherits": "2.0.3",
+            "isarray": "1.0.0",
+            "process-nextick-args": "1.0.7",
+            "string_decoder": "0.10.31",
+            "util-deprecate": "1.0.2"
+          }
+        },
+        "string_decoder": {
+          "version": "0.10.31",
+          "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz",
+          "integrity": "sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ="
+        }
+      }
+    },
     "karma": {
       "version": "1.7.1",
       "resolved": "https://registry.npmjs.org/karma/-/karma-1.7.1.tgz",
@@ -2853,6 +3078,14 @@
       "integrity": "sha1-MIrMr6C8SDo4Z7S28rlQYlHRuDU=",
       "requires": {
         "invert-kv": "1.0.0"
+      }
+    },
+    "lie": {
+      "version": "3.1.1",
+      "resolved": "https://registry.npmjs.org/lie/-/lie-3.1.1.tgz",
+      "integrity": "sha1-mkNrLMd0bKWd56QfpGmz77dr2H4=",
+      "requires": {
+        "immediate": "3.0.6"
       }
     },
     "load-json-file": {
@@ -3180,6 +3413,11 @@
       "resolved": "https://registry.npmjs.org/negotiator/-/negotiator-0.6.1.tgz",
       "integrity": "sha1-KzJxhOiZIQEXeyhWP7XnECrNDKk=",
       "dev": true
+    },
+    "ng2-translate": {
+      "version": "5.0.0",
+      "resolved": "https://registry.npmjs.org/ng2-translate/-/ng2-translate-5.0.0.tgz",
+      "integrity": "sha1-Ctu1EOtQB6LW3tX10miIwUdgrKU="
     },
     "no-case": {
       "version": "2.3.2",
@@ -4111,9 +4349,9 @@
       }
     },
     "preboot": {
-      "version": "5.1.4",
-      "resolved": "https://registry.npmjs.org/preboot/-/preboot-5.1.4.tgz",
-      "integrity": "sha512-PmHTwtqL/s2qjD8G45IUalw1mbl15xxmiTSx+tKWQFny9mbXvBsicMdM8xQYAxDyHGtosoWh8y6o4dRTDDvEbA=="
+      "version": "5.1.5",
+      "resolved": "https://registry.npmjs.org/preboot/-/preboot-5.1.5.tgz",
+      "integrity": "sha512-WprVhgsLXA9Kya2P6x6KcjmKB1dnCyx6PIDkBaaP/fexBFFsIpeNoA97FBFLDlN98rC6uDTsT9jmRe/w75cxPQ=="
     },
     "prepend-http": {
       "version": "1.0.4",
@@ -4126,9 +4364,9 @@
       "integrity": "sha1-gV7R9uvGWSb4ZbMQwHE7yzMVzks="
     },
     "primeng": {
-      "version": "4.2.2",
-      "resolved": "https://registry.npmjs.org/primeng/-/primeng-4.2.2.tgz",
-      "integrity": "sha1-t2EWwkUF3crX9SpLuna1hNjnxSc="
+      "version": "4.3.0",
+      "resolved": "https://registry.npmjs.org/primeng/-/primeng-4.3.0.tgz",
+      "integrity": "sha1-aH7NHhoVjPDodC78fam5M4zUcMM="
     },
     "private": {
       "version": "0.1.8",
@@ -5167,9 +5405,9 @@
       }
     },
     "typescript": {
-      "version": "2.5.0",
-      "resolved": "https://registry.npmjs.org/typescript/-/typescript-2.5.0.tgz",
-      "integrity": "sha1-YJiedMrZPCj+Nff3tB/psgWiVwE="
+      "version": "2.6.1",
+      "resolved": "https://registry.npmjs.org/typescript/-/typescript-2.6.1.tgz",
+      "integrity": "sha1-7znN6ierrAtQAkLWcmq5DgyEZjE="
     },
     "typescript-string-operations": {
       "version": "1.1.0",
