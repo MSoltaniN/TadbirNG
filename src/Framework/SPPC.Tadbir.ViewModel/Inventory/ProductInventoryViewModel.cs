@@ -11,9 +11,9 @@ namespace SPPC.Tadbir.ViewModel.Inventory
         /// <summary>
         /// شناسه دیتابیسی کالایی که موجودی برای آن تعریف شده
         /// </summary>
-        [Display(Name = FieldNames.ProductNameField)]
+        [Display(Name = FieldNames.ProductField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
 
         /// <summary>
         /// کد کالایی که موجودی برای آن تعریف شده
@@ -30,7 +30,7 @@ namespace SPPC.Tadbir.ViewModel.Inventory
         /// </summary>
         [Display(Name = FieldNames.UomField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int UomId { get; set; }
+        public int? UomId { get; set; }
 
         /// <summary>
         /// نام واحد اندازه گیری کالا برای این موجودی
@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.ViewModel.Inventory
         /// </summary>
         [Display(Name = FieldNames.WarehouseField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int WarehouseId { get; set; }
+        public int? WarehouseId { get; set; }
 
         /// <summary>
         /// نام انباری که موجودی کالا برای آن تعریف شده

@@ -142,17 +142,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetRepository<User>();
             if (user.Id == 0)
             {
-                var newUser = _mapper.Map<User>(user);
+                var newUser = GetNewUser(user);
                 repository.Insert(newUser);
-                var person = new Person()
-                {
-                    FirstName = user.PersonFirstName,
-                    LastName = user.PersonLastName,
-                    User = newUser
-                };
-
-                newUser.Person = person;
-                repository.Update(newUser);
             }
             else
             {

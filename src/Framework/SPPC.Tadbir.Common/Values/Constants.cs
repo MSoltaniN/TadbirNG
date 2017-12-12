@@ -60,5 +60,7 @@ namespace SPPC.Tadbir.Values
         /// نام تنظیمات مربوط به مسیر صفحه اصلی برنامه روی سرور وب
         /// </summary>
         public const string AppRootKey = "AppRoot";
+
+        public const string AppRoot = "http://localhost:8802/";
     }
 }

@@ -2,32 +2,34 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>SPPC.Tadbir</RootNamespace>
     <Version>1.1.0</Version>
     <Authors>Babak Eslamieh</Authors>
     <Company>SPPC</Company>
     <Product>Framework</Product>
-    <Copyright>TODO: Add copyright notice</Copyright>
     <Description>TODO: Add product description</Description>
+    <Copyright>TODO: Add copyright notice</Copyright>
     <AssemblyVersion>1.1.182.0</AssemblyVersion>
     <FileVersion>1.1.182.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\..\..\bin\Debug\netstandard2.0\</OutputPath>
-    <DocumentationFile>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.Interfaces.xml</DocumentationFile>
+    <DocumentationFile>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.Service.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Class1.cs" />
-    <Compile Remove="Persistence\IAccountRepository.Generated.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj" />
+    <ProjectReference Include="..\SPPC.Framework.Service\SPPC.Framework.Service.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj" />
-    <ProjectReference Include="..\SPPC.Tadbir.ViewModel\SPPC.Tadbir.ViewModel.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

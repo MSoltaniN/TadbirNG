@@ -157,8 +157,8 @@ namespace SPPC.Tadbir.Persistence
             var articles = repository
                 .GetByCriteria(
                     line => line.Account.Id == accountId,
-                    line => line.Account, line => line.Branch, line => line.Currency, line => line.FiscalPeriod,
-                    line => line.Transaction)
+                    line => line.Account, line => line.Branch, line => line.Currency, line => line.FiscalPeriod)
+                    //,line => line.Transaction)
                 .Select(line => _mapper.Map<TransactionLineViewModel>(line))
                 .ToList();
 

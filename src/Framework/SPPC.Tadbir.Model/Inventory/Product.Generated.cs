@@ -64,6 +64,7 @@ namespace SPPC.Tadbir.Model.Inventory
 
         private void InitReferences()
         {
+            Category = new ProductCategory();
         }
     }
 }

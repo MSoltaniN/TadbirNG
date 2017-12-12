@@ -298,6 +298,11 @@ namespace SPPC.Tadbir.Values
         public const string WarehouseCommentField = "نظریه انبار";
 
         /// <summary>
+        /// Localized name of Product field
+        /// </summary>
+        public const string ProductField = "کالا";
+
+        /// <summary>
         /// Localized name of Product Code field
         /// </summary>
         public const string ProductCodeField = "کد کالا";

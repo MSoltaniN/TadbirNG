@@ -58,6 +58,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not post new product inventory because a 'null' value was provided");
             }
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             _repository.SaveProductInventory(inventory);
             return StatusCode(StatusCodes.Status201Created);
         }
@@ -81,6 +86,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (inventory.Id != inventoryId)
             {
                 return BadRequest("Could not put modified product inventory due to an identity conflict in request");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
 
             _repository.SaveProductInventory(inventory);

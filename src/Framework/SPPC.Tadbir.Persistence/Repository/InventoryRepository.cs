@@ -110,9 +110,9 @@ namespace SPPC.Tadbir.Persistence
         private void UpdateExistingInventory(ProductInventory existing, ProductInventoryViewModel inventory)
         {
             existing.Quantity = inventory.Quantity;
-            existing.Product = _unitOfWork.GetRepository<Product>().GetByID(inventory.ProductId);
-            existing.Uom = _unitOfWork.GetRepository<UnitOfMeasurement>().GetByID(inventory.UomId);
-            existing.Warehouse = _unitOfWork.GetRepository<Warehouse>().GetByID(inventory.WarehouseId);
+            existing.Product = _unitOfWork.GetRepository<Product>().GetByID(inventory.ProductId ?? 0);
+            existing.Uom = _unitOfWork.GetRepository<UnitOfMeasurement>().GetByID(inventory.UomId ?? 0);
+            existing.Warehouse = _unitOfWork.GetRepository<Warehouse>().GetByID(inventory.WarehouseId ?? 0);
         }
 
         private IUnitOfWork _unitOfWork;

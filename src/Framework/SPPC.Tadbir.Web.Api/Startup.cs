@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ using SPPC.Framework.Persistence;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Service;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -31,14 +33,17 @@ namespace SPPC.Tadbir.Web.Api
         {
             services.AddDbContext<TadbirContext>();
             services.AddMvc();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<ILookupRepository, LookupRepository>();
             services.AddTransient<IInventoryRepository, InventoryRepository>();
             services.AddTransient<ISecurityRepository, SecurityRepository>();
+            services.AddTransient<ITransactionRepository, TransactionRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IDomainMapper, DomainMapper>();
             services.AddTransient<DbContext, TadbirContext>();
             services.AddTransient<ICryptoService, CryptoService>();
+            services.AddTransient<ISecurityContextManager, ServiceContextManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

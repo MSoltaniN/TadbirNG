@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Contact;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
@@ -37,7 +38,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(d => d.Person)
                 .WithOne(p => p.User)
-                .HasForeignKey<User>()
+                .HasForeignKey<Person>("UserID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Contact_Person_Auth_User");
         }
