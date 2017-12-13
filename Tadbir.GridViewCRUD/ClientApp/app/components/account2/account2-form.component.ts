@@ -42,7 +42,7 @@ export class AccountFormComponent {
         
         this.editForm.reset(account);
 
-        this.active = account !== undefined;
+        this.active = account !== undefined || this.isNew;
         if (account != undefined)
         {
             //var index = this.fiscalPeriodRows.find(p => p.Key == account.fiscalPeriodId.toString());
@@ -74,6 +74,7 @@ export class AccountFormComponent {
     }
 
     private closeForm(): void {
+        this.isNew = false;
         this.active = false;
         this.cancel.emit();
     }

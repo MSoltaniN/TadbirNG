@@ -43,14 +43,14 @@ export class AccountComponent implements OnInit {
     currentOrder: string = "";
 
     //variable for visible delete confirm dialog
-    displayDeleteDialog: boolean;
+    displayDeleteDialog: boolean = false;
     deleteAccountId: number;
 
     //for add in delete messageText
     deleteConfirm: string;
 
     //variable for dialog
-    displayDialog: boolean;
+    displayDialog: boolean = false;
 
     config: ToastConfig;
 

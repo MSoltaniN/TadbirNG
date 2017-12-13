@@ -10,7 +10,7 @@
                 <input type="text" class="k-textbox" formControlName="code" />
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
-                    code is required
+                    {{ 'Validations.AccountCode' | translate }}
                 </div>
             </div>
             <div class="form-group">
@@ -19,7 +19,7 @@
                 <input type="text" class="k-textbox" formControlName="name" />
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-                    name is required
+                    {{ 'Validations.AccountName' | translate }}
                 </div>
             </div>
             <div class="form-group">
@@ -32,19 +32,22 @@
 
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fiscalPeriodId.valid || editForm.controls.fiscalPeriodId.pristine">
-                    fiscalPeriodId is required
+                    {{ 'Validations.FiscalPeriodid' | translate }}
                 </div>
             </div>
             <div class="form-group">
                 <label for="branchId" class="control-label">{{ 'Account.Branch' | translate }}</label>
 
                 <input type="text" class="k-textbox" formControlName="branchId" />
-                <!--<kendo-dropdownlist [data]="branchItems" [textField]="text" [valueField]="value" [(ngModel)]="selectedbranch">
-                </kendo-dropdownlist>-->
-
+              
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.branchId.valid || editForm.controls.branchId.pristine">
-                    branchId is required
+                    {{ 'Validations.BranchId' | translate }}
                 </div>
+            </div>
+            <div class="form-group">
+                <label for="description" class="control-label">{{ 'Account.Description' | translate }}</label>
+
+                <input type="text" class="k-textbox" formControlName="description" />              
             </div>
         </form>
 

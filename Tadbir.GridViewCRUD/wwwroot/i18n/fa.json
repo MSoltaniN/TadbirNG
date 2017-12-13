@@ -43,9 +43,15 @@
   "Fiscal": {
     "FiscalPeriod": "دوره مالی"
   },
-  "Paging" :
-  {
+  "Paging": {
     "Record": "رکورد",
-    "Of" : "از"
+    "Of": "از"
+  },
+  "Validations": {
+    "AccountCode": "کد حساب اجباری می باشد",
+    "AccountName": "نام حساب اجباری می باشد",
+    "FiscalPeriodId": "دوره مالی اجباری می باشد",
+    "BranchId": "کد شعبه اجباری می باشد"
   }
+
 }

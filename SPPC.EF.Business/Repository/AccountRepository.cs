@@ -57,6 +57,7 @@
                 {
                     var result = from a in db.Account
                                  where a.BranchId == branchId && a.FiscalPeriodId == fId
+                                 orderby a.ModifiedDate descending
                                  select new Account
                                  {
                                      BranchId = a.BranchId,
@@ -159,6 +160,7 @@
                 using (SppcDBContext db = new SppcDBContext())
                 {
                     var result = from a in db.Account
+                                 orderby a.ModifiedDate descending
                                  select new Account
                                  {
                                      BranchId = a.BranchId,

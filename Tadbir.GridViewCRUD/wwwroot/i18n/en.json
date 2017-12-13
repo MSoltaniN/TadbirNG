@@ -49,6 +49,12 @@
   "Paging": {
     "Record": "Record",
     "Of": "Of"
+  },
+  "Validations": {
+    "AccountCode": "account code is required",
+    "AccountName": "account name is required",
+    "FiscalPeriodId": "fiscal period is required",
+    "BranchId": "branch id is required"
   }
 
 

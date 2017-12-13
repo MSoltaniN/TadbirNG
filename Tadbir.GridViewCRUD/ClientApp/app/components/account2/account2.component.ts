@@ -169,8 +169,17 @@ export class Account2Component implements OnInit {
         return context.dataItem.accountId + " " + context.index;
     }
 
+    deleteAccounts()
+    {
+        this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
+            this.toastrService.info(this.deleteMsg, '', { positionClass: 'toast-top-left' });
+            this.selectedRows = [];
+            this.reloadGrid();            
+        });
+    }
+
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
-        if (this.selectedRows.length > 0)        
+        if (this.selectedRows.length > 1)        
             this.groupDelete = true;
         else
             this.groupDelete = false;
@@ -317,6 +326,11 @@ export class Account2Component implements OnInit {
         this.editDataItem = undefined;
     }
 
+    public addNew() {
+        this.isNew = true;
+        this.editDataItem = new AccountInfo();        
+    }    
+
     public saveHandler(account: Account) {
 
         if (!this.isNew) {
@@ -336,6 +350,7 @@ export class Account2Component implements OnInit {
         }
 
         this.editDataItem = undefined;
+        this.isNew = false;
     }
 
     //

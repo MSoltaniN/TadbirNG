@@ -39,6 +39,26 @@ namespace Tadbir.GridViewCRUD.Controllers
             return Json(await _repository.Delete(id));
         }
 
+
+        ////[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
+        [HttpPost, Produces("application/json")]
+        [Route("/Account/DeleteAccs")]
+        public async Task<IActionResult> DeleteAccs([FromBody] string[] ids)
+        {
+            if (ids.Length == 0)
+            {
+                return BadRequest("Could not delete account because it does not exist.");
+            }
+
+            bool res = false;
+            foreach(string id in ids)
+            {
+                res = await _repository.Delete(int.Parse(id.Split(' ')[0]));
+            }
+
+            return Json(res);
+        }
+
         // POST: api/accounts
         [Route("/Account/Edit")]
         [HttpPost, Produces("application/json")]
@@ -97,5 +117,7 @@ namespace Tadbir.GridViewCRUD.Controllers
             var accounts = await _repository.Get(options);
             return Json(accounts);
         }
+
+
     }
 }

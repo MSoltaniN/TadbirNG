@@ -26,7 +26,9 @@ export class AccountService
 
     private _getCountUrl = "/Account/Count";
 
-    private _deleteAccountsUrl = "/Account/Delete/{0}";
+    private _deleteUrl = "/Account/Delete/{0}";
+
+    private _deleteAccountsUrl = "/Account/DeleteAccs";
 
     private _postNewAccountsUrl = "/Account/Insert";
 
@@ -156,9 +158,22 @@ export class AccountService
     {
         //ToDo : call api for delete entity
 
-        var deleteByIdUrl = String.Format(this._deleteAccountsUrl, accountId.toString());
+        var deleteByIdUrl = String.Format(this._deleteUrl, accountId.toString());
 
         return this.http.post(deleteByIdUrl,this.options)
+            .map(response => response.json().message)
+            .catch(this.handleError);
+    }
+
+    deleteAccounts(accounts: string[]): Observable<string> {
+        //ToDo : call api for delete entity
+
+        let body = JSON.stringify(accounts);
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+
+
+        return this.http.post(this._deleteAccountsUrl,body, this.options)
             .map(response => response.json().message)
             .catch(this.handleError);
     }
