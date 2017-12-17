@@ -187,7 +187,7 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.Date,
                     opts => opts.MapFrom(
                         src => JalaliDateTime.Parse(src.Date).ToGregorian()))
-                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
+                //.AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
                 .AfterMap((viewModel, model) => model.Document.Id = viewModel.Document.Id);
             mapperConfig.CreateMap<TransactionLine, TransactionLineViewModel>();
@@ -363,14 +363,15 @@ namespace SPPC.Tadbir.Mapper
                         src => !String.IsNullOrWhiteSpace(src.PromisedDate)
                             ? JalaliDateTime.Parse(src.PromisedDate).ToGregorian()
                             : (DateTime?)null))
-                .AfterMap((viewModel, model) => model.Type.Id = viewModel.TypeId)
+                .AfterMap((viewModel, model) => model.Type.Id = viewModel.TypeId ?? 0)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
-                .AfterMap((viewModel, model) => model.Requester.Id = viewModel.RequesterId)
-                .AfterMap((viewModel, model) => model.Receiver.Id = viewModel.ReceiverId)
-                .AfterMap((viewModel, model) => model.RequesterUnit.Id = viewModel.RequesterUnitId)
-                .AfterMap((viewModel, model) => model.ReceiverUnit.Id = viewModel.ReceiverUnitId)
-                .AfterMap((viewModel, model) => model.Warehouse.Id = viewModel.WarehouseId);
+                .AfterMap((viewModel, model) => model.Requester.Id = viewModel.RequesterId ?? 0)
+                .AfterMap((viewModel, model) => model.FullAccount.Id = viewModel.FullAccount.Id)
+                .AfterMap((viewModel, model) => model.Receiver.Id = viewModel.ReceiverId ?? 0)
+                .AfterMap((viewModel, model) => model.RequesterUnit.Id = viewModel.RequesterUnitId ?? 0)
+                .AfterMap((viewModel, model) => model.ReceiverUnit.Id = viewModel.ReceiverUnitId ?? 0)
+                .AfterMap((viewModel, model) => model.Warehouse.Id = viewModel.WarehouseId ?? 0);
 
             mapperConfig.CreateMap<RequisitionVoucherLine, VoucherLineSummaryViewModel>()
                 .ForMember(

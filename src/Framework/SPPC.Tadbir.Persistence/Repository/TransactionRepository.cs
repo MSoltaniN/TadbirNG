@@ -42,8 +42,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<Transaction>();
             var transactions = repository
-                .GetByCriteria(txn => txn.FiscalPeriod.Id == fpId
-                    && txn.Branch.Id == branchId)
+                //.GetByCriteria(txn => txn.FiscalPeriod.Id == fpId
+                //    && txn.Branch.Id == branchId)
+                .GetAll(txn => txn.Branch, txn => txn.Document, txn => txn.Lines)
                 .OrderBy(txn => txn.Date)
                 .Select(txn => _mapper.Map<TransactionViewModel>(txn))
                 .Select(txn => AddWorkItemInfo(txn))
@@ -60,13 +61,14 @@ namespace SPPC.Tadbir.Persistence
         {
             TransactionFullViewModel transactionDetail = null;
             var repository = _unitOfWork.GetRepository<Transaction>();
-            var transaction = repository.GetByID(transactionId);
+            var transaction = repository.GetByID(transactionId, txn => txn.Branch, txn => txn.Lines);
             if (transaction != null)
             {
                 transactionDetail = _mapper.Map<TransactionFullViewModel>(transaction);
                 var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
                 var history = historyRepository
-                    .GetByCriteria(hist => hist.EntityId == transactionId)
+                    .GetByCriteria(
+                        hist => hist.EntityId == transactionId, hist => hist.Document, hist => hist.User, hist => hist.Role)
                     .OrderByDescending(hist => hist.Date)
                     .OrderByDescending(hist => hist.Time)
                     .Select(hist => _mapper.Map<HistoryItemViewModel>(hist));
@@ -309,7 +311,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetRepository<WorkItemDocument>();
             var document = repository
                 .GetByCriteria(wid => wid.Document.Id == transaction.Document.Id
-                    && wid.DocumentType == DocumentTypeName.Transaction)
+                    && wid.DocumentType == DocumentTypeName.Transaction,
+                    wid => wid.Document, wid => wid.WorkItem)
                 .FirstOrDefault();
             if (document != null)
             {

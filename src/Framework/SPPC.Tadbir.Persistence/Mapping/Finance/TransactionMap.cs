@@ -43,11 +43,11 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey("DocumentID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_Transaction_Core_Document");
-            builder.HasOne(d => d.FiscalPeriod)
-                .WithMany()
-                .HasForeignKey("FiscalPeriodID")
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_Transaction_Finance_FiscalPeriod");
+            //builder.HasOne(d => d.FiscalPeriod)
+            //    .WithMany()
+            //    .HasForeignKey("FiscalPeriodID")
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK_Finance_Transaction_Finance_FiscalPeriod");
         }
     }
 }

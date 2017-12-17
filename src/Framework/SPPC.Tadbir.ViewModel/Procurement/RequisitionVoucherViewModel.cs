@@ -15,42 +15,42 @@ namespace SPPC.Tadbir.ViewModel.Procurement
         /// </summary>
         [Display(Name = FieldNames.RequisitionVoucherTypeField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int TypeId { get; set; }
+        public int? TypeId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی شخص درخواست کننده
         /// </summary>
         [Display(Name = FieldNames.RequesterField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int RequesterId { get; set; }
+        public int? RequesterId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی شخص دریافت کننده
         /// </summary>
         [Display(Name = FieldNames.ReceiverField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int ReceiverId { get; set; }
+        public int? ReceiverId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی واحد درخواست کننده
         /// </summary>
         [Display(Name = FieldNames.RequesterUnitField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int RequesterUnitId { get; set; }
+        public int? RequesterUnitId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی واحد دریافت کننده
         /// </summary>
         [Display(Name = FieldNames.ReceiverUnitField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int ReceiverUnitId { get; set; }
+        public int? ReceiverUnitId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی انبار مرتبط با این درخواست
         /// </summary>
         [Display(Name = FieldNames.WarehouseField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int WarehouseId { get; set; }
+        public int? WarehouseId { get; set; }
 
         /// <summary>
         /// اطلاعات نمایشی بردار حساب این درخواست کالا

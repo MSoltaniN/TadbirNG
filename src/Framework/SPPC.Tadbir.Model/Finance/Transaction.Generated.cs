@@ -71,10 +71,10 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public virtual IList<TransactionLine> Lines { get; protected set; }
 
-        /// <summary>
-        /// دوره مالی که در آن پیشامد مالی ثبت شده است
-        /// </summary>
-        public virtual FiscalPeriod FiscalPeriod { get; set; }
+        ///// <summary>
+        ///// دوره مالی که در آن پیشامد مالی ثبت شده است
+        ///// </summary>
+        //public virtual FiscalPeriod FiscalPeriod { get; set; }
 
         /// <summary>
         /// شعبه سازمانی که سند مالی برای آن ایجاد شده است
@@ -89,7 +89,7 @@ namespace SPPC.Tadbir.Model.Finance
         private void InitReferences()
         {
             Lines = new List<TransactionLine>();
-            FiscalPeriod = new FiscalPeriod();
+            //FiscalPeriod = new FiscalPeriod();
             Branch = new Branch();
             Document = new Document();
         }

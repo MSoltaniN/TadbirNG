@@ -39,11 +39,13 @@ namespace SPPC.Tadbir.Web.Api
             services.AddTransient<IInventoryRepository, InventoryRepository>();
             services.AddTransient<ISecurityRepository, SecurityRepository>();
             services.AddTransient<ITransactionRepository, TransactionRepository>();
+            services.AddTransient<IRequisitionRepository, RequisitionRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IDomainMapper, DomainMapper>();
             services.AddTransient<DbContext, TadbirContext>();
             services.AddTransient<ICryptoService, CryptoService>();
             services.AddTransient<ISecurityContextManager, ServiceContextManager>();
+            services.AddTransient<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

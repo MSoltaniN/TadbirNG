@@ -17,6 +17,7 @@ using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    [Produces("application/json")]
     public class RequisitionsController : Controller
     {
         public RequisitionsController(IRequisitionRepository repository, ISecurityContextManager contextManager)
@@ -61,7 +62,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/requisitions
-        [Route(RequisitionApi.RequisitionsUrl)]
+        [HttpPost, Route(RequisitionApi.RequisitionsUrl)]
         //[AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Create)]
         public IActionResult PostNewRequisition([FromBody] RequisitionVoucherViewModel voucher)
         {
@@ -70,13 +71,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest("Could not post new requisition because a 'null' value was provided.");
             }
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             SetVoucherDocument(voucher);
             _repository.SaveRequisition(voucher);
             return StatusCode(StatusCodes.Status201Created);
         }
 
         // PUT: api/requisitions/{voucherId:int}
-        [Route(RequisitionApi.RequisitionUrl)]
+        [HttpPut, Route(RequisitionApi.RequisitionUrl)]
         //[AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public IActionResult PutModifiedRequisition(int voucherId, [FromBody] RequisitionVoucherViewModel voucher)
         {
@@ -96,7 +102,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // DELETE: api/requisitions/{voucherId:int}
-        [Route(RequisitionApi.RequisitionUrl)]
+        [HttpDelete, Route(RequisitionApi.RequisitionUrl)]
         //[AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Delete)]
         public IActionResult DeleteExistingRequisition(int voucherId)
         {
@@ -127,7 +133,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/requisitions/{voucherId:int}/lines
-        [Route(RequisitionApi.RequisitionLinesUrl)]
+        [HttpPost, Route(RequisitionApi.RequisitionLinesUrl)]
         //[AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public IActionResult PostNewRequisitionLine(int voucherId, [FromBody] RequisitionVoucherLineViewModel line)
         {
@@ -147,7 +153,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/requisitions/{voucherId:int}/lines/{lineId:int}
-        [Route(RequisitionApi.RequisitionLineUrl)]
+        [HttpPut, Route(RequisitionApi.RequisitionLineUrl)]
         //[AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public IActionResult PutModifiedRequisitionLine(
             int voucherId, int lineId, [FromBody] RequisitionVoucherLineViewModel line)
@@ -168,7 +174,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // DELETE: api/requisitions/{voucherId:int}/lines/{lineId:int}
-        [Route(RequisitionApi.RequisitionLineUrl)]
+        [HttpDelete, Route(RequisitionApi.RequisitionLineUrl)]
         //[AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Delete)]
         public IActionResult DeleteExistingRequisitionLine(int voucherId, int lineId)
         {
@@ -182,7 +188,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/requisitions/{voucherId:int}/prepare
-        [Route(RequisitionApi.PrepareUrl)]
+        [HttpPut, Route(RequisitionApi.PrepareUrl)]
         //[AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Prepare)]
         public IActionResult PutRequisitionAsPrepared(int voucherId, [FromBody] ActionDetailViewModel detail)
         {

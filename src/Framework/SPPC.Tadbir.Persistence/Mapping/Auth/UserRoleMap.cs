@@ -16,7 +16,16 @@ namespace SPPC.Tadbir.Persistence.Mapping
         internal static void BuildMapping(EntityTypeBuilder<UserRole> builder)
         {
             builder.ToTable("UserRole", "Auth");
-            builder.HasKey(e => new { e.UserId, e.RoleId });
+            builder.HasKey(e => e.Id);
+            builder.Property(e => e.Id)
+                .HasColumnName("UserRoleID");
+            builder.HasAlternateKey(e => new { e.UserId, e.RoleId });
+            builder.Property(e => e.ModifiedDate)
+                .HasColumnType("datetime")
+                .HasDefaultValueSql("(getdate())");
+            builder.Property(e => e.RowGuid)
+                .HasColumnName("rowguid")
+                .HasDefaultValueSql("(newid())");
 
             builder.HasOne(d => d.User)
                 .WithMany(p => p.UserRoles)

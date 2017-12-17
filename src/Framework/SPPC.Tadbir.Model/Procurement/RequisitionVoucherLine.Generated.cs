@@ -54,17 +54,17 @@ namespace SPPC.Tadbir.Model.Procurement
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        public virtual double DeliveredQuantity { get; set; }
+        public virtual double? DeliveredQuantity { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        public virtual double ReservedQuantity { get; set; }
+        public virtual double? ReservedQuantity { get; set; }
 
         /// <summary>
         /// TODO: Add description...
         /// </summary>
-        public virtual double LastOrderedQuantity { get; set; }
+        public virtual double? LastOrderedQuantity { get; set; }
 
         /// <summary>
         /// TODO: Add description...

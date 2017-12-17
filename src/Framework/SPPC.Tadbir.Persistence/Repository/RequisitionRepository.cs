@@ -43,7 +43,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetRepository<RequisitionVoucher>();
             var requisitions = repository
                 .GetByCriteria(req => req.FiscalPeriod.Id == fpId
-                    && req.Branch.Id == branchId)
+                    && req.Branch.Id == branchId,
+                    req => req.Requester, req => req.RequesterUnit, req => req.Document)
                 .Select(item => _mapper.Map<VoucherSummaryViewModel>(item))
                 .ToList();
             return requisitions;
@@ -76,7 +77,11 @@ namespace SPPC.Tadbir.Persistence
         {
             var voucherDetails = default(RequisitionFullViewModel);
             var repository = _unitOfWork.GetRepository<RequisitionVoucher>();
-            var voucher = repository.GetByID(voucherId);
+            var voucher = repository.GetByID(
+                voucherId,
+                req => req.Branch, req => req.Document, req => req.FiscalPeriod, req => req.FullAccount,
+                req => req.Lines, req => req.Receiver, req => req.ReceiverUnit, req => req.Requester,
+                req => req.RequesterUnit, req => req.Warehouse);
             if (voucher != null)
             {
                 voucherDetails = _mapper.Map<RequisitionFullViewModel>(voucher);
@@ -232,12 +237,12 @@ namespace SPPC.Tadbir.Persistence
             existing.Reference = voucher.Reference;
             existing.WarehouseComment = voucher.WarehouseComment;
             existing.Description = voucher.Description;
-            existing.Type = new RequisitionVoucherType() { Id = voucher.TypeId };
-            existing.Requester = new BusinessPartner() { Id = voucher.RequesterId };
-            existing.Receiver = new BusinessPartner() { Id = voucher.ReceiverId };
-            existing.RequesterUnit = new BusinessUnit() { Id = voucher.RequesterUnitId };
-            existing.ReceiverUnit = new BusinessUnit() { Id = voucher.ReceiverUnitId };
-            existing.Warehouse = new Warehouse() { Id = voucher.WarehouseId };
+            existing.Type = new RequisitionVoucherType() { Id = voucher.TypeId ?? 0 };
+            existing.Requester = new BusinessPartner() { Id = voucher.RequesterId ?? 0 };
+            existing.Receiver = new BusinessPartner() { Id = voucher.ReceiverId ?? 0 };
+            existing.RequesterUnit = new BusinessUnit() { Id = voucher.RequesterUnitId ?? 0 };
+            existing.ReceiverUnit = new BusinessUnit() { Id = voucher.ReceiverUnitId ?? 0 };
+            existing.Warehouse = new Warehouse() { Id = voucher.WarehouseId ?? 0 };
             existing.FullAccount.Account = new Account() { Id = voucher.FullAccount.AccountId };
             existing.FullAccount.Detail = new DetailAccount() { Id = voucher.FullAccount.DetailId };
             existing.FullAccount.CostCenter = new CostCenter() { Id = voucher.FullAccount.CostCenterId };
