@@ -9,7 +9,7 @@ import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component 
 import {
     GridDataResult,
     DataStateChangeEvent,
-    PageChangeEvent,
+    PageChangeEvent,
     RowArgs,
     SelectAllCheckboxState
 } from '@progress/kendo-angular-grid';
@@ -227,6 +227,8 @@ export class Account2Component implements OnInit {
         if(state.sort)
         if (state.sort.length > 0)
             this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
+
+        this.state = state;
 
         this.skip = state.skip;
         this.reloadGrid();

@@ -1,13 +1,12 @@
-﻿
-<div class="col-xs-12 col-md-12 col-sm-12" dir="rtl">
+﻿<div class="col-xs-12 col-md-12 col-sm-12" dir="rtl">
     <div class="panel panel-primary">
         <div class="panel-heading">لیست حساب</div>
         <div class="panel-body">
             <kendo-grid #GridID [data]="rowData" 
+                        [sortable]="true"
                         [pageSize]="pageSize"
                         [skip]="skip"                  
-                        [filter]="state.filter"
-                        [sortable]="true"
+                        [filter]="state.filter"              
                         [pageable]="true"
                         [resizable]="true"
                         [filterable]="true"
@@ -16,7 +15,7 @@
                         (sortChange)="sortChange($event)"
                         (edit)="editHandler($event)"
                         (remove)="removeHandler($event)"
-                        [sort]="sort"                    
+                        [sort]="state.sort"                    
                         [selectable]="true"
                         [selectedKeys]="selectedRows"
                         [kendoGridSelectBy]="selectionKey"
