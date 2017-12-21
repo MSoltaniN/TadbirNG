@@ -12,6 +12,10 @@
     <FileVersion>1.1.183.0</FileVersion>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.Model.xml</DocumentationFile>
     <OutputPath>..\..\..\bin\Debug\netstandard2.0\</OutputPath>
@@ -23,6 +27,10 @@
     <Compile Remove="Core\DocumentType.cs" />
     <Compile Remove="Finance\Account.cs" />
     <Compile Remove="Finance\FullAccount.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\TadbirSolutionInfo.cs" Link="TadbirSolutionInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>

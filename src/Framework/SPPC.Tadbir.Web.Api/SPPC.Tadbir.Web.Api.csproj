@@ -12,8 +12,16 @@
     <FileVersion>1.1.183.0</FileVersion>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Controllers\ValuesController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\TadbirSolutionInfo.cs" Link="TadbirSolutionInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
