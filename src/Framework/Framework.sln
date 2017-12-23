@@ -59,6 +59,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TadbirSolutionInfo.cs = TadbirSolutionInfo.cs
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{31064D34-EDBB-482E-863F-C96DD57766F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Integration.Nuget", "SPPC.Integration.Nuget\SPPC.Integration.Nuget.csproj", "{338B4B58-3DD0-429C-9AC3-518C48BA6030}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +121,10 @@ Global
 		{1371F64F-E66F-49F9-996A-505B153AE127}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1371F64F-E66F-49F9-996A-505B153AE127}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1371F64F-E66F-49F9-996A-505B153AE127}.Release|Any CPU.Build.0 = Release|Any CPU
+		{338B4B58-3DD0-429C-9AC3-518C48BA6030}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{338B4B58-3DD0-429C-9AC3-518C48BA6030}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{338B4B58-3DD0-429C-9AC3-518C48BA6030}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{338B4B58-3DD0-429C-9AC3-518C48BA6030}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,6 +153,7 @@ Global
 		{81EBEB1B-5AAD-4179-A66D-49AEC2697B42} = {F1297F8E-F5D9-4FC0-A55C-48642E81478E}
 		{81DA88F6-B2AF-4568-B56B-35CC3368F850} = {A0791FB8-7664-4E79-8ACF-921F38F71D4B}
 		{1371F64F-E66F-49F9-996A-505B153AE127} = {F1297F8E-F5D9-4FC0-A55C-48642E81478E}
+		{338B4B58-3DD0-429C-9AC3-518C48BA6030} = {31064D34-EDBB-482E-863F-C96DD57766F6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1D717D5C-5BCF-401B-A4A8-D0B263F70830}
