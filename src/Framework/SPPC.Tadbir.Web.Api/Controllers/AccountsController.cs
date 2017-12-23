@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -20,7 +22,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/accounts/fp/{fpId:int}/branch/{branchId:int}
         [Route(AccountApi.FiscalPeriodBranchAccountsUrl)]
-        //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IActionResult GetAccounts(int fpId, int branchId)
         {
             if (fpId <= 0 || branchId <= 0)
@@ -34,7 +36,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/accounts/{accountId:int}
         [Route(AccountApi.AccountUrl)]
-        //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IActionResult GetAccount(int accountId)
         {
             if (accountId <= 0)
@@ -52,7 +54,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/accounts
         [HttpPost, Route(AccountApi.AccountsUrl)]
-        //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         public IActionResult PostNewAccount([FromBody] AccountViewModel account)
         {
             if (account == null)
@@ -77,7 +79,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/accounts/{accountId:int}
         [HttpPut, Route(AccountApi.AccountUrl)]
-        //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Edit)]
         public IActionResult PutModifiedAccount(int accountId, [FromBody] AccountViewModel account)
         {
             if (account == null)
@@ -112,7 +114,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/accounts/{accountId:int}/details
         [Route(AccountApi.AccountDetailsUrl)]
-        //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IActionResult GetAccountDetail(int accountId)
         {
             if (accountId <= 0)
@@ -130,7 +132,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/accounts/{accountId:int}/articles
         [Route(AccountApi.AccountArticlesUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public IActionResult GetAccountArticles(int accountId)
         {
             if (accountId <= 0)
@@ -148,7 +150,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // DELETE: api/accounts/{accountId:int}
         [HttpDelete, Route(AccountApi.AccountUrl)]
-        //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
         public IActionResult DeleteExistingAccount(int accountId)
         {
             if (accountId <= 0)

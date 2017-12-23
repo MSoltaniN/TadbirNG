@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -16,7 +17,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/lookup/accounts/fp/{fpId:int}/branch/{branchId:int}
         [Route(LookupApi.FiscalPeriodBranchAccountsUrl)]
-        //[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IActionResult GetAccountsLookup(int fpId, int branchId)
         {
             if (fpId <= 0 || branchId <= 0)

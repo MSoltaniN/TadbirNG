@@ -8,6 +8,7 @@ using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -21,7 +22,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/users
         [Route(SecurityApi.UsersUrl)]
-        //[AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public IActionResult GetUsers()
         {
             var users = _repository.GetUsers();
@@ -46,7 +47,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/users/{userId:int}
         [Route(SecurityApi.UserUrl)]
-        //[AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public IActionResult GetUser(int userId)
         {
             if (userId <= 0)
@@ -64,7 +65,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/users
         [HttpPost, Route(SecurityApi.UsersUrl)]
-        //[AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Create)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Create)]
         public IActionResult PostNewUser([FromBody] UserViewModel user)
         {
             if (user == null)
@@ -89,7 +90,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/users/{userId:int}
         [HttpPut, Route(SecurityApi.UserUrl)]
-        //[AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Edit)]
         public IActionResult PutModifiedUser(int userId, [FromBody] UserViewModel user)
         {
             if (userId == Constants.AdminUserId)

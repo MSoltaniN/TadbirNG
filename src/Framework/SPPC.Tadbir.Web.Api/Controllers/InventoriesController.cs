@@ -6,6 +6,7 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Inventory;
+using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -19,7 +20,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/inventories/fp/{fpId:int}/branch/{branchId:int}
         [Route(InventoryApi.FiscalPeriodBranchInventoriesUrl)]
-        //[AuthorizeRequest(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.View)]
+        [AuthorizeRequest(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.View)]
         public IActionResult GetProductInventories(int fpId, int branchId)
         {
             if (fpId <= 0 || branchId <= 0)
@@ -33,7 +34,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/inventories/{inventoryId:int}
         [Route(InventoryApi.InventoryUrl)]
-        //[AuthorizeRequest(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.View)]
+        [AuthorizeRequest(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.View)]
         public IActionResult GetProductInventory(int inventoryId)
         {
             if (inventoryId <= 0)
@@ -50,7 +51,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/inventories
         [HttpPost, Route(InventoryApi.InventoriesUrl)]
-        //[AuthorizeRequest(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.Create)]
+        [AuthorizeRequest(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.Create)]
         public IActionResult PostNewProductInventory([FromBody] ProductInventoryViewModel inventory)
         {
             if (inventory == null)
@@ -69,7 +70,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/inventories/{inventoryId:int}
         [HttpPut, Route(InventoryApi.InventoryUrl)]
-        //[AuthorizeRequest(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.Edit)]
         public IActionResult PutModifiedProductInventory(
             int inventoryId, [FromBody] ProductInventoryViewModel inventory)
         {
@@ -99,7 +100,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // DELETE: api/inventories/{inventoryId:int}
         [HttpDelete, Route(InventoryApi.InventoryUrl)]
-        //[AuthorizeRequest(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.Delete)]
+        [AuthorizeRequest(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.Delete)]
         public IActionResult DeleteExistingProductInventory(int inventoryId)
         {
             if (inventoryId <= 0)

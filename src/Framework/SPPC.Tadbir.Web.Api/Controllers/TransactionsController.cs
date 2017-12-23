@@ -13,6 +13,7 @@ using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Workflow;
+using SPPC.Tadbir.Web.Api.Filters;
 //using SPPC.Tadbir.Web.Api.Filters;
 //using SPPC.Tadbir.Workflow;
 
@@ -34,7 +35,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/transactions/fp/{fpId:int}/branch/{branchId:int}
         [Route(TransactionApi.FiscalPeriodBranchTransactionsUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public IActionResult GetTransactions(int fpId, int branchId)
         {
             if (fpId <= 0 || branchId <= 0)
@@ -48,7 +49,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/transactions/{transactionId:int}/details
         [Route(TransactionApi.TransactionDetailsUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public IActionResult GetTransactionDetail(int transactionId)
         {
             if (transactionId <= 0)
@@ -66,7 +67,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/transactions
         [Route(TransactionApi.TransactionsUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
         public IActionResult PostNewTransaction([FromBody] TransactionViewModel transaction)
         {
             if (transaction == null)
@@ -91,7 +92,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/transactions/{transactionId:int}
         [Route(TransactionApi.TransactionUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
         public IActionResult PutModifiedTransaction(int transactionId, [FromBody] TransactionViewModel transaction)
         {
             if (transaction == null)
@@ -126,7 +127,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // DELETE: api/transactions/{transactionId:int}
         [Route(TransactionApi.TransactionUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
         public IActionResult DeleteExistingTransaction(int transactionId)
         {
             if (transactionId <= 0)
@@ -147,7 +148,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/transactions/articles/{articleId:int}
         [Route(TransactionApi.TransactionArticleUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public IActionResult GetArticle(int articleId)
         {
             if (articleId <= 0)
@@ -164,7 +165,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/transactions/articles/{articleId:int}/details
         [Route(TransactionApi.TransactionArticleDetailsUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public IActionResult GetArticleDetails(int articleId)
         {
             if (articleId <= 0)
@@ -181,7 +182,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/transactions/{transactionId:int}/articles
         [Route(TransactionApi.TransactionArticlesUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
         public IActionResult PostNewArticle(int transactionId, [FromBody] TransactionLineViewModel article)
         {
             if (transactionId <= 0)
@@ -215,7 +216,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/transactions/articles/{articleId:int}
         [Route(TransactionApi.TransactionArticleUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
         public IActionResult PutModifiedArticle(int articleId, [FromBody] TransactionLineViewModel article)
         {
             if (article == null)
@@ -249,7 +250,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // DELETE: api/transactions/articles/{articleId:int}
         [Route(TransactionApi.TransactionArticleUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
         public IActionResult DeleteExistingArticle(int articleId)
         {
             if (articleId <= 0)
