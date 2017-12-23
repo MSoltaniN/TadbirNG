@@ -7,15 +7,12 @@ import { Headers, RequestOptions, BaseRequestOptions } from '@angular/http';
 import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 // third party module to display toast 
 import { ToastrModule } from 'toastr-ng2';
-//PRIMENG - Third party module
-import { InputTextModule, DataTableModule, ButtonModule, /*DialogModule,*/ PanelModule, /*DropdownModule*/ } from 'primeng/primeng';
 
 import { ReactiveFormsModule } from '@angular/forms';
 
 
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
-import { AccountComponent } from './components/account/account.component';
 import { Account2Component } from './components/account2/account2.component';
 import { AccountFormComponent } from './components/account2/account2-form.component';
 
@@ -31,8 +28,7 @@ import { AccountService, TransactionLineService, FiscalPeriodService } from './s
 @NgModule({
     declarations: [
         AppComponent,
-        NavMenuComponent,
-        AccountComponent,
+        NavMenuComponent,       
         Account2Component,
         AccountFormComponent
     ],
@@ -45,12 +41,11 @@ import { AccountService, TransactionLineService, FiscalPeriodService } from './s
         ReactiveFormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        InputTextModule, DataTableModule, ButtonModule, DialogModule, PanelModule, DropDownsModule, GridModule,
+        DialogModule, DropDownsModule, GridModule,
         BrowserModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
-            { path: '', redirectTo: 'account2', pathMatch: 'full' },
-            { path: 'account', component: AccountComponent },
+            { path: '', redirectTo: 'account2', pathMatch: 'full' },            
             { path: 'account2', component: Account2Component },
             { path: '**', redirectTo: 'account' }
         ])        

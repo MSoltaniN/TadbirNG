@@ -57,7 +57,14 @@
 
                 <!-- template for mid-size devices -->
                 <kendo-grid-checkbox-column showSelectAll="true" width="10"  media="(min-width: 450px) and (max-width: 1024px)" ></kendo-grid-checkbox-column>
-                <kendo-grid-column field="code" [sortable]="true" width="150" media="(min-width: 450px) and (max-width: 1024px)"  [filterable]="true" title="{{ 'Account.Code' | translate }}" ></kendo-grid-column>
+                <kendo-grid-column field="code" [sortable]="true" width="150" media="(min-width: 450px) and (max-width: 1024px)"  [filterable]="false" title="{{ 'Account.Code' | translate }}" >
+                    <ng-template kendoGridFilterCellTemplate>
+                        <input type="text" class="k-textbox" />
+                        <kendo-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
+                                             [(ngModel)]="selectedValue" >
+                        </kendo-dropdownlist>
+                    </ng-template>
+                </kendo-grid-column>
                 <kendo-grid-column field="name" [sortable]="true" width="250" media="(min-width: 450px) and (max-width: 1024px)" [filterable]="true" title="{{ 'Account.Name' | translate }}" ></kendo-grid-column>
                 <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
                     <ng-template kendoGridCellTemplate>
@@ -73,7 +80,11 @@
 
                 <!-- additional columns on large devices -->
                 <kendo-grid-checkbox-column showSelectAll="true" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
-                <kendo-grid-column field="code" [sortable]="true" media="(min-width: 1024px)" [filterable]="true"  title="{{ 'Account.Code' | translate }}" width="130" ></kendo-grid-column>
+                <kendo-grid-column field="code" [sortable]="true" media="(min-width: 1024px)"  title="{{ 'Account.Code' | translate }}" width="130" >
+                    <ng-template kendoGridFilterCellTemplate>
+                        <input type="text" class="k-textbox" />
+                    </ng-template>
+                </kendo-grid-column>
                 <kendo-grid-column field="name" [sortable]="true" media="(min-width: 1024px)" [filterable]="true" title="{{ 'Account.Name' | translate }}" width="200" ></kendo-grid-column>
                 <kendo-grid-column field="fiscalPeriodId" [filterable]="true" media="(min-width: 1024px)" title="{{ 'Account.Fiscal' | translate }}" [sortable]="false" ></kendo-grid-column>
                 <kendo-grid-column field="description" [filterable]="false" media="(min-width: 1024px)" title="{{ 'Account.Description' | translate }}" [sortable]="false" ></kendo-grid-column>                             
