@@ -7,13 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
-//using System.Web.Http.Controllers;
-//using System.Web.Http.Filters;
 using SPPC.Framework.Common;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Auth;
-//using SPPC.Tadbir.Web.Api.AppStart;
-//using Unity;
 
 namespace SPPC.Tadbir.Web.Api.Filters
 {
@@ -45,7 +41,6 @@ namespace SPPC.Tadbir.Web.Api.Filters
             else if (!IsAuthorized(authTicket))
             {
                 // If caller is not authorized, return Unauthorized (401) response...
-                string reason = "Caller is not authorized to perform current operation.";
                 actionContext.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
             }
             else

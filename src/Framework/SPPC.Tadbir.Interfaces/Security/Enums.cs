@@ -161,12 +161,12 @@ namespace SPPC.Tadbir.Security
         Delete = 0x8,
 
         /// <summary>
-        /// Indicates permission to add/remove one or more users to/from a role 
+        /// Indicates permission to add/remove one or more users to/from a role
         /// </summary>
         AssignUsers = 0x10,
 
         /// <summary>
-        /// Indicates permission to allow/disallow access to one or more branches in a role 
+        /// Indicates permission to allow/disallow access to one or more branches in a role
         /// </summary>
         AssignBranches = 0x20,
 

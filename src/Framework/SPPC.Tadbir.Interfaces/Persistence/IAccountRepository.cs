@@ -44,7 +44,7 @@ namespace SPPC.Tadbir.Persistence
         bool IsDuplicateAccount(AccountViewModel accountViewModel);
 
         /// <summary>
-        /// Determines if the account specified by identifier is referenced by other records. 
+        /// Determines if the account specified by identifier is referenced by other records.
         /// </summary>
         /// <param name="accountId"></param>
         /// <returns></returns>
@@ -62,7 +62,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="accountId">Unique identifier of an existing financial account</param>
         /// <returns>Collection of all transaction lines (articles) for specified account</returns>
-        IList<TransactionLineViewModel> GetAccountArticles(int accountId); 
+        IList<TransactionLineViewModel> GetAccountArticles(int accountId);
 
         /// <summary>
         /// Deletes an existing financial account from repository.

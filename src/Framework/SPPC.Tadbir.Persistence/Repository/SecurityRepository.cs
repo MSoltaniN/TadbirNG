@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Corporate;
@@ -220,13 +220,6 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>A collection of <see cref="RoleViewModel"/> objects retrieved from repository</returns>
         public IList<RoleViewModel> GetRoles()
         {
-            //var repository = _unitOfWork.GetRepository<RolePermission>();
-            //var roles = repository
-            //    .GetAll(rp => rp.Role, rp => rp.Permission)
-            //    .Select(rp => rp.Role)
-            //    .Select(r => _mapper.Map<RoleViewModel>(r))
-            //    .ToList();
-            //return roles;
             var repository = _unitOfWork.GetRepository<Role>();
             var roles = repository
                 .GetAllAsQuery()

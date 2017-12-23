@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// تفصیلی های شناور موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
+        /// تفصیلی های شناور موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه تفصیلی های شناور موجود</returns>
         public IEnumerable<KeyValue> LookupDetailAccounts()
@@ -46,7 +46,7 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// مراکز هزینه موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
+        /// مراکز هزینه موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه مراکز هزینه موجود</returns>
         public IEnumerable<KeyValue> LookupCostCenters()
@@ -56,7 +56,7 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// پروژه های موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
+        /// پروژه های موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه پروژه های موجود</returns>
         public IEnumerable<KeyValue> LookupProjects()
@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// ارزهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
+        /// ارزهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ارزهای موجود</returns>
         public IEnumerable<KeyValue> LookupCurrencies()
@@ -76,7 +76,7 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// شرکای تجاری موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
+        /// شرکای تجاری موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه شرکای تجاری موجود</returns>
         public IEnumerable<KeyValue> LookupPartners()
@@ -86,7 +86,7 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// واحد های سازمانی موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
+        /// واحد های سازمانی موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه واحد های سازمانی موجود</returns>
         public IEnumerable<KeyValue> LookupBusinessUnits()
@@ -96,7 +96,7 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// انبارهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
+        /// انبارهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه انبارهای موجود</returns>
         public IEnumerable<KeyValue> LookupWarehouses()
@@ -106,7 +106,7 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// کالاهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
+        /// کالاهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه کالاهای موجود</returns>
         public IEnumerable<KeyValue> LookupProducts()
@@ -116,7 +116,7 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// واحدهای اندازه گیری موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
+        /// واحدهای اندازه گیری موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه واحدهای اندازه گیری موجود</returns>
         public IEnumerable<KeyValue> LookupUnitsOfMeasurement()
@@ -126,7 +126,7 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// انواع درخواست کالاهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند 
+        /// انواع درخواست کالاهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه انواع درخواست کالاهای موجود</returns>
         public IEnumerable<KeyValue> LookupRequisitionVoucherTypes()
@@ -136,7 +136,7 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات درخواست کار را خوانده و برمی گرداند 
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات درخواست کار را خوانده و برمی گرداند
         /// </summary>
         /// <returns>وابستگی های مورد نیاز درخواست کار</returns>
         public VoucherDependsViewModel LookupRequisitionVoucherDepends()
@@ -146,7 +146,7 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات سطر درخواست کار را خوانده و برمی گرداند 
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات سطر درخواست کار را خوانده و برمی گرداند
         /// </summary>
         /// <returns>وابستگی های مورد نیاز سطر درخواست کار</returns>
         public VoucherLineDependsViewModel LookupRequisitionVoucherLineDepends()
@@ -156,7 +156,7 @@ namespace SPPC.Tadbir.Service
         }
 
         /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات سطر موجودی کالا را خوانده و برمی گرداند 
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات سطر موجودی کالا را خوانده و برمی گرداند
         /// </summary>
         /// <returns>وابستگی های مورد نیاز سطر موجودی کالا</returns>
         public InventoryDependsViewModel LookupProductInventoryDepends()

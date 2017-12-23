@@ -50,7 +50,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/inventories
-        [HttpPost, Route(InventoryApi.InventoriesUrl)]
+        [HttpPost]
+        [Route(InventoryApi.InventoriesUrl)]
         [AuthorizeRequest(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.Create)]
         public IActionResult PostNewProductInventory([FromBody] ProductInventoryViewModel inventory)
         {
@@ -69,7 +70,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/inventories/{inventoryId:int}
-        [HttpPut, Route(InventoryApi.InventoryUrl)]
+        [HttpPut]
+        [Route(InventoryApi.InventoryUrl)]
         [AuthorizeRequest(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.Edit)]
         public IActionResult PutModifiedProductInventory(
             int inventoryId, [FromBody] ProductInventoryViewModel inventory)
@@ -99,7 +101,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // DELETE: api/inventories/{inventoryId:int}
-        [HttpDelete, Route(InventoryApi.InventoryUrl)]
+        [HttpDelete]
+        [Route(InventoryApi.InventoryUrl)]
         [AuthorizeRequest(SecureEntity.ProductInventory, (int)ProductInventoryPermissions.Delete)]
         public IActionResult DeleteExistingProductInventory(int inventoryId)
         {

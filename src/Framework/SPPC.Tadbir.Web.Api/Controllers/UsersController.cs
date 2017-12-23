@@ -64,7 +64,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/users
-        [HttpPost, Route(SecurityApi.UsersUrl)]
+        [HttpPost]
+        [Route(SecurityApi.UsersUrl)]
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Create)]
         public IActionResult PostNewUser([FromBody] UserViewModel user)
         {
@@ -89,7 +90,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/users/{userId:int}
-        [HttpPut, Route(SecurityApi.UserUrl)]
+        [HttpPut]
+        [Route(SecurityApi.UserUrl)]
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Edit)]
         public IActionResult PutModifiedUser(int userId, [FromBody] UserViewModel user)
         {
@@ -134,7 +136,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/users/{userId:int}/login
-        [HttpPut, Route(SecurityApi.UserLastLoginUrl)]
+        [HttpPut]
+        [Route(SecurityApi.UserLastLoginUrl)]
         public IActionResult PutUserLastLogin(int userId)
         {
             if (userId <= 0)
@@ -147,7 +150,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/users/{userName}/password
-        [HttpPut, Route(SecurityApi.UserPasswordUrl)]
+        [HttpPut]
+        [Route(SecurityApi.UserPasswordUrl)]
         public IActionResult PutUserPassword(string userName, [FromBody] UserProfileViewModel profile)
         {
             if (profile == null)
@@ -202,7 +206,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route("users/{userId:int}/ticket")]
         public IActionResult GetUserTicket(int userId)
         {
-////#if DEBUG
+#if DEBUG
             if (userId <= 0)
             {
                 return NotFound();
@@ -212,19 +216,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var userContext = _repository.GetUserContext(userId);
             if (userContext != null)
             {
-                //var contextEncoder = UnityConfig.GetConfiguredContainer()
-                //    .Resolve<ITextEncoder<SecurityContext>>();
-                //var securityContext = new SecurityContext(userContext);
-                //ticket = contextEncoder.Encode(securityContext);
+                var contextEncoder = new Base64Encoder<SecurityContext>();
+                var securityContext = new SecurityContext(userContext);
+                ticket = contextEncoder.Encode(securityContext);
             }
 
             var result = (!String.IsNullOrEmpty(ticket))
                 ? Json(ticket)
                 : NotFound() as IActionResult;
             return result;
-////#else
-            ////return NotFound();
-////#endif
+#else
+            return NotFound();
+#endif
         }
 
         private ISecurityRepository _repository;

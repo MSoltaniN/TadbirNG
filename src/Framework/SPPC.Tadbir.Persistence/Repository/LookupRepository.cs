@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;

@@ -70,7 +70,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/roles
-        [HttpPost, Route(SecurityApi.RolesUrl)]
+        [HttpPost]
+        [Route(SecurityApi.RolesUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Create)]
         public IActionResult PostNewRole([FromBody] RoleFullViewModel role)
         {
@@ -89,7 +90,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/roles/{roleId:int}
-        [HttpPut, Route(SecurityApi.RoleUrl)]
+        [HttpPut]
+        [Route(SecurityApi.RoleUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Edit)]
         public IActionResult PutModifiedRole(int roleId, [FromBody] RoleFullViewModel role)
         {
@@ -123,7 +125,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // DELETE: api/roles/{roleId:int}
-        [HttpDelete, Route(SecurityApi.RoleUrl)]
+        [HttpDelete]
+        [Route(SecurityApi.RoleUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Delete)]
         public IActionResult DeleteExistingRole(int roleId)
         {
@@ -171,7 +174,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/roles/{roleId:int}/branches
-        [HttpPut, Route(SecurityApi.RoleBranchesUrl)]
+        [HttpPut]
+        [Route(SecurityApi.RoleBranchesUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.AssignBranches)]
         public IActionResult PutModifiedRoleBranches(int roleId, RoleBranchesViewModel branches)
         {
@@ -217,7 +221,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/roles/{roleId:int}/users
-        [HttpPut, Route(SecurityApi.RoleUsersUrl)]
+        [HttpPut]
+        [Route(SecurityApi.RoleUsersUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.AssignUsers)]
         public IActionResult PutModifiedRoleUsers(int roleId, RoleUsersViewModel users)
         {

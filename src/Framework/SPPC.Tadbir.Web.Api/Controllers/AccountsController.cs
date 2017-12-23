@@ -53,7 +53,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/accounts
-        [HttpPost, Route(AccountApi.AccountsUrl)]
+        [HttpPost]
+        [Route(AccountApi.AccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         public IActionResult PostNewAccount([FromBody] AccountViewModel account)
         {
@@ -78,7 +79,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/accounts/{accountId:int}
-        [HttpPut, Route(AccountApi.AccountUrl)]
+        [HttpPut]
+        [Route(AccountApi.AccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Edit)]
         public IActionResult PutModifiedAccount(int accountId, [FromBody] AccountViewModel account)
         {
@@ -149,7 +151,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // DELETE: api/accounts/{accountId:int}
-        [HttpDelete, Route(AccountApi.AccountUrl)]
+        [HttpDelete]
+        [Route(AccountApi.AccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
         public IActionResult DeleteExistingAccount(int accountId)
         {

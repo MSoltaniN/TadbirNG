@@ -13,7 +13,6 @@ using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Procurement;
 using SPPC.Tadbir.ViewModel.Workflow;
 using SPPC.Tadbir.Web.Api.Filters;
-//using SPPC.Tadbir.Workflow;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -23,10 +22,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public RequisitionsController(IRequisitionRepository repository, ISecurityContextManager contextManager)
         {
             Verify.ArgumentNotNull(contextManager, "contextManager");
-            //Verify.ArgumentNotNull(workflow, "workflow");
             _repository = repository;
-            //_workflow = workflow;
-            //_workflow.CurrentContext = contextManager.CurrentContext;
             _userContext = contextManager.CurrentContext;
         }
 
@@ -62,7 +58,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/requisitions
-        [HttpPost, Route(RequisitionApi.RequisitionsUrl)]
+        [HttpPost]
+        [Route(RequisitionApi.RequisitionsUrl)]
         [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Create)]
         public IActionResult PostNewRequisition([FromBody] RequisitionVoucherViewModel voucher)
         {
@@ -82,7 +79,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/requisitions/{voucherId:int}
-        [HttpPut, Route(RequisitionApi.RequisitionUrl)]
+        [HttpPut]
+        [Route(RequisitionApi.RequisitionUrl)]
         [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public IActionResult PutModifiedRequisition(int voucherId, [FromBody] RequisitionVoucherViewModel voucher)
         {
@@ -102,7 +100,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // DELETE: api/requisitions/{voucherId:int}
-        [HttpDelete, Route(RequisitionApi.RequisitionUrl)]
+        [HttpDelete]
+        [Route(RequisitionApi.RequisitionUrl)]
         [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Delete)]
         public IActionResult DeleteExistingRequisition(int voucherId)
         {
@@ -133,7 +132,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/requisitions/{voucherId:int}/lines
-        [HttpPost, Route(RequisitionApi.RequisitionLinesUrl)]
+        [HttpPost]
+        [Route(RequisitionApi.RequisitionLinesUrl)]
         [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public IActionResult PostNewRequisitionLine(int voucherId, [FromBody] RequisitionVoucherLineViewModel line)
         {
@@ -153,7 +153,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/requisitions/{voucherId:int}/lines/{lineId:int}
-        [HttpPut, Route(RequisitionApi.RequisitionLineUrl)]
+        [HttpPut]
+        [Route(RequisitionApi.RequisitionLineUrl)]
         [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Edit)]
         public IActionResult PutModifiedRequisitionLine(
             int voucherId, int lineId, [FromBody] RequisitionVoucherLineViewModel line)
@@ -174,7 +175,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // DELETE: api/requisitions/{voucherId:int}/lines/{lineId:int}
-        [HttpDelete, Route(RequisitionApi.RequisitionLineUrl)]
+        [HttpDelete]
+        [Route(RequisitionApi.RequisitionLineUrl)]
         [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Delete)]
         public IActionResult DeleteExistingRequisitionLine(int voucherId, int lineId)
         {
@@ -188,7 +190,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/requisitions/{voucherId:int}/prepare
-        [HttpPut, Route(RequisitionApi.PrepareUrl)]
+        [HttpPut]
+        [Route(RequisitionApi.PrepareUrl)]
         [AuthorizeRequest(SecureEntity.Requisition, (int)RequisitionPermissions.Prepare)]
         public IActionResult PutRequisitionAsPrepared(int voucherId, [FromBody] ActionDetailViewModel detail)
         {
@@ -210,7 +213,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var paraph = detail?.Paraph;
-            //_workflow.Prepare(summary.Id, summary.DocumentId, DocumentTypeName.RequisitionVoucher, paraph);
             return Ok();
         }
 
@@ -260,22 +262,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private string ValidateStateOperation(string operation, VoucherSummaryViewModel summary)
         {
-            string result = String.Empty;
-            //if (!_workflow.ValidateAction(DocumentTypeName.RequisitionVoucher, summary.DocumentOperationalStatus, operation))
-            //{
-            //    result = String.Format(
-            //        Strings.InvalidDocumentOperation,
-            //        Entities.RequisitionVoucherAlt,
-            //        summary.No,
-            //        DocumentActionName.ToLocalValue(operation),
-            //        DocumentStatusName.ToLocalValue(summary.DocumentOperationalStatus));
-            //}
-
-            return result;
+            return String.Empty;
         }
 
         private IRequisitionRepository _repository;
-        //private IDocumentWorkflow _workflow;
         private ISecurityContext _userContext;
     }
 }

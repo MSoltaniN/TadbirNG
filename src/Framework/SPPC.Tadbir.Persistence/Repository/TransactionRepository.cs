@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using SPPC.Framework.Common;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
@@ -42,9 +42,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<Transaction>();
             var transactions = repository
-                //.GetByCriteria(txn => txn.FiscalPeriod.Id == fpId
-                //    && txn.Branch.Id == branchId)
-                .GetAll(txn => txn.Branch, txn => txn.Document, txn => txn.Lines)
+                .GetByCriteria(
+                    txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId,
+                    txn => txn.Branch, txn => txn.Document, txn => txn.Lines)
                 .OrderBy(txn => txn.Date)
                 .Select(txn => _mapper.Map<TransactionViewModel>(txn))
                 .Select(txn => AddWorkItemInfo(txn))

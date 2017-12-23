@@ -14,8 +14,6 @@ using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Workflow;
 using SPPC.Tadbir.Web.Api.Filters;
-//using SPPC.Tadbir.Web.Api.Filters;
-//using SPPC.Tadbir.Workflow;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -27,8 +25,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Verify.ArgumentNotNull(contextManager, "contextManager");
             _repository = repository;
             _contextManager = contextManager;
-            //_workflow = workflow;
-            //_workflow.CurrentContext = _contextManager.CurrentContext;
         }
 
         #region Transaction CRUD Operations
@@ -270,275 +266,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        #region Transaction Workflow Operations
-
-        //// PUT: api/transactions/{transactionId:int}/prepare
-        //[Route(TransactionApi.PrepareTransactionUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
-        //public IActionResult PutTransactionAsPrepared(int transactionId, [FromBody] ActionDetailViewModel detail)
-        //{
-        //    if (transactionId <= 0)
-        //    {
-        //        return BadRequest("Could not put transaction as Prepared because transaction does not exist.");
-        //    }
-
-        //    var summary = _repository.GetTransactionSummary(transactionId);
-        //    if (summary == null)
-        //    {
-        //        return BadRequest("Could not put transaction as Prepared because transaction does not exist.");
-        //    }
-
-        //    string message = ValidateStateOperation(DocumentActionName.Prepare, summary);
-        //    if (!String.IsNullOrEmpty(message))
-        //    {
-        //        return BadRequest(message);
-        //    }
-
-        //    var paraph = detail?.Paraph;
-        //    _workflow.Prepare(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, paraph);
-        //    return Ok();
-        //}
-
-        //// PUT: api/transactions/{transactionId:int}/review
-        //[Route(TransactionApi.ReviewTransactionUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Review)]
-        //public IActionResult PutTransactionAsReviewed(int transactionId, [FromBody] ActionDetailViewModel detail)
-        //{
-        //    if (transactionId <= 0)
-        //    {
-        //        return BadRequest("Could not put transaction as Reviewed because transaction does not exist.");
-        //    }
-
-        //    var summary = _repository.GetTransactionSummary(transactionId);
-        //    if (summary == null)
-        //    {
-        //        return BadRequest("Could not put transaction as Reviewed because transaction does not exist.");
-        //    }
-
-        //    string message = ValidateStateOperation(DocumentActionName.Review, summary);
-        //    if (!String.IsNullOrEmpty(message))
-        //    {
-        //        return BadRequest(message);
-        //    }
-
-        //    var paraph = detail?.Paraph;
-        //    _workflow.Review(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, paraph);
-        //    return Ok();
-        //}
-
-        //// PUT: api/transactions/{transactionId:int}/reject
-        //[Route(TransactionApi.RejectTransactionUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
-        //public IActionResult PutTransactionAsRejected(int transactionId, [FromBody] ActionDetailViewModel detail)
-        //{
-        //    if (transactionId <= 0)
-        //    {
-        //        return BadRequest("Could not put transaction as Rejected because transaction does not exist.");
-        //    }
-
-        //    var summary = _repository.GetTransactionSummary(transactionId);
-        //    if (summary == null)
-        //    {
-        //        return BadRequest("Could not put transaction as Rejected because transaction does not exist.");
-        //    }
-
-        //    string message = ValidateStateOperation(DocumentActionName.Reject, summary);
-        //    if (!String.IsNullOrEmpty(message))
-        //    {
-        //        return BadRequest(message);
-        //    }
-
-        //    var paraph = detail?.Paraph;
-        //    _workflow.Reject(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, paraph);
-        //    return Ok();
-        //}
-
-        //// PUT: api/transactions/{transactionId:int}/confirm
-        //[Route(TransactionApi.ConfirmTransactionUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
-        //public IActionResult PutTransactionAsConfirmed(int transactionId, [FromBody] ActionDetailViewModel detail)
-        //{
-        //    if (transactionId <= 0)
-        //    {
-        //        return BadRequest("Could not put transaction as Confirmed because transaction does not exist.");
-        //    }
-
-        //    var summary = _repository.GetTransactionSummary(transactionId);
-        //    if (summary == null)
-        //    {
-        //        return BadRequest("Could not put transaction as Confirmed because transaction does not exist.");
-        //    }
-
-        //    string message = ValidateStateOperation(DocumentActionName.Confirm, summary);
-        //    if (!String.IsNullOrEmpty(message))
-        //    {
-        //        return BadRequest(message);
-        //    }
-
-        //    var paraph = detail?.Paraph;
-        //    _workflow.Confirm(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, paraph);
-        //    return Ok();
-        //}
-
-        //// PUT: api/transactions/{transactionId:int}/approve
-        //[Route(TransactionApi.ApproveTransactionUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Approve)]
-        //public IActionResult PutTransactionAsApproved(int transactionId, [FromBody] ActionDetailViewModel detail)
-        //{
-        //    if (transactionId <= 0)
-        //    {
-        //        return BadRequest("Could not put transaction as Approved because transaction does not exist.");
-        //    }
-
-        //    var summary = _repository.GetTransactionSummary(transactionId);
-        //    if (summary == null)
-        //    {
-        //        return BadRequest("Could not put transaction as Approved because transaction does not exist.");
-        //    }
-
-        //    string message = ValidateStateOperation(DocumentActionName.Approve, summary);
-        //    if (!String.IsNullOrEmpty(message))
-        //    {
-        //        return BadRequest(message);
-        //    }
-
-        //    var paraph = detail?.Paraph;
-        //    _workflow.Approve(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, paraph);
-        //    return Ok();
-        //}
-
-        //// PUT: api/transactions/prepare
-        //[Route(TransactionApi.PrepareTransactionsUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
-        //public IActionResult PutTransactionsAsPrepared([FromBody] ActionDetailViewModel detail)
-        //{
-        //    if (detail == null)
-        //    {
-        //        return BadRequest("Could not put transaction as Prepared because operation detail is null.");
-        //    }
-
-        //    var summaries = detail.Items
-        //        .Select(id => _repository.GetTransactionSummary(id));
-        //    string message = ValidateGroupStateOperation(DocumentActionName.Prepare, summaries);
-        //    if (!String.IsNullOrEmpty(message))
-        //    {
-        //        return BadRequest(message);
-        //    }
-
-        //    foreach (var summary in summaries)
-        //    {
-        //        _workflow.Prepare(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, detail.Paraph);
-        //    }
-
-        //    return Ok();
-        //}
-
-        //// PUT: api/transactions/review
-        //[Route(TransactionApi.ReviewTransactionsUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Review)]
-        //public IActionResult PutTransactionsAsReviewed([FromBody] ActionDetailViewModel detail)
-        //{
-        //    if (detail == null)
-        //    {
-        //        return BadRequest("Could not put transaction as Reviewed because operation detail is null.");
-        //    }
-
-        //    var summaries = detail.Items
-        //        .Select(id => _repository.GetTransactionSummary(id));
-        //    string message = ValidateGroupStateOperation(DocumentActionName.Review, summaries);
-        //    if (!String.IsNullOrEmpty(message))
-        //    {
-        //        return BadRequest(message);
-        //    }
-
-        //    foreach (var summary in summaries)
-        //    {
-        //        _workflow.Review(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, detail.Paraph);
-        //    }
-
-        //    return Ok();
-        //}
-
-        //// PUT: api/transactions/reject
-        //[Route(TransactionApi.RejectTransactionsUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
-        //public IActionResult PutTransactionsAsRejected([FromBody] ActionDetailViewModel detail)
-        //{
-        //    if (detail == null)
-        //    {
-        //        return BadRequest("Could not put transaction as Rejected because operation detail is null.");
-        //    }
-
-        //    var summaries = detail.Items
-        //        .Select(id => _repository.GetTransactionSummary(id));
-        //    string message = ValidateGroupStateOperation(DocumentActionName.Reject, summaries);
-        //    if (!String.IsNullOrEmpty(message))
-        //    {
-        //        return BadRequest(message);
-        //    }
-
-        //    foreach (var summary in summaries)
-        //    {
-        //        _workflow.Reject(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, detail.Paraph);
-        //    }
-
-        //    return Ok();
-        //}
-
-        //// PUT: api/transactions/confirm
-        //[Route(TransactionApi.ConfirmTransactionsUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
-        //public IActionResult PutTransactionsAsConfirmed([FromBody] ActionDetailViewModel detail)
-        //{
-        //    if (detail == null)
-        //    {
-        //        return BadRequest("Could not put transaction as Confirmed because operation detail is null.");
-        //    }
-
-        //    var summaries = detail.Items
-        //        .Select(id => _repository.GetTransactionSummary(id));
-        //    string message = ValidateGroupStateOperation(DocumentActionName.Confirm, summaries);
-        //    if (!String.IsNullOrEmpty(message))
-        //    {
-        //        return BadRequest(message);
-        //    }
-
-        //    foreach (var summary in summaries)
-        //    {
-        //        _workflow.Confirm(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, detail.Paraph);
-        //    }
-
-        //    return Ok();
-        //}
-
-        //// PUT: api/transactions/approve
-        //[Route(TransactionApi.ApproveTransactionsUrl)]
-        //[AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Approve)]
-        //public IActionResult PutTransactionsAsApproved([FromBody] ActionDetailViewModel detail)
-        //{
-        //    if (detail == null)
-        //    {
-        //        return BadRequest("Could not put transaction as Approved because operation detail is null.");
-        //    }
-
-        //    var summaries = detail.Items
-        //        .Select(id => _repository.GetTransactionSummary(id));
-        //    string message = ValidateGroupStateOperation(DocumentActionName.Approve, summaries);
-        //    if (!String.IsNullOrEmpty(message))
-        //    {
-        //        return BadRequest(message);
-        //    }
-
-        //    foreach (var summary in summaries)
-        //    {
-        //        _workflow.Approve(summary.Id, summary.DocumentId, DocumentTypeName.Transaction, detail.Paraph);
-        //    }
-
-        //    return Ok();
-        //}
-
-        #endregion
-
         private string ValidateGroupStateOperation(string operation, IEnumerable<TransactionSummaryViewModel> summaries)
         {
             var messages = summaries
@@ -551,18 +278,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private string ValidateStateOperation(string operation, TransactionSummaryViewModel summary)
         {
-            string result = String.Empty;
-            //if (!_workflow.ValidateAction(DocumentTypeName.Transaction, summary.DocumentOperationalStatus, operation))
-            //{
-            //    result = String.Format(
-            //        Strings.InvalidDocumentOperation,
-            //        Entities.TransactionLongName,
-            //        summary.No,
-            //        DocumentActionName.ToLocalValue(operation),
-            //        DocumentStatusName.ToLocalValue(summary.DocumentOperationalStatus));
-            //}
-
-            return result;
+            return String.Empty;
         }
 
         private void SetDocument(TransactionViewModel transaction)
@@ -591,7 +307,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private ITransactionRepository _repository;
-        //private IDocumentWorkflow _workflow;
         private ISecurityContextManager _contextManager;
     }
 }

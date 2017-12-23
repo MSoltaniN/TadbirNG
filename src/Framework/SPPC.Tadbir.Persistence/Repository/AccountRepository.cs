@@ -115,7 +115,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Determines if the account specified by identifier is referenced by other records. 
+        /// Determines if the account specified by identifier is referenced by other records.
         /// </summary>
         /// <param name="accountId"></param>
         /// <returns></returns>
@@ -158,7 +158,6 @@ namespace SPPC.Tadbir.Persistence
                 .GetByCriteria(
                     line => line.Account.Id == accountId,
                     line => line.Account, line => line.Branch, line => line.Currency, line => line.FiscalPeriod)
-                    //,line => line.Transaction)
                 .Select(line => _mapper.Map<TransactionLineViewModel>(line))
                 .ToList();
 

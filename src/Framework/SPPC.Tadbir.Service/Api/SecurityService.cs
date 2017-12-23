@@ -61,9 +61,7 @@ namespace SPPC.Tadbir.Service
         /// <param name="user">User to set context for</param>
         public void Login(UserViewModel user)
         {
-            //Verify.ArgumentNotNull(user, "user");
-            //var principal = GetPrincipal(user);
-            //LoginPrincipal(principal);
+            throw ExceptionBuilder.NewInvalidOperationException("ERROR: Operation is currently disabled.");
         }
 
         /// <summary>
@@ -71,13 +69,7 @@ namespace SPPC.Tadbir.Service
         /// </summary>
         public void Logout()
         {
-            //var cookie = _httpContext.Request.Cookies[FormsAuthentication.FormsCookieName];
-            //cookie.Expires = DateTime.Now.AddDays(-1);
-            //_httpContext.Response.SetCookie(cookie);
-
-            //var principal = new GenericPrincipal(new GenericIdentity(String.Empty), new string[0]);
-            //_httpContext.User = principal;
-            //Thread.CurrentPrincipal = principal;
+            throw ExceptionBuilder.NewInvalidOperationException("ERROR: Operation is currently disabled.");
         }
 
         /// <summary>
@@ -281,31 +273,13 @@ namespace SPPC.Tadbir.Service
             return response;
         }
 
-        ///// <summary>
-        ///// Creates and returns a concrete <see cref="IPrincipal"/> instance using specified member information,
-        ///// its assigned roles and a value indicating if user must be kept logged in.
-        ///// </summary>
-        ///// <param name="user">A <see cref="UserViewModel"/> instance for which a principal must be created</param>
-        ///// <returns>A principal created for the specified user</returns>
-        //private static IPrincipal GetPrincipal(UserViewModel user)
-        //{
-        //    Verify.ArgumentNotNull(user, "user");
-        //    var authCookie = FormsAuthentication.GetAuthCookie(user.UserName, false, _rootUrl);
-        //    var ticket = FormsAuthentication.Decrypt(authCookie.Value);
-        //    FormsAuthentication.SetAuthCookie(user.UserName, false, _rootUrl);
-        //    var identity = new TadbirIdentity(user.Id, ticket);
-        //    return new GenericPrincipal(identity, new string[0]);
-        //}
-
         /// <summary>
         /// Associates the specified principal object with current Web context.
         /// </summary>
         /// <param name="principal">Principal instance corresponding to the current user</param>
         private void LoginPrincipal(IPrincipal principal)
         {
-            //Verify.ArgumentNotNull(principal, "principal");
-            //_httpContext.User = principal;
-            //Thread.CurrentPrincipal = principal;
+            throw ExceptionBuilder.NewInvalidOperationException("ERROR: Operation is currently disabled.");
         }
 
         private bool IsAuthenticated(UserViewModel user, string password)
@@ -336,10 +310,10 @@ namespace SPPC.Tadbir.Service
             profile.RepeatPassword = newPasswordHash;
         }
 
-        private IApiClient _apiClient;
-        private ICryptoService _crypto;
+        private static string _rootUrl;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly HttpContext _httpContext;
-        private static string _rootUrl;
+        private IApiClient _apiClient;
+        private ICryptoService _crypto;
     }
 }

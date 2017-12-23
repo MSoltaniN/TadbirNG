@@ -7,7 +7,7 @@ using SPPC.Tadbir.ViewModel.Workflow;
 namespace SPPC.Tadbir.Service
 {
     /// <summary>
-    /// عملیات مرتبط با مشاهده کارتابل ها را پیاده سازی می کند. 
+    /// عملیات مرتبط با مشاهده کارتابل ها را پیاده سازی می کند.
     /// </summary>
     public class CartableService : ICartableService
     {

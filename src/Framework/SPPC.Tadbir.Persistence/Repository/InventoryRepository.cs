@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using SPPC.Framework.Common;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Mapper;
+using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Model.Inventory;
 using SPPC.Tadbir.ViewModel.Inventory;
 

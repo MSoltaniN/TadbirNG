@@ -92,10 +92,10 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey("RequesterUnitID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Procurement_RequisitionVoucher_Corporate_RequesterUnit");
-            //builder.HasOne(d => d.ServiceJob)
-            //    .WithMany()
-            //    .HasForeignKey("ServiceJobID")
-            //    .HasConstraintName("FK_Procurement_RequisitionVoucher_Core_ServiceJob");
+            builder.HasOne(d => d.ServiceJob)
+                .WithMany()
+                .HasForeignKey("ServiceJobID")
+                .HasConstraintName("FK_Procurement_RequisitionVoucher_Core_ServiceJob");
             builder.HasOne(d => d.Type)
                 .WithMany(p => p.RequisitionVouchers)
                 .HasForeignKey("VoucherTypeID")
