@@ -58,12 +58,12 @@ namespace SPPC.Framework.Values
         public const string ReturnToPage = "بازگشت به {0}";
 
         /// <summary>
-        /// Localized text for View caption 
+        /// Localized text for View caption
         /// </summary>
         public const string View = "مشاهده";
 
         /// <summary>
-        /// Localized text for Edit caption 
+        /// Localized text for Edit caption
         /// </summary>
         public const string Edit = "ویرایش";
 
@@ -78,12 +78,12 @@ namespace SPPC.Framework.Values
         public const string Delete = "حذف";
 
         /// <summary>
-        /// Localized text for Save caption 
+        /// Localized text for Save caption
         /// </summary>
         public const string Save = "ذخیره";
 
         /// <summary>
-        /// Localized text for Cancel caption 
+        /// Localized text for Cancel caption
         /// </summary>
         public const string Cancel = "انصراف";
     }

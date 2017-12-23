@@ -38,6 +38,14 @@ namespace SPPC.Framework.Common
         }
 
         /// <summary>
+        /// Gets a <see cref="JalaliDateTime"/> object initialized to the current system date and time in Jalali calendar.
+        /// </summary>
+        public static JalaliDateTime Now
+        {
+            get { return (FromDateTime(DateTime.Now)); }
+        }
+
+        /// <summary>
         /// Gets the year component of the Jalali date encapsulated by this object.
         /// </summary>
         public int Year
@@ -85,14 +93,6 @@ namespace SPPC.Framework.Common
         public string Weekday
         {
             get { return _dayNames[_weekday - 1]; }
-        }
-
-        /// <summary>
-        /// Gets a <see cref="JalaliDateTime"/> object initialized to the current system date and time in Jalali calendar.
-        /// </summary>
-        public static JalaliDateTime Now
-        {
-            get { return (FromDateTime(DateTime.Now)); }
         }
 
         /// <summary>

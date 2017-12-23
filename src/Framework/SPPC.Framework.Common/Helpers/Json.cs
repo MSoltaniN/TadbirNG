@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
-using SPPC.Framework.Common;
 using Newtonsoft.Json;
+using SPPC.Framework.Common;
 
 namespace SPPC.Framework.Helpers
 {

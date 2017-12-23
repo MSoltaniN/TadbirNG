@@ -14,7 +14,8 @@ namespace SPPC.Framework.Persistence
         /// </summary>
         /// <typeparam name="TEntity">Type of entity whose repository is required</typeparam>
         /// <returns>Repository implementation for entity</returns>
-        IRepository<TEntity> GetRepository<TEntity>() where TEntity : class, IEntity;
+        IRepository<TEntity> GetRepository<TEntity>()
+            where TEntity : class, IEntity;
 
         /// <summary>
         /// Commits all repository operations that are not yet applied, using a database transaction

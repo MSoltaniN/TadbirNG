@@ -25,7 +25,9 @@ namespace SPPC.Framework.Common
 
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < input.Length; i++)
+            {
                 builder.Append(input[i].ToString("X2"));
+            }
 
             return (builder.ToString());
         }
@@ -74,7 +76,9 @@ namespace SPPC.Framework.Common
                 string part = input.Substring(i, 2);
                 byte result;
                 if (Byte.TryParse(part, NumberStyles.AllowHexSpecifier, null, out result))
+                {
                     bytes.Add(result);
+                }
                 else
                 {
                     string message = String.Format("string \"{0}\" does not represent " +

@@ -19,7 +19,9 @@ namespace SPPC.Framework.Common
         public static void ArgumentNotNull(object argValue)
         {
             if (argValue == null)
+            {
                 throw (ExceptionBuilder.NewArgumentNullException());
+            }
         }
 
         /// <summary>
@@ -32,7 +34,9 @@ namespace SPPC.Framework.Common
         public static void ArgumentNotNull(object argValue, string argName)
         {
             if (argValue == null)
+            {
                 throw (ExceptionBuilder.NewArgumentNullException(argName));
+            }
         }
 
         /// <summary>
@@ -44,9 +48,14 @@ namespace SPPC.Framework.Common
         public static void ArgumentNotNullOrEmptyString(string argValue)
         {
             if (argValue == null)
+            {
                 throw (ExceptionBuilder.NewArgumentNullException());
+            }
+
             if (String.IsNullOrEmpty(argValue))
+            {
                 throw (ExceptionBuilder.NewArgumentException());
+            }
         }
 
         /// <summary>
@@ -60,9 +69,14 @@ namespace SPPC.Framework.Common
         public static void ArgumentNotNullOrEmptyString(string argValue, string argName)
         {
             if (argValue == null)
+            {
                 throw (ExceptionBuilder.NewArgumentNullException(argName));
+            }
+
             if (String.IsNullOrEmpty(argValue))
+            {
                 throw (ExceptionBuilder.NewArgumentException());
+            }
         }
 
         /// <summary>
@@ -74,9 +88,14 @@ namespace SPPC.Framework.Common
         public static void ArgumentNotNullOrWhitespace(string argValue)
         {
             if (argValue == null)
+            {
                 throw (ExceptionBuilder.NewArgumentNullException());
+            }
+
             if (String.IsNullOrWhiteSpace(argValue))
+            {
                 throw (ExceptionBuilder.NewArgumentException());
+            }
         }
 
         /// <summary>
@@ -90,9 +109,14 @@ namespace SPPC.Framework.Common
         public static void ArgumentNotNullOrWhitespace(string argValue, string argName)
         {
             if (argValue == null)
+            {
                 throw (ExceptionBuilder.NewArgumentNullException(argName));
+            }
+
             if (String.IsNullOrWhiteSpace(argValue))
+            {
                 throw (ExceptionBuilder.NewArgumentException());
+            }
         }
 
         /// <summary>
@@ -105,7 +129,9 @@ namespace SPPC.Framework.Common
         {
             VerifyNotNullAndIsAssignable(argValue, minValue);
             if (argValue.CompareTo(minValue) < 0)
+            {
                 throw (ExceptionBuilder.NewArgumentOutOfRangeException());
+            }
         }
 
         /// <summary>
@@ -120,7 +146,9 @@ namespace SPPC.Framework.Common
         {
             VerifyNotNullAndIsAssignable(argValue, minValue);
             if (argValue.CompareTo(minValue) < 0)
+            {
                 throw (ExceptionBuilder.NewArgumentOutOfRangeException(argName));
+            }
         }
 
         /// <summary>
@@ -133,7 +161,9 @@ namespace SPPC.Framework.Common
         {
             VerifyNotNullAndIsAssignable(argValue, maxValue);
             if (argValue.CompareTo(maxValue) > 0)
+            {
                 throw (ExceptionBuilder.NewArgumentOutOfRangeException());
+            }
         }
 
         /// <summary>
@@ -148,7 +178,9 @@ namespace SPPC.Framework.Common
         {
             VerifyNotNullAndIsAssignable(argValue, maxValue);
             if (argValue.CompareTo(maxValue) > 0)
+            {
                 throw (ExceptionBuilder.NewArgumentOutOfRangeException(argName));
+            }
         }
 
         /// <summary>
@@ -162,7 +194,9 @@ namespace SPPC.Framework.Common
         {
             VerifyNotNullAndIsAssignable(argValue, minValue, maxValue);
             if (argValue.CompareTo(minValue) < 0 || argValue.CompareTo(maxValue) > 0)
+            {
                 throw (ExceptionBuilder.NewArgumentOutOfRangeException());
+            }
         }
 
         /// <summary>
@@ -179,7 +213,9 @@ namespace SPPC.Framework.Common
         {
             VerifyNotNullAndIsAssignable(argValue, minValue, maxValue);
             if (argValue.CompareTo(minValue) < 0 || argValue.CompareTo(maxValue) > 0)
+            {
                 throw (ExceptionBuilder.NewArgumentOutOfRangeException(argName));
+            }
         }
 
         /// <summary>
@@ -195,7 +231,10 @@ namespace SPPC.Framework.Common
 
             // Make sure an enum type is supplied...
             if (!enumType.IsEnum)
+            {
                 throw (ExceptionBuilder.NewArgumentException());
+            }
+
             if (!Enum.IsDefined(enumType, argValue))
             {
                 throw (ExceptionBuilder.NewInvalidEnumArgumentException(argName, argValue, enumType));
@@ -212,31 +251,32 @@ namespace SPPC.Framework.Common
             Verify.ArgumentNotNull(leftType, "leftType");
 
             if (!leftType.IsAssignableFrom(rightType))
+            {
                 throw (ExceptionBuilder.NewArgumentException());
+            }
         }
 
         private static void VerifyNotNullAndIsAssignable(IComparable leftValue, IComparable rightValue)
         {
-            Verify.ArgumentNotNull(leftValue, "leftValue");
-            Verify.ArgumentNotNull(rightValue, "rightValue");
+            ArgumentNotNull(leftValue, "leftValue");
+            ArgumentNotNull(rightValue, "rightValue");
 
             Type leftType = leftValue.GetType();
             Type rightType = rightValue.GetType();
-            Verify.TypeIsAssignableFromType(leftType, rightType);
+            TypeIsAssignableFromType(leftType, rightType);
         }
 
         private static void VerifyNotNullAndIsAssignable(IComparable argValue, IComparable minValue, IComparable maxValue)
         {
-            Verify.ArgumentNotNull(argValue, "argValue");
-            Verify.ArgumentNotNull(minValue, "minValue");
-            Verify.ArgumentNotNull(maxValue, "maxValue");
-
+            ArgumentNotNull(argValue, "argValue");
+            ArgumentNotNull(minValue, "minValue");
+            ArgumentNotNull(maxValue, "maxValue");
             Type leftType = argValue.GetType();
             Type rightType = minValue.GetType();
-            Verify.TypeIsAssignableFromType(leftType, rightType);
+            TypeIsAssignableFromType(leftType, rightType);
 
             rightType = maxValue.GetType();
-            Verify.TypeIsAssignableFromType(leftType, rightType);
+            TypeIsAssignableFromType(leftType, rightType);
         }
     }
 }

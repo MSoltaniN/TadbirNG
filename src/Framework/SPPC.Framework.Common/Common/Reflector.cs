@@ -8,7 +8,7 @@ namespace SPPC.Framework.Common
 {
     /// <summary>
     /// Provides common reflection services using .NET Reflection API. Using this class will free developers
-    /// from learning the internals of Reflection API. 
+    /// from learning the internals of Reflection API.
     /// </summary>
     public static partial class Reflector
     {
@@ -69,7 +69,9 @@ namespace SPPC.Framework.Common
             Verify.ArgumentNotNull(source, "source");
 
             if (indexArgTypes == null || indexArgTypes.Length == 0)
+            {
                 return (GetProperty(source, name));
+            }
 
             PropertyInfo prop = source.GetType().GetProperty(name, indexArgTypes);
             return (prop.GetValue(source, indexArgValues));
@@ -258,7 +260,7 @@ namespace SPPC.Framework.Common
 
         /// <summary>
         /// Creates a new instance of a type given by the exact .NET type and a variable number of arguments
-        /// required by the type's constructor. 
+        /// required by the type's constructor.
         /// </summary>
         /// <param name="type">A Type object specifying the exact type to instantiate.</param>
         /// <param name="args">A variable number of arguments required by the type's constructor.</param>
@@ -282,11 +284,17 @@ namespace SPPC.Framework.Common
 
             bool derives = false;
             if (type == baseType)
+            {
                 derives = true;
+            }
             else if (baseType.IsInterface)
+            {
                 derives = DerivesFromInterface(type, baseType);
+            }
             else
+            {
                 derives = DerivesFromClass(type, baseType);
+            }
 
             return derives;
         }
@@ -317,7 +325,9 @@ namespace SPPC.Framework.Common
             Verify.ArgumentNotNull(type, "type");
 
             if (!baseType.IsInterface)
+            {
                 throw ExceptionBuilder.NewArgumentException("Specified type must be an interface type.", "baseType");
+            }
 
             Type[] interfaces = type.GetInterfaces();
             return (Array.IndexOf(interfaces, baseType) != -1);
@@ -339,7 +349,9 @@ namespace SPPC.Framework.Common
 
             // Make sure given generic arguments are actually expected by base generic type...
             if (argList.Length != typeArguments.Length)
+            {
                 throw (ExceptionBuilder.NewArgumentException("Insufficient number of generic arguments"));
+            }
 
             Type genericType = baseGenericType.MakeGenericType(typeArguments);
             return genericType;
@@ -406,7 +418,7 @@ namespace SPPC.Framework.Common
             Verify.ArgumentNotNullOrWhitespace(methodName, "methodName");
 
             Type[] paramTypes = Type.EmptyTypes;
-            if(args != null)
+            if (args != null)
             {
                 paramTypes = args
                     .Select(a => a.GetType())
@@ -428,6 +440,7 @@ namespace SPPC.Framework.Common
             PropertyInfo prop = source.GetType().GetProperty(name);
             return (prop.GetValue(source, null));
         }
+
         private static void VerifyIsValidProperty(Type type, string property)
         {
             PropertyInfo prop = type.GetProperty(property);
@@ -439,6 +452,7 @@ namespace SPPC.Framework.Common
                 throw ExceptionBuilder.NewArgumentException(message, "property");
             }
         }
+
         private static void VerifyIsValidMethod(Type type, string methodName)
         {
             MethodInfo method = type.GetMethod(methodName);
@@ -450,6 +464,7 @@ namespace SPPC.Framework.Common
                 throw ExceptionBuilder.NewArgumentException(message, "methodName");
             }
         }
+
         private static void VerifyIsWritable(object source, string propertyName)
         {
             if (IsReadOnly(source, propertyName))
@@ -459,48 +474,6 @@ namespace SPPC.Framework.Common
                     propertyName, source.GetType().FullName);
                 throw ExceptionBuilder.NewInvalidOperationException(message);
             }
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Defines a method for comparing two interface types.
-    /// </summary>
-    public class InterfaceComparer : IComparer<Type>
-    {
-        #region IComparer<Type> Members
-
-        /// <summary>
-        /// Compares two types and determines the inheritance order of them.
-        /// </summary>
-        /// <param name="x">The left type of the comparison operator.</param>
-        /// <param name="y">The right type of the comparison operator.</param>
-        /// <returns>-1 if an object having the type y can be assigned to an object having the type x,
-        /// 1 if an object having the type x can be assigned to an object having the type y, otherwise
-        /// returns 0.</returns>
-        /// <remarks> This comparison follows the same semantic convention as integral types;
-        /// i.e. if x is less than y returns -1 and if x is greater than y returns 1. A type
-        /// higher in the inheritance hierarchy is supposed to be greater than a type lower
-        /// in the inheritance hierarchy. If two types are unrelated (don't belong to the same
-        /// inheritance hierarchy), or if two types are equal, then this method returns 0;
-        /// With this logic, the clients cannot rely on this method for type equality.</remarks>
-        public int Compare(Type x, Type y)
-        {
-            Verify.ArgumentNotNull(x, "x");
-            Verify.ArgumentNotNull(y, "y");
-
-            int result;
-            if (x == y)
-                result = 0;
-            else if (x.IsAssignableFrom(y))
-                result = -1;
-            else if (y.IsAssignableFrom(x))
-                result = 1;
-            else
-                result = 0;
-
-            return result;
         }
 
         #endregion
