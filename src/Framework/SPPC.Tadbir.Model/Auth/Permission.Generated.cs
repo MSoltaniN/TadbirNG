@@ -67,15 +67,17 @@ namespace SPPC.Tadbir.Model.Auth
         /// </summary>
         public virtual PermissionGroup Group { get; set; }
 
-        /// <summary>
-        /// Gets or sets the collection of all roles that this permission is enabled in them.
-        /// </summary>
-        public virtual IList<Role> Roles { get; protected set; }
+        // Temporarily disabled, due to EF Core's lack of support for direct many-to-many relationships.
+        ///// <summary>
+        ///// Gets or sets the collection of all roles that this permission is enabled in them.
+        ///// </summary>
+        ////public virtual IList<Role> Roles { get; protected set; }
 
         private void InitReferences()
         {
             Group = new PermissionGroup();
-            Roles = new List<Role>();
+            RolePermissions = new List<RolePermission>();
+            ////Roles = new List<Role>();
         }
     }
 }

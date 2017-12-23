@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using SPPC.Framework.Common;
+using SPPC.Framework.Helpers;
 
 namespace SPPC.Tadbir.Service
 {
@@ -21,15 +20,8 @@ namespace SPPC.Tadbir.Service
         /// <returns>Base64-encoded form of given object</returns>
         public string Encode(T data)
         {
-            var encodedValue = String.Empty;
-            using (var stream = new MemoryStream())
-            {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(stream, data);
-                encodedValue = Transform.ToBase64String(stream.ToArray());
-            }
-
-            return encodedValue;
+            var json = Json.From(data, false);
+            return Transform.ToBase64String(Encoding.UTF8.GetBytes(json));
         }
 
         /// <summary>
@@ -40,13 +32,8 @@ namespace SPPC.Tadbir.Service
         public T Decode(string encodedData)
         {
             Verify.ArgumentNotNullOrEmptyString(encodedData, "encodedData");
-            T data = default(T);
-            using (var stream = new MemoryStream(Transform.FromBase64String(encodedData)))
-            {
-                var formatter = new BinaryFormatter();
-                data = formatter.Deserialize(stream) as T;
-            }
-
+            string json = Encoding.UTF8.GetString(Transform.FromBase64String(encodedData));
+            T data = Json.To<T>(json);
             return data;
         }
     }

@@ -6,7 +6,6 @@ namespace SPPC.Tadbir.ViewModel.Auth
     /// <summary>
     /// Provides complete contextual information about a user and his/her security permissions.
     /// </summary>
-    [Serializable]
     public class UserContextViewModel
     {
         /// <summary>

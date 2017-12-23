@@ -6,7 +6,6 @@ namespace SPPC.Tadbir.ViewModel.Auth
     /// <summary>
     /// Provides concise permission information for operations available for managing an entity.
     /// </summary>
-    [Serializable]
     public class PermissionBriefViewModel
     {
         /// <summary>

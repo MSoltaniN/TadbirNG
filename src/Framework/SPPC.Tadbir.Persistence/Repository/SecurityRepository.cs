@@ -78,24 +78,25 @@ namespace SPPC.Tadbir.Persistence
         {
             UserContextViewModel userContext = null;
             var repository = _unitOfWork.GetRepository<User>();
-            var user = repository.GetByID(userId);
+            var user = repository.GetByID(userId, usr => usr.Person, usr => usr.UserRoles);
             if (user != null)
             {
-                // EF Core workaround
-                var roles = user.UserRoles
-                    .Select(ur => ur.Role);
-                userContext = _mapper.Map<UserContextViewModel>(user);
-                var branches = new List<int>();
-                Array.ForEach(roles.ToArray(), role => branches.AddRange(role.RoleBranches.Select(rb => rb.BranchId)));
-                Array.ForEach(branches.Distinct().ToArray(), br => userContext.Branches.Add(br));
-                Array.ForEach(roles.Select(role => role.Id).ToArray(), roleId => userContext.Roles.Add(roleId));
-
                 var permissions = new List<PermissionBriefViewModel>();
-                Array.ForEach(
-                    roles.ToArray(),
-                    role => permissions.AddRange(role.RolePermissions
-                        .Select(rp => rp.Permission)
-                        .Select(perm => _mapper.Map<PermissionBriefViewModel>(perm))));
+                var branches = new List<int>();
+                var roleRepository = _unitOfWork.GetRepository<Role>();
+                foreach (var roleId in user.UserRoles.Select(ur => ur.RoleId))
+                {
+                    var role = roleRepository.GetByID(roleId, r => r.RoleBranches, r => r.RolePermissions);
+                    userContext = _mapper.Map<UserContextViewModel>(user);
+                    userContext.Roles.Add(roleId);
+                    branches.AddRange(role.RoleBranches.Select(rb => rb.BranchId));
+                    Array.ForEach(
+                        role.RolePermissions.ToArray(),
+                        rp => permissions.Add(_mapper.Map<PermissionBriefViewModel>(
+                            _unitOfWork.GetRepository<Permission>().GetByID(rp.PermissionId, perm => perm.Group))));
+                }
+
+                Array.ForEach(branches.Distinct().ToArray(), br => userContext.Branches.Add(br));
                 var groups = permissions
                     .Distinct(new PermissionEqualityComparer())
                     .GroupBy(perm => perm.EntityName);

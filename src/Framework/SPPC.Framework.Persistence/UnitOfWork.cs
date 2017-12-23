@@ -8,7 +8,7 @@ namespace SPPC.Framework.Persistence
     /// <summary>
     /// Provides operations required for supporting the Unit of Work pattern
     /// </summary>
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UnitOfWork"/> class using an Entity Framework Core
@@ -40,6 +40,39 @@ namespace SPPC.Framework.Persistence
             _dataContext.SaveChanges();
         }
 
+        #region IDisposable Support
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) below.
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Supports correct implementation of the Disposable pattern for this class.
+        /// </summary>
+        /// <param name="disposing">Indicates if this instance is currently being disposed</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                _dataContext.Dispose();
+                _disposed = true;
+            }
+        }
+
+        #endregion
+
         private DbContext _dataContext;
+        private bool _disposed = false;
     }
 }

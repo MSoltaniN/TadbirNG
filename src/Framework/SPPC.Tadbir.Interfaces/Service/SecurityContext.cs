@@ -8,7 +8,6 @@ namespace SPPC.Tadbir.Service
     /// <summary>
     /// Provides members required for authorizing actions of current application user.
     /// </summary>
-    [Serializable]
     public class SecurityContext : ISecurityContext
     {
         /// <summary>
