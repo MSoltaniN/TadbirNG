@@ -1,26 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>SPPC.Tadbir</RootNamespace>
-    <Version>1.1.0</Version>
-    <Authors>Babak Eslamieh</Authors>
-    <Company>SPPC</Company>
-    <Product>Framework</Product>
-    <Description>TODO: Add product description</Description>
-    <Copyright>TODO: Add copyright notice</Copyright>
-    <AssemblyVersion>1.1.183.0</AssemblyVersion>
-    <FileVersion>1.1.183.0</FileVersion>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <CodeAnalysisRuleSet>..\..\..\misc\assets\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+    <Authors>Babak Eslamieh</Authors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\bin\Debug\netstandard2.0\</OutputPath>
-    <DocumentationFile></DocumentationFile>
+    <OutputPath>..\..\..\testbin\Debug\netcoreapp2.0\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,13 +23,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="6.2.0" />
+    <PackageReference Include="AutoMapper" Version="6.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="Moq" Version="4.7.145" />
     <PackageReference Include="NUnit" Version="3.9.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Tadbir.Mapper\SPPC.Tadbir.Mapper.csproj" />
+    <ProjectReference Include="..\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj" />
   </ItemGroup>
 
 </Project>
