@@ -59,10 +59,7 @@
                 <kendo-grid-checkbox-column showSelectAll="true" width="10"  media="(min-width: 450px) and (max-width: 1024px)" ></kendo-grid-checkbox-column>
                 <kendo-grid-column field="code" [sortable]="true" width="150" media="(min-width: 450px) and (max-width: 1024px)"  [filterable]="false" title="{{ 'Account.Code' | translate }}" >
                     <ng-template kendoGridFilterCellTemplate>
-                        <input type="text" class="k-textbox" />
-                        <kendo-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
-                                             [(ngModel)]="selectedValue" >
-                        </kendo-dropdownlist>
+                        <input type="text" class="k-textbox" />                        
                     </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-column field="name" [sortable]="true" width="250" media="(min-width: 450px) and (max-width: 1024px)" [filterable]="true" title="{{ 'Account.Name' | translate }}" ></kendo-grid-column>
