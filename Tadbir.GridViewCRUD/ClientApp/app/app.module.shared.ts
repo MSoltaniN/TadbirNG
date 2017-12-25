@@ -16,21 +16,29 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { Account2Component } from './components/account2/account2.component';
 import { AccountFormComponent } from './components/account2/account2-form.component';
 
+
+//custom controls
+import { SppcMaskTextBox } from './controls/sppc-mask-textbox';
+
 import {BrowserModule} from "@angular/platform-browser";
 import { TranslateModule } from "ng2-translate";
 import { GridModule } from '@progress/kendo-angular-grid';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { DialogModule } from '@progress/kendo-angular-dialog';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+import { InputsModule } from '@progress/kendo-angular-inputs';
 
 import { AccountService, TransactionLineService, FiscalPeriodService } from './service/index';
+
+
 
 @NgModule({
     declarations: [
         AppComponent,
         NavMenuComponent,       
         Account2Component,
-        AccountFormComponent
+        AccountFormComponent,
+        SppcMaskTextBox
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true }],        
@@ -41,7 +49,7 @@ import { AccountService, TransactionLineService, FiscalPeriodService } from './s
         ReactiveFormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        DialogModule, DropDownsModule, GridModule,
+        DialogModule, DropDownsModule, GridModule, InputsModule,
         BrowserModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
