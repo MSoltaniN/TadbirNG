@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using SPPC.Framework.Common;
+using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 {
@@ -50,6 +51,38 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Assert
             Assert.That(route, Is.Not.Null);
             Assert.That(route.Template, Is.EqualTo(expectedRoute));
+        }
+
+        protected void AssertActionIsSecured(string actionName)
+        {
+            var method = typeof(TController).GetMethod(actionName);
+            var attribute = Reflector.GetAttribute(method, typeof(AuthorizeRequestAttribute))
+                as AuthorizeRequestAttribute;
+
+            // Assert
+            Assert.That(attribute, Is.Not.Null);
+        }
+
+        protected void AssertActionIsSecured(string actionName, string entity, int permission)
+        {
+            var method = typeof(TController).GetMethod(actionName);
+            var attribute = Reflector.GetAttribute(method, typeof(AuthorizeRequestAttribute))
+                as AuthorizeRequestAttribute;
+
+            // Assert
+            Assert.That(attribute, Is.Not.Null);
+            Assert.That(attribute.Entity, Is.EqualTo(entity));
+            Assert.That(attribute.Permission, Is.EqualTo(permission));
+        }
+
+        protected void AssertActionHasVerbAttribute<T>(string actionName)
+            where T : Attribute
+        {
+            var method = typeof(TController).GetMethod(actionName);
+            var attribute = Reflector.GetAttribute(method, typeof(T)) as T;
+
+            // Assert
+            Assert.That(attribute, Is.Not.Null);
         }
 
         protected TController _controller;

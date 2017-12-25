@@ -89,7 +89,7 @@ namespace SPPC.Tadbir.Model.Finance
         private void InitReferences()
         {
             Lines = new List<TransactionLine>();
-            //FiscalPeriod = new FiscalPeriod();
+            FiscalPeriod = new FiscalPeriod();
             Branch = new Branch();
             Document = new Document();
         }

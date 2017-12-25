@@ -26,6 +26,16 @@ namespace SPPC.Tadbir.Web.Api.Filters
             };
         }
 
+        public string Entity
+        {
+            get { return _requiredPermissions[0].EntityName; }
+        }
+
+        public int Permission
+        {
+            get { return _requiredPermissions[0].Flags; }
+        }
+
         public override void OnActionExecuting(ActionExecutingContext actionContext)
         {
             Verify.ArgumentNotNull(actionContext, "actionContext");

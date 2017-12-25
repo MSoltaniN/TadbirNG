@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Web.Api.Controllers.Tests
@@ -27,7 +28,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             _existingAccount = new AccountViewModel() { Id = _existingAccountId };
         }
 
-        #region GetAccounts (GET: accounts/fp/{fpId:int}) tests
+        #region GetAccounts (GET: accounts/fp/{fpId}/branch/{branchId}) tests
+
+        [Test]
+        public void GetAccounts_HasAuthorizeRequestAttribute()
+        {
+            // Arrange
+
+            // Act & Assert
+            AssertActionIsSecured("GetAccounts", SecureEntity.Account, (int)AccountPermissions.View);
+        }
 
         [Test]
         public void GetAccounts_SpecifiesCorrectRoute()
@@ -51,7 +61,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         }
 
         [Test]
-        public void GetAccounts_CallsRepositoryWithFiscalPeriodId()
+        public void GetAccounts_CallsRepositoryWithFiscalPeriodIdAndBranchId()
         {
             // Arrange
 
@@ -66,30 +76,29 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         public void GetAccounts_ReturnsJsonWithCorrectContentType()
         {
             // Arrange
+            _mockRepository
+                .Setup(repo => repo.GetAccounts(_fpId, _branchId, null))
+                .Returns(new List<AccountViewModel>());
 
             // Act
             var result = _controller.GetAccounts(_fpId, _branchId) as JsonResult;
 
             // Assert
-            Assert.That(result, Is.Not.Null);
-        }
-
-        [Test]
-        public void GetAccounts_GivenInvalidFiscalPeriodId_ReturnsNotFound()
-        {
-            // Arrange
-            int invalidFpId = -2;
-
-            // Act
-            var result = _controller.GetAccounts(invalidFpId, _branchId) as NotFoundResult;
-
-            // Assert
-            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Value, Is.InstanceOf<IList<AccountViewModel>>());
         }
 
         #endregion
 
-        #region GetAccount (GET: accounts/{accountId:int}) tests
+        #region GetAccount (GET: accounts/{accountId}) tests
+
+        [Test]
+        public void GetAccount_HasAuthorizeRequestAttribute()
+        {
+            // Arrange
+
+            // Act & Assert
+            AssertActionIsSecured("GetAccount", SecureEntity.Account, (int)AccountPermissions.View);
+        }
 
         [Test]
         public void GetAccount_SpecifiesCorrectRoute()
@@ -137,6 +146,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
             // Assert
             Assert.That(result, Is.Not.Null);
+            Assert.That(result.Value, Is.InstanceOf<AccountViewModel>());
         }
 
         [Test]
@@ -174,12 +184,30 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         #region PostNewAccount (POST: accounts) tests
 
         [Test]
+        public void PostNewAccount_HasAuthorizeRequestAttribute()
+        {
+            // Arrange
+
+            // Act & Assert
+            AssertActionIsSecured("PostNewAccount", SecureEntity.Account, (int)AccountPermissions.Create);
+        }
+
+        [Test]
         public void PostNewAccount_SpecifiesCorrectRoute()
         {
             // Arrange (Done in setup methods)
 
             // Act & Assert
             AssertActionRouteEquals("PostNewAccount", AccountApi.AccountsUrl);
+        }
+
+        [Test]
+        public void PostNewAccount_SpecifiesCorrectHttpVerb()
+        {
+            // Arrange
+
+            // Act & Assert
+            AssertActionHasVerbAttribute<HttpPostAttribute>("PostNewAccount");
         }
 
         [Test]
@@ -218,7 +246,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Created));
+            Assert.That(result.StatusCode, Is.EqualTo(StatusCodes.Status201Created));
         }
 
         [Test]
@@ -234,7 +262,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         }
 
         [Test]
-        public void PostNewAccount_GivenInvalidModel_ReturnsInvalidModelStateResultWithModelState()
+        public void PostNewAccount_GivenInvalidModel_ReturnsBadRequestObjectResultWithCorrectValue()
         {
             // Arrange
             var invalidModel = new AccountViewModel();
@@ -245,7 +273,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Value, Is.SameAs(_controller.ModelState));
+            Assert.That(result.Value, Is.InstanceOf<SerializableError>());
+            Assert.That((result.Value as SerializableError).Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -265,7 +294,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
         #endregion
 
-        #region PutModifiedAccount (PUT: accounts/{accountId:int}) tests
+        #region PutModifiedAccount (PUT: accounts/{accountId}) tests
+
+        [Test]
+        public void PutModifiedAccount_HasAuthorizeRequestAttribute()
+        {
+            // Arrange
+
+            // Act & Assert
+            AssertActionIsSecured("PutModifiedAccount", SecureEntity.Account, (int)AccountPermissions.Edit);
+        }
 
         [Test]
         public void PutModifiedAccount_SpecifiesCorrectRoute()
@@ -274,6 +312,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
             // Act & Assert
             AssertActionRouteEquals("PutModifiedAccount", AccountApi.AccountUrl);
+        }
+
+        [Test]
+        public void PutModifiedAccount_SpecifiesCorrectHttpVerb()
+        {
+            // Arrange
+
+            // Act & Assert
+            AssertActionHasVerbAttribute<HttpPutAttribute>("PutModifiedAccount");
         }
 
         [Test]
@@ -340,7 +387,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         }
 
         [Test]
-        public void PutModifiedAccount_GivenInvalidModel_ReturnsInvalidModelStateResultWithModelState()
+        public void PutModifiedAccount_GivenInvalidModel_ReturnsBadRequestObjectResultWithCorrectValue()
         {
             // Arrange
             var invalidModel = new AccountViewModel() { Id = _existingAccountId };
@@ -351,7 +398,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Value, Is.SameAs(_controller.ModelState));
+            Assert.That(result.Value, Is.InstanceOf<SerializableError>());
+            Assert.That((result.Value as SerializableError).Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -395,7 +443,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
         #endregion
 
-        #region GetAccountDetail (GET: accounts/{accountId:int}/details) tests
+        #region GetAccountDetail (GET: accounts/{accountId}/details) tests
+
+        [Test]
+        public void GetAccountDetail_HasAuthorizeRequestAttribute()
+        {
+            // Arrange
+
+            // Act & Assert
+            AssertActionIsSecured("GetAccountDetail", SecureEntity.Account, (int)AccountPermissions.View);
+        }
 
         [Test]
         public void GetAccountDetail_SpecifiesCorrectRoute()
@@ -443,6 +500,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
             // Assert
             Assert.That(result, Is.Not.Null);
+            Assert.That(result.Value, Is.InstanceOf<AccountFullViewModel>());
         }
 
         [Test]

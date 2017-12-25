@@ -20,30 +20,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
         }
 
-        // GET: api/accounts/fp/{fpId:int}/branch/{branchId:int}
+        // GET: api/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
         [Route(AccountApi.FiscalPeriodBranchAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IActionResult GetAccounts(int fpId, int branchId)
         {
-            if (fpId <= 0 || branchId <= 0)
-            {
-                return NotFound();
-            }
-
             var accounts = _repository.GetAccounts(fpId, branchId);
             return Json(accounts);
         }
 
-        // GET: api/accounts/{accountId:int}
+        // GET: api/accounts/{accountId:min(1)}
         [Route(AccountApi.AccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IActionResult GetAccount(int accountId)
         {
-            if (accountId <= 0)
-            {
-                return NotFound();
-            }
-
             var account = _repository.GetAccount(accountId);
             var result = (account != null)
                 ? Json(account)
@@ -78,7 +68,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        // PUT: api/accounts/{accountId:int}
+        // PUT: api/accounts/{accountId:min(1)}
         [HttpPut]
         [Route(AccountApi.AccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Edit)]
@@ -114,16 +104,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        // GET: api/accounts/{accountId:int}/details
+        // GET: api/accounts/{accountId:min(1)}/details
         [Route(AccountApi.AccountDetailsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IActionResult GetAccountDetail(int accountId)
         {
-            if (accountId <= 0)
-            {
-                return NotFound();
-            }
-
             var account = _repository.GetAccountDetail(accountId);
             var result = (account != null)
                 ? Json(account)
@@ -132,16 +117,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
-        // GET: api/accounts/{accountId:int}/articles
+        // GET: api/accounts/{accountId:min(1)}/articles
         [Route(AccountApi.AccountArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public IActionResult GetAccountArticles(int accountId)
         {
-            if (accountId <= 0)
-            {
-                return NotFound();
-            }
-
             var articles = _repository.GetAccountArticles(accountId);
             var result = (articles != null)
                 ? Json(articles)
@@ -150,17 +130,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
-        // DELETE: api/accounts/{accountId:int}
+        // DELETE: api/accounts/{accountId:min(1)}
         [HttpDelete]
         [Route(AccountApi.AccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
         public IActionResult DeleteExistingAccount(int accountId)
         {
-            if (accountId <= 0)
-            {
-                return BadRequest("Could not delete account because it does not exist.");
-            }
-
             var account = _repository.GetAccount(accountId);
             if (account == null)
             {

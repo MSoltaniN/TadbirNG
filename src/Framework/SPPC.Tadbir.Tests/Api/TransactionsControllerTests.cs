@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -157,7 +158,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Created));
+            Assert.That(result.StatusCode, Is.EqualTo(StatusCodes.Status201Created));
         }
 
         [Test]
@@ -173,7 +174,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         }
 
         [Test]
-        public void PostNewTransaction_GivenInvalidModel_ReturnsInvalidModelStateResultWithModelState()
+        public void PostNewTransaction_GivenInvalidModel_ReturnsBadRequestObjectResultWithCorrectValue()
         {
             // Arrange
             var invalidModel = new TransactionViewModel();
@@ -184,7 +185,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Value, Is.SameAs(_controller.ModelState));
+            Assert.That(result.Value, Is.InstanceOf<SerializableError>());
+            Assert.That((result.Value as SerializableError).Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -280,7 +282,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         }
 
         [Test]
-        public void PutModifiedTransaction_GivenInvalidModel_ReturnsInvalidModelStateResultWithModelState()
+        public void PutModifiedTransaction_GivenInvalidModel_ReturnsBadRequestObjectResultWithCorrectValue()
         {
             // Arrange
             var invalidModel = new TransactionViewModel() { Id = _existingTransactionId };
@@ -292,7 +294,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Value, Is.SameAs(_controller.ModelState));
+            Assert.That(result.Value, Is.InstanceOf<SerializableError>());
+            Assert.That((result.Value as SerializableError).Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -470,7 +473,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.Created));
+            Assert.That(result.StatusCode, Is.EqualTo(StatusCodes.Status201Created));
         }
 
         [Test]
@@ -512,7 +515,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         }
 
         [Test]
-        public void PostNewArticle_GivenInvalidModel_ReturnsInvalidModelStateResultWithModelState()
+        public void PostNewArticle_GivenInvalidModel_ReturnsBadRequestObjectResultWithCorrectValue()
         {
             // Arrange
             var invalidModel = new TransactionLineViewModel() { TransactionId = _existingTransactionId };
@@ -523,7 +526,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Value, Is.SameAs(_controller.ModelState));
+            Assert.That(result.Value, Is.InstanceOf<SerializableError>());
+            Assert.That((result.Value as SerializableError).Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -591,7 +595,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         }
 
         [Test]
-        public void PutModifiedArticle_GivenInvalidModel_ReturnsInvalidModelStateResultWithModelState()
+        public void PutModifiedArticle_GivenInvalidModel_ReturnsBadRequestObjectResultWithCorrectValue()
         {
             // Arrange
             var invalidModel = new TransactionLineViewModel() { Id = 1 };
@@ -602,7 +606,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
             // Assert
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Value, Is.SameAs(_controller.ModelState));
+            Assert.That(result.Value, Is.InstanceOf<SerializableError>());
+            Assert.That((result.Value as SerializableError).Count, Is.EqualTo(1));
         }
 
         [Test]
