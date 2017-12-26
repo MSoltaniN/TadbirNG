@@ -39,7 +39,6 @@ namespace Tadbir.GridViewCRUD.Controllers
             return Json(await _repository.Delete(id));
         }
 
-
         ////[AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
         [HttpPost, Produces("application/json")]
         [Route("/Account/DeleteAccs")]
@@ -51,7 +50,7 @@ namespace Tadbir.GridViewCRUD.Controllers
             }
 
             bool res = false;
-            foreach(string id in ids)
+            foreach (string id in ids)
             {
                 res = await _repository.Delete(int.Parse(id.Split(' ')[0]));
             }
@@ -117,7 +116,5 @@ namespace Tadbir.GridViewCRUD.Controllers
             var accounts = await _repository.Get(options);
             return Json(accounts);
         }
-
-
     }
 }
