@@ -19,6 +19,7 @@ import { AccountFormComponent } from './components/account2/account2-form.compon
 
 //custom controls
 import { SppcMaskTextBox } from './controls/sppc-mask-textbox';
+import { SppcNumberBox } from './controls/sppc-numberbox';
 
 import {BrowserModule} from "@angular/platform-browser";
 import { TranslateModule } from "ng2-translate";
@@ -38,7 +39,8 @@ import { AccountService, TransactionLineService, FiscalPeriodService } from './s
         NavMenuComponent,       
         Account2Component,
         AccountFormComponent,
-        SppcMaskTextBox
+        SppcMaskTextBox,
+        SppcNumberBox
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true }],        
