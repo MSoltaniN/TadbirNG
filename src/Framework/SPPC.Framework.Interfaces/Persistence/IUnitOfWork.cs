@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SPPC.Framework.Domain;
 
 namespace SPPC.Framework.Persistence
@@ -21,5 +22,10 @@ namespace SPPC.Framework.Persistence
         /// Commits all repository operations that are not yet applied, using a database transaction
         /// </summary>
         void Commit();
+
+        /// <summary>
+        /// Asynchronously commits all repository operations that are not yet applied, using a database transaction
+        /// </summary>
+        Task CommitAsync();
     }
 }

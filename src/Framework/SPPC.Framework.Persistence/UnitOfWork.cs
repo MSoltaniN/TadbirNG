@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Domain;
 
@@ -38,6 +39,14 @@ namespace SPPC.Framework.Persistence
         public void Commit()
         {
             _dataContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Asynchronously commits all repository operations that are not yet applied, using a database transaction
+        /// </summary>
+        public async Task CommitAsync()
+        {
+            await _dataContext.SaveChangesAsync();
         }
 
         #region IDisposable Support
