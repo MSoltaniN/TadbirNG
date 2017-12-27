@@ -30,7 +30,6 @@ namespace SPPC.Tadbir.Service
             _crypto = crypto;
             _httpContextAccessor = httpContextAccessor;
             _httpContext = httpContextAccessor.HttpContext;
-            _rootUrl = Constants.AppRoot;
         }
 
         /// <summary>
@@ -310,7 +309,6 @@ namespace SPPC.Tadbir.Service
             profile.RepeatPassword = newPasswordHash;
         }
 
-        private static string _rootUrl;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly HttpContext _httpContext;
         private IApiClient _apiClient;

@@ -18,10 +18,15 @@ using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.Persistence
 {
+    /// <summary>
+    /// Entity Framework (EF) data context class used for managing database operations of Tadbir application
+    /// </summary>
     public partial class TadbirContext : DbContext
     {
-        public DbSet<Account> Accounts { get; set; }
-
+        /// <summary>
+        /// Performs configuration that fine-tunes database provider operations
+        /// </summary>
+        /// <param name="optionsBuilder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -32,6 +37,10 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// Performs entity mappings required for converting data between object and relational forms
+        /// </summary>
+        /// <param name="modelBuilder">Builder instance used for mapping definitions</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             AccountMap.BuildMapping(modelBuilder.Entity<Account>());

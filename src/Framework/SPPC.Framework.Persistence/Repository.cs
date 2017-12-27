@@ -25,6 +25,10 @@ namespace SPPC.Framework.Persistence
             _dataSet = dataContext.Set<TEntity>();
         }
 
+        /// <summary>
+        /// Returns a queryable object that is initially set to return all data
+        /// </summary>
+        /// <returns>Queryable object for all data</returns>
         public IQueryable<TEntity> GetAllAsQuery()
         {
             return _dataSet.AsQueryable();

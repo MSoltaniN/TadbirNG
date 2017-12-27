@@ -130,6 +130,13 @@ namespace SPPC.Framework.Common
             return parsed;
         }
 
+        /// <summary>
+        /// Parses the given string as a date value in Jalali calendar.
+        /// </summary>
+        /// <param name="dateTime">String representation of a date value</param>
+        /// <returns>
+        /// A new <see cref="JalaliDateTime"/> instance whose date value is equivalent to the given string
+        /// </returns>
         public static JalaliDateTime Parse(string dateTime)
         {
             JalaliDateTime jalali = null;
@@ -182,6 +189,19 @@ namespace SPPC.Framework.Common
             return toString;
         }
 
+        /// <summary>
+        /// Returns a string representation of the Jalali date with specified format
+        /// </summary>
+        /// <param name="format">
+        /// String value that specifies a representation format.
+        /// <para>Currently supported formats are : "wdmy", "dmy" and "dmyw", where each letter stands for
+        /// a single part in a date value, as below :</para>
+        /// <para>1. w : Day of week (Weekday) with Persian name</para>
+        /// <para>2. d : Number of the day in month</para>
+        /// <para>3. m : Persian name or number of the month in year</para>
+        /// <para>4. y : Year</para>
+        /// </param>
+        /// <returns>Formatted string representation of this Jalali date object</returns>
         public string ToString(string format)
         {
             string toString = ToShortDateString();

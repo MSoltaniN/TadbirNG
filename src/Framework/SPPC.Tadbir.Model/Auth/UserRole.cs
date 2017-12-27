@@ -13,7 +13,7 @@ namespace SPPC.Tadbir.Model.Auth
     public class UserRole : IEntity
     {
         /// <summary>
-        /// Initializes a new instance of this class
+        /// Initializes a new instance of the <see cref="UserRole"/> class.
         /// </summary>
         public UserRole()
         {

@@ -13,6 +13,10 @@ namespace SPPC.Framework.Persistence
     public interface IRepository<TEntity>
         where TEntity : class, IEntity
     {
+        /// <summary>
+        /// Returns a queryable object that is initially set to return all data
+        /// </summary>
+        /// <returns>Queryable object for all data</returns>
         IQueryable<TEntity> GetAllAsQuery();
 
         /// <summary>

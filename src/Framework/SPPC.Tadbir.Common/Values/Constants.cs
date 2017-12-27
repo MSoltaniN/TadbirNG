@@ -61,6 +61,9 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         public const string AppRootKey = "AppRoot";
 
+        /// <summary>
+        /// آدرس وب برنامه تحت وب
+        /// </summary>
         public const string AppRoot = "http://localhost:8802/";
     }
 }
