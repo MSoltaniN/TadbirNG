@@ -10,7 +10,7 @@ namespace SPPC.Framework.Persistence
     /// Defines asynchronous operations required for reading and manipulating data in a permanent data store.
     /// </summary>
     /// <typeparam name="TEntity">Type of entity that can be handled</typeparam>
-    public interface IAsyncRepository<TEntity>
+    public interface IAsyncRepository<TEntity> : IRepository<TEntity>
         where TEntity : class, IEntity
     {
         /// <summary>

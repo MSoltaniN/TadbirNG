@@ -34,6 +34,18 @@ namespace SPPC.Framework.Persistence
         }
 
         /// <summary>
+        /// Returns a concrete asynchronous repository implementation for a specific entity
+        /// </summary>
+        /// <typeparam name="TEntity">Type of entity whose repository is required</typeparam>
+        /// <returns>Asynchronous repository implementation for entity</returns>
+        public IAsyncRepository<TEntity> GetAsyncRepository<TEntity>()
+            where TEntity : class, IEntity
+        {
+            var repository = new Repository<TEntity>(_dataContext);
+            return repository;
+        }
+
+        /// <summary>
         /// Commits all repository operations that are not yet applied, using a database transaction
         /// </summary>
         public void Commit()

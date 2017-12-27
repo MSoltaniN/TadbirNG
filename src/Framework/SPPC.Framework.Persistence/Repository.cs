@@ -12,7 +12,7 @@ namespace SPPC.Framework.Persistence
     /// Provides operations required for reading and manipulating data in a database.
     /// </summary>
     /// <typeparam name="TEntity">Type of entity that can be handled</typeparam>
-    public class Repository<TEntity> : IDisposable, IRepository<TEntity>, IAsyncRepository<TEntity>
+    public class Repository<TEntity> : IDisposable, IAsyncRepository<TEntity>
         where TEntity : class, IEntity
     {
         /// <summary>
