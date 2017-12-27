@@ -8,15 +8,28 @@ using SPPC.Framework.Persistence;
 
 namespace SPPC.Framework.Workflow.Tracking
 {
+    /// <summary>
+    /// Represents a workflow extension that interacts with the workflow tracking infrastructure and accesses
+    /// tracking records in a SQL Server database
+    /// </summary>
     public class SqlTrackingParticipant : TrackingParticipant
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlTrackingParticipant"/> class
+        /// </summary>
+        /// <param name="repository">Repository object to use for managing workflow tracking records</param>
+        /// <param name="mapper">Mapper instance to use for conversion between model and view model objects</param>
         public SqlTrackingParticipant(ITrackingRepository repository, IDomainMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        // The track method is called when a tracking record is emitted by the workflow runtime
+        /// <summary>
+        /// Synchronously processes the tracking record
+        /// </summary>
+        /// <param name="record">The generated tracking record</param>
+        /// <param name="timeout">The time period after which the provider aborts the attempt</param>
         protected override void Track(TrackingRecord record, TimeSpan timeout)
         {
             var instanceRecord = record as WorkflowInstanceRecord;

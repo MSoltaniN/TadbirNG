@@ -11,13 +11,26 @@ using System.Web.Configuration;
 
 namespace SPPC.Framework.Workflow.Tracking
 {
+    /// <summary>
+    /// A WCF service behavior that enables tracking workflow states in a SQL Server database
+    /// </summary>
     public class SqlTrackingBehavior : IServiceBehavior
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SqlTrackingBehavior"/> class
+        /// </summary>
+        /// <param name="profileName">Name of the tracking profile to use</param>
         public SqlTrackingBehavior(string profileName)
         {
             _profileName = profileName;
         }
 
+        /// <summary>
+        /// Provides the ability to change run-time property values or insert custom extension objects such as
+        /// error handlers, message or parameter interceptors, security extensions, and other custom extension objects.
+        /// </summary>
+        /// <param name="serviceDescription">The service description</param>
+        /// <param name="serviceHostBase">The host that is currently being built</param>
         public virtual void ApplyDispatchBehavior(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
         {
             WorkflowServiceHost workflowServiceHost = serviceHostBase as WorkflowServiceHost;
@@ -36,12 +49,25 @@ namespace SPPC.Framework.Workflow.Tracking
             }
         }
 
+        /// <summary>
+        /// Provides the ability to pass custom data to binding elements to support the contract implementation
+        /// </summary>
+        /// <param name="serviceDescription">The service description of the service</param>
+        /// <param name="serviceHostBase">The host of the service</param>
+        /// <param name="endpoints">The service endpoints</param>
+        /// <param name="bindingParameters">Custom objects to which binding elements have access</param>
         public virtual void AddBindingParameters(
             ServiceDescription serviceDescription, ServiceHostBase serviceHostBase,
             Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters)
         {
         }
 
+        /// <summary>
+        /// Provides the ability to inspect the service host and the service description to confirm
+        /// that the service can run successfully
+        /// </summary>
+        /// <param name="serviceDescription">The service description</param>
+        /// <param name="serviceHostBase">The service host that is currently being constructed</param>
         public virtual void Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase)
         {
         }
