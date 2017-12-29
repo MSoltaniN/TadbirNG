@@ -215,12 +215,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
-        // GET: api/accounts/{accountId:min(1)}/articles
-        [Route(AccountApi.AccountArticlesUrl)]
+        // GET: api/accounts/{accountId:min(1)}/articles/sync
+        [Route(AccountApi.AccountArticlesSyncUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public IActionResult GetAccountArticles(int accountId)
         {
             var articles = _repository.GetAccountArticles(accountId);
+            var result = (articles != null)
+                ? Json(articles)
+                : NotFound() as IActionResult;
+
+            return result;
+        }
+
+        // GET: api/accounts/{accountId:min(1)}/articles
+        [Route(AccountApi.AccountArticlesUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        public async Task<IActionResult> GetAccountArticlesAsync(int accountId)
+        {
+            var articles = await _repository.GetAccountArticlesAsync(accountId);
             var result = (articles != null)
                 ? Json(articles)
                 : NotFound() as IActionResult;

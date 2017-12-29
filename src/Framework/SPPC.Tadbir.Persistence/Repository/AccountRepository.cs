@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
@@ -235,7 +236,13 @@ namespace SPPC.Tadbir.Persistence
         {
             AccountFullViewModel accountViewModel = null;
             var repository = _unitOfWork.GetRepository<Account>();
-            var account = repository.GetByID(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
+            var account = repository
+                .GetAllAsQuery()
+                .Where(acc => acc.Id == accountId)
+                .Include(acc => acc.Branch)
+                    .ThenInclude(br => br.Company)
+                .Include(acc => acc.FiscalPeriod)
+                .SingleOrDefault();
             if (account != null)
             {
                 accountViewModel = _mapper.Map<AccountFullViewModel>(account);
@@ -253,7 +260,13 @@ namespace SPPC.Tadbir.Persistence
         {
             AccountFullViewModel accountViewModel = null;
             var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
+            var account = await repository
+                .GetAllAsQuery()
+                .Where(acc => acc.Id == accountId)
+                .Include(acc => acc.Branch)
+                    .ThenInclude(br => br.Company)
+                .Include(acc => acc.FiscalPeriod)
+                .SingleOrDefaultAsync();
             if (account != null)
             {
                 accountViewModel = _mapper.Map<AccountFullViewModel>(account);
@@ -273,11 +286,31 @@ namespace SPPC.Tadbir.Persistence
             var articles = repository
                 .GetByCriteria(
                     line => line.Account.Id == accountId,
-                    line => line.Account, line => line.Branch, line => line.Currency, line => line.FiscalPeriod)
+                    line => line.Transaction, line => line.Account, line => line.Currency,
+                    line => line.FiscalPeriod, line => line.Branch)
                 .Select(line => _mapper.Map<TransactionLineViewModel>(line))
                 .ToList();
 
             return articles;
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves all transaction lines (articles) that use the financial account specified by
+        /// given unique identifier.
+        /// </summary>
+        /// <param name="accountId">Unique identifier of an existing financial account</param>
+        /// <returns>Collection of all transaction lines (articles) for specified account</returns>
+        public async Task<IList<TransactionLineViewModel>> GetAccountArticlesAsync(int accountId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
+            var articles = await repository
+                .GetByCriteriaAsync(
+                    line => line.Account.Id == accountId,
+                    line => line.Transaction, line => line.Account, line => line.Currency,
+                    line => line.FiscalPeriod, line => line.Branch);
+            return articles
+                .Select(line => _mapper.Map<TransactionLineViewModel>(line))
+                .ToList();
         }
 
         /// <summary>

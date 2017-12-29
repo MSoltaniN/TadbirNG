@@ -91,5 +91,10 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for transaction articles that reference an account specified by identifier
         /// </summary>
         public const string AccountArticlesUrl = "accounts/{accountId:min(1)}/articles";
+
+        /// <summary>
+        /// API server route URL for transaction articles that reference an account specified by identifier
+        /// </summary>
+        public const string AccountArticlesSyncUrl = "accounts/{accountId:min(1)}/articles/sync";
     }
 }

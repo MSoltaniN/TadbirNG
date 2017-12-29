@@ -45,7 +45,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act & Assert
-            AssertActionRouteEquals("GetAccounts", AccountApi.FiscalPeriodBranchAccountsUrl);
+            AssertActionRouteEquals("GetAccounts", AccountApi.FiscalPeriodBranchAccountsSyncUrl);
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("GetAccount", AccountApi.AccountUrl);
+            AssertActionRouteEquals("GetAccount", AccountApi.AccountSyncUrl);
         }
 
         [Test]
@@ -198,7 +198,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("PostNewAccount", AccountApi.AccountsUrl);
+            AssertActionRouteEquals("PostNewAccount", AccountApi.AccountsSyncUrl);
         }
 
         [Test]
@@ -311,7 +311,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("PutModifiedAccount", AccountApi.AccountUrl);
+            AssertActionRouteEquals("PutModifiedAccount", AccountApi.AccountSyncUrl);
         }
 
         [Test]
@@ -460,7 +460,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("GetAccountDetail", AccountApi.AccountDetailsUrl);
+            AssertActionRouteEquals("GetAccountDetail", AccountApi.AccountDetailsSyncUrl);
         }
 
         [Test]
