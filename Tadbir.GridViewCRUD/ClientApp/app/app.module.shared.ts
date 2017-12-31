@@ -30,6 +30,9 @@ import { DialogModule } from '@progress/kendo-angular-dialog';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 
+import { ColumnComponent } from "@progress/kendo-angular-grid";
+//import {  } from "@progress/kendo-angular-grid/dist/es/columns/column-base";
+//import { ColumnBase } from '@progress/kendo-angular-grid/dist/es/columns/column-base';
 import { AccountService, TransactionLineService, FiscalPeriodService } from './service/index';
 
 
@@ -43,6 +46,7 @@ import { AccountService, TransactionLineService, FiscalPeriodService } from './s
         SppcMaskTextBox,
         SppcNumberBox,
         SppcGridColumn
+        
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true }],        
@@ -53,7 +57,7 @@ import { AccountService, TransactionLineService, FiscalPeriodService } from './s
         ReactiveFormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        DialogModule, DropDownsModule, GridModule, InputsModule,
+        DialogModule, DropDownsModule, GridModule, InputsModule, 
         BrowserModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([

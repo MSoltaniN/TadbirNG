@@ -62,10 +62,11 @@
                         <input type="text" class="k-textbox" />                        
                     </ng-template>
                 </kendo-grid-column>-->
-                <ng-template>
-                    <sppc-grid-column>
-                    </sppc-grid-column> 
-                </ng-template>               
+                <!--<sppc-grid-column field="code" [sortable]="true" media="(min-width: 1024px)" title="{{ 'Account.Code' | translate }}" width="130">
+                    <ng-template kendoGridFilterCellTemplate>
+                        <input type="text" class="k-textbox" />
+                    </ng-template>
+                </sppc-grid-column>-->             
                 <kendo-grid-column field="name" [sortable]="true" width="250" media="(min-width: 450px) and (max-width: 1024px)" [filterable]="true" title="{{ 'Account.Name' | translate }}" ></kendo-grid-column>
                 <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
                     <ng-template kendoGridCellTemplate>
@@ -81,15 +82,10 @@
 
                 <!-- additional columns on large devices -->
                 <kendo-grid-checkbox-column showSelectAll="true" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
-                <!--<kendo-grid-column field="code" [sortable]="true" media="(min-width: 1024px)"  title="{{ 'Account.Code' | translate }}" width="130" >
-                    <ng-template kendoGridFilterCellTemplate>
-                        <input type="text" class="k-textbox" />
-                    </ng-template>
-                </kendo-grid-column>-->
-                <ng-template>
-                    <sppc-grid-column>
-                    </sppc-grid-column>
-                </ng-template>
+                    
+                <sppc-grid-column field="code" [sortable]="true" media="(min-width: 1024px)" title="{{ 'Account.Code' | translate }}" width="130">
+                    
+                </sppc-grid-column>
 
                 <kendo-grid-column field="name" [sortable]="true" media="(min-width: 1024px)" [filterable]="true" title="{{ 'Account.Name' | translate }}" width="200"></kendo-grid-column>
                 <kendo-grid-column field="fiscalPeriodId" [filterable]="true" media="(min-width: 1024px)" title="{{ 'Account.Fiscal' | translate }}" [sortable]="false"></kendo-grid-column>
