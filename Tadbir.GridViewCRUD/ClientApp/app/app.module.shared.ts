@@ -24,12 +24,13 @@ import { SppcNumberBox } from './controls/sppc-numberbox';
 import {BrowserModule} from "@angular/platform-browser";
 import { TranslateModule } from "ng2-translate";
 import { GridModule } from '@progress/kendo-angular-grid';
-import { RTL } from '@progress/kendo-angular-l10n';
+import { RTL, MessageService } from '@progress/kendo-angular-l10n';
 import { DialogModule } from '@progress/kendo-angular-dialog';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 
-import { AccountService, TransactionLineService, FiscalPeriodService } from './service/index';
+import { AccountService, TransactionLineService, FiscalPeriodService , GridMessageService } from './service/index';
+
 
 
 
@@ -44,7 +45,8 @@ import { AccountService, TransactionLineService, FiscalPeriodService } from './s
         
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService,
-        { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true }],        
+        { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true },
+        { provide: MessageService, useClass: GridMessageService }],        
     imports: [
         CommonModule,         
         HttpModule,

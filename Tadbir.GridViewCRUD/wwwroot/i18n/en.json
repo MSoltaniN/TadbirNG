@@ -55,8 +55,10 @@
     "AccountName": "account name is required",
     "FiscalPeriodId": "fiscal period is required",
     "BranchId": "branch id is required"
+  },
+  "Grid": {
+    "noRecords": "row not found!!!!!!!!!!"
   }
-
 
 
 

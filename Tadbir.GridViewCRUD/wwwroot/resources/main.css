@@ -99,6 +99,10 @@ table thead tr th span.ui-column-title {
     display: inline !important; 
 }
 
+.k-animation-container {
+    font-family: SPPC !important;
+}
+
 /*#endregion */
 
 /*#region loading sppiner in page load*/
