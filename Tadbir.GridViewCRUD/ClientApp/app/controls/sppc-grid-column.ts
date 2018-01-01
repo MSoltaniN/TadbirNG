@@ -1,7 +1,6 @@
 ﻿
 import { Component, OnInit, Input } from '@angular/core';
 import { ColumnComponent } from "@progress/kendo-angular-grid";
-import { ColumnBase } from "@progress/kendo-angular-grid/dist/es/columns/column-base";
 
 
 @Component({
@@ -12,7 +11,7 @@ import { ColumnBase } from "@progress/kendo-angular-grid/dist/es/columns/column-
                         <input type="text" class="k-textbox" />                        
                     </ng-template>
                 </kendo-grid-column>`,
-    providers: [ColumnBase]
+    providers: [ColumnComponent]
 })
 
 export class SppcGridColumn extends ColumnComponent{

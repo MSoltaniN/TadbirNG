@@ -20,7 +20,6 @@ import { AccountFormComponent } from './components/account2/account2-form.compon
 //custom controls
 import { SppcMaskTextBox } from './controls/sppc-mask-textbox';
 import { SppcNumberBox } from './controls/sppc-numberbox';
-import { SppcGridColumn } from './controls/sppc-grid-column';
 
 import {BrowserModule} from "@angular/platform-browser";
 import { TranslateModule } from "ng2-translate";
@@ -30,9 +29,6 @@ import { DialogModule } from '@progress/kendo-angular-dialog';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 
-import { ColumnComponent } from "@progress/kendo-angular-grid";
-//import {  } from "@progress/kendo-angular-grid/dist/es/columns/column-base";
-//import { ColumnBase } from '@progress/kendo-angular-grid/dist/es/columns/column-base';
 import { AccountService, TransactionLineService, FiscalPeriodService } from './service/index';
 
 
@@ -44,8 +40,7 @@ import { AccountService, TransactionLineService, FiscalPeriodService } from './s
         Account2Component,
         AccountFormComponent,
         SppcMaskTextBox,
-        SppcNumberBox,
-        SppcGridColumn
+        SppcNumberBox        
         
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService,

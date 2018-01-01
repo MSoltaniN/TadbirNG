@@ -73,6 +73,10 @@ tgrid {
     font-family:SPPC !important;
 }
 
+kendo-dropdownlist {
+    font-family: SPPC !important;
+}
+
 /*#endregion */
 /*#region override class for primeng datatable*/
 .templateColumn {
