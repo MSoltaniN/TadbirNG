@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -18,11 +19,26 @@ namespace SPPC.Tadbir.Persistence
         IList<TransactionViewModel> GetTransactions(int fpId, int branchId);
 
         /// <summary>
+        /// Asynchronously retrieves all transactions in specified fiscal period and branch from repository.
+        /// </summary>
+        /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <returns>A collection of <see cref="TransactionViewModel"/> objects retrieved from repository</returns>
+        Task<IList<TransactionViewModel>> GetTransactionsAsync(int fpId, int branchId);
+
+        /// <summary>
         /// Retrieves a single financial transaction with detail information from repository.
         /// </summary>
         /// <param name="transactionId">Unique identifier of an existing transaction</param>
         /// <returns>The transaction retrieved from repository as a <see cref="TransactionFullViewModel"/> object</returns>
         TransactionFullViewModel GetTransactionDetail(int transactionId);
+
+        /// <summary>
+        /// Asynchronously retrieves a single financial transaction with detail information from repository.
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of an existing transaction</param>
+        /// <returns>The transaction retrieved from repository as a <see cref="TransactionFullViewModel"/> object</returns>
+        Task<TransactionFullViewModel> GetTransactionDetailAsync(int transactionId);
 
         /// <summary>
         /// Retrieves summary information for an existing transaction.
@@ -43,6 +59,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="transaction">Item to insert or update</param>
         void SaveTransaction(TransactionViewModel transaction);
+
+        /// <summary>
+        /// Asynchronously inserts or updates a single transaction in repository.
+        /// </summary>
+        /// <param name="transaction">Item to insert or update</param>
+        Task SaveTransactionAsync(TransactionViewModel transaction);
 
         /// <summary>
         /// Deletes an existing financial transaction from repository.

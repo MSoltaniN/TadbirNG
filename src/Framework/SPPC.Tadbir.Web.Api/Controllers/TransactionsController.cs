@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Framework.Common;
@@ -12,7 +12,6 @@ using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Workflow;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -29,30 +28,29 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Transaction CRUD Operations
 
-        // GET: api/transactions/fp/{fpId:int}/branch/{branchId:int}
-        [Route(TransactionApi.FiscalPeriodBranchTransactionsUrl)]
+        // GET: api/transactions/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync
+        [Route(TransactionApi.FiscalPeriodBranchTransactionsSyncUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public IActionResult GetTransactions(int fpId, int branchId)
         {
-            if (fpId <= 0 || branchId <= 0)
-            {
-                return NotFound();
-            }
-
             var transactions = _repository.GetTransactions(fpId, branchId);
             return Json(transactions);
         }
 
-        // GET: api/transactions/{transactionId:int}/details
-        [Route(TransactionApi.TransactionDetailsUrl)]
+        // GET: api/transactions/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [Route(TransactionApi.FiscalPeriodBranchTransactionsUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        public async Task<IActionResult> GetTransactionsAsync(int fpId, int branchId)
+        {
+            var transactions = await _repository.GetTransactionsAsync(fpId, branchId);
+            return Json(transactions);
+        }
+
+        // GET: api/transactions/{transactionId:int}/details/sync
+        [Route(TransactionApi.TransactionDetailsSyncUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public IActionResult GetTransactionDetail(int transactionId)
         {
-            if (transactionId <= 0)
-            {
-                return NotFound();
-            }
-
             var transaction = _repository.GetTransactionDetail(transactionId);
             var result = (transaction != null)
                 ? Json(transaction)
@@ -61,8 +59,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
-        // POST: api/transactions
-        [Route(TransactionApi.TransactionsUrl)]
+        // GET: api/transactions/{transactionId:int}/details
+        [Route(TransactionApi.TransactionDetailsUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        public async Task<IActionResult> GetTransactionDetailAsync(int transactionId)
+        {
+            var transaction = await _repository.GetTransactionDetailAsync(transactionId);
+            var result = (transaction != null)
+                ? Json(transaction)
+                : NotFound() as IActionResult;
+
+            return result;
+        }
+
+        // POST: api/transactions/sync
+        [HttpPost]
+        [Route(TransactionApi.TransactionsSyncUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
         public IActionResult PostNewTransaction([FromBody] TransactionViewModel transaction)
         {
@@ -86,7 +98,34 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
+        // POST: api/transactions
+        [HttpPost]
+        [Route(TransactionApi.TransactionsUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
+        public async Task<IActionResult> PostNewTransactionAsync([FromBody] TransactionViewModel transaction)
+        {
+            if (transaction == null)
+            {
+                return BadRequest("Could not post new transaction because a 'null' value was provided.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_repository.IsValidTransaction(transaction))
+            {
+                return BadRequest(Strings.OutOfFiscalPeriodDate);
+            }
+
+            SetDocument(transaction);
+            await _repository.SaveTransactionAsync(transaction);
+            return StatusCode(StatusCodes.Status201Created);
+        }
+
         // PUT: api/transactions/{transactionId:int}
+        [HttpPut]
         [Route(TransactionApi.TransactionUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
         public IActionResult PutModifiedTransaction(int transactionId, [FromBody] TransactionViewModel transaction)
@@ -122,6 +161,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // DELETE: api/transactions/{transactionId:int}
+        [HttpDelete]
         [Route(TransactionApi.TransactionUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
         public IActionResult DeleteExistingTransaction(int transactionId)

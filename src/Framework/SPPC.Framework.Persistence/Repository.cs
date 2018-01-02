@@ -268,7 +268,7 @@ namespace SPPC.Framework.Persistence
         /// <param name="entity">Entity to update</param>
         public void Update(TEntity entity)
         {
-            _dataContext.Attach(entity);
+            ////_dataContext.Attach(entity);
             _dataSet.Update(entity);
         }
 

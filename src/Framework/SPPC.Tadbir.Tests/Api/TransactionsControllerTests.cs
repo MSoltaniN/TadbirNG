@@ -7,6 +7,7 @@ using Moq;
 using NUnit.Framework;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
@@ -45,7 +46,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             };
         }
 
-        #region GetTransactions (GET: transactions/fp/{fpId:int}) tests
+        #region GetTransactions (GET: transactions/fp/{fpId}/branch/{branchId}) tests
+
+        [Test]
+        public void GetTransactions_HasAuthorizeRequestAttribute()
+        {
+            // Arrange
+
+            // Act & Assert
+            AssertActionIsSecured("GetTransactions", SecureEntity.Transaction, (int)AccountPermissions.View);
+        }
 
         [Test]
         public void GetTransactions_SpecifiesCorrectRoute()
@@ -87,19 +97,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
             // Act
             var result = _controller.GetTransactions(_fpId, _branchId) as JsonResult;
-
-            // Assert
-            Assert.That(result, Is.Not.Null);
-        }
-
-        [Test]
-        public void GetTransactions_GivenInvalidFiscalPeriodId_ReturnsNotFound()
-        {
-            // Arrange
-            int invalidFpId = -2;
-
-            // Act
-            var result = _controller.GetTransactions(invalidFpId, _branchId) as NotFoundResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);

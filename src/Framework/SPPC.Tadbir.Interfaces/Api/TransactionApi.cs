@@ -20,7 +20,13 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for all transactions defined in a fiscal period and a corporate branch
         /// </summary>
-        public const string FiscalPeriodBranchTransactionsUrl = "transactions/fp/{fpId:int}/branch/{branchId:int}";
+        public const string FiscalPeriodBranchTransactionsUrl = "transactions/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+
+        /// <summary>
+        /// API server route URL for all transactions defined in a fiscal period and a corporate branch
+        /// </summary>
+        public const string FiscalPeriodBranchTransactionsSyncUrl =
+            "transactions/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync";
 
         /// <summary>
         /// API client URL for all transactions
@@ -33,6 +39,11 @@ namespace SPPC.Tadbir.Api
         public const string TransactionsUrl = "transactions";
 
         /// <summary>
+        /// API server route URL for all transactions
+        /// </summary>
+        public const string TransactionsSyncUrl = "transactions/sync";
+
+        /// <summary>
         /// API client URL for a single transaction specified by identifier
         /// </summary>
         public const string Transaction = "transactions/{0}";
@@ -40,7 +51,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for a single transaction specified by identifier
         /// </summary>
-        public const string TransactionUrl = "transactions/{transactionId:int}";
+        public const string TransactionUrl = "transactions/{transactionId:min(1)}";
 
         /// <summary>
         /// API client URL for details of a single transaction specified by identifier
@@ -50,7 +61,12 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for details of a single transaction specified by identifier
         /// </summary>
-        public const string TransactionDetailsUrl = "transactions/{transactionId:int}/details";
+        public const string TransactionDetailsSyncUrl = "transactions/{transactionId:min(1)}/details/sync";
+
+        /// <summary>
+        /// API server route URL for details of a single transaction specified by identifier
+        /// </summary>
+        public const string TransactionDetailsUrl = "transactions/{transactionId:min(1)}/details";
 
         /// <summary>
         /// API client URL for preparing a single transaction specified by identifier

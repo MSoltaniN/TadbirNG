@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
@@ -41,14 +44,35 @@ namespace SPPC.Tadbir.Persistence
         public IList<TransactionViewModel> GetTransactions(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetRepository<Transaction>();
-            var transactions = repository
-                .GetByCriteria(
-                    txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId,
-                    txn => txn.Branch, txn => txn.Document, txn => txn.Lines)
-                .OrderBy(txn => txn.Date)
+            var query = GetTransactionQuery(
+                repository, txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId);
+            var transactions = query
                 .Select(txn => _mapper.Map<TransactionViewModel>(txn))
+                .ToList();
+            return transactions
                 .Select(txn => AddWorkItemInfo(txn))
                 .ToList();
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves all transactions in specified fiscal period and branch from repository.
+        /// </summary>
+        /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <returns>A collection of <see cref="TransactionViewModel"/> objects retrieved from repository</returns>
+        public async Task<IList<TransactionViewModel>> GetTransactionsAsync(int fpId, int branchId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
+            var query = GetTransactionQuery(
+                repository, txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId);
+            var transactions = await query
+                .Select(txn => _mapper.Map<TransactionViewModel>(txn))
+                .ToListAsync();
+            foreach (var transaction in transactions)
+            {
+                await AddWorkItemInfoAsync(transaction);
+            }
+
             return transactions;
         }
 
@@ -61,19 +85,44 @@ namespace SPPC.Tadbir.Persistence
         {
             TransactionFullViewModel transactionDetail = null;
             var repository = _unitOfWork.GetRepository<Transaction>();
-            var transaction = repository.GetByID(transactionId, txn => txn.Branch, txn => txn.Lines);
+            var query = GetTransactionWithLinesQuery(repository, txn => txn.Id == transactionId);
+            var transaction = query.SingleOrDefault();
             if (transaction != null)
             {
                 transactionDetail = _mapper.Map<TransactionFullViewModel>(transaction);
                 var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
-                var history = historyRepository
-                    .GetByCriteria(
-                        hist => hist.EntityId == transactionId, hist => hist.Document, hist => hist.User, hist => hist.Role)
-                    .OrderByDescending(hist => hist.Date)
-                    .OrderByDescending(hist => hist.Time)
-                    .Select(hist => _mapper.Map<HistoryItemViewModel>(hist));
+                var historyQuery = GetHistoryQuery(historyRepository, hist => hist.EntityId == transactionId);
+                var history = historyQuery
+                    .Select(hist => _mapper.Map<HistoryItemViewModel>(hist))
+                    .ToList();
                 (transactionDetail.Actions as List<HistoryItemViewModel>).AddRange(history);
                 transactionDetail.Transaction = AddWorkItemInfo(transactionDetail.Transaction);
+            }
+
+            return transactionDetail;
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves a single financial transaction with detail information from repository.
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of an existing transaction</param>
+        /// <returns>The transaction retrieved from repository as a <see cref="TransactionFullViewModel"/> object</returns>
+        public async Task<TransactionFullViewModel> GetTransactionDetailAsync(int transactionId)
+        {
+            TransactionFullViewModel transactionDetail = null;
+            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
+            var query = GetTransactionWithLinesQuery(repository, txn => txn.Id == transactionId);
+            var transaction = await query.SingleOrDefaultAsync();
+            if (transaction != null)
+            {
+                transactionDetail = _mapper.Map<TransactionFullViewModel>(transaction);
+                var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
+                var historyQuery = GetHistoryQuery(historyRepository, hist => hist.EntityId == transactionId);
+                var history = await historyQuery
+                    .Select(hist => _mapper.Map<HistoryItemViewModel>(hist))
+                    .ToListAsync();
+                (transactionDetail.Actions as List<HistoryItemViewModel>).AddRange(history);
+                await AddWorkItemInfoAsync(transactionDetail.Transaction);
             }
 
             return transactionDetail;
@@ -135,7 +184,8 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                var existing = repository.GetByID(transaction.Id);
+                var query = GetTransactionQuery(repository, txn => txn.Id == transaction.Id);
+                var existing = query.SingleOrDefault();
                 if (existing != null)
                 {
                     UpdateExistingTransaction(existing, transaction);
@@ -145,6 +195,34 @@ namespace SPPC.Tadbir.Persistence
             }
 
             _unitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// Asynchronously inserts or updates a single transaction in repository.
+        /// </summary>
+        /// <param name="transaction">Item to insert or update</param>
+        public async Task SaveTransactionAsync(TransactionViewModel transaction)
+        {
+            Verify.ArgumentNotNull(transaction, "transaction");
+            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
+            if (transaction.Id == 0)
+            {
+                var newTransaction = _mapper.Map<Transaction>(transaction);
+                UpdateAction(newTransaction);
+                repository.Insert(newTransaction);
+            }
+            else
+            {
+                var existing = await repository.GetByIDAsync(transaction.Id);
+                if (existing != null)
+                {
+                    UpdateExistingTransaction(existing, transaction);
+                    UpdateAction(existing);
+                    repository.Update(existing);
+                }
+            }
+
+            await _unitOfWork.CommitAsync();
         }
 
         /// <summary>
@@ -272,15 +350,6 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private static void UpdateExistingTransaction(Transaction existing, TransactionViewModel transaction)
-        {
-            existing.No = transaction.No;
-            existing.Date = JalaliDateTime.Parse(transaction.Date).ToGregorian();
-            existing.Description = transaction.Description;
-            var mainAction = existing.Document.Actions.First();
-            mainAction.ModifiedBy = new User() { Id = transaction.Document.Actions.First().ModifiedById };
-        }
-
         private static void UpdateExistingArticle(TransactionLine existing, TransactionLineViewModel article)
         {
             existing.Account = new Account() { Id = article.AccountId };
@@ -306,6 +375,97 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private void UpdateExistingTransaction(Transaction existing, TransactionViewModel transaction)
+        {
+            var userRepository = _unitOfWork.GetRepository<User>();
+            existing.No = transaction.No;
+            existing.Date = JalaliDateTime.Parse(transaction.Date).ToGregorian();
+            existing.Description = transaction.Description;
+            var mainAction = existing.Document.Actions.First();
+            mainAction.ModifiedBy = userRepository.GetByID(transaction.Document.Actions.First().ModifiedById);
+        }
+
+        private IQueryable<Transaction> GetTransactionQuery(
+            IRepository<Transaction> repository, Expression<Func<Transaction, bool>> criteria)
+        {
+            var transactionsQuery = repository
+                .GetAllAsQuery()
+                .Include(txn => txn.Lines)
+                .Include(txn => txn.FiscalPeriod)
+                .Include(txn => txn.Branch)
+                .Include(txn => txn.Document)
+                    .ThenInclude(doc => doc.Type)
+                .Include(txn => txn.Document)
+                    .ThenInclude(doc => doc.Status)
+                .Include(txn => txn.Document)
+                    .ThenInclude(doc => doc.Actions)
+                        .ThenInclude(act => act.CreatedBy)
+                            .ThenInclude(usr => usr.Person)
+                .Include(txn => txn.Document)
+                    .ThenInclude(doc => doc.Actions)
+                        .ThenInclude(act => act.ModifiedBy)
+                            .ThenInclude(usr => usr.Person)
+                .Include(txn => txn.Document)
+                    .ThenInclude(doc => doc.Actions)
+                        .ThenInclude(act => act.ConfirmedBy)
+                            .ThenInclude(usr => usr.Person)
+                .Include(txn => txn.Document)
+                    .ThenInclude(doc => doc.Actions)
+                        .ThenInclude(act => act.ApprovedBy)
+                            .ThenInclude(usr => usr.Person)
+                .Where(criteria);
+            return transactionsQuery;
+        }
+
+        private IQueryable<Transaction> GetTransactionWithLinesQuery(
+            IRepository<Transaction> repository, Expression<Func<Transaction, bool>> criteria)
+        {
+            var transactionsQuery = repository
+                .GetAllAsQuery()
+                .Include(txn => txn.Lines)
+                    .ThenInclude(line => line.Account)
+                .Include(txn => txn.Lines)
+                    .ThenInclude(line => line.Currency)
+                .Include(txn => txn.Lines)
+                    .ThenInclude(line => line.FiscalPeriod)
+                .Include(txn => txn.Lines)
+                    .ThenInclude(line => line.Branch)
+                        .ThenInclude(br => br.Company)
+                .Include(txn => txn.FiscalPeriod)
+                .Include(txn => txn.Branch)
+                .Include(txn => txn.Document)
+                    .ThenInclude(doc => doc.Type)
+                .Include(txn => txn.Document)
+                    .ThenInclude(doc => doc.Status)
+                .Include(txn => txn.Document)
+                    .ThenInclude(doc => doc.Actions)
+                        .ThenInclude(act => act.CreatedBy)
+                .Include(txn => txn.Document)
+                    .ThenInclude(doc => doc.Actions)
+                        .ThenInclude(act => act.ModifiedBy)
+                .Include(txn => txn.Document)
+                    .ThenInclude(doc => doc.Actions)
+                        .ThenInclude(act => act.ConfirmedBy)
+                .Include(txn => txn.Document)
+                    .ThenInclude(doc => doc.Actions)
+                        .ThenInclude(act => act.ApprovedBy)
+                .Where(criteria);
+            return transactionsQuery;
+        }
+
+        private IQueryable<WorkItemHistory> GetHistoryQuery(
+            IRepository<WorkItemHistory> repository, Expression<Func<WorkItemHistory, bool>> criteria)
+        {
+            var query = repository
+                .GetAllAsQuery()
+                .Include(hist => hist.User)
+                .Include(hist => hist.Role)
+                .Where(criteria)
+                .OrderByDescending(hist => hist.Date)
+                .OrderByDescending(hist => hist.Time);
+            return query;
+        }
+
         private TransactionViewModel AddWorkItemInfo(TransactionViewModel transaction)
         {
             var repository = _unitOfWork.GetRepository<WorkItemDocument>();
@@ -314,6 +474,24 @@ namespace SPPC.Tadbir.Persistence
                     && wid.DocumentType == DocumentTypeName.Transaction,
                     wid => wid.Document, wid => wid.WorkItem)
                 .FirstOrDefault();
+            if (document != null)
+            {
+                transaction.WorkItemId = document.WorkItem.Id;
+                transaction.WorkItemTargetId = document.WorkItem.Target.Id;
+                transaction.WorkItemAction = document.WorkItem.Action;
+            }
+
+            return transaction;
+        }
+
+        private async Task<TransactionViewModel> AddWorkItemInfoAsync(TransactionViewModel transaction)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<WorkItemDocument>();
+            var documents = await repository
+                .GetByCriteriaAsync(wid => wid.Document.Id == transaction.Document.Id
+                    && wid.DocumentType == DocumentTypeName.Transaction,
+                    wid => wid.Document, wid => wid.WorkItem);
+            var document = documents.FirstOrDefault();
             if (document != null)
             {
                 transaction.WorkItemId = document.WorkItem.Id;
