@@ -23,8 +23,7 @@
                         (selectedKeysChange)="onSelectedKeysChange($event)" >
                 <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                                      pagerOf="{{ 'Paging.Of' | translate }}"
-                                     pagerItems="{{ 'Paging.Record' | translate }}" 
-                                     filterEqOperator="مساوی">
+                                     pagerItems="{{ 'Paging.Record' | translate }}" >
                 </kendo-grid-messages>
                 <ng-template kendoGridNoRecordsTemplate>
                     {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}

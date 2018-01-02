@@ -109,6 +109,7 @@
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\fiscal-period.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\message\sppc-message.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\transaction-line.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\index.ts" />
   </ItemGroup>

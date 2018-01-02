@@ -1,31 +1,28 @@
 ﻿import { MessageService } from '@progress/kendo-angular-l10n';
 import { TranslateService } from "ng2-translate";
 import { Injectable } from "@angular/core";
+import { SppcMessageService } from "./sppc-message.service";
 
-
-//string messages = {
-//    'kendo.grid.noRecords': 'No hay datos disponibles.'
-//};
-
+    
 @Injectable()
 export class GridMessageService extends MessageService {
 
-    private translateService: TranslateService;
+    private messageService: SppcMessageService
+
+    constructor(private translate: TranslateService) {
+        super()   
+        this.messageService = new SppcMessageService(translate);
+    }
+
+    
+    
     
     get(key: string): string | undefined {
-
+        
         var result: string = "";
-
-        this.translateService.addLangs(["en", "fa"]);
-        this.translateService.setDefaultLang('fa');
-
-        var browserLang = 'fa';//translate.getBrowserLang();
-        this.translateService.use(browserLang);
-
-        this.translateService.get("GridMessages." + key.split('.')[2]).subscribe((msg: string) => {
-            result = msg;
-        });
-       
+        
+        result = this.messageService.getText(key.split('.')[2])
+                  
         return result;
     }
    

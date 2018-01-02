@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Headers, RequestOptions, BaseRequestOptions } from '@angular/http';
+import { Headers, RequestOptions, BaseRequestOptions, Http } from '@angular/http';
 import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
 // third party module to display toast 
 import { ToastrModule } from 'toastr-ng2';
@@ -22,7 +22,7 @@ import { SppcMaskTextBox } from './controls/sppc-mask-textbox';
 import { SppcNumberBox } from './controls/sppc-numberbox';
 
 import {BrowserModule} from "@angular/platform-browser";
-import { TranslateModule } from "ng2-translate";
+import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
 import { GridModule } from '@progress/kendo-angular-grid';
 import { RTL, MessageService } from '@progress/kendo-angular-l10n';
 import { DialogModule } from '@progress/kendo-angular-dialog';
@@ -30,7 +30,6 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 
 import { AccountService, TransactionLineService, FiscalPeriodService , GridMessageService } from './service/index';
-
 
 
 
@@ -56,7 +55,11 @@ import { AccountService, TransactionLineService, FiscalPeriodService , GridMessa
         ToastrModule.forRoot(),
         DialogModule, DropDownsModule, GridModule, InputsModule, 
         BrowserModule,
-        TranslateModule.forRoot(),
+        TranslateModule.forRoot({
+            provide: TranslateLoader,
+            useFactory: (http: Http) => new TranslateStaticLoader(http, '/i18n', '.json'),
+            deps: [Http]
+        }),
         RouterModule.forRoot([
             { path: '', redirectTo: 'account2', pathMatch: 'full' },            
             { path: 'account2', component: Account2Component },
@@ -67,3 +70,4 @@ import { AccountService, TransactionLineService, FiscalPeriodService , GridMessa
 })
 export class AppModuleShared {
 }
+
