@@ -1,0 +1,437 @@
+﻿<WorkflowService mc:Ignorable="sap sap2010 sads" p1:TextExpression.Namespaces="{x:Reference __ReferenceID6}" p1:TextExpression.References="{x:Reference __ReferenceID7}" ConfigurationName="DocumentStateService" sap2010:ExpressionActivityEditor.ExpressionActivityEditor="C#" sap2010:WorkflowViewState.IdRef="WorkflowService_1" Name="DocumentStateService"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/servicemodel"
+ xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:p="http://tempuri.org/"
+ xmlns:p1="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:ssx="clr-namespace:System.ServiceModel.XamlIntegration;assembly=System.ServiceModel"
+ xmlns:stmw="clr-namespace:SPPC.Tadbir.Metadata.Workflow;assembly=SPPC.Tadbir.Metadata"
+ xmlns:stw="clr-namespace:SPPC.Tadbir.Workflow;assembly=SPPC.Tadbir.Interfaces"
+ xmlns:stw1="clr-namespace:SPPC.Tadbir.Workflow;assembly=SPPC.Tadbir.Workflow"
+ xmlns:stwa="clr-namespace:SPPC.Tadbir.Workflow.Activities;assembly=SPPC.Tadbir.Workflow"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <p1:Flowchart DisplayName="DocumentStateFlowchart" sap2010:WorkflowViewState.IdRef="Flowchart_1">
+    <p1:TextExpression.Namespaces>
+      <sco:Collection x:TypeArguments="x:String" x:Name="__ReferenceID6">
+        <x:String>System</x:String>
+        <x:String>System.Collections.Generic</x:String>
+        <x:String>System.Data</x:String>
+        <x:String>System.Linq</x:String>
+        <x:String>System.Text</x:String>
+        <x:String>SPPC.Tadbir.Workflow</x:String>
+        <x:String>SPPC.Tadbir.Metadata.Workflow</x:String>
+        <x:String>System.ServiceModel.Activities</x:String>
+      </sco:Collection>
+    </p1:TextExpression.Namespaces>
+    <p1:TextExpression.References>
+      <sco:Collection x:TypeArguments="p1:AssemblyReference" x:Name="__ReferenceID7">
+        <p1:AssemblyReference>BabakSoft.Platform.Interfaces</p1:AssemblyReference>
+        <p1:AssemblyReference>Microsoft.CSharp</p1:AssemblyReference>
+        <p1:AssemblyReference>Microsoft.Practices.ServiceLocation</p1:AssemblyReference>
+        <p1:AssemblyReference>Microsoft.Practices.Unity</p1:AssemblyReference>
+        <p1:AssemblyReference>Microsoft.Practices.Unity.Configuration</p1:AssemblyReference>
+        <p1:AssemblyReference>Microsoft.Practices.Unity.RegistrationByConvention</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Activities.DurableInstancing</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Configuration</p1:AssemblyReference>
+        <p1:AssemblyReference>System</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Activities</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Core</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Data</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Runtime.Serialization</p1:AssemblyReference>
+        <p1:AssemblyReference>System.ServiceModel</p1:AssemblyReference>
+        <p1:AssemblyReference>System.ServiceModel.Activities</p1:AssemblyReference>
+        <p1:AssemblyReference>System.ServiceModel.Channels</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Web</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Xaml</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Xml</p1:AssemblyReference>
+        <p1:AssemblyReference>System.Xml.Linq</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Framework.Unity</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Framework.Workflow</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Tadbir.Common</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Tadbir.Interfaces</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Tadbir.Metadata</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Tadbir.Unity</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Tadbir.ViewModel</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Tadbir.Workflow</p1:AssemblyReference>
+        <p1:AssemblyReference>mscorlib</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Tadbir.WorkflowService</p1:AssemblyReference>
+      </sco:Collection>
+    </p1:TextExpression.References>
+    <p1:Flowchart.Variables>
+      <p1:Variable x:TypeArguments="stmw:StateWorkflow" Name="metadata" />
+      <p1:Variable x:TypeArguments="stw:StateOperation" Name="operation" />
+      <p1:Variable x:TypeArguments="stmw:StateAction" Name="action" />
+      <p1:Variable x:TypeArguments="CorrelationHandle" Name="docIdHandle" />
+    </p1:Flowchart.Variables>
+    <p1:Flowchart.StartNode>
+      <x:Reference>__ReferenceID5</x:Reference>
+    </p1:Flowchart.StartNode>
+    <p1:FlowStep x:Name="__ReferenceID5" sap2010:WorkflowViewState.IdRef="FlowStep_2">
+      <p1:Sequence DisplayName="WaitForFirstAction" sap2010:WorkflowViewState.IdRef="Sequence_1">
+        <Receive x:Name="__ReferenceID0" CanCreateInstance="True" DisplayName="ReceiveFirstActionRequest" sap2010:WorkflowViewState.IdRef="Receive_1" OperationName="FirstAction" ServiceContractName="p:IDocumentStateService">
+          <Receive.CorrelatesOn>
+            <XPathMessageQuery x:Key="docId">
+              <XPathMessageQuery.Namespaces>
+                <ssx:XPathMessageContextMarkup>
+                  <x:String x:Key="xg0">http://schemas.datacontract.org/2004/07/SPPC.Tadbir.Workflow</x:String>
+                  <x:String x:Key="xgSc">http://tempuri.org/</x:String>
+                </ssx:XPathMessageContextMarkup>
+              </XPathMessageQuery.Namespaces>sm:body()/xgSc:FirstAction/xgSc:operation/xg0:DocumentId</XPathMessageQuery>
+          </Receive.CorrelatesOn>
+          <Receive.CorrelatesWith>
+            <p1:InArgument x:TypeArguments="CorrelationHandle">
+              <mca:CSharpValue x:TypeArguments="CorrelationHandle">docIdHandle</mca:CSharpValue>
+            </p1:InArgument>
+          </Receive.CorrelatesWith>
+          <Receive.CorrelationInitializers>
+            <RequestReplyCorrelationInitializer>
+              <RequestReplyCorrelationInitializer.CorrelationHandle>
+                <p1:InArgument x:TypeArguments="CorrelationHandle">
+                  <mca:CSharpValue x:TypeArguments="CorrelationHandle">docIdHandle</mca:CSharpValue>
+                </p1:InArgument>
+              </RequestReplyCorrelationInitializer.CorrelationHandle>
+            </RequestReplyCorrelationInitializer>
+          </Receive.CorrelationInitializers>
+          <ReceiveParametersContent>
+            <p1:OutArgument x:TypeArguments="stw:StateOperation" x:Key="operation">
+              <mca:CSharpReference x:TypeArguments="stw:StateOperation">operation</mca:CSharpReference>
+            </p1:OutArgument>
+          </ReceiveParametersContent>
+        </Receive>
+        <stwa:GetWorkflowMetadataActivity DisplayName="ReadWorkflowMetadata" sap2010:WorkflowViewState.IdRef="GetWorkflowMetadataActivity_4">
+          <stwa:GetWorkflowMetadataActivity.DocumentType>
+            <p1:InArgument x:TypeArguments="x:String">
+              <mca:CSharpValue x:TypeArguments="x:String">operation.DocumentType</mca:CSharpValue>
+            </p1:InArgument>
+          </stwa:GetWorkflowMetadataActivity.DocumentType>
+          <stwa:GetWorkflowMetadataActivity.Result>
+            <p1:OutArgument x:TypeArguments="stmw:StateWorkflow">
+              <mca:CSharpReference x:TypeArguments="stmw:StateWorkflow">metadata</mca:CSharpReference>
+            </p1:OutArgument>
+          </stwa:GetWorkflowMetadataActivity.Result>
+        </stwa:GetWorkflowMetadataActivity>
+        <p1:Assign sap2010:WorkflowViewState.IdRef="Assign_4">
+          <p1:Assign.To>
+            <p1:OutArgument x:TypeArguments="stmw:StateAction">
+              <mca:CSharpReference x:TypeArguments="stmw:StateAction">action</mca:CSharpReference>
+            </p1:OutArgument>
+          </p1:Assign.To>
+          <p1:Assign.Value>
+            <p1:InArgument x:TypeArguments="stmw:StateAction">
+              <mca:CSharpValue x:TypeArguments="stmw:StateAction">metadata.FirstAction</mca:CSharpValue>
+            </p1:InArgument>
+          </p1:Assign.Value>
+        </p1:Assign>
+        <stw1:ManageCartableActivity DisplayName="AddWorkItemForFirstAction" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_1">
+          <stw1:ManageCartableActivity.Metadata>
+            <p1:InArgument x:TypeArguments="stmw:StateAction">
+              <mca:CSharpValue x:TypeArguments="stmw:StateAction">action</mca:CSharpValue>
+            </p1:InArgument>
+          </stw1:ManageCartableActivity.Metadata>
+          <stw1:ManageCartableActivity.Operation>
+            <p1:InArgument x:TypeArguments="stw:StateOperation">
+              <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+            </p1:InArgument>
+          </stw1:ManageCartableActivity.Operation>
+        </stw1:ManageCartableActivity>
+        <stwa:TrackWorkflowStateActivity DisplayName="TrackFirstWorkflowState" EditionName="Generic" sap2010:WorkflowViewState.IdRef="TrackWorkflowStateActivity_1" WorkflowName="DocumentState">
+          <stwa:TrackWorkflowStateActivity.Operation>
+            <p1:InArgument x:TypeArguments="stw:StateOperation">
+              <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+            </p1:InArgument>
+          </stwa:TrackWorkflowStateActivity.Operation>
+          <stwa:TrackWorkflowStateActivity.State>
+            <p1:InArgument x:TypeArguments="x:String">
+              <mca:CSharpValue x:TypeArguments="x:String">action.ToDocumentStatus</mca:CSharpValue>
+            </p1:InArgument>
+          </stwa:TrackWorkflowStateActivity.State>
+        </stwa:TrackWorkflowStateActivity>
+        <SendReply Request="{x:Reference __ReferenceID0}" DisplayName="SendFirstActionReply" sap2010:WorkflowViewState.IdRef="SendReply_1" PersistBeforeSend="True">
+          <SendParametersContent>
+            <p1:InArgument x:TypeArguments="x:Int32" x:Key="result">0</p1:InArgument>
+          </SendParametersContent>
+        </SendReply>
+      </p1:Sequence>
+      <p1:FlowStep.Next>
+        <p1:FlowDecision x:Name="__ReferenceID3" DisplayName="HasNextAction" sap2010:WorkflowViewState.IdRef="FlowDecision_1">
+          <p1:FlowDecision.Condition>
+            <mca:CSharpValue x:TypeArguments="x:Boolean">!action.IsFinal</mca:CSharpValue>
+          </p1:FlowDecision.Condition>
+          <p1:FlowDecision.True>
+            <p1:FlowStep x:Name="__ReferenceID4" sap2010:WorkflowViewState.IdRef="FlowStep_6">
+              <p1:Sequence DisplayName="WaitForNextOrReverseAction" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                <p1:Pick DisplayName="PickNextOrReverseAction" sap2010:WorkflowViewState.IdRef="Pick_1">
+                  <p1:PickBranch DisplayName="PickNextAction" sap2010:WorkflowViewState.IdRef="PickBranch_1">
+                    <p1:PickBranch.Trigger>
+                      <p1:Sequence DisplayName="WaitForNextAction" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                        <Receive x:Name="__ReferenceID1" CanCreateInstance="True" DisplayName="ReceiveNextActionRequest" sap2010:WorkflowViewState.IdRef="Receive_5" OperationName="NextAction" ServiceContractName="p:IDocumentStateService">
+                          <Receive.CorrelatesOn>
+                            <XPathMessageQuery x:Key="docId">
+                              <XPathMessageQuery.Namespaces>
+                                <ssx:XPathMessageContextMarkup>
+                                  <x:String x:Key="xg0">http://schemas.datacontract.org/2004/07/SPPC.Tadbir.Workflow</x:String>
+                                  <x:String x:Key="xgSc">http://tempuri.org/</x:String>
+                                </ssx:XPathMessageContextMarkup>
+                              </XPathMessageQuery.Namespaces>sm:body()/xgSc:NextAction/xgSc:operation/xg0:DocumentId</XPathMessageQuery>
+                          </Receive.CorrelatesOn>
+                          <Receive.CorrelatesWith>
+                            <p1:InArgument x:TypeArguments="CorrelationHandle">
+                              <mca:CSharpValue x:TypeArguments="CorrelationHandle">docIdHandle</mca:CSharpValue>
+                            </p1:InArgument>
+                          </Receive.CorrelatesWith>
+                          <Receive.CorrelationInitializers>
+                            <RequestReplyCorrelationInitializer>
+                              <RequestReplyCorrelationInitializer.CorrelationHandle>
+                                <p1:InArgument x:TypeArguments="CorrelationHandle">
+                                  <mca:CSharpValue x:TypeArguments="CorrelationHandle">docIdHandle</mca:CSharpValue>
+                                </p1:InArgument>
+                              </RequestReplyCorrelationInitializer.CorrelationHandle>
+                            </RequestReplyCorrelationInitializer>
+                          </Receive.CorrelationInitializers>
+                          <ReceiveParametersContent>
+                            <p1:OutArgument x:TypeArguments="stw:StateOperation" x:Key="operation">
+                              <mca:CSharpReference x:TypeArguments="stw:StateOperation">operation</mca:CSharpReference>
+                            </p1:OutArgument>
+                          </ReceiveParametersContent>
+                        </Receive>
+                        <p1:Assign sap2010:WorkflowViewState.IdRef="Assign_5">
+                          <p1:Assign.To>
+                            <p1:OutArgument x:TypeArguments="stmw:StateAction">
+                              <mca:CSharpReference x:TypeArguments="stmw:StateAction">action</mca:CSharpReference>
+                            </p1:OutArgument>
+                          </p1:Assign.To>
+                          <p1:Assign.Value>
+                            <p1:InArgument x:TypeArguments="stmw:StateAction">
+                              <mca:CSharpValue x:TypeArguments="stmw:StateAction">metadata.NextActions.Where(act =&gt; act.Name == operation.Action).First()</mca:CSharpValue>
+                            </p1:InArgument>
+                          </p1:Assign.Value>
+                        </p1:Assign>
+                        <stw1:ManageCartableActivity DisplayName="AddWorkItemForNextAction" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_4">
+                          <stw1:ManageCartableActivity.Metadata>
+                            <p1:InArgument x:TypeArguments="stmw:StateAction">
+                              <mca:CSharpValue x:TypeArguments="stmw:StateAction">action</mca:CSharpValue>
+                            </p1:InArgument>
+                          </stw1:ManageCartableActivity.Metadata>
+                          <stw1:ManageCartableActivity.Operation>
+                            <p1:InArgument x:TypeArguments="stw:StateOperation">
+                              <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                            </p1:InArgument>
+                          </stw1:ManageCartableActivity.Operation>
+                        </stw1:ManageCartableActivity>
+                        <stwa:TrackWorkflowStateActivity DisplayName="TrackNextActionState" EditionName="Generic" sap2010:WorkflowViewState.IdRef="TrackWorkflowStateActivity_4" WorkflowName="DocumentState">
+                          <stwa:TrackWorkflowStateActivity.Operation>
+                            <p1:InArgument x:TypeArguments="stw:StateOperation">
+                              <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                            </p1:InArgument>
+                          </stwa:TrackWorkflowStateActivity.Operation>
+                          <stwa:TrackWorkflowStateActivity.State>
+                            <p1:InArgument x:TypeArguments="x:String">
+                              <mca:CSharpValue x:TypeArguments="x:String">action.ToDocumentStatus</mca:CSharpValue>
+                            </p1:InArgument>
+                          </stwa:TrackWorkflowStateActivity.State>
+                        </stwa:TrackWorkflowStateActivity>
+                        <SendReply Request="{x:Reference __ReferenceID1}" DisplayName="SendNextActionReply" sap2010:WorkflowViewState.IdRef="SendReply_5" PersistBeforeSend="True">
+                          <SendParametersContent>
+                            <p1:InArgument x:TypeArguments="x:Int32" x:Key="result">0</p1:InArgument>
+                          </SendParametersContent>
+                        </SendReply>
+                      </p1:Sequence>
+                    </p1:PickBranch.Trigger>
+                  </p1:PickBranch>
+                  <p1:PickBranch DisplayName="PickReverseAction" sap2010:WorkflowViewState.IdRef="PickBranch_2">
+                    <p1:PickBranch.Trigger>
+                      <p1:Sequence DisplayName="WaitForReverseAction" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                        <Receive x:Name="__ReferenceID2" CanCreateInstance="True" DisplayName="ReceiveReverseActionRequest" sap2010:WorkflowViewState.IdRef="Receive_6" OperationName="ReverseAction" ServiceContractName="p:IDocumentStateService">
+                          <Receive.CorrelatesOn>
+                            <XPathMessageQuery x:Key="docId">
+                              <XPathMessageQuery.Namespaces>
+                                <ssx:XPathMessageContextMarkup>
+                                  <x:String x:Key="xg0">http://schemas.datacontract.org/2004/07/SPPC.Tadbir.Workflow</x:String>
+                                  <x:String x:Key="xgSc">http://tempuri.org/</x:String>
+                                </ssx:XPathMessageContextMarkup>
+                              </XPathMessageQuery.Namespaces>sm:body()/xgSc:ReverseAction/xgSc:operation/xg0:DocumentId</XPathMessageQuery>
+                          </Receive.CorrelatesOn>
+                          <Receive.CorrelatesWith>
+                            <p1:InArgument x:TypeArguments="CorrelationHandle">
+                              <mca:CSharpValue x:TypeArguments="CorrelationHandle">docIdHandle</mca:CSharpValue>
+                            </p1:InArgument>
+                          </Receive.CorrelatesWith>
+                          <Receive.CorrelationInitializers>
+                            <RequestReplyCorrelationInitializer>
+                              <RequestReplyCorrelationInitializer.CorrelationHandle>
+                                <p1:InArgument x:TypeArguments="CorrelationHandle">
+                                  <mca:CSharpValue x:TypeArguments="CorrelationHandle">docIdHandle</mca:CSharpValue>
+                                </p1:InArgument>
+                              </RequestReplyCorrelationInitializer.CorrelationHandle>
+                            </RequestReplyCorrelationInitializer>
+                          </Receive.CorrelationInitializers>
+                          <ReceiveParametersContent>
+                            <p1:OutArgument x:TypeArguments="stw:StateOperation" x:Key="operation">
+                              <mca:CSharpReference x:TypeArguments="stw:StateOperation">operation</mca:CSharpReference>
+                            </p1:OutArgument>
+                          </ReceiveParametersContent>
+                        </Receive>
+                        <p1:Assign sap2010:WorkflowViewState.IdRef="Assign_6">
+                          <p1:Assign.To>
+                            <p1:OutArgument x:TypeArguments="stmw:StateAction">
+                              <mca:CSharpReference x:TypeArguments="stmw:StateAction">action</mca:CSharpReference>
+                            </p1:OutArgument>
+                          </p1:Assign.To>
+                          <p1:Assign.Value>
+                            <p1:InArgument x:TypeArguments="stmw:StateAction">
+                              <mca:CSharpValue x:TypeArguments="stmw:StateAction">metadata.NextActions.Where(act =&gt; act.Name == operation.Action).First()</mca:CSharpValue>
+                            </p1:InArgument>
+                          </p1:Assign.Value>
+                        </p1:Assign>
+                        <stw1:ManageCartableActivity DisplayName="AddWorkItemForReverseAction" sap2010:WorkflowViewState.IdRef="ManageCartableActivity_5">
+                          <stw1:ManageCartableActivity.Metadata>
+                            <p1:InArgument x:TypeArguments="stmw:StateAction">
+                              <mca:CSharpValue x:TypeArguments="stmw:StateAction">action</mca:CSharpValue>
+                            </p1:InArgument>
+                          </stw1:ManageCartableActivity.Metadata>
+                          <stw1:ManageCartableActivity.Operation>
+                            <p1:InArgument x:TypeArguments="stw:StateOperation">
+                              <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                            </p1:InArgument>
+                          </stw1:ManageCartableActivity.Operation>
+                        </stw1:ManageCartableActivity>
+                        <stwa:TrackWorkflowStateActivity DisplayName="TrackReverseActionState" EditionName="Generic" sap2010:WorkflowViewState.IdRef="TrackWorkflowStateActivity_5" WorkflowName="DocumentState">
+                          <stwa:TrackWorkflowStateActivity.Operation>
+                            <p1:InArgument x:TypeArguments="stw:StateOperation">
+                              <mca:CSharpValue x:TypeArguments="stw:StateOperation">operation</mca:CSharpValue>
+                            </p1:InArgument>
+                          </stwa:TrackWorkflowStateActivity.Operation>
+                          <stwa:TrackWorkflowStateActivity.State>
+                            <p1:InArgument x:TypeArguments="x:String">
+                              <mca:CSharpValue x:TypeArguments="x:String">action.ToDocumentStatus</mca:CSharpValue>
+                            </p1:InArgument>
+                          </stwa:TrackWorkflowStateActivity.State>
+                        </stwa:TrackWorkflowStateActivity>
+                        <SendReply Request="{x:Reference __ReferenceID2}" DisplayName="SendReverseActionReply" sap2010:WorkflowViewState.IdRef="SendReply_6" PersistBeforeSend="True">
+                          <SendParametersContent>
+                            <p1:InArgument x:TypeArguments="x:Int32" x:Key="result">0</p1:InArgument>
+                          </SendParametersContent>
+                        </SendReply>
+                      </p1:Sequence>
+                    </p1:PickBranch.Trigger>
+                  </p1:PickBranch>
+                </p1:Pick>
+              </p1:Sequence>
+              <p1:FlowStep.Next>
+                <x:Reference>__ReferenceID3</x:Reference>
+              </p1:FlowStep.Next>
+            </p1:FlowStep>
+          </p1:FlowDecision.True>
+        </p1:FlowDecision>
+      </p1:FlowStep.Next>
+    </p1:FlowStep>
+    <x:Reference>__ReferenceID3</x:Reference>
+    <x:Reference>__ReferenceID4</x:Reference>
+    <sads:DebugSymbol.Symbol>d2ZEOlxHaXRIdWJcYmFiYWtzb2Z0XFByb2plY3RzXFNQUENcZnJhbWV3b3JrXHNyY1xTUFBDLlRhZGJpci5Xb3JrZmxvd1NlcnZpY2VcRG9jdW1lbnRTdGF0ZVNlcnZpY2UueGFtbHg/EwPRAhIBAUwHoAEVAosBpAENpAFbAoYBqAEPxQIdAQJNCWoTAsYBawl2LAK7AXcJggEVArABgwEJjgEnAqUBjwEJmgErApgBmwEJnwEVAowBqQERxAIbAQNZD1lhAtEBZw9naALMAWATYGUCxwFzD3NnAsEBbg9uYwK8AX8Pf2kCtgF6D3pjArEBhgEPhgFbAqsBiwEPiwFgAqYBkgEPkgFgAqABjwGyAY8BwQECnwGPAVyPAWUCngGXAQ+XAWQCmQGdAUWdAUYCjQGqARP2ASMBRfcBE8MCIwEErAEX9AElAUb5ARfBAiUBBa0BGcoBIwF2ywEZ1gElAWvXARniATcBYOMBGe4BOwFT7wEZ8wElAUf6ARmXAiMBNZgCGaMCJQEqpAIZrwI3AR+wAhm7AjsBErwCGcACJQEGuQEfuQFxAoEBxwEfxwF4AXzAASPAAXUBd9MBH9MBrwEBcc4BH84BcwFs2gEf2gFrAWbfAR/fAXABYeYBH+YBcAFb4wG/AeMBzgEBWuMBaeMBcgFZ6wEf6wF0AVTxAVXxAVYBSIYCH4YCcQFAlAIflAJ4ATuNAiONAnUBNqACH6ACrwEBMJsCH5sCcwErpwIfpwJrASWsAh+sAnABILMCH7MCcAEasALCAbAC0QEBGbACbLACdQEYuAIfuAJ0ARO+AlW+AlYBBw==</sads:DebugSymbol.Symbol>
+  </p1:Flowchart>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="Receive_1" sap:VirtualizedContainerService.HintSize="255.2,88" />
+      <sap2010:ViewStateData Id="GetWorkflowMetadataActivity_4" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
+      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="255.2,62.4" />
+      <sap2010:ViewStateData Id="ManageCartableActivity_1" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
+      <sap2010:ViewStateData Id="TrackWorkflowStateActivity_1" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
+      <sap2010:ViewStateData Id="SendReply_1" sap:VirtualizedContainerService.HintSize="255.2,88" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="200,52.8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Receive_5" sap:VirtualizedContainerService.HintSize="255.2,88" />
+      <sap2010:ViewStateData Id="Assign_5" sap:VirtualizedContainerService.HintSize="255.2,62.4" />
+      <sap2010:ViewStateData Id="ManageCartableActivity_4" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
+      <sap2010:ViewStateData Id="TrackWorkflowStateActivity_4" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
+      <sap2010:ViewStateData Id="SendReply_5" sap:VirtualizedContainerService.HintSize="255.2,88" />
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="277.6,568">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="PickBranch_1" sap:VirtualizedContainerService.HintSize="308,828" />
+      <sap2010:ViewStateData Id="Receive_6" sap:VirtualizedContainerService.HintSize="255.2,88" />
+      <sap2010:ViewStateData Id="Assign_6" sap:VirtualizedContainerService.HintSize="255.2,62.4" />
+      <sap2010:ViewStateData Id="ManageCartableActivity_5" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
+      <sap2010:ViewStateData Id="TrackWorkflowStateActivity_5" sap:VirtualizedContainerService.HintSize="255.2,22.4" />
+      <sap2010:ViewStateData Id="SendReply_6" sap:VirtualizedContainerService.HintSize="255.2,88" />
+      <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="277.6,568">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="PickBranch_2" sap:VirtualizedContainerService.HintSize="308,828" />
+      <sap2010:ViewStateData Id="Pick_1" sap:VirtualizedContainerService.HintSize="770.4,874.4">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="792.8,999.2">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_6">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">30,333.6</av:Point>
+            <av:Size x:Key="ShapeSize">200,52.8</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">130,386.4 130,416.4 270,416.4 270,313.6</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_1" sap:VirtualizedContainerService.HintSize="83.2,87.2">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:Point x:Key="ShapeLocation">228.4,226.4</av:Point>
+            <av:Size x:Key="ShapeSize">83.2,87.2</av:Size>
+            <x:String x:Key="TrueLabel">Yes</x:String>
+            <x:String x:Key="FalseLabel">No</x:String>
+            <av:PointCollection x:Key="TrueConnector">228.4,270 130,270 130,333.6</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_2">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">170,123.6</av:Point>
+            <av:Size x:Key="ShapeSize">200,52.8</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">270,176.4 270,226.4</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Flowchart_1" sap:VirtualizedContainerService.HintSize="614.4,636.8">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <av:Point x:Key="ShapeLocation">240,2.4</av:Point>
+            <av:Size x:Key="ShapeSize">60,75.2</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">270,77.6 270,123.6</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="WorkflowService_1" sap:VirtualizedContainerService.HintSize="644,706.4" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</WorkflowService>

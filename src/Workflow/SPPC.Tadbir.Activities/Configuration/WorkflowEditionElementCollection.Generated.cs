@@ -13,6 +13,7 @@
 using System;
 using System.Collections;
 using System.Configuration;
+using SPPC.Framework.Common;
 
 namespace SPPC.Tadbir.Configuration
 {
@@ -126,6 +127,7 @@ namespace SPPC.Tadbir.Configuration
         /// <param name="item">The WorkflowEditionElement instance to remove from the collection</param>
         public void Remove(WorkflowEditionElement item)
         {
+            Verify.ArgumentNotNull(item, "item");
             if (BaseIndexOf(item) >= 0)
                 BaseRemove(item.Name);
         }

@@ -134,20 +134,43 @@
     <Compile Include="..\WorkflowSolutionInfo.cs">
       <Link>WorkflowSolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="CSharpExpressionEditor\CSharpExpressionHelper.cs" />
-    <Compile Include="CSharpExpressionEditor\ExpressionHelper.cs" />
-    <Compile Include="CSharpExpressionEditor\ExpressionSelection.cs" />
-    <Compile Include="CSharpExpressionEditor\ExpressionValidationContext.cs" />
-    <Compile Include="CSharpExpressionEditor\LineToHeightConverter.cs" />
-    <Compile Include="CSharpExpressionEditor\ParserContext.cs" />
-    <Compile Include="CSharpExpressionEditor\QueryCompletionData.cs" />
+    <Compile Include="CSharpExpressionEditor\CSharpExpressionHelper.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\ExpressionHelper.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\ExpressionSelection.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\ExpressionValidationContext.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\LineToHeightConverter.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\ParserContext.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\QueryCompletionData.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="CSharpExpressionEditor\RoslynExpressionEditor.xaml.cs">
       <DependentUpon>RoslynExpressionEditor.xaml</DependentUpon>
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="CSharpExpressionEditor\RoslynExpressionEditorInstance.cs" />
-    <Compile Include="CSharpExpressionEditor\RoslynExpressionEditorService.cs" />
-    <Compile Include="CSharpExpressionEditor\XamlUtilities.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="CSharpExpressionEditor\RoslynExpressionEditorInstance.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\RoslynExpressionEditorService.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="CSharpExpressionEditor\XamlUtilities.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="GlobalSuppressions.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkflowDesignerControl.xaml.cs">
       <DependentUpon>WorkflowDesignerControl.xaml</DependentUpon>

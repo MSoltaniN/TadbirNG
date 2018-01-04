@@ -14,9 +14,9 @@ namespace SPPC.Workflow.Unity
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeContainer"/> class that wraps a Unity container.
         /// </summary>
-        public TypeContainer()
+        public TypeContainer(IUnityContainer container)
         {
-            _container = new UnityContainer();
+            _container = container;
         }
 
         /// <summary>
@@ -25,6 +25,27 @@ namespace SPPC.Workflow.Unity
         public IUnityContainer Unity
         {
             get { return _container; }
+        }
+
+        /// <summary>
+        /// Performs all type registrations for the types that are used in multiple logical layers.
+        /// </summary>
+        public static void RegisterCrossCuttingTypes()
+        {
+        }
+
+        /// <summary>
+        /// Performs all type registrations for the types that are used for database persistence operations.
+        /// </summary>
+        public static void RegisterPersistenceTypes()
+        {
+        }
+
+        /// <summary>
+        /// Performs type registrations for service types.
+        /// </summary>
+        public static void RegisterServiceTypes()
+        {
         }
 
         /// <summary>
@@ -46,27 +67,6 @@ namespace SPPC.Workflow.Unity
             RegisterPersistenceTypes();
             RegisterServiceTypes();
             RegisterWebDependentTypes();
-        }
-
-        /// <summary>
-        /// Performs all type registrations for the types that are used in multiple logical layers.
-        /// </summary>
-        public void RegisterCrossCuttingTypes()
-        {
-        }
-
-        /// <summary>
-        /// Performs all type registrations for the types that are used for database persistence operations.
-        /// </summary>
-        public void RegisterPersistenceTypes()
-        {
-        }
-
-        /// <summary>
-        /// Performs type registrations for service types.
-        /// </summary>
-        public void RegisterServiceTypes()
-        {
         }
 
         /// <summary>
