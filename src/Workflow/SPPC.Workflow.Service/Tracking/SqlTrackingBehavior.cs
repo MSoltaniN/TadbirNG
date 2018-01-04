@@ -39,13 +39,13 @@ namespace SPPC.Framework.Workflow.Tracking
                 string workflowDisplayName = workflowServiceHost.Activity.DisplayName;
                 TrackingProfile trackingProfile = GetProfile(_profileName, workflowDisplayName);
 
-                //workflowServiceHost.WorkflowExtensions.Add(() =>
-                //        {
-                //            var participant = UnityConfig.GetConfiguredContainer()
-                //                .Get<SqlTrackingParticipant>();
-                //            participant.TrackingProfile = trackingProfile;
-                //            return participant;
-                //        });
+                ////workflowServiceHost.WorkflowExtensions.Add(() =>
+                ////        {
+                ////            var participant = UnityConfig.GetConfiguredContainer()
+                ////                .Get<SqlTrackingParticipant>();
+                ////            participant.TrackingProfile = trackingProfile;
+                ////            return participant;
+                ////        });
             }
         }
 

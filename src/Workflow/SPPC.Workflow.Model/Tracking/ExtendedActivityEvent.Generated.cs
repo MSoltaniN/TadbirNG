@@ -41,7 +41,6 @@ namespace SPPC.Workflow.Model.Tracking
             this.FaultHandlerActivityType = String.Empty;
             this.SerializedAnnotations = String.Empty;
             this.ModifiedDate = DateTime.Now;
-            InitReferences();
         }
 
         /// <summary>
@@ -153,14 +152,5 @@ namespace SPPC.Workflow.Model.Tracking
         /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
         /// </summary>
         public virtual DateTime ModifiedDate { get; set; }
-
-        private void InitReferences()
-        {
-
-            //// IMPORTANT NOTE: DO NOT add initialization statements for one-to-one and many-to-one relationships.
-            //// 1. Initializing one-to-one associations causes StackOverflowException (A initializes B and B initializes A)
-            //// 2. Initializing many-to-one associations causes most mapping tests to fail, because they will trigger many
-            //// unnecessary operations (INSERT and UPDATE) by in-memory SQLite database.
-        }
     }
 }

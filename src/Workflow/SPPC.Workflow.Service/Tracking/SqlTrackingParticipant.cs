@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Activities.Tracking;
-using System.Collections.Generic;
 using System.Diagnostics;
 using SPPC.Framework.Mapper;
-using SPPC.Workflow.Model.Tracking;
 using SPPC.Framework.Persistence;
+using SPPC.Workflow.Model.Tracking;
 
 namespace SPPC.Framework.Workflow.Tracking
 {
