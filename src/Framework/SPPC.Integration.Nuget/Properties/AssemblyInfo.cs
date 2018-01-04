@@ -8,8 +8,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("SPPC.Integration.Nuget")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SPPC.Integration.Nuget")]
+[assembly: AssemblyCompany("SPPC")]
+[assembly: AssemblyProduct("NugetServer")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("338b4b58-3dd0-429c-9ac3-518c48ba6030")]
+[assembly: Guid("9cadf0f5-9a54-45d9-9ffc-842caf8f030e")]
 
 // Version information for an assembly consists of the following four values:
 //
