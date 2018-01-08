@@ -28,7 +28,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         [Display(Name = FieldNames.AccountField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int AccountId { get; set; }
+        public int? AccountId { get; set; }
 
         /// <summary>
         /// Gets or sets the code of the account that is affected by this article.
@@ -41,7 +41,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         [Display(Name = FieldNames.CurrencyTypeField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int CurrencyId { get; set; }
+        public int? CurrencyId { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the currency that qualifies the amount of this article

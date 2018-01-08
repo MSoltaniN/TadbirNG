@@ -233,7 +233,8 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<Transaction>();
             var documentRepository = _unitOfWork.GetRepository<Document>();
-            var transaction = repository.GetByID(transactionId);
+            var query = GetTransactionWithLinesQuery(repository, txn => txn.Id == transactionId);
+            var transaction = query.SingleOrDefault();
             if (transaction != null)
             {
                 transaction.Document.Actions.Clear();
@@ -248,6 +249,29 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// Asynchronously deletes an existing financial transaction from repository.
+        /// </summary>
+        /// <param name="transactionId">Identifier of the transaction to delete</param>
+        public async Task<bool> DeleteTransactionAsync(int transactionId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
+            var documentRepository = _unitOfWork.GetAsyncRepository<Document>();
+            var query = GetTransactionWithLinesQuery(repository, txn => txn.Id == transactionId);
+            var transaction = await query.SingleOrDefaultAsync();
+            if (transaction != null)
+            {
+                transaction.Document.Actions.Clear();
+                documentRepository.Update(transaction.Document);
+                transaction.Lines.Clear();
+                repository.Update(transaction);
+                repository.Delete(transaction);
+                await _unitOfWork.CommitAsync();
+            }
+
+            return (transaction != null);
+        }
+
+        /// <summary>
         /// Retrieves a single financial article from repository.
         /// </summary>
         /// <param name="articleId">Unique identifier of an existing article</param>
@@ -256,7 +280,10 @@ namespace SPPC.Tadbir.Persistence
         {
             TransactionLineViewModel articleViewModel = null;
             var repository = _unitOfWork.GetRepository<TransactionLine>();
-            var article = repository.GetByID(articleId);
+            var article = repository.GetByID(
+                articleId,
+                art => art.Transaction, art => art.Account, art => art.Currency,
+                art => art.Branch, art => art.FiscalPeriod);
             if (article != null)
             {
                 articleViewModel = _mapper.Map<TransactionLineViewModel>(article);
@@ -275,7 +302,8 @@ namespace SPPC.Tadbir.Persistence
         {
             TransactionLineFullViewModel articleDetails = null;
             var repository = _unitOfWork.GetRepository<TransactionLine>();
-            var article = repository.GetByID(articleId);
+            var query = GetArticleDetailsQuery(repository, art => art.Id == articleId);
+            var article = query.SingleOrDefault();
             if (article != null)
             {
                 articleDetails = _mapper.Map<TransactionLineFullViewModel>(article);
@@ -352,8 +380,8 @@ namespace SPPC.Tadbir.Persistence
 
         private static void UpdateExistingArticle(TransactionLine existing, TransactionLineViewModel article)
         {
-            existing.Account = new Account() { Id = article.AccountId };
-            existing.Currency = new Currency() { Id = article.CurrencyId };
+            existing.Account = new Account() { Id = article.AccountId ?? 0 };
+            existing.Currency = new Currency() { Id = article.CurrencyId ?? 0 };
             existing.Debit = article.Debit;
             existing.Credit = article.Credit;
             existing.Description = article.Description;
@@ -463,6 +491,21 @@ namespace SPPC.Tadbir.Persistence
                 .Where(criteria)
                 .OrderByDescending(hist => hist.Date)
                 .OrderByDescending(hist => hist.Time);
+            return query;
+        }
+
+        private IQueryable<TransactionLine> GetArticleDetailsQuery(
+            IRepository<TransactionLine> repository, Expression<Func<TransactionLine, bool>> criteria)
+        {
+            var query = repository
+                .GetAllAsQuery()
+                .Include(art => art.Account)
+                .Include(art => art.Transaction)
+                .Include(art => art.FiscalPeriod)
+                .Include(art => art.Currency)
+                .Include(art => art.Branch)
+                    .ThenInclude(br => br.Company)
+                .Where(criteria);
             return query;
         }
 

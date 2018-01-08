@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SPPC.Framework.Domain;
 
 namespace SPPC.Framework.Persistence
@@ -256,9 +257,18 @@ namespace SPPC.Framework.Persistence
         /// Inserts a single entity instance into the data store
         /// </summary>
         /// <param name="entity">Entity to insert</param>
-        public void Insert(TEntity entity)
+        /// <param name="trackingSelectors">
+        /// Collection of all navigation properties that must be saved along with the main entity.
+        /// When set to null (default), only the main entity will be inserted.
+        /// </param>
+        public void Insert(TEntity entity, ICollection<Expression<Func<object, object>>> trackingSelectors = null)
         {
-            _dataContext.Attach(entity);
+            _trackingStatus = new TrackingStatus(trackingSelectors)
+            {
+                Entity = entity,
+                State = EntityState.Added
+            };
+            _dataContext.ChangeTracker.TrackGraph(entity, SetTrackingStatus);
             _dataSet.Add(entity);
         }
 
@@ -268,7 +278,6 @@ namespace SPPC.Framework.Persistence
         /// <param name="entity">Entity to update</param>
         public void Update(TEntity entity)
         {
-            ////_dataContext.Attach(entity);
             _dataSet.Update(entity);
         }
 
@@ -348,8 +357,19 @@ namespace SPPC.Framework.Persistence
             return query;
         }
 
+        private void SetTrackingStatus(EntityEntryGraphNode entity)
+        {
+            if (_trackingStatus.Selectors == null)
+            {
+                entity.Entry.State = Object.ReferenceEquals(entity.Entry.Entity, _trackingStatus.Entity)
+                    ? _trackingStatus.State
+                    : EntityState.Detached;
+            }
+        }
+
         private DbContext _dataContext;
         private bool _disposed = false;
         private DbSet<TEntity> _dataSet;
+        private TrackingStatus _trackingStatus;
     }
 }

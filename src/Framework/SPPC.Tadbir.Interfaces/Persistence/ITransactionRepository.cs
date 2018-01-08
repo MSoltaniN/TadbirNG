@@ -73,6 +73,12 @@ namespace SPPC.Tadbir.Persistence
         bool DeleteTransaction(int transactionId);
 
         /// <summary>
+        /// Asynchronously deletes an existing financial transaction from repository.
+        /// </summary>
+        /// <param name="transactionId">Identifier of the transaction to delete</param>
+        Task<bool> DeleteTransactionAsync(int transactionId);
+
+        /// <summary>
         /// Retrieves a single financial article from repository.
         /// </summary>
         /// <param name="articleId">Unique identifier of an existing article</param>

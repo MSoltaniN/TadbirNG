@@ -101,7 +101,11 @@ namespace SPPC.Framework.Persistence
         /// Inserts a single entity instance into the data store
         /// </summary>
         /// <param name="entity">Entity to insert</param>
-        void Insert(TEntity entity);
+        /// <param name="trackingSelectors">
+        /// Collection of all navigation properties that must be saved along with the main entity.
+        /// When set to null (default), only the main entity will be inserted.
+        /// </param>
+        void Insert(TEntity entity, ICollection<Expression<Func<object, object>>> trackingSelectors = null);
 
         /// <summary>
         /// Updates an existing entity instance in the data store

@@ -160,18 +160,26 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // DELETE: api/transactions/{transactionId:int}/sync
+        [HttpDelete]
+        [Route(TransactionApi.TransactionSyncUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
+        public IActionResult DeleteExistingTransaction(int transactionId)
+        {
+            bool deleted = _repository.DeleteTransaction(transactionId);
+            var result = deleted
+                ? StatusCode(StatusCodes.Status204NoContent)
+                : BadRequest("Could not delete transaction because it does not exist.") as IActionResult;
+            return result;
+        }
+
         // DELETE: api/transactions/{transactionId:int}
         [HttpDelete]
         [Route(TransactionApi.TransactionUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
-        public IActionResult DeleteExistingTransaction(int transactionId)
+        public async Task<IActionResult> DeleteExistingTransactionAsync(int transactionId)
         {
-            if (transactionId <= 0)
-            {
-                return BadRequest("Could not delete transaction because it does not exist.");
-            }
-
-            bool deleted = _repository.DeleteTransaction(transactionId);
+            bool deleted = await _repository.DeleteTransactionAsync(transactionId);
             var result = deleted
                 ? StatusCode(StatusCodes.Status204NoContent)
                 : BadRequest("Could not delete transaction because it does not exist.") as IActionResult;
@@ -182,16 +190,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Article CRUD Operations
 
-        // GET: api/transactions/articles/{articleId:int}
+        // GET: api/transactions/articles/{articleId:min(1)}
         [Route(TransactionApi.TransactionArticleUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public IActionResult GetArticle(int articleId)
         {
-            if (articleId <= 0)
-            {
-                return NotFound();
-            }
-
             var article = _repository.GetArticle(articleId);
             var result = (article != null)
                 ? Json(article)
@@ -204,11 +207,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public IActionResult GetArticleDetails(int articleId)
         {
-            if (articleId <= 0)
-            {
-                return NotFound();
-            }
-
             var article = _repository.GetArticleDetails(articleId);
             var result = (article != null)
                 ? Json(article)
@@ -217,15 +215,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // POST: api/transactions/{transactionId:int}/articles
+        [HttpPost]
         [Route(TransactionApi.TransactionArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
         public IActionResult PostNewArticle(int transactionId, [FromBody] TransactionLineViewModel article)
         {
-            if (transactionId <= 0)
-            {
-                return BadRequest("Could not post new article because the parent transaction could not be found.");
-            }
-
             if (article == null)
             {
                 return BadRequest("Could not post new article because a 'null' value was provided.");
@@ -251,6 +245,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // PUT: api/transactions/articles/{articleId:int}
+        [HttpPut]
         [Route(TransactionApi.TransactionArticleUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
         public IActionResult PutModifiedArticle(int articleId, [FromBody] TransactionLineViewModel article)
@@ -285,6 +280,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // DELETE: api/transactions/articles/{articleId:int}
+        [HttpDelete]
         [Route(TransactionApi.TransactionArticleUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
         public IActionResult DeleteExistingArticle(int articleId)

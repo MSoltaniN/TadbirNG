@@ -54,6 +54,11 @@ namespace SPPC.Tadbir.Api
         public const string TransactionUrl = "transactions/{transactionId:min(1)}";
 
         /// <summary>
+        /// API server route URL for a single transaction specified by identifier
+        /// </summary>
+        public const string TransactionSyncUrl = "transactions/{transactionId:min(1)}/sync";
+
+        /// <summary>
         /// API client URL for details of a single transaction specified by identifier
         /// </summary>
         public const string TransactionDetails = "transactions/{0}/details";
@@ -136,7 +141,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for reviewing a single transaction specified by identifier
         /// </summary>
-        public const string ReviewTransactionUrl = "transactions/{transactionId:int}/review";
+        public const string ReviewTransactionUrl = "transactions/{transactionId:min(1)}/review";
 
         /// <summary>
         /// API client URL for rejecting a reviewed transaction specified by identifier
@@ -146,7 +151,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for rejecting a reviewed transaction specified by identifier
         /// </summary>
-        public const string RejectTransactionUrl = "transactions/{transactionId:int}/reject";
+        public const string RejectTransactionUrl = "transactions/{transactionId:min(1)}/reject";
 
         /// <summary>
         /// API client URL for confirming a single transaction specified by identifier
@@ -156,7 +161,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for confirming a single transaction specified by identifier
         /// </summary>
-        public const string ConfirmTransactionUrl = "transactions/{transactionId:int}/confirm";
+        public const string ConfirmTransactionUrl = "transactions/{transactionId:min(1)}/confirm";
 
         /// <summary>
         /// API client URL for approving a single transaction specified by identifier
@@ -166,7 +171,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for approving a single transaction specified by identifier
         /// </summary>
-        public const string ApproveTransactionUrl = "transactions/{transactionId:int}/approve";
+        public const string ApproveTransactionUrl = "transactions/{transactionId:min(1)}/approve";
 
         /// <summary>
         /// API client URL for all articles in a single transaction specified by identifier
@@ -176,7 +181,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for all articles in a single transaction specified by identifier
         /// </summary>
-        public const string TransactionArticlesUrl = "transactions/{transactionId:int}/articles";
+        public const string TransactionArticlesUrl = "transactions/{transactionId:min(1)}/articles";
 
         /// <summary>
         /// API client URL for a single transaction article specified by identifier
@@ -186,7 +191,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for a single transaction article specified by identifier
         /// </summary>
-        public const string TransactionArticleUrl = "transactions/articles/{articleId:int}";
+        public const string TransactionArticleUrl = "transactions/articles/{articleId:min(1)}";
 
         /// <summary>
         /// API client URL for details of a single transaction article specified by identifier
@@ -196,6 +201,6 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for details of a single transaction article specified by identifier
         /// </summary>
-        public const string TransactionArticleDetailsUrl = "transactions/articles/{articleId:int}/details";
+        public const string TransactionArticleDetailsUrl = "transactions/articles/{articleId:min(1)}/details";
     }
 }

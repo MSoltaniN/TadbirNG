@@ -55,7 +55,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasOne(d => d.Transaction)
                 .WithMany(p => p.Lines)
                 .HasForeignKey("TransactionID")
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Finance_TransactionLine_Finance_Transaction");
         }
     }
