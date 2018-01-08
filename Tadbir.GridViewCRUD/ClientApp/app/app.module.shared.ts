@@ -1,4 +1,4 @@
-import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA, forwardRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
@@ -8,7 +8,7 @@ import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationSt
 // third party module to display toast 
 import { ToastrModule } from 'toastr-ng2';
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 
 import { AppComponent } from './components/app/app.component';
@@ -20,6 +20,7 @@ import { AccountFormComponent } from './components/account2/account2-form.compon
 //custom controls
 import { SppcMaskTextBox } from './controls/sppc-mask-textbox';
 import { SppcNumberBox } from './controls/sppc-numberbox';
+import { SppcDropDownList } from './controls/sppc-dropdownlist';
 
 import {BrowserModule} from "@angular/platform-browser";
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
@@ -40,12 +41,14 @@ import { AccountService, TransactionLineService, FiscalPeriodService , GridMessa
         Account2Component,
         AccountFormComponent,
         SppcMaskTextBox,
-        SppcNumberBox        
+        SppcNumberBox,
+        SppcDropDownList
         
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true },
-        { provide: MessageService, useClass: GridMessageService }],        
+        { provide: MessageService, useClass: GridMessageService }        
+    ],        
     imports: [
         CommonModule,         
         HttpModule,

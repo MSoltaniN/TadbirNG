@@ -16,6 +16,9 @@
             <div class="form-group">                
                 <sppc-mask-textbox class="k-textbox" value="13:10" mask="00:00"></sppc-mask-textbox>
             </div>
+            <!--<div class="form-group">
+                <sppc-numberbox class="k-textbox" value="13" ></sppc-numberbox>
+            </div>-->
             <div class="form-group">
                 <label for="name" class="control-label">{{ 'Account.Name' | translate }}</label>
 
@@ -33,6 +36,9 @@
                                     [textField]="'Value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'Key'">
                 </kendo-dropdownlist>
 
+                <!--<sppc-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
+                                    [textField]="'Value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'Key'">
+                </sppc-dropdownlist>-->
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fiscalPeriodId.valid || editForm.controls.fiscalPeriodId.pristine">
                     {{ 'Validations.FiscalPeriodid' | translate }}
