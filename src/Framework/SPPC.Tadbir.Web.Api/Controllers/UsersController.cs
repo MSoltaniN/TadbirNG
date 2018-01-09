@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
@@ -9,6 +8,7 @@ using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.Web.Api.Filters;
+using Fwk = SPPC.Framework.Values;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -81,7 +81,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (_repository.IsDuplicateUser(user))
             {
-                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.UserName);
+                var message = String.Format(Fwk.ValidationMessages.DuplicateFieldValue, FieldNames.UserName);
                 return BadRequest(message);
             }
 
@@ -122,7 +122,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (_repository.IsDuplicateUser(user))
             {
-                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.UserName);
+                var message = String.Format(Fwk.ValidationMessages.DuplicateFieldValue, FieldNames.UserName);
                 return BadRequest(message);
             }
 

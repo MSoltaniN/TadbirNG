@@ -23,6 +23,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UI\**" />
+    <EmbeddedResource Remove="UI\**" />
+    <None Remove="UI\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Class1.cs" />
   </ItemGroup>
 

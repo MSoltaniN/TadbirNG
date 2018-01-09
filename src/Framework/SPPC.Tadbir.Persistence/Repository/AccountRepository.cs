@@ -8,7 +8,6 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.UI;
 
 namespace SPPC.Tadbir.Persistence
 {
