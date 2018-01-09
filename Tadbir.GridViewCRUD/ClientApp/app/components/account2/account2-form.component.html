@@ -32,12 +32,12 @@
                 <label for="fiscalPeriodId" class="control-label">{{ 'Account.Fiscal' | translate }}</label>
 
                 <!--<input type="text" class="k-textbox" formControlName="fiscalPeriodId" />-->
-                <kendo-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
+                <!--<kendo-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
                                     [textField]="'Value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'Key'">
-                </kendo-dropdownlist>
+                </kendo-dropdownlist>-->
 
                 <sppc-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
-                                    [textField]="'Value'" formControlName="fiscalPeriodId" [value]="selectedValue"   [valueField]="'Key'">
+                                    [textField]="'Value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue"  [valueField]="'Key'">
                 </sppc-dropdownlist>
                 <!--<sppc-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
                                     [textField]="'Value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'Key'">
