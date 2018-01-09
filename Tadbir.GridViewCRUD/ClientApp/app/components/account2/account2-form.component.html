@@ -36,6 +36,9 @@
                                     [textField]="'Value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'Key'">
                 </kendo-dropdownlist>
 
+                <sppc-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
+                                    [textField]="'Value'" formControlName="fiscalPeriodId" [value]="selectedValue"   [valueField]="'Key'">
+                </sppc-dropdownlist>
                 <!--<sppc-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
                                     [textField]="'Value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'Key'">
                 </sppc-dropdownlist>-->
