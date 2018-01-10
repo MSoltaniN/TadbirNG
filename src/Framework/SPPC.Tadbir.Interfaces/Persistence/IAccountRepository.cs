@@ -109,16 +109,18 @@ namespace SPPC.Tadbir.Persistence
         /// Retrieves all transaction lines (articles) that use the financial account specified by given unique identifier.
         /// </summary>
         /// <param name="accountId">Unique identifier of an existing financial account</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
         /// <returns>Collection of all transaction lines (articles) for specified account</returns>
-        IList<TransactionLineViewModel> GetAccountArticles(int accountId);
+        IList<TransactionLineViewModel> GetAccountArticles(int accountId, GridOptions gridOptions = null);
 
         /// <summary>
         /// Asynchronously retrieves all transaction lines (articles) that use the financial account specified by
         /// given unique identifier.
         /// </summary>
         /// <param name="accountId">Unique identifier of an existing financial account</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
         /// <returns>Collection of all transaction lines (articles) for specified account</returns>
-        Task<IList<TransactionLineViewModel>> GetAccountArticlesAsync(int accountId);
+        Task<IList<TransactionLineViewModel>> GetAccountArticlesAsync(int accountId, GridOptions gridOptions = null);
 
         /// <summary>
         /// Deletes an existing financial account from repository.

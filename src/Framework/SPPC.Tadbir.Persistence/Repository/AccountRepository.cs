@@ -44,8 +44,8 @@ namespace SPPC.Tadbir.Persistence
                 .GetByCriteria(
                     acc => acc.FiscalPeriod.Id == fpId
                         && acc.Branch.Id == branchId,
+                    options,
                     acc => acc.FiscalPeriod, acc => acc.Branch)
-                .OrderBy(acc => acc.Code)
                 .Select(item => _mapper.Map<AccountViewModel>(item))
                 .ToList();
             return accounts;
@@ -56,17 +56,19 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">Identifier of an existing fiscal period</param>
         /// <param name="branchId">Identifier of an existing corporate branch</param>
-        /// <param name="options">Options used for displaying data in a tabular grid view</param>
+        /// <param name="gridOptions">Options used for displaying data in a tabular grid view</param>
         /// <returns>A collection of <see cref="AccountViewModel"/> objects retrieved from repository</returns>
-        public async Task<IList<AccountViewModel>> GetAccountsAsync(int fpId, int branchId, GridOptions options = null)
+        public async Task<IList<AccountViewModel>> GetAccountsAsync(
+            int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var accounts = await repository
                 .GetByCriteriaAsync(
                     acc => acc.FiscalPeriod.Id == fpId
                         && acc.Branch.Id == branchId,
+                    gridOptions,
                     acc => acc.FiscalPeriod, acc => acc.Branch);
-            return accounts.OrderBy(acc => acc.Code)
+            return accounts
                 .Select(item => _mapper.Map<AccountViewModel>(item))
                 .ToList();
         }
@@ -194,9 +196,10 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(accountViewModel, "accountViewModel");
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var accounts = await repository
-                .GetByCriteriaAsync(acc => acc.Id != accountViewModel.Id
-                    && acc.FiscalPeriod.Id == accountViewModel.FiscalPeriodId
-                    && acc.Code == accountViewModel.Code);
+                .GetByCriteriaAsync(
+                    acc => acc.Id != accountViewModel.Id
+                        && acc.FiscalPeriod.Id == accountViewModel.FiscalPeriodId
+                        && acc.Code == accountViewModel.Code);
             return (accounts.Count > 0);
         }
 
@@ -279,13 +282,15 @@ namespace SPPC.Tadbir.Persistence
         /// Retrieves all transaction lines (articles) that use the financial account specified by given unique identifier.
         /// </summary>
         /// <param name="accountId">Unique identifier of an existing financial account</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
         /// <returns>Collection of all transaction lines (articles) for specified account</returns>
-        public IList<TransactionLineViewModel> GetAccountArticles(int accountId)
+        public IList<TransactionLineViewModel> GetAccountArticles(int accountId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetRepository<TransactionLine>();
             var articles = repository
                 .GetByCriteria(
                     line => line.Account.Id == accountId,
+                    gridOptions,
                     line => line.Transaction, line => line.Account, line => line.Currency,
                     line => line.FiscalPeriod, line => line.Branch)
                 .Select(line => _mapper.Map<TransactionLineViewModel>(line))
@@ -299,13 +304,16 @@ namespace SPPC.Tadbir.Persistence
         /// given unique identifier.
         /// </summary>
         /// <param name="accountId">Unique identifier of an existing financial account</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
         /// <returns>Collection of all transaction lines (articles) for specified account</returns>
-        public async Task<IList<TransactionLineViewModel>> GetAccountArticlesAsync(int accountId)
+        public async Task<IList<TransactionLineViewModel>> GetAccountArticlesAsync(
+            int accountId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
             var articles = await repository
                 .GetByCriteriaAsync(
                     line => line.Account.Id == accountId,
+                    gridOptions,
                     line => line.Transaction, line => line.Account, line => line.Currency,
                     line => line.FiscalPeriod, line => line.Branch);
             return articles

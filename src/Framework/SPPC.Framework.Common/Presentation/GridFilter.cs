@@ -38,8 +38,8 @@ namespace SPPC.Framework.Presentation
         public override string ToString()
         {
             string toString = Operator.Contains("{0}")
-                ? String.Format("[{0}] {1}", FieldName, String.Format(Operator, Value))
-                : String.Format("[{0}] {1} '{2}'", FieldName, Operator, Value);
+                ? String.Format("{0}{1}", FieldName, String.Format(Operator, Value))
+                : String.Format("{0} {1} '{2}'", FieldName, Operator, Value);
             return toString;
         }
     }

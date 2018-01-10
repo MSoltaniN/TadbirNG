@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SPPC.Framework.Presentation;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
@@ -24,18 +25,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync
         [Route(AccountApi.FiscalPeriodBranchAccountsSyncUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public IActionResult GetAccounts(int fpId, int branchId)
+        public IActionResult GetAccounts(int fpId, int branchId, [FromBody] GridOptions gridOptions = null)
         {
-            var accounts = _repository.GetAccounts(fpId, branchId);
+            var accounts = _repository.GetAccounts(fpId, branchId, gridOptions);
             return Json(accounts);
         }
 
         // GET: api/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
         [Route(AccountApi.FiscalPeriodBranchAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetAccountsAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetAccountsAsync(
+            int fpId, int branchId, [FromBody] GridOptions gridOptions = null)
         {
-            var accounts = await _repository.GetAccountsAsync(fpId, branchId);
+            var accounts = await _repository.GetAccountsAsync(fpId, branchId, gridOptions);
             return Json(accounts);
         }
 
@@ -218,9 +220,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accounts/{accountId:min(1)}/articles/sync
         [Route(AccountApi.AccountArticlesSyncUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
-        public IActionResult GetAccountArticles(int accountId)
+        public IActionResult GetAccountArticles(int accountId, [FromBody] GridOptions gridOptions = null)
         {
-            var articles = _repository.GetAccountArticles(accountId);
+            var articles = _repository.GetAccountArticles(accountId, gridOptions);
             var result = (articles != null)
                 ? Json(articles)
                 : NotFound() as IActionResult;
@@ -231,9 +233,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accounts/{accountId:min(1)}/articles
         [Route(AccountApi.AccountArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
-        public async Task<IActionResult> GetAccountArticlesAsync(int accountId)
+        public async Task<IActionResult> GetAccountArticlesAsync(
+            int accountId, [FromBody] GridOptions gridOptions = null)
         {
-            var articles = await _repository.GetAccountArticlesAsync(accountId);
+            var articles = await _repository.GetAccountArticlesAsync(accountId, gridOptions);
             var result = (articles != null)
                 ? Json(articles)
                 : NotFound() as IActionResult;

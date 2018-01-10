@@ -351,14 +351,15 @@ namespace SPPC.Framework.Persistence
             GridOptions gridOptions,
             params Expression<Func<TEntity, object>>[] relatedProperties)
         {
+            var options = gridOptions ?? new GridOptions();
             foreach (var property in relatedProperties)
             {
                 query = query.Include(property);
             }
 
             return query
-                .Skip((gridOptions.Paging.PageIndex - 1) * gridOptions.Paging.PageSize)
-                .Take(gridOptions.Paging.PageSize);
+                .Skip((options.Paging.PageIndex - 1) * options.Paging.PageSize)
+                .Take(options.Paging.PageSize);
         }
 
         private IQueryable<TEntity> GetEntityWithNavigationQuery(GridOptions gridOptions,

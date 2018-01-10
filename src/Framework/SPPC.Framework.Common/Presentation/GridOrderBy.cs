@@ -32,7 +32,7 @@ namespace SPPC.Framework.Presentation
         /// <returns>نمایش متنی برای این نمونه</returns>
         public override string ToString()
         {
-            return String.Format("[{0}] {1}", FieldName, Direction);
+            return String.Format("{0} {1}", FieldName, Direction);
         }
     }
 }
