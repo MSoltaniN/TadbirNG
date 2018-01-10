@@ -223,7 +223,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<Role>();
             var roles = repository
-                .GetAllAsQuery()
+                .GetEntityQuery()
                 .Include(r => r.RolePermissions)
                     .ThenInclude(rp => rp.Permission)
                 .ToList();

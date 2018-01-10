@@ -28,38 +28,13 @@ namespace SPPC.Framework.Persistence
         }
 
         /// <summary>
-        /// Returns a queryable object that is initially set to return all data
+        /// Returns a queryable object for entity that can be further manipulated to include related properties
+        /// and perform other standard LINQ functions.
         /// </summary>
-        /// <returns>Queryable object for all data</returns>
-        public IQueryable<TEntity> GetAllAsQuery()
+        /// <returns>Queryable object for entity</returns>
+        public IQueryable<TEntity> GetEntityQuery()
         {
-            return _dataSet
-                .AsNoTracking()
-                .AsQueryable();
-        }
-
-        /// <summary>
-        /// Retrieves complete information for all existing entities in data store
-        /// </summary>
-        /// <returns>Collection of all existing entities</returns>
-        /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
-        /// to retrieve them via additional JOIN statements.</remarks>
-        public IList<TEntity> GetAll()
-        {
-            return _dataSet
-                .AsNoTracking()
-                .ToList();
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves complete information for all existing entities in data store
-        /// </summary>
-        /// <returns>Collection of all existing entities</returns>
-        /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
-        /// to retrieve them via additional JOIN statements.</remarks>
-        public async Task<IList<TEntity>> GetAllAsync()
-        {
-            return await _dataSet.ToListAsync();
+            return _dataSet.AsNoTracking();
         }
 
         /// <summary>
@@ -97,30 +72,6 @@ namespace SPPC.Framework.Persistence
         }
 
         /// <summary>
-        /// Retrieves a single entity instance with the specified unique identifier
-        /// </summary>
-        /// <param name="id">Identifier of an existing entity</param>
-        /// <returns>Entity instance having the specified identifier</returns>
-        /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
-        /// to retrieve them via additional JOIN statements.</remarks>
-        public TEntity GetByID(int id)
-        {
-            return _dataSet.Find(id);
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves a single entity instance with the specified unique identifier
-        /// </summary>
-        /// <param name="id">Identifier of an existing entity</param>
-        /// <returns>Entity instance having the specified identifier</returns>
-        /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
-        /// to retrieve them via additional JOIN statements.</remarks>
-        public async Task<TEntity> GetByIDAsync(int id)
-        {
-            return await _dataSet.FindAsync(id);
-        }
-
-        /// <summary>
         /// Retrieves a single entity instance with the specified unique identifier, including specified
         /// navigation properties, if any.
         /// </summary>
@@ -154,35 +105,6 @@ namespace SPPC.Framework.Persistence
         {
             var query = GetEntityQuery(id, relatedProperties);
             return await query.SingleOrDefaultAsync();
-        }
-
-        /// <summary>
-        /// Retrieves complete information for a subset of existing entities, as defined by the specified criteria
-        /// </summary>
-        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <returns>Filtered collection of existing entities</returns>
-        /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
-        /// to retrieve them via additional JOIN statements.</remarks>
-        public IList<TEntity> GetByCriteria(Expression<Func<TEntity, bool>> criteria)
-        {
-            var list = _dataSet.Where(criteria)
-                .ToList();
-            return list;
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves complete information for a subset of existing entities,
-        /// as defined by the specified criteria
-        /// </summary>
-        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <returns>Filtered collection of existing entities</returns>
-        /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
-        /// to retrieve them via additional JOIN statements.</remarks>
-        public async Task<IList<TEntity>> GetByCriteriaAsync(Expression<Func<TEntity, bool>> criteria)
-        {
-            var list = await _dataSet.Where(criteria)
-                .ToListAsync();
-            return list;
         }
 
         /// <summary>
@@ -322,9 +244,9 @@ namespace SPPC.Framework.Persistence
 
         #endregion
 
-        private IQueryable<TEntity> GetEntityQuery(params Expression<Func<TEntity, object>>[] relatedProperties)
+        private IQueryable<TEntity> GetEntityQuery(
+            IQueryable<TEntity> query, params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = _dataSet.AsQueryable();
             foreach (var property in relatedProperties)
             {
                 query = query.Include(property);
@@ -333,28 +255,26 @@ namespace SPPC.Framework.Persistence
             return query;
         }
 
+        private IQueryable<TEntity> GetEntityQuery(params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = GetEntityQuery();
+            return GetEntityQuery(query, relatedProperties);
+        }
+
         private IQueryable<TEntity> GetEntityQuery(int id, params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = _dataSet.Where(e => e.Id == id);
-            foreach (var property in relatedProperties)
-            {
-                query = query.Include(property);
-            }
-
-            return query;
+            var query = GetEntityQuery()
+                .Where(e => e.Id == id);
+            return GetEntityQuery(query, relatedProperties);
         }
 
         private IQueryable<TEntity> GetEntityQuery(
             Expression<Func<TEntity, bool>> criteria,
             params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = _dataSet.Where(criteria);
-            foreach (var property in relatedProperties)
-            {
-                query = query.Include(property);
-            }
-
-            return query;
+            var query = GetEntityQuery()
+                .Where(criteria);
+            return GetEntityQuery(query, relatedProperties);
         }
 
         private void SetTrackingStatus(EntityEntryGraphNode entity)

@@ -417,7 +417,7 @@ namespace SPPC.Tadbir.Persistence
             IRepository<Transaction> repository, Expression<Func<Transaction, bool>> criteria)
         {
             var transactionsQuery = repository
-                .GetAllAsQuery()
+                .GetEntityQuery()
                 .Include(txn => txn.Lines)
                 .Include(txn => txn.FiscalPeriod)
                 .Include(txn => txn.Branch)
@@ -449,7 +449,7 @@ namespace SPPC.Tadbir.Persistence
             IRepository<Transaction> repository, Expression<Func<Transaction, bool>> criteria)
         {
             var transactionsQuery = repository
-                .GetAllAsQuery()
+                .GetEntityQuery()
                 .Include(txn => txn.Lines)
                     .ThenInclude(line => line.Account)
                 .Include(txn => txn.Lines)
@@ -485,7 +485,7 @@ namespace SPPC.Tadbir.Persistence
             IRepository<WorkItemHistory> repository, Expression<Func<WorkItemHistory, bool>> criteria)
         {
             var query = repository
-                .GetAllAsQuery()
+                .GetEntityQuery()
                 .Include(hist => hist.User)
                 .Include(hist => hist.Role)
                 .Where(criteria)
@@ -498,7 +498,7 @@ namespace SPPC.Tadbir.Persistence
             IRepository<TransactionLine> repository, Expression<Func<TransactionLine, bool>> criteria)
         {
             var query = repository
-                .GetAllAsQuery()
+                .GetEntityQuery()
                 .Include(art => art.Account)
                 .Include(art => art.Transaction)
                 .Include(art => art.FiscalPeriod)

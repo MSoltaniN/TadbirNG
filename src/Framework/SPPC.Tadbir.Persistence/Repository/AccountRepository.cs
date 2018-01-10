@@ -237,7 +237,7 @@ namespace SPPC.Tadbir.Persistence
             AccountFullViewModel accountViewModel = null;
             var repository = _unitOfWork.GetRepository<Account>();
             var account = repository
-                .GetAllAsQuery()
+                .GetEntityQuery()
                 .Where(acc => acc.Id == accountId)
                 .Include(acc => acc.Branch)
                     .ThenInclude(br => br.Company)
@@ -261,7 +261,7 @@ namespace SPPC.Tadbir.Persistence
             AccountFullViewModel accountViewModel = null;
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var account = await repository
-                .GetAllAsQuery()
+                .GetEntityQuery()
                 .Where(acc => acc.Id == accountId)
                 .Include(acc => acc.Branch)
                     .ThenInclude(br => br.Company)

@@ -14,18 +14,11 @@ namespace SPPC.Framework.Persistence
         where TEntity : class, IEntity
     {
         /// <summary>
-        /// Returns a queryable object that is initially set to return all data
+        /// Returns a queryable object for entity that can be further manipulated to include related properties
+        /// and perform other standard LINQ functions.
         /// </summary>
-        /// <returns>Queryable object for all data</returns>
-        IQueryable<TEntity> GetAllAsQuery();
-
-        /// <summary>
-        /// Retrieves complete information for all existing entities in data store
-        /// </summary>
-        /// <returns>Collection of all existing entities</returns>
-        /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
-        /// to retrieve them via additional JOIN statements.</remarks>
-        IList<TEntity> GetAll();
+        /// <returns>Queryable object for entity</returns>
+        IQueryable<TEntity> GetEntityQuery();
 
         /// <summary>
         /// Retrieves complete information for all existing entities in data store, including specified
@@ -41,15 +34,6 @@ namespace SPPC.Framework.Persistence
         IList<TEntity> GetAll(params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>
-        /// Retrieves a single entity instance with the specified unique identifier
-        /// </summary>
-        /// <param name="id">Identifier of an existing entity</param>
-        /// <returns>Entity instance having the specified identifier</returns>
-        /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
-        /// to retrieve them via additional JOIN statements.</remarks>
-        TEntity GetByID(int id);
-
-        /// <summary>
         /// Retrieves a single entity instance with the specified unique identifier, including specified
         /// navigation properties, if any.
         /// </summary>
@@ -62,15 +46,6 @@ namespace SPPC.Framework.Persistence
         /// (i.e. no navigation properties inside the main entity's navigation properties are required)
         /// </remarks>
         TEntity GetByID(int id, params Expression<Func<TEntity, object>>[] relatedProperties);
-
-        /// <summary>
-        /// Retrieves complete information for a subset of existing entities, as defined by the specified criteria
-        /// </summary>
-        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <returns>Filtered collection of existing entities</returns>
-        /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
-        /// to retrieve them via additional JOIN statements.</remarks>
-        IList<TEntity> GetByCriteria(Expression<Func<TEntity, bool>> criteria);
 
         /// <summary>
         /// Retrieves complete information for a subset of existing entities, as defined by the specified criteria,

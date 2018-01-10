@@ -14,14 +14,6 @@ namespace SPPC.Framework.Persistence
         where TEntity : class, IEntity
     {
         /// <summary>
-        /// Asynchronously retrieves complete information for all existing entities in data store
-        /// </summary>
-        /// <returns>Collection of all existing entities</returns>
-        /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
-        /// to retrieve them via additional JOIN statements.</remarks>
-        Task<IList<TEntity>> GetAllAsync();
-
-        /// <summary>
         /// Asynchronously retrieves complete information for all existing entities in data store,
         /// including specified navigation properties, if any.
         /// </summary>
@@ -33,15 +25,6 @@ namespace SPPC.Framework.Persistence
         /// (i.e. no navigation properties inside the main entity's navigation properties are required)
         /// </remarks>
         Task<IList<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] relatedProperties);
-
-        /// <summary>
-        /// Asynchronously retrieves a single entity instance with the specified unique identifier
-        /// </summary>
-        /// <param name="id">Identifier of an existing entity</param>
-        /// <returns>Entity instance having the specified identifier</returns>
-        /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
-        /// to retrieve them via additional JOIN statements.</remarks>
-        Task<TEntity> GetByIDAsync(int id);
 
         /// <summary>
         /// Asynchronously retrieves a single entity instance with the specified unique identifier,
@@ -56,16 +39,6 @@ namespace SPPC.Framework.Persistence
         /// (i.e. no navigation properties inside the main entity's navigation properties are required)
         /// </remarks>
         Task<TEntity> GetByIDAsync(int id, params Expression<Func<TEntity, object>>[] relatedProperties);
-
-        /// <summary>
-        /// Asynchronously retrieves complete information for a subset of existing entities,
-        /// as defined by the specified criteria
-        /// </summary>
-        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <returns>Filtered collection of existing entities</returns>
-        /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
-        /// to retrieve them via additional JOIN statements.</remarks>
-        Task<IList<TEntity>> GetByCriteriaAsync(Expression<Func<TEntity, bool>> criteria);
 
         /// <summary>
         /// Asynchronously retrieves complete information for a subset of existing entities, as defined by
