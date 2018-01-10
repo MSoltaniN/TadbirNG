@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace SPPC.Framework.Persistence
+namespace SPPC.Framework.Presentation
 {
     /// <summary>
-    /// اطلاعات مورد نیاز برای عمل مرتب سازی اطلاعات بر حسب یک فیلد اطلاعاتی را نگهداری می کند
+    /// اطلاعات مورد نیاز برای عمل مرتب سازی بر حسب یک فیلد اطلاعاتی را نگهداری می کند
     /// </summary>
     public class GridOrderBy
     {
@@ -23,14 +22,14 @@ namespace SPPC.Framework.Persistence
         public string FieldName { get; set; }
 
         /// <summary>
-        /// جهت مرتب سازی اطلاعات که می تواند صعودی یا نزولی باشد. پیش فرض این مشخصه مرتب سازی صعودی است.
+        /// جهت مرتب سازی که می تواند صعودی یا نزولی باشد. پیش فرض این مشخصه مرتب سازی صعودی است.
         /// </summary>
         public string Direction { get; set; }
 
         /// <summary>
-        /// مقادیر این نمونه را به صورت متنی بر می گرداند
+        /// نمایش متنی برای این نمونه را برمی گرداند
         /// </summary>
-        /// <returns>مقادیر این نمونه به صورت متنی</returns>
+        /// <returns>نمایش متنی برای این نمونه</returns>
         public override string ToString()
         {
             return String.Format("[{0}] {1}", FieldName, Direction);

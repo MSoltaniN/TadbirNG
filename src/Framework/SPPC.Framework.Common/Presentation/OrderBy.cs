@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace SPPC.Framework.Persistence
+namespace SPPC.Framework.Presentation
 {
     /// <summary>
-    /// مقادیر مجاز را برای استفاده در جهت مرتب سازی اطلاعات تعریف می کند
+    /// مقادیر مجاز برای جهت مرتب سازی اطلاعات را تعریف می کند
     /// </summary>
     public sealed class OrderBy
     {

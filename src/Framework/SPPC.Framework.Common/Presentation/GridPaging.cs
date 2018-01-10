@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using SPPC.Framework.Values;
 
-namespace SPPC.Framework.Persistence
+namespace SPPC.Framework.Presentation
 {
     /// <summary>
-    /// اطلاعات مورد نیاز برای صفحه بندی اطلاعات در یک لیست اطلاعاتی را نگهداری می کند
+    /// اطلاعات مورد نیاز برای صفحه بندی یک نمای جدولی را نگهداری می کند
     /// </summary>
     public class GridPaging
     {
@@ -20,12 +19,12 @@ namespace SPPC.Framework.Persistence
         }
 
         /// <summary>
-        /// شماره صفحه مورد نظر از اطلاعات که از یک شروع می شود
+        /// شماره صفحه مورد نظر از نمای جدولی که از یک شروع می شود
         /// </summary>
         public int PageIndex { get; set; }
 
         /// <summary>
-        /// تعداد سطرهای اطلاعاتی مورد نظر در هر صفحه از اطلاعات
+        /// تعداد سطرهای مورد نیاز در هر صفحه از نمای جدولی
         /// </summary>
         public int PageSize { get; set; }
     }

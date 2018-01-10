@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using SPPC.Framework.Values;
 
-namespace SPPC.Framework.Persistence
+namespace SPPC.Framework.Presentation
 {
     /// <summary>
-    /// گزینه های مختلف برای کنترل سطرهای اطلاعاتی نمایش داده شده در یک نمای جدولی را نگهداری می کند
+    /// گزینه های مختلف برای کنترل نمایش سطرهای اطلاعاتی در یک نمای جدولی را نگهداری می کند
     /// </summary>
     public class GridOptions
     {

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -63,7 +61,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act & Assert
-            AssertActionRouteEquals("GetTransactions", TransactionApi.FiscalPeriodBranchTransactionsUrl);
+            AssertActionRouteEquals("GetTransactions", TransactionApi.FiscalPeriodBranchTransactionsSyncUrl);
         }
 
         [Test]
@@ -112,7 +110,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("PostNewTransaction", TransactionApi.TransactionsUrl);
+            AssertActionRouteEquals("PostNewTransaction", TransactionApi.TransactionsSyncUrl);
         }
 
         [Test]
@@ -486,19 +484,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         }
 
         [Test]
-        public void PostNewArticle_GivenInvalidTransactionId_ReturnsBadRequestWithMessage()
-        {
-            // Arrange
-            int invalidId = 0;
-
-            // Act
-            var result = _controller.PostNewArticle(invalidId, new TransactionLineViewModel()) as BadRequestObjectResult;
-
-            // Assert
-            Assert.That(result, Is.Not.Null);
-        }
-
-        [Test]
         public void PostNewArticle_GivenModelWithInvalidTransactionId_ReturnsBadRequestWithMessage()
         {
             // Arrange (Done in setup methods)
@@ -655,7 +640,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("GetTransactionDetail", TransactionApi.TransactionDetailsUrl);
+            AssertActionRouteEquals("GetTransactionDetail", TransactionApi.TransactionDetailsSyncUrl);
         }
 
         [Test]
