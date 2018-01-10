@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using SPPC.Framework.Domain;
+using SPPC.Framework.Presentation;
 
 namespace SPPC.Framework.Persistence
 {
@@ -17,8 +18,9 @@ namespace SPPC.Framework.Persistence
         /// Returns a queryable object for entity that can be further manipulated to include related properties
         /// and perform other standard LINQ functions.
         /// </summary>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
         /// <returns>Queryable object for entity</returns>
-        IQueryable<TEntity> GetEntityQuery();
+        IQueryable<TEntity> GetEntityQuery(GridOptions gridOptions = null);
 
         /// <summary>
         /// Retrieves complete information for all existing entities in data store, including specified
@@ -32,6 +34,21 @@ namespace SPPC.Framework.Persistence
         /// (i.e. no navigation properties inside the main entity's navigation properties are required)
         /// </remarks>
         IList<TEntity> GetAll(params Expression<Func<TEntity, object>>[] relatedProperties);
+
+        /// <summary>
+        /// Retrieves complete information for all existing entities in data store, including specified
+        /// navigation properties, if any.
+        /// </summary>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Collection of all existing entities</returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        IList<TEntity> GetAll(GridOptions gridOptions, params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>
         /// Retrieves a single entity instance with the specified unique identifier, including specified
@@ -61,6 +78,25 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         IList<TEntity> GetByCriteria(
             Expression<Func<TEntity, bool>> criteria,
+            params Expression<Func<TEntity, object>>[] relatedProperties);
+
+        /// <summary>
+        /// Retrieves complete information for a subset of existing entities, as defined by the specified criteria,
+        /// including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        IList<TEntity> GetByCriteria(
+            Expression<Func<TEntity, bool>> criteria,
+            GridOptions gridOptions,
             params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>

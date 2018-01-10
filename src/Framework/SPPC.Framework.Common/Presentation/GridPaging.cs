@@ -19,6 +19,21 @@ namespace SPPC.Framework.Presentation
         }
 
         /// <summary>
+        /// نمونه کمکی برای غیرفعال کردن صفحه بندی در یک نمای جدولی
+        /// </summary>
+        public static GridPaging NoPaging
+        {
+            get
+            {
+                return new GridPaging()
+                {
+                    PageIndex = 1,
+                    PageSize = Int32.MaxValue
+                };
+            }
+        }
+
+        /// <summary>
         /// شماره صفحه مورد نظر از نمای جدولی که از یک شروع می شود
         /// </summary>
         public int PageIndex { get; set; }

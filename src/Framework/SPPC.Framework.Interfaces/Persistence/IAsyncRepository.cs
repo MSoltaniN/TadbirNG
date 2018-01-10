@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using SPPC.Framework.Domain;
+using SPPC.Framework.Presentation;
 
 namespace SPPC.Framework.Persistence
 {
@@ -25,6 +26,22 @@ namespace SPPC.Framework.Persistence
         /// (i.e. no navigation properties inside the main entity's navigation properties are required)
         /// </remarks>
         Task<IList<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] relatedProperties);
+
+        /// <summary>
+        /// Asynchronously retrieves complete information for all existing entities in data store,
+        /// including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Collection of all existing entities</returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        Task<IList<TEntity>> GetAllAsync(
+            GridOptions gridOptions, params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>
         /// Asynchronously retrieves a single entity instance with the specified unique identifier,
@@ -54,6 +71,25 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         Task<IList<TEntity>> GetByCriteriaAsync(
             Expression<Func<TEntity, bool>> criteria,
+            params Expression<Func<TEntity, object>>[] relatedProperties);
+
+        /// <summary>
+        /// Asynchronously retrieves complete information for a subset of existing entities, as defined by
+        /// the specified criteria, including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        Task<IList<TEntity>> GetByCriteriaAsync(
+            Expression<Func<TEntity, bool>> criteria,
+            GridOptions gridOptions,
             params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>

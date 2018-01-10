@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SPPC.Framework.Domain;
+using SPPC.Framework.Presentation;
 
 namespace SPPC.Framework.Persistence
 {
@@ -31,10 +33,24 @@ namespace SPPC.Framework.Persistence
         /// Returns a queryable object for entity that can be further manipulated to include related properties
         /// and perform other standard LINQ functions.
         /// </summary>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
         /// <returns>Queryable object for entity</returns>
-        public IQueryable<TEntity> GetEntityQuery()
+        public IQueryable<TEntity> GetEntityQuery(GridOptions gridOptions = null)
         {
-            return _dataSet.AsNoTracking();
+            var options = gridOptions ?? new GridOptions();
+            var query = _dataSet.AsNoTracking();
+            foreach (var filter in options.Filters)
+            {
+                query = query.Where(filter.ToString());
+            }
+
+            if (options.SortColumns.Count > 0)
+            {
+                string ordering = String.Join(", ", options.SortColumns.Select(col => col.ToString()));
+                query = query.OrderBy(ordering);
+            }
+
+            return query;
         }
 
         /// <summary>
@@ -50,7 +66,27 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         public IList<TEntity> GetAll(params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityQuery(relatedProperties);
+            var query = GetEntityWithNavigationQuery(null, relatedProperties);
+            return query.ToList();
+        }
+
+        /// <summary>
+        /// Retrieves complete information for all existing entities in data store, including specified
+        /// navigation properties, if any.
+        /// </summary>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Collection of all existing entities</returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        public IList<TEntity> GetAll(
+            GridOptions gridOptions, params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = GetEntityWithNavigationQuery(gridOptions, relatedProperties);
             return query.ToList();
         }
 
@@ -67,7 +103,27 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         public async Task<IList<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityQuery(relatedProperties);
+            var query = GetEntityWithNavigationQuery(null, relatedProperties);
+            return await query.ToListAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves complete information for all existing entities in data store,
+        /// including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Collection of all existing entities</returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        public async Task<IList<TEntity>> GetAllAsync(
+            GridOptions gridOptions, params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = GetEntityWithNavigationQuery(gridOptions, relatedProperties);
             return await query.ToListAsync();
         }
 
@@ -85,7 +141,7 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         public TEntity GetByID(int id, params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityQuery(id, relatedProperties);
+            var query = GetEntityWithNavigationQuery(id, null, relatedProperties);
             return query.SingleOrDefault();
         }
 
@@ -103,7 +159,7 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         public async Task<TEntity> GetByIDAsync(int id, params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityQuery(id, relatedProperties);
+            var query = GetEntityWithNavigationQuery(id, null, relatedProperties);
             return await query.SingleOrDefaultAsync();
         }
 
@@ -123,7 +179,30 @@ namespace SPPC.Framework.Persistence
             Expression<Func<TEntity, bool>> criteria,
             params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityQuery(criteria, relatedProperties);
+            var query = GetEntityWithNavigationQuery(criteria, null, relatedProperties);
+            return query.ToList();
+        }
+
+        /// <summary>
+        /// Retrieves complete information for a subset of existing entities, as defined by the specified criteria,
+        /// including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        public IList<TEntity> GetByCriteria(
+            Expression<Func<TEntity, bool>> criteria,
+            GridOptions gridOptions,
+            params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = GetEntityWithNavigationQuery(criteria, gridOptions, relatedProperties);
             return query.ToList();
         }
 
@@ -143,7 +222,30 @@ namespace SPPC.Framework.Persistence
             Expression<Func<TEntity, bool>> criteria,
             params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityQuery(criteria, relatedProperties);
+            var query = GetEntityWithNavigationQuery(criteria, null, relatedProperties);
+            return await query.ToListAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves complete information for a subset of existing entities, as defined by
+        /// the specified criteria, including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        public async Task<IList<TEntity>> GetByCriteriaAsync(
+            Expression<Func<TEntity, bool>> criteria,
+            GridOptions gridOptions,
+            params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = GetEntityWithNavigationQuery(criteria, gridOptions, relatedProperties);
             return await query.ToListAsync();
         }
 
@@ -244,37 +346,44 @@ namespace SPPC.Framework.Persistence
 
         #endregion
 
-        private IQueryable<TEntity> GetEntityQuery(
-            IQueryable<TEntity> query, params Expression<Func<TEntity, object>>[] relatedProperties)
+        private IQueryable<TEntity> GetEntityWithNavigationQuery(
+            IQueryable<TEntity> query,
+            GridOptions gridOptions,
+            params Expression<Func<TEntity, object>>[] relatedProperties)
         {
             foreach (var property in relatedProperties)
             {
                 query = query.Include(property);
             }
 
-            return query;
+            return query
+                .Skip((gridOptions.Paging.PageIndex - 1) * gridOptions.Paging.PageSize)
+                .Take(gridOptions.Paging.PageSize);
         }
 
-        private IQueryable<TEntity> GetEntityQuery(params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            var query = GetEntityQuery();
-            return GetEntityQuery(query, relatedProperties);
-        }
-
-        private IQueryable<TEntity> GetEntityQuery(int id, params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            var query = GetEntityQuery()
-                .Where(e => e.Id == id);
-            return GetEntityQuery(query, relatedProperties);
-        }
-
-        private IQueryable<TEntity> GetEntityQuery(
-            Expression<Func<TEntity, bool>> criteria,
+        private IQueryable<TEntity> GetEntityWithNavigationQuery(GridOptions gridOptions,
             params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityQuery()
+            var query = GetEntityQuery(gridOptions);
+            return GetEntityWithNavigationQuery(query, gridOptions, relatedProperties);
+        }
+
+        private IQueryable<TEntity> GetEntityWithNavigationQuery(int id, GridOptions gridOptions,
+            params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = GetEntityQuery(gridOptions)
+                .Where(e => e.Id == id);
+            return GetEntityWithNavigationQuery(query, gridOptions, relatedProperties);
+        }
+
+        private IQueryable<TEntity> GetEntityWithNavigationQuery(
+            Expression<Func<TEntity, bool>> criteria,
+            GridOptions gridOptions,
+            params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = GetEntityQuery(gridOptions)
                 .Where(criteria);
-            return GetEntityQuery(query, relatedProperties);
+            return GetEntityWithNavigationQuery(query, gridOptions, relatedProperties);
         }
 
         private void SetTrackingStatus(EntityEntryGraphNode entity)
