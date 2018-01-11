@@ -124,7 +124,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                var existing = repository.GetByID(account.Id);
+                var existing = repository.GetByID(account.Id, acc => acc.FiscalPeriod, acc => acc.Branch);
                 if (existing != null)
                 {
                     UpdateExistingAccount(account, existing);
@@ -150,7 +150,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                var existing = await repository.GetByIDAsync(account.Id);
+                var existing = await repository.GetByIDAsync(account.Id, acc => acc.FiscalPeriod, acc => acc.Branch);
                 if (existing != null)
                 {
                     UpdateExistingAccount(account, existing);
@@ -239,13 +239,8 @@ namespace SPPC.Tadbir.Persistence
         {
             AccountFullViewModel accountViewModel = null;
             var repository = _unitOfWork.GetRepository<Account>();
-            var account = repository
-                .GetEntityQuery()
-                .Where(acc => acc.Id == accountId)
-                .Include(acc => acc.Branch)
-                    .ThenInclude(br => br.Company)
-                .Include(acc => acc.FiscalPeriod)
-                .SingleOrDefault();
+            var query = GetAccountDetailsQuery(repository, accountId);
+            var account = query.SingleOrDefault();
             if (account != null)
             {
                 accountViewModel = _mapper.Map<AccountFullViewModel>(account);
@@ -263,13 +258,8 @@ namespace SPPC.Tadbir.Persistence
         {
             AccountFullViewModel accountViewModel = null;
             var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var account = await repository
-                .GetEntityQuery()
-                .Where(acc => acc.Id == accountId)
-                .Include(acc => acc.Branch)
-                    .ThenInclude(br => br.Company)
-                .Include(acc => acc.FiscalPeriod)
-                .SingleOrDefaultAsync();
+            var query = GetAccountDetailsQuery(repository, accountId);
+            var account = await query.SingleOrDefaultAsync();
             if (account != null)
             {
                 accountViewModel = _mapper.Map<AccountFullViewModel>(account);
@@ -328,7 +318,7 @@ namespace SPPC.Tadbir.Persistence
         public void DeleteAccount(int accountId)
         {
             var repository = _unitOfWork.GetRepository<Account>();
-            var account = repository.GetByID(accountId);
+            var account = repository.GetByID(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
             if (account != null)
             {
                 repository.Delete(account);
@@ -343,7 +333,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteAccountAsync(int accountId)
         {
             var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId);
+            var account = await repository.GetByIDAsync(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
             if (account != null)
             {
                 repository.Delete(account);
@@ -371,6 +361,17 @@ namespace SPPC.Tadbir.Persistence
             account.Code = accountViewModel.Code;
             account.Name = accountViewModel.Name;
             account.Description = accountViewModel.Description;
+        }
+
+        private IQueryable<Account> GetAccountDetailsQuery(IRepository<Account> repository, int accountId)
+        {
+            var query = repository
+                .GetEntityQuery()
+                .Where(acc => acc.Id == accountId)
+                .Include(acc => acc.Branch)
+                    .ThenInclude(br => br.Company)
+                .Include(acc => acc.FiscalPeriod);
+            return query;
         }
 
         private IUnitOfWork _unitOfWork;

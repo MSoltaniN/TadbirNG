@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -47,11 +46,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public IActionResult GetAccount(int accountId)
         {
             var account = _repository.GetAccount(accountId);
-            var result = (account != null)
-                ? Json(account)
-                : NotFound() as IActionResult;
-
-            return result;
+            return JsonReadResult(account);
         }
 
         // GET: api/accounts/{accountId:min(1)}
@@ -60,11 +55,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountAsync(int accountId)
         {
             var account = await _repository.GetAccountAsync(accountId);
-            var result = (account != null)
-                ? Json(account)
-                : NotFound() as IActionResult;
-
-            return result;
+            return JsonReadResult(account);
         }
 
         // POST: api/accounts/sync
@@ -73,20 +64,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         public IActionResult PostNewAccount([FromBody] AccountViewModel account)
         {
-            if (account == null)
+            var result = ValidationResult(account);
+            if (result is BadRequestObjectResult)
             {
-                return BadRequest("Could not post new account because a 'null' value was provided.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (_repository.IsDuplicateAccount(account))
-            {
-                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.AccountCodeField);
-                return BadRequest(message);
+                return result;
             }
 
             _repository.SaveAccount(account);
@@ -99,20 +80,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         public async Task<IActionResult> PostNewAccountAsync([FromBody] AccountViewModel account)
         {
-            if (account == null)
+            var result = await ValidationResultAsync(account);
+            if (result is BadRequestObjectResult)
             {
-                return BadRequest("Could not post new account because a 'null' value was provided.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (await _repository.IsDuplicateAccountAsync(account))
-            {
-                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.AccountCodeField);
-                return BadRequest(message);
+                return result;
             }
 
             await _repository.SaveAccountAsync(account);
@@ -125,30 +96,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Edit)]
         public IActionResult PutModifiedAccount(int accountId, [FromBody] AccountViewModel account)
         {
-            if (account == null)
+            var result = ValidationResult(account, accountId);
+            if (result is BadRequestObjectResult)
             {
-                return BadRequest("Could not put modified account because a 'null' value was provided.");
-            }
-
-            if (accountId <= 0 || account.Id <= 0)
-            {
-                return BadRequest("Could not put modified account because original account does not exist.");
-            }
-
-            if (accountId != account.Id)
-            {
-                return BadRequest("Could not put modified account because of an identity conflict in the request.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (_repository.IsDuplicateAccount(account))
-            {
-                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.AccountCodeField);
-                return BadRequest(message);
+                return result;
             }
 
             _repository.SaveAccount(account);
@@ -161,30 +112,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Edit)]
         public async Task<IActionResult> PutModifiedAccountAsync(int accountId, [FromBody] AccountViewModel account)
         {
-            if (account == null)
+            var result = await ValidationResultAsync(account, accountId);
+            if (result is BadRequestObjectResult)
             {
-                return BadRequest("Could not put modified account because a 'null' value was provided.");
-            }
-
-            if (accountId <= 0 || account.Id <= 0)
-            {
-                return BadRequest("Could not put modified account because original account does not exist.");
-            }
-
-            if (accountId != account.Id)
-            {
-                return BadRequest("Could not put modified account because of an identity conflict in the request.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (await _repository.IsDuplicateAccountAsync(account))
-            {
-                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.AccountCodeField);
-                return BadRequest(message);
+                return result;
             }
 
             await _repository.SaveAccountAsync(account);
@@ -197,11 +128,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public IActionResult GetAccountDetail(int accountId)
         {
             var account = _repository.GetAccountDetail(accountId);
-            var result = (account != null)
-                ? Json(account)
-                : NotFound() as IActionResult;
-
-            return result;
+            return JsonReadResult(account);
         }
 
         // GET: api/accounts/{accountId:min(1)}/details
@@ -210,11 +137,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountDetailAsync(int accountId)
         {
             var account = await _repository.GetAccountDetailAsync(accountId);
-            var result = (account != null)
-                ? Json(account)
-                : NotFound() as IActionResult;
-
-            return result;
+            return JsonReadResult(account);
         }
 
         // GET: api/accounts/{accountId:min(1)}/articles/sync
@@ -223,11 +146,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public IActionResult GetAccountArticles(int accountId, [FromBody] GridOptions gridOptions = null)
         {
             var articles = _repository.GetAccountArticles(accountId, gridOptions);
-            var result = (articles != null)
-                ? Json(articles)
-                : NotFound() as IActionResult;
-
-            return result;
+            return JsonReadResult(articles);
         }
 
         // GET: api/accounts/{accountId:min(1)}/articles
@@ -237,11 +156,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int accountId, [FromBody] GridOptions gridOptions = null)
         {
             var articles = await _repository.GetAccountArticlesAsync(accountId, gridOptions);
-            var result = (articles != null)
-                ? Json(articles)
-                : NotFound() as IActionResult;
-
-            return result;
+            return JsonReadResult(articles);
         }
 
         // DELETE: api/accounts/{accountId:min(1)}/sync
@@ -253,7 +168,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var account = _repository.GetAccount(accountId);
             if (account == null)
             {
-                return BadRequest("Could not delete account because it does not exist.");
+                return NotFound();
             }
 
             if (_repository.IsUsedAccount(accountId))
@@ -276,7 +191,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var account = await _repository.GetAccountAsync(accountId);
             if (account == null)
             {
-                return BadRequest("Could not delete account because it does not exist.");
+                return NotFound();
             }
 
             if (await _repository.IsUsedAccountAsync(accountId))
@@ -288,6 +203,71 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             await _repository.DeleteAccountAsync(accountId);
             return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        private IActionResult JsonReadResult<TData>(TData data)
+        {
+            var result = (data != null)
+                ? Json(data)
+                : NotFound() as IActionResult;
+
+            return result;
+        }
+
+        private IActionResult BasicValidationResult(AccountViewModel account, int accountId)
+        {
+            if (account == null)
+            {
+                var message = String.Format(ValidationMessages.RequestFailedNoData, Entities.Account);
+                return BadRequest(message);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (accountId != account.Id)
+            {
+                var message = String.Format(ValidationMessages.RequestFailedConflict, Entities.Account);
+                return BadRequest(message);
+            }
+
+            return Ok();
+        }
+
+        private IActionResult ValidationResult(AccountViewModel account, int accountId = 0)
+        {
+            var result = BasicValidationResult(account, accountId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (_repository.IsDuplicateAccount(account))
+            {
+                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.AccountCodeField);
+                return BadRequest(message);
+            }
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> ValidationResultAsync(AccountViewModel account, int accountId = 0)
+        {
+            var result = BasicValidationResult(account, accountId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (await _repository.IsDuplicateAccountAsync(account))
+            {
+                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.AccountCodeField);
+                return BadRequest(message);
+            }
+
+            return Ok();
         }
 
         private IAccountRepository _repository;

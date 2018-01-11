@@ -18,6 +18,16 @@ namespace SPPC.Framework.Values
         public const string RequestSucceeded = "درخواست مورد نظر با موفقیت انجام شد.";
 
         /// <summary>
+        /// Localized text for a message indicating that operation failed because data was not provided.
+        /// </summary>
+        public const string RequestFailedNoData = "درخواست مورد نظر به دلیل خالی بودن {0} انجام نشد.";
+
+        /// <summary>
+        /// Localized text for a message indicating that operation failed because data was not provided.
+        /// </summary>
+        public const string RequestFailedConflict = "درخواست مورد نظر به دلیل متناقض بودن {0} انجام نشد.";
+
+        /// <summary>
         /// Localized text for a message indicating that a field is required.
         /// </summary>
         public const string FieldIsRequired = "وارد کردن {0} اجباری است.";
