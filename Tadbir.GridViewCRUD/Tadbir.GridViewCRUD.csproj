@@ -42,6 +42,7 @@
     <None Remove="ClientApp\app\components\project\complexAccount.component.ts" />
     <None Remove="ClientApp\app\components\project\project.component.ts" />
     <None Remove="ClientApp\app\controls\sppc-grid-messages.ts" />
+    <None Remove="ClientApp\app\controls\sppc-grid.ts" />
     <None Remove="ClientApp\app\model\account.ts" />
     <None Remove="ClientApp\app\model\index.ts" />
     <None Remove="ClientApp\app\service\fiscal-period.service.ts" />
@@ -100,6 +101,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\class\filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\sppc-dropdownlist.ts" />
+    <TypeScriptCompile Include="ClientApp\app\controls\sppc-grid.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\sppc-mask-textbox.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\account2\account2-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\account2\account2.component.ts" />
