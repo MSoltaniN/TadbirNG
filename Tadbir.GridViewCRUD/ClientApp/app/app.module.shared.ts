@@ -31,6 +31,7 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 
 import { AccountService, TransactionLineService, FiscalPeriodService , GridMessageService } from './service/index';
+import { SppcNumberColumn } from "./directive/sppc-column";
 
 
 
@@ -42,8 +43,8 @@ import { AccountService, TransactionLineService, FiscalPeriodService , GridMessa
         AccountFormComponent,
         SppcMaskTextBox,
         SppcNumberBox,
-        SppcDropDownList
-        
+        SppcDropDownList,
+        SppcNumberColumn
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true },

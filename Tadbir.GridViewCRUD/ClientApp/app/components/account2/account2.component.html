@@ -33,7 +33,7 @@
                     <button *ngIf="groupDelete" class="k-button" (click)="deleteAccounts()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
                 </ng-template>               
                 <!-- template for mobile -->
-                <kendo-grid-column media="(max-width: 450px)" title="">
+                <kendo-grid-column media="(max-width: 450px)" title=""  >
                     <ng-template kendoGridCellTemplate let-account>
                         <!-- template for mobile -->
                         <h4>
@@ -57,7 +57,7 @@
 
                 <!-- template for mid-size devices -->
                 <kendo-grid-checkbox-column showSelectAll="true" width="10"  media="(min-width: 450px) and (max-width: 1024px)" ></kendo-grid-checkbox-column>
-                <kendo-grid-column field="code" [sortable]="true" width="150" media="(min-width: 450px) and (max-width: 1024px)"  [filterable]="true" title="{{ 'Account.Code' | translate }}" >
+                <kendo-grid-column field="code" [sortable]="true" width="150" media="(min-width: 450px) and (max-width: 1024px)"  sppc-number-column="true" [filterable]="true" title="{{ 'Account.Code' | translate }}" >
                     <!--<ng-template kendoGridFilterCellTemplate>
                         <input type="text" class="k-textbox" />                        
                     </ng-template>-->
