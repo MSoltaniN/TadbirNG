@@ -1,6 +1,7 @@
 ﻿
 import { Directive, Host, Input } from "@angular/core";
-import { ColumnComponent } from "@progress/kendo-angular-grid";
+import { ColumnComponent, FilterMenuTemplateDirective } from "@progress/kendo-angular-grid";
+import { TranslateService } from "ng2-translate";
 
 
 
@@ -10,9 +11,9 @@ import { ColumnComponent } from "@progress/kendo-angular-grid";
 })
 
 export class SppcNumberColumn {
-    constructor( @Host() private hostColumn: ColumnComponent)
+    constructor( @Host() private hostColumn: ColumnComponent, private translate: TranslateService)
     {
-        this.hostColumn.title = (this.value == "true" ? "numeric" : "text");
+        
     }
 
     @Input('sppc-number-column') value: string;
@@ -22,7 +23,19 @@ export class SppcNumberColumn {
     }
 
     ngOnChanges() {
+
         
+        this.hostColumn.resizable = true;
+        this.hostColumn.sortable = true;
+
+        var parts = this.value.split('.');        
+
+        this.hostColumn.field = parts[1].toLowerCase();
+        
+        this.translate.get(this.value).subscribe((msg: string) => {
+            this.hostColumn.title = msg;
+        });
+
     }
 
     ngAfterContentInit(): void {

@@ -57,18 +57,14 @@
 
                 <!-- template for mid-size devices -->
                 <kendo-grid-checkbox-column showSelectAll="true" width="10"  media="(min-width: 450px) and (max-width: 1024px)" ></kendo-grid-checkbox-column>
-                <kendo-grid-column field="code" [sortable]="true" width="150" media="(min-width: 450px) and (max-width: 1024px)"  sppc-number-column="true" [filterable]="true" title="{{ 'Account.Code' | translate }}" >
+                <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-number-column="Account.Code"  > 
+                                   
                     <!--<ng-template kendoGridFilterCellTemplate>
                         <input type="text" class="k-textbox" />                        
-                    </ng-template>-->
-                    <ng-template kendoGridFilterMenuTemplate let-filter let-column="column" let-filterService="filterService">
-                        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                            <kendo-grid-string-filter-cell [showOperators]="false"
-                                                           [column]="column"
-                                                           [filter]="filter" >
-                            </kendo-grid-string-filter-cell>
-                        </ng-template>
-                    </ng-template>
+                    </ng-template>-->                    
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                        <sppc-numeric-filter></sppc-numeric-filter>
+                    </ng-template>                    
                 </kendo-grid-column>
                 <!--<sppc-grid-column field="code" [sortable]="true" media="(min-width: 1024px)" title="{{ 'Account.Code' | translate }}" width="130">
                     <ng-template kendoGridFilterCellTemplate>

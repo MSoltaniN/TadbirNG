@@ -33,7 +33,7 @@ import { InputsModule } from '@progress/kendo-angular-inputs';
 import { AccountService, TransactionLineService, FiscalPeriodService , GridMessageService } from './service/index';
 import { SppcNumberColumn } from "./directive/sppc-column";
 
-
+import { SppcNumericFilterComponent } from './controls/grid/sppc-numeric-filter';
 
 @NgModule({
     declarations: [
@@ -44,7 +44,8 @@ import { SppcNumberColumn } from "./directive/sppc-column";
         SppcMaskTextBox,
         SppcNumberBox,
         SppcDropDownList,
-        SppcNumberColumn
+        SppcNumberColumn,
+        SppcNumericFilterComponent
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true },
