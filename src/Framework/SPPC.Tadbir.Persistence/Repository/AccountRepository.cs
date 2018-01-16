@@ -346,14 +346,34 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">Identifier of an existing fiscal period</param>
         /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
         /// <returns>Count of all account items</returns>
-        public int GetCount(int fpId, int branchId)
+        public int GetCount(int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetRepository<Account>();
             int count = repository
-                .GetByCriteria(acc => acc.FiscalPeriod.Id == fpId && acc.Branch.Id == branchId)
+                .GetByCriteria(
+                    acc => acc.FiscalPeriod.Id == fpId && acc.Branch.Id == branchId,
+                    gridOptions)
                 .Count();
             return count;
+        }
+
+        /// <summary>
+        /// Retrieves the count of all account items in a specified fiscal period and branch
+        /// </summary>
+        /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
+        /// <returns>Count of all account items</returns>
+        public async Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var items = await repository
+                .GetByCriteriaAsync(
+                    acc => acc.FiscalPeriod.Id == fpId && acc.Branch.Id == branchId,
+                    gridOptions);
+            return items.Count;
         }
 
         private static void UpdateExistingAccount(AccountViewModel accountViewModel, Account account)

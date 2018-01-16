@@ -33,6 +33,7 @@ namespace SPPC.Tadbir.Web.Api
         {
             services.AddDbContext<TadbirContext>();
             services.AddMvc();
+            services.AddCors();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<ILookupRepository, LookupRepository>();
@@ -55,6 +56,12 @@ namespace SPPC.Tadbir.Web.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(
+                options => options
+                    .WithOrigins("*")
+                    .AllowAnyMethod()
+                    .WithHeaders("Content-Type", "X-Tadbir-AuthTicket"));
 
             app.UseMvc();
         }

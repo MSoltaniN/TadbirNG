@@ -139,7 +139,17 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">Identifier of an existing fiscal period</param>
         /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
         /// <returns>Count of all account items</returns>
-        int GetCount(int fpId, int branchId);
+        int GetCount(int fpId, int branchId, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// Retrieves the count of all account items in a specified fiscal period and branch
+        /// </summary>
+        /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
+        /// <returns>Count of all account items</returns>
+        Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null);
     }
 }

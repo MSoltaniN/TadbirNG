@@ -159,6 +159,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(articles);
         }
 
+        // GET: api/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}/count
+        [Route(AccountApi.FiscalPeriodBranchItemCountUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        public async Task<IActionResult> GetAccountItemCount(
+            int fpId, int branchId, [FromBody] GridOptions gridOptions = null)
+        {
+            int count = await _repository.GetCountAsync(fpId, branchId, gridOptions);
+            return Json(count);
+        }
+
         // DELETE: api/accounts/{accountId:min(1)}/sync
         [HttpDelete]
         [Route(AccountApi.AccountSyncUrl)]
