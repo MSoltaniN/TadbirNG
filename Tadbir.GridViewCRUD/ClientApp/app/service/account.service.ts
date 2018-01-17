@@ -6,10 +6,11 @@ import "rxjs/Rx";
 import { String } from '../class/source';
 import { expect } from 'chai';
 import { Filter } from "../class/filter";
+import { GridOrderBy } from "../class/grid.orderby";
 
 export class AccountInfo implements Account
 {    
-    constructor(public accountId: number = 0, public code: string = "", public name: string = "",
+    constructor(public id: number = 0, public code: string = "", public name: string = "",
         public fiscalPeriodId: number = 0, public description: string = "",public branchId:number = 0)
     { }
     
@@ -36,7 +37,7 @@ export class AccountService
 
     private _postNewAccountsUrl = BASE_URL + "/accounts";
 
-    private _postModifiedAccountsUrl = BASE_URL + "/accounts";
+    private _postModifiedAccountsUrl = BASE_URL + "/accounts/{0}";
 
     headers: Headers;
     options: RequestOptions;
@@ -89,15 +90,29 @@ export class AccountService
 
     
     
-    search(start? :number , count? :number , orderby?:string,filters?:Filter[]  ) {
+    search(start?: number, count?: number, orderby?: string, filters?: Filter[]) {
         var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
         
-        var postItem = { StartIndex: start, Count: count, Filters: filters, OrderBy: orderby };
+        var gridPaging = { PageIndex: start, PageSize: count };
+
+        var sortColumns = new Array<GridOrderBy>();
+
+        if (orderby)
+        { 
+            var orderByParts = orderby.split(' ');
+            sortColumns.push(new GridOrderBy(orderByParts[0], orderByParts[1]));
+        }
+        var postItem = { GridPaging : gridPaging, Filters: filters, SortColumns: sortColumns };
         
         var url = String.Format(this._getAccountsUrl, FP_ID, BRANCH_ID);
-        
-        return this.http.post(url, JSON.stringify(postItem), options)
+
+        let params = new URLSearchParams();
+        params.append('gridOptions', JSON.stringify(postItem));
+
+        var options = new RequestOptions({ headers: headers, search: params});
+
+
+        return this.http.get(url/*, JSON.stringify(postItem)*/, options)
             .map(response => <any>(<Response>response).json());
     }
 
@@ -107,8 +122,10 @@ export class AccountService
         var headers = this.headers;
         var options = new RequestOptions({ headers: headers });
 
-        return this.http.put(this._postModifiedAccountsUrl, body, options)
-            .map(res => res.json().message)
+        var url = String.Format(this._postModifiedAccountsUrl, account.id);
+
+        return this.http.put(url, body, options)
+            .map(res => res)
             .catch(this.handleError);
     }
 
@@ -118,7 +135,7 @@ export class AccountService
         var options = new RequestOptions({ headers: headers });
 
         return this.http.post(this._postNewAccountsUrl, body, options)
-            .map(res => res.json().message)
+            .map(res => res)
             .catch(this.handleError);
     }
     

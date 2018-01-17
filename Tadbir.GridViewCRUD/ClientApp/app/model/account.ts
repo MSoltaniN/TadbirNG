@@ -2,7 +2,7 @@
 /** define account interface */
 
 export interface Account {
-    accountId: number;
+    id: number;
     code: string;
     name: string;
     description?: string;

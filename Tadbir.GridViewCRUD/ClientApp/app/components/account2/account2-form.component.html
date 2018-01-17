@@ -13,9 +13,9 @@
                     {{ 'Validations.AccountCode' | translate }}
                 </div>
             </div>
-            <div class="form-group">                
+            <!--<div class="form-group">                
                 <sppc-mask-textbox class="k-textbox" value="13:10" mask="00:00"></sppc-mask-textbox>
-            </div>
+            </div>-->
             <!--<div class="form-group">
                 <sppc-numberbox class="k-textbox" value="13" ></sppc-numberbox>
             </div>-->
@@ -33,18 +33,15 @@
 
                 <!--<input type="text" class="k-textbox" formControlName="fiscalPeriodId" />-->
                 <!--<kendo-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
-                                    [textField]="'Value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'Key'">
+                                    [textField]="'value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'key'">
                 </kendo-dropdownlist>-->
 
                 <sppc-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
-                                    [textField]="'Value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue"  [valueField]="'Key'">
+                                    [textField]="'value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue"  [valueField]="'key'">
                 </sppc-dropdownlist>
-                <!--<sppc-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
-                                    [textField]="'Value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'Key'">
-                </sppc-dropdownlist>-->
-
+              
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fiscalPeriodId.valid || editForm.controls.fiscalPeriodId.pristine">
-                    {{ 'Validations.FiscalPeriodid' | translate }}
+                    {{ 'Validations.FiscalPeriodId' | translate }}
                 </div>
             </div>
             <div class="form-group">

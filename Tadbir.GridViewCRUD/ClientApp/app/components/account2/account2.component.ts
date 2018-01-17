@@ -166,7 +166,7 @@ export class Account2Component implements OnInit {
 
     selectionKey(context: RowArgs): string {        
 
-        return context.dataItem.accountId + " " + context.index;
+        return context.dataItem.id + " " + context.index;
     }
 
     deleteAccounts()
@@ -250,7 +250,7 @@ export class Account2Component implements OnInit {
     
     /* lazy loading for account articles */
     lazyProjectLoad(account: any) {
-        this.transactionLineService.getAccountArticles(account.data.accountId).subscribe(res => {
+        this.transactionLineService.getAccountArticles(account.data.id).subscribe(res => {
             this.accountArticleRows = res;
             //this.accountArticleRows.set(account.data.accountId, res);
 
@@ -298,7 +298,7 @@ export class Account2Component implements OnInit {
             this.deleteConfirmMsg = String.Format(msg, arg.dataItem.name);
         });
 
-        this.deleteAccountId = arg.dataItem.accountId;
+        this.deleteAccountId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 

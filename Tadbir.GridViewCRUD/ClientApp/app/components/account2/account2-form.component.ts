@@ -28,7 +28,7 @@ export class AccountFormComponent {
 
     //create a form controls
     private editForm = new FormGroup({
-        accountId : new FormControl("", Validators.required),
+        id : new FormControl("", Validators.required),
         code: new FormControl("", Validators.required),
         name: new FormControl("", Validators.required),   
         description: new FormControl(),
