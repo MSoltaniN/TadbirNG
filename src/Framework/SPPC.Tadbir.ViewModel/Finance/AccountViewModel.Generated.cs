@@ -48,7 +48,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// Gets or sets the full code of the account
         /// </summary>
-        [Display(Name = FieldNames.CodeField)]
+        [Display(Name = FieldNames.FullCodeField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string FullCode { get; set; }

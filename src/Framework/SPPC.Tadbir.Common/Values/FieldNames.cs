@@ -43,6 +43,11 @@ namespace SPPC.Tadbir.Values
         public const string CodeField = "کد";
 
         /// <summary>
+        /// Localized name of Full Code field.
+        /// </summary>
+        public const string FullCodeField = "کد کامل";
+
+        /// <summary>
         /// Localized name of StartDate field.
         /// </summary>
         public const string StartDateField = "تاریخ شروع";

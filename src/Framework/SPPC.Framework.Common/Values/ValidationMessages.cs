@@ -23,7 +23,7 @@ namespace SPPC.Framework.Values
         public const string RequestFailedNoData = "درخواست مورد نظر به دلیل خالی بودن {0} انجام نشد.";
 
         /// <summary>
-        /// Localized text for a message indicating that operation failed because data was not provided.
+        /// Localized text for a message indicating that operation failed because of an identity conflict.
         /// </summary>
         public const string RequestFailedConflict = "درخواست مورد نظر به دلیل متناقض بودن {0} انجام نشد.";
 

@@ -30,26 +30,7 @@ namespace SPPC.Tadbir.Persistence
             _mapper = mapper;
         }
 
-        /// <summary>
-        /// Retrieves all accounts in specified fiscal period and branch from repository.
-        /// </summary>
-        /// <param name="fpId">Identifier of an existing fiscal period</param>
-        /// <param name="branchId">Identifier of an existing corporate branch</param>
-        /// <param name="options">Options used for displaying data in a tabular grid view</param>
-        /// <returns>A collection of <see cref="AccountViewModel"/> objects retrieved from repository</returns>
-        public IList<AccountViewModel> GetAccounts(int fpId, int branchId, GridOptions options = null)
-        {
-            var repository = _unitOfWork.GetRepository<Account>();
-            var accounts = repository
-                .GetByCriteria(
-                    acc => acc.FiscalPeriod.Id == fpId
-                        && acc.Branch.Id == branchId,
-                    options,
-                    acc => acc.FiscalPeriod, acc => acc.Branch)
-                .Select(item => _mapper.Map<AccountViewModel>(item))
-                .ToList();
-            return accounts;
-        }
+        #region Asynchronous Methods
 
         /// <summary>
         /// Asynchronously retrieves all accounts in specified fiscal period and branch from repository.
@@ -74,24 +55,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves a single account specified by Id from repository.
-        /// </summary>
-        /// <param name="accountId">Identifier of an existing account</param>
-        /// <returns>The account retrieved from repository as a <see cref="AccountViewModel"/> object</returns>
-        public AccountViewModel GetAccount(int accountId)
-        {
-            AccountViewModel accountViewModel = null;
-            var repository = _unitOfWork.GetRepository<Account>();
-            var account = repository.GetByID(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
-            if (account != null)
-            {
-                accountViewModel = _mapper.Map<AccountViewModel>(account);
-            }
-
-            return accountViewModel;
-        }
-
-        /// <summary>
         /// Asynchronously retrieves a single account specified by Id from repository.
         /// </summary>
         /// <param name="accountId">Identifier of an existing account</param>
@@ -110,29 +73,61 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Inserts or updates a single account in repository.
+        /// Asynchronously retrieves a single financial account with detail information from repository
         /// </summary>
-        /// <param name="account">Item to insert or update</param>
-        public void SaveAccount(AccountViewModel account)
+        /// <param name="accountId">Unique identifier of an existing account</param>
+        /// <returns>The account retrieved from repository as a <see cref="AccountFullViewModel"/> object</returns>
+        public async Task<AccountFullViewModel> GetAccountDetailAsync(int accountId)
         {
-            Verify.ArgumentNotNull(account, "account");
-            var repository = _unitOfWork.GetRepository<Account>();
-            if (account.Id == 0)
+            AccountFullViewModel accountViewModel = null;
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var query = GetAccountDetailsQuery(repository, accountId);
+            var account = await query.SingleOrDefaultAsync();
+            if (account != null)
             {
-                var newAccount = _mapper.Map<Account>(account);
-                repository.Insert(newAccount);
-            }
-            else
-            {
-                var existing = repository.GetByID(account.Id, acc => acc.FiscalPeriod, acc => acc.Branch);
-                if (existing != null)
-                {
-                    UpdateExistingAccount(account, existing);
-                    repository.Update(existing);
-                }
+                accountViewModel = _mapper.Map<AccountFullViewModel>(account);
             }
 
-            _unitOfWork.Commit();
+            return accountViewModel;
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves all transaction lines (articles) that use the financial account specified by
+        /// given unique identifier.
+        /// </summary>
+        /// <param name="accountId">Unique identifier of an existing financial account</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
+        /// <returns>Collection of all transaction lines (articles) for specified account</returns>
+        public async Task<IList<TransactionLineViewModel>> GetAccountArticlesAsync(
+            int accountId, GridOptions gridOptions = null)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
+            var articles = await repository
+                .GetByCriteriaAsync(
+                    line => line.Account.Id == accountId,
+                    gridOptions,
+                    line => line.Transaction, line => line.Account, line => line.Currency,
+                    line => line.FiscalPeriod, line => line.Branch);
+            return articles
+                .Select(line => _mapper.Map<TransactionLineViewModel>(line))
+                .ToList();
+        }
+
+        /// <summary>
+        /// Retrieves the count of all account items in a specified fiscal period and branch
+        /// </summary>
+        /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
+        /// <returns>Count of all account items</returns>
+        public async Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var items = await repository
+                .GetByCriteriaAsync(
+                    acc => acc.FiscalPeriod.Id == fpId && acc.Branch.Id == branchId,
+                    gridOptions);
+            return items.Count;
         }
 
         /// <summary>
@@ -162,24 +157,18 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Determines if the specified <see cref="AccountViewModel"/> instance uses a code that is already used
-        /// in a different account item.
+        /// Asynchronously deletes an existing financial account from repository.
         /// </summary>
-        /// <param name="accountViewModel">Account item to check for duplicate code</param>
-        /// <returns>True if the Code of specified account item is already used in a different account;
-        /// otherwise, returns false.</returns>
-        /// <remarks>If the account code is used in the same account (i.e. the account is being edited
-        /// without changing its code value), this method will return false.</remarks>
-        public bool IsDuplicateAccount(AccountViewModel accountViewModel)
+        /// <param name="accountId">Identifier of the account to delete</param>
+        public async Task DeleteAccountAsync(int accountId)
         {
-            Verify.ArgumentNotNull(accountViewModel, "accountViewModel");
-            var repository = _unitOfWork.GetRepository<Account>();
-            var account = repository
-                .GetByCriteria(acc => acc.Id != accountViewModel.Id
-                    && acc.FiscalPeriod.Id == accountViewModel.FiscalPeriodId
-                    && acc.Code == accountViewModel.Code)
-                .FirstOrDefault();
-            return (account != null);
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetByIDAsync(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
+            if (account != null)
+            {
+                repository.Delete(account);
+                await _unitOfWork.CommitAsync();
+            }
         }
 
         /// <summary>
@@ -204,20 +193,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Determines if the account specified by identifier is referenced by other records.
-        /// </summary>
-        /// <param name="accountId"></param>
-        /// <returns></returns>
-        public bool IsUsedAccount(int accountId)
-        {
-            var repository = _unitOfWork.GetRepository<TransactionLine>();
-            var articleCount = repository
-                .GetByCriteria(art => art.Account.Id == accountId)
-                .Count();
-            return (articleCount != 0);
-        }
-
-        /// <summary>
         /// Asynchronously determines if the account specified by identifier is referenced by other records.
         /// </summary>
         /// <param name="accountId"></param>
@@ -228,6 +203,49 @@ namespace SPPC.Tadbir.Persistence
             var articles = await repository
                 .GetByCriteriaAsync(art => art.Account.Id == accountId);
             return (articles.Count != 0);
+        }
+
+        #endregion
+
+        #region Synchronous Methods (May be removed in the future)
+
+        /// <summary>
+        /// Retrieves all accounts in specified fiscal period and branch from repository.
+        /// </summary>
+        /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <param name="options">Options used for displaying data in a tabular grid view</param>
+        /// <returns>A collection of <see cref="AccountViewModel"/> objects retrieved from repository</returns>
+        public IList<AccountViewModel> GetAccounts(int fpId, int branchId, GridOptions options = null)
+        {
+            var repository = _unitOfWork.GetRepository<Account>();
+            var accounts = repository
+                .GetByCriteria(
+                    acc => acc.FiscalPeriod.Id == fpId
+                        && acc.Branch.Id == branchId,
+                    options,
+                    acc => acc.FiscalPeriod, acc => acc.Branch)
+                .Select(item => _mapper.Map<AccountViewModel>(item))
+                .ToList();
+            return accounts;
+        }
+
+        /// <summary>
+        /// Retrieves a single account specified by Id from repository.
+        /// </summary>
+        /// <param name="accountId">Identifier of an existing account</param>
+        /// <returns>The account retrieved from repository as a <see cref="AccountViewModel"/> object</returns>
+        public AccountViewModel GetAccount(int accountId)
+        {
+            AccountViewModel accountViewModel = null;
+            var repository = _unitOfWork.GetRepository<Account>();
+            var account = repository.GetByID(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
+            if (account != null)
+            {
+                accountViewModel = _mapper.Map<AccountViewModel>(account);
+            }
+
+            return accountViewModel;
         }
 
         /// <summary>
@@ -241,25 +259,6 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetRepository<Account>();
             var query = GetAccountDetailsQuery(repository, accountId);
             var account = query.SingleOrDefault();
-            if (account != null)
-            {
-                accountViewModel = _mapper.Map<AccountFullViewModel>(account);
-            }
-
-            return accountViewModel;
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves a single financial account with detail information from repository
-        /// </summary>
-        /// <param name="accountId">Unique identifier of an existing account</param>
-        /// <returns>The account retrieved from repository as a <see cref="AccountFullViewModel"/> object</returns>
-        public async Task<AccountFullViewModel> GetAccountDetailAsync(int accountId)
-        {
-            AccountFullViewModel accountViewModel = null;
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var query = GetAccountDetailsQuery(repository, accountId);
-            var account = await query.SingleOrDefaultAsync();
             if (account != null)
             {
                 accountViewModel = _mapper.Map<AccountFullViewModel>(account);
@@ -290,58 +289,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Asynchronously retrieves all transaction lines (articles) that use the financial account specified by
-        /// given unique identifier.
-        /// </summary>
-        /// <param name="accountId">Unique identifier of an existing financial account</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
-        /// <returns>Collection of all transaction lines (articles) for specified account</returns>
-        public async Task<IList<TransactionLineViewModel>> GetAccountArticlesAsync(
-            int accountId, GridOptions gridOptions = null)
-        {
-            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
-            var articles = await repository
-                .GetByCriteriaAsync(
-                    line => line.Account.Id == accountId,
-                    gridOptions,
-                    line => line.Transaction, line => line.Account, line => line.Currency,
-                    line => line.FiscalPeriod, line => line.Branch);
-            return articles
-                .Select(line => _mapper.Map<TransactionLineViewModel>(line))
-                .ToList();
-        }
-
-        /// <summary>
-        /// Deletes an existing financial account from repository.
-        /// </summary>
-        /// <param name="accountId">Identifier of the account to delete</param>
-        public void DeleteAccount(int accountId)
-        {
-            var repository = _unitOfWork.GetRepository<Account>();
-            var account = repository.GetByID(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
-            if (account != null)
-            {
-                repository.Delete(account);
-                _unitOfWork.Commit();
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously deletes an existing financial account from repository.
-        /// </summary>
-        /// <param name="accountId">Identifier of the account to delete</param>
-        public async Task DeleteAccountAsync(int accountId)
-        {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
-            if (account != null)
-            {
-                repository.Delete(account);
-                await _unitOfWork.CommitAsync();
-            }
-        }
-
-        /// <summary>
         /// Retrieves the count of all account items in a specified fiscal period and branch
         /// </summary>
         /// <param name="fpId">Identifier of an existing fiscal period</param>
@@ -360,26 +307,89 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves the count of all account items in a specified fiscal period and branch
+        /// Inserts or updates a single account in repository.
         /// </summary>
-        /// <param name="fpId">Identifier of an existing fiscal period</param>
-        /// <param name="branchId">Identifier of an existing corporate branch</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
-        /// <returns>Count of all account items</returns>
-        public async Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null)
+        /// <param name="account">Item to insert or update</param>
+        public void SaveAccount(AccountViewModel account)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var items = await repository
-                .GetByCriteriaAsync(
-                    acc => acc.FiscalPeriod.Id == fpId && acc.Branch.Id == branchId,
-                    gridOptions);
-            return items.Count;
+            Verify.ArgumentNotNull(account, "account");
+            var repository = _unitOfWork.GetRepository<Account>();
+            if (account.Id == 0)
+            {
+                var newAccount = _mapper.Map<Account>(account);
+                repository.Insert(newAccount);
+            }
+            else
+            {
+                var existing = repository.GetByID(account.Id, acc => acc.FiscalPeriod, acc => acc.Branch);
+                if (existing != null)
+                {
+                    UpdateExistingAccount(account, existing);
+                    repository.Update(existing);
+                }
+            }
+
+            _unitOfWork.Commit();
         }
+
+        /// <summary>
+        /// Deletes an existing financial account from repository.
+        /// </summary>
+        /// <param name="accountId">Identifier of the account to delete</param>
+        public void DeleteAccount(int accountId)
+        {
+            var repository = _unitOfWork.GetRepository<Account>();
+            var account = repository.GetByID(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
+            if (account != null)
+            {
+                repository.Delete(account);
+                _unitOfWork.Commit();
+            }
+        }
+
+        /// <summary>
+        /// Determines if the specified <see cref="AccountViewModel"/> instance uses a code that is already used
+        /// in a different account item.
+        /// </summary>
+        /// <param name="accountViewModel">Account item to check for duplicate code</param>
+        /// <returns>True if the Code of specified account item is already used in a different account;
+        /// otherwise, returns false.</returns>
+        /// <remarks>If the account code is used in the same account (i.e. the account is being edited
+        /// without changing its code value), this method will return false.</remarks>
+        public bool IsDuplicateAccount(AccountViewModel accountViewModel)
+        {
+            Verify.ArgumentNotNull(accountViewModel, "accountViewModel");
+            var repository = _unitOfWork.GetRepository<Account>();
+            var account = repository
+                .GetByCriteria(acc => acc.Id != accountViewModel.Id
+                    && acc.FiscalPeriod.Id == accountViewModel.FiscalPeriodId
+                    && acc.Code == accountViewModel.Code)
+                .FirstOrDefault();
+            return (account != null);
+        }
+
+        /// <summary>
+        /// Determines if the account specified by identifier is referenced by other records.
+        /// </summary>
+        /// <param name="accountId"></param>
+        /// <returns></returns>
+        public bool IsUsedAccount(int accountId)
+        {
+            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            var articleCount = repository
+                .GetByCriteria(art => art.Account.Id == accountId)
+                .Count();
+            return (articleCount != 0);
+        }
+
+        #endregion
 
         private static void UpdateExistingAccount(AccountViewModel accountViewModel, Account account)
         {
             account.Code = accountViewModel.Code;
+            account.FullCode = accountViewModel.FullCode;
             account.Name = accountViewModel.Name;
+            account.Level = accountViewModel.Level;
             account.Description = accountViewModel.Description;
         }
 
