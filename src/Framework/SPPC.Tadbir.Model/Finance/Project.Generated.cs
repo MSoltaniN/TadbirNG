@@ -59,6 +59,11 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual short Level { get; set; }
 
         /// <summary>
+        /// TODO: Add description...
+        /// </summary>
+        public virtual string Description { get; set; }
+
+        /// <summary>
         /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
         /// </summary>
         public virtual Guid RowGuid { get; set; }

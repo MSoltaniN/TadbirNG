@@ -26,7 +26,6 @@
     <Compile Remove="Class1.cs" />
     <Compile Remove="Core\DocumentStatus.cs" />
     <Compile Remove="Core\DocumentType.cs" />
-    <Compile Remove="Finance\Account.cs" />
     <Compile Remove="Finance\FullAccount.cs" />
   </ItemGroup>
 

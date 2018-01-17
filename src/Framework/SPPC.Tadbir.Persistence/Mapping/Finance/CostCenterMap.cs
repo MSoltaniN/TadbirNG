@@ -26,6 +26,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasMaxLength(256);
             builder.Property(e => e.Level)
                 .HasDefaultValueSql("((0))");
+            builder.Property(e => e.Description)
+                .HasMaxLength(512);
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");

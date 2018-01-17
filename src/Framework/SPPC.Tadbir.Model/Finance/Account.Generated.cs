@@ -40,14 +40,24 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the user-friendly code of the account
+        /// Gets or sets the partial code of the account
         /// </summary>
         public virtual string Code { get; set; }
+
+        /// <summary>
+        /// Gets or sets the full code of the account
+        /// </summary>
+        public virtual string FullCode { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the account
         /// </summary>
         public virtual string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the zero-based level of this account item in the account hierarchy
+        /// </summary>
+        public virtual short Level { get; set; }
 
         /// <summary>
         /// Gets or sets the detail information related to this account
@@ -63,6 +73,11 @@ namespace SPPC.Tadbir.Model.Finance
         /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
         /// </summary>
         public virtual DateTime ModifiedDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the account that is the immediate parent of this account in the hierarchy. Can be null.
+        /// </summary>
+        public virtual Account Parent { get; set; }
 
         /// <summary>
         /// Gets or sets the fiscal period in which this account is defined
@@ -84,6 +99,7 @@ namespace SPPC.Tadbir.Model.Finance
             TransactionLines = new List<TransactionLine>();
             FiscalPeriod = new FiscalPeriod();
             Branch = new Branch();
+            Children = new List<Account>();
         }
     }
 }

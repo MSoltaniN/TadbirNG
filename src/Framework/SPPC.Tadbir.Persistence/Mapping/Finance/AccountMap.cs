@@ -21,7 +21,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasColumnName("AccountID");
             builder.Property(e => e.Code)
                 .IsRequired()
+                .HasMaxLength(16);
+            builder.Property(e => e.FullCode)
+                .IsRequired()
                 .HasMaxLength(512);
+            builder.Property(e => e.Level)
+                .IsRequired();
             builder.Property(e => e.Description)
                 .HasMaxLength(512);
             builder.Property(e => e.ModifiedDate)
@@ -34,6 +39,10 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
 
+            builder.HasOne(d => d.Parent)
+                .WithMany(p => p.Children)
+                .HasForeignKey("ParentID")
+                .HasConstraintName("FK_Finance_Account_Finance_Parent");
             builder.HasOne(d => d.Branch)
                 .WithMany()
                 .HasForeignKey("BranchID")

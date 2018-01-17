@@ -38,12 +38,20 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the user-friendly code of the account
+        /// Gets or sets the partial code of the account
+        /// </summary>
+        [Display(Name = FieldNames.CodeField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(16, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string Code { get; set; }
+
+        /// <summary>
+        /// Gets or sets the full code of the account
         /// </summary>
         [Display(Name = FieldNames.CodeField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string Code { get; set; }
+        public string FullCode { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the account
@@ -52,6 +60,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(512, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the zero-based level of this account item in the account hierarchy
+        /// </summary>
+        public short Level { get; set; }
 
         /// <summary>
         /// Gets or sets the detail information related to this account
