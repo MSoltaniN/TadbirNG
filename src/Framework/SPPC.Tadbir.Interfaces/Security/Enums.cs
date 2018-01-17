@@ -4,38 +4,223 @@ using System.Collections.Generic;
 namespace SPPC.Tadbir.Security
 {
     /// <summary>
-    /// Provides flag values for permissions currently defined for managing a financial account.
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به یک سرفصل حسابداری را تعریف می کند
     /// </summary>
     [Flags]
     public enum AccountPermissions
     {
         /// <summary>
-        /// Indicates no permission for managing an account
+        /// عدم دسترسی به یک سرفصل حسابداری
         /// </summary>
         None = 0x0,
 
         /// <summary>
-        /// Indicates permission to view account list or details of an account
+        /// دسترسی مشاهده لیست سرفصل های حسابداری یا جزییات یک سرفصل حسابداری
         /// </summary>
         View = 0x1,
 
         /// <summary>
-        /// Indicates permission to create a new account
+        /// دسترسی ایجاد یک سرفصل حسابداری جدید
         /// </summary>
         Create = 0x2,
 
         /// <summary>
-        /// Indicates permission to edit an existing account
+        /// دسترسی ویرایش یک سرفصل حسابداری موجود
         /// </summary>
         Edit = 0x4,
 
         /// <summary>
-        /// Indicates permission to delete an existing account
+        /// دسترسی حذف یک سرفصل حسابداری موجود
         /// </summary>
         Delete = 0x8,
 
         /// <summary>
-        /// Indicates all permissions available for managing an account
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت سرفصل حسابداری
+        /// </summary>
+        All = 0xf
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به تفصیلی های شناور را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum DetailAccountPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به یک تفصیلی شناور
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست تفصیلی های شناور یا جزییات یک تفصیلی شناور
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی ایجاد یک تفصیلی شناور جدید
+        /// </summary>
+        Create = 0x2,
+
+        /// <summary>
+        /// دسترسی ویرایش یک تفصیلی شناور موجود
+        /// </summary>
+        Edit = 0x4,
+
+        /// <summary>
+        /// دسترسی حذف یک تفصیلی شناور موجود
+        /// </summary>
+        Delete = 0x8,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت تفصیلی های شناور
+        /// </summary>
+        All = 0xf
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به مراکز هزینه را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum CostCenterPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به مراکز هزینه
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست مراکز هزینه یا جزییات یک مرکز هزینه
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی ایجاد یک مرکز هزینه جدید
+        /// </summary>
+        Create = 0x2,
+
+        /// <summary>
+        /// دسترسی ویرایش یک مرکز هزینه موجود
+        /// </summary>
+        Edit = 0x4,
+
+        /// <summary>
+        /// دسترسی حذف یک مرکز هزینه موجود
+        /// </summary>
+        Delete = 0x8,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت مراکز هزینه
+        /// </summary>
+        All = 0xf
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به پروژه ها را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum ProjectPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به پروژه ها
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست پروژه ها یا جزییات یک پروژه
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی ایجاد یک پروژه جدید
+        /// </summary>
+        Create = 0x2,
+
+        /// <summary>
+        /// دسترسی ویرایش یک پروژه موجود
+        /// </summary>
+        Edit = 0x4,
+
+        /// <summary>
+        /// دسترسی حذف یک پروژه موجود
+        /// </summary>
+        Delete = 0x8,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت پروژه ها
+        /// </summary>
+        All = 0xf
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به ارزها را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum CurrencyPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به ارزها
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست ارزها یا جزییات یک ارز
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی ایجاد یک ارز جدید
+        /// </summary>
+        Create = 0x2,
+
+        /// <summary>
+        /// دسترسی ویرایش یک ارز موجود
+        /// </summary>
+        Edit = 0x4,
+
+        /// <summary>
+        /// دسترسی حذف یک ارز موجود
+        /// </summary>
+        Delete = 0x8,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت ارزها
+        /// </summary>
+        All = 0xf
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به دوره های مالی را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum FiscalPeriodPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به دوره های مالی
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست دوره های مالی یا جزییات یک دوره مالی
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی ایجاد یک دوره مالی جدید
+        /// </summary>
+        Create = 0x2,
+
+        /// <summary>
+        /// دسترسی ویرایش یک دوره مالی موجود
+        /// </summary>
+        Edit = 0x4,
+
+        /// <summary>
+        /// دسترسی حذف یک دوره مالی موجود
+        /// </summary>
+        Delete = 0x8,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت دوره های مالی
         /// </summary>
         All = 0xf
     }
@@ -95,6 +280,80 @@ namespace SPPC.Tadbir.Security
         /// Indicates all permissions available for managing a transaction
         /// </summary>
         All = 0xff
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به واحدهای سازمانی را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum BusinessUnitPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به واحدهای سازمانی
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست واحهای سازمانی یا جزییات یک واحد سازمانی
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی ایجاد یک واحد سازمانی جدید
+        /// </summary>
+        Create = 0x2,
+
+        /// <summary>
+        /// دسترسی ویرایش یک واحد سازمانی موجود
+        /// </summary>
+        Edit = 0x4,
+
+        /// <summary>
+        /// دسترسی حذف یک واحد سازمانی موجود
+        /// </summary>
+        Delete = 0x8,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت واحدهای سازمانی
+        /// </summary>
+        All = 0xf
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به شرکای تجاری را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum BusinessPartnerPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به شرکای تجاری
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست شرکای تجاری یا جزییات یک شریک تجاری
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی ایجاد یک شریک تجاری جدید
+        /// </summary>
+        Create = 0x2,
+
+        /// <summary>
+        /// دسترسی ویرایش یک شریک تجاری موجود
+        /// </summary>
+        Edit = 0x4,
+
+        /// <summary>
+        /// دسترسی حذف یک شریک تجاری موجود
+        /// </summary>
+        Delete = 0x8,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت شرکای تجاری
+        /// </summary>
+        All = 0xf
     }
 
     /// <summary>

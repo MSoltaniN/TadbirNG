@@ -18,6 +18,41 @@ namespace SPPC.Tadbir.Security
         public const string Account = "Account";
 
         /// <summary>
+        /// نام موجودیت تفصیلی شناور
+        /// </summary>
+        public const string DetailAccount = "DetailAccount";
+
+        /// <summary>
+        /// نام موجودیت مرکز هزینه
+        /// </summary>
+        public const string CostCenter = "CostCenter";
+
+        /// <summary>
+        /// نام موجودیت پروژه
+        /// </summary>
+        public const string Project = "Project";
+
+        /// <summary>
+        /// نام موجودیت ارز
+        /// </summary>
+        public const string Currency = "Currency";
+
+        /// <summary>
+        /// نام موجودیت دوره مالی
+        /// </summary>
+        public const string FiscalPeriod = "FiscalPeriod";
+
+        /// <summary>
+        /// نام موجودیت واحد سازمانی
+        /// </summary>
+        public const string BusinessUnit = "BusinessUnit";
+
+        /// <summary>
+        /// نام موجودیت شریک تجاری
+        /// </summary>
+        public const string BusinessPartner = "BusinessPartner";
+
+        /// <summary>
         /// نام موجودیت سند مالی
         /// </summary>
         public const string Transaction = "Transaction";

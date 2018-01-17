@@ -18,6 +18,21 @@ namespace SPPC.Tadbir.Security
         public static AccountPermission Account = AccountPermission.Instance;
 
         /// <summary>
+        /// Exposes all permissions currently applicable to managing a detail account.
+        /// </summary>
+        public static DetailAccountPermission DetailAccount = DetailAccountPermission.Instance;
+
+        /// <summary>
+        /// Exposes all permissions currently applicable to managing a cost center.
+        /// </summary>
+        public static CostCenterPermission CostCenter = CostCenterPermission.Instance;
+
+        /// <summary>
+        /// Exposes all permissions currently applicable to managing a project.
+        /// </summary>
+        public static ProjectPermission Project = ProjectPermission.Instance;
+
+        /// <summary>
         /// Exposes all permissions currently applicable to managing a financial transaction.
         /// </summary>
         public static TransactionPermission Transaction = TransactionPermission.Instance;
