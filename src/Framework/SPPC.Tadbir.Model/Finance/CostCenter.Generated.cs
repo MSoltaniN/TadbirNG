@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using SPPC.Framework.Domain;
+using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Model.Finance
 {
@@ -78,8 +79,20 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public virtual CostCenter Parent { get; set; }
 
+        /// <summary>
+        /// Gets or sets the fiscal period in which this cost center is defined
+        /// </summary>
+        public virtual FiscalPeriod FiscalPeriod { get; set; }
+
+        /// <summary>
+        /// Gets or sets the branch that defines this cost center
+        /// </summary>
+        public virtual Branch Branch { get; set; }
+
         private void InitReferences()
         {
+            FiscalPeriod = new FiscalPeriod();
+            Branch = new Branch();
             Children = new List<CostCenter>();
         }
     }

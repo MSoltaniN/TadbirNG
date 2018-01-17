@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Finance;
@@ -43,6 +41,16 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .WithMany(p => p.Children)
                 .HasForeignKey("ParentID")
                 .HasConstraintName("FK_Finance_Project_Finance_Parent");
+            builder.HasOne(d => d.Branch)
+                .WithMany()
+                .HasForeignKey("BranchID")
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Finance_Project_Corporate_Branch");
+            builder.HasOne(d => d.FiscalPeriod)
+                .WithMany()
+                .HasForeignKey("FiscalPeriodID")
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Finance_Project_Finance_FiscalPeriod");
         }
     }
 }

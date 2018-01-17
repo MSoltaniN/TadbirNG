@@ -55,8 +55,8 @@
       <Relations>
         <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Account" hasKey="True" joinTable="" description="Parent of this account in the account hierarchy (can be null)" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="False" joinTable="" description="Fiscal period in which this account is defined" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToMany" endpointName="TransactionLine" entityName="TransactionLine" hasKey="False" joinTable="" description="Collection of financial transaction lines (articles) in which this account is used" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="Branch that defines this financial account" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="TransactionLine" entityName="TransactionLine" hasKey="False" joinTable="" description="Collection of financial transaction lines (articles) in which this account is used" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="Branch" area="Corporate" identifier="Id" description="Represents a physical division of a business unit" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -1820,6 +1820,8 @@
       </Properties>
       <Relations>
         <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="DetailAccount" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="Fiscal period in which this detail account is defined" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="Branch that defines this detail account" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="CostCenter" area="Finance" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -1875,6 +1877,8 @@
       </Properties>
       <Relations>
         <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="CostCenter" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="Fiscal period in which this cost center is defined" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="Branch that defines this cost center" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="Project" area="Finance" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -1930,6 +1934,8 @@
       </Properties>
       <Relations>
         <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Project" hasKey="True" joinTable="" description="TODO: Add description..." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="Fiscal period in which this project is defined" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="Branch that defines this project" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="DocumentType" area="Core" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
