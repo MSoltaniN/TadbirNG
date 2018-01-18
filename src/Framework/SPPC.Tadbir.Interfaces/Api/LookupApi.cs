@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for lookup collection of all accounts in a fiscal period and a corporate branch
         /// </summary>
-        public const string FiscalPeriodBranchAccountsUrl = "lookup/accounts/fp/{fpId:int}/branch/{branchId:int}";
+        public const string FiscalPeriodBranchAccountsUrl = "lookup/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
 
         /// <summary>
         /// API client URL for lookup collection of all currencies

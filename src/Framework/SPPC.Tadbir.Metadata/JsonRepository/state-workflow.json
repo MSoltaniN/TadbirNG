@@ -1,0 +1,146 @@
+﻿[
+  {
+    "DocumentTypeId": 1,
+    "DocumentType": "Transaction",
+    "FirstAction": {
+      "Name": "Prepare",
+      "NextAction": "Review",
+      "FromStatus": 1,
+      "ToStatus": 2,
+      "FromDocumentStatus": "Created",
+      "ToDocumentStatus": "Prepared",
+      "WorkTitle": "Please review attached document",
+      "TargetId": 3,
+      "IsReverse": false,
+      "IsFinal": false
+    },
+    "NextActions": [
+      {
+        "Name": "Review",
+        "NextAction": "Confirm",
+        "FromStatus": 2,
+        "ToStatus": 4,
+        "FromDocumentStatus": "Prepared",
+        "ToDocumentStatus": "Reviewed",
+        "WorkTitle": "Please confirm attached document",
+        "TargetId": 4,
+        "IsReverse": false,
+        "IsFinal": false
+      },
+      {
+        "Name": "Reject",
+        "NextAction": "Review",
+        "FromStatus": 4,
+        "ToStatus": 2,
+        "FromDocumentStatus": "Reviewed",
+        "ToDocumentStatus": "Prepared",
+        "WorkTitle": "Please review attached document",
+        "TargetId": 3,
+        "IsReverse": true,
+        "IsFinal": false
+      },
+      {
+        "Name": "Confirm",
+        "NextAction": "Approve",
+        "FromStatus": 4,
+        "ToStatus": 4,
+        "FromDocumentStatus": "Reviewed",
+        "ToDocumentStatus": "Confirmed",
+        "WorkTitle": "Please approve attached document",
+        "TargetId": 5,
+        "IsReverse": false,
+        "IsFinal": false
+      },
+      {
+        "Name": "Approve",
+        "NextAction": "",
+        "FromStatus": 4,
+        "ToStatus": 5,
+        "FromDocumentStatus": "Confirmed",
+        "ToDocumentStatus": "Approved",
+        "WorkTitle": "",
+        "TargetId": 0,
+        "IsReverse": false,
+        "IsFinal": true
+      }
+    ]
+  },
+  {
+    "DocumentTypeId": 2,
+    "DocumentType": "RequisitionVoucher",
+    "FirstAction": {
+      "Name": "Prepare",
+      "NextAction": "Confirm",
+      "FromStatus": 1,
+      "ToStatus": 1,
+      "FromDocumentStatus": "Created",
+      "ToDocumentStatus": "Prepared",
+      "WorkTitle": "Please confirm attached document",
+      "TargetId": 6,
+      "IsReverse": false,
+      "IsFinal": false
+    },
+    "NextActions": [
+      {
+        "Name": "Confirm",
+        "NextAction": "Approve",
+        "FromStatus": 1,
+        "ToStatus": 1,
+        "FromDocumentStatus": "Prepared",
+        "ToDocumentStatus": "Confirmed",
+        "WorkTitle": "Please approve attached document",
+        "TargetId": 7,
+        "IsReverse": false,
+        "IsFinal": false
+      },
+      {
+        "Name": "RejectConfirm",
+        "NextAction": "",
+        "FromStatus": 1,
+        "ToStatus": 1,
+        "FromDocumentStatus": "Prepared",
+        "ToDocumentStatus": "NotConfirmed",
+        "WorkTitle": "",
+        "TargetId": 0,
+        "IsReverse": true,
+        "IsFinal": true
+      },
+      {
+        "Name": "Approve",
+        "NextAction": "Process",
+        "FromStatus": 1,
+        "ToStatus": 1,
+        "FromDocumentStatus": "Confirmed",
+        "ToDocumentStatus": "Approved",
+        "WorkTitle": "Please process attached document",
+        "TargetId": 8,
+        "IsReverse": false,
+        "IsFinal": false
+      },
+      {
+        "Name": "RejectApprove",
+        "NextAction": "",
+        "FromStatus": 1,
+        "ToStatus": 1,
+        "FromDocumentStatus": "Confirmed",
+        "ToDocumentStatus": "NotApproved",
+        "WorkTitle": "",
+        "TargetId": 0,
+        "IsReverse": true,
+        "IsFinal": true
+      },
+      {
+        "Name": "Process",
+        "NextAction": "",
+        "FromStatus": 1,
+        "ToStatus": 1,
+        "FromDocumentStatus": "Approved",
+        "ToDocumentStatus": "Processed",
+        "WorkTitle": "",
+        "TargetId": 0,
+        "IsReverse": false,
+        "IsFinal": true
+      }
+    ]
+  }
+]

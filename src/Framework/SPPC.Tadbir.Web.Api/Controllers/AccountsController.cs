@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
@@ -26,9 +28,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
         [Route(AccountApi.FiscalPeriodBranchAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetAccountsAsync(
-            int fpId, int branchId, [FromBody] GridOptions gridOptions = null)
+        public async Task<IActionResult> GetAccountsAsync(int fpId, int branchId, string options = null)
         {
+            var gridOptions = FromEncodedValue(options);
             var accounts = await _repository.GetAccountsAsync(fpId, branchId, gridOptions);
             return Json(accounts);
         }
@@ -222,6 +224,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         #endregion
+
+        private GridOptions FromEncodedValue(string options)
+        {
+            var json = Encoding.UTF8.GetString(Transform.FromBase64String(options));
+            return Framework.Helpers.Json.To<GridOptions>(json);
+        }
 
         private IActionResult JsonReadResult<TData>(TData data)
         {

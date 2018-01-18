@@ -20,17 +20,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IActionResult GetAccountsLookup(int fpId, int branchId)
         {
-            if (fpId <= 0 || branchId <= 0)
-            {
-                return NotFound();
-            }
-
             var accountLookup = _repository.GetAccounts(fpId, branchId);
             return Json(accountLookup);
         }
 
         // GET: api/lookup/faccounts
         [Route(LookupApi.DetailAccountsUrl)]
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public IActionResult GetDetailAccountsLookup()
         {
             var lookup = _repository.GetDetailAccounts();
@@ -39,6 +35,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/lookup/costcenters
         [Route(LookupApi.CostCentersUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public IActionResult GetCostCentersLookup()
         {
             var lookup = _repository.GetCostCenters();
@@ -47,6 +44,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/lookup/projects
         [Route(LookupApi.ProjectsUrl)]
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public IActionResult GetProjectsLookup()
         {
             var lookup = _repository.GetProjects();
