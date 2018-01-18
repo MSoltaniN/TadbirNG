@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.Service
             _httpContextAccessor = httpContextAccessor;
             _contextEncoder = contextEncoder;
             _httpContext = httpContextAccessor.HttpContext;
-            _rootUrl = Constants.AppRoot;
+            _rootUrl = AppConstants.AppRoot;
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace SPPC.Tadbir.Service
 
             var context = new SecurityContext(userContext);
             _httpContext.Response.Cookies.Append(
-                Values.Constants.ContextCookieName,
+                AppConstants.ContextCookieName,
                 _contextEncoder.Encode(context),
                 new CookieOptions() { Path = _rootUrl });
         }
@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.Service
         private ISecurityContext GetCurrentContext()
         {
             ISecurityContext current = null;
-            var contextCookie = _httpContext.Request.Cookies[Values.Constants.ContextCookieName];
+            var contextCookie = _httpContext.Request.Cookies[AppConstants.ContextCookieName];
             if (contextCookie != null)
             {
                 current = _contextEncoder.Decode(contextCookie);
@@ -77,14 +77,14 @@ namespace SPPC.Tadbir.Service
 
         private string GetEncodedContext()
         {
-            var contextCookie = _httpContext.Request.Cookies[Values.Constants.ContextCookieName];
+            var contextCookie = _httpContext.Request.Cookies[AppConstants.ContextCookieName];
             return contextCookie ?? String.Empty;
         }
 
         private void ClearContext()
         {
-            var cookie = _httpContext.Request.Cookies[Values.Constants.ContextCookieName];
-            _httpContext.Response.Cookies.Delete(Values.Constants.ContextCookieName);
+            var cookie = _httpContext.Request.Cookies[AppConstants.ContextCookieName];
+            _httpContext.Response.Cookies.Delete(AppConstants.ContextCookieName);
         }
 
         private readonly IHttpContextAccessor _httpContextAccessor;

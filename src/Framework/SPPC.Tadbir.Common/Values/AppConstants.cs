@@ -6,9 +6,9 @@ namespace SPPC.Tadbir.Values
     /// <summary>
     /// Provides definitions for special-purpose constant values.
     /// </summary>
-    public sealed class Constants
+    public sealed class AppConstants
     {
-        private Constants()
+        private AppConstants()
         {
         }
 
@@ -41,6 +41,11 @@ namespace SPPC.Tadbir.Values
         /// Name of authorization context HTTP header used for authorization in Web service level
         /// </summary>
         public const string ContextHeaderName = "X-Tadbir-AuthTicket";
+
+        /// <summary>
+        /// Name of an optional HTTP header used for paging, sorting and filtering data in a grid display.
+        /// </summary>
+        public const string GridOptionsHeaderName = "X-Tadbir-GridOptions";
 
         /// <summary>
         /// Default connection string used for connecting to SQL Server database

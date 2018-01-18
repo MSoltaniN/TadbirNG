@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 using SPPC.Framework.Common;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Web.Api.Filters
@@ -45,7 +43,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
             {
                 // If custom authorization ticket header is not found in request, return Bad Request (400) response...
                 string reason = string.Format(
-                    "Authorization ticket header '{0}' could not be found.", Values.Constants.ContextHeaderName);
+                    "Authorization ticket header '{0}' could not be found.", AppConstants.ContextHeaderName);
                 actionContext.Result = new BadRequestObjectResult(reason);
             }
             else if (!IsAuthorized(authTicket))
@@ -63,9 +61,9 @@ namespace SPPC.Tadbir.Web.Api.Filters
         {
             authTicket = null;
             var headers = actionContext.HttpContext.Request.Headers;
-            if (headers[Values.Constants.ContextHeaderName] != StringValues.Empty)
+            if (headers[AppConstants.ContextHeaderName] != StringValues.Empty)
             {
-                authTicket = headers[Values.Constants.ContextHeaderName].First();
+                authTicket = headers[AppConstants.ContextHeaderName].First();
             }
 
             return !String.IsNullOrEmpty(authTicket);
@@ -74,7 +72,7 @@ namespace SPPC.Tadbir.Web.Api.Filters
         private bool IsAuthorized(string authTicket)
         {
             var securityContext = _contextDecoder.Decode(authTicket);
-            return (securityContext.User.Id == Values.Constants.AdminUserId
+            return (securityContext.User.Id == AppConstants.AdminUserId
                 || securityContext.HasPermissions(_requiredPermissions));
         }
 

@@ -95,7 +95,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Edit)]
         public IActionResult PutModifiedRole(int roleId, [FromBody] RoleFullViewModel role)
         {
-            if (roleId == Constants.AdminRoleId)
+            if (roleId == AppConstants.AdminRoleId)
             {
                 return BadRequest("Could not put modified role because the role is read-only.");
             }
@@ -130,7 +130,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Delete)]
         public IActionResult DeleteExistingRole(int roleId)
         {
-            if (roleId == Constants.AdminRoleId)
+            if (roleId == AppConstants.AdminRoleId)
             {
                 return BadRequest("Could not delete role because the role is read-only.");
             }

@@ -28,9 +28,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
         [Route(AccountApi.FiscalPeriodBranchAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetAccountsAsync(int fpId, int branchId, string options = null)
+        public async Task<IActionResult> GetAccountsAsync(int fpId, int branchId)
         {
-            var gridOptions = FromEncodedValue(options);
+            var gridOptions = GetGridOptions();
             var accounts = await _repository.GetAccountsAsync(fpId, branchId, gridOptions);
             return Json(accounts);
         }
@@ -56,9 +56,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accounts/{accountId:min(1)}/articles
         [Route(AccountApi.AccountArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
-        public async Task<IActionResult> GetAccountArticlesAsync(
-            int accountId, [FromBody] GridOptions gridOptions = null)
+        public async Task<IActionResult> GetAccountArticlesAsync(int accountId)
         {
+            var gridOptions = GetGridOptions();
             var articles = await _repository.GetAccountArticlesAsync(accountId, gridOptions);
             return JsonReadResult(articles);
         }
@@ -66,9 +66,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}/count
         [Route(AccountApi.FiscalPeriodBranchItemCountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetAccountItemCountAsync(
-            int fpId, int branchId, [FromBody] GridOptions gridOptions = null)
+        public async Task<IActionResult> GetAccountItemCountAsync(int fpId, int branchId)
         {
+            var gridOptions = GetGridOptions();
             int count = await _repository.GetCountAsync(fpId, branchId, gridOptions);
             return Json(count);
         }
@@ -135,8 +135,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync
         [Route(AccountApi.FiscalPeriodBranchAccountsSyncUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public IActionResult GetAccounts(int fpId, int branchId, [FromBody] GridOptions gridOptions = null)
+        public IActionResult GetAccounts(int fpId, int branchId)
         {
+            var gridOptions = GetGridOptions();
             var accounts = _repository.GetAccounts(fpId, branchId, gridOptions);
             return Json(accounts);
         }
@@ -162,8 +163,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accounts/{accountId:min(1)}/articles/sync
         [Route(AccountApi.AccountArticlesSyncUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
-        public IActionResult GetAccountArticles(int accountId, [FromBody] GridOptions gridOptions = null)
+        public IActionResult GetAccountArticles(int accountId)
         {
+            var gridOptions = GetGridOptions();
             var articles = _repository.GetAccountArticles(accountId, gridOptions);
             return JsonReadResult(articles);
         }
@@ -225,8 +227,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        private GridOptions FromEncodedValue(string options)
+        private GridOptions GetGridOptions()
         {
+            var options = Request.Headers[AppConstants.GridOptionsHeaderName];
+            if (String.IsNullOrEmpty(options))
+            {
+                return null;
+            }
+
             var json = Encoding.UTF8.GetString(Transform.FromBase64String(options));
             return Framework.Helpers.Json.To<GridOptions>(json);
         }

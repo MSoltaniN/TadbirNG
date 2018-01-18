@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using SPPC.Framework.Common;
+using SPPC.Framework.Helpers;
+using SPPC.Framework.Presentation;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -14,6 +12,11 @@ namespace SPPC.Tadbir.Web.Api
     {
         public static void Main(string[] args)
         {
+            ////var gridOptions = new GridOptions() { Paging = new GridPaging() { PageIndex = 1, PageSize = 5 } };
+            ////gridOptions.Filters.Add(new GridFilter() { FieldName = "Code", Operator = ".Contains(\"{0}\")", Value = "00" });
+            ////gridOptions.SortColumns.Add(new GridOrderBy() { FieldName = "Code", Direction = "ASC" });
+            ////var json = Json.From(gridOptions, false);
+            ////var base64 = Transform.ToBase64String(Encoding.UTF8.GetBytes(json));
             BuildWebHost(args).Run();
         }
 

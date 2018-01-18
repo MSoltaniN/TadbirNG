@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 using SPPC.Framework.Common;
+using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Service
@@ -50,15 +51,15 @@ namespace SPPC.Tadbir.Service
         {
             Verify.ArgumentNotNull(userContext, "userContext");
             var context = new SecurityContext(userContext);
-            _httpContext.Response.Headers.Add(Values.Constants.ContextHeaderName, _contextEncoder.Encode(context));
+            _httpContext.Response.Headers.Add(AppConstants.ContextHeaderName, _contextEncoder.Encode(context));
         }
 
         private ISecurityContext GetCurrentContext()
         {
             ISecurityContext current = null;
-            if (_httpContext.Request.Headers.ContainsKey(Values.Constants.ContextHeaderName))
+            if (_httpContext.Request.Headers.ContainsKey(AppConstants.ContextHeaderName))
             {
-                current = _contextEncoder.Decode(_httpContext.Request.Headers[Values.Constants.ContextHeaderName]);
+                current = _contextEncoder.Decode(_httpContext.Request.Headers[AppConstants.ContextHeaderName]);
             }
 
             return current;
@@ -67,9 +68,9 @@ namespace SPPC.Tadbir.Service
         private string GetEncodedContext()
         {
             string current = String.Empty;
-            if (_httpContext.Request.Headers.ContainsKey(Values.Constants.ContextHeaderName))
+            if (_httpContext.Request.Headers.ContainsKey(AppConstants.ContextHeaderName))
             {
-                current = _httpContext.Request.Headers[Values.Constants.ContextHeaderName];
+                current = _httpContext.Request.Headers[AppConstants.ContextHeaderName];
             }
 
             return current;

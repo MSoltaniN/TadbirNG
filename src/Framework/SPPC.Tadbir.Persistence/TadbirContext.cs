@@ -33,7 +33,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 optionsBuilder
                     .UseLoggerFactory(_loggerFactory)
-                    .UseSqlServer(Constants.ConnectionString);
+                    .UseSqlServer(AppConstants.ConnectionString);
             }
         }
 

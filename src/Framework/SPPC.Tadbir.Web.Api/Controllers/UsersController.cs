@@ -95,7 +95,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Edit)]
         public IActionResult PutModifiedUser(int userId, [FromBody] UserViewModel user)
         {
-            if (userId == Constants.AdminUserId)
+            if (userId == AppConstants.AdminUserId)
             {
                 return BadRequest("Could not put modified user because the user is read-only.");
             }
@@ -126,7 +126,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            if (user.Password == Constants.DummyPassword)
+            if (user.Password == AppConstants.DummyPassword)
             {
                 user.Password = String.Empty;
             }

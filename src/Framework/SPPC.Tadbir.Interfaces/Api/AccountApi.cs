@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for accounts defined in a fiscal period and a corporate branch
         /// </summary>
-        public const string FiscalPeriodBranchAccountsUrl = "accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}/options";
+        public const string FiscalPeriodBranchAccountsUrl = "accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
 
         /// <summary>
         /// API server route URL for accounts defined in a fiscal period and a corporate branch

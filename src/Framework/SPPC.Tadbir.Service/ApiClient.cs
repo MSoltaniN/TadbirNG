@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.Service
             var context = _contextManager.EncodedContext;
             if (!String.IsNullOrWhiteSpace(context))
             {
-                _httpClient.DefaultRequestHeaders.Add(Constants.ContextHeaderName, context);
+                _httpClient.DefaultRequestHeaders.Add(AppConstants.ContextHeaderName, context);
             }
         }
 
