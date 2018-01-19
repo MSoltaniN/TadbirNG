@@ -7,11 +7,12 @@ import { String } from '../class/source';
 import { expect } from 'chai';
 import { Filter } from "../class/filter";
 import { GridOrderBy } from "../class/grid.orderby";
+import { HttpParams } from "@angular/common/http";
 
 export class AccountInfo implements Account
 {    
     constructor(public id: number = 0, public code: string = "", public name: string = "",
-        public fiscalPeriodId: number = 0, public description: string = "",public branchId:number = 0)
+        public fiscalPeriodId: number = 0, public description: string = "",public branchId:number = 0,public level:number = 0,public fullCode:string = "0")
     { }
     
 }
@@ -25,6 +26,7 @@ const BRANCH_ID = 1
 @Injectable()
 export class AccountService 
 {   
+   
     private _getAccountsUrl = BASE_URL + "/accounts/fp/{0}/branch/{1}";
 
     private _getAllAccountsUrl = BASE_URL + "/accounts";
@@ -33,7 +35,7 @@ export class AccountService
 
     private _getCountUrl = BASE_URL + "/accounts/fp/{0}/branch/{1}/count";
 
-    private _deleteAccountsUrl = BASE_URL + "/Account/DeleteAccs";
+    private _deleteAccountsUrl = BASE_URL + "/accounts/{0}";
 
     private _postNewAccountsUrl = BASE_URL + "/accounts";
 
@@ -93,26 +95,32 @@ export class AccountService
     search(start?: number, count?: number, orderby?: string, filters?: Filter[]) {
         var headers = this.headers;
         
-        var gridPaging = { PageIndex: start, PageSize: count };
+        var gridPaging = { pageIndex: start, pageSize: count };
 
-        var sortColumns = new Array<GridOrderBy>();
+        var sort = new Array<GridOrderBy>();
 
         if (orderby)
         { 
             var orderByParts = orderby.split(' ');
-            sortColumns.push(new GridOrderBy(orderByParts[0], orderByParts[1]));
+            var fieldName = orderByParts[0];
+            if (orderByParts[1] != 'undefined')
+                sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
-        var postItem = { GridPaging : gridPaging, Filters: filters, SortColumns: sortColumns };
+        var postItem = { Paging : gridPaging, filters : filters, sortColumns: sort };
         
         var url = String.Format(this._getAccountsUrl, FP_ID, BRANCH_ID);
 
-        let params = new URLSearchParams();
-        params.append('gridOptions', JSON.stringify(postItem));
+        var searchHeaders = this.headers;
 
-        var options = new RequestOptions({ headers: headers, search: params});
+        var postBody = JSON.stringify(postItem);
 
+        var base64Body = btoa(postBody);
 
-        return this.http.get(url/*, JSON.stringify(postItem)*/, options)
+        searchHeaders.set('X-Tadbir-GridOptions', base64Body);
+
+        var options = new RequestOptions({ headers: searchHeaders });
+
+        return this.http.get(url,options)
             .map(response => <any>(<Response>response).json());
     }
 
@@ -146,7 +154,7 @@ export class AccountService
         var deleteByIdUrl = String.Format(this._deleteAccountsUrl, accountId.toString());
 
         return this.http.delete(deleteByIdUrl,this.options)
-            .map(response => response.json().message)
+            .map(response => response)
             .catch(this.handleError);
     }
 

@@ -8,5 +8,8 @@ export interface Account {
     description?: string;
     fiscalPeriodId: number;
     branchId: number;
+    fullCode: string;
+    level: number;
+
 }
 

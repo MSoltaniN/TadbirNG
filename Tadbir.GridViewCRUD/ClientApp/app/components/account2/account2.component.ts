@@ -79,10 +79,10 @@ export class Account2Component implements OnInit {
     private translateService: TranslateService
 
     pageSize: number = 10;
-    skip: number = 0;
+    skip: number = 1;
 
     public state: State = {
-        skip: 0,
+        skip: 1,
         take: 5,
         // Initial filter descriptor
         filter: {
@@ -212,7 +212,16 @@ export class Account2Component implements OnInit {
             {
                 if (filter.filters[i].value != "")
                 {
-                    filters.push(new Filter(filter.filters[i].field, filter.filters[i].value, filter.filters[i].operator))
+                    var operator = "";
+                    switch (filter.filters[i].operator)
+                    {
+                        case "eq":
+                            operator = ".Contains(\"{0}\")";
+                        default:
+                            operator = ".Contains(\"{0}\")";
+                    }
+
+                    filters.push(new Filter(filter.filters[i].field, filter.filters[i].value, operator))
 
                 }
             }
@@ -230,7 +239,7 @@ export class Account2Component implements OnInit {
 
         this.state = state;
 
-        this.skip = state.skip;
+        this.skip = state.skip + 1;
         this.reloadGrid();
     }
 

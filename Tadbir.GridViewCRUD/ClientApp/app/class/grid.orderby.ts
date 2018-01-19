@@ -2,6 +2,6 @@
 
 export class GridOrderBy {
 
-    constructor(private FieldName: string, private Direction: string) {
+    constructor(private fieldName: string, private direction: string) {
     }
 }

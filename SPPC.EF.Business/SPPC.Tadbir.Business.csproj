@@ -115,12 +115,6 @@
     <Compile Include="Interface\IRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SPPC.EF.DataAccess\SPPC.Tadbir.DataAccess.csproj">
-      <Project>{a92313bd-8185-42df-8362-8e9fc7dedaa4}</Project>
-      <Name>SPPC.Tadbir.DataAccess</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Settings.StyleCop" />

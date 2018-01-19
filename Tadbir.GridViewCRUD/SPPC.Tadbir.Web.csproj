@@ -94,11 +94,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SPPC.EF.Business\SPPC.Tadbir.Business.csproj" />
-    <ProjectReference Include="..\SPPC.EF.DataAccess\SPPC.Tadbir.DataAccess.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\class\filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\grid.orderby.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\sppc-dropdownlist.ts" />

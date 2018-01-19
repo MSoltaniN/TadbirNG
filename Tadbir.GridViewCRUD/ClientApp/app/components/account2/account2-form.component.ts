@@ -33,7 +33,9 @@ export class AccountFormComponent {
         name: new FormControl("", Validators.required),   
         description: new FormControl(),
         fiscalPeriodId: new FormControl("", Validators.required),
-        branchId: new FormControl("", Validators.required)
+        branchId: new FormControl("", Validators.required),
+        level: new FormControl(0),
+        fullCode: new FormControl("0")
     });
 
     //create properties
