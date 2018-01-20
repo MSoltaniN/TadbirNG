@@ -45,7 +45,7 @@ namespace SPPC.Tadbir.Persistence
             var accounts = repository
                 .GetByCriteria(acc => acc.FiscalPeriod.Id == fpId
                     && acc.Branch.Id == branchId)
-                .OrderBy(acc => acc.Code)
+                .OrderBy(acc => acc.FullCode)
                 .Select(acc => _mapper.Map<KeyValue>(acc));
             return accounts;
         }
@@ -55,12 +55,13 @@ namespace SPPC.Tadbir.Persistence
         /// entry is the unique identifier of corresponding detail account in database.
         /// </summary>
         /// <returns>Collection of all detail account items.</returns>
-        public IEnumerable<KeyValue> GetDetailAccounts()
+        public IEnumerable<KeyValue> GetDetailAccounts(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetRepository<DetailAccount>();
             var detailAccounts = repository
-                .GetAll()
-                .OrderBy(det => det.Name)
+                .GetByCriteria(det => det.FiscalPeriod.Id == fpId
+                    && det.Branch.Id == branchId)
+                .OrderBy(det => det.FullCode)
                 .Select(det => _mapper.Map<KeyValue>(det));
             return detailAccounts;
         }
@@ -70,12 +71,13 @@ namespace SPPC.Tadbir.Persistence
         /// entry is the unique identifier of corresponding cost center in database.
         /// </summary>
         /// <returns>Collection of all cost center items.</returns>
-        public IEnumerable<KeyValue> GetCostCenters()
+        public IEnumerable<KeyValue> GetCostCenters(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetRepository<CostCenter>();
             var costCenters = repository
-                .GetAll()
-                .OrderBy(cc => cc.Name)
+                .GetByCriteria(cc => cc.FiscalPeriod.Id == fpId
+                    && cc.Branch.Id == branchId)
+                .OrderBy(cc => cc.FullCode)
                 .Select(cc => _mapper.Map<KeyValue>(cc));
             return costCenters;
         }
@@ -85,12 +87,13 @@ namespace SPPC.Tadbir.Persistence
         /// entry is the unique identifier of corresponding project in database.
         /// </summary>
         /// <returns>Collection of all project items.</returns>
-        public IEnumerable<KeyValue> GetProjects()
+        public IEnumerable<KeyValue> GetProjects(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetRepository<Project>();
             var projects = repository
-                .GetAll()
-                .OrderBy(prj => prj.Name)
+                .GetByCriteria(prj => prj.FiscalPeriod.Id == fpId
+                    && prj.Branch.Id == branchId)
+                .OrderBy(prj => prj.FullCode)
                 .Select(prj => _mapper.Map<KeyValue>(prj));
             return projects;
         }
@@ -115,11 +118,11 @@ namespace SPPC.Tadbir.Persistence
         /// entry is the unique identifier of corresponding fiscal period in data store.
         /// </summary>
         /// <returns>Collection of all fiscal period items.</returns>
-        public IEnumerable<KeyValue> GetFiscalPeriods()
+        public IEnumerable<KeyValue> GetFiscalPeriods(int companyId)
         {
             var repository = _unitOfWork.GetRepository<FiscalPeriod>();
             var fiscalPeriods = repository
-                .GetAll()
+                .GetByCriteria(fp => fp.Company.Id == companyId)
                 .OrderBy(fp => fp.Name)
                 .Select(fp => _mapper.Map<KeyValue>(fp));
             return fiscalPeriods;
@@ -224,9 +227,9 @@ namespace SPPC.Tadbir.Persistence
             var depends = new VoucherDependsViewModel();
             CopyCollection(GetRequisitionVoucherTypes(), depends.VoucherTypes);
             CopyCollection(GetAccounts(1, 1), depends.Accounts);
-            CopyCollection(GetDetailAccounts(), depends.DetailAccounts);
-            CopyCollection(GetCostCenters(), depends.CostCenters);
-            CopyCollection(GetProjects(), depends.Projects);
+            CopyCollection(GetDetailAccounts(1, 1), depends.DetailAccounts);
+            CopyCollection(GetCostCenters(1, 1), depends.CostCenters);
+            CopyCollection(GetProjects(1, 1), depends.Projects);
             CopyCollection(GetPartners(), depends.Partners);
             CopyCollection(GetBusinessUnits(), depends.Units);
             CopyCollection(GetWarehouses(), depends.Warehouses);
@@ -241,9 +244,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var depends = new VoucherLineDependsViewModel();
             CopyCollection(GetAccounts(1, 1), depends.Accounts);
-            CopyCollection(GetDetailAccounts(), depends.DetailAccounts);
-            CopyCollection(GetCostCenters(), depends.CostCenters);
-            CopyCollection(GetProjects(), depends.Projects);
+            CopyCollection(GetDetailAccounts(1, 1), depends.DetailAccounts);
+            CopyCollection(GetCostCenters(1, 1), depends.CostCenters);
+            CopyCollection(GetProjects(1, 1), depends.Projects);
             CopyCollection(GetProducts(), depends.Products);
             CopyCollection(GetUnitsOfMeasurement(), depends.Units);
             CopyCollection(GetWarehouses(), depends.Warehouses);

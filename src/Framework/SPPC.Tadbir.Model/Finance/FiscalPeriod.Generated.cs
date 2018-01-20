@@ -68,16 +68,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public virtual DateTime ModifiedDate { get; set; }
 
-        ///// <summary>
-        ///// Gets or sets the collection of all financial accounts applicable in this fiscal period
-        ///// </summary>
-        //public virtual IList<Account> Accounts { get; protected set; }
-
-        ///// <summary>
-        ///// Gets or sets the collection of all financial transactions registered in this fiscal period
-        ///// </summary>
-        //public virtual IList<Transaction> Transactions { get; protected set; }
-
         /// <summary>
         /// Gets or sets the business unit that defines this fiscal period
         /// </summary>

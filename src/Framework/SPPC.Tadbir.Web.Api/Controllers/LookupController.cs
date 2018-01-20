@@ -8,14 +8,16 @@ using SPPC.Tadbir.Web.Api.Filters;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class LookupController : Controller
+    public partial class LookupController : Controller
     {
         public LookupController(ILookupRepository repository)
         {
             _repository = repository;
         }
 
-        // GET: api/lookup/accounts/fp/{fpId:int}/branch/{branchId:int}
+        #region Finance Subsystem API
+
+        // GET: api/lookup/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
         [Route(LookupApi.FiscalPeriodBranchAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IActionResult GetAccountsLookup(int fpId, int branchId)
@@ -24,64 +26,54 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accountLookup);
         }
 
-        // GET: api/lookup/faccounts
-        [Route(LookupApi.DetailAccountsUrl)]
+        // GET: api/lookup/faccounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [Route(LookupApi.FiscalPeriodBranchDetailAccountsUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
-        public IActionResult GetDetailAccountsLookup()
+        public IActionResult GetDetailAccountsLookup(int fpId, int branchId)
         {
-            var lookup = _repository.GetDetailAccounts();
+            var lookup = _repository.GetDetailAccounts(fpId, branchId);
             return Json(lookup);
         }
 
-        // GET: api/lookup/costcenters
-        [Route(LookupApi.CostCentersUrl)]
+        // GET: api/lookup/costcenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [Route(LookupApi.FiscalPeriodBranchCostCentersUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
-        public IActionResult GetCostCentersLookup()
+        public IActionResult GetCostCentersLookup(int fpId, int branchId)
         {
-            var lookup = _repository.GetCostCenters();
+            var lookup = _repository.GetCostCenters(fpId, branchId);
             return Json(lookup);
         }
 
-        // GET: api/lookup/projects
-        [Route(LookupApi.ProjectsUrl)]
+        // GET: api/lookup/projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [Route(LookupApi.FiscalPeriodBranchProjectsUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
-        public IActionResult GetProjectsLookup()
+        public IActionResult GetProjectsLookup(int fpId, int branchId)
         {
-            var lookup = _repository.GetProjects();
+            var lookup = _repository.GetProjects(fpId, branchId);
             return Json(lookup);
         }
 
         // GET: api/lookup/currencies
         [Route(LookupApi.CurrenciesUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
         public IActionResult GetCurrenciesLookup()
         {
             var currencyLookup = _repository.GetCurrencies();
             return Json(currencyLookup);
         }
 
-        // GET: api/lookup/fps
-        [Route(LookupApi.FiscalPeriodsUrl)]
-        public IActionResult GetFiscalPeriodsLookup()
+        // GET: api/lookup/fps/company/{companyId:min(1)}
+        [Route(LookupApi.CompanyFiscalPeriodsUrl)]
+        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
+        public IActionResult GetFiscalPeriodsLookup(int companyId)
         {
-            var fiscalPeriodLookup = _repository.GetFiscalPeriods();
+            var fiscalPeriodLookup = _repository.GetFiscalPeriods(companyId);
             return Json(fiscalPeriodLookup);
         }
 
-        // GET: api/lookup/partners
-        [Route(LookupApi.PartnersUrl)]
-        public IActionResult GetPartnersLookup()
-        {
-            var lookup = _repository.GetPartners();
-            return Json(lookup);
-        }
+        #endregion
 
-        // GET: api/lookup/units
-        [Route(LookupApi.UnitsUrl)]
-        public IActionResult GetUnitsLookup()
-        {
-            var lookup = _repository.GetBusinessUnits();
-            return Json(lookup);
-        }
+        #region Inventory Subsystem API
 
         // GET: api/lookup/warehouses
         [Route(LookupApi.WarehousesUrl)]
@@ -107,6 +99,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
+        // GET: api/lookup/invdepends
+        [Route(LookupApi.ProductInventoryDependsUrl)]
+        public IActionResult GetProductInventoryDependencies()
+        {
+            var depends = _repository.GetInventoryDepends();
+            return Json(depends);
+        }
+
+        #endregion
+
+        #region Procurement Subsystem API
+
         // GET: api/lookup/rvtypes
         [Route(LookupApi.RequisitionVoucherTypesUrl)]
         public IActionResult GetRequisitionVoucherTypesLookup()
@@ -131,12 +135,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(depends);
         }
 
-        // GET: api/lookup/invdepends
-        [Route(LookupApi.ProductInventoryDependsUrl)]
-        public IActionResult GetProductInventoryDependencies()
+        #endregion
+
+        // GET: api/lookup/partners
+        [Route(LookupApi.PartnersUrl)]
+        public IActionResult GetPartnersLookup()
         {
-            var depends = _repository.GetInventoryDepends();
-            return Json(depends);
+            var lookup = _repository.GetPartners();
+            return Json(lookup);
+        }
+
+        // GET: api/lookup/units
+        [Route(LookupApi.UnitsUrl)]
+        public IActionResult GetUnitsLookup()
+        {
+            var lookup = _repository.GetBusinessUnits();
+            return Json(lookup);
         }
 
         private ILookupRepository _repository;

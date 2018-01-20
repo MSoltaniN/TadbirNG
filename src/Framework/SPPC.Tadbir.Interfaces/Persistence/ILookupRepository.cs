@@ -26,21 +26,21 @@ namespace SPPC.Tadbir.Persistence
         /// entry is the unique identifier of corresponding detail account in data store.
         /// </summary>
         /// <returns>Collection of all detail account items.</returns>
-        IEnumerable<KeyValue> GetDetailAccounts();
+        IEnumerable<KeyValue> GetDetailAccounts(int fpId, int branchId);
 
         /// <summary>
         /// Retrieves all cost center objects as a collection of <see cref="KeyValue"/> objects. The key for each
         /// entry is the unique identifier of corresponding cost center in data store.
         /// </summary>
         /// <returns>Collection of all cost center items.</returns>
-        IEnumerable<KeyValue> GetCostCenters();
+        IEnumerable<KeyValue> GetCostCenters(int fpId, int branchId);
 
         /// <summary>
         /// Retrieves all project objects as a collection of <see cref="KeyValue"/> objects. The key for each
         /// entry is the unique identifier of corresponding project in data store.
         /// </summary>
         /// <returns>Collection of all project items.</returns>
-        IEnumerable<KeyValue> GetProjects();
+        IEnumerable<KeyValue> GetProjects(int fpId, int branchId);
 
         /// <summary>
         /// Retrieves all currency objects as a collection of <see cref="KeyValue"/> objects. The key for each
@@ -54,7 +54,7 @@ namespace SPPC.Tadbir.Persistence
         /// entry is the unique identifier of corresponding fiscal period in data store.
         /// </summary>
         /// <returns>Collection of all fiscal period items.</returns>
-        IEnumerable<KeyValue> GetFiscalPeriods();
+        IEnumerable<KeyValue> GetFiscalPeriods(int companyId);
 
         /// <summary>
         /// Retrieves all business partner objects as a collection of <see cref="KeyValue"/> objects. The key for each
