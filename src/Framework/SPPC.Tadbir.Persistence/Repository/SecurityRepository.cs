@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
@@ -32,6 +33,190 @@ namespace SPPC.Tadbir.Persistence
         }
 
         #region User Management operations
+
+        #region Asynchronous Methods
+
+        /// <summary>
+        /// Asynchronously retrieves all application users from repository.
+        /// </summary>
+        /// <returns>A collection of <see cref="UserViewModel"/> objects retrieved from repository</returns>
+        public async Task<IList<UserViewModel>> GetUsersAsync()
+        {
+            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var users = await repository
+                .GetAllAsync(u => u.Person);
+            return users
+                .Select(user => _mapper.Map<UserViewModel>(user))
+                .ToList();
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves a single user specified by user name from repository.
+        /// </summary>
+        /// <param name="userName">User name to search for</param>
+        /// <returns>A <see cref="UserViewModel"/> instance that corresponds to the specified user name, if there is
+        /// such a user defined; otherwise, returns null.</returns>
+        public async Task<UserViewModel> GetUserAsync(string userName)
+        {
+            UserViewModel userViewModel = null;
+            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var users = await repository
+                .GetByCriteriaAsync(usr => usr.UserName == userName, usr => usr.Person);
+            var user = users.SingleOrDefault();
+            if (user != null)
+            {
+                userViewModel = _mapper.Map<UserViewModel>(user);
+            }
+
+            return userViewModel;
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves context information for a user specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="userId">Unique identifier of the user to search for</param>
+        /// <returns>A <see cref="UserContextViewModel"/> instance containing context information, if there is
+        /// such a user defined; otherwise, returns null.</returns>
+        public async Task<UserContextViewModel> GetUserContextAsync(int userId)
+        {
+            UserContextViewModel userContext = null;
+            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var user = await repository.GetByIDAsync(userId, usr => usr.Person, usr => usr.UserRoles);
+            if (user != null)
+            {
+                var permissions = new List<PermissionBriefViewModel>();
+                var branches = new List<int>();
+                var roleRepository = _unitOfWork.GetAsyncRepository<Role>();
+                foreach (var roleId in user.UserRoles.Select(ur => ur.RoleId))
+                {
+                    var role = await roleRepository.GetByIDAsync(roleId, r => r.RoleBranches, r => r.RolePermissions);
+                    userContext = _mapper.Map<UserContextViewModel>(user);
+                    userContext.Roles.Add(roleId);
+                    branches.AddRange(role.RoleBranches.Select(rb => rb.BranchId));
+                    Array.ForEach(
+                        role.RolePermissions.ToArray(),
+                        rp => permissions.Add(_mapper.Map<PermissionBriefViewModel>(
+                            _unitOfWork.GetRepository<Permission>().GetByID(rp.PermissionId, perm => perm.Group))));
+                }
+
+                Array.ForEach(branches.Distinct().ToArray(), br => userContext.Branches.Add(br));
+                var groups = permissions
+                    .Distinct(new PermissionEqualityComparer())
+                    .GroupBy(perm => perm.EntityName);
+                foreach (var group in groups)
+                {
+                    var permission = new PermissionBriefViewModel()
+                    {
+                        EntityName = group.Key,
+                        Flags = group.Sum(perm => perm.Flags)
+                    };
+                    userContext.Permissions.Add(permission);
+                }
+            }
+
+            return userContext;
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves a single user specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="userId">Unique identifier of the user to search for</param>
+        /// <returns>A <see cref="UserViewModel"/> instance that corresponds to the specified identifier, if there is
+        /// such a user defined; otherwise, returns null.</returns>
+        public async Task<UserViewModel> GetUserAsync(int userId)
+        {
+            UserViewModel userViewModel = null;
+            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var user = await repository.GetByIDAsync(userId, usr => usr.Person);
+            if (user != null)
+            {
+                userViewModel = _mapper.Map<UserViewModel>(user);
+            }
+
+            return userViewModel;
+        }
+
+        /// <summary>
+        /// Asynchronously inserts or updates a single user in repository.
+        /// </summary>
+        /// <param name="user">Item to insert or update</param>
+        public async Task SaveUserAsync(UserViewModel user)
+        {
+            Verify.ArgumentNotNull(user, "user");
+            var repository = _unitOfWork.GetAsyncRepository<User>();
+            if (user.Id == 0)
+            {
+                var newUser = GetNewUser(user);
+                repository.Insert(newUser, usr => usr.Person);
+            }
+            else
+            {
+                var existing = await repository.GetByIDAsync(user.Id, u => u.Person);
+                if (existing != null)
+                {
+                    UpdateExistingUser(existing, user);
+                    repository.Update(existing, usr => usr.Person);
+                }
+            }
+
+            await _unitOfWork.CommitAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously sets LastLoginDate field of the specified user to current system date/time.
+        /// </summary>
+        /// <param name="userId">Unique identifier of an existing user</param>
+        public async Task UpdateUserLastLoginAsync(int userId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var user = await repository.GetByIDAsync(userId);
+            if (user != null)
+            {
+                user.LastLoginDate = DateTime.Now;
+                repository.Update(user);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously updates a user profile in repository.
+        /// </summary>
+        /// <param name="profile">User profile to update</param>
+        public async Task UpdateUserPasswordAsync(UserProfileViewModel profile)
+        {
+            Verify.ArgumentNotNull(profile, "profile");
+            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var users = await repository
+                .GetByCriteriaAsync(usr => usr.UserName == profile.UserName);
+            var user = users.SingleOrDefault();
+            if (user != null)
+            {
+                user.PasswordHash = profile.NewPassword;
+                repository.Update(user);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously determines if the specified <see cref="UserViewModel"/> instance has a user name that is already used
+        /// by a different user.
+        /// </summary>
+        /// <param name="user">User item to check for duplicate user name</param>
+        /// <returns>True if the user name is already used; otherwise returns false.</returns>
+        public async Task<bool> IsDuplicateUserAsync(UserViewModel user)
+        {
+            Verify.ArgumentNotNull(user, "user");
+            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var items = await repository
+                .GetByCriteriaAsync(usr => usr.Id != user.Id
+                    && usr.UserName == user.UserName);
+            var existing = items.SingleOrDefault();
+            return (existing != null);
+        }
+
+        #endregion
+
+        #region Synchronous Methods (May be removed in the future)
 
         /// <summary>
         /// Retrieves all application users from repository.
@@ -210,6 +395,8 @@ namespace SPPC.Tadbir.Persistence
                 .FirstOrDefault();
             return (existing != null);
         }
+
+        #endregion
 
         #endregion
 

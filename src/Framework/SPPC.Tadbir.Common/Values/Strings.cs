@@ -355,6 +355,21 @@ namespace SPPC.Tadbir.Values
         public static readonly string IncorrectOldPassword = "رمز ورود قدیم صحیح نیست.";
 
         /// <summary>
+        /// Localized text for a validating message indicating that a user could not be found
+        /// </summary>
+        public static readonly string UserNotFound = "کاربر مورد نظر یافت نشد.";
+
+        /// <summary>
+        /// Localized text for a validating message indicating that new password and/or repeat password is missing
+        /// </summary>
+        public static readonly string MissingNewAndRepeatPasswords = "رمز ورود جدید یا تکرار آن وارد نشده است.";
+
+        /// <summary>
+        /// Localized text for a validating message indicating that new password and repeat password do not match
+        /// </summary>
+        public static readonly string NewAndRepeatPasswordsDontMatch = "رمز ورود جدید و تکرار آن متفاوت هستند.";
+
+        /// <summary>
         /// Localized text for a message indicating that both debit and credit amounts cannot be entered for an article.
         /// </summary>
         public static readonly string DebitAndCreditNotAllowed = "وارد کردن همزمان مبالغ بدهکار و بستانکار در آرتیکل نادرست است.";

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Persistence
@@ -10,6 +11,68 @@ namespace SPPC.Tadbir.Persistence
     public interface ISecurityRepository
     {
         #region User Management operations
+
+        #region Asynchronous Methods
+
+        /// <summary>
+        /// Asynchronously retrieves all application users from repository.
+        /// </summary>
+        /// <returns>A collection of <see cref="UserViewModel"/> objects retrieved from repository</returns>
+        Task<IList<UserViewModel>> GetUsersAsync();
+
+        /// <summary>
+        /// Asynchronously retrieves a single user specified by user name from repository.
+        /// </summary>
+        /// <param name="userName">User name to search for</param>
+        /// <returns>A <see cref="UserViewModel"/> instance that corresponds to the specified user name, if there is
+        /// such a user defined; otherwise, returns null.</returns>
+        Task<UserViewModel> GetUserAsync(string userName);
+
+        /// <summary>
+        /// Asynchronously retrieves a single user specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="userId">Unique identifier of the user to search for</param>
+        /// <returns>A <see cref="UserViewModel"/> instance that corresponds to the specified identifier, if there is
+        /// such a user defined; otherwise, returns null.</returns>
+        Task<UserViewModel> GetUserAsync(int userId);
+
+        /// <summary>
+        /// Asynchronously retrieves context information for a user specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="userId">Unique identifier of the user to search for</param>
+        /// <returns>A <see cref="UserContextViewModel"/> instance containing context information, if there is
+        /// such a user defined; otherwise, returns null.</returns>
+        Task<UserContextViewModel> GetUserContextAsync(int userId);
+
+        /// <summary>
+        /// Asynchronously inserts or updates a single user in repository.
+        /// </summary>
+        /// <param name="user">Item to insert or update</param>
+        Task SaveUserAsync(UserViewModel user);
+
+        /// <summary>
+        /// Asynchronously sets LastLoginDate field of the specified user to current system date/time.
+        /// </summary>
+        /// <param name="userId">Unique identifier of an existing user</param>
+        Task UpdateUserLastLoginAsync(int userId);
+
+        /// <summary>
+        /// Asynchronously updates a user profile in repository.
+        /// </summary>
+        /// <param name="profile">User profile to update</param>
+        Task UpdateUserPasswordAsync(UserProfileViewModel profile);
+
+        /// <summary>
+        /// Asynchronously determines if the specified <see cref="UserViewModel"/> instance has a user name that is already used
+        /// by a different user.
+        /// </summary>
+        /// <param name="user">User item to check for duplicate user name</param>
+        /// <returns>True if the user name is already used; otherwise returns false.</returns>
+        Task<bool> IsDuplicateUserAsync(UserViewModel user);
+
+        #endregion
+
+        #region Synchronous Methods (May be removed in the future)
 
         /// <summary>
         /// Retrieves all application users from repository.
@@ -66,6 +129,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="user">User item to check for duplicate user name</param>
         /// <returns>True if the user name is already used; otherwise returns false.</returns>
         bool IsDuplicateUser(UserViewModel user);
+
+        #endregion
 
         #endregion
 
