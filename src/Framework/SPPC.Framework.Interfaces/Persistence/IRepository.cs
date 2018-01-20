@@ -112,17 +112,21 @@ namespace SPPC.Framework.Persistence
         /// Inserts a single entity instance into the data store
         /// </summary>
         /// <param name="entity">Entity to insert</param>
-        /// <param name="trackingSelectors">
+        /// <param name="cascadeProperties">
         /// Collection of all navigation properties that must be saved along with the main entity.
         /// When set to null (default), only the main entity will be inserted.
         /// </param>
-        void Insert(TEntity entity, ICollection<Expression<Func<object, object>>> trackingSelectors = null);
+        void Insert(TEntity entity, params Expression<Func<TEntity, object>>[] cascadeProperties);
 
         /// <summary>
         /// Updates an existing entity instance in the data store
         /// </summary>
         /// <param name="entity">Entity to update</param>
-        void Update(TEntity entity);
+        /// <param name="cascadeProperties">
+        /// Collection of all navigation properties that must be saved along with the main entity.
+        /// When set to null (default), only the main entity will be updated.
+        /// </param>
+        void Update(TEntity entity, params Expression<Func<TEntity, object>>[] cascadeProperties);
 
         /// <summary>
         /// Deletes an existing entity instance from the data store

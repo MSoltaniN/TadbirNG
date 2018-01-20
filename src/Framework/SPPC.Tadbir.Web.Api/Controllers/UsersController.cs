@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         // GET: api/users
-        [Route(SecurityApi.UsersUrl)]
+        [Route(UserApi.UsersUrl)]
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public IActionResult GetUsers()
         {
@@ -29,8 +29,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(users);
         }
 
-        // GET: api/users/{userName}
-        [Route(SecurityApi.UserByNameUrl)]
+        // GET: api/users/name/{userName}
+        [Route(UserApi.UserByNameUrl)]
         public IActionResult GetUserByName(string userName)
         {
             if (String.IsNullOrEmpty(userName))
@@ -45,16 +45,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
-        // GET: api/users/{userId:int}
-        [Route(SecurityApi.UserUrl)]
+        // GET: api/users/{userId:min(1)}
+        [Route(UserApi.UserUrl)]
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public IActionResult GetUser(int userId)
         {
-            if (userId <= 0)
-            {
-                return NotFound();
-            }
-
             var user = _repository.GetUser(userId);
             var result = (user != null)
                 ? Json(user)
@@ -65,7 +60,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/users
         [HttpPost]
-        [Route(SecurityApi.UsersUrl)]
+        [Route(UserApi.UsersUrl)]
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Create)]
         public IActionResult PostNewUser([FromBody] UserViewModel user)
         {
@@ -89,9 +84,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        // PUT: api/users/{userId:int}
+        // PUT: api/users/{userId:min(1)}
         [HttpPut]
-        [Route(SecurityApi.UserUrl)]
+        [Route(UserApi.UserUrl)]
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Edit)]
         public IActionResult PutModifiedUser(int userId, [FromBody] UserViewModel user)
         {
@@ -137,21 +132,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/users/{userId:int}/login
         [HttpPut]
-        [Route(SecurityApi.UserLastLoginUrl)]
+        [Route(UserApi.UserLastLoginUrl)]
         public IActionResult PutUserLastLogin(int userId)
         {
-            if (userId <= 0)
-            {
-                return BadRequest("Cannot put user last login because specified user does not exist.");
-            }
-
             _repository.UpdateUserLastLogin(userId);
             return Ok();
         }
 
         // PUT: api/users/{userName}/password
         [HttpPut]
-        [Route(SecurityApi.UserPasswordUrl)]
+        [Route(UserApi.UserPasswordUrl)]
         public IActionResult PutUserPassword(string userName, [FromBody] UserProfileViewModel profile)
         {
             if (profile == null)
@@ -162,6 +152,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (String.IsNullOrEmpty(userName) || String.IsNullOrEmpty(profile.UserName))
             {
                 return BadRequest("Could not put user password because user does not exist.");
+            }
+
+            if (String.IsNullOrWhiteSpace(profile.NewPassword) || String.IsNullOrWhiteSpace(profile.RepeatPassword))
+            {
+                return BadRequest("New password and/or repeat password is not entered.");
+            }
+
+            if (profile.NewPassword != profile.RepeatPassword)
+            {
+                return BadRequest("New password and repeat password do not match.");
             }
 
             if (userName != profile.UserName)
@@ -186,15 +186,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        // GET: api/users/{userId:int}/context
-        [Route(SecurityApi.UserContextUrl)]
+        // GET: api/users/{userId:min(1)}/context
+        [Route(UserApi.UserContextUrl)]
         public IActionResult GetUserContext(int userId)
         {
-            if (userId <= 0)
-            {
-                return NotFound();
-            }
-
             var userContext = _repository.GetUserContext(userId);
             var result = (userContext != null)
                 ? Json(userContext)

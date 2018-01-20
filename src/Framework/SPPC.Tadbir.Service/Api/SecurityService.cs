@@ -7,7 +7,6 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Service;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Api;
-using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 
@@ -41,7 +40,7 @@ namespace SPPC.Tadbir.Service
         public UserViewModel Authenticate(LoginViewModel login)
         {
             Verify.ArgumentNotNull(login, "login");
-            UserViewModel user = _apiClient.Get<UserViewModel>(SecurityApi.UserByName, login.UserName);
+            UserViewModel user = _apiClient.Get<UserViewModel>(UserApi.UserByName, login.UserName);
             if (IsAuthenticated(user, login.Password))
             {
                 UpdateUserLogin(user.Id);
@@ -77,7 +76,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>Collection of all users in security system</returns>
         public IEnumerable<UserViewModel> GetUsers()
         {
-            var users = _apiClient.Get<IEnumerable<UserViewModel>>(SecurityApi.Users);
+            var users = _apiClient.Get<IEnumerable<UserViewModel>>(UserApi.Users);
             return users;
         }
 
@@ -89,7 +88,7 @@ namespace SPPC.Tadbir.Service
         /// otherwise, returns null.</returns>
         public UserViewModel GetUser(int userId)
         {
-            var user = _apiClient.Get<UserViewModel>(SecurityApi.User, userId);
+            var user = _apiClient.Get<UserViewModel>(UserApi.User, userId);
             return user;
         }
 
@@ -101,7 +100,7 @@ namespace SPPC.Tadbir.Service
         /// if user can be found; otherwise, returns null.</returns>
         public UserContextViewModel GetUserContext(int userId)
         {
-            var userContext = _apiClient.Get<UserContextViewModel>(SecurityApi.UserContext, userId);
+            var userContext = _apiClient.Get<UserContextViewModel>(UserApi.UserContext, userId);
             return userContext;
         }
 
@@ -116,11 +115,11 @@ namespace SPPC.Tadbir.Service
             ServiceResponse response = null;
             if (user.Id == 0)
             {
-                response = _apiClient.Insert(user, SecurityApi.Users);
+                response = _apiClient.Insert(user, UserApi.Users);
             }
             else
             {
-                response = _apiClient.Update(user, SecurityApi.User, user.Id);
+                response = _apiClient.Update(user, UserApi.User, user.Id);
             }
 
             return response;
@@ -134,7 +133,7 @@ namespace SPPC.Tadbir.Service
         public ServiceResponse ChangePassword(UserProfileViewModel profile)
         {
             ProcessProfile(profile);
-            var response = _apiClient.Update(profile, SecurityApi.UserPassword, profile.UserName);
+            var response = _apiClient.Update(profile, UserApi.UserPassword, profile.UserName);
             return response;
         }
 
@@ -296,7 +295,7 @@ namespace SPPC.Tadbir.Service
 
         private void UpdateUserLogin(int userId)
         {
-            _apiClient.Update(new { }, SecurityApi.UserLastLogin, userId);
+            _apiClient.Update(new { }, UserApi.UserLastLogin, userId);
         }
 
         private void ProcessProfile(UserProfileViewModel profile)

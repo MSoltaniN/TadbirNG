@@ -144,7 +144,7 @@ namespace SPPC.Tadbir.Persistence
             if (user.Id == 0)
             {
                 var newUser = GetNewUser(user);
-                repository.Insert(newUser);
+                repository.Insert(newUser, usr => usr.Person);
             }
             else
             {
@@ -152,7 +152,7 @@ namespace SPPC.Tadbir.Persistence
                 if (existing != null)
                 {
                     UpdateExistingUser(existing, user);
-                    repository.Update(existing);
+                    repository.Update(existing, usr => usr.Person);
                 }
             }
 

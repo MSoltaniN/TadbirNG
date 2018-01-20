@@ -13,66 +13,6 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
-        /// API client URL for all users
-        /// </summary>
-        public const string Users = "users";
-
-        /// <summary>
-        /// API server route URL for all users
-        /// </summary>
-        public const string UsersUrl = "users";
-
-        /// <summary>
-        /// API client URL for a user specified by unique identifier.
-        /// </summary>
-        public const string User = "users/{0}";
-
-        /// <summary>
-        /// API server route URL for a user specified by unique identifier.
-        /// </summary>
-        public const string UserUrl = "users/{userId:int}";
-
-        /// <summary>
-        /// API client URL for a user's last login statistics.
-        /// </summary>
-        public const string UserLastLogin = "users/{0}/login";
-
-        /// <summary>
-        /// API server route URL for a user's last login statistics.
-        /// </summary>
-        public const string UserLastLoginUrl = "users/{userId:int}/login";
-
-        /// <summary>
-        /// API client URL for a user specified by user name.
-        /// </summary>
-        public const string UserByName = "users/name/{0}";
-
-        /// <summary>
-        /// API server route URL for a user specified by user name.
-        /// </summary>
-        public const string UserByNameUrl = "users/name/{userName}";
-
-        /// <summary>
-        /// API client URL for the password of a user specified by user name.
-        /// </summary>
-        public const string UserPassword = "users/{0}/password";
-
-        /// <summary>
-        /// API server route URL for the password of a user specified by user name.
-        /// </summary>
-        public const string UserPasswordUrl = "users/{userName}/password";
-
-        /// <summary>
-        /// API client URL for application context related to a user specified by identifier.
-        /// </summary>
-        public const string UserContext = "users/{0}/context";
-
-        /// <summary>
-        /// API server route URL for application context related to a user specified by identifier.
-        /// </summary>
-        public const string UserContextUrl = "users/{userId:int}/context";
-
-        /// <summary>
         /// API client URL for all roles
         /// </summary>
         public const string Roles = "roles";

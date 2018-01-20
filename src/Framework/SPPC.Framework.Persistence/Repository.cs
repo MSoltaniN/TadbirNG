@@ -281,13 +281,13 @@ namespace SPPC.Framework.Persistence
         /// Inserts a single entity instance into the data store
         /// </summary>
         /// <param name="entity">Entity to insert</param>
-        /// <param name="trackingSelectors">
+        /// <param name="cascadeProperties">
         /// Collection of all navigation properties that must be saved along with the main entity.
         /// When set to null (default), only the main entity will be inserted.
         /// </param>
-        public void Insert(TEntity entity, ICollection<Expression<Func<object, object>>> trackingSelectors = null)
+        public void Insert(TEntity entity, params Expression<Func<TEntity, object>>[] cascadeProperties)
         {
-            _trackingStatus = new TrackingStatus(trackingSelectors)
+            _trackingStatus = new TrackingStatus<TEntity>(cascadeProperties)
             {
                 Entity = entity,
                 State = EntityState.Added
@@ -300,8 +300,18 @@ namespace SPPC.Framework.Persistence
         /// Updates an existing entity instance in the data store
         /// </summary>
         /// <param name="entity">Entity to update</param>
-        public void Update(TEntity entity)
+        /// <param name="cascadeProperties">
+        /// Collection of all navigation properties that must be saved along with the main entity.
+        /// When set to null (default), only the main entity will be inserted.
+        /// </param>
+        public void Update(TEntity entity, params Expression<Func<TEntity, object>>[] cascadeProperties)
         {
+            _trackingStatus = new TrackingStatus<TEntity>(cascadeProperties)
+            {
+                Entity = entity,
+                State = EntityState.Modified
+            };
+            _dataContext.ChangeTracker.TrackGraph(entity, SetTrackingStatus);
             _dataSet.Update(entity);
         }
 
@@ -389,17 +399,21 @@ namespace SPPC.Framework.Persistence
 
         private void SetTrackingStatus(EntityEntryGraphNode entity)
         {
-            if (_trackingStatus.Selectors == null)
+            bool mustSave = Object.ReferenceEquals(entity.Entry.Entity, _trackingStatus.Entity);
+            foreach (var selector in _trackingStatus.CascadeProperties)
             {
-                entity.Entry.State = Object.ReferenceEquals(entity.Entry.Entity, _trackingStatus.Entity)
-                    ? _trackingStatus.State
-                    : EntityState.Detached;
+                var cascadedProperty = selector.Compile().Invoke(_trackingStatus.Entity);
+                mustSave = mustSave || Object.ReferenceEquals(entity.Entry.Entity, cascadedProperty);
             }
+
+            entity.Entry.State = mustSave
+                ? _trackingStatus.State
+                : EntityState.Detached;
         }
 
         private DbContext _dataContext;
         private bool _disposed = false;
         private DbSet<TEntity> _dataSet;
-        private TrackingStatus _trackingStatus;
+        private TrackingStatus<TEntity> _trackingStatus;
     }
 }
