@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Tadbir_GridViewCRUD
+namespace SPPC.Tadbir.Web
 {
     public class Program
     {
