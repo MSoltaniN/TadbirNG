@@ -173,6 +173,33 @@ namespace SPPC.Framework.Persistence
         }
 
         /// <summary>
+        /// Asynchronously retrieves a single entity instance with the specified unique identifier, including specified
+        /// navigation properties, if any. This overload is suitable for scenarios when you want to change
+        /// retrieved entity.
+        /// </summary>
+        /// <param name="id">Identifier of an existing entity</param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Entity instance having the specified identifier</returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        public async Task<TEntity> GetByIDWithTrackingAsync(
+            int id, params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = _dataSet
+                .AsQueryable()
+                .Where(e => e.Id == id);
+            foreach (var property in relatedProperties)
+            {
+                query = query.Include(property);
+            }
+
+            return await query.SingleOrDefaultAsync();
+        }
+
+        /// <summary>
         /// Asynchronously retrieves a single entity instance with the specified unique identifier,
         /// including specified navigation properties, if any.
         /// </summary>

@@ -378,5 +378,10 @@ namespace SPPC.Tadbir.Values
         /// Localized text for a message indicating that a requested operation is not allowed on a document.
         /// </summary>
         public static readonly string InvalidDocumentOperation = "{0} شماره {1} : اقدام '{2}' برای {0} '{3}' غیر مجاز است.";
+
+        /// <summary>
+        /// Localized text for a message indicating that the system administrator role cannot be modified or deleted.
+        /// </summary>
+        public static readonly string AdminRoleIsReadonly = "اصلاح یا حذف نقش راهبر سیستم امکانپذیر نیست.";
     }
 }

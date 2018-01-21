@@ -24,6 +24,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Api\SecurityApi.cs" />
     <Compile Remove="Class1.cs" />
     <Compile Remove="Persistence\IAccountRepository.Generated.cs" />
   </ItemGroup>

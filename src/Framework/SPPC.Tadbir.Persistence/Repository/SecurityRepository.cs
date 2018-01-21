@@ -402,6 +402,366 @@ namespace SPPC.Tadbir.Persistence
 
         #region Role Management operations
 
+        #region Asynchronous Methods
+
+        /// <summary>
+        /// Asynchronously retrieves all application roles from repository.
+        /// </summary>
+        /// <returns>A collection of <see cref="RoleViewModel"/> objects retrieved from repository</returns>
+        public async Task<IList<RoleViewModel>> GetRolesAsync()
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var roles = await repository
+                .GetEntityQuery()
+                .Include(r => r.RolePermissions)
+                    .ThenInclude(rp => rp.Permission)
+                .ToListAsync();
+            return roles
+                .Select(r => _mapper.Map<RoleViewModel>(r))
+                .ToList();
+        }
+
+        /// <summary>
+        /// Asynchronously initializes and returns a new role object that contains all available security permissions.
+        /// </summary>
+        /// <returns>A blank <see cref="RoleFullViewModel"/> object that contains full permission list from repository
+        /// </returns>
+        public async Task<RoleFullViewModel> GetNewRoleAsync()
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Permission>();
+            var all = await repository
+                .GetAllAsync(perm => perm.Group);
+            var allView = all
+                .Select(perm => _mapper.Map<PermissionViewModel>(perm))
+                .ToArray();
+            var role = new RoleFullViewModel();
+            Array.ForEach(allView, perm =>
+            {
+                perm.IsEnabled = false;
+                role.Permissions.Add(perm);
+            });
+            return role;
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves a single role with permissions (specified by role identifier) from repository.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of the role to search for</param>
+        /// <returns>A <see cref="RoleFullViewModel"/> instance that corresponds to the specified identifier, if there is
+        /// such a role defined; otherwise, returns null.</returns>
+        public async Task<RoleFullViewModel> GetRoleAsync(int roleId)
+        {
+            RoleFullViewModel role = null;
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var existing = await repository
+                .GetEntityQuery()
+                .Include(r => r.RolePermissions)
+                    .ThenInclude(rp => rp.Permission)
+                        .ThenInclude(p => p.Group)
+                .Where(r => r.Id == roleId)
+                .SingleOrDefaultAsync();
+            if (existing != null)
+            {
+                var enabledPermissions = existing.RolePermissions
+                    .Select(rp => rp.Permission)
+                    .Select(perm => _mapper.Map<PermissionViewModel>(perm));
+                var permissionRepository = _unitOfWork.GetAsyncRepository<Permission>();
+                var disabledPermissions = await permissionRepository
+                    .GetAllAsync(perm => perm.Group);
+                var disabledView = disabledPermissions
+                    .Select(perm => _mapper.Map<PermissionViewModel>(perm))
+                    .Except(enabledPermissions, new EntityEqualityComparer<PermissionViewModel>())
+                    .ToArray();
+                Array.ForEach(disabledView, perm => perm.IsEnabled = false);
+
+                role = new RoleFullViewModel()
+                {
+                    Role = _mapper.Map<RoleViewModel>(existing)
+                };
+                Array.ForEach(enabledPermissions
+                    .Concat(disabledView)
+                    .OrderBy(perm => perm.Id)
+                    .ToArray(), perm => role.Permissions.Add(perm));
+            }
+
+            return role;
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves a single role with full details (specified by role identifier) from repository.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of the role to search for</param>
+        /// <returns>A <see cref="RoleDetailsViewModel"/> instance that corresponds to the specified identifier, if there is
+        /// such a role defined; otherwise, returns null.</returns>
+        public async Task<RoleDetailsViewModel> GetRoleDetailsAsync(int roleId)
+        {
+            RoleDetailsViewModel role = null;
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var existing = await repository
+                .GetEntityQuery()
+                .Include(r => r.RolePermissions)
+                    .ThenInclude(rp => rp.Permission)
+                        .ThenInclude(p => p.Group)
+                .Include(r => r.RoleBranches)
+                    .ThenInclude(rb => rb.Branch)
+                        .ThenInclude(br => br.Company)
+                .Include(r => r.UserRoles)
+                    .ThenInclude(ur => ur.User)
+                        .ThenInclude(usr => usr.Person)
+                .Where(r => r.Id == roleId)
+                .SingleOrDefaultAsync();
+            if (existing != null)
+            {
+                role = new RoleDetailsViewModel()
+                {
+                    Role = _mapper.Map<RoleViewModel>(existing)
+                };
+                Array.ForEach(
+                    existing.RolePermissions.Select(rp => rp.Permission).ToArray(),
+                    perm => role.Permissions.Add(_mapper.Map<PermissionViewModel>(perm)));
+                Array.ForEach(
+                    existing.RoleBranches.Select(rb => rb.Branch).ToArray(),
+                    br => role.Branches.Add(_mapper.Map<BranchViewModel>(br)));
+                Array.ForEach(
+                    existing.UserRoles.Select(ur => ur.User).ToArray(),
+                    usr => role.Users.Add(_mapper.Map<UserBriefViewModel>(usr)));
+            }
+
+            return role;
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves brief information for a single role specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of the role to search for</param>
+        /// <returns>A <see cref="RoleViewModel"/> instance that corresponds to the specified role identifier,
+        /// if there is such a role defined; otherwise, returns null.</returns>
+        public async Task<RoleViewModel> GetRoleBriefAsync(int roleId)
+        {
+            RoleViewModel roleBrief = null;
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var role = await repository.GetByIDAsync(roleId);
+            if (role != null)
+            {
+                roleBrief = _mapper.Map<RoleViewModel>(role);
+            }
+
+            return roleBrief;
+        }
+
+        /// <summary>
+        /// Asynchronously inserts or updates a single security role, including all permissions in it, in repository
+        /// </summary>
+        /// <param name="role">Role to insert or update</param>
+        public async Task SaveRoleAsync(RoleFullViewModel role)
+        {
+            Verify.ArgumentNotNull(role, "role");
+            Verify.ArgumentNotNull(role.Role, "role.Role");
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            if (role.Role.Id == 0)
+            {
+                var newRole = _mapper.Map<Role>(role.Role);
+                AddRolePermissions(newRole, role);
+                repository.Insert(newRole, r => r.RolePermissions);
+            }
+            else
+            {
+                var existing = await repository.GetByIDWithTrackingAsync(role.Role.Id, r => r.RolePermissions);
+                if (existing != null)
+                {
+                    if (ArePermissionsModified(existing, role))
+                    {
+                        if (existing.RolePermissions.Count > 0)
+                        {
+                            RemoveDisabledPermissions(existing, role);
+                        }
+
+                        AddNewPermissions(existing, role);
+                    }
+
+                    UpdateExistingRole(existing, role);
+                    repository.UpdateWithTracking(existing);
+                }
+            }
+
+            await _unitOfWork.CommitAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously deletes a role specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of the role to delete</param>
+        /// <remarks>If no role with specified identifier could be found, no exception would be thrown.</remarks>
+        public async Task DeleteRoleAsync(int roleId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var role = await repository.GetByIDWithTrackingAsync(roleId, r => r.RolePermissions, r => r.RoleBranches);
+            if (role != null)
+            {
+                role.RolePermissions.Clear();
+                role.RoleBranches.Clear();
+                repository.Delete(role);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously determines if an existing role specified by unique identifier is assigned to users.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of the role to search for</param>
+        /// <returns>true if specified role is assigned; otherwise false. If no role with specified identifier
+        /// could be found, returns false.</returns>
+        public async Task<bool> IsAssignedRoleAsync(int roleId)
+        {
+            bool isAssigned = false;
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var role = await repository
+                .GetEntityQuery()
+                .Include(r => r.UserRoles)
+                .Where(r => r.Id == roleId)
+                .SingleOrDefaultAsync();
+            if (role != null)
+            {
+                isAssigned = (role.UserRoles.Count > 0);
+            }
+
+            return isAssigned;
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves branch associations for a role specified by identifier.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of an existing role</param>
+        /// <returns>An object that contains information about all branches accessible by specified role</returns>
+        public async Task<RoleBranchesViewModel> GetRoleBranchesAsync(int roleId)
+        {
+            RoleBranchesViewModel role = null;
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var existing = await repository
+                .GetEntityQuery()
+                .Include(r => r.RoleBranches)
+                    .ThenInclude(rb => rb.Branch)
+                        .ThenInclude(br => br.Company)
+                .Where(r => r.Id == roleId)
+                .SingleOrDefaultAsync();
+            if (existing != null)
+            {
+                var enabledBranches = existing.RoleBranches
+                    .Select(rb => rb.Branch)
+                    .Select(br => _mapper.Map<BranchViewModel>(br));
+                var branchRepository = _unitOfWork.GetAsyncRepository<Branch>();
+                var allBranches = await branchRepository
+                    .GetEntityQuery()
+                    .Include(br => br.Company)
+                    .ToListAsync();
+                var disabledBranches = allBranches
+                    .Select(br => _mapper.Map<BranchViewModel>(br))
+                    .Except(enabledBranches, new EntityEqualityComparer<BranchViewModel>())
+                    .ToArray();
+                Array.ForEach(disabledBranches, br => br.IsAccessible = false);
+
+                role = _mapper.Map<RoleBranchesViewModel>(existing);
+                Array.ForEach(enabledBranches
+                    .Concat(disabledBranches)
+                    .OrderBy(br => br.Id)
+                    .ToArray(), br => role.Branches.Add(br));
+            }
+
+            return role;
+        }
+
+        /// <summary>
+        /// Asynchronously updates branch associations for a role specified by identifier.
+        /// </summary>
+        /// <param name="role">A <see cref="RoleBranchesViewModel"/> object that contains information about all branch
+        /// associations to the specified role</param>
+        public async Task SaveRoleBranchesAsync(RoleBranchesViewModel role)
+        {
+            Verify.ArgumentNotNull(role, "role");
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var existing = await repository.GetByIDWithTrackingAsync(role.Id, r => r.RoleBranches);
+            if (existing != null && AreBranchesModified(existing, role))
+            {
+                if (existing.RoleBranches.Count > 0)
+                {
+                    RemoveInaccessibleBranches(existing, role);
+                }
+
+                AddNewBranches(existing, role);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves user associations for a role specified by identifier.
+        /// </summary>
+        /// <param name="roleId">Unique identifier of an existing role</param>
+        /// <returns>An object that contains information about all users assigned to specified role</returns>
+        public async Task<RoleUsersViewModel> GetRoleUsersAsync(int roleId)
+        {
+            RoleUsersViewModel role = null;
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var existing = await repository
+                .GetEntityQuery()
+                .Include(r => r.UserRoles)
+                    .ThenInclude(ur => ur.User)
+                        .ThenInclude(usr => usr.Person)
+                .Where(r => r.Id == roleId)
+                .SingleOrDefaultAsync();
+            if (existing != null)
+            {
+                var enabledUsers = existing.UserRoles
+                    .Select(ur => ur.User)
+                    .Select(usr => _mapper.Map<UserBriefViewModel>(usr));
+                var userRepository = _unitOfWork.GetRepository<User>();
+                var allUsers = await userRepository
+                    .GetEntityQuery()
+                    .Include(usr => usr.Person)
+                    .ToListAsync();
+                var disabledUsers = allUsers
+                    .Select(usr => _mapper.Map<UserBriefViewModel>(usr))
+                    .Except(enabledUsers, new EntityEqualityComparer<UserBriefViewModel>())
+                    .ToArray();
+                Array.ForEach(disabledUsers, usr => usr.HasRole = false);
+
+                role = _mapper.Map<RoleUsersViewModel>(existing);
+                Array.ForEach(enabledUsers
+                    .Concat(disabledUsers)
+                    .OrderBy(usr => usr.Id)
+                    .ToArray(), usr => role.Users.Add(usr));
+            }
+
+            return role;
+        }
+
+        /// <summary>
+        /// Asynchronously updates user associations for a role specified by identifier.
+        /// </summary>
+        /// <param name="role">A <see cref="RoleUsersViewModel"/> object that contains information about all user
+        /// associations to the specified role</param>
+        public async Task SaveRoleUsersAsync(RoleUsersViewModel role)
+        {
+            Verify.ArgumentNotNull(role, "role");
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var existing = await repository.GetByIDWithTrackingAsync(role.Id, r => r.UserRoles);
+            if (existing != null && AreUsersModified(existing, role))
+            {
+                if (existing.UserRoles.Count > 0)
+                {
+                    RemoveUnassignedUsers(existing, role);
+                }
+
+                AddNewUsers(existing, role);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        #endregion
+
+        #region Synchronous Methods (May be removed in the future)
+
         /// <summary>
         /// Retrieves all application roles from repository.
         /// </summary>
@@ -753,6 +1113,8 @@ namespace SPPC.Tadbir.Persistence
                 _unitOfWork.Commit();
             }
         }
+
+        #endregion
 
         #endregion
 

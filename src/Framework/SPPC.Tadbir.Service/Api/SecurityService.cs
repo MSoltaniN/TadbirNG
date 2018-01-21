@@ -143,7 +143,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>Collection of all roles in security system</returns>
         public IEnumerable<RoleViewModel> GetRoles()
         {
-            var roles = _apiClient.Get<IEnumerable<RoleViewModel>>(SecurityApi.Roles);
+            var roles = _apiClient.Get<IEnumerable<RoleViewModel>>(RoleApi.Roles);
             return roles;
         }
 
@@ -153,7 +153,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>A <see cref="RoleFullViewModel"/> object that contains all available permissions</returns>
         public RoleFullViewModel GetNewRole()
         {
-            var newRole = _apiClient.Get<RoleFullViewModel>(SecurityApi.NewRole);
+            var newRole = _apiClient.Get<RoleFullViewModel>(RoleApi.NewRole);
             return newRole;
         }
 
@@ -165,7 +165,7 @@ namespace SPPC.Tadbir.Service
         /// otherwise, returns null.</returns>
         public RoleFullViewModel GetRole(int roleId)
         {
-            var role = _apiClient.Get<RoleFullViewModel>(SecurityApi.Role, roleId);
+            var role = _apiClient.Get<RoleFullViewModel>(RoleApi.Role, roleId);
             return role;
         }
 
@@ -177,7 +177,7 @@ namespace SPPC.Tadbir.Service
         /// otherwise, returns null.</returns>
         public RoleDetailsViewModel GetRoleDetails(int roleId)
         {
-            var role = _apiClient.Get<RoleDetailsViewModel>(SecurityApi.RoleDetails, roleId);
+            var role = _apiClient.Get<RoleDetailsViewModel>(RoleApi.RoleDetails, roleId);
             return role;
         }
 
@@ -193,11 +193,11 @@ namespace SPPC.Tadbir.Service
             ServiceResponse response = null;
             if (role.Role.Id == 0)
             {
-                response = _apiClient.Insert(role, SecurityApi.Roles);
+                response = _apiClient.Insert(role, RoleApi.Roles);
             }
             else
             {
-                response = _apiClient.Update(role, SecurityApi.Role, role.Role.Id);
+                response = _apiClient.Update(role, RoleApi.Role, role.Role.Id);
             }
 
             return response;
@@ -211,7 +211,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
         public ServiceResponse DeleteRole(int roleId)
         {
-            var response = _apiClient.Delete(SecurityApi.Role, roleId);
+            var response = _apiClient.Delete(RoleApi.Role, roleId);
             if (!response.Succeeded)
             {
                 response.Result = ServiceResult.DeleteFailed;
@@ -229,7 +229,7 @@ namespace SPPC.Tadbir.Service
         /// otherwise, returns null.</returns>
         public RoleBranchesViewModel GetRoleBranches(int roleId)
         {
-            var branches = _apiClient.Get<RoleBranchesViewModel>(SecurityApi.RoleBranches, roleId);
+            var branches = _apiClient.Get<RoleBranchesViewModel>(RoleApi.RoleBranches, roleId);
             return branches;
         }
 
@@ -242,7 +242,7 @@ namespace SPPC.Tadbir.Service
         public ServiceResponse SaveRoleBranches(RoleBranchesViewModel branches)
         {
             Verify.ArgumentNotNull(branches, "branches");
-            ServiceResponse response = _apiClient.Update(branches, SecurityApi.RoleBranches, branches.Id);
+            ServiceResponse response = _apiClient.Update(branches, RoleApi.RoleBranches, branches.Id);
             return response;
         }
 
@@ -254,7 +254,7 @@ namespace SPPC.Tadbir.Service
         /// otherwise, returns null.</returns>
         public RoleUsersViewModel GetRoleUsers(int roleId)
         {
-            var users = _apiClient.Get<RoleUsersViewModel>(SecurityApi.RoleUsers, roleId);
+            var users = _apiClient.Get<RoleUsersViewModel>(RoleApi.RoleUsers, roleId);
             return users;
         }
 
@@ -267,7 +267,7 @@ namespace SPPC.Tadbir.Service
         public ServiceResponse SaveRoleUsers(RoleUsersViewModel users)
         {
             Verify.ArgumentNotNull(users, "users");
-            ServiceResponse response = _apiClient.Update(users, SecurityApi.RoleUsers, users.Id);
+            ServiceResponse response = _apiClient.Update(users, RoleApi.RoleUsers, users.Id);
             return response;
         }
 

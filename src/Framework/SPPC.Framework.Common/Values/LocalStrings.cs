@@ -23,6 +23,11 @@ namespace SPPC.Framework.Values
         public const string IndexTitle = "فهرست {0}";
 
         /// <summary>
+        /// Localized text for the message indicating that a required item could not be found
+        /// </summary>
+        public const string ItemNotFound = "{0} مورد نظر یافت نشد";
+
+        /// <summary>
         /// Localized text for the text indicating that no record could be found
         /// </summary>
         public const string NoRecords = "{0} یافت نشد";
