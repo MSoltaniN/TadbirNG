@@ -30,7 +30,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for a role specified by unique identifier.
         /// </summary>
-        public const string RoleUrl = "roles/{roleId:int}";
+        public const string RoleUrl = "roles/{roleId:min(1)}";
 
         /// <summary>
         /// API client URL for full details of a role specified by unique identifier.
@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for full details of a role specified by unique identifier.
         /// </summary>
-        public const string RoleDetailsUrl = "roles/{roleId:int}/details";
+        public const string RoleDetailsUrl = "roles/{roleId:min(1)}/details";
 
         /// <summary>
         /// API client URL for branches accessible to a role specified by unique identifier.
@@ -50,7 +50,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for branches accessible to a role specified by unique identifier.
         /// </summary>
-        public const string RoleBranchesUrl = "roles/{roleId:int}/branches";
+        public const string RoleBranchesUrl = "roles/{roleId:min(1)}/branches";
 
         /// <summary>
         /// API client URL for users assigned to a role specified by unique identifier.
@@ -60,7 +60,7 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for users assigned to a role specified by unique identifier.
         /// </summary>
-        public const string RoleUsersUrl = "roles/{roleId:int}/users";
+        public const string RoleUsersUrl = "roles/{roleId:min(1)}/users";
 
         /// <summary>
         /// API client URL for a new role that contains all available permissions.

@@ -450,7 +450,13 @@ namespace SPPC.Tadbir.Persistence
         {
             RoleFullViewModel role = null;
             var repository = _unitOfWork.GetRepository<Role>();
-            var existing = repository.GetByID(roleId, r => r.RolePermissions);
+            var existing = repository
+                .GetEntityQuery()
+                .Include(r => r.RolePermissions)
+                    .ThenInclude(rp => rp.Permission)
+                        .ThenInclude(p => p.Group)
+                .Where(r => r.Id == roleId)
+                .SingleOrDefault();
             if (existing != null)
             {
                 var enabledPermissions = existing.RolePermissions
@@ -487,7 +493,19 @@ namespace SPPC.Tadbir.Persistence
         {
             RoleDetailsViewModel role = null;
             var repository = _unitOfWork.GetRepository<Role>();
-            var existing = repository.GetByID(roleId);
+            var existing = repository
+                .GetEntityQuery()
+                .Include(r => r.RolePermissions)
+                    .ThenInclude(rp => rp.Permission)
+                        .ThenInclude(p => p.Group)
+                .Include(r => r.RoleBranches)
+                    .ThenInclude(rb => rb.Branch)
+                        .ThenInclude(br => br.Company)
+                .Include(r => r.UserRoles)
+                    .ThenInclude(ur => ur.User)
+                        .ThenInclude(usr => usr.Person)
+                .Where(r => r.Id == roleId)
+                .SingleOrDefault();
             if (existing != null)
             {
                 role = new RoleDetailsViewModel()
@@ -540,11 +558,11 @@ namespace SPPC.Tadbir.Persistence
             {
                 var newRole = _mapper.Map<Role>(role.Role);
                 AddRolePermissions(newRole, role);
-                repository.Insert(newRole);
+                repository.Insert(newRole, r => r.RolePermissions);
             }
             else
             {
-                var existing = repository.GetByID(role.Role.Id);
+                var existing = repository.GetByIDWithTracking(role.Role.Id, r => r.RolePermissions);
                 if (existing != null)
                 {
                     if (ArePermissionsModified(existing, role))
@@ -558,7 +576,7 @@ namespace SPPC.Tadbir.Persistence
                     }
 
                     UpdateExistingRole(existing, role);
-                    repository.Update(existing);
+                    repository.UpdateWithTracking(existing);
                 }
             }
 
@@ -573,11 +591,11 @@ namespace SPPC.Tadbir.Persistence
         public void DeleteRole(int roleId)
         {
             var repository = _unitOfWork.GetRepository<Role>();
-            var role = repository.GetByID(roleId);
+            var role = repository.GetByIDWithTracking(roleId, r => r.RolePermissions, r => r.RoleBranches);
             if (role != null)
             {
                 role.RolePermissions.Clear();
-                repository.Update(role);
+                role.RoleBranches.Clear();
                 repository.Delete(role);
                 _unitOfWork.Commit();
             }
@@ -593,7 +611,11 @@ namespace SPPC.Tadbir.Persistence
         {
             bool isAssigned = false;
             var repository = _unitOfWork.GetRepository<Role>();
-            var role = repository.GetByID(roleId);
+            var role = repository
+                .GetEntityQuery()
+                .Include(r => r.UserRoles)
+                .Where(r => r.Id == roleId)
+                .SingleOrDefault();
             if (role != null)
             {
                 isAssigned = (role.UserRoles.Count > 0);
@@ -611,15 +633,24 @@ namespace SPPC.Tadbir.Persistence
         {
             RoleBranchesViewModel role = null;
             var repository = _unitOfWork.GetRepository<Role>();
-            var existing = repository.GetByID(roleId);
+            var existing = repository
+                .GetEntityQuery()
+                .Include(r => r.RoleBranches)
+                    .ThenInclude(rb => rb.Branch)
+                        .ThenInclude(br => br.Company)
+                .Where(r => r.Id == roleId)
+                .SingleOrDefault();
             if (existing != null)
             {
                 var enabledBranches = existing.RoleBranches
                     .Select(rb => rb.Branch)
                     .Select(br => _mapper.Map<BranchViewModel>(br));
                 var branchRepository = _unitOfWork.GetRepository<Branch>();
-                var disabledBranches = branchRepository
-                    .GetAll()
+                var allBranches = branchRepository
+                    .GetEntityQuery()
+                    .Include(br => br.Company)
+                    .ToList();
+                var disabledBranches = allBranches
                     .Select(br => _mapper.Map<BranchViewModel>(br))
                     .Except(enabledBranches, new EntityEqualityComparer<BranchViewModel>())
                     .ToArray();
@@ -644,7 +675,7 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(role, "role");
             var repository = _unitOfWork.GetRepository<Role>();
-            var existing = repository.GetByID(role.Id);
+            var existing = repository.GetByIDWithTracking(role.Id, r => r.RoleBranches);
             if (existing != null && AreBranchesModified(existing, role))
             {
                 if (existing.RoleBranches.Count > 0)
@@ -667,15 +698,24 @@ namespace SPPC.Tadbir.Persistence
         {
             RoleUsersViewModel role = null;
             var repository = _unitOfWork.GetRepository<Role>();
-            var existing = repository.GetByID(roleId);
+            var existing = repository
+                .GetEntityQuery()
+                .Include(r => r.UserRoles)
+                    .ThenInclude(ur => ur.User)
+                        .ThenInclude(usr => usr.Person)
+                .Where(r => r.Id == roleId)
+                .SingleOrDefault();
             if (existing != null)
             {
                 var enabledUsers = existing.UserRoles
                     .Select(ur => ur.User)
                     .Select(usr => _mapper.Map<UserBriefViewModel>(usr));
                 var userRepository = _unitOfWork.GetRepository<User>();
-                var disabledUsers = userRepository
-                    .GetAll()
+                var allUsers = userRepository
+                    .GetEntityQuery()
+                    .Include(usr => usr.Person)
+                    .ToList();
+                var disabledUsers = allUsers
                     .Select(usr => _mapper.Map<UserBriefViewModel>(usr))
                     .Except(enabledUsers, new EntityEqualityComparer<UserBriefViewModel>())
                     .ToArray();
@@ -700,7 +740,7 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(role, "role");
             var repository = _unitOfWork.GetRepository<Role>();
-            var existing = repository.GetByID(role.Id);
+            var existing = repository.GetByIDWithTracking(role.Id, r => r.UserRoles);
             if (existing != null && AreUsersModified(existing, role))
             {
                 if (existing.UserRoles.Count > 0)
@@ -844,13 +884,14 @@ namespace SPPC.Tadbir.Persistence
 
         private void AddNewPermissions(Role existing, RoleFullViewModel role)
         {
+            var repository = _unitOfWork.GetRepository<Permission>();
             var currentItems = existing.RolePermissions.Select(rp => rp.PermissionId);
             var newItems = role.Permissions
                 .Where(perm => perm.IsEnabled
                     && !currentItems.Contains(perm.Id));
             foreach (var item in newItems)
             {
-                var permission = _mapper.Map<Permission>(item);
+                var permission = repository.GetByIDWithTracking(item.Id, perm => perm.Group);
                 var rolePermission = new RolePermission()
                 {
                     Permission = permission,
@@ -864,13 +905,14 @@ namespace SPPC.Tadbir.Persistence
 
         private void AddNewBranches(Role existing, RoleBranchesViewModel role)
         {
+            var repository = _unitOfWork.GetRepository<Branch>();
             var currentItems = existing.RoleBranches.Select(rb => rb.BranchId);
             var newItems = role.Branches
                 .Where(br => br.IsAccessible
                     && !currentItems.Contains(br.Id));
             foreach (var item in newItems)
             {
-                var branch = _mapper.Map<Branch>(item);
+                var branch = repository.GetByIDWithTracking(item.Id, br => br.Company);
                 var roleBranch = new RoleBranch()
                 {
                     Branch = branch,
@@ -884,13 +926,14 @@ namespace SPPC.Tadbir.Persistence
 
         private void AddNewUsers(Role existing, RoleUsersViewModel role)
         {
+            var repository = _unitOfWork.GetRepository<User>();
             var currentItems = existing.UserRoles.Select(ur => ur.UserId);
             var newItems = role.Users
                 .Where(usr => usr.HasRole
                     && !currentItems.Contains(usr.Id));
             foreach (var item in newItems)
             {
-                var user = _mapper.Map<User>(item);
+                var user = repository.GetByIDWithTracking(item.Id, usr => usr.Person);
                 var userRole = new UserRole()
                 {
                     User = user,

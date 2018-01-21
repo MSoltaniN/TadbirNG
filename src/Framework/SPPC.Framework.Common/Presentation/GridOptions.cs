@@ -13,7 +13,7 @@ namespace SPPC.Framework.Presentation
         /// </summary>
         public GridOptions()
         {
-            Paging = new GridPaging();
+            Paging = GridPaging.NoPaging;
             Filters = new List<GridFilter>();
             SortColumns = new List<GridOrderBy>();
         }

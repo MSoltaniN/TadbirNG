@@ -65,6 +65,21 @@ namespace SPPC.Framework.Persistence
         TEntity GetByID(int id, params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>
+        /// Retrieves a single entity instance with the specified unique identifier, including specified
+        /// navigation properties, if any. This overload is suitable for scenarios when you want to change
+        /// retrieved entity.
+        /// </summary>
+        /// <param name="id">Identifier of an existing entity</param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Entity instance having the specified identifier</returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        TEntity GetByIDWithTracking(int id, params Expression<Func<TEntity, object>>[] relatedProperties);
+
+        /// <summary>
         /// Retrieves complete information for a subset of existing entities, as defined by the specified criteria,
         /// including specified navigation properties, if any.
         /// </summary>
@@ -127,6 +142,12 @@ namespace SPPC.Framework.Persistence
         /// When set to null (default), only the main entity will be updated.
         /// </param>
         void Update(TEntity entity, params Expression<Func<TEntity, object>>[] cascadeProperties);
+
+        /// <summary>
+        /// Updates an existing entity instance in the data store, using default ORM tracking mechanism
+        /// </summary>
+        /// <param name="entity">Entity to update</param>
+        void UpdateWithTracking(TEntity entity);
 
         /// <summary>
         /// Deletes an existing entity instance from the data store

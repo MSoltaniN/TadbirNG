@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
@@ -141,7 +142,33 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         public TEntity GetByID(int id, params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityWithNavigationQuery(id, null, relatedProperties);
+            var query = GetEntityWithNavigationQuery(id, relatedProperties);
+            return query.SingleOrDefault();
+        }
+
+        /// <summary>
+        /// Retrieves a single entity instance with the specified unique identifier, including specified
+        /// navigation properties, if any. This overload is suitable for scenarios when you want to change
+        /// retrieved entity.
+        /// </summary>
+        /// <param name="id">Identifier of an existing entity</param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Entity instance having the specified identifier</returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        public TEntity GetByIDWithTracking(int id, params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = _dataSet
+                .AsQueryable()
+                .Where(e => e.Id == id);
+            foreach (var property in relatedProperties)
+            {
+                query = query.Include(property);
+            }
+
             return query.SingleOrDefault();
         }
 
@@ -159,7 +186,7 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         public async Task<TEntity> GetByIDAsync(int id, params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityWithNavigationQuery(id, null, relatedProperties);
+            var query = GetEntityWithNavigationQuery(id, relatedProperties);
             return await query.SingleOrDefaultAsync();
         }
 
@@ -316,6 +343,16 @@ namespace SPPC.Framework.Persistence
         }
 
         /// <summary>
+        /// Updates an existing entity instance in the data store, using EF auto-tracking mechanism
+        /// </summary>
+        /// <param name="entity">Entity to update</param>
+        public void UpdateWithTracking(TEntity entity)
+        {
+            _dataContext.Attach(entity);
+            _dataSet.Update(entity);
+        }
+
+        /// <summary>
         /// Deletes an existing entity instance from the data store
         /// </summary>
         /// <param name="entity">Entity to delete</param>
@@ -379,12 +416,12 @@ namespace SPPC.Framework.Persistence
             return GetEntityWithNavigationQuery(query, gridOptions, relatedProperties);
         }
 
-        private IQueryable<TEntity> GetEntityWithNavigationQuery(int id, GridOptions gridOptions,
-            params Expression<Func<TEntity, object>>[] relatedProperties)
+        private IQueryable<TEntity> GetEntityWithNavigationQuery(
+            int id, params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityQuery(gridOptions)
+            var query = GetEntityQuery()
                 .Where(e => e.Id == id);
-            return GetEntityWithNavigationQuery(query, gridOptions, relatedProperties);
+            return GetEntityWithNavigationQuery(query, null, relatedProperties);
         }
 
         private IQueryable<TEntity> GetEntityWithNavigationQuery(
@@ -403,7 +440,18 @@ namespace SPPC.Framework.Persistence
             foreach (var selector in _trackingStatus.CascadeProperties)
             {
                 var cascadedProperty = selector.Compile().Invoke(_trackingStatus.Entity);
-                mustSave = mustSave || Object.ReferenceEquals(entity.Entry.Entity, cascadedProperty);
+                var asEnumerable = cascadedProperty as IEnumerable;
+                if (asEnumerable != null)
+                {
+                    foreach (var item in asEnumerable)
+                    {
+                        mustSave = mustSave || Object.ReferenceEquals(entity.Entry.Entity, item);
+                    }
+                }
+                else
+                {
+                    mustSave = mustSave || Object.ReferenceEquals(entity.Entry.Entity, cascadedProperty);
+                }
             }
 
             entity.Entry.State = mustSave

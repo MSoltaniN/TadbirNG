@@ -35,16 +35,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(newRole);
         }
 
-        // GET: api/roles/{roleId:int}
+        // GET: api/roles/{roleId:min(1)}
         [Route(SecurityApi.RoleUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public IActionResult GetRole(int roleId)
         {
-            if (roleId <= 0)
-            {
-                return NotFound();
-            }
-
             var role = _repository.GetRole(roleId);
             var result = (role != null)
                 ? Json(role)
@@ -52,16 +47,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
-        // GET: api/roles/{roleId:int}/details
+        // GET: api/roles/{roleId:min(1)}/details
         [Route(SecurityApi.RoleDetailsUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public IActionResult GetRoleDetails(int roleId)
         {
-            if (roleId <= 0)
-            {
-                return NotFound();
-            }
-
             var role = _repository.GetRoleDetails(roleId);
             var result = (role != null)
                 ? Json(role)
@@ -89,7 +79,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        // PUT: api/roles/{roleId:int}
+        // PUT: api/roles/{roleId:min(1)}
         [HttpPut]
         [Route(SecurityApi.RoleUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Edit)]
@@ -124,7 +114,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        // DELETE: api/roles/{roleId:int}
+        // DELETE: api/roles/{roleId:min(1)}
         [HttpDelete]
         [Route(SecurityApi.RoleUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Delete)]
@@ -133,11 +123,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (roleId == AppConstants.AdminRoleId)
             {
                 return BadRequest("Could not delete role because the role is read-only.");
-            }
-
-            if (roleId <= 0)
-            {
-                return BadRequest("Could not delete role because it does not exist.");
             }
 
             var role = _repository.GetRoleBrief(roleId);
@@ -156,16 +141,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        // GET: api/roles/{roleId:int}/branches
+        // GET: api/roles/{roleId:min(1)}/branches
         [Route(SecurityApi.RoleBranchesUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public IActionResult GetRoleBranches(int roleId)
         {
-            if (roleId <= 0)
-            {
-                return NotFound();
-            }
-
             var branches = _repository.GetRoleBranches(roleId);
             var result = (branches != null)
                 ? Json(branches)
@@ -173,23 +153,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
-        // PUT: api/roles/{roleId:int}/branches
+        // PUT: api/roles/{roleId:min(1)}/branches
         [HttpPut]
         [Route(SecurityApi.RoleBranchesUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.AssignBranches)]
-        public IActionResult PutModifiedRoleBranches(int roleId, RoleBranchesViewModel branches)
+        public IActionResult PutModifiedRoleBranches(int roleId, [FromBody] RoleBranchesViewModel roleBranches)
         {
-            if (branches == null)
+            if (roleBranches == null)
             {
                 return BadRequest("Could not put modified role branches because a 'null' value was provided.");
             }
 
-            if (roleId <= 0 || branches.Id <= 0)
+            if (roleId <= 0 || roleBranches.Id <= 0)
             {
                 return BadRequest("Could not put modified role branches because original role does not exist.");
             }
 
-            if (roleId != branches.Id)
+            if (roleId != roleBranches.Id)
             {
                 return BadRequest("Could not put modified role branches because of an identity conflict in the request.");
             }
@@ -199,20 +179,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            _repository.SaveRoleBranches(branches);
+            _repository.SaveRoleBranches(roleBranches);
             return Ok();
         }
 
-        // GET: api/roles/{roleId:int}/users
+        // GET: api/roles/{roleId:min(1)}/users
         [Route(SecurityApi.RoleUsersUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public IActionResult GetRoleUsers(int roleId)
         {
-            if (roleId <= 0)
-            {
-                return NotFound();
-            }
-
             var users = _repository.GetRoleUsers(roleId);
             var result = (users != null)
                 ? Json(users)
@@ -220,23 +195,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
-        // PUT: api/roles/{roleId:int}/users
+        // PUT: api/roles/{roleId:min(1)}/users
         [HttpPut]
         [Route(SecurityApi.RoleUsersUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.AssignUsers)]
-        public IActionResult PutModifiedRoleUsers(int roleId, RoleUsersViewModel users)
+        public IActionResult PutModifiedRoleUsers(int roleId, [FromBody] RoleUsersViewModel roleUsers)
         {
-            if (users == null)
+            if (roleUsers == null)
             {
                 return BadRequest("Could not put modified role users because a 'null' value was provided.");
             }
 
-            if (roleId <= 0 || users.Id <= 0)
+            if (roleId <= 0 || roleUsers.Id <= 0)
             {
                 return BadRequest("Could not put modified role users because original role does not exist.");
             }
 
-            if (roleId != users.Id)
+            if (roleId != roleUsers.Id)
             {
                 return BadRequest("Could not put modified role users because of an identity conflict in the request.");
             }
@@ -246,7 +221,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            _repository.SaveRoleUsers(users);
+            _repository.SaveRoleUsers(roleUsers);
             return Ok();
         }
 
