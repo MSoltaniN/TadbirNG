@@ -22,6 +22,15 @@ namespace SPPC.Framework.Presentation
         public string FieldName { get; set; }
 
         /// <summary>
+        /// نوع داده ای فیلد اطلاعاتی مورد استفاده در فیلتر به صورت متنی
+        /// </summary>
+        /// <remarks>
+        /// برای این فیلد لازم است از نام کامل نوع داده ای در دات نت استفاده شود، به عنوان مثال مقادیر زیر مجاز هستند :
+        /// System.String, System.Int32, System.DateTime, etc.
+        /// </remarks>
+        public string FieldTypeName { get; set; }
+
+        /// <summary>
         /// عملگر مورد استفاده در فیلتر
         /// </summary>
         public string Operator { get; set; }
@@ -37,10 +46,39 @@ namespace SPPC.Framework.Presentation
         /// <returns>نمایش متنی برای این نمونه</returns>
         public override string ToString()
         {
-            string toString = Operator.Contains("{0}")
-                ? String.Format("{0}{1}", FieldName, String.Format(Operator, Value))
-                : String.Format("{0} {1} '{2}'", FieldName, Operator, Value);
+            string op = OperatorFromFieldType(FieldTypeName);
+            string toString = !String.IsNullOrEmpty(Value)
+                ? String.Format("{0}{1}", FieldName, String.Format(op, Value))
+                : String.Format("{0} {1}", FieldName, Operator);
             return toString;
+        }
+
+        private string OperatorFromFieldType(string typeName)
+        {
+            string op = null;
+            if (FieldTypeName == "System.String")
+            {
+                op = Operator.Replace("{0}", "\"{0}\"");
+            }
+            else if (FieldTypeName == "System.DateTime")
+            {
+                op = Operator.Replace("{0}", "DateTime.Parse(\"{0}\")");
+            }
+            else if (FieldTypeName == "System.Date")
+            {
+                op = Operator.Replace("{0}", "DateTime.Parse(\"{0}\")");
+                op = String.Format(".Date{0}", op);
+            }
+            else if (FieldTypeName == "System.TimeSpan")
+            {
+                op = Operator.Replace("{0}", "TimeSpan.Parse(\"{0}\")");
+            }
+            else
+            {
+                op = Operator;
+            }
+
+            return op;
         }
     }
 }
