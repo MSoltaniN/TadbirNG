@@ -61,11 +61,7 @@ import { SppcStringFilter } from './controls/grid/sppc-string-filter';
         ToastrModule.forRoot(),
         DialogModule, DropDownsModule, GridModule, InputsModule, 
         BrowserModule,
-        TranslateModule.forRoot({
-            provide: TranslateLoader,
-            useFactory: (http: Http) => new TranslateStaticLoader(http, '/i18n', '.json'),
-            deps: [Http]
-        }),
+        TranslateModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'account2', pathMatch: 'full' },            
             { path: 'account2', component: Account2Component },

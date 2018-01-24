@@ -105,7 +105,6 @@
     <TypeScriptCompile Include="ClientApp\app\components\account2\account2.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\project\project.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-numberbox.ts" />
-    <TypeScriptCompile Include="ClientApp\app\directive\sppc-grid-column.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\fiscal-period.service.ts" />
