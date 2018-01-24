@@ -28,7 +28,7 @@
   "Account": {
     "Code": "کد حساب",
     "Name": "نام حساب",
-    "Fiscal": "دوره مالی",
+    "FiscalPeriodId": "دوره مالی",
     "Branch": "شعبه",
     "Description": "توضیحات",
     "Delete": "حذف حساب",

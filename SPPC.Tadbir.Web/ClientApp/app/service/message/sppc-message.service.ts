@@ -5,7 +5,7 @@ import { TranslateService } from "ng2-translate";
 
 var messages : { [id: string]: string; } = {
     "filterEqOperator": "مساوی",
-    "filterNotEqOperator" : "مخالف",
+    "filterNotEqOperator" : "نا مساوی",
     "filterIsNullOperator": "مساوی با تهی",
     "filterIsNotNullOperator": "مخالف با تهی",
     "filterIsEmptyOperator": "مساوی با خالی",

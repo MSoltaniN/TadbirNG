@@ -1,42 +1,23 @@
-﻿import { Component, Input } from '@angular/core';
-import { FilterService } from '@progress/kendo-angular-grid';
-import { NumericFilterComponent } from "@progress/kendo-angular-grid/dist/es/filtering/numeric-filter.component";
-import { LocalizationService } from "@progress/kendo-angular-l10n/dist/es/localization.service";
-import { CompositeFilterDescriptor } from "@progress/kendo-data-query";
-
+﻿
+import { Component, Input } from '@angular/core';
+import { CompositeFilterDescriptor } from "@progress/kendo-data-query/dist/es/main";
 
 @Component({
     selector: 'sppc-numeric-filter',
-    template: `           
-        <kendo-grid-numeric-filter-menu [column]="column" [filter]="filter" [filterService]="filterService">
-         </kendo-grid-numeric-filter-menu>
-  `
+    template: `<kendo-grid-numeric-filter-cell [spinners]="spinners" [column]="column"   [filter]="filter">
+                            <kendo-filter-eq-operator></kendo-filter-eq-operator>
+                            <kendo-filter-neq-operator></kendo-filter-neq-operator>
+                            <kendo-filter-lt-operator></kendo-filter-lt-operator>
+                            <kendo-filter-lte-operator></kendo-filter-lte-operator>                            
+                            <kendo-filter-gt-operator></kendo-filter-gt-operator>
+                            <kendo-filter-gte-operator></kendo-filter-gte-operator>                                                        
+                        </kendo-grid-numeric-filter-cell> `
 })
-export class SppcNumericFilterComponent extends NumericFilterComponent {
+export class SppcNumericFilter {
 
-    public get selectedValue(): any {
-        const filter = this.filterByField(this.valueField);
-        return filter ? filter.value : null;
-    }
-
+    @Input() public column: string;
     @Input() public filter: CompositeFilterDescriptor;
-    @Input() public data: any[];
-    @Input() public textField: string;
-    @Input() public valueField: string;
+    @Input() public spinners: string;
 
-    constructor(filterService: FilterService,localization:LocalizationService) {
-        super(filterService,localization);
-    }
-
-    public onChange(value: any): void {
-        this.applyFilter(
-            value === null ? // value of the default item
-                this.removeFilter(this.valueField) : // remove the filter
-                this.updateFilter({ // add a filter for the field with the value
-                    field: this.valueField,
-                    operator: this.currentOperator,
-                    value: value
-                })
-        ); // update the root filter
-    }
+    
 }

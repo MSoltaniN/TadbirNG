@@ -8,6 +8,7 @@ import { expect } from 'chai';
 import { Filter } from "../class/filter";
 import { GridOrderBy } from "../class/grid.orderby";
 import { HttpParams } from "@angular/common/http";
+import { Environment } from "../enviroment"
 
 export class AccountInfo implements Account
 {    
@@ -17,29 +18,24 @@ export class AccountInfo implements Account
     
 }
 
-const BASE_URL = "http://130.185.76.7:8080";
-const ADMIN_TICKET = "eyJVc2VyIjp7IklkIjoxLCJQZXJzb25GaXJzdE5hbWUiOiIiLCJQZXJzb25MYXN0TmFtZSI6IiIsIkJyYW5jaGVzIjpbMSwyXSwiUm9sZXMiOlsxXSwiUGVybWlzc2lvbnMiOlt7IkVudGl0eU5hbWUiOiJBY2NvdW50IiwiRmxhZ3MiOjE1fSx7IkVudGl0eU5hbWUiOiJUcmFuc2FjdGlvbiIsIkZsYWdzIjoxMDIzfSx7IkVudGl0eU5hbWUiOiJVc2VyIiwiRmxhZ3MiOjd9LHsiRW50aXR5TmFtZSI6IlJvbGUiLCJGbGFncyI6NjN9LHsiRW50aXR5TmFtZSI6IlJlcXVpc2l0aW9uVm91Y2hlciIsIkZsYWdzIjoxMjd9LHsiRW50aXR5TmFtZSI6Iklzc3VlUmVjZWlwdFZvdWNoZXIiLCJGbGFncyI6NjN9LHsiRW50aXR5TmFtZSI6IlNhbGVzSW52b2ljZSIsIkZsYWdzIjozMX0seyJFbnRpdHlOYW1lIjoiUHJvZHVjdEludmVudG9yeSIsIkZsYWdzIjoxNX1dfX0=";
-const FP_ID = 1
-const BRANCH_ID = 1
-
 
 @Injectable()
 export class AccountService 
 {   
-   
-    private _getAccountsUrl = BASE_URL + "/accounts/fp/{0}/branch/{1}";
 
-    private _getAllAccountsUrl = BASE_URL + "/accounts";
+    private _getAccountsUrl = Environment.BaseUrl + "/accounts/fp/{0}/branch/{1}";
 
-    private _getTotalCountUrl = BASE_URL + "/Account/TotalCount";
+    private _getAllAccountsUrl = Environment.BaseUrl + "/accounts";
 
-    private _getCountUrl = BASE_URL + "/accounts/fp/{0}/branch/{1}/count";
+    private _getTotalCountUrl = Environment.BaseUrl + "/Account/TotalCount";
 
-    private _deleteAccountsUrl = BASE_URL + "/accounts/{0}";
+    private _getCountUrl = Environment.BaseUrl + "/accounts/fp/{0}/branch/{1}/count";
 
-    private _postNewAccountsUrl = BASE_URL + "/accounts";
+    private _deleteAccountsUrl = Environment.BaseUrl + "/accounts/{0}";
 
-    private _postModifiedAccountsUrl = BASE_URL + "/accounts/{0}";
+    private _postNewAccountsUrl = Environment.BaseUrl + "/accounts";
+
+    private _postModifiedAccountsUrl = Environment.BaseUrl + "/accounts/{0}";
 
     headers: Headers;
     options: RequestOptions;
@@ -48,7 +44,7 @@ export class AccountService
     {
 
         this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8'});        
-        this.headers.append('X-Tadbir-AuthTicket', ADMIN_TICKET);
+        this.headers.append('X-Tadbir-AuthTicket', Environment.AdminTicket);
         
         this.options = new RequestOptions({ headers: this.headers });        
     }
@@ -65,7 +61,7 @@ export class AccountService
         var headers = this.headers;
         headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
 
-        var url = String.Format(this._getCountUrl, FP_ID, BRANCH_ID);
+        var url = String.Format(this._getCountUrl, Environment.FiscalPeriodId, Environment.BranchId);
         
         return this.http.get(url, { headers: headers })
             .map(response => <any>(<Response>response).json());;
@@ -77,7 +73,7 @@ export class AccountService
         var headers = this.headers;
         //headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
 
-        var url = String.Format(this._getCountUrl, FP_ID, BRANCH_ID);
+        var url = String.Format(this._getCountUrl, Environment.FiscalPeriodId, Environment.BranchId);
 
         //var postItem = { Filters: filters, OrderBy: orderby };
         
@@ -107,8 +103,8 @@ export class AccountService
                 sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
         var postItem = { Paging : gridPaging, filters : filters, sortColumns: sort };
-        
-        var url = String.Format(this._getAccountsUrl, FP_ID, BRANCH_ID);
+
+        var url = String.Format(this._getAccountsUrl, Environment.FiscalPeriodId, Environment.BranchId);
 
         var searchHeaders = this.headers;
 
@@ -123,6 +119,8 @@ export class AccountService
         return this.http.get(url,options)
             .map(response => <any>(<Response>response).json());
     }
+
+   
 
     
     editAccount(account: Account): Observable<string> {

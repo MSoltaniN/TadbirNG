@@ -18,9 +18,9 @@ import { AccountFormComponent } from './components/account2/account2-form.compon
 
 
 //custom controls
-import { SppcMaskTextBox } from './controls/sppc-mask-textbox';
-import { SppcNumberBox } from './controls/sppc-numberbox';
-import { SppcDropDownList } from './controls/sppc-dropdownlist';
+import { SppcMaskTextBox } from './controls/textbox/sppc-mask-textbox';
+import { SppcNumberBox } from './controls/textbox/sppc-numberbox';
+import { SppcDropDownList } from './controls/dropdownlist/sppc-dropdownlist';
 
 import {BrowserModule} from "@angular/platform-browser";
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
@@ -31,9 +31,9 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 
 import { AccountService, TransactionLineService, FiscalPeriodService , GridMessageService } from './service/index';
-import { SppcNumberColumn } from "./directive/sppc-column";
-
-import { SppcNumericFilterComponent } from './controls/grid/sppc-numeric-filter';
+import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
+import { SppcNumericFilter } from './controls/grid/sppc-numeric-filter';
+import { SppcStringFilter } from './controls/grid/sppc-string-filter';
 
 @NgModule({
     declarations: [
@@ -44,8 +44,9 @@ import { SppcNumericFilterComponent } from './controls/grid/sppc-numeric-filter'
         SppcMaskTextBox,
         SppcNumberBox,
         SppcDropDownList,
-        SppcNumberColumn,
-        SppcNumericFilterComponent
+        SppcGridColumn,
+        SppcNumericFilter,
+        SppcStringFilter,
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true },

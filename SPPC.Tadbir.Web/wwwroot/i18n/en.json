@@ -30,7 +30,7 @@
     "Delete": "Delete",
     "Code": "Code",
     "Name": "Name",
-    "Fiscal": "Fiscal",
+    "FiscalPeriodId": "Fiscal",
     "Branch": "Branch",
     "Description": "Description",
     "List": "Account list"

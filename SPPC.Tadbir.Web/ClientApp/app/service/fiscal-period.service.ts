@@ -10,7 +10,7 @@ import { expect } from 'chai';
 export class FiscalPeriodService {
 
     
-    private getFiscalPeriodUrl = "http://130.185.76.7:8080/lookup/fps";
+    private getFiscalPeriodUrl = "http://130.185.76.7:8080/lookup/fps/company/1";
 
     constructor(private http: Http) {
 

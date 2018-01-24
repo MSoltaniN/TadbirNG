@@ -3,7 +3,7 @@
 
 export class Filter{    
 
-    constructor(private FieldName: string, private Value: string,private Operator:string)
+    constructor(private FieldName: string, private Value: string,private Operator:string,private fieldTypeName:string)
     {     
     }
 }

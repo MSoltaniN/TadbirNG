@@ -204,6 +204,8 @@ export class Account2Component implements OnInit {
 
     }
 
+   
+
     getFilters(filter: any): Filter[] {
         let filters: Filter[] = [];
 
@@ -216,12 +218,44 @@ export class Account2Component implements OnInit {
                     switch (filter.filters[i].operator)
                     {
                         case "eq":
-                            operator = ".Contains(\"{0}\")";
+                            operator = " == {0}";
+                            break;
+                        case "neq":
+                            operator = " != {0}";
+                            break;
+                        case "contains":      
+                            operator = ".Contains({0})";                            
+                            break;
+                        case "doesnotcontain":      
+                            operator = ".IndexOf({0}) == -1";
+                            break;
+                        case "startswith":      
+                            operator = ".StartsWith({0})";
+                            break;
+                        case "endswith":      
+                            operator = ".EndsWith({0})";                        
+                            break;
                         default:
-                            operator = ".Contains(\"{0}\")";
+                            operator = " == {0}";
                     }
 
-                    filters.push(new Filter(filter.filters[i].field, filter.filters[i].value, operator))
+                    var dataType = "";
+                    switch (filter.filters[i].field)
+                    {                        
+                        case "fiscalPeriodId":                        
+                            dataType = "System.Int16";
+                            break;
+                        case "code":
+                        case "description":
+                        case "name":
+                            dataType = "System.String";                        
+                            break;
+                        default:
+                            dataType = "System.String";                        
+                    }
+                    
+
+                    filters.push(new Filter(filter.filters[i].field, filter.filters[i].value, operator,dataType))
 
                 }
             }
