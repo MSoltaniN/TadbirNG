@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
@@ -17,8 +18,68 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Finance Subsystem API
 
+        #region Asynchronous Methods
+
         // GET: api/lookup/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
         [Route(LookupApi.FiscalPeriodBranchAccountsUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        public async Task<IActionResult> GetAccountsLookupAsync(int fpId, int branchId)
+        {
+            var accountLookup = await _repository.GetAccountsAsync(fpId, branchId);
+            return Json(accountLookup);
+        }
+
+        // GET: api/lookup/faccounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [Route(LookupApi.FiscalPeriodBranchDetailAccountsUrl)]
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
+        public async Task<IActionResult> GetDetailAccountsLookupAsync(int fpId, int branchId)
+        {
+            var lookup = await _repository.GetDetailAccountsAsync(fpId, branchId);
+            return Json(lookup);
+        }
+
+        // GET: api/lookup/costcenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [Route(LookupApi.FiscalPeriodBranchCostCentersUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
+        public async Task<IActionResult> GetCostCentersLookupAsync(int fpId, int branchId)
+        {
+            var lookup = await _repository.GetCostCentersAsync(fpId, branchId);
+            return Json(lookup);
+        }
+
+        // GET: api/lookup/projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [Route(LookupApi.FiscalPeriodBranchProjectsUrl)]
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
+        public async Task<IActionResult> GetProjectsLookupAsync(int fpId, int branchId)
+        {
+            var lookup = await _repository.GetProjectsAsync(fpId, branchId);
+            return Json(lookup);
+        }
+
+        // GET: api/lookup/currencies
+        [Route(LookupApi.CurrenciesUrl)]
+        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
+        public async Task<IActionResult> GetCurrenciesLookupAsync()
+        {
+            var currencyLookup = await _repository.GetCurrenciesAsync();
+            return Json(currencyLookup);
+        }
+
+        // GET: api/lookup/fps/company/{companyId:min(1)}
+        [Route(LookupApi.CompanyFiscalPeriodsUrl)]
+        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
+        public async Task<IActionResult> GetFiscalPeriodsLookupAsync(int companyId)
+        {
+            var fiscalPeriodLookup = await _repository.GetFiscalPeriodsAsync(companyId);
+            return Json(fiscalPeriodLookup);
+        }
+
+        #endregion
+
+        #region Synchronous Methods (May be removed in the future)
+
+        // GET: api/lookup/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync
+        [Route(LookupApi.FiscalPeriodBranchAccountsSyncUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public IActionResult GetAccountsLookup(int fpId, int branchId)
         {
@@ -26,8 +87,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accountLookup);
         }
 
-        // GET: api/lookup/faccounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(LookupApi.FiscalPeriodBranchDetailAccountsUrl)]
+        // GET: api/lookup/faccounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync
+        [Route(LookupApi.FiscalPeriodBranchDetailAccountsSyncUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public IActionResult GetDetailAccountsLookup(int fpId, int branchId)
         {
@@ -35,8 +96,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
-        // GET: api/lookup/costcenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(LookupApi.FiscalPeriodBranchCostCentersUrl)]
+        // GET: api/lookup/costcenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync
+        [Route(LookupApi.FiscalPeriodBranchCostCentersSyncUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public IActionResult GetCostCentersLookup(int fpId, int branchId)
         {
@@ -44,8 +105,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
-        // GET: api/lookup/projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(LookupApi.FiscalPeriodBranchProjectsUrl)]
+        // GET: api/lookup/projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync
+        [Route(LookupApi.FiscalPeriodBranchProjectsSyncUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public IActionResult GetProjectsLookup(int fpId, int branchId)
         {
@@ -53,8 +114,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
-        // GET: api/lookup/currencies
-        [Route(LookupApi.CurrenciesUrl)]
+        // GET: api/lookup/currencies/sync
+        [Route(LookupApi.CurrenciesSyncUrl)]
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
         public IActionResult GetCurrenciesLookup()
         {
@@ -62,14 +123,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(currencyLookup);
         }
 
-        // GET: api/lookup/fps/company/{companyId:min(1)}
-        [Route(LookupApi.CompanyFiscalPeriodsUrl)]
+        // GET: api/lookup/fps/company/{companyId:min(1)}/sync
+        [Route(LookupApi.CompanyFiscalPeriodsSyncUrl)]
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
         public IActionResult GetFiscalPeriodsLookup(int companyId)
         {
             var fiscalPeriodLookup = _repository.GetFiscalPeriods(companyId);
             return Json(fiscalPeriodLookup);
         }
+
+        #endregion
 
         #endregion
 

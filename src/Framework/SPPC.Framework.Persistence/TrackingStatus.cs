@@ -13,7 +13,7 @@ namespace SPPC.Framework.Persistence
         where TEntity : class, IEntity
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TrackingStatus&lt;TEntity&gt;"/> class.
+        /// Initializes a new instance of the <see cref="TrackingStatus{TEntity}"/> class.
         /// </summary>
         /// <param name="cascadeProperties">
         /// Collection of all navigation properties that must be operated on, along with the main entity.

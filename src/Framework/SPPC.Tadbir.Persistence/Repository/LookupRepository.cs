@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
@@ -15,30 +16,138 @@ using SPPC.Tadbir.ViewModel.Procurement;
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// Provides repository operations for getting different types of key/value collections (lookups) from
-    /// the underlying database.
+    /// عملیات مورد نیاز برای خواندن لیست موجودیت ها به صورت مجموعه ای از کلید و مقدار را پیاده سازی می کند.
+    /// کلید برابر شناسه دیتابیسی موجودیت و مقدار برابر نام موجودیت خواهد بود
     /// </summary>
     public class LookupRepository : ILookupRepository
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LookupRepository"/> class.
+        /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork"></param>
-        /// <param name="mapper"></param>
+        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
+        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         public LookupRepository(IUnitOfWork unitOfWork, IDomainMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
+        #region Finance Subsystem Lookup
+
+        #region Asynchronous Methods
+
         /// <summary>
-        /// Retrieves all financial account items in the specified fiscal period as a collection of
-        /// <see cref="KeyValue"/> objects. The key for each entry is the unique identifier of corresponding
-        /// account in database.
+        /// به روش آسنکرون، سرفصل های حسابداری تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <param name="fpId">Unique identifier of an existing fiscal period</param>
-        /// <param name="branchId">Unique identifier of the branch to look for accounts</param>
-        /// <returns>Collection of all account items in the specified fiscal period.</returns>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه سرفصل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
+        public async Task<IEnumerable<KeyValue>> GetAccountsAsync(int fpId, int branchId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var accounts = await repository
+                .GetByCriteriaAsync(acc => acc.FiscalPeriod.Id == fpId
+                    && acc.Branch.Id == branchId);
+            return accounts
+                .OrderBy(acc => acc.FullCode)
+                .Select(acc => _mapper.Map<KeyValue>(acc));
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه تفصیلی های شناور تعریف شده در دوره و شعبه مشخص شده</returns>
+        public async Task<IEnumerable<KeyValue>> GetDetailAccountsAsync(int fpId, int branchId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var detailAccounts = await repository
+                .GetByCriteriaAsync(det => det.FiscalPeriod.Id == fpId
+                    && det.Branch.Id == branchId);
+            return detailAccounts
+                .OrderBy(det => det.FullCode)
+                .Select(det => _mapper.Map<KeyValue>(det));
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه مراکز هزینه تعریف شده در دوره و شعبه مشخص شده</returns>
+        public async Task<IEnumerable<KeyValue>> GetCostCentersAsync(int fpId, int branchId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var costCenters = await repository
+                .GetByCriteriaAsync(cc => cc.FiscalPeriod.Id == fpId
+                    && cc.Branch.Id == branchId);
+            return costCenters
+                .OrderBy(cc => cc.FullCode)
+                .Select(cc => _mapper.Map<KeyValue>(cc));
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، پروژه های تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه پروژه های تعریف شده در دوره و شعبه مشخص شده</returns>
+        public async Task<IEnumerable<KeyValue>> GetProjectsAsync(int fpId, int branchId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var projects = await repository
+                .GetByCriteriaAsync(prj => prj.FiscalPeriod.Id == fpId
+                    && prj.Branch.Id == branchId);
+            return projects
+                .OrderBy(prj => prj.FullCode)
+                .Select(prj => _mapper.Map<KeyValue>(prj));
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ارزهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ارز های تعریف شده</returns>
+        public async Task<IEnumerable<KeyValue>> GetCurrenciesAsync()
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Currency>();
+            var currencies = await repository
+                .GetAllAsync();
+            return currencies
+                .OrderBy(curr => curr.Name)
+                .Select(curr => _mapper.Map<KeyValue>(curr));
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، دوره های مالی تعریف شده در یک شرکت مشخص شده را به صورت مجموعه ای از
+        /// کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="companyId">شناسه دیتابیسی یکی از شرکت های موجود</param>
+        /// <returns>مجموعه دوره های مالی تعریف شده در یک شرکت مشخص شده</returns>
+        public async Task<IEnumerable<KeyValue>> GetFiscalPeriodsAsync(int companyId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var fiscalPeriods = await repository
+                .GetByCriteriaAsync(fp => fp.Company.Id == companyId);
+            return fiscalPeriods
+                .OrderBy(fp => fp.Name)
+                .Select(fp => _mapper.Map<KeyValue>(fp));
+        }
+
+        #endregion
+
+        #region Synchronous Methods (May be removed in the future)
+
+        /// <summary>
+        /// سرفصل های حسابداری تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه سرفصل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
         public IEnumerable<KeyValue> GetAccounts(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetRepository<Account>();
@@ -51,10 +160,11 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves all detail account objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding detail account in database.
+        /// تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all detail account items.</returns>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه تفصیلی های شناور تعریف شده در دوره و شعبه مشخص شده</returns>
         public IEnumerable<KeyValue> GetDetailAccounts(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetRepository<DetailAccount>();
@@ -67,10 +177,11 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves all cost center objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding cost center in database.
+        /// مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all cost center items.</returns>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه مراکز هزینه تعریف شده در دوره و شعبه مشخص شده</returns>
         public IEnumerable<KeyValue> GetCostCenters(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetRepository<CostCenter>();
@@ -83,10 +194,11 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves all project objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding project in database.
+        /// پروژه های تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all project items.</returns>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه پروژه های تعریف شده در دوره و شعبه مشخص شده</returns>
         public IEnumerable<KeyValue> GetProjects(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetRepository<Project>();
@@ -99,10 +211,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves all currency objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding currency in database.
+        /// ارزهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all currency items.</returns>
+        /// <returns>مجموعه ارز های تعریف شده</returns>
         public IEnumerable<KeyValue> GetCurrencies()
         {
             var repository = _unitOfWork.GetRepository<Currency>();
@@ -114,10 +225,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves all fiscal period objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding fiscal period in data store.
+        /// دوره های مالی تعریف شده در یک شرکت مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all fiscal period items.</returns>
+        /// <param name="companyId">شناسه دیتابیسی یکی از شرکت های موجود</param>
+        /// <returns>مجموعه دوره های مالی تعریف شده در یک شرکت مشخص شده</returns>
         public IEnumerable<KeyValue> GetFiscalPeriods(int companyId)
         {
             var repository = _unitOfWork.GetRepository<FiscalPeriod>();
@@ -128,41 +239,16 @@ namespace SPPC.Tadbir.Persistence
             return fiscalPeriods;
         }
 
-        /// <summary>
-        /// Retrieves all business partner objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding business partner in database.
-        /// </summary>
-        /// <returns>Collection of all business partner items.</returns>
-        public IEnumerable<KeyValue> GetPartners()
-        {
-            var repository = _unitOfWork.GetRepository<BusinessPartner>();
-            var partners = repository
-                .GetAll()
-                .OrderBy(bp => bp.Name)
-                .Select(bp => _mapper.Map<KeyValue>(bp));
-            return partners;
-        }
+        #endregion
+
+        #endregion
+
+        #region Inventory Subsystem Lookup
 
         /// <summary>
-        /// Retrieves all business unit objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding business unit in database.
+        /// انبارهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all business unit items.</returns>
-        public IEnumerable<KeyValue> GetBusinessUnits()
-        {
-            var repository = _unitOfWork.GetRepository<BusinessUnit>();
-            var units = repository
-                .GetAll()
-                .OrderBy(bu => bu.Name)
-                .Select(bu => _mapper.Map<KeyValue>(bu));
-            return units;
-        }
-
-        /// <summary>
-        /// Retrieves all warehouse objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding warehouse in database.
-        /// </summary>
-        /// <returns>Collection of all warehouse items.</returns>
+        /// <returns>مجموعه انبارهای تعریف شده</returns>
         public IEnumerable<KeyValue> GetWarehouses()
         {
             var repository = _unitOfWork.GetRepository<Warehouse>();
@@ -174,10 +260,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves all product objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding product in data store.
+        /// کالاهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all product items.</returns>
+        /// <returns>مجموعه کالاهای تعریف شده</returns>
         public IEnumerable<KeyValue> GetProducts()
         {
             var repository = _unitOfWork.GetRepository<Product>();
@@ -189,10 +274,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves all unit of measurement (UOM) objects as a collection of <see cref="KeyValue"/> objects.
-        /// The key for each entry is the unique identifier of corresponding unit of measurement (UOM) in data store.
+        /// واحدهای شمارش تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all unit of measurement (UOM) items.</returns>
+        /// <returns>مجموعه واحدهای شمارش تعریف شده</returns>
         public IEnumerable<KeyValue> GetUnitsOfMeasurement()
         {
             var repository = _unitOfWork.GetRepository<UnitOfMeasurement>();
@@ -204,10 +288,26 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves all requisition voucher type objects as a collection of <see cref="KeyValue"/> objects.
-        /// The key for each entry is the unique identifier of corresponding requisition voucher type in database.
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات یک سطر موجودی کالا را از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <returns>Collection of all requisition voucher type items.</returns>
+        /// <returns>اطلاعات پایه مورد نیاز سطر موجودی کالا</returns>
+        public InventoryDependsViewModel GetInventoryDepends()
+        {
+            var depends = new InventoryDependsViewModel();
+            CopyCollection(GetUnitsOfMeasurement(), depends.Units);
+            CopyCollection(GetProducts(), depends.Products);
+            CopyCollection(GetWarehouses(), depends.Warehouses);
+            return depends;
+        }
+
+        #endregion
+
+        #region Procurement Subsystem Lookup
+
+        /// <summary>
+        /// انواع درخواست کالای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه انواع درخواست کالای تعریف شده</returns>
         public IEnumerable<KeyValue> GetRequisitionVoucherTypes()
         {
             var repository = _unitOfWork.GetRepository<RequisitionVoucherType>();
@@ -253,17 +353,34 @@ namespace SPPC.Tadbir.Persistence
             return depends;
         }
 
+        #endregion
+
         /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات یک سطر موجودی کالا را از دیتابیس خوانده و برمی گرداند
+        /// شرکای کاری تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>اطلاعات پایه مورد نیاز سطر موجودی کالا</returns>
-        public InventoryDependsViewModel GetInventoryDepends()
+        /// <returns>مجموعه شرکای کاری تعریف شده</returns>
+        public IEnumerable<KeyValue> GetPartners()
         {
-            var depends = new InventoryDependsViewModel();
-            CopyCollection(GetUnitsOfMeasurement(), depends.Units);
-            CopyCollection(GetProducts(), depends.Products);
-            CopyCollection(GetWarehouses(), depends.Warehouses);
-            return depends;
+            var repository = _unitOfWork.GetRepository<BusinessPartner>();
+            var partners = repository
+                .GetAll()
+                .OrderBy(bp => bp.Name)
+                .Select(bp => _mapper.Map<KeyValue>(bp));
+            return partners;
+        }
+
+        /// <summary>
+        /// واحدهای سازمانی تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه واحدهای سازمانی تعریف شده</returns>
+        public IEnumerable<KeyValue> GetBusinessUnits()
+        {
+            var repository = _unitOfWork.GetRepository<BusinessUnit>();
+            var units = repository
+                .GetAll()
+                .OrderBy(bu => bu.Name)
+                .Select(bu => _mapper.Map<KeyValue>(bu));
+            return units;
         }
 
         private static void CopyCollection(IEnumerable<KeyValue> source, IList<KeyValue> destination)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
 using SPPC.Tadbir.ViewModel.Inventory;
 using SPPC.Tadbir.ViewModel.Procurement;
@@ -7,95 +8,152 @@ using SPPC.Tadbir.ViewModel.Procurement;
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// Defines repository operations for getting different types of key/value collections (lookups).
+    /// عملیات مورد نیاز برای خواندن لیست موجودیت ها به صورت مجموعه ای از کلید و مقدار را تعریف می کند.
+    /// کلید برابر شناسه دیتابیسی موجودیت و مقدار برابر نام موجودیت خواهد بود
     /// </summary>
     public interface ILookupRepository
     {
+        #region Finance Subsystem lookup
+
+        #region Asynchronous Methods
+
         /// <summary>
-        /// Retrieves all financial account items in the specified fiscal period and branch as a collection of
-        /// <see cref="KeyValue"/> objects. The key for each entry is the unique identifier of corresponding
-        /// account in data store.
+        /// به روش آسنکرون، سرفصل های حسابداری تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <param name="fpId">Unique identifier of an existing fiscal period</param>
-        /// <param name="branchId">Unique identifier of the branch to look for accounts</param>
-        /// <returns>Collection of all account items in the specified fiscal period.</returns>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه سرفصل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
+        Task<IEnumerable<KeyValue>> GetAccountsAsync(int fpId, int branchId);
+
+        /// <summary>
+        /// به روش آسنکرون، تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه تفصیلی های شناور تعریف شده در دوره و شعبه مشخص شده</returns>
+        Task<IEnumerable<KeyValue>> GetDetailAccountsAsync(int fpId, int branchId);
+
+        /// <summary>
+        /// به روش آسنکرون، مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه مراکز هزینه تعریف شده در دوره و شعبه مشخص شده</returns>
+        Task<IEnumerable<KeyValue>> GetCostCentersAsync(int fpId, int branchId);
+
+        /// <summary>
+        /// به روش آسنکرون، پروژه های تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه پروژه های تعریف شده در دوره و شعبه مشخص شده</returns>
+        Task<IEnumerable<KeyValue>> GetProjectsAsync(int fpId, int branchId);
+
+        /// <summary>
+        /// به روش آسنکرون، ارزهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ارز های تعریف شده</returns>
+        Task<IEnumerable<KeyValue>> GetCurrenciesAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، دوره های مالی تعریف شده در یک شرکت مشخص شده را به صورت مجموعه ای از
+        /// کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="companyId">شناسه دیتابیسی یکی از شرکت های موجود</param>
+        /// <returns>مجموعه دوره های مالی تعریف شده در یک شرکت مشخص شده</returns>
+        Task<IEnumerable<KeyValue>> GetFiscalPeriodsAsync(int companyId);
+
+        #endregion
+
+        #region Synchronous Methods (May be removed in the future)
+
+        /// <summary>
+        /// سرفصل های حسابداری تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه سرفصل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
         IEnumerable<KeyValue> GetAccounts(int fpId, int branchId);
 
         /// <summary>
-        /// Retrieves all detail account objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding detail account in data store.
+        /// تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all detail account items.</returns>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه تفصیلی های شناور تعریف شده در دوره و شعبه مشخص شده</returns>
         IEnumerable<KeyValue> GetDetailAccounts(int fpId, int branchId);
 
         /// <summary>
-        /// Retrieves all cost center objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding cost center in data store.
+        /// مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all cost center items.</returns>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه مراکز هزینه تعریف شده در دوره و شعبه مشخص شده</returns>
         IEnumerable<KeyValue> GetCostCenters(int fpId, int branchId);
 
         /// <summary>
-        /// Retrieves all project objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding project in data store.
+        /// پروژه های تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all project items.</returns>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه پروژه های تعریف شده در دوره و شعبه مشخص شده</returns>
         IEnumerable<KeyValue> GetProjects(int fpId, int branchId);
 
         /// <summary>
-        /// Retrieves all currency objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding currency in data store.
+        /// ارزهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all currency items.</returns>
+        /// <returns>مجموعه ارز های تعریف شده</returns>
         IEnumerable<KeyValue> GetCurrencies();
 
         /// <summary>
-        /// Retrieves all fiscal period objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding fiscal period in data store.
+        /// دوره های مالی تعریف شده در یک شرکت مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all fiscal period items.</returns>
+        /// <param name="companyId">شناسه دیتابیسی یکی از شرکت های موجود</param>
+        /// <returns>مجموعه دوره های مالی تعریف شده در یک شرکت مشخص شده</returns>
         IEnumerable<KeyValue> GetFiscalPeriods(int companyId);
 
-        /// <summary>
-        /// Retrieves all business partner objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding business partner in data store.
-        /// </summary>
-        /// <returns>Collection of all business partner items.</returns>
-        IEnumerable<KeyValue> GetPartners();
+        #endregion
+
+        #endregion
+
+        #region Inventory Subsystem lookup
 
         /// <summary>
-        /// Retrieves all business unit objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding business unit in data store.
+        /// انبارهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all business unit items.</returns>
-        IEnumerable<KeyValue> GetBusinessUnits();
-
-        /// <summary>
-        /// Retrieves all warehouse objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding warehouse in data store.
-        /// </summary>
-        /// <returns>Collection of all warehouse items.</returns>
+        /// <returns>مجموعه انبارهای تعریف شده</returns>
         IEnumerable<KeyValue> GetWarehouses();
 
         /// <summary>
-        /// Retrieves all product objects as a collection of <see cref="KeyValue"/> objects. The key for each
-        /// entry is the unique identifier of corresponding product in data store.
+        /// کالاهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all product items.</returns>
+        /// <returns>مجموعه کالاهای تعریف شده</returns>
         IEnumerable<KeyValue> GetProducts();
 
         /// <summary>
-        /// Retrieves all unit of measurement (UOM) objects as a collection of <see cref="KeyValue"/> objects.
-        /// The key for each entry is the unique identifier of corresponding unit of measurement (UOM) in data store.
+        /// واحدهای شمارش تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>Collection of all unit of measurement (UOM) items.</returns>
+        /// <returns>مجموعه واحدهای شمارش تعریف شده</returns>
         IEnumerable<KeyValue> GetUnitsOfMeasurement();
 
         /// <summary>
-        /// Retrieves all requisition voucher type objects as a collection of <see cref="KeyValue"/> objects.
-        /// The key for each entry is the unique identifier of corresponding requisition voucher type in database.
+        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات یک سطر موجودی کالا را از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <returns>Collection of all requisition voucher type items.</returns>
+        /// <returns>اطلاعات پایه مورد نیاز سطر موجودی کالا</returns>
+        InventoryDependsViewModel GetInventoryDepends();
+
+        #endregion
+
+        #region Procurement Subsystem lookup
+
+        /// <summary>
+        /// انواع درخواست کالای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه انواع درخواست کالای تعریف شده</returns>
         IEnumerable<KeyValue> GetRequisitionVoucherTypes();
 
         /// <summary>
@@ -110,10 +168,18 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات پایه مورد نیاز سطر درخواست کالا</returns>
         VoucherLineDependsViewModel GetRequisitionLineDepends();
 
+        #endregion
+
         /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات یک سطر موجودی کالا را از دیتابیس خوانده و برمی گرداند
+        /// شرکای کاری تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
-        /// <returns>اطلاعات پایه مورد نیاز سطر موجودی کالا</returns>
-        InventoryDependsViewModel GetInventoryDepends();
+        /// <returns>مجموعه شرکای کاری تعریف شده</returns>
+        IEnumerable<KeyValue> GetPartners();
+
+        /// <summary>
+        /// واحدهای سازمانی تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه واحدهای سازمانی تعریف شده</returns>
+        IEnumerable<KeyValue> GetBusinessUnits();
     }
 }
