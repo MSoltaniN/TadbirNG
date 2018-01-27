@@ -419,6 +419,11 @@ namespace SPPC.Tadbir.Persistence
             var article = repository.GetByID(articleId);
             if (article != null)
             {
+                article.Account = null;
+                article.Branch = null;
+                article.Currency = null;
+                article.FiscalPeriod = null;
+                article.Transaction = null;
                 repository.Delete(article);
                 _unitOfWork.Commit();
             }
@@ -428,8 +433,8 @@ namespace SPPC.Tadbir.Persistence
 
         private static void UpdateExistingArticle(TransactionLine existing, TransactionLineViewModel article)
         {
-            existing.Account = new Account() { Id = article.AccountId ?? 0 };
-            existing.Currency = new Currency() { Id = article.CurrencyId ?? 0 };
+            existing.AccountId = article.AccountId ?? 0;
+            existing.CurrencyId = article.CurrencyId ?? 0;
             existing.Debit = article.Debit;
             existing.Credit = article.Credit;
             existing.Description = article.Description;
