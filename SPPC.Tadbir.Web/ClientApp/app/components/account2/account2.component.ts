@@ -223,6 +223,18 @@ export class Account2Component implements OnInit {
                         case "neq":
                             operator = " != {0}";
                             break;
+                        case "lte":
+                            operator = " <= {0}";
+                            break;
+                        case "gte":
+                            operator = " >= {0}";
+                            break;
+                        case "lt":
+                            operator = " < {0}";
+                            break;
+                        case "gt":
+                            operator = " > {0}";
+                            break;
                         case "contains":      
                             operator = ".Contains({0})";                            
                             break;
@@ -243,6 +255,7 @@ export class Account2Component implements OnInit {
                     switch (filter.filters[i].field)
                     {                        
                         case "fiscalPeriodId":                        
+                        case "level":                        
                             dataType = "System.Int16";
                             break;
                         case "code":

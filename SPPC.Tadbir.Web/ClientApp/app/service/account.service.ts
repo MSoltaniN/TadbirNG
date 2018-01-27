@@ -8,7 +8,9 @@ import { expect } from 'chai';
 import { Filter } from "../class/filter";
 import { GridOrderBy } from "../class/grid.orderby";
 import { HttpParams } from "@angular/common/http";
-import { Environment } from "../enviroment"
+import { Environment } from "../enviroment";
+
+
 
 export class AccountInfo implements Account
 {    
@@ -86,6 +88,7 @@ export class AccountService
 
     }
 
+
     
     
     search(start?: number, count?: number, orderby?: string, filters?: Filter[]) {
@@ -107,10 +110,12 @@ export class AccountService
         var url = String.Format(this._getAccountsUrl, Environment.FiscalPeriodId, Environment.BranchId);
 
         var searchHeaders = this.headers;
-
+        
         var postBody = JSON.stringify(postItem);
-
-        var base64Body = btoa(postBody);
+        
+        
+        
+        var base64Body = btoa(encodeURIComponent(postBody));
 
         searchHeaders.set('X-Tadbir-GridOptions', base64Body);
 
@@ -120,6 +125,7 @@ export class AccountService
             .map(response => <any>(<Response>response).json());
     }
 
+   
    
 
     

@@ -30,6 +30,7 @@
     "Name": "نام حساب",
     "FiscalPeriodId": "دوره مالی",
     "Branch": "شعبه",
+    "Level": "سطح",
     "Description": "توضیحات",
     "Delete": "حذف حساب",
     "List": "لیست حساب ها"

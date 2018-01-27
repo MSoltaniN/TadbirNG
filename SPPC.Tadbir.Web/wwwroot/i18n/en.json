@@ -31,6 +31,7 @@
     "Code": "Code",
     "Name": "Name",
     "FiscalPeriodId": "Fiscal",
+    "Level": "Level",
     "Branch": "Branch",
     "Description": "Description",
     "List": "Account list"
