@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -235,7 +236,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return null;
             }
 
-            var json = Encoding.UTF8.GetString(Transform.FromBase64String(options));
+            var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
+            var json = WebUtility.UrlDecode(urlEncoded);
             return Framework.Helpers.Json.To<GridOptions>(json);
         }
 
