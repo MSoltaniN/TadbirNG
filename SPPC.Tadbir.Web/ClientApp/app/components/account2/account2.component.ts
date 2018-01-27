@@ -286,7 +286,7 @@ export class Account2Component implements OnInit {
 
         this.state = state;
 
-        this.skip = state.skip + 1;
+        this.skip = state.skip;
         this.reloadGrid();
     }
 
