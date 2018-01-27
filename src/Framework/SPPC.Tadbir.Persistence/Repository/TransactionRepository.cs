@@ -35,24 +35,9 @@ namespace SPPC.Tadbir.Persistence
             _mapper = mapper;
         }
 
-        /// <summary>
-        /// Retrieves all transactions in specified fiscal period and corporate branch from repository.
-        /// </summary>
-        /// <param name="fpId">Identifier of an existing fiscal period</param>
-        /// <param name="branchId">Identifier of an existing corporate branch</param>
-        /// <returns>A collection of <see cref="TransactionViewModel"/> objects retrieved from repository</returns>
-        public IList<TransactionViewModel> GetTransactions(int fpId, int branchId)
-        {
-            var repository = _unitOfWork.GetRepository<Transaction>();
-            var query = GetTransactionQuery(
-                repository, txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId);
-            var transactions = query
-                .Select(txn => _mapper.Map<TransactionViewModel>(txn))
-                .ToList();
-            return transactions
-                .Select(txn => AddWorkItemInfo(txn))
-                .ToList();
-        }
+        #region Transaction Operations
+
+        #region Asynchronous Methods
 
         /// <summary>
         /// Asynchronously retrieves all transactions in specified fiscal period and branch from repository.
@@ -74,6 +59,135 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return transactions;
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves a single financial transaction with detail information from repository.
+        /// </summary>
+        /// <param name="transactionId">Unique identifier of an existing transaction</param>
+        /// <returns>The transaction retrieved from repository as a <see cref="TransactionFullViewModel"/> object</returns>
+        public async Task<TransactionFullViewModel> GetTransactionDetailAsync(int transactionId)
+        {
+            TransactionFullViewModel transactionDetail = null;
+            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
+            var query = GetTransactionWithLinesQuery(repository, txn => txn.Id == transactionId);
+            var transaction = await query.SingleOrDefaultAsync();
+            if (transaction != null)
+            {
+                transactionDetail = _mapper.Map<TransactionFullViewModel>(transaction);
+                var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
+                var historyQuery = GetHistoryQuery(historyRepository, hist => hist.EntityId == transactionId);
+                var history = await historyQuery
+                    .Select(hist => _mapper.Map<HistoryItemViewModel>(hist))
+                    .ToListAsync();
+                (transactionDetail.Actions as List<HistoryItemViewModel>).AddRange(history);
+                await AddWorkItemInfoAsync(transactionDetail.Transaction);
+            }
+
+            return transactionDetail;
+        }
+
+        /// <summary>
+        /// Asynchronously inserts or updates a single transaction in repository.
+        /// </summary>
+        /// <param name="transaction">Item to insert or update</param>
+        public async Task SaveTransactionAsync(TransactionViewModel transaction)
+        {
+            Verify.ArgumentNotNull(transaction, "transaction");
+            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
+            if (transaction.Id == 0)
+            {
+                var newTransaction = _mapper.Map<Transaction>(transaction);
+                UpdateAction(newTransaction);
+                repository.Insert(newTransaction, txn => txn.Document, txn => txn.Document.Actions);
+            }
+            else
+            {
+                var existing = await repository
+                    .GetEntityQuery()
+                    .Where(txn => txn.Id == transaction.Id)
+                    .Include(txn => txn.Document)
+                        .ThenInclude(doc => doc.Actions)
+                    .SingleOrDefaultAsync();
+                if (existing != null)
+                {
+                    UpdateExistingTransaction(existing, transaction);
+                    UpdateAction(existing);
+                    repository.Update(existing, txn => txn.Document, txn => txn.Document.Actions);
+                }
+            }
+
+            await _unitOfWork.CommitAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously deletes an existing financial transaction from repository.
+        /// </summary>
+        /// <param name="transactionId">Identifier of the transaction to delete</param>
+        public async Task DeleteTransactionAsync(int transactionId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
+            var transaction = await repository.GetByIDWithTrackingAsync(
+                transactionId, txn => txn.Lines, txn => txn.Document);
+            if (transaction != null)
+            {
+                var documentRepository = _unitOfWork.GetAsyncRepository<Document>();
+                var document = await documentRepository.GetByIDWithTrackingAsync(
+                    transaction.Document.Id, doc => doc.Actions);
+                transaction.Lines.Clear();
+                document.Actions.Clear();
+                repository.Delete(transaction);
+                documentRepository.Delete(document);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously validates the specified transaction to make sure it fulfills all business rules.
+        /// Current implementation verifies that transaction date is between start and end dates of the fiscal period
+        /// in which the transaction is defined.
+        /// </summary>
+        /// <param name="transaction">Transaction that needs to be validated</param>
+        /// <returns>True if the transaction fulfills all business rules; otherwise, returns false.</returns>
+        public async Task<bool> IsValidTransactionAsync(TransactionViewModel transaction)
+        {
+            Verify.ArgumentNotNull(transaction, "transaction");
+            var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var fiscalPeriod = await repository.GetByIDAsync(transaction.FiscalPeriodId);
+            DateTime transactionDate = DateTime.MinValue;
+            JalaliDateTime jalali = null;
+            if (JalaliDateTime.TryParse(transaction.Date, out jalali))
+            {
+                transactionDate = jalali.ToGregorian();
+            }
+
+            bool isValid = (fiscalPeriod != null)
+                && (transactionDate >= fiscalPeriod.StartDate)
+                && (transactionDate <= fiscalPeriod.EndDate);
+            return isValid;
+        }
+
+        #endregion
+
+        #region Synchronous Methods (May be removed in the future)
+
+        /// <summary>
+        /// Retrieves all transactions in specified fiscal period and corporate branch from repository.
+        /// </summary>
+        /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <returns>A collection of <see cref="TransactionViewModel"/> objects retrieved from repository</returns>
+        public IList<TransactionViewModel> GetTransactions(int fpId, int branchId)
+        {
+            var repository = _unitOfWork.GetRepository<Transaction>();
+            var query = GetTransactionQuery(
+                repository, txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId);
+            var transactions = query
+                .Select(txn => _mapper.Map<TransactionViewModel>(txn))
+                .ToList();
+            return transactions
+                .Select(txn => AddWorkItemInfo(txn))
+                .ToList();
         }
 
         /// <summary>
@@ -103,29 +217,83 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Asynchronously retrieves a single financial transaction with detail information from repository.
+        /// Inserts or updates a single transaction in repository.
         /// </summary>
-        /// <param name="transactionId">Unique identifier of an existing transaction</param>
-        /// <returns>The transaction retrieved from repository as a <see cref="TransactionFullViewModel"/> object</returns>
-        public async Task<TransactionFullViewModel> GetTransactionDetailAsync(int transactionId)
+        /// <param name="transaction">Item to insert or update</param>
+        public void SaveTransaction(TransactionViewModel transaction)
         {
-            TransactionFullViewModel transactionDetail = null;
-            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
-            var query = GetTransactionWithLinesQuery(repository, txn => txn.Id == transactionId);
-            var transaction = await query.SingleOrDefaultAsync();
-            if (transaction != null)
+            Verify.ArgumentNotNull(transaction, "transaction");
+            var repository = _unitOfWork.GetRepository<Transaction>();
+            if (transaction.Id == 0)
             {
-                transactionDetail = _mapper.Map<TransactionFullViewModel>(transaction);
-                var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
-                var historyQuery = GetHistoryQuery(historyRepository, hist => hist.EntityId == transactionId);
-                var history = await historyQuery
-                    .Select(hist => _mapper.Map<HistoryItemViewModel>(hist))
-                    .ToListAsync();
-                (transactionDetail.Actions as List<HistoryItemViewModel>).AddRange(history);
-                await AddWorkItemInfoAsync(transactionDetail.Transaction);
+                var newTransaction = _mapper.Map<Transaction>(transaction);
+                UpdateAction(newTransaction);
+                repository.Insert(newTransaction, txn => txn.Document, txn => txn.Document.Actions);
+            }
+            else
+            {
+                var existing = repository
+                    .GetEntityQuery()
+                    .Where(txn => txn.Id == transaction.Id)
+                    .Include(txn => txn.Document)
+                        .ThenInclude(doc => doc.Actions)
+                    .SingleOrDefault();
+                if (existing != null)
+                {
+                    UpdateExistingTransaction(existing, transaction);
+                    UpdateAction(existing);
+                    repository.Update(existing, txn => txn.Document, txn => txn.Document.Actions);
+                }
             }
 
-            return transactionDetail;
+            _unitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// Deletes an existing financial transaction from repository.
+        /// </summary>
+        /// <param name="transactionId">Identifier of the transaction to delete</param>
+        public void DeleteTransaction(int transactionId)
+        {
+            var repository = _unitOfWork.GetRepository<Transaction>();
+            var transaction = repository.GetByIDWithTracking(
+                transactionId, txn => txn.Lines, txn => txn.Document);
+            if (transaction != null)
+            {
+                var documentRepository = _unitOfWork.GetRepository<Document>();
+                var document = documentRepository.GetByIDWithTracking(
+                    transaction.Document.Id, doc => doc.Actions);
+                transaction.Lines.Clear();
+                document.Actions.Clear();
+                repository.Delete(transaction);
+                documentRepository.Delete(document);
+                _unitOfWork.Commit();
+            }
+        }
+
+        /// <summary>
+        /// Validates the specified transaction to make sure it fulfills all business rules. Current implementation
+        /// verifies that transaction date is between start and end dates of the fiscal period in which the transaction
+        /// is defined.
+        /// </summary>
+        /// <param name="transaction">Transaction that needs to be validated</param>
+        /// <returns>True if the transaction fulfills all business rules; otherwise, returns false.</returns>
+        public bool IsValidTransaction(TransactionViewModel transaction)
+        {
+            Verify.ArgumentNotNull(transaction, "transaction");
+            var repository = _unitOfWork.GetRepository<FiscalPeriod>();
+            var fiscalPeriod = repository.GetByID(transaction.FiscalPeriodId);
+            DateTime transactionDate = DateTime.MinValue;
+            JalaliDateTime jalali = null;
+            if (JalaliDateTime.TryParse(transaction.Date, out jalali))
+            {
+                transactionDate = jalali.ToGregorian();
+            }
+
+            bool isValid = (fiscalPeriod != null)
+                && (transactionDate >= fiscalPeriod.StartDate)
+                && (transactionDate <= fiscalPeriod.EndDate);
+            return isValid;
         }
 
         /// <summary>
@@ -168,108 +336,11 @@ namespace SPPC.Tadbir.Persistence
             return summary;
         }
 
-        /// <summary>
-        /// Inserts or updates a single transaction in repository.
-        /// </summary>
-        /// <param name="transaction">Item to insert or update</param>
-        public void SaveTransaction(TransactionViewModel transaction)
-        {
-            Verify.ArgumentNotNull(transaction, "transaction");
-            var repository = _unitOfWork.GetRepository<Transaction>();
-            if (transaction.Id == 0)
-            {
-                var newTransaction = _mapper.Map<Transaction>(transaction);
-                UpdateAction(newTransaction);
-                repository.Insert(newTransaction);
-            }
-            else
-            {
-                var query = GetTransactionQuery(repository, txn => txn.Id == transaction.Id);
-                var existing = query.SingleOrDefault();
-                if (existing != null)
-                {
-                    UpdateExistingTransaction(existing, transaction);
-                    UpdateAction(existing);
-                    repository.Update(existing);
-                }
-            }
+        #endregion
 
-            _unitOfWork.Commit();
-        }
+        #endregion
 
-        /// <summary>
-        /// Asynchronously inserts or updates a single transaction in repository.
-        /// </summary>
-        /// <param name="transaction">Item to insert or update</param>
-        public async Task SaveTransactionAsync(TransactionViewModel transaction)
-        {
-            Verify.ArgumentNotNull(transaction, "transaction");
-            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
-            if (transaction.Id == 0)
-            {
-                var newTransaction = _mapper.Map<Transaction>(transaction);
-                UpdateAction(newTransaction);
-                repository.Insert(newTransaction);
-            }
-            else
-            {
-                var existing = await repository.GetByIDAsync(transaction.Id);
-                if (existing != null)
-                {
-                    UpdateExistingTransaction(existing, transaction);
-                    UpdateAction(existing);
-                    repository.Update(existing);
-                }
-            }
-
-            await _unitOfWork.CommitAsync();
-        }
-
-        /// <summary>
-        /// Deletes an existing financial transaction from repository.
-        /// </summary>
-        /// <param name="transactionId">Identifier of the transaction to delete</param>
-        public bool DeleteTransaction(int transactionId)
-        {
-            var repository = _unitOfWork.GetRepository<Transaction>();
-            var documentRepository = _unitOfWork.GetRepository<Document>();
-            var query = GetTransactionWithLinesQuery(repository, txn => txn.Id == transactionId);
-            var transaction = query.SingleOrDefault();
-            if (transaction != null)
-            {
-                transaction.Document.Actions.Clear();
-                documentRepository.Update(transaction.Document);
-                transaction.Lines.Clear();
-                repository.Update(transaction);
-                repository.Delete(transaction);
-                _unitOfWork.Commit();
-            }
-
-            return (transaction != null);
-        }
-
-        /// <summary>
-        /// Asynchronously deletes an existing financial transaction from repository.
-        /// </summary>
-        /// <param name="transactionId">Identifier of the transaction to delete</param>
-        public async Task<bool> DeleteTransactionAsync(int transactionId)
-        {
-            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
-            var documentRepository = _unitOfWork.GetAsyncRepository<Document>();
-            var query = GetTransactionWithLinesQuery(repository, txn => txn.Id == transactionId);
-            var transaction = await query.SingleOrDefaultAsync();
-            if (transaction != null)
-            {
-                transaction.Document.Actions.Clear();
-                documentRepository.Update(transaction.Document);
-                transaction.Lines.Clear();
-                repository.Update(transaction);
-                repository.Delete(transaction);
-                await _unitOfWork.CommitAsync();
-            }
-
-            return (transaction != null);
-        }
+        #region Transaction Line Operations
 
         /// <summary>
         /// Retrieves a single financial article from repository.
@@ -339,31 +410,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Validates the specified transaction to make sure it fulfills all business rules. Current implementation
-        /// verifies that transaction date is between start and end dates of the fiscal period in which the transaction
-        /// is defined.
-        /// </summary>
-        /// <param name="transaction">Transaction that needs to be validated</param>
-        /// <returns>True if the transaction fulfills all business rules; otherwise, returns false.</returns>
-        public bool IsValidTransaction(TransactionViewModel transaction)
-        {
-            Verify.ArgumentNotNull(transaction, "transaction");
-            var repository = _unitOfWork.GetRepository<FiscalPeriod>();
-            var fiscalPeriod = repository.GetByID(transaction.FiscalPeriodId);
-            DateTime transactionDate = DateTime.MinValue;
-            JalaliDateTime jalali = null;
-            if (JalaliDateTime.TryParse(transaction.Date, out jalali))
-            {
-                transactionDate = jalali.ToGregorian();
-            }
-
-            bool isValid = (fiscalPeriod != null)
-                && (transactionDate >= fiscalPeriod.StartDate)
-                && (transactionDate <= fiscalPeriod.EndDate);
-            return isValid;
-        }
-
-        /// <summary>
         /// Deletes an existing financial transaction line (article) from repository.
         /// </summary>
         /// <param name="articleId">Identifier of the article to delete</param>
@@ -377,6 +423,8 @@ namespace SPPC.Tadbir.Persistence
                 _unitOfWork.Commit();
             }
         }
+
+        #endregion
 
         private static void UpdateExistingArticle(TransactionLine existing, TransactionLineViewModel article)
         {
@@ -409,6 +457,7 @@ namespace SPPC.Tadbir.Persistence
             existing.No = transaction.No;
             existing.Date = JalaliDateTime.Parse(transaction.Date).ToGregorian();
             existing.Description = transaction.Description;
+            existing.Document.EntityNo = transaction.No;
             var mainAction = existing.Document.Actions.First();
             mainAction.ModifiedBy = userRepository.GetByID(transaction.Document.Actions.First().ModifiedById);
         }
@@ -418,9 +467,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var transactionsQuery = repository
                 .GetEntityQuery()
-                .Include(txn => txn.Lines)
                 .Include(txn => txn.FiscalPeriod)
                 .Include(txn => txn.Branch)
+                .Include(txn => txn.Lines)
                 .Include(txn => txn.Document)
                     .ThenInclude(doc => doc.Type)
                 .Include(txn => txn.Document)
@@ -428,19 +477,15 @@ namespace SPPC.Tadbir.Persistence
                 .Include(txn => txn.Document)
                     .ThenInclude(doc => doc.Actions)
                         .ThenInclude(act => act.CreatedBy)
-                            .ThenInclude(usr => usr.Person)
                 .Include(txn => txn.Document)
                     .ThenInclude(doc => doc.Actions)
                         .ThenInclude(act => act.ModifiedBy)
-                            .ThenInclude(usr => usr.Person)
                 .Include(txn => txn.Document)
                     .ThenInclude(doc => doc.Actions)
                         .ThenInclude(act => act.ConfirmedBy)
-                            .ThenInclude(usr => usr.Person)
                 .Include(txn => txn.Document)
                     .ThenInclude(doc => doc.Actions)
                         .ThenInclude(act => act.ApprovedBy)
-                            .ThenInclude(usr => usr.Person)
                 .Where(criteria);
             return transactionsQuery;
         }
@@ -458,9 +503,9 @@ namespace SPPC.Tadbir.Persistence
                     .ThenInclude(line => line.FiscalPeriod)
                 .Include(txn => txn.Lines)
                     .ThenInclude(line => line.Branch)
-                        .ThenInclude(br => br.Company)
                 .Include(txn => txn.FiscalPeriod)
                 .Include(txn => txn.Branch)
+                    .ThenInclude(br => br.Company)
                 .Include(txn => txn.Document)
                     .ThenInclude(doc => doc.Type)
                 .Include(txn => txn.Document)

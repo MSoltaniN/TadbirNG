@@ -16,11 +16,20 @@ namespace SPPC.Framework.Persistence
     {
         /// <summary>
         /// Returns a queryable object for entity that can be further manipulated to include related properties
-        /// and perform other standard LINQ functions.
+        /// and perform other standard LINQ functions. This method is suitable for read-only operations, as it
+        /// disables EF Core tracking mechanism.
         /// </summary>
         /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
         /// <returns>Queryable object for entity</returns>
         IQueryable<TEntity> GetEntityQuery(GridOptions gridOptions = null);
+
+        /// <summary>
+        /// Returns a queryable object for entity that can be further manipulated to include related properties
+        /// and perform other standard LINQ functions.
+        /// </summary>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
+        /// <returns>Queryable object for entity</returns>
+        IQueryable<TEntity> GetEntityWithTrackingQuery(GridOptions gridOptions = null);
 
         /// <summary>
         /// Retrieves complete information for all existing entities in data store, including specified
@@ -129,7 +138,7 @@ namespace SPPC.Framework.Persistence
         /// <param name="entity">Entity to insert</param>
         /// <param name="cascadeProperties">
         /// Collection of all navigation properties that must be saved along with the main entity.
-        /// When set to null (default), only the main entity will be inserted.
+        /// When not used, only the main entity will be inserted.
         /// </param>
         void Insert(TEntity entity, params Expression<Func<TEntity, object>>[] cascadeProperties);
 
@@ -139,7 +148,7 @@ namespace SPPC.Framework.Persistence
         /// <param name="entity">Entity to update</param>
         /// <param name="cascadeProperties">
         /// Collection of all navigation properties that must be saved along with the main entity.
-        /// When set to null (default), only the main entity will be updated.
+        /// When not used, only the main entity will be updated.
         /// </param>
         void Update(TEntity entity, params Expression<Func<TEntity, object>>[] cascadeProperties);
 

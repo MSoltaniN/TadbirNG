@@ -32,7 +32,8 @@ namespace SPPC.Framework.Persistence
 
         /// <summary>
         /// Returns a queryable object for entity that can be further manipulated to include related properties
-        /// and perform other standard LINQ functions.
+        /// and perform other standard LINQ functions. This method is suitable for read-only operations, as it
+        /// disables EF Core tracking mechanism.
         /// </summary>
         /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
         /// <returns>Queryable object for entity</returns>
@@ -40,6 +41,30 @@ namespace SPPC.Framework.Persistence
         {
             var options = gridOptions ?? new GridOptions();
             var query = _dataSet.AsNoTracking();
+            foreach (var filter in options.Filters)
+            {
+                query = query.Where(filter.ToString());
+            }
+
+            if (options.SortColumns.Count > 0)
+            {
+                string ordering = String.Join(", ", options.SortColumns.Select(col => col.ToString()));
+                query = query.OrderBy(ordering);
+            }
+
+            return query;
+        }
+
+        /// <summary>
+        /// Returns a queryable object for entity that can be further manipulated to include related properties
+        /// and perform other standard LINQ functions.
+        /// </summary>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
+        /// <returns>Queryable object for entity</returns>
+        public IQueryable<TEntity> GetEntityWithTrackingQuery(GridOptions gridOptions = null)
+        {
+            var options = gridOptions ?? new GridOptions();
+            var query = _dataSet.AsQueryable();
             foreach (var filter in options.Filters)
             {
                 query = query.Where(filter.ToString());
@@ -337,7 +362,7 @@ namespace SPPC.Framework.Persistence
         /// <param name="entity">Entity to insert</param>
         /// <param name="cascadeProperties">
         /// Collection of all navigation properties that must be saved along with the main entity.
-        /// When set to null (default), only the main entity will be inserted.
+        /// When not used, only the main entity will be inserted.
         /// </param>
         public void Insert(TEntity entity, params Expression<Func<TEntity, object>>[] cascadeProperties)
         {
@@ -356,7 +381,7 @@ namespace SPPC.Framework.Persistence
         /// <param name="entity">Entity to update</param>
         /// <param name="cascadeProperties">
         /// Collection of all navigation properties that must be saved along with the main entity.
-        /// When set to null (default), only the main entity will be inserted.
+        /// When not used, only the main entity will be updated.
         /// </param>
         public void Update(TEntity entity, params Expression<Func<TEntity, object>>[] cascadeProperties)
         {

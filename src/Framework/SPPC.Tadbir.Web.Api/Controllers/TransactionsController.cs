@@ -28,14 +28,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Transaction CRUD Operations
 
-        // GET: api/transactions/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync
-        [Route(TransactionApi.FiscalPeriodBranchTransactionsSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
-        public IActionResult GetTransactions(int fpId, int branchId)
-        {
-            var transactions = _repository.GetTransactions(fpId, branchId);
-            return Json(transactions);
-        }
+        #region Asynchronous Methods
 
         // GET: api/transactions/fp/{fpId:min(1)}/branch/{branchId:min(1)}
         [Route(TransactionApi.FiscalPeriodBranchTransactionsUrl)]
@@ -46,12 +39,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(transactions);
         }
 
-        // GET: api/transactions/{transactionId:int}/details/sync
-        [Route(TransactionApi.TransactionDetailsSyncUrl)]
+        // GET: api/transactions/{transactionId:int}/details
+        [Route(TransactionApi.TransactionDetailsUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
-        public IActionResult GetTransactionDetail(int transactionId)
+        public async Task<IActionResult> GetTransactionDetailAsync(int transactionId)
         {
-            var transaction = _repository.GetTransactionDetail(transactionId);
+            var transaction = await _repository.GetTransactionDetailAsync(transactionId);
             var result = (transaction != null)
                 ? Json(transaction)
                 : NotFound() as IActionResult;
@@ -59,12 +52,98 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
-        // GET: api/transactions/{transactionId:int}/details
-        [Route(TransactionApi.TransactionDetailsUrl)]
-        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
-        public async Task<IActionResult> GetTransactionDetailAsync(int transactionId)
+        // POST: api/transactions
+        [HttpPost]
+        [Route(TransactionApi.TransactionsUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
+        public async Task<IActionResult> PostNewTransactionAsync([FromBody] TransactionViewModel transaction)
         {
-            var transaction = await _repository.GetTransactionDetailAsync(transactionId);
+            if (transaction == null)
+            {
+                return BadRequest("Could not post new transaction because a 'null' value was provided.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_repository.IsValidTransaction(transaction))
+            {
+                return BadRequest(Strings.OutOfFiscalPeriodDate);
+            }
+
+            SetDocument(transaction);
+            await _repository.SaveTransactionAsync(transaction);
+            return StatusCode(StatusCodes.Status201Created);
+        }
+
+        // PUT: api/transactions/{transactionId:int}
+        [HttpPut]
+        [Route(TransactionApi.TransactionUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
+        public async Task<IActionResult> PutModifiedTransactionAsync(
+            int transactionId, [FromBody] TransactionViewModel transaction)
+        {
+            if (transaction == null)
+            {
+                return BadRequest("Could not put modified transaction because a 'null' value was provided.");
+            }
+
+            if (transactionId <= 0 || transaction.Id <= 0)
+            {
+                return BadRequest("Could not put modified transaction because original transaction does not exist.");
+            }
+
+            if (transactionId != transaction.Id)
+            {
+                return BadRequest("Could not put modified transaction because of an identity conflict in the request.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!await _repository.IsValidTransactionAsync(transaction))
+            {
+                return BadRequest(Strings.OutOfFiscalPeriodDate);
+            }
+
+            SetDocument(transaction);
+            await _repository.SaveTransactionAsync(transaction);
+            return Ok();
+        }
+
+        // DELETE: api/transactions/{transactionId:int}
+        [HttpDelete]
+        [Route(TransactionApi.TransactionUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
+        public async Task<IActionResult> DeleteExistingTransactionAsync(int transactionId)
+        {
+            await _repository.DeleteTransactionAsync(transactionId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        #endregion
+
+        #region Synchronous Methods (May be removed in the future)
+
+        // GET: api/transactions/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync
+        [Route(TransactionApi.FiscalPeriodBranchTransactionsSyncUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        public IActionResult GetTransactions(int fpId, int branchId)
+        {
+            var transactions = _repository.GetTransactions(fpId, branchId);
+            return Json(transactions);
+        }
+
+        // GET: api/transactions/{transactionId:int}/details/sync
+        [Route(TransactionApi.TransactionDetailsSyncUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        public IActionResult GetTransactionDetail(int transactionId)
+        {
+            var transaction = _repository.GetTransactionDetail(transactionId);
             var result = (transaction != null)
                 ? Json(transaction)
                 : NotFound() as IActionResult;
@@ -98,35 +177,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        // POST: api/transactions
-        [HttpPost]
-        [Route(TransactionApi.TransactionsUrl)]
-        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
-        public async Task<IActionResult> PostNewTransactionAsync([FromBody] TransactionViewModel transaction)
-        {
-            if (transaction == null)
-            {
-                return BadRequest("Could not post new transaction because a 'null' value was provided.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (!_repository.IsValidTransaction(transaction))
-            {
-                return BadRequest(Strings.OutOfFiscalPeriodDate);
-            }
-
-            SetDocument(transaction);
-            await _repository.SaveTransactionAsync(transaction);
-            return StatusCode(StatusCodes.Status201Created);
-        }
-
-        // PUT: api/transactions/{transactionId:int}
+        // PUT: api/transactions/{transactionId:min(1)}/sync
         [HttpPut]
-        [Route(TransactionApi.TransactionUrl)]
+        [Route(TransactionApi.TransactionSyncUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
         public IActionResult PutModifiedTransaction(int transactionId, [FromBody] TransactionViewModel transaction)
         {
@@ -166,25 +219,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
         public IActionResult DeleteExistingTransaction(int transactionId)
         {
-            bool deleted = _repository.DeleteTransaction(transactionId);
-            var result = deleted
-                ? StatusCode(StatusCodes.Status204NoContent)
-                : BadRequest("Could not delete transaction because it does not exist.") as IActionResult;
-            return result;
+            _repository.DeleteTransaction(transactionId);
+            return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        // DELETE: api/transactions/{transactionId:int}
-        [HttpDelete]
-        [Route(TransactionApi.TransactionUrl)]
-        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
-        public async Task<IActionResult> DeleteExistingTransactionAsync(int transactionId)
-        {
-            bool deleted = await _repository.DeleteTransactionAsync(transactionId);
-            var result = deleted
-                ? StatusCode(StatusCodes.Status204NoContent)
-                : BadRequest("Could not delete transaction because it does not exist.") as IActionResult;
-            return result;
-        }
+        #endregion
 
         #endregion
 

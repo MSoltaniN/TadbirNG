@@ -49,7 +49,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasOne(d => d.Document)
                 .WithMany(p => p.Actions)
                 .HasForeignKey("DocumentID")
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Core_DocumentAction_Core_Document");
             builder.HasOne(d => d.ModifiedBy)
                 .WithMany(p => p.ModifiedActions)
