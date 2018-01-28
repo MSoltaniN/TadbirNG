@@ -6,7 +6,7 @@ using SPPC.Tadbir.ViewModel.Finance;
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// Defines repository operations for managing a transaction and its child items.
+    /// عملیات مورد نیاز برای مدیریت اطلاعات اسناد مالی و آرتیکل های آنها را تعریف می کند.
     /// </summary>
     public interface ITransactionRepository
     {
@@ -15,37 +15,37 @@ namespace SPPC.Tadbir.Persistence
         #region Asynchronous Methods
 
         /// <summary>
-        /// Asynchronously retrieves all transactions in specified fiscal period and branch from repository.
+        /// به روش آسنکرون، کلیه اسناد مالی را که در دوره مالی و شعبه مشخص شده تعریف شده اند، از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">Identifier of an existing fiscal period</param>
-        /// <param name="branchId">Identifier of an existing corporate branch</param>
-        /// <returns>A collection of <see cref="TransactionViewModel"/> objects retrieved from repository</returns>
+        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         Task<IList<TransactionViewModel>> GetTransactionsAsync(int fpId, int branchId);
 
         /// <summary>
-        /// Asynchronously retrieves a single financial transaction with detail information from repository.
+        /// به روش آسنکرون، سند مالی با شناسه عددی مشخص شده را به همراه اطلاعات کامل آن از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">Unique identifier of an existing transaction</param>
-        /// <returns>The transaction retrieved from repository as a <see cref="TransactionFullViewModel"/> object</returns>
+        /// <param name="transactionId">شناسه عددی یکی از اسناد مالی موجود</param>
+        /// <returns>سند مالی مشخص شده با شناسه عددی به همراه اطلاعات کامل آن</returns>
         Task<TransactionFullViewModel> GetTransactionDetailAsync(int transactionId);
 
         /// <summary>
-        /// Asynchronously inserts or updates a single transaction in repository.
+        /// به روش آسنکرون، اطلاعات یک سند مالی را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="transaction">Item to insert or update</param>
+        /// <param name="transaction">سند مالی برای ایجاد یا اصلاح</param>
         Task SaveTransactionAsync(TransactionViewModel transaction);
 
         /// <summary>
-        /// Asynchronously deletes an existing financial transaction from repository.
+        /// به روش آسنکرون، سند مالی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
         /// </summary>
-        /// <param name="transactionId">Identifier of the transaction to delete</param>
+        /// <param name="transactionId">شناسه عددی سند مالی برای حذف</param>
         Task DeleteTransactionAsync(int transactionId);
 
         /// <summary>
-        /// Asynchronously validates the specified transaction to make sure it fulfills all business rules.
+        /// به روش آسنکرون، اطلاعات سند مالی داده شده را برای مطابقت با کلیه قواعد کاری برنامه اعتبارسنجی می کند
         /// </summary>
-        /// <param name="transaction">Transaction that needs to be validated</param>
-        /// <returns>True if the transaction fulfills all business rules; otherwise, returns false.</returns>
+        /// <param name="transaction">سند مالی که باید اعتبارسنجی شود</param>
+        /// <returns>مقدار بولی درست در صورت مطابقت کامل با قواعد کاری، در غیر این صورت مقدار بولی نادرست</returns>
         Task<bool> IsValidTransactionAsync(TransactionViewModel transaction);
 
         #endregion
@@ -53,51 +53,51 @@ namespace SPPC.Tadbir.Persistence
         #region Synchronous Methods (May be removed in the future)
 
         /// <summary>
-        /// Retrieves all transactions in specified fiscal period and branch from repository.
+        /// کلیه اسناد مالی را که در دوره مالی و شعبه مشخص شده تعریف شده اند، از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">Identifier of an existing fiscal period</param>
-        /// <param name="branchId">Identifier of an existing corporate branch</param>
-        /// <returns>A collection of <see cref="TransactionViewModel"/> objects retrieved from repository</returns>
+        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         IList<TransactionViewModel> GetTransactions(int fpId, int branchId);
 
         /// <summary>
-        /// Retrieves a single financial transaction with detail information from repository.
+        /// سند مالی با شناسه عددی مشخص شده را به همراه اطلاعات کامل آن از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">Unique identifier of an existing transaction</param>
-        /// <returns>The transaction retrieved from repository as a <see cref="TransactionFullViewModel"/> object</returns>
+        /// <param name="transactionId">شناسه عددی یکی از اسناد مالی موجود</param>
+        /// <returns>سند مالی مشخص شده با شناسه عددی به همراه اطلاعات کامل آن</returns>
         TransactionFullViewModel GetTransactionDetail(int transactionId);
 
         /// <summary>
-        /// Inserts or updates a single transaction in repository.
+        /// اطلاعات یک سند مالی را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="transaction">Item to insert or update</param>
+        /// <param name="transaction">سند مالی برای ایجاد یا اصلاح</param>
         void SaveTransaction(TransactionViewModel transaction);
 
         /// <summary>
-        /// Deletes an existing financial transaction from repository.
+        /// سند مالی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
         /// </summary>
-        /// <param name="transactionId">Identifier of the transaction to delete</param>
+        /// <param name="transactionId">شناسه عددی سند مالی برای حذف</param>
         void DeleteTransaction(int transactionId);
 
         /// <summary>
-        /// Validates the specified transaction to make sure it fulfills all business rules.
+        /// اطلاعات سند مالی داده شده را برای مطابقت با کلیه قواعد کاری برنامه اعتبارسنجی می کند
         /// </summary>
-        /// <param name="transaction">Transaction that needs to be validated</param>
-        /// <returns>True if the transaction fulfills all business rules; otherwise, returns false.</returns>
+        /// <param name="transaction">سند مالی که باید اعتبارسنجی شود</param>
+        /// <returns>مقدار بولی درست در صورت مطابقت کامل با قواعد کاری، در غیر این صورت مقدار بولی نادرست</returns>
         bool IsValidTransaction(TransactionViewModel transaction);
 
         /// <summary>
-        /// Retrieves summary information for an existing transaction.
+        /// اطلاعات خلاصه سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">Unique identifier of an existing transaction</param>
-        /// <returns>The transaction summary retrieved from repository as a <see cref="TransactionSummaryViewModel"/> object</returns>
+        /// <param name="transactionId">شناسه عددی یکی از اسناد مالی موجود</param>
+        /// <returns>اطلاعات خلاصه سند مالی مشخص شده با شناسه عددی</returns>
         TransactionSummaryViewModel GetTransactionSummary(int transactionId);
 
         /// <summary>
-        /// Retrieves summary information for an existing transaction.
+        /// اطلاعات خلاصه سند مشخص شده با شناسه عددی مستند اداری مرتبط را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="documentId">Unique identifier of the document related to an existing transaction</param>
-        /// <returns>The transaction summary retrieved from repository as a <see cref="TransactionSummaryViewModel"/> object</returns>
+        /// <param name="documentId">شناسه عددی یکی از مستندهای اداری موجود</param>
+        /// <returns>اطلاعات خلاصه سند مالی مشخص شده با شناسه عددی مستند اداری مرتبط</returns>
         TransactionSummaryViewModel GetTransactionSummaryFromDocument(int documentId);
 
         #endregion
@@ -106,32 +106,65 @@ namespace SPPC.Tadbir.Persistence
 
         #region Transaction Line Operations
 
+        #region Asynchronous Methods
+
         /// <summary>
-        /// Retrieves a single financial article from repository.
+        /// به روش آسنکرون، اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="articleId">Unique identifier of an existing article</param>
-        /// <returns>The article retrieved from repository as a <see cref="TransactionLineViewModel"/> object</returns>
+        /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
+        /// <returns>اطلاعات آرتیکل مشخص شده با شناسه عددی</returns>
+        Task<TransactionLineViewModel> GetArticleAsync(int articleId);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات کامل سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
+        /// <returns>اطلاعات کامل آرتیکل مشخص شده با شناسه عددی</returns>
+        Task<TransactionLineFullViewModel> GetArticleDetailsAsync(int articleId);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات یک سطر سند مالی (آرتیکل) را در محل ذخیره ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
+        Task SaveArticleAsync(TransactionLineViewModel article);
+
+        /// <summary>
+        /// به روش آسنکرون، سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// </summary>
+        /// <param name="articleId">شناسه عددی آرتیکل برای حذف</param>
+        Task DeleteArticleAsync(int articleId);
+
+        #endregion
+
+        #region Synchronous Methods (May be removed in the future)
+
+        /// <summary>
+        /// اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
+        /// <returns>اطلاعات آرتیکل مشخص شده با شناسه عددی</returns>
         TransactionLineViewModel GetArticle(int articleId);
 
         /// <summary>
-        /// Retrieves a single financial transaction line (article) with detail information from repository.
+        /// اطلاعات کامل سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="articleId">Unique identifier of an existing transaction line (article)</param>
-        /// <returns>The transaction line (article) retrieved from repository as a
-        /// <see cref="TransactionLineFullViewModel"/> object</returns>
+        /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
+        /// <returns>اطلاعات کامل آرتیکل مشخص شده با شناسه عددی</returns>
         TransactionLineFullViewModel GetArticleDetails(int articleId);
 
         /// <summary>
-        /// Inserts or updates a single transaction line (article) in repository.
+        /// اطلاعات یک سطر سند مالی (آرتیکل) را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="article">Article to insert or update</param>
+        /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
         void SaveArticle(TransactionLineViewModel article);
 
         /// <summary>
-        /// Deletes an existing financial transaction line (article) from repository.
+        /// سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
         /// </summary>
-        /// <param name="articleId">Identifier of the article to delete</param>
+        /// <param name="articleId">شناسه عددی آرتیکل برای حذف</param>
         void DeleteArticle(int articleId);
+
+        #endregion
 
         #endregion
     }

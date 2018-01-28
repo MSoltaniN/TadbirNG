@@ -184,6 +184,11 @@ namespace SPPC.Tadbir.Api
         public const string TransactionArticlesUrl = "transactions/{transactionId:min(1)}/articles";
 
         /// <summary>
+        /// API server route URL for all articles in a single transaction specified by identifier
+        /// </summary>
+        public const string TransactionArticlesSyncUrl = "transactions/{transactionId:min(1)}/articles/sync";
+
+        /// <summary>
         /// API client URL for a single transaction article specified by identifier
         /// </summary>
         public const string TransactionArticle = "transactions/articles/{0}";
@@ -194,6 +199,11 @@ namespace SPPC.Tadbir.Api
         public const string TransactionArticleUrl = "transactions/articles/{articleId:min(1)}";
 
         /// <summary>
+        /// API server route URL for a single transaction article specified by identifier
+        /// </summary>
+        public const string TransactionArticleSyncUrl = "transactions/articles/{articleId:min(1)}/sync";
+
+        /// <summary>
         /// API client URL for details of a single transaction article specified by identifier
         /// </summary>
         public const string TransactionArticleDetails = "transactions/articles/{0}/details";
@@ -202,5 +212,10 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for details of a single transaction article specified by identifier
         /// </summary>
         public const string TransactionArticleDetailsUrl = "transactions/articles/{articleId:min(1)}/details";
+
+        /// <summary>
+        /// API server route URL for details of a single transaction article specified by identifier
+        /// </summary>
+        public const string TransactionArticleDetailsSyncUrl = "transactions/articles/{articleId:min(1)}/details/sync";
     }
 }

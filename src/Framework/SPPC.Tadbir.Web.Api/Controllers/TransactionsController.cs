@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Framework.Common;
+using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
@@ -45,11 +46,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetTransactionDetailAsync(int transactionId)
         {
             var transaction = await _repository.GetTransactionDetailAsync(transactionId);
-            var result = (transaction != null)
-                ? Json(transaction)
-                : NotFound() as IActionResult;
-
-            return result;
+            return JsonReadResult(transaction);
         }
 
         // POST: api/transactions
@@ -58,17 +55,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
         public async Task<IActionResult> PostNewTransactionAsync([FromBody] TransactionViewModel transaction)
         {
-            if (transaction == null)
+            var result = BasicValidationResult(transaction, Entities.Transaction);
+            if (result is BadRequestObjectResult)
             {
-                return BadRequest("Could not post new transaction because a 'null' value was provided.");
+                return result;
             }
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (!_repository.IsValidTransaction(transaction))
+            if (!await _repository.IsValidTransactionAsync(transaction))
             {
                 return BadRequest(Strings.OutOfFiscalPeriodDate);
             }
@@ -85,24 +78,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedTransactionAsync(
             int transactionId, [FromBody] TransactionViewModel transaction)
         {
-            if (transaction == null)
+            var result = BasicValidationResult(transaction, Entities.Transaction, transactionId);
+            if (result is BadRequestObjectResult)
             {
-                return BadRequest("Could not put modified transaction because a 'null' value was provided.");
-            }
-
-            if (transactionId <= 0 || transaction.Id <= 0)
-            {
-                return BadRequest("Could not put modified transaction because original transaction does not exist.");
-            }
-
-            if (transactionId != transaction.Id)
-            {
-                return BadRequest("Could not put modified transaction because of an identity conflict in the request.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
+                return result;
             }
 
             if (!await _repository.IsValidTransactionAsync(transaction))
@@ -144,11 +123,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public IActionResult GetTransactionDetail(int transactionId)
         {
             var transaction = _repository.GetTransactionDetail(transactionId);
-            var result = (transaction != null)
-                ? Json(transaction)
-                : NotFound() as IActionResult;
-
-            return result;
+            return JsonReadResult(transaction);
         }
 
         // POST: api/transactions/sync
@@ -157,14 +132,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
         public IActionResult PostNewTransaction([FromBody] TransactionViewModel transaction)
         {
-            if (transaction == null)
+            var result = BasicValidationResult(transaction, Entities.Transaction);
+            if (result is BadRequestObjectResult)
             {
-                return BadRequest("Could not post new transaction because a 'null' value was provided.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
+                return result;
             }
 
             if (!_repository.IsValidTransaction(transaction))
@@ -183,24 +154,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
         public IActionResult PutModifiedTransaction(int transactionId, [FromBody] TransactionViewModel transaction)
         {
-            if (transaction == null)
+            var result = BasicValidationResult(transaction, Entities.Transaction, transactionId);
+            if (result is BadRequestObjectResult)
             {
-                return BadRequest("Could not put modified transaction because a 'null' value was provided.");
-            }
-
-            if (transactionId <= 0 || transaction.Id <= 0)
-            {
-                return BadRequest("Could not put modified transaction because original transaction does not exist.");
-            }
-
-            if (transactionId != transaction.Id)
-            {
-                return BadRequest("Could not put modified transaction because of an identity conflict in the request.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
+                return result;
             }
 
             if (!_repository.IsValidTransaction(transaction))
@@ -229,49 +186,135 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Article CRUD Operations
 
+        #region Asynchronous Methods
+
         // GET: api/transactions/articles/{articleId:min(1)}
         [Route(TransactionApi.TransactionArticleUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
-        public IActionResult GetArticle(int articleId)
+        public async Task<IActionResult> GetArticleAsync(int articleId)
         {
-            var article = _repository.GetArticle(articleId);
-            var result = (article != null)
-                ? Json(article)
-                : NotFound() as IActionResult;
-            return result;
+            var article = await _repository.GetArticleAsync(articleId);
+            return JsonReadResult(article);
         }
 
-        // GET: api/transactions/articles/{articleId:int}/details
+        // GET: api/transactions/articles/{articleId:min(1)}/details
         [Route(TransactionApi.TransactionArticleDetailsUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
-        public IActionResult GetArticleDetails(int articleId)
+        public async Task<IActionResult> GetArticleDetailsAsync(int articleId)
         {
-            var article = _repository.GetArticleDetails(articleId);
-            var result = (article != null)
-                ? Json(article)
-                : NotFound() as IActionResult;
-            return result;
+            var article = await _repository.GetArticleDetailsAsync(articleId);
+            return JsonReadResult(article);
         }
 
-        // POST: api/transactions/{transactionId:int}/articles
+        // POST: api/transactions/{transactionId:min(1)}/articles
         [HttpPost]
         [Route(TransactionApi.TransactionArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
-        public IActionResult PostNewArticle(int transactionId, [FromBody] TransactionLineViewModel article)
+        public async Task<IActionResult> PostNewArticleAsync(
+            int transactionId, [FromBody] TransactionLineViewModel article)
         {
-            if (article == null)
+            var result = BasicValidationResult(article, Entities.Article);
+            if (result is BadRequestObjectResult)
             {
-                return BadRequest("Could not post new article because a 'null' value was provided.");
+                return result;
             }
 
             if (article.TransactionId != transactionId)
             {
-                return BadRequest("Could not post new article because of an identity conflict in the request.");
+                var message = String.Format(ValidationMessages.RequestFailedConflict, Entities.Article);
+                return BadRequest(message);
             }
 
-            if (!ModelState.IsValid)
+            if ((article.Debit > 0m) && (article.Credit > 0m))
             {
-                return BadRequest(ModelState);
+                return BadRequest(Strings.DebitAndCreditNotAllowed);
+            }
+
+            await _repository.SaveArticleAsync(article);
+            return StatusCode(StatusCodes.Status201Created);
+        }
+
+        // PUT: api/transactions/articles/{articleId:min(1)}
+        [HttpPut]
+        [Route(TransactionApi.TransactionArticleUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
+        public async Task<IActionResult> PutModifiedArticleAsync(
+            int articleId, [FromBody] TransactionLineViewModel article)
+        {
+            var result = BasicValidationResult(article, Entities.Article, articleId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if ((article.Debit > 0m) && (article.Credit > 0m))
+            {
+                return BadRequest(Strings.DebitAndCreditNotAllowed);
+            }
+
+            await _repository.SaveArticleAsync(article);
+            return Ok();
+        }
+
+        // DELETE: api/transactions/articles/{articleId:int}
+        [HttpDelete]
+        [Route(TransactionApi.TransactionArticleUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
+        public async Task<IActionResult> DeleteExistingArticleAsync(int articleId)
+        {
+            if (articleId <= 0)
+            {
+                return BadRequest("Could not delete article because it does not exist.");
+            }
+
+            var article = _repository.GetArticle(articleId);
+            if (article == null)
+            {
+                return BadRequest("Could not delete article because it does not exist.");
+            }
+
+            await _repository.DeleteArticleAsync(articleId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        #endregion
+
+        #region Synchronous Methods (May be removed in the future)
+
+        // GET: api/transactions/articles/{articleId:min(1)}/sync
+        [Route(TransactionApi.TransactionArticleSyncUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        public IActionResult GetArticle(int articleId)
+        {
+            var article = _repository.GetArticle(articleId);
+            return JsonReadResult(article);
+        }
+
+        // GET: api/transactions/articles/{articleId:min(1)}/details/sync
+        [Route(TransactionApi.TransactionArticleDetailsSyncUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        public IActionResult GetArticleDetails(int articleId)
+        {
+            var article = _repository.GetArticleDetails(articleId);
+            return JsonReadResult(article);
+        }
+
+        // POST: api/transactions/{transactionId:min(1)}/articles/sync
+        [HttpPost]
+        [Route(TransactionApi.TransactionArticlesSyncUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
+        public IActionResult PostNewArticle(int transactionId, [FromBody] TransactionLineViewModel article)
+        {
+            var result = BasicValidationResult(article, Entities.Article);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (article.TransactionId != transactionId)
+            {
+                var message = String.Format(ValidationMessages.RequestFailedConflict, Entities.Article);
+                return BadRequest(message);
             }
 
             if ((article.Debit > 0m) && (article.Credit > 0m))
@@ -283,30 +326,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        // PUT: api/transactions/articles/{articleId:int}
+        // PUT: api/transactions/articles/{articleId:min(1)}/sync
         [HttpPut]
-        [Route(TransactionApi.TransactionArticleUrl)]
+        [Route(TransactionApi.TransactionArticleSyncUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
         public IActionResult PutModifiedArticle(int articleId, [FromBody] TransactionLineViewModel article)
         {
-            if (article == null)
+            var result = BasicValidationResult(article, Entities.Article, articleId);
+            if (result is BadRequestObjectResult)
             {
-                return BadRequest("Could not put modified article because a 'null' value was provided.");
-            }
-
-            if (articleId <= 0 || article.Id <= 0)
-            {
-                return BadRequest("Could not put modified article because original transaction does not exist.");
-            }
-
-            if (articleId != article.Id)
-            {
-                return BadRequest("Could not put modified article because of an identity conflict in the request.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
+                return result;
             }
 
             if ((article.Debit > 0m) && (article.Credit > 0m))
@@ -318,9 +347,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        // DELETE: api/transactions/articles/{articleId:int}
+        // DELETE: api/transactions/articles/{articleId:int}/sync
         [HttpDelete]
-        [Route(TransactionApi.TransactionArticleUrl)]
+        [Route(TransactionApi.TransactionArticleSyncUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
         public IActionResult DeleteExistingArticle(int articleId)
         {
@@ -340,6 +369,40 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         #endregion
+
+        #endregion
+
+        private IActionResult JsonReadResult<TData>(TData data)
+        {
+            var result = (data != null)
+                ? Json(data)
+                : NotFound() as IActionResult;
+
+            return result;
+        }
+
+        private IActionResult BasicValidationResult<TModel>(TModel model, string modelType, int modelId = 0)
+        {
+            if (model == null)
+            {
+                var message = String.Format(ValidationMessages.RequestFailedNoData, modelType);
+                return BadRequest(message);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            int id = (int)Reflector.GetProperty(model, "Id");
+            if (modelId != id)
+            {
+                var message = String.Format(ValidationMessages.RequestFailedConflict, modelType);
+                return BadRequest(message);
+            }
+
+            return Ok();
+        }
 
         private string ValidateGroupStateOperation(string operation, IEnumerable<TransactionSummaryViewModel> summaries)
         {

@@ -18,17 +18,15 @@ using SPPC.Tadbir.ViewModel.Workflow;
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// Provides operations required for managing a single transaction and its child items in the underlying database.
+    /// عملیات مورد نیاز برای مدیریت اطلاعات اسناد مالی و آرتیکل های آنها را پیاده سازی می کند.
     /// </summary>
     public class TransactionRepository : ITransactionRepository
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TransactionRepository"/> class using specified
-        /// unit of work implementation and domain mapper.
-        /// <param name="unitOfWork">The <see cref="IUnitOfWork"/> implementation to use for all database operations
-        /// in this repository.</param>
-        /// <param name="mapper">Domain mapper to use for mapping between entitiy and view model classes</param>
+        /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
+        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
+        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         public TransactionRepository(IUnitOfWork unitOfWork, IDomainMapper mapper)
         {
             _unitOfWork = unitOfWork;
@@ -40,11 +38,11 @@ namespace SPPC.Tadbir.Persistence
         #region Asynchronous Methods
 
         /// <summary>
-        /// Asynchronously retrieves all transactions in specified fiscal period and branch from repository.
+        /// به روش آسنکرون، کلیه اسناد مالی را که در دوره مالی و شعبه مشخص شده تعریف شده اند، از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">Identifier of an existing fiscal period</param>
-        /// <param name="branchId">Identifier of an existing corporate branch</param>
-        /// <returns>A collection of <see cref="TransactionViewModel"/> objects retrieved from repository</returns>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<IList<TransactionViewModel>> GetTransactionsAsync(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetAsyncRepository<Transaction>();
@@ -62,10 +60,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Asynchronously retrieves a single financial transaction with detail information from repository.
+        /// به روش آسنکرون، سند مالی با شناسه دیتابیسی مشخص شده را به همراه اطلاعات کامل آن از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">Unique identifier of an existing transaction</param>
-        /// <returns>The transaction retrieved from repository as a <see cref="TransactionFullViewModel"/> object</returns>
+        /// <param name="transactionId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
+        /// <returns>سند مالی مشخص شده با شناسه دیتابیسی به همراه اطلاعات کامل آن</returns>
         public async Task<TransactionFullViewModel> GetTransactionDetailAsync(int transactionId)
         {
             TransactionFullViewModel transactionDetail = null;
@@ -88,9 +86,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Asynchronously inserts or updates a single transaction in repository.
+        /// به روش آسنکرون، اطلاعات یک سند مالی را در دیتابیس ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="transaction">Item to insert or update</param>
+        /// <param name="transaction">سند مالی برای ایجاد یا اصلاح</param>
         public async Task SaveTransactionAsync(TransactionViewModel transaction)
         {
             Verify.ArgumentNotNull(transaction, "transaction");
@@ -121,9 +119,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Asynchronously deletes an existing financial transaction from repository.
+        /// به روش آسنکرون، سند مالی مشخص شده با شناسه دیتابیسی را از دیتابیس حذف می کند
         /// </summary>
-        /// <param name="transactionId">Identifier of the transaction to delete</param>
+        /// <param name="transactionId">شناسه دیتابیسی سند مالی برای حذف</param>
         public async Task DeleteTransactionAsync(int transactionId)
         {
             var repository = _unitOfWork.GetAsyncRepository<Transaction>();
@@ -143,12 +141,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Asynchronously validates the specified transaction to make sure it fulfills all business rules.
-        /// Current implementation verifies that transaction date is between start and end dates of the fiscal period
-        /// in which the transaction is defined.
+        /// به روش آسنکرون، اطلاعات سند مالی داده شده را برای مطابقت با کلیه قواعد کاری برنامه اعتبارسنجی می کند
         /// </summary>
-        /// <param name="transaction">Transaction that needs to be validated</param>
-        /// <returns>True if the transaction fulfills all business rules; otherwise, returns false.</returns>
+        /// <param name="transaction">سند مالی که باید اعتبارسنجی شود</param>
+        /// <returns>مقدار بولی درست در صورت مطابقت کامل با قواعد کاری، در غیر این صورت مقدار بولی نادرست</returns>
         public async Task<bool> IsValidTransactionAsync(TransactionViewModel transaction)
         {
             Verify.ArgumentNotNull(transaction, "transaction");
@@ -172,11 +168,11 @@ namespace SPPC.Tadbir.Persistence
         #region Synchronous Methods (May be removed in the future)
 
         /// <summary>
-        /// Retrieves all transactions in specified fiscal period and corporate branch from repository.
+        /// کلیه اسناد مالی را که در دوره مالی و شعبه مشخص شده تعریف شده اند، از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">Identifier of an existing fiscal period</param>
-        /// <param name="branchId">Identifier of an existing corporate branch</param>
-        /// <returns>A collection of <see cref="TransactionViewModel"/> objects retrieved from repository</returns>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public IList<TransactionViewModel> GetTransactions(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetRepository<Transaction>();
@@ -191,10 +187,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves a single financial transaction with detail information from repository
+        /// سند مالی با شناسه دیتابیسی مشخص شده را به همراه اطلاعات کامل آن از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">Unique identifier of an existing transaction</param>
-        /// <returns>The transaction retrieved from repository as a <see cref="TransactionFullViewModel"/> object</returns>
+        /// <param name="transactionId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
+        /// <returns>سند مالی مشخص شده با شناسه دیتابیسی به همراه اطلاعات کامل آن</returns>
         public TransactionFullViewModel GetTransactionDetail(int transactionId)
         {
             TransactionFullViewModel transactionDetail = null;
@@ -217,9 +213,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Inserts or updates a single transaction in repository.
+        /// اطلاعات یک سند مالی را در دیتابیس ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="transaction">Item to insert or update</param>
+        /// <param name="transaction">سند مالی برای ایجاد یا اصلاح</param>
         public void SaveTransaction(TransactionViewModel transaction)
         {
             Verify.ArgumentNotNull(transaction, "transaction");
@@ -250,9 +246,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Deletes an existing financial transaction from repository.
+        /// سند مالی مشخص شده با شناسه دیتابیسی را از دیتابیس حذف می کند
         /// </summary>
-        /// <param name="transactionId">Identifier of the transaction to delete</param>
+        /// <param name="transactionId">شناسه دیتابیسی سند مالی برای حذف</param>
         public void DeleteTransaction(int transactionId)
         {
             var repository = _unitOfWork.GetRepository<Transaction>();
@@ -272,12 +268,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Validates the specified transaction to make sure it fulfills all business rules. Current implementation
-        /// verifies that transaction date is between start and end dates of the fiscal period in which the transaction
-        /// is defined.
+        /// اطلاعات سند مالی داده شده را برای مطابقت با کلیه قواعد کاری برنامه اعتبارسنجی می کند
         /// </summary>
-        /// <param name="transaction">Transaction that needs to be validated</param>
-        /// <returns>True if the transaction fulfills all business rules; otherwise, returns false.</returns>
+        /// <param name="transaction">سند مالی که باید اعتبارسنجی شود</param>
+        /// <returns>مقدار بولی درست در صورت مطابقت کامل با قواعد کاری، در غیر این صورت مقدار بولی نادرست</returns>
         public bool IsValidTransaction(TransactionViewModel transaction)
         {
             Verify.ArgumentNotNull(transaction, "transaction");
@@ -297,10 +291,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves summary information for an existing transaction.
+        /// اطلاعات خلاصه سند مشخص شده با شناسه دیتابیسی را از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">Unique identifier of an existing transaction</param>
-        /// <returns>The transaction summary retrieved from repository as a <see cref="TransactionSummaryViewModel"/> object</returns>
+        /// <param name="transactionId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
+        /// <returns>اطلاعات خلاصه سند مالی مشخص شده با شناسه دیتابیسی</returns>
         public TransactionSummaryViewModel GetTransactionSummary(int transactionId)
         {
             TransactionSummaryViewModel summary = default(TransactionSummaryViewModel);
@@ -316,10 +310,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves summary information for an existing transaction.
+        /// اطلاعات خلاصه سند مشخص شده با شناسه دیتابیسی مستند اداری مرتبط را از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="documentId">Unique identifier of the document related to an existing transaction</param>
-        /// <returns>The transaction summary retrieved from repository as a <see cref="TransactionSummaryViewModel"/> object</returns>
+        /// <param name="documentId">شناسه دیتابیسی یکی از مستندهای اداری موجود</param>
+        /// <returns>اطلاعات خلاصه سند مالی مشخص شده با شناسه دیتابیسی مستند اداری مرتبط</returns>
         public TransactionSummaryViewModel GetTransactionSummaryFromDocument(int documentId)
         {
             TransactionSummaryViewModel summary = default(TransactionSummaryViewModel);
@@ -342,11 +336,103 @@ namespace SPPC.Tadbir.Persistence
 
         #region Transaction Line Operations
 
+        #region Asynchronous Methods
+
         /// <summary>
-        /// Retrieves a single financial article from repository.
+        /// به روش آسنکرون، اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="articleId">Unique identifier of an existing article</param>
-        /// <returns>The article retrieved from repository as a <see cref="TransactionLineViewModel"/> object</returns>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
+        /// <returns>اطلاعات آرتیکل مشخص شده با شناسه دیتابیسی</returns>
+        public async Task<TransactionLineViewModel> GetArticleAsync(int articleId)
+        {
+            TransactionLineViewModel articleViewModel = null;
+            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
+            var article = await repository.GetByIDAsync(
+                articleId,
+                art => art.Transaction, art => art.Account, art => art.Currency,
+                art => art.Branch, art => art.FiscalPeriod);
+            if (article != null)
+            {
+                articleViewModel = _mapper.Map<TransactionLineViewModel>(article);
+            }
+
+            return articleViewModel;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات کامل سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
+        /// <returns>اطلاعات کامل آرتیکل مشخص شده با شناسه دیتابیسی</returns>
+        public async Task<TransactionLineFullViewModel> GetArticleDetailsAsync(int articleId)
+        {
+            TransactionLineFullViewModel articleDetails = null;
+            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
+            var query = GetArticleDetailsQuery(repository, art => art.Id == articleId);
+            var article = await query.SingleOrDefaultAsync();
+            if (article != null)
+            {
+                articleDetails = _mapper.Map<TransactionLineFullViewModel>(article);
+            }
+
+            return articleDetails;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات یک سطر سند مالی (آرتیکل) را در دیتابیس ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
+        public async Task SaveArticleAsync(TransactionLineViewModel article)
+        {
+            Verify.ArgumentNotNull(article, "article");
+            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
+            if (article.Id == 0)
+            {
+                var newArticle = _mapper.Map<TransactionLine>(article);
+                repository.Insert(newArticle);
+            }
+            else
+            {
+                var existing = await repository.GetByIDAsync(article.Id);
+                if (existing != null)
+                {
+                    UpdateExistingArticle(existing, article);
+                    repository.Update(existing);
+                }
+            }
+
+            await _unitOfWork.CommitAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از محل ذخیره حذف می کند
+        /// </summary>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل برای حذف</param>
+        public async Task DeleteArticleAsync(int articleId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
+            var article = await repository.GetByIDAsync(articleId);
+            if (article != null)
+            {
+                article.Account = null;
+                article.Branch = null;
+                article.Currency = null;
+                article.FiscalPeriod = null;
+                article.Transaction = null;
+                repository.Delete(article);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        #endregion
+
+        #region Synchronous Methods (May be removed in the future)
+
+        /// <summary>
+        /// اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
+        /// <returns>اطلاعات آرتیکل مشخص شده با شناسه دیتابیسی</returns>
         public TransactionLineViewModel GetArticle(int articleId)
         {
             TransactionLineViewModel articleViewModel = null;
@@ -364,11 +450,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves a single financial transaction line (article) with detail information from repository.
+        /// اطلاعات کامل سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="articleId">Unique identifier of an existing transaction line (article)</param>
-        /// <returns>The transaction line (article) retrieved from repository as a
-        /// <see cref="TransactionLineFullViewModel"/> object</returns>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
+        /// <returns>اطلاعات کامل آرتیکل مشخص شده با شناسه دیتابیسی</returns>
         public TransactionLineFullViewModel GetArticleDetails(int articleId)
         {
             TransactionLineFullViewModel articleDetails = null;
@@ -384,9 +469,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Inserts or updates a single transaction line (article) in repository.
+        /// اطلاعات یک سطر سند مالی (آرتیکل) را در دیتابیس ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="article">Article to insert or update</param>
+        /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
         public void SaveArticle(TransactionLineViewModel article)
         {
             Verify.ArgumentNotNull(article, "article");
@@ -410,9 +495,9 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Deletes an existing financial transaction line (article) from repository.
+        /// سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از محل ذخیره حذف می کند
         /// </summary>
-        /// <param name="articleId">Identifier of the article to delete</param>
+        /// <param name="articleId">شناسه دیتابیسی آرتیکل برای حذف</param>
         public void DeleteArticle(int articleId)
         {
             var repository = _unitOfWork.GetRepository<TransactionLine>();
@@ -428,6 +513,8 @@ namespace SPPC.Tadbir.Persistence
                 _unitOfWork.Commit();
             }
         }
+
+        #endregion
 
         #endregion
 
