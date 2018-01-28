@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using SPPC.Workflow.Model.Tracking;
+using SPPC.Framework.Model.Workflow.Tracking;
 
-namespace SPPC.Framework.Persistence
+namespace SPPC.Workflow.Persistence
 {
     /// <summary>
     /// عملیات مرتبط با ذخیره وقایع گردش کاری در جریان ردگیری را تعریف می کند.

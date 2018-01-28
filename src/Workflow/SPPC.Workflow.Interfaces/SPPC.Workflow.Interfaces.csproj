@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -39,14 +39,7 @@
     <Compile Include="..\WorkflowSolutionInfo.cs">
       <Link>WorkflowSolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="Persistence\ITrackingRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SPPC.Workflow.Model\SPPC.Workflow.Model.csproj">
-      <Project>{80b64d24-cb03-4ebc-b2f4-b53cd4908975}</Project>
-      <Name>SPPC.Workflow.Model</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
