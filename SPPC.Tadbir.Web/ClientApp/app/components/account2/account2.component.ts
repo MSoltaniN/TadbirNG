@@ -24,13 +24,7 @@ import { String } from '../../class/source';
 
 import { State, CompositeFilterDescriptor  } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
-import { FormGroup, FormControl, Validators } from "@angular/forms/forms";
-
-declare var jquery: any;
-declare var $: any;
-
-
-
+import { DefaultComponent } from "../../class/default.component";
 
 @Component({
     selector: 'account2',
@@ -38,14 +32,13 @@ declare var $: any;
 })
 
 
-export class Account2Component implements OnInit {
+export class Account2Component extends DefaultComponent implements OnInit {
 
     public rowData: GridDataResult;
     
     public selectedRows: string[] = [];
     public accountArticleRows: any[];
-
-
+    
     public fiscalPeriodRows: any[];
 
     public totalRecords: number;
@@ -53,13 +46,9 @@ export class Account2Component implements OnInit {
     public fpId: number;
 
     //for add in delete messageText
-    deleteConfirmMsg: string;
     deleteConfirm: boolean;
     deleteAccountId: number;
     
-    config: ToastConfig;
-
-
     currentFilter: Filter[] = [];
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
@@ -68,16 +57,7 @@ export class Account2Component implements OnInit {
 
     newAccount: boolean;
     account: Account = new AccountInfo
-
-    updateMsg: string;
-    insertMsg: string;
-    deleteMsg: string;
-
-    rtlClass: string = "ui-rtl";
-    rtlUse: string = "rtl";
-
-    private translateService: TranslateService
-
+    
     pageSize: number = 10;
     skip: number = 1;
 
@@ -95,68 +75,22 @@ export class Account2Component implements OnInit {
     editDataItem ? : Account = undefined;
     isNew: boolean;
     groupDelete: boolean = false;
-
-    public formGroup: FormGroup;
-
+    
     ngOnInit() {
-
-
-        ////how to call jquery in angular 4
-        /*
-        $(document).ready(function () {
-            $('p-datatable table').addClass('table');
-
-            $('p-datatable table th:first').attr('data-breakpoints' , 'xs sm md');
-            
-            $('p-datatable table').footable()
-            //alert($('p-datatable > table').length);
-        });
-        */
-
+        
     }
 
-
-    constructor(private accountService: AccountService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
-        private toastrService: ToastrService, private translate: TranslateService) {
-        translate.addLangs(["en", "fa"]);
-        translate.setDefaultLang('fa');
-
-        var browserLang = 'fa';//translate.getBrowserLang();
-        translate.use(browserLang);
-
-        this.translateService = translate;
-
-        this.localizeMsg();
+    constructor(public toastrService: ToastrService, public translate: TranslateService,
+        private accountService: AccountService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService)
+    {
+        super(toastrService, translate);
 
         this.getFiscalPeriod();
 
-        this.reloadGrid();
-    }
-
-    languageChange(value: string) {
-        this.translateService.use(value);
-        this.localizeMsg();
-        switch (value) {
-            case "fa":
-                {
-                    this.rtlUse = "rtl";
-                    this.rtlClass = "ui-rtl"
-                    break;
-                }
-            case "en":
-                {
-                    this.rtlUse = "ltr";
-                    this.rtlClass = ""
-                    break;
-                }
-        }
-
-
+        this.reloadGrid();         
     }
     
-
     getRowsCount() {
-
 
         this.accountService.getCount(this.currentOrder, this.currentFilter).subscribe(res => {
             this.totalRecords = res;
@@ -203,9 +137,7 @@ export class Account2Component implements OnInit {
         });
 
     }
-
-   
-
+    
     getFilters(filter: any): Filter[] {
         let filters: Filter[] = [];
 
@@ -289,8 +221,7 @@ export class Account2Component implements OnInit {
         this.skip = state.skip;
         this.reloadGrid();
     }
-
-
+    
     public sortChange(sort: SortDescriptor[]): void {
         if (sort)
             this.currentOrder = sort[0].field + " " + sort[0].dir;
@@ -315,26 +246,7 @@ export class Account2Component implements OnInit {
         });
     }
 
-    localizeMsg() {
-        // read message format for crud operations
-        var entityType = '';
-        this.translateService.get("Entity.Account").subscribe((msg: string) => {
-            entityType = msg;
-        });
-
-        this.translateService.get("Messages.Inserted").subscribe((msg: string) => {
-            this.insertMsg = String.Format(msg, entityType);
-        });
-
-        this.translateService.get("Messages.Updated").subscribe((msg: string) => {
-            this.updateMsg = String.Format(msg, entityType);;
-        });
-
-        this.translateService.get("Messages.Deleted").subscribe((msg: string) => {
-            this.deleteMsg = String.Format(msg, entityType);;
-        });
-    }
-
+    
     deleteAccount(confirm: boolean) {
         if (confirm) {
             this.accountService.delete(this.deleteAccountId).subscribe(response => {
@@ -349,11 +261,7 @@ export class Account2Component implements OnInit {
     }
 
     removeHandler(arg: any) {
-
-        this.translateService.get("Messages.DeleteConfirm").subscribe((msg: string) => {
-            this.deleteConfirmMsg = String.Format(msg, arg.dataItem.name);
-        });
-
+        
         this.deleteAccountId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
@@ -371,10 +279,8 @@ export class Account2Component implements OnInit {
     onFiscalPeriodChange(arg: any) {
 
     }
-
-
+    
     //account form events
-
     public editHandler(arg: any) {
         this.editDataItem = arg.dataItem;
         this.isNew = false;
@@ -410,9 +316,7 @@ export class Account2Component implements OnInit {
         this.editDataItem = undefined;
         this.isNew = false;
     }
-
-    //
-
+    
 }
 
 

@@ -37,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\app\class\default.component.ts" />
     <None Remove="ClientApp\app\class\filter.ts" />
     <None Remove="ClientApp\app\class\grid.orderby.ts" />
     <None Remove="ClientApp\app\components\account2\account2.component.ts" />
@@ -96,6 +97,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\class\default.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\grid.orderby.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\dropdownlist\sppc-dropdownlist.ts" />
