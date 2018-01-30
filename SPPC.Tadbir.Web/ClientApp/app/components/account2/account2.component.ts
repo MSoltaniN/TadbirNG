@@ -14,7 +14,7 @@ import {
     SelectAllCheckboxState
 } from '@progress/kendo-angular-grid';
 
-import { Filter } from '../../class/filter';
+
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -25,6 +25,9 @@ import { String } from '../../class/source';
 import { State, CompositeFilterDescriptor  } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
+import { MessageType } from "../../enviroment";
+import { Filter } from "../../class/filter";
+
 
 @Component({
     selector: 'account2',
@@ -57,20 +60,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     newAccount: boolean;
     account: Account = new AccountInfo
-    
-    pageSize: number = 10;
-    skip: number = 1;
-
-    public state: State = {
-        skip: 1,
-        take: 5,
-        // Initial filter descriptor
-        filter: {
-            logic: "and",
-            filters: [{ field: "code", operator: "contains", value: "" }]
-        }
-    };
-
+       
 
     editDataItem ? : Account = undefined;
     isNew: boolean;
@@ -105,8 +95,8 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     deleteAccounts()
     {
-        this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
-            this.toastrService.info(this.deleteMsg, '', { positionClass: 'toast-top-left' });
+        this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {            
+            this.showMessage(this.deleteMsg, MessageType.Info);
             this.selectedRows = [];
             this.reloadGrid();            
         });
@@ -126,7 +116,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
         var filter = this.currentFilter;
         var order = this.currentOrder;
 
-        this.accountService.search(this.skip, this.pageSize, order, filter).subscribe(res => {
+        this.accountService.search(this.pageIndex, this.pageSize, order, filter).subscribe(res => {
             //this.rowData = res;
             this.rowData = {
                 data: res,
@@ -138,77 +128,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     }
     
-    getFilters(filter: any): Filter[] {
-        let filters: Filter[] = [];
-
-        if (filter.filters.length) {
-            for (let i = 0; i < filter.filters.length; i++)
-            {
-                if (filter.filters[i].value != "")
-                {
-                    var operator = "";
-                    switch (filter.filters[i].operator)
-                    {
-                        case "eq":
-                            operator = " == {0}";
-                            break;
-                        case "neq":
-                            operator = " != {0}";
-                            break;
-                        case "lte":
-                            operator = " <= {0}";
-                            break;
-                        case "gte":
-                            operator = " >= {0}";
-                            break;
-                        case "lt":
-                            operator = " < {0}";
-                            break;
-                        case "gt":
-                            operator = " > {0}";
-                            break;
-                        case "contains":      
-                            operator = ".Contains({0})";                            
-                            break;
-                        case "doesnotcontain":      
-                            operator = ".IndexOf({0}) == -1";
-                            break;
-                        case "startswith":      
-                            operator = ".StartsWith({0})";
-                            break;
-                        case "endswith":      
-                            operator = ".EndsWith({0})";                        
-                            break;
-                        default:
-                            operator = " == {0}";
-                    }
-
-                    var dataType = "";
-                    switch (filter.filters[i].field)
-                    {                        
-                        case "fiscalPeriodId":                        
-                        case "level":                        
-                            dataType = "System.Int16";
-                            break;
-                        case "code":
-                        case "description":
-                        case "name":
-                            dataType = "System.String";                        
-                            break;
-                        default:
-                            dataType = "System.String";                        
-                    }
-                    
-
-                    filters.push(new Filter(filter.filters[i].field, filter.filters[i].value, operator,dataType))
-
-                }
-            }
-              
-        }
-
-        return filters;
-    }
+    
 
     dataStateChange(state: DataStateChangeEvent): void {
         this.currentFilter = this.getFilters(state.filter);
@@ -251,7 +171,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
         if (confirm) {
             this.accountService.delete(this.deleteAccountId).subscribe(response => {
                 this.deleteAccountId = 0;
-                this.toastrService.info(this.deleteMsg, '', { positionClass: 'toast-top-left' });
+                this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             });
         }
@@ -261,7 +181,9 @@ export class Account2Component extends DefaultComponent implements OnInit {
     }
 
     removeHandler(arg: any) {
-        
+
+        this.prepareDeleteConfirm(arg.dataItem.name);
+
         this.deleteAccountId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
@@ -300,14 +222,14 @@ export class Account2Component extends DefaultComponent implements OnInit {
         if (!this.isNew) {
             this.accountService.editAccount(account)
                 .subscribe(response => {
-                    this.toastrService.success(this.updateMsg, '', { positionClass: 'toast-top-left' });
+                    this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
                 });            
         }
         else {
             this.accountService.insertAccount(account)
                 .subscribe(response => {
-                    this.toastrService.success(this.insertMsg, '', { positionClass: 'toast-top-left' });
+                    this.showMessage(this.insertMsg, MessageType.Succes);
                     this.reloadGrid();
                 });
             

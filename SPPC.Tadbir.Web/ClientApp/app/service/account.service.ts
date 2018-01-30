@@ -73,17 +73,21 @@ export class AccountService
     //get count of records base on Grid filters and order value
     getCount(orderby?: string, filters?: any[]) {
         var headers = this.headers;
-        //headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
-
-        var url = String.Format(this._getCountUrl, Environment.FiscalPeriodId, Environment.BranchId);
-
-        //var postItem = { Filters: filters, OrderBy: orderby };
         
-        //return this.http.post(url,postItem, { headers: headers })
-        //    .map(response => <any>(<Response>response).json());;
-        let options = new RequestOptions({ headers: this.headers });
+        var url = String.Format(this._getCountUrl, Environment.FiscalPeriodId, Environment.BranchId);
+        
+        var postItem = { filters: filters };
+        var searchHeaders = this.headers;
 
-            return this.http.get(url, options)
+        var postBody = JSON.stringify(postItem);
+
+        var base64Body = btoa(encodeURIComponent(postBody));
+
+        searchHeaders.set('X-Tadbir-GridOptions', base64Body);
+
+        var options = new RequestOptions({ headers: searchHeaders });
+        
+        return this.http.get(url, options)
                 .map(response => <any>(<Response>response).json());;
 
     }
@@ -112,8 +116,6 @@ export class AccountService
         var searchHeaders = this.headers;
         
         var postBody = JSON.stringify(postItem);
-        
-        
         
         var base64Body = btoa(encodeURIComponent(postBody));
 

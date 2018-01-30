@@ -97,6 +97,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\class\base.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\default.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\grid.orderby.ts" />
