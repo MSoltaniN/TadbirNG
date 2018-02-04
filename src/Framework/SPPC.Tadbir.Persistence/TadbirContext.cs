@@ -23,18 +23,23 @@ namespace SPPC.Tadbir.Persistence
     /// </summary>
     public partial class TadbirContext : DbContext
     {
+        public TadbirContext(DbContextOptions<TadbirContext> options)
+            : base(options)
+        {
+        }
+
         /// <summary>
         /// Performs configuration that fine-tunes database provider operations
         /// </summary>
         /// <param name="optionsBuilder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder
-                    .UseLoggerFactory(_loggerFactory)
-                    .UseSqlServer(AppConstants.ConnectionString);
-            }
+            ////if (!optionsBuilder.IsConfigured)
+            ////{
+            ////    optionsBuilder
+            ////        .UseLoggerFactory(_loggerFactory)
+            ////        .UseSqlServer(AppConstants.ConnectionString);
+            ////}
         }
 
         /// <summary>

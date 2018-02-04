@@ -31,7 +31,8 @@ namespace SPPC.Tadbir.Web.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TadbirContext>();
+            services.AddDbContext<TadbirContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("TadbirApi")));
             services.AddMvc();
             services.AddCors();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
