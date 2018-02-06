@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Framework.Helpers;
 using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Persistence
@@ -43,6 +44,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>A <see cref="UserContextViewModel"/> instance containing context information, if there is
         /// such a user defined; otherwise, returns null.</returns>
         Task<UserContextViewModel> GetUserContextAsync(int userId);
+
+        /// <summary>
+        /// Asynchrnously retrieves all companies accessible by the specified user, as a list of key/value pairs
+        /// </summary>
+        /// <param name="userId">Unique identifier of an existing user</param>
+        /// <returns>Collection of all companies accessible by the user</returns>
+        Task<IList<KeyValue>> GetUserCompaniesAsync(int userId);
 
         /// <summary>
         /// Asynchronously inserts or updates a single user in repository.

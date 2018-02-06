@@ -162,6 +162,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(userContext);
         }
 
+        // GET: api/users/{userId:min(1)}/companies
+        [Route(UserApi.UserAccessibleCompaniesUrl)]
+        public async Task<IActionResult> GetUserAccessibleCompaniesAsync(int userId)
+        {
+            var accessibleCompanies = await _repository.GetUserCompaniesAsync(userId);
+            return Json(accessibleCompanies);
+        }
+
         #endregion
 
         #region Synchronous Methods (May be removed in the future)

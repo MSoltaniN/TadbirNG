@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Model.Auth;
@@ -72,6 +73,25 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// Asynchronously retrieves a single user specified by unique identifier from repository.
+        /// </summary>
+        /// <param name="userId">Unique identifier of the user to search for</param>
+        /// <returns>A <see cref="UserViewModel"/> instance that corresponds to the specified identifier, if there is
+        /// such a user defined; otherwise, returns null.</returns>
+        public async Task<UserViewModel> GetUserAsync(int userId)
+        {
+            UserViewModel userViewModel = null;
+            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var user = await repository.GetByIDAsync(userId, usr => usr.Person);
+            if (user != null)
+            {
+                userViewModel = _mapper.Map<UserViewModel>(user);
+            }
+
+            return userViewModel;
+        }
+
+        /// <summary>
         /// Asynchronously retrieves context information for a user specified by unique identifier from repository.
         /// </summary>
         /// <param name="userId">Unique identifier of the user to search for</param>
@@ -118,22 +138,37 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Asynchronously retrieves a single user specified by unique identifier from repository.
+        /// Asynchrnously retrieves all companies accessible by the specified user, as a list of key/value pairs
         /// </summary>
-        /// <param name="userId">Unique identifier of the user to search for</param>
-        /// <returns>A <see cref="UserViewModel"/> instance that corresponds to the specified identifier, if there is
-        /// such a user defined; otherwise, returns null.</returns>
-        public async Task<UserViewModel> GetUserAsync(int userId)
+        /// <param name="userId">Database identifier of an existing user</param>
+        /// <returns>Collection of all companies accessible by the user</returns>
+        public async Task<IList<KeyValue>> GetUserCompaniesAsync(int userId)
         {
-            UserViewModel userViewModel = null;
             var repository = _unitOfWork.GetAsyncRepository<User>();
-            var user = await repository.GetByIDAsync(userId, usr => usr.Person);
+            var query = repository
+                .GetEntityQuery()
+                .Where(usr => usr.Id == userId)
+                .Include(usr => usr.UserRoles)
+                    .ThenInclude(ur => ur.Role)
+                        .ThenInclude(r => r.RoleBranches)
+                            .ThenInclude(rb => rb.Branch)
+                                .ThenInclude(br => br.Company);
+            var user = await query.SingleOrDefaultAsync();
+            var companies = new List<KeyValue>();
             if (user != null)
             {
-                userViewModel = _mapper.Map<UserViewModel>(user);
+                Array.ForEach(
+                    user.UserRoles
+                        .Select(ur => ur.Role)
+                        .ToArray(),
+                    role => companies.AddRange(
+                        role.RoleBranches
+                            .Select(rb => rb.Branch)
+                            .Select(br => br.Company)
+                            .Select(c => _mapper.Map<KeyValue>(c))));
             }
 
-            return userViewModel;
+            return companies;
         }
 
         /// <summary>

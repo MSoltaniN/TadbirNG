@@ -214,6 +214,9 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapCorporateTypes(IMapperConfigurationExpression mapperConfig)
         {
+            mapperConfig.CreateMap<Company, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
             mapperConfig.CreateMap<Branch, BranchViewModel>()
                 .ForMember(dest => dest.IsAccessible, opts => opts.UseValue(true));
             mapperConfig.CreateMap<BranchViewModel, Branch>()
