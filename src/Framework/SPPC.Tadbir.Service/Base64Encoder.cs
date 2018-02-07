@@ -14,7 +14,7 @@ namespace SPPC.Tadbir.Service
         where T : class, new()
     {
         /// <summary>
-        /// Encodes given data object into Base64 format.
+        /// Encodes JSON serialization of the given data object into Base64 format.
         /// </summary>
         /// <param name="data">Object to encode</param>
         /// <returns>Base64-encoded form of given object</returns>

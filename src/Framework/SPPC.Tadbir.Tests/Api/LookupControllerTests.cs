@@ -34,7 +34,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act & Assert
-            AssertActionRouteEquals("GetAccountsLookup", LookupApi.FiscalPeriodBranchAccountsUrl);
+            AssertActionRouteEquals("GetAccountsLookup", LookupApi.FiscalPeriodBranchAccountsSyncUrl);
         }
 
         [Test]
@@ -73,19 +73,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             Assert.That(result, Is.Not.Null);
         }
 
-        [Test]
-        public void GetAccountsLookup_GivenInvalidFiscalPeriodId_ReturnsNotFound()
-        {
-            // Arrange
-            int invalidFpId = -2;
-
-            // Act
-            var result = _controller.GetAccountsLookup(invalidFpId, _branchId) as NotFoundResult;
-
-            // Assert
-            Assert.That(result, Is.Not.Null);
-        }
-
         #endregion
 
         #region GetCurrenciesLookup (GET: lookup/currencies) tests
@@ -96,7 +83,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange
 
             // Act & Assert
-            AssertActionRouteEquals("GetCurrenciesLookup", LookupApi.CurrenciesUrl);
+            AssertActionRouteEquals("GetCurrenciesLookup", LookupApi.CurrenciesSyncUrl);
         }
 
         [Test]

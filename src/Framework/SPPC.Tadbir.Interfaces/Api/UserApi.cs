@@ -111,5 +111,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all companies accessible to a user specified by identifier.
         /// </summary>
         public const string UserAccessibleCompaniesUrl = "users/{userId:min(1)}/companies";
+
+        /// <summary>
+        /// API client URL for login status of all users.
+        /// </summary>
+        public const string UsersLoginStatus = "users/login";
+
+        /// <summary>
+        /// API server route URL for login status of all users.
+        /// </summary>
+        public const string UsersLoginStatusUrl = "users/login";
     }
 }

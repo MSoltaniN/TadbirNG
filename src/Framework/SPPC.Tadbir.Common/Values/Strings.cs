@@ -204,6 +204,21 @@ namespace SPPC.Tadbir.Values
         public const string InvalidUserOrPassword = "نام کاربری یا رمز ورود نادرست است.";
 
         /// <summary>
+        /// Localized text for a validation message indicating that user name could not be found
+        /// </summary>
+        public const string InvalidUserName = "کاربری با نام کاربری داده شده یافت نشد.";
+
+        /// <summary>
+        /// Localized text for a validation message indicating that the value entered for password is incorrect
+        /// </summary>
+        public const string InvalidPassword = "رمز ورود داده شده نادرست است.";
+
+        /// <summary>
+        /// Localized text for a validation message indicating that the specified user name has been disabled
+        /// </summary>
+        public const string UserIsDisabled = "کاربر مورد نظر غیرفعال است.";
+
+        /// <summary>
         /// Localized text for a message indicating that the request verification token is invalid.
         /// </summary>
         public const string InvalidBrowserRequest = "درخواست دریافت شده از مرورگر معتبر نیست. لطفا دوباره تلاش کنید.";

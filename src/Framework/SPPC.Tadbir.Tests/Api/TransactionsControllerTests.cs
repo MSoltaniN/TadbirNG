@@ -209,7 +209,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("PutModifiedTransaction", TransactionApi.TransactionUrl);
+            AssertActionRouteEquals("PutModifiedTransaction", TransactionApi.TransactionSyncUrl);
         }
 
         [Test]
@@ -346,7 +346,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("GetArticle", TransactionApi.TransactionArticleUrl);
+            AssertActionRouteEquals("GetArticle", TransactionApi.TransactionArticleSyncUrl);
         }
 
         [Test]
@@ -429,7 +429,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in setup methos)
 
             // Act & Assert
-            AssertActionRouteEquals("PostNewArticle", TransactionApi.TransactionArticlesUrl);
+            AssertActionRouteEquals("PostNewArticle", TransactionApi.TransactionArticlesSyncUrl);
         }
 
         [Test]
@@ -535,7 +535,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in Setup method)
 
             // Act & Assert
-            AssertActionRouteEquals("PutModifiedArticle", TransactionApi.TransactionArticleUrl);
+            AssertActionRouteEquals("PutModifiedArticle", TransactionApi.TransactionArticleSyncUrl);
         }
 
         [Test]
@@ -722,7 +722,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("GetArticleDetails", TransactionApi.TransactionArticleDetailsUrl);
+            AssertActionRouteEquals("GetArticleDetails", TransactionApi.TransactionArticleDetailsSyncUrl);
         }
 
         [Test]

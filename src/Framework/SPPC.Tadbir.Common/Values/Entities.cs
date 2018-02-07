@@ -153,6 +153,11 @@ namespace SPPC.Tadbir.Values
         public const string AUser = "کاربری";
 
         /// <summary>
+        /// Localized name of User Account view model (singular form).
+        /// </summary>
+        public const string UserAccount = "حساب کاربری";
+
+        /// <summary>
         /// Localized name of Role entity (singular form).
         /// </summary>
         public const string Role = "نقش";

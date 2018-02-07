@@ -23,7 +23,7 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// </summary>
         [Display(Name = FieldNames.Password)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Password { get; set; }
     }
 }

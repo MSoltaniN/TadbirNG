@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SPPC.Framework.Common;
+using SPPC.Framework.Service.Security;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
@@ -16,9 +19,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     [Produces("application/json")]
     public class UsersController : Controller
     {
-        public UsersController(ISecurityRepository repository)
+        public UsersController(
+            ISecurityRepository repository, ICryptoService crypto, ITextEncoder<SecurityContext> encoder)
         {
             _repository = repository;
+            _crypto = crypto;
+            _contextEncoder = encoder;
         }
 
         #region Asynchronous Methods
@@ -168,6 +174,44 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var accessibleCompanies = await _repository.GetUserCompaniesAsync(userId);
             return Json(accessibleCompanies);
+        }
+
+        // PUT: api/users/login
+        [HttpPut]
+        [Route(UserApi.UsersLoginStatusUrl)]
+        public async Task<IActionResult> PutUsersLoginStatusAsync([FromBody] LoginViewModel login)
+        {
+            if (login == null)
+            {
+                var message = String.Format(ValidationMessages.RequestFailedNoData, Entities.UserAccount);
+                return BadRequest(message);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _repository.GetUserAsync(login.UserName);
+            if (user == null)
+            {
+                return BadRequest(Strings.InvalidUserName);
+            }
+
+            if (!user.IsEnabled)
+            {
+                return BadRequest(Strings.UserIsDisabled);
+            }
+
+            if (!CheckPassword(user.Password, login.Password))
+            {
+                return BadRequest(Strings.InvalidPassword);
+            }
+
+            await _repository.UpdateUserLastLoginAsync(user.Id);
+            string userTicket = await GetUserTicketAsync(user.Id);
+            Response.Headers.Add(AppConstants.ContextHeaderName, userTicket);
+            return Ok();
         }
 
         #endregion
@@ -400,6 +444,28 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        private bool CheckPassword(string passwordHash, string password)
+        {
+            byte[] passwordHashBytes = Transform.FromHexString(passwordHash);
+            byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+            return _crypto.ValidateHash(passwordBytes, passwordHashBytes);
+        }
+
+        private async Task<string> GetUserTicketAsync(int userId)
+        {
+            string ticket = null;
+            var userContext = await _repository.GetUserContextAsync(userId);
+            if (userContext != null)
+            {
+                var securityContext = new SecurityContext(userContext);
+                ticket = _contextEncoder.Encode(securityContext);
+            }
+
+            return ticket;
+        }
+
         private ISecurityRepository _repository;
+        private ICryptoService _crypto;
+        private ITextEncoder<SecurityContext> _contextEncoder;
     }
 }
