@@ -7,6 +7,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Corporate;
@@ -165,6 +166,7 @@ namespace SPPC.Tadbir.Persistence
                         role.RoleBranches
                             .Select(rb => rb.Branch)
                             .Select(br => br.Company)
+                            .Distinct(new EntityEqualityComparer())
                             .Select(c => _mapper.Map<KeyValue>(c))));
             }
 

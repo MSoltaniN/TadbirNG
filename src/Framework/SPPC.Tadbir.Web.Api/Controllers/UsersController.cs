@@ -40,6 +40,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/users/name/{userName}
         [Route(UserApi.UserByNameUrl)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public async Task<IActionResult> GetUserByNameAsync(string userName)
         {
             if (String.IsNullOrEmpty(userName))
@@ -105,6 +106,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/users/{userId:int}/login
         [HttpPut]
         [Route(UserApi.UserLastLoginUrl)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Edit)]
         public async Task<IActionResult> PutUserLastLoginAsync(int userId)
         {
             await _repository.UpdateUserLastLoginAsync(userId);
@@ -114,6 +116,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/users/{userName}/password
         [HttpPut]
         [Route(UserApi.UserPasswordUrl)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Edit)]
         public async Task<IActionResult> PutUserPasswordAsync(string userName, [FromBody] UserProfileViewModel profile)
         {
             if (profile == null)
@@ -170,6 +173,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/users/{userId:min(1)}/companies
         [Route(UserApi.UserAccessibleCompaniesUrl)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public async Task<IActionResult> GetUserAccessibleCompaniesAsync(int userId)
         {
             var accessibleCompanies = await _repository.GetUserCompaniesAsync(userId);
