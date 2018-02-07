@@ -138,6 +138,22 @@ namespace SPPC.Tadbir.Persistence
                 .Select(fp => _mapper.Map<KeyValue>(fp));
         }
 
+        /// <summary>
+        /// به روش آسنکرون، شعب سازمانی تعریف شده در یک شرکت مشخص شده را به صورت مجموعه ای از
+        /// کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="companyId">شناسه دیتابیسی یکی از شرکت های موجود</param>
+        /// <returns>مجموعه شعب سازمانی تعریف شده در یک شرکت مشخص شده</returns>
+        public async Task<IEnumerable<KeyValue>> GetBranchesAsync(int companyId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Branch>();
+            var branches = await repository
+                .GetByCriteriaAsync(br => br.Company.Id == companyId);
+            return branches
+                .OrderBy(br => br.Name)
+                .Select(br => _mapper.Map<KeyValue>(br));
+        }
+
         #endregion
 
         #region Synchronous Methods (May be removed in the future)

@@ -43,6 +43,11 @@ namespace SPPC.Tadbir.Security
         public const string FiscalPeriod = "FiscalPeriod";
 
         /// <summary>
+        /// نام موجودیت شعبه سازمانی
+        /// </summary>
+        public const string Branch = "Branch";
+
+        /// <summary>
         /// نام موجودیت واحد سازمانی
         /// </summary>
         public const string BusinessUnit = "BusinessUnit";

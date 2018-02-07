@@ -74,6 +74,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(fiscalPeriodLookup);
         }
 
+        // GET: api/lookup/branches/company/{companyId:min(1)}
+        [Route(LookupApi.CompanyBranchesUrl)]
+        [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
+        public async Task<IActionResult> GetBranchesLookupAsync(int companyId)
+        {
+            var branchLookup = await _repository.GetBranchesAsync(companyId);
+            return Json(branchLookup);
+        }
+
         #endregion
 
         #region Synchronous Methods (May be removed in the future)

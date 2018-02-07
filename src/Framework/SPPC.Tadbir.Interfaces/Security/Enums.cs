@@ -226,6 +226,43 @@ namespace SPPC.Tadbir.Security
     }
 
     /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به شعب سازمانی را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum BranchPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به شعب سازمانی
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده لیست شعب سازمانی یا جزییات یک شعبه سازمانی
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی ایجاد یک شعبه سازمانی جدید
+        /// </summary>
+        Create = 0x2,
+
+        /// <summary>
+        /// دسترسی ویرایش یک شعبه سازمانی موجود
+        /// </summary>
+        Edit = 0x4,
+
+        /// <summary>
+        /// دسترسی حذف یک شعبه سازمانی موجود
+        /// </summary>
+        Delete = 0x8,
+
+        /// <summary>
+        /// دسترسی کامل به عملیات تعریف شده برای مدیریت شعب سازمانی
+        /// </summary>
+        All = 0xf
+    }
+
+    /// <summary>
     /// Provides flag values for permissions currently defined for managing a financial transaction.
     /// </summary>
     [Flags]

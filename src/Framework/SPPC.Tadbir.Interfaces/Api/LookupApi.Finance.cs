@@ -91,6 +91,16 @@ namespace SPPC.Tadbir.Api
         public const string CompanyFiscalPeriodsSyncUrl = "lookup/fps/company/{companyId:min(1)}/sync";
 
         /// <summary>
+        /// API client URL for lookup collection of all branches of a company
+        /// </summary>
+        public const string CompanyBranches = "lookup/branches/company/{0}";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all branches of a company
+        /// </summary>
+        public const string CompanyBranchesUrl = "lookup/branches/company/{companyId:min(1)}";
+
+        /// <summary>
         /// API client URL for lookup collection of all currencies
         /// </summary>
         public const string Currencies = "lookup/currencies";

@@ -67,6 +67,14 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه دوره های مالی تعریف شده در یک شرکت مشخص شده</returns>
         Task<IEnumerable<KeyValue>> GetFiscalPeriodsAsync(int companyId);
 
+        /// <summary>
+        /// به روش آسنکرون، شعب سازمانی تعریف شده در یک شرکت مشخص شده را به صورت مجموعه ای از
+        /// کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="companyId">شناسه دیتابیسی یکی از شرکت های موجود</param>
+        /// <returns>مجموعه شعب سازمانی تعریف شده در یک شرکت مشخص شده</returns>
+        Task<IEnumerable<KeyValue>> GetBranchesAsync(int companyId);
+
         #endregion
 
         #region Synchronous Methods (May be removed in the future)
