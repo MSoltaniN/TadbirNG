@@ -236,6 +236,18 @@ CREATE TABLE [Finance].[FiscalPeriod] (
 )
 GO
 
+CREATE TABLE [Auth].[RoleFiscalPeriod] (
+    [RoleFiscalPeriodID] INT              IDENTITY (1, 1) NOT NULL,
+    [RoleID]             INT              NOT NULL,
+    [FiscalPeriodID]     INT              NOT NULL,
+    [rowguid]            UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_RoleFiscalPeriod_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]       DATETIME         CONSTRAINT [DF_Auth_RoleFiscalPeriod_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Auth_RoleFiscalPeriod] PRIMARY KEY CLUSTERED ([RoleFiscalPeriodID] ASC)
+    , CONSTRAINT [FK_Auth_RoleFiscalPeriod_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role] ([RoleID])
+    , CONSTRAINT [FK_Auth_RoleFiscalPeriod_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+)
+GO
+
 CREATE TABLE [Finance].[Account] (
     [AccountID]      INT              IDENTITY (1, 1) NOT NULL,
 	[ParentID]       INT              NULL,

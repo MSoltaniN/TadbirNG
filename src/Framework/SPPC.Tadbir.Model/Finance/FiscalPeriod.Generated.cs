@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Framework.Domain;
+using SPPC.Tadbir.Model.Auth;
 
 namespace SPPC.Tadbir.Model.Finance
 {
@@ -75,8 +76,7 @@ namespace SPPC.Tadbir.Model.Finance
 
         private void InitReferences()
         {
-            //this.Accounts = new List<Account>();
-            //this.Transactions = new List<Transaction>();
+            RoleFiscalPeriods = new List<RoleFiscalPeriod>();
         }
     }
 }

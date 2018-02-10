@@ -72,6 +72,7 @@ namespace SPPC.Tadbir.Persistence
             RequisitionVoucherTypeMap.BuildMapping(modelBuilder.Entity<RequisitionVoucherType>());
             RoleMap.BuildMapping(modelBuilder.Entity<Role>());
             RoleBranchMap.BuildMapping(modelBuilder.Entity<RoleBranch>());
+            RoleFiscalPeriodMap.BuildMapping(modelBuilder.Entity<RoleFiscalPeriod>());
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());
             ServiceJobMap.BuildMapping(modelBuilder.Entity<ServiceJob>());
             TransactionMap.BuildMapping(modelBuilder.Entity<Transaction>());

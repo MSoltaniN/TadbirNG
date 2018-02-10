@@ -5,19 +5,19 @@ using SPPC.Tadbir.Model.Auth;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class RoleBranchMap
+    internal sealed class RoleFiscalPeriodMap
     {
-        private RoleBranchMap()
+        private RoleFiscalPeriodMap()
         {
         }
 
-        internal static void BuildMapping(EntityTypeBuilder<RoleBranch> builder)
+        internal static void BuildMapping(EntityTypeBuilder<RoleFiscalPeriod> builder)
         {
-            builder.ToTable("RoleBranch", "Auth");
+            builder.ToTable("RoleFiscalPeriod", "Auth");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
-                .HasColumnName("RoleBranchID");
-            builder.HasAlternateKey(e => new { e.RoleId, e.BranchId });
+                .HasColumnName("RoleFiscalPeriodID");
+            builder.HasAlternateKey(e => new { e.RoleId, e.FiscalPeriodId });
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
@@ -26,11 +26,11 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(newid())");
 
             builder.HasOne(d => d.Role)
-                .WithMany(p => p.RoleBranches)
+                .WithMany(p => p.RoleFiscalPeriods)
                 .HasForeignKey(d => d.RoleId);
-            builder.HasOne(d => d.Branch)
-                .WithMany(p => p.RoleBranches)
-                .HasForeignKey(d => d.BranchId);
+            builder.HasOne(d => d.FiscalPeriod)
+                .WithMany(p => p.RoleFiscalPeriods)
+                .HasForeignKey(d => d.FiscalPeriodId);
         }
     }
 }
