@@ -139,41 +139,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Asynchrnously retrieves all companies accessible by the specified user, as a list of key/value pairs
-        /// </summary>
-        /// <param name="userId">Database identifier of an existing user</param>
-        /// <returns>Collection of all companies accessible by the user</returns>
-        public async Task<IList<KeyValue>> GetUserCompaniesAsync(int userId)
-        {
-            var repository = _unitOfWork.GetAsyncRepository<User>();
-            var query = repository
-                .GetEntityQuery()
-                .Where(usr => usr.Id == userId)
-                .Include(usr => usr.UserRoles)
-                    .ThenInclude(ur => ur.Role)
-                        .ThenInclude(r => r.RoleBranches)
-                            .ThenInclude(rb => rb.Branch)
-                                .ThenInclude(br => br.Company);
-            var user = await query.SingleOrDefaultAsync();
-            var companies = new List<KeyValue>();
-            if (user != null)
-            {
-                Array.ForEach(
-                    user.UserRoles
-                        .Select(ur => ur.Role)
-                        .ToArray(),
-                    role => companies.AddRange(
-                        role.RoleBranches
-                            .Select(rb => rb.Branch)
-                            .Select(br => br.Company)
-                            .Distinct(new EntityEqualityComparer())
-                            .Select(c => _mapper.Map<KeyValue>(c))));
-            }
-
-            return companies;
-        }
-
-        /// <summary>
         /// Asynchronously inserts or updates a single user in repository.
         /// </summary>
         /// <param name="user">Item to insert or update</param>

@@ -81,7 +81,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>مجموعه دوره های مالی موجود در یک شرکت</returns>
         public IEnumerable<KeyValue> LookupFiscalPeriods(int companyId)
         {
-            var fiscalperiodLookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.CompanyFiscalPeriods, companyId);
+            var fiscalperiodLookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.UserAccessibleCompanyFiscalPeriods, companyId);
             return fiscalperiodLookup;
         }
 

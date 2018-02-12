@@ -76,14 +76,25 @@ namespace SPPC.Tadbir.Api
             "lookup/projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync";
 
         /// <summary>
+        /// API client URL for all companies accessible to a user specified by identifier.
+        /// </summary>
+        public const string UserAccessibleCompanies = "lookup/companies/user/{0}";
+
+        /// <summary>
+        /// API server route URL for all companies accessible to a user specified by identifier.
+        /// </summary>
+        public const string UserAccessibleCompaniesUrl = "lookup/companies/user/{userId:min(1)}";
+
+        /// <summary>
         /// API client URL for lookup collection of all fiscal periods of a company
         /// </summary>
-        public const string CompanyFiscalPeriods = "lookup/fps/company/{0}";
+        public const string UserAccessibleCompanyFiscalPeriods = "lookup/fps/company/{0}/user/{1}";
 
         /// <summary>
         /// API server route URL for lookup collection of all fiscal periods of a company
         /// </summary>
-        public const string CompanyFiscalPeriodsUrl = "lookup/fps/company/{companyId:min(1)}";
+        public const string UserAccessibleCompanyFiscalPeriodsUrl =
+            "lookup/fps/company/{companyId:min(1)}/user/{userId:min(1)}";
 
         /// <summary>
         /// API server route URL for lookup collection of all fiscal periods of a company
@@ -93,12 +104,13 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for lookup collection of all branches of a company
         /// </summary>
-        public const string CompanyBranches = "lookup/branches/company/{0}";
+        public const string UserAccessibleCompanyBranches = "lookup/branches/company/{0}/user/{1}";
 
         /// <summary>
         /// API server route URL for lookup collection of all branches of a company
         /// </summary>
-        public const string CompanyBranchesUrl = "lookup/branches/company/{companyId:min(1)}";
+        public const string UserAccessibleCompanyBranchesUrl =
+            "lookup/branches/company/{companyId:min(1)}/user/{userId:min(1)}";
 
         /// <summary>
         /// API client URL for lookup collection of all currencies

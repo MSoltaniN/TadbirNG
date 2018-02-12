@@ -171,15 +171,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(userContext);
         }
 
-        // GET: api/users/{userId:min(1)}/companies
-        [Route(UserApi.UserAccessibleCompaniesUrl)]
-        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
-        public async Task<IActionResult> GetUserAccessibleCompaniesAsync(int userId)
-        {
-            var accessibleCompanies = await _repository.GetUserCompaniesAsync(userId);
-            return Json(accessibleCompanies);
-        }
-
         // PUT: api/users/login
         [HttpPut]
         [Route(UserApi.UsersLoginStatusUrl)]

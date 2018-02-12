@@ -65,21 +65,30 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(currencyLookup);
         }
 
-        // GET: api/lookup/fps/company/{companyId:min(1)}
-        [Route(LookupApi.CompanyFiscalPeriodsUrl)]
-        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
-        public async Task<IActionResult> GetFiscalPeriodsLookupAsync(int companyId)
+        // GET: api/lookup/companies/user/{userId:min(1)}
+        [Route(LookupApi.UserAccessibleCompaniesUrl)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
+        public async Task<IActionResult> GetUserAccessibleCompaniesAsync(int userId)
         {
-            var fiscalPeriodLookup = await _repository.GetFiscalPeriodsAsync(companyId);
+            var accessibleCompanies = await _repository.GetUserAccessibleCompaniesAsync(userId);
+            return Json(accessibleCompanies);
+        }
+
+        // GET: api/lookup/fps/company/{companyId:min(1)}/user/{userId:min(1)}
+        [Route(LookupApi.UserAccessibleCompanyFiscalPeriodsUrl)]
+        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
+        public async Task<IActionResult> GetFiscalPeriodsLookupAsync(int companyId, int userId)
+        {
+            var fiscalPeriodLookup = await _repository.GetUserAccessibleFiscalPeriodsAsync(companyId, userId);
             return Json(fiscalPeriodLookup);
         }
 
-        // GET: api/lookup/branches/company/{companyId:min(1)}
-        [Route(LookupApi.CompanyBranchesUrl)]
+        // GET: api/lookup/branches/company/{companyId:min(1)}/user/{userId:min(1)}
+        [Route(LookupApi.UserAccessibleCompanyBranchesUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
-        public async Task<IActionResult> GetBranchesLookupAsync(int companyId)
+        public async Task<IActionResult> GetBranchesLookupAsync(int companyId, int userId)
         {
-            var branchLookup = await _repository.GetBranchesAsync(companyId);
+            var branchLookup = await _repository.GetUserAccessibleBranchesAsync(companyId, userId);
             return Json(branchLookup);
         }
 

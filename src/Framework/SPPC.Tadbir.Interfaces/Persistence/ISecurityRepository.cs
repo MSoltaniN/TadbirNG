@@ -46,13 +46,6 @@ namespace SPPC.Tadbir.Persistence
         Task<UserContextViewModel> GetUserContextAsync(int userId);
 
         /// <summary>
-        /// Asynchrnously retrieves all companies accessible by the specified user, as a list of key/value pairs
-        /// </summary>
-        /// <param name="userId">Unique identifier of an existing user</param>
-        /// <returns>Collection of all companies accessible by the user</returns>
-        Task<IList<KeyValue>> GetUserCompaniesAsync(int userId);
-
-        /// <summary>
         /// Asynchronously inserts or updates a single user in repository.
         /// </summary>
         /// <param name="user">Item to insert or update</param>

@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Model;
+using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
@@ -123,32 +126,94 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، دوره های مالی تعریف شده در یک شرکت مشخص شده را به صورت مجموعه ای از
+        /// به روش آسنکرون، شرکت های تعریف شده و قابل دسترسی توسط کاربر مشخص شده را به صورت مجموعه ای
+        /// از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="userId">شناسه یتابیسی یکی از کاربران موجود</param>
+        /// <returns>مجموعه ای از شرکت های قابل دسترسی</returns>
+        public async Task<IList<KeyValue>> GetUserAccessibleCompaniesAsync(int userId)
+        {
+            var query = GetUserQuery(userId);
+            var user = await query.SingleOrDefaultAsync();
+            var companies = new List<KeyValue>();
+            if (user != null)
+            {
+                Array.ForEach(
+                    user.UserRoles
+                        .Select(ur => ur.Role)
+                        .ToArray(),
+                    role => companies.AddRange(
+                        role.RoleBranches
+                            .Select(rb => rb.Branch)
+                            .Select(br => br.Company)
+                            .Distinct(new EntityEqualityComparer())
+                            .Select(c => _mapper.Map<KeyValue>(c))));
+            }
+
+            return companies;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، دوره های مالی تعریف شده در یک شرکت و قابل دسترسی توسط یک کاربر را به صورت مجموعه ای از
         /// کلید و مقدار برمی گرداند
         /// </summary>
         /// <param name="companyId">شناسه دیتابیسی یکی از شرکت های موجود</param>
+        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
         /// <returns>مجموعه دوره های مالی تعریف شده در یک شرکت مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetFiscalPeriodsAsync(int companyId)
+        public async Task<IEnumerable<KeyValue>> GetUserAccessibleFiscalPeriodsAsync(int companyId, int userId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var fiscalPeriods = await repository
-                .GetByCriteriaAsync(fp => fp.Company.Id == companyId);
+            var fiscalPeriods = new List<FiscalPeriod>();
+            var query = GetUserQuery(userId);
+            var user = await query.SingleOrDefaultAsync();
+            if (user != null)
+            {
+                Array.ForEach(
+                    user.UserRoles
+                        .Select(ur => ur.Role)
+                        .ToArray(),
+                    role => fiscalPeriods.AddRange(
+                        role.RoleFiscalPeriods
+                            .Select(rfp => rfp.FiscalPeriod)
+                            .Where(fp => fp.Company.Id == companyId)));
+                fiscalPeriods = fiscalPeriods
+                    .Distinct(new EntityEqualityComparer())
+                    .Cast<FiscalPeriod>()
+                    .ToList();
+            }
+
             return fiscalPeriods
                 .OrderBy(fp => fp.Name)
                 .Select(fp => _mapper.Map<KeyValue>(fp));
         }
 
         /// <summary>
-        /// به روش آسنکرون، شعب سازمانی تعریف شده در یک شرکت مشخص شده را به صورت مجموعه ای از
+        /// به روش آسنکرون، شعب سازمانی تعریف شده در یک شرکت و قابل دسترسی توسط یک کاربر را به صورت مجموعه ای از
         /// کلید و مقدار برمی گرداند
         /// </summary>
         /// <param name="companyId">شناسه دیتابیسی یکی از شرکت های موجود</param>
+        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
         /// <returns>مجموعه شعب سازمانی تعریف شده در یک شرکت مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetBranchesAsync(int companyId)
+        public async Task<IEnumerable<KeyValue>> GetUserAccessibleBranchesAsync(int companyId, int userId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Branch>();
-            var branches = await repository
-                .GetByCriteriaAsync(br => br.Company.Id == companyId);
+            var branches = new List<Branch>();
+            var query = GetUserQuery(userId);
+            var user = await query.SingleOrDefaultAsync();
+            if (user != null)
+            {
+                Array.ForEach(
+                    user.UserRoles
+                        .Select(ur => ur.Role)
+                        .ToArray(),
+                    role => branches.AddRange(
+                        role.RoleBranches
+                            .Select(rb => rb.Branch)
+                            .Where(br => br.Company.Id == companyId)));
+                branches = branches
+                    .Distinct(new EntityEqualityComparer())
+                    .Cast<Branch>()
+                    .ToList();
+            }
+
             return branches
                 .OrderBy(br => br.Name)
                 .Select(br => _mapper.Map<KeyValue>(br));
@@ -402,6 +467,25 @@ namespace SPPC.Tadbir.Persistence
         private static void CopyCollection(IEnumerable<KeyValue> source, IList<KeyValue> destination)
         {
             Array.ForEach(source.ToArray(), item => destination.Add(item));
+        }
+
+        private IQueryable<User> GetUserQuery(int userId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var query = repository
+                .GetEntityQuery()
+                .Where(usr => usr.Id == userId)
+                .Include(usr => usr.UserRoles)
+                    .ThenInclude(ur => ur.Role)
+                        .ThenInclude(r => r.RoleBranches)
+                            .ThenInclude(rb => rb.Branch)
+                                .ThenInclude(br => br.Company)
+                .Include(usr => usr.UserRoles)
+                    .ThenInclude(ur => ur.Role)
+                        .ThenInclude(r => r.RoleFiscalPeriods)
+                            .ThenInclude(rfp => rfp.FiscalPeriod)
+                                .ThenInclude(fp => fp.Company);
+            return query;
         }
 
         private IUnitOfWork _unitOfWork;
