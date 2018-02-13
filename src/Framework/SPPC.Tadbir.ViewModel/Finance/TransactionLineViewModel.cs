@@ -24,17 +24,9 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int FiscalPeriodId { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the account that is affected by this article.
+        /// Gets or sets the account vector that is affected by this article.
         /// </summary>
-        [Display(Name = FieldNames.AccountField)]
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int? AccountId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the code of the account that is affected by this article.
-        /// </summary>
-        [Display(Name = FieldNames.AccountCodeField)]
-        public string AccountCode { get; set; }
+        public FullAccountViewModel FullAccount { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the currency that qualifies monetary values in this article.

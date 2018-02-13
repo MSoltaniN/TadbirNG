@@ -289,7 +289,7 @@ CREATE TABLE [Finance].[TransactionLine] (
 	[TransactionID]   INT              NOT NULL,
 	[FiscalPeriodID]  INT              NOT NULL,
 	[BranchID]        INT              NOT NULL,
-	[AccountID]       INT              NOT NULL,
+	[FullAccountID]   INT              NOT NULL,
 	[CurrencyID]      INT              NOT NULL,
     [Description]     NVARCHAR(512)    NULL,
     [Debit]           MONEY            NOT NULL,
@@ -300,7 +300,7 @@ CREATE TABLE [Finance].[TransactionLine] (
     , CONSTRAINT [FK_Finance_TransactionLine_Finance_Transaction] FOREIGN KEY ([TransactionID]) REFERENCES [Finance].[Transaction] ([TransactionID])
     , CONSTRAINT [FK_Finance_TransactionLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_TransactionLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
-    , CONSTRAINT [FK_Finance_TransactionLine_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
+    , CONSTRAINT [FK_Finance_TransactionLine_Finance_FullAccount] FOREIGN KEY ([FullAccountID]) REFERENCES [Finance].[FullAccount] ([FullAccountID])
     , CONSTRAINT [FK_Finance_TransactionLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
 )
 GO

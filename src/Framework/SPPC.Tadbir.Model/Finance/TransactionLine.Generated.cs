@@ -68,9 +68,9 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual Transaction Transaction { get; set; }
 
         /// <summary>
-        /// Gets or sets the financial account affected by this transaction entry
+        /// Gets or sets the financial account vector affected by this transaction entry
         /// </summary>
-        public virtual Account Account { get; set; }
+        public virtual FullAccount FullAccount { get; set; }
 
         /// <summary>
         /// Gets or sets the currency used in this financial transaction entry
@@ -90,7 +90,7 @@ namespace SPPC.Tadbir.Model.Finance
         private void InitReferences()
         {
             Transaction = new Transaction();
-            Account = new Account();
+            FullAccount = new FullAccount();
             Currency = new Currency();
             Branch = new Branch();
             FiscalPeriod = new FiscalPeriod();

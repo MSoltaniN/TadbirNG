@@ -27,7 +27,8 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public TransactionLineViewModel()
         {
-            this.Description = String.Empty;
+            Description = String.Empty;
+            FullAccount = new FullAccountViewModel();
         }
 
         /// <summary>

@@ -128,6 +128,11 @@ namespace SPPC.Tadbir.Values
         public const string AccountField = "حساب";
 
         /// <summary>
+        /// Localized name of FullAccount field.
+        /// </summary>
+        public const string FullAccountField = "بردار حساب";
+
+        /// <summary>
         /// Localized name of Permissions field.
         /// </summary>
         public const string PermissionsField = "دسترسی ها";

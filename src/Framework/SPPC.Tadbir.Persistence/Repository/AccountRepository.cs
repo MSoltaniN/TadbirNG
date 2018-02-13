@@ -104,9 +104,9 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
             var articles = await repository
                 .GetByCriteriaAsync(
-                    line => line.Account.Id == accountId,
+                    line => line.FullAccount.Id == accountId,
                     gridOptions,
-                    line => line.Transaction, line => line.Account, line => line.Currency,
+                    line => line.Transaction, line => line.FullAccount, line => line.Currency,
                     line => line.FiscalPeriod, line => line.Branch);
             return articles
                 .Select(line => _mapper.Map<TransactionLineViewModel>(line))
@@ -201,7 +201,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
             var articles = await repository
-                .GetByCriteriaAsync(art => art.Account.Id == accountId);
+                .GetByCriteriaAsync(art => art.FullAccount.Id == accountId);
             return (articles.Count != 0);
         }
 
@@ -278,9 +278,9 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetRepository<TransactionLine>();
             var articles = repository
                 .GetByCriteria(
-                    line => line.Account.Id == accountId,
+                    line => line.FullAccount.Id == accountId,
                     gridOptions,
-                    line => line.Transaction, line => line.Account, line => line.Currency,
+                    line => line.Transaction, line => line.FullAccount, line => line.Currency,
                     line => line.FiscalPeriod, line => line.Branch)
                 .Select(line => _mapper.Map<TransactionLineViewModel>(line))
                 .ToList();
@@ -377,7 +377,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<TransactionLine>();
             var articleCount = repository
-                .GetByCriteria(art => art.Account.Id == accountId)
+                .GetByCriteria(art => art.FullAccount.Id == accountId)
                 .Count();
             return (articleCount != 0);
         }

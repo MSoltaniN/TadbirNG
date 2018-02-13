@@ -347,10 +347,8 @@ namespace SPPC.Tadbir.Persistence
         {
             TransactionLineViewModel articleViewModel = null;
             var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
-            var article = await repository.GetByIDAsync(
-                articleId,
-                art => art.Transaction, art => art.Account, art => art.Currency,
-                art => art.Branch, art => art.FiscalPeriod);
+            var query = GetArticleDetailsQuery(repository, art => art.Id == articleId);
+            var article = await query.SingleOrDefaultAsync();
             if (article != null)
             {
                 articleViewModel = _mapper.Map<TransactionLineViewModel>(article);
@@ -414,7 +412,7 @@ namespace SPPC.Tadbir.Persistence
             var article = await repository.GetByIDAsync(articleId);
             if (article != null)
             {
-                article.Account = null;
+                article.FullAccount = null;
                 article.Branch = null;
                 article.Currency = null;
                 article.FiscalPeriod = null;
@@ -439,7 +437,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetRepository<TransactionLine>();
             var article = repository.GetByID(
                 articleId,
-                art => art.Transaction, art => art.Account, art => art.Currency,
+                art => art.Transaction, art => art.FullAccount, art => art.Currency,
                 art => art.Branch, art => art.FiscalPeriod);
             if (article != null)
             {
@@ -504,7 +502,7 @@ namespace SPPC.Tadbir.Persistence
             var article = repository.GetByID(articleId);
             if (article != null)
             {
-                article.Account = null;
+                article.FullAccount = null;
                 article.Branch = null;
                 article.Currency = null;
                 article.FiscalPeriod = null;
@@ -520,7 +518,7 @@ namespace SPPC.Tadbir.Persistence
 
         private static void UpdateExistingArticle(TransactionLine existing, TransactionLineViewModel article)
         {
-            existing.AccountId = article.AccountId ?? 0;
+            existing.FullAccountId = article.FullAccount.Id;
             existing.CurrencyId = article.CurrencyId ?? 0;
             existing.Debit = article.Debit;
             existing.Credit = article.Credit;
@@ -588,7 +586,7 @@ namespace SPPC.Tadbir.Persistence
             var transactionsQuery = repository
                 .GetEntityQuery()
                 .Include(txn => txn.Lines)
-                    .ThenInclude(line => line.Account)
+                    .ThenInclude(line => line.FullAccount)
                 .Include(txn => txn.Lines)
                     .ThenInclude(line => line.Currency)
                 .Include(txn => txn.Lines)
@@ -636,7 +634,14 @@ namespace SPPC.Tadbir.Persistence
         {
             var query = repository
                 .GetEntityQuery()
-                .Include(art => art.Account)
+                .Include(art => art.FullAccount)
+                    .ThenInclude(full => full.Account)
+                .Include(art => art.FullAccount)
+                    .ThenInclude(full => full.Detail)
+                .Include(art => art.FullAccount)
+                    .ThenInclude(full => full.Project)
+                .Include(art => art.FullAccount)
+                    .ThenInclude(full => full.CostCenter)
                 .Include(art => art.Transaction)
                 .Include(art => art.FiscalPeriod)
                 .Include(art => art.Currency)

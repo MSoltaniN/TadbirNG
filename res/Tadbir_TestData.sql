@@ -95,7 +95,11 @@ INSERT INTO [Finance].[Project] (ProjectID, FiscalPeriodID, BranchID, Code, Full
 SET IDENTITY_INSERT [Finance].[Project] OFF
 
 SET IDENTITY_INSERT [Finance].[FullAccount] ON
-INSERT INTO [Finance].[FullAccount] (FullAccountID, AccountID) VALUES (1, 4)
+INSERT INTO [Finance].[FullAccount] (FullAccountID, AccountID) VALUES (1, 1)
+INSERT INTO [Finance].[FullAccount] (FullAccountID, AccountID) VALUES (2, 3)
+INSERT INTO [Finance].[FullAccount] (FullAccountID, AccountID) VALUES (3, 4)
+INSERT INTO [Finance].[FullAccount] (FullAccountID, AccountID) VALUES (4, 5)
+INSERT INTO [Finance].[FullAccount] (FullAccountID, AccountID) VALUES (5, 7)
 SET IDENTITY_INSERT [Finance].[FullAccount] OFF
 
 SET IDENTITY_INSERT [Inventory].[UOM] ON
@@ -193,16 +197,16 @@ INSERT INTO [Finance].[Transaction] (TransactionID, FiscalPeriodID, BranchID, Do
 SET IDENTITY_INSERT [Finance].[Transaction] OFF
 
 SET IDENTITY_INSERT [Finance].[TransactionLine] ON
-INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
-  VALUES (1, 1, 1, 1, 4, 1, N'ثبت موجودی نقدی اولیه در حساب بانکی', 100000000, 0)
-INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
-  VALUES (2, 1, 1, 1, 5, 1, N'ثبت موجودی نقدی اولیه صندوق', 5000000, 0)
-INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
-  VALUES (3, 1, 1, 1, 6, 1, N'ثبت سرمایه اولیه', 0, 105000000)
-INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
-  VALUES (4, 2, 1, 1, 5, 1, N'خرید نقدی لوازم اداری مصرفی', 850000, 0)
-INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
-  VALUES (5, 2, 1, 1, 7, 1, N'خرید نقدی لوازم اداری مصرفی', 0, 850000)
+INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, FullAccountID, CurrencyID, [Description], Debit, Credit)
+  VALUES (1, 1, 1, 1, 2, 1, N'ثبت موجودی نقدی اولیه در حساب بانکی', 100000000, 0)
+INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, FullAccountID, CurrencyID, [Description], Debit, Credit)
+  VALUES (2, 1, 1, 1, 1, 1, N'ثبت موجودی نقدی اولیه صندوق', 5000000, 0)
+INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, FullAccountID, CurrencyID, [Description], Debit, Credit)
+  VALUES (3, 1, 1, 1, 3, 1, N'ثبت سرمایه اولیه', 0, 105000000)
+INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, FullAccountID, CurrencyID, [Description], Debit, Credit)
+  VALUES (4, 2, 1, 1, 2, 1, N'خرید نقدی لوازم اداری مصرفی', 850000, 0)
+INSERT INTO [Finance].[TransactionLine] (LineID, TransactionID, FiscalPeriodID, BranchID, FullAccountID, CurrencyID, [Description], Debit, Credit)
+  VALUES (5, 2, 1, 1, 4, 1, N'خرید نقدی لوازم اداری مصرفی', 0, 850000)
 SET IDENTITY_INSERT [Finance].[TransactionLine] OFF
 
 SET IDENTITY_INSERT [Procurement].[RequisitionVoucher] ON

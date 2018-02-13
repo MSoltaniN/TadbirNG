@@ -24,12 +24,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public TransactionLineViewModel Article { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the financial account affected by this transaction line (article).
-        /// </summary>
-        [Display(Name = FieldNames.AccountNameField)]
-        public string AccountName { get; set; }
-
-        /// <summary>
         /// Gets or sets the name of fiscal period in which this transaction line (article) is defined.
         /// </summary>
         [Display(Name = Entities.FiscalPeriod)]

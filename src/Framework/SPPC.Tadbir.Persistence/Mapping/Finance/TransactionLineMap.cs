@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Finance;
@@ -32,11 +30,11 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
 
-            builder.HasOne(d => d.Account)
-                .WithMany(p => p.TransactionLines)
-                .HasForeignKey(d => d.AccountId)
+            builder.HasOne(d => d.FullAccount)
+                .WithMany()
+                .HasForeignKey(d => d.FullAccountId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_TransactionLine_Finance_Account");
+                .HasConstraintName("FK_Finance_TransactionLine_Finance_FullAccount");
             builder.HasOne(d => d.Branch)
                 .WithMany()
                 .HasForeignKey("BranchID")
