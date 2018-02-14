@@ -181,5 +181,10 @@ namespace SPPC.Tadbir.Values
         /// Localized name of WorkItem entity (unknown).
         /// </summary>
         public const string AWorkItem = "کاری";
+
+        /// <summary>
+        /// Localized name of Group Action
+        /// </summary>
+        public const string GroupAction = "اقدام گروهی";
     }
 }

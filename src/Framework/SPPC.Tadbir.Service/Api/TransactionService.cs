@@ -4,8 +4,8 @@ using System.Linq;
 using SPPC.Framework.Common;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Service
 {

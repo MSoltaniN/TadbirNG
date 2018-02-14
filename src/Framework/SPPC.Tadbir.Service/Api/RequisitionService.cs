@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using SPPC.Framework.Common;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Procurement;
-using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Service
 {

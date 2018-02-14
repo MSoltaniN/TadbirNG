@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +13,7 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Filters;
 
@@ -112,20 +115,39 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingAccountAsync(int accountId)
         {
-            var account = await _repository.GetAccountAsync(accountId);
-            if (account == null)
+            string result = await ValidateDeleteAsync(accountId);
+            if (!String.IsNullOrEmpty(result))
             {
-                return NotFound();
-            }
-
-            if (await _repository.IsUsedAccountAsync(accountId))
-            {
-                var accountInfo = String.Format("'{0} ({1})'", account.Name, account.Code);
-                var message = String.Format(Strings.CannotDeleteUsedAccount, accountInfo);
-                return BadRequest(message);
+                return BadRequest(result);
             }
 
             await _repository.DeleteAccountAsync(accountId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        // DELETE: api/accounts
+        [HttpDelete]
+        [Route(AccountApi.AccountsUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
+        public async Task<IActionResult> DeleteExistingAccountsAsync([FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                var message = String.Format(ValidationMessages.RequestFailedNoData, Entities.GroupAction);
+                return BadRequest(message);
+            }
+
+            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            foreach (int accountId in actionDetail.Items)
+            {
+                await _repository.DeleteAccountAsync(accountId);
+            }
+
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
@@ -304,6 +326,36 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
+        }
+
+        private async Task<IEnumerable<string>> ValidateGroupDeleteAsync(IEnumerable<int> items)
+        {
+            var messages = new List<string>();
+            foreach (int item in items)
+            {
+                messages.Add(await ValidateDeleteAsync(item));
+            }
+
+            return messages
+                .Where(msg => !String.IsNullOrEmpty(msg));
+        }
+
+        private async Task<string> ValidateDeleteAsync(int item)
+        {
+            string message = String.Empty;
+            var account = await _repository.GetAccountAsync(item);
+            if (account == null)
+            {
+                message = String.Format(Strings.ItemByIdNotFound, Entities.Account, item);
+            }
+
+            if (await _repository.IsUsedAccountAsync(item))
+            {
+                var accountInfo = String.Format("'{0} ({1})'", account.Name, account.Code);
+                message = String.Format(Strings.CannotDeleteUsedAccount, accountInfo);
+            }
+
+            return message;
         }
 
         private IAccountRepository _repository;

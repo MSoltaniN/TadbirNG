@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Tadbir.ViewModel.Workflow
+namespace SPPC.Tadbir.ViewModel.Core
 {
     /// <summary>
     /// این مدل نمایشی اطلاعات تکمیلی مربوط به یک اقدام را نشان می دهد.

@@ -159,9 +159,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteAccountAsync(int accountId)
         {
             var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
+            var account = await repository.GetByIDAsync(accountId);
             if (account != null)
             {
+                account.FiscalPeriod = null;
+                account.Branch = null;
+                account.Parent = null;
                 repository.Delete(account);
                 await _unitOfWork.CommitAsync();
             }
@@ -197,7 +200,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
             var articles = await repository
-                .GetByCriteriaAsync(art => art.FullAccount.Id == accountId);
+                .GetByCriteriaAsync(art => art.FullAccount.Account.Id == accountId);
             return (articles.Count != 0);
         }
 

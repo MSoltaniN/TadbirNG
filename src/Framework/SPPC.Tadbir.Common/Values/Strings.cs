@@ -339,6 +339,11 @@ namespace SPPC.Tadbir.Values
         public const string RequestLines = "آرتیکل های درخواست";
 
         /// <summary>
+        /// Localized text for an error message indicating that no item with specified id could be found
+        /// </summary>
+        public const string ItemByIdNotFound = "{0} مورد نظر با شناسه '{1}' یافت نشد.";
+
+        /// <summary>
         /// Localized text for the text indicating that an account is used in financial transactions and cannot be deleted.
         /// </summary>
         public static readonly string CannotDeleteUsedAccount = "حساب {0} در یک یا چند سند مالی استفاده شده و قابل حذف نیست.";
