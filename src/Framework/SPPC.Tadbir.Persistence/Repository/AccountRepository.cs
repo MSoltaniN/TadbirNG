@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -102,15 +103,10 @@ namespace SPPC.Tadbir.Persistence
             int accountId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
-            var articles = await repository
-                .GetByCriteriaAsync(
-                    line => line.FullAccount.Id == accountId,
-                    gridOptions,
-                    line => line.Transaction, line => line.FullAccount, line => line.Currency,
-                    line => line.FiscalPeriod, line => line.Branch);
-            return articles
+            var query = GetArticleDetailsQuery(repository, line => line.FullAccount.Account.Id == accountId);
+            return await query
                 .Select(line => _mapper.Map<TransactionLineViewModel>(line))
-                .ToList();
+                .ToListAsync();
         }
 
         /// <summary>
@@ -401,6 +397,28 @@ namespace SPPC.Tadbir.Persistence
                 .Include(acc => acc.Branch)
                     .ThenInclude(br => br.Company)
                 .Include(acc => acc.FiscalPeriod);
+            return query;
+        }
+
+        private IQueryable<TransactionLine> GetArticleDetailsQuery(
+            IRepository<TransactionLine> repository, Expression<Func<TransactionLine, bool>> criteria)
+        {
+            var query = repository
+                .GetEntityQuery()
+                .Include(art => art.FullAccount)
+                    .ThenInclude(full => full.Account)
+                .Include(art => art.FullAccount)
+                    .ThenInclude(full => full.Detail)
+                .Include(art => art.FullAccount)
+                    .ThenInclude(full => full.Project)
+                .Include(art => art.FullAccount)
+                    .ThenInclude(full => full.CostCenter)
+                .Include(art => art.Transaction)
+                .Include(art => art.FiscalPeriod)
+                .Include(art => art.Currency)
+                .Include(art => art.Branch)
+                    .ThenInclude(br => br.Company)
+                .Where(criteria);
             return query;
         }
 

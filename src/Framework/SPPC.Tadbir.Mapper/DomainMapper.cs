@@ -142,10 +142,10 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
             mapperConfig.CreateMap<FullAccount, FullAccountViewModel>();
             mapperConfig.CreateMap<FullAccountViewModel, FullAccount>()
-                .AfterMap((viewModel, model) => model.Account.Id = viewModel.AccountId)
-                .AfterMap((viewModel, model) => model.Detail.Id = viewModel.DetailId)
-                .AfterMap((viewModel, model) => model.CostCenter.Id = viewModel.CostCenterId)
-                .AfterMap((viewModel, model) => model.Project.Id = viewModel.ProjectId);
+                .AfterMap((viewModel, model) => model.Account.Id = viewModel.AccountId ?? 0)
+                .AfterMap((viewModel, model) => model.Detail.Id = viewModel.DetailId ?? 0)
+                .AfterMap((viewModel, model) => model.CostCenter.Id = viewModel.CostCenterId ?? 0)
+                .AfterMap((viewModel, model) => model.Project.Id = viewModel.ProjectId ?? 0);
             mapperConfig.CreateMap<Transaction, TransactionFullViewModel>()
                 .ForMember(
                     dest => dest.Transaction,

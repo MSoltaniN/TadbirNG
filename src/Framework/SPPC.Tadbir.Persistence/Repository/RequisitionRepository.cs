@@ -243,10 +243,10 @@ namespace SPPC.Tadbir.Persistence
             existing.RequesterUnit = new BusinessUnit() { Id = voucher.RequesterUnitId ?? 0 };
             existing.ReceiverUnit = new BusinessUnit() { Id = voucher.ReceiverUnitId ?? 0 };
             existing.Warehouse = new Warehouse() { Id = voucher.WarehouseId ?? 0 };
-            existing.FullAccount.Account = new Account() { Id = voucher.FullAccount.AccountId };
-            existing.FullAccount.Detail = new DetailAccount() { Id = voucher.FullAccount.DetailId };
-            existing.FullAccount.CostCenter = new CostCenter() { Id = voucher.FullAccount.CostCenterId };
-            existing.FullAccount.Project = new Project() { Id = voucher.FullAccount.ProjectId };
+            existing.FullAccount.Account = new Account() { Id = voucher.FullAccount.AccountId ?? 0 };
+            existing.FullAccount.Detail = new DetailAccount() { Id = voucher.FullAccount.DetailId ?? 0 };
+            existing.FullAccount.CostCenter = new CostCenter() { Id = voucher.FullAccount.CostCenterId ?? 0 };
+            existing.FullAccount.Project = new Project() { Id = voucher.FullAccount.ProjectId ?? 0 };
             var mainAction = existing.Document.Actions.First();
             mainAction.ModifiedBy = new User() { Id = voucher.Document.Actions.First().ModifiedById };
         }
@@ -272,10 +272,10 @@ namespace SPPC.Tadbir.Persistence
             existing.Warehouse = new Warehouse() { Id = line.WarehouseId };
             existing.Product = new Product() { Id = line.ProductId };
             existing.Uom = new UnitOfMeasurement() { Id = line.UomId };
-            existing.FullAccount.Account = new Account() { Id = line.FullAccount.AccountId };
-            existing.FullAccount.Detail = new DetailAccount() { Id = line.FullAccount.DetailId };
-            existing.FullAccount.CostCenter = new CostCenter() { Id = line.FullAccount.CostCenterId };
-            existing.FullAccount.Project = new Project() { Id = line.FullAccount.ProjectId };
+            existing.FullAccount.Account = new Account() { Id = line.FullAccount.AccountId ?? 0 };
+            existing.FullAccount.Detail = new DetailAccount() { Id = line.FullAccount.DetailId ?? 0 };
+            existing.FullAccount.CostCenter = new CostCenter() { Id = line.FullAccount.CostCenterId ?? 0 };
+            existing.FullAccount.Project = new Project() { Id = line.FullAccount.ProjectId ?? 0 };
             existing.Action.ModifiedDate = DateTime.Now;
             existing.Action.ModifiedBy = new User()
             {

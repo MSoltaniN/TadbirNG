@@ -256,21 +256,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        // DELETE: api/transactions/articles/{articleId:int}
+        // DELETE: api/transactions/articles/{articleId:min(1)}
         [HttpDelete]
         [Route(TransactionApi.TransactionArticleUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingArticleAsync(int articleId)
         {
-            if (articleId <= 0)
-            {
-                return BadRequest("Could not delete article because it does not exist.");
-            }
-
             var article = _repository.GetArticle(articleId);
             if (article == null)
             {
-                return BadRequest("Could not delete article because it does not exist.");
+                var message = String.Format(ValidationMessages.ItemNotFound, Entities.Article);
+                return BadRequest(message);
             }
 
             await _repository.DeleteArticleAsync(articleId);

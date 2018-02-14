@@ -128,6 +128,21 @@ namespace SPPC.Tadbir.Values
         public const string AccountField = "حساب";
 
         /// <summary>
+        /// Localized name of DetailAccount field.
+        /// </summary>
+        public const string DetailAccountField = "تفصیلی شناور";
+
+        /// <summary>
+        /// Localized name of CostCenter field.
+        /// </summary>
+        public const string CostCenterField = "مرکز هزینه";
+
+        /// <summary>
+        /// Localized name of Project field.
+        /// </summary>
+        public const string ProjectField = "پروژه";
+
+        /// <summary>
         /// Localized name of FullAccount field.
         /// </summary>
         public const string FullAccountField = "بردار حساب";

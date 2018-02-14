@@ -89,14 +89,8 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public virtual Branch Branch { get; set; }
 
-        /// <summary>
-        /// Gets or sets the collection of financial transaction lines (articles) in which this account is used
-        /// </summary>
-        public virtual IList<TransactionLine> TransactionLines { get; protected set; }
-
         private void InitReferences()
         {
-            TransactionLines = new List<TransactionLine>();
             FiscalPeriod = new FiscalPeriod();
             Branch = new Branch();
             Children = new List<Account>();

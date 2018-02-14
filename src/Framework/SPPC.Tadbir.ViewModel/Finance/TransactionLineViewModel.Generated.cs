@@ -47,14 +47,12 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// Gets or sets the amount debited in this financial transaction entry
         /// </summary>
         [Display(Name = FieldNames.DebitField)]
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public decimal Debit { get; set; }
 
         /// <summary>
         /// Gets or sets the amount credited in this financial transaction entry
         /// </summary>
         [Display(Name = FieldNames.CreditField)]
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public decimal Credit { get; set; }
     }
 }

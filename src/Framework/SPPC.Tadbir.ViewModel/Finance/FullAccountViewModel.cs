@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -23,21 +25,26 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// شناسه دیتابیسی مولفه سرفصل مالی از بردار حساب
         /// </summary>
-        public int AccountId { get; set; }
+        [Display(Name = FieldNames.AccountField)]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        public int? AccountId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی مولفه تفصیلی شناور از بردار حساب
         /// </summary>
-        public int DetailId { get; set; }
+        [Display(Name = FieldNames.DetailAccountField)]
+        public int? DetailId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی مولفه مرکز هزینه از بردار حساب
         /// </summary>
-        public int CostCenterId { get; set; }
+        [Display(Name = FieldNames.CostCenterField)]
+        public int? CostCenterId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی مولفه پروژه از بردار حساب
         /// </summary>
-        public int ProjectId { get; set; }
+        [Display(Name = FieldNames.ProjectField)]
+        public int? ProjectId { get; set; }
     }
 }
