@@ -29,6 +29,17 @@ namespace SPPC.Tadbir.Api
             "transactions/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync";
 
         /// <summary>
+        /// API client URL for count of all transactions defined in a fiscal period and a corporate branch
+        /// </summary>
+        public const string FiscalPeriodBranchItemCount = "transactions/fp/{0}/branch/{1}/count";
+
+        /// <summary>
+        /// API server route URL for count of all transactions defined in a fiscal period and a corporate branch
+        /// </summary>
+        public const string FiscalPeriodBranchItemCountUrl =
+            "transactions/fp/{fpId:min(1)}/branch/{branchId:min(1)}/count";
+
+        /// <summary>
         /// API client URL for all transactions
         /// </summary>
         public const string Transactions = "transactions";
@@ -187,6 +198,16 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all articles in a single transaction specified by identifier
         /// </summary>
         public const string TransactionArticlesSyncUrl = "transactions/{transactionId:min(1)}/articles/sync";
+
+        /// <summary>
+        /// API client URL for count of all articles in a transaction specified by identifier
+        /// </summary>
+        public const string TransactionArticleCount = "transactions/{0}/articles/count";
+
+        /// <summary>
+        /// API server route URL for count of all articles in a transaction specified by identifier
+        /// </summary>
+        public const string TransactionArticleCountUrl = "transactions/{transactionId:min(1)}/articles/count";
 
         /// <summary>
         /// API client URL for a single transaction article specified by identifier

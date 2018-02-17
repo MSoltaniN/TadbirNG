@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
@@ -42,12 +43,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<IList<TransactionViewModel>> GetTransactionsAsync(int fpId, int branchId)
+        public async Task<IList<TransactionViewModel>> GetTransactionsAsync(
+            int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<Transaction>();
             var query = GetTransactionQuery(
-                repository, txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId);
+                repository, txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId, gridOptions);
             var transactions = await query
                 .Select(txn => _mapper.Map<TransactionViewModel>(txn))
                 .ToListAsync();
@@ -83,6 +86,23 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return transactionDetail;
+        }
+
+        /// <summary>
+        /// Retrieves the count of all financial transaction items in a specified fiscal period and branch
+        /// </summary>
+        /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
+        /// <returns>Count of all financial transaction items</returns>
+        public async Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
+            var items = await repository
+                .GetByCriteriaAsync(
+                    txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId,
+                    gridOptions);
+            return items.Count;
         }
 
         /// <summary>
@@ -172,12 +192,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public IList<TransactionViewModel> GetTransactions(int fpId, int branchId)
+        public IList<TransactionViewModel> GetTransactions(int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetRepository<Transaction>();
             var query = GetTransactionQuery(
-                repository, txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId);
+                repository, txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId, gridOptions);
             var transactions = query
                 .Select(txn => _mapper.Map<TransactionViewModel>(txn))
                 .ToList();
@@ -377,6 +398,19 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// Retrieves the count of all transaction line items in a specified financial transaction
+        /// </summary>
+        /// <param name="transactionId">Identifier of an existing transaction</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
+        /// <returns>Count of all transaction line items</returns>
+        public async Task<int> GetArticleCountAsync(int transactionId, GridOptions gridOptions = null)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
+            var items = await repository.GetByCriteriaAsync(line => line.Transaction.Id == transactionId, gridOptions);
+            return items.Count;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات یک سطر سند مالی (آرتیکل) را در دیتابیس ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
@@ -553,10 +587,11 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private IQueryable<Transaction> GetTransactionQuery(
-            IRepository<Transaction> repository, Expression<Func<Transaction, bool>> criteria)
+            IRepository<Transaction> repository, Expression<Func<Transaction, bool>> criteria,
+            GridOptions gridOptions = null)
         {
             var transactionsQuery = repository
-                .GetEntityQuery()
+                .GetEntityQuery(gridOptions)
                 .Include(txn => txn.FiscalPeriod)
                 .Include(txn => txn.Branch)
                 .Include(txn => txn.Lines)

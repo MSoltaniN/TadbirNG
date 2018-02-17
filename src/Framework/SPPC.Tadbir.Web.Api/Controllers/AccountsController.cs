@@ -70,7 +70,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}/count
         [Route(AccountApi.FiscalPeriodBranchItemCountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetAccountItemCountAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetItemCountAsync(int fpId, int branchId)
         {
             var gridOptions = GetGridOptions();
             int count = await _repository.GetCountAsync(fpId, branchId, gridOptions);

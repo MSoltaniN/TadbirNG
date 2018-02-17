@@ -85,7 +85,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             _controller.GetTransactions(_fpId, _branchId);
 
             // Assert
-            _mockRepository.Verify(repo => repo.GetTransactions(_fpId, _branchId));
+            _mockRepository.Verify(repo => repo.GetTransactions(_fpId, _branchId, null));
         }
 
         [Test]

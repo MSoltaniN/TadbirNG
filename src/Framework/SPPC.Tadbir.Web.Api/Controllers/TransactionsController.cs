@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Framework.Common;
+using SPPC.Framework.Presentation;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
@@ -36,7 +39,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public async Task<IActionResult> GetTransactionsAsync(int fpId, int branchId)
         {
-            var transactions = await _repository.GetTransactionsAsync(fpId, branchId);
+            var gridOptions = GetGridOptions();
+            var transactions = await _repository.GetTransactionsAsync(fpId, branchId, gridOptions);
             return Json(transactions);
         }
 
@@ -47,6 +51,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var transaction = await _repository.GetTransactionDetailAsync(transactionId);
             return JsonReadResult(transaction);
+        }
+
+        // GET: api/transactions/fp/{fpId:min(1)}/branch/{branchId:min(1)}/count
+        [Route(TransactionApi.FiscalPeriodBranchItemCountUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)AccountPermissions.View)]
+        public async Task<IActionResult> GetItemCountAsync(int fpId, int branchId)
+        {
+            var gridOptions = GetGridOptions();
+            int count = await _repository.GetCountAsync(fpId, branchId, gridOptions);
+            return Json(count);
         }
 
         // POST: api/transactions
@@ -113,7 +127,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public IActionResult GetTransactions(int fpId, int branchId)
         {
-            var transactions = _repository.GetTransactions(fpId, branchId);
+            var gridOptions = GetGridOptions();
+            var transactions = _repository.GetTransactions(fpId, branchId, gridOptions);
             return Json(transactions);
         }
 
@@ -204,6 +219,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var article = await _repository.GetArticleDetailsAsync(articleId);
             return JsonReadResult(article);
+        }
+
+        // GET: api/transactions/{transactionId:min(1)}/articles/count
+        [Route(TransactionApi.TransactionArticleCountUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)AccountPermissions.View)]
+        public async Task<IActionResult> GetTransactionArticleCountAsync(int transactionId)
+        {
+            var gridOptions = GetGridOptions();
+            int count = await _repository.GetArticleCountAsync(transactionId, gridOptions);
+            return Json(count);
         }
 
         // POST: api/transactions/{transactionId:min(1)}/articles
@@ -413,6 +438,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private string ValidateStateOperation(string operation, TransactionSummaryViewModel summary)
         {
             return String.Empty;
+        }
+
+        private GridOptions GetGridOptions()
+        {
+            var options = Request.Headers[AppConstants.GridOptionsHeaderName];
+            if (String.IsNullOrEmpty(options))
+            {
+                return null;
+            }
+
+            var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
+            var json = WebUtility.UrlDecode(urlEncoded);
+            return Framework.Helpers.Json.To<GridOptions>(json);
         }
 
         private void SetDocument(TransactionViewModel transaction)

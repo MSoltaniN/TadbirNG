@@ -376,7 +376,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<TransactionLine>();
             var articleCount = repository
-                .GetByCriteria(art => art.FullAccount.Id == accountId)
+                .GetByCriteria(art => art.FullAccount.Account.Id == accountId)
                 .Count();
             return (articleCount != 0);
         }

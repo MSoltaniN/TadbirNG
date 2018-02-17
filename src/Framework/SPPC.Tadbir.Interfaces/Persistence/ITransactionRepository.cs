@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -19,8 +20,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<IList<TransactionViewModel>> GetTransactionsAsync(int fpId, int branchId);
+        Task<IList<TransactionViewModel>> GetTransactionsAsync(int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، سند مالی با شناسه عددی مشخص شده را به همراه اطلاعات کامل آن از محل ذخیره خوانده و برمی گرداند
@@ -28,6 +30,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="transactionId">شناسه عددی یکی از اسناد مالی موجود</param>
         /// <returns>سند مالی مشخص شده با شناسه عددی به همراه اطلاعات کامل آن</returns>
         Task<TransactionFullViewModel> GetTransactionDetailAsync(int transactionId);
+
+        /// <summary>
+        /// Retrieves the count of all financial transaction items in a specified fiscal period and branch
+        /// </summary>
+        /// <param name="fpId">Identifier of an existing fiscal period</param>
+        /// <param name="branchId">Identifier of an existing corporate branch</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
+        /// <returns>Count of all financial transaction items</returns>
+        Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک سند مالی را در محل ذخیره ایجاد یا اصلاح می کند
@@ -57,8 +68,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        IList<TransactionViewModel> GetTransactions(int fpId, int branchId);
+        IList<TransactionViewModel> GetTransactions(int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// سند مالی با شناسه عددی مشخص شده را به همراه اطلاعات کامل آن از محل ذخیره خوانده و برمی گرداند
@@ -121,6 +133,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
         /// <returns>اطلاعات کامل آرتیکل مشخص شده با شناسه عددی</returns>
         Task<TransactionLineFullViewModel> GetArticleDetailsAsync(int articleId);
+
+        /// <summary>
+        /// Retrieves the count of all transaction line items in a specified financial transaction
+        /// </summary>
+        /// <param name="transactionId">Identifier of an existing transaction</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
+        /// <returns>Count of all transaction line items</returns>
+        Task<int> GetArticleCountAsync(int transactionId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک سطر سند مالی (آرتیکل) را در محل ذخیره ایجاد یا اصلاح می کند
