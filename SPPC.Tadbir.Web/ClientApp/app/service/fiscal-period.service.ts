@@ -4,29 +4,61 @@ import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
 import { expect } from 'chai';
-
+import { Environment } from "../enviroment";
 
 @Injectable()
 export class FiscalPeriodService {
 
     
-    private getFiscalPeriodUrl = "http://130.185.76.7:8080/lookup/fps/company/1";
+    private getFiscalPeriodUrl = Environment.BaseUrl +"/lookup/fps/company/1";
+
+    private getFiscalUrl =  Environment.BaseUrl + "/lookup/fps/company/{0}/user/{1}";
+
+    headers: Headers;
 
     constructor(private http: Http) {
 
     }
 
 
-    getFiscalPeriods() {
-        var headers = new Headers();
+    //getFiscalPeriods() {
+    //    var headers = new Headers();
         
-        headers.append("Content-Type", "application/json");
+    //    headers.append("Content-Type", "application/json");
 
-        headers.append("X-Tadbir-AuthTicket", "eyJVc2VyIjp7IklkIjoxLCJQZXJzb25GaXJzdE5hbWUiOiIiLCJQZXJzb25MYXN0TmFtZSI6IiIsIkJyYW5jaGVzIjpbMSwyXSwiUm9sZXMiOlsxXSwiUGVybWlzc2lvbnMiOlt7IkVudGl0eU5hbWUiOiJBY2NvdW50IiwiRmxhZ3MiOjE1fSx7IkVudGl0eU5hbWUiOiJUcmFuc2FjdGlvbiIsIkZsYWdzIjoxMDIzfSx7IkVudGl0eU5hbWUiOiJVc2VyIiwiRmxhZ3MiOjd9LHsiRW50aXR5TmFtZSI6IlJvbGUiLCJGbGFncyI6NjN9LHsiRW50aXR5TmFtZSI6IlJlcXVpc2l0aW9uVm91Y2hlciIsIkZsYWdzIjoxMjd9LHsiRW50aXR5TmFtZSI6Iklzc3VlUmVjZWlwdFZvdWNoZXIiLCJGbGFncyI6NjN9LHsiRW50aXR5TmFtZSI6IlNhbGVzSW52b2ljZSIsIkZsYWdzIjozMX0seyJFbnRpdHlOYW1lIjoiUHJvZHVjdEludmVudG9yeSIsIkZsYWdzIjoxNX1dfX0=");
+    //    headers.append("X-Tadbir-AuthTicket", "eyJVc2VyIjp7IklkIjoxLCJQZXJzb25GaXJzdE5hbWUiOiIiLCJQZXJzb25MYXN0TmFtZSI6IiIsIkJyYW5jaGVzIjpbMSwyXSwiUm9sZXMiOlsxXSwiUGVybWlzc2lvbnMiOlt7IkVudGl0eU5hbWUiOiJBY2NvdW50IiwiRmxhZ3MiOjE1fSx7IkVudGl0eU5hbWUiOiJUcmFuc2FjdGlvbiIsIkZsYWdzIjoxMDIzfSx7IkVudGl0eU5hbWUiOiJVc2VyIiwiRmxhZ3MiOjd9LHsiRW50aXR5TmFtZSI6IlJvbGUiLCJGbGFncyI6NjN9LHsiRW50aXR5TmFtZSI6IlJlcXVpc2l0aW9uVm91Y2hlciIsIkZsYWdzIjoxMjd9LHsiRW50aXR5TmFtZSI6Iklzc3VlUmVjZWlwdFZvdWNoZXIiLCJGbGFncyI6NjN9LHsiRW50aXR5TmFtZSI6IlNhbGVzSW52b2ljZSIsIkZsYWdzIjozMX0seyJFbnRpdHlOYW1lIjoiUHJvZHVjdEludmVudG9yeSIsIkZsYWdzIjoxNX1dfX0=");
         
-        return this.http.get(this.getFiscalPeriodUrl, { headers: headers })
+    //    return this.http.get(this.getFiscalPeriodUrl, { headers: headers })
+    //        .map(response => <any>(<Response>response).json());
+    //}
+
+
+    getFiscalPeriod(companyId : number) {
+
+        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8'});        
+       
+        var userId = '';        
+
+        if (localStorage.getItem('currentContext')) {
+            const userJson = localStorage.getItem('currentContext');
+            var currentUser = userJson !== null ? JSON.parse(userJson) : null;
+            
+            if(currentUser != null)
+            {
+                var jsonContext = atob(currentUser.ticket);
+                var context = JSON.parse(jsonContext);
+
+                userId = context.User.Id;
+               
+                this.headers.append('X-Tadbir-AuthTicket', currentUser.ticket);       
+            }
+
+        }
+
+        var url = String.Format(this.getFiscalUrl, companyId,userId);
+        
+        return this.http.get(url, { headers: this.headers })
             .map(response => <any>(<Response>response).json());
     }
-
 
 }

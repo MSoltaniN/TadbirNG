@@ -16,21 +16,23 @@ export class BaseComponent {
 
     }
 
-    public showMessage(text: string, type: MessageType = MessageType.Info, title: string = '' )
+    public showMessage(text: string, type: MessageType = MessageType.Info, title: string = '', position: string = 'toast-top-left' )
     {
         switch (type)
         {
             case MessageType.Info:
-                this.toastrService.info(text, '', { positionClass: 'toast-top-left' });
+                this.toastrService.info(text, '', { positionClass: position });
                 break;
             case MessageType.Warning:
-                this.toastrService.warning(text, '', { positionClass: 'toast-top-left' });
+                this.toastrService.warning(text, '', { positionClass: position });
                 break;
             case MessageType.Succes:
-                this.toastrService.success(text, '', { positionClass: 'toast-top-left' });
+                this.toastrService.success(text, '', { positionClass: position });
                 break;
         }
 
     }
+
+
 
 }

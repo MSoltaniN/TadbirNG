@@ -41,6 +41,12 @@
     "Description": "توضیحات"
 
   },
+  "Company": {
+    "CompanyName": "شرکت"
+  },
+  "Branch": {
+    "BranchName": "شعبه"
+  },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی"
   },
@@ -55,8 +61,25 @@
     "BranchId": "کد شعبه اجباری می باشد"
   },
   "Grid": {
-    "noRecords" :  "هیچ رکورذی یافت نشد!!!!!!!!!!"
+    "noRecords": "هیچ رکورذی یافت نشد!!!!!!!!!!"
+  },
+  "Login": {
+    "Ok": "تایید",
+    "Title": "ورود به سیستم",
+    "SelectTitle": "انتخاب شرکت",
+    "UserName": "نام کاربر",
+    "Password": "کلمه عبور",
+    "BtnLogin": "ورود",
+    "Validation": {
+      "UserRequired": "نام کاربر را وارد کنید",
+      "PasswordRequired": "کلمه عبور را وارد کنید",
+      "UserIncorrect": "نام کاربری يا کلمه عبور اشتباه می باشد",
+      "SelectCompany": "لطفا شرکت را انتخاب کنید",
+      "SelectBranch": "لطفا شعبه را انتخاب کنید",
+      "SelectFiscalPeriod": "لطفا دوره مالی را انتخاب کنید"
+    }
   }
-    
+
+
 
 }

@@ -1,11 +1,16 @@
 <div class='container-fluid'>
     <div class='row'>
-        <div class='col-sm-9 col-md-9 body-content'>
-            <router-outlet></router-outlet>
-            
+        <div id="mainContent" [ngClass]="{'col-sm-9 col-md-9 body-content' : (showNavbar || !isLogin) ,'col-sm-12 col-md-12 body-content' : (!showNavbar || isLogin) }" >
+            <router-outlet></router-outlet>            
         </div>
-        <div class='col-sm-3 col-md-3'>
-            <nav-menu></nav-menu>
+        <!--<div *ngIf="currentUser != undefined">
+            <div class='col-sm-3 col-md-3'>
+                <nav-menu></nav-menu>
+            </div>
+        </div>-->
+        <div [ngClass]="{'col-sm-3 col-md-3' : showNavbar , 'hidden-xs hidden-sm hidden-md' : !showNavbar }" >
+            <nav-menu *ngIf="showNavbar"></nav-menu>
         </div>
+        
     </div>
 </div>

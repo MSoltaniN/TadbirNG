@@ -8,6 +8,7 @@ import { State } from "@progress/kendo-data-query/dist/es/state";
 import { BaseComponent } from "./base.component"
 
 import { Filter } from './filter';
+import { Renderer2 } from "@angular/core";
 
 
 export class DefaultComponent extends BaseComponent {
@@ -22,18 +23,51 @@ export class DefaultComponent extends BaseComponent {
 
     public rtlClass: string = "ui-rtl";
     public rtlUse: string = "rtl";
-    
 
-    constructor(public toastrService: ToastrService,public translate: TranslateService) 
+    public currentlang: string = "";
+
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2) 
     {
         
         super(toastrService);
 
+        //use lang
         translate.addLangs(["en", "fa"]);
-        translate.setDefaultLang('fa');
 
-        var browserLang = 'fa';
-        translate.use(browserLang);
+        var lang = localStorage.getItem('lang');
+        if (lang)
+        {
+            this.currentlang = lang;
+        }
+        else
+        {
+            this.currentlang = "fa";
+        }
+
+        translate.setDefaultLang(this.currentlang);
+
+        translate.use(this.currentlang);
+        //use lang
+
+
+        //rtl or ltr body
+        
+        if (this.currentlang == 'fa') {
+            this.renderer.addClass(document.body, 'tRtl');
+            this.renderer.removeClass(document.body, 'tLtr');
+
+            this.renderer.addClass(document.getElementById('mainContent'), 'pull-left')
+            this.renderer.removeClass(document.getElementById('mainContent'), 'pull-right')
+        }
+
+        if (this.currentlang == 'en') {
+            this.renderer.addClass(document.body, 'tLtr');
+            this.renderer.removeClass(document.body, 'tRtl');
+            
+            this.renderer.addClass(document.getElementById('mainContent'), 'pull-right')
+            this.renderer.removeClass(document.getElementById('mainContent'), 'pull-left')
+        }
+        //rtl or ltr body
 
         this.translateService = translate;
 
@@ -152,6 +186,15 @@ export class DefaultComponent extends BaseComponent {
        
     }
 
+    public getText(key: string) : string
+    {
+        var msgText = '';
+        this.translateService.get(key).subscribe((msg: string) => {
+            msgText = msg;
+        });
+        return msgText;
+    }    
+
     public prepareDeleteConfirm(name : string)
     {
         this.translateService.get("Messages.DeleteConfirm").subscribe((msg: string) => {
@@ -159,9 +202,14 @@ export class DefaultComponent extends BaseComponent {
         });
     }
 
-    languageChange(value: string) {
+    changeLanguage(value: string) {
         this.translateService.use(value);
+
+        this.currentlang = value;
+        localStorage.setItem('lang',value);
+        
         this.localizeMsg();
+
         switch (value) {
             case "fa":
                 {

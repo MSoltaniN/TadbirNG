@@ -5,6 +5,7 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
+    <TypeScriptStrictNullChecks>False</TypeScriptStrictNullChecks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -41,6 +42,10 @@
     <None Remove="ClientApp\app\class\filter.ts" />
     <None Remove="ClientApp\app\class\grid.orderby.ts" />
     <None Remove="ClientApp\app\components\account2\account2.component.ts" />
+    <None Remove="ClientApp\app\components\login\index.ts" />
+    <None Remove="ClientApp\app\components\login\login.complete.component.ts" />
+    <None Remove="ClientApp\app\components\login\login.component.ts" />
+    <None Remove="ClientApp\app\components\login\login.container.component.ts" />
     <None Remove="ClientApp\app\components\project\complexAccount.component.ts" />
     <None Remove="ClientApp\app\components\project\project.component.ts" />
     <None Remove="ClientApp\app\controls\grid\sppc-string-filter.ts" />
@@ -54,6 +59,44 @@
 
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\fa-brands.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\fa-regular.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\fa-solid.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\fontawesome.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\_animated.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\_bordered-pulled.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\_core.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\_fixed-width.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\_icons.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\_larger.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\_list.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\_mixins.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\_rotated-flipped.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\_screen-reader.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\_stacked.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\less\_variables.less" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\fa-brands.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\fa-regular.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\fa-solid.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\fontawesome.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\_animated.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\_bordered-pulled.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\_core.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\_fixed-width.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\_icons.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\_larger.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\_list.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\_mixins.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\_rotated-flipped.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\_screen-reader.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\_stacked.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\scss\_variables.scss" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\webfonts\fa-brands-400.svg" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\webfonts\fa-brands-400.woff2" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\webfonts\fa-regular-400.svg" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\webfonts\fa-regular-400.woff2" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\webfonts\fa-solid-900.svg" />
+    <None Include="wwwroot\resources\fonts\FontAwesome\webfonts\fa-solid-900.woff2" />
     <None Include="wwwroot\resources\fonts\IranSans\woff2\IRANSansWeb.woff2" />
     <None Include="wwwroot\resources\fonts\IranSans\woff2\IRANSansWeb_Bold.woff2" />
     <None Include="wwwroot\resources\fonts\IranSans\woff2\IRANSansWeb_Light.woff2" />
@@ -101,6 +144,10 @@
     <TypeScriptCompile Include="ClientApp\app\class\default.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\grid.orderby.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\login\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\login\login.complete.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\login\login.container.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\dropdownlist\sppc-dropdownlist.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\grid\sppc-string-filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-mask-textbox.ts" />
@@ -110,6 +157,7 @@
     <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-numberbox.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\context.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\fiscal-period.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\message\sppc-message.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\transaction-line.service.ts" />

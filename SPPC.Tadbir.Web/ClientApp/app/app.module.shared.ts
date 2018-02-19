@@ -30,10 +30,18 @@ import { DialogModule } from '@progress/kendo-angular-dialog';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 
-import { AccountService, TransactionLineService, FiscalPeriodService , GridMessageService } from './service/index';
+import { AccountService, TransactionLineService, FiscalPeriodService , GridMessageService,CompanyService,BranchService } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
 import { SppcNumericFilter } from './controls/grid/sppc-numeric-filter';
 import { SppcStringFilter } from './controls/grid/sppc-string-filter';
+
+//import { Context } from "./components/login/login.component";
+import { LoginComponent } from "./components/login/login.component";
+import { LoginCompleteComponent } from "./components/login/login.complete.component";
+import { LoginContainerComponent } from "./components/login/login.container.component";
+
+import { AuthenticationService, AuthGuard } from "./service/login/index";
+
 
 @NgModule({
     declarations: [
@@ -41,6 +49,9 @@ import { SppcStringFilter } from './controls/grid/sppc-string-filter';
         NavMenuComponent,       
         Account2Component,
         AccountFormComponent,
+        LoginComponent,
+        LoginCompleteComponent,
+        LoginContainerComponent,
         SppcMaskTextBox,
         SppcNumberBox,
         SppcDropDownList,
@@ -48,9 +59,11 @@ import { SppcStringFilter } from './controls/grid/sppc-string-filter';
         SppcNumericFilter,
         SppcStringFilter,
     ],
-    providers: [AccountService, TransactionLineService, FiscalPeriodService,
+    providers: [AccountService, TransactionLineService, FiscalPeriodService,BranchService,CompanyService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true },
-        { provide: MessageService, useClass: GridMessageService }        
+        { provide: MessageService, useClass: GridMessageService },
+        AuthGuard,        
+        AuthenticationService,
     ],        
     imports: [
         CommonModule,         
@@ -63,8 +76,9 @@ import { SppcStringFilter } from './controls/grid/sppc-string-filter';
         BrowserModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
-            { path: '', redirectTo: 'account2', pathMatch: 'full' },            
-            { path: 'account2', component: Account2Component },
+            { path: '', redirectTo: 'login', pathMatch: 'full' },            
+            { path: 'account2', component: Account2Component, canActivate: [AuthGuard]},
+            { path: 'login', component: LoginContainerComponent },
             { path: '**', redirectTo: 'account' }
         ])        
     ],

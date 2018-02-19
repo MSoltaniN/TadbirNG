@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input } from '@angular/core';
+﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
 
 import { AccountService, AccountInfo, TransactionLineService, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
 
@@ -16,6 +16,7 @@ import {
 
 
 
+
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 
@@ -27,6 +28,7 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
 import { MessageType } from "../../enviroment";
 import { Filter } from "../../class/filter";
+import { ContextInfo } from "../../service/login/authentication.service";
 
 
 @Component({
@@ -71,10 +73,11 @@ export class Account2Component extends DefaultComponent implements OnInit {
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService,
-        private accountService: AccountService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService)
+        private accountService: AccountService, private transactionLineService: TransactionLineService,
+        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2)
     {
-        super(toastrService, translate);
-
+        super(toastrService, translate,renderer);
+        
         this.getFiscalPeriod();
 
         this.reloadGrid();         
@@ -192,7 +195,16 @@ export class Account2Component extends DefaultComponent implements OnInit {
     /* load fiscal periods */
     getFiscalPeriod() {
         this.showloadingMessage = true;
-        this.fiscalPeriodService.getFiscalPeriods().subscribe(res => {
+
+        var currentUser: ContextInfo = new ContextInfo();
+        if (localStorage.getItem('currentContext')) {
+            const userJson = localStorage.getItem('currentContext');
+
+            currentUser = userJson !== null ? JSON.parse(userJson) : null;
+
+        }
+
+        this.fiscalPeriodService.getFiscalPeriod(currentUser.companyId).subscribe(res => {
             this.fiscalPeriodRows = res;
             this.showloadingMessage = !(res.length == 0);
         });

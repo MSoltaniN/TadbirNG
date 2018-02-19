@@ -1,5 +1,4 @@
-﻿
-
+﻿//this class for all variable in system
 export enum MessageType {
     Info,
     Succes,

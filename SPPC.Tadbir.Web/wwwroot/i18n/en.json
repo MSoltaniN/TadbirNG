@@ -44,6 +44,12 @@
     "Description": "Description"
 
   },
+  "Company": {
+    "CompanyName": "Company"
+  },
+  "Branch": {
+    "BranchName": "Branch"
+  },
   "Fiscal": {
     "FiscalPeriod": "Fiscal Period"
   },
@@ -59,8 +65,25 @@
   },
   "Grid": {
     "noRecords": "row not found!!!!!!!!!!"
-  }
+  },
 
+  "Login": {
+    "Ok" : "Ok",
+    "Title": "Login",
+    "SelectTitle": "Select company",
+    "UserName": "User Name",
+    "Password": "Password",
+    "BtnLogin": "Login",
+    "Validation": {
+      "UserRequired": "username is required",
+      "PasswordRequired": "password is required",
+      "UserIncorrect": "username or password is incorrect",
+      "SelectCompany": "please select company",
+      "SelectBranch": "please select branch",
+      "SelectFiscalPeriod": "please select fiscal"
+    }
+
+  }
 
 
 }

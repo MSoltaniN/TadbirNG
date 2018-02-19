@@ -23,12 +23,49 @@ tbutton {
     background-color: #2c3e50;
 }
 
+.tRtl {
+    direction: rtl !important;
+}
 
+.tLtr {
+    direction:ltr!important;
+}
+
+
+label {
+    display: block !important;
+}
+
+.voffset1 {
+    margin-top: 5px;
+}
+
+.voffset2 {
+    margin-top: 10px;
+}
+
+.voffset3 {
+    margin-top: 15px;
+}
+
+.voffset4 {
+    margin-top: 30px;
+}
+
+.flag
+{
+    width:25px;
+    height:25px;
+}
+
+.activeflag {
+    border-width: 1px;
+    width: 36px;
+    border-style: solid;
+}
 
 /*#endregion public classes */
-
 /*#region add class for sppc font*/
-
 tgrid {
     font-family: SPPC !important;
     font-size: 15px;
@@ -198,45 +235,5 @@ table thead tr th span.ui-column-title {
 }
 
 /*#endregion loading sppiner in page load*/
-
-/*#region for better responsive in primeng datatable*/
-
-@media (max-width: 1024px) /* I want the datatable to be stacked at at least iPad Pro portrait mode, this depends on your data */ {
-    /* Data in responsive mode */
-    .ui-datatable-reflow .ui-datatable-data > tr > td {
-        width: 100% !important;
-        text-align: right !important;
-        border: 0;
-        box-sizing: border-box;
-        float: right;
-        clear: left;
-    }
-
-
-    .ui-datatable-reflow .ui-datatable-data tr.ui-widget-content {
-        border-left: 0;
-        border-right: 0;
-    }
-
-    .ui-datatable-reflow .ui-datatable-data.ui-widget-content {
-        border: 0;
-    }
-
-    /*Hide the headers in responsive mode*/
-    .ui-datatable-reflow thead th {
-        display: none !important;
-    }
-
-    /*Display the headers inline with the data in responsive mode */
-    .ui-datatable-reflow .ui-datatable-data td .ui-column-title {
-        padding: .4em;
-        min-width: 30%;
-        display: inline-block;
-        margin: -.4em 1em -.4em -.4em;
-        font-weight: bold;
-    }
-}
-
-/*#endregion for better responsive in primeng datatable*/
 
 

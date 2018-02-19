@@ -1,0 +1,17 @@
+﻿.login {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+.vertical-center {
+    min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+    /*display: flex;*/
+    margin-top: 10%;
+    align-items: center;
+}
+
+.active {
+    border-style: ridge;
+}
+
