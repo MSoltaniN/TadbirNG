@@ -15,6 +15,8 @@ import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { Account2Component } from './components/account2/account2.component';
 import { AccountFormComponent } from './components/account2/account2-form.component';
+import { TransactionComponent } from './components/transaction/transaction.component';
+import { TransactionFormComponent } from './components/transaction/transaction-form.component';
 
 
 //custom controls
@@ -29,8 +31,9 @@ import { RTL, MessageService } from '@progress/kendo-angular-l10n';
 import { DialogModule } from '@progress/kendo-angular-dialog';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
+import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
-import { AccountService, TransactionLineService, FiscalPeriodService , GridMessageService } from './service/index';
+import { AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, TransactionService } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
 import { SppcNumericFilter } from './controls/grid/sppc-numeric-filter';
 import { SppcStringFilter } from './controls/grid/sppc-string-filter';
@@ -47,8 +50,10 @@ import { SppcStringFilter } from './controls/grid/sppc-string-filter';
         SppcGridColumn,
         SppcNumericFilter,
         SppcStringFilter,
+        TransactionComponent,
+        TransactionFormComponent
     ],
-    providers: [AccountService, TransactionLineService, FiscalPeriodService,
+    providers: [AccountService, TransactionLineService, FiscalPeriodService, TransactionService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true },
         { provide: MessageService, useClass: GridMessageService }        
     ],        
@@ -59,12 +64,13 @@ import { SppcStringFilter } from './controls/grid/sppc-string-filter';
         ReactiveFormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        DialogModule, DropDownsModule, GridModule, InputsModule, 
+        DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule,
         BrowserModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'account2', pathMatch: 'full' },            
             { path: 'account2', component: Account2Component },
+            { path: 'transaction', component: TransactionComponent },
             { path: '**', redirectTo: 'account' }
         ])        
     ],

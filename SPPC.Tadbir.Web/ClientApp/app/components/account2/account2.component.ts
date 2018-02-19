@@ -75,7 +75,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
     constructor(public toastrService: ToastrService, public translate: TranslateService,
         private accountService: AccountService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService)
     {
-        super(toastrService, translate);
+        super(toastrService, translate,"Account");
 
             
     }
