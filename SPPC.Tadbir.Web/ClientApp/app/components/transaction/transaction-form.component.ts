@@ -7,6 +7,7 @@ import { TranslateService } from "ng2-translate";
 import { ToastrService, ToastConfig } from 'toastr-ng2';
 
 import { Observable } from 'rxjs/Observable';
+import { ContextInfo } from "../../service/login/authentication.service";
 
 
 
@@ -94,7 +95,15 @@ export class TransactionFormComponent {
     /* load fiscal periods */
     getFiscalPeriod() {
 
-        this.fiscalPeriodService.getFiscalPeriods().subscribe(res => {
+        var currentUser: ContextInfo = new ContextInfo();
+        if (localStorage.getItem('currentContext')) {
+            const userJson = localStorage.getItem('currentContext');
+
+            currentUser = userJson !== null ? JSON.parse(userJson) : null;
+
+        }
+
+        this.fiscalPeriodService.getFiscalPeriod(currentUser.companyId).subscribe(res => {
             this.fiscalPeriodRows = res;
         });
     }

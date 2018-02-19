@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input } from '@angular/core';
+﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
 
 import { TransactionService, TransactionInfo, TransactionLineService, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
 
@@ -73,8 +73,9 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService,
-        private transactionService: TransactionService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService) {
-        super(toastrService, translate,"Transaction");
+        private transactionService: TransactionService, private transactionLineService: TransactionLineService,
+        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2) {
+        super(toastrService, translate,renderer,"Transaction");
 
     }
 

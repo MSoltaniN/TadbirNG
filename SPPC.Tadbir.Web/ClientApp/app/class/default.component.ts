@@ -26,7 +26,7 @@ export class DefaultComponent extends BaseComponent {
 
     public currentlang: string = "";
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public entityName: string) 
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public entityName: string = '') 
     {
         
         super(toastrService);

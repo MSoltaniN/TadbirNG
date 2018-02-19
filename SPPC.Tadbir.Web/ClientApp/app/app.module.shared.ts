@@ -84,7 +84,7 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
             { path: '', redirectTo: 'login', pathMatch: 'full' },            
             { path: 'account2', component: Account2Component, canActivate: [AuthGuard]},
             { path: 'login', component: LoginContainerComponent },
-            { path: 'transaction', component: TransactionComponent },
+            { path: 'transaction', component: TransactionComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])        
     ],
