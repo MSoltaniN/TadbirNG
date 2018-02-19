@@ -15,6 +15,8 @@ import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { Account2Component } from './components/account2/account2.component';
 import { AccountFormComponent } from './components/account2/account2-form.component';
+import { TransactionComponent } from './components/transaction/transaction.component';
+import { TransactionFormComponent } from './components/transaction/transaction-form.component';
 
 
 //custom controls
@@ -29,8 +31,9 @@ import { RTL, MessageService } from '@progress/kendo-angular-l10n';
 import { DialogModule } from '@progress/kendo-angular-dialog';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
+import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
-import { AccountService, TransactionLineService, FiscalPeriodService , GridMessageService,CompanyService,BranchService } from './service/index';
+import { AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService, BranchService, TransactionService } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
 import { SppcNumericFilter } from './controls/grid/sppc-numeric-filter';
 import { SppcStringFilter } from './controls/grid/sppc-string-filter';
@@ -58,8 +61,10 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
         SppcGridColumn,
         SppcNumericFilter,
         SppcStringFilter,
+        TransactionComponent,
+        TransactionFormComponent
     ],
-    providers: [AccountService, TransactionLineService, FiscalPeriodService,BranchService,CompanyService,
+    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true },
         { provide: MessageService, useClass: GridMessageService },
         AuthGuard,        
@@ -72,13 +77,14 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
         ReactiveFormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
-        DialogModule, DropDownsModule, GridModule, InputsModule, 
+        DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule,
         BrowserModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'login', pathMatch: 'full' },            
             { path: 'account2', component: Account2Component, canActivate: [AuthGuard]},
             { path: 'login', component: LoginContainerComponent },
+            { path: 'transaction', component: TransactionComponent },
             { path: '**', redirectTo: 'account' }
         ])        
     ],

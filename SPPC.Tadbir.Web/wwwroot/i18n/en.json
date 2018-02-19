@@ -22,7 +22,8 @@
     "GroupDelete": "Delete"
   },
   "Entity": {
-    "Account": "Account"
+    "Account": "Account",
+    "Transaction": "Transaction"
   },
   "Account": {
     "New": "New Account",
@@ -50,6 +51,16 @@
   "Branch": {
     "BranchName": "Branch"
   },
+  "Transaction": {
+    "New": "New Transaction",
+    "Edit": "Edit",
+    "Delete": "Delete",
+    "No": "Voucher No",
+    "Date": "Date",
+    "Description": "Description",
+    "BranchId": "Branch",
+    "FiscalPeriodId": "Fiscal"
+  },
   "Fiscal": {
     "FiscalPeriod": "Fiscal Period"
   },
@@ -61,7 +72,10 @@
     "AccountCode": "account code is required",
     "AccountName": "account name is required",
     "FiscalPeriodId": "fiscal period is required",
-    "BranchId": "branch id is required"
+    "BranchId": "branch id is required",
+    "No": "voucher no is required",
+    "DocumentID": "document id is required",
+    "Date": "date is required"
   },
   "Grid": {
     "noRecords": "row not found!!!!!!!!!!"

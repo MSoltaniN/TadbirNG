@@ -48,12 +48,17 @@
     <None Remove="ClientApp\app\components\login\login.container.component.ts" />
     <None Remove="ClientApp\app\components\project\complexAccount.component.ts" />
     <None Remove="ClientApp\app\components\project\project.component.ts" />
+    <None Remove="ClientApp\app\components\transaction\transaction-form.component.ts" />
+    <None Remove="ClientApp\app\components\transaction\transaction.component.ts" />
+    <None Remove="ClientApp\app\controls\grid\sppc-date-filter.ts" />
     <None Remove="ClientApp\app\controls\grid\sppc-string-filter.ts" />
     <None Remove="ClientApp\app\controls\sppc-grid-messages.ts" />
     <None Remove="ClientApp\app\model\account.ts" />
     <None Remove="ClientApp\app\model\index.ts" />
+    <None Remove="ClientApp\app\model\transaction.ts" />
     <None Remove="ClientApp\app\service\fiscal-period.service.ts" />
     <None Remove="ClientApp\app\service\index.ts" />
+    <None Remove="ClientApp\app\service\transaction.service.ts" />
     <None Remove="ClientApp\enviroment.ts" />
   </ItemGroup>
 
@@ -148,7 +153,10 @@
     <TypeScriptCompile Include="ClientApp\app\components\login\login.complete.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.container.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction-form.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\dropdownlist\sppc-dropdownlist.ts" />
+    <TypeScriptCompile Include="ClientApp\app\controls\grid\sppc-date-filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\grid\sppc-string-filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-mask-textbox.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\account2\account2-form.component.ts" />
@@ -156,6 +164,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\project\project.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-numberbox.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\transaction.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\context.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\fiscal-period.service.ts" />
@@ -163,6 +172,7 @@
     <TypeScriptCompile Include="ClientApp\app\service\transaction-line.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\enviroment.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\transaction.service.ts" />
   </ItemGroup>
 
   <ItemGroup>

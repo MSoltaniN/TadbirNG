@@ -1,0 +1,61 @@
+﻿<kendo-dialog *ngIf="active" (close)="closeForm()" [minWidth]="250" [width]="450">
+    <kendo-dialog-titlebar>
+        {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
+    </kendo-dialog-titlebar>
+
+    <form novalidate [formGroup]="editForm">
+
+        <div class="form-group">
+            <label for="date" class="control-label">{{ 'Transaction.Date' | translate }}</label>
+
+            <input type="text" class="k-textbox" formControlName="date" />
+            
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.date.valid || editForm.controls.date.pristine">
+                {{ 'Validations.Date' | translate }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="no" class="control-label">{{ 'Transaction.No' | translate }}</label>
+
+            <input type="text" class="k-textbox" formControlName="no" />
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.no.valid || editForm.controls.no.pristine">
+                {{ 'Validations.No' | translate }}
+            </div>
+        </div>
+
+        <!--<div class="form-group">
+            <label for="branchId" class="control-label">{{ 'Transaction.BranchId' | translate }}</label>
+
+            <input type="text" class="k-textbox" formControlName="branchId" />
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.branchId.valid || editForm.controls.branchId.pristine">
+                {{ 'Validations.BranchId' | translate }}
+            </div>
+        </div>-->
+
+        <!--<div class="form-group">
+            <label for="fiscalPeriodId" class="control-label">{{ 'Transaction.FiscalPeriodId' | translate }}</label>
+
+            <sppc-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
+                               [textField]="'value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'key'">
+            </sppc-dropdownlist>
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fiscalPeriodId.valid || editForm.controls.fiscalPeriodId.pristine">
+                {{ 'Validations.FiscalPeriodId' | translate }}
+            </div>
+        </div>-->
+
+        <div class="form-group">
+            <label for="description" class="control-label">{{ 'Transaction.Description' | translate }}</label>
+
+            <input type="text" class="k-textbox" formControlName="description" />
+        </div>
+    </form>
+
+    <kendo-dialog-actions>
+        <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+        <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

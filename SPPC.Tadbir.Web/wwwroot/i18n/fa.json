@@ -23,7 +23,8 @@
     "GroupDelete": "حذف گروهی"
   },
   "Entity": {
-    "Account": "اطلاعات حساب"
+    "Account": "اطلاعات حساب",
+    "Transaction": "اطلاعات سند"
   },
   "Account": {
     "Code": "کد حساب",
@@ -47,6 +48,15 @@
   "Branch": {
     "BranchName": "شعبه"
   },
+  "Transaction": {
+    "No": "شماره سند مالی",
+    "Date": "تاریخ",
+    "Description": "توضیحات",
+    "BranchId": "شعبه",
+    "FiscalPeriodId": "دوره مالی",
+    "Delete": "حذف سند"
+
+  },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی"
   },
@@ -58,7 +68,10 @@
     "AccountCode": "کد حساب اجباری می باشد",
     "AccountName": "نام حساب اجباری می باشد",
     "FiscalPeriodId": "دوره مالی اجباری می باشد",
-    "BranchId": "کد شعبه اجباری می باشد"
+    "BranchId": "کد شعبه اجباری می باشد",
+    "No": "شماره سند مالی اجباری می باشد",
+    "DocumentID": "شماره مستند اداری اجباری می باشد",
+    "Date": "تاریخ اجباری می باشد"
   },
   "Grid": {
     "noRecords": "هیچ رکورذی یافت نشد!!!!!!!!!!"

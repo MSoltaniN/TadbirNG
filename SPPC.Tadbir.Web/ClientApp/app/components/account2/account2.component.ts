@@ -69,14 +69,16 @@ export class Account2Component extends DefaultComponent implements OnInit {
     groupDelete: boolean = false;
     
     ngOnInit() {
-        
+        this.getFiscalPeriod();
+
+        this.reloadGrid();    
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService,
         private accountService: AccountService, private transactionLineService: TransactionLineService,
         private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2)
     {
-        super(toastrService, translate,renderer);
+        super(toastrService, translate, renderer, "Account");
         
         this.getFiscalPeriod();
 
@@ -85,9 +87,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
     
     getRowsCount() {
 
-        this.accountService.getCount(this.currentOrder, this.currentFilter).subscribe(res => {
-            this.totalRecords = res;
-        });
+        return this.accountService.getCount(this.currentOrder, this.currentFilter).map(response => <any>(<Response>response).json());
 
     }
 
@@ -114,20 +114,25 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     reloadGrid() {
 
-        this.getRowsCount();
+        
 
-        var filter = this.currentFilter;
-        var order = this.currentOrder;
 
-        this.accountService.search(this.pageIndex, this.pageSize, order, filter).subscribe(res => {
-            //this.rowData = res;
-            this.rowData = {
-                data: res,
-                total: this.totalRecords
-            }
+        this.accountService.getCount(this.currentOrder, this.currentFilter).finally(() => {
+            var filter = this.currentFilter;
+            var order = this.currentOrder;
 
-            this.showloadingMessage = !(res.length == 0);
-        });
+            this.accountService.search(this.pageIndex, this.pageSize, order, filter).subscribe(res => {
+                //this.rowData = res;
+                this.rowData = {
+                    data: res,
+                    total: this.totalRecords
+                }
+
+                this.showloadingMessage = !(res.length == 0);
+            })
+        }).subscribe(res => {
+            this.totalRecords = res;
+        });       
 
     }
     

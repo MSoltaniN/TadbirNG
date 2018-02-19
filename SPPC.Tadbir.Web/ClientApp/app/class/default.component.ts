@@ -26,7 +26,7 @@ export class DefaultComponent extends BaseComponent {
 
     public currentlang: string = "";
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2) 
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public entityName: string) 
     {
         
         super(toastrService);
@@ -167,7 +167,7 @@ export class DefaultComponent extends BaseComponent {
     localizeMsg() {
         // read message format for crud operations
         var entityType = '';
-        this.translateService.get("Entity.Account").subscribe((msg: string) => {
+        this.translateService.get("Entity." + this.entityName).subscribe((msg: string) => {
             entityType = msg;
         });
 
