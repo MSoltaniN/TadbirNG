@@ -7,20 +7,24 @@
                 <span class='icon-bar'></span>
                 <span class='icon-bar'></span>
             </button>
-            <a class='navbar-brand' [routerLink]="['/account']">سیستم جامع تدبیر</a>
+            <a class='navbar-brand' [routerLink]="['/account2']">{{ 'App.Name' | translate }}</a>
         </div>
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse'>
             <ul class='nav navbar-nav'>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/account2']">
-                        <span class='glyphicon glyphicon-home'></span> تعریف حساب
+                        <span class='glyphicon glyphicon-tasks'></span><span class="menuitem">{{ 'App.Menu.Account' | translate }}</span>
                     </a>
                 </li>
-
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/transaction']">
-                        <span class='glyphicon glyphicon-list'></span> اسناد
+                        <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.Transaction' | translate }}</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/logout']">
+                        <span class='glyphicon glyphicon-log-out'></span><span class="menuitem">{{ 'App.Menu.Exit' | translate }}</span>
                     </a>
                 </li>
             </ul>

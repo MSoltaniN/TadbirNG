@@ -46,6 +46,7 @@
     <None Remove="ClientApp\app\components\login\login.complete.component.ts" />
     <None Remove="ClientApp\app\components\login\login.component.ts" />
     <None Remove="ClientApp\app\components\login\login.container.component.ts" />
+    <None Remove="ClientApp\app\components\login\logout.component.ts" />
     <None Remove="ClientApp\app\components\project\complexAccount.component.ts" />
     <None Remove="ClientApp\app\components\project\project.component.ts" />
     <None Remove="ClientApp\app\components\transaction\transaction-form.component.ts" />
@@ -153,6 +154,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\login\login.complete.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.container.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\login\logout.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\dropdownlist\sppc-dropdownlist.ts" />

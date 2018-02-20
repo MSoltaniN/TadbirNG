@@ -1,9 +1,10 @@
 ﻿
-<div class="col-xs-12 col-md-12 col-sm-12" dir="rtl">
+<div class="col-xs-12 col-md-12 col-sm-12">
     <div class="panel panel-primary">
-        <div class="panel-heading">ليست اسناد</div>
+        <div class="panel-heading">{{ 'Entity.Transaction' | translate }}</div>
         <div class="panel-body">
-            <kendo-grid #GridID [data]="rowData"
+            <kendo-grid #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+                        [data]="rowData"
                         [sortable]="true"
                         [pageSize]="pageSize"
                         [skip]="skip"

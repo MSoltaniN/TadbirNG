@@ -3,7 +3,13 @@
     "Title": "Wellcome to Tabir New System",
     "SELECT": "Change language",
     "Loading": "loading ...",
-    "RecordNotFound": "Record not found!"
+    "RecordNotFound": "Record not found!",
+    "Name": "Tadbir Accounting System",
+    "Menu": {
+      "Account": "Account",
+      "Transaction": "Transaction",
+      "Exit": "Exit"
+    }
   },
   "Messages": {
     "Inserted": "{0} inserted successfully",

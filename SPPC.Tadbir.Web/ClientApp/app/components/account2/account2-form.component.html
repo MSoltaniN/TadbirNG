@@ -1,4 +1,5 @@
-﻿<kendo-dialog *ngIf="active" (close)="closeForm()" [minWidth]="250" [width]="450">
+﻿<kendo-dialog *ngIf="active"  [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              (close)="closeForm()" [minWidth]="250" [width]="450">
         <kendo-dialog-titlebar>
             {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
         </kendo-dialog-titlebar>

@@ -27,13 +27,17 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     returnUrl: string;    
     ticket: string = '';
 
-    public companySelected: boolean = false;
+
+
+    public disabledBranch: boolean = true;
+
+    public disabledFiscalPeriod: boolean = true;
 
     public compenies: any = {};
 
     public branches: any = {};
 
-    public ficalPeriods: any = {};
+    public fiscalPeriods: any = {};
 
 
     public companyId: string = '';
@@ -65,9 +69,11 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
    
     public companyChange(value: any): void {
+        this.disabledBranch = true;
+        this.disabledFiscalPeriod = true;
+
         this.getBranch(value);
-        this.getFiscalPeriod(value);
-        this.companySelected = true;
+        this.getFiscalPeriod(value);        
     }
 
 
@@ -112,14 +118,16 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     getBranch(companyId: number) {
 
         this.branchService.getBranches(companyId).subscribe(res => {
-            this.branches = res;
+            this.disabledBranch = false;
+            this.branches = res;            
         });
     }
 
     getFiscalPeriod(companyId : number) {
 
         this.fiscalPeriodService.getFiscalPeriod(companyId).subscribe(res => {
-            this.ficalPeriods = res;        
+            this.disabledFiscalPeriod = false;
+            this.fiscalPeriods = res;                    
         });
     }
 

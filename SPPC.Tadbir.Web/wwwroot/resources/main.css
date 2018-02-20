@@ -31,6 +31,9 @@ tbutton {
     direction:ltr!important;
 }
 
+.menuitem {
+    margin-right: 6px;    
+}
 
 label {
     display: block !important;

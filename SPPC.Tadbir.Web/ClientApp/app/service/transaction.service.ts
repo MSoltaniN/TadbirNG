@@ -9,6 +9,7 @@ import { Filter } from "../class/filter";
 import { GridOrderBy } from "../class/grid.orderby";
 import { HttpParams } from "@angular/common/http";
 import { Environment, MessageType } from "../enviroment";
+import { Context } from "../model/context";
 
 
 
@@ -38,7 +39,25 @@ export class TransactionService {
     constructor(private http: Http) {
 
         this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
-        this.headers.append('X-Tadbir-AuthTicket', Environment.AdminTicket);
+
+
+        //this section written in base class
+        var ticket = '';
+        
+        if (localStorage.getItem('currentContext') != null) {
+            var item: string | null;
+            item = localStorage.getItem('currentContext');
+            this.currentContext = JSON.parse(item != null ? item.toString() : "");
+
+            ticket = this.currentContext ? this.currentContext.ticket.toString() : '';
+        }
+
+        //this section written in base class
+
+
+        this.headers.append('X-Tadbir-AuthTicket', ticket);
+
+
 
         this.options = new RequestOptions({ headers: this.headers });
     }
@@ -84,6 +103,8 @@ export class TransactionService {
 
     }
 
+    currentContext?: Context = undefined;
+
     search(start?: number, count?: number, orderby?: string, filters?: Filter[]) {
         var headers = this.headers;
 
@@ -99,7 +120,24 @@ export class TransactionService {
         }
         var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
 
-        var url = String.Format(this._getTransactionsUrl, Environment.FiscalPeriodId, Environment.BranchId);
+        //this section written in base class
+        var fpId = '';
+        var branchId = '';
+
+        if (localStorage.getItem('currentContext') != null) {
+            var item: string | null;
+            item = localStorage.getItem('currentContext');
+            this.currentContext = JSON.parse(item != null ? item.toString() : "");
+
+            fpId = this.currentContext ? this.currentContext.fpId.toString() : '';
+            branchId = this.currentContext ? this.currentContext.branchId.toString() : '';
+
+        }
+
+        //this section written in base class
+
+
+        var url = String.Format(this._getTransactionsUrl, fpId, branchId);
 
         var searchHeaders = this.headers;
 

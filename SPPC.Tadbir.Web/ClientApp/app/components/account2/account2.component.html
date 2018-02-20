@@ -1,8 +1,8 @@
-﻿<div class="col-xs-12 col-md-12 col-sm-12" dir="rtl">
+﻿<div class="col-xs-12 col-md-12 col-sm-12">
     <div class="panel panel-primary">
-        <div class="panel-heading">لیست حساب</div>
+        <div class="panel-heading">{{ 'Entity.Account' | translate }}</div>
         <div class="panel-body">
-            <kendo-grid #GridID [data]="rowData" 
+            <kendo-grid [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"                                                 
                         [sortable]="true"
                         [pageSize]="pageSize"
                         [skip]="skip"                  
@@ -121,7 +121,7 @@
         </div>
         <kendo-dialog title="{{'Account.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteAccount(false)" [minWidth]="250" [width]="450">
             <p>
-                {{ deleteConfirmMsg }}
+                {{ this.deleteConfirmMsg }}
             </p>
             <kendo-dialog-actions>                
                 <button class="k-button" (click)="deleteAccount(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>

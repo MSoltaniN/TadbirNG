@@ -1,4 +1,4 @@
-﻿<div class="col-md-5 col-md-offset-4 vertical-center">
+﻿<div class="col-md-5 col-md-offset-4 vertical-center col-sm-6 col-sm-offset-3">
     <div class="col-md-9">
         <div class="panel panel-primary">
             <div class="panel-heading"><i class="fa fa-building"></i> {{ 'Login.SelectTitle' | translate }}</div>
@@ -13,13 +13,13 @@
                     </div>
                     <div class="form-group voffset2">
                         <label class="col-md-12">{{ 'Branch.BranchName' | translate }}</label>
-                        <kendo-dropdownlist [disabled]="!companySelected" class="col-md-12" [data]="branches"  [valuePrimitive]="true"
+                        <kendo-dropdownlist [disabled]="disabledBranch" class="col-md-12" [data]="branches"  [valuePrimitive]="true"
                                            [textField]="'value'"   [(ngModel)]="branchId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
                         </kendo-dropdownlist>
                     </div>
                     <div class="form-group voffset2">
                         <label class="col-md-12">{{ 'Fiscal.FiscalPeriod' | translate }}</label>
-                        <kendo-dropdownlist [disabled]="!companySelected" class="col-md-12" [data]="ficalPeriods" [valuePrimitive]="true"
+                        <kendo-dropdownlist [disabled]="disabledFiscalPeriod" class="col-md-12" [data]="fiscalPeriods" [valuePrimitive]="true"
                                            [textField]="'value'"   [(ngModel)]="fiscalPeriodId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
                         </kendo-dropdownlist>
                     </div>

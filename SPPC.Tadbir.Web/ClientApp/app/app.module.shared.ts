@@ -42,6 +42,7 @@ import { SppcStringFilter } from './controls/grid/sppc-string-filter';
 import { LoginComponent } from "./components/login/login.component";
 import { LoginCompleteComponent } from "./components/login/login.complete.component";
 import { LoginContainerComponent } from "./components/login/login.container.component";
+import { LogoutComponent } from "./components/login/logout.component";
 
 import { AuthenticationService, AuthGuard } from "./service/login/index";
 
@@ -55,6 +56,7 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
         LoginComponent,
         LoginCompleteComponent,
         LoginContainerComponent,
+        LogoutComponent,
         SppcMaskTextBox,
         SppcNumberBox,
         SppcDropDownList,
@@ -65,7 +67,7 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
         TransactionFormComponent
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService,
-        { provide: LocationStrategy, useClass: HashLocationStrategy }, { provide: RTL, useValue: true },
+        { provide: LocationStrategy, useClass: HashLocationStrategy }, /*{ provide: RTL, useValue: false },*/
         { provide: MessageService, useClass: GridMessageService },
         AuthGuard,        
         AuthenticationService,
@@ -84,6 +86,7 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
             { path: '', redirectTo: 'login', pathMatch: 'full' },            
             { path: 'account2', component: Account2Component, canActivate: [AuthGuard]},
             { path: 'login', component: LoginContainerComponent },
+            { path: 'logout', component: LogoutComponent },
             { path: 'transaction', component: TransactionComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])        

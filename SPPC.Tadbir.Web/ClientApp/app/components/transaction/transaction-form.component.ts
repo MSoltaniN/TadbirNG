@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { TransactionService, TransactionInfo, TransactionLineService, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
 
@@ -8,6 +8,7 @@ import { ToastrService, ToastConfig } from 'toastr-ng2';
 
 import { Observable } from 'rxjs/Observable';
 import { ContextInfo } from "../../service/login/authentication.service";
+import { DefaultComponent } from "../../class/default.component";
 
 
 
@@ -25,7 +26,7 @@ interface Item {
     templateUrl: './transaction-form.component.html'
 })
 
-export class TransactionFormComponent {
+export class TransactionFormComponent extends DefaultComponent{
 
     //create a form controls
     private editForm = new FormGroup({
@@ -81,15 +82,10 @@ export class TransactionFormComponent {
     //Events
 
     constructor(private transactionService: TransactionService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
-        private toastrService: ToastrService, private translate: TranslateService) {
-        translate.addLangs(["en", "fa"]);
-        translate.setDefaultLang('fa');
+        public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2) {
 
-        var browserLang = 'fa';//translate.getBrowserLang();
-        translate.use(browserLang);
-
-        //this.getFiscalPeriod();
-
+        super(toastrService, translate, renderer, "Transaction");   
+    
     }
 
     /* load fiscal periods */

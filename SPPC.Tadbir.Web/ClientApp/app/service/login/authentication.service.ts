@@ -52,6 +52,22 @@ export class AuthenticationService {
             //});
     }
 
+    islogin()
+    {
+        if (localStorage.getItem('currentContext'))
+        {
+            var item: string | null;
+            item = localStorage.getItem('currentContext');
+            var currentContext = JSON.parse(item != null ? item.toString() : ""); 
+            if (currentContext.userName != '')
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('currentContext');

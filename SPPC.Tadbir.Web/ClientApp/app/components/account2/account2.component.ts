@@ -191,7 +191,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
     removeHandler(arg: any) {
 
         this.prepareDeleteConfirm(arg.dataItem.name);
-
+        
         this.deleteAccountId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
@@ -206,7 +206,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
             const userJson = localStorage.getItem('currentContext');
 
             currentUser = userJson !== null ? JSON.parse(userJson) : null;
-
+            
         }
 
         this.fiscalPeriodService.getFiscalPeriod(currentUser.companyId).subscribe(res => {

@@ -3,7 +3,14 @@
     "Title": "به سیستم جدید تدبیر خوش آمدید!",
     "SELECT": "Changer la langue",
     "Loading": "در حال بارگذاری ...",
-    "RecordNotFound": "هیچ رکوردی یافت نشد!"
+    "RecordNotFound": "هیچ رکوردی یافت نشد!",
+    "Name": "سیستم جامع تدبیر",
+    "Menu": {
+      "Account": "حساب",
+      "Transaction": "اسناد",
+      "Exit": "خروج"
+    }
+
   },
 
   "Messages": {

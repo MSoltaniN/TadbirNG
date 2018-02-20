@@ -41,9 +41,14 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     ngOnInit() {
         // reset login status
         this.authenticationService.logout();
+        if(this.authenticationService.islogin())
+        {
+            this.router.navigate(['/account2']);
+        }
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        
     }
 
     changeLang(language : string)
