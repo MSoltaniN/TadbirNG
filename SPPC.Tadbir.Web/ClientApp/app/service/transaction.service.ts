@@ -17,7 +17,23 @@ import { Context } from "../model/context";
 export class TransactionInfo implements Transaction {
     //TODO: مقدار پیش فرض دوره مالی و شعبه در اینجا ست شده است که باید برداشته شود
     constructor(public id: number = 0, public description: string = "", public fiscalPeriodId: number = 1, public branchId: number = 1,
-        public no: string = "", public date: Date = new Date()) { }
+        public no: string = "", public date: Date = new Date()) {
+
+
+        //this section written in base class
+
+        if (localStorage.getItem('currentContext') != null) {
+            var item: string | null;
+            item = localStorage.getItem('currentContext');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+
+            this.fiscalPeriodId = currentContext ? currentContext.fpId.toString() : '';
+            this.branchId = currentContext ? currentContext.branchId.toString() : '';
+
+        }
+
+        //this section written in base class
+    }
 
 }
 
@@ -43,7 +59,7 @@ export class TransactionService {
 
         //this section written in base class
         var ticket = '';
-        
+
         if (localStorage.getItem('currentContext') != null) {
             var item: string | null;
             item = localStorage.getItem('currentContext');
