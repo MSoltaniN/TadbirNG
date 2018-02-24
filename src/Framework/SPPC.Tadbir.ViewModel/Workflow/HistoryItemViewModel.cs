@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.ViewModel.Workflow
         /// <summary>
         /// تاریخ اقدام انجام شده روی یک مستند
         /// </summary>
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
 
         /// <summary>
         /// زمان اقدام انجام شده روی یک مستند

@@ -125,11 +125,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        // DELETE: api/accounts
-        [HttpDelete]
+        // PUT: api/accounts
+        [HttpPut]
         [Route(AccountApi.AccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
-        public async Task<IActionResult> DeleteExistingAccountsAsync([FromBody] ActionDetailViewModel actionDetail)
+        public async Task<IActionResult> PutExistingAccountsAsDeletedAsync([FromBody] ActionDetailViewModel actionDetail)
         {
             if (actionDetail == null)
             {

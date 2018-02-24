@@ -33,18 +33,18 @@ namespace SPPC.Tadbir.ViewModel.Core
         public int Id { get; set; }
 
         /// <summary>
-        /// تاریخ شمسی ایجاد مستند
+        /// تاریخ ایجاد مستند
         /// </summary>
-        public string CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
 
         /// <summary>
-        /// تاریخ شمسی آخرین تایید مستند
+        /// تاریخ آخرین تایید مستند
         /// </summary>
-        public string ConfirmedDate { get; set; }
+        public DateTime? ConfirmedDate { get; set; }
 
         /// <summary>
-        /// تاریخ شمسی آخرین تصویب مستند
+        /// تاریخ آخرین تصویب مستند
         /// </summary>
-        public string ApprovedDate { get; set; }
+        public DateTime? ApprovedDate { get; set; }
     }
 }

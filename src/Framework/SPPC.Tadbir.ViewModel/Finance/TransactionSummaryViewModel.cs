@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// شماره سند مالی که می تواند شامل اعداد و حروف باشد
         /// </summary>
-        public virtual string No { get; set; }
+        public string No { get; set; }
 
         /// <summary>
         /// جمع مقادیر بدهکار در آرتیکل های سند

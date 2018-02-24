@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public TransactionViewModel()
         {
             No = String.Empty;
-            Date = "1390/09/09";
+            Date = DateTime.Now;
             Description = String.Empty;
             Document = new DocumentViewModel();
         }
@@ -52,7 +52,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         [Display(Name = FieldNames.DateField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
 
         /// <summary>
         /// شرح سند مالی که جزئیات بیشتری را در مورد پیشامد مالی ارائه می دهد

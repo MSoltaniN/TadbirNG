@@ -170,16 +170,9 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(transaction, "transaction");
             var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriod = await repository.GetByIDAsync(transaction.FiscalPeriodId);
-            DateTime transactionDate = DateTime.MinValue;
-            JalaliDateTime jalali = null;
-            if (JalaliDateTime.TryParse(transaction.Date, out jalali))
-            {
-                transactionDate = jalali.ToGregorian();
-            }
-
             bool isValid = (fiscalPeriod != null)
-                && (transactionDate >= fiscalPeriod.StartDate)
-                && (transactionDate <= fiscalPeriod.EndDate);
+                && (transaction.Date >= fiscalPeriod.StartDate)
+                && (transaction.Date <= fiscalPeriod.EndDate);
             return isValid;
         }
 
@@ -298,16 +291,9 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(transaction, "transaction");
             var repository = _unitOfWork.GetRepository<FiscalPeriod>();
             var fiscalPeriod = repository.GetByID(transaction.FiscalPeriodId);
-            DateTime transactionDate = DateTime.MinValue;
-            JalaliDateTime jalali = null;
-            if (JalaliDateTime.TryParse(transaction.Date, out jalali))
-            {
-                transactionDate = jalali.ToGregorian();
-            }
-
             bool isValid = (fiscalPeriod != null)
-                && (transactionDate >= fiscalPeriod.StartDate)
-                && (transactionDate <= fiscalPeriod.EndDate);
+                && (transaction.Date >= fiscalPeriod.StartDate)
+                && (transaction.Date <= fiscalPeriod.EndDate);
             return isValid;
         }
 
@@ -579,7 +565,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var userRepository = _unitOfWork.GetRepository<User>();
             existing.No = transaction.No;
-            existing.Date = JalaliDateTime.Parse(transaction.Date).ToGregorian();
+            existing.Date = transaction.Date;
             existing.Description = transaction.Description;
             existing.Document.EntityNo = transaction.No;
             var mainAction = existing.Document.Actions.First();

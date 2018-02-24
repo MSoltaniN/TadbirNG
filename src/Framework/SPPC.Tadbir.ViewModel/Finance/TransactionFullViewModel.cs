@@ -39,7 +39,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string BranchName { get; set; }
 
         /// <summary>
-        /// نام شرکتی که سند مالی برای یکی از شعبات آن ایجاد شده است
+        /// نام شرکتی که سند مالی برای یکی از شعب آن ایجاد شده است
         /// </summary>
         [Display(Name = Entities.Company)]
         public string BranchCompanyName { get; set; }

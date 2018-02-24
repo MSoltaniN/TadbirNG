@@ -163,11 +163,7 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.MapFrom(
                         src => src.Lines
                             .Select(line => line.Credit)
-                            .Sum()))
-                .ForMember(
-                    dest => dest.Date,
-                    opts => opts.MapFrom(
-                        src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()));
+                            .Sum()));
             mapperConfig.CreateMap<Transaction, TransactionSummaryViewModel>()
                 .ForMember(
                     dest => dest.DebitSum,
@@ -183,10 +179,6 @@ namespace SPPC.Tadbir.Mapper
                             .Sum()));
 
             mapperConfig.CreateMap<TransactionViewModel, Transaction>()
-                .ForMember(
-                    dest => dest.Date,
-                    opts => opts.MapFrom(
-                        src => JalaliDateTime.Parse(src.Date).ToGregorian()))
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
                 .AfterMap((viewModel, model) => model.Document.Id = viewModel.Document.Id);
@@ -273,10 +265,6 @@ namespace SPPC.Tadbir.Mapper
                             }
                         : null);
             mapperConfig.CreateMap<WorkItemHistory, HistoryItemViewModel>()
-                .ForMember(
-                    dest => dest.Date,
-                    opts => opts.MapFrom(
-                        src => JalaliDateTime.FromDateTime(src.Date).ToShortDateString()))
                 .ForMember(
                     dest => dest.UserFullName,
                     opts => opts.MapFrom(
@@ -466,56 +454,16 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapCoreTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<Model.Core.DocumentAction, DocumentActionViewModel>()
+            mapperConfig.CreateMap<DocumentAction, DocumentActionViewModel>()
                 .ForMember(
                     dest => dest.LineId,
                     opts => opts.MapFrom(
-                        src => (src.LineId.HasValue) ? src.LineId.Value : 0))
-                .ForMember(
-                    dest => dest.CreatedDate,
-                    opts => opts.MapFrom(
-                        src => JalaliDateTime.FromDateTime(src.CreatedDate).ToShortDateString()))
-                .ForMember(
-                    dest => dest.ModifiedDate,
-                    opts => opts.MapFrom(
-                        src => JalaliDateTime.FromDateTime(src.ModifiedDate).ToShortDateString()))
-                .ForMember(
-                    dest => dest.ConfirmedDate,
-                    opts => opts.MapFrom(
-                        src => src.ConfirmedDate.HasValue
-                            ? JalaliDateTime.FromDateTime(src.ConfirmedDate.Value).ToShortDateString()
-                            : String.Empty))
-                .ForMember(
-                    dest => dest.ApprovedDate,
-                    opts => opts.MapFrom(
-                        src => src.ApprovedDate.HasValue
-                            ? JalaliDateTime.FromDateTime(src.ApprovedDate.Value).ToShortDateString()
-                            : String.Empty));
+                        src => (src.LineId.HasValue) ? src.LineId.Value : 0));
             mapperConfig.CreateMap<DocumentActionViewModel, Model.Core.DocumentAction>()
                 .ForMember(
                     dest => dest.LineId,
                     opts => opts.MapFrom(
                         src => (src.LineId > 0) ? (int?)src.LineId : null))
-                .ForMember(
-                    dest => dest.CreatedDate,
-                    opts => opts.MapFrom(
-                        src => JalaliDateTime.Parse(src.CreatedDate).ToGregorian()))
-                .ForMember(
-                    dest => dest.ModifiedDate,
-                    opts => opts.MapFrom(
-                        src => JalaliDateTime.Parse(src.ModifiedDate).ToGregorian()))
-                .ForMember(
-                    dest => dest.ConfirmedDate,
-                    opts => opts.MapFrom(
-                        src => !String.IsNullOrWhiteSpace(src.ConfirmedDate)
-                            ? JalaliDateTime.Parse(src.ConfirmedDate).ToGregorian()
-                            : (DateTime?)null))
-                .ForMember(
-                    dest => dest.ApprovedDate,
-                    opts => opts.MapFrom(
-                        src => !String.IsNullOrWhiteSpace(src.ApprovedDate)
-                            ? JalaliDateTime.Parse(src.ApprovedDate).ToGregorian()
-                            : (DateTime?)null))
                 .AfterMap((viewModel, model) => model.CreatedBy.Id = viewModel.CreatedById)
                 .AfterMap((viewModel, model) => model.ModifiedBy.Id = viewModel.ModifiedById)
                 .AfterMap((viewModel, model) =>

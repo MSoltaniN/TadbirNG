@@ -6,9 +6,9 @@ namespace SPPC.Tadbir.ViewModel.Core
     public partial class DocumentActionViewModel
     {
         /// <summary>
-        /// تاریخ شمسی آخرین تغییر روی مستند
+        /// تاریخ آخرین تغییر روی مستند
         /// </summary>
-        public string ModifiedDate { get; set; }
+        public DateTime ModifiedDate { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی کاربری که مستند را ایجاد کرده است
