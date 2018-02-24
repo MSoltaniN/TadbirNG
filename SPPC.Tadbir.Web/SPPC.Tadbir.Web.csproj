@@ -51,6 +51,7 @@
     <None Remove="ClientApp\app\components\project\project.component.ts" />
     <None Remove="ClientApp\app\components\transaction\transaction-form.component.ts" />
     <None Remove="ClientApp\app\components\transaction\transaction.component.ts" />
+    <None Remove="ClientApp\app\controls\datepicker\sppc-datepicker.ts" />
     <None Remove="ClientApp\app\controls\grid\sppc-date-filter.ts" />
     <None Remove="ClientApp\app\controls\grid\sppc-string-filter.ts" />
     <None Remove="ClientApp\app\controls\sppc-grid-messages.ts" />
@@ -157,6 +158,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\login\logout.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\controls\datepicker\sppc-datepicker.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\dropdownlist\sppc-dropdownlist.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\grid\sppc-date-filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\grid\sppc-string-filter.ts" />

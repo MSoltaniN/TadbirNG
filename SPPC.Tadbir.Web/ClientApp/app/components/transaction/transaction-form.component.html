@@ -8,8 +8,8 @@
         <div class="form-group">
             <label for="date" class="control-label">{{ 'Transaction.Date' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="date" />
-            
+            <sppc-datepicker formControlName="date"></sppc-datepicker>
+
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.date.valid || editForm.controls.date.pristine">
                 {{ 'Validations.Date' | translate }}
             </div>
@@ -24,28 +24,6 @@
                 {{ 'Validations.No' | translate }}
             </div>
         </div>
-
-        <!--<div class="form-group">
-            <label for="branchId" class="control-label">{{ 'Transaction.BranchId' | translate }}</label>
-
-            <input type="text" class="k-textbox" formControlName="branchId" />
-
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.branchId.valid || editForm.controls.branchId.pristine">
-                {{ 'Validations.BranchId' | translate }}
-            </div>
-        </div>-->
-
-        <!--<div class="form-group">
-            <label for="fiscalPeriodId" class="control-label">{{ 'Transaction.FiscalPeriodId' | translate }}</label>
-
-            <sppc-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
-                               [textField]="'value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'key'">
-            </sppc-dropdownlist>
-
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fiscalPeriodId.valid || editForm.controls.fiscalPeriodId.pristine">
-                {{ 'Validations.FiscalPeriodId' | translate }}
-            </div>
-        </div>-->
 
         <div class="form-group">
             <label for="description" class="control-label">{{ 'Transaction.Description' | translate }}</label>
