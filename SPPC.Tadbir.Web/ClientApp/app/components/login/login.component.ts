@@ -1,4 +1,5 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import {  AuthenticationService } from '../../service/login/index';
@@ -8,6 +9,8 @@ import { TranslateService } from "ng2-translate";
 
 import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
+
+
 
 @Component({
     selector: 'login',
@@ -58,12 +61,12 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
         if (this.currentlang == 'fa') {
             this.renderer.addClass(document.body, 'tRtl');
-            this.renderer.removeClass(document.body, 'tLtr');
+            this.renderer.removeClass(document.body, 'tLtr');            
         }
 
         if (this.currentlang == 'en') {
             this.renderer.addClass(document.body, 'tLtr');
-            this.renderer.removeClass(document.body, 'tRtl');
+            this.renderer.removeClass(document.body, 'tRtl');            
         }
 
     }

@@ -19,6 +19,8 @@ import { TransactionComponent } from './components/transaction/transaction.compo
 import { TransactionFormComponent } from './components/transaction/transaction-form.component';
 
 
+import { Layout } from './enviroment';
+
 //custom controls
 import { SppcMaskTextBox } from './controls/textbox/sppc-mask-textbox';
 import { SppcNumberBox } from './controls/textbox/sppc-numberbox';
@@ -67,7 +69,18 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
         TransactionFormComponent
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService,
-        { provide: LocationStrategy, useClass: HashLocationStrategy }, /*{ provide: RTL, useValue: false },*/
+        { provide: LocationStrategy, useClass: HashLocationStrategy },
+        //{
+        //    provide: RTL,
+        //    useFactory: function () {
+        //        var lang = localStorage.getItem('lang');
+        //        if (lang == "en") {
+        //            return false;
+        //        } 
+        //        else 
+        //            return true;
+        //    }            
+        //},
         { provide: MessageService, useClass: GridMessageService },
         AuthGuard,        
         AuthenticationService,
