@@ -24,7 +24,6 @@ export class SppcDatePipe implements PipeTransform {
     }
 
     transform(value: any) {
-        debugger;
         if (this.dateLocale == 'en')
             return this.datepipe.transform(value, 'MM/dd/yyyy hh:mm');
         else {

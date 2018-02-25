@@ -15,7 +15,7 @@ import { Context } from "../model/context";
 
 
 export class TransactionInfo implements Transaction {
-    //TODO: مقدار پیش فرض دوره مالی و شعبه در اینجا ست شده است که باید برداشته شود
+
     constructor(public id: number = 0, public description: string = "", public fiscalPeriodId: number = 1, public branchId: number = 1,
         public no: string = "", public date: Date = new Date()) {
 
@@ -48,6 +48,8 @@ export class TransactionService {
     private _postNewTransactionsUrl = Environment.BaseUrl + "/transactions";
     private _postModifiedTransactionsUrl = Environment.BaseUrl + "/transactions/{0}";
 
+    private fiscalPeriodId: string;
+    private branchId: string;
 
     headers: Headers;
     options: RequestOptions;
@@ -59,7 +61,6 @@ export class TransactionService {
 
         //this section written in base class
         var ticket = '';
-
         if (localStorage.getItem('currentContext') != null) {
             var item: string | null;
             item = localStorage.getItem('currentContext');
@@ -70,12 +71,23 @@ export class TransactionService {
 
         //this section written in base class
 
-
         this.headers.append('X-Tadbir-AuthTicket', ticket);
 
 
 
         this.options = new RequestOptions({ headers: this.headers });
+    }
+
+    //TODO: this method must deleted
+    GetFpIdBranchId() {
+        if (localStorage.getItem('currentContext') != null) {
+            var item: string | null;
+            item = localStorage.getItem('currentContext');
+            this.currentContext = JSON.parse(item != null ? item.toString() : "");
+
+            this.fiscalPeriodId = this.currentContext ? this.currentContext.fpId.toString() : '';
+            this.branchId = this.currentContext ? this.currentContext.branchId.toString() : '';
+        }
     }
 
     getTransactions() {
@@ -87,10 +99,15 @@ export class TransactionService {
     }
 
     getTotalCount() {
+
+        //TODO: this line must deleted
+        this.GetFpIdBranchId();
+
+
         var headers = this.headers;
         headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
 
-        var url = String.Format(this._getCountUrl, Environment.FiscalPeriodId, Environment.BranchId);
+        var url = String.Format(this._getCountUrl, this.fiscalPeriodId, this.branchId);
 
         return this.http.get(url, { headers: headers })
             .map(response => <any>(<Response>response).json());;
@@ -99,9 +116,13 @@ export class TransactionService {
 
     //get count of records base on Grid filters and order value
     getCount(orderby?: string, filters?: any[]) {
+
+        //TODO: this line must deleted
+        this.GetFpIdBranchId();
+
         var headers = this.headers;
 
-        var url = String.Format(this._getCountUrl, Environment.FiscalPeriodId, Environment.BranchId);
+        var url = String.Format(this._getCountUrl, this.fiscalPeriodId, this.branchId);
 
         var postItem = { filters: filters };
         var searchHeaders = this.headers;
@@ -136,24 +157,11 @@ export class TransactionService {
         }
         var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
 
-        //this section written in base class
-        var fpId = '';
-        var branchId = '';
-
-        if (localStorage.getItem('currentContext') != null) {
-            var item: string | null;
-            item = localStorage.getItem('currentContext');
-            this.currentContext = JSON.parse(item != null ? item.toString() : "");
-
-            fpId = this.currentContext ? this.currentContext.fpId.toString() : '';
-            branchId = this.currentContext ? this.currentContext.branchId.toString() : '';
-
-        }
-
-        //this section written in base class
+        //TODO: this line must deleted
+        this.GetFpIdBranchId();
 
 
-        var url = String.Format(this._getTransactionsUrl, fpId, branchId);
+        var url = String.Format(this._getTransactionsUrl, this.fiscalPeriodId, this.branchId);
 
         var searchHeaders = this.headers;
 
