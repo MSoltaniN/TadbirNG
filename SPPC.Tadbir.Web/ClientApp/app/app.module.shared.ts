@@ -49,6 +49,8 @@ import { LogoutComponent } from "./components/login/logout.component";
 
 import { AuthenticationService, AuthGuard } from "./service/login/index";
 
+import { SppcDatePipe } from "./pipes/index"
+
 
 @NgModule({
     declarations: [
@@ -68,7 +70,8 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
         SppcNumericFilter,
         SppcStringFilter,
         TransactionComponent,
-        TransactionFormComponent
+        TransactionFormComponent,
+        SppcDatePipe
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService,
         { provide: LocationStrategy, useClass: HashLocationStrategy }, /*{ provide: RTL, useValue: false },*/
