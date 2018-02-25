@@ -4,7 +4,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Headers, RequestOptions, BaseRequestOptions, Http } from '@angular/http';
-import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationStrategy, DatePipe } from '@angular/common';
 // third party module to display toast 
 import { ToastrModule } from 'toastr-ng2';
 
@@ -18,6 +18,8 @@ import { AccountFormComponent } from './components/account2/account2-form.compon
 import { TransactionComponent } from './components/transaction/transaction.component';
 import { TransactionFormComponent } from './components/transaction/transaction-form.component';
 
+import { DpDatePickerModule } from 'ng2-jalali-date-picker';
+
 
 import { Layout } from './enviroment';
 
@@ -25,6 +27,7 @@ import { Layout } from './enviroment';
 import { SppcMaskTextBox } from './controls/textbox/sppc-mask-textbox';
 import { SppcNumberBox } from './controls/textbox/sppc-numberbox';
 import { SppcDropDownList } from './controls/dropdownlist/sppc-dropdownlist';
+import { SppcDatepicker } from './controls/datepicker/sppc-datepicker'
 
 import {BrowserModule} from "@angular/platform-browser";
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
@@ -48,6 +51,8 @@ import { LogoutComponent } from "./components/login/logout.component";
 
 import { AuthenticationService, AuthGuard } from "./service/login/index";
 
+import { SppcDatePipe } from "./pipes/index"
+
 
 @NgModule({
     declarations: [
@@ -62,11 +67,13 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
         SppcMaskTextBox,
         SppcNumberBox,
         SppcDropDownList,
+        SppcDatepicker,
         SppcGridColumn,
         SppcNumericFilter,
         SppcStringFilter,
         TransactionComponent,
-        TransactionFormComponent
+        TransactionFormComponent,
+        SppcDatePipe
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -84,6 +91,7 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
         { provide: MessageService, useClass: GridMessageService },
         AuthGuard,        
         AuthenticationService,
+        DatePipe
     ],        
     imports: [
         CommonModule,         
@@ -94,6 +102,7 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
         ToastrModule.forRoot(),
         DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule,
         BrowserModule,
+        DpDatePickerModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'login', pathMatch: 'full' },            

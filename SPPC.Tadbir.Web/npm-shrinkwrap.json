@@ -1523,6 +1523,11 @@
         "es5-ext": "0.10.35"
       }
     },
+    "date-fns": {
+      "version": "1.29.0",
+      "resolved": "https://registry.npmjs.org/date-fns/-/date-fns-1.29.0.tgz",
+      "integrity": "sha512-lbTXWZ6M20cWH8N9S6afb0SBm6tMk+uUg6z3MqHPKE9atmsY3kJkTm8vKe93izJ2B2+q5MV990sM2CHgtAZaOw=="
+    },
     "date-now": {
       "version": "0.1.4",
       "resolved": "https://registry.npmjs.org/date-now/-/date-now-0.1.4.tgz",
@@ -3623,6 +3628,14 @@
         "whatwg-fetch": "2.0.3"
       }
     },
+    "jalali-moment": {
+      "version": "3.0.10",
+      "resolved": "https://registry.npmjs.org/jalali-moment/-/jalali-moment-3.0.10.tgz",
+      "integrity": "sha512-K7JAKmNcSQBqx0rs+N4dNsJ0Hcy103y8KVZCXXcPH9/izFFu/5lfPvFAbJytGgWkT9G8qnQN+7KKha11zxlukg==",
+      "requires": {
+        "moment": "2.20.1"
+      }
+    },
     "jasmine-core": {
       "version": "2.8.0",
       "resolved": "https://registry.npmjs.org/jasmine-core/-/jasmine-core-2.8.0.tgz",
@@ -4167,6 +4180,11 @@
         }
       }
     },
+    "moment": {
+      "version": "2.20.1",
+      "resolved": "https://registry.npmjs.org/moment/-/moment-2.20.1.tgz",
+      "integrity": "sha512-Yh9y73JRljxW5QxN08Fner68eFLxM5ynNOAw2LbIB1YAGeQzZT8QFSUvkAz609Zf+IHhhaUxqZK8dG3W/+HEvg=="
+    },
     "ms": {
       "version": "2.0.0",
       "resolved": "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz",
@@ -4210,10 +4228,32 @@
       "integrity": "sha1-KzJxhOiZIQEXeyhWP7XnECrNDKk=",
       "dev": true
     },
+    "ng2-datepicker": {
+      "version": "2.2.5",
+      "resolved": "https://registry.npmjs.org/ng2-datepicker/-/ng2-datepicker-2.2.5.tgz",
+      "integrity": "sha512-LqVAqDLFW2w7LvtP++caDbNBxuWNcwlaDA2ONDk/SVV55sr5vS+4YCq2aE7u27OpBEPkfxGnfjDpDON+P+P47Q==",
+      "requires": {
+        "date-fns": "1.29.0",
+        "ngx-slimscroll": "3.7.0"
+      }
+    },
+    "ng2-jalali-date-picker": {
+      "version": "2.2.1",
+      "resolved": "https://registry.npmjs.org/ng2-jalali-date-picker/-/ng2-jalali-date-picker-2.2.1.tgz",
+      "integrity": "sha512-h4P5DTl6HzD204dFL+FoVanvDcUxaOgTn7N3Ndd4j3s3aFs2jP/GszGJNmhnam29TkzUcQj4m8yuaFA/dsw/EA==",
+      "requires": {
+        "jalali-moment": "3.0.10"
+      }
+    },
     "ng2-translate": {
       "version": "5.0.0",
       "resolved": "https://registry.npmjs.org/ng2-translate/-/ng2-translate-5.0.0.tgz",
       "integrity": "sha1-Ctu1EOtQB6LW3tX10miIwUdgrKU="
+    },
+    "ngx-slimscroll": {
+      "version": "3.7.0",
+      "resolved": "https://registry.npmjs.org/ngx-slimscroll/-/ngx-slimscroll-3.7.0.tgz",
+      "integrity": "sha512-cy1r4PaWR4hOHFog49LffrHG0lt6q27ePrvh3S0W9Y3bccbHwCAfzay68wHCryQL0+pIqa6APo3Wv+9qAeSSbw=="
     },
     "no-case": {
       "version": "2.3.2",

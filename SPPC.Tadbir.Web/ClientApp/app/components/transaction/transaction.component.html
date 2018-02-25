@@ -43,9 +43,9 @@
                             <dd>{{ transaction.no }}</dd>
 
                             <dt>{{ 'Transaction.Date' | translate }}</dt>
-                            <dd>{{ transaction.date }}</dd>
+                            <dd>{{ transaction.date | SppcDate }}</dd>
 
-                            <dt>{{ 'Transaction.Description' | translate }}</dt>
+                            <dt>{{ 'Transaction.Description' | translate  }}</dt>
                             <dd>{{ transaction.description }}</dd>
                         </dl>
                         <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
@@ -63,6 +63,9 @@
                 <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Transaction.date">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
+                    </ng-template>
+                    <ng-template kendoGridCellTemplate let-transaction>
+                        {{ transaction.date | SppcDate }}
                     </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
@@ -85,8 +88,11 @@
                 </kendo-grid-column>
 
                 <kendo-grid-column media="(min-width: 1024px)" sppc-grid-column="Transaction.date">
-                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column" let-Transaction>
                         <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
+                    </ng-template>
+                    <ng-template kendoGridCellTemplate let-transaction>
+                        {{ transaction.date | SppcDate }}
                     </ng-template>
                 </kendo-grid-column>
 
