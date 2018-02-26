@@ -91,7 +91,8 @@ import { SppcDatePipe } from "./pipes/index"
         { provide: MessageService, useClass: GridMessageService },
         AuthGuard,        
         AuthenticationService,
-        DatePipe
+        DatePipe,
+        Layout
     ],        
     imports: [
         CommonModule,         

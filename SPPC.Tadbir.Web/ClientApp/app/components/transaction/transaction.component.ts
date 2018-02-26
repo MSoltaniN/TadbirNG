@@ -25,13 +25,24 @@ import { String } from '../../class/source';
 import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
-import { MessageType } from "../../enviroment";
+import { MessageType, Layout } from "../../enviroment";
 import { Filter } from "../../class/filter";
 
+import { RTL } from '@progress/kendo-angular-l10n';
+
+
+export function getLayoutModule(layout: Layout) {
+    return layout.getLayout();
+}  
 
 @Component({
     selector: 'transaction',
-    templateUrl: './transaction.component.html'
+    templateUrl: './transaction.component.html',
+    providers: [{
+        provide: RTL,
+        useFactory: getLayoutModule,
+        deps: [Layout]
+    }]
 })
 
 

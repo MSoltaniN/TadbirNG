@@ -32,14 +32,18 @@ import { ContextInfo } from "../../service/login/authentication.service";
 
 import { RTL } from '@progress/kendo-angular-l10n';
 
+export function getLayoutModule(layout: Layout) {
+    return layout.getLayout();
+}  
+
+
 @Component({
     selector: 'account2',
     templateUrl: './account2.component.html',
     providers: [{
         provide: RTL,
-        useFactory: function () {
-            return new Layout().getLayout();
-        }
+        useFactory: getLayoutModule,
+        deps: [Layout]
     }]
 })
 

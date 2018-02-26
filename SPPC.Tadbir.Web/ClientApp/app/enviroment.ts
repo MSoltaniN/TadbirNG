@@ -1,4 +1,6 @@
-﻿//this class for all variable in system
+﻿import { Injectable } from "@angular/core";
+
+//this class for all variable in system
 export enum MessageType {
     Info,
     Succes,
@@ -14,7 +16,7 @@ export const Environment = {
 };
 
 
-
+@Injectable()
 export class  Layout  {       
     getLayout():boolean
     {

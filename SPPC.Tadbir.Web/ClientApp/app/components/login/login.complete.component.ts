@@ -15,17 +15,21 @@ import { MessageType, Layout } from "../../enviroment";
 
 import { RTL } from '@progress/kendo-angular-l10n';
 
+
+export function getLayoutModule(layout: Layout) {
+    return layout.getLayout();
+}  
+
 @Component({
     selector: 'logincomplete',
     templateUrl: 'login.complete.component.html',
     styleUrls: ['./login.complete.component.css'],
     providers: [{
-        provide: RTL,
-        useFactory: function () {
-            return new Layout().getLayout();
-        }
+        provide: RTL,        
+        useFactory: getLayoutModule,
+        deps: [Layout]
     }]
-
+   
 })
 
 
