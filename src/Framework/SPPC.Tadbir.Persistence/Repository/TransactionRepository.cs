@@ -598,6 +598,11 @@ namespace SPPC.Tadbir.Persistence
                     .ThenInclude(doc => doc.Actions)
                         .ThenInclude(act => act.ApprovedBy)
                 .Where(criteria);
+            transactionsQuery = (gridOptions != null)
+                ? transactionsQuery
+                    .Skip((gridOptions.Paging.PageIndex - 1) * gridOptions.Paging.PageSize)
+                    .Take(gridOptions.Paging.PageSize)
+                : transactionsQuery;
             return transactionsQuery;
         }
 
