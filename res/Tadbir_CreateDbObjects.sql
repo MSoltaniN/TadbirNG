@@ -10,6 +10,9 @@ GO
 CREATE SCHEMA [Core]
 GO
 
+CREATE SCHEMA [Metadata]
+GO
+
 CREATE SCHEMA [Auth]
 GO
 
@@ -38,6 +41,57 @@ CREATE SCHEMA [Warehousing]
 GO
 
 CREATE SCHEMA [Sales]
+GO
+
+CREATE TABLE [Metadata].[Locale] (
+    [LocaleID]       INT              IDENTITY (1, 1) NOT NULL,
+    [Name]           VARCHAR(64)      NOT NULL,
+    [LocalName]      NVARCHAR(64)     NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Locale_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Locale_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_Locale] PRIMARY KEY CLUSTERED ([LocaleID] ASC)
+)
+GO
+
+CREATE TABLE [Metadata].[LocalText] (
+    [LocalTextID]    INT              IDENTITY (1, 1) NOT NULL,
+    [LocaleID]       INT              NOT NULL,
+    [ResourceId]     VARCHAR(128)     NOT NULL,
+    [Text]           NVARCHAR(1024)   NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_LocalText_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_LocalText_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_LocalText] PRIMARY KEY CLUSTERED ([LocalTextID] ASC)
+    , CONSTRAINT [FK_Metadata_LocalText_Metadata_Locale] FOREIGN KEY ([LocaleID]) REFERENCES [Metadata].[Locale] ([LocaleID])
+)
+GO
+
+CREATE TABLE [Metadata].[Entity] (
+    [EntityID]               INT              IDENTITY (1, 1) NOT NULL,
+    [Name]                   VARCHAR(64)      NOT NULL,
+    [IsHierarchy]            BIT              CONSTRAINT [DF_Metadata_Entity_IsHierarchy] DEFAULT (0) NOT NULL,
+    [IsCartableIntegrated]   BIT              CONSTRAINT [DF_Metadata_Entity_IsCartableIntegrated] DEFAULT (1) NOT NULL,
+    [rowguid]                UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Entity_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]           DATETIME         CONSTRAINT [DF_Metadata_Entity_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_Entity] PRIMARY KEY CLUSTERED ([EntityID] ASC)
+)
+GO
+
+CREATE TABLE [Metadata].[Property] (
+    [PropertyID]       INT              IDENTITY (1, 1) NOT NULL,
+    [EntityID]         INT              NOT NULL,
+    [Name]             VARCHAR(64)      NOT NULL,
+    [DotNetType]       VARCHAR(64)      NOT NULL,
+    [StorageType]      VARCHAR(32)      NOT NULL,
+    [ScriptType]       VARCHAR(32)      NOT NULL,
+    [Length]           INT              NULL,
+    [IsFixedLength]    BIT              CONSTRAINT [DF_Metadata_Property_IsFixedLength] DEFAULT (0) NOT NULL,
+    [IsNullable]       BIT              NOT NULL,
+    [NameResourceId]   VARCHAR(128)     NOT NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Property_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Metadata_Property_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_Property] PRIMARY KEY CLUSTERED ([PropertyID] ASC)
+    , CONSTRAINT [FK_Metadata_Property_Metadata_Entity] FOREIGN KEY ([EntityID]) REFERENCES [Metadata].[Entity]([EntityID])
+)
 GO
 
 CREATE TABLE [Finance].[Currency] (
@@ -253,6 +307,7 @@ CREATE TABLE [Finance].[Account] (
 	[ParentID]       INT              NULL,
 	[FiscalPeriodID] INT              NOT NULL,
 	[BranchID]       INT              NOT NULL,
+	[MetadataID]     INT              NULL,
     [Code]           NVARCHAR(16)     NOT NULL,
     [FullCode]       NVARCHAR(256)    NOT NULL,
     [Name]           NVARCHAR(512)    NOT NULL,
@@ -264,6 +319,7 @@ CREATE TABLE [Finance].[Account] (
     , CONSTRAINT [FK_Finance_Account_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[Account]([AccountID])
     , CONSTRAINT [FK_Finance_Account_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_Account_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+    , CONSTRAINT [FK_Finance_Account_Metadata_Entity] FOREIGN KEY ([MetadataID]) REFERENCES [Metadata].[Entity] ([EntityID])
 )
 GO
 
@@ -272,6 +328,7 @@ CREATE TABLE [Finance].[Transaction] (
 	[FiscalPeriodID]    INT              NOT NULL,
 	[BranchID]          INT              NOT NULL,
 	[DocumentID]        INT              NOT NULL,
+	[MetadataID]        INT              NULL,
     [No]                NVARCHAR(64)     NOT NULL,
     [Date]              DATETIME         NOT NULL,
     [Description]       NVARCHAR(512)    NULL,
@@ -281,6 +338,7 @@ CREATE TABLE [Finance].[Transaction] (
     , CONSTRAINT [FK_Finance_Transaction_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_Transaction_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
     , CONSTRAINT [FK_Finance_Transaction_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document] ([DocumentID])
+    , CONSTRAINT [FK_Finance_Transaction_Metadata_Entity] FOREIGN KEY ([MetadataID]) REFERENCES [Metadata].[Entity] ([EntityID])
 )
 GO
 
@@ -291,6 +349,7 @@ CREATE TABLE [Finance].[TransactionLine] (
 	[BranchID]        INT              NOT NULL,
 	[FullAccountID]   INT              NOT NULL,
 	[CurrencyID]      INT              NOT NULL,
+	[MetadataID]      INT              NULL,
     [Description]     NVARCHAR(512)    NULL,
     [Debit]           MONEY            NOT NULL,
     [Credit]          MONEY            NOT NULL,
@@ -302,6 +361,7 @@ CREATE TABLE [Finance].[TransactionLine] (
     , CONSTRAINT [FK_Finance_TransactionLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
     , CONSTRAINT [FK_Finance_TransactionLine_Finance_FullAccount] FOREIGN KEY ([FullAccountID]) REFERENCES [Finance].[FullAccount] ([FullAccountID])
     , CONSTRAINT [FK_Finance_TransactionLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
+    , CONSTRAINT [FK_Finance_TransactionLine_Metadata_Entity] FOREIGN KEY ([MetadataID]) REFERENCES [Metadata].[Entity] ([EntityID])
 )
 GO
 
@@ -922,6 +982,75 @@ CREATE TABLE [Sales].[InvoiceLine] (
     , CONSTRAINT [FK_Sales_InvoiceLine_Finance_FullDetail] FOREIGN KEY ([FullDetailID]) REFERENCES [Finance].[FullDetail]([FullDetailID])
 )
 GO
+
+-- Create system metadata records
+SET IDENTITY_INSERT [Metadata].[Locale] ON
+INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (1, 'English', N'English')
+INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (2, 'Persian', N'فارسی')
+INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (3, 'Arabic', N'عربیه')
+INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (4, 'French', N'Français')
+SET IDENTITY_INSERT [Metadata].[Locale] OFF
+
+SET IDENTITY_INSERT [Metadata].[Entity] ON
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (1, 'Account', 1, 1)
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (2, 'Voucher', 0, 1)
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (3, 'VoucherLine', 0, 1)
+SET IDENTITY_INSERT [Metadata].[Entity] OFF
+
+SET IDENTITY_INSERT [Metadata].[Property] ON
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (1, 1, 'Id', 'System.Int32', 'int', 'number', 0, 0, 0, 'Id_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (2, 1, 'Code', 'System.String', 'nvarchar', 'string', 16, 0, 0, 'Code_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (3, 1, 'FullCode', 'System.String', 'nvarchar', 'string', 256, 0, 0, 'FullCode_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (4, 1, 'Name', 'System.String', 'nvarchar', 'string', 512, 0, 0, 'Name_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (5, 1, 'Level', 'System.Int16', 'smallint', '', 0, 0, 0, 'Level_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (6, 1, 'Description', 'System.String', 'nvarchar', 'string', 512, 0, 1, 'Description_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (7, 2, 'Id', 'System.Int32', 'int', 'number', 0, 0, 0, 'Id_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (8, 2, 'No', 'System.String', 'nvarchar', 'string', 64, 0, 0, 'Number_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (9, 2, 'Date', 'System.DateTime', 'datetime', 'Date', 0, 0, 0, 'Date_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (10, 2, 'Description', 'System.String', 'nvarchar', 'string', 512, 0, 1, 'Description_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (11, 3, 'Id', 'System.Int32', 'int', 'number', 0, 0, 0, 'Id_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (12, 3, 'Description', 'System.String', 'nvarchar', 'string', 512, 0, 1, 'Description_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (13, 3, 'Debit', 'System.Decimal', 'money', 'number', 0, 0, 0, 'Debit_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (14, 3, 'Credit', 'System.Decimal', 'money', 'number', 0, 0, 0, 'Credit_Field')
+SET IDENTITY_INSERT [Metadata].[Property] OFF
+
+SET IDENTITY_INSERT [Metadata].[LocalText] ON
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (1, 1, 'Id_Field', N'Id')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (2, 1, 'Name_Field', N'Name')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (3, 1, 'Description_Field', N'Description')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (4, 1, 'Code_Field', N'Code')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (5, 1, 'FullCode_Field', N'Full code')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (6, 1, 'Level_Field', N'Level')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (7, 1, 'Number_Field', N'Number')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (8, 1, 'Date_Field', N'Date')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (9, 1, 'Debit_Field', N'Debit')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (10, 1, 'Credit_Field', N'Credit')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (11, 2, 'Id_Field', N'شناسه')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (12, 2, 'Name_Field', N'نام')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (13, 2, 'Description_Field', N'شرح')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (14, 2, 'Code_Field', N'کد')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (15, 2, 'FullCode_Field', N'کد کامل')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (16, 2, 'Level_Field', N'شماره سطح')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (17, 2, 'Number_Field', N'شماره')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (18, 2, 'Date_Field', N'تاریخ')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (19, 2, 'Debit_Field', N'بدهکار')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (20, 2, 'Credit_Field', N'بستانکار')
+SET IDENTITY_INSERT [Metadata].[LocalText] OFF
+
 
 -- Create system records for security (NOTE: These records will be migrated to SYS database in a later stage)
 
