@@ -25,11 +25,12 @@
     "New": "New Account",
     "Edit": "Edit",
     "Delete": "Delete",
-    "GroupDelete": "Delete"
+    "GroupDelete": "Delete Group"
   },
   "Entity": {
     "Account": "Account",
-    "Transaction": "Transaction"
+    "Transaction": "Transaction",
+    "TransactionLine": "Voucher Article"
   },
   "Account": {
     "New": "New Account",
@@ -48,7 +49,9 @@
   "TransactionLine": {
     "Debit": "Debit",
     "Credit": "Credit",
-    "Description": "Description"
+    "Description": "Description",
+    "New": "New Article",
+    "Delete": "Delete Article"
 
   },
   "Company": {
@@ -81,7 +84,9 @@
     "BranchId": "branch id is required",
     "No": "voucher no is required",
     "DocumentID": "document id is required",
-    "Date": "date is required"
+    "Date": "date is required",
+    "TransactionLineDebit": "debit is required",
+    "TransactionLineCredit": "credit is required"
   },
   "Grid": {
     "noRecords": "row not found!!!!!!!!!!"

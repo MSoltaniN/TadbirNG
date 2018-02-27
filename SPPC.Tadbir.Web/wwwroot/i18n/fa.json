@@ -31,7 +31,8 @@
   },
   "Entity": {
     "Account": "اطلاعات حساب",
-    "Transaction": "اطلاعات سند"
+    "Transaction": "اطلاعات سند",
+    "TransactionLine": "آرتیکل سند"
   },
   "Account": {
     "Code": "کد حساب",
@@ -46,7 +47,9 @@
   "TransactionLine": {
     "Debit": "بدهکار",
     "Credit": "بستانکار",
-    "Description": "توضیحات"
+    "Description": "توضیحات",
+    "New": "آرتیکل جدید",
+    "Delete": "حذف آرتیکل"
 
   },
   "Company": {
@@ -61,7 +64,8 @@
     "Description": "توضیحات",
     "BranchId": "شعبه",
     "FiscalPeriodId": "دوره مالی",
-    "Delete": "حذف سند"
+    "Delete": "حذف سند",
+    "New": "سند جدید"
 
   },
   "Fiscal": {
@@ -78,7 +82,9 @@
     "BranchId": "کد شعبه اجباری می باشد",
     "No": "شماره سند مالی اجباری می باشد",
     "DocumentID": "شماره مستند اداری اجباری می باشد",
-    "Date": "تاریخ اجباری می باشد"
+    "Date": "تاریخ اجباری می باشد",
+    "TransactionLineDebit": "بدهکار اجباری می باشد",
+    "TransactionLineCredit": "بستانکار اجباری می باشد"
   },
   "Grid": {
     "noRecords": "هیچ رکورذی یافت نشد!!!!!!!!!!"

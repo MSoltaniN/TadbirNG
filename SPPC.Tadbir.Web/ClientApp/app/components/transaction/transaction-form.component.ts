@@ -21,24 +21,28 @@ interface Item {
 @Component({
     selector: 'transaction-form-component',
     styles: [
-        "input[type=text] { width: 100%; }"
+        "input[type=text] { width: 100%; } /deep/ .new-dialog > .k-dialog {width: 450px !important; min-width: 250px !important;}",
+        "/deep/ .edit-dialog > .k-dialog {width: 100% !important; min-width: 250px !important; height:100%}",
+        "/deep/ .edit-dialog .k-window-titlebar{ padding: 5px 16px !important;}",
+        "/deep/ .edit-dialog .edit-form-body { background: #f6f6f6; border: solid 1px #989898; border-radius: 4px; padding-top: 10px;}"
     ],
     templateUrl: './transaction-form.component.html'
 })
 
-export class TransactionFormComponent extends DefaultComponent{
+export class TransactionFormComponent extends DefaultComponent {
 
     //create a form controls
     private editForm = new FormGroup({
         id: new FormControl("", Validators.required),
         fiscalPeriodId: new FormControl("", Validators.required),
-        branchId: new FormControl("1", Validators.required),
+        branchId: new FormControl("", Validators.required),
         description: new FormControl(),
         no: new FormControl("", Validators.required),
         date: new FormControl("", Validators.required)
     });
 
     //create properties
+    public transaction_Id: number;
     active: boolean = false;
     @Input() public isNew: boolean = false;
 
@@ -47,9 +51,9 @@ export class TransactionFormComponent extends DefaultComponent{
         this.editForm.reset(transaction);
 
         this.active = transaction !== undefined || this.isNew;
+
         if (transaction != undefined) {
-            this.selectedValue = transaction.fiscalPeriodId.toString();
-            if (this.fiscalPeriodRows == undefined) this.getFiscalPeriod();
+            this.transaction_Id = transaction.id;
         }
 
     }
@@ -57,10 +61,6 @@ export class TransactionFormComponent extends DefaultComponent{
     @Output() cancel: EventEmitter<any> = new EventEmitter();
     @Output() save: EventEmitter<Transaction> = new EventEmitter();
     //create properties
-
-    //public placeHolder: { Key: string, Value: string } = { Key: "-1" , Value: "---" };
-    public fiscalPeriodRows: Array<Item>;
-    public selectedValue: string = '1';
 
     //Events
     public onSave(e: any): void {
@@ -79,28 +79,17 @@ export class TransactionFormComponent extends DefaultComponent{
         this.active = false;
         this.cancel.emit();
     }
+
+    public onDeleteData() {
+        alert("Data deleted.");
+    }
     //Events
 
     constructor(private transactionService: TransactionService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
         public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2) {
 
-        super(toastrService, translate, renderer, "Transaction");   
-    
+        super(toastrService, translate, renderer, "Transaction");
+
     }
 
-    /* load fiscal periods */
-    getFiscalPeriod() {
-
-        var currentUser: ContextInfo = new ContextInfo();
-        if (localStorage.getItem('currentContext')) {
-            const userJson = localStorage.getItem('currentContext');
-
-            currentUser = userJson !== null ? JSON.parse(userJson) : null;
-
-        }
-
-        this.fiscalPeriodService.getFiscalPeriod(currentUser.companyId).subscribe(res => {
-            this.fiscalPeriodRows = res;
-        });
-    }
 }

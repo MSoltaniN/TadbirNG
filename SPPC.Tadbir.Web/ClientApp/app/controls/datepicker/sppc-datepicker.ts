@@ -16,7 +16,7 @@ import { FiscalPeriodService } from '../../service/index';
     theme="dp-material"
     (ngModelChange)="DateChange()">
   </dp-date-picker>`,
-    styles: ['/deep/ dp-date-picker.dp-material .dp-picker-input { height: 26px !important; width:100% !important; } dp-date-picker{width:100%} /deep/ dp-day-time-calendar{position: fixed;}'],
+    styles: ['/deep/ dp-date-picker.dp-material .dp-picker-input { height: 26px !important; width:100% !important; } dp-date-picker{width:100%; direction:ltr;} /deep/ dp-day-time-calendar{position: fixed;}'],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,

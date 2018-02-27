@@ -40,7 +40,6 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
     public rowData: GridDataResult;
 
     public selectedRows: string[] = [];
-    //public accountArticleRows: any[];
 
     public fiscalPeriodRows: any[];
 
@@ -67,8 +66,6 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
     groupDelete: boolean = false;
 
     ngOnInit() {
-        //this.getFiscalPeriod();
-
         this.reloadGrid();
     }
 
@@ -113,7 +110,6 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
             var order = this.currentOrder;
 
             this.transactionService.search(this.pageIndex, this.pageSize, order, filter).subscribe(res => {
-                //this.rowData = res;
                 this.rowData = {
                     data: res,
                     total: this.totalRecords
@@ -153,18 +149,6 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    /* lazy loading for account articles */
-    //lazyProjectLoad(account: any) {
-    //    this.transactionLineService.getAccountArticles(account.data.id).subscribe(res => {
-    //        this.accountArticleRows = res;
-    //        //this.accountArticleRows.set(account.data.accountId, res);
-
-    //        if (res.length == 0)
-    //            this.showloadingMessage = !(res.length == 0);
-    //    });
-    //}
-
-
     deleteTransaction(confirm: boolean) {
         if (confirm) {
             this.transactionService.delete(this.deleteTransactionId).subscribe(response => {
@@ -189,27 +173,15 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
     }
 
 
-    ///* load fiscal periods */
-    //getFiscalPeriod() {
-    //    this.showloadingMessage = true;
-    //    this.fiscalPeriodService.getFiscalPeriods().subscribe(res => {
-    //        this.fiscalPeriodRows = res;
-    //        this.showloadingMessage = !(res.length == 0);
-    //    });
-    //}
-
-    //onFiscalPeriodChange(arg: any) {
-
-    //}
-
-    //transaction form events
     public editHandler(arg: any) {
+
         this.editDataItem = arg.dataItem;
         this.isNew = false;
     }
 
     public cancelHandler() {
         this.editDataItem = undefined;
+        this.isNew = false;
     }
 
     public addNew() {
@@ -223,6 +195,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
                 .subscribe(response => {
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
+                    
                 }, (error => {
                     this.showMessage(error, MessageType.Warning);
                 }));
