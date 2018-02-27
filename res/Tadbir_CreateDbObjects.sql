@@ -83,7 +83,7 @@ CREATE TABLE [Metadata].[Property] (
     [DotNetType]       VARCHAR(64)      NOT NULL,
     [StorageType]      VARCHAR(32)      NOT NULL,
     [ScriptType]       VARCHAR(32)      NOT NULL,
-    [Length]           INT              NULL,
+    [Length]           INT              CONSTRAINT [DF_Metadata_Property_Length] DEFAULT (0) NOT NULL,
     [IsFixedLength]    BIT              CONSTRAINT [DF_Metadata_Property_IsFixedLength] DEFAULT (0) NOT NULL,
     [IsNullable]       BIT              NOT NULL,
     [NameResourceId]   VARCHAR(128)     NOT NULL,

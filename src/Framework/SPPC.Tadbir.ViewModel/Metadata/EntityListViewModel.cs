@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// <summary>
         /// لیست اطلاعاتی
         /// </summary>
-        public IList<TModel> List { get; protected set; }
+        public IList<TModel> List { get; set; }
 
         /// <summary>
         /// متادیتای اقلام داخل لیست اطلاعاتی

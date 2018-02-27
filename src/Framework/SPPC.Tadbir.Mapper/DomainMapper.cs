@@ -12,6 +12,7 @@ using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Inventory;
+using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Procurement;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Values;
@@ -20,6 +21,7 @@ using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Inventory;
+using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Procurement;
 using SPPC.Tadbir.ViewModel.Workflow;
 
@@ -76,6 +78,7 @@ namespace SPPC.Tadbir.Mapper
             MapInventoryTypes(mapperConfig);
             MapContactTypes(mapperConfig);
             MapCoreTypes(mapperConfig);
+            MapMetadataTypes(mapperConfig);
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
@@ -497,6 +500,12 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<BusinessPartner, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+        }
+
+        private static void MapMetadataTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<Entity, EntityViewModel>();
+            mapperConfig.CreateMap<Property, PropertyViewModel>();
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

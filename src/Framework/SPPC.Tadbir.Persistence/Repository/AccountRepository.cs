@@ -10,6 +10,7 @@ using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -42,7 +43,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">Identifier of an existing corporate branch</param>
         /// <param name="gridOptions">Options used for displaying data in a tabular grid view</param>
         /// <returns>A collection of <see cref="AccountViewModel"/> objects retrieved from repository</returns>
-        public async Task<IList<AccountViewModel>> GetAccountsAsync(
+        public async Task<EntityListViewModel<AccountViewModel>> GetAccountsAsync(
             int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<Account>();
@@ -52,9 +53,9 @@ namespace SPPC.Tadbir.Persistence
                         && acc.Branch.Id == branchId,
                     gridOptions,
                     acc => acc.FiscalPeriod, acc => acc.Branch);
-            return accounts
+            return await _decorator.GetDecoratedListAsync<Account, AccountViewModel>(accounts
                 .Select(item => _mapper.Map<AccountViewModel>(item))
-                .ToList();
+                .ToList());
         }
 
         /// <summary>

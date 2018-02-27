@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Framework.Domain;
 using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
@@ -18,8 +19,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="item">مدل نمایشی برای یک رکورد اطلاعاتی</param>
         /// <returns>رکورد اطلاعاتی با متادیتای ضمیمه شده</returns>
         Task<EntityItemViewModel<TModel>> GetDecoratedItemAsync<TEntity, TModel>(TModel item)
-            where TModel : class, new()
-            where TEntity : class, new();
+            where TEntity : IEntity
+            where TModel : class, new();
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات متادیتا را به یک لیست اطلاعاتی ضمیمه می کند
@@ -29,7 +30,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="list">مجموعه ای از مدل های نمایشی</param>
         /// <returns>لیست اطلاعاتی با متادیتای ضمیمه شده</returns>
         Task<EntityListViewModel<TModel>> GetDecoratedListAsync<TEntity, TModel>(IList<TModel> list)
-            where TModel : class, new()
-            where TEntity : class, new();
+            where TEntity : IEntity
+            where TModel : class, new();
     }
 }

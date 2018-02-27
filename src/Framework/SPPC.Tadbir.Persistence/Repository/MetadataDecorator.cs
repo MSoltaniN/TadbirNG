@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Framework.Domain;
 using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
@@ -27,10 +28,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="item">مدل نمایشی برای یک رکورد اطلاعاتی</param>
         /// <returns>رکورد اطلاعاتی با متادیتای ضمیمه شده</returns>
         public async Task<EntityItemViewModel<TModel>> GetDecoratedItemAsync<TEntity, TModel>(TModel item)
-            where TEntity : class, new()
+            where TEntity : IEntity
             where TModel : class, new()
         {
-            throw new NotImplementedException();
+            var metadata = await _repository.GetEntityMetadataAsync<TEntity>();
+            return new EntityItemViewModel<TModel>() { Item = item, Metadata = metadata };
         }
 
         /// <summary>
@@ -41,10 +43,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="list">مجموعه ای از مدل های نمایشی</param>
         /// <returns>لیست اطلاعاتی با متادیتای ضمیمه شده</returns>
         public async Task<EntityListViewModel<TModel>> GetDecoratedListAsync<TEntity, TModel>(IList<TModel> list)
-            where TEntity : class, new()
+            where TEntity : IEntity
             where TModel : class, new()
         {
-            throw new NotImplementedException();
+            var metadata = await _repository.GetEntityMetadataAsync<TEntity>();
+            return new EntityListViewModel<TModel>() { List = list, Metadata = metadata };
         }
 
         private IMetadataRepository _repository;

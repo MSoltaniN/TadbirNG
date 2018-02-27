@@ -13,12 +13,12 @@ namespace SPPC.Tadbir.Web.Api
     {
         public static void Main(string[] args)
         {
-            var gridOptions = new GridOptions() { Paging = new GridPaging() { PageIndex = 2, PageSize = 3 } };
-            //gridOptions.Filters.Add(new GridFilter() { FieldName = "Name", FieldTypeName = "System.String", Operator = ".IndexOf({0}) == -1", Value = "های" });
-            gridOptions.SortColumns.Add(new GridOrderBy() { FieldName = "Date", Direction = "ASC" });
-            var json = Json.From(gridOptions, false);
-            var urlEncoded = WebUtility.UrlEncode(json);
-            var base64 = Transform.ToBase64String(Encoding.UTF8.GetBytes(urlEncoded));
+            ////var gridOptions = new GridOptions() { Paging = new GridPaging() { PageIndex = 2, PageSize = 3 } };
+            ////gridOptions.Filters.Add(new GridFilter() { FieldName = "Name", FieldTypeName = "System.String", Operator = ".IndexOf({0}) == -1", Value = "های" });
+            ////gridOptions.SortColumns.Add(new GridOrderBy() { FieldName = "Date", Direction = "ASC" });
+            ////var json = Json.From(gridOptions, false);
+            ////var urlEncoded = WebUtility.UrlEncode(json);
+            ////var base64 = Transform.ToBase64String(Encoding.UTF8.GetBytes(urlEncoded));
             BuildWebHost(args).Run();
         }
 

@@ -9,6 +9,7 @@ using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Inventory;
+using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Procurement;
 using SPPC.Tadbir.Model.Sales;
 using SPPC.Tadbir.Model.Warehousing;
@@ -51,6 +52,7 @@ namespace SPPC.Tadbir.Persistence
             DocumentActionMap.BuildMapping(modelBuilder.Entity<DocumentAction>());
             DocumentStatusMap.BuildMapping(modelBuilder.Entity<DocumentStatus>());
             DocumentTypeMap.BuildMapping(modelBuilder.Entity<DocumentType>());
+            EntityMap.BuildMapping(modelBuilder.Entity<Entity>());
             FiscalPeriodMap.BuildMapping(modelBuilder.Entity<FiscalPeriod>());
             FullAccountMap.BuildMapping(modelBuilder.Entity<FullAccount>());
             FullDetailMap.BuildMapping(modelBuilder.Entity<FullDetail>());
@@ -67,6 +69,7 @@ namespace SPPC.Tadbir.Persistence
             ProductCategoryMap.BuildMapping(modelBuilder.Entity<ProductCategory>());
             ProductInventoryMap.BuildMapping(modelBuilder.Entity<ProductInventory>());
             ProjectMap.BuildMapping(modelBuilder.Entity<Project>());
+            PropertyMap.BuildMapping(modelBuilder.Entity<Property>());
             RequisitionVoucherMap.BuildMapping(modelBuilder.Entity<RequisitionVoucher>());
             RequisitionVoucherLineMap.BuildMapping(modelBuilder.Entity<RequisitionVoucherLine>());
             RequisitionVoucherTypeMap.BuildMapping(modelBuilder.Entity<RequisitionVoucherType>());

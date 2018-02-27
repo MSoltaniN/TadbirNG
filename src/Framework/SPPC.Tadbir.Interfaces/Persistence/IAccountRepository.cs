@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -27,7 +28,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">Identifier of an existing corporate branch</param>
         /// <param name="options">Options used for displaying data in a tabular grid view</param>
         /// <returns>A collection of <see cref="AccountViewModel"/> objects retrieved from repository</returns>
-        Task<IList<AccountViewModel>> GetAccountsAsync(int fpId, int branchId, GridOptions options = null);
+        Task<EntityListViewModel<AccountViewModel>> GetAccountsAsync(
+            int fpId, int branchId, GridOptions options = null);
 
         /// <summary>
         /// Retrieves a single account specified by Id from repository.

@@ -2720,9 +2720,9 @@
         </Property>
         <Property name="Length" type="Int32" isValidated="True" description="تعداد کاراکتر در ویژگی متنی - به طور پیش فرض مقدار صفر دارد و برای ویژگی های غیرمتنی کاربردی ندارد" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnLength" format="" type="SpinButton" bindingMember="Value" />
-          <PropertyStorage name="Length" type="int" nullable="True" />
+          <PropertyStorage name="Length" type="int" nullable="False" />
           <ColumnView name="Length" visible="True" width="120" />
-          <ValidationRule name="Length_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule name="Length_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
         <Property name="IsFixedLength" type="Boolean" isValidated="True" description="مشخص می کند که تعداد کاراکترها در یک ویژگی متنی ثابت است یا نه - به طور پیش فرض مقدار نادرست دارد و برای ویژگی های غیرمتنی کاربردی ندارد" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="chkIsFixedLength" format="" type="CheckBox" bindingMember="Checked" />
