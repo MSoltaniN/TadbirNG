@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.Model.Metadata
     public partial class Property : IEntity
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Property"/> class.
+        /// نمونه جدیدی از این کلاس ایجاد می کند.
         /// </summary>
         public Property()
         {
@@ -36,62 +36,62 @@ namespace SPPC.Tadbir.Model.Metadata
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity. This property is auto-generated.
+        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
         /// </summary>
         public virtual int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the نام ویژگی به صورت غیر محلی شده - به زبان انگلیسی
+        /// نام ویژگی به صورت غیر محلی شده - به زبان انگلیسی
         /// </summary>
         public virtual string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the نوع داده ای مورد استفاده در دات نت
+        /// نوع داده ای مورد استفاده در دات نت
         /// </summary>
         public virtual string DotNetType { get; set; }
 
         /// <summary>
-        /// Gets or sets the نوع داده ای مورد استفاده در دیتابیس
+        /// نوع داده ای مورد استفاده در دیتابیس
         /// </summary>
         public virtual string StorageType { get; set; }
 
         /// <summary>
-        /// Gets or sets the نوع داده ای مورد استفاده در جاواسکریپت
+        /// نوع داده ای مورد استفاده در جاواسکریپت
         /// </summary>
         public virtual string ScriptType { get; set; }
 
         /// <summary>
-        /// Gets or sets the تعداد کاراکتر در ویژگی متنی - به طور پیش فرض مقدار صفر دارد و برای ویژگی های غیرمتنی کاربردی ندارد
+        /// تعداد کاراکتر در ویژگی متنی - به طور پیش فرض مقدار صفر دارد و برای ویژگی های غیرمتنی کاربردی ندارد
         /// </summary>
         public virtual int Length { get; set; }
 
         /// <summary>
-        /// Gets or sets the مشخص می کند که تعداد کاراکترها در یک ویژگی متنی ثابت است یا نه - به طور پیش فرض مقدار نادرست دارد و برای ویژگی های غیرمتنی کاربردی ندارد
+        /// مشخص می کند که تعداد کاراکترها در یک ویژگی متنی ثابت است یا نه - به طور پیش فرض مقدار نادرست دارد و برای ویژگی های غیرمتنی کاربردی ندارد
         /// </summary>
         public virtual bool IsFixedLength { get; set; }
 
         /// <summary>
-        /// Gets or sets the مشخص می کند که وارد کردن مقدار برای ویژگی اجباری است یا نه
+        /// مشخص می کند که وارد کردن مقدار برای ویژگی اجباری است یا نه
         /// </summary>
         public virtual bool IsNullable { get; set; }
 
         /// <summary>
-        /// Gets or sets the شناسه یکتای متن محلی شده برای نام ویژگی - به زبان انگلیسی
+        /// شناسه یکتای متن محلی شده برای نام ویژگی - به زبان انگلیسی
         /// </summary>
         public virtual string NameResourceId { get; set; }
 
         /// <summary>
-        /// Gets or sets the موجودیتی که این ویژگی در آن تعریف شده است
+        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
+        /// </summary>
+        public virtual Guid RowGuid { get; set; }
+
+        /// <summary>
+        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
+        /// </summary>
+        public virtual DateTime ModifiedDate { get; set; }
+
+        /// <summary>
+        /// موجودیتی که این ویژگی در آن تعریف شده است
         /// </summary>
         public virtual Entity Entity { get; set; }
 

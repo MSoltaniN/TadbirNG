@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.Model.Metadata
     public partial class Entity : IEntity
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Entity"/> class.
+        /// نمونه جدیدی از این کلاس ایجاد می کند.
         /// </summary>
         public Entity()
         {
@@ -32,37 +32,37 @@ namespace SPPC.Tadbir.Model.Metadata
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity. This property is auto-generated.
+        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
         /// </summary>
         public virtual int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the نام موجودیت به صورت غیر محلی شده - به زبان انگلیسی
+        /// نام موجودیت به صورت غیر محلی شده - به زبان انگلیسی
         /// </summary>
         public virtual string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the مشخص می کند که موجودیت ساختار سلسله مراتبی یا درختی دارد یا نه
+        /// مشخص می کند که موجودیت ساختار سلسله مراتبی یا درختی دارد یا نه
         /// </summary>
         public virtual bool IsHierarchy { get; set; }
 
         /// <summary>
-        /// Gets or sets the مشخص می کند که موجودیت امکان تعامل با کارتابل را دارد یا نه
+        /// مشخص می کند که موجودیت امکان تعامل با کارتابل را دارد یا نه
         /// </summary>
         public virtual bool IsCartableIntegrated { get; set; }
 
         /// <summary>
-        /// Gets or sets the مجموعه ای از ویژگی های تعریف شده برای موجودیت
+        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
+        /// </summary>
+        public virtual Guid RowGuid { get; set; }
+
+        /// <summary>
+        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
+        /// </summary>
+        public virtual DateTime ModifiedDate { get; set; }
+
+        /// <summary>
+        /// مجموعه ای از ویژگی های تعریف شده برای موجودیت
         /// </summary>
         public virtual IList<Property> Properties { get; protected set; }
 

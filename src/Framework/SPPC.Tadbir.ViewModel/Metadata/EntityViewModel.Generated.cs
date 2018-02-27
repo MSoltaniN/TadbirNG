@@ -12,6 +12,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
 
 namespace SPPC.Tadbir.ViewModel.Metadata
 {
@@ -21,7 +22,7 @@ namespace SPPC.Tadbir.ViewModel.Metadata
     public partial class EntityViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EntityViewModel"/> class.
+        /// یک نمونه جدید از این کلاس ایجاد می کند
         /// </summary>
         public EntityViewModel()
         {
@@ -29,27 +30,27 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity.
+        /// شناسه دیتابیسی این موجودیت
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the نام موجودیت به صورت غیر محلی شده - به زبان انگلیسی
+        /// نام موجودیت به صورت غیر محلی شده - به زبان انگلیسی
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the مشخص می کند که موجودیت ساختار سلسله مراتبی یا درختی دارد یا نه
+        /// مشخص می کند که موجودیت ساختار سلسله مراتبی یا درختی دارد یا نه
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public bool IsHierarchy { get; set; }
 
         /// <summary>
-        /// Gets or sets the مشخص می کند که موجودیت امکان تعامل با کارتابل را دارد یا نه
+        /// مشخص می کند که موجودیت امکان تعامل با کارتابل را دارد یا نه
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public bool IsCartableIntegrated { get; set; }
     }
 }

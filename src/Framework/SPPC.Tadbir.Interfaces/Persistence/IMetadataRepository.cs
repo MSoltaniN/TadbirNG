@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using SPPC.Tadbir.Metadata.Workflow;
+using System.Threading.Tasks;
+using SPPC.Framework.Domain;
+using SPPC.Tadbir.ViewModel.Metadata;
 
-namespace SPPC.Tadbir.Repository
+namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// عملیات مورد نیاز برای خواندن اطلاعات فراداده ای از محل ذخیره را تعریف می کند
@@ -10,10 +11,11 @@ namespace SPPC.Tadbir.Repository
     public interface IMetadataRepository
     {
         /// <summary>
-        /// اطلاعات فراداده ای مربوط به گردش های کاری تغییر وضعیت را خوانده و برمی گرداند
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای نوع موجودیت مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="documentType">نوع مستند اداری</param>
-        /// <returns>اطلاعات فراداده ای گردش کار تغییر وضعیت</returns>
-        StateWorkflow GetStateWorkflow(string documentType);
+        /// <typeparam name="TEntity">نوع موجودیتی که فراداده آن مورد نیاز است</typeparam>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
+        Task<EntityViewModel> GetEntityMetadataAsync<TEntity>()
+            where TEntity : IEntity;
     }
 }

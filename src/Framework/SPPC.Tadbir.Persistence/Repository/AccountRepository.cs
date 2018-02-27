@@ -24,11 +24,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">The <see cref="IUnitOfWork"/> implementation to use for all database operations
         /// in this repository.</param>
         /// <param name="mapper">Domain mapper to use for mapping between entitiy and view model classes</param>
+        /// <param name="decorator">Decorator to use for adding metadata to retrieved records</param>
         /// </summary>
-        public AccountRepository(IUnitOfWork unitOfWork, IDomainMapper mapper)
+        public AccountRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataDecorator decorator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _decorator = decorator;
         }
 
         #region Asynchronous Methods
@@ -427,5 +429,6 @@ namespace SPPC.Tadbir.Persistence
 
         private IUnitOfWork _unitOfWork;
         private IDomainMapper _mapper;
+        private IMetadataDecorator _decorator;
     }
 }

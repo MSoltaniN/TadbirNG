@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.Model.Metadata
     public partial class LocalText : IEntity
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LocalText"/> class.
+        /// نمونه جدیدی از این کلاس ایجاد می کند.
         /// </summary>
         public LocalText()
         {
@@ -32,32 +32,32 @@ namespace SPPC.Tadbir.Model.Metadata
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity. This property is auto-generated.
+        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
         /// </summary>
         public virtual int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the شناسه یکتای متن محلی شده - به زبان انگلیسی
+        /// شناسه یکتای متن محلی شده - به زبان انگلیسی
         /// </summary>
         public virtual string ResourceId { get; set; }
 
         /// <summary>
-        /// Gets or sets the متن محلی شده
+        /// متن محلی شده
         /// </summary>
         public virtual string Text { get; set; }
 
         /// <summary>
-        /// Gets or sets the زبان این متن محلی شده را مشخص می کند
+        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
+        /// </summary>
+        public virtual Guid RowGuid { get; set; }
+
+        /// <summary>
+        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
+        /// </summary>
+        public virtual DateTime ModifiedDate { get; set; }
+
+        /// <summary>
+        /// زبان این متن محلی شده را مشخص می کند
         /// </summary>
         public virtual Locale Locale { get; set; }
 

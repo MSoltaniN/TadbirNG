@@ -12,6 +12,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
 
 namespace SPPC.Tadbir.ViewModel.Metadata
 {
@@ -21,7 +22,7 @@ namespace SPPC.Tadbir.ViewModel.Metadata
     public partial class PropertyViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyViewModel"/> class.
+        /// یک نمونه جدید از این کلاس ایجاد می کند
         /// </summary>
         public PropertyViewModel()
         {
@@ -33,60 +34,60 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity.
+        /// شناسه دیتابیسی این موجودیت
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the نام ویژگی به صورت غیر محلی شده - به زبان انگلیسی
+        /// نام ویژگی به صورت غیر محلی شده - به زبان انگلیسی
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the نوع داده ای مورد استفاده در دات نت
+        /// نوع داده ای مورد استفاده در دات نت
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string DotNetType { get; set; }
 
         /// <summary>
-        /// Gets or sets the نوع داده ای مورد استفاده در دیتابیس
+        /// نوع داده ای مورد استفاده در دیتابیس
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(32, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string StorageType { get; set; }
 
         /// <summary>
-        /// Gets or sets the نوع داده ای مورد استفاده در جاواسکریپت
+        /// نوع داده ای مورد استفاده در جاواسکریپت
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(32, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string ScriptType { get; set; }
 
         /// <summary>
-        /// Gets or sets the تعداد کاراکتر در ویژگی متنی - به طور پیش فرض مقدار صفر دارد و برای ویژگی های غیرمتنی کاربردی ندارد
+        /// تعداد کاراکتر در ویژگی متنی - به طور پیش فرض مقدار صفر دارد و برای ویژگی های غیرمتنی کاربردی ندارد
         /// </summary>
         public int Length { get; set; }
 
         /// <summary>
-        /// Gets or sets the مشخص می کند که تعداد کاراکترها در یک ویژگی متنی ثابت است یا نه - به طور پیش فرض مقدار نادرست دارد و برای ویژگی های غیرمتنی کاربردی ندارد
+        /// مشخص می کند که تعداد کاراکترها در یک ویژگی متنی ثابت است یا نه - به طور پیش فرض مقدار نادرست دارد و برای ویژگی های غیرمتنی کاربردی ندارد
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public bool IsFixedLength { get; set; }
 
         /// <summary>
-        /// Gets or sets the مشخص می کند که وارد کردن مقدار برای ویژگی اجباری است یا نه
+        /// مشخص می کند که وارد کردن مقدار برای ویژگی اجباری است یا نه
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public bool IsNullable { get; set; }
 
         /// <summary>
-        /// Gets or sets the شناسه یکتای متن محلی شده برای نام ویژگی - به زبان انگلیسی
+        /// شناسه یکتای متن محلی شده برای نام ویژگی - به زبان انگلیسی
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(128, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(128, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string NameResourceId { get; set; }
     }
 }

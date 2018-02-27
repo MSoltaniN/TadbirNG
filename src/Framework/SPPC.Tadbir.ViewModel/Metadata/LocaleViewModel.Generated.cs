@@ -12,6 +12,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
 
 namespace SPPC.Tadbir.ViewModel.Metadata
 {
@@ -21,7 +22,7 @@ namespace SPPC.Tadbir.ViewModel.Metadata
     public partial class LocaleViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LocaleViewModel"/> class.
+        /// یک نمونه جدید از این کلاس ایجاد می کند
         /// </summary>
         public LocaleViewModel()
         {
@@ -30,22 +31,22 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity.
+        /// شناسه دیتابیسی این موجودیت
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the نام زبان به صورت غیر محلی شده - به زبان انگلیسی
+        /// نام زبان به صورت غیر محلی شده - به زبان انگلیسی
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the نام زبان به صورت محلی شده
+        /// نام زبان به صورت محلی شده
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(64, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string LocalName { get; set; }
     }
 }

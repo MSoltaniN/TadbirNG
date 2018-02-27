@@ -12,6 +12,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using SPPC.Framework.Values;
 
 namespace SPPC.Tadbir.ViewModel.Metadata
 {
@@ -21,7 +22,7 @@ namespace SPPC.Tadbir.ViewModel.Metadata
     public partial class LocalTextViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LocalTextViewModel"/> class.
+        /// یک نمونه جدید از این کلاس ایجاد می کند
         /// </summary>
         public LocalTextViewModel()
         {
@@ -30,22 +31,22 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity.
+        /// شناسه دیتابیسی این موجودیت
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the شناسه یکتای متن محلی شده - به زبان انگلیسی
+        /// شناسه یکتای متن محلی شده - به زبان انگلیسی
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(128, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(128, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string ResourceId { get; set; }
 
         /// <summary>
-        /// Gets or sets the متن محلی شده
+        /// متن محلی شده
         /// </summary>
-        [Required(ErrorMessage = "{0} is required.")]
-        [MaxLength(1024, ErrorMessage = "{0} must have at most {1} characters.")]
+        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
+        [StringLength(1024, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Text { get; set; }
     }
 }

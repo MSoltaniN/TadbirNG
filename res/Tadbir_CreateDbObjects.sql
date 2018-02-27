@@ -307,7 +307,6 @@ CREATE TABLE [Finance].[Account] (
 	[ParentID]       INT              NULL,
 	[FiscalPeriodID] INT              NOT NULL,
 	[BranchID]       INT              NOT NULL,
-	[MetadataID]     INT              NULL,
     [Code]           NVARCHAR(16)     NOT NULL,
     [FullCode]       NVARCHAR(256)    NOT NULL,
     [Name]           NVARCHAR(512)    NOT NULL,
@@ -319,7 +318,6 @@ CREATE TABLE [Finance].[Account] (
     , CONSTRAINT [FK_Finance_Account_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[Account]([AccountID])
     , CONSTRAINT [FK_Finance_Account_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_Account_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
-    , CONSTRAINT [FK_Finance_Account_Metadata_Entity] FOREIGN KEY ([MetadataID]) REFERENCES [Metadata].[Entity] ([EntityID])
 )
 GO
 
@@ -328,7 +326,6 @@ CREATE TABLE [Finance].[Transaction] (
 	[FiscalPeriodID]    INT              NOT NULL,
 	[BranchID]          INT              NOT NULL,
 	[DocumentID]        INT              NOT NULL,
-	[MetadataID]        INT              NULL,
     [No]                NVARCHAR(64)     NOT NULL,
     [Date]              DATETIME         NOT NULL,
     [Description]       NVARCHAR(512)    NULL,
@@ -338,7 +335,6 @@ CREATE TABLE [Finance].[Transaction] (
     , CONSTRAINT [FK_Finance_Transaction_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_Transaction_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
     , CONSTRAINT [FK_Finance_Transaction_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document] ([DocumentID])
-    , CONSTRAINT [FK_Finance_Transaction_Metadata_Entity] FOREIGN KEY ([MetadataID]) REFERENCES [Metadata].[Entity] ([EntityID])
 )
 GO
 
@@ -349,7 +345,6 @@ CREATE TABLE [Finance].[TransactionLine] (
 	[BranchID]        INT              NOT NULL,
 	[FullAccountID]   INT              NOT NULL,
 	[CurrencyID]      INT              NOT NULL,
-	[MetadataID]      INT              NULL,
     [Description]     NVARCHAR(512)    NULL,
     [Debit]           MONEY            NOT NULL,
     [Credit]          MONEY            NOT NULL,
@@ -361,7 +356,6 @@ CREATE TABLE [Finance].[TransactionLine] (
     , CONSTRAINT [FK_Finance_TransactionLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
     , CONSTRAINT [FK_Finance_TransactionLine_Finance_FullAccount] FOREIGN KEY ([FullAccountID]) REFERENCES [Finance].[FullAccount] ([FullAccountID])
     , CONSTRAINT [FK_Finance_TransactionLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
-    , CONSTRAINT [FK_Finance_TransactionLine_Metadata_Entity] FOREIGN KEY ([MetadataID]) REFERENCES [Metadata].[Entity] ([EntityID])
 )
 GO
 
