@@ -23,6 +23,8 @@ import { TransactionLineFormComponent } from './components/transactionLine/trans
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 
 
+import { Layout } from './enviroment';
+
 //custom controls
 import { SppcMaskTextBox } from './controls/textbox/sppc-mask-textbox';
 import { SppcNumberBox } from './controls/textbox/sppc-numberbox';
@@ -78,11 +80,23 @@ import { SppcDatePipe } from "./pipes/index"
         SppcDatePipe
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService,
-        { provide: LocationStrategy, useClass: HashLocationStrategy }, /*{ provide: RTL, useValue: false },*/
+        { provide: LocationStrategy, useClass: HashLocationStrategy },
+        //{
+        //    provide: RTL,
+        //    useFactory: function () {
+        //        var lang = localStorage.getItem('lang');
+        //        if (lang == "en") {
+        //            return false;
+        //        } 
+        //        else 
+        //            return true;
+        //    }            
+        //},
         { provide: MessageService, useClass: GridMessageService },
         AuthGuard,        
         AuthenticationService,
-        DatePipe
+        DatePipe,
+        Layout
     ],        
     imports: [
         CommonModule,         

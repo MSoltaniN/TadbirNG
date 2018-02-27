@@ -26,14 +26,25 @@ import { String } from '../../class/source';
 import { State, CompositeFilterDescriptor  } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
-import { MessageType } from "../../enviroment";
+import { MessageType,Layout } from "../../enviroment";
 import { Filter } from "../../class/filter";
 import { ContextInfo } from "../../service/login/authentication.service";
+
+import { RTL } from '@progress/kendo-angular-l10n';
+
+export function getLayoutModule(layout: Layout) {
+    return layout.getLayout();
+}  
 
 
 @Component({
     selector: 'account2',
-    templateUrl: './account2.component.html'
+    templateUrl: './account2.component.html',
+    providers: [{
+        provide: RTL,
+        useFactory: getLayoutModule,
+        deps: [Layout]
+    }]
 })
 
 

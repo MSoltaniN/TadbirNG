@@ -11,13 +11,25 @@ import { CompanyService, BranchService, FiscalPeriodService } from '../../servic
 import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
 import { ContextInfo } from "../../service/login/authentication.service";
-import { MessageType } from "../../enviroment";
+import { MessageType, Layout } from "../../enviroment";
+
+import { RTL } from '@progress/kendo-angular-l10n';
+
+
+export function getLayoutModule(layout: Layout) {
+    return layout.getLayout();
+}  
 
 @Component({
     selector: 'logincomplete',
     templateUrl: 'login.complete.component.html',
-    styleUrls: ['./login.complete.component.css']
-
+    styleUrls: ['./login.complete.component.css'],
+    providers: [{
+        provide: RTL,        
+        useFactory: getLayoutModule,
+        deps: [Layout]
+    }]
+   
 })
 
 
@@ -158,22 +170,22 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     selectParams()
     {
 
-        this.isValidate();
+        if (this.isValidate()) {
+            if (localStorage.getItem('currentContext')) {
+                const userJson = localStorage.getItem('currentContext');
 
-        if (localStorage.getItem('currentContext')) {
-            const userJson = localStorage.getItem('currentContext');
+                var currentUser: ContextInfo = userJson !== null ? JSON.parse(userJson) : null;
 
-            var currentUser: ContextInfo = userJson !== null ? JSON.parse(userJson) : null;
+                currentUser.branchId = parseInt(this.branchId);
+                currentUser.companyId = parseInt(this.companyId);
+                currentUser.fpId = parseInt(this.fiscalPeriodId);
 
-            currentUser.branchId = parseInt(this.branchId);
-            currentUser.companyId = parseInt(this.companyId);
-            currentUser.fpId = parseInt(this.fiscalPeriodId);
 
-            
-            localStorage.setItem('currentContext', JSON.stringify(currentUser));
+                localStorage.setItem('currentContext', JSON.stringify(currentUser));
 
-            this.router.navigate(['/account2']);
-            
+                this.router.navigate(['/account2']);
+
+            }
         }
     }
 

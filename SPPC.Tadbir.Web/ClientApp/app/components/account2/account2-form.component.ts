@@ -10,7 +10,13 @@ import { Observable } from 'rxjs/Observable';
 import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
 
+import { Layout } from "../../enviroment";
+import { RTL } from '@progress/kendo-angular-l10n';
 
+
+export function getLayoutModule(layout: Layout) {
+    return layout.getLayout();
+} 
 
 interface Item {
     Key: string,
@@ -23,7 +29,13 @@ interface Item {
     styles: [
         "input[type=text] { width: 100%; }"
     ],
-    templateUrl: './account2-form.component.html'
+    templateUrl: './account2-form.component.html',
+    providers: [{
+        provide: RTL,
+        useFactory: getLayoutModule,
+        deps: [Layout]
+    }]
+
 })
         
 export class AccountFormComponent extends DefaultComponent{
