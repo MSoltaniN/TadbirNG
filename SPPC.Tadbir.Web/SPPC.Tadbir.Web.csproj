@@ -57,6 +57,7 @@
     <None Remove="ClientApp\app\controls\grid\sppc-date-filter.ts" />
     <None Remove="ClientApp\app\controls\grid\sppc-string-filter.ts" />
     <None Remove="ClientApp\app\controls\sppc-grid-messages.ts" />
+    <None Remove="ClientApp\app\enum\KeyCode.ts" />
     <None Remove="ClientApp\app\model\account.ts" />
     <None Remove="ClientApp\app\model\fullaccount.ts" />
     <None Remove="ClientApp\app\model\index.ts" />
@@ -67,6 +68,7 @@
     <None Remove="ClientApp\app\service\index.ts" />
     <None Remove="ClientApp\app\service\transaction.service.ts" />
     <None Remove="ClientApp\enviroment.ts" />
+    <None Remove="Properties\PublishProfiles\FolderProfile1.pubxml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -174,6 +176,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\account2\account2.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\project\project.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-numberbox.ts" />
+    <TypeScriptCompile Include="ClientApp\app\enum\KeyCode.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\fullaccount.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\transaction.ts" />
