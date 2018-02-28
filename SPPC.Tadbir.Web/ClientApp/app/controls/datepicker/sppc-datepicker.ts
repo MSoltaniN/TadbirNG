@@ -31,7 +31,7 @@ export class SppcDatepicker implements OnInit, ControlValueAccessor {
     private minDate: string;
     private fiscalPeriodId: string;
 
-    private dateConfig: any;
+    public dateConfig: any;
     
     constructor(private fiscalPeriodService: FiscalPeriodService, private datepipe: DatePipe) {
 
@@ -75,7 +75,7 @@ export class SppcDatepicker implements OnInit, ControlValueAccessor {
     }
 
     @Input() date: any;
-    private dateObject = moment();
+    public dateObject = moment();
     propagateChange: any = () => { };
 
     DateChange() {
