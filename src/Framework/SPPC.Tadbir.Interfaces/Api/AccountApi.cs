@@ -78,6 +78,16 @@ namespace SPPC.Tadbir.Api
         public const string AccountDetailsUrl = "accounts/{accountId:min(1)}/details";
 
         /// <summary>
+        /// API client URL for account metadata
+        /// </summary>
+        public const string AccountMetadata = "accounts/metadata";
+
+        /// <summary>
+        /// API server route URL for account metadata
+        /// </summary>
+        public const string AccountMetadataUrl = "accounts/metadata";
+
+        /// <summary>
         /// API server route URL for details of an account specified by identifier
         /// </summary>
         public const string AccountDetailsSyncUrl = "accounts/{accountId:min(1)}/details/sync";

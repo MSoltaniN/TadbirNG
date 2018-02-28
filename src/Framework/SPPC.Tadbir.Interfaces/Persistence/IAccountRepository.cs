@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
@@ -8,150 +8,172 @@ using SPPC.Tadbir.ViewModel.Metadata;
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// Defines repository operations for managing a financial account.
+    /// عملیات مورد نیاز برای مدیریت اطلاعات سرفصل های حسابداری را تعریف می کند.
     /// </summary>
     public interface IAccountRepository
     {
-        /// <summary>
-        /// Retrieves all accounts in specified fiscal period and branch from repository.
-        /// </summary>
-        /// <param name="fpId">Identifier of an existing fiscal period</param>
-        /// <param name="branchId">Identifier of an existing corporate branch</param>
-        /// <param name="options">Options used for displaying data in a tabular grid view</param>
-        /// <returns>A collection of <see cref="AccountViewModel"/> objects retrieved from repository</returns>
-        IList<AccountViewModel> GetAccounts(int fpId, int branchId, GridOptions options = null);
+        #region Asynchronous Methods
 
         /// <summary>
-        /// Asynchronously retrieves all accounts in specified fiscal period and branch from repository.
+        /// به روش آسنکرون، کلیه حساب هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
+        /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">Identifier of an existing fiscal period</param>
-        /// <param name="branchId">Identifier of an existing corporate branch</param>
-        /// <param name="options">Options used for displaying data in a tabular grid view</param>
-        /// <returns>A collection of <see cref="AccountViewModel"/> objects retrieved from repository</returns>
+        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         Task<EntityListViewModel<AccountViewModel>> GetAccountsAsync(
-            int fpId, int branchId, GridOptions options = null);
+            int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
-        /// Retrieves a single account specified by Id from repository.
+        /// به روش آسنکرون، حساب با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="accountId">Identifier of an existing account</param>
-        /// <returns>The account retrieved from repository as a <see cref="AccountViewModel"/> object</returns>
-        AccountViewModel GetAccount(int accountId);
+        /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>
+        /// <returns>حساب مشخص شده با شناسه عددی</returns>
+        Task<EntityItemViewModel<AccountViewModel>> GetAccountAsync(int accountId);
 
         /// <summary>
-        /// Asynchronously retrieves a single account specified by Id from repository.
+        /// به روش آسنکرون، حساب با شناسه عددی مشخص شده را به همراه اطلاعات کامل آن
+        /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="accountId">Identifier of an existing account</param>
-        /// <returns>The account retrieved from repository as a <see cref="AccountViewModel"/> object</returns>
-        Task<AccountViewModel> GetAccountAsync(int accountId);
+        /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>
+        /// <returns>حساب مشخص شده با شناسه عددی به همراه اطلاعات کامل آن</returns>
+        Task<EntityItemViewModel<AccountFullViewModel>> GetAccountDetailAsync(int accountId);
 
         /// <summary>
-        /// Inserts or updates a single account in repository.
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای حساب را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="account">Item to insert or update</param>
-        void SaveAccount(AccountViewModel account);
+        /// <returns>اطلاعات فراداده ای تعریف شده برای حساب</returns>
+        Task<EntityItemViewModel<AccountViewModel>> GetAccountMetadataAsync();
 
         /// <summary>
-        /// Asynchronously inserts or updates a single account in repository.
+        /// به روش آسنکرون، کلیه آرتیکل های مالی را که از حساب مشخص شده استفاده می کندد را
+        /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="account">Item to insert or update</param>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از آرتیکل های مالی که از حساب مشخص شده استفاده می کندد</returns>
+        Task<EntityListViewModel<TransactionLineViewModel>> GetAccountArticlesAsync(
+            int accountId, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
+        Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات یک حساب را در محل ذخیره ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="account">حساب مورد نظر برای ایجاد یا اصلاح</param>
         Task SaveAccountAsync(AccountViewModel account);
 
         /// <summary>
-        /// Determines if the specified <see cref="AccountViewModel"/> instance uses a code that is already used
-        /// in a different account item.
+        /// به روش آسنکرون، حساب مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
         /// </summary>
-        /// <param name="accountViewModel">Account item to check for duplicate code</param>
-        /// <returns>True if the Code of specified account item is already used in a different account;
-        /// otherwise, returns false.</returns>
-        /// <remarks>If the account code is used in the same account (i.e. the account is being edited
-        /// without changing its code value), this method will return false.</remarks>
-        bool IsDuplicateAccount(AccountViewModel accountViewModel);
-
-        /// <summary>
-        /// Asynchronously determines if the specified <see cref="AccountViewModel"/> instance uses a code
-        /// that is already used in a different account item.
-        /// </summary>
-        /// <param name="accountViewModel">Account item to check for duplicate code</param>
-        /// <returns>True if the Code of specified account item is already used in a different account;
-        /// otherwise, returns false.</returns>
-        /// <remarks>If the account code is used in the same account (i.e. the account is being edited
-        /// without changing its code value), this method will return false.</remarks>
-        Task<bool> IsDuplicateAccountAsync(AccountViewModel accountViewModel);
-
-        /// <summary>
-        /// Determines if the account specified by identifier is referenced by other records.
-        /// </summary>
-        /// <param name="accountId"></param>
-        /// <returns></returns>
-        bool IsUsedAccount(int accountId);
-
-        /// <summary>
-        /// Asynchronously determines if the account specified by identifier is referenced by other records.
-        /// </summary>
-        /// <param name="accountId"></param>
-        /// <returns></returns>
-        Task<bool> IsUsedAccountAsync(int accountId);
-
-        /// <summary>
-        /// Retrieves a single financial account with detail information from repository
-        /// </summary>
-        /// <param name="accountId">Unique identifier of an existing account</param>
-        /// <returns>The account retrieved from repository as a <see cref="AccountFullViewModel"/> object</returns>
-        AccountFullViewModel GetAccountDetail(int accountId);
-
-        /// <summary>
-        /// Asynchronously retrieves a single financial account with detail information from repository
-        /// </summary>
-        /// <param name="accountId">Unique identifier of an existing account</param>
-        /// <returns>The account retrieved from repository as a <see cref="AccountFullViewModel"/> object</returns>
-        Task<AccountFullViewModel> GetAccountDetailAsync(int accountId);
-
-        /// <summary>
-        /// Retrieves all transaction lines (articles) that use the financial account specified by given unique identifier.
-        /// </summary>
-        /// <param name="accountId">Unique identifier of an existing financial account</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
-        /// <returns>Collection of all transaction lines (articles) for specified account</returns>
-        IList<TransactionLineViewModel> GetAccountArticles(int accountId, GridOptions gridOptions = null);
-
-        /// <summary>
-        /// Asynchronously retrieves all transaction lines (articles) that use the financial account specified by
-        /// given unique identifier.
-        /// </summary>
-        /// <param name="accountId">Unique identifier of an existing financial account</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
-        /// <returns>Collection of all transaction lines (articles) for specified account</returns>
-        Task<IList<TransactionLineViewModel>> GetAccountArticlesAsync(int accountId, GridOptions gridOptions = null);
-
-        /// <summary>
-        /// Deletes an existing financial account from repository.
-        /// </summary>
-        /// <param name="accountId">Identifier of the account to delete</param>
-        void DeleteAccount(int accountId);
-
-        /// <summary>
-        /// Asynchronously deletes an existing financial account from repository.
-        /// </summary>
-        /// <param name="accountId">Identifier of the account to delete</param>
+        /// <param name="accountId">شناسه عددی حساب مورد نظر برای حذف</param>
         Task DeleteAccountAsync(int accountId);
 
         /// <summary>
-        /// Retrieves the count of all account items in a specified fiscal period and branch
+        /// به روش آسنکرون، مشخص می کند که آیا کد حساب مورد نظر تکراری است یا نه
         /// </summary>
-        /// <param name="fpId">Identifier of an existing fiscal period</param>
-        /// <param name="branchId">Identifier of an existing corporate branch</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
-        /// <returns>Count of all account items</returns>
+        /// <param name="accountViewModel">مدل نمایشی حساب مورد نظر</param>
+        /// <returns>اگر کد حساب تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
+        /// <remarks>اگر کد حساب در حسابی با شناسه یکتای همین حساب به کار رفته باشد (مثلاً در حالتی که
+        /// یک حساب در حالت ویرایش است) در این صورت مقدار "نادرست" را برمی گرداند</remarks>
+        Task<bool> IsDuplicateAccountAsync(AccountViewModel accountViewModel);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده توسط رکوردهای اطلاعاتی دیگر
+        /// در حال استفاده است یا نه
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <returns>در حالتی که حساب مشخص شده در حال استفاده باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool> IsUsedAccountAsync(int accountId);
+
+        #endregion
+
+        #region Synchronous Methods (May be removed in the future)
+
+        /// <summary>
+        /// کلیه حساب هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
+        /// از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
+        IList<AccountViewModel> GetAccounts(int fpId, int branchId, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// حساب با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>
+        /// <returns>حساب مشخص شده با شناسه عددی</returns>
+        AccountViewModel GetAccount(int accountId);
+
+        /// <summary>
+        /// حساب با شناسه عددی مشخص شده را به همراه اطلاعات کامل آن
+        /// از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>
+        /// <returns>حساب مشخص شده با شناسه عددی به همراه اطلاعات کامل آن</returns>
+        AccountFullViewModel GetAccountDetail(int accountId);
+
+        /// <summary>
+        /// کلیه آرتیکل های مالی را که از حساب مشخص شده استفاده می کندد را
+        /// از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از آرتیکل های مالی که از حساب مشخص شده استفاده می کندد</returns>
+        IList<TransactionLineViewModel> GetAccountArticles(int accountId, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         int GetCount(int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
-        /// Retrieves the count of all account items in a specified fiscal period and branch
+        /// اطلاعات یک حساب را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="fpId">Identifier of an existing fiscal period</param>
-        /// <param name="branchId">Identifier of an existing corporate branch</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
-        /// <returns>Count of all account items</returns>
-        Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null);
+        /// <param name="account">حساب مورد نظر برای ایجاد یا اصلاح</param>
+        void SaveAccount(AccountViewModel account);
+
+        /// <summary>
+        /// حساب مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// </summary>
+        /// <param name="accountId">شناسه عددی حساب مورد نظر برای حذف</param>
+        void DeleteAccount(int accountId);
+
+        /// <summary>
+        /// مشخص می کند که آیا کد حساب مورد نظر تکراری است یا نه
+        /// </summary>
+        /// <param name="accountViewModel">مدل نمایشی حساب مورد نظر</param>
+        /// <returns>اگر کد حساب تکراری باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" برمی گرداند</returns>
+        /// <remarks>اگر کد حساب در حسابی با شناسه یکتای همین حساب به کار رفته باشد (مثلاً در حالتی که
+        /// یک حساب در حالت ویرایش است) در این صورت مقدار "نادرست" را برمی گرداند</remarks>
+        bool IsDuplicateAccount(AccountViewModel accountViewModel);
+
+        /// <summary>
+        /// مشخص می کند که آیا حساب انتخاب شده توسط رکوردهای اطلاعاتی دیگر
+        /// در حال استفاده است یا نه
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <returns>در حالتی که حساب مشخص شده در حال استفاده باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        bool IsUsedAccount(int accountId);
+
+        #endregion
     }
 }

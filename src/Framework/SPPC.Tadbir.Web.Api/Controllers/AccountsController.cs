@@ -57,6 +57,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(account);
         }
 
+        // GET: api/accounts/metadata
+        [Route(AccountApi.AccountMetadataUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        public async Task<IActionResult> GetAccountMetadata()
+        {
+            var metadata = await _repository.GetAccountMetadataAsync();
+            return JsonReadResult(metadata);
+        }
+
         // GET: api/accounts/{accountId:min(1)}/articles
         [Route(AccountApi.AccountArticlesUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
@@ -343,15 +352,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
-            var account = await _repository.GetAccountAsync(item);
-            if (account == null)
+            var accountItem = await _repository.GetAccountAsync(item);
+            if (accountItem == null)
             {
                 message = String.Format(Strings.ItemByIdNotFound, Entities.Account, item);
             }
 
             if (await _repository.IsUsedAccountAsync(item))
             {
-                var accountInfo = String.Format("'{0} ({1})'", account.Name, account.Code);
+                var accountInfo = String.Format("'{0} ({1})'", accountItem.Item.Name, accountItem.Item.Code);
                 message = String.Format(Strings.CannotDeleteUsedAccount, accountInfo);
             }
 

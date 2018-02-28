@@ -32,12 +32,13 @@ namespace SPPC.Tadbir.Persistence
         Task<TransactionFullViewModel> GetTransactionDetailAsync(int transactionId);
 
         /// <summary>
-        /// Retrieves the count of all financial transaction items in a specified fiscal period and branch
+        /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">Identifier of an existing fiscal period</param>
-        /// <param name="branchId">Identifier of an existing corporate branch</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
-        /// <returns>Count of all financial transaction items</returns>
+        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
