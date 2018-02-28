@@ -106,22 +106,22 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
         
         
-        var userName = '';
-        var ticket = '';
+        //var userName = '';
+        //var ticket = '';
 
-        if (localStorage.getItem('currentContext')) {
-            const userJson = localStorage.getItem('currentContext');
-            var currentUser = userJson !== null ? JSON.parse(userJson) : null;
+        //if (localStorage.getItem('currentContext')) {
+        //    const userJson = localStorage.getItem('currentContext');
+        //    var currentUser = userJson !== null ? JSON.parse(userJson) : null;
 
-            if (currentUser != null) {
-                userName = currentUser.userName;        
-                ticket = currentUser.ticket;
-            }
+        //    if (currentUser != null) {
+        //        userName = currentUser.userName;        
+        //        ticket = currentUser.ticket;
+        //    }
 
 
-        }
+        //}
 
-        this.companyService.getCompanies(userName,ticket).subscribe(res => {
+        this.companyService.getCompanies(this.UserName,this.Ticket).subscribe(res => {
             this.compenies = res;
         });
     }

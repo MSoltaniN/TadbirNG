@@ -45,9 +45,7 @@ export class AccountFormComponent extends DefaultComponent{
         id : new FormControl("", Validators.required),
         code: new FormControl("", Validators.required),
         name: new FormControl("", Validators.required),   
-        description: new FormControl(),
-        fiscalPeriodId: new FormControl("", Validators.required),
-        branchId: new FormControl("", Validators.required),
+        description: new FormControl(),        
         level: new FormControl(0),
         fullCode: new FormControl("0")
     });
@@ -63,19 +61,16 @@ export class AccountFormComponent extends DefaultComponent{
         this.active = account !== undefined || this.isNew;
         if (account != undefined)
         {
-            //var index = this.fiscalPeriodRows.find(p => p.Key == account.fiscalPeriodId.toString());
             this.selectedValue = account.fiscalPeriodId.toString();
             if (this.fiscalPeriodRows == undefined) this.getFiscalPeriod();
         }
             
-        //this.editForm.setValue({ fiscalPeriodId: account.fiscalPeriodId });
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
     @Output() save: EventEmitter<Account> = new EventEmitter();
     //create properties
 
-    //public placeHolder: { Key: string, Value: string } = { Key: "-1" , Value: "---" };
     public fiscalPeriodRows : Array<Item>;
     public selectedValue : string = '1';
 
@@ -100,11 +95,7 @@ export class AccountFormComponent extends DefaultComponent{
 
     constructor(private accountService: AccountService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
         public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2) {
-        //translate.addLangs(["en", "fa"]);
-        //translate.setDefaultLang('fa');
 
-        //var browserLang = 'fa';//translate.getBrowserLang();
-        //translate.use(browserLang);
         super(toastrService, translate, renderer, "Account");
 
         this.getFiscalPeriod();
@@ -113,16 +104,8 @@ export class AccountFormComponent extends DefaultComponent{
 
     /* load fiscal periods */
     getFiscalPeriod() {
-
-        var currentUser: ContextInfo = new ContextInfo();
-        if (localStorage.getItem('currentContext')) {
-            const userJson = localStorage.getItem('currentContext');
-
-            currentUser = userJson !== null ? JSON.parse(userJson) : null;
-
-        }
-
-        this.fiscalPeriodService.getFiscalPeriod(currentUser.companyId).subscribe(res => {
+        
+        this.fiscalPeriodService.getFiscalPeriod(this.CompanyId).subscribe(res => {
             this.fiscalPeriodRows = res;            
         });
     }

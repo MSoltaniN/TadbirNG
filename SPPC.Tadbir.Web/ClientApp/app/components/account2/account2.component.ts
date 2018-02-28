@@ -26,9 +26,9 @@ import { String } from '../../class/source';
 import { State, CompositeFilterDescriptor  } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
-import { MessageType,Layout } from "../../enviroment";
+
+import { MessageType, Layout } from "../../enviroment";
 import { Filter } from "../../class/filter";
-import { ContextInfo } from "../../service/login/authentication.service";
 
 import { RTL } from '@progress/kendo-angular-l10n';
 
@@ -135,7 +135,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
             this.accountService.search(this.pageIndex, this.pageSize, order, filter).subscribe(res => {
                 //this.rowData = res;
                 this.rowData = {
-                    data: res,
+                    data: res.list,
                     total: this.totalRecords
                 }
 
@@ -211,16 +211,8 @@ export class Account2Component extends DefaultComponent implements OnInit {
     /* load fiscal periods */
     getFiscalPeriod() {
         this.showloadingMessage = true;
-
-        var currentUser: ContextInfo = new ContextInfo();
-        if (localStorage.getItem('currentContext')) {
-            const userJson = localStorage.getItem('currentContext');
-
-            currentUser = userJson !== null ? JSON.parse(userJson) : null;
-            
-        }
-
-        this.fiscalPeriodService.getFiscalPeriod(currentUser.companyId).subscribe(res => {
+        
+        this.fiscalPeriodService.getFiscalPeriod(this.CompanyId).subscribe(res => {
             this.fiscalPeriodRows = res;
             this.showloadingMessage = !(res.length == 0);
         });
@@ -246,6 +238,9 @@ export class Account2Component extends DefaultComponent implements OnInit {
     }    
 
     public saveHandler(account: Account) {
+
+        account.branchId = this.BranchId;
+        account.fiscalPeriodId = this.FiscalPeriodId;
 
         if (!this.isNew) {
             this.accountService.editAccount(account)

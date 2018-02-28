@@ -5,9 +5,10 @@ import "rxjs/Rx";
 import { String } from '../class/source';
 import { expect } from 'chai';
 import { Environment } from "../enviroment";
+import { BaseService } from '../class/base.service';
 
 @Injectable()
-export class FiscalPeriodService {
+export class FiscalPeriodService extends BaseService{
 
     
     private getFiscalPeriodUrl = Environment.BaseUrl +"/lookup/fps/company/1";
@@ -17,7 +18,7 @@ export class FiscalPeriodService {
     headers: Headers;
 
     constructor(private http: Http) {
-
+        super();
     }
 
 
@@ -39,23 +40,28 @@ export class FiscalPeriodService {
        
         var userId = '';        
 
-        if (localStorage.getItem('currentContext')) {
-            const userJson = localStorage.getItem('currentContext');
-            var currentUser = userJson !== null ? JSON.parse(userJson) : null;
+        //if (localStorage.getItem('currentContext')) {
+        //    const userJson = localStorage.getItem('currentContext');
+        //    var currentUser = userJson !== null ? JSON.parse(userJson) : null;
             
-            if(currentUser != null)
-            {
-                var jsonContext = atob(currentUser.ticket);
-                var context = JSON.parse(jsonContext);
+        //    if(currentUser != null)
+        //    {
+        //        var jsonContext = atob(currentUser.ticket);
+        //        var context = JSON.parse(jsonContext);
 
-                userId = context.User.Id;
+        //        userId = context.User.Id;
                
-                this.headers.append('X-Tadbir-AuthTicket', currentUser.ticket);       
-            }
+        //        this.headers.append('X-Tadbir-AuthTicket', currentUser.ticket);       
+        //    }
 
+        //}
+
+        if (this.Ticket != '')
+        {
+            this.headers.append('X-Tadbir-AuthTicket', this.Ticket);       
         }
 
-        var url = String.Format(this.getFiscalUrl, companyId,userId);
+        var url = String.Format(this.getFiscalUrl, companyId,this.UserId);
         
         return this.http.get(url, { headers: this.headers })
             .map(response => <any>(<Response>response).json());

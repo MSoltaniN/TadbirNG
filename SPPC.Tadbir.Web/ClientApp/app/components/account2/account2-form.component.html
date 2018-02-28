@@ -28,32 +28,7 @@
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
                     {{ 'Validations.AccountName' | translate }}
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="fiscalPeriodId" class="control-label">{{ 'Account.FiscalPeriodId' | translate }}</label>
-
-                <!--<input type="text" class="k-textbox" formControlName="fiscalPeriodId" />-->
-                <!--<kendo-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
-                                    [textField]="'value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue" [valueField]="'key'">
-                </kendo-dropdownlist>-->
-
-                <sppc-dropdownlist [data]="fiscalPeriodRows" [valuePrimitive]="true"
-                                    [textField]="'value'" formControlName="fiscalPeriodId" [value]="selectedValue" [(ngModel)]="selectedValue"  [valueField]="'key'">
-                </sppc-dropdownlist>
-              
-                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fiscalPeriodId.valid || editForm.controls.fiscalPeriodId.pristine">
-                    {{ 'Validations.FiscalPeriodId' | translate }}
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="branchId" class="control-label">{{ 'Account.Branch' | translate }}</label>
-
-                <input type="text" class="k-textbox" formControlName="branchId" />
-              
-                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.branchId.valid || editForm.controls.branchId.pristine">
-                    {{ 'Validations.BranchId' | translate }}
-                </div>
-            </div>
+            </div>            
             <div class="form-group">
                 <label for="description" class="control-label">{{ 'Account.Description' | translate }}</label>
 

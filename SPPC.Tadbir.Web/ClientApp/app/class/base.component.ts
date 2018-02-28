@@ -3,17 +3,17 @@
 
 import { ToastrService } from "toastr-ng2/toastr";
 import { MessageType } from "../enviroment";
+import { EnviromentComponent } from "./enviroment.component"
 
 
 
-
-export class BaseComponent {
+export class BaseComponent extends EnviromentComponent {
 
     
 
     constructor(public toastrService: ToastrService)
     {
-
+        super();
     }
 
     public showMessage(text: string, type: MessageType = MessageType.Info, title: string = '', position: string = 'toast-top-left' )
@@ -33,6 +33,6 @@ export class BaseComponent {
 
     }
 
-
+    
 
 }
