@@ -1,7 +1,6 @@
 ﻿
-<div class="col-xs-12 col-md-12 col-sm-12">
+<div>
     <div class="panel panel-primary">
-        <div class="panel-heading">{{ 'Entity.Transaction' | translate }}</div>
         <div class="panel-body">
             <kendo-grid #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
                         [data]="rowData"
@@ -31,22 +30,23 @@
                     {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
                 </ng-template>
                 <ng-template kendoGridToolbarTemplate>
-                    <button kendoGridAddCommand (click)="addNew()" type="button">{{ 'Transaction.New' | translate }}</button>
+                    <button kendoGridAddCommand (click)="addNew()" type="button">{{ 'TransactionLine.New' | translate }}</button>
                     <button *ngIf="groupDelete" class="k-button" (click)="deleteTransactions()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
                 </ng-template>
+
                 <!-- template for mobile -->
                 <kendo-grid-column media="(max-width: 449px)" title="">
-                    <ng-template kendoGridCellTemplate let-transaction>
+                    <ng-template kendoGridCellTemplate let-transactionLine>
                         <!-- template for mobile -->
                         <dl>
-                            <dt>{{ 'Transaction.No' | translate }}</dt>
-                            <dd>{{ transaction.no }}</dd>
+                            <dt>{{ 'TransactionLine.Debit' | translate }}</dt>
+                            <dd>{{ transactionLine.debit }}</dd>
 
-                            <dt>{{ 'Transaction.Date' | translate }}</dt>
-                            <dd>{{ transaction.date | SppcDate }}</dd>
+                            <dt>{{ 'TransactionLine.Credit' | translate }}</dt>
+                            <dd>{{ transactionLine.credit }}</dd>
 
-                            <dt>{{ 'Transaction.Description' | translate  }}</dt>
-                            <dd>{{ transaction.description }}</dd>
+                            <dt>{{ 'TransactionLine.Description' | translate  }}</dt>
+                            <dd>{{ transactionLine.description }}</dd>
                         </dl>
                         <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
                         <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
@@ -55,19 +55,19 @@
                 <!-- template for mobile -->
                 <!-- template for mid-size devices -->
                 <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px) and (max-width: 1024px)"></kendo-grid-checkbox-column>
-                <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Transaction.no">
+
+                <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="TransactionLine.debit">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-string-filter [column]="column" [spinners]="true" [filter]="filter"></sppc-string-filter>
                     </ng-template>
                 </kendo-grid-column>
-                <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Transaction.date">
+
+                <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="TransactionLine.credit">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
-                    </ng-template>
-                    <ng-template kendoGridCellTemplate let-transaction>
-                        {{ transaction.date | SppcDate }}
+                        <sppc-string-filter [column]="column" [spinners]="true" [filter]="filter"></sppc-string-filter>
                     </ng-template>
                 </kendo-grid-column>
+
                 <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
                     <ng-template kendoGridCellTemplate>
                         <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
@@ -81,22 +81,20 @@
                 <!-- template for mid-size devices -->
                 <!-- additional columns on large devices -->
                 <kendo-grid-checkbox-column showSelectAll="true" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
-                <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="Transaction.no">
+
+                <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="TransactionLine.debit">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
                     </ng-template>
                 </kendo-grid-column>
 
-                <kendo-grid-column media="(min-width: 1024px)" sppc-grid-column="Transaction.date">
-                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column" let-Transaction>
+                <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="TransactionLine.credit">
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
-                    </ng-template>
-                    <ng-template kendoGridCellTemplate let-transaction>
-                        {{ transaction.date | SppcDate }}
                     </ng-template>
                 </kendo-grid-column>
 
-                <kendo-grid-column media="(min-width: 1024px)" sppc-grid-column="Transaction.description">
+                <kendo-grid-column media="(min-width: 1024px)" sppc-grid-column="TransactionLine.description">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
                     </ng-template>
@@ -115,24 +113,19 @@
                 <!-- additional columns on large devices -->
 
             </kendo-grid>
-            <transaction-form-component [model]="editDataItem" [isNew]="isNew"
-                                        (save)="saveHandler($event)"
-                                        (cancel)="cancelHandler()">
-            </transaction-form-component>
+            <transactionLine-form-component [model]="editDataItem" [isNew]="isNew"
+                                            (save)="saveHandler($event)"
+                                            (cancel)="cancelHandler()">
+            </transactionLine-form-component>
         </div>
-        <kendo-dialog title="{{'Transaction.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteTransaction(false)" [minWidth]="250" [width]="450">
+        <kendo-dialog title="{{'TransactionLine.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteTransactionLine(false)" [minWidth]="250" [width]="450">
             <p>
                 {{ deleteConfirmMsg }}
             </p>
             <kendo-dialog-actions>
-                <button class="k-button" (click)="deleteTransaction(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-                <button class="k-button" (click)="deleteTransaction(false)">{{ 'Buttons.No' | translate }}</button>
+                <button class="k-button" (click)="deleteTransactionLine(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+                <button class="k-button" (click)="deleteTransactionLine(false)">{{ 'Buttons.No' | translate }}</button>
             </kendo-dialog-actions>
         </kendo-dialog>
     </div>
 </div>
-
-
-
-
-

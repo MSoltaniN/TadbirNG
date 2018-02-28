@@ -17,6 +17,8 @@ import { Account2Component } from './components/account2/account2.component';
 import { AccountFormComponent } from './components/account2/account2-form.component';
 import { TransactionComponent } from './components/transaction/transaction.component';
 import { TransactionFormComponent } from './components/transaction/transaction-form.component';
+import { TransactionLineComponent } from './components/transactionLine/transactionLine.component';
+import { TransactionLineFormComponent } from './components/transactionLine/transactionLine-form.component'
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 
@@ -73,6 +75,8 @@ import { SppcDatePipe } from "./pipes/index"
         SppcStringFilter,
         TransactionComponent,
         TransactionFormComponent,
+        TransactionLineComponent,
+        TransactionLineFormComponent,
         SppcDatePipe
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService,

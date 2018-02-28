@@ -1,8 +1,8 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
 
-import { TransactionService, TransactionInfo, TransactionLineService, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
+import { TransactionService, TransactionLineInfo, TransactionLineService, FiscalPeriodService } from '../../service/index';
 
-import { Transaction, TransactionLine } from '../../model/index';
+import { TransactionLine } from '../../model/index';
 
 import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component for message in client side */
 
@@ -25,42 +25,26 @@ import { String } from '../../class/source';
 import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
-import { MessageType, Layout } from "../../enviroment";
+import { MessageType } from "../../enviroment";
 import { Filter } from "../../class/filter";
 
-import { RTL } from '@progress/kendo-angular-l10n';
-
-
-export function getLayoutModule(layout: Layout) {
-    return layout.getLayout();
-}  
 
 @Component({
-    selector: 'transaction',
-    templateUrl: './transaction.component.html',
-    providers: [{
-        provide: RTL,
-        useFactory: getLayoutModule,
-        deps: [Layout]
-    }]
+    selector: 'transactionLine',
+    templateUrl: './transactionLine.component.html',
+    styles: ["/deep/ .panel-primary { border-color: #989898; }"]
 })
 
 
-export class TransactionComponent extends DefaultComponent implements OnInit {
+export class TransactionLineComponent extends DefaultComponent implements OnInit {
 
     public rowData: GridDataResult;
-
     public selectedRows: string[] = [];
-
-    public fiscalPeriodRows: any[];
-
     public totalRecords: number;
-
-    public fpId: number;
 
     //for add in delete messageText
     deleteConfirm: boolean;
-    deleteTransactionId: number;
+    deleteTransactionLineId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
@@ -68,45 +52,46 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
     showloadingMessage: boolean = true;
 
-    newTransaction: boolean;
-    transaction: Transaction = new TransactionInfo
+    newTransactionLine: boolean;
+    transactionLine: TransactionLine = new TransactionLineInfo;
 
 
-    editDataItem?: Transaction = undefined;
+    editDataItem?: TransactionLine = undefined;
     isNew: boolean;
+
     groupDelete: boolean = false;
+
+    @Input() transactionId: number;
+
 
     ngOnInit() {
         this.reloadGrid();
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService,
-        private transactionService: TransactionService, private transactionLineService: TransactionLineService,
-        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2) {
-        super(toastrService, translate,renderer,"Transaction");
-
+        private transactionLineService: TransactionLineService, public renderer: Renderer2) {
+        super(toastrService, translate, renderer, "TransactionLine");
     }
 
     getRowsCount() {
-        return this.transactionService.getCount(this.currentOrder, this.currentFilter).map(response => <any>(<Response>response).json());
-
+        return this.transactionLineService.getCount(this.transactionId, this.currentOrder, this.currentFilter).map(response => <any>(<Response>response).json());
     }
 
     selectionKey(context: RowArgs): string {
 
         //return context.dataItem.id + " " + context.index;
-        return context.dataItem.id ;
+        return context.dataItem.id;
     }
 
-    deleteTransactions() {
-        this.transactionService.deleteTransactions(this.selectedRows).subscribe(res => {
-            this.showMessage(this.deleteMsg, MessageType.Info);
-            this.selectedRows = [];
-            this.reloadGrid();
-        }, (error => {
-            this.showMessage(error, MessageType.Warning);
-        }));
-    }
+    //deleteTransactionsLine() {
+    //    this.transactionLineService.deleteTransactions(this.selectedRows).subscribe(res => {
+    //        this.showMessage(this.deleteMsg, MessageType.Info);
+    //        this.selectedRows = [];
+    //        this.reloadGrid();
+    //    }, (error => {
+    //        this.showMessage(error, MessageType.Warning);
+    //    }));
+    //}
 
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
         if (this.selectedRows.length > 1)
@@ -116,21 +101,20 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
     }
 
     reloadGrid() {
-        this.transactionService.getCount(this.currentOrder, this.currentFilter).finally(() => {
+
+        this.transactionLineService.getCount(this.transactionId, this.currentOrder, this.currentFilter).finally(() => {
             var filter = this.currentFilter;
             var order = this.currentOrder;
-
-            this.transactionService.search(this.pageIndex, this.pageSize, order, filter).subscribe(res => {
+            this.transactionLineService.search(this.transactionId, this.pageIndex, this.pageSize, order, filter).subscribe(res => {
                 this.rowData = {
-                    data: res,
+                    data: res.lines,
                     total: this.totalRecords
                 }
-
-                this.showloadingMessage = !(res.length == 0);
+                this.showloadingMessage = !(res.lines.length == 0);
             })
         }).subscribe(res => {
             this.totalRecords = res;
-            });
+        });
     }
 
 
@@ -160,10 +144,11 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    deleteTransaction(confirm: boolean) {
+
+    deleteTransactionLine(confirm: boolean) {
         if (confirm) {
-            this.transactionService.delete(this.deleteTransactionId).subscribe(response => {
-                this.deleteTransactionId = 0;
+            this.transactionLineService.delete(this.deleteTransactionLineId).subscribe(response => {
+                this.deleteTransactionLineId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
@@ -179,13 +164,13 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
         this.prepareDeleteConfirm(arg.dataItem.name);
 
-        this.deleteTransactionId = arg.dataItem.id;
+        this.deleteTransactionLineId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
 
+    //transaction form events
     public editHandler(arg: any) {
-
         this.editDataItem = arg.dataItem;
         this.isNew = false;
     }
@@ -197,22 +182,23 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
     public addNew() {
         this.isNew = true;
-        this.editDataItem = new TransactionInfo();
+        var article = new TransactionLineInfo();
+        article.transactionId = this.transactionId;
+        this.editDataItem = article;
     }
 
-    public saveHandler(transaction: Transaction) {
+    public saveHandler(transactionLine: TransactionLine) {
         if (!this.isNew) {
-            this.transactionService.editTransaction(transaction)
+            this.transactionLineService.editTransactionLine(transactionLine)
                 .subscribe(response => {
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
-                    
                 }, (error => {
                     this.showMessage(error, MessageType.Warning);
                 }));
         }
         else {
-            this.transactionService.insertTransaction(transaction)
+            this.transactionLineService.insertTransactionLine(this.transactionId,transactionLine)
                 .subscribe(response => {
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     this.reloadGrid();

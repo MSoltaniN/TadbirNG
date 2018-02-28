@@ -5,18 +5,20 @@ import { DatePipe } from '@angular/common'
 import * as moment from 'jalali-moment';
 import { DatePickerDirective, DatePickerComponent } from 'ng2-jalali-date-picker';
 import { FiscalPeriodService } from '../../service/index';
+import { KeyCode } from '../../enum/KeyCode';
 
 @Component({
     selector: 'sppc-datepicker',
     template: `<dp-date-picker 
     class="k-textbox"
+    (keydown)="ChangeDateKey($event.keyCode)"
     [(ngModel)]="dateObject"
     mode="daytime"
     [config]='dateConfig'
     theme="dp-material"
     (ngModelChange)="DateChange()">
   </dp-date-picker>`,
-    styles: ['/deep/ dp-date-picker.dp-material .dp-picker-input { height: 26px !important; width:100% !important; } dp-date-picker{width:100%} /deep/ dp-day-time-calendar{position: fixed;}'],
+    styles: ['/deep/ dp-date-picker.dp-material .dp-picker-input { height: 26px !important; width:100% !important; } dp-date-picker{width:100%; direction:ltr;} /deep/ dp-day-time-calendar{position: fixed;}'],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -53,8 +55,10 @@ export class SppcDatepicker implements OnInit, ControlValueAccessor {
         //this.minDate = "01/20/2018";
         //this.maxDate = "02/15/2019";
 
-        
+
     }
+
+    public inputDateFormat: string = 'yyyy-MM-dd hh:mm';
 
     ngOnInit() {
         var dateLocale = 'fa';
@@ -70,8 +74,66 @@ export class SppcDatepicker implements OnInit, ControlValueAccessor {
             format: dateFormat,
             //min: this.minDate,
             //max: this.maxDate,
-            locale: dateLocale
+            locale: dateLocale,
         };
+    }
+
+    public ChangeDateKey(event: any) {
+
+        var allowKey = false;
+
+        var currentDate = this.dateObject.toDate();
+        switch (event) {
+            case KeyCode.Space: {
+
+                this.date = this.datepipe.transform(new Date().toString(), this.inputDateFormat);             
+
+                break;
+            }
+            case KeyCode.Page_Up: {
+
+                this.date = this.datepipe.transform(currentDate.setFullYear(currentDate.getFullYear() + 1), this.inputDateFormat);
+
+                break;
+            }
+            case KeyCode.Page_Down: {
+
+                this.date = this.datepipe.transform(currentDate.setFullYear(currentDate.getFullYear() - 1), this.inputDateFormat);
+
+                break;
+            }
+            case KeyCode.Down_Arrow: {
+
+                this.date = this.datepipe.transform(currentDate.setMonth(currentDate.getMonth() - 1), this.inputDateFormat);
+
+                break;
+            }
+            case KeyCode.Up_Arrow: {
+
+                this.date = this.datepipe.transform(currentDate.setMonth(currentDate.getMonth() + 1), this.inputDateFormat);
+
+                break;
+            }
+            case KeyCode.Left_Arrow: {
+
+                this.date = this.datepipe.transform(currentDate.setDate(currentDate.getDate() - 1), this.inputDateFormat);
+
+                break;
+            }
+            case KeyCode.Right_Arrow: {
+
+                this.date = this.datepipe.transform(currentDate.setDate(currentDate.getDate() + 1), this.inputDateFormat);
+
+                break;
+            }
+            default: {
+
+                break;
+            }
+        }
+
+        this.dateObject = moment(this.date);
+        return allowKey;
     }
 
     @Input() date: any;
@@ -79,13 +141,13 @@ export class SppcDatepicker implements OnInit, ControlValueAccessor {
     propagateChange: any = () => { };
 
     DateChange() {
-        this.propagateChange(this.datepipe.transform(this.dateObject, 'yyyy-MM-dd hh:mm'));
+        this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
     }
 
     writeValue(value: any): void {
-         if (value) {
-             this.date = this.datepipe.transform(value, 'yyyy-MM-dd hh:mm');
-             this.dateObject = moment(this.date);
+        if (value) {
+            this.date = this.datepipe.transform(value, this.inputDateFormat);
+            this.dateObject = moment(this.date);
         }
     }
 

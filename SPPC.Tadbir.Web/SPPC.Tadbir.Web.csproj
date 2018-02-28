@@ -49,13 +49,17 @@
     <None Remove="ClientApp\app\components\login\logout.component.ts" />
     <None Remove="ClientApp\app\components\project\complexAccount.component.ts" />
     <None Remove="ClientApp\app\components\project\project.component.ts" />
+    <None Remove="ClientApp\app\components\transactionLine\transactionLine-form.component.ts" />
+    <None Remove="ClientApp\app\components\transactionLine\transactionLine.component.ts" />
     <None Remove="ClientApp\app\components\transaction\transaction-form.component.ts" />
     <None Remove="ClientApp\app\components\transaction\transaction.component.ts" />
     <None Remove="ClientApp\app\controls\datepicker\sppc-datepicker.ts" />
     <None Remove="ClientApp\app\controls\grid\sppc-date-filter.ts" />
     <None Remove="ClientApp\app\controls\grid\sppc-string-filter.ts" />
     <None Remove="ClientApp\app\controls\sppc-grid-messages.ts" />
+    <None Remove="ClientApp\app\enum\KeyCode.ts" />
     <None Remove="ClientApp\app\model\account.ts" />
+    <None Remove="ClientApp\app\model\fullaccount.ts" />
     <None Remove="ClientApp\app\model\index.ts" />
     <None Remove="ClientApp\app\model\transaction.ts" />
     <None Remove="ClientApp\app\pipes\index.ts" />
@@ -64,6 +68,7 @@
     <None Remove="ClientApp\app\service\index.ts" />
     <None Remove="ClientApp\app\service\transaction.service.ts" />
     <None Remove="ClientApp\enviroment.ts" />
+    <None Remove="Properties\PublishProfiles\FolderProfile1.pubxml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -158,6 +163,8 @@
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.container.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\logout.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\transactionLine\transactionLine-form.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\transactionLine\transactionLine.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\datepicker\sppc-datepicker.ts" />
@@ -169,7 +176,9 @@
     <TypeScriptCompile Include="ClientApp\app\components\account2\account2.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\project\project.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-numberbox.ts" />
+    <TypeScriptCompile Include="ClientApp\app\enum\KeyCode.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\fullaccount.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\transaction.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\context.ts" />
