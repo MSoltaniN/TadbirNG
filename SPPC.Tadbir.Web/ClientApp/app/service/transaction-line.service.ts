@@ -16,21 +16,6 @@ import { BaseService } from '../class/base.service';
 export class TransactionLineInfo implements TransactionLine {
     constructor(public id: number = 0, public debit: number = 0, public credit: number = 0, public description?: string,
         public fiscalPeriodId: number = 0, public branchId: number = 0, public transactionId: number = 0, public currencyId: number = 0, public currencyName: string = "", public fullAccount: FullAccount = new FullAccount()) {
-        //TODO
-        //this section written in base class
-        //if (localStorage.getItem('currentContext') != null) {
-        //    var item: string | null;
-        //    item = localStorage.getItem('currentContext');
-        //    var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-        //    this.fiscalPeriodId = currentContext ? currentContext.fpId.toString() : '';
-        //    this.branchId = currentContext ? currentContext.branchId.toString() : '';
-
-        //}
-        //this section written in base class
-
-        this.currencyId = 1;
-        this.currencyName = "ریال";
 
     }
 }

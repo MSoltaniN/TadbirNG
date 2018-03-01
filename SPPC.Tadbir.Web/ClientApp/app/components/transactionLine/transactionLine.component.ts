@@ -188,6 +188,13 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     }
 
     public saveHandler(transactionLine: TransactionLine) {
+
+        transactionLine.branchId = this.BranchId;
+        transactionLine.fiscalPeriodId = this.FiscalPeriodId;
+        transactionLine.currencyId = 1;
+        transactionLine.currencyName = "ریال";
+
+        debugger;
         if (!this.isNew) {
             this.transactionLineService.editTransactionLine(transactionLine)
                 .subscribe(response => {

@@ -34,12 +34,7 @@ export class TransactionLineFormComponent extends DefaultComponent {
         debit: new FormControl("", Validators.required),
         credit: new FormControl("", Validators.required),
         description: new FormControl(),
-
-        fiscalPeriodId: new FormControl(),
-        branchId: new FormControl(),
         transactionId: new FormControl(),
-        currencyId: new FormControl(),
-        currencyName: new FormControl(),
 
         fullAccount: new FormControl()
     });
@@ -54,10 +49,6 @@ export class TransactionLineFormComponent extends DefaultComponent {
         this.editForm.reset(transactionLine);
 
         this.active = transactionLine !== undefined || this.isNew;
-
-        //this.editForm.setValue({ transactionId: this.transactionId });
-        //debugger;
-        //console.log(this.editForm);
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -70,7 +61,6 @@ export class TransactionLineFormComponent extends DefaultComponent {
 
     //Events
     public onSave(e: any): void {
-        console.log(this.editForm.value);
         e.preventDefault();
         this.save.emit(this.editForm.value);
         this.active = false;

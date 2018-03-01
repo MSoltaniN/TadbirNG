@@ -45,8 +45,6 @@ export class TransactionFormComponent extends DefaultComponent {
     //create a form controls
     private editForm = new FormGroup({
         id: new FormControl("", Validators.required),
-        fiscalPeriodId: new FormControl("", Validators.required),
-        branchId: new FormControl("", Validators.required),
         description: new FormControl(),
         no: new FormControl("", Validators.required),
         date: new FormControl("", Validators.required)

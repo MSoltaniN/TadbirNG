@@ -201,6 +201,10 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
     }
 
     public saveHandler(transaction: Transaction) {
+
+        transaction.branchId = this.BranchId;
+        transaction.fiscalPeriodId = this.FiscalPeriodId;
+
         if (!this.isNew) {
             this.transactionService.editTransaction(transaction)
                 .subscribe(response => {
