@@ -20,7 +20,7 @@ export class TransactionInfo implements Transaction {
 
     constructor(public id: number = 0, public description: string = "", public fiscalPeriodId: number = 0, public branchId: number = 0,
         public no: string = "", public date: Date = new Date()) {
-        
+
     }
 
 }
@@ -47,38 +47,11 @@ export class TransactionService extends BaseService {
         super();
 
         this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
-
-
-        //this section written in base class
-        //var ticket = '';
-        //if (localStorage.getItem('currentContext') != null) {
-        //    var item: string | null;
-        //    item = localStorage.getItem('currentContext');
-        //    this.currentContext = JSON.parse(item != null ? item.toString() : "");
-
-        //    ticket = this.currentContext ? this.currentContext.ticket.toString() : '';
-        //}
-
-        //this section written in base class
-
         this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
-
-
-
         this.options = new RequestOptions({ headers: this.headers });
+
     }
 
-    //TODO: this method must deleted
-    //GetFpIdBranchId() {
-    //    if (localStorage.getItem('currentContext') != null) {
-    //        var item: string | null;
-    //        item = localStorage.getItem('currentContext');
-    //        this.currentContext = JSON.parse(item != null ? item.toString() : "");
-
-    //        this.fiscalPeriodId = this.currentContext ? this.currentContext.fpId.toString() : '';
-    //        this.branchId = this.currentContext ? this.currentContext.branchId.toString() : '';
-    //    }
-    //}
 
     getTransactions() {
         var headers = this.headers;
@@ -89,56 +62,35 @@ export class TransactionService extends BaseService {
     }
 
     getTotalCount() {
-
-        //TODO: this line must deleted
-        //this.GetFpIdBranchId();
-
-
         var headers = this.headers;
         headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
-
         var url = String.Format(this._getCountUrl, this.FiscalPeriodId, this.BranchId);
-
         return this.http.get(url, { headers: headers })
             .map(response => <any>(<Response>response).json());;
-
     }
 
     //get count of records base on Grid filters and order value
     getCount(orderby?: string, filters?: any[]) {
 
-        //TODO: this line must deleted
-        //this.GetFpIdBranchId();
-
         var headers = this.headers;
-
         var url = String.Format(this._getCountUrl, this.FiscalPeriodId, this.BranchId);
-
         var postItem = { filters: filters };
         var searchHeaders = this.headers;
-
         var postBody = JSON.stringify(postItem);
-
         var base64Body = btoa(encodeURIComponent(postBody));
-
         searchHeaders.set('X-Tadbir-GridOptions', base64Body);
-
         var options = new RequestOptions({ headers: searchHeaders });
-
         return this.http.get(url, options)
             .map(response => <any>(<Response>response).json());;
-
     }
 
     currentContext?: Context = undefined;
 
     search(start?: number, count?: number, orderby?: string, filters?: Filter[]) {
+
         var headers = this.headers;
-
         var gridPaging = { pageIndex: start, pageSize: count };
-
         var sort = new Array<GridOrderBy>();
-
         if (orderby) {
             var orderByParts = orderby.split(' ');
             var fieldName = orderByParts[0];
@@ -146,21 +98,11 @@ export class TransactionService extends BaseService {
                 sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
         var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
-
-        //TODO: this line must deleted
-        //this.GetFpIdBranchId();
-
-
         var url = String.Format(this._getTransactionsUrl, this.FiscalPeriodId, this.BranchId);
-
         var searchHeaders = this.headers;
-
         var postBody = JSON.stringify(postItem);
-
         var base64Body = btoa(encodeURIComponent(postBody));
-
         searchHeaders.set('X-Tadbir-GridOptions', base64Body);
-
         var options = new RequestOptions({ headers: searchHeaders });
 
         return this.http.get(url, options)

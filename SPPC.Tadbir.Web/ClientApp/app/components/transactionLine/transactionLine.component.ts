@@ -194,29 +194,41 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
         transactionLine.currencyId = 1;
         transactionLine.currencyName = "ریال";
 
-        debugger;
         if (!this.isNew) {
+
+            this.isNew = false;
+            
             this.transactionLineService.editTransactionLine(transactionLine)
                 .subscribe(response => {
+
+                    this.editDataItem = undefined;
+
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
+
                 }, (error => {
+                    this.editDataItem = transactionLine;
                     this.showMessage(error, MessageType.Warning);
+
                 }));
         }
         else {
             this.transactionLineService.insertTransactionLine(this.transactionId,transactionLine)
                 .subscribe(response => {
+
+                    this.isNew = false;
+                    this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     this.reloadGrid();
+
                 }, (error => {
+
+                    this.isNew = true;
                     this.showMessage(error, MessageType.Warning);
+
                 }));
 
         }
-
-        this.editDataItem = undefined;
-        this.isNew = false;
     }
 
 }
