@@ -1,24 +1,23 @@
-﻿import { Component, OnInit, Input, forwardRef, OnChanges } from '@angular/core';
+﻿import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 import { DatePipe } from '@angular/common'
 
 import * as moment from 'jalali-moment';
 import { DatePickerDirective, DatePickerComponent } from 'ng2-jalali-date-picker';
-import { FiscalPeriodService } from '../../service/index';
 import { KeyCode } from '../../enum/KeyCode';
 
 @Component({
     selector: 'sppc-datepicker',
     template: `<dp-date-picker 
     class="k-textbox"
-    (keydown)="ChangeDateKey($event.keyCode)"
     [(ngModel)]="dateObject"
-    mode="daytime"
+    (keydown)="ChangeDateKey($event.keyCode)"
+    (ngModelChange)="DateChange()"  
     [config]='dateConfig'
     theme="dp-material"
-    (ngModelChange)="DateChange()">
+    >
   </dp-date-picker>`,
-    styles: ['/deep/ dp-date-picker.dp-material .dp-picker-input { height: 26px !important; width:100% !important; } dp-date-picker{width:100%; direction:ltr;} /deep/ dp-day-time-calendar{position: fixed;}'],
+    styles: ['/deep/ dp-date-picker.dp-material .dp-picker-input { height: 26px !important; width:100% !important; } dp-date-picker{width:100%; direction:ltr;} /deep/ dp-day-calendar{position: fixed;}'],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -27,121 +26,108 @@ import { KeyCode } from '../../enum/KeyCode';
         }
     ]
 })
-export class SppcDatepicker implements OnInit, ControlValueAccessor {
-
-    private maxDate: string;
-    private minDate: string;
-    private fiscalPeriodId: string;
+export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor {
 
     public dateConfig: any;
-    
-    constructor(private fiscalPeriodService: FiscalPeriodService, private datepipe: DatePipe) {
+    public dateLocale: string = 'fa';
 
-
-        //this section written in base class
-
-        if (localStorage.getItem('currentContext') != null) {
-            var item: string | null;
-            item = localStorage.getItem('currentContext');
-            var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-            this.fiscalPeriodId = currentContext ? currentContext.fpId.toString() : '';
-
-        }
-
-        //this section written in base class
-
-        //todo: get fiscal period record for set minDate and maxDate
-        //this.minDate = "01/20/2018";
-        //this.maxDate = "02/15/2019";
-
-
+    constructor(private datepipe: DatePipe) {
     }
 
-    public inputDateFormat: string = 'yyyy-MM-dd hh:mm';
+    public inputDateFormat: string = 'yyyy/MM/dd hh:mm';
+
 
     ngOnInit() {
-        var dateLocale = 'fa';
-        var dateFormat = "YYYY/MM/DD HH:mm"
+        //var dateLocale = 'fa';
+        var dateFormat = "YYYY/MM/DD"
         var lang = localStorage.getItem('lang');
         if (lang) {
-            dateLocale = lang;
+            this.dateLocale = lang;
             if (lang == "en")
-                dateFormat = "MM/DD/YYYY HH:mm";
+                dateFormat = "MM/DD/YYYY";
         }
 
         this.dateConfig = {
+            mode: "day",
             format: dateFormat,
-            //min: this.minDate,
-            //max: this.maxDate,
-            locale: dateLocale,
+            locale: this.dateLocale,
         };
     }
 
-    public ChangeDateKey(event: any) {
-
-        var allowKey = false;
-
-        var currentDate = this.dateObject.toDate();
-        switch (event) {
-            case KeyCode.Space: {
-
-                this.date = this.datepipe.transform(new Date().toString(), this.inputDateFormat);             
-
-                break;
-            }
-            case KeyCode.Page_Up: {
-
-                this.date = this.datepipe.transform(currentDate.setFullYear(currentDate.getFullYear() + 1), this.inputDateFormat);
-
-                break;
-            }
-            case KeyCode.Page_Down: {
-
-                this.date = this.datepipe.transform(currentDate.setFullYear(currentDate.getFullYear() - 1), this.inputDateFormat);
-
-                break;
-            }
-            case KeyCode.Down_Arrow: {
-
-                this.date = this.datepipe.transform(currentDate.setMonth(currentDate.getMonth() - 1), this.inputDateFormat);
-
-                break;
-            }
-            case KeyCode.Up_Arrow: {
-
-                this.date = this.datepipe.transform(currentDate.setMonth(currentDate.getMonth() + 1), this.inputDateFormat);
-
-                break;
-            }
-            case KeyCode.Left_Arrow: {
-
-                this.date = this.datepipe.transform(currentDate.setDate(currentDate.getDate() - 1), this.inputDateFormat);
-
-                break;
-            }
-            case KeyCode.Right_Arrow: {
-
-                this.date = this.datepipe.transform(currentDate.setDate(currentDate.getDate() + 1), this.inputDateFormat);
-
-                break;
-            }
-            default: {
-
-                break;
-            }
-        }
-
-        this.dateObject = moment(this.date);
-        return allowKey;
+    ngOnDestroy() {
+        moment.locale('en');
     }
 
     @Input() date: any;
     public dateObject = moment();
     propagateChange: any = () => { };
 
+    public ChangeDateKey(event: any) {
+
+        var allowKey = false;
+
+        switch (event) {
+            case KeyCode.Space: {
+                var currentDate = this.dateObject.toDate();
+                this.date = this.datepipe.transform(new Date().toString(), this.inputDateFormat);
+                this.dateObject = moment(this.date);
+                break;
+            }
+            case KeyCode.Page_Up: {
+                var currentDate = this.dateObject.toDate();
+                this.date = this.datepipe.transform(currentDate.setFullYear(currentDate.getFullYear() + 1), this.inputDateFormat);
+                this.dateObject = moment(this.date);
+                break;
+            }
+            case KeyCode.Page_Down: {
+                var currentDate = this.dateObject.toDate();
+                this.date = this.datepipe.transform(currentDate.setFullYear(currentDate.getFullYear() - 1), this.inputDateFormat);
+                this.dateObject = moment(this.date);
+                break;
+            }
+            case KeyCode.Down_Arrow: {
+                var currentDate = this.dateObject.toDate();
+                this.date = this.datepipe.transform(currentDate.setMonth(currentDate.getMonth() - 1), this.inputDateFormat);
+                this.dateObject = moment(this.date);
+                break;
+            }
+            case KeyCode.Up_Arrow: {
+                var currentDate = this.dateObject.toDate();
+                this.date = this.datepipe.transform(currentDate.setMonth(currentDate.getMonth() + 1), this.inputDateFormat);
+                this.dateObject = moment(this.date);
+                break;
+            }
+            case KeyCode.Left_Arrow: {
+                var currentDate = this.dateObject.toDate();
+                this.date = this.datepipe.transform(currentDate.setDate(currentDate.getDate() - 1), this.inputDateFormat);
+                this.dateObject = moment(this.date);
+                break;
+            }
+            case KeyCode.Right_Arrow: {
+                var currentDate = this.dateObject.toDate();
+                this.date = this.datepipe.transform(currentDate.setDate(currentDate.getDate() + 1), this.inputDateFormat);
+                this.dateObject = moment(this.date);
+                break;
+            }
+            default: {
+                if ((event >= 48 && event <= 57) || (event >= 96 && event <= 105) || (event == 191) || (event == 111) || (event == 8)) {
+                    allowKey = true;
+                    if (this.dateLocale == "fa") {
+                        moment.locale('fa');
+                    }
+                }
+                else {
+                    return false;
+                }
+                break;
+            }
+        }
+
+    }
+
     DateChange() {
         this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
+        moment.locale('en');
     }
 
     writeValue(value: any): void {
