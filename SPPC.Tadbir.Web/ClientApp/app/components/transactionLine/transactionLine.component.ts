@@ -194,6 +194,10 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
         transactionLine.currencyId = 1;
         transactionLine.currencyName = "ریال";
 
+        //TODO
+        transactionLine.debit = +transactionLine.debit.toString().replace(',', '').replace(' $', '');
+        transactionLine.credit = +transactionLine.credit.toString().replace(',', '').replace(' ریال', '');
+
         if (!this.isNew) {
 
             this.isNew = false;

@@ -8,7 +8,7 @@
         <div class="form-group">
             <label for="debit" class="control-label">{{ 'TransactionLine.Debit' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="debit" />
+            <input type="text" class="k-textbox" formControlName="debit" [textMask]="{mask: dollarMask}" (focus)="$event.target.select()"/>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.debit.valid || editForm.controls.debit.pristine">
                 {{ 'Validations.TransactionLineDebit' | translate }}
@@ -18,7 +18,7 @@
         <div class="form-group">
             <label for="credit" class="control-label">{{ 'TransactionLine.Credit' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="credit" />
+            <input type="text" class="k-textbox" formControlName="credit" [textMask]="{mask: rialMask}" (focus)="$event.target.select()"/>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.credit.valid || editForm.controls.credit.pristine">
                 {{ 'Validations.TransactionLineCredit' | translate }}

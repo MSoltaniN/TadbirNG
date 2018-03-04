@@ -10,6 +10,8 @@ import { Observable } from 'rxjs/Observable';
 import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
 
+import createNumberMask from 'text-mask-addons/dist/createNumberMask'
+
 
 
 interface Item {
@@ -27,6 +29,16 @@ interface Item {
 })
 
 export class TransactionLineFormComponent extends DefaultComponent {
+
+    public dollarMask = createNumberMask({
+        prefix: '$ ',
+        suffix: ''
+    })
+
+    public rialMask = createNumberMask({
+        prefix: '',
+        suffix: ' ریال'
+    })
 
     //create a form controls
     private editForm = new FormGroup({
