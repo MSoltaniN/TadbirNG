@@ -31,6 +31,8 @@ namespace SPPC.Tadbir.ViewModel.Metadata
             StorageType = String.Empty;
             ScriptType = String.Empty;
             NameResourceId = String.Empty;
+            AllowSorting = true;
+            AllowFiltering = true;
         }
 
         /// <summary>
@@ -89,5 +91,15 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(128, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string NameResourceId { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که آیا عمل مرتب سازی بر حسب مقادیر این ویژگی فعال هست یا نه
+        /// </summary>
+        public bool AllowSorting { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که آیا عمل فیلتر کردن بر حسب مقادیر این ویژگی فعال هست یا نه
+        /// </summary>
+        public bool AllowFiltering { get; set; }
     }
 }

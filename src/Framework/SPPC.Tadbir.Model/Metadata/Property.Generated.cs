@@ -81,6 +81,16 @@ namespace SPPC.Tadbir.Model.Metadata
         public virtual string NameResourceId { get; set; }
 
         /// <summary>
+        /// مشخص می کند که آیا عمل مرتب سازی بر حسب مقادیر این ویژگی فعال هست یا نه
+        /// </summary>
+        public virtual bool AllowSorting { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که آیا عمل فیلتر کردن بر حسب مقادیر این ویژگی فعال هست یا نه
+        /// </summary>
+        public virtual bool AllowFiltering { get; set; }
+
+        /// <summary>
         /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
         /// </summary>
         public virtual Guid RowGuid { get; set; }

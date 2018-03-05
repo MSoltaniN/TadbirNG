@@ -40,6 +40,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.NameResourceId)
                 .IsRequired()
                 .HasMaxLength(128);
+            builder.Property(e => e.AllowSorting)
+                .HasColumnType("bit")
+                .IsRequired();
+            builder.Property(e => e.AllowFiltering)
+                .HasColumnType("bit")
+                .IsRequired();
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");

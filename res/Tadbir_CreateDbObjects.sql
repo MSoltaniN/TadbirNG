@@ -87,6 +87,8 @@ CREATE TABLE [Metadata].[Property] (
     [IsFixedLength]    BIT              CONSTRAINT [DF_Metadata_Property_IsFixedLength] DEFAULT (0) NOT NULL,
     [IsNullable]       BIT              NOT NULL,
     [NameResourceId]   VARCHAR(128)     NOT NULL,
+    [AllowSorting]     BIT              CONSTRAINT [DF_Metadata_Property_AllowSorting] DEFAULT (1) NOT NULL,
+    [AllowFiltering]   BIT              CONSTRAINT [DF_Metadata_Property_AllowFiltering] DEFAULT (1) NOT NULL,
     [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Property_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]     DATETIME         CONSTRAINT [DF_Metadata_Property_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Metadata_Property] PRIMARY KEY CLUSTERED ([PropertyID] ASC)
