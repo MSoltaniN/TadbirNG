@@ -17,5 +17,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
         Task<EntityViewModel> GetEntityMetadataAsync<TEntity>()
             where TEntity : IEntity;
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای موجودیت با نام مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="entityName">نام (شناسه متنی) موجودیت مورد نظر</param>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
+        Task<EntityViewModel> GetEntityMetadataAsync(string entityName);
     }
 }

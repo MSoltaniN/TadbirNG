@@ -33,9 +33,19 @@ namespace SPPC.Tadbir.Persistence
         public async Task<EntityViewModel> GetEntityMetadataAsync<TEntity>()
             where TEntity : IEntity
         {
+            return await GetEntityMetadataAsync(typeof(TEntity).Name);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای موجودیت با نام مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="entityName">نام (شناسه متنی) موجودیت مورد نظر</param>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
+        public async Task<EntityViewModel> GetEntityMetadataAsync(string entityName)
+        {
             var repository = _unitOfWork.GetAsyncRepository<Entity>();
             var entityMetadata = await repository
-                .GetByCriteriaAsync(ent => ent.Name == typeof(TEntity).Name, ent => ent.Properties);
+                .GetByCriteriaAsync(ent => ent.Name == entityName, ent => ent.Properties);
             return entityMetadata
                 .Select(ent => _mapper.Map<EntityViewModel>(ent))
                 .FirstOrDefault();
