@@ -31,26 +31,28 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor {
     public dateConfig: any;
     public dateLocale: string = 'fa';
 
+
     constructor(private datepipe: DatePipe) {
     }
 
-    public inputDateFormat: string = 'yyyy/MM/dd hh:mm';
+    public inputDateFormat: string = 'yyyy/M/d hh:mm';
 
 
     ngOnInit() {
         //var dateLocale = 'fa';
-        var dateFormat = "YYYY/MM/DD"
+        var dateFormat = "YYYY/M/D"
         var lang = localStorage.getItem('lang');
         if (lang) {
             this.dateLocale = lang;
             if (lang == "en")
-                dateFormat = "MM/DD/YYYY";
+                dateFormat = "M/D/YYYY";
         }
 
         this.dateConfig = {
             mode: "day",
             format: dateFormat,
             locale: this.dateLocale,
+            showGoToCurrent: false
         };
     }
 
@@ -112,21 +114,26 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor {
             default: {
                 if ((event >= 48 && event <= 57) || (event >= 96 && event <= 105) || (event == 191) || (event == 111) || (event == 8)) {
                     allowKey = true;
+
                     if (this.dateLocale == "fa") {
                         moment.locale('fa');
                     }
                 }
                 else {
-                    return false;
+                    allowKey = false;
                 }
                 break;
             }
         }
 
+        return allowKey;
+
     }
 
     DateChange() {
-        this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
+        debugger;
+        var test = this.datepipe.transform(this.dateObject, this.inputDateFormat);
+        this.propagateChange(test);
         moment.locale('en');
     }
 
@@ -142,5 +149,6 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor {
     }
 
     registerOnTouched(fn: any): void { }
+
 
 }

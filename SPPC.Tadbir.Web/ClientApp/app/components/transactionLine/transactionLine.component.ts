@@ -42,6 +42,9 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     public selectedRows: string[] = [];
     public totalRecords: number;
 
+    public debitSum: number;
+    public creditSum: number;
+
     //for add in delete messageText
     deleteConfirm: boolean;
     deleteTransactionLineId: number;
@@ -110,6 +113,8 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
                     data: res.lines,
                     total: this.totalRecords
                 }
+                this.debitSum = res.transaction.debitSum;
+                this.creditSum = res.transaction.creditSum;
                 this.showloadingMessage = !(res.lines.length == 0);
             })
         }).subscribe(res => {

@@ -3,4 +3,8 @@
     .body-content {
         padding-top: 50px;
     }
+
+    #mainContent{
+        margin-top:50px;
+    }
 }

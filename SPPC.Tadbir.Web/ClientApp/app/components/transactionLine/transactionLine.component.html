@@ -86,11 +86,17 @@
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
                     </ng-template>
+                    <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex">
+                        {{debitSum}}
+                    </ng-template>
                 </kendo-grid-column>
 
                 <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="TransactionLine.credit">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
+                    </ng-template>
+                    <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex">
+                        {{creditSum}}
                     </ng-template>
                 </kendo-grid-column>
 
