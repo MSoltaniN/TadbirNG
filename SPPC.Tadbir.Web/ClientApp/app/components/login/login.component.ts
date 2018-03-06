@@ -9,6 +9,7 @@ import { TranslateService } from "ng2-translate";
 
 import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
+import { MetaDataService } from '../../service/metadata/metadata.service';
 
 
 
@@ -35,9 +36,10 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService, public toastrService: ToastrService,
-        public translate: TranslateService, @Host() public parent: LoginContainerComponent, public renderer: Renderer2) 
+        public translate: TranslateService, @Host() public parent: LoginContainerComponent, public renderer: Renderer2,
+        public metadata: MetaDataService) 
     {
-        super(toastrService, translate, renderer);
+        super(toastrService, translate, renderer,'',metadata);
         this.lang = this.currentlang;
     }
 

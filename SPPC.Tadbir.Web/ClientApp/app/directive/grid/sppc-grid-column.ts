@@ -2,24 +2,28 @@
 import { Directive, Host, Input } from "@angular/core";
 import { ColumnComponent, FilterMenuTemplateDirective } from "@progress/kendo-angular-grid";
 import { TranslateService } from "ng2-translate";
+import { DefaultComponent } from "../../class/default.component";
+import { String } from '../../class/source';
+//import { Component } from '@angular/core'
 
 
 
 
 @Directive({
-    selector: '[sppc-grid-column]'
+    selector: '[sppc-grid-column]',
+    providers: [DefaultComponent,String]
 })
 
 export class SppcGridColumn {
-    constructor( @Host() private hostColumn: ColumnComponent, private translate: TranslateService)
+    constructor( @Host() private hostColumn: ColumnComponent, @Host() public hostColumn1: DefaultComponent, private translate: TranslateService)
     {
-        
+        //var props = def.properties;
     }
-
+    
     @Input('sppc-grid-column') value: string;
 
     ngOnInit() {
-        
+        var item = this.hostColumn1;
     }
 
     ngOnChanges() {

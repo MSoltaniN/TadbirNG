@@ -27,6 +27,7 @@ import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
 import { MessageType } from "../../enviroment";
 import { Filter } from "../../class/filter";
+import { MetaDataService } from '../../service/metadata/metadata.service';
 
 
 @Component({
@@ -69,8 +70,9 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService,
-        private transactionLineService: TransactionLineService, public renderer: Renderer2) {
-        super(toastrService, translate, renderer, "TransactionLine");
+        private transactionLineService: TransactionLineService,
+        public renderer: Renderer2, public metadata: MetaDataService) {
+        super(toastrService, translate, renderer, "TransactionLine", metadata);
     }
 
     getRowsCount() {
@@ -127,7 +129,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
         this.state = state;
 
-        this.skip = state.skip;
+        this.pageIndex = state.skip;
         this.reloadGrid();
     }
 
@@ -140,7 +142,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
 
     pageChange(event: PageChangeEvent): void {
-        this.skip = event.skip;
+        this.pageIndex = event.skip;
         this.reloadGrid();
     }
 

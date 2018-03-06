@@ -58,13 +58,13 @@
 
                 <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="TransactionLine.debit">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column" [spinners]="true" [filter]="filter"></sppc-string-filter>
+                        <sppc-grid-filter [metaData]="getMeta('debit')" [column]="column" [spinners]="true" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                 </kendo-grid-column>
 
                 <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="TransactionLine.credit">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column" [spinners]="true" [filter]="filter"></sppc-string-filter>
+                        <sppc-grid-filter [metaData]="getMeta('credit')" [column]="column" [spinners]="true" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                 </kendo-grid-column>
 
@@ -84,19 +84,19 @@
 
                 <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="TransactionLine.debit">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
+                        <sppc-grid-filter [metaData]="getMeta('debit')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                 </kendo-grid-column>
 
                 <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="TransactionLine.credit">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
+                        <sppc-grid-filter [metaData]="getMeta('credit')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                 </kendo-grid-column>
 
                 <kendo-grid-column media="(min-width: 1024px)" sppc-grid-column="TransactionLine.description">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
+                        <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                 </kendo-grid-column>
 

@@ -11,9 +11,10 @@ import { CompanyService, BranchService, FiscalPeriodService } from '../../servic
 import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
 import { ContextInfo } from "../../service/login/authentication.service";
-import { MessageType, Layout } from "../../enviroment";
+import { MessageType, Layout, MessagePosition } from "../../enviroment";
 
 import { RTL } from '@progress/kendo-angular-l10n';
+import { MetaDataService } from '../../service/metadata/metadata.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -67,9 +68,10 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         public companyService: CompanyService,
         private fiscalPeriodService: FiscalPeriodService,
         @Host() parent: LoginContainerComponent,
-        public renderer: Renderer2) 
+        public renderer: Renderer2,
+        public metadata: MetaDataService) 
     {
-        super(toastrService, translate,renderer);
+        super(toastrService, translate,renderer,'',metadata);
             
     }
 
@@ -148,19 +150,19 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         var isValidate: boolean = true;
 
         if (this.companyId == '') {
-            this.showMessage(this.getText("Login.Validation.SelectCompany"), MessageType.Info, '', 'toast-top-center');
+            this.showMessage(this.getText("Login.Validation.SelectCompany"), MessageType.Info, '', MessagePosition.TopCenter);
             isValidate = false;
             return isValidate;
         }
 
         if (this.branchId == '')
         {
-            this.showMessage(this.getText("Login.Validation.SelectBranch"), MessageType.Info, '', 'toast-top-center');
+            this.showMessage(this.getText("Login.Validation.SelectBranch"), MessageType.Info, '', MessagePosition.TopCenter);
             isValidate = false;
         }
 
         if (this.fiscalPeriodId == '') {
-            this.showMessage(this.getText("Login.Validation.SelectFiscalPeriod"), MessageType.Info, '', 'toast-top-center');
+            this.showMessage(this.getText("Login.Validation.SelectFiscalPeriod"), MessageType.Info, '', MessagePosition.TopCenter);
             isValidate = false;
         }
 

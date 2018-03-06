@@ -5,6 +5,7 @@ import {  AuthenticationService } from '../../service/login/index';
 import { ToastrService } from "toastr-ng2/toastr";
 import { DefaultComponent } from "../../class/default.component";
 import { TranslateService } from "ng2-translate";
+import { MetaDataService } from '../../service/metadata/metadata.service';
 
 
 @Component({
@@ -26,9 +27,10 @@ export class LoginContainerComponent extends DefaultComponent implements OnInit 
         private authenticationService: AuthenticationService,
         public toastrService: ToastrService,
         public translate: TranslateService,
-        public renderer: Renderer2) 
+        public renderer: Renderer2,
+        public metadata: MetaDataService) 
     {
-        super(toastrService, translate, renderer);
+        super(toastrService, translate, renderer,'',metadata);
 
     }
 

@@ -12,6 +12,7 @@ import { DefaultComponent } from "../../class/default.component";
 
 import { Layout } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
+import { MetaDataService } from '../../service/metadata/metadata.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -95,9 +96,9 @@ export class TransactionFormComponent extends DefaultComponent {
     //Events
 
     constructor(private transactionService: TransactionService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
-        public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2) {
+        public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
 
-        super(toastrService, translate, renderer, "Transaction");
+        super(toastrService, translate, renderer, "Transaction",metadata);
 
     }
 

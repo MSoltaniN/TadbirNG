@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injector } from '@angular/core';
 import { ServerModule } from '@angular/platform-server';
 import { AppModuleShared } from './app.module.shared';
 import { AppComponent } from './components/app/app.component';
@@ -11,4 +11,10 @@ import { AppComponent } from './components/app/app.component';
     ]
 })
 export class AppModule {
+
+    static injector: Injector;
+    constructor(injector: Injector) {
+        AppModule.injector = injector;
+    }
+
 }

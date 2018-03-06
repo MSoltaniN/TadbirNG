@@ -9,6 +9,7 @@ import { ToastrService, ToastConfig } from 'toastr-ng2';
 import { Observable } from 'rxjs/Observable';
 import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
+import { MetaDataService } from '../../service/metadata/metadata.service';
 
 
 
@@ -78,8 +79,10 @@ export class TransactionLineFormComponent extends DefaultComponent {
     }
     //Events
 
-    constructor(private transactionLineService: TransactionLineService, public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2) {
-        super(toastrService, translate, renderer, "TransactionLine");
+    constructor(private transactionLineService: TransactionLineService,
+        public toastrService: ToastrService, public translate: TranslateService,
+        public renderer: Renderer2,public metadata : MetaDataService) {
+        super(toastrService, translate, renderer, "TransactionLine",metadata);
 
         
     }

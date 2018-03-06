@@ -6,27 +6,72 @@ import { TranslateService } from "ng2-translate";
 import { String } from './source';
 import { State } from "@progress/kendo-data-query/dist/es/state";
 import { BaseComponent } from "./base.component"
+import { Property } from "./metadata/property"
 
 import { Filter } from './filter';
-import { Renderer2 } from "@angular/core";
+import { Renderer2, Injectable, Inject, Injector } from "@angular/core";
+import { MetaDataService } from '../service/metadata/metadata.service';
+import { Http } from '@angular/http';
+import { AppModule } from '../app.module.server';
 
-
+@Injectable()
 export class DefaultComponent extends BaseComponent {
 
     public translateService: TranslateService
+
+    /** this message show after update command */
     public updateMsg: string;
+
+    /** this message show after insert command */
     public insertMsg: string;
+
+    /** this message show after delete command */
     public deleteMsg: string;
 
+    /** this message show in confirm messagebox */
     public deleteConfirmMsg: string;
+
+    /** array of property.this variable is a container for metadata */
+    public properties: { [id: string]: Array<Property>; } = {}
+
+
+
+
+    /**
+    * this function return metadata of column
+    * @param name is a name of column like 'id' , 'name' , 'fiscalperiod' , ... .    
+    */    
+    public getMeta(name: string):Property | undefined {       
+        
+        //@Inject(MetaDataService) metadata: MetaDataService;
+        if (Object.keys(this.properties).length === 0) {                       
+            this.metadataService.getMetaData(this.entityName).subscribe(res1 => {
+                this.properties[this.entityName] = res1.properties;
+                localStorage.setItem(this.entityName, JSON.stringify(this.properties[this.entityName]))
+            });            
+        }
+
+        if (localStorage.getItem(this.entityName) != undefined) {
+
+            var item: string | null;
+            item = localStorage.getItem(this.entityName);
+            this.properties[this.entityName] = JSON.parse(item != null ? item.toString() : "");
+        }
+        
+        var result = this.properties[this.entityName].find(p => p.name.toLowerCase() == name.toLowerCase());
+
+        return result;
+    }
+    
+    //public rtlClass: string = "ui-rtl";
+    //public rtlUse: string = "rtl";
     
 
-    public rtlClass: string = "ui-rtl";
-    public rtlUse: string = "rtl";
-
+    /** return the current language */
     public currentlang: string = "";
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public entityName: string = '') 
+    constructor(public toastrService: ToastrService, public translate: TranslateService
+        , public renderer: Renderer2, public entityName: string = '',public metadataService:MetaDataService) 
     {
         
         super(toastrService);
@@ -74,18 +119,28 @@ export class DefaultComponent extends BaseComponent {
         this.localizeMsg();        
     }
 
+    /** the default value of grid paging size  */
     pageSize: number = 10;
-    skip: number = 0;
 
     
-    get pageIndex(): number {
+    private skip: number = 0;
+
+    /** set number value for grid current page
+    * @param value is page number.
+    */
+    public set pageIndex(value: number) {
+        this.skip = value;
+    }
+
+    /** set number value for grid current page */
+    public get pageIndex(): number {
         if (this.skip == 0)
             return 1;
         else
             return (this.skip / this.pageSize) + 1;        
-    }
-    
+    }    
 
+    /** the current state of filtering and paging */
     public state: State = {
         skip: 0,
         take: 10,
@@ -138,7 +193,9 @@ export class DefaultComponent extends BaseComponent {
                             operator = " == {0}";
                     }
 
-                    var dataType = "";
+                    
+                    //var dataType = "";
+                    /*
                     switch (filter.filters[i].field) {
                         case "fiscalPeriodId":
                         case "level":
@@ -151,10 +208,14 @@ export class DefaultComponent extends BaseComponent {
                             break;
                         default:
                             dataType = "System.String";
-                    }
+                    }*/
 
+                    var metadata = this.getMeta(filter.filters[i].field);
+                    var dataType = '';
+                    if (metadata != undefined)
+                        dataType = metadata.dotNetType;
 
-                    filters.push(new Filter(filter.filters[i].field, filter.filters[i].value, operator, dataType))
+                    filters.push(new Filter(filter.filters[i].field, filter.filters[i].value, operator, dataType));
 
                 }
             }
@@ -164,7 +225,10 @@ export class DefaultComponent extends BaseComponent {
         return filters;
     }
 
-    localizeMsg() {
+    /**
+     * this method localize CRUD messages 
+     */
+    private localizeMsg() {
         // read message format for crud operations
         var entityType = '';
         this.translateService.get("Entity." + this.entityName).subscribe((msg: string) => {
@@ -186,6 +250,10 @@ export class DefaultComponent extends BaseComponent {
        
     }
 
+    /**
+     * return message or translate key from resource file (from fa.json or en.json)
+     * @param key is key of message like 'Buttons.Ok'
+     */
     public getText(key: string) : string
     {
         var msgText = '';
@@ -195,13 +263,21 @@ export class DefaultComponent extends BaseComponent {
         return msgText;
     }    
 
-    public prepareDeleteConfirm(name : string)
+    /**
+     * prepare confim message for delete operation
+     * @param text is a part of message that use for delete confirm message
+    */
+    public prepareDeleteConfirm(text : string)
     {
         this.translateService.get("Messages.DeleteConfirm").subscribe((msg: string) => {
             this.deleteConfirmMsg = String.Format(msg, name);
         });
     }
 
+    /**
+     * change current language
+     * @param value is string like 'fa' , 'en' , 'de' , ....
+     */
     changeLanguage(value: string) {
         this.translateService.use(value);
 
@@ -210,28 +286,22 @@ export class DefaultComponent extends BaseComponent {
         
         this.localizeMsg();
 
-        switch (value) {
-            case "fa":
-                {
-                    this.rtlUse = "rtl";
-                    this.rtlClass = "ui-rtl"
-                    break;
-                }
-            case "en":
-                {
-                    this.rtlUse = "ltr";
-                    this.rtlClass = ""
-                    break;
-                }
-        }
+        //switch (value) {
+        //    case "fa":
+        //        {
+        //            this.rtlUse = "rtl";
+        //            this.rtlClass = "ui-rtl"
+        //            break;
+        //        }
+        //    case "en":
+        //        {
+        //            this.rtlUse = "ltr";
+        //            this.rtlClass = ""
+        //            break;
+        //        }
+        //}
 
 
     }
-
-
     
-   
-
-
-
 }

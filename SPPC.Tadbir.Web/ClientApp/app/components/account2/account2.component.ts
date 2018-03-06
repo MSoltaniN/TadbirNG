@@ -31,6 +31,7 @@ import { MessageType, Layout } from "../../enviroment";
 import { Filter } from "../../class/filter";
 
 import { RTL } from '@progress/kendo-angular-l10n';
+import { MetaDataService } from '../../service/metadata/metadata.service';
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
@@ -81,19 +82,20 @@ export class Account2Component extends DefaultComponent implements OnInit {
     
     ngOnInit() {
         this.getFiscalPeriod();
-
+        
         this.reloadGrid();    
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService,
         private accountService: AccountService, private transactionLineService: TransactionLineService,
-        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2)
+        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2,public metadata: MetaDataService)
     {
-        super(toastrService, translate, renderer, "Account");
+        super(toastrService, translate, renderer, "Account",metadata);
         
         this.getFiscalPeriod();
 
-        this.reloadGrid();         
+        this.reloadGrid();
+        
     }
     
     getRowsCount() {
@@ -134,12 +136,15 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
             this.accountService.search(this.pageIndex, this.pageSize, order, filter).subscribe(res => {
                 //this.rowData = res;
+                this.properties = res.metadata.properties;
+
                 this.rowData = {
                     data: res.list,
-                    total: this.totalRecords
+                    total: this.totalRecords                   
                 }
 
                 this.showloadingMessage = !(res.length == 0);
+                
             })
         }).subscribe(res => {
             this.totalRecords = res;
@@ -157,7 +162,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
         this.state = state;
 
-        this.skip = state.skip;
+        this.pageIndex = state.skip;
         this.reloadGrid();
     }
     
@@ -170,7 +175,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
 
     pageChange(event: PageChangeEvent): void {
-        this.skip = event.skip;
+        this.pageIndex = event.skip;
         this.reloadGrid();
     }
     

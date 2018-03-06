@@ -29,6 +29,7 @@ import { MessageType, Layout } from "../../enviroment";
 import { Filter } from "../../class/filter";
 
 import { RTL } from '@progress/kendo-angular-l10n';
+import { MetaDataService } from '../../service/metadata/metadata.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -82,8 +83,8 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
     constructor(public toastrService: ToastrService, public translate: TranslateService,
         private transactionService: TransactionService, private transactionLineService: TransactionLineService,
-        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2) {
-        super(toastrService, translate,renderer,"Transaction");
+        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService) {
+        super(toastrService, translate, renderer, "Transaction", metadata);
 
     }
 
@@ -143,7 +144,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
         this.state = state;
 
-        this.skip = state.skip;
+        this.pageIndex = state.skip;
         this.reloadGrid();
     }
 
@@ -156,7 +157,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
 
     pageChange(event: PageChangeEvent): void {
-        this.skip = event.skip;
+        this.pageIndex = event.skip;
         this.reloadGrid();
     }
 
