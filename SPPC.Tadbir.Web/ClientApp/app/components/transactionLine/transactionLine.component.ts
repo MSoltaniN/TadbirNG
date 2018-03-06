@@ -43,6 +43,9 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     public selectedRows: string[] = [];
     public totalRecords: number;
 
+    public debitSum: number;
+    public creditSum: number;
+
     //for add in delete messageText
     deleteConfirm: boolean;
     deleteTransactionLineId: number;
@@ -112,6 +115,8 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
                     data: res.lines,
                     total: this.totalRecords
                 }
+                this.debitSum = res.transaction.debitSum;
+                this.creditSum = res.transaction.creditSum;
                 this.showloadingMessage = !(res.lines.length == 0);
             })
         }).subscribe(res => {
@@ -196,29 +201,45 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
         transactionLine.currencyId = 1;
         transactionLine.currencyName = "ریال";
 
-        debugger;
+        //TODO
+        transactionLine.debit = +transactionLine.debit.toString().replace(',', '').replace(' $', '');
+        transactionLine.credit = +transactionLine.credit.toString().replace(',', '').replace(' ریال', '');
+
         if (!this.isNew) {
+
+            this.isNew = false;
+            
             this.transactionLineService.editTransactionLine(transactionLine)
                 .subscribe(response => {
+
+                    this.editDataItem = undefined;
+
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
+
                 }, (error => {
+                    this.editDataItem = transactionLine;
                     this.showMessage(error, MessageType.Warning);
+
                 }));
         }
         else {
             this.transactionLineService.insertTransactionLine(this.transactionId,transactionLine)
                 .subscribe(response => {
+
+                    this.isNew = false;
+                    this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     this.reloadGrid();
+
                 }, (error => {
+
+                    this.isNew = true;
                     this.showMessage(error, MessageType.Warning);
+
                 }));
 
         }
-
-        this.editDataItem = undefined;
-        this.isNew = false;
     }
 
 }

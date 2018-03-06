@@ -1,20 +1,8 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-
 import { TransactionService, TransactionInfo, TransactionLineService, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
-
 import { Transaction, TransactionLine } from '../../model/index';
-
 import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component for message in client side */
-
-import {
-    GridDataResult,
-    DataStateChangeEvent,
-    PageChangeEvent,
-    RowArgs,
-    SelectAllCheckboxState
-} from '@progress/kendo-angular-grid';
-
-
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -50,13 +38,9 @@ export function getLayoutModule(layout: Layout) {
 export class TransactionComponent extends DefaultComponent implements OnInit {
 
     public rowData: GridDataResult;
-
     public selectedRows: string[] = [];
-
     public fiscalPeriodRows: any[];
-
     public totalRecords: number;
-
     public fpId: number;
 
     //for add in delete messageText
@@ -207,28 +191,37 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
         transaction.fiscalPeriodId = this.FiscalPeriodId;
 
         if (!this.isNew) {
+
+            this.isNew = false;
+
             this.transactionService.editTransaction(transaction)
                 .subscribe(response => {
+                    
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
-                    
+
                 }, (error => {
+
                     this.showMessage(error, MessageType.Warning);
+
                 }));
         }
         else {
             this.transactionService.insertTransaction(transaction)
                 .subscribe(response => {
+
+                    this.isNew = false;
+                    this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    this.reloadGrid();
+                    this.reloadGrid();                  
+
                 }, (error => {
+
+                    this.isNew = true;
                     this.showMessage(error, MessageType.Warning);
+                                       
                 }));
-
         }
-
-        this.editDataItem = undefined;
-        this.isNew = false;
     }
 
 }

@@ -9,6 +9,7 @@ import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationSt
 import { ToastrModule } from 'toastr-ng2';
 
 import { ReactiveFormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { TextMaskModule } from 'angular2-text-mask';
 
 
 import { AppComponent } from './components/app/app.component';
@@ -110,6 +111,7 @@ import { MetaDataService } from './service/metadata/metadata.service';
         DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule,
         BrowserModule,        
         DpDatePickerModule,
+        TextMaskModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'login', pathMatch: 'full' },            

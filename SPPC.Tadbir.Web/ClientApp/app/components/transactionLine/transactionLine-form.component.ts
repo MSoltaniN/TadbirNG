@@ -11,6 +11,8 @@ import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
 import { MetaDataService } from '../../service/metadata/metadata.service';
 
+import createNumberMask from 'text-mask-addons/dist/createNumberMask'
+
 
 
 interface Item {
@@ -28,6 +30,16 @@ interface Item {
 })
 
 export class TransactionLineFormComponent extends DefaultComponent {
+
+    public dollarMask = createNumberMask({
+        prefix: '$ ',
+        suffix: ''
+    })
+
+    public rialMask = createNumberMask({
+        prefix: '',
+        suffix: ' ریال'
+    })
 
     //create a form controls
     private editForm = new FormGroup({
@@ -64,7 +76,7 @@ export class TransactionLineFormComponent extends DefaultComponent {
     public onSave(e: any): void {
         e.preventDefault();
         this.save.emit(this.editForm.value);
-        this.active = false;
+        this.active = true;
     }
 
     public onCancel(e: any): void {
