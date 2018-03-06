@@ -4,11 +4,16 @@
 }
 
 
+.parentVertical {
+    height: 100vh;
+}
+
 .vertical-center {
-    min-height: 100%; /* Fallback for browsers do NOT support vh unit */
-    /*display: flex;*/
-    margin-top: 10%;
-    align-items: center;
+    float: none;
+    margin: auto auto;
+    vertical-align: middle;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .active {
