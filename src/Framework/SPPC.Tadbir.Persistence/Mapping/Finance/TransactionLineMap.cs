@@ -30,11 +30,26 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
 
-            builder.HasOne(d => d.FullAccount)
+            builder.HasOne(d => d.Account)
                 .WithMany()
-                .HasForeignKey(d => d.FullAccountId)
+                .HasForeignKey(d => d.AccountId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_TransactionLine_Finance_FullAccount");
+                .HasConstraintName("FK_Finance_TransactionLine_Finance_Account");
+            builder.HasOne(d => d.DetailAccount)
+                .WithMany()
+                .HasForeignKey(d => d.DetailAccountId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Finance_TransactionLine_Finance_DetailAccount");
+            builder.HasOne(d => d.CostCenter)
+                .WithMany()
+                .HasForeignKey(d => d.CostCenterId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Finance_TransactionLine_Finance_CostCenter");
+            builder.HasOne(d => d.Project)
+                .WithMany()
+                .HasForeignKey(d => d.ProjectId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Finance_TransactionLine_Finance_Project");
             builder.HasOne(d => d.Branch)
                 .WithMany()
                 .HasForeignKey("BranchID")

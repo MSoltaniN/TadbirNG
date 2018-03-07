@@ -7,42 +7,42 @@ namespace SPPC.Tadbir.ViewModel.Finance
     public partial class TransactionViewModel
     {
         /// <summary>
-        /// Gets or sets the identifier of the fiscal period in which this financial transaction is defined.
+        /// شناسه دیتابیسی دوره مالی که این سرفصل حسابداری در آن تعریف شده است
         /// </summary>
         public int FiscalPeriodId { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the branch in which this financial transaction is defined.
+        /// شناسه دیتابیسی شعبه سازمانی که این سرفصل حسابداری در آن تعریف شده است
         /// </summary>
         public int BranchId { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the current work item for this transaction, if any.
+        /// شناسه دیتابیسی کار مرتبط با این سند مالی در کارتابل، در صورت وجود
         /// </summary>
         public int WorkItemId { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the target role of current work item for this transaction, if any.
+        /// شناسه دیتابیسی نقش گیرنده کار مرتبط با این سند مالی در کارتابل، در صورت وجود
         /// </summary>
         public int WorkItemTargetId { get; set; }
 
         /// <summary>
-        /// Gets or sets the document action of current work item for this transaction, if any.
+        /// آخرین اقدام صورت گرفته روی کار مرتبط با این سند مالی در کارتابل، در صورت وجود
         /// </summary>
         public string WorkItemAction { get; set; }
 
         /// <summary>
-        /// Gets or sets the sum of all debit values in transaction lines (articles).
+        /// جمع مقادیر بدهکار در آرتیکل های سند
         /// </summary>
         public decimal DebitSum { get; set; }
 
         /// <summary>
-        /// Gets or sets the sum of all credit values in transaction lines (articles).
+        /// جمع مقادیر بستانکار در آرتیکل های سند
         /// </summary>
         public decimal CreditSum { get; set; }
 
         /// <summary>
-        /// Gets or sets the document related to this transaction
+        /// مدل نمایشی مستند اداری مرتبط با این سند مالی
         /// </summary>
         public DocumentViewModel Document { get; set; }
     }

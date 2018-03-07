@@ -23,10 +23,10 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public int FiscalPeriodId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the account vector that is affected by this article.
-        /// </summary>
-        public FullAccountViewModel FullAccount { get; set; }
+        ///// <summary>
+        ///// Gets or sets the account vector that is affected by this article.
+        ///// </summary>
+        //public FullAccountViewModel FullAccount { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the currency that qualifies monetary values in this article.

@@ -7,7 +7,7 @@ namespace SPPC.Tadbir.Model.Finance
     public partial class Project
     {
         /// <summary>
-        /// Gets a collection of all projects that are immediately below this item in the project hierarchy
+        /// مجموعه ای از پروژه های زیرشاخه (فرزند) در ساختار درختی
         /// </summary>
         public IList<Project> Children { get; protected set; }
     }

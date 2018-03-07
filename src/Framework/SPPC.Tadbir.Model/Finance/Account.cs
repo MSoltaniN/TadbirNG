@@ -7,7 +7,7 @@ namespace SPPC.Tadbir.Model.Finance
     public partial class Account
     {
         /// <summary>
-        /// Gets a collection of all accounts that are immediately below this item in the account hierarchy
+        /// مجموعه ای از سرفصل های حسابداری زیرشاخه (فرزند) در ساختار درختی
         /// </summary>
         public IList<Account> Children { get; protected set; }
     }

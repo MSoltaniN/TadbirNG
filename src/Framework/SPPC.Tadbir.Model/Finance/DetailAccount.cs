@@ -7,7 +7,7 @@ namespace SPPC.Tadbir.Model.Finance
     public partial class DetailAccount
     {
         /// <summary>
-        /// Gets a collection of all detail accounts that are immediately below this item in the detail account hierarchy
+        /// مجموعه ای از تفصیلی های شناور زیرشاخه (فرزند) در ساختار درختی
         /// </summary>
         public IList<DetailAccount> Children { get; protected set; }
     }

@@ -432,7 +432,7 @@ namespace SPPC.Tadbir.Persistence
             var article = await repository.GetByIDAsync(articleId);
             if (article != null)
             {
-                article.FullAccount = null;
+                //article.FullAccount = null;
                 article.Branch = null;
                 article.Currency = null;
                 article.FiscalPeriod = null;
@@ -457,7 +457,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetRepository<TransactionLine>();
             var article = repository.GetByID(
                 articleId,
-                art => art.Transaction, art => art.FullAccount, art => art.Currency,
+                art => art.Transaction, art => art.Account, art => art.Currency,
                 art => art.Branch, art => art.FiscalPeriod);
             if (article != null)
             {
@@ -522,7 +522,7 @@ namespace SPPC.Tadbir.Persistence
             var article = repository.GetByID(articleId);
             if (article != null)
             {
-                article.FullAccount = null;
+                //article.FullAccount = null;
                 article.Branch = null;
                 article.Currency = null;
                 article.FiscalPeriod = null;
@@ -538,7 +538,7 @@ namespace SPPC.Tadbir.Persistence
 
         private static void UpdateExistingArticle(TransactionLine existing, TransactionLineViewModel article)
         {
-            existing.FullAccountId = article.FullAccount.Id;
+            //existing.FullAccountId = article.FullAccount.Id;
             existing.CurrencyId = article.CurrencyId ?? 0;
             existing.Debit = article.Debit;
             existing.Credit = article.Credit;
@@ -612,7 +612,7 @@ namespace SPPC.Tadbir.Persistence
             var transactionsQuery = repository
                 .GetEntityQuery()
                 .Include(txn => txn.Lines)
-                    .ThenInclude(line => line.FullAccount)
+                    .ThenInclude(line => line.Account)
                 .Include(txn => txn.Lines)
                     .ThenInclude(line => line.Currency)
                 .Include(txn => txn.Lines)
@@ -660,14 +660,14 @@ namespace SPPC.Tadbir.Persistence
         {
             var query = repository
                 .GetEntityQuery()
-                .Include(art => art.FullAccount)
-                    .ThenInclude(full => full.Account)
-                .Include(art => art.FullAccount)
-                    .ThenInclude(full => full.Detail)
-                .Include(art => art.FullAccount)
-                    .ThenInclude(full => full.Project)
-                .Include(art => art.FullAccount)
-                    .ThenInclude(full => full.CostCenter)
+                .Include(art => art.Account)
+                    //.ThenInclude(full => full.Account)
+                //.Include(art => art.FullAccount)
+                //    .ThenInclude(full => full.Detail)
+                //.Include(art => art.FullAccount)
+                //    .ThenInclude(full => full.Project)
+                //.Include(art => art.FullAccount)
+                //    .ThenInclude(full => full.CostCenter)
                 .Include(art => art.Transaction)
                 .Include(art => art.FiscalPeriod)
                 .Include(art => art.Currency)

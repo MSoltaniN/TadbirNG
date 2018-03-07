@@ -6,12 +6,27 @@ namespace SPPC.Tadbir.Model.Finance
     public partial class TransactionLine
     {
         /// <summary>
-        /// Gets or sets the unique identifier of the account vector affected by this transaction line
+        /// شناسه دیتابیسی مولفه سرفصل حسابداری از بردار حساب مورد استفاده در این آرتیکل مالی
         /// </summary>
-        public virtual int FullAccountId { get; set; }
+        public virtual int AccountId { get; set; }
 
         /// <summary>
-        /// Gets or sets the unique identifier of the currency that qualifies monetary value in this transaction line
+        /// شناسه دیتابیسی مولفه تفصیلی شناور از بردار حساب مورد استفاده در این آرتیکل مالی
+        /// </summary>
+        public virtual int DetailAccountId { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی مولفه مرکز هزینه از بردار حساب مورد استفاده در این آرتیکل مالی
+        /// </summary>
+        public virtual int CostCenterId { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی مولفه پروژه از بردار حساب مورد استفاده در این آرتیکل مالی
+        /// </summary>
+        public virtual int ProjectId { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی پول یا ارز مورد استفاده برای مبلغ بدهکار یا بستانکار این آرتیکل
         /// </summary>
         public virtual int CurrencyId { get; set; }
     }

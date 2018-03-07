@@ -195,7 +195,7 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.Transaction.Id = viewModel.TransactionId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
-                .AfterMap((viewModel, model) => model.FullAccount.Id = viewModel.FullAccount.Id)
+                //.AfterMap((viewModel, model) => model.Account.Id = viewModel.Account.Id)
                 .AfterMap((viewModel, model) => model.Currency.Id = viewModel.CurrencyId ?? 0);
 
             mapperConfig.CreateMap<Currency, KeyValue>()

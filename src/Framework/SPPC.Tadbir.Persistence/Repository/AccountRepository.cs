@@ -118,7 +118,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
             var query = GetArticleDetailsQuery(
-                repository, line => line.FullAccount.Account.Id == accountId, gridOptions);
+                repository, line => line.Account.Id == accountId, gridOptions);
             var list = await query
                 .Select(line => _mapper.Map<TransactionLineViewModel>(line))
                 .ToListAsync();
@@ -217,7 +217,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
             var articles = await repository
-                .GetByCriteriaAsync(art => art.FullAccount.Account.Id == accountId);
+                .GetByCriteriaAsync(art => art.Account.Id == accountId);
             return (articles.Count != 0);
         }
 
@@ -296,7 +296,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<TransactionLine>();
             var query = GetArticleDetailsQuery(
-                repository, line => line.FullAccount.Account.Id == accountId, gridOptions);
+                repository, line => line.Account.Id == accountId, gridOptions);
             return query
                 .Select(line => _mapper.Map<TransactionLineViewModel>(line))
                 .ToList();
@@ -392,7 +392,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<TransactionLine>();
             var articleCount = repository
-                .GetByCriteria(art => art.FullAccount.Account.Id == accountId)
+                .GetByCriteria(art => art.Account.Id == accountId)
                 .Count();
             return (articleCount != 0);
         }
@@ -425,14 +425,14 @@ namespace SPPC.Tadbir.Persistence
         {
             var query = repository
                 .GetEntityQuery()
-                .Include(art => art.FullAccount)
-                    .ThenInclude(full => full.Account)
-                .Include(art => art.FullAccount)
-                    .ThenInclude(full => full.Detail)
-                .Include(art => art.FullAccount)
-                    .ThenInclude(full => full.Project)
-                .Include(art => art.FullAccount)
-                    .ThenInclude(full => full.CostCenter)
+                .Include(art => art.Account)
+                //    .ThenInclude(full => full.Account)
+                //.Include(art => art.FullAccount)
+                //    .ThenInclude(full => full.Detail)
+                //.Include(art => art.FullAccount)
+                //    .ThenInclude(full => full.Project)
+                //.Include(art => art.FullAccount)
+                //    .ThenInclude(full => full.CostCenter)
                 .Include(art => art.Transaction)
                 .Include(art => art.FiscalPeriod)
                 .Include(art => art.Currency)
