@@ -1,5 +1,5 @@
-﻿import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
+﻿import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator } from '@angular/forms'
 import { DatePipe } from '@angular/common'
 
 import * as moment from 'jalali-moment';
@@ -8,7 +8,7 @@ import { KeyCode } from '../../enum/KeyCode';
 
 @Component({
     selector: 'sppc-datepicker',
-    template: `<dp-date-picker 
+    template: `<dp-date-picker
     class="k-textbox"
     [(ngModel)]="dateObject"
     (keydown)="ChangeDateKey($event.keyCode)"
@@ -23,23 +23,26 @@ import { KeyCode } from '../../enum/KeyCode';
             provide: NG_VALUE_ACCESSOR,
             useExisting: forwardRef(() => SppcDatepicker),
             multi: true
+        },
+        {
+            provide: NG_VALIDATORS,
+            useExisting: forwardRef(() => SppcDatepicker),
+            multi: true,
         }
     ]
 })
-export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor {
+export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, Validator {
 
     public dateConfig: any;
     public dateLocale: string = 'fa';
-
+    private parseError: boolean = false;
+    public inputDateFormat: string = 'yyyy/M/d hh:mm';
 
     constructor(private datepipe: DatePipe) {
     }
 
-    public inputDateFormat: string = 'yyyy/M/d hh:mm';
+       ngOnInit() {
 
-
-    ngOnInit() {
-        //var dateLocale = 'fa';
         var dateFormat = "YYYY/M/D"
         var lang = localStorage.getItem('lang');
         if (lang) {
@@ -52,7 +55,8 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor {
             mode: "day",
             format: dateFormat,
             locale: this.dateLocale,
-            showGoToCurrent: false
+            showGoToCurrent: false,
+
         };
     }
 
@@ -131,10 +135,20 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor {
     }
 
     DateChange() {
+
+        if (typeof this.dateObject === "object") {
+            this.parseError = false;
+            this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
+            moment.locale('en');  
+        }
+        else {
+            this.parseError = true;
+            this.propagateChange("");
+        } 
+    }
+
+    onGoToCurrent() {
         debugger;
-        var test = this.datepipe.transform(this.dateObject, this.inputDateFormat);
-        this.propagateChange(test);
-        moment.locale('en');
     }
 
     writeValue(value: any): void {
@@ -150,5 +164,12 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor {
 
     registerOnTouched(fn: any): void { }
 
+    public validate(c: FormControl) {
+        return (!this.parseError) ? null : {
+            jsonParseError: {
+                valid: false,
+            },
+        };
+    }
 
 }
