@@ -47,6 +47,8 @@
   "TransactionLine": {
     "Debit": "بدهکار",
     "Credit": "بستانکار",
+    "DebitSum": "جمع بدهکار",
+    "CreditSum": "جمع بستانکار",
     "Description": "توضیحات",
     "New": "آرتیکل جدید",
     "Delete": "حذف آرتیکل"

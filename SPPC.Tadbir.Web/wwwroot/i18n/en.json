@@ -49,6 +49,8 @@
   "TransactionLine": {
     "Debit": "Debit",
     "Credit": "Credit",
+    "DebitSum": "Debit Sum",
+    "CreditSum": "Credit Sum",
     "Description": "Description",
     "New": "New Article",
     "Delete": "Delete Article"
