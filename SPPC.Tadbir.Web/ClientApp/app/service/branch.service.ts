@@ -5,9 +5,10 @@ import "rxjs/Rx";
 import { String } from '../class/source';
 import { expect } from 'chai';
 import { Environment } from "../enviroment";
+import { BaseService } from '../class/base.service';
 
 @Injectable()
-export class BranchService {
+export class BranchService extends BaseService {
     
     private getBranchUrl = Environment.BaseUrl + "/lookup/branches/company/{0}/user/{1}"; //{0}=companyId  , {1}=userId
 
@@ -15,7 +16,7 @@ export class BranchService {
     options: RequestOptions;
 
     constructor(private http: Http) {
-
+        super();
     }
 
 
@@ -23,26 +24,28 @@ export class BranchService {
         
         this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8'});        
        
-        var userId = '';        
+        //var userId = '';        
 
-        if (localStorage.getItem('currentContext')) {
-            const userJson = localStorage.getItem('currentContext');
-            var currentUser = userJson !== null ? JSON.parse(userJson) : null;
+        //if (localStorage.getItem('currentContext')) {
+        //    const userJson = localStorage.getItem('currentContext');
+        //    var currentUser = userJson !== null ? JSON.parse(userJson) : null;
             
-            if(currentUser != null)
-            {
-                this.headers.append('X-Tadbir-AuthTicket', currentUser.ticket);       
+        //    if(currentUser != null)
+        //    {
+        //        this.headers.append('X-Tadbir-AuthTicket', currentUser.ticket);       
 
-                var jsonContext = atob(currentUser.ticket);
-                var context = JSON.parse(jsonContext);
+        //        var jsonContext = atob(currentUser.ticket);
+        //        var context = JSON.parse(jsonContext);
 
-                userId = context.User.Id;
-            }
+        //        userId = context.User.Id;
+        //    }
             
 
-        }
+        //}
 
-        var url = String.Format(this.getBranchUrl, companyId, userId);
+        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);       
+
+        var url = String.Format(this.getBranchUrl, companyId, this.UserId);
         
         return this.http.get(url, { headers: this.headers })
             .map(response => <any>(<Response>response).json());

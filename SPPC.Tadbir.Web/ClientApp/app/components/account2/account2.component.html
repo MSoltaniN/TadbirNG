@@ -59,12 +59,12 @@
                 <kendo-grid-checkbox-column showSelectAll="true" width="10"  media="(min-width: 450px) and (max-width: 1024px)" ></kendo-grid-checkbox-column>
                 <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Account.code"  > 
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column" [spinners]="true"  [filter]="filter"></sppc-string-filter>       
+                        <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [spinners]="true"  [filter]="filter"></sppc-grid-filter>       
                     </ng-template>                                                                        
                 </kendo-grid-column>
                 <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Account.name" >
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
+                        <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
@@ -83,22 +83,22 @@
                 <kendo-grid-checkbox-column showSelectAll="true" media="(min-width: 1024px)"></kendo-grid-checkbox-column>           
                 <kendo-grid-column width="150" media="(min-width: 1024px)" sppc-grid-column="Account.code" >                                     
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column"  [filter]="filter"></sppc-string-filter>
+                        <sppc-grid-filter [metaData]="getMeta('code')" [column]="column"  [filter]="filter"></sppc-grid-filter>
                     </ng-template>                    
                 </kendo-grid-column>
-                <kendo-grid-column  media="(min-width: 1024px)" width="200" sppc-grid-column="Account.name">
-                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
+                <kendo-grid-column  media="(min-width: 1024px)" width="200" sppc-grid-column="Account.name" >
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column" >
+                        <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-column  media="(min-width: 1024px)" sppc-grid-column="Account.level" >
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-numeric-filter [column]="column" [spinners]="false" [filter]="filter"></sppc-numeric-filter>
+                        <sppc-grid-filter [metaData]="getMeta('level')" [column]="column" [spinners]="false" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-column media="(min-width: 1024px)"  sppc-grid-column="Account.description" >
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
+                        <sppc-grid-filter [metaData]="getMeta('descrption')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-command-column media="(min-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">

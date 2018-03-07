@@ -25,11 +25,11 @@ export class SppcDatePipe implements PipeTransform {
 
     transform(value: any) {
         if (this.dateLocale == 'en')
-            return this.datepipe.transform(value, 'MM/dd/yyyy hh:mm');
+            return this.datepipe.transform(value, 'MM/dd/yyyy');
         else {
             var d = this.datepipe.transform(value, 'yyyy-MM-dd hh:mm');
             let MomentDate = moment(value);
-            return MomentDate.locale('fa').format("YYYY/M/D hh:mm");
+            return MomentDate.locale('fa').format("YYYY/MM/DD");
         }
     }
 }

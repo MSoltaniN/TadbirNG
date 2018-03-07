@@ -26,20 +26,25 @@ import { String } from '../../class/source';
 import { State, CompositeFilterDescriptor  } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
-import { MessageType,Layout } from "../../enviroment";
+
+import { MessageType, Layout } from "../../enviroment";
 import { Filter } from "../../class/filter";
-import { ContextInfo } from "../../service/login/authentication.service";
 
 import { RTL } from '@progress/kendo-angular-l10n';
+import { MetaDataService } from '../../service/metadata/metadata.service';
+
+export function getLayoutModule(layout: Layout) {
+    return layout.getLayout();
+}  
+
 
 @Component({
     selector: 'account2',
     templateUrl: './account2.component.html',
     providers: [{
         provide: RTL,
-        useFactory: function () {
-            return new Layout().getLayout();
-        }
+        useFactory: getLayoutModule,
+        deps: [Layout]
     }]
 })
 
@@ -77,19 +82,20 @@ export class Account2Component extends DefaultComponent implements OnInit {
     
     ngOnInit() {
         this.getFiscalPeriod();
-
+        
         this.reloadGrid();    
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService,
         private accountService: AccountService, private transactionLineService: TransactionLineService,
-        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2)
+        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2,public metadata: MetaDataService)
     {
-        super(toastrService, translate, renderer, "Account");
+        super(toastrService, translate, renderer, "Account",metadata);
         
         this.getFiscalPeriod();
 
-        this.reloadGrid();         
+        this.reloadGrid();
+        
     }
     
     getRowsCount() {
@@ -130,12 +136,15 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
             this.accountService.search(this.pageIndex, this.pageSize, order, filter).subscribe(res => {
                 //this.rowData = res;
+                this.properties = res.metadata.properties;
+
                 this.rowData = {
-                    data: res,
-                    total: this.totalRecords
+                    data: res.list,
+                    total: this.totalRecords                   
                 }
 
                 this.showloadingMessage = !(res.length == 0);
+                
             })
         }).subscribe(res => {
             this.totalRecords = res;
@@ -153,7 +162,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
         this.state = state;
 
-        this.skip = state.skip;
+        this.pageIndex = state.skip;
         this.reloadGrid();
     }
     
@@ -166,7 +175,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
 
     pageChange(event: PageChangeEvent): void {
-        this.skip = event.skip;
+        this.pageIndex = event.skip;
         this.reloadGrid();
     }
     
@@ -207,16 +216,8 @@ export class Account2Component extends DefaultComponent implements OnInit {
     /* load fiscal periods */
     getFiscalPeriod() {
         this.showloadingMessage = true;
-
-        var currentUser: ContextInfo = new ContextInfo();
-        if (localStorage.getItem('currentContext')) {
-            const userJson = localStorage.getItem('currentContext');
-
-            currentUser = userJson !== null ? JSON.parse(userJson) : null;
-            
-        }
-
-        this.fiscalPeriodService.getFiscalPeriod(currentUser.companyId).subscribe(res => {
+        
+        this.fiscalPeriodService.getFiscalPeriod(this.CompanyId).subscribe(res => {
             this.fiscalPeriodRows = res;
             this.showloadingMessage = !(res.length == 0);
         });
@@ -242,6 +243,9 @@ export class Account2Component extends DefaultComponent implements OnInit {
     }    
 
     public saveHandler(account: Account) {
+
+        account.branchId = this.BranchId;
+        account.fiscalPeriodId = this.FiscalPeriodId;
 
         if (!this.isNew) {
             this.accountService.editAccount(account)

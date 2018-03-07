@@ -5,9 +5,10 @@ import "rxjs/Rx";
 import { String } from '../class/source';
 import { expect } from 'chai';
 import { Environment } from "../enviroment";
+import { BaseService } from '../class/base.service';
 
 @Injectable()
-export class CompanyService {
+export class CompanyService extends BaseService {
 
     
     private getCompanyUrl = Environment.BaseUrl + "/lookup/companies/user/{0}";
@@ -16,7 +17,7 @@ export class CompanyService {
     options: RequestOptions;
 
     constructor(private http: Http) {
-
+        super();
     }
 
 

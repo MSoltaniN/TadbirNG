@@ -9,6 +9,7 @@ import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationSt
 import { ToastrModule } from 'toastr-ng2';
 
 import { ReactiveFormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { TextMaskModule } from 'angular2-text-mask';
 
 
 import { AppComponent } from './components/app/app.component';
@@ -17,6 +18,8 @@ import { Account2Component } from './components/account2/account2.component';
 import { AccountFormComponent } from './components/account2/account2-form.component';
 import { TransactionComponent } from './components/transaction/transaction.component';
 import { TransactionFormComponent } from './components/transaction/transaction-form.component';
+import { TransactionLineComponent } from './components/transactionLine/transactionLine.component';
+import { TransactionLineFormComponent } from './components/transactionLine/transactionLine-form.component'
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 
@@ -40,8 +43,9 @@ import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
 import { AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService, BranchService, TransactionService } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
-import { SppcNumericFilter } from './controls/grid/sppc-numeric-filter';
-import { SppcStringFilter } from './controls/grid/sppc-string-filter';
+
+import { SppcGridFilter } from './controls/grid/sppc-grid-filter';
+
 
 //import { Context } from "./components/login/login.component";
 import { LoginComponent } from "./components/login/login.component";
@@ -52,6 +56,7 @@ import { LogoutComponent } from "./components/login/logout.component";
 import { AuthenticationService, AuthGuard } from "./service/login/index";
 
 import { SppcDatePipe } from "./pipes/index"
+import { MetaDataService } from './service/metadata/metadata.service';
 
 
 @NgModule({
@@ -68,14 +73,16 @@ import { SppcDatePipe } from "./pipes/index"
         SppcNumberBox,
         SppcDropDownList,
         SppcDatepicker,
-        SppcGridColumn,
-        SppcNumericFilter,
-        SppcStringFilter,
+        SppcGridColumn,        
+        SppcGridFilter,
         TransactionComponent,
         TransactionFormComponent,
+        TransactionLineComponent,
+        TransactionLineFormComponent,
         SppcDatePipe
+        
     ],
-    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService,
+    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, MetaDataService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,
@@ -91,7 +98,8 @@ import { SppcDatePipe } from "./pipes/index"
         { provide: MessageService, useClass: GridMessageService },
         AuthGuard,        
         AuthenticationService,
-        DatePipe
+        DatePipe,
+        Layout        
     ],        
     imports: [
         CommonModule,         
@@ -101,8 +109,9 @@ import { SppcDatePipe } from "./pipes/index"
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
         DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule,
-        BrowserModule,
+        BrowserModule,        
         DpDatePickerModule,
+        TextMaskModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'login', pathMatch: 'full' },            

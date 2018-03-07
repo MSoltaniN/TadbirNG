@@ -1,8 +1,22 @@
-﻿//this class for all variable in system
+﻿import { Injectable } from "@angular/core";
+
+//this class for all variable in system
 export enum MessageType {
     Info,
     Succes,
     Warning
+}
+
+
+export enum MessagePosition {
+    TopLeft,
+    TopCenter,
+    TopRight,
+    MiddleLeft,    
+    MiddleRight,
+    BottomLeft,
+    BottomCenter,
+    BottomRight  
 }
 
 
@@ -14,7 +28,7 @@ export const Environment = {
 };
 
 
-
+@Injectable()
 export class  Layout  {       
     getLayout():boolean
     {

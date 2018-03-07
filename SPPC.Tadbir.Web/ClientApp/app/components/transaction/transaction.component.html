@@ -31,7 +31,7 @@
                     {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
                 </ng-template>
                 <ng-template kendoGridToolbarTemplate>
-                    <button kendoGridAddCommand (click)="addNew()" type="button">{{ 'Buttons.New' | translate }}</button>
+                    <button kendoGridAddCommand (click)="addNew()" type="button">{{ 'Transaction.New' | translate }}</button>
                     <button *ngIf="groupDelete" class="k-button" (click)="deleteTransactions()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
                 </ng-template>
                 <!-- template for mobile -->
@@ -57,12 +57,12 @@
                 <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px) and (max-width: 1024px)"></kendo-grid-checkbox-column>
                 <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Transaction.no">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column" [spinners]="true" [filter]="filter"></sppc-string-filter>
+                        <sppc-grid-filter [metaData]="getMeta('no')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                 </kendo-grid-column>
                 <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Transaction.date">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
+                        <sppc-grid-filter [metaData]="getMeta('date')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                     <ng-template kendoGridCellTemplate let-transaction>
                         {{ transaction.date | SppcDate }}
@@ -83,13 +83,13 @@
                 <kendo-grid-checkbox-column showSelectAll="true" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
                 <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="Transaction.no">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
+                        <sppc-grid-filter [metaData]="getMeta('no')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                 </kendo-grid-column>
 
                 <kendo-grid-column media="(min-width: 1024px)" sppc-grid-column="Transaction.date">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column" let-Transaction>
-                        <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
+                        <sppc-grid-filter [metaData]="getMeta('date')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                     <ng-template kendoGridCellTemplate let-transaction>
                         {{ transaction.date | SppcDate }}
@@ -98,7 +98,7 @@
 
                 <kendo-grid-column media="(min-width: 1024px)" sppc-grid-column="Transaction.description">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-string-filter [column]="column" [filter]="filter"></sppc-string-filter>
+                        <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                 </kendo-grid-column>
 

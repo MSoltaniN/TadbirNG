@@ -10,6 +10,7 @@ import { GridOrderBy } from "../class/grid.orderby";
 import { HttpParams } from "@angular/common/http";
 import { Environment } from "../enviroment";
 import { Context } from "../model/context";
+import { BaseService } from '../class/base.service';
 
 
 export class AccountInfo implements Account
@@ -22,7 +23,7 @@ export class AccountInfo implements Account
 
 
 @Injectable()
-export class AccountService 
+export class AccountService extends BaseService
 {   
 
     private _getAccountsUrl = Environment.BaseUrl + "/accounts/fp/{0}/branch/{1}";
@@ -46,24 +47,25 @@ export class AccountService
 
     constructor(private http: Http)
     {
+        super();
 
         this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8'});        
 
         //this section written in base class
-        var ticket = '';
+        //var ticket = '';
 
-        if (localStorage.getItem('currentContext') != null) {
-            var item: string | null;
-            item = localStorage.getItem('currentContext');
-            this.currentContext = JSON.parse(item != null ? item.toString() : "");
+        //if (localStorage.getItem('currentContext') != null) {
+        //    var item: string | null;
+        //    item = localStorage.getItem('currentContext');
+        //    this.currentContext = JSON.parse(item != null ? item.toString() : "");
 
-            ticket = this.currentContext ? this.currentContext.ticket.toString() : '';
-        }
+        //    ticket = this.currentContext ? this.currentContext.ticket.toString() : '';
+        //}
 
         //this section written in base class
 
 
-        this.headers.append('X-Tadbir-AuthTicket', ticket);
+        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
 
 
 
@@ -82,7 +84,7 @@ export class AccountService
         var headers = this.headers;
         headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
 
-        var url = String.Format(this._getCountUrl, Environment.FiscalPeriodId, Environment.BranchId);
+        var url = String.Format(this._getCountUrl, this.FiscalPeriodId, this.BranchId);
         
         return this.http.get(url, { headers: headers })
             .map(response => <any>(<Response>response).json());;
@@ -93,7 +95,7 @@ export class AccountService
     getCount(orderby?: string, filters?: any[]) {
         var headers = this.headers;
         
-        var url = String.Format(this._getCountUrl, Environment.FiscalPeriodId, Environment.BranchId);
+        var url = String.Format(this._getCountUrl, this.FiscalPeriodId, this.BranchId);
         
         var postItem = { filters: filters };
         var searchHeaders = this.headers;
@@ -132,22 +134,22 @@ export class AccountService
 
 
         //this section written in base class
-        var fpId = '';
-        var branchId = '';
+        //var fpId = '';
+        //var branchId = '';
 
-        if (localStorage.getItem('currentContext') != null) {
-            var item: string | null;
-            item = localStorage.getItem('currentContext');
-            this.currentContext = JSON.parse(item != null ? item.toString() : "");
+        //if (localStorage.getItem('currentContext') != null) {
+        //    var item: string | null;
+        //    item = localStorage.getItem('currentContext');
+        //    this.currentContext = JSON.parse(item != null ? item.toString() : "");
 
-            fpId = this.currentContext ? this.currentContext.fpId.toString() : '';
-            branchId = this.currentContext ? this.currentContext.branchId.toString() : '';
+        //    fpId = this.currentContext ? this.currentContext.fpId.toString() : '';
+        //    branchId = this.currentContext ? this.currentContext.branchId.toString() : '';
 
-        }
+        //}
 
         //this section written in base class
 
-        var url = String.Format(this._getAccountsUrl, fpId, branchId);
+        var url = String.Format(this._getAccountsUrl, this.FiscalPeriodId, this.BranchId);
 
         var searchHeaders = this.headers;
         

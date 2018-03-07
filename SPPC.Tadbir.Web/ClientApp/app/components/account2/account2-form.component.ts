@@ -10,7 +10,14 @@ import { Observable } from 'rxjs/Observable';
 import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
 
+import { Layout } from "../../enviroment";
+import { RTL } from '@progress/kendo-angular-l10n';
+import { MetaDataService } from '../../service/metadata/metadata.service';
 
+
+export function getLayoutModule(layout: Layout) {
+    return layout.getLayout();
+} 
 
 interface Item {
     Key: string,
@@ -23,7 +30,13 @@ interface Item {
     styles: [
         "input[type=text] { width: 100%; }"
     ],
-    templateUrl: './account2-form.component.html'
+    templateUrl: './account2-form.component.html',
+    providers: [{
+        provide: RTL,
+        useFactory: getLayoutModule,
+        deps: [Layout]
+    }]
+
 })
         
 export class AccountFormComponent extends DefaultComponent{
@@ -33,9 +46,7 @@ export class AccountFormComponent extends DefaultComponent{
         id : new FormControl("", Validators.required),
         code: new FormControl("", Validators.required),
         name: new FormControl("", Validators.required),   
-        description: new FormControl(),
-        fiscalPeriodId: new FormControl("", Validators.required),
-        branchId: new FormControl("", Validators.required),
+        description: new FormControl(),        
         level: new FormControl(0),
         fullCode: new FormControl("0")
     });
@@ -51,19 +62,16 @@ export class AccountFormComponent extends DefaultComponent{
         this.active = account !== undefined || this.isNew;
         if (account != undefined)
         {
-            //var index = this.fiscalPeriodRows.find(p => p.Key == account.fiscalPeriodId.toString());
             this.selectedValue = account.fiscalPeriodId.toString();
             if (this.fiscalPeriodRows == undefined) this.getFiscalPeriod();
         }
             
-        //this.editForm.setValue({ fiscalPeriodId: account.fiscalPeriodId });
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
     @Output() save: EventEmitter<Account> = new EventEmitter();
     //create properties
 
-    //public placeHolder: { Key: string, Value: string } = { Key: "-1" , Value: "---" };
     public fiscalPeriodRows : Array<Item>;
     public selectedValue : string = '1';
 
@@ -87,13 +95,9 @@ export class AccountFormComponent extends DefaultComponent{
     //Events
 
     constructor(private accountService: AccountService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
-        public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2) {
-        //translate.addLangs(["en", "fa"]);
-        //translate.setDefaultLang('fa');
+        public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2,public metadata:MetaDataService) {
 
-        //var browserLang = 'fa';//translate.getBrowserLang();
-        //translate.use(browserLang);
-        super(toastrService, translate, renderer, "Account");
+        super(toastrService, translate, renderer, "Account", metadata);
 
         this.getFiscalPeriod();
         
@@ -101,16 +105,8 @@ export class AccountFormComponent extends DefaultComponent{
 
     /* load fiscal periods */
     getFiscalPeriod() {
-
-        var currentUser: ContextInfo = new ContextInfo();
-        if (localStorage.getItem('currentContext')) {
-            const userJson = localStorage.getItem('currentContext');
-
-            currentUser = userJson !== null ? JSON.parse(userJson) : null;
-
-        }
-
-        this.fiscalPeriodService.getFiscalPeriod(currentUser.companyId).subscribe(res => {
+        
+        this.fiscalPeriodService.getFiscalPeriod(this.CompanyId).subscribe(res => {
             this.fiscalPeriodRows = res;            
         });
     }
