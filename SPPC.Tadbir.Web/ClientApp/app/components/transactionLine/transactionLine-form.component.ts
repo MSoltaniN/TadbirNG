@@ -93,8 +93,8 @@ export class TransactionLineFormComponent extends DefaultComponent {
 
     constructor(private transactionLineService: TransactionLineService,
         public toastrService: ToastrService, public translate: TranslateService,
-        public renderer: Renderer2,public metadata : MetaDataService) {
-        super(toastrService, translate, renderer, "TransactionLine",metadata);
+        public renderer: Renderer2, public metadata: MetaDataService) {
+        super(toastrService, translate, renderer, metadata,'TransactionLine');
 
         
     }

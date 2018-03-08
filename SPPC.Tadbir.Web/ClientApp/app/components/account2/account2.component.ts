@@ -88,9 +88,9 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     constructor(public toastrService: ToastrService, public translate: TranslateService,
         private accountService: AccountService, private transactionLineService: TransactionLineService,
-        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2,public metadata: MetaDataService)
+        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService)
     {
-        super(toastrService, translate, renderer, "Account",metadata);
+        super(toastrService, translate, renderer, metadata,'Account');
         
         this.getFiscalPeriod();
 
@@ -162,7 +162,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
         this.state = state;
 
-        this.pageIndex = state.skip;
+        this.skip = state.skip;
         this.reloadGrid();
     }
     
@@ -175,7 +175,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
 
     pageChange(event: PageChangeEvent): void {
-        this.pageIndex = event.skip;
+        this.skip = event.skip;
         this.reloadGrid();
     }
     

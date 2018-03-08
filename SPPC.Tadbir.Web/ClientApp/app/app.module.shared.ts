@@ -57,6 +57,7 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
 
 import { SppcDatePipe } from "./pipes/index"
 import { MetaDataService } from './service/metadata/metadata.service';
+import { BaseService } from './class/base.service';
 
 
 @NgModule({
@@ -95,7 +96,7 @@ import { MetaDataService } from './service/metadata/metadata.service';
         //            return true;
         //    }            
         //},
-        { provide: MessageService, useClass: GridMessageService },
+        { provide: MessageService, useClass: GridMessageService },        
         AuthGuard,        
         AuthenticationService,
         DatePipe,

@@ -75,7 +75,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     constructor(public toastrService: ToastrService, public translate: TranslateService,
         private transactionLineService: TransactionLineService,
         public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, "TransactionLine", metadata);
+        super(toastrService, translate, renderer, metadata,'TransactionLine');
     }
 
     getRowsCount() {
@@ -134,7 +134,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
         this.state = state;
 
-        this.pageIndex = state.skip;
+        this.skip = state.skip;
         this.reloadGrid();
     }
 
@@ -147,7 +147,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
 
     pageChange(event: PageChangeEvent): void {
-        this.pageIndex = event.skip;
+        this.skip = event.skip;
         this.reloadGrid();
     }
 
