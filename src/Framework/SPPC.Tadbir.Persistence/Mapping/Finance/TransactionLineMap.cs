@@ -37,7 +37,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasConstraintName("FK_Finance_TransactionLine_Finance_Account");
             builder.HasOne(d => d.DetailAccount)
                 .WithMany()
-                .HasForeignKey(d => d.DetailAccountId)
+                .HasForeignKey(d => d.DetailId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_TransactionLine_Finance_DetailAccount");
             builder.HasOne(d => d.CostCenter)

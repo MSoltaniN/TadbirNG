@@ -13,17 +13,17 @@ namespace SPPC.Tadbir.Model.Finance
         /// <summary>
         /// شناسه دیتابیسی مولفه تفصیلی شناور از بردار حساب مورد استفاده در این آرتیکل مالی
         /// </summary>
-        public virtual int DetailAccountId { get; set; }
+        public virtual int? DetailId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی مولفه مرکز هزینه از بردار حساب مورد استفاده در این آرتیکل مالی
         /// </summary>
-        public virtual int CostCenterId { get; set; }
+        public virtual int? CostCenterId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی مولفه پروژه از بردار حساب مورد استفاده در این آرتیکل مالی
         /// </summary>
-        public virtual int ProjectId { get; set; }
+        public virtual int? ProjectId { get; set; }
 
         /// <summary>
         /// شناسه دیتابیسی پول یا ارز مورد استفاده برای مبلغ بدهکار یا بستانکار این آرتیکل
