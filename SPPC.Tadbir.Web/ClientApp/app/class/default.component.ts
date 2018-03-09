@@ -110,16 +110,12 @@ export class DefaultComponent extends BaseComponent {
         return result;
     }
     
-    //public rtlClass: string = "ui-rtl";
-    //public rtlUse: string = "rtl";
-    
-
     /** return the current language */
     public currentlang: string = "";
     
 
     /** the default value of grid paging size  */
-    pageSize: number = 10;
+    pageSize: number = 7;
 
     
     public skip: number = 0;
@@ -142,7 +138,7 @@ export class DefaultComponent extends BaseComponent {
     /** the current state of filtering and paging */
     public state: State = {
         skip: 0,
-        take: 10,
+        take: 7,
         // Initial filter descriptor
         filter: {
             logic: "and",
@@ -246,6 +242,10 @@ export class DefaultComponent extends BaseComponent {
             this.deleteMsg = String.Format(msg, entityType);;
         });
 
+        this.translateService.get("Messages.DeleteConfirm").subscribe((msg: string) => {
+            this.deleteConfirmMsg = String.Format(msg, entityType);
+        });
+
        
     }
 
@@ -269,7 +269,7 @@ export class DefaultComponent extends BaseComponent {
     public prepareDeleteConfirm(text : string)
     {
         this.translateService.get("Messages.DeleteConfirm").subscribe((msg: string) => {
-            this.deleteConfirmMsg = String.Format(msg, name);
+            this.deleteConfirmMsg = String.Format(msg, text);
         });
     }
 

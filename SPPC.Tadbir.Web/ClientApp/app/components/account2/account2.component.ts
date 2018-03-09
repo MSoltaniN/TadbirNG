@@ -64,6 +64,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     //for add in delete messageText
     deleteConfirm: boolean;
+    deleteAccountsConfirm: boolean;
     deleteAccountId: number;
     
     currentFilter: Filter[] = [];
@@ -109,13 +110,22 @@ export class Account2Component extends DefaultComponent implements OnInit {
         return context.dataItem.id + " " + context.index;
     }
 
-    deleteAccounts()
-    {
-        this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {            
-            this.showMessage(this.deleteMsg, MessageType.Info);
-            this.selectedRows = [];
-            this.reloadGrid();            
-        });
+    showConfirm() {
+        this.deleteAccountsConfirm = true;
+    }
+
+    deleteAccounts(confirm : boolean)
+    {       
+        if (confirm) {
+           
+            this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
+                this.showMessage(this.deleteMsg, MessageType.Info);
+                this.selectedRows = [];
+                this.reloadGrid();
+            });
+        }
+
+        this.deleteAccountsConfirm = false;
     }
 
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {

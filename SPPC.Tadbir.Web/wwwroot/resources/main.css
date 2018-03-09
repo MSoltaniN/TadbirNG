@@ -27,17 +27,20 @@ tbutton {
     direction: rtl !important;
 }
 
+.tRtl {
+    direction: rtl !important;
+}
+
 .tLtr {
     direction:ltr!important;
 }
 
-.noright {
-    padding-right: 0 !important; 
-
+.tRtl .nopad {
+    padding-right: 0 !important;
 }
 
-.noleft {
-    padding-left: 0!important;
+.tLtr .nopad {
+    padding-left: 0 !important;
 }
 
 .menuitem {

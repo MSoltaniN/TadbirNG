@@ -18,7 +18,7 @@ export class AppComponent {
 
     public lang: string = '';
 
-    public langIsFa: boolean = false;
+    //public langIsFa: boolean = false;
     
     constructor(location: Location,router: Router) {
 
@@ -37,10 +37,10 @@ export class AppComponent {
             this.lang = "fa";
         }
 
-        if (this.lang == "fa")
-            this.langIsFa = true;
-        else
-            this.langIsFa = false;
+        //if (this.lang == "fa")
+        //    this.langIsFa = true;
+        //else
+        //    this.langIsFa = false;
 
         if (this.currentContext != undefined) {
             this.showNavbar = true;
