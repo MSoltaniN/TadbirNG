@@ -1,12 +1,10 @@
-﻿
-<div>
-    <div class="panel panel-primary">
+﻿<div class="panel panel-primary">
         <div class="panel-body">
             <kendo-grid #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
                         [data]="rowData"
                         [sortable]="true"
                         [pageSize]="pageSize"
-                        [skip]="skip"
+                        [skip]="pageIndex"
                         [filter]="state.filter"
                         [pageable]="true"
                         [resizable]="true"
@@ -152,4 +150,4 @@
             </kendo-dialog-actions>
         </kendo-dialog>
     </div>
-</div>
+

@@ -9,7 +9,7 @@ import { BaseComponent } from "./base.component"
 import { Property } from "./metadata/property"
 
 import { Filter } from './filter';
-import { Renderer2, Injectable, Inject, Injector } from "@angular/core";
+import { Renderer2, Injectable, Inject, Injector, forwardRef, Optional } from "@angular/core";
 import { MetaDataService } from '../service/metadata/metadata.service';
 import { Http } from '@angular/http';
 import { AppModule } from '../app.module.server';
@@ -34,58 +34,22 @@ export class DefaultComponent extends BaseComponent {
     /** array of property.this variable is a container for metadata */
     public properties: { [id: string]: Array<Property>; } = {}
 
-
-
-
-    /**
-    * this function return metadata of column
-    * @param name is a name of column like 'id' , 'name' , 'fiscalperiod' , ... .    
-    */    
-    public getMeta(name: string):Property | undefined {       
-        
-        //@Inject(MetaDataService) metadata: MetaDataService;
-        if (Object.keys(this.properties).length === 0) {                       
-            this.metadataService.getMetaData(this.entityName).subscribe(res1 => {
-                this.properties[this.entityName] = res1.properties;
-                localStorage.setItem(this.entityName, JSON.stringify(this.properties[this.entityName]))
-            });            
-        }
-
-        if (localStorage.getItem(this.entityName) != undefined) {
-
-            var item: string | null;
-            item = localStorage.getItem(this.entityName);
-            this.properties[this.entityName] = JSON.parse(item != null ? item.toString() : "");
-        }
-        
-        var result = this.properties[this.entityName].find(p => p.name.toLowerCase() == name.toLowerCase());
-
-        return result;
-    }
     
-    //public rtlClass: string = "ui-rtl";
-    //public rtlUse: string = "rtl";
-    
-
-    /** return the current language */
-    public currentlang: string = "";
 
     constructor(public toastrService: ToastrService, public translate: TranslateService
-        , public renderer: Renderer2, public entityName: string = '',public metadataService:MetaDataService) 
-    {
-        
-        super(toastrService);
+        , public renderer: Renderer2, private metadataService: MetaDataService,@Optional() @Inject('empty') private entityType : string) {
 
+
+        super(toastrService);
+        
         //use lang
         translate.addLangs(["en", "fa"]);
 
         var lang = localStorage.getItem('lang');
-        if (lang)
-        {
+        if (lang) {
             this.currentlang = lang;
         }
-        else
-        {
+        else {
             this.currentlang = "fa";
         }
 
@@ -96,7 +60,7 @@ export class DefaultComponent extends BaseComponent {
 
 
         //rtl or ltr body
-        
+
         if (this.currentlang == 'fa') {
             this.renderer.addClass(document.body, 'tRtl');
             this.renderer.removeClass(document.body, 'tLtr');
@@ -108,7 +72,7 @@ export class DefaultComponent extends BaseComponent {
         if (this.currentlang == 'en') {
             this.renderer.addClass(document.body, 'tLtr');
             this.renderer.removeClass(document.body, 'tRtl');
-            
+
             this.renderer.addClass(document.getElementById('mainContent'), 'pull-right')
             this.renderer.removeClass(document.getElementById('mainContent'), 'pull-left')
         }
@@ -116,14 +80,45 @@ export class DefaultComponent extends BaseComponent {
 
         this.translateService = translate;
 
-        this.localizeMsg();        
+        this.localizeMsg();
     }
 
+
+    /**
+    * this function return metadata of column
+    * @param name is a name of column like 'id' , 'name' , 'fiscalperiod' , ... .    
+    */    
+    public getMeta(name: string):Property | undefined {       
+        
+        //@Inject(MetaDataService) metadata: MetaDataService;
+        if (localStorage.getItem(this.entityType) == undefined) {                       
+            this.metadataService.getMetaData(this.entityType).subscribe(res1 => {
+                this.properties[this.entityType] = res1.properties;
+                localStorage.setItem(this.entityType, JSON.stringify(this.properties[this.entityType]))
+            });            
+        }
+
+        if (localStorage.getItem(this.entityType) != undefined) {
+
+            var item: string | null;
+            item = localStorage.getItem(this.entityType);
+            this.properties[this.entityType] = JSON.parse(item != null ? item.toString() : "");
+        }
+        
+        var result = this.properties[this.entityType].find(p => p.name.toLowerCase() == name.toLowerCase());
+
+        return result;
+    }
+    
+    /** return the current language */
+    public currentlang: string = "";
+    
+
     /** the default value of grid paging size  */
-    pageSize: number = 10;
+    pageSize: number = 7;
 
     
-    private skip: number = 0;
+    public skip: number = 0;
 
     /** set number value for grid current page
     * @param value is page number.
@@ -143,7 +138,7 @@ export class DefaultComponent extends BaseComponent {
     /** the current state of filtering and paging */
     public state: State = {
         skip: 0,
-        take: 10,
+        take: 7,
         // Initial filter descriptor
         filter: {
             logic: "and",
@@ -231,7 +226,7 @@ export class DefaultComponent extends BaseComponent {
     private localizeMsg() {
         // read message format for crud operations
         var entityType = '';
-        this.translateService.get("Entity." + this.entityName).subscribe((msg: string) => {
+        this.translateService.get("Entity." + this.entityType).subscribe((msg: string) => {
             entityType = msg;
         });
 
@@ -245,6 +240,10 @@ export class DefaultComponent extends BaseComponent {
 
         this.translateService.get("Messages.Deleted").subscribe((msg: string) => {
             this.deleteMsg = String.Format(msg, entityType);;
+        });
+
+        this.translateService.get("Messages.DeleteConfirm").subscribe((msg: string) => {
+            this.deleteConfirmMsg = String.Format(msg, entityType);
         });
 
        
@@ -270,7 +269,7 @@ export class DefaultComponent extends BaseComponent {
     public prepareDeleteConfirm(text : string)
     {
         this.translateService.get("Messages.DeleteConfirm").subscribe((msg: string) => {
-            this.deleteConfirmMsg = String.Format(msg, name);
+            this.deleteConfirmMsg = String.Format(msg, text);
         });
     }
 

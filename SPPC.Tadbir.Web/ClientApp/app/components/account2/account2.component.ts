@@ -64,6 +64,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     //for add in delete messageText
     deleteConfirm: boolean;
+    deleteAccountsConfirm: boolean;
     deleteAccountId: number;
     
     currentFilter: Filter[] = [];
@@ -88,9 +89,9 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     constructor(public toastrService: ToastrService, public translate: TranslateService,
         private accountService: AccountService, private transactionLineService: TransactionLineService,
-        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2,public metadata: MetaDataService)
+        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService)
     {
-        super(toastrService, translate, renderer, "Account",metadata);
+        super(toastrService, translate, renderer, metadata,'Account');
         
         this.getFiscalPeriod();
 
@@ -109,13 +110,22 @@ export class Account2Component extends DefaultComponent implements OnInit {
         return context.dataItem.id + " " + context.index;
     }
 
-    deleteAccounts()
-    {
-        this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {            
-            this.showMessage(this.deleteMsg, MessageType.Info);
-            this.selectedRows = [];
-            this.reloadGrid();            
-        });
+    showConfirm() {
+        this.deleteAccountsConfirm = true;
+    }
+
+    deleteAccounts(confirm : boolean)
+    {       
+        if (confirm) {
+           
+            this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
+                this.showMessage(this.deleteMsg, MessageType.Info);
+                this.selectedRows = [];
+                this.reloadGrid();
+            });
+        }
+
+        this.deleteAccountsConfirm = false;
     }
 
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
@@ -162,7 +172,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
         this.state = state;
 
-        this.pageIndex = state.skip;
+        this.skip = state.skip;
         this.reloadGrid();
     }
     
@@ -175,7 +185,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
 
     pageChange(event: PageChangeEvent): void {
-        this.pageIndex = event.skip;
+        this.skip = event.skip;
         this.reloadGrid();
     }
     

@@ -36,9 +36,9 @@ export class MetaDataService extends BaseService {
      * return metadata from database for each entity
      * @param entityName is name of entity like 'account' , 'transaction' , ...
      */
-    getMetaData(entityName: string) {
-        var headers = this.headers;
-
+    getMetaData(entityName : string) {
+        var headers = this.headers;      
+                    
         var url = String.Format(this._getMetaDataUrl, entityName);
         return this.http.get(url, { headers: headers })
             .map(response => (<Response>response).json());

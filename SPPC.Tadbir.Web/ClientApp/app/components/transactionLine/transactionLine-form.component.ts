@@ -113,10 +113,11 @@ export class TransactionLineFormComponent extends DefaultComponent {
     }
     //Events
 
+
     constructor(private transactionLineService: TransactionLineService, private accountService: AccountService,
         public toastrService: ToastrService, public translate: TranslateService, public fullAccountService: FullAccountService,
         public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, "TransactionLine", metadata);
+        super(toastrService, translate, renderer, metadata, "TransactionLine");
 
         this.GetAccounts();
         this.GetDetailAccounts();

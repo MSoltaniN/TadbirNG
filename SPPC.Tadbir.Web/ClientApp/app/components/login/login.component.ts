@@ -37,9 +37,10 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService, public toastrService: ToastrService,
         public translate: TranslateService, @Host() public parent: LoginContainerComponent, public renderer: Renderer2,
-        public metadata: MetaDataService) 
+        public metadata: MetaDataService
+        ) 
     {
-        super(toastrService, translate, renderer,'',metadata);
+        super(toastrService, translate, renderer, metadata,'');
         this.lang = this.currentlang;
     }
 

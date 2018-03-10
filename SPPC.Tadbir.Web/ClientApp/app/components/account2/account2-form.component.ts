@@ -38,7 +38,7 @@ interface Item {
     }]
 
 })
-        
+
 export class AccountFormComponent extends DefaultComponent{
 
     //create a form controls
@@ -95,9 +95,9 @@ export class AccountFormComponent extends DefaultComponent{
     //Events
 
     constructor(private accountService: AccountService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
-        public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2,public metadata:MetaDataService) {
+        public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
 
-        super(toastrService, translate, renderer, "Account", metadata);
+        super(toastrService, translate, renderer, metadata,'Account');
 
         this.getFiscalPeriod();
         
