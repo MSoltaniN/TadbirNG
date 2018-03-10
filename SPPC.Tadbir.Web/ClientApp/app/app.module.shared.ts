@@ -30,7 +30,8 @@ import { Layout } from './enviroment';
 import { SppcMaskTextBox } from './controls/textbox/sppc-mask-textbox';
 import { SppcNumberBox } from './controls/textbox/sppc-numberbox';
 import { SppcDropDownList } from './controls/dropdownlist/sppc-dropdownlist';
-import { SppcDatepicker } from './controls/datepicker/sppc-datepicker'
+import { SppcDatepicker } from './controls/datepicker/sppc-datepicker';
+import { SppcFullAccount } from './controls/fullAccount/sppc-fullAccount'
 
 import {BrowserModule} from "@angular/platform-browser";
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
@@ -41,7 +42,10 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
-import { AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService, BranchService, TransactionService } from './service/index';
+import {
+    AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService,
+    BranchService, TransactionService, FullAccountService
+} from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
 
 import { SppcGridFilter } from './controls/grid/sppc-grid-filter';
@@ -73,6 +77,7 @@ import { MetaDataService } from './service/metadata/metadata.service';
         SppcNumberBox,
         SppcDropDownList,
         SppcDatepicker,
+        SppcFullAccount,
         SppcGridColumn,        
         SppcGridFilter,
         TransactionComponent,
@@ -82,7 +87,7 @@ import { MetaDataService } from './service/metadata/metadata.service';
         SppcDatePipe
         
     ],
-    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, MetaDataService,
+    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, FullAccountService, MetaDataService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,

@@ -1,0 +1,35 @@
+﻿
+<div>
+
+    <kendo-dropdownlist [data]="accountsRows" [valuePrimitive]="true" class="ddl-fAcc"
+                        textField="value" (valueChange)="valueChange($event)" [value]="selectedAccountValue" [(ngModel)]="selectedAccountValue" valueField="key">
+    </kendo-dropdownlist>
+
+    <kendo-dropdownlist [data]="detailAccountsRows" [valuePrimitive]="true" class="ddl-fAcc"
+                        [textField]="'value'" [value]="selectedDetailAccountValue" [(ngModel)]="selectedDetailAccountValue" [valueField]="'key'">
+    </kendo-dropdownlist>
+
+    <kendo-dropdownlist [data]="costCentersRows" [valuePrimitive]="true" class="ddl-fAcc"
+                        [textField]="'value'" [value]="selectedCostCenterValue" [(ngModel)]="selectedCostCenterValue" [valueField]="'key'">
+    </kendo-dropdownlist>
+
+    <kendo-dropdownlist [data]="projectsRows" [valuePrimitive]="true" class="ddl-fAcc"
+                        [textField]="'value'" [value]="selectedprojectValue" [(ngModel)]="selectedprojectValue" [valueField]="'key'">
+    </kendo-dropdownlist>
+
+    <!--<sppc-dropdownlist [data]="accountsRows" [valuePrimitive]="true" class="ddl-fAcc"
+                       [textField]="'value'" [value]="selectedaccountValue" [(ngModel)]="selectedaccountValue" [valueField]="'key'">
+    </sppc-dropdownlist>-->
+
+    <!--<sppc-dropdownlist [data]="detailAccountsRows" [valuePrimitive]="true" class="ddl-fAcc"
+                       [textField]="'value'" [value]="selecteddetailAccountValue" [(ngModel)]="selecteddetailAccountValue" [valueField]="'key'">
+    </sppc-dropdownlist>
+
+    <sppc-dropdownlist [data]="costCentersRows" [valuePrimitive]="true" class="ddl-fAcc"
+                       [textField]="'value'" [value]="selectedcostCenterValue" [(ngModel)]="selectedcostCenterValue" [valueField]="'key'">
+    </sppc-dropdownlist>
+
+    <sppc-dropdownlist [data]="projectsRows" [valuePrimitive]="true" class="ddl-fAcc"
+                       [textField]="'value'" [value]="selectedprojectValue" [(ngModel)]="selectedprojectValue" [valueField]="'key'">
+    </sppc-dropdownlist>-->
+</div>

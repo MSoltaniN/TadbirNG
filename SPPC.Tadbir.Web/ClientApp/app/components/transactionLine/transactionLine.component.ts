@@ -199,11 +199,12 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
         transactionLine.branchId = this.BranchId;
         transactionLine.fiscalPeriodId = this.FiscalPeriodId;
         transactionLine.currencyId = 1;
-        transactionLine.currencyName = "ریال";
 
         //TODO
-        transactionLine.debit = +transactionLine.debit.toString().replace(',', '').replace(' $', '');
+        transactionLine.debit = +transactionLine.debit.toString().replace(',', '').replace('$ ', '');
         transactionLine.credit = +transactionLine.credit.toString().replace(',', '').replace(' ریال', '');
+
+        console.log(transactionLine);
 
         if (!this.isNew) {
 

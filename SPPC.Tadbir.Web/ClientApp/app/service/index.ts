@@ -11,3 +11,5 @@ export * from './company.service';
 export * from './message/grid-messages.service';
 
 export * from './transaction.service';
+
+export * from './fullAccount.service';
