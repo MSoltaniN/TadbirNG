@@ -135,7 +135,18 @@ export class Account2Component extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid() {
+
+//    function isEqual(element, index, array) {
+//    var start = 2;
+//    while (start <= Math.sqrt(element)) {
+//        if (element % start++ < 1) {
+//            return false;
+//        }
+//    }
+//    return element > 1;
+//}
+
+    reloadGrid(insertedAccount ?: Account) {
 
         
 
@@ -144,16 +155,32 @@ export class Account2Component extends DefaultComponent implements OnInit {
             var filter = this.currentFilter;
             var order = this.currentOrder;
 
+            if (this.totalRecords == this.skip) {
+                this.skip = this.skip - this.pageSize;                
+            }
+            
             this.accountService.search(this.pageIndex, this.pageSize, order, filter).subscribe(res => {
-                //this.rowData = res;
+                
                 this.properties = res.metadata.properties;
+                var totalCount = this.totalRecords;
+                var insertedAccountId = 0;
+
+                if (insertedAccount) {
+                    var index = (res.list as Array<Account>).findIndex(p => p.id == insertedAccountId);
+                    if (index >= 0) {
+                        res.list.splice(index, 1);
+                        (res.list as Array<Account>).splice(0, 0, insertedAccount);
+                    }
+                }
 
                 this.rowData = {
                     data: res.list,
-                    total: this.totalRecords                   
+                    total: totalCount
                 }
+                               
+               
 
-                this.showloadingMessage = !(res.length == 0);
+                this.showloadingMessage = !(res.list.length == 0);
                 
             })
         }).subscribe(res => {
@@ -256,6 +283,9 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
         account.branchId = this.BranchId;
         account.fiscalPeriodId = this.FiscalPeriodId;
+        //TODO: این کد بعدا باید تغییر پیدا کند البته با اقای اسلامیه هماهنگ شده است 
+        account.fullCode = account.code;
+
 
         if (!this.isNew) {
             this.accountService.editAccount(account)
@@ -268,7 +298,8 @@ export class Account2Component extends DefaultComponent implements OnInit {
             this.accountService.insertAccount(account)
                 .subscribe(response => {
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    this.reloadGrid();
+                    this.reloadGrid(account);
+                    
                 });
             
         }

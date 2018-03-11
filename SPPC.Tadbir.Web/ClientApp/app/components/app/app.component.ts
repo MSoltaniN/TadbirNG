@@ -47,7 +47,7 @@ export class AppComponent {
         }
 
         router.events.subscribe((val) => {
-            if (location.path() == '/login') {
+            if (location.path().toLowerCase() == '/login' || location.path().toString().indexOf('/login?returnUrl=') >= 0) {
                 this.showNavbar = false;
                 this.isLogin = true;
                 
