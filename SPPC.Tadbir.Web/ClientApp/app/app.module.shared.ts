@@ -44,7 +44,7 @@ import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
 import {
     AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService,
-    BranchService, TransactionService, FullAccountService
+    BranchService, TransactionService, LookupService
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
 
@@ -88,7 +88,7 @@ import { BaseService } from './class/base.service';
         SppcDatePipe
         
     ],
-    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, FullAccountService, MetaDataService,
+    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, LookupService, MetaDataService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,

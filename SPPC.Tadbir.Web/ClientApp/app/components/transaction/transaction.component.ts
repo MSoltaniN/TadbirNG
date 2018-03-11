@@ -59,6 +59,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
     editDataItem?: Transaction = undefined;
     isNew: boolean;
+    errorMessage: string;
     groupDelete: boolean = false;
 
     ngOnInit() {
@@ -173,6 +174,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
         this.editDataItem = arg.dataItem;
         this.isNew = false;
+        this.errorMessage = '';
     }
 
     public cancelHandler() {
@@ -183,6 +185,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
     public addNew() {
         this.isNew = true;
         this.editDataItem = new TransactionInfo();
+        this.errorMessage = '';
     }
 
     public saveHandler(transaction: Transaction) {
@@ -192,19 +195,22 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
         if (!this.isNew) {
 
-            this.isNew = false;
-
+           
             this.transactionService.editTransaction(transaction)
                 .subscribe(response => {
-                    
+
+                    this.isNew = false;
+                    this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
 
                 }, (error => {
-
-                    this.showMessage(error, MessageType.Warning);
+                    //this.showMessage(error, MessageType.Warning);
+                    this.errorMessage = error;
 
                 }));
+
+            
         }
         else {
             this.transactionService.insertTransaction(transaction)
@@ -218,7 +224,8 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
                 }, (error => {
 
                     this.isNew = true;
-                    this.showMessage(error, MessageType.Warning);
+                    //this.showMessage(error, MessageType.Warning);
+                    this.errorMessage = error;
                                        
                 }));
         }

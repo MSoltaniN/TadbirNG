@@ -12,4 +12,4 @@ export * from './message/grid-messages.service';
 
 export * from './transaction.service';
 
-export * from './fullAccount.service';
+export * from './lookup.service';

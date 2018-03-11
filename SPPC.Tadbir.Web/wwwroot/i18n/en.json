@@ -54,6 +54,7 @@
     "Description": "Description",
     "New": "New Article",
     "Delete": "Delete Article",
+    "Currency": "Currency",
 
     "Account": "Account"
 
@@ -92,7 +93,8 @@
     "TransactionLineDebit": "debit is required",
     "TransactionLineCredit": "credit is required",
 
-    "TransactionLineAccount": "account is required"
+    "TransactionLineAccount": "account is required",
+    "TransactionLineCurrency": "currency is required"
   },
   "Grid": {
     "noRecords": "row not found!!!!!!!!!!"

@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator } from '@angular/forms';
-import { FullAccountService } from '../../service/index';
+import { LookupService } from '../../service/index';
 
 interface Item {
     key: string,
@@ -37,7 +37,7 @@ export class SppcFullAccount implements OnInit, ControlValueAccessor, Validator 
     public selectedCostCenterValue: number;
     public selectedprojectValue: number;
 
-    constructor(private fullAccountService: FullAccountService) {
+    constructor(private lookupService: LookupService) {
         this.GetAccounts();
         this.GetDetailAccounts();
         this.GetCostCenters();
@@ -82,26 +82,26 @@ export class SppcFullAccount implements OnInit, ControlValueAccessor, Validator 
     }
 
     GetAccounts() {
-        this.fullAccountService.GetAccountsLookup().subscribe(res => {
+        this.lookupService.GetAccountsLookup().subscribe(res => {
             this.accountsRows = res;
         })
 
     }
 
     GetDetailAccounts() {
-        this.fullAccountService.GetDetailAccountsLookup().subscribe(res => {
+        this.lookupService.GetDetailAccountsLookup().subscribe(res => {
             this.detailAccountsRows = res;
         })
     }
 
     GetCostCenters() {
-        this.fullAccountService.GetCostCentersLookup().subscribe(res => {
+        this.lookupService.GetCostCentersLookup().subscribe(res => {
             this.costCentersRows = res;
         })
     }
 
     GetProjects() {
-        this.fullAccountService.GetProjectsLookup().subscribe(res => {
+        this.lookupService.GetProjectsLookup().subscribe(res => {
             this.projectsRows = res;
         })
     }

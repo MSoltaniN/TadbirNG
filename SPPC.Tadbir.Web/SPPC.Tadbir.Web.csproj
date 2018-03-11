@@ -72,6 +72,7 @@
     <None Remove="ClientApp\app\service\fiscal-period.service.ts" />
     <None Remove="ClientApp\app\service\fullAccount.service.ts" />
     <None Remove="ClientApp\app\service\index.ts" />
+    <None Remove="ClientApp\app\service\lookup.service.ts" />
     <None Remove="ClientApp\app\service\metadata\metadata.service.ts" />
     <None Remove="ClientApp\app\service\transaction.service.ts" />
     <None Remove="ClientApp\enviroment.ts" />
@@ -197,6 +198,7 @@
     <TypeScriptCompile Include="ClientApp\app\pipes\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\pipes\sppc.date.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\fiscal-period.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\lookup.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\message\sppc-message.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\metadata\metadata.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\fullAccount.service.ts" />

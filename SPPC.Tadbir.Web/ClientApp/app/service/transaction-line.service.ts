@@ -11,7 +11,7 @@ import { HttpParams } from "@angular/common/http";
 import { Environment, MessageType } from "../enviroment";
 import { Context } from "../model/context";
 import { BaseService } from '../class/base.service';
-import { FullAccountInfo } from './index';
+//import { FullAccountInfo } from './index';
 
 export class TransactionLineInfo implements TransactionLine {
     constructor(public id: number = 0, public debit: number = 0, public credit: number = 0, public description?: string,

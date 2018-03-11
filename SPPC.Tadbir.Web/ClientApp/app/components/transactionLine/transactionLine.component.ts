@@ -62,7 +62,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
     editDataItem?: TransactionLine = undefined;
     isNew: boolean;
-
+    errorMessage: string;
     groupDelete: boolean = false;
 
     @Input() transactionId: number;
@@ -180,6 +180,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     public editHandler(arg: any) {
         this.editDataItem = arg.dataItem;
         this.isNew = false;
+        this.errorMessage = '';
     }
 
     public cancelHandler() {
@@ -189,6 +190,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
     public addNew() {
         this.isNew = true;
+        this.errorMessage = '';
         var article = new TransactionLineInfo();
         article.transactionId = this.transactionId;
         this.editDataItem = article;
@@ -198,7 +200,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
         transactionLine.branchId = this.BranchId;
         transactionLine.fiscalPeriodId = this.FiscalPeriodId;
-        transactionLine.currencyId = 1;
+        //transactionLine.currencyId = 1;
 
         //TODO
         transactionLine.debit = +transactionLine.debit.toString().replace(',', '').replace('$ ', '');
@@ -220,7 +222,8 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
                 }, (error => {
                     this.editDataItem = transactionLine;
-                    this.showMessage(error, MessageType.Warning);
+                    //this.showMessage(error, MessageType.Warning);
+                    this.errorMessage = error;
 
                 }));
         }
@@ -236,7 +239,8 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
                 }, (error => {
 
                     this.isNew = true;
-                    this.showMessage(error, MessageType.Warning);
+                    //this.showMessage(error, MessageType.Warning);
+                    this.errorMessage = error;
 
                 }));
 

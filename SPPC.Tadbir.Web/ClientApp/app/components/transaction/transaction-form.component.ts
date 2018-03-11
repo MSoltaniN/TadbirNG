@@ -55,6 +55,7 @@ export class TransactionFormComponent extends DefaultComponent {
     public transaction_Id: number;
     active: boolean = false;
     @Input() public isNew: boolean = false;
+    @Input() public errorMessage: string;
 
     @Input() public set model(transaction: Transaction) {
 

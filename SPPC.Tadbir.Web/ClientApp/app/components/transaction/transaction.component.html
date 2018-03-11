@@ -113,7 +113,7 @@
                 <!-- additional columns on large devices -->
 
             </kendo-grid>
-            <transaction-form-component [model]="editDataItem" [isNew]="isNew"
+            <transaction-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
                                         (save)="saveHandler($event)"
                                         (cancel)="cancelHandler()">
             </transaction-form-component>
