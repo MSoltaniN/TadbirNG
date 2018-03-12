@@ -5,7 +5,7 @@ import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component 
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
-import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+//import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 import { TranslateService } from 'ng2-translate';
 import { String } from '../../class/source';
@@ -60,7 +60,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
         this.reloadGrid();
     }
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, private loadingService: Ng4LoadingSpinnerService,
+    constructor(public toastrService: ToastrService, public translate: TranslateService, /*private loadingService: Ng4LoadingSpinnerService,*/
         private transactionLineService: TransactionLineService, public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, 'TransactionLine');
     }
@@ -93,7 +93,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     }
 
     reloadGrid() {
-        this.loadingService.show();
+
         this.transactionLineService.getCount(this.transactionId, this.currentOrder, this.currentFilter).finally(() => {
             var filter = this.currentFilter;
             var order = this.currentOrder;
@@ -108,7 +108,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
             })
         }).subscribe(res => {
             this.totalRecords = res;
-            this.loadingService.hide();
+
         });
     }
 
@@ -140,13 +140,13 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
     deleteTransactionLine(confirm: boolean) {
         if (confirm) {
-            this.loadingService.show();
+
             this.transactionLineService.delete(this.deleteTransactionLineId).subscribe(response => {
                 this.deleteTransactionLineId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
-                this.loadingService.hide();
+
                 this.showMessage(error, MessageType.Warning);
             }));
         }
@@ -189,7 +189,6 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
         transactionLine.branchId = this.BranchId;
         transactionLine.fiscalPeriodId = this.FiscalPeriodId;
 
-        this.loadingService.show();
         if (!this.isNew) {
 
             this.isNew = false;
@@ -226,7 +225,6 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
                 }));
         }
-        this.loadingService.hide();
     }
 
 }

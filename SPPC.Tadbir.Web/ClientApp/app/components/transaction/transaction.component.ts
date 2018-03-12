@@ -6,7 +6,7 @@ import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectA
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
-import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+//import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 import { TranslateService } from 'ng2-translate';
 import { String } from '../../class/source';
@@ -67,7 +67,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, private loadingService: Ng4LoadingSpinnerService,
+    constructor(public toastrService: ToastrService, public translate: TranslateService, /*private loadingService: Ng4LoadingSpinnerService,*/
         private transactionService: TransactionService, private transactionLineService: TransactionLineService,
         private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, 'Transaction');
@@ -85,13 +85,13 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
     }
 
     deleteTransactions() {
-        this.loadingService.show();
+
         this.transactionService.deleteTransactions(this.selectedRows).subscribe(res => {
             this.showMessage(this.deleteMsg, MessageType.Info);
             this.selectedRows = [];
             this.reloadGrid();
         }, (error => {
-            this.loadingService.hide();
+
             this.showMessage(error, MessageType.Warning);
         }));
     }
@@ -104,7 +104,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
     }
 
     reloadGrid() {
-        this.loadingService.show();
+
         this.transactionService.getCount(this.currentOrder, this.currentFilter).finally(() => {
             var filter = this.currentFilter;
             var order = this.currentOrder;
@@ -119,7 +119,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
             })
         }).subscribe(res => {
             this.totalRecords = res;
-            this.loadingService.hide();
+
         });
     }
 
@@ -152,13 +152,13 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
     deleteTransaction(confirm: boolean) {
         if (confirm) {
-            this.loadingService.show();
+
             this.transactionService.delete(this.deleteTransactionId).subscribe(response => {
                 this.deleteTransactionId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
-                this.loadingService.hide();
+
                 this.showMessage(error, MessageType.Warning);
             }));
         }
@@ -198,7 +198,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
         transaction.branchId = this.BranchId;
         transaction.fiscalPeriodId = this.FiscalPeriodId;
-        this.loadingService.show();
+
 
         if (!this.isNew) {
             this.transactionService.editTransaction(transaction)
@@ -230,7 +230,6 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
                 }));
         }
-        this.loadingService.hide();
     }
 
 }

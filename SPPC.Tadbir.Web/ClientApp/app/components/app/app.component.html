@@ -6,7 +6,7 @@
         <div id="mainContent" class="nopad" [ngClass]="{'col-sm-9 col-xs-12 col-md-9 body-content' : (showNavbar || !isLogin) ,
              'col-sm-12 col-xs-12 col-md-12 body-content' : (!showNavbar || isLogin) }">
             <!--<div class="col-xs-12 col-md-12 col-sm-12" [ngClass]="{'noright':(langIsFa) , 'noleft': (!langIsFa) }" >-->
-            <ng4-loading-spinner [threshold]="100" [template]="template" [zIndex]="999999"> </ng4-loading-spinner>
+            <!--<ng4-loading-spinner [threshold]="100" [template]="template" [zIndex]="999999"> </ng4-loading-spinner>-->
             <router-outlet></router-outlet>
             <!--</div>-->
 
