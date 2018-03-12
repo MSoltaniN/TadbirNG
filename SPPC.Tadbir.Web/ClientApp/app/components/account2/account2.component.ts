@@ -32,6 +32,7 @@ import { Filter } from "../../class/filter";
 
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
+import { Response } from '@angular/http';
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
@@ -75,11 +76,12 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     newAccount: boolean;
     account: Account = new AccountInfo
-       
+    
 
     editDataItem ? : Account = undefined;
     isNew: boolean;
     groupDelete: boolean = false;
+
     
     ngOnInit() {
         this.getFiscalPeriod();
@@ -163,13 +165,22 @@ export class Account2Component extends DefaultComponent implements OnInit {
                 
                 this.properties = res.metadata.properties;
                 var totalCount = this.totalRecords;
-                var insertedAccountId = 0;
+                
 
                 if (insertedAccount) {
-                    var index = (res.list as Array<Account>).findIndex(p => p.id == insertedAccountId);
+                    var rows = (res.list as Array<Account>);
+                    var index = rows.findIndex(p => p.id == insertedAccount.id);
                     if (index >= 0) {
                         res.list.splice(index, 1);
-                        (res.list as Array<Account>).splice(0, 0, insertedAccount);
+                        rows.splice(0, 0, insertedAccount);                        
+                    }
+                    else {
+                        if (rows.length == this.pageSize) {
+                            res.list.splice(this.pageSize - 1, 1);                           
+                        }
+                     
+                        rows.splice(0, 0, insertedAccount);
+                        
                     }
                 }
 
@@ -178,7 +189,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
                     total: totalCount
                 }
                                
-               
+                
 
                 this.showloadingMessage = !(res.list.length == 0);
                 
@@ -296,9 +307,10 @@ export class Account2Component extends DefaultComponent implements OnInit {
         }
         else {
             this.accountService.insertAccount(account)
-                .subscribe(response => {
+                .subscribe((response : any) => {
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    this.reloadGrid(account);
+                    var insertedAccount = JSON.parse(response._body);
+                    this.reloadGrid(insertedAccount);
                     
                 });
             
