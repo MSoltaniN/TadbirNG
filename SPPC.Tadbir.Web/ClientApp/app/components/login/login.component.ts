@@ -42,15 +42,11 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     {
         super(toastrService, translate, renderer, metadata,'');
         this.lang = this.currentlang;
+
+        this.parent.step2 = true;
     }
 
-    ngOnInit() {
-        // reset login status
-        this.authenticationService.logout();
-        if(this.authenticationService.islogin())
-        {
-            this.router.navigate(['/account2']);
-        }
+    ngOnInit() {       
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -76,27 +72,16 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
     login() {
         this.loading = true;
-        this.authenticationService.login(this.model.username, this.model.password)
+        this.authenticationService.login(this.model.username, this.model.password, this.model.remember)
             .subscribe(
             data => {
                 //this.router.navigate([this.returnUrl]);
                 
-                if(localStorage.getItem('currentContext') != undefined)
-                {                    
-                    
-                    //if (localStorage.getItem('currentContext'))
-                    //{
-                    //    var currentContext = JSON.parse(localStorage.getItem('currentContext'));
-                    //    if (currentContext && currentContext.ticket)
-                    //    {
-                
-                    //    }
-                    //}
+                //if(localStorage.getItem('currentContext') != undefined)
+                if (this.authenticationService.islogin())
+                {     
                     this.parent.step1 = false;
-                    this.parent.step2 = true;
-                
-
-                    //this.stepOne = false;
+                    this.parent.step2 = true;                
                 }
             },
             error => {

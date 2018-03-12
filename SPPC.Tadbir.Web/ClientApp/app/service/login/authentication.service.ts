@@ -18,21 +18,13 @@ export class ContextInfo implements Context {
 @Injectable()
 export class AuthenticationService {
 
-    //headers: Headers;
-    //options: RequestOptions;
-
+    
     constructor(private http: Http)
     {
-        //this.headers = new Headers({
-        //    'Content-Type': 'application/json; charset=utf-8',
-        //    'Access-Control-Expose-Headers': 'X-Tadbir-AuthTicket',
-        //    //'Access-Control-Allow-Headers' : '*'
-        //});   
-
-        //this.options = new RequestOptions({ headers: this.headers });      
+           
     }
 
-    login(username: string, password: string) {
+    login(username: string, password: string, remember:boolean) {
         return this.http.put(Environment.BaseUrl + '/users/login', { username: username, password: password }/*, this.options*/)
             .map((response: Response) => {
                 // login successful if there's a jwt token in the response           
@@ -43,13 +35,15 @@ export class AuthenticationService {
                         user.ticket = ticket;
                         user.userName = username;
 
-                        // store user details and jwt token in local storage to keep user logged in between page refreshes
-                        localStorage.setItem('currentContext', JSON.stringify(user));
+                        // در صورتی که تیک بخاطر سپردن بخورد در حافظه storage ذخیره می شود
+                        if(remember)
+                            localStorage.setItem('currentContext', JSON.stringify(user));
+                        else // در صورتی که تیک بخاطر سپردن بخورد در حافظه session ذخیره می شود
+                            sessionStorage.setItem('currentContext', JSON.stringify(user));
                     }
                 }              
-            })
-              
-            //});
+            })              
+           
     }
 
     islogin()
@@ -64,12 +58,50 @@ export class AuthenticationService {
                 return true;
             }
         }
+        else if (sessionStorage.getItem('currentContext')) {
+            var item: string | null;
+            item = sessionStorage.getItem('currentContext');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+            if (currentContext.userName != '') {
+                return true;
+            }
+        }
 
         return false;
     }
 
+    isRememberMe() {
+        if (localStorage.getItem('currentContext')) {            
+            return true;            
+        }        
+
+        return false;
+    }
+
+    getCurrentUser(): ContextInfo | null {
+        var currentUser: ContextInfo;
+        var item: string | null = '';
+        if (localStorage.getItem('currentContext')) {
+            item = localStorage.getItem('currentContext');
+        }
+        else if (sessionStorage.getItem('currentContext')) {
+            item = sessionStorage.getItem('currentContext');
+        }    
+
+        if (item) {
+            var currentUser: ContextInfo = item !== null ? JSON.parse(item) : null;
+            return currentUser;
+        }
+
+        return null;
+    }
+
     logout() {
         // remove user from local storage to log user out
-        localStorage.removeItem('currentContext');
+        if (localStorage.getItem('currentContext'))
+            localStorage.removeItem('currentContext');
+
+        if (sessionStorage.getItem('currentContext'))
+            sessionStorage.removeItem('currentContext');
     }
 }
