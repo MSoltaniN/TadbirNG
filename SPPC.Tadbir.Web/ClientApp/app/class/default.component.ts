@@ -88,23 +88,26 @@ export class DefaultComponent extends BaseComponent {
     * this function return metadata of column
     * @param name is a name of column like 'id' , 'name' , 'fiscalperiod' , ... .    
     */    
-    public getMeta(name: string):Property | undefined {       
+    public getMeta(name: string):Property | undefined {      
         
-        //@Inject(MetaDataService) metadata: MetaDataService;
-        if (localStorage.getItem(this.entityType) == undefined) {                       
+        if (localStorage.getItem(this.entityType) == undefined) {
             this.metadataService.getMetaData(this.entityType).subscribe(res1 => {
+
                 this.properties[this.entityType] = res1.properties;
+
                 localStorage.setItem(this.entityType, JSON.stringify(this.properties[this.entityType]))
-            });            
+                var result = this.properties[this.entityType].find(p => p.name.toLowerCase() == name.toLowerCase());
+
+                return result;
+            });
         }
-
-        if (localStorage.getItem(this.entityType) != undefined) {
-
+        else {
             var item: string | null;
             item = localStorage.getItem(this.entityType);
             this.properties[this.entityType] = JSON.parse(item != null ? item.toString() : "");
         }
-        
+
+        if (this.properties[this.entityType] == undefined || this.properties[this.entityType].length == 0) return undefined;
         var result = this.properties[this.entityType].find(p => p.name.toLowerCase() == name.toLowerCase());
 
         return result;
@@ -115,7 +118,7 @@ export class DefaultComponent extends BaseComponent {
     
 
     /** the default value of grid paging size  */
-    pageSize: number = 7;
+    pageSize: number = 10;
 
     
     public skip: number = 0;
@@ -138,7 +141,7 @@ export class DefaultComponent extends BaseComponent {
     /** the current state of filtering and paging */
     public state: State = {
         skip: 0,
-        take: 7,
+        take: 10,
         // Initial filter descriptor
         filter: {
             logic: "and",
