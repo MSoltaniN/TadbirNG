@@ -7,7 +7,7 @@ import { Headers, RequestOptions, BaseRequestOptions, Http } from '@angular/http
 import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationStrategy, DatePipe } from '@angular/common';
 // third party module to display toast 
 import { ToastrModule } from 'toastr-ng2';
-import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+//import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 import { ReactiveFormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TextMaskModule } from 'angular2-text-mask';
@@ -109,7 +109,7 @@ import { BaseService } from './class/base.service';
         Layout        
     ],        
     imports: [
-        Ng4LoadingSpinnerModule.forRoot(),
+        //Ng4LoadingSpinnerModule.forRoot(),
         CommonModule,         
         HttpModule,
         FormsModule,
