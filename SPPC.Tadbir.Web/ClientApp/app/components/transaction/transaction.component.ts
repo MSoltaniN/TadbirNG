@@ -6,6 +6,7 @@ import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectA
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 import { TranslateService } from 'ng2-translate';
 import { String } from '../../class/source';
@@ -22,7 +23,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
-}  
+}
 
 @Component({
     selector: 'transaction',
@@ -66,30 +67,31 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService,
+    constructor(public toastrService: ToastrService, public translate: TranslateService, private loadingService: Ng4LoadingSpinnerService,
         private transactionService: TransactionService, private transactionLineService: TransactionLineService,
         private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata,'Transaction');
+        super(toastrService, translate, renderer, metadata, 'Transaction');
 
     }
 
     getRowsCount() {
         return this.transactionService.getCount(this.currentOrder, this.currentFilter).map(response => <any>(<Response>response).json());
-
     }
 
     selectionKey(context: RowArgs): string {
 
         //return context.dataItem.id + " " + context.index;
-        return context.dataItem.id ;
+        return context.dataItem.id;
     }
 
     deleteTransactions() {
+        this.loadingService.show();
         this.transactionService.deleteTransactions(this.selectedRows).subscribe(res => {
             this.showMessage(this.deleteMsg, MessageType.Info);
             this.selectedRows = [];
             this.reloadGrid();
         }, (error => {
+            this.loadingService.hide();
             this.showMessage(error, MessageType.Warning);
         }));
     }
@@ -102,6 +104,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
     }
 
     reloadGrid() {
+        this.loadingService.show();
         this.transactionService.getCount(this.currentOrder, this.currentFilter).finally(() => {
             var filter = this.currentFilter;
             var order = this.currentOrder;
@@ -116,7 +119,8 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
             })
         }).subscribe(res => {
             this.totalRecords = res;
-            });
+            this.loadingService.hide();
+        });
     }
 
 
@@ -148,11 +152,13 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
     deleteTransaction(confirm: boolean) {
         if (confirm) {
+            this.loadingService.show();
             this.transactionService.delete(this.deleteTransactionId).subscribe(response => {
                 this.deleteTransactionId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
+                this.loadingService.hide();
                 this.showMessage(error, MessageType.Warning);
             }));
         }
@@ -192,25 +198,20 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
         transaction.branchId = this.BranchId;
         transaction.fiscalPeriodId = this.FiscalPeriodId;
+        this.loadingService.show();
 
         if (!this.isNew) {
-
-           
             this.transactionService.editTransaction(transaction)
                 .subscribe(response => {
-
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
-
                 }, (error => {
                     //this.showMessage(error, MessageType.Warning);
                     this.errorMessage = error;
 
                 }));
-
-            
         }
         else {
             this.transactionService.insertTransaction(transaction)
@@ -219,16 +220,17 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    this.reloadGrid();                  
+                    this.reloadGrid();
 
                 }, (error => {
 
                     this.isNew = true;
                     //this.showMessage(error, MessageType.Warning);
                     this.errorMessage = error;
-                                       
+
                 }));
         }
+        this.loadingService.hide();
     }
 
 }

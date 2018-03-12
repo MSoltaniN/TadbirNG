@@ -1,23 +1,11 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-
 import { TransactionService, TransactionLineInfo, TransactionLineService, FiscalPeriodService } from '../../service/index';
-
 import { TransactionLine } from '../../model/index';
-
 import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component for message in client side */
-
-import {
-    GridDataResult,
-    DataStateChangeEvent,
-    PageChangeEvent,
-    RowArgs,
-    SelectAllCheckboxState
-} from '@progress/kendo-angular-grid';
-
-
-
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 import { TranslateService } from 'ng2-translate';
 import { String } from '../../class/source';
@@ -72,10 +60,9 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
         this.reloadGrid();
     }
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService,
-        private transactionLineService: TransactionLineService,
-        public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata,'TransactionLine');
+    constructor(public toastrService: ToastrService, public translate: TranslateService, private loadingService: Ng4LoadingSpinnerService,
+        private transactionLineService: TransactionLineService, public renderer: Renderer2, public metadata: MetaDataService) {
+        super(toastrService, translate, renderer, metadata, 'TransactionLine');
     }
 
     getRowsCount() {
@@ -106,7 +93,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     }
 
     reloadGrid() {
-
+        this.loadingService.show();
         this.transactionLineService.getCount(this.transactionId, this.currentOrder, this.currentFilter).finally(() => {
             var filter = this.currentFilter;
             var order = this.currentOrder;
@@ -121,10 +108,9 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
             })
         }).subscribe(res => {
             this.totalRecords = res;
+            this.loadingService.hide();
         });
     }
-
-
 
     dataStateChange(state: DataStateChangeEvent): void {
         this.currentFilter = this.getFilters(state.filter);
@@ -146,7 +132,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     }
 
 
-    pageChange(event: PageChangeEvent): void {
+    pageChange(event: PageChangeEvent): void {        
         this.skip = event.skip;
         this.reloadGrid();
     }
@@ -154,11 +140,13 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
     deleteTransactionLine(confirm: boolean) {
         if (confirm) {
+            this.loadingService.show();
             this.transactionLineService.delete(this.deleteTransactionLineId).subscribe(response => {
                 this.deleteTransactionLineId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
+                this.loadingService.hide();
                 this.showMessage(error, MessageType.Warning);
             }));
         }
@@ -200,18 +188,12 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
         transactionLine.branchId = this.BranchId;
         transactionLine.fiscalPeriodId = this.FiscalPeriodId;
-        //transactionLine.currencyId = 1;
 
-        //TODO
-        transactionLine.debit = +transactionLine.debit.toString().replace(',', '').replace('$ ', '');
-        transactionLine.credit = +transactionLine.credit.toString().replace(',', '').replace(' ریال', '');
-
-        console.log(transactionLine);
-
+        this.loadingService.show();
         if (!this.isNew) {
 
             this.isNew = false;
-            
+
             this.transactionLineService.editTransactionLine(transactionLine)
                 .subscribe(response => {
 
@@ -228,7 +210,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
                 }));
         }
         else {
-            this.transactionLineService.insertTransactionLine(this.transactionId,transactionLine)
+            this.transactionLineService.insertTransactionLine(this.transactionId, transactionLine)
                 .subscribe(response => {
 
                     this.isNew = false;
@@ -243,8 +225,8 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
                     this.errorMessage = error;
 
                 }));
-
         }
+        this.loadingService.hide();
     }
 
 }
