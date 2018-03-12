@@ -101,12 +101,13 @@
   },
 
   "Login": {
-    "Ok" : "Ok",
+    "Ok": "Ok",
     "Title": "Login",
     "SelectTitle": "Select company",
     "UserName": "User Name",
     "Password": "Password",
     "BtnLogin": "Login",
+    "RememberMe": "Remember me",
     "Validation": {
       "UserRequired": "username is required",
       "PasswordRequired": "password is required",
