@@ -1,6 +1,4 @@
-﻿import { FullAccount } from "./fullaccount";
-
-
+﻿
 export interface TransactionLine {
     id: number;
     debit: number;
@@ -10,7 +8,9 @@ export interface TransactionLine {
     branchId: number;
     transactionId: number;
     currencyId: number;
-    currencyName: string;
-    fullAccount: FullAccount;
+    accountId: number;
+    detailId?: number;
+    costCenterId?: number;
+    projectId?: number;    
 }
 

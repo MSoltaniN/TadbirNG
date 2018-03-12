@@ -12,7 +12,7 @@ import { KeyCode } from '../../enum/KeyCode';
     class="k-textbox"
     [(ngModel)]="dateObject"
     (keydown)="ChangeDateKey($event.keyCode)"
-    (ngModelChange)="DateChange()"  
+    (ngModelChange)="DateChange()" 
     [config]='dateConfig'
     theme="dp-material"
     >
@@ -56,7 +56,6 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
             format: dateFormat,
             locale: this.dateLocale,
             showGoToCurrent: false,
-
         };
     }
 
@@ -145,10 +144,6 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
             this.parseError = true;
             this.propagateChange("");
         } 
-    }
-
-    onGoToCurrent() {
-        debugger;
     }
 
     writeValue(value: any): void {

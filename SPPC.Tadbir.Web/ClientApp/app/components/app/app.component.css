@@ -8,3 +8,7 @@
         margin-top:50px;
     }
 }
+
+/deep/.spinner{
+    z-index:100010 !important;
+}

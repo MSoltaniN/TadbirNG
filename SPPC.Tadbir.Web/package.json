@@ -49,6 +49,7 @@
     "json-loader": "0.5.7",
     "ng2-jalali-date-picker": "^2.2.1",
     "ng2-translate": "5.0.0",
+    "ng4-loading-spinner": "^1.1.1",
     "preboot": "5.1.5",
     "raw-loader": "0.5.1",
     "reflect-metadata": "0.1.10",

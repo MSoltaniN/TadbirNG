@@ -74,8 +74,9 @@ export class AccountService extends BaseService
 
     getAccounts() {
         var headers = this.headers;
-        headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
-        var url = this._getAccountsUrl;
+        //headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
+        //var url = this._getAccountsUrl;
+        var url = String.Format(this._getAccountsUrl, this.FiscalPeriodId, this.BranchId);
         return this.http.get(url, { headers: headers })
             .map(response => <any>(<Response>response).json());
     }

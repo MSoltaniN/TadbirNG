@@ -51,7 +51,10 @@
     "CreditSum": "جمع بستانکار",
     "Description": "توضیحات",
     "New": "آرتیکل جدید",
-    "Delete": "حذف آرتیکل"
+    "Delete": "حذف آرتیکل",
+    "Currency": "واحد پول",
+
+    "Account": "بردار حساب"
 
   },
   "Company": {
@@ -86,7 +89,10 @@
     "DocumentID": "شماره مستند اداری اجباری می باشد",
     "Date": "تاریخ اجباری می باشد",
     "TransactionLineDebit": "بدهکار اجباری می باشد",
-    "TransactionLineCredit": "بستانکار اجباری می باشد"
+    "TransactionLineCredit": "بستانکار اجباری می باشد",
+
+    "TransactionLineAccount": "حساب اجباری می باشد",
+    "TransactionLineCurrency": "واحد پول اجباری می باشد"
   },
   "Grid": {
     "noRecords": "هیچ رکورذی یافت نشد!!!!!!!!!!"

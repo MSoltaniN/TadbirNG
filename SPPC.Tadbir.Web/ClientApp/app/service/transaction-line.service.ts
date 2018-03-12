@@ -10,18 +10,19 @@ import { GridOrderBy } from "../class/grid.orderby";
 import { HttpParams } from "@angular/common/http";
 import { Environment, MessageType } from "../enviroment";
 import { Context } from "../model/context";
-import { FullAccount } from '../model/fullaccount';
 import { BaseService } from '../class/base.service';
+//import { FullAccountInfo } from './index';
 
 export class TransactionLineInfo implements TransactionLine {
     constructor(public id: number = 0, public debit: number = 0, public credit: number = 0, public description?: string,
-        public fiscalPeriodId: number = 0, public branchId: number = 0, public transactionId: number = 0, public currencyId: number = 0, public currencyName: string = "", public fullAccount: FullAccount = new FullAccount()) {
+        public fiscalPeriodId: number = 0, public branchId: number = 0, public transactionId: number = 0, public currencyId: number = 0,
+        public accountId: number = 0 ) {
 
     }
 }
 
 @Injectable()
-export class TransactionLineService extends BaseService{
+export class TransactionLineService extends BaseService {
 
     private getAccountArticlesUrl = "http://37.59.93.7:8080/accounts/{0}/articles";
     getAccountArticles(accountId: number) {
@@ -52,23 +53,9 @@ export class TransactionLineService extends BaseService{
 
 
     constructor(private http: Http) {
-
         super();
 
         this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
-
-        //this section written in base class
-        //var ticket = '';
-        //if (localStorage.getItem('currentContext') != null) {
-        //    var item: string | null;
-        //    item = localStorage.getItem('currentContext');
-        //    var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-        //    ticket = currentContext ? currentContext.ticket.toString() : '';
-        //}
-
-        //this section written in base class
-
         this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
         this.options = new RequestOptions({ headers: this.headers });
     }
@@ -136,7 +123,6 @@ export class TransactionLineService extends BaseService{
     }
 
     insertTransactionLine(transactionId: number, transactionLine: TransactionLine): Observable<string> {
-        debugger;
         var body = JSON.stringify(transactionLine);
         var headers = this.headers;
         var options = new RequestOptions({ headers: headers });
@@ -156,20 +142,6 @@ export class TransactionLineService extends BaseService{
             .map(response => response)
             .catch(this.handleError);
     }
-
-    //// this method comment beacause method in controller not implemented
-
-    //deleteTransactionLines(transactionLines: string[]): Observable<string> {
-
-    //    let body = JSON.stringify(transactionLines);
-
-    //    let headers = this.headers
-    //    let options = new RequestOptions({ headers: headers, body: body });
-
-    //    return this.http.delete(this._deleteMultiTransactionLinesUrl, this.options)
-    //        .map(response => response.json().message)
-    //        .catch(this.handleError);
-    //}
 
 
     private handleError(error: Response) {

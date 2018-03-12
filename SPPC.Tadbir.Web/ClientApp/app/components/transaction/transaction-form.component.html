@@ -3,7 +3,11 @@
     <kendo-dialog-titlebar>
         {{ isNew ?  ('Transaction.New' | translate) :  ('Buttons.Edit' | translate) }}
     </kendo-dialog-titlebar>
-
+    <div *ngIf="errorMessage != ''">
+        <div class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+    </div>
     <form novalidate [formGroup]="editForm">
         <div class="clearfix edit-form-body">
             <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.currentlang === 'fa' && !isNew}">
@@ -34,6 +38,7 @@
 
             <div class="form-group col-xs-12 pull-left" *ngIf="!isNew">
                 <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)" primary="true">{{ 'Buttons.Ok' | translate }}</button>
+                <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
             </div>
         </div>
 

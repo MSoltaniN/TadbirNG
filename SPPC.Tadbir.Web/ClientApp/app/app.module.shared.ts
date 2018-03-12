@@ -7,6 +7,7 @@ import { Headers, RequestOptions, BaseRequestOptions, Http } from '@angular/http
 import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationStrategy, DatePipe } from '@angular/common';
 // third party module to display toast 
 import { ToastrModule } from 'toastr-ng2';
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 import { ReactiveFormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TextMaskModule } from 'angular2-text-mask';
@@ -30,7 +31,8 @@ import { Layout } from './enviroment';
 import { SppcMaskTextBox } from './controls/textbox/sppc-mask-textbox';
 import { SppcNumberBox } from './controls/textbox/sppc-numberbox';
 import { SppcDropDownList } from './controls/dropdownlist/sppc-dropdownlist';
-import { SppcDatepicker } from './controls/datepicker/sppc-datepicker'
+import { SppcDatepicker } from './controls/datepicker/sppc-datepicker';
+import { SppcFullAccount } from './controls/fullAccount/sppc-fullAccount'
 
 import {BrowserModule} from "@angular/platform-browser";
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
@@ -41,7 +43,10 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
-import { AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService, BranchService, TransactionService } from './service/index';
+import {
+    AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService,
+    BranchService, TransactionService, LookupService
+} from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
 
 import { SppcGridFilter } from './controls/grid/sppc-grid-filter';
@@ -74,6 +79,7 @@ import { BaseService } from './class/base.service';
         SppcNumberBox,
         SppcDropDownList,
         SppcDatepicker,
+        SppcFullAccount,
         SppcGridColumn,        
         SppcGridFilter,
         TransactionComponent,
@@ -83,7 +89,7 @@ import { BaseService } from './class/base.service';
         SppcDatePipe
         
     ],
-    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, MetaDataService,
+    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, LookupService, MetaDataService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,
@@ -103,6 +109,7 @@ import { BaseService } from './class/base.service';
         Layout        
     ],        
     imports: [
+        Ng4LoadingSpinnerModule.forRoot(),
         CommonModule,         
         HttpModule,
         FormsModule,
@@ -113,7 +120,7 @@ import { BaseService } from './class/base.service';
         BrowserModule,        
         DpDatePickerModule,
         TextMaskModule,
-        TranslateModule.forRoot(),
+        TranslateModule.forRoot(),        
         RouterModule.forRoot([
             { path: '', redirectTo: 'login', pathMatch: 'full' },            
             { path: 'account2', component: Account2Component, canActivate: [AuthGuard]},

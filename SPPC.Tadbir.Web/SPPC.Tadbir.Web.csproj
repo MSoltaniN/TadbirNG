@@ -58,6 +58,7 @@
     <None Remove="ClientApp\app\components\transaction\transaction-form.component.ts" />
     <None Remove="ClientApp\app\components\transaction\transaction.component.ts" />
     <None Remove="ClientApp\app\controls\datepicker\sppc-datepicker.ts" />
+    <None Remove="ClientApp\app\controls\fullAccount\sppc-fullAccount.ts" />
     <None Remove="ClientApp\app\controls\grid\sppc-date-filter.ts" />
     <None Remove="ClientApp\app\controls\grid\sppc-grid-filter.ts" />
     <None Remove="ClientApp\app\controls\sppc-grid-messages.ts" />
@@ -69,7 +70,9 @@
     <None Remove="ClientApp\app\pipes\index.ts" />
     <None Remove="ClientApp\app\pipes\sppc.date.pipe.ts" />
     <None Remove="ClientApp\app\service\fiscal-period.service.ts" />
+    <None Remove="ClientApp\app\service\fullAccount.service.ts" />
     <None Remove="ClientApp\app\service\index.ts" />
+    <None Remove="ClientApp\app\service\lookup.service.ts" />
     <None Remove="ClientApp\app\service\metadata\metadata.service.ts" />
     <None Remove="ClientApp\app\service\transaction.service.ts" />
     <None Remove="ClientApp\enviroment.ts" />
@@ -178,6 +181,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\datepicker\sppc-datepicker.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\dropdownlist\sppc-dropdownlist.ts" />
+    <TypeScriptCompile Include="ClientApp\app\controls\fullAccount\sppc-fullAccount.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\grid\sppc-date-filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\grid\sppc-grid-filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-mask-textbox.ts" />
@@ -194,8 +198,10 @@
     <TypeScriptCompile Include="ClientApp\app\pipes\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\pipes\sppc.date.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\fiscal-period.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\lookup.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\message\sppc-message.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\metadata\metadata.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\fullAccount.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\transaction-line.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\enviroment.ts" />

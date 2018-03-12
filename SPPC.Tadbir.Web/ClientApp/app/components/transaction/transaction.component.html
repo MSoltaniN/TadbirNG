@@ -1,4 +1,5 @@
-﻿    <div class="panel panel-primary">
+﻿   
+ <div class="panel panel-primary">
         <div class="panel-heading">{{ 'Entity.Transaction' | translate }}</div>
         <div class="panel-body">
             <kendo-grid #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
@@ -113,7 +114,7 @@
                 <!-- additional columns on large devices -->
 
             </kendo-grid>
-            <transaction-form-component [model]="editDataItem" [isNew]="isNew"
+            <transaction-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
                                         (save)="saveHandler($event)"
                                         (cancel)="cancelHandler()">
             </transaction-form-component>

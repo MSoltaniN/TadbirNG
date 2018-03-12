@@ -4,11 +4,55 @@
         {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
     </kendo-dialog-titlebar>
 
+    <div *ngIf="errorMessage != ''">
+        <div class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+    </div>
+
     <form novalidate [formGroup]="editForm">
+
+        <div class="form-group">
+            <label for="accountId" class="control-label">{{ 'TransactionLine.Account' | translate }}</label>
+
+            <kendo-dropdownlist [data]="accountsRows" [valuePrimitive]="true" formControlName="accountId" class="ddl-fAcc"
+                                textField="value" [value]="selectedAccountValue" [(ngModel)]="selectedAccountValue" valueField="key" [defaultItem]="{ value: '', key: null}">
+            </kendo-dropdownlist>
+
+            <kendo-dropdownlist [data]="detailAccountsRows" [valuePrimitive]="true" formControlName="detailId" class="ddl-fAcc"
+                                [textField]="'value'" [value]="selectedDetailAccountValue" [(ngModel)]="selectedDetailAccountValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
+            </kendo-dropdownlist>
+
+            <kendo-dropdownlist [data]="costCentersRows" [valuePrimitive]="true" formControlName="costCenterId" class="ddl-fAcc"
+                                [textField]="'value'" [value]="selectedCostCenterValue" [(ngModel)]="selectedCostCenterValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
+            </kendo-dropdownlist>
+
+            <kendo-dropdownlist [data]="projectsRows" [valuePrimitive]="true" formControlName="projectId" class="ddl-fAcc"
+                                [textField]="'value'" [value]="selectedprojectValue" [(ngModel)]="selectedprojectValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
+            </kendo-dropdownlist>
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.accountId.valid || editForm.controls.accountId.pristine">
+                {{ 'Validations.TransactionLineAccount' | translate }}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="currencyId" class="control-label">{{ 'TransactionLine.Currency' | translate }}</label>
+
+            <kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="ddl-fAcc"
+                                [textField]="'value'" [value]="selectedCurrencyValue" [(ngModel)]="selectedCurrencyValue" [valueField]="'key'">
+            </kendo-dropdownlist>
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.currencyId.valid || editForm.controls.currencyId.pristine">
+                {{ 'Validations.TransactionLineCurrency' | translate }}
+            </div>
+        </div>
+
         <div class="form-group">
             <label for="debit" class="control-label">{{ 'TransactionLine.Debit' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="debit" [textMask]="{mask: dollarMask}" (focus)="$event.target.select()"/>
+            <!--<input type="text" class="k-textbox" formControlName="debit" [textMask]="{mask: dollarMask}" (focus)="$event.target.select()" />-->
+            <input type="text" class="k-textbox" formControlName="debit"/>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.debit.valid || editForm.controls.debit.pristine">
                 {{ 'Validations.TransactionLineDebit' | translate }}
@@ -18,7 +62,8 @@
         <div class="form-group">
             <label for="credit" class="control-label">{{ 'TransactionLine.Credit' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="credit" [textMask]="{mask: rialMask}" (focus)="$event.target.select()"/>
+            <!--<input type="text" class="k-textbox" formControlName="credit" [textMask]="{mask: rialMask}" (focus)="$event.target.select()" />-->
+            <input type="text" class="k-textbox" formControlName="credit"/>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.credit.valid || editForm.controls.credit.pristine">
                 {{ 'Validations.TransactionLineCredit' | translate }}

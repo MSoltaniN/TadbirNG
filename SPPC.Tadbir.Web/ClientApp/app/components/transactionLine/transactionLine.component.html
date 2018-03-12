@@ -135,7 +135,7 @@
                 <!-- additional columns on large devices -->
 
             </kendo-grid>
-            <transactionLine-form-component [model]="editDataItem" [isNew]="isNew"
+            <transactionLine-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
                                             (save)="saveHandler($event)"
                                             (cancel)="cancelHandler()">
             </transactionLine-form-component>

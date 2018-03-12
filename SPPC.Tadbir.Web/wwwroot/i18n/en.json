@@ -53,7 +53,10 @@
     "CreditSum": "Credit Sum",
     "Description": "Description",
     "New": "New Article",
-    "Delete": "Delete Article"
+    "Delete": "Delete Article",
+    "Currency": "Currency",
+
+    "Account": "Account"
 
   },
   "Company": {
@@ -88,7 +91,10 @@
     "DocumentID": "document id is required",
     "Date": "date is required",
     "TransactionLineDebit": "debit is required",
-    "TransactionLineCredit": "credit is required"
+    "TransactionLineCredit": "credit is required",
+
+    "TransactionLineAccount": "account is required",
+    "TransactionLineCurrency": "currency is required"
   },
   "Grid": {
     "noRecords": "row not found!!!!!!!!!!"
