@@ -98,8 +98,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SaveAccountAsync(account);
-            return StatusCode(StatusCodes.Status201Created);
+            var outputAccount = await _repository.SaveAccountAsync(account);
+            return StatusCode(StatusCodes.Status201Created, outputAccount);
         }
 
         // PUT: api/accounts/{accountId:min(1)}
@@ -114,8 +114,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SaveAccountAsync(account);
-            return Ok();
+            var outputAccount = await _repository.SaveAccountAsync(account);
+            result = (outputAccount != null)
+                ? Ok(outputAccount)
+                : NotFound() as IActionResult;
+            return result;
         }
 
         // DELETE: api/accounts/{accountId:min(1)}

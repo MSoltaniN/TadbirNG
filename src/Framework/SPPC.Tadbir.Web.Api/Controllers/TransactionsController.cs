@@ -81,8 +81,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             SetDocument(transaction);
-            await _repository.SaveTransactionAsync(transaction);
-            return StatusCode(StatusCodes.Status201Created);
+            var outputTransaction = await _repository.SaveTransactionAsync(transaction);
+            return StatusCode(StatusCodes.Status201Created, outputTransaction);
         }
 
         // PUT: api/transactions/{transactionId:int}
@@ -104,8 +104,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             SetDocument(transaction);
-            await _repository.SaveTransactionAsync(transaction);
-            return Ok();
+            var outputTransaction = await _repository.SaveTransactionAsync(transaction);
+            result = (outputTransaction != null)
+                ? Ok(outputTransaction)
+                : NotFound() as IActionResult;
+            return result;
         }
 
         // DELETE: api/transactions/{transactionId:int}
@@ -255,8 +258,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(Strings.DebitAndCreditNotAllowed);
             }
 
-            await _repository.SaveArticleAsync(article);
-            return StatusCode(StatusCodes.Status201Created);
+            var outputLine = await _repository.SaveArticleAsync(article);
+            return StatusCode(StatusCodes.Status201Created, outputLine);
         }
 
         // PUT: api/transactions/articles/{articleId:min(1)}
@@ -277,8 +280,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(Strings.DebitAndCreditNotAllowed);
             }
 
-            await _repository.SaveArticleAsync(article);
-            return Ok();
+            var outputLine = await _repository.SaveArticleAsync(article);
+            result = (outputLine != null)
+                ? Ok(outputLine)
+                : NotFound() as IActionResult;
+            return result;
         }
 
         // DELETE: api/transactions/articles/{articleId:min(1)}

@@ -45,7 +45,8 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک سند مالی را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="transaction">سند مالی برای ایجاد یا اصلاح</param>
-        Task SaveTransactionAsync(TransactionViewModel transaction);
+        /// <returns>مدل نمایشی سند ایجاد یا اصلاح شده</returns>
+        Task<TransactionViewModel> SaveTransactionAsync(TransactionViewModel transaction);
 
         /// <summary>
         /// به روش آسنکرون، سند مالی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
@@ -147,7 +148,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک سطر سند مالی (آرتیکل) را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
-        Task SaveArticleAsync(TransactionLineViewModel article);
+        Task<TransactionLineViewModel> SaveArticleAsync(TransactionLineViewModel article);
 
         /// <summary>
         /// به روش آسنکرون، سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره حذف می کند

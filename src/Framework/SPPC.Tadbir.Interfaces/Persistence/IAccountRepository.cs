@@ -70,7 +70,8 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک حساب را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="account">حساب مورد نظر برای ایجاد یا اصلاح</param>
-        Task SaveAccountAsync(AccountViewModel account);
+        /// <returns>اطلاعات نمایشی حساب ایجاد یا اصلاح شده</returns>
+        Task<AccountViewModel> SaveAccountAsync(AccountViewModel account);
 
         /// <summary>
         /// به روش آسنکرون، حساب مشخص شده با شناسه عددی را از محل ذخیره حذف می کند

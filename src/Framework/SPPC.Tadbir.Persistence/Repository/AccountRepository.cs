@@ -147,26 +147,29 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک حساب را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="account">حساب مورد نظر برای ایجاد یا اصلاح</param>
-        public async Task SaveAccountAsync(AccountViewModel account)
+        /// <returns>اطلاعات نمایشی حساب ایجاد یا اصلاح شده</returns>
+        public async Task<AccountViewModel> SaveAccountAsync(AccountViewModel account)
         {
             Verify.ArgumentNotNull(account, "account");
+            Account accountModel = default(Account);
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             if (account.Id == 0)
             {
-                var newAccount = _mapper.Map<Account>(account);
-                repository.Insert(newAccount);
+                accountModel = _mapper.Map<Account>(account);
+                repository.Insert(accountModel);
             }
             else
             {
-                var existing = await repository.GetByIDAsync(account.Id, acc => acc.FiscalPeriod, acc => acc.Branch);
-                if (existing != null)
+                accountModel = await repository.GetByIDAsync(account.Id, acc => acc.FiscalPeriod, acc => acc.Branch);
+                if (accountModel != null)
                 {
-                    UpdateExistingAccount(account, existing);
-                    repository.Update(existing);
+                    UpdateExistingAccount(account, accountModel);
+                    repository.Update(accountModel);
                 }
             }
 
             await _unitOfWork.CommitAsync();
+            return _mapper.Map<AccountViewModel>(accountModel);
         }
 
         /// <summary>

@@ -109,33 +109,38 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک سند مالی را در دیتابیس ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="transaction">سند مالی برای ایجاد یا اصلاح</param>
-        public async Task SaveTransactionAsync(TransactionViewModel transaction)
+        /// <returns>مدل نمایشی سند ایجاد یا اصلاح شده</returns>
+        public async Task<TransactionViewModel> SaveTransactionAsync(TransactionViewModel transaction)
         {
             Verify.ArgumentNotNull(transaction, "transaction");
+            Transaction transactionModel = default(Transaction);
             var repository = _unitOfWork.GetAsyncRepository<Transaction>();
             if (transaction.Id == 0)
             {
-                var newTransaction = _mapper.Map<Transaction>(transaction);
-                UpdateAction(newTransaction);
-                repository.Insert(newTransaction, txn => txn.Document, txn => txn.Document.Actions);
+                transactionModel = _mapper.Map<Transaction>(transaction);
+                UpdateAction(transactionModel);
+                repository.Insert(transactionModel, txn => txn.Document, txn => txn.Document.Actions);
             }
             else
             {
-                var existing = await repository
+                transactionModel = await repository
                     .GetEntityQuery()
                     .Where(txn => txn.Id == transaction.Id)
+                    .Include(txn => txn.FiscalPeriod)
+                    .Include(txn => txn.Branch)
                     .Include(txn => txn.Document)
                         .ThenInclude(doc => doc.Actions)
                     .SingleOrDefaultAsync();
-                if (existing != null)
+                if (transactionModel != null)
                 {
-                    UpdateExistingTransaction(existing, transaction);
-                    UpdateAction(existing);
-                    repository.Update(existing, txn => txn.Document, txn => txn.Document.Actions);
+                    UpdateExistingTransaction(transactionModel, transaction);
+                    UpdateAction(transactionModel);
+                    repository.Update(transactionModel, txn => txn.Document, txn => txn.Document.Actions);
                 }
             }
 
             await _unitOfWork.CommitAsync();
+            return _mapper.Map<TransactionViewModel>(transactionModel);
         }
 
         /// <summary>
@@ -400,26 +405,28 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک سطر سند مالی (آرتیکل) را در دیتابیس ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
-        public async Task SaveArticleAsync(TransactionLineViewModel article)
+        public async Task<TransactionLineViewModel> SaveArticleAsync(TransactionLineViewModel article)
         {
             Verify.ArgumentNotNull(article, "article");
+            TransactionLine lineModel = default(TransactionLine);
             var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
             if (article.Id == 0)
             {
-                var newArticle = _mapper.Map<TransactionLine>(article);
-                repository.Insert(newArticle);
+                lineModel = _mapper.Map<TransactionLine>(article);
+                repository.Insert(lineModel);
             }
             else
             {
-                var existing = await repository.GetByIDAsync(article.Id);
-                if (existing != null)
+                lineModel = await repository.GetByIDAsync(article.Id);
+                if (lineModel != null)
                 {
-                    UpdateExistingArticle(existing, article);
-                    repository.Update(existing);
+                    UpdateExistingArticle(lineModel, article);
+                    repository.Update(lineModel);
                 }
             }
 
             await _unitOfWork.CommitAsync();
+            return _mapper.Map<TransactionLineViewModel>(lineModel);
         }
 
         /// <summary>
