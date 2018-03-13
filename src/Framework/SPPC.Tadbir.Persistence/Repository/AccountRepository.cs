@@ -136,11 +136,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var items = await repository
-                .GetByCriteriaAsync(
+            var count = await repository
+                .GetCountByCriteriaAsync(
                     acc => acc.FiscalPeriod.Id == fpId && acc.Branch.Id == branchId,
                     gridOptions);
-            return items.Count;
+            return count;
         }
 
         /// <summary>
@@ -317,10 +317,9 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<Account>();
             int count = repository
-                .GetByCriteria(
+                .GetCountByCriteria(
                     acc => acc.FiscalPeriod.Id == fpId && acc.Branch.Id == branchId,
-                    gridOptions)
-                .Count();
+                    gridOptions);
             return count;
         }
 

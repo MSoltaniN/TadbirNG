@@ -124,6 +124,15 @@ namespace SPPC.Framework.Persistence
             params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>
+        /// Retrieves record count for a subset of existing entities, as defined by the specified criteria.
+        /// </summary>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <returns>Record count for filtered items</returns>
+        int GetCountByCriteria(Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions);
+
+        /// <summary>
         /// Retrieves a single entity instance with the specified row identifier
         /// </summary>
         /// <param name="rowId">A <see cref="Guid"/> value that uniquely identifies a row of information in data store</param>

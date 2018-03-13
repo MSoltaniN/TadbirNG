@@ -40,6 +40,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetTransactionsAsync(int fpId, int branchId)
         {
             var gridOptions = GetGridOptions();
+            int itemCount = await _repository.GetCountAsync(fpId, branchId, gridOptions);
+            SetItemCount(itemCount);
             var transactions = await _repository.GetTransactionsAsync(fpId, branchId, gridOptions);
             return Json(transactions);
         }
@@ -49,7 +51,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
         public async Task<IActionResult> GetTransactionDetailAsync(int transactionId)
         {
-            var transaction = await _repository.GetTransactionDetailAsync(transactionId);
+            var gridOptions = GetGridOptions();
+            int itemCount = await _repository.GetArticleCountAsync(transactionId, gridOptions);
+            SetItemCount(itemCount);
+            var transaction = await _repository.GetTransactionDetailAsync(transactionId, gridOptions);
             return JsonReadResult(transaction);
         }
 
@@ -131,6 +136,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public IActionResult GetTransactions(int fpId, int branchId)
         {
             var gridOptions = GetGridOptions();
+            int itemCount = _repository.GetCount(fpId, branchId, gridOptions);
+            SetItemCount(itemCount);
             var transactions = _repository.GetTransactions(fpId, branchId, gridOptions);
             return Json(transactions);
         }
@@ -457,6 +464,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
             var json = WebUtility.UrlDecode(urlEncoded);
             return Framework.Helpers.Json.To<GridOptions>(json);
+        }
+
+        private void SetItemCount(int count)
+        {
+            Response.Headers.Add(AppConstants.TotalCountHeaderName, count.ToString());
         }
 
         private void SetDocument(TransactionViewModel transaction)

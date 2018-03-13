@@ -66,8 +66,10 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، سند مالی با شناسه دیتابیسی مشخص شده را به همراه اطلاعات کامل آن از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <param name="transactionId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>سند مالی مشخص شده با شناسه دیتابیسی به همراه اطلاعات کامل آن</returns>
-        public async Task<TransactionFullViewModel> GetTransactionDetailAsync(int transactionId)
+        public async Task<TransactionFullViewModel> GetTransactionDetailAsync(
+            int transactionId, GridOptions gridOptions = null)
         {
             TransactionFullViewModel transactionDetail = null;
             var repository = _unitOfWork.GetAsyncRepository<Transaction>();
@@ -89,20 +91,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves the count of all financial transaction items in a specified fiscal period and branch
+        /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">Identifier of an existing fiscal period</param>
-        /// <param name="branchId">Identifier of an existing corporate branch</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
-        /// <returns>Count of all financial transaction items</returns>
+        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<Transaction>();
-            var items = await repository
-                .GetByCriteriaAsync(
+            var count = await repository
+                .GetCountByCriteriaAsync(
                     txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId,
                     gridOptions);
-            return items.Count;
+            return count;
         }
 
         /// <summary>
@@ -229,6 +232,23 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return transactionDetail;
+        }
+
+        /// <summary>
+        /// تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
+        public int GetCount(int fpId, int branchId, GridOptions gridOptions = null)
+        {
+            var repository = _unitOfWork.GetRepository<Transaction>();
+            var count = repository
+                .GetCountByCriteria(
+                    txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId,
+                    gridOptions);
+            return count;
         }
 
         /// <summary>
@@ -389,16 +409,18 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Retrieves the count of all transaction line items in a specified financial transaction
+        /// به روش آسنکرون، تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
+        /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">Identifier of an existing transaction</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
-        /// <returns>Count of all transaction line items</returns>
+        /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد آرتیکل های سند مالی بعد از اعمال فیلتر</returns>
         public async Task<int> GetArticleCountAsync(int transactionId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
-            var items = await repository.GetByCriteriaAsync(line => line.Transaction.Id == transactionId, gridOptions);
-            return items.Count;
+            var count = await repository.GetCountByCriteriaAsync(
+                line => line.Transaction.Id == transactionId, gridOptions);
+            return count;
         }
 
         /// <summary>
@@ -494,6 +516,20 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return articleDetails;
+        }
+
+        /// <summary>
+        /// تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
+        /// از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد آرتیکل های سند مالی بعد از اعمال فیلتر</returns>
+        public int GetArticleCount(int transactionId, GridOptions gridOptions = null)
+        {
+            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            var count = repository.GetCountByCriteria(line => line.Transaction.Id == transactionId, gridOptions);
+            return count;
         }
 
         /// <summary>
@@ -623,7 +659,8 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private IQueryable<Transaction> GetTransactionWithLinesQuery(
-            IRepository<Transaction> repository, Expression<Func<Transaction, bool>> criteria)
+            IRepository<Transaction> repository,
+            Expression<Func<Transaction, bool>> criteria)
         {
             var transactionsQuery = repository
                 .GetEntityQuery()

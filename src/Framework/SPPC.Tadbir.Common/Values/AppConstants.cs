@@ -48,6 +48,11 @@ namespace SPPC.Tadbir.Values
         public const string GridOptionsHeaderName = "X-Tadbir-GridOptions";
 
         /// <summary>
+        /// Name of response header used for returning total item count of collections
+        /// </summary>
+        public const string TotalCountHeaderName = "X-Total-Count";
+
+        /// <summary>
         /// اندازه پیش فرض صفحه در فهرست های اطلاعاتی
         /// </summary>
         public const int DefaultPageSize = 10;

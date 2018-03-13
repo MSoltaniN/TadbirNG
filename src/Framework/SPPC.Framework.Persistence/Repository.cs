@@ -30,6 +30,166 @@ namespace SPPC.Framework.Persistence
             _dataSet = dataContext.Set<TEntity>();
         }
 
+        #region Asynchronous Methods
+
+        /// <summary>
+        /// Asynchronously retrieves complete information for all existing entities in data store,
+        /// including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Collection of all existing entities</returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        public async Task<IList<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = GetEntityWithNavigationQuery(null, relatedProperties);
+            return await query.ToListAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves complete information for all existing entities in data store,
+        /// including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Collection of all existing entities</returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        public async Task<IList<TEntity>> GetAllAsync(
+            GridOptions gridOptions, params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = GetEntityWithNavigationQuery(gridOptions, relatedProperties);
+            return await query.ToListAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves a single entity instance with the specified unique identifier,
+        /// including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="id">Identifier of an existing entity</param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Entity instance having the specified identifier</returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        public async Task<TEntity> GetByIDAsync(int id, params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = GetEntityWithNavigationQuery(id, relatedProperties);
+            return await query.SingleOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves a single entity instance with the specified unique identifier, including specified
+        /// navigation properties, if any. This overload is suitable for scenarios when you want to change
+        /// retrieved entity.
+        /// </summary>
+        /// <param name="id">Identifier of an existing entity</param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Entity instance having the specified identifier</returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        public async Task<TEntity> GetByIDWithTrackingAsync(
+            int id, params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = _dataSet
+                .AsQueryable()
+                .Where(e => e.Id == id);
+            foreach (var property in relatedProperties)
+            {
+                query = query.Include(property);
+            }
+
+            return await query.SingleOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves complete information for a subset of existing entities, as defined by
+        /// the specified criteria, including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        public async Task<IList<TEntity>> GetByCriteriaAsync(
+            Expression<Func<TEntity, bool>> criteria,
+            params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = GetEntityWithNavigationQuery(criteria, null, relatedProperties);
+            return await query.ToListAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves complete information for a subset of existing entities, as defined by
+        /// the specified criteria, including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        public async Task<IList<TEntity>> GetByCriteriaAsync(
+            Expression<Func<TEntity, bool>> criteria,
+            GridOptions gridOptions,
+            params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            var query = GetEntityWithNavigationQuery(criteria, gridOptions, relatedProperties);
+            return await query.ToListAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves record count for a subset of existing entities, as defined by
+        /// the specified criteria.
+        /// </summary>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <returns></returns>
+        public async Task<int> GetCountByCriteriaAsync(Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions)
+        {
+            var query = GetCountByCriteriaQuery(criteria, gridOptions);
+            return await query.CountAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves a single entity instance with the specified row identifier
+        /// </summary>
+        /// <param name="rowId">A <see cref="Guid"/> value that uniquely identifies a row of information in data store</param>
+        /// <returns>Entity instance having the specified row identifier, if found; otherwise, returns null.</returns>
+        /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
+        /// to retrieve them via additional JOIN statements.</remarks>
+        public async Task<TEntity> GetByRowIDAsync(Guid rowId)
+        {
+            var entity = await _dataSet
+                .Where(item => item.RowGuid == rowId)
+                .SingleOrDefaultAsync();
+            return entity;
+        }
+
+        #endregion
+
+        #region Synchronous Methods
+
         /// <summary>
         /// Returns a queryable object for entity that can be further manipulated to include related properties
         /// and perform other standard LINQ functions. This method is suitable for read-only operations, as it
@@ -117,43 +277,6 @@ namespace SPPC.Framework.Persistence
         }
 
         /// <summary>
-        /// Asynchronously retrieves complete information for all existing entities in data store,
-        /// including specified navigation properties, if any.
-        /// </summary>
-        /// <param name="relatedProperties">Variable array of expressions that specify navigation
-        /// properties that must be loaded in the main entity</param>
-        /// <returns>Collection of all existing entities</returns>
-        /// <remarks>
-        /// Use this method when you need to retrieve the entity's navigation properties in a single level
-        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
-        /// </remarks>
-        public async Task<IList<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            var query = GetEntityWithNavigationQuery(null, relatedProperties);
-            return await query.ToListAsync();
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves complete information for all existing entities in data store,
-        /// including specified navigation properties, if any.
-        /// </summary>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
-        /// <param name="relatedProperties">Variable array of expressions that specify navigation
-        /// properties that must be loaded in the main entity</param>
-        /// <returns>Collection of all existing entities</returns>
-        /// <remarks>
-        /// Use this method when you need to retrieve the entity's navigation properties in a single level
-        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
-        /// </remarks>
-        public async Task<IList<TEntity>> GetAllAsync(
-            GridOptions gridOptions, params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            var query = GetEntityWithNavigationQuery(gridOptions, relatedProperties);
-            return await query.ToListAsync();
-        }
-
-        /// <summary>
         /// Retrieves a single entity instance with the specified unique identifier, including specified
         /// navigation properties, if any.
         /// </summary>
@@ -198,51 +321,6 @@ namespace SPPC.Framework.Persistence
         }
 
         /// <summary>
-        /// Asynchronously retrieves a single entity instance with the specified unique identifier, including specified
-        /// navigation properties, if any. This overload is suitable for scenarios when you want to change
-        /// retrieved entity.
-        /// </summary>
-        /// <param name="id">Identifier of an existing entity</param>
-        /// <param name="relatedProperties">Variable array of expressions that specify navigation
-        /// properties that must be loaded in the main entity</param>
-        /// <returns>Entity instance having the specified identifier</returns>
-        /// <remarks>
-        /// Use this method when you need to retrieve the entity's navigation properties in a single level
-        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
-        /// </remarks>
-        public async Task<TEntity> GetByIDWithTrackingAsync(
-            int id, params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            var query = _dataSet
-                .AsQueryable()
-                .Where(e => e.Id == id);
-            foreach (var property in relatedProperties)
-            {
-                query = query.Include(property);
-            }
-
-            return await query.SingleOrDefaultAsync();
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves a single entity instance with the specified unique identifier,
-        /// including specified navigation properties, if any.
-        /// </summary>
-        /// <param name="id">Identifier of an existing entity</param>
-        /// <param name="relatedProperties">Variable array of expressions that specify navigation
-        /// properties that must be loaded in the main entity</param>
-        /// <returns>Entity instance having the specified identifier</returns>
-        /// <remarks>
-        /// Use this method when you need to retrieve the entity's navigation properties in a single level
-        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
-        /// </remarks>
-        public async Task<TEntity> GetByIDAsync(int id, params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            var query = GetEntityWithNavigationQuery(id, relatedProperties);
-            return await query.SingleOrDefaultAsync();
-        }
-
-        /// <summary>
         /// Retrieves complete information for a subset of existing entities, as defined by the specified criteria,
         /// including specified navigation properties, if any.
         /// </summary>
@@ -286,46 +364,16 @@ namespace SPPC.Framework.Persistence
         }
 
         /// <summary>
-        /// Asynchronously retrieves complete information for a subset of existing entities, as defined by
-        /// the specified criteria, including specified navigation properties, if any.
-        /// </summary>
-        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <param name="relatedProperties">Variable array of expressions that specify navigation
-        /// properties that must be loaded in the main entity</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// Use this method when you need to retrieve the entity's navigation properties in a single level
-        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
-        /// </remarks>
-        public async Task<IList<TEntity>> GetByCriteriaAsync(
-            Expression<Func<TEntity, bool>> criteria,
-            params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            var query = GetEntityWithNavigationQuery(criteria, null, relatedProperties);
-            return await query.ToListAsync();
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves complete information for a subset of existing entities, as defined by
-        /// the specified criteria, including specified navigation properties, if any.
+        /// Retrieves record count for a subset of existing entities, as defined by the specified criteria.
         /// </summary>
         /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
         /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
         /// </param>
-        /// <param name="relatedProperties">Variable array of expressions that specify navigation
-        /// properties that must be loaded in the main entity</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// Use this method when you need to retrieve the entity's navigation properties in a single level
-        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
-        /// </remarks>
-        public async Task<IList<TEntity>> GetByCriteriaAsync(
-            Expression<Func<TEntity, bool>> criteria,
-            GridOptions gridOptions,
-            params Expression<Func<TEntity, object>>[] relatedProperties)
+        /// <returns>Record count for filtered items</returns>
+        public int GetCountByCriteria(Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions)
         {
-            var query = GetEntityWithNavigationQuery(criteria, gridOptions, relatedProperties);
-            return await query.ToListAsync();
+            var query = GetCountByCriteriaQuery(criteria, gridOptions);
+            return query.Count();
         }
 
         /// <summary>
@@ -338,21 +386,6 @@ namespace SPPC.Framework.Persistence
             var entity = _dataSet
                 .Where(item => item.RowGuid == rowId)
                 .SingleOrDefault();
-            return entity;
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves a single entity instance with the specified row identifier
-        /// </summary>
-        /// <param name="rowId">A <see cref="Guid"/> value that uniquely identifies a row of information in data store</param>
-        /// <returns>Entity instance having the specified row identifier, if found; otherwise, returns null.</returns>
-        /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
-        /// to retrieve them via additional JOIN statements.</remarks>
-        public async Task<TEntity> GetByRowIDAsync(Guid rowId)
-        {
-            var entity = await _dataSet
-                .Where(item => item.RowGuid == rowId)
-                .SingleOrDefaultAsync();
             return entity;
         }
 
@@ -412,6 +445,8 @@ namespace SPPC.Framework.Persistence
         {
             _dataSet.Remove(entity);
         }
+
+        #endregion
 
         #region IDisposable Support
 
@@ -511,6 +546,21 @@ namespace SPPC.Framework.Persistence
             entity.Entry.State = mustSave
                 ? _trackingStatus.State
                 : EntityState.Detached;
+        }
+
+        private IQueryable<TEntity> GetCountByCriteriaQuery(
+            Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions)
+        {
+            var options = gridOptions ?? new GridOptions();
+            var query = _dataSet
+                .AsNoTracking()
+                .Where(criteria);
+            foreach (var filter in options.Filters)
+            {
+                query = query.Where(filter.ToString());
+            }
+
+            return query;
         }
 
         private DbContext _dataContext;

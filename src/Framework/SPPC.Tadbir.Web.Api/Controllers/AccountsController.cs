@@ -35,6 +35,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountsAsync(int fpId, int branchId)
         {
             var gridOptions = GetGridOptions();
+            int itemCount = await _repository.GetCountAsync(fpId, branchId, gridOptions);
+            SetItemCount(itemCount);
             var accounts = await _repository.GetAccountsAsync(fpId, branchId, gridOptions);
             return Json(accounts);
         }
@@ -173,6 +175,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public IActionResult GetAccounts(int fpId, int branchId)
         {
             var gridOptions = GetGridOptions();
+            int itemCount = _repository.GetCount(fpId, branchId, gridOptions);
+            SetItemCount(itemCount);
             var accounts = _repository.GetAccounts(fpId, branchId, gridOptions);
             return Json(accounts);
         }
@@ -273,6 +277,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
             var json = WebUtility.UrlDecode(urlEncoded);
             return Framework.Helpers.Json.To<GridOptions>(json);
+        }
+
+        private void SetItemCount(int count)
+        {
+            Response.Headers.Add(AppConstants.TotalCountHeaderName, count.ToString());
         }
 
         private IActionResult JsonReadResult<TData>(TData data)

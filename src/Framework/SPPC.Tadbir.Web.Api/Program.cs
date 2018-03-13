@@ -13,9 +13,9 @@ namespace SPPC.Tadbir.Web.Api
     {
         public static void Main(string[] args)
         {
-            ////var gridOptions = new GridOptions() { Paging = new GridPaging() { PageIndex = 2, PageSize = 3 } };
-            ////gridOptions.Filters.Add(new GridFilter() { FieldName = "Name", FieldTypeName = "System.String", Operator = ".IndexOf({0}) == -1", Value = "های" });
-            ////gridOptions.SortColumns.Add(new GridOrderBy() { FieldName = "Date", Direction = "ASC" });
+            ////var gridOptions = new GridOptions() { Paging = new GridPaging() { PageIndex = 1, PageSize = 3 } };
+            ////gridOptions.Filters.Add(new GridFilter() { FieldName = "Document.Id", FieldTypeName = "System.Int32", Operator = " >= {0}", Value = "1000" });
+            ////gridOptions.SortColumns.Add(new GridOrderBy() { FieldName = "No", Direction = "ASC" });
             ////var json = Json.From(gridOptions, false);
             ////var urlEncoded = WebUtility.UrlEncode(json);
             ////var base64 = Transform.ToBase64String(Encoding.UTF8.GetBytes(urlEncoded));
