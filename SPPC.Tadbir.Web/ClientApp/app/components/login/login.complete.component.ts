@@ -123,9 +123,12 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
         //}
 
-        this.companyService.getCompanies(this.UserName,this.Ticket).subscribe(res => {
-            this.compenies = res;
-        });
+        var companiesList = this.companyService.getCompanies(this.UserName, this.Ticket);
+        if (companiesList != null) {
+            companiesList.subscribe(res => {
+                this.compenies = res;
+            });
+        }
     }
 
 
@@ -173,20 +176,23 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     {
 
         if (this.isValidate()) {
-            if (localStorage.getItem('currentContext')) {
-                const userJson = localStorage.getItem('currentContext');
+            
+            if (this.authenticationService.islogin()) {
 
-                var currentUser: ContextInfo = userJson !== null ? JSON.parse(userJson) : null;
+                var currentUser = this.authenticationService.getCurrentUser();
+                if (currentUser != null) {
 
-                currentUser.branchId = parseInt(this.branchId);
-                currentUser.companyId = parseInt(this.companyId);
-                currentUser.fpId = parseInt(this.fiscalPeriodId);
+                    currentUser.branchId = parseInt(this.branchId);
+                    currentUser.companyId = parseInt(this.companyId);
+                    currentUser.fpId = parseInt(this.fiscalPeriodId);
 
+                    if (this.authenticationService.isRememberMe())
+                        localStorage.setItem('currentContext', JSON.stringify(currentUser));
+                    else
+                        sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
 
-                localStorage.setItem('currentContext', JSON.stringify(currentUser));
-
-                this.router.navigate(['/account2']);
-
+                    this.router.navigate(['/account2']);
+                }
             }
         }
     }

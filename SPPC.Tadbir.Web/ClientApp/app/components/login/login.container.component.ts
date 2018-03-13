@@ -18,7 +18,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 
 export class LoginContainerComponent extends DefaultComponent implements OnInit {
     
-    public step1: boolean = true;
+    public step1: boolean = false;
     public step2: boolean = false;
 
     constructor(
@@ -31,11 +31,23 @@ export class LoginContainerComponent extends DefaultComponent implements OnInit 
         public metadata: MetaDataService) 
     {
         super(toastrService, translate, renderer, metadata,'');
-
+        this.step2 = false;
     }
 
     ngOnInit() {
-        
+        if (this.authenticationService.isRememberMe()) {
+            if (this.route.snapshot.queryParams['returnUrl'] == undefined) {
+                this.step1 = false;
+                this.step2 = true;
+            }
+            else {
+                this.router.navigate(this.route.snapshot.queryParams['returnUrl']);
+            }
+        }
+        else {
+            this.step1 = true;
+            this.step2 = false;
+        }
     }
 
     

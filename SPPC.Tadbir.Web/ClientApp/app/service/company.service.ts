@@ -26,6 +26,7 @@ export class CompanyService extends BaseService {
         this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
         this.headers.append('X-Tadbir-AuthTicket', ticket);
 
+        if (ticket == '') return null;
         var jsonContext = atob(ticket);
         var context = JSON.parse(jsonContext);
 

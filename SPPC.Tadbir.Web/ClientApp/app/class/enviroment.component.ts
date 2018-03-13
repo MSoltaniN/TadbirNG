@@ -21,6 +21,15 @@ export class EnviromentComponent {
             fpId = currentContext ? parseInt(currentContext.fpId) : 0;
 
         }
+        else if (sessionStorage.getItem('currentContext') != null) {
+                var item: string | null;
+                item = sessionStorage.getItem('currentContext');
+                var currentContext = JSON.parse(item != null ? item.toString() : "");
+
+                fpId = currentContext ? parseInt(currentContext.fpId) : 0;
+
+        }
+
         return fpId;
     }
 
@@ -31,6 +40,14 @@ export class EnviromentComponent {
         if (localStorage.getItem('currentContext') != null) {
             var item: string | null;
             item = localStorage.getItem('currentContext');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+
+            branchId = currentContext ? parseInt(currentContext.branchId) : 0;
+
+        }
+        else if (sessionStorage.getItem('currentContext') != null) {
+            var item: string | null;
+            item = sessionStorage.getItem('currentContext');
             var currentContext = JSON.parse(item != null ? item.toString() : "");
 
             branchId = currentContext ? parseInt(currentContext.branchId) : 0;
@@ -51,6 +68,15 @@ export class EnviromentComponent {
             companyId = currentContext ? parseInt(currentContext.companyId) : 0;
 
         }
+        else if (sessionStorage.getItem('currentContext') != null) {
+            var item: string | null;
+            item = sessionStorage.getItem('currentContext');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+
+            companyId = currentContext ? parseInt(currentContext.companyId) : 0;
+
+        }
+
         return companyId;
     }
 
@@ -61,6 +87,14 @@ export class EnviromentComponent {
         if (localStorage.getItem('currentContext') != null) {
             var item: string | null;
             item = localStorage.getItem('currentContext');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+
+            ticket = currentContext ? currentContext.ticket.toString() : '';
+
+        }
+        else if (sessionStorage.getItem('currentContext') != null) {
+            var item: string | null;
+            item = sessionStorage.getItem('currentContext');
             var currentContext = JSON.parse(item != null ? item.toString() : "");
 
             ticket = currentContext ? currentContext.ticket.toString() : '';
@@ -84,6 +118,17 @@ export class EnviromentComponent {
             userId = currentContext ? parseInt(context.User.Id) : 0;
 
         }
+        else if (sessionStorage.getItem('currentContext') != null) {
+            var item: string | null;
+            item = sessionStorage.getItem('currentContext');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+
+            var jsonContext = atob(currentContext.ticket);
+            var context = JSON.parse(jsonContext);
+
+            userId = currentContext ? parseInt(context.User.Id) : 0;
+
+        }
 
         return userId;
     }
@@ -95,6 +140,14 @@ export class EnviromentComponent {
         if (localStorage.getItem('currentContext') != null) {
             var item: string | null;
             item = localStorage.getItem('currentContext');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+
+            userName = currentContext ? currentContext.userName.toString() : '';
+
+        }
+        else if (sessionStorage.getItem('currentContext') != null) {
+            var item: string | null;
+            item = sessionStorage.getItem('currentContext');
             var currentContext = JSON.parse(item != null ? item.toString() : "");
 
             userName = currentContext ? currentContext.userName.toString() : '';

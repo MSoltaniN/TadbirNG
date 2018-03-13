@@ -133,6 +133,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
             }));
         }
 
+        this.groupDelete = false;
         this.deleteAccountsConfirm = false;
     }
 
