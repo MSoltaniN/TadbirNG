@@ -42,8 +42,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     {
         super(toastrService, translate, renderer, metadata,'');
         this.lang = this.currentlang;
-
-        this.parent.step2 = true;
+       
     }
 
     ngOnInit() {       

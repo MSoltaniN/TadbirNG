@@ -31,7 +31,7 @@ export class LoginContainerComponent extends DefaultComponent implements OnInit 
         public metadata: MetaDataService) 
     {
         super(toastrService, translate, renderer, metadata,'');
-
+        this.step2 = false;
     }
 
     ngOnInit() {

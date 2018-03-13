@@ -123,9 +123,12 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
         //}
 
-        this.companyService.getCompanies(this.UserName,this.Ticket).subscribe(res => {
-            this.compenies = res;
-        });
+        var companiesList = this.companyService.getCompanies(this.UserName, this.Ticket);
+        if (companiesList != null) {
+            companiesList.subscribe(res => {
+                this.compenies = res;
+            });
+        }
     }
 
 
