@@ -63,11 +63,13 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
 import { SppcDatePipe } from "./pipes/index"
 import { MetaDataService } from './service/metadata/metadata.service';
 import { BaseService } from './class/base.service';
+import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading/index';
 
 
 @NgModule({
     declarations: [
         AppComponent,
+        SppcLoadingComponent,
         NavMenuComponent,       
         Account2Component,
         AccountFormComponent,
@@ -89,7 +91,7 @@ import { BaseService } from './class/base.service';
         SppcDatePipe
         
     ],
-    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, LookupService, MetaDataService,
+    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, LookupService, MetaDataService, SppcLoadingService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,

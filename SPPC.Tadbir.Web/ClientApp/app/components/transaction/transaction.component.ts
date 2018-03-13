@@ -1,12 +1,11 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { TransactionService, TransactionInfo, TransactionLineService, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
+import { TransactionService, TransactionInfo, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
 import { Transaction, TransactionLine } from '../../model/index';
 import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component for message in client side */
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
-//import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 import { TranslateService } from 'ng2-translate';
 import { String } from '../../class/source';
@@ -19,6 +18,7 @@ import { Filter } from "../../class/filter";
 
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
+import { SppcLoadingService } from '../../controls/sppcLoading/index';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -67,9 +67,8 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, /*private loadingService: Ng4LoadingSpinnerService,*/
-        private transactionService: TransactionService, private transactionLineService: TransactionLineService,
-        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService) {
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+        private transactionService: TransactionService, public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, 'Transaction');
 
     }
@@ -85,13 +84,13 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
     }
 
     deleteTransactions() {
-
+        this.sppcLoading.show();
         this.transactionService.deleteTransactions(this.selectedRows).subscribe(res => {
             this.showMessage(this.deleteMsg, MessageType.Info);
             this.selectedRows = [];
             this.reloadGrid();
         }, (error => {
-
+                this.sppcLoading.hide();
             this.showMessage(error, MessageType.Warning);
         }));
     }
@@ -103,23 +102,49 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid() {
+    reloadGrid(insertedTransaction?: Transaction) {
 
+        this.sppcLoading.show();
         this.transactionService.getCount(this.currentOrder, this.currentFilter).finally(() => {
             var filter = this.currentFilter;
             var order = this.currentOrder;
 
+            if (this.totalRecords == this.skip) {
+                this.skip = this.skip - this.pageSize;
+            }
+
             this.transactionService.search(this.pageIndex, this.pageSize, order, filter).subscribe(res => {
+
+                //this.properties = res.metadata.properties;
+                var totalCount = this.totalRecords;
+
+                if (insertedTransaction) {
+                    var rows = (res as Array<Transaction>);
+                    var index = rows.findIndex(p => p.id == insertedTransaction.id);
+                    if (index >= 0) {
+                        res.splice(index, 1);
+                        rows.splice(0, 0, insertedTransaction);
+                    }
+                    else {
+                        if (rows.length == this.pageSize) {
+                            res.splice(this.pageSize - 1, 1);
+                        }
+
+                        rows.splice(0, 0, insertedTransaction);
+
+                    }
+                }
+
                 this.rowData = {
                     data: res,
-                    total: this.totalRecords
+                    total: totalCount
                 }
 
                 this.showloadingMessage = !(res.length == 0);
             })
         }).subscribe(res => {
             this.totalRecords = res;
-
+            this.sppcLoading.hide();
         });
     }
 
@@ -152,13 +177,13 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
     deleteTransaction(confirm: boolean) {
         if (confirm) {
-
+            this.sppcLoading.show();
             this.transactionService.delete(this.deleteTransactionId).subscribe(response => {
                 this.deleteTransactionId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
-
+                    this.sppcLoading.hide();
                 this.showMessage(error, MessageType.Warning);
             }));
         }
@@ -186,6 +211,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
     public cancelHandler() {
         this.editDataItem = undefined;
         this.isNew = false;
+        this.errorMessage = '';
     }
 
     public addNew() {
@@ -199,7 +225,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
         transaction.branchId = this.BranchId;
         transaction.fiscalPeriodId = this.FiscalPeriodId;
 
-
+        this.sppcLoading.show();
         if (!this.isNew) {
             this.transactionService.editTransaction(transaction)
                 .subscribe(response => {
@@ -208,28 +234,28 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
                 }, (error => {
-                    //this.showMessage(error, MessageType.Warning);
                     this.errorMessage = error;
 
                 }));
         }
         else {
             this.transactionService.insertTransaction(transaction)
-                .subscribe(response => {
+                .subscribe((response: any) => {
 
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    this.reloadGrid();
+                    var insertedTransaction = JSON.parse(response._body);
+                    this.reloadGrid(insertedTransaction);
 
                 }, (error => {
 
                     this.isNew = true;
-                    //this.showMessage(error, MessageType.Warning);
                     this.errorMessage = error;
 
                 }));
         }
+        this.sppcLoading.hide();
     }
 
 }

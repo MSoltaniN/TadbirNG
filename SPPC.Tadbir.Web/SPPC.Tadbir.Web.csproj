@@ -62,6 +62,9 @@
     <None Remove="ClientApp\app\controls\grid\sppc-date-filter.ts" />
     <None Remove="ClientApp\app\controls\grid\sppc-grid-filter.ts" />
     <None Remove="ClientApp\app\controls\sppc-grid-messages.ts" />
+    <None Remove="ClientApp\app\controls\sppcLoading\index.ts" />
+    <None Remove="ClientApp\app\controls\sppcLoading\sppc-loading.component.ts" />
+    <None Remove="ClientApp\app\controls\sppcLoading\sppc-loading.service.ts" />
     <None Remove="ClientApp\app\enum\KeyCode.ts" />
     <None Remove="ClientApp\app\model\account.ts" />
     <None Remove="ClientApp\app\model\fullaccount.ts" />
@@ -184,6 +187,9 @@
     <TypeScriptCompile Include="ClientApp\app\controls\fullAccount\sppc-fullAccount.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\grid\sppc-date-filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\grid\sppc-grid-filter.ts" />
+    <TypeScriptCompile Include="ClientApp\app\controls\sppcLoading\index.ts" />
+    <TypeScriptCompile Include="ClientApp\app\controls\sppcLoading\sppc-loading.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\controls\sppcLoading\sppc-loading.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-mask-textbox.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\account2\account2-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\account2\account2.component.ts" />

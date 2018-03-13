@@ -33,6 +33,7 @@ import { Filter } from "../../class/filter";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { Response } from '@angular/http';
+import { SppcLoadingService } from '../../controls/sppcLoading/index';
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
@@ -80,6 +81,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     editDataItem ? : Account = undefined;
     isNew: boolean;
+    errorMessage: string;
     groupDelete: boolean = false;
 
     
@@ -89,7 +91,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
         this.reloadGrid();    
     }
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService,
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
         private accountService: AccountService, private transactionLineService: TransactionLineService,
         private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService)
     {
@@ -119,12 +121,16 @@ export class Account2Component extends DefaultComponent implements OnInit {
     deleteAccounts(confirm : boolean)
     {       
         if (confirm) {
-           
+            this.sppcLoading.show();
             this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.selectedRows = [];
                 this.reloadGrid();
-            });
+                this.groupDelete = false;
+            }, (error => {
+                this.sppcLoading.hide();
+                this.showMessage(error, MessageType.Warning);
+            }));
         }
 
         this.deleteAccountsConfirm = false;
@@ -150,9 +156,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     reloadGrid(insertedAccount ?: Account) {
 
-        
-
-
+        this.sppcLoading.show();
         this.accountService.getCount(this.currentOrder, this.currentFilter).finally(() => {
             var filter = this.currentFilter;
             var order = this.currentOrder;
@@ -196,6 +200,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
             })
         }).subscribe(res => {
             this.totalRecords = res;
+            this.sppcLoading.hide();
         });       
 
     }
@@ -229,10 +234,11 @@ export class Account2Component extends DefaultComponent implements OnInit {
     
     /* lazy loading for account articles */
     lazyProjectLoad(account: any) {
+        this.sppcLoading.show();
         this.transactionLineService.getAccountArticles(account.data.id).subscribe(res => {
             this.accountArticleRows = res;
             //this.accountArticleRows.set(account.data.accountId, res);
-
+            this.sppcLoading.hide();
             if (res.length == 0)
                 this.showloadingMessage = !(res.length == 0);
         });
@@ -241,11 +247,15 @@ export class Account2Component extends DefaultComponent implements OnInit {
     
     deleteAccount(confirm: boolean) {
         if (confirm) {
+            this.sppcLoading.show();
             this.accountService.delete(this.deleteAccountId).subscribe(response => {
                 this.deleteAccountId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
-            });
+            }, (error => {
+                this.sppcLoading.hide();
+                this.showMessage(error, MessageType.Warning);
+            }));
         }
 
         //hide confirm dialog
@@ -263,11 +273,13 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     /* load fiscal periods */
     getFiscalPeriod() {
+        this.sppcLoading.show();
         this.showloadingMessage = true;
         
         this.fiscalPeriodService.getFiscalPeriod(this.CompanyId).subscribe(res => {
             this.fiscalPeriodRows = res;
             this.showloadingMessage = !(res.length == 0);
+            this.sppcLoading.hide();
         });
     }
 
@@ -279,15 +291,18 @@ export class Account2Component extends DefaultComponent implements OnInit {
     public editHandler(arg: any) {
         this.editDataItem = arg.dataItem;
         this.isNew = false;
+        this.errorMessage = '';
     }    
 
     public cancelHandler() {
         this.editDataItem = undefined;
+        this.errorMessage = '';
     }
 
     public addNew() {
         this.isNew = true;
-        this.editDataItem = new AccountInfo();        
+        this.editDataItem = new AccountInfo(); 
+        this.errorMessage = '';
     }    
 
     public saveHandler(account: Account) {
@@ -297,27 +312,38 @@ export class Account2Component extends DefaultComponent implements OnInit {
         //TODO: این کد بعدا باید تغییر پیدا کند البته با اقای اسلامیه هماهنگ شده است 
         account.fullCode = account.code;
 
+        this.sppcLoading.show();
 
         if (!this.isNew) {
+            this.isNew = false;
             this.accountService.editAccount(account)
                 .subscribe(response => {
+                    this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
-                });            
+                }, (error => {
+                    this.editDataItem = account;
+                    this.errorMessage = error;
+
+                }));            
         }
         else {
             this.accountService.insertAccount(account)
-                .subscribe((response : any) => {
+                .subscribe((response: any) => {
+                    this.isNew = false;
+                    this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     var insertedAccount = JSON.parse(response._body);
                     this.reloadGrid(insertedAccount);
                     
-                });
+                }, (error => {
+                    this.isNew = true;
+                    this.errorMessage = error;
+                }));
             
         }
 
-        this.editDataItem = undefined;
-        this.isNew = false;
+        this.sppcLoading.hide();
     }
     
 }

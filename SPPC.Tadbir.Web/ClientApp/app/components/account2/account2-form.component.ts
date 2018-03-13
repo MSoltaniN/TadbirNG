@@ -4,7 +4,7 @@ import { AccountService, AccountInfo, TransactionLineService, TransactionLineInf
 
 import { Account, TransactionLine } from '../../model/index';
 import { TranslateService } from "ng2-translate";
-import { ToastrService, ToastConfig } from 'toastr-ng2'; 
+import { ToastrService, ToastConfig } from 'toastr-ng2';
 
 import { Observable } from 'rxjs/Observable';
 import { ContextInfo } from "../../service/login/authentication.service";
@@ -17,7 +17,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
-} 
+}
 
 interface Item {
     Key: string,
@@ -39,14 +39,14 @@ interface Item {
 
 })
 
-export class AccountFormComponent extends DefaultComponent{
+export class AccountFormComponent extends DefaultComponent {
 
     //create a form controls
     private editForm = new FormGroup({
-        id : new FormControl("", Validators.required),
+        id: new FormControl("", Validators.required),
         code: new FormControl("", Validators.required),
-        name: new FormControl("", Validators.required),   
-        description: new FormControl(),        
+        name: new FormControl("", Validators.required),
+        description: new FormControl(),
         level: new FormControl(0),
         fullCode: new FormControl("0")
     });
@@ -54,35 +54,35 @@ export class AccountFormComponent extends DefaultComponent{
     //create properties
     active: boolean = false;
     @Input() public isNew: boolean = false;
+    @Input() public errorMessage: string = '';
 
     @Input() public set model(account: Account) {
-        
+
         this.editForm.reset(account);
 
         this.active = account !== undefined || this.isNew;
-        if (account != undefined)
-        {
+        if (account != undefined) {
             this.selectedValue = account.fiscalPeriodId.toString();
             if (this.fiscalPeriodRows == undefined) this.getFiscalPeriod();
         }
-            
+
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
     @Output() save: EventEmitter<Account> = new EventEmitter();
     //create properties
 
-    public fiscalPeriodRows : Array<Item>;
-    public selectedValue : string = '1';
+    public fiscalPeriodRows: Array<Item>;
+    public selectedValue: string = '1';
 
     //Events
-    public onSave(e : any): void {
+    public onSave(e: any): void {
         e.preventDefault();
         this.save.emit(this.editForm.value);
-        this.active = false;
+        this.active = true;
     }
 
-    public onCancel(e : any): void {
+    public onCancel(e: any): void {
         e.preventDefault();
         this.closeForm();
     }
@@ -97,17 +97,17 @@ export class AccountFormComponent extends DefaultComponent{
     constructor(private accountService: AccountService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
         public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
 
-        super(toastrService, translate, renderer, metadata,'Account');
+        super(toastrService, translate, renderer, metadata, 'Account');
 
         this.getFiscalPeriod();
-        
+
     }
 
     /* load fiscal periods */
     getFiscalPeriod() {
-        
+
         this.fiscalPeriodService.getFiscalPeriod(this.CompanyId).subscribe(res => {
-            this.fiscalPeriodRows = res;            
+            this.fiscalPeriodRows = res;
         });
     }
 }

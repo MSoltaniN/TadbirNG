@@ -87,7 +87,6 @@ export class TransactionService extends BaseService {
     currentContext?: Context = undefined;
 
     search(start?: number, count?: number, orderby?: string, filters?: Filter[]) {
-
         var headers = this.headers;
         var gridPaging = { pageIndex: start, pageSize: count };
         var sort = new Array<GridOrderBy>();

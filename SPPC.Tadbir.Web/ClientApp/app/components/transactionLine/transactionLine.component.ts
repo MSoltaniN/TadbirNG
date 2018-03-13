@@ -5,7 +5,6 @@ import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component 
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
-//import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 import { TranslateService } from 'ng2-translate';
 import { String } from '../../class/source';
@@ -16,6 +15,7 @@ import { DefaultComponent } from "../../class/default.component";
 import { MessageType } from "../../enviroment";
 import { Filter } from "../../class/filter";
 import { MetaDataService } from '../../service/metadata/metadata.service';
+import { SppcLoadingService } from '../../controls/sppcLoading/index';
 
 
 @Component({
@@ -60,7 +60,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
         this.reloadGrid();
     }
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, /*private loadingService: Ng4LoadingSpinnerService,*/
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
         private transactionLineService: TransactionLineService, public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, 'TransactionLine');
     }
@@ -92,23 +92,51 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
             this.groupDelete = false;
     }
 
-    reloadGrid() {
+    reloadGrid(insertedTransactionLine?: TransactionLine) {
 
+        this.sppcLoading.show();
         this.transactionLineService.getCount(this.transactionId, this.currentOrder, this.currentFilter).finally(() => {
             var filter = this.currentFilter;
             var order = this.currentOrder;
+
+            if (this.totalRecords == this.skip) {
+                this.skip = this.skip - this.pageSize;
+            }
+
             this.transactionLineService.search(this.transactionId, this.pageIndex, this.pageSize, order, filter).subscribe(res => {
-                this.rowData = {
-                    data: res.lines,
-                    total: this.totalRecords
-                }
+
+                //this.properties = res.metadata.properties;
+                var totalCount = this.totalRecords;
                 this.debitSum = res.transaction.debitSum;
                 this.creditSum = res.transaction.creditSum;
+
+                if (insertedTransactionLine) {
+                    var rows = (res.lines as Array<TransactionLine>);
+                    var index = rows.findIndex(p => p.id == insertedTransactionLine.id);
+                    if (index >= 0) {
+                        res.lines.splice(index, 1);
+                        rows.splice(0, 0, insertedTransactionLine);
+                    }
+                    else {
+                        if (rows.length == this.pageSize) {
+                            res.lines.splice(this.pageSize - 1, 1);
+                        }
+
+                        rows.splice(0, 0, insertedTransactionLine);
+
+                    }
+                }
+
+                this.rowData = {
+                    data: res.lines,
+                    total: totalCount
+                }
+                
                 this.showloadingMessage = !(res.lines.length == 0);
             })
         }).subscribe(res => {
             this.totalRecords = res;
-
+            this.sppcLoading.hide();
         });
     }
 
@@ -140,13 +168,13 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
     deleteTransactionLine(confirm: boolean) {
         if (confirm) {
-
+            this.sppcLoading.show();
             this.transactionLineService.delete(this.deleteTransactionLineId).subscribe(response => {
                 this.deleteTransactionLineId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
-
+                this.sppcLoading.hide();
                 this.showMessage(error, MessageType.Warning);
             }));
         }
@@ -174,6 +202,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     public cancelHandler() {
         this.editDataItem = undefined;
         this.isNew = false;
+        this.errorMessage = '';
     }
 
     public addNew() {
@@ -188,7 +217,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
         transactionLine.branchId = this.BranchId;
         transactionLine.fiscalPeriodId = this.FiscalPeriodId;
-
+        this.sppcLoading.show();
         if (!this.isNew) {
 
             this.isNew = false;
@@ -203,28 +232,28 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
                 }, (error => {
                     this.editDataItem = transactionLine;
-                    //this.showMessage(error, MessageType.Warning);
                     this.errorMessage = error;
 
                 }));
         }
         else {
             this.transactionLineService.insertTransactionLine(this.transactionId, transactionLine)
-                .subscribe(response => {
+                .subscribe((response: any) => {
 
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    this.reloadGrid();
+                    var insertedTransactionLine = JSON.parse(response._body);
+                    this.reloadGrid(insertedTransactionLine);
 
                 }, (error => {
 
                     this.isNew = true;
-                    //this.showMessage(error, MessageType.Warning);
                     this.errorMessage = error;
 
                 }));
         }
+        this.sppcLoading.hide();
     }
 
 }
