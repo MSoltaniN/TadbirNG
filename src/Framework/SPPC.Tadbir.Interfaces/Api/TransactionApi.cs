@@ -70,21 +70,6 @@ namespace SPPC.Tadbir.Api
         public const string TransactionSyncUrl = "transactions/{transactionId:min(1)}/sync";
 
         /// <summary>
-        /// API client URL for details of a single transaction specified by identifier
-        /// </summary>
-        public const string TransactionDetails = "transactions/{0}/details";
-
-        /// <summary>
-        /// API server route URL for details of a single transaction specified by identifier
-        /// </summary>
-        public const string TransactionDetailsSyncUrl = "transactions/{transactionId:min(1)}/details/sync";
-
-        /// <summary>
-        /// API server route URL for details of a single transaction specified by identifier
-        /// </summary>
-        public const string TransactionDetailsUrl = "transactions/{transactionId:min(1)}/details";
-
-        /// <summary>
         /// API client URL for preparing a single transaction specified by identifier
         /// </summary>
         public const string PrepareTransaction = "transactions/{0}/prepare";

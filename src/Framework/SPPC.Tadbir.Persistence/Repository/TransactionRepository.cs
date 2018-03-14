@@ -48,9 +48,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<TransactionViewModel>> GetTransactionsAsync(
             int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
             var query = GetTransactionQuery(
-                repository, txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId, gridOptions);
+                txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId, gridOptions);
             var transactions = await query
                 .Select(txn => _mapper.Map<TransactionViewModel>(txn))
                 .ToListAsync();
@@ -63,31 +62,22 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، سند مالی با شناسه دیتابیسی مشخص شده را به همراه اطلاعات کامل آن از دیتابیس خوانده و برمی گرداند
+        /// به روش آسنکرون، سند مالی با شناسه دیتابیسی مشخص شده را از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <param name="transactionId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>سند مالی مشخص شده با شناسه دیتابیسی به همراه اطلاعات کامل آن</returns>
-        public async Task<TransactionFullViewModel> GetTransactionDetailAsync(
-            int transactionId, GridOptions gridOptions = null)
+        /// <returns>سند مالی مشخص شده با شناسه دیتابیسی</returns>
+        public async Task<TransactionViewModel> GetTransactionAsync(int transactionId)
         {
-            TransactionFullViewModel transactionDetail = null;
-            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
-            var query = GetTransactionWithLinesQuery(repository, txn => txn.Id == transactionId);
+            TransactionViewModel transactionViewModel = null;
+            var query = GetTransactionQuery(txn => txn.Id == transactionId);
             var transaction = await query.SingleOrDefaultAsync();
             if (transaction != null)
             {
-                transactionDetail = _mapper.Map<TransactionFullViewModel>(transaction);
-                var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
-                var historyQuery = GetHistoryQuery(historyRepository, hist => hist.EntityId == transactionId);
-                var history = await historyQuery
-                    .Select(hist => _mapper.Map<HistoryItemViewModel>(hist))
-                    .ToListAsync();
-                (transactionDetail.Actions as List<HistoryItemViewModel>).AddRange(history);
-                await AddWorkItemInfoAsync(transactionDetail.Transaction);
+                transactionViewModel = _mapper.Map<TransactionViewModel>(transaction);
+                AddWorkItemInfo(transactionViewModel);
             }
 
-            return transactionDetail;
+            return transactionViewModel;
         }
 
         /// <summary>
@@ -197,9 +187,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public IList<TransactionViewModel> GetTransactions(int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetRepository<Transaction>();
             var query = GetTransactionQuery(
-                repository, txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId, gridOptions);
+                txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId, gridOptions);
             var transactions = query
                 .Select(txn => _mapper.Map<TransactionViewModel>(txn))
                 .ToList();
@@ -209,29 +198,22 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// سند مالی با شناسه دیتابیسی مشخص شده را به همراه اطلاعات کامل آن از دیتابیس خوانده و برمی گرداند
+        /// سند مالی با شناسه دیتابیسی مشخص شده را از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <param name="transactionId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
-        /// <returns>سند مالی مشخص شده با شناسه دیتابیسی به همراه اطلاعات کامل آن</returns>
-        public TransactionFullViewModel GetTransactionDetail(int transactionId)
+        /// <returns>سند مالی مشخص شده با شناسه دیتابیسی</returns>
+        public TransactionViewModel GetTransaction(int transactionId)
         {
-            TransactionFullViewModel transactionDetail = null;
-            var repository = _unitOfWork.GetRepository<Transaction>();
-            var query = GetTransactionWithLinesQuery(repository, txn => txn.Id == transactionId);
+            TransactionViewModel transactionViewModel = null;
+            var query = GetTransactionQuery(txn => txn.Id == transactionId);
             var transaction = query.SingleOrDefault();
             if (transaction != null)
             {
-                transactionDetail = _mapper.Map<TransactionFullViewModel>(transaction);
-                var historyRepository = _unitOfWork.GetRepository<WorkItemHistory>();
-                var historyQuery = GetHistoryQuery(historyRepository, hist => hist.EntityId == transactionId);
-                var history = historyQuery
-                    .Select(hist => _mapper.Map<HistoryItemViewModel>(hist))
-                    .ToList();
-                (transactionDetail.Actions as List<HistoryItemViewModel>).AddRange(history);
-                transactionDetail.Transaction = AddWorkItemInfo(transactionDetail.Transaction);
+                transactionViewModel = _mapper.Map<TransactionViewModel>(transaction);
+                AddWorkItemInfo(transactionViewModel);
             }
 
-            return transactionDetail;
+            return transactionViewModel;
         }
 
         /// <summary>
@@ -371,6 +353,22 @@ namespace SPPC.Tadbir.Persistence
         #region Asynchronous Methods
 
         /// <summary>
+        /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
+        public async Task<IList<TransactionLineViewModel>> GetArticlesAsync(
+            int transactionId, GridOptions gridOptions = null)
+        {
+            var query = GetTransactionLinesQuery(transactionId, gridOptions);
+            var lines = await query
+                .Select(line => _mapper.Map<TransactionLineViewModel>(line))
+                .ToListAsync();
+            return lines;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
@@ -477,6 +475,21 @@ namespace SPPC.Tadbir.Persistence
         #endregion
 
         #region Synchronous Methods (May be removed in the future)
+
+        /// <summary>
+        /// آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>آرتیکل های سند مشخص شده با شناسه عددی</returns>
+        public IList<TransactionLineViewModel> GetArticles(int transactionId, GridOptions gridOptions = null)
+        {
+            var query = GetTransactionLinesQuery(transactionId, gridOptions);
+            var lines = query
+                .Select(line => _mapper.Map<TransactionLineViewModel>(line))
+                .ToList();
+            return lines;
+        }
 
         /// <summary>
         /// اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از دیتابیس خوانده و برمی گرداند
@@ -625,14 +638,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private IQueryable<Transaction> GetTransactionQuery(
-            IRepository<Transaction> repository, Expression<Func<Transaction, bool>> criteria,
-            GridOptions gridOptions = null)
+            Expression<Func<Transaction, bool>> criteria, GridOptions gridOptions = null)
         {
+            var repository = _unitOfWork.GetRepository<Transaction>();
             var transactionsQuery = repository
                 .GetEntityQuery(gridOptions)
+                .Include(txn => txn.Lines)
                 .Include(txn => txn.FiscalPeriod)
                 .Include(txn => txn.Branch)
-                .Include(txn => txn.Lines)
                 .Include(txn => txn.Document)
                     .ThenInclude(doc => doc.Type)
                 .Include(txn => txn.Document)
@@ -658,47 +671,26 @@ namespace SPPC.Tadbir.Persistence
             return transactionsQuery;
         }
 
-        private IQueryable<Transaction> GetTransactionWithLinesQuery(
-            IRepository<Transaction> repository,
-            Expression<Func<Transaction, bool>> criteria)
+        private IQueryable<TransactionLine> GetTransactionLinesQuery(int transactionId, GridOptions gridOptions = null)
         {
-            var transactionsQuery = repository
-                .GetEntityQuery()
-                .Include(txn => txn.Lines)
-                    .ThenInclude(line => line.Account)
-                .Include(txn => txn.Lines)
-                    .ThenInclude(line => line.DetailAccount)
-                .Include(txn => txn.Lines)
-                    .ThenInclude(line => line.CostCenter)
-                .Include(txn => txn.Lines)
-                    .ThenInclude(line => line.Project)
-                .Include(txn => txn.Lines)
-                    .ThenInclude(line => line.Currency)
-                .Include(txn => txn.Lines)
-                    .ThenInclude(line => line.FiscalPeriod)
-                .Include(txn => txn.Lines)
-                    .ThenInclude(line => line.Branch)
-                .Include(txn => txn.FiscalPeriod)
-                .Include(txn => txn.Branch)
-                    .ThenInclude(br => br.Company)
-                .Include(txn => txn.Document)
-                    .ThenInclude(doc => doc.Type)
-                .Include(txn => txn.Document)
-                    .ThenInclude(doc => doc.Status)
-                .Include(txn => txn.Document)
-                    .ThenInclude(doc => doc.Actions)
-                        .ThenInclude(act => act.CreatedBy)
-                .Include(txn => txn.Document)
-                    .ThenInclude(doc => doc.Actions)
-                        .ThenInclude(act => act.ModifiedBy)
-                .Include(txn => txn.Document)
-                    .ThenInclude(doc => doc.Actions)
-                        .ThenInclude(act => act.ConfirmedBy)
-                .Include(txn => txn.Document)
-                    .ThenInclude(doc => doc.Actions)
-                        .ThenInclude(act => act.ApprovedBy)
-                .Where(criteria);
-            return transactionsQuery;
+            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            var linesQuery = repository
+                .GetEntityQuery(gridOptions)
+                .Include(line => line.Transaction)
+                .Include(line => line.Account)
+                .Include(line => line.DetailAccount)
+                .Include(line => line.CostCenter)
+                .Include(line => line.Project)
+                .Include(line => line.Currency)
+                .Include(line => line.FiscalPeriod)
+                .Include(line => line.Branch)
+                .Where(line => line.Transaction.Id == transactionId);
+            linesQuery = (gridOptions != null)
+                ? linesQuery
+                    .Skip((gridOptions.Paging.PageIndex - 1) * gridOptions.Paging.PageSize)
+                    .Take(gridOptions.Paging.PageSize)
+                : linesQuery;
+            return linesQuery;
         }
 
         private IQueryable<WorkItemHistory> GetHistoryQuery(

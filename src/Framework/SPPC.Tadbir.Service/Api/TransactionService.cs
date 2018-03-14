@@ -216,7 +216,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>Transaction item with detail information as a <see cref="TransactionFullViewModel"/> instance</returns>
         public TransactionFullViewModel GetDetailTransactionInfo(int transactionId)
         {
-            var transaction = _apiClient.Get<TransactionFullViewModel>(TransactionApi.TransactionDetails, transactionId);
+            var transaction = _apiClient.Get<TransactionFullViewModel>(TransactionApi.Transaction, transactionId);
             return transaction;
         }
 

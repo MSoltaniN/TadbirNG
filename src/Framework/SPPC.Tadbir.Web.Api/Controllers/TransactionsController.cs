@@ -46,15 +46,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(transactions);
         }
 
-        // GET: api/transactions/{transactionId:int}/details
-        [Route(TransactionApi.TransactionDetailsUrl)]
+        // GET: api/transactions/{transactionId:int}
+        [Route(TransactionApi.TransactionUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
-        public async Task<IActionResult> GetTransactionDetailAsync(int transactionId)
+        public async Task<IActionResult> GetTransactionAsync(int transactionId)
         {
-            var gridOptions = GetGridOptions();
-            int itemCount = await _repository.GetArticleCountAsync(transactionId, gridOptions);
-            SetItemCount(itemCount);
-            var transaction = await _repository.GetTransactionDetailAsync(transactionId, gridOptions);
+            var transaction = await _repository.GetTransactionAsync(transactionId);
             return JsonReadResult(transaction);
         }
 
@@ -142,12 +139,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(transactions);
         }
 
-        // GET: api/transactions/{transactionId:int}/details/sync
-        [Route(TransactionApi.TransactionDetailsSyncUrl)]
+        // GET: api/transactions/{transactionId:int}/sync
+        [Route(TransactionApi.TransactionSyncUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
-        public IActionResult GetTransactionDetail(int transactionId)
+        public IActionResult GetTransaction(int transactionId)
         {
-            var transaction = _repository.GetTransactionDetail(transactionId);
+            var transaction = _repository.GetTransaction(transactionId);
             return JsonReadResult(transaction);
         }
 
@@ -212,6 +209,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #region Article CRUD Operations
 
         #region Asynchronous Methods
+
+        // GET: api/transactions/{transactionId:min(1)}/articles
+        [Route(TransactionApi.TransactionArticlesUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        public async Task<IActionResult> GetArticlesAsync(int transactionId)
+        {
+            var gridOptions = GetGridOptions();
+            int itemCount = await _repository.GetArticleCountAsync(transactionId, gridOptions);
+            SetItemCount(itemCount);
+            var articles = await _repository.GetArticlesAsync(transactionId, gridOptions);
+            return Json(articles);
+        }
 
         // GET: api/transactions/articles/{articleId:min(1)}
         [Route(TransactionApi.TransactionArticleUrl)]
@@ -314,6 +323,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #endregion
 
         #region Synchronous Methods (May be removed in the future)
+
+        // GET: api/transactions/{transactionId:min(1)}/articles/sync
+        [Route(TransactionApi.TransactionArticlesSyncUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        public IActionResult GetArticles(int transactionId)
+        {
+            var gridOptions = GetGridOptions();
+            int itemCount = _repository.GetArticleCount(transactionId, gridOptions);
+            SetItemCount(itemCount);
+            var articles = _repository.GetArticles(transactionId, gridOptions);
+            return Json(articles);
+        }
 
         // GET: api/transactions/articles/{articleId:min(1)}/sync
         [Route(TransactionApi.TransactionArticleSyncUrl)]

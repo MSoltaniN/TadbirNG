@@ -632,81 +632,81 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
         #endregion
 
-        #region GetTransactionDetail (GET: transactions/{transactionId:int}/details) tests
+        #region GetTransaction (GET: transactions/{transactionId:int}) tests
 
         [Test]
-        public void GetTransactionDetail_SpecifiesCorrectRoute()
+        public void GetTransaction_SpecifiesCorrectRoute()
         {
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("GetTransactionDetail", TransactionApi.TransactionDetailsSyncUrl);
+            AssertActionRouteEquals("GetTransaction", TransactionApi.TransactionSyncUrl);
         }
 
         [Test]
-        public void GetTransactionDetail_ReturnsNonNullResult()
+        public void GetTransaction_ReturnsNonNullResult()
         {
             // Arrange (Done in setup methods)
 
             // Act
-            var result = _controller.GetTransactionDetail(1);
+            var result = _controller.GetTransaction(1);
 
             // Assert
             Assert.That(result, Is.Not.Null);
         }
 
         [Test]
-        public void GetTransactionDetail_CallsRepositoryWithTransactionId()
+        public void GetTransaction_CallsRepositoryWithTransactionId()
         {
             // Arrange
             int transactionId = 1;
 
             // Act
-            _controller.GetTransactionDetail(transactionId);
+            _controller.GetTransaction(transactionId);
 
             // Assert
-            _mockRepository.Verify(repo => repo.GetTransactionDetail(transactionId));
+            _mockRepository.Verify(repo => repo.GetTransaction(transactionId));
         }
 
         [Test]
-        public void GetTransactionDetail_GivenExistingId_ReturnsJsonWithCorrectContentType()
+        public void GetTransaction_GivenExistingId_ReturnsJsonWithCorrectContentType()
         {
             // Arrange
-            _mockRepository.Setup(repo => repo.GetTransactionDetail(_existingTransactionId))
-                .Returns(new TransactionFullViewModel());
+            _mockRepository.Setup(repo => repo.GetTransaction(_existingTransactionId))
+                .Returns(new TransactionViewModel());
 
             // Act
-            var result = _controller.GetTransactionDetail(_existingTransactionId) as JsonResult;
+            var result = _controller.GetTransaction(_existingTransactionId) as JsonResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);
         }
 
         [Test]
-        public void GetTransactionDetail_GivenNonExistingId_ReturnsNotFound()
+        public void GetTransaction_GivenNonExistingId_ReturnsNotFound()
         {
             // Arrange
             int nonExistingId = 2;
-            _mockRepository.Setup(repo => repo.GetTransactionDetail(nonExistingId))
-                .Returns((TransactionFullViewModel)null);
+            _mockRepository.Setup(repo => repo.GetTransaction(nonExistingId))
+                .Returns((TransactionViewModel)null);
 
             // Act
-            var result = _controller.GetTransactionDetail(nonExistingId) as NotFoundResult;
+            var result = _controller.GetTransaction(nonExistingId) as NotFoundResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);
         }
 
         [Test]
-        public void GetTransactionDetail_GivenInvalidId_ReturnsNotFound()
+        public void GetTransaction_GivenInvalidId_ReturnsNotFound()
         {
             // Arrange
             int invalidId = 0;
-            _mockRepository.Setup(repo => repo.GetTransactionDetail(It.Is<int>(val => val <= 0)))
-                .Returns((TransactionFullViewModel)null);
+            _mockRepository.Setup(repo => repo.GetTransaction(It.Is<int>(val => val <= 0)))
+                .Returns((TransactionViewModel)null);
 
             // Act
-            var result = _controller.GetTransactionDetail(invalidId) as NotFoundResult;
+            var result = _controller.GetTransaction(invalidId) as NotFoundResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);

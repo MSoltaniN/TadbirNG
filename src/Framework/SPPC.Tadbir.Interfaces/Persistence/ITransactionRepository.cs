@@ -25,12 +25,11 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<TransactionViewModel>> GetTransactionsAsync(int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
-        /// به روش آسنکرون، سند مالی با شناسه عددی مشخص شده را به همراه اطلاعات کامل آن از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، سند مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="transactionId">شناسه عددی یکی از اسناد مالی موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>سند مالی مشخص شده با شناسه عددی به همراه اطلاعات کامل آن</returns>
-        Task<TransactionFullViewModel> GetTransactionDetailAsync(int transactionId, GridOptions gridOptions = null);
+        /// <returns>سند مالی مشخص شده با شناسه عددی</returns>
+        Task<TransactionViewModel> GetTransactionAsync(int transactionId);
 
         /// <summary>
         /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را
@@ -76,11 +75,11 @@ namespace SPPC.Tadbir.Persistence
         IList<TransactionViewModel> GetTransactions(int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
-        /// سند مالی با شناسه عددی مشخص شده را به همراه اطلاعات کامل آن از محل ذخیره خوانده و برمی گرداند
+        /// سند مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="transactionId">شناسه عددی یکی از اسناد مالی موجود</param>
-        /// <returns>سند مالی مشخص شده با شناسه عددی به همراه اطلاعات کامل آن</returns>
-        TransactionFullViewModel GetTransactionDetail(int transactionId);
+        /// <returns>سند مالی مشخص شده با شناسه عددی</returns>
+        TransactionViewModel GetTransaction(int transactionId);
 
         /// <summary>
         /// تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را از محل ذخیره خوانده و برمی گرداند
@@ -133,6 +132,14 @@ namespace SPPC.Tadbir.Persistence
         #region Asynchronous Methods
 
         /// <summary>
+        /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
+        Task<IList<TransactionLineViewModel>> GetArticlesAsync(int transactionId, GridOptions gridOptions = null);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
@@ -170,6 +177,14 @@ namespace SPPC.Tadbir.Persistence
         #endregion
 
         #region Synchronous Methods (May be removed in the future)
+
+        /// <summary>
+        /// آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
+        IList<TransactionLineViewModel> GetArticles(int transactionId, GridOptions gridOptions = null);
 
         /// <summary>
         /// اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
