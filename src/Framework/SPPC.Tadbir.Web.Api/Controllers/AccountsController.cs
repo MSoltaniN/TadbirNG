@@ -62,7 +62,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/accounts/metadata
         [Route(AccountApi.AccountMetadataUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetAccountMetadata()
+        public async Task<IActionResult> GetAccountMetadataAsync()
         {
             var metadata = await _repository.GetAccountMetadataAsync();
             return JsonReadResult(metadata);

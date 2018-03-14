@@ -14,6 +14,7 @@ using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Persistence
@@ -28,10 +29,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        public TransactionRepository(IUnitOfWork unitOfWork, IDomainMapper mapper)
+        /// <param name="decorator">امکان ضمیمه کردن متادیتا به اطلاعات خوانده شده را فراهم می کند</param>
+        public TransactionRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataDecorator decorator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _decorator = decorator;
         }
 
         #region Transaction Operations
@@ -45,7 +48,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<IList<TransactionViewModel>> GetTransactionsAsync(
+        public async Task<EntityListViewModel<TransactionViewModel>> GetTransactionsAsync(
             int fpId, int branchId, GridOptions gridOptions = null)
         {
             var query = GetTransactionQuery(
@@ -58,7 +61,7 @@ namespace SPPC.Tadbir.Persistence
                 await AddWorkItemInfoAsync(transaction);
             }
 
-            return transactions;
+            return await _decorator.GetDecoratedListAsync<Transaction, TransactionViewModel>(transactions);
         }
 
         /// <summary>
@@ -66,7 +69,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="transactionId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
         /// <returns>سند مالی مشخص شده با شناسه دیتابیسی</returns>
-        public async Task<TransactionViewModel> GetTransactionAsync(int transactionId)
+        public async Task<EntityItemViewModel<TransactionViewModel>> GetTransactionAsync(int transactionId)
         {
             TransactionViewModel transactionViewModel = null;
             var query = GetTransactionQuery(txn => txn.Id == transactionId);
@@ -77,7 +80,16 @@ namespace SPPC.Tadbir.Persistence
                 AddWorkItemInfo(transactionViewModel);
             }
 
-            return transactionViewModel;
+            return await _decorator.GetDecoratedItemAsync<Transaction, TransactionViewModel>(transactionViewModel);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای سند مالی را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای سند مالی</returns>
+        public async Task<EntityItemViewModel<TransactionViewModel>> GetTransactionMetadataAsync()
+        {
+            return await _decorator.GetDecoratedItemAsync<Transaction, TransactionViewModel>(null);
         }
 
         /// <summary>
@@ -358,14 +370,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        public async Task<IList<TransactionLineViewModel>> GetArticlesAsync(
+        public async Task<EntityListViewModel<TransactionLineViewModel>> GetArticlesAsync(
             int transactionId, GridOptions gridOptions = null)
         {
             var query = GetTransactionLinesQuery(transactionId, gridOptions);
             var lines = await query
                 .Select(line => _mapper.Map<TransactionLineViewModel>(line))
                 .ToListAsync();
-            return lines;
+            return await _decorator.GetDecoratedListAsync<TransactionLine, TransactionLineViewModel>(lines);
         }
 
         /// <summary>
@@ -373,7 +385,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
         /// <returns>اطلاعات آرتیکل مشخص شده با شناسه دیتابیسی</returns>
-        public async Task<TransactionLineViewModel> GetArticleAsync(int articleId)
+        public async Task<EntityItemViewModel<TransactionLineViewModel>> GetArticleAsync(int articleId)
         {
             TransactionLineViewModel articleViewModel = null;
             var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
@@ -384,7 +396,7 @@ namespace SPPC.Tadbir.Persistence
                 articleViewModel = _mapper.Map<TransactionLineViewModel>(article);
             }
 
-            return articleViewModel;
+            return await _decorator.GetDecoratedItemAsync<TransactionLine, TransactionLineViewModel>(articleViewModel);
         }
 
         /// <summary>
@@ -392,7 +404,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
         /// <returns>اطلاعات کامل آرتیکل مشخص شده با شناسه دیتابیسی</returns>
-        public async Task<TransactionLineFullViewModel> GetArticleDetailsAsync(int articleId)
+        public async Task<EntityItemViewModel<TransactionLineFullViewModel>> GetArticleDetailsAsync(int articleId)
         {
             TransactionLineFullViewModel articleDetails = null;
             var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
@@ -403,7 +415,16 @@ namespace SPPC.Tadbir.Persistence
                 articleDetails = _mapper.Map<TransactionLineFullViewModel>(article);
             }
 
-            return articleDetails;
+            return await _decorator.GetDecoratedItemAsync<TransactionLine, TransactionLineFullViewModel>(articleDetails);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی</returns>
+        public async Task<EntityItemViewModel<TransactionLineViewModel>> GetTransactionLineMetadataAsync()
+        {
+            return await _decorator.GetDecoratedItemAsync<TransactionLine, TransactionLineViewModel>(null);
         }
 
         /// <summary>
@@ -762,5 +783,6 @@ namespace SPPC.Tadbir.Persistence
 
         private IUnitOfWork _unitOfWork;
         private IDomainMapper _mapper;
+        private IMetadataDecorator _decorator;
     }
 }

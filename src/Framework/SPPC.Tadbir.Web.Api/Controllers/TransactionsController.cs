@@ -55,6 +55,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(transaction);
         }
 
+        // GET: api/transactions/metadata
+        [Route(TransactionApi.TransactionMetadataUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        public async Task<IActionResult> GetTransactionMetadataAsync()
+        {
+            var metadata = await _repository.GetTransactionMetadataAsync();
+            return JsonReadResult(metadata);
+        }
+
         // GET: api/transactions/fp/{fpId:min(1)}/branch/{branchId:min(1)}/count
         [Route(TransactionApi.FiscalPeriodBranchItemCountUrl)]
         [AuthorizeRequest(SecureEntity.Transaction, (int)AccountPermissions.View)]
@@ -238,6 +247,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var article = await _repository.GetArticleDetailsAsync(articleId);
             return JsonReadResult(article);
+        }
+
+        // GET: api/transactions/articles/metadata
+        [Route(TransactionApi.TransactionArticleMetadataUrl)]
+        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        public async Task<IActionResult> GetTransactionArticleMetadataAsync()
+        {
+            var metadata = await _repository.GetTransactionLineMetadataAsync();
+            return JsonReadResult(metadata);
         }
 
         // GET: api/transactions/{transactionId:min(1)}/articles/count

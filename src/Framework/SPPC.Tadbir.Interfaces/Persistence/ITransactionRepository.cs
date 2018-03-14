@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -22,14 +23,21 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<IList<TransactionViewModel>> GetTransactionsAsync(int fpId, int branchId, GridOptions gridOptions = null);
+        Task<EntityListViewModel<TransactionViewModel>> GetTransactionsAsync(
+            int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، سند مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="transactionId">شناسه عددی یکی از اسناد مالی موجود</param>
         /// <returns>سند مالی مشخص شده با شناسه عددی</returns>
-        Task<TransactionViewModel> GetTransactionAsync(int transactionId);
+        Task<EntityItemViewModel<TransactionViewModel>> GetTransactionAsync(int transactionId);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای سند مالی را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای سند مالی</returns>
+        Task<EntityItemViewModel<TransactionViewModel>> GetTransactionMetadataAsync();
 
         /// <summary>
         /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را
@@ -137,21 +145,28 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        Task<IList<TransactionLineViewModel>> GetArticlesAsync(int transactionId, GridOptions gridOptions = null);
+        Task<EntityListViewModel<TransactionLineViewModel>> GetArticlesAsync(
+            int transactionId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
         /// <returns>اطلاعات آرتیکل مشخص شده با شناسه عددی</returns>
-        Task<TransactionLineViewModel> GetArticleAsync(int articleId);
+        Task<EntityItemViewModel<TransactionLineViewModel>> GetArticleAsync(int articleId);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات کامل سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
         /// <returns>اطلاعات کامل آرتیکل مشخص شده با شناسه عددی</returns>
-        Task<TransactionLineFullViewModel> GetArticleDetailsAsync(int articleId);
+        Task<EntityItemViewModel<TransactionLineFullViewModel>> GetArticleDetailsAsync(int articleId);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی</returns>
+        Task<EntityItemViewModel<TransactionLineViewModel>> GetTransactionLineMetadataAsync();
 
         /// <summary>
         /// به روش آسنکرون، تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
