@@ -191,7 +191,12 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                     else
                         sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
 
-                    this.router.navigate(['/account2']);
+                    if (this.route.snapshot.queryParams['returnUrl'] != undefined) {
+                        var url = this.route.snapshot.queryParams['returnUrl'];
+                        this.router.navigate([url]);
+                    }
+                    else
+                        this.router.navigate(['/account2']);
                 }
             }
         }
