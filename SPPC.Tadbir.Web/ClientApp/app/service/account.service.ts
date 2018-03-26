@@ -156,8 +156,7 @@ export class AccountService extends BaseService
 
         return this.http.get(url, options)
             .map(response => <any>(<Response>response));
-
-        //return new GridResult(result, totalCount);
+       
     }
 
    
