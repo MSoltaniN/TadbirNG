@@ -41,12 +41,14 @@ export class TransactionLineService extends BaseService {
 
 
 
-    private _getTransactionLinesUrl = Environment.BaseUrl + "/transactions/{0}/details";//transactionId
+    //private _getTransactionLinesUrl = Environment.BaseUrl + "/transactions/{0}/details";//transactionId
+    private _getTransactionLinesUrl = Environment.BaseUrl + "/transactions/{0}/articles";//transactionId
     ////private _deleteMultiTransactionLinesUrl = Environment.BaseUrl + "/transactions";
     private _getCountUrl = Environment.BaseUrl + "/transactions/{0}/articles/count";
     private _deleteTransactionLineUrl = Environment.BaseUrl + "/transactions/articles/{0}";//articleId
     private _postNewTransactionLineUrl = Environment.BaseUrl + "/transactions/{0}/articles";//transactionId
     private _putModifiedTransactionLineUrl = Environment.BaseUrl + "/transactions/articles/{0}";//articleId
+    private _getTransactionInfo = Environment.BaseUrl + "/transactions/{0}";//transactionId
 
     headers: Headers;
     options: RequestOptions;
@@ -55,7 +57,8 @@ export class TransactionLineService extends BaseService {
     constructor(private http: Http) {
         super();
 
-        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+
+        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });        
         this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
         this.options = new RequestOptions({ headers: this.headers });
     }
@@ -79,7 +82,6 @@ export class TransactionLineService extends BaseService {
     }
 
     search(transactionId: number, start?: number, count?: number, orderby?: string, filters?: Filter[]) {
-        var headers = this.headers;
 
         var gridPaging = { pageIndex: start, pageSize: count };
 
@@ -93,10 +95,9 @@ export class TransactionLineService extends BaseService {
         }
         var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
 
-
         var url = String.Format(this._getTransactionLinesUrl, transactionId);
 
-        var searchHeaders = this.headers;
+        var searchHeaders = this.headers;        
 
         var postBody = JSON.stringify(postItem);
 
@@ -108,6 +109,16 @@ export class TransactionLineService extends BaseService {
 
         return this.http.get(url, options)
             .map(response => <any>(<Response>response).json());
+    }
+
+    getTransactionInfo(transactionId: number) {
+        var headers = this.headers;
+        var url = String.Format(this._getTransactionInfo, transactionId);
+
+        var options = new RequestOptions({ headers: headers });
+
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response).json());;
     }
 
     editTransactionLine(transactionLine: TransactionLine): Observable<string> {
