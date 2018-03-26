@@ -105,21 +105,19 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
             this.transactionLineService.search(this.transactionId, this.pageIndex, this.pageSize, order, filter).subscribe(res => {
 
-                //this.properties = res.metadata.properties;
+                this.properties = res.metadata.properties;
                 var totalCount = this.totalRecords;
-                this.debitSum = res.transaction.debitSum;
-                this.creditSum = res.transaction.creditSum;
 
                 if (insertedTransactionLine) {
-                    var rows = (res.lines as Array<TransactionLine>);
+                    var rows = (res.list as Array<TransactionLine>);
                     var index = rows.findIndex(p => p.id == insertedTransactionLine.id);
                     if (index >= 0) {
-                        res.lines.splice(index, 1);
+                        res.list.splice(index, 1);
                         rows.splice(0, 0, insertedTransactionLine);
                     }
                     else {
                         if (rows.length == this.pageSize) {
-                            res.lines.splice(this.pageSize - 1, 1);
+                            res.list.splice(this.pageSize - 1, 1);
                         }
 
                         rows.splice(0, 0, insertedTransactionLine);
@@ -128,12 +126,18 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
                 }
 
                 this.rowData = {
-                    data: res.lines,
+                    data: res.list,
                     total: totalCount
                 }
-                
-                this.showloadingMessage = !(res.lines.length == 0);
+
+                this.showloadingMessage = !(res.list.length == 0);
             })
+
+            this.transactionLineService.getTransactionInfo(this.transactionId).subscribe(res => {
+                this.debitSum = res.item.debitSum;
+                this.creditSum = res.item.creditSum;
+            })
+
         }).subscribe(res => {
             this.totalRecords = res;
             this.sppcLoading.hide();
@@ -160,7 +164,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     }
 
 
-    pageChange(event: PageChangeEvent): void {        
+    pageChange(event: PageChangeEvent): void {
         this.skip = event.skip;
         this.reloadGrid();
     }

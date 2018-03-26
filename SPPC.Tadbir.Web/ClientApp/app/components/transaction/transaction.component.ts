@@ -115,19 +115,19 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
             this.transactionService.search(this.pageIndex, this.pageSize, order, filter).subscribe(res => {
 
-                //this.properties = res.metadata.properties;
+                this.properties = res.metadata.properties;
                 var totalCount = this.totalRecords;
 
                 if (insertedTransaction) {
-                    var rows = (res as Array<Transaction>);
+                    var rows = (res.list as Array<Transaction>);
                     var index = rows.findIndex(p => p.id == insertedTransaction.id);
                     if (index >= 0) {
-                        res.splice(index, 1);
+                        res.list.splice(index, 1);
                         rows.splice(0, 0, insertedTransaction);
                     }
                     else {
                         if (rows.length == this.pageSize) {
-                            res.splice(this.pageSize - 1, 1);
+                            res.list.splice(this.pageSize - 1, 1);
                         }
 
                         rows.splice(0, 0, insertedTransaction);
@@ -136,11 +136,11 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
                 }
 
                 this.rowData = {
-                    data: res,
+                    data: res.list,
                     total: totalCount
                 }
 
-                this.showloadingMessage = !(res.length == 0);
+                this.showloadingMessage = !(res.list.length == 0);
             })
         }).subscribe(res => {
             this.totalRecords = res;
