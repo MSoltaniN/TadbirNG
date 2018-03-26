@@ -34,6 +34,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { Response } from '@angular/http';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
+import { GridResult } from '../../service/account.service';
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
@@ -143,17 +144,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
         else
             this.groupDelete = false;
     }
-
-
-//    function isEqual(element, index, array) {
-//    var start = 2;
-//    while (start <= Math.sqrt(element)) {
-//        if (element % start++ < 1) {
-//            return false;
-//        }
-//    }
-//    return element > 1;
-//}
+    
 
     reloadGrid(insertedAccount ?: Account) {
 
@@ -166,22 +157,23 @@ export class Account2Component extends DefaultComponent implements OnInit {
                 this.skip = this.skip - this.pageSize;                
             }
             
-            this.accountService.search(this.pageIndex, this.pageSize, order, filter).subscribe(res => {
-                
-                this.properties = res.metadata.properties;
-                var totalCount = this.totalRecords;
+            this.accountService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+
+                var resData = res.json();
+                this.properties = resData.metadata.properties;
+                var totalCount = 0;
                 
 
                 if (insertedAccount) {
-                    var rows = (res.list as Array<Account>);
+                    var rows = (resData.list as Array<Account>);
                     var index = rows.findIndex(p => p.id == insertedAccount.id);
                     if (index >= 0) {
-                        res.list.splice(index, 1);
+                        resData.list.splice(index, 1);
                         rows.splice(0, 0, insertedAccount);                        
                     }
                     else {
                         if (rows.length == this.pageSize) {
-                            res.list.splice(this.pageSize - 1, 1);                           
+                            resData.splice(this.pageSize - 1, 1);                           
                         }
                      
                         rows.splice(0, 0, insertedAccount);
@@ -189,14 +181,23 @@ export class Account2Component extends DefaultComponent implements OnInit {
                     }
                 }
 
+                if (res.headers != null) {
+                    var headers = res.headers != undefined ? res.headers : null;
+                    if (headers != null) {
+                        var retheader = headers.get('X-Total-Count');
+                        if (retheader != null)
+                            totalCount = parseInt(retheader.toString());
+                    }
+                }
+
                 this.rowData = {
-                    data: res.list,
+                    data: resData.list,
                     total: totalCount
                 }
                                
                 
 
-                this.showloadingMessage = !(res.list.length == 0);
+                this.showloadingMessage = !(resData.list.length == 0);
                 
             })
         }).subscribe(res => {

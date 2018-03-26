@@ -21,6 +21,10 @@ export class AccountInfo implements Account
     
 }
 
+export class GridResult  {
+    constructor(public data: any , public totalCount: number) { }
+}
+
 
 @Injectable()
 export class AccountService extends BaseService
@@ -132,24 +136,7 @@ export class AccountService extends BaseService
                 sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
         var postItem = { Paging : gridPaging, filters : filters, sortColumns: sort };
-
-
-        //this section written in base class
-        //var fpId = '';
-        //var branchId = '';
-
-        //if (localStorage.getItem('currentContext') != null) {
-        //    var item: string | null;
-        //    item = localStorage.getItem('currentContext');
-        //    this.currentContext = JSON.parse(item != null ? item.toString() : "");
-
-        //    fpId = this.currentContext ? this.currentContext.fpId.toString() : '';
-        //    branchId = this.currentContext ? this.currentContext.branchId.toString() : '';
-
-        //}
-
-        //this section written in base class
-
+        
         var url = String.Format(this._getAccountsUrl, this.FiscalPeriodId, this.BranchId);
 
         var searchHeaders = this.headers;
@@ -159,11 +146,18 @@ export class AccountService extends BaseService
         var base64Body = btoa(encodeURIComponent(postBody));
 
         searchHeaders.set('X-Tadbir-GridOptions', base64Body);
+        
 
         var options = new RequestOptions({ headers: searchHeaders });
+               
 
-        return this.http.get(url,options)
-            .map(response => <any>(<Response>response).json());
+        var result: any = null;
+        var totalCount = 0;
+
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
+
+        //return new GridResult(result, totalCount);
     }
 
    
