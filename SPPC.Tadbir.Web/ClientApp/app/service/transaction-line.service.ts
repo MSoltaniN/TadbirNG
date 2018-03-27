@@ -108,7 +108,7 @@ export class TransactionLineService extends BaseService {
         var options = new RequestOptions({ headers: searchHeaders });
 
         return this.http.get(url, options)
-            .map(response => <any>(<Response>response).json());
+            .map(response => <any>(<Response>response));
     }
 
     getTransactionInfo(transactionId: number) {

@@ -25,7 +25,6 @@ export class TransactionInfo implements Transaction {
 
 }
 
-
 @Injectable()
 export class TransactionService extends BaseService {
 
@@ -55,8 +54,7 @@ export class TransactionService extends BaseService {
 
     getTransactions() {
         var headers = this.headers;
-        headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
-        var url = this._getTransactionsUrl;
+        var url = String.Format(this._getTransactionsUrl, this.FiscalPeriodId, this.BranchId);
         return this.http.get(url, { headers: headers })
             .map(response => <any>(<Response>response).json());
     }
@@ -104,8 +102,11 @@ export class TransactionService extends BaseService {
         searchHeaders.set('X-Tadbir-GridOptions', base64Body);
         var options = new RequestOptions({ headers: searchHeaders });
 
+        var result: any = null;
+        var totalCount = 0;
+
         return this.http.get(url, options)
-            .map(response => <any>(<Response>response).json());
+            .map(response => <any>(<Response>response));
     }
 
     editTransaction(transaction: Transaction): Observable<string> {

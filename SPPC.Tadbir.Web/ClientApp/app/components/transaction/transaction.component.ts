@@ -79,8 +79,8 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
     selectionKey(context: RowArgs): string {
 
-        //return context.dataItem.id + " " + context.index;
-        return context.dataItem.id;
+        return context.dataItem.id + " " + context.index;
+        //return context.dataItem.id;
     }
 
     deleteTransactions() {
@@ -90,7 +90,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
             this.selectedRows = [];
             this.reloadGrid();
         }, (error => {
-                this.sppcLoading.hide();
+            this.sppcLoading.hide();
             this.showMessage(error, MessageType.Warning);
         }));
     }
@@ -105,47 +105,57 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
     reloadGrid(insertedTransaction?: Transaction) {
 
         this.sppcLoading.show();
-        this.transactionService.getCount(this.currentOrder, this.currentFilter).finally(() => {
-            var filter = this.currentFilter;
-            var order = this.currentOrder;
 
-            if (this.totalRecords == this.skip) {
-                this.skip = this.skip - this.pageSize;
+        var filter = this.currentFilter;
+        var order = this.currentOrder;
+
+        if (this.totalRecords == this.skip && this.totalRecords != 0) {
+            this.skip = this.skip - this.pageSize;
+        }
+
+        this.transactionService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+
+            var resData = res.json();
+            this.properties = resData.metadata.properties;
+            var totalCount = 0;
+
+
+            if (insertedTransaction) {
+                var rows = (resData.list as Array<Transaction>);
+                var index = rows.findIndex(p => p.id == insertedTransaction.id);
+                if (index >= 0) {
+                    resData.list.splice(index, 1);
+                    rows.splice(0, 0, insertedTransaction);
+                }
+                else {
+                    if (rows.length == this.pageSize) {
+                        resData.list.splice(this.pageSize - 1, 1);
+                    }
+
+                    rows.splice(0, 0, insertedTransaction);
+                }
             }
 
-            this.transactionService.search(this.pageIndex, this.pageSize, order, filter).subscribe(res => {
-
-                this.properties = res.metadata.properties;
-                var totalCount = this.totalRecords;
-
-                if (insertedTransaction) {
-                    var rows = (res.list as Array<Transaction>);
-                    var index = rows.findIndex(p => p.id == insertedTransaction.id);
-                    if (index >= 0) {
-                        res.list.splice(index, 1);
-                        rows.splice(0, 0, insertedTransaction);
-                    }
-                    else {
-                        if (rows.length == this.pageSize) {
-                            res.list.splice(this.pageSize - 1, 1);
-                        }
-
-                        rows.splice(0, 0, insertedTransaction);
-
-                    }
+            if (res.headers != null) {
+                var headers = res.headers != undefined ? res.headers : null;
+                if (headers != null) {
+                    var retheader = headers.get('X-Total-Count');
+                    if (retheader != null)
+                        totalCount = parseInt(retheader.toString());
                 }
+            }
 
-                this.rowData = {
-                    data: res.list,
-                    total: totalCount
-                }
+            this.rowData = {
+                data: resData.list,
+                total: totalCount
+            }
 
-                this.showloadingMessage = !(res.list.length == 0);
-            })
-        }).subscribe(res => {
-            this.totalRecords = res;
+            this.showloadingMessage = !(resData.list.length == 0);
+            this.totalRecords = totalCount;
             this.sppcLoading.hide();
-        });
+
+        })
+
     }
 
 
@@ -183,7 +193,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
-                    this.sppcLoading.hide();
+                this.sppcLoading.hide();
                 this.showMessage(error, MessageType.Warning);
             }));
         }

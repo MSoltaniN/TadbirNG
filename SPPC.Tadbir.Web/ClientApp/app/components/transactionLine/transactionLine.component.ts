@@ -96,53 +96,62 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
         this.sppcLoading.show();
 
-        this.transactionLineService.getCount(this.transactionId, this.currentOrder, this.currentFilter).finally(() => {
-            var filter = this.currentFilter;
-            var order = this.currentOrder;
+        var filter = this.currentFilter;
+        var order = this.currentOrder;
 
-            if (this.totalRecords == this.skip && this.totalRecords != 0) {
-                this.skip = this.skip - this.pageSize;
+        if (this.totalRecords == this.skip && this.totalRecords != 0) {
+            this.skip = this.skip - this.pageSize;
+        }
+
+        this.transactionLineService.search(this.transactionId, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+
+            var resData = res.json();
+            this.properties = resData.metadata.properties;
+            var totalCount = 0;
+
+
+            if (insertedTransactionLine) {
+                var rows = (resData.list as Array<TransactionLine>);
+                var index = rows.findIndex(p => p.id == insertedTransactionLine.id);
+                if (index >= 0) {
+                    resData.list.splice(index, 1);
+                    rows.splice(0, 0, insertedTransactionLine);
+                }
+                else {
+                    if (rows.length == this.pageSize) {
+                        resData.list.splice(this.pageSize - 1, 1);
+                    }
+
+                    rows.splice(0, 0, insertedTransactionLine);
+                }
             }
 
-            this.transactionLineService.search(this.transactionId, this.pageIndex, this.pageSize, order, filter).subscribe(res => {
-
-                this.properties = res.metadata.properties;
-                var totalCount = this.totalRecords;
-
-                if (insertedTransactionLine) {
-                    var rows = (res.list as Array<TransactionLine>);
-                    var index = rows.findIndex(p => p.id == insertedTransactionLine.id);
-                    if (index >= 0) {
-                        res.list.splice(index, 1);
-                        rows.splice(0, 0, insertedTransactionLine);
-                    }
-                    else {
-                        if (rows.length == this.pageSize) {
-                            res.list.splice(this.pageSize - 1, 1);
-                        }
-
-                        rows.splice(0, 0, insertedTransactionLine);
-
-                    }
+            if (res.headers != null) {
+                var headers = res.headers != undefined ? res.headers : null;
+                if (headers != null) {
+                    var retheader = headers.get('X-Total-Count');
+                    if (retheader != null)
+                        totalCount = parseInt(retheader.toString());
                 }
+            }
 
-                this.rowData = {
-                    data: res.list,
-                    total: totalCount
-                }
+            this.rowData = {
+                data: resData.list,
+                total: totalCount
+            }
 
-                this.showloadingMessage = !(res.list.length == 0);
-            })
+            this.showloadingMessage = !(resData.list.length == 0);
+            this.totalRecords = totalCount;
+            
 
-            this.transactionLineService.getTransactionInfo(this.transactionId).subscribe(res => {
-                this.debitSum = res.item.debitSum;
-                this.creditSum = res.item.creditSum;
-            })
+        })
 
-        }).subscribe(res => {
-            this.totalRecords = res;
+        this.transactionLineService.getTransactionInfo(this.transactionId).subscribe(res => {
+            this.debitSum = res.item.debitSum;
+            this.creditSum = res.item.creditSum;
+
             this.sppcLoading.hide();
-        });
+        })
     }
 
     dataStateChange(state: DataStateChangeEvent): void {
