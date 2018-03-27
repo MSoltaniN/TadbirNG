@@ -149,61 +149,62 @@ export class Account2Component extends DefaultComponent implements OnInit {
     reloadGrid(insertedAccount ?: Account) {
 
         this.sppcLoading.show();
-        this.accountService.getCount(this.currentOrder, this.currentFilter).finally(() => {
-            var filter = this.currentFilter;
-            var order = this.currentOrder;
 
-            if (this.totalRecords == this.skip) {
-                this.skip = this.skip - this.pageSize;                
-            }
-            
-            this.accountService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+    var filter = this.currentFilter;
+    var order = this.currentOrder;
 
-                var resData = res.json();
-                this.properties = resData.metadata.properties;
-                var totalCount = 0;
+    if (this.totalRecords == this.skip) {
+        this.skip = this.skip - this.pageSize;                
+    }
+
+
+
+    this.accountService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+
+        var resData = res.json();
+        this.properties = resData.metadata.properties;
+        var totalCount = 0;
                 
 
-                if (insertedAccount) {
-                    var rows = (resData.list as Array<Account>);
-                    var index = rows.findIndex(p => p.id == insertedAccount.id);
-                    if (index >= 0) {
-                        resData.list.splice(index, 1);
-                        rows.splice(0, 0, insertedAccount);                        
-                    }
-                    else {
-                        if (rows.length == this.pageSize) {
-                            resData.splice(this.pageSize - 1, 1);                           
-                        }
+        if (insertedAccount) {
+            var rows = (resData.list as Array<Account>);
+            var index = rows.findIndex(p => p.id == insertedAccount.id);
+            if (index >= 0) {
+                resData.list.splice(index, 1);
+                rows.splice(0, 0, insertedAccount);                        
+            }
+            else {
+                if (rows.length == this.pageSize) {
+                    resData.list.splice(this.pageSize - 1, 1);                           
+                }
                      
-                        rows.splice(0, 0, insertedAccount);
+                rows.splice(0, 0, insertedAccount);
                         
-                    }
-                }
+            }
+        }
 
-                if (res.headers != null) {
-                    var headers = res.headers != undefined ? res.headers : null;
-                    if (headers != null) {
-                        var retheader = headers.get('X-Total-Count');
-                        if (retheader != null)
-                            totalCount = parseInt(retheader.toString());
-                    }
-                }
+        if (res.headers != null) {
+            var headers = res.headers != undefined ? res.headers : null;
+            if (headers != null) {
+                var retheader = headers.get('X-Total-Count');
+                if (retheader != null)
+                    totalCount = parseInt(retheader.toString());
+            }
+        }
 
-                this.rowData = {
-                    data: resData.list,
-                    total: totalCount
-                }
+        this.rowData = {
+            data: resData.list,
+            total: totalCount
+        }
                                
                 
 
-                this.showloadingMessage = !(resData.list.length == 0);
+        this.showloadingMessage = !(resData.list.length == 0);
+        this.totalRecords = totalCount;
+        this.sppcLoading.hide();
                 
-            })
-        }).subscribe(res => {
-            this.totalRecords = res;
-            this.sppcLoading.hide();
-        });       
+    })
+           
 
     }
     
