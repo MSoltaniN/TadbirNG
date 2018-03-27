@@ -71,8 +71,8 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
     selectionKey(context: RowArgs): string {
 
-        //return context.dataItem.id + " " + context.index;
-        return context.dataItem.id;
+        return context.dataItem.id + " " + context.index;
+        //return context.dataItem.id;
     }
 
     //deleteTransactionsLine() {
@@ -95,11 +95,12 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     reloadGrid(insertedTransactionLine?: TransactionLine) {
 
         this.sppcLoading.show();
+
         this.transactionLineService.getCount(this.transactionId, this.currentOrder, this.currentFilter).finally(() => {
             var filter = this.currentFilter;
             var order = this.currentOrder;
 
-            if (this.totalRecords == this.skip) {
+            if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
 
@@ -166,7 +167,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
     pageChange(event: PageChangeEvent): void {
         this.skip = event.skip;
-        this.reloadGrid();
+        //this.reloadGrid();
     }
 
 

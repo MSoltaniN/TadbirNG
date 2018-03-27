@@ -4,7 +4,7 @@
                         [data]="rowData"
                         [sortable]="true"
                         [pageSize]="pageSize"
-                        [skip]="pageIndex"
+                        [skip]="skip"
                         [filter]="state.filter"
                         [pageable]="true"
                         [resizable]="true"
@@ -49,7 +49,7 @@
                         <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
                         <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
                     </ng-template>
-                    <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex">
+                    <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
                         <table>
                             <tr>
                                 <td>{{ 'TransactionLine.DebitSum' | translate }}</td>
@@ -70,7 +70,7 @@
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-grid-filter [metaData]="getMeta('debit')" [column]="column" [spinners]="true" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
-                    <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex">
+                    <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
                         {{debitSum}}
                     </ng-template>
                 </kendo-grid-column>
@@ -79,7 +79,7 @@
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-grid-filter [metaData]="getMeta('credit')" [column]="column" [spinners]="true" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
-                    <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex">
+                    <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
                         {{creditSum}}
                     </ng-template>
                 </kendo-grid-column>
@@ -102,7 +102,7 @@
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-grid-filter [metaData]="getMeta('debit')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
-                    <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex">
+                    <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
                         {{debitSum}}
                     </ng-template>
                 </kendo-grid-column>
@@ -111,7 +111,7 @@
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-grid-filter [metaData]="getMeta('credit')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
-                    <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex">
+                    <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
                         {{creditSum}}
                     </ng-template>
                 </kendo-grid-column>
