@@ -54,25 +54,9 @@ export class AccountService extends BaseService
         super();
 
         this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8'});        
-
-        //this section written in base class
-        //var ticket = '';
-
-        //if (localStorage.getItem('currentContext') != null) {
-        //    var item: string | null;
-        //    item = localStorage.getItem('currentContext');
-        //    this.currentContext = JSON.parse(item != null ? item.toString() : "");
-
-        //    ticket = this.currentContext ? this.currentContext.ticket.toString() : '';
-        //}
-
-        //this section written in base class
-
-
+        
         this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
-
-
-
+        
         this.options = new RequestOptions({ headers: this.headers });        
     }
 

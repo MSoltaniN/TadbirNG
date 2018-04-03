@@ -27,7 +27,7 @@ import { State, CompositeFilterDescriptor  } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
 
-import { MessageType, Layout } from "../../enviroment";
+import { MessageType, Layout, Entities, Metadatas } from "../../enviroment";
 import { Filter } from "../../class/filter";
 
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -96,7 +96,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
         private accountService: AccountService, private transactionLineService: TransactionLineService,
         private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService)
     {
-        super(toastrService, translate, renderer, metadata,'Account');
+        super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
         
         this.getFiscalPeriod();
 

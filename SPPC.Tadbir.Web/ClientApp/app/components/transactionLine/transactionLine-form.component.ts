@@ -14,6 +14,7 @@ import { DefaultComponent } from "../../class/default.component";
 import { MetaDataService } from '../../service/metadata/metadata.service';
 
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
+import { Metadatas, Entities } from '../../enviroment';
 
 
 
@@ -123,8 +124,9 @@ export class TransactionLineFormComponent extends DefaultComponent {
     constructor(private transactionLineService: TransactionLineService, private accountService: AccountService,
         public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
         public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, "TransactionLine");
 
+        super(toastrService, translate, renderer, metadata, Entities.Transaction, Metadatas.Transaction);    
+        
         this.GetAccounts();
         this.GetDetailAccounts();
         this.GetCostCenters();

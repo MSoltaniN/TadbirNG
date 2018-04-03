@@ -37,7 +37,8 @@ export class DefaultComponent extends BaseComponent {
     
 
     constructor(public toastrService: ToastrService, public translate: TranslateService
-        , public renderer: Renderer2, private metadataService: MetaDataService,@Optional() @Inject('empty') private entityType : string) {
+        , public renderer: Renderer2, private metadataService: MetaDataService,
+        @Optional() @Inject('empty') private entityType: string, @Optional() @Inject('empty') private metaDataName: string) {
 
 
         super(toastrService);
@@ -85,32 +86,41 @@ export class DefaultComponent extends BaseComponent {
 
 
     /**
-    * this function return metadata of column
+    * این تابع متادیتا مربوط به یک انتیتی را در قالب انتیتی به نام Property برمیگرداند.
     * @param name is a name of column like 'id' , 'name' , 'fiscalperiod' , ... .    
     */    
-    public getMeta(name: string):Property | undefined {      
+    public getMeta(name: string):Property | any {      
         
-        if (localStorage.getItem(this.entityType) == undefined) {
-            this.metadataService.getMetaData(this.entityType).subscribe(res1 => {
+        if (localStorage.getItem(this.metaDataName) == undefined || localStorage.getItem(this.metaDataName) == null) {
+            this.metadataService.getMetaData(this.metaDataName).finally(() =>
+            {
+                if (this.properties[this.metaDataName] == undefined || this.properties[this.metaDataName].length == 0) return undefined;
 
-                this.properties[this.entityType] = res1.properties;
+                var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());
 
-                localStorage.setItem(this.entityType, JSON.stringify(this.properties[this.entityType]))
-                var result = this.properties[this.entityType].find(p => p.name.toLowerCase() == name.toLowerCase());
+                return result;
+
+            }).subscribe(res1 => {
+
+                this.properties[this.metaDataName] = res1.metadata.properties;
+
+                localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))
+                var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());
 
                 return result;
             });
         }
         else {
             var item: string | null;
-            item = localStorage.getItem(this.entityType);
-            this.properties[this.entityType] = JSON.parse(item != null ? item.toString() : "");
-        }
+            item = localStorage.getItem(this.metaDataName);
+            this.properties[this.metaDataName] = JSON.parse(item != null ? item.toString() : "");
 
-        if (this.properties[this.entityType] == undefined || this.properties[this.entityType].length == 0) return undefined;
-        var result = this.properties[this.entityType].find(p => p.name.toLowerCase() == name.toLowerCase());
+            if (this.properties[this.metaDataName] == undefined || this.properties[this.metaDataName].length == 0) return undefined;
 
-        return result;
+            var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());
+
+            return result;
+        }        
     }
     
     /** return the current language */
@@ -127,7 +137,7 @@ export class DefaultComponent extends BaseComponent {
     * @param value is page number.
     */
     public set pageIndex(value: number) {
-        this.skip = value;
+        this.skip = value;        
     }
 
     /** set number value for grid current page */

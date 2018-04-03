@@ -16,20 +16,18 @@ import { Property } from '../../class/metadata/property';
 @Injectable()
 export class MetaDataService extends BaseService {
 
-    private _getMetaDataUrl = Environment.BaseUrl + "/metadata/entity/{0}";
+    private _getMetaDataUrl = Environment.BaseUrl + "/{0}/metadata";
+
+    //private _getMetaDataUrl = Environment.BaseUrl + "/metadata/entity/{0}";
+
+    
 
     
     headers: Headers;
     options: RequestOptions;
 
-    constructor(private http: Http) {
+    constructor(private http: Http) {        
         super();
-
-        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
-        
-        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
-        
-        this.options = new RequestOptions({ headers: this.headers });
     }
 
     /**
@@ -37,10 +35,15 @@ export class MetaDataService extends BaseService {
      * @param entityName is name of entity like 'account' , 'transaction' , ...
      */
     getMetaData(entityName : string) {
-        var headers = this.headers;      
-                    
+
+        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+
+        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
+
+        this.options = new RequestOptions({ headers: this.headers });
+            
         var url = String.Format(this._getMetaDataUrl, entityName);
-        return this.http.get(url, { headers: headers })
+        return this.http.get(url, { headers: this.headers })
             .map(response => (<Response>response).json());
     }
 

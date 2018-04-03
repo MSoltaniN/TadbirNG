@@ -40,7 +40,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         public metadata: MetaDataService
         ) 
     {
-        super(toastrService, translate, renderer, metadata,'');
+        super(toastrService, translate, renderer, metadata,'','');
         this.lang = this.currentlang;
        
     }

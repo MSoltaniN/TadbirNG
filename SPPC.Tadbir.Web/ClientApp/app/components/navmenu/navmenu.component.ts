@@ -14,7 +14,7 @@ export class NavMenuComponent extends DefaultComponent {
     constructor(public toastrService: ToastrService,
         public translate: TranslateService, public renderer: Renderer2,public metadata: MetaDataService) {
 
-        super(toastrService, translate, renderer, metadata,'');
+        super(toastrService, translate, renderer, metadata,'','');
     }
 
 }

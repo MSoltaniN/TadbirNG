@@ -13,7 +13,7 @@ import { String } from '../../class/source';
 import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
-import { MessageType, Layout } from "../../enviroment";
+import { MessageType, Layout, Entities, Metadatas } from "../../enviroment";
 import { Filter } from "../../class/filter";
 
 import { RTL } from '@progress/kendo-angular-l10n';
@@ -69,7 +69,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
         private transactionService: TransactionService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, 'Transaction');
+        super(toastrService, translate, renderer, metadata, Entities.Transaction, Metadatas.Transaction);
 
     }
 

@@ -12,7 +12,7 @@ import { String } from '../../class/source';
 import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
-import { MessageType } from "../../enviroment";
+import { MessageType, Entities, Metadatas } from "../../enviroment";
 import { Filter } from "../../class/filter";
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
@@ -62,7 +62,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
         private transactionLineService: TransactionLineService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, 'TransactionLine');
+        super(toastrService, translate, renderer, metadata, Entities.TransactionLine, Metadatas.TransactionArticles);
     }
 
     getRowsCount() {

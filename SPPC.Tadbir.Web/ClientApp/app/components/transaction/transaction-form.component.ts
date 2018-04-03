@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
 
-import { Layout } from "../../enviroment";
+import { Layout, Entities, Metadatas } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 
@@ -99,7 +99,7 @@ export class TransactionFormComponent extends DefaultComponent {
     constructor(private transactionService: TransactionService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
         public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
 
-        super(toastrService, translate, renderer, metadata,'Transaction');
+        super(toastrService, translate, renderer, metadata, Entities.Transaction, Metadatas.Transaction);
 
     }
 

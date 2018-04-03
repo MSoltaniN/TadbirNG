@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
 
-import { Layout } from "../../enviroment";
+import { Layout, Entities, Metadatas } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 
@@ -97,7 +97,7 @@ export class AccountFormComponent extends DefaultComponent {
     constructor(private accountService: AccountService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
         public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
 
-        super(toastrService, translate, renderer, metadata, 'Account');
+        super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
 
         this.getFiscalPeriod();
 

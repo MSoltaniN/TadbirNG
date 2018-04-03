@@ -8,6 +8,26 @@ export enum MessageType {
 }
 
 
+//export const Metadatas = {
+//    Transaction: 'transaction',
+//    Account: 'account' /*'accounts'*/,
+//    TransactionArticles: 'TransactionLine'//'transactions/articles'
+//}
+
+export const Metadatas = {
+    Transaction: 'transactions',
+    Account: 'accounts',
+    TransactionArticles: 'transactions/articles'
+}
+
+
+export const Entities = {
+    Transaction: 'Transaction',
+    Account: 'Account',
+    TransactionLine: 'TransactionLine'
+}
+
+
 export enum MessagePosition {
     TopLeft,
     TopCenter,
