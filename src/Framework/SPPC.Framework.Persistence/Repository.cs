@@ -560,11 +560,6 @@ namespace SPPC.Framework.Persistence
                 query = query.Where(filter.ToString());
             }
 
-            query = (gridOptions != null)
-                ? query
-                    .Skip((gridOptions.Paging.PageIndex - 1) * gridOptions.Paging.PageSize)
-                    .Take(gridOptions.Paging.PageSize)
-                : query;
             return query;
         }
 
