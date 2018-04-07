@@ -1,0 +1,35 @@
+﻿<div class="col-md-12 col-sm-12 col-xs-12 parentVertical">
+    <div class="col-md-5 col-xs-12 col-lg-4 col-sm-7 vertical-center">
+        <div class="panel panel-primary">
+            <div class="panel-heading"><i class="fa fa-building"></i> {{ 'Login.SelectTitle' | translate }}</div>
+            <div class="panel-body">
+                <form name="form"  (ngSubmit)="f.form.valid && selectParams()" #f="ngForm" novalidate>
+                    <div class="toast-container"></div>
+                    <div class="form-group" >
+                        <label class="col-md-12">{{ 'Company.CompanyName' | translate }}</label>
+                        <kendo-dropdownlist class="col-md-12" [data]="compenies" (valueChange)="companyChange($event)" [valuePrimitive]="true"
+                                                [textField]="'value'" [(ngModel)]="companyId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
+                        </kendo-dropdownlist>                        
+                    </div>
+                    <div class="form-group voffset2">
+                        <label class="col-md-12">{{ 'Branch.BranchName' | translate }}</label>
+                        <kendo-dropdownlist [disabled]="disabledBranch" class="col-md-12" [data]="branches"  [valuePrimitive]="true"
+                                           [textField]="'value'"   [(ngModel)]="branchId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
+                        </kendo-dropdownlist>
+                    </div>
+                    <div class="form-group voffset2">
+                        <label class="col-md-12">{{ 'Fiscal.FiscalPeriod' | translate }}</label>
+                        <kendo-dropdownlist [disabled]="disabledFiscalPeriod" class="col-md-12" [data]="fiscalPeriods" [valuePrimitive]="true"
+                                           [textField]="'value'"   [(ngModel)]="fiscalPeriodId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
+                        </kendo-dropdownlist>
+                    </div>
+                    <div class="form-group voffset2">
+                        <div class="col-md-12">
+                            <button  class="btn btn-primary voffset3">{{ 'Login.Ok' | translate }}</button>                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

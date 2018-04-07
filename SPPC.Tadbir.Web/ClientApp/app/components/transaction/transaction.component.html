@@ -1,0 +1,135 @@
+﻿   
+ <div class="panel panel-primary">
+        <div class="panel-heading">{{ 'Entity.Transaction' | translate }}</div>
+        <div class="panel-body">
+            <kendo-grid #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+                        [data]="rowData"
+                        [sortable]="true"
+                        [pageSize]="pageSize"
+                        [skip]="skip"
+                        [filter]="state.filter"
+                        [pageable]="true"
+                        [resizable]="true"
+                        [filterable]="true"
+                        [scrollable]="'none'"
+                        (pageChange)="pageChange($event)"
+                        (sortChange)="sortChange($event)"
+                        (edit)="editHandler($event)"
+                        (remove)="removeHandler($event)"
+                        [sort]="state.sort"
+                        [selectable]="true"
+                        [selectedKeys]="selectedRows"
+                        [kendoGridSelectBy]="selectionKey"
+                        (dataStateChange)="dataStateChange($event)"
+                        (selectedKeysChange)="onSelectedKeysChange($event)">
+                <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                                     pagerOf="{{ 'Paging.Of' | translate }}"
+                                     pagerItems="{{ 'Paging.Record' | translate }}">
+                </kendo-grid-messages>
+                <ng-template kendoGridNoRecordsTemplate>
+                    {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+                </ng-template>
+                <ng-template kendoGridToolbarTemplate>
+                    <button kendoGridAddCommand (click)="addNew()" type="button">{{ 'Transaction.New' | translate }}</button>
+                    <button *ngIf="groupDelete" class="k-button" (click)="deleteTransactions()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
+                </ng-template>
+                <!-- template for mobile -->
+                <kendo-grid-column media="(max-width: 449px)" title="">
+                    <ng-template kendoGridCellTemplate let-transaction>
+                        <!-- template for mobile -->
+                        <dl>
+                            <dt>{{ 'Transaction.No' | translate }}</dt>
+                            <dd>{{ transaction.no }}</dd>
+
+                            <dt>{{ 'Transaction.Date' | translate }}</dt>
+                            <dd>{{ transaction.date | SppcDate }}</dd>
+
+                            <dt>{{ 'Transaction.Description' | translate  }}</dt>
+                            <dd>{{ transaction.description }}</dd>
+                        </dl>
+                        <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                        <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-column>
+                <!-- template for mobile -->
+                <!-- template for mid-size devices -->
+                <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px) and (max-width: 1024px)"></kendo-grid-checkbox-column>
+                <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Transaction.no">
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                        <sppc-grid-filter [metaData]="getMeta('no')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Transaction.date">
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                        <sppc-grid-filter [metaData]="getMeta('date')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                    </ng-template>
+                    <ng-template kendoGridCellTemplate let-transaction>
+                        {{ transaction.date | SppcDate }}
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
+                    <ng-template kendoGridCellTemplate>
+                        <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-command-column>
+                <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Delete' | translate }}  ">
+                    <ng-template kendoGridCellTemplate>
+                        <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-command-column>
+                <!-- template for mid-size devices -->
+                <!-- additional columns on large devices -->
+                <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
+                <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="Transaction.no">
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                        <sppc-grid-filter [metaData]="getMeta('no')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                    </ng-template>
+                </kendo-grid-column>
+
+                <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="Transaction.date">
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column" let-Transaction>
+                        <sppc-grid-filter [metaData]="getMeta('date')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                    </ng-template>
+                    <ng-template kendoGridCellTemplate let-transaction>
+                        {{ transaction.date | SppcDate }}
+                    </ng-template>
+                </kendo-grid-column>
+
+                <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="Transaction.description">
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                        <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                    </ng-template>
+                </kendo-grid-column>
+
+                <kendo-grid-command-column media="(min-width: 1024px)" width="60" title="{{ 'Buttons.Edit' | translate }}">
+                    <ng-template kendoGridCellTemplate>
+                        <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-command-column>
+                <kendo-grid-command-column media="(min-width: 1024px)" width="60" title="{{ 'Buttons.Delete' | translate }}  ">
+                    <ng-template kendoGridCellTemplate>
+                        <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-command-column>
+                <!-- additional columns on large devices -->
+
+            </kendo-grid>
+            <transaction-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
+                                        (save)="saveHandler($event)"
+                                        (cancel)="cancelHandler()">
+            </transaction-form-component>
+        </div>
+        <kendo-dialog title="{{'Transaction.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteTransaction(false)" [minWidth]="250" [width]="450">
+            <p>
+                {{ deleteConfirmMsg }}
+            </p>
+            <kendo-dialog-actions>
+                <button class="k-button" (click)="deleteTransaction(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+                <button class="k-button" (click)="deleteTransaction(false)">{{ 'Buttons.No' | translate }}</button>
+            </kendo-dialog-actions>
+        </kendo-dialog>
+    </div>
+
+
+
+

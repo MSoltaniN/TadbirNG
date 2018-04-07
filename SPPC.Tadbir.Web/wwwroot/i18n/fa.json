@@ -1,0 +1,120 @@
+﻿{
+  "App": {
+    "Title": "به سیستم جدید تدبیر خوش آمدید!",
+    "SELECT": "Changer la langue",
+    "Loading": "در حال بارگذاری ...",
+    "RecordNotFound": "هیچ رکوردی یافت نشد!",
+    "Name": "سیستم جامع تدبیر",
+    "Menu": {
+      "Account": "حساب",
+      "Transaction": "اسناد",
+      "Exit": "خروج"
+    }
+
+  },
+
+  "Messages": {
+    "Inserted": "{0} با موفقیت ثبت شد",
+    "Updated": "{0} با موفقیت ویرایش شد",
+    "Deleted": "{0} با موفقیت حذف شد",
+    "DeleteConfirm": "آیا برای حذف {0} اطمینان دارید؟"
+  },
+  "Buttons": {
+    "Ok": "تایید",
+    "Cancel": "انصراف",
+    "Yes": "بله",
+    "No": "خیر",
+    "New": "جدید",
+    "Edit": "ویرایش",
+    "Delete": "حذف",
+    "GroupDelete": "حذف گروهی"
+  },
+  "Entity": {
+    "Account": "اطلاعات حساب",
+    "Transaction": "اطلاعات سند",
+    "TransactionLine": "آرتیکل سند"
+  },
+  "Account": {
+    "Code": "کد حساب",
+    "Name": "نام حساب",
+    "FiscalPeriodId": "دوره مالی",
+    "Branch": "شعبه",
+    "Level": "سطح",
+    "Description": "توضیحات",
+    "Delete": "حذف حساب",
+    "List": "لیست حساب ها"
+  },
+  "TransactionLine": {
+    "Debit": "بدهکار",
+    "Credit": "بستانکار",
+    "DebitSum": "جمع بدهکار",
+    "CreditSum": "جمع بستانکار",
+    "Description": "توضیحات",
+    "New": "آرتیکل جدید",
+    "Delete": "حذف آرتیکل",
+    "Currency": "واحد پول",
+
+    "Account": "بردار حساب"
+
+  },
+  "Company": {
+    "CompanyName": "شرکت"
+  },
+  "Branch": {
+    "BranchName": "شعبه"
+  },
+  "Transaction": {
+    "No": "شماره سند مالی",
+    "Date": "تاریخ",
+    "Description": "توضیحات",
+    "BranchId": "شعبه",
+    "FiscalPeriodId": "دوره مالی",
+    "Delete": "حذف سند",
+    "New": "سند جدید"
+
+  },
+  "Fiscal": {
+    "FiscalPeriod": "دوره مالی"
+  },
+  "Paging": {
+    "Record": "رکورد",
+    "Of": "از"
+  },
+  "Validations": {
+    "AccountCode": "کد حساب اجباری می باشد",
+    "AccountName": "نام حساب اجباری می باشد",
+    "FiscalPeriodId": "دوره مالی اجباری می باشد",
+    "BranchId": "کد شعبه اجباری می باشد",
+    "No": "شماره سند مالی اجباری می باشد",
+    "DocumentID": "شماره مستند اداری اجباری می باشد",
+    "Date": "تاریخ اجباری می باشد",
+    "TransactionLineDebit": "بدهکار اجباری می باشد",
+    "TransactionLineCredit": "بستانکار اجباری می باشد",
+
+    "TransactionLineAccount": "حساب اجباری می باشد",
+    "TransactionLineCurrency": "واحد پول اجباری می باشد"
+  },
+  "Grid": {
+    "noRecords": "هیچ رکورذی یافت نشد!!!!!!!!!!"
+  },
+  "Login": {
+    "Ok": "تایید",
+    "Title": "ورود به سیستم",
+    "SelectTitle": "انتخاب شرکت",
+    "UserName": "نام کاربر",
+    "Password": "کلمه عبور",
+    "BtnLogin": "ورود",
+    "RememberMe": "مرا به خاطر بسپار",
+    "Validation": {
+      "UserRequired": "نام کاربر را وارد کنید",
+      "PasswordRequired": "کلمه عبور را وارد کنید",
+      "UserIncorrect": "نام کاربری يا کلمه عبور اشتباه می باشد",
+      "SelectCompany": "لطفا شرکت را انتخاب کنید",
+      "SelectBranch": "لطفا شعبه را انتخاب کنید",
+      "SelectFiscalPeriod": "لطفا دوره مالی را انتخاب کنید"
+    }
+  }
+
+
+
+}

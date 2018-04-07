@@ -1,0 +1,123 @@
+﻿{
+  "App": {
+    "Title": "Wellcome to Tabir New System",
+    "SELECT": "Change language",
+    "Loading": "loading ...",
+    "RecordNotFound": "Record not found!",
+    "Name": "Tadbir Accounting System",
+    "Menu": {
+      "Account": "Account",
+      "Transaction": "Transaction",
+      "Exit": "Exit"
+    }
+  },
+  "Messages": {
+    "Inserted": "{0} inserted successfully",
+    "Updated": "{0} updated successfully",
+    "Deleted": "{0} deleted successfully",
+    "DeleteConfirm": "are you sure to delete {0} ?"
+  },
+  "Buttons": {
+    "Ok": "Ok",
+    "Cancel": "Cancel",
+    "Yes": "Yes",
+    "No": "No",
+    "New": "New Account",
+    "Edit": "Edit",
+    "Delete": "Delete",
+    "GroupDelete": "Delete Group"
+  },
+  "Entity": {
+    "Account": "Account",
+    "Transaction": "Transaction",
+    "TransactionLine": "Voucher Article"
+  },
+  "Account": {
+    "New": "New Account",
+    "Edit": "Edit",
+    "Delete": "Delete",
+    "Code": "Code",
+    "Name": "Name",
+    "FiscalPeriodId": "Fiscal",
+    "Level": "Level",
+    "Branch": "Branch",
+    "Description": "Description",
+    "List": "Account list"
+
+
+  },
+  "TransactionLine": {
+    "Debit": "Debit",
+    "Credit": "Credit",
+    "DebitSum": "Debit Sum",
+    "CreditSum": "Credit Sum",
+    "Description": "Description",
+    "New": "New Article",
+    "Delete": "Delete Article",
+    "Currency": "Currency",
+
+    "Account": "Account"
+
+  },
+  "Company": {
+    "CompanyName": "Company"
+  },
+  "Branch": {
+    "BranchName": "Branch"
+  },
+  "Transaction": {
+    "New": "New Transaction",
+    "Edit": "Edit",
+    "Delete": "Delete",
+    "No": "Voucher No",
+    "Date": "Date",
+    "Description": "Description",
+    "BranchId": "Branch",
+    "FiscalPeriodId": "Fiscal"
+  },
+  "Fiscal": {
+    "FiscalPeriod": "Fiscal Period"
+  },
+  "Paging": {
+    "Record": "Record",
+    "Of": "Of"
+  },
+  "Validations": {
+    "AccountCode": "account code is required",
+    "AccountName": "account name is required",
+    "FiscalPeriodId": "fiscal period is required",
+    "BranchId": "branch id is required",
+    "No": "voucher no is required",
+    "DocumentID": "document id is required",
+    "Date": "date is required",
+    "TransactionLineDebit": "debit is required",
+    "TransactionLineCredit": "credit is required",
+
+    "TransactionLineAccount": "account is required",
+    "TransactionLineCurrency": "currency is required"
+  },
+  "Grid": {
+    "noRecords": "row not found!!!!!!!!!!"
+  },
+
+  "Login": {
+    "Ok": "Ok",
+    "Title": "Login",
+    "SelectTitle": "Select company",
+    "UserName": "User Name",
+    "Password": "Password",
+    "BtnLogin": "Login",
+    "RememberMe": "Remember me",
+    "Validation": {
+      "UserRequired": "username is required",
+      "PasswordRequired": "password is required",
+      "UserIncorrect": "username or password is incorrect",
+      "SelectCompany": "please select company",
+      "SelectBranch": "please select branch",
+      "SelectFiscalPeriod": "please select fiscal"
+    }
+
+  }
+
+
+}
