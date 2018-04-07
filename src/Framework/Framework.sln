@@ -71,6 +71,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackEnd", "BackEnd", "{D236
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Workflow.Persistence", "SPPC.Workflow.Persistence\SPPC.Workflow.Persistence.csproj", "{683F4DC9-DE6E-473A-8859-6D1E46A17E1A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Tadbir.Web", "SPPC.Tadbir.Web\SPPC.Tadbir.Web.csproj", "{89ADEA49-71C8-4D6D-99F8-16A7EB2EDC62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -141,6 +143,10 @@ Global
 		{683F4DC9-DE6E-473A-8859-6D1E46A17E1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{683F4DC9-DE6E-473A-8859-6D1E46A17E1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{683F4DC9-DE6E-473A-8859-6D1E46A17E1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89ADEA49-71C8-4D6D-99F8-16A7EB2EDC62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89ADEA49-71C8-4D6D-99F8-16A7EB2EDC62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89ADEA49-71C8-4D6D-99F8-16A7EB2EDC62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89ADEA49-71C8-4D6D-99F8-16A7EB2EDC62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -173,6 +179,7 @@ Global
 		{93E47F2B-FBD5-4C88-9D91-76B87B76EEB4} = {E595CA7E-69A6-44B7-8C54-90F642D8658D}
 		{D236161C-1261-49F9-9DDA-738F051C6D4A} = {C7262652-F3A0-4E41-B27A-2B829ECF183B}
 		{683F4DC9-DE6E-473A-8859-6D1E46A17E1A} = {D236161C-1261-49F9-9DDA-738F051C6D4A}
+		{89ADEA49-71C8-4D6D-99F8-16A7EB2EDC62} = {E39A066F-1EDE-49A4-868E-A1D05D8C93B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1D717D5C-5BCF-401B-A4A8-D0B263F70830}
