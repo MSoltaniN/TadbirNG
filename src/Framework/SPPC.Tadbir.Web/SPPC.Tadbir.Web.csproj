@@ -12,6 +12,11 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <CodeAnalysisRuleSet>..\..\..\misc\assets\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
@@ -80,6 +85,10 @@
     <None Remove="ClientApp\app\service\transaction.service.ts" />
     <None Remove="ClientApp\enviroment.ts" />
     <None Remove="Properties\PublishProfiles\FolderProfile1.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\TadbirSolutionInfo.cs" Link="TadbirSolutionInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>

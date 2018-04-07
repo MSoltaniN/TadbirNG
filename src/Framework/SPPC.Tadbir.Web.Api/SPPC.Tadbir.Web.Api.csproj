@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\TadbirSolutionInfo.cs" Link="TadbirSolutionInfo.cs" />
+    <Compile Include="..\FrameworkSolutionInfo.cs" Link="FrameworkSolutionInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>
