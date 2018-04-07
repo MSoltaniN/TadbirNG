@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -38,12 +40,25 @@ namespace SPPC.Tadbir.Persistence
         Task<UserViewModel> GetUserAsync(int userId);
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای کاربر را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای کاربر</returns>
+        Task<EntityItemViewModel<UserViewModel>> GetUserMetadataAsync();
+
+        /// <summary>
         /// Asynchronously retrieves context information for a user specified by unique identifier from repository.
         /// </summary>
         /// <param name="userId">Unique identifier of the user to search for</param>
         /// <returns>A <see cref="UserContextViewModel"/> instance containing context information, if there is
         /// such a user defined; otherwise, returns null.</returns>
         Task<UserContextViewModel> GetUserContextAsync(int userId);
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد کاربران تعریف شده را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد کاربران تعریف شده</returns>
+        Task<int> GetUserCountAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// Asynchronously inserts or updates a single user in repository.

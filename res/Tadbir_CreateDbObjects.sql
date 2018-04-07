@@ -986,7 +986,7 @@ GO
 SET IDENTITY_INSERT [Metadata].[Locale] ON
 INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (1, 'English', N'English')
 INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (2, 'Persian', N'فارسی')
-INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (3, 'Arabic', N'عربیه')
+INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (3, 'Arabic', N'العربیه')
 INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (4, 'French', N'Français')
 SET IDENTITY_INSERT [Metadata].[Locale] OFF
 
@@ -994,6 +994,8 @@ SET IDENTITY_INSERT [Metadata].[Entity] ON
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (1, 'Account', 1, 1)
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (2, 'Transaction', 0, 1)
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (3, 'TransactionLine', 0, 1)
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (4, 'User', 0, 0)
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (5, 'Role', 0, 0)
 SET IDENTITY_INSERT [Metadata].[Entity] OFF
 
 SET IDENTITY_INSERT [Metadata].[Property] ON
@@ -1025,6 +1027,20 @@ INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, Stora
     VALUES (13, 3, 'Debit', 'System.Decimal', 'money', 'number', 0, 0, 0, 'Debit_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
     VALUES (14, 3, 'Credit', 'System.Decimal', 'money', 'number', 0, 0, 0, 'Credit_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (15, 4, 'Id', 'System.Int32', 'int', 'number', 0, 0, 0, 'Id_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (16, 4, 'UserName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'UserName_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (17, 4, 'PasswordHash', 'System.String', 'varchar(256)', 'string', 256, 0, 0, 'Password_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (18, 4, 'LastLoginDate', 'System.DateTime', 'datetime', 'Date', 0, 0, 1, 'LastLoginDate_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (19, 4, 'IsEnabled', 'System.Boolean', 'bit', 'boolean', 0, 0, 0, 'Status_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (20, 4, 'PersonFirstName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'FirstName_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (21, 4, 'PersonFirstName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'LastName_Field')
 SET IDENTITY_INSERT [Metadata].[Property] OFF
 
 SET IDENTITY_INSERT [Metadata].[LocalText] ON
@@ -1048,6 +1064,18 @@ INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) V
 INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (18, 2, 'Date_Field', N'تاریخ')
 INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (19, 2, 'Debit_Field', N'بدهکار')
 INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (20, 2, 'Credit_Field', N'بستانکار')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (21, 1, 'UserName_Field', N'User Name')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (22, 1, 'Password_Field', N'Password')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (23, 1, 'LastLoginDate_Field', N'Last Login Date')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (24, 1, 'Status_Field', N'Status')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (25, 1, 'FirstName_Field', N'First Name')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (26, 1, 'LastName_Field', N'Last Name')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (27, 2, 'UserName_Field', N'نام کاربری')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (28, 2, 'Password_Field', N'رمز ورود')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (29, 2, 'LastLoginDate_Field', N'تاریخ آخرین ورود')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (30, 2, 'Status_Field', N'وضعیت')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (31, 2, 'FirstName_Field', N'نام')
+INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (32, 2, 'LastName_Field', N'نام خانوادگی')
 SET IDENTITY_INSERT [Metadata].[LocalText] OFF
 
 

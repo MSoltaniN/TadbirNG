@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Framework.Common;
+using SPPC.Framework.Presentation;
 using SPPC.Framework.Service.Security;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
@@ -34,6 +36,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public async Task<IActionResult> GetUsersAsync()
         {
+            var gridOptions = GetGridOptions();
+            int itemCount = await _repository.GetUserCountAsync(gridOptions);
+            SetItemCount(itemCount);
             var users = await _repository.GetUsersAsync();
             return Json(users);
         }
@@ -59,6 +64,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var user = await _repository.GetUserAsync(userId);
             return JsonReadResult(user);
+        }
+
+        // GET: api/users/metadata
+        [Route(UserApi.UserMetadataUrl)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
+        public async Task<IActionResult> GetUserMetadataAsync()
+        {
+            var metadata = await _repository.GetUserMetadataAsync();
+            return JsonReadResult(metadata);
         }
 
         // POST: api/users
@@ -372,6 +386,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 #else
             return NotFound();
 #endif
+        }
+
+        private GridOptions GetGridOptions()
+        {
+            var options = Request.Headers[AppConstants.GridOptionsHeaderName];
+            if (String.IsNullOrEmpty(options))
+            {
+                return null;
+            }
+
+            var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
+            var json = WebUtility.UrlDecode(urlEncoded);
+            return Framework.Helpers.Json.To<GridOptions>(json);
+        }
+
+        private void SetItemCount(int count)
+        {
+            Response.Headers.Add(AppConstants.TotalCountHeaderName, count.ToString());
         }
 
         private IActionResult JsonReadResult<TData>(TData data)
