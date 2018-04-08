@@ -552,9 +552,10 @@ namespace SPPC.Framework.Persistence
             Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions)
         {
             var options = gridOptions ?? new GridOptions();
+            var currentCriteria = criteria ?? (entity => true);
             var query = _dataSet
                 .AsNoTracking()
-                .Where(criteria);
+                .Where(currentCriteria);
             foreach (var filter in options.Filters)
             {
                 query = query.Where(filter.ToString());

@@ -4,16 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
-using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
-using SPPC.Tadbir.Model;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Corporate;
+using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -23,15 +23,16 @@ namespace SPPC.Tadbir.Persistence
     public class SecurityRepository : ISecurityRepository
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityRepository"/> class.
+        /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">The <see cref="IUnitOfWork"/> implementation to use for all database operations
-        /// in this repository.</param>
-        /// <param name="mapper">Domain mapper to use for mapping between entitiy and view model classes</param>
-        public SecurityRepository(IUnitOfWork unitOfWork, IDomainMapper mapper)
+        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
+        /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
+        /// <param name="decorator">امکان ضمیمه کردن متادیتا به اطلاعات خوانده شده را فراهم می کند</param>
+        public SecurityRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataDecorator decorator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _decorator = decorator;
         }
 
         #region User Management operations
@@ -93,6 +94,15 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای کاربر را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای کاربر</returns>
+        public async Task<EntityItemViewModel<UserViewModel>> GetUserMetadataAsync()
+        {
+            return await _decorator.GetDecoratedItemAsync<User, UserViewModel>(null);
+        }
+
+        /// <summary>
         /// Asynchronously retrieves context information for a user specified by unique identifier from repository.
         /// </summary>
         /// <param name="userId">Unique identifier of the user to search for</param>
@@ -139,29 +149,43 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، تعداد کاربران تعریف شده را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد کاربران تعریف شده</returns>
+        public async Task<int> GetUserCountAsync(GridOptions gridOptions = null)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var count = await repository.GetCountByCriteriaAsync(null, gridOptions);
+            return count;
+        }
+
+        /// <summary>
         /// Asynchronously inserts or updates a single user in repository.
         /// </summary>
         /// <param name="user">Item to insert or update</param>
-        public async Task SaveUserAsync(UserViewModel user)
+        public async Task<UserViewModel> SaveUserAsync(UserViewModel user)
         {
             Verify.ArgumentNotNull(user, "user");
+            User userModel = default(User);
             var repository = _unitOfWork.GetAsyncRepository<User>();
             if (user.Id == 0)
             {
-                var newUser = GetNewUser(user);
-                repository.Insert(newUser, usr => usr.Person);
+                userModel = GetNewUser(user);
+                repository.Insert(userModel, usr => usr.Person);
             }
             else
             {
-                var existing = await repository.GetByIDAsync(user.Id, u => u.Person);
-                if (existing != null)
+                userModel = await repository.GetByIDAsync(user.Id, u => u.Person);
+                if (userModel != null)
                 {
-                    UpdateExistingUser(existing, user);
-                    repository.Update(existing, usr => usr.Person);
+                    UpdateExistingUser(userModel, user);
+                    repository.Update(userModel, usr => usr.Person);
                 }
             }
 
             await _unitOfWork.CommitAsync();
+            return _mapper.Map<UserViewModel>(userModel);
         }
 
         /// <summary>
@@ -1332,5 +1356,6 @@ namespace SPPC.Tadbir.Persistence
 
         private IUnitOfWork _unitOfWork;
         private IDomainMapper _mapper;
+        private IMetadataDecorator _decorator;
     }
 }
