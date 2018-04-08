@@ -64,7 +64,7 @@ namespace SPPC.Tadbir.Persistence
         /// Asynchronously inserts or updates a single user in repository.
         /// </summary>
         /// <param name="user">Item to insert or update</param>
-        Task SaveUserAsync(UserViewModel user);
+        Task<UserViewModel> SaveUserAsync(UserViewModel user);
 
         /// <summary>
         /// Asynchronously sets LastLoginDate field of the specified user to current system date/time.

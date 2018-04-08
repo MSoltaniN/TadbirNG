@@ -164,26 +164,28 @@ namespace SPPC.Tadbir.Persistence
         /// Asynchronously inserts or updates a single user in repository.
         /// </summary>
         /// <param name="user">Item to insert or update</param>
-        public async Task SaveUserAsync(UserViewModel user)
+        public async Task<UserViewModel> SaveUserAsync(UserViewModel user)
         {
             Verify.ArgumentNotNull(user, "user");
+            User userModel = default(User);
             var repository = _unitOfWork.GetAsyncRepository<User>();
             if (user.Id == 0)
             {
-                var newUser = GetNewUser(user);
-                repository.Insert(newUser, usr => usr.Person);
+                userModel = GetNewUser(user);
+                repository.Insert(userModel, usr => usr.Person);
             }
             else
             {
-                var existing = await repository.GetByIDAsync(user.Id, u => u.Person);
-                if (existing != null)
+                userModel = await repository.GetByIDAsync(user.Id, u => u.Person);
+                if (userModel != null)
                 {
-                    UpdateExistingUser(existing, user);
-                    repository.Update(existing, usr => usr.Person);
+                    UpdateExistingUser(userModel, user);
+                    repository.Update(userModel, usr => usr.Person);
                 }
             }
 
             await _unitOfWork.CommitAsync();
+            return _mapper.Map<UserViewModel>(userModel);
         }
 
         /// <summary>

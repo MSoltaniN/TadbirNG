@@ -87,8 +87,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SaveUserAsync(user);
-            return StatusCode(StatusCodes.Status201Created);
+            var outputUser = await _repository.SaveUserAsync(user);
+            return StatusCode(StatusCodes.Status201Created, outputUser);
         }
 
         // PUT: api/users/{userId:min(1)}
@@ -113,8 +113,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 user.Password = String.Empty;
             }
 
-            await _repository.SaveUserAsync(user);
-            return Ok();
+            var outputUser = await _repository.SaveUserAsync(user);
+            result = (outputUser != null)
+                ? Ok(outputUser)
+                : NotFound() as IActionResult;
+            return result;
         }
 
         // PUT: api/users/{userId:int}/login

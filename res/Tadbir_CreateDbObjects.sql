@@ -1040,7 +1040,7 @@ INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, Stora
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
     VALUES (20, 4, 'PersonFirstName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'FirstName_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (21, 4, 'PersonFirstName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'LastName_Field')
+    VALUES (21, 4, 'PersonLastName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'LastName_Field')
 SET IDENTITY_INSERT [Metadata].[Property] OFF
 
 SET IDENTITY_INSERT [Metadata].[LocalText] ON
