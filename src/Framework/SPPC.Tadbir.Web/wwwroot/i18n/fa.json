@@ -8,6 +8,7 @@
     "Menu": {
       "Account": "حساب",
       "Transaction": "اسناد",
+      "Users": "کاربران",
       "Exit": "خروج"
     }
 
@@ -32,7 +33,8 @@
   "Entity": {
     "Account": "اطلاعات حساب",
     "Transaction": "اطلاعات سند",
-    "TransactionLine": "آرتیکل سند"
+    "TransactionLine": "آرتیکل سند",
+    "User": "کاربر"
   },
   "Account": {
     "Code": "کد حساب",
@@ -72,6 +74,29 @@
     "Delete": "حذف سند",
     "New": "سند جدید"
 
+  },
+  "User": {
+    "New": "کاربر جدید",
+    "Edit": "ویرایش",
+    "Delete": "حذف",
+    "PersonFirstName": "نام",
+    "PersonLastName": "نام خانوادگی",
+    "UserName": "نام کاربری",
+    "LastLoginDate": "تاریخ آخرین ورود",
+    "IsEnabled": "وضعیت",
+    "Password": "کلمه عبور",
+    "Active": "فعال",
+    "Inactive": "غیرفعال"
+  },
+  "UserValidations": {
+    "PersonFirstName": "نام اجباری می باشد",
+    "PersonLastName": "نام خانوادگی اجباری می باشد",
+    "UserName": "نام کاربری اجباری می باشد",
+    "Password": "پسورد اجباری می باشد",
+    "PasswordLenght": "کلمه عبور باید حداقل 4 و حداکثر 32 کاراکتر طول داشته باشد",
+    "UserNameLenght": "نام کاربری حداکثر ۶۴ کاراکتر میتواند داشته باشد",
+    "PersonLastNameLenght": "نام خانوادگی حداکثر ۶۴ کاراکتر میتواند داشته باشد",
+    "PersonFirstNameLenght": "نام حداکثر ۶۴ کاراکتر میتواند داشته باشد"
   },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی"

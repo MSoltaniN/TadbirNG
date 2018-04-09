@@ -8,6 +8,7 @@
     "Menu": {
       "Account": "Account",
       "Transaction": "Transaction",
+      "Users": "Users",
       "Exit": "Exit"
     }
   },
@@ -30,7 +31,8 @@
   "Entity": {
     "Account": "Account",
     "Transaction": "Transaction",
-    "TransactionLine": "Voucher Article"
+    "TransactionLine": "Voucher Article",
+    "User": "User"
   },
   "Account": {
     "New": "New Account",
@@ -74,6 +76,29 @@
     "Description": "Description",
     "BranchId": "Branch",
     "FiscalPeriodId": "Fiscal"
+  },
+  "User": {
+    "New": "New User",
+    "Edit": "Edit",
+    "Delete": "Delete",
+    "PersonFirstName": "First Name",
+    "PersonLastName": "Last Name",
+    "UserName": "User Name",
+    "LastLoginDate": "Last Login Date",
+    "IsEnabled": "Status",
+    "Password": "Password",
+    "Active": "Active",
+    "Inactive": "Inactive"
+  },
+  "UserValidations": {
+    "PersonFirstName": "first name is required",
+    "PersonLastName": "last neme is required ",
+    "UserName": "user name is required",
+    "Password": "password is required",
+    "PasswordLenght": "Password must be at least 4 and last 32 characters long",
+    "UserNameLenght": "UserName can be max 64 characters long",
+    "PersonLastNameLenght": "Last name can be max 64 characters long",
+    "PersonFirstNameLenght": "First name can be max 64 characters long"
   },
   "Fiscal": {
     "FiscalPeriod": "Fiscal Period"

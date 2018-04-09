@@ -7,29 +7,38 @@ import * as moment from 'jalali-moment';
 })
 export class SppcDatePipe implements PipeTransform {
 
-    private dateLocale: string;
-    private dateFormat: string;
+    private dateLocale: string = 'fa';
+    private dateFormat: string = "YYYY/MM/DD";
+    public date: any;
 
     constructor(private datepipe: DatePipe) {
 
         //TODO از متغیرهای محیطی گرفته شود
-         this.dateLocale = 'fa';
-        this.dateFormat = "yyyy-M-d hh:mm"
+
         var lang = localStorage.getItem('lang');
         if (lang) {
             this.dateLocale = lang;
             if (lang == "en")
-                this.dateFormat = "M/D/YYYY HH:mm";
+                this.dateFormat = "MM/dd/yyyy";
         }
     }
 
-    transform(value: any) {
+    transform(value: any, withTime: string) {
+        if (value == null || value == undefined)
+            return "";
+
+        let hasTime: boolean = false;
+        hasTime = (withTime != null && withTime != undefined && withTime.toLowerCase() == "datetime") ? true : false;
+        let format: string = hasTime ? this.dateFormat + " HH:mm" : this.dateFormat;
+
         if (this.dateLocale == 'en')
-            return this.datepipe.transform(value, 'M/d/yyyy');
+            return this.datepipe.transform(value, format);
         else {
-            var d = this.datepipe.transform(value, 'yyyy-M-d hh:mm');
-            let MomentDate = moment(value);
-            return MomentDate.locale('fa').format("YYYY/M/D");
+            this.date = this.datepipe.transform(value, 'yyyy-M-d HH:mm');
+            moment.locale('en');
+            let MomentDate = moment(this.date).locale('fa').format(format);
+            return MomentDate;
         }
+
     }
 }
