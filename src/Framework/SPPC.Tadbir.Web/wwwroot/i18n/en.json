@@ -11,6 +11,12 @@
       "Exit": "Exit"
     }
   },
+  "Enviroment": {
+    "FiscalPeriod": "FiscalPeriod",
+    "Company": "Company",
+    "User": "User",
+    "Branch": "Branch"
+  },
   "Messages": {
     "Inserted": "{0} inserted successfully",
     "Updated": "{0} updated successfully",

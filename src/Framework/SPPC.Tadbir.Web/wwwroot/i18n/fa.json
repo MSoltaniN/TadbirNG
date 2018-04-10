@@ -13,6 +13,13 @@
 
   },
 
+  "Enviroment": {
+    "FiscalPeriod": "دوره مالی",
+    "Company": "شرکت",
+    "User": "کاربر جاری",
+    "Branch": "شعبه"
+  },
+
   "Messages": {
     "Inserted": "{0} با موفقیت ثبت شد",
     "Updated": "{0} با موفقیت ویرایش شد",

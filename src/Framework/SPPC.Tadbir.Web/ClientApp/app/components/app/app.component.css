@@ -20,11 +20,14 @@
     padding: 7px;
     color: #444;
     border-top: 1px solid #d2d6de;
-    height: 38px;
-    visibility: hidden;
+    height: 38px;    
     width: 100%;
     bottom: 0;
+    font-family:SPPC!important;
 }
+
+
+
 
 kendo-pager {
     z-index: 0 !important;

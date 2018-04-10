@@ -10,8 +10,30 @@
             </div>
             
         </div>
-        <div id="dashboardFooter" class="nopad footer">
-            
+        <div id="dashboardFooter" class="nopad footer" [ngClass]="{ 'hidden-xs hidden-sm hidden-md hidden-lg' : !showNavbar}">
+            <div class="col-md-3" id="spacePad"></div>
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="col-md-12">
+                        {{ 'Enviroment.User' | translate }} : {{userName}}
+                    </div>                    
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="col-md-12">
+                        {{ 'Enviroment.Company' | translate }}:{{companyName}}
+                    </div>                    
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="col-md-12">
+                        {{ 'Enviroment.FiscalPeriod' | translate }} : {{ fiscalPeriodName }}
+                    </div>                    
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="col-md-12">
+                        {{ 'Enviroment.Branch' | translate }}:{{ branchName }}
+                    </div>                    
+                </div>
+            </div>
         </div>
     </div>
 </div>
