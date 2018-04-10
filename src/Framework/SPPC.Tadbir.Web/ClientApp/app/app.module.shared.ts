@@ -23,6 +23,8 @@ import { TransactionComponent } from './components/transaction/transaction.compo
 import { TransactionFormComponent } from './components/transaction/transaction-form.component';
 import { TransactionLineComponent } from './components/transactionLine/transactionLine.component';
 import { TransactionLineFormComponent } from './components/transactionLine/transactionLine-form.component'
+import { UserComponent } from './components/user/user.component';
+import { UserFormComponent } from './components/user/user-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 
@@ -47,7 +49,7 @@ import { InputsModule } from '@progress/kendo-angular-inputs';
 import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
 import {
-    AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService,
+    AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService,
     BranchService, TransactionService, LookupService
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
@@ -91,10 +93,12 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         TransactionFormComponent,
         TransactionLineComponent,
         TransactionLineFormComponent,
+        UserComponent,
+        UserFormComponent,
         SppcDatePipe
         
     ],
-    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, LookupService, MetaDataService, SppcLoadingService,
+    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, LookupService, MetaDataService, SppcLoadingService, UserService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,
@@ -133,6 +137,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
             { path: 'login', component: LoginContainerComponent },
             { path: 'logout', component: LogoutComponent },
             { path: 'transaction', component: TransactionComponent, canActivate: [AuthGuard] },
+            { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])        
     ],

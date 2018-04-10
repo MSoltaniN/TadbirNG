@@ -79,6 +79,12 @@ label {
     border-style: solid;
 }
 
+.k-pager-wrap
+{
+    z-index:0!important;
+}
+
+
 /*#endregion public classes */
 /*#region add class for sppc font*/
 tgrid {

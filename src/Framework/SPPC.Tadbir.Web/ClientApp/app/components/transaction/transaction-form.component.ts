@@ -28,7 +28,7 @@ interface Item {
 @Component({
     selector: 'transaction-form-component',
     styles: [
-        "input[type=text] { width: 100%; } /deep/ .new-dialog > .k-dialog {width: 450px !important; min-width: 250px !important;}",
+        "input[type=text],textarea { width: 100%; } /deep/ .new-dialog > .k-dialog {width: 450px !important; min-width: 250px !important;}",
         "/deep/ .edit-dialog > .k-dialog {width: 100% !important; min-width: 250px !important; height:100%}",
         "/deep/ .edit-dialog .k-window-titlebar{ padding: 5px 16px !important;}",
         "/deep/ .edit-dialog .edit-form-body { background: #f6f6f6; border: solid 1px #989898; border-radius: 4px; padding-top: 10px;}"
@@ -45,9 +45,9 @@ export class TransactionFormComponent extends DefaultComponent {
 
     //create a form controls
     private editForm = new FormGroup({
-        id: new FormControl("", Validators.required),
-        description: new FormControl(),
-        no: new FormControl("", Validators.required),
+        id: new FormControl(),
+        description: new FormControl("", Validators.maxLength(512)),
+        no: new FormControl("", [Validators.required, Validators.maxLength(64)]),
         date: new FormControl("", Validators.required)
     });
 

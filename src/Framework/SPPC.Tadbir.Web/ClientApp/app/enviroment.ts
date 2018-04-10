@@ -17,14 +17,16 @@ export enum MessageType {
 export const Metadatas = {
     Transaction: 'transactions',
     Account: 'accounts',
-    TransactionArticles: 'transactions/articles'
+    TransactionArticles: 'transactions/articles',
+    User: 'users'
 }
 
 
 export const Entities = {
     Transaction: 'Transaction',
     Account: 'Account',
-    TransactionLine: 'TransactionLine'
+    TransactionLine: 'TransactionLine',
+    User: 'User'
 }
 
 
@@ -32,11 +34,11 @@ export enum MessagePosition {
     TopLeft,
     TopCenter,
     TopRight,
-    MiddleLeft,    
+    MiddleLeft,
     MiddleRight,
     BottomLeft,
     BottomCenter,
-    BottomRight  
+    BottomRight
 }
 
 
@@ -49,9 +51,8 @@ export const Environment = {
 
 
 @Injectable()
-export class  Layout  {       
-    getLayout():boolean
-    {
+export class Layout {
+    getLayout(): boolean {
         var lang = localStorage.getItem('lang');
         if (lang == "en") {
             return false;

@@ -23,6 +23,11 @@
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/users']">
+                        <span class='glyphicon glyphicon-user'></span><span class="menuitem">{{ 'App.Menu.Users' | translate }}</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/logout']">
                         <span class='glyphicon glyphicon-log-out'></span><span class="menuitem">{{ 'App.Menu.Exit' | translate }}</span>
                     </a>
