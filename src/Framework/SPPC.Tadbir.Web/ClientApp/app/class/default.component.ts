@@ -1,5 +1,5 @@
 ﻿
-import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component for message in client side */
+import { ToastrService } from 'ngx-toastr';
 
 import { TranslateService } from "ng2-translate";
 

@@ -21,25 +21,25 @@
             </div>
         </div>
         <!--<div class="form-group">
-            <sppc-mask-textbox class="k-textbox" value="13:10" mask="00:00"></sppc-mask-textbox>
-        </div>-->
+    <sppc-mask-textbox class="k-textbox" value="13:10" mask="00:00"></sppc-mask-textbox>
+    </div>-->
         <!--<div class="form-group">
-            <sppc-numberbox class="k-textbox" value="13" ></sppc-numberbox>
-        </div>-->
-        <div class="form-group">
-            <label for="name" class="control-label">{{ 'Account.Name' | translate }}</label>
+        <sppc-numberbox class="k-textbox" value="13" ></sppc-numberbox>
+    </div>-->       
+            <div class="form-group">
+                <label for="name" class="control-label">{{ 'Account.Name' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="name" />
+                <input type="text" class="k-textbox" formControlName="name" />
 
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-                {{ 'Validations.AccountName' | translate }}
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
+                    {{ 'Validations.AccountName' | translate }}
+                </div>
             </div>
-        </div>
-        <div class="form-group">
-            <label for="description" class="control-label">{{ 'Account.Description' | translate }}</label>
+            <div class="form-group">
+                <label for="description" class="control-label">{{ 'Account.Description' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="description" />
-        </div>
+                <input type="text" class="k-textbox" formControlName="description" />
+            </div>
     </form>
 
     <kendo-dialog-actions>

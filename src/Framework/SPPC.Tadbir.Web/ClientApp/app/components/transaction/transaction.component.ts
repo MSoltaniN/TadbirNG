@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
 import { TransactionService, TransactionInfo, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
 import { Transaction, TransactionLine } from '../../model/index';
-import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component for message in client side */
+import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 
 import { Observable } from 'rxjs/Observable';

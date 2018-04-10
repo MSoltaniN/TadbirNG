@@ -3,10 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { Headers, RequestOptions, BaseRequestOptions, Http } from '@angular/http';
 import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationStrategy, DatePipe } from '@angular/common';
 // third party module to display toast 
-import { ToastrModule } from 'toastr-ng2';
+import { ToastrModule  } from 'ngx-toastr';
+
 //import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 import { ReactiveFormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -37,7 +39,8 @@ import { SppcFullAccount } from './controls/fullAccount/sppc-fullAccount'
 import {BrowserModule} from "@angular/platform-browser";
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
 import { GridModule } from '@progress/kendo-angular-grid';
-import { RTL, MessageService } from '@progress/kendo-angular-l10n';
+import { RTL,MessageService } from '@progress/kendo-angular-l10n';
+
 import { DialogModule } from '@progress/kendo-angular-dialog';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
@@ -112,6 +115,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
     ],        
     imports: [
         //Ng4LoadingSpinnerModule.forRoot(),
+        ButtonsModule,
         CommonModule,         
         HttpModule,
         FormsModule,

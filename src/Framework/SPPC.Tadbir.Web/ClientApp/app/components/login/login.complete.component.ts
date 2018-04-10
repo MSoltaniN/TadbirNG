@@ -2,9 +2,8 @@
 import { Router, ActivatedRoute } from '@angular/router';
 
 import {  AuthenticationService } from '../../service/login/index';
-import { ToastrService } from "toastr-ng2/toastr";
 import { DefaultComponent } from "../../class/default.component";
-import { TranslateService } from "ng2-translate";
+import { ToastrService } from 'ngx-toastr';
 
 import { CompanyService, BranchService, FiscalPeriodService } from '../../service/index';
 
@@ -15,6 +14,7 @@ import { MessageType, Layout, MessagePosition } from "../../enviroment";
 
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
+import { TranslateService } from 'ng2-translate';
 
 
 export function getLayoutModule(layout: Layout) {

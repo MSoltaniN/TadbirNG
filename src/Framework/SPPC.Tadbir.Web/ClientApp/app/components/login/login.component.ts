@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import {  AuthenticationService } from '../../service/login/index';
-import { ToastrService } from "toastr-ng2/toastr";
+import { ToastrService } from 'ngx-toastr';
 import { DefaultComponent } from "../../class/default.component";
 import { TranslateService } from "ng2-translate";
 
@@ -31,6 +31,18 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
     public lang: string = '';
     public stepOne : boolean = true;
+
+    public data: Array<any> = [{
+        text: 'My Profile'
+    }, {
+        text: 'Friend Requests'
+    }, {
+        text: 'Account Settings'
+    }, {
+        text: 'Support'
+    }, {
+        text: 'Log Out'
+    }];
 
     constructor(
         private route: ActivatedRoute,

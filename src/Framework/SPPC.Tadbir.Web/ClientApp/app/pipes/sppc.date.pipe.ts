@@ -2,6 +2,7 @@
 import { DatePipe } from "@angular/common";
 import * as moment from 'jalali-moment';
 
+
 @Pipe({
     name: 'SppcDate'
 })
