@@ -62,6 +62,8 @@
     <None Remove="ClientApp\app\components\transactionLine\transactionLine.component.ts" />
     <None Remove="ClientApp\app\components\transaction\transaction-form.component.ts" />
     <None Remove="ClientApp\app\components\transaction\transaction.component.ts" />
+    <None Remove="ClientApp\app\components\user\user-form.component.ts" />
+    <None Remove="ClientApp\app\components\user\user.component.ts" />
     <None Remove="ClientApp\app\controls\datepicker\sppc-datepicker.ts" />
     <None Remove="ClientApp\app\controls\fullAccount\sppc-fullAccount.ts" />
     <None Remove="ClientApp\app\controls\grid\sppc-date-filter.ts" />
@@ -75,6 +77,7 @@
     <None Remove="ClientApp\app\model\fullaccount.ts" />
     <None Remove="ClientApp\app\model\index.ts" />
     <None Remove="ClientApp\app\model\transaction.ts" />
+    <None Remove="ClientApp\app\model\user.ts" />
     <None Remove="ClientApp\app\pipes\index.ts" />
     <None Remove="ClientApp\app\pipes\sppc.date.pipe.ts" />
     <None Remove="ClientApp\app\service\fiscal-period.service.ts" />
@@ -83,6 +86,7 @@
     <None Remove="ClientApp\app\service\lookup.service.ts" />
     <None Remove="ClientApp\app\service\metadata\metadata.service.ts" />
     <None Remove="ClientApp\app\service\transaction.service.ts" />
+    <None Remove="ClientApp\app\service\user.service.ts" />
     <None Remove="ClientApp\enviroment.ts" />
     <None Remove="Properties\PublishProfiles\FolderProfile1.pubxml" />
   </ItemGroup>
@@ -191,6 +195,8 @@
     <TypeScriptCompile Include="ClientApp\app\components\transactionLine\transactionLine.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\user\user-form.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\user\user.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\datepicker\sppc-datepicker.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\dropdownlist\sppc-dropdownlist.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\fullAccount\sppc-fullAccount.ts" />
@@ -210,6 +216,7 @@
     <TypeScriptCompile Include="ClientApp\app\model\transaction.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\context.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\user.ts" />
     <TypeScriptCompile Include="ClientApp\app\pipes\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\pipes\sppc.date.pipe.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\fiscal-period.service.ts" />
@@ -221,6 +228,7 @@
     <TypeScriptCompile Include="ClientApp\app\service\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\enviroment.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\transaction.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\user.service.ts" />
   </ItemGroup>
 
   <ItemGroup>

@@ -3,10 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { Headers, RequestOptions, BaseRequestOptions, Http } from '@angular/http';
 import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationStrategy, DatePipe } from '@angular/common';
 // third party module to display toast 
-import { ToastrModule } from 'toastr-ng2';
+import { ToastrModule  } from 'ngx-toastr';
+
 //import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 import { ReactiveFormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -21,6 +23,8 @@ import { TransactionComponent } from './components/transaction/transaction.compo
 import { TransactionFormComponent } from './components/transaction/transaction-form.component';
 import { TransactionLineComponent } from './components/transactionLine/transactionLine.component';
 import { TransactionLineFormComponent } from './components/transactionLine/transactionLine-form.component'
+import { UserComponent } from './components/user/user.component';
+import { UserFormComponent } from './components/user/user-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 
@@ -37,14 +41,15 @@ import { SppcFullAccount } from './controls/fullAccount/sppc-fullAccount'
 import {BrowserModule} from "@angular/platform-browser";
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
 import { GridModule } from '@progress/kendo-angular-grid';
-import { RTL, MessageService } from '@progress/kendo-angular-l10n';
+import { RTL,MessageService } from '@progress/kendo-angular-l10n';
+
 import { DialogModule } from '@progress/kendo-angular-dialog';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
 import {
-    AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService,
+    AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService,
     BranchService, TransactionService, LookupService
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
@@ -88,10 +93,12 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         TransactionFormComponent,
         TransactionLineComponent,
         TransactionLineFormComponent,
+        UserComponent,
+        UserFormComponent,
         SppcDatePipe
         
     ],
-    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, LookupService, MetaDataService, SppcLoadingService,
+    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, LookupService, MetaDataService, SppcLoadingService, UserService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,
@@ -112,6 +119,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
     ],        
     imports: [
         //Ng4LoadingSpinnerModule.forRoot(),
+        ButtonsModule,
         CommonModule,         
         HttpModule,
         FormsModule,
@@ -129,6 +137,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
             { path: 'login', component: LoginContainerComponent },
             { path: 'logout', component: LogoutComponent },
             { path: 'transaction', component: TransactionComponent, canActivate: [AuthGuard] },
+            { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])        
     ],

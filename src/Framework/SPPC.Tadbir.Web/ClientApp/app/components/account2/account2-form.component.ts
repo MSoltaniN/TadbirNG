@@ -4,7 +4,7 @@ import { AccountService, AccountInfo, TransactionLineService, TransactionLineInf
 
 import { Account, TransactionLine } from '../../model/index';
 import { TranslateService } from "ng2-translate";
-import { ToastrService, ToastConfig } from 'toastr-ng2';
+import { ToastrService } from 'ngx-toastr';
 
 import { Observable } from 'rxjs/Observable';
 import { ContextInfo } from "../../service/login/authentication.service";
@@ -74,6 +74,8 @@ export class AccountFormComponent extends DefaultComponent {
 
     public fiscalPeriodRows: Array<Item>;
     public selectedValue: string = '1';
+
+   
 
     //Events
     public onSave(e: any): void {

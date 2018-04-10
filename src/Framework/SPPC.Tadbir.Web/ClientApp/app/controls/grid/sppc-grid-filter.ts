@@ -25,7 +25,6 @@ export class SppcGridFilter {
     @Input('metaData')
     public set metaData(value: Property | undefined) {
         if (value == undefined) return;
-
         switch (value.scriptType.toLowerCase()) {
             case "number":
                 this.isNumber = true;
@@ -35,8 +34,8 @@ export class SppcGridFilter {
                 break;
             case "date":
                 break;
-            default :
-                this.isString = true;
+            default:
+                break;
         }
 
     }

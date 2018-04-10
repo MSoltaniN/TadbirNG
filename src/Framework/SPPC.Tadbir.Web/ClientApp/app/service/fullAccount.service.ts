@@ -12,7 +12,7 @@ import { Environment, MessageType } from "../enviroment";
 import { Context } from "../model/context";
 
 import { BaseComponent } from "../class/base.component"
-import { ToastrService } from 'toastr-ng2';
+import { ToastrService } from 'ngx-toastr';
 import { BaseService } from '../class/base.service';
 
 

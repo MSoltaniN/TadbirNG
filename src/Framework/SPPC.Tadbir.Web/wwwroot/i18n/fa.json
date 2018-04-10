@@ -8,6 +8,7 @@
     "Menu": {
       "Account": "حساب",
       "Transaction": "اسناد",
+      "Users": "کاربران",
       "Exit": "خروج"
     }
 
@@ -39,7 +40,8 @@
   "Entity": {
     "Account": "اطلاعات حساب",
     "Transaction": "اطلاعات سند",
-    "TransactionLine": "آرتیکل سند"
+    "TransactionLine": "آرتیکل سند",
+    "User": "کاربر"
   },
   "Account": {
     "Code": "کد حساب",
@@ -64,6 +66,13 @@
     "Account": "بردار حساب"
 
   },
+  "TransactionLineValidation": {
+    "Debit": "بدهکار اجباری می باشد",
+    "Credit": "بستانکار اجباری می باشد",
+    "Account": "حساب اجباری می باشد",
+    "Currency": "واحد پول اجباری می باشد",
+    "DescriptionLenght": "توضیحات حداکثر 512 کاراکتر میتواند داشته باشد"
+  },
   "Company": {
     "CompanyName": "شرکت"
   },
@@ -80,6 +89,35 @@
     "New": "سند جدید"
 
   },
+  "TransactionValidation": {
+    "No": "شماره سند مالی اجباری می باشد",
+    "Date": "تاریخ اجباری می باشد",
+    "DescriptionLenght": "توضیحات حداکثر 512 کاراکتر میتواند داشته باشد",
+    "NoLenght": "شماره سند مالی حداکثر ۶۴ کاراکتر میتواند داشته باشد"
+  },
+  "User": {
+    "New": "کاربر جدید",
+    "Edit": "ویرایش",
+    "Delete": "حذف",
+    "PersonFirstName": "نام",
+    "PersonLastName": "نام خانوادگی",
+    "UserName": "نام کاربری",
+    "LastLoginDate": "تاریخ آخرین ورود",
+    "IsEnabled": "وضعیت",
+    "Password": "کلمه عبور",
+    "Active": "فعال",
+    "Inactive": "غیرفعال"
+  },
+  "UserValidations": {
+    "PersonFirstName": "نام اجباری می باشد",
+    "PersonLastName": "نام خانوادگی اجباری می باشد",
+    "UserName": "نام کاربری اجباری می باشد",
+    "Password": "پسورد اجباری می باشد",
+    "PasswordLenght": "کلمه عبور باید حداقل 4 و حداکثر 32 کاراکتر طول داشته باشد",
+    "UserNameLenght": "نام کاربری حداکثر ۶۴ کاراکتر میتواند داشته باشد",
+    "PersonLastNameLenght": "نام خانوادگی حداکثر ۶۴ کاراکتر میتواند داشته باشد",
+    "PersonFirstNameLenght": "نام حداکثر ۶۴ کاراکتر میتواند داشته باشد"
+  },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی"
   },
@@ -92,14 +130,7 @@
     "AccountName": "نام حساب اجباری می باشد",
     "FiscalPeriodId": "دوره مالی اجباری می باشد",
     "BranchId": "کد شعبه اجباری می باشد",
-    "No": "شماره سند مالی اجباری می باشد",
-    "DocumentID": "شماره مستند اداری اجباری می باشد",
-    "Date": "تاریخ اجباری می باشد",
-    "TransactionLineDebit": "بدهکار اجباری می باشد",
-    "TransactionLineCredit": "بستانکار اجباری می باشد",
-
-    "TransactionLineAccount": "حساب اجباری می باشد",
-    "TransactionLineCurrency": "واحد پول اجباری می باشد"
+    "DocumentID": "شماره مستند اداری اجباری می باشد"    
   },
   "Grid": {
     "noRecords": "هیچ رکورذی یافت نشد!!!!!!!!!!"

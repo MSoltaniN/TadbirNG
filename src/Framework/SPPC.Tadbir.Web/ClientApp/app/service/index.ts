@@ -13,3 +13,5 @@ export * from './message/grid-messages.service';
 export * from './transaction.service';
 
 export * from './lookup.service';
+
+export * from './user.service'

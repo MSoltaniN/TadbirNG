@@ -4,7 +4,7 @@ import { AccountService, AccountInfo, TransactionLineService, TransactionLineInf
 
 import { Account, TransactionLine } from '../../model/index';
 
-import { ToastrService, ToastConfig } from 'toastr-ng2'; /** add this component for message in client side */
+import { ToastrService } from 'ngx-toastr'; /** add this component for message in client side */
 
 import {
     GridDataResult,

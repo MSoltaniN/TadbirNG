@@ -6,7 +6,7 @@ import { TransactionLineService, TransactionLineInfo, AccountService, LookupServ
 import { TransactionLine, FullAccount } from '../../model/index';
 
 import { TranslateService } from "ng2-translate";
-import { ToastrService, ToastConfig } from 'toastr-ng2';
+import { ToastrService } from 'ngx-toastr';
 
 import { Observable } from 'rxjs/Observable';
 import { ContextInfo } from "../../service/login/authentication.service";
@@ -27,7 +27,7 @@ interface Item {
 @Component({
     selector: 'transactionLine-form-component',
     styles: [
-        "input[type=text] { width: 100%; } .ddl-fAcc {width:49%}"
+        "input[type=text],textarea { width: 100%; } .ddl-fAcc {width:49%}"
     ],
     templateUrl: './TransactionLine-form.component.html'
 })
@@ -47,12 +47,12 @@ export class TransactionLineFormComponent extends DefaultComponent {
 
     //create a form controls
     private editForm = new FormGroup({
-        id: new FormControl("", Validators.required),
+        id: new FormControl(),
         debit: new FormControl("", Validators.required),
         credit: new FormControl("", Validators.required),
-        description: new FormControl(),
+        description: new FormControl("", Validators.maxLength(512)),
         transactionId: new FormControl(),
-        currencyId: new FormControl("",Validators.required),
+        currencyId: new FormControl("", Validators.required),
 
         accountId: new FormControl("", Validators.required),
         detailId: new FormControl(),
@@ -84,7 +84,7 @@ export class TransactionLineFormComponent extends DefaultComponent {
 
         if (transactionLine != undefined) {
             if (transactionLine.accountId > 0)
-                this.selectedAccountValue = transactionLine.accountId.toString();           
+                this.selectedAccountValue = transactionLine.accountId.toString();
             if (transactionLine.detailId != undefined)
                 this.selectedDetailAccountValue = transactionLine.detailId.toString();
             if (transactionLine.costCenterId != undefined)
@@ -93,7 +93,7 @@ export class TransactionLineFormComponent extends DefaultComponent {
                 this.selectedprojectValue = transactionLine.projectId.toString();
 
             if (transactionLine.currencyId > 0)
-            this.selectedCurrencyValue = transactionLine.currencyId.toString();
+                this.selectedCurrencyValue = transactionLine.currencyId.toString();
         }
     }
 
@@ -125,8 +125,8 @@ export class TransactionLineFormComponent extends DefaultComponent {
         public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
         public renderer: Renderer2, public metadata: MetaDataService) {
 
-        super(toastrService, translate, renderer, metadata, Entities.Transaction, Metadatas.Transaction);    
-        
+        super(toastrService, translate, renderer, metadata, Entities.Transaction, Metadatas.Transaction);
+
         this.GetAccounts();
         this.GetDetailAccounts();
         this.GetCostCenters();

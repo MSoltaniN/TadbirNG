@@ -1,7 +1,7 @@
 ﻿
 
 
-import { ToastrService } from "toastr-ng2/toastr";
+import { ToastrService } from 'ngx-toastr';
 import { MessageType, MessagePosition } from "../enviroment";
 import { EnviromentComponent } from "./enviroment.component"
 
