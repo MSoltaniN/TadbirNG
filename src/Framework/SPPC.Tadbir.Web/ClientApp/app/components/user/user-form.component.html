@@ -17,7 +17,7 @@
 
             <input type="text" class="k-textbox" formControlName="personFirstName" />
 
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.personFirstName.valid || editForm.controls.personFirstName.pristine || editForm.controls.personFirstName.touched">
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.personFirstName.valid || editForm.controls.personFirstName.pristine">
                 <span *ngIf="editForm.controls.personFirstName.errors?.required">{{ 'UserValidations.PersonFirstName' | translate }}</span>
                 <span *ngIf="editForm.controls.personFirstName.errors?.maxlength">{{ 'UserValidations.PersonFirstNameLenght' | translate }}</span>
             </div>

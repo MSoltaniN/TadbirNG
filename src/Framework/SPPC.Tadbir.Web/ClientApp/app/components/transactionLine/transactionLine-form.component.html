@@ -32,7 +32,7 @@
             </kendo-dropdownlist>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.accountId.valid || editForm.controls.accountId.pristine">
-                {{ 'Validations.TransactionLineAccount' | translate }}
+                {{ 'TransactionLineValidation.Account' | translate }}
             </div>
         </div>
 
@@ -44,7 +44,7 @@
             </kendo-dropdownlist>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.currencyId.valid || editForm.controls.currencyId.pristine">
-                {{ 'Validations.TransactionLineCurrency' | translate }}
+                {{ 'TransactionLineValidation.Currency' | translate }}
             </div>
         </div>
 
@@ -55,7 +55,7 @@
             <input type="text" class="k-textbox" formControlName="debit"/>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.debit.valid || editForm.controls.debit.pristine">
-                {{ 'Validations.TransactionLineDebit' | translate }}
+                {{ 'TransactionLineValidation.Debit' | translate }}
             </div>
         </div>
 
@@ -66,14 +66,18 @@
             <input type="text" class="k-textbox" formControlName="credit"/>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.credit.valid || editForm.controls.credit.pristine">
-                {{ 'Validations.TransactionLineCredit' | translate }}
+                {{ 'TransactionLineValidation.Credit' | translate }}
             </div>
         </div>
 
         <div class="form-group">
             <label for="description" class="control-label">{{ 'TransactionLine.Description' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="description" />
+            <textarea class="k-textarea" formControlName="description"></textarea>
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+                {{ 'TransactionLineValidation.DescriptionLenght' | translate }}
+            </div>
         </div>
     </form>
 

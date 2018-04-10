@@ -61,6 +61,13 @@
     "Account": "Account"
 
   },
+  "TransactionLineValidation": {
+    "DescriptionLenght": "Description can be max 512 characters long",
+    "Debit": "debit is required",
+    "Credit": "credit is required",
+    "Account": "account is required",
+    "Currency": "currency is required"
+  },
   "Company": {
     "CompanyName": "Company"
   },
@@ -76,6 +83,12 @@
     "Description": "Description",
     "BranchId": "Branch",
     "FiscalPeriodId": "Fiscal"
+  },
+  "TransactionValidation": {
+    "No": "voucher no is required",
+    "Date": "date is required",
+    "DescriptionLenght": "Description can be max 512 characters long",
+    "NoLenght": "Voucher No can be max 64 characters long"
   },
   "User": {
     "New": "New User",
@@ -112,14 +125,7 @@
     "AccountName": "account name is required",
     "FiscalPeriodId": "fiscal period is required",
     "BranchId": "branch id is required",
-    "No": "voucher no is required",
-    "DocumentID": "document id is required",
-    "Date": "date is required",
-    "TransactionLineDebit": "debit is required",
-    "TransactionLineCredit": "credit is required",
-
-    "TransactionLineAccount": "account is required",
-    "TransactionLineCurrency": "currency is required"
+    "DocumentID": "document id is required"
   },
   "Grid": {
     "noRecords": "row not found!!!!!!!!!!"

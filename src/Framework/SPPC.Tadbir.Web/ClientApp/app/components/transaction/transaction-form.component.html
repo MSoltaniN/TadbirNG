@@ -16,7 +16,7 @@
                 <sppc-datepicker formControlName="date"></sppc-datepicker>
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.date.valid || editForm.controls.date.pristine">
-                    {{ 'Validations.Date' | translate }}
+                    {{ 'TransactionValidation.Date' | translate }}
                 </div>
             </div>
 
@@ -26,14 +26,19 @@
                 <input type="text" class="k-textbox" formControlName="no" />
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.no.valid || editForm.controls.no.pristine">
-                    {{ 'Validations.No' | translate }}
+                    <span *ngIf="editForm.controls.no.errors?.required">{{ 'TransactionValidation.No' | translate }}</span>
+                    <span *ngIf="editForm.controls.no.errors?.maxlength">{{ 'TransactionValidation.NoLenght' | translate }}</span>
                 </div>
             </div>
 
             <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.currentlang === 'fa' && !isNew}">
                 <label for="description" class="control-label">{{ 'Transaction.Description' | translate }}</label>
 
-                <input type="text" class="k-textbox" formControlName="description" />
+                <textarea class="k-textarea" formControlName="description"></textarea>
+
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+                    {{ 'TransactionValidation.DescriptionLenght' | translate }}
+                </div>
             </div>
 
             <div class="form-group col-xs-12 pull-left" *ngIf="!isNew">
