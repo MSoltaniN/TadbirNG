@@ -39,7 +39,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var gridOptions = GetGridOptions();
             int itemCount = await _repository.GetUserCountAsync(gridOptions);
             SetItemCount(itemCount);
-            var users = await _repository.GetUsersAsync();
+            var users = await _repository.GetUsersAsync(gridOptions);
             return Json(users);
         }
 

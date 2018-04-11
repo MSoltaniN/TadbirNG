@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         public ActionResult Edit(int id)
         {
             // Prevent modification of Admin user by directly browsing the Edit page...
-            if (id == Constants.AdminUserId)
+            if (id == AppConstants.AdminUserId)
             {
                 return RedirectToAction("notfound", "error", new { area = String.Empty });
             }

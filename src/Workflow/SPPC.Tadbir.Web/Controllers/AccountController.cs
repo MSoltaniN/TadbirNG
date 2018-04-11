@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Web.Mvc;
-using BabakSoft.Platform.Common;
 using BabakSoft.Platform.Configuration;
+using SPPC.Framework.Common;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
-using SPPC.Tadbir.Web.Extensions;
+//using SPPC.Tadbir.Web.Extensions;
 
 namespace SPPC.Tadbir.Web.Controllers
 {
@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Web.Controllers
         {
             _service = service;
             _contextManager = contextManager;
-            _rootUrl = ConfigHelper.GetAppSettings(Values.Constants.AppRootKey);
+            _rootUrl = ConfigHelper.GetAppSettings(AppConstants.AppRootKey);
         }
 
         // GET: account/login
@@ -34,7 +34,7 @@ namespace SPPC.Tadbir.Web.Controllers
         public ActionResult Login(LoginViewModel loginModel, string returnUrl)
         {
             Verify.ArgumentNotNull(loginModel, "loginModel");
-            if (ModelState.IsValid && this.ValidateCaptcha())
+            if (ModelState.IsValid /*&& this.ValidateCaptcha()*/)
             {
                 var user = _service.Authenticate(loginModel);
                 if (user != null)

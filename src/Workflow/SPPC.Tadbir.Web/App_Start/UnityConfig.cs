@@ -1,4 +1,5 @@
 using System;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Unity;
 using Unity;
 using Unity.Configuration;
@@ -54,6 +55,9 @@ namespace SPPC.Tadbir.Web.AppStart
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
         public static void RegisterTypes(IUnityContainer container)
         {
+            container.RegisterType<ISecurityService, SecurityService>();
+            container.RegisterType<ISecurityContextManager, SecurityContextManager>();
+
             _unityWrapper = new TypeContainer(container);
             _unityWrapper.RegisterAll();
         }

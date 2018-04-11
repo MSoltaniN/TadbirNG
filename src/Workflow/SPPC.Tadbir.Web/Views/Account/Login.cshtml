@@ -1,5 +1,5 @@
 ﻿@using SPPC.Tadbir.Values
-@using SPPC.Tadbir.Web.Extensions
+@*@using SPPC.Tadbir.Web.Extensions*@
 @model SPPC.Tadbir.ViewModel.Auth.LoginViewModel
 
 @{
@@ -44,7 +44,7 @@
                                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                             </div>
 
-                            @Html.Captcha()
+                            @*@Html.Captcha()*@
 
                             <div class="form-group">
                                 <input type="submit" value="@Strings.AppLogin" class="btn btn-primary" />
