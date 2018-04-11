@@ -60,7 +60,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         public ActionResult Edit(int id)
         {
             // Prevent modification of Admin role by directly browsing the Edit page...
-            if (id == Constants.AdminRoleId)
+            if (id == AppConstants.AdminRoleId)
             {
                 return RedirectToAction("notfound", "error", new { area = String.Empty });
             }
@@ -112,7 +112,7 @@ namespace SPPC.Tadbir.Web.Areas.Admin.Controllers
         public ActionResult Delete(int id)
         {
             // Prevent deletion of Admin role by directly browsing the Edit page...
-            if (id == Constants.AdminRoleId)
+            if (id == AppConstants.AdminRoleId)
             {
                 return RedirectToAction("notfound", "error", new { area = String.Empty });
             }

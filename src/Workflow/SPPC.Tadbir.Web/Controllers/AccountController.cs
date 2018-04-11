@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
-using BabakSoft.Platform.Common;
 using BabakSoft.Platform.Configuration;
+using SPPC.Framework.Common;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Web.Controllers
         {
             _service = service;
             _contextManager = contextManager;
-            _rootUrl = ConfigHelper.GetAppSettings(Values.Constants.AppRootKey);
+            _rootUrl = ConfigHelper.GetAppSettings(AppConstants.AppRootKey);
         }
 
         // GET: account/login

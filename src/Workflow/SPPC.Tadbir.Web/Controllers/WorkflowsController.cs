@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.Web.Controllers
 {
@@ -20,7 +18,7 @@ namespace SPPC.Tadbir.Web.Controllers
         {
             var running = _service.GetRunningWorkflows();
             int pageNumber = (page ?? 1);
-            return View(running.ToPagedList(pageNumber, Values.Constants.DefaultPageSize));
+            return View(running.ToPagedList(pageNumber, AppConstants.DefaultPageSize));
         }
 
         private IWorkflowService _service;

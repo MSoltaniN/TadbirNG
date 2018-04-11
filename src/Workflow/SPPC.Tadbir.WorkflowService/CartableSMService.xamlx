@@ -29,7 +29,7 @@
     </p1:TextExpression.Namespaces>
     <p1:TextExpression.References>
       <sco:Collection x:TypeArguments="p1:AssemblyReference" x:Name="__ReferenceID11">
-        <p1:AssemblyReference>BabakSoft.Platform.Interfaces</p1:AssemblyReference>
+        <p1:AssemblyReference>SPPC.Framework.Interfaces</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.CSharp</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.ServiceLocation</p1:AssemblyReference>
         <p1:AssemblyReference>Microsoft.Practices.Unity</p1:AssemblyReference>

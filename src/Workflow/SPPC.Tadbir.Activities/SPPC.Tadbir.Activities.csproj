@@ -100,7 +100,6 @@
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Provider\DocumentWorkflow.cs" />
     <Compile Include="Provider\TransactionBasicWorkflow.cs" />
     <Compile Include="Provider\TransactionDecisionWorkflow.cs" />
     <Compile Include="Provider\TransactionTimeoutWorkflow.cs" />
