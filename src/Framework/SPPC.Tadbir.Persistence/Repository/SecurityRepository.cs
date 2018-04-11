@@ -43,11 +43,11 @@ namespace SPPC.Tadbir.Persistence
         /// Asynchronously retrieves all application users from repository.
         /// </summary>
         /// <returns>A collection of <see cref="UserViewModel"/> objects retrieved from repository</returns>
-        public async Task<IList<UserViewModel>> GetUsersAsync()
+        public async Task<IList<UserViewModel>> GetUsersAsync(GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<User>();
             var users = await repository
-                .GetAllAsync(u => u.Person);
+                .GetAllAsync(gridOptions, u => u.Person);
             return users
                 .Select(user => _mapper.Map<UserViewModel>(user))
                 .ToList();

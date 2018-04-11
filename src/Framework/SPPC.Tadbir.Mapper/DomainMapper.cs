@@ -84,7 +84,7 @@ namespace SPPC.Tadbir.Mapper
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)
         {
             mapperConfig.CreateMap<User, UserViewModel>()
-                .ForMember(dest => dest.Password, opts => opts.MapFrom(src => src.PasswordHash));
+                .ForMember(dest => dest.Password, opts => opts.UseValue(AppConstants.DummyPassword));
             mapperConfig.CreateMap<UserViewModel, User>()
                 .ForMember(dest => dest.LastLoginDate, opts => opts.Ignore())
                 .ForMember(dest => dest.PasswordHash,
