@@ -9,7 +9,7 @@ using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Repository;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.Workflow;
+//using SPPC.Tadbir.Workflow;
 using SPPC.Workflow.Persistence;
 using Unity;
 using Unity.Injection;
@@ -78,22 +78,22 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<IUnitOfWork, UnitOfWork>();
             _container.RegisterType<IAccountRepository, AccountRepository>();
             _container.RegisterType<ITransactionRepository, TransactionRepository>();
-            _container.RegisterType<ITransactionRepository, TransactionRepository>(
-                "WF", new InjectionConstructor(
-                    new ResolvedParameter<IUnitOfWork>("WF"), new ResolvedParameter<IDomainMapper>()));
+            //_container.RegisterType<ITransactionRepository, TransactionRepository>(
+            //    "WF", new InjectionConstructor(
+            //        new ResolvedParameter<IUnitOfWork>("WF"), new ResolvedParameter<IDomainMapper>()));
             _container.RegisterType<ILookupRepository, LookupRepository>();
             _container.RegisterType<ISecurityRepository, SecurityRepository>();
             _container.RegisterType<IWorkItemRepository, WorkItemRepository>();
-            _container.RegisterType<IWorkItemRepository, WorkItemRepository>(
-                "WF", new InjectionConstructor(
-                    new ResolvedParameter<IUnitOfWork>("WF"), new ResolvedParameter<IDomainMapper>()));
+            //_container.RegisterType<IWorkItemRepository, WorkItemRepository>(
+            //    "WF", new InjectionConstructor(
+            //        new ResolvedParameter<IUnitOfWork>("WF"), new ResolvedParameter<IDomainMapper>()));
 
-            _container.RegisterType<ISettingsRepository, ConfigSettingsRepository>();
+            //_container.RegisterType<ISettingsRepository, ConfigSettingsRepository>();
             _container.RegisterType<ITrackingRepository, TrackingRepository>();
             _container.RegisterType<IWorkflowRepository, WorkflowRepository>();
             _container.RegisterType<IRequisitionRepository, RequisitionRepository>();
             _container.RegisterType<IInventoryRepository, InventoryRepository>();
-            _container.RegisterType<IMetadataRepository, JsonMetadataRepository>();
+            //_container.RegisterType<IMetadataRepository, JsonMetadataRepository>();
         }
 
         /// <summary>
@@ -105,20 +105,20 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<IAccountService, AccountService>();
             _container.RegisterType<ITransactionService, TransactionService>();
             _container.RegisterType<ILookupService, LookupService>();
-            _container.RegisterType<ISecurityService, SecurityService>();
+            //_container.RegisterType<ISecurityService, SecurityService>();
             _container.RegisterType<ICryptoService, CryptoService>();
             _container.RegisterType<ICartableService, CartableService>();
-            _container.RegisterType<ISecurityContextManager, SecurityContextManager>();
-            _container.RegisterType<ISecurityContextManager, ServiceContextManager>("API");
+            //_container.RegisterType<ISecurityContextManager, SecurityContextManager>();
+            //_container.RegisterType<ISecurityContextManager, ServiceContextManager>("API");
             _container.RegisterType<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
             //_container.RegisterType<IDocumentWorkflow, DocumentWorkflow>();
-            _container.RegisterType<ITransactionWorkflow, TransactionWorkflow>(WorkflowEdition.StateMachine);
-            _container.RegisterType<ITransactionWorkflow, TransactionDecisionWorkflow>(WorkflowEdition.Flowchart);
-            _container.RegisterType<ITransactionWorkflow, TransactionTimeoutWorkflow>(WorkflowEdition.Timeout);
-            _container.RegisterType<ITransactionWorkflow, TransactionBasicWorkflow>(WorkflowEdition.Sequential);
+            //_container.RegisterType<ITransactionWorkflow, TransactionWorkflow>(WorkflowEdition.StateMachine);
+            //_container.RegisterType<ITransactionWorkflow, TransactionDecisionWorkflow>(WorkflowEdition.Flowchart);
+            //_container.RegisterType<ITransactionWorkflow, TransactionTimeoutWorkflow>(WorkflowEdition.Timeout);
+            //_container.RegisterType<ITransactionWorkflow, TransactionBasicWorkflow>(WorkflowEdition.Sequential);
             //_container.RegisterType<ISettingsService, ConfigSettingsService>();
             _container.RegisterType<IWorkflowService, WorkflowService>();
-            _container.RegisterType<IWorkflowTracker, WorkflowTracker>();
+            //_container.RegisterType<IWorkflowTracker, WorkflowTracker>();
             _container.RegisterType<IRequisitionService, RequisitionService>();
             _container.RegisterType<IInventoryService, InventoryService>();
         }
