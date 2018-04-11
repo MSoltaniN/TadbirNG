@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 using PagedList;
 using SPPC.Framework.Values;
@@ -26,7 +25,7 @@ namespace SPPC.Tadbir.Web.Areas.Inventory.Controllers
             var inventories = _service.GetProductInventories(
                 TempContext.CurrentFiscalPeriodId, TempContext.CurrentBranchId);
             int pageNumber = (page ?? 1);
-            return View(inventories.ToPagedList(pageNumber, Constants.DefaultPageSize));
+            return View(inventories.ToPagedList(pageNumber, AppConstants.DefaultPageSize));
         }
 
         // GET: inventory/inventories/create

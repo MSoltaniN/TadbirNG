@@ -2,7 +2,7 @@
 using System.Activities;
 using SPPC.Framework.Common;
 using SPPC.Tadbir.Metadata.Workflow;
-using SPPC.Tadbir.Repository;
+using SPPC.Tadbir.Persistence;
 using SPPC.Workflow.Unity;
 
 namespace SPPC.Tadbir.Workflow.Activities
@@ -28,8 +28,9 @@ namespace SPPC.Tadbir.Workflow.Activities
             Verify.ArgumentNotNull(context, "context");
             InitializeDependencies(context);
             string documentType = context.GetValue(DocumentType);
-            var stateWorkflow = _repository.GetStateWorkflow(documentType);
-            return stateWorkflow;
+            ////var stateWorkflow = _repository.GetStateWorkflow(documentType);
+            ////return stateWorkflow;
+            throw ExceptionBuilder.NewNotImplementedException("Workflow functionality is currently disabled.");
         }
 
         private void InitializeDependencies(CodeActivityContext context)

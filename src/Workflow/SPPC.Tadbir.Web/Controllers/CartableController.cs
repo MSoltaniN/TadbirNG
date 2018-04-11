@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
-using BabakSoft.Platform.Common;
+using SPPC.Framework.Common;
 using PagedList;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.ViewModel;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.Web.Controllers
 {
@@ -24,7 +25,7 @@ namespace SPPC.Tadbir.Web.Controllers
         {
             var workItems = _service.GetUserInbox(_userContext.User.Id);
             int pageNumber = (page ?? 1);
-            return View(workItems.ToPagedList(pageNumber, Values.Constants.DefaultPageSize));
+            return View(workItems.ToPagedList(pageNumber, AppConstants.DefaultPageSize));
         }
 
         // POST: cartable
@@ -51,7 +52,7 @@ namespace SPPC.Tadbir.Web.Controllers
         {
             var workItems = _service.GetUserOutbox(_userContext.User.Id);
             int pageNumber = (page ?? 1);
-            return View(workItems.ToPagedList(pageNumber, Values.Constants.DefaultPageSize));
+            return View(workItems.ToPagedList(pageNumber, AppConstants.DefaultPageSize));
         }
 
         private static RouteValueDictionary GetGroupOperationRouteValues(IList<SelectedItemViewModel> allItems)

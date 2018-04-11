@@ -13,9 +13,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SPPC.Tadbir.Web</RootNamespace>
     <AssemblyName>SPPC.Tadbir.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -24,6 +24,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,7 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\..\misc\assets\Relaxed.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\..\misc\assets\Relaxed.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,18 +49,14 @@
       <HintPath>..\..\lib\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BabakSoft.Platform.Common">
-      <HintPath>..\..\lib\BabakSoft.Platform.1.0.0\BabakSoft.Platform.Common.dll</HintPath>
-    </Reference>
     <Reference Include="BabakSoft.Platform.Configuration">
       <HintPath>..\..\lib\BabakSoft.Platform.1.0.0\BabakSoft.Platform.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="BabakSoft.Platform.Web">
       <HintPath>..\..\lib\BabakSoft.Platform.1.0.0\BabakSoft.Platform.Web.dll</HintPath>
     </Reference>
-    <Reference Include="CommonServiceLocator, Version=2.0.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Unity.5.1.0\lib\net45\CommonServiceLocator.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CommonServiceLocator, Version=2.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\Unity.5.8.5\lib\net46\CommonServiceLocator.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -74,11 +71,34 @@
       <HintPath>..\..\lib\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SPPC.Framework.Common, Version=1.0.167.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Framework.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="SPPC.Framework.Interfaces, Version=1.0.167.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Framework.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="SPPC.Tadbir.Common, Version=1.0.167.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="SPPC.Tadbir.Interfaces, Version=1.0.167.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="SPPC.Tadbir.ViewModel, Version=1.0.167.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.ViewModel.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
@@ -117,33 +137,30 @@
       <Private>True</Private>
       <HintPath>..\..\lib\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Abstractions, Version=2.1.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Unity.5.1.0\lib\net45\Unity.Abstractions.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\Unity.Abstractions.3.3.0\lib\net45\Unity.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Configuration, Version=5.0.2.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Unity.5.1.0\lib\net45\Unity.Configuration.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Unity.Configuration, Version=5.2.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\Unity.5.8.5\lib\net46\Unity.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Container, Version=5.1.0.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Unity.5.1.0\lib\net45\Unity.Container.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Unity.Container, Version=5.8.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\Unity.Container.5.8.5\lib\net46\Unity.Container.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Interception, Version=5.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Unity.5.1.0\lib\net45\Unity.Interception.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Unity.Interception, Version=5.5.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\Unity.5.8.5\lib\net46\Unity.Interception.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Interception.Configuration, Version=5.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Unity.5.1.0\lib\net45\Unity.Interception.Configuration.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Unity.Interception.Configuration, Version=5.1.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\Unity.5.8.5\lib\net46\Unity.Interception.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Mvc, Version=5.0.2.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Unity.Mvc.5.0.2\lib\net45\Unity.Mvc.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Unity.Mvc, Version=5.0.13.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\Unity.Mvc.5.0.13\lib\net46\Unity.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.ServiceLocation, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\Unity.5.1.0\lib\net45\Unity.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Unity.RegistrationByConvention, Version=2.1.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\Unity.5.8.5\lib\net46\Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ServiceLocation, Version=2.1.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\..\..\lib\Unity.5.8.5\lib\net46\Unity.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
       <HintPath>..\..\lib\WebActivatorEx.2.2.0\lib\net40\WebActivatorEx.dll</HintPath>
@@ -155,8 +172,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\TadbirSolutionInfo.cs">
-      <Link>TadbirSolutionInfo.cs</Link>
+    <Compile Include="..\WorkflowSolutionInfo.cs">
+      <Link>WorkflowSolutionInfo.cs</Link>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -319,29 +336,9 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SPPC.Framework.Common\SPPC.Framework.Common.csproj">
-      <Project>{4a10f6f8-6a15-490c-b222-be5dfa4775f9}</Project>
-      <Name>SPPC.Framework.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SPPC.Framework.Interfaces\SPPC.Framework.Interfaces.csproj">
-      <Project>{25d668e5-7585-47d7-8ab6-2fd4ac3f8565}</Project>
-      <Name>SPPC.Framework.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SPPC.Tadbir.Common\SPPC.Tadbir.Common.csproj">
-      <Project>{504d9334-9367-4535-925b-ccb7574ce350}</Project>
-      <Name>SPPC.Tadbir.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SPPC.Tadbir.Interfaces\SPPC.Tadbir.Interfaces.csproj">
-      <Project>{10837CB4-3C60-42EF-9806-D312C17B9F2F}</Project>
-      <Name>SPPC.Tadbir.Interfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SPPC.Tadbir.Unity\SPPC.Tadbir.Unity.csproj">
-      <Project>{2788A1DA-3298-4635-8AAB-064B5EA773C8}</Project>
+      <Project>{2788a1da-3298-4635-8aab-064b5ea773c8}</Project>
       <Name>SPPC.Tadbir.Unity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SPPC.Tadbir.ViewModel\SPPC.Tadbir.ViewModel.csproj">
-      <Project>{C3445A49-084D-4FC2-B1BB-DCE676B52618}</Project>
-      <Name>SPPC.Tadbir.ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -390,6 +387,13 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\..\..\lib\NETStandard.Library.2.0.2\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('..\..\..\lib\NETStandard.Library.2.0.2\build\netstandard2.0\NETStandard.Library.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\lib\NETStandard.Library.2.0.2\build\netstandard2.0\NETStandard.Library.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\lib\NETStandard.Library.2.0.2\build\netstandard2.0\NETStandard.Library.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

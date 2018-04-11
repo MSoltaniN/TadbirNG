@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
-using BabakSoft.Platform.Common;
+using SPPC.Framework.Common;
 using PagedList;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Security;
@@ -59,7 +59,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             {
                 FiscalPeriodId = TempContext.CurrentFiscalPeriodId,
                 BranchId = TempContext.CurrentBranchId,
-                Date = JalaliDateTime.Now.ToShortDateString()
+                Date = DateTime.Now
             };
 
             return View(transaction);
@@ -74,13 +74,6 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             if (transaction == null)
             {
                 return RedirectToAction("index", "error", new { area = String.Empty });
-            }
-
-            JalaliDateTime jalali;
-            if (!JalaliDateTime.TryParse(transaction.Date, out jalali))
-            {
-                ModelState.AddModelError("Date", Strings.InvalidDate);
-                return View(transaction);
             }
 
             if (ModelState.IsValid)
@@ -120,13 +113,6 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             if (fullTransaction == null)
             {
                 return RedirectToAction("index", "error", new { area = String.Empty });
-            }
-
-            JalaliDateTime jalali;
-            if (!JalaliDateTime.TryParse(fullTransaction.Transaction.Date, out jalali))
-            {
-                ModelState.AddModelError("Transaction.Date", Strings.InvalidDate);
-                return View(fullTransaction);
             }
 
             if (ModelState.IsValid)
