@@ -63,6 +63,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetUserAsync(int userId)
         {
             var user = await _repository.GetUserAsync(userId);
+            user.Password = AppConstants.DummyPassword;
             return JsonReadResult(user);
         }
 
