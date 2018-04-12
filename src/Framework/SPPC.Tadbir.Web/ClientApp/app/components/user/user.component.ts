@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
 import { UserService, UserInfo } from '../../service/index';
 import { User } from '../../model/index';
-import { ToastrService, ToastConfig } from 'toastr-ng2';
+import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 
 import { Observable } from 'rxjs/Observable';
