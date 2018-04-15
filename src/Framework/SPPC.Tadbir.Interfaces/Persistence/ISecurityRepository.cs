@@ -18,9 +18,10 @@ namespace SPPC.Tadbir.Persistence
         #region Asynchronous Methods
 
         /// <summary>
-        /// Asynchronously retrieves all application users from repository.
+        /// به روش آسنکرون، لیست کاربران برنامه را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <returns>A collection of <see cref="UserViewModel"/> objects retrieved from repository</returns>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>لیست کاربران برنامه</returns>
         Task<IList<UserViewModel>> GetUsersAsync(GridOptions gridOptions = null);
 
         /// <summary>
@@ -155,10 +156,11 @@ namespace SPPC.Tadbir.Persistence
         #region Asynchronous Methods
 
         /// <summary>
-        /// Asynchronously retrieves all application roles from repository.
+        /// به روش آسنکرون، لیست نقش های تعریف شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <returns>A collection of <see cref="RoleViewModel"/> objects retrieved from repository</returns>
-        Task<IList<RoleViewModel>> GetRolesAsync();
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>لیست نقش های تعریف شده</returns>
+        Task<IList<RoleViewModel>> GetRolesAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// Asynchronously initializes and returns a new role object that contains all available security permissions.
@@ -190,6 +192,19 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>A <see cref="RoleViewModel"/> instance that corresponds to the specified role identifier,
         /// if there is such a role defined; otherwise, returns null.</returns>
         Task<RoleViewModel> GetRoleBriefAsync(int roleId);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای نقش را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای نقش</returns>
+        Task<EntityItemViewModel<RoleViewModel>> GetRoleMetadataAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد نقش های تعریف شده را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد نقش های تعریف شده</returns>
+        Task<int> GetRoleCountAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// Asynchronously inserts or updates a single security role, including all permissions in it, in repository

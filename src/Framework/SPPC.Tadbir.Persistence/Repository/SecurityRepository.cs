@@ -40,9 +40,10 @@ namespace SPPC.Tadbir.Persistence
         #region Asynchronous Methods
 
         /// <summary>
-        /// Asynchronously retrieves all application users from repository.
+        /// به روش آسنکرون، لیست کاربران برنامه را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <returns>A collection of <see cref="UserViewModel"/> objects retrieved from repository</returns>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>لیست کاربران برنامه</returns>
         public async Task<IList<UserViewModel>> GetUsersAsync(GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<User>();
@@ -431,18 +432,26 @@ namespace SPPC.Tadbir.Persistence
         #region Asynchronous Methods
 
         /// <summary>
-        /// Asynchronously retrieves all application roles from repository.
+        /// به روش آسنکرون، لیست نقش های تعریف شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <returns>A collection of <see cref="RoleViewModel"/> objects retrieved from repository</returns>
-        public async Task<IList<RoleViewModel>> GetRolesAsync()
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>لیست نقش های تعریف شده</returns>
+        public async Task<IList<RoleViewModel>> GetRolesAsync(GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<Role>();
-            var roles = await repository
-                .GetEntityQuery()
+            var query = repository
+                .GetEntityQuery(gridOptions)
                 .Include(r => r.RolePermissions)
                     .ThenInclude(rp => rp.Permission)
-                .ToListAsync();
-            return roles
+                .ToAsyncEnumerable();
+            if (gridOptions != null)
+            {
+                query = query
+                    .Skip((gridOptions.Paging.PageIndex - 1) * gridOptions.Paging.PageSize)
+                    .Take(gridOptions.Paging.PageSize);
+            }
+
+            return await query
                 .Select(r => _mapper.Map<RoleViewModel>(r))
                 .ToList();
         }
@@ -573,6 +582,27 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return roleBrief;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای نقش را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای نقش</returns>
+        public async Task<EntityItemViewModel<RoleViewModel>> GetRoleMetadataAsync()
+        {
+            return await _decorator.GetDecoratedItemAsync<Role, RoleViewModel>(null);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد نقش های تعریف شده را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد نقش های تعریف شده</returns>
+        public async Task<int> GetRoleCountAsync(GridOptions gridOptions = null)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var count = await repository.GetCountByCriteriaAsync(null, gridOptions);
+            return count;
         }
 
         /// <summary>

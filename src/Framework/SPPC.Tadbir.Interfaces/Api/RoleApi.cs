@@ -101,5 +101,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a new role that contains all available permissions.
         /// </summary>
         public const string NewRoleSyncUrl = "roles/new/sync";
+
+        /// <summary>
+        /// API client URL for role metadata
+        /// </summary>
+        public const string RoleMetadata = "roles/metadata";
+
+        /// <summary>
+        /// API server route URL for role metadata
+        /// </summary>
+        public const string RoleMetadataUrl = "roles/metadata";
     }
 }

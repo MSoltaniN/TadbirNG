@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SPPC.Framework.Common;
+using SPPC.Framework.Presentation;
 using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
@@ -28,7 +31,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public async Task<IActionResult> GetRolesAsync()
         {
-            var roles = await _repository.GetRolesAsync();
+            var gridOptions = GetGridOptions();
+            int itemCount = await _repository.GetRoleCountAsync(gridOptions);
+            SetItemCount(itemCount);
+            var roles = await _repository.GetRolesAsync(gridOptions);
             return Json(roles);
         }
 
@@ -56,6 +62,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var role = await _repository.GetRoleDetailsAsync(roleId);
             return JsonReadResult(role);
+        }
+
+        // GET: api/roles/metadata
+        [Route(RoleApi.RoleMetadataUrl)]
+        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
+        public async Task<IActionResult> GetRoleMetadataAsync()
+        {
+            var metadata = await _repository.GetRoleMetadataAsync();
+            return JsonReadResult(metadata);
         }
 
         // POST: api/roles
@@ -328,6 +343,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         #endregion
+
+        private GridOptions GetGridOptions()
+        {
+            var options = Request.Headers[AppConstants.GridOptionsHeaderName];
+            if (String.IsNullOrEmpty(options))
+            {
+                return null;
+            }
+
+            var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
+            var json = WebUtility.UrlDecode(urlEncoded);
+            return Framework.Helpers.Json.To<GridOptions>(json);
+        }
+
+        private void SetItemCount(int count)
+        {
+            Response.Headers.Add(AppConstants.TotalCountHeaderName, count.ToString());
+        }
 
         private IActionResult JsonReadResult<TData>(TData data)
         {
