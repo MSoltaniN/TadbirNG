@@ -9,6 +9,7 @@
       "Account": "Account",
       "Transaction": "Transaction",
       "Users": "Users",
+      "Roles": "Roles",
       "Exit": "Exit"
     }
   },
@@ -38,7 +39,8 @@
     "Account": "Account",
     "Transaction": "Transaction",
     "TransactionLine": "Voucher Article",
-    "User": "User"
+    "User": "User",
+    "Role": "Role"
   },
   "Account": {
     "New": "New Account",
@@ -118,6 +120,11 @@
     "UserNameLenght": "UserName can be max 64 characters long",
     "PersonLastNameLenght": "Last name can be max 64 characters long",
     "PersonFirstNameLenght": "First name can be max 64 characters long"
+  },
+  "Role": {
+    "Name": "Name",
+    "Description": "Description",
+    "Permissions": "Permissions"
   },
   "Fiscal": {
     "FiscalPeriod": "Fiscal Period"
