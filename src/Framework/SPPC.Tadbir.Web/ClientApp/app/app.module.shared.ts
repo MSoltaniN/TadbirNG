@@ -7,7 +7,7 @@ import { ButtonsModule } from '@progress/kendo-angular-buttons';
 import { Headers, RequestOptions, BaseRequestOptions, Http } from '@angular/http';
 import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationStrategy, DatePipe } from '@angular/common';
 // third party module to display toast 
-import { ToastrModule  } from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
 
 //import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
@@ -25,6 +25,7 @@ import { TransactionLineComponent } from './components/transactionLine/transacti
 import { TransactionLineFormComponent } from './components/transactionLine/transactionLine-form.component'
 import { UserComponent } from './components/user/user.component';
 import { UserFormComponent } from './components/user/user-form.component';
+import { RoleComponent } from './components/role/role.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 
@@ -38,10 +39,10 @@ import { SppcDropDownList } from './controls/dropdownlist/sppc-dropdownlist';
 import { SppcDatepicker } from './controls/datepicker/sppc-datepicker';
 import { SppcFullAccount } from './controls/fullAccount/sppc-fullAccount'
 
-import {BrowserModule} from "@angular/platform-browser";
+import { BrowserModule } from "@angular/platform-browser";
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
 import { GridModule } from '@progress/kendo-angular-grid';
-import { RTL,MessageService } from '@progress/kendo-angular-l10n';
+import { RTL, MessageService } from '@progress/kendo-angular-l10n';
 
 import { DialogModule } from '@progress/kendo-angular-dialog';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
@@ -49,7 +50,7 @@ import { InputsModule } from '@progress/kendo-angular-inputs';
 import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
 import {
-    AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService,
+    AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService,
     BranchService, TransactionService, LookupService
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
@@ -75,7 +76,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
     declarations: [
         AppComponent,
         SppcLoadingComponent,
-        NavMenuComponent,       
+        NavMenuComponent,
         Account2Component,
         AccountFormComponent,
         LoginComponent,
@@ -87,7 +88,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         SppcDropDownList,
         SppcDatepicker,
         SppcFullAccount,
-        SppcGridColumn,        
+        SppcGridColumn,
         SppcGridFilter,
         TransactionComponent,
         TransactionFormComponent,
@@ -95,10 +96,12 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         TransactionLineFormComponent,
         UserComponent,
         UserFormComponent,
+        RoleComponent,
         SppcDatePipe
-        
+
     ],
-    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, LookupService, MetaDataService, SppcLoadingService, UserService,
+    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, LookupService, MetaDataService, SppcLoadingService,
+        UserService, RoleService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,
@@ -111,35 +114,36 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         //            return true;
         //    }            
         //},
-        { provide: MessageService, useClass: GridMessageService },        
-        AuthGuard,        
+        { provide: MessageService, useClass: GridMessageService },
+        AuthGuard,
         AuthenticationService,
         DatePipe,
-        Layout        
-    ],        
+        Layout
+    ],
     imports: [
         //Ng4LoadingSpinnerModule.forRoot(),
         ButtonsModule,
-        CommonModule,         
+        CommonModule,
         HttpModule,
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
         DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule,
-        BrowserModule,        
+        BrowserModule,
         DpDatePickerModule,
         TextMaskModule,
-        TranslateModule.forRoot(),        
+        TranslateModule.forRoot(),
         RouterModule.forRoot([
-            { path: '', redirectTo: 'login', pathMatch: 'full' },            
-            { path: 'account2', component: Account2Component, canActivate: [AuthGuard]},
+            { path: '', redirectTo: 'login', pathMatch: 'full' },
+            { path: 'account2', component: Account2Component, canActivate: [AuthGuard] },
             { path: 'login', component: LoginContainerComponent },
             { path: 'logout', component: LogoutComponent },
             { path: 'transaction', component: TransactionComponent, canActivate: [AuthGuard] },
             { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
+            { path: 'roles', component: RoleComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
-        ])        
+        ])
     ],
     schemas: [NO_ERRORS_SCHEMA]
 })

@@ -58,6 +58,7 @@
     <None Remove="ClientApp\app\components\login\logout.component.ts" />
     <None Remove="ClientApp\app\components\project\complexAccount.component.ts" />
     <None Remove="ClientApp\app\components\project\project.component.ts" />
+    <None Remove="ClientApp\app\components\role\role.component.ts" />
     <None Remove="ClientApp\app\components\transactionLine\transactionLine-form.component.ts" />
     <None Remove="ClientApp\app\components\transactionLine\transactionLine.component.ts" />
     <None Remove="ClientApp\app\components\transaction\transaction-form.component.ts" />
@@ -76,6 +77,7 @@
     <None Remove="ClientApp\app\model\account.ts" />
     <None Remove="ClientApp\app\model\fullaccount.ts" />
     <None Remove="ClientApp\app\model\index.ts" />
+    <None Remove="ClientApp\app\model\role.ts" />
     <None Remove="ClientApp\app\model\transaction.ts" />
     <None Remove="ClientApp\app\model\user.ts" />
     <None Remove="ClientApp\app\pipes\index.ts" />
@@ -85,6 +87,7 @@
     <None Remove="ClientApp\app\service\index.ts" />
     <None Remove="ClientApp\app\service\lookup.service.ts" />
     <None Remove="ClientApp\app\service\metadata\metadata.service.ts" />
+    <None Remove="ClientApp\app\service\role.service.ts" />
     <None Remove="ClientApp\app\service\transaction.service.ts" />
     <None Remove="ClientApp\app\service\user.service.ts" />
     <None Remove="ClientApp\enviroment.ts" />
@@ -191,6 +194,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.container.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\logout.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\role\role.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transactionLine\transactionLine-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transactionLine\transactionLine.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction-form.component.ts" />
@@ -216,6 +220,7 @@
     <TypeScriptCompile Include="ClientApp\app\model\transaction.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\context.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\role.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\user.ts" />
     <TypeScriptCompile Include="ClientApp\app\pipes\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\pipes\sppc.date.pipe.ts" />
@@ -224,6 +229,7 @@
     <TypeScriptCompile Include="ClientApp\app\service\message\sppc-message.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\metadata\metadata.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\fullAccount.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\role.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\transaction-line.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\enviroment.ts" />

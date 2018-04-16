@@ -28,6 +28,11 @@
                     </a>
                 </li>
                 <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/roles']">
+                        <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.Roles' | translate }}</span>
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/logout']">
                         <span class='glyphicon glyphicon-log-out'></span><span class="menuitem">{{ 'App.Menu.Exit' | translate }}</span>
                     </a>
