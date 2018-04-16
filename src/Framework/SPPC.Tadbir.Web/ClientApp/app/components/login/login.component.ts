@@ -32,17 +32,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
     public lang: string = '';
     public stepOne : boolean = true;
 
-    public data: Array<any> = [{
-        text: 'My Profile'
-    }, {
-        text: 'Friend Requests'
-    }, {
-        text: 'Account Settings'
-    }, {
-        text: 'Support'
-    }, {
-        text: 'Log Out'
-    }];
+    
 
     constructor(
         private route: ActivatedRoute,
