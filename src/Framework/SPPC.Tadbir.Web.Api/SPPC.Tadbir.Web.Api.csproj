@@ -20,6 +20,18 @@
   <ItemGroup>
     <Compile Remove="Controllers\LookupController.Finance.cs" />
     <Compile Remove="Controllers\ValuesController.cs" />
+    <Compile Remove="Resources\Types\EntityNames.cs" />
+    <Compile Remove="Resources\Types\Messages.cs" />
+    <Compile Remove="Resources\Types\Strings.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Resources\Types\EntityNames.en.resx" />
+    <EmbeddedResource Remove="Resources\Types\EntityNames.resx" />
+    <EmbeddedResource Remove="Resources\Types\Messages.en.resx" />
+    <EmbeddedResource Remove="Resources\Types\Messages.resx" />
+    <EmbeddedResource Remove="Resources\Types\Strings.en.resx" />
+    <EmbeddedResource Remove="Resources\Types\Strings.resx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,5 +60,9 @@
     <ProjectReference Include="..\SPPC.Tadbir.Persistence\SPPC.Tadbir.Persistence.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Service\SPPC.Tadbir.Service.csproj" />
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="$(SolutionDir)..\..\bin\Debug\ResXTool.exe -res:$(ProjectDir)Resources\Types\AppStrings.resx -ns:$(ProjectName).Resources.Types" />
+  </Target>
 
 </Project>

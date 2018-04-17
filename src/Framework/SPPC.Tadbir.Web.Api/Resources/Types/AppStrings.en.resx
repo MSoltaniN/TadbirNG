@@ -120,4 +120,25 @@
   <data name="Account" xml:space="preserve">
     <value>Account</value>
   </data>
+  <data name="AccountCode" xml:space="preserve">
+    <value>Account code</value>
+  </data>
+  <data name="CannotDeleteUsedAccount" xml:space="preserve">
+    <value>The account {0} is used in one or more vouchers and cannot be deleted.</value>
+  </data>
+  <data name="DuplicateFieldValue" xml:space="preserve">
+    <value>{0} is duplicate.</value>
+  </data>
+  <data name="GroupAction" xml:space="preserve">
+    <value>group action</value>
+  </data>
+  <data name="ItemByIdNotFound" xml:space="preserve">
+    <value>No {0} having an identifier of '{1}' could be found.</value>
+  </data>
+  <data name="RequestFailedConflict" xml:space="preserve">
+    <value>Request failed because conflicts were detected in {0} data.</value>
+  </data>
+  <data name="RequestFailedNoData" xml:space="preserve">
+    <value>Request failed because {0} data was not provided.</value>
+  </data>
 </root>

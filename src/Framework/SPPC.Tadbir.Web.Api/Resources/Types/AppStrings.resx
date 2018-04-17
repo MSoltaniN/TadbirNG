@@ -117,6 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Account" xml:space="preserve">
+    <value>حساب</value>
+  </data>
+  <data name="AccountCode" xml:space="preserve">
+    <value>کد حساب</value>
+  </data>
+  <data name="CannotDeleteUsedAccount" xml:space="preserve">
+    <value>حساب {0} در یک یا چند سند مالی استفاده شده و قابل حذف نیست.</value>
+  </data>
+  <data name="DuplicateFieldValue" xml:space="preserve">
+    <value>{0} تکراری است.</value>
+  </data>
+  <data name="GroupAction" xml:space="preserve">
+    <value>اقدام گروهی</value>
+  </data>
+  <data name="ItemByIdNotFound" xml:space="preserve">
+    <value>{0} مورد نظر با شناسه '{1}' یافت نشد.</value>
+  </data>
   <data name="RequestFailedConflict" xml:space="preserve">
     <value>درخواست مورد نظر به دلیل متناقض بودن اطلاعات {0} انجام نشد.</value>
   </data>
