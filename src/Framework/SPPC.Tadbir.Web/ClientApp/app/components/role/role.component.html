@@ -1,0 +1,94 @@
+﻿
+<div class="panel panel-primary">
+    <div class="panel-heading">{{ 'Entity.Role' | translate }}</div>
+    <div class="panel-body">
+        <kendo-grid [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
+                    [sortable]="true"
+                    [pageSize]="pageSize"
+                    [skip]="skip"
+                    [filter]="state.filter"
+                    [pageable]="true"
+                    [resizable]="true"
+                    [filterable]="true"
+                    [scrollable]="'none'"
+                    (pageChange)="pageChange($event)"
+                    (sortChange)="sortChange($event)"
+                    (edit)="editHandler($event)"
+                    (remove)="removeHandler($event)"
+                    [sort]="state.sort"
+                    [selectable]="true"
+                    [selectedKeys]="selectedRows"
+                    [kendoGridSelectBy]="selectionKey"
+                    (dataStateChange)="dataStateChange($event)"
+                    (selectedKeysChange)="onSelectedKeysChange($event)">
+            <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                                 pagerOf="{{ 'Paging.Of' | translate }}"
+                                 pagerItems="{{ 'Paging.Record' | translate }}">
+            </kendo-grid-messages>
+            <ng-template kendoGridNoRecordsTemplate>
+                {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+            </ng-template>
+            <ng-template kendoGridToolbarTemplate>
+                <button kendoGridAddCommand (click)="addNew()" type="button">{{ 'Buttons.New' | translate }}</button>
+                <button *ngIf="groupDelete" class="k-button" (click)="showConfirm()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
+            </ng-template>
+            <!-- template for mobile -->
+            <kendo-grid-column media="(max-width: 450px)" title="">
+                <ng-template kendoGridCellTemplate let-role>
+                    <!-- template for mobile -->
+                    <h4>
+                        {{ role.name }}
+                    </h4>
+                    <dl>
+                        <dt>{{ 'Role.Name' | translate }}</dt>
+                        <dd>{{ role.name }}</dd>
+                        <dt>{{ 'Role.Description' | translate }}</dt>
+                        <dd>{{ role.description }}</dd>
+                    </dl>
+                    <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                    <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                </ng-template>
+            </kendo-grid-column>
+            <!-- template for mobile -->
+            <!-- additional columns on large devices -->
+            <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px)"></kendo-grid-checkbox-column>
+            <kendo-grid-column width="130" media="(min-width: 450px)" sppc-grid-column="Role.name">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column media="(min-width: 450px)" width="350" sppc-grid-column="Role.description">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-command-column media="(min-width: 450px)" width="70" title="{{ 'Buttons.Edit' | translate }}">
+                <ng-template kendoGridCellTemplate>
+                    <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                </ng-template>
+            </kendo-grid-command-column>
+            <kendo-grid-command-column media="(min-width: 1024px)" width="70" title="{{ 'Buttons.Delete' | translate }}">
+                <ng-template kendoGridCellTemplate>
+                    <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                </ng-template>
+            </kendo-grid-command-column>
+            <!-- additional columns on large devices -->
+
+        </kendo-grid>
+        <role-form-component [model]="editDataItem" [permissionModel]="permissionsData" [isNew]="isNew" [errorMessage]="errorMessage"
+                                (save)="saveHandler($event)"
+                                (cancel)="cancelHandler()">
+        </role-form-component>
+    </div>
+    <kendo-dialog title="{{'Role.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteRole(false)" [minWidth]="250" [width]="450">
+        <p>
+            {{ this.deleteConfirmMsg }}
+        </p>
+        <kendo-dialog-actions>
+            <button class="k-button" (click)="deleteRole(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+            <button class="k-button" (click)="deleteRole(false)">{{ 'Buttons.No' | translate }}</button>
+        </kendo-dialog-actions>
+    </kendo-dialog>
+</div>
+

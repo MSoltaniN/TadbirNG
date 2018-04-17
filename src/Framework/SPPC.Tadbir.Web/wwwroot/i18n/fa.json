@@ -9,6 +9,7 @@
       "Account": "حساب",
       "Transaction": "اسناد",
       "Users": "کاربران",
+      "Roles": "نقش ها",
       "Exit": "خروج"
     }
 
@@ -41,7 +42,8 @@
     "Account": "اطلاعات حساب",
     "Transaction": "اطلاعات سند",
     "TransactionLine": "آرتیکل سند",
-    "User": "کاربر"
+    "User": "کاربر",
+    "Role": "نقش"
   },
   "Account": {
     "Code": "کد حساب",
@@ -118,6 +120,18 @@
     "PersonLastNameLenght": "نام خانوادگی حداکثر ۶۴ کاراکتر میتواند داشته باشد",
     "PersonFirstNameLenght": "نام حداکثر ۶۴ کاراکتر میتواند داشته باشد"
   },
+  "Role": {
+    "Name": "نام",
+    "Description": "شرح",
+    "Permissions": "دسترسی ها",
+    "GroupName": "گروه دسترسی",
+    "Delete": "حذف نقش"
+  },
+  "RoleValidation": {
+    "Name": "نام اجباری می باشد",
+    "NameLenght": "نام حداکثر 64 کاراکتر میتواند داشته باشد",
+    "DescriptionLenght": "توضیحات حداکثر 512 کاراکتر میتواند داشته باشد"
+  },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی"
   },
@@ -130,7 +144,7 @@
     "AccountName": "نام حساب اجباری می باشد",
     "FiscalPeriodId": "دوره مالی اجباری می باشد",
     "BranchId": "کد شعبه اجباری می باشد",
-    "DocumentID": "شماره مستند اداری اجباری می باشد"    
+    "DocumentID": "شماره مستند اداری اجباری می باشد"
   },
   "Grid": {
     "noRecords": "هیچ رکورذی یافت نشد!!!!!!!!!!"

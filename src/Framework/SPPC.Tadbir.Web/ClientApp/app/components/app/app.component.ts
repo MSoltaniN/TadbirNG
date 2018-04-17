@@ -54,6 +54,7 @@ export class AppComponent {
         }
         else {
             this.lang = "fa";
+            
         }        
 
         
@@ -76,7 +77,7 @@ export class AppComponent {
 
                 var spacePad = this.document.getElementById('spacePad')
                 var currentLang = localStorage.getItem('lang')
-                if (currentLang == 'fa') {
+                if (currentLang == 'fa' || currentLang == null) {
                     if (spacePad) {
                         spacePad.classList.add('pull-right');
                         spacePad.classList.remove('pull-left');

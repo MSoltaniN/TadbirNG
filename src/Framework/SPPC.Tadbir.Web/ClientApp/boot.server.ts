@@ -21,7 +21,7 @@ export default createServerRenderer(params => {
         const state = moduleRef.injector.get(PlatformState);
         //const zone = moduleRef.injector.get(NgZone);
 
-        const zone: NgZone = moduleRef.injector.get(NgZone);
+        const zone: NgZone = moduleRef.injector.get(NgZone); 
 
 
 
