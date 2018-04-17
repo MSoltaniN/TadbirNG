@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Framework.Values;
@@ -16,15 +17,21 @@ using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
     public class AccountsController : Controller
     {
-        public AccountsController(IAccountRepository repository)
+        public AccountsController(
+            IAccountRepository repository,
+            IStringLocalizer<Messages> messages = null,
+            IStringLocalizer<EntityNames> entities = null)
         {
             _repository = repository;
+            _messages = messages;
+            _entities = entities;
         }
 
         #region Asynchronous Methods
@@ -297,8 +304,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (account == null)
             {
-                var message = String.Format(ValidationMessages.RequestFailedNoData, Entities.Account);
-                return BadRequest(message);
+                var message = _messages["RequestFailedNoData", _entities["Account"]];
+                return BadRequest(message.Value);
             }
 
             if (!ModelState.IsValid)
@@ -308,8 +315,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (accountId != account.Id)
             {
-                var message = String.Format(ValidationMessages.RequestFailedConflict, Entities.Account);
-                return BadRequest(message);
+                var message = _messages["RequestFailedConflict", _entities["Account"]];
+                return BadRequest(message.Value);
             }
 
             return Ok();
@@ -380,5 +387,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private IAccountRepository _repository;
+        private IStringLocalizer<Messages> _messages;
+        private IStringLocalizer<EntityNames> _entities;
     }
 }
