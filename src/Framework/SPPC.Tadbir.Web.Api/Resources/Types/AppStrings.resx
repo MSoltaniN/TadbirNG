@@ -123,8 +123,20 @@
   <data name="AccountCode" xml:space="preserve">
     <value>کد حساب</value>
   </data>
+  <data name="AdminRoleIsReadonly" xml:space="preserve">
+    <value>اصلاح یا حذف نقش راهبر سیستم امکانپذیر نیست.</value>
+  </data>
+  <data name="AdminUserIsReadOnly" xml:space="preserve">
+    <value>اصلاح یا حذف کاربر راهبر سیستم امکانپذیر نیست.</value>
+  </data>
+  <data name="CannotDeleteAssignedRole" xml:space="preserve">
+    <value>نقش {0} به یک یا چند کاربر  تخصیص داده شده و قابل حذف نیست.</value>
+  </data>
   <data name="CannotDeleteUsedAccount" xml:space="preserve">
     <value>حساب {0} در یک یا چند سند مالی استفاده شده و قابل حذف نیست.</value>
+  </data>
+  <data name="DebitAndCreditNotAllowed" xml:space="preserve">
+    <value>وارد کردن همزمان مبالغ بدهکار و بستانکار در آرتیکل نادرست است.</value>
   </data>
   <data name="DuplicateFieldValue" xml:space="preserve">
     <value>{0} تکراری است.</value>
@@ -132,13 +144,52 @@
   <data name="GroupAction" xml:space="preserve">
     <value>اقدام گروهی</value>
   </data>
+  <data name="IncorrectOldPassword" xml:space="preserve">
+    <value>رمز ورود قدیم صحیح نیست.</value>
+  </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>رمز ورود وارد شده نادرست است.</value>
+  </data>
+  <data name="InvalidUserName" xml:space="preserve">
+    <value>کاربری با نام کاربری داده شده یافت نشد.</value>
+  </data>
   <data name="ItemByIdNotFound" xml:space="preserve">
     <value>{0} مورد نظر با شناسه '{1}' یافت نشد.</value>
+  </data>
+  <data name="ItemNotFound" xml:space="preserve">
+    <value>{0} مورد نظر یافت نشد.</value>
+  </data>
+  <data name="MissingNewAndRepeatPasswords" xml:space="preserve">
+    <value>رمز ورود جدید یا تکرار آن وارد نشده است.</value>
+  </data>
+  <data name="NewAndRepeatPasswordsDontMatch" xml:space="preserve">
+    <value>رمز ورود جدید و تکرار آن متفاوت هستند.</value>
+  </data>
+  <data name="OutOfFiscalPeriodDate" xml:space="preserve">
+    <value>تاریخ سند خارج از محدوده تاریخی دوره مالی جاری قرار دارد.</value>
   </data>
   <data name="RequestFailedConflict" xml:space="preserve">
     <value>درخواست مورد نظر به دلیل متناقض بودن اطلاعات {0} انجام نشد.</value>
   </data>
   <data name="RequestFailedNoData" xml:space="preserve">
     <value>درخواست مورد نظر به دلیل خالی بودن اطلاعات {0} انجام نشد.</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>نقش</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>کاربر</value>
+  </data>
+  <data name="UserAccount" xml:space="preserve">
+    <value>حساب کاربری</value>
+  </data>
+  <data name="UserIsDisabled" xml:space="preserve">
+    <value>کاربر مورد نظر غیرفعال است.</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>نام کاربری</value>
+  </data>
+  <data name="VoucherLine" xml:space="preserve">
+    <value>آرتیکل سند</value>
   </data>
 </root>

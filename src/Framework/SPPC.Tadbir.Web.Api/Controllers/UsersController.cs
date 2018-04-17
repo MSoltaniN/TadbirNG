@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Framework.Service.Security;
@@ -15,6 +16,7 @@ using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
@@ -22,14 +24,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     public class UsersController : Controller
     {
         public UsersController(
-            ISecurityRepository repository, ICryptoService crypto, ITextEncoder<SecurityContext> encoder)
+            ISecurityRepository repository,
+            ICryptoService crypto,
+            ITextEncoder<SecurityContext> encoder,
+            IStringLocalizer<AppStrings> strings)
         {
             _repository = repository;
             _crypto = crypto;
             _contextEncoder = encoder;
+            _strings = strings;
         }
-
-        #region Asynchronous Methods
 
         // GET: api/users
         [Route(UserApi.UsersUrl)]
@@ -100,7 +104,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (userId == AppConstants.AdminUserId)
             {
-                return BadRequest("Could not put modified user because the user is read-only.");
+                return BadRequest(_strings[AppStrings.AdminUserIsReadOnly].Value);
             }
 
             var result = await ValidationResultAsync(user, userId);
@@ -139,29 +143,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (profile == null)
             {
-                var message = String.Format(ValidationMessages.RequestFailedNoData, Entities.User);
-                return BadRequest(message);
+                return BadRequest(_strings[AppStrings.RequestFailedNoData, AppStrings.User].Value);
             }
 
             if (String.IsNullOrEmpty(userName) || String.IsNullOrEmpty(profile.UserName))
             {
-                return BadRequest(Strings.UserNotFound);
+                return BadRequest(_strings[AppStrings.ItemNotFound, AppStrings.User].Value);
             }
 
             if (String.IsNullOrWhiteSpace(profile.NewPassword) || String.IsNullOrWhiteSpace(profile.RepeatPassword))
             {
-                return BadRequest(Strings.MissingNewAndRepeatPasswords);
+                return BadRequest(_strings[AppStrings.MissingNewAndRepeatPasswords].Value);
             }
 
             if (profile.NewPassword != profile.RepeatPassword)
             {
-                return BadRequest(Strings.NewAndRepeatPasswordsDontMatch);
+                return BadRequest(_strings[AppStrings.NewAndRepeatPasswordsDontMatch].Value);
             }
 
             if (userName != profile.UserName)
             {
-                var message = String.Format(ValidationMessages.RequestFailedConflict, FieldNames.UserName);
-                return BadRequest(message);
+                return BadRequest(_strings[AppStrings.RequestFailedConflict, AppStrings.UserName].Value);
             }
 
             //// NOTE: DO NOT check ModelState here, because plain-text passwords are replaced by hash values.
@@ -169,12 +171,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var user = _repository.GetUser(userName);
             if (user == null)
             {
-                return BadRequest(Strings.UserNotFound);
+                return BadRequest(_strings[AppStrings.ItemNotFound, AppStrings.User].Value);
             }
 
             if (String.Compare(user.Password, profile.OldPassword, true) != 0)
             {
-                return BadRequest(Strings.IncorrectOldPassword);
+                return BadRequest(_strings[AppStrings.IncorrectOldPassword].Value);
             }
 
             await _repository.UpdateUserPasswordAsync(profile);
@@ -196,8 +198,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (login == null)
             {
-                var message = String.Format(ValidationMessages.RequestFailedNoData, Entities.UserAccount);
-                return BadRequest(message);
+                return BadRequest(_strings[AppStrings.RequestFailedNoData, AppStrings.UserAccount].Value);
             }
 
             if (!ModelState.IsValid)
@@ -208,17 +209,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var user = await _repository.GetUserAsync(login.UserName);
             if (user == null)
             {
-                return BadRequest(Strings.InvalidUserName);
+                return BadRequest(_strings[AppStrings.InvalidUserName].Value);
             }
 
             if (!user.IsEnabled)
             {
-                return BadRequest(Strings.UserIsDisabled);
+                return BadRequest(_strings[AppStrings.UserIsDisabled].Value);
             }
 
             if (!CheckPassword(user.Password, login.Password))
             {
-                return BadRequest(Strings.InvalidPassword);
+                return BadRequest(_strings[AppStrings.InvalidPassword].Value);
             }
 
             await _repository.UpdateUserLastLoginAsync(user.Id);
@@ -226,151 +227,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             Response.Headers.Add(AppConstants.ContextHeaderName, userTicket);
             return Ok();
         }
-
-        #endregion
-
-        #region Synchronous Methods (May be removed in the future)
-
-        // GET: api/users
-        [Route(UserApi.UsersSyncUrl)]
-        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
-        public IActionResult GetUsers()
-        {
-            var users = _repository.GetUsers();
-            return Json(users);
-        }
-
-        // GET: api/users/name/{userName}
-        [Route(UserApi.UserByNameSyncUrl)]
-        public IActionResult GetUserByName(string userName)
-        {
-            if (String.IsNullOrEmpty(userName))
-            {
-                return NotFound();
-            }
-
-            var user = _repository.GetUser(userName);
-            return JsonReadResult(user);
-        }
-
-        // GET: api/users/{userId:min(1)}
-        [Route(UserApi.UserSyncUrl)]
-        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
-        public IActionResult GetUser(int userId)
-        {
-            var user = _repository.GetUser(userId);
-            return JsonReadResult(user);
-        }
-
-        // POST: api/users
-        [HttpPost]
-        [Route(UserApi.UsersSyncUrl)]
-        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Create)]
-        public IActionResult PostNewUser([FromBody] UserViewModel user)
-        {
-            var result = ValidationResult(user);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            _repository.SaveUser(user);
-            return StatusCode(StatusCodes.Status201Created);
-        }
-
-        // PUT: api/users/{userId:min(1)}
-        [HttpPut]
-        [Route(UserApi.UserSyncUrl)]
-        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.Edit)]
-        public IActionResult PutModifiedUser(int userId, [FromBody] UserViewModel user)
-        {
-            if (userId == AppConstants.AdminUserId)
-            {
-                return BadRequest("Could not put modified user because the user is read-only.");
-            }
-
-            var result = ValidationResult(user, userId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            if (user.Password == AppConstants.DummyPassword)
-            {
-                user.Password = String.Empty;
-            }
-
-            _repository.SaveUser(user);
-            return Ok();
-        }
-
-        // PUT: api/users/{userId:int}/login
-        [HttpPut]
-        [Route(UserApi.UserLastLoginSyncUrl)]
-        public IActionResult PutUserLastLogin(int userId)
-        {
-            _repository.UpdateUserLastLogin(userId);
-            return Ok();
-        }
-
-        // PUT: api/users/{userName}/password
-        [HttpPut]
-        [Route(UserApi.UserPasswordSyncUrl)]
-        public IActionResult PutUserPassword(string userName, [FromBody] UserProfileViewModel profile)
-        {
-            if (profile == null)
-            {
-                var message = String.Format(ValidationMessages.RequestFailedNoData, Entities.User);
-                return BadRequest(message);
-            }
-
-            if (String.IsNullOrEmpty(userName) || String.IsNullOrEmpty(profile.UserName))
-            {
-                return BadRequest(Strings.UserNotFound);
-            }
-
-            if (String.IsNullOrWhiteSpace(profile.NewPassword) || String.IsNullOrWhiteSpace(profile.RepeatPassword))
-            {
-                return BadRequest(Strings.MissingNewAndRepeatPasswords);
-            }
-
-            if (profile.NewPassword != profile.RepeatPassword)
-            {
-                return BadRequest(Strings.NewAndRepeatPasswordsDontMatch);
-            }
-
-            if (userName != profile.UserName)
-            {
-                var message = String.Format(ValidationMessages.RequestFailedConflict, FieldNames.UserName);
-                return BadRequest(message);
-            }
-
-            //// NOTE: DO NOT check ModelState here, because plain-text passwords are replaced by hash values.
-
-            var user = _repository.GetUser(userName);
-            if (user == null)
-            {
-                return BadRequest(Strings.UserNotFound);
-            }
-
-            if (String.Compare(user.Password, profile.OldPassword, true) != 0)
-            {
-                return BadRequest(Strings.IncorrectOldPassword);
-            }
-
-            _repository.UpdateUserPassword(profile);
-            return Ok();
-        }
-
-        // GET: api/users/{userId:min(1)}/context
-        [Route(UserApi.UserContextSyncUrl)]
-        public IActionResult GetUserContext(int userId)
-        {
-            var userContext = _repository.GetUserContext(userId);
-            return JsonReadResult(userContext);
-        }
-
-        #endregion
 
         // GET: api/users/{userId:min(1)}/ticket
         [Route("users/{userId:min(1)}/ticket")]
@@ -423,8 +279,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (user == null)
             {
-                var message = String.Format(ValidationMessages.RequestFailedNoData, Entities.User);
-                return BadRequest(message);
+                return BadRequest(_strings[AppStrings.RequestFailedNoData, AppStrings.User].Value);
             }
 
             if (!ModelState.IsValid)
@@ -434,25 +289,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (userId != user.Id)
             {
-                var message = String.Format(ValidationMessages.RequestFailedConflict, Entities.User);
-                return BadRequest(message);
-            }
-
-            return Ok();
-        }
-
-        private IActionResult ValidationResult(UserViewModel user, int userId = 0)
-        {
-            var result = BasicValidationResult(user, userId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            if (_repository.IsDuplicateUser(user))
-            {
-                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.UserName);
-                return BadRequest(message);
+                return BadRequest(_strings[AppStrings.RequestFailedConflict, AppStrings.User].Value);
             }
 
             return Ok();
@@ -468,8 +305,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateUserAsync(user))
             {
-                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.UserName);
-                return BadRequest(message);
+                return BadRequest(_strings[AppStrings.DuplicateFieldValue, AppStrings.UserName].Value);
             }
 
             return Ok();
@@ -498,5 +334,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private ISecurityRepository _repository;
         private ICryptoService _crypto;
         private ITextEncoder<SecurityContext> _contextEncoder;
+        private IStringLocalizer<AppStrings> _strings;
     }
 }

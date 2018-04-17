@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
 using SPPC.Framework.Values;
@@ -13,18 +14,18 @@ using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
     public class RolesController : Controller
     {
-        public RolesController(ISecurityRepository repository)
+        public RolesController(ISecurityRepository repository, IStringLocalizer<AppStrings> strings)
         {
             _repository = repository;
+            _strings = strings;
         }
-
-        #region Asynchronous Methods
 
         // GET: api/roles
         [Route(RoleApi.RolesUrl)]
@@ -97,7 +98,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (roleId == AppConstants.AdminRoleId)
             {
-                return BadRequest(Strings.AdminRoleIsReadonly);
+                return BadRequest(_strings[AppStrings.AdminRoleIsReadonly].Value);
             }
 
             var result = BasicValidationResult(role, roleId);
@@ -118,20 +119,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (roleId == AppConstants.AdminRoleId)
             {
-                return BadRequest(Strings.AdminRoleIsReadonly);
+                return BadRequest(_strings[AppStrings.AdminRoleIsReadonly].Value);
             }
 
             var role = await _repository.GetRoleBriefAsync(roleId);
             if (role == null)
             {
-                string message = String.Format(LocalStrings.ItemNotFound, Entities.Role);
-                return BadRequest(message);
+                return BadRequest(_strings[AppStrings.ItemNotFound, AppStrings.Role].Value);
             }
 
             if (await _repository.IsAssignedRoleAsync(roleId))
             {
-                var message = String.Format(Strings.CannotDeleteAssignedRole, role.Name);
-                return BadRequest(message);
+                return BadRequest(_strings[AppStrings.CannotDeleteAssignedRole, role.Name].Value);
             }
 
             await _repository.DeleteRoleAsync(roleId);
@@ -188,162 +187,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        #endregion
-
-        #region Synchronous Methods (May be removed in the future)
-
-        // GET: api/roles/sync
-        [Route(RoleApi.RolesSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
-        public IActionResult GetRoles()
-        {
-            var roles = _repository.GetRoles();
-            return Json(roles);
-        }
-
-        // GET: api/roles/new/sync
-        [Route(RoleApi.NewRoleSyncUrl)]
-        public IActionResult GetNewRole()
-        {
-            var newRole = _repository.GetNewRole();
-            return Json(newRole);
-        }
-
-        // GET: api/roles/{roleId:min(1)}/sync
-        [Route(RoleApi.RoleSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
-        public IActionResult GetRole(int roleId)
-        {
-            var role = _repository.GetRole(roleId);
-            return JsonReadResult(role);
-        }
-
-        // GET: api/roles/{roleId:min(1)}/details/sync
-        [Route(RoleApi.RoleDetailsSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
-        public IActionResult GetRoleDetails(int roleId)
-        {
-            var role = _repository.GetRoleDetails(roleId);
-            return JsonReadResult(role);
-        }
-
-        // POST: api/roles/sync
-        [HttpPost]
-        [Route(RoleApi.RolesSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Create)]
-        public IActionResult PostNewRole([FromBody] RoleFullViewModel role)
-        {
-            var result = BasicValidationResult(role);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            _repository.SaveRole(role);
-            return StatusCode(StatusCodes.Status201Created);
-        }
-
-        // PUT: api/roles/{roleId:min(1)}/sync
-        [HttpPut]
-        [Route(RoleApi.RoleSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Edit)]
-        public IActionResult PutModifiedRole(int roleId, [FromBody] RoleFullViewModel role)
-        {
-            if (roleId == AppConstants.AdminRoleId)
-            {
-                return BadRequest(Strings.AdminRoleIsReadonly);
-            }
-
-            var result = BasicValidationResult(role, roleId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            _repository.SaveRole(role);
-            return Ok();
-        }
-
-        // DELETE: api/roles/{roleId:min(1)}/sync
-        [HttpDelete]
-        [Route(RoleApi.RoleSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Delete)]
-        public IActionResult DeleteExistingRole(int roleId)
-        {
-            if (roleId == AppConstants.AdminRoleId)
-            {
-                return BadRequest(Strings.AdminRoleIsReadonly);
-            }
-
-            var role = _repository.GetRoleBrief(roleId);
-            if (role == null)
-            {
-                string message = String.Format(LocalStrings.ItemNotFound, Entities.Role);
-                return BadRequest(message);
-            }
-
-            if (_repository.IsAssignedRole(roleId))
-            {
-                var message = String.Format(Strings.CannotDeleteAssignedRole, role.Name);
-                return BadRequest(message);
-            }
-
-            _repository.DeleteRole(roleId);
-            return StatusCode(StatusCodes.Status204NoContent);
-        }
-
-        // GET: api/roles/{roleId:min(1)}/branches/sync
-        [Route(RoleApi.RoleBranchesSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
-        public IActionResult GetRoleBranches(int roleId)
-        {
-            var branches = _repository.GetRoleBranches(roleId);
-            return JsonReadResult(branches);
-        }
-
-        // PUT: api/roles/{roleId:min(1)}/branches/sync
-        [HttpPut]
-        [Route(RoleApi.RoleBranchesSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.AssignBranches)]
-        public IActionResult PutModifiedRoleBranches(int roleId, [FromBody] RoleBranchesViewModel roleBranches)
-        {
-            var result = BasicValidationResult(roleBranches, roleId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            _repository.SaveRoleBranches(roleBranches);
-            return Ok();
-        }
-
-        // GET: api/roles/{roleId:min(1)}/users/sync
-        [Route(RoleApi.RoleUsersSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
-        public IActionResult GetRoleUsers(int roleId)
-        {
-            var users = _repository.GetRoleUsers(roleId);
-            return JsonReadResult(users);
-        }
-
-        // PUT: api/roles/{roleId:min(1)}/users/sync
-        [HttpPut]
-        [Route(RoleApi.RoleUsersSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.AssignUsers)]
-        public IActionResult PutModifiedRoleUsers(int roleId, [FromBody] RoleUsersViewModel roleUsers)
-        {
-            var result = BasicValidationResult(roleUsers, roleId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            _repository.SaveRoleUsers(roleUsers);
-            return Ok();
-        }
-
-        #endregion
-
         private GridOptions GetGridOptions()
         {
             var options = Request.Headers[AppConstants.GridOptionsHeaderName];
@@ -375,14 +218,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (role == null || role.Role == null)
             {
-                var message = String.Format(ValidationMessages.RequestFailedNoData, Entities.Role);
-                return BadRequest(message);
+                return BadRequest(_strings[AppStrings.RequestFailedNoData, AppStrings.Role].Value);
             }
 
             if (roleId != role.Role.Id)
             {
-                var message = String.Format(ValidationMessages.RequestFailedConflict, Entities.Role);
-                return BadRequest(message);
+                return BadRequest(_strings[AppStrings.RequestFailedConflict, AppStrings.Role].Value);
             }
 
             if (!ModelState.IsValid)
@@ -397,15 +238,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (model == null)
             {
-                var message = String.Format(ValidationMessages.RequestFailedNoData, Entities.Role);
-                return BadRequest(message);
+                return BadRequest(_strings[AppStrings.RequestFailedNoData, AppStrings.Role].Value);
             }
 
             int id = (int)Reflector.GetProperty(model, "id");
             if (roleId != id)
             {
-                var message = String.Format(ValidationMessages.RequestFailedConflict, Entities.Role);
-                return BadRequest(message);
+                return BadRequest(_strings[AppStrings.RequestFailedConflict, AppStrings.Role].Value);
             }
 
             if (!ModelState.IsValid)
@@ -417,5 +256,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private ISecurityRepository _repository;
+        private IStringLocalizer<AppStrings> _strings;
     }
 }

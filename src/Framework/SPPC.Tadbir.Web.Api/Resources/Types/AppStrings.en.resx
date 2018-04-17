@@ -123,8 +123,20 @@
   <data name="AccountCode" xml:space="preserve">
     <value>Account code</value>
   </data>
+  <data name="AdminRoleIsReadonly" xml:space="preserve">
+    <value>System Administrator role cannot be modified or deleted.</value>
+  </data>
+  <data name="AdminUserIsReadOnly" xml:space="preserve">
+    <value>Administrator user cannot be modified or deleted.</value>
+  </data>
+  <data name="CannotDeleteAssignedRole" xml:space="preserve">
+    <value>The role {0} is currently assigned to one or more users and cannot be deleted.</value>
+  </data>
   <data name="CannotDeleteUsedAccount" xml:space="preserve">
     <value>The account {0} is used in one or more vouchers and cannot be deleted.</value>
+  </data>
+  <data name="DebitAndCreditNotAllowed" xml:space="preserve">
+    <value>Entering values for both Debit and Credit is not allowed.</value>
   </data>
   <data name="DuplicateFieldValue" xml:space="preserve">
     <value>{0} is duplicate.</value>
@@ -132,13 +144,52 @@
   <data name="GroupAction" xml:space="preserve">
     <value>group action</value>
   </data>
+  <data name="IncorrectOldPassword" xml:space="preserve">
+    <value>Value entered for old password is incorrect.</value>
+  </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>Password is incorrect.</value>
+  </data>
+  <data name="InvalidUserName" xml:space="preserve">
+    <value>No user with specified user name could be found.</value>
+  </data>
   <data name="ItemByIdNotFound" xml:space="preserve">
     <value>No {0} having an identifier of '{1}' could be found.</value>
+  </data>
+  <data name="ItemNotFound" xml:space="preserve">
+    <value>{0} could not be found.</value>
+  </data>
+  <data name="MissingNewAndRepeatPasswords" xml:space="preserve">
+    <value>New password and/or repeat password are missing.</value>
+  </data>
+  <data name="NewAndRepeatPasswordsDontMatch" xml:space="preserve">
+    <value>New password and repeat password do not match.</value>
+  </data>
+  <data name="OutOfFiscalPeriodDate" xml:space="preserve">
+    <value>Voucher date is out of range for current fiscal period.</value>
   </data>
   <data name="RequestFailedConflict" xml:space="preserve">
     <value>Request failed because conflicts were detected in {0} data.</value>
   </data>
   <data name="RequestFailedNoData" xml:space="preserve">
     <value>Request failed because {0} data was not provided.</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="UserAccount" xml:space="preserve">
+    <value>User account</value>
+  </data>
+  <data name="UserIsDisabled" xml:space="preserve">
+    <value>Specified user is disabled.</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>User name</value>
+  </data>
+  <data name="VoucherLine" xml:space="preserve">
+    <value>Voucher line</value>
   </data>
 </root>

@@ -18,8 +18,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Finance Subsystem API
 
-        #region Asynchronous Methods
-
         // GET: api/lookup/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
         [Route(LookupApi.FiscalPeriodBranchAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
@@ -91,66 +89,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var branchLookup = await _repository.GetUserAccessibleBranchesAsync(companyId, userId);
             return Json(branchLookup);
         }
-
-        #endregion
-
-        #region Synchronous Methods (May be removed in the future)
-
-        // GET: api/lookup/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync
-        [Route(LookupApi.FiscalPeriodBranchAccountsSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public IActionResult GetAccountsLookup(int fpId, int branchId)
-        {
-            var accountLookup = _repository.GetAccounts(fpId, branchId);
-            return Json(accountLookup);
-        }
-
-        // GET: api/lookup/faccounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync
-        [Route(LookupApi.FiscalPeriodBranchDetailAccountsSyncUrl)]
-        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
-        public IActionResult GetDetailAccountsLookup(int fpId, int branchId)
-        {
-            var lookup = _repository.GetDetailAccounts(fpId, branchId);
-            return Json(lookup);
-        }
-
-        // GET: api/lookup/costcenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync
-        [Route(LookupApi.FiscalPeriodBranchCostCentersSyncUrl)]
-        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
-        public IActionResult GetCostCentersLookup(int fpId, int branchId)
-        {
-            var lookup = _repository.GetCostCenters(fpId, branchId);
-            return Json(lookup);
-        }
-
-        // GET: api/lookup/projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync
-        [Route(LookupApi.FiscalPeriodBranchProjectsSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
-        public IActionResult GetProjectsLookup(int fpId, int branchId)
-        {
-            var lookup = _repository.GetProjects(fpId, branchId);
-            return Json(lookup);
-        }
-
-        // GET: api/lookup/currencies/sync
-        [Route(LookupApi.CurrenciesSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]
-        public IActionResult GetCurrenciesLookup()
-        {
-            var currencyLookup = _repository.GetCurrencies();
-            return Json(currencyLookup);
-        }
-
-        // GET: api/lookup/fps/company/{companyId:min(1)}/sync
-        [Route(LookupApi.CompanyFiscalPeriodsSyncUrl)]
-        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
-        public IActionResult GetFiscalPeriodsLookup(int companyId)
-        {
-            var fiscalPeriodLookup = _repository.GetFiscalPeriods(companyId);
-            return Json(fiscalPeriodLookup);
-        }
-
-        #endregion
 
         #endregion
 
