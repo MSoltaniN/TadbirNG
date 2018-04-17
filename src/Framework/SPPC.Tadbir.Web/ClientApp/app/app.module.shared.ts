@@ -26,6 +26,7 @@ import { TransactionLineFormComponent } from './components/transactionLine/trans
 import { UserComponent } from './components/user/user.component';
 import { UserFormComponent } from './components/user/user-form.component';
 import { RoleComponent } from './components/role/role.component';
+import { RoleFormComponent } from './components/role/role-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 
@@ -97,6 +98,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         UserComponent,
         UserFormComponent,
         RoleComponent,
+        RoleFormComponent,
         SppcDatePipe
 
     ],
