@@ -189,6 +189,9 @@
   <data name="UserName" xml:space="preserve">
     <value>نام کاربری</value>
   </data>
+  <data name="Voucher" xml:space="preserve">
+    <value>سند</value>
+  </data>
   <data name="VoucherLine" xml:space="preserve">
     <value>آرتیکل سند</value>
   </data>

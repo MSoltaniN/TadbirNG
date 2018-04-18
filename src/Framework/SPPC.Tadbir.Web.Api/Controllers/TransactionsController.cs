@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
-using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
@@ -17,6 +16,7 @@ using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
@@ -84,7 +84,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
         public async Task<IActionResult> PostNewTransactionAsync([FromBody] TransactionViewModel transaction)
         {
-            var result = BasicValidationResult(transaction, Entities.Transaction);
+            var result = BasicValidationResult(transaction, AppStrings.Voucher);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -92,7 +92,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (!await _repository.IsValidTransactionAsync(transaction))
             {
-                return BadRequest(_strings[AppStrings.OutOfFiscalPeriodDate].Value);
+                return BadRequest(_strings.Format(AppStrings.OutOfFiscalPeriodDate));
             }
 
             SetDocument(transaction);
@@ -107,7 +107,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedTransactionAsync(
             int transactionId, [FromBody] TransactionViewModel transaction)
         {
-            var result = BasicValidationResult(transaction, Entities.Transaction, transactionId);
+            var result = BasicValidationResult(transaction, AppStrings.Voucher, transactionId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -115,7 +115,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (!await _repository.IsValidTransactionAsync(transaction))
             {
-                return BadRequest(_strings[AppStrings.OutOfFiscalPeriodDate].Value);
+                return BadRequest(_strings.Format(AppStrings.OutOfFiscalPeriodDate));
             }
 
             SetDocument(transaction);
@@ -196,7 +196,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PostNewArticleAsync(
             int transactionId, [FromBody] TransactionLineViewModel article)
         {
-            var result = BasicValidationResult(article, Entities.Article);
+            var result = BasicValidationResult(article, AppStrings.VoucherLine);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -204,13 +204,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (article.TransactionId != transactionId)
             {
-                var message = _strings[AppStrings.RequestFailedConflict, AppStrings.VoucherLine];
-                return BadRequest(message.Value);
+                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.VoucherLine));
             }
 
             if ((article.Debit > 0m) && (article.Credit > 0m))
             {
-                return BadRequest(_strings[AppStrings.DebitAndCreditNotAllowed].Value);
+                return BadRequest(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
             }
 
             var outputLine = await _repository.SaveArticleAsync(article);
@@ -224,7 +223,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedArticleAsync(
             int articleId, [FromBody] TransactionLineViewModel article)
         {
-            var result = BasicValidationResult(article, Entities.Article, articleId);
+            var result = BasicValidationResult(article, AppStrings.VoucherLine, articleId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -232,7 +231,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if ((article.Debit > 0m) && (article.Credit > 0m))
             {
-                return BadRequest(_strings[AppStrings.DebitAndCreditNotAllowed].Value);
+                return BadRequest(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
             }
 
             var outputLine = await _repository.SaveArticleAsync(article);
@@ -251,7 +250,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var article = _repository.GetArticle(articleId);
             if (article == null)
             {
-                return BadRequest(_strings[AppStrings.ItemNotFound, AppStrings.VoucherLine].Value);
+                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.VoucherLine));
             }
 
             await _repository.DeleteArticleAsync(articleId);
@@ -273,7 +272,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (model == null)
             {
-                return BadRequest(_strings[AppStrings.RequestFailedNoData, modelType].Value);
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, modelType));
             }
 
             if (!ModelState.IsValid)
@@ -284,7 +283,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int id = (int)Reflector.GetProperty(model, "Id");
             if (modelId != id)
             {
-                return BadRequest(_strings[AppStrings.RequestFailedConflict, modelType].Value);
+                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, modelType));
             }
 
             return Ok();

@@ -189,6 +189,9 @@
   <data name="UserName" xml:space="preserve">
     <value>User name</value>
   </data>
+  <data name="Voucher" xml:space="preserve">
+    <value>Voucher</value>
+  </data>
   <data name="VoucherLine" xml:space="preserve">
     <value>Voucher line</value>
   </data>

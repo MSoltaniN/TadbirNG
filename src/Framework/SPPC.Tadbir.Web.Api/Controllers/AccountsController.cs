@@ -15,6 +15,7 @@ using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
@@ -149,8 +150,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                var message = _strings[AppStrings.RequestFailedNoData, _strings[AppStrings.GroupAction]];
-                return BadRequest(message.Value);
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             var result = await ValidateGroupDeleteAsync(actionDetail.Items);
@@ -198,8 +198,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (account == null)
             {
-                var message = _strings[AppStrings.RequestFailedNoData, _strings[AppStrings.Account]];
-                return BadRequest(message.Value);
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Account));
             }
 
             if (!ModelState.IsValid)
@@ -209,8 +208,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (accountId != account.Id)
             {
-                var message = _strings[AppStrings.RequestFailedConflict, _strings[AppStrings.Account]];
-                return BadRequest(message.Value);
+                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Account));
             }
 
             return Ok();
@@ -226,8 +224,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateAccountAsync(account))
             {
-                var message = _strings[AppStrings.DuplicateFieldValue, _strings[AppStrings.AccountCode]];
-                return BadRequest(message);
+                return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.AccountCode));
             }
 
             return Ok();
@@ -251,13 +248,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var accountItem = await _repository.GetAccountAsync(item);
             if (accountItem == null)
             {
-                message = _strings[AppStrings.ItemByIdNotFound, _strings[AppStrings.Account], item].Value;
+                message = String.Format(
+                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Account), item);
             }
 
             if (await _repository.IsUsedAccountAsync(item))
             {
                 var accountInfo = String.Format("'{0} ({1})'", accountItem.Item.Name, accountItem.Item.Code);
-                message = _strings[AppStrings.CannotDeleteUsedAccount, accountInfo].Value;
+                message = String.Format(_strings.Format(AppStrings.CannotDeleteUsedAccount), accountInfo);
             }
 
             return message;

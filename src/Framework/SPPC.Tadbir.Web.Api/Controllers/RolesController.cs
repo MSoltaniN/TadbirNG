@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
-using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
@@ -98,7 +98,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (roleId == AppConstants.AdminRoleId)
             {
-                return BadRequest(_strings[AppStrings.AdminRoleIsReadonly].Value);
+                return BadRequest(_strings.Format(AppStrings.AdminRoleIsReadonly));
             }
 
             var result = BasicValidationResult(role, roleId);
@@ -119,18 +119,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (roleId == AppConstants.AdminRoleId)
             {
-                return BadRequest(_strings[AppStrings.AdminRoleIsReadonly].Value);
+                return BadRequest(_strings.Format(AppStrings.AdminRoleIsReadonly));
             }
 
             var role = await _repository.GetRoleBriefAsync(roleId);
             if (role == null)
             {
-                return BadRequest(_strings[AppStrings.ItemNotFound, AppStrings.Role].Value);
+                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.Role));
             }
 
             if (await _repository.IsAssignedRoleAsync(roleId))
             {
-                return BadRequest(_strings[AppStrings.CannotDeleteAssignedRole, role.Name].Value);
+                return BadRequest(String.Format(_strings.Format(AppStrings.CannotDeleteAssignedRole), role.Name));
             }
 
             await _repository.DeleteRoleAsync(roleId);
@@ -218,12 +218,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (role == null || role.Role == null)
             {
-                return BadRequest(_strings[AppStrings.RequestFailedNoData, AppStrings.Role].Value);
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Role));
             }
 
             if (roleId != role.Role.Id)
             {
-                return BadRequest(_strings[AppStrings.RequestFailedConflict, AppStrings.Role].Value);
+                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Role));
             }
 
             if (!ModelState.IsValid)
@@ -238,13 +238,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (model == null)
             {
-                return BadRequest(_strings[AppStrings.RequestFailedNoData, AppStrings.Role].Value);
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Role));
             }
 
             int id = (int)Reflector.GetProperty(model, "id");
             if (roleId != id)
             {
-                return BadRequest(_strings[AppStrings.RequestFailedConflict, AppStrings.Role].Value);
+                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Role));
             }
 
             if (!ModelState.IsValid)
