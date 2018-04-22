@@ -43,13 +43,13 @@ interface Item {
 
 export class TransactionFormComponent extends DefaultComponent {
 
-    //create a form controls
-    private editForm = new FormGroup({
-        id: new FormControl(),
-        description: new FormControl("", Validators.maxLength(512)),
-        no: new FormControl("", [Validators.required, Validators.maxLength(64)]),
-        date: new FormControl("", Validators.required)
-    });
+    ////create a form controls
+    //private editForm = new FormGroup({
+    //    id: new FormControl(),
+    //    description: new FormControl("", Validators.maxLength(512)),
+    //    no: new FormControl("", [Validators.required, Validators.maxLength(64)]),
+    //    date: new FormControl("", Validators.required)
+    //});
 
     //create properties
     public transaction_Id: number;

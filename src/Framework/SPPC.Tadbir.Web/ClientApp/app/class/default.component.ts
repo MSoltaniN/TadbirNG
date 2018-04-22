@@ -13,6 +13,7 @@ import { Renderer2, Injectable, Inject, Injector, forwardRef, Optional } from "@
 import { MetaDataService } from '../service/metadata/metadata.service';
 import { Http } from '@angular/http';
 import { AppModule } from '../app.module.server';
+import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 
 @Injectable()
 export class DefaultComponent extends BaseComponent {
@@ -34,17 +35,115 @@ export class DefaultComponent extends BaseComponent {
     /** array of property.this variable is a container for metadata */
     public properties: { [id: string]: Array<Property>; } = {}
 
+    private form: FormGroup;
+
+    public get editForm(): FormGroup {
+
+        if (this.form == undefined) {
+
+            this.form = new FormGroup({ id: new FormControl() });
+            
+
+            if (this.properties[this.metaDataName] == undefined) {
+
+                this.metadataService.getMetaData(this.metaDataName).finally(() => {
+                    this.fillFormValidators();
+
+                    return this.form;
+
+                }).subscribe(res1 => {
+
+                    this.properties[this.metaDataName] = res1.metadata.properties;
+
+                    localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))
+
+                    return
+                });
+
+            }
+
+        }
+        else {
+            this.fillFormValidators();        
+        }       
+            
+        return this.form;
+
+    }
+
+  
+
     
 
     constructor(public toastrService: ToastrService, public translate: TranslateService
         , public renderer: Renderer2, private metadataService: MetaDataService,
-        @Optional() @Inject('empty') private entityType: string, @Optional() @Inject('empty') private metaDataName: string) {
+        @Optional() @Inject('empty') private entityType: string, @Optional() @Inject('empty') private metaDataName: string,
+        @Optional() @Inject(false) private createForm: boolean = false) {
 
 
         super(toastrService);
         
+        this.setLanguageSetting();
+
+        this.localizeMsg();
+
+        //if (createForm)
+            //this.initializeFrom();
+    }
+
+
+    private fillFormValidators() {
+
+        var p: Property | undefined = undefined;
+        
+        for (let entry of this.properties[this.metaDataName]) {
+
+            var name: string = entry.name.toLowerCase().substring(0, 1) + entry.name.substring(1);
+
+            var validators: ValidatorFn[] = [];
+
+            if (entry.length > 0) validators.push(Validators.maxLength(entry.length));
+
+
+            if (!entry.isNullable) validators.push(Validators.required);
+            
+            if (!this.form.contains(name)) {                 
+                this.form.addControl(name, new FormControl("",validators));
+            }
+        }
+
+    }
+
+    private initializeFrom() {
+
+        if (this.properties[this.metaDataName] == undefined) {
+
+            this.metadataService.getMetaData(this.metaDataName).finally(() => {
+                this.fillFormValidators();
+
+            }).subscribe(res1 => {
+
+                this.properties[this.metaDataName] = res1.metadata.properties;
+
+                localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))
+
+                return
+            });
+
+        }
+        else {
+            this.fillFormValidators();
+        }
+        
+    }
+
+
+    /**
+     * تنظیمات مربوط به زبان سیستم را انجام میدهد
+     */
+    private setLanguageSetting() {
         //use lang
-        translate.addLangs(["en", "fa"]);
+        this.translate.addLangs(["en", "fa"]);
 
         var lang = localStorage.getItem('lang');
         if (lang) {
@@ -54,9 +153,9 @@ export class DefaultComponent extends BaseComponent {
             this.currentlang = "fa";
         }
 
-        translate.setDefaultLang(this.currentlang);
+        this.translate.setDefaultLang(this.currentlang);
 
-        translate.use(this.currentlang);
+        this.translate.use(this.currentlang);
         //use lang
 
 
@@ -79,17 +178,16 @@ export class DefaultComponent extends BaseComponent {
         }
         //rtl or ltr body
 
-        this.translateService = translate;
-
-        this.localizeMsg();
+        this.translateService = this.translate;
     }
+    
 
 
     /**
     * این تابع متادیتا مربوط به یک انتیتی را در قالب انتیتی به نام Property برمیگرداند.
     * @param name is a name of column like 'id' , 'name' , 'fiscalperiod' , ... .    
     */    
-    public getMeta(name: string):Property | any {      
+    public getMeta(name: string): Property | undefined  {      
         
         if (localStorage.getItem(this.metaDataName) == undefined || localStorage.getItem(this.metaDataName) == null) {
             this.metadataService.getMetaData(this.metaDataName).finally(() =>
@@ -118,9 +216,11 @@ export class DefaultComponent extends BaseComponent {
             if (this.properties[this.metaDataName] == undefined || this.properties[this.metaDataName].length == 0) return undefined;
 
             var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());
-
+            
             return result;
-        }        
+        }   
+
+
     }
     
     /** return the current language */

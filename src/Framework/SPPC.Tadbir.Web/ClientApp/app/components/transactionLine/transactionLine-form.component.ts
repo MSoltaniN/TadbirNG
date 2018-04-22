@@ -46,19 +46,19 @@ export class TransactionLineFormComponent extends DefaultComponent {
     })
 
     //create a form controls
-    private editForm = new FormGroup({
-        id: new FormControl(),
-        debit: new FormControl("", Validators.required),
-        credit: new FormControl("", Validators.required),
-        description: new FormControl("", Validators.maxLength(512)),
-        transactionId: new FormControl(),
-        currencyId: new FormControl("", Validators.required),
+    //private editForm = new FormGroup({
+    //    id: new FormControl(),
+    //    debit: new FormControl("", Validators.required),
+    //    credit: new FormControl("", Validators.required),
+    //    description: new FormControl("", Validators.maxLength(512)),
+    //    transactionId: new FormControl(),
+    //    currencyId: new FormControl("", Validators.required),
 
-        accountId: new FormControl("", Validators.required),
-        detailId: new FormControl(),
-        costCenterId: new FormControl(),
-        projectId: new FormControl()
-    });
+    //    accountId: new FormControl("", Validators.required),
+    //    detailId: new FormControl(),
+    //    costCenterId: new FormControl(),
+    //    projectId: new FormControl()
+    //});
 
     //create properties
     public accountsRows: Array<Item>;
@@ -125,7 +125,7 @@ export class TransactionLineFormComponent extends DefaultComponent {
         public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
         public renderer: Renderer2, public metadata: MetaDataService) {
 
-        super(toastrService, translate, renderer, metadata, Entities.Transaction, Metadatas.Transaction);
+        super(toastrService, translate, renderer, metadata, Entities.TransactionLine, Metadatas.TransactionArticles);
 
         this.GetAccounts();
         this.GetDetailAccounts();
