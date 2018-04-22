@@ -84,6 +84,7 @@ CREATE TABLE [Metadata].[Property] (
     [StorageType]      VARCHAR(32)      NOT NULL,
     [ScriptType]       VARCHAR(32)      NOT NULL,
     [Length]           INT              CONSTRAINT [DF_Metadata_Property_Length] DEFAULT (0) NOT NULL,
+    [MinLength]        INT              CONSTRAINT [DF_Metadata_Property_MinLength] DEFAULT (0) NOT NULL,
     [IsFixedLength]    BIT              CONSTRAINT [DF_Metadata_Property_IsFixedLength] DEFAULT (0) NOT NULL,
     [IsNullable]       BIT              NOT NULL,
     [NameResourceId]   VARCHAR(128)     NOT NULL,
@@ -1041,8 +1042,8 @@ INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, Stora
     VALUES (20, 4, 'Id', 'System.Int32', 'int', 'number', 0, 0, 0, 'Id_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
     VALUES (21, 4, 'UserName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'UserName_Field')
-INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (22, 4, 'PasswordHash', 'System.String', 'varchar(256)', 'string', 256, 0, 0, 'Password_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], MinLength, IsFixedLength, IsNullable, NameResourceId)
+    VALUES (22, 4, 'Password', 'System.String', 'nvarchar(32)', 'string', 32, 4, 0, 0, 'Password_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
     VALUES (23, 4, 'LastLoginDate', 'System.DateTime', 'datetime', 'Date', 0, 0, 1, 'LastLoginDate_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)

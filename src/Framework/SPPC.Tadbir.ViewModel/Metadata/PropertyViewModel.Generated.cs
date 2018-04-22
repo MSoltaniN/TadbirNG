@@ -74,6 +74,11 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         public int Length { get; set; }
 
         /// <summary>
+        /// حداقل تعداد کاراکتر در ویژگی متنی - به طور پیش فرض مقدار صفر دارد و برای ویژگی های غیرمتنی کاربردی ندارد
+        /// </summary>
+        public int MinLength { get; set; }
+
+        /// <summary>
         /// مشخص می کند که تعداد کاراکترها در یک ویژگی متنی ثابت است یا نه - به طور پیش فرض مقدار نادرست دارد و برای ویژگی های غیرمتنی کاربردی ندارد
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
