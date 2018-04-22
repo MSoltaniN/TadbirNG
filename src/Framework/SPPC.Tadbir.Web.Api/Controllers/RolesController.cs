@@ -241,7 +241,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Role));
             }
 
-            int id = (int)Reflector.GetProperty(model, "id");
+            int id = (int)Reflector.GetProperty(model, "Id");
             if (roleId != id)
             {
                 return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Role));
