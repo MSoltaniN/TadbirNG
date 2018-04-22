@@ -34,23 +34,24 @@ export class UserFormComponent extends DefaultComponent {
 
     public checked: boolean = false;
     //create a form controls
-    private editForm = new FormGroup({
+    private editForm1 = new FormGroup({
         id: new FormControl(),
         personFirstName: new FormControl("", [Validators.required, Validators.maxLength(64)]),
         personLastName: new FormControl("", [Validators.required, Validators.maxLength(64)]),
         userName: new FormControl("", [Validators.required, Validators.maxLength(64)]),
-        password: new FormControl("", [Validators.required, Validators.minLength(4), Validators.maxLength(32)]),
+        passwordHash: new FormControl("", [Validators.required, Validators.maxLength(32)]),
         isEnabled: new FormControl(),
     });
 
     //create properties
     active: boolean = false;
     @Input() public isNew: boolean = false;
-    @Input() public errorMessage: string;
+    @Input() public errorMessage: string = "";
 
 
     @Input() public set model(user: User) {
 
+        //this.editForm.reset(user);
         this.editForm.reset(user);
         this.active = user !== undefined || this.isNew;
 

@@ -3,6 +3,7 @@ import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { AccountService, AccountInfo, TransactionLineService, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
 
 import { Account, TransactionLine } from '../../model/index';
+import { Property } from "../../class/metadata/property"
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
 
@@ -42,14 +43,16 @@ interface Item {
 export class AccountFormComponent extends DefaultComponent {
 
     //create a form controls
-    private editForm = new FormGroup({
-        id: new FormControl("", Validators.required),
+    private editForm1 = new FormGroup({
+        id: new FormControl("", Validators.required)  ,
         code: new FormControl("", Validators.required),
         name: new FormControl("", Validators.required),
         description: new FormControl(),
         level: new FormControl(0),
         fullCode: new FormControl("0")
     });
+
+    
 
     //create properties
     active: boolean = false;
@@ -65,7 +68,7 @@ export class AccountFormComponent extends DefaultComponent {
             this.selectedValue = account.fiscalPeriodId.toString();
             if (this.fiscalPeriodRows == undefined) this.getFiscalPeriod();
         }
-
+        
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -99,10 +102,11 @@ export class AccountFormComponent extends DefaultComponent {
     constructor(private accountService: AccountService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
         public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
 
-        super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
+        super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account,true);
 
         this.getFiscalPeriod();
 
+        
     }
 
     /* load fiscal periods */
