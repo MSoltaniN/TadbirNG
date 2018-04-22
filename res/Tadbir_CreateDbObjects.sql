@@ -84,6 +84,7 @@ CREATE TABLE [Metadata].[Property] (
     [StorageType]      VARCHAR(32)      NOT NULL,
     [ScriptType]       VARCHAR(32)      NOT NULL,
     [Length]           INT              CONSTRAINT [DF_Metadata_Property_Length] DEFAULT (0) NOT NULL,
+    [MinLength]        INT              CONSTRAINT [DF_Metadata_Property_MinLength] DEFAULT (0) NOT NULL,
     [IsFixedLength]    BIT              CONSTRAINT [DF_Metadata_Property_IsFixedLength] DEFAULT (0) NOT NULL,
     [IsNullable]       BIT              NOT NULL,
     [NameResourceId]   VARCHAR(128)     NOT NULL,
@@ -1028,23 +1029,33 @@ INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, Stora
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
     VALUES (14, 3, 'Credit', 'System.Decimal', 'money', 'number', 0, 0, 0, 'Credit_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (15, 4, 'Id', 'System.Int32', 'int', 'number', 0, 0, 0, 'Id_Field')
+    VALUES (15, 3, 'CurrencyId', 'System.Int32', 'int', 'number', 0, 0, 0, 'CurrencyId_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (16, 4, 'UserName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'UserName_Field')
+    VALUES (16, 3, 'AccountId', 'System.Int32', 'int', 'number', 0, 0, 0, 'AccountId_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (17, 4, 'PasswordHash', 'System.String', 'varchar(256)', 'string', 256, 0, 0, 'Password_Field')
+    VALUES (17, 3, 'DetailId', 'System.Int32', 'int', 'number', 0, 0, 1, 'DetailId_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (18, 4, 'LastLoginDate', 'System.DateTime', 'datetime', 'Date', 0, 0, 1, 'LastLoginDate_Field')
+    VALUES (18, 3, 'CostCenterId', 'System.Int32', 'int', 'number', 0, 0, 1, 'CostCenterId_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (19, 4, 'IsEnabled', 'System.Boolean', 'bit', 'boolean', 0, 0, 0, 'Status_Field')
+    VALUES (19, 3, 'ProjectId', 'System.Int32', 'int', 'number', 0, 0, 1, 'ProjectId_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (20, 4, 'PersonFirstName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'FirstName_Field')
+    VALUES (20, 4, 'Id', 'System.Int32', 'int', 'number', 0, 0, 0, 'Id_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (21, 4, 'PersonLastName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'LastName_Field')
+    VALUES (21, 4, 'UserName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'UserName_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], MinLength, IsFixedLength, IsNullable, NameResourceId)
+    VALUES (22, 4, 'Password', 'System.String', 'nvarchar(32)', 'string', 32, 4, 0, 0, 'Password_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (22, 5, 'Name', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'Name_Field')
+    VALUES (23, 4, 'LastLoginDate', 'System.DateTime', 'datetime', 'Date', 0, 0, 1, 'LastLoginDate_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (23, 5, 'Description', 'System.String', 'nvarchar(512)', 'string', 512, 0, 1, 'Description_Field')
+    VALUES (24, 4, 'IsEnabled', 'System.Boolean', 'bit', 'boolean', 0, 0, 0, 'Status_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (25, 4, 'PersonFirstName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'FirstName_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (26, 4, 'PersonLastName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'LastName_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (27, 5, 'Name', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'Name_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (28, 5, 'Description', 'System.String', 'nvarchar(512)', 'string', 512, 0, 1, 'Description_Field')
 SET IDENTITY_INSERT [Metadata].[Property] OFF
 
 SET IDENTITY_INSERT [Metadata].[LocalText] ON

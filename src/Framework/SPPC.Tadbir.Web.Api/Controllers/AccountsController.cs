@@ -6,28 +6,31 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
-using SPPC.Framework.Values;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
     public class AccountsController : Controller
     {
-        public AccountsController(IAccountRepository repository)
+        public AccountsController(
+            IAccountRepository repository,
+            IStringLocalizer<AppStrings> strings = null)
         {
             _repository = repository;
+            _strings = strings;
         }
-
-        #region Asynchronous Methods
 
         // GET: api/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
         [Route(AccountApi.FiscalPeriodBranchAccountsUrl)]
@@ -147,8 +150,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (actionDetail == null)
             {
-                var message = String.Format(ValidationMessages.RequestFailedNoData, Entities.GroupAction);
-                return BadRequest(message);
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
             }
 
             var result = await ValidateGroupDeleteAsync(actionDetail.Items);
@@ -164,107 +166,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             return StatusCode(StatusCodes.Status204NoContent);
         }
-
-        #endregion
-
-        #region Synchronous Methods (May be removed in the future)
-
-        // GET: api/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync
-        [Route(AccountApi.FiscalPeriodBranchAccountsSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public IActionResult GetAccounts(int fpId, int branchId)
-        {
-            var gridOptions = GetGridOptions();
-            int itemCount = _repository.GetCount(fpId, branchId, gridOptions);
-            SetItemCount(itemCount);
-            var accounts = _repository.GetAccounts(fpId, branchId, gridOptions);
-            return Json(accounts);
-        }
-
-        // GET: api/accounts/{accountId:min(1)}/sync
-        [Route(AccountApi.AccountSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public IActionResult GetAccount(int accountId)
-        {
-            var account = _repository.GetAccount(accountId);
-            return JsonReadResult(account);
-        }
-
-        // GET: api/accounts/{accountId:min(1)}/details/sync
-        [Route(AccountApi.AccountDetailsSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public IActionResult GetAccountDetail(int accountId)
-        {
-            var account = _repository.GetAccountDetail(accountId);
-            return JsonReadResult(account);
-        }
-
-        // GET: api/accounts/{accountId:min(1)}/articles/sync
-        [Route(AccountApi.AccountArticlesSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
-        public IActionResult GetAccountArticles(int accountId)
-        {
-            var gridOptions = GetGridOptions();
-            var articles = _repository.GetAccountArticles(accountId, gridOptions);
-            return JsonReadResult(articles);
-        }
-
-        // POST: api/accounts/sync
-        [HttpPost]
-        [Route(AccountApi.AccountsSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
-        public IActionResult PostNewAccount([FromBody] AccountViewModel account)
-        {
-            var result = ValidationResult(account);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            _repository.SaveAccount(account);
-            return StatusCode(StatusCodes.Status201Created);
-        }
-
-        // PUT: api/accounts/{accountId:min(1)}/sync
-        [HttpPut]
-        [Route(AccountApi.AccountSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Edit)]
-        public IActionResult PutModifiedAccount(int accountId, [FromBody] AccountViewModel account)
-        {
-            var result = ValidationResult(account, accountId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            _repository.SaveAccount(account);
-            return Ok();
-        }
-
-        // DELETE: api/accounts/{accountId:min(1)}/sync
-        [HttpDelete]
-        [Route(AccountApi.AccountSyncUrl)]
-        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
-        public IActionResult DeleteExistingAccount(int accountId)
-        {
-            var account = _repository.GetAccount(accountId);
-            if (account == null)
-            {
-                return NotFound();
-            }
-
-            if (_repository.IsUsedAccount(accountId))
-            {
-                var accountInfo = String.Format("'{0} ({1})'", account.Name, account.Code);
-                var message = String.Format(Strings.CannotDeleteUsedAccount, accountInfo);
-                return BadRequest(message);
-            }
-
-            _repository.DeleteAccount(accountId);
-            return StatusCode(StatusCodes.Status204NoContent);
-        }
-
-        #endregion
 
         private GridOptions GetGridOptions()
         {
@@ -297,8 +198,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (account == null)
             {
-                var message = String.Format(ValidationMessages.RequestFailedNoData, Entities.Account);
-                return BadRequest(message);
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Account));
             }
 
             if (!ModelState.IsValid)
@@ -308,25 +208,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (accountId != account.Id)
             {
-                var message = String.Format(ValidationMessages.RequestFailedConflict, Entities.Account);
-                return BadRequest(message);
-            }
-
-            return Ok();
-        }
-
-        private IActionResult ValidationResult(AccountViewModel account, int accountId = 0)
-        {
-            var result = BasicValidationResult(account, accountId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            if (_repository.IsDuplicateAccount(account))
-            {
-                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.AccountCodeField);
-                return BadRequest(message);
+                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Account));
             }
 
             return Ok();
@@ -342,8 +224,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateAccountAsync(account))
             {
-                var message = String.Format(ValidationMessages.DuplicateFieldValue, FieldNames.AccountCodeField);
-                return BadRequest(message);
+                return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.AccountCode));
             }
 
             return Ok();
@@ -367,18 +248,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var accountItem = await _repository.GetAccountAsync(item);
             if (accountItem == null)
             {
-                message = String.Format(Strings.ItemByIdNotFound, Entities.Account, item);
+                message = String.Format(
+                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Account), item);
             }
 
             if (await _repository.IsUsedAccountAsync(item))
             {
                 var accountInfo = String.Format("'{0} ({1})'", accountItem.Item.Name, accountItem.Item.Code);
-                message = String.Format(Strings.CannotDeleteUsedAccount, accountInfo);
+                message = String.Format(_strings.Format(AppStrings.CannotDeleteUsedAccount), accountInfo);
             }
 
             return message;
         }
 
         private IAccountRepository _repository;
+        private IStringLocalizer<AppStrings> _strings;
     }
 }

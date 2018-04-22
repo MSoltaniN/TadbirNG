@@ -123,7 +123,14 @@
   "Role": {
     "Name": "نام",
     "Description": "شرح",
-    "Permissions": "دسترسی ها"
+    "Permissions": "دسترسی ها",
+    "GroupName": "گروه دسترسی",
+    "Delete": "حذف نقش"
+  },
+  "RoleValidation": {
+    "Name": "نام اجباری می باشد",
+    "NameLenght": "نام حداکثر 64 کاراکتر میتواند داشته باشد",
+    "DescriptionLenght": "توضیحات حداکثر 512 کاراکتر میتواند داشته باشد"
   },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی"

@@ -1,12 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Repository name="SPPC-Framework" productName="Tadbir" companyName="SPPC" database="Tadbir" generationOutputPath="D:\GitHub\babaksoft\Projects\SPPC\framework\res\_codegen_">
   <Entities>
-    <Entity description="اطلاعات یک سرفصل حسابداری مورد استفاده برای ثبت پیشامدهای مالی سازمان را نگهداری می کند" name="Account" area="Finance" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Account" hasKey="True" joinTable="" description="حساب والد (پدر) برای این سرفصل حسابداری که در سطح بالایی آن در ساختار درختی تعریف شده" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="False" joinTable="" description="دوره مالی که این سرفصل حسابداری در آن تعریف شده است" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="شعبه سازمانی که این سرفصل حسابداری در آن تعریف شده است" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-      </Relations>
+    <Entity name="Account" area="Finance" identifier="Id" description="اطلاعات یک سرفصل حسابداری مورد استفاده برای ثبت پیشامدهای مالی سازمان را نگهداری می کند" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -57,13 +52,13 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="Represents a physical division of a business unit" name="Branch" area="Corporate" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Company" entityName="Company" hasKey="False" joinTable="" description="Main company that controls the activities of this branch" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToMany" endpointName="Role" entityName="Role" hasKey="False" joinTable="RoleBranch" description="Collection of all roles that can access this branch" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Branch" hasKey="True" joinTable="" description="Parent of this branch in the main branch hierarchy" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Account" hasKey="True" joinTable="" description="حساب والد (پدر) برای این سرفصل حسابداری که در سطح بالایی آن در ساختار درختی تعریف شده" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="False" joinTable="" description="دوره مالی که این سرفصل حسابداری در آن تعریف شده است" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="شعبه سازمانی که این سرفصل حسابداری در آن تعریف شده است" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="Branch" area="Corporate" identifier="Id" description="Represents a physical division of a business unit" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -102,12 +97,13 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="Represents a business unit that is registered as a legal entity" name="Company" area="Corporate" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="OneToMany" endpointName="Branch" entityName="Branch" hasKey="False" joinTable="" description="Collection of all physical branches controlled by this company" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToMany" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="False" joinTable="" description="Collection of all fiscal periods defined for this company" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Company" entityName="Company" hasKey="False" joinTable="" description="Main company that controls the activities of this branch" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Role" entityName="Role" hasKey="False" joinTable="RoleBranch" description="Collection of all roles that can access this branch" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Branch" hasKey="True" joinTable="" description="Parent of this branch in the main branch hierarchy" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="Company" area="Corporate" identifier="Id" description="Represents a business unit that is registered as a legal entity" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -140,11 +136,12 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="Represents a local or international currency used for registering monetary transactions" name="Currency" area="Finance" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="OneToMany" endpointName="TransactionLine" entityName="TransactionLine" hasKey="False" joinTable="" description="Collection of all financial transaction lines (articles) that use this currency in their monetary values" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Branch" entityName="Branch" hasKey="False" joinTable="" description="Collection of all physical branches controlled by this company" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="False" joinTable="" description="Collection of all fiscal periods defined for this company" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="Currency" area="Finance" identifier="Id" description="Represents a local or international currency used for registering monetary transactions" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -171,13 +168,11 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="Represents a date period used for partitioning financial events of a business unit" name="FiscalPeriod" area="Finance" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="OneToMany" endpointName="Account" entityName="Account" hasKey="False" joinTable="" description="Collection of all financial accounts applicable in this fiscal period" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToMany" endpointName="Transaction" entityName="Transaction" hasKey="False" joinTable="" description="Collection of all financial transactions registered in this fiscal period" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Company" entityName="Company" hasKey="True" joinTable="" description="Business unit that defines this fiscal period" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="TransactionLine" entityName="TransactionLine" hasKey="False" joinTable="" description="Collection of all financial transaction lines (articles) that use this currency in their monetary values" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="FiscalPeriod" area="Finance" identifier="Id" description="Represents a date period used for partitioning financial events of a business unit" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -222,12 +217,13 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="Represents a potential access grant for a unit of functionality in the application" name="Permission" area="Auth" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Group" entityName="PermissionGroup" hasKey="True" joinTable="" description="Main permission group that contains this permission" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToMany" endpointName="Role" entityName="Role" hasKey="False" joinTable="RolePermission" description="Collection of all roles that this permission is enabled in them." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Account" entityName="Account" hasKey="False" joinTable="" description="Collection of all financial accounts applicable in this fiscal period" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Transaction" entityName="Transaction" hasKey="False" joinTable="" description="Collection of all financial transactions registered in this fiscal period" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Company" entityName="Company" hasKey="True" joinTable="" description="Business unit that defines this fiscal period" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="Permission" area="Auth" identifier="Id" description="Represents a potential access grant for a unit of functionality in the application" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -266,11 +262,12 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="Represents a category used for organizing related permissions." name="PermissionGroup" area="Auth" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="OneToMany" endpointName="Permission" entityName="Permission" hasKey="False" joinTable="" description="Collection of all permissions defined in this group" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Group" entityName="PermissionGroup" hasKey="True" joinTable="" description="Main permission group that contains this permission" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Role" entityName="Role" hasKey="False" joinTable="RolePermission" description="Collection of all roles that this permission is enabled in them." clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="PermissionGroup" area="Auth" identifier="Id" description="Represents a category used for organizing related permissions." clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -309,11 +306,11 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="Represents information about a business person" name="Person" area="Contact" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="OneToOne" endpointName="User" entityName="User" hasKey="False" joinTable="" description="Application user that represents this user in security subsystem" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Permission" entityName="Permission" hasKey="False" joinTable="" description="Collection of all permissions defined in this group" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="Person" area="Contact" identifier="Id" description="Represents information about a business person" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -346,13 +343,11 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="Represents a logical authority used in a role-based security subsystem." name="Role" area="Auth" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToMany" endpointName="User" entityName="User" hasKey="False" joinTable="UserRole" description="Collection of all application users that this role is assigned to them" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToMany" endpointName="Permission" entityName="Permission" hasKey="False" joinTable="RolePermission" description="Collection of all operational permissions that are enabled for this role" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToMany" endpointName="Branch" entityName="Branch" hasKey="False" joinTable="RoleBranch" description="Collection of all branches that this role can access" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToOne" endpointName="User" entityName="User" hasKey="False" joinTable="" description="Application user that represents this user in security subsystem" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="Role" area="Auth" identifier="Id" description="Represents a logical authority used in a role-based security subsystem." clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -385,14 +380,13 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="سند مالی که اطلاعات پولی مرتبط با یک پیشامد مالی را در سازمان نگهداری می کند" name="Transaction" area="Finance" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="دوره مالی که پیشامد مالی در آن ثبت شده است" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToMany" endpointName="Line" entityName="TransactionLine" hasKey="False" joinTable="" description="مجموعه ای از آرتیکل های موجود در سند مالی" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="شعبه سازمانی که سند مالی برای آن ایجاد شده است" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToOne" endpointName="Document" entityName="Document" hasKey="True" joinTable="" description="مستند اداری مرتبط با این سند مالی" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="User" entityName="User" hasKey="False" joinTable="UserRole" description="Collection of all application users that this role is assigned to them" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Permission" entityName="Permission" hasKey="False" joinTable="RolePermission" description="Collection of all operational permissions that are enabled for this role" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Branch" entityName="Branch" hasKey="False" joinTable="RoleBranch" description="Collection of all branches that this role can access" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="Transaction" area="Finance" identifier="Id" description="سند مالی که اطلاعات پولی مرتبط با یک پیشامد مالی را در سازمان نگهداری می کند" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -431,18 +425,14 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="آرتیکل سند مالی که اطلاعات مربوط به بخشی از یک پیشامد مالی را نگهداری می کند" name="TransactionLine" area="Finance" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Transaction" entityName="Transaction" hasKey="True" joinTable="" description="سند مالی که این آرتیکل برای آن ایجاد شده است" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Currency" entityName="Currency" hasKey="True" joinTable="" description="پول یا ارز مورد استفاده برای مبلغ بدهکار یا بستانکار این آرتیکل" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="شعبه سازمانی که اطلاعات مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="دوره مالی که وضعیت مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Account" entityName="Account" hasKey="True" joinTable="" description="مولفه سرفصل حسابداری از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="DetailAccount" entityName="DetailAccount" hasKey="True" joinTable="" description="مولفه تفصیلی شناور از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="CostCenter" entityName="CostCenter" hasKey="True" joinTable="" description="مولفه مرکز هزینه از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Project" entityName="Project" hasKey="True" joinTable="" description="مولفه پروژه از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="دوره مالی که پیشامد مالی در آن ثبت شده است" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Line" entityName="TransactionLine" hasKey="False" joinTable="" description="مجموعه ای از آرتیکل های موجود در سند مالی" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="شعبه سازمانی که سند مالی برای آن ایجاد شده است" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToOne" endpointName="Document" entityName="Document" hasKey="True" joinTable="" description="مستند اداری مرتبط با این سند مالی" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="TransactionLine" area="Finance" identifier="Id" description="آرتیکل سند مالی که اطلاعات مربوط به بخشی از یک پیشامد مالی را نگهداری می کند" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -481,16 +471,18 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="Represents an application user recognized by the security subsystem" name="User" area="Auth" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="OneToMany" endpointName="CreatedTransaction" entityName="Transaction" hasKey="False" joinTable="" description="Collection of all financial transactions created by this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToMany" endpointName="ModifiedTransaction" entityName="Transaction" hasKey="False" joinTable="" description="Collection of all financial transactions modified by this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToMany" endpointName="VerifiedTransaction" entityName="Transaction" hasKey="False" joinTable="" description="Collection of all financial transactions verified by this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToMany" endpointName="ApprovedTransaction" entityName="Transaction" hasKey="False" joinTable="" description="Collection of all financial transactions approved by this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToOne" endpointName="Person" entityName="Person" hasKey="False" joinTable="" description="Business person that this user represents" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToMany" endpointName="Role" entityName="Role" hasKey="False" joinTable="UserRole" description="Collection of all application-defined roles that are assigned to this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Transaction" entityName="Transaction" hasKey="True" joinTable="" description="سند مالی که این آرتیکل برای آن ایجاد شده است" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Currency" entityName="Currency" hasKey="True" joinTable="" description="پول یا ارز مورد استفاده برای مبلغ بدهکار یا بستانکار این آرتیکل" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="شعبه سازمانی که اطلاعات مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="دوره مالی که وضعیت مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Account" entityName="Account" hasKey="True" joinTable="" description="مولفه سرفصل حسابداری از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="DetailAccount" entityName="DetailAccount" hasKey="True" joinTable="" description="مولفه تفصیلی شناور از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="CostCenter" entityName="CostCenter" hasKey="True" joinTable="" description="مولفه مرکز هزینه از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Project" entityName="Project" hasKey="True" joinTable="" description="مولفه پروژه از بردار حساب مورد استفاده در این آرتیکل مالی" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="User" area="Auth" identifier="Id" description="Represents an application user recognized by the security subsystem" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -535,13 +527,16 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="یک ردیف کار را در کارتابل کاربران یا نقش ها نشان می دهد" name="WorkItem" area="Workflow" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="CreatedBy" entityName="User" hasKey="False" joinTable="" description="کاربر ایجاد کننده کار" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Target" entityName="Role" hasKey="False" joinTable="" description="نقش سازمانی که باید گیرنده کار باشد" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToMany" endpointName="Document" entityName="WorkItemDocument" hasKey="False" joinTable="" description="رکوردهای موجودیت مرتبط با کار" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="CreatedTransaction" entityName="Transaction" hasKey="False" joinTable="" description="Collection of all financial transactions created by this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="ModifiedTransaction" entityName="Transaction" hasKey="False" joinTable="" description="Collection of all financial transactions modified by this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="VerifiedTransaction" entityName="Transaction" hasKey="False" joinTable="" description="Collection of all financial transactions verified by this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="ApprovedTransaction" entityName="Transaction" hasKey="False" joinTable="" description="Collection of all financial transactions approved by this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToOne" endpointName="Person" entityName="Person" hasKey="False" joinTable="" description="Business person that this user represents" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToMany" endpointName="Role" entityName="Role" hasKey="False" joinTable="UserRole" description="Collection of all application-defined roles that are assigned to this user" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="WorkItem" area="Workflow" identifier="Id" description="یک ردیف کار را در کارتابل کاربران یا نقش ها نشان می دهد" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -604,11 +599,13 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="یک رکورد از موجودیت مرتبط با یک کار را نشان می دهد" name="WorkItemDocument" area="Workflow" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="WorkItem" entityName="WorkItem" hasKey="False" joinTable="" description="کاری که طی عملیات برنامه روی این موجودیت انجام شده است" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="CreatedBy" entityName="User" hasKey="False" joinTable="" description="کاربر ایجاد کننده کار" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Target" entityName="Role" hasKey="False" joinTable="" description="نقش سازمانی که باید گیرنده کار باشد" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Document" entityName="WorkItemDocument" hasKey="False" joinTable="" description="رکوردهای موجودیت مرتبط با کار" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="WorkItemDocument" area="Workflow" identifier="Id" description="یک رکورد از موجودیت مرتبط با یک کار را نشان می دهد" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -641,12 +638,11 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="یک رکورد از سوابق عملیات انجام شده روی یک موجودیت را نشان می دهد." name="WorkItemHistory" area="Workflow" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="User" entityName="User" hasKey="False" joinTable="" description="کاربر ایجاد کننده کار" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Role" entityName="Role" hasKey="False" joinTable="" description="نقش اقدام کننده روی کار" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="WorkItem" entityName="WorkItem" hasKey="False" joinTable="" description="کاری که طی عملیات برنامه روی این موجودیت انجام شده است" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
+    </Entity>
+    <Entity name="WorkItemHistory" area="Workflow" identifier="Id" description="یک رکورد از سوابق عملیات انجام شده روی یک موجودیت را نشان می دهد." clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -727,9 +723,12 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
+      <Relations>
+        <Relation multiplicity="ManyToOne" endpointName="User" entityName="User" hasKey="False" joinTable="" description="کاربر ایجاد کننده کار" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Role" entityName="Role" hasKey="False" joinTable="" description="نقش اقدام کننده روی کار" clrType="SwForAll.Platform.Metadata.Relation, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+      </Relations>
     </Entity>
-    <Entity description="" name="WorkflowInstanceEvent" area="Workflow.Tracking" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <Relations />
+    <Entity name="WorkflowInstanceEvent" area="Workflow.Tracking" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -804,9 +803,9 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="" name="ActivityInstanceEvent" area="Workflow.Tracking" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations />
+    </Entity>
+    <Entity name="ActivityInstanceEvent" area="Workflow.Tracking" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -905,9 +904,9 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
-    </Entity>
-    <Entity description="" name="ExtendedActivityEvent" area="Workflow.Tracking" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations />
+    </Entity>
+    <Entity name="ExtendedActivityEvent" area="Workflow.Tracking" identifier="Id" description="" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -1042,6 +1041,7 @@
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
       </Properties>
+      <Relations />
     </Entity>
     <Entity description="" name="BookmarkResumptionEvent" area="Workflow.Tracking" identifier="Id" clrType="SwForAll.Platform.Metadata.Entity, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Relations />
@@ -2713,6 +2713,12 @@
           <PropertyStorage name="Length" type="int" nullable="False" />
           <ColumnView name="Length" visible="True" width="120" />
           <ValidationRule name="Length_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="MinLength" type="Int32" isValidated="True" description="حداقل تعداد کاراکتر در ویژگی متنی - به طور پیش فرض مقدار صفر دارد و برای ویژگی های غیرمتنی کاربردی ندارد" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnMinLength" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="MinLength" type="int" nullable="False" />
+          <ColumnView name="Min Length" visible="True" width="120" />
+          <ValidationRule name="MinLength_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
         <Property name="IsFixedLength" type="Boolean" isValidated="True" description="مشخص می کند که تعداد کاراکترها در یک ویژگی متنی ثابت است یا نه - به طور پیش فرض مقدار نادرست دارد و برای ویژگی های غیرمتنی کاربردی ندارد" clrType="SwForAll.Platform.Metadata.Property, SwForAll.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="chkIsFixedLength" format="" type="CheckBox" bindingMember="Checked" />

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +35,7 @@ namespace SPPC.Tadbir.Web.Api
         {
             services.AddDbContext<TadbirContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("TadbirApi")));
+            services.AddLocalization();
             services.AddMvc();
             services.AddCors();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -60,14 +63,34 @@ namespace SPPC.Tadbir.Web.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            ConfigureLocalization(app);
+
             app.UseCors(
                 options => options
                     .WithOrigins("*")
                     .AllowAnyMethod()
                     .WithExposedHeaders("X-Tadbir-AuthTicket", "X-Total-Count")
-                    .WithHeaders("Content-Type", "X-Tadbir-AuthTicket", "X-Tadbir-GridOptions"));
+                    .WithHeaders("Content-Type", "Accept-Language", "X-Tadbir-AuthTicket", "X-Tadbir-GridOptions"));
 
             app.UseMvc();
+        }
+
+        private void ConfigureLocalization(IApplicationBuilder app)
+        {
+            var supportedCultures = new[]
+            {
+                new CultureInfo("fa-IR"),
+                new CultureInfo("fa"),
+                new CultureInfo("en-US"),
+                new CultureInfo("en")
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("fa", "fa"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
         }
     }
 }

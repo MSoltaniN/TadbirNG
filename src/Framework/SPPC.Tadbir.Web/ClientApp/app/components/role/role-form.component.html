@@ -1,0 +1,75 @@
+﻿<kendo-dialog *ngIf="active" class="permission-dialog" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              (close)="closeForm()">
+    <kendo-dialog-titlebar>
+        {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
+    </kendo-dialog-titlebar>
+
+    <div *ngIf="errorMessage != ''">
+        <div class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+    </div>
+    <div>
+        <form novalidate [formGroup]="editForm">
+            <div class="form-group col-sm-offset-3 col-sm-6">
+                <label for="name" class="control-label">{{ 'Role.Name' | translate }}</label>
+
+                <input type="text" class="k-textbox" formControlName="name" />
+
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
+                    <span *ngIf="editForm.controls.name.errors?.required">{{ 'RoleValidation.Name' | translate }}</span>
+                    <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'RoleValidation.NameLenght' | translate }}</span>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-offset-3 col-sm-6">
+                <label for="description" class="control-label">{{ 'Role.Description' | translate }}</label>
+
+                <textarea class="k-textarea" formControlName="description"></textarea>
+
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+                    {{ 'RoleValidation.DescriptionLenght' | translate }}
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">{{ 'Role.Permissions' | translate }}</div>
+        <div class="panel-body">
+
+            <kendo-grid [data]="gridPermissionsData"
+                        [selectable]="true"
+                        [selectedKeys]="selectedRows"
+                        [kendoGridSelectBy]="selectionKey"
+                        [height]="410">
+                <ng-template kendoGridNoRecordsTemplate>
+                    {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+                </ng-template>
+                <kendo-grid-checkbox-column showSelectAll="true" width="50"></kendo-grid-checkbox-column>
+
+                <!-- template for mobile -->
+                <kendo-grid-column media="(max-width: 450px)" width="150" sppc-grid-column="Role.name">
+                </kendo-grid-column>
+                <kendo-grid-column media="(max-width: 450px)" width="150" sppc-grid-column="Role.groupName">
+                </kendo-grid-column>
+                <!-- template for mobile -->
+                <!-- additional columns on large devices -->
+                <kendo-grid-column media="(min-width: 450px)" width="300" sppc-grid-column="Role.name">
+                </kendo-grid-column>
+                <kendo-grid-column media="(min-width: 450px)" width="300" sppc-grid-column="Role.groupName">
+                </kendo-grid-column>
+                <kendo-grid-column media="(min-width: 450px)" sppc-grid-column="Role.description">
+                </kendo-grid-column>
+                <!-- additional columns on large devices -->
+
+            </kendo-grid>
+        </div>
+    </div>
+    <kendo-dialog-actions>
+        <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+        <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+    </kendo-dialog-actions>
+
+</kendo-dialog>

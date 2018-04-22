@@ -58,6 +58,7 @@
     <None Remove="ClientApp\app\components\login\logout.component.ts" />
     <None Remove="ClientApp\app\components\project\complexAccount.component.ts" />
     <None Remove="ClientApp\app\components\project\project.component.ts" />
+    <None Remove="ClientApp\app\components\role\role-form.component.ts" />
     <None Remove="ClientApp\app\components\role\role.component.ts" />
     <None Remove="ClientApp\app\components\transactionLine\transactionLine-form.component.ts" />
     <None Remove="ClientApp\app\components\transactionLine\transactionLine.component.ts" />
@@ -194,6 +195,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.container.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\logout.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\role\role-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transactionLine\transactionLine-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transactionLine\transactionLine.component.ts" />

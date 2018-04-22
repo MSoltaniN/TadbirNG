@@ -124,7 +124,14 @@
   "Role": {
     "Name": "Name",
     "Description": "Description",
-    "Permissions": "Permissions"
+    "Permissions": "Permissions",
+    "GroupName": "Permission Group",
+    "Delete": "Delete Role"
+  },
+  "RoleValidation": {
+    "Name": "name is required",
+    "NameLenght": "Description can be max 64 characters long",
+    "DescriptionLenght": "Description can be max 512 characters long"
   },
   "Fiscal": {
     "FiscalPeriod": "Fiscal Period"
