@@ -41,12 +41,12 @@ export function getLayoutModule(layout: Layout) {
 
 export class RoleFormComponent extends DefaultComponent {
 
-    //create a form controls
-    private editForm = new FormGroup({
-        id: new FormControl(),
-        name: new FormControl("", [Validators.required, Validators.maxLength(64)]),
-        description: new FormControl("", [Validators.maxLength(512)]),
-    });
+    ////create a form controls
+    //private editForm = new FormGroup({
+    //    id: new FormControl(),
+    //    name: new FormControl("", [Validators.required, Validators.maxLength(64)]),
+    //    description: new FormControl("", [Validators.maxLength(512)]),
+    //});
 
     //create properties
     gridPermissionsData: any;
