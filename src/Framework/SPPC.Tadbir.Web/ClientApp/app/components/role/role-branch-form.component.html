@@ -1,0 +1,58 @@
+﻿<kendo-dialog *ngIf="roleBranches" class="user-dialog" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              (close)="closeForm()">
+    <kendo-dialog-titlebar>
+        {{ getTitleText('RoleBranches.RoleBranchesTitle' | translate) }}
+    </kendo-dialog-titlebar>
+
+    <div *ngIf="errorMessage != ''">
+        <div class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-body">
+
+            <kendo-grid [data]="gridData"
+                        [selectable]="true"
+                        [selectedKeys]="selectedRows"
+                        [kendoGridSelectBy]="selectionKey">
+                <ng-template kendoGridNoRecordsTemplate>
+                    {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+                </ng-template>
+
+                <kendo-grid-checkbox-column showSelectAll="true" width="40"></kendo-grid-checkbox-column>
+
+                <!-- template for mobile -->
+                <kendo-grid-column media="(max-width: 450px)" title="">
+                    <ng-template kendoGridCellTemplate let-roleBranches>
+                        <dl>
+                            <dt>{{ 'RoleBranches.Name' | translate }}</dt>
+                            <dd>{{ roleBranches.name }}</dd>
+
+                            <dt>{{ 'RoleBranches.Description' | translate }}</dt>
+                            <dd>{{ roleBranches.description }}</dd>                            
+                        </dl>
+
+                    </ng-template>
+                </kendo-grid-column>
+                <!-- template for mobile -->
+
+                <!-- additional columns on large devices -->
+                <kendo-grid-column media="(min-width: 450px)" width="400" sppc-grid-column="RoleBranches.name">
+                </kendo-grid-column>
+                <kendo-grid-column media="(min-width: 450px)" sppc-grid-column="RoleBranches.description">
+                </kendo-grid-column>                
+                <!-- additional columns on large devices -->
+
+            </kendo-grid>
+        </div>
+    </div>
+
+
+    <kendo-dialog-actions>
+        <button class="k-button k-primary" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+        <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+    </kendo-dialog-actions>
+
+</kendo-dialog>

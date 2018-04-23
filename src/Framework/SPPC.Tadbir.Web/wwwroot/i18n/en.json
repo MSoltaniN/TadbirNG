@@ -126,7 +126,29 @@
     "Description": "Description",
     "Permissions": "Permissions",
     "GroupName": "Permission Group",
-    "Delete": "Delete Role"
+    "Delete": "Delete Role",
+    "Users": "Users",
+    "Branches": "Branches",
+    "Detail": "Detail",
+    "RecordNotFound": "This role has no permission",
+    "RoleDetail": "Role detail"
+  },
+  "RoleUsers": {
+    "UserName": "User Name",
+    "PersonFirstName": "First Name",
+    "PersonLastName": "Last Name",
+    "IsEnabled": "Status",
+    "RoleUsers": "Users have the role of '{0}'",
+    "RecordNotFound": "This role has not been assigned to any user"
+  },
+  "RoleBranches": {
+    "Name": "Name",
+    "Description": "Description",
+    "RoleBranchesTitle": "Branches accessible by '{0}'",
+    "RecordNotFound": "This role has no branch"
+  },
+  "RoleDetail": {
+    "RoleDetailTitle": "Role details '{0}'"
   },
   "RoleValidation": {
     "Name": "name is required",

@@ -27,6 +27,9 @@ import { UserComponent } from './components/user/user.component';
 import { UserFormComponent } from './components/user/user-form.component';
 import { RoleComponent } from './components/role/role.component';
 import { RoleFormComponent } from './components/role/role-form.component';
+import { RoleUserFormComponent } from './components/role/role-user-form.component';
+import { RoleBranchFormComponent } from './components/role/role-branch-form.component';
+import { RoleDetailFormComponent } from './components/role/role-detail-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 
@@ -99,6 +102,9 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         UserFormComponent,
         RoleComponent,
         RoleFormComponent,
+        RoleUserFormComponent,
+        RoleBranchFormComponent,
+        RoleDetailFormComponent,
         SppcDatePipe
 
     ],

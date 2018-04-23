@@ -45,8 +45,11 @@
                         <dt>{{ 'Role.Description' | translate }}</dt>
                         <dd>{{ role.description }}</dd>
                     </dl>
-                    <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                    <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                    <button kendoGridEditCommand *ngIf="role.id!=1" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                    <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
+                    <button kendoButton (click)="userHandler(role.id)" [primary]="true">{{ 'Role.Users' | translate }}</button>
+                    <button kendoButton (click)="branchHandler(role.id)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
+                    <button kendoGridRemoveCommand *ngIf="role.id!=1">{{ 'Buttons.Delete' | translate }}</button>
                 </ng-template>
             </kendo-grid-column>
             <!-- template for mobile -->
@@ -63,23 +66,34 @@
                 </ng-template>
             </kendo-grid-column>
 
-            <kendo-grid-command-column media="(min-width: 450px)" width="70" title="{{ 'Buttons.Edit' | translate }}">
-                <ng-template kendoGridCellTemplate>
-                    <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                </ng-template>
-            </kendo-grid-command-column>
-            <kendo-grid-command-column media="(min-width: 1024px)" width="70" title="{{ 'Buttons.Delete' | translate }}">
-                <ng-template kendoGridCellTemplate>
-                    <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+            <kendo-grid-command-column media="(min-width: 450px)" width="230">
+                <ng-template kendoGridCellTemplate let-role>
+                    <button kendoGridEditCommand *ngIf="role.id!=1" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                    <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
+                    <button kendoButton (click)="userHandler(role.id)" [primary]="true">{{ 'Role.Users' | translate }}</button>
+                    <button kendoButton (click)="branchHandler(role.id)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
+                    <button kendoGridRemoveCommand *ngIf="role.id!=1">{{ 'Buttons.Delete' | translate }}</button>
                 </ng-template>
             </kendo-grid-command-column>
             <!-- additional columns on large devices -->
 
         </kendo-grid>
         <role-form-component [model]="editDataItem" [permissionModel]="permissionsData" [isNew]="isNew" [errorMessage]="errorMessage"
-                                (save)="saveHandler($event)"
-                                (cancel)="cancelHandler()">
+                             (save)="saveHandler($event)"
+                             (cancel)="cancelHandler()">
         </role-form-component>
+        <role-user-form-component [usersList]="usersList" [roleUserViewModel]="roleUsersData" [errorMessage]="errorMessage"
+                                  (saveRoleUsers)="saveRoleUsersHandler($event)"
+                                  (cancelRoleUsers)="cancelRoleUsersHandler()">
+
+        </role-user-form-component>
+        <role-branch-form-component [roleBranches]="roleBranches" [roleBranchesViewModel]="roleBranchesData" [errorMessage]="errorMessage"
+                                    (saveRoleBranches)="saveRoleBranchesHandler($event)"
+                                    (cancelRoleBranches)="cancelRoleBranchesHandler()">
+        </role-branch-form-component>
+        <role-detail-form-component [roleDetail]="roleDetail" [roleDetailsViewModel]="roleDetailData" [errorMessage]="errorMessage"
+                                    (cancelRoleDetail)="cancelRoleDetailHandler()">
+        </role-detail-form-component>
     </div>
     <kendo-dialog title="{{'Role.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteRole(false)" [minWidth]="250" [width]="450">
         <p>
