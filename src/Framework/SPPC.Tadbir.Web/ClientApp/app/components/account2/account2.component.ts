@@ -292,7 +292,13 @@ export class Account2Component extends DefaultComponent implements OnInit {
     
     //account form events
     public editHandler(arg: any) {
-        this.editDataItem = arg.dataItem;
+
+        this.sppcLoading.show();
+        this.accountService.getAccountById(arg.dataItem.id).subscribe(res => {
+            this.editDataItem = res.item;
+
+            this.sppcLoading.hide();
+        })
         this.isNew = false;
         this.errorMessage = '';
     }    

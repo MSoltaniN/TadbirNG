@@ -208,7 +208,14 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
     //transaction form events
     public editHandler(arg: any) {
-        this.editDataItem = arg.dataItem;
+
+        this.sppcLoading.show();
+
+        this.transactionLineService.getTransactionLineById(arg.dataItem.id).subscribe(res => {
+            this.editDataItem = res.item;
+
+            this.sppcLoading.hide();
+        })
         this.isNew = false;
         this.errorMessage = '';
     }
