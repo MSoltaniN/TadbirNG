@@ -125,7 +125,29 @@
     "Description": "شرح",
     "Permissions": "دسترسی ها",
     "GroupName": "گروه دسترسی",
-    "Delete": "حذف نقش"
+    "Delete": "حذف نقش",
+    "Users": "کاربران",
+    "Branches": "شعب",
+    "Detail": "جزئیات",
+    "RecordNotFound": "این نقش هیچ دسترسی ندارد",
+    "RoleDetail": "جزئیات نقش"
+  },
+  "RoleUsers": {
+    "UserName": "نام کاربری",
+    "PersonFirstName": "نام",
+    "PersonLastName": "نام خانوادگی",
+    "IsEnabled": "وضعیت",
+    "RoleUsersTitle": "کاربران دارای نقش '{0}'",
+    "RecordNotFound": "این نقش به هیچ کاربری تخصیص داده نشده است"
+  },
+  "RoleBranches": {
+    "Name": "نام",
+    "Description": "توضیحات",
+    "RoleBranchesTitle": "شعب قابل دسترسی توسط '{0}'",
+    "RecordNotFound": "این نقش به هیچ شعبه ای دسترسی ندارد"
+  },
+  "RoleDetail": {
+    "RoleDetailTitle": "جزئیات نقش '{0}'"
   },
   "RoleValidation": {
     "Name": "نام اجباری می باشد",

@@ -27,7 +27,8 @@ export function getLayoutModule(layout: Layout) {
     selector: 'role-form-component',
     styles: [`
         input[type=text],textarea { width: 100%; }
-       /deep/.permission-dialog {width: 100% !important; min-width: 250px !important; height:100%}
+        .permission-dialog {width: 100% !important; min-width: 250px !important; height:100%}
+        /deep/ .permission-dialog .k-dialog{ height:100% !important; min-width: unset !important; }
 `
     ],
     templateUrl: './role-form.component.html',
@@ -74,7 +75,7 @@ export class RoleFormComponent extends DefaultComponent {
                     this.selectedRows.push(permissionItem.id)
                 }
             }
-        }  
+        }
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -87,6 +88,10 @@ export class RoleFormComponent extends DefaultComponent {
     public onSave(e: any): void {
         e.preventDefault();
 
+        for (let permissionItem of this.gridPermissionsData) {
+            permissionItem.isEnabled = false;
+        }
+
         for (let permissionSelected of this.selectedRows) {
             for (let permissionItem of this.gridPermissionsData) {
                 if (permissionItem.id == permissionSelected) {
@@ -94,7 +99,7 @@ export class RoleFormComponent extends DefaultComponent {
                 }
             }
         }
-        
+
         var viewModel: RoleFullViewModel;
         viewModel = {
             role: this.editForm.value,

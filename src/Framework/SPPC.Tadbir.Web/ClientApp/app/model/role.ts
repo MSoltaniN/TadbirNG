@@ -22,3 +22,42 @@ export interface RoleFullViewModel {
     role: Role;
     permissions: Array<Permission>;
 }
+
+
+export interface UserBriefViewModel {
+    id: number;
+    userName: string;
+    personFirstName: string;
+    personLastName: string;
+    isEnabled: boolean;
+    hasRole: boolean;
+}
+
+
+export interface RoleUsersViewModel {
+    id: number;
+    name: string;
+    users: Array<UserBriefViewModel>;
+}
+
+export interface BranchViewModel {
+    id: number;
+    name: string;
+    description?: string;
+    level: number;
+    companyId: number;
+    isAccessible: boolean;
+}
+
+export interface RoleBranchesViewModel {
+    id: number;
+    name: string;
+    branches: Array<BranchViewModel>;
+}
+
+export interface RoleDetailsViewModel {
+    role: Role;
+    permissions: Array<Permission>;
+    branches: Array<BranchViewModel>;
+    users: Array<UserBriefViewModel>;
+}

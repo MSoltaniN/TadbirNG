@@ -172,7 +172,14 @@ export class UserComponent extends DefaultComponent implements OnInit {
 
 
     public editHandler(arg: any) {
-        this.editDataItem = arg.dataItem;
+
+        this.sppcLoading.show();
+
+        this.userService.getUserById(arg.dataItem.id).subscribe(res => {
+            this.editDataItem = res;
+            this.sppcLoading.hide();
+        })
+
         this.isNew = false;
         this.errorMessage = '';
     }

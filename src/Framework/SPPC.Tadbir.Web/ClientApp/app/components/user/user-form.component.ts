@@ -50,7 +50,7 @@ export class UserFormComponent extends DefaultComponent {
 
 
     @Input() public set model(user: User) {
-
+        debugger;
         //this.editForm.reset(user);
         this.editForm.reset(user);
         this.active = user !== undefined || this.isNew;
@@ -85,11 +85,6 @@ export class UserFormComponent extends DefaultComponent {
         public renderer: Renderer2, public metadata: MetaDataService) {
 
         super(toastrService, translate, renderer, metadata, Entities.User, Metadatas.User);
-    }
-
-
-    passwordMatch() {
-
     }
 
 }

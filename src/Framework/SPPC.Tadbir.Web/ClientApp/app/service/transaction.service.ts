@@ -34,6 +34,7 @@ export class TransactionService extends BaseService {
     private _deleteMultiTransactionsUrl = Environment.BaseUrl + "/transactions";
     private _postNewTransactionsUrl = Environment.BaseUrl + "/transactions";
     private _postModifiedTransactionsUrl = Environment.BaseUrl + "/transactions/{0}";
+    private _getTransactionByIdUrl = Environment.BaseUrl + "/transactions/{0}";
 
     private fiscalPeriodId: string;
     private branchId: string;
@@ -152,6 +153,14 @@ export class TransactionService extends BaseService {
         return this.http.delete(this._deleteMultiTransactionsUrl, this.options)
             .map(response => response.json().message)
             .catch(this.handleError);
+    }
+
+    getTransactionById(transactionId: number) {
+        var url = String.Format(this._getTransactionByIdUrl, transactionId);
+        var options = new RequestOptions({ headers: this.headers });
+
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response).json());
     }
 
 

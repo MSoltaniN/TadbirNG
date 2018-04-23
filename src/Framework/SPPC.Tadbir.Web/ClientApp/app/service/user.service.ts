@@ -30,6 +30,7 @@ export class UserService extends BaseService {
     private _getUsersUrl = Environment.BaseUrl + "/users";
     private _postNewUsersUrl = Environment.BaseUrl + "/users";
     private _putModifiedUsersUrl = Environment.BaseUrl + "/users/{0}";
+    private _getUserByIdUrl = Environment.BaseUrl + "/users/{0}";
 
     headers: Headers;
     options: RequestOptions;
@@ -93,6 +94,13 @@ export class UserService extends BaseService {
             .catch(this.handleError);
     }
 
+    getUserById(userId: number) {
+        var url = String.Format(this._getUserByIdUrl, userId);
+        var options = new RequestOptions({ headers: this.headers });
+
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response).json());
+    }
 
 
     private handleError(error: Response) {

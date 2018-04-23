@@ -210,7 +210,7 @@ namespace SPPC.Tadbir.Persistence
         /// Asynchronously inserts or updates a single security role, including all permissions in it, in repository
         /// </summary>
         /// <param name="role">Role to insert or update</param>
-        Task SaveRoleAsync(RoleFullViewModel role);
+        Task<RoleViewModel> SaveRoleAsync(RoleFullViewModel role);
 
         /// <summary>
         /// Asynchronously deletes a role specified by unique identifier from repository.

@@ -46,6 +46,8 @@ export class AccountService extends BaseService
 
     private _postModifiedAccountsUrl = Environment.BaseUrl + "/accounts/{0}";
 
+    private _getAccountByIdUrl = Environment.BaseUrl + "/accounts/{0}";
+
     headers: Headers;
     options: RequestOptions;
 
@@ -205,7 +207,14 @@ export class AccountService extends BaseService
             .map(response => response)
             .catch(this.handleError);
     }
-    
+
+    getAccountById(accountId: number) {
+        var url = String.Format(this._getAccountByIdUrl, accountId);
+        var options = new RequestOptions({ headers: this.headers });
+
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response).json());
+    }
 
     private handleError(error: Response) {
         return Observable.throw(error.json());
