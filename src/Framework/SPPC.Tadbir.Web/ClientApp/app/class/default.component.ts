@@ -104,7 +104,8 @@ export class DefaultComponent extends BaseComponent {
 
             if (entry.length > 0) validators.push(Validators.maxLength(entry.length));
 
-
+            if (entry.minLength > 0) validators.push(Validators.minLength(entry.minLength));
+        
             if (!entry.isNullable) validators.push(Validators.required);
             
             if (!this.form.contains(name)) {                 

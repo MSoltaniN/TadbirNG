@@ -18,7 +18,7 @@ import { BaseService } from '../class/base.service';
 
 export class UserInfo implements User {
 
-    constructor(public id: number = 0, public userName: string = "", public personFirstName: string = "", public personLastName: string = "", public passwordHash: string = "",
+    constructor(public id: number = 0, public userName: string = "", public personFirstName: string = "", public personLastName: string = "", public password: string = "",
         public isEnabled: boolean = false, public lastLoginDate: Date = new Date()) {
 
     }

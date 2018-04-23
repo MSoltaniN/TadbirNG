@@ -5,7 +5,7 @@ export interface User {
     userName: string;
     personFirstName: string;
     personLastName: string;
-    passwordHash: string;
+    password: string;
     lastLoginDate?: Date;
     isEnabled: boolean;
 }
