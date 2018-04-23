@@ -86,8 +86,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SaveRoleAsync(role);
-            return StatusCode(StatusCodes.Status201Created);
+            var outputRole = await _repository.SaveRoleAsync(role);
+            return StatusCode(StatusCodes.Status201Created, outputRole);
         }
 
         // PUT: api/roles/{roleId:min(1)}
@@ -107,8 +107,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SaveRoleAsync(role);
-            return Ok();
+            var outputRole = await _repository.SaveRoleAsync(role);
+            return Ok(outputRole);
         }
 
         // DELETE: api/roles/{roleId:min(1)}

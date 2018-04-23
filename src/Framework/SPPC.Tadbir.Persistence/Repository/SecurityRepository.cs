@@ -609,38 +609,40 @@ namespace SPPC.Tadbir.Persistence
         /// Asynchronously inserts or updates a single security role, including all permissions in it, in repository
         /// </summary>
         /// <param name="role">Role to insert or update</param>
-        public async Task SaveRoleAsync(RoleFullViewModel role)
+        public async Task<RoleViewModel> SaveRoleAsync(RoleFullViewModel role)
         {
             Verify.ArgumentNotNull(role, "role");
             Verify.ArgumentNotNull(role.Role, "role.Role");
+            Role outputRole = null;
             var repository = _unitOfWork.GetAsyncRepository<Role>();
             if (role.Role.Id == 0)
             {
-                var newRole = _mapper.Map<Role>(role.Role);
-                AddRolePermissions(newRole, role);
-                repository.Insert(newRole, r => r.RolePermissions);
+                outputRole = _mapper.Map<Role>(role.Role);
+                AddRolePermissions(outputRole, role);
+                repository.Insert(outputRole, r => r.RolePermissions);
             }
             else
             {
-                var existing = await repository.GetByIDWithTrackingAsync(role.Role.Id, r => r.RolePermissions);
-                if (existing != null)
+                outputRole = await repository.GetByIDWithTrackingAsync(role.Role.Id, r => r.RolePermissions);
+                if (outputRole != null)
                 {
-                    if (ArePermissionsModified(existing, role))
+                    if (ArePermissionsModified(outputRole, role))
                     {
-                        if (existing.RolePermissions.Count > 0)
+                        if (outputRole.RolePermissions.Count > 0)
                         {
-                            RemoveDisabledPermissions(existing, role);
+                            RemoveDisabledPermissions(outputRole, role);
                         }
 
-                        AddNewPermissions(existing, role);
+                        AddNewPermissions(outputRole, role);
                     }
 
-                    UpdateExistingRole(existing, role);
-                    repository.UpdateWithTracking(existing);
+                    UpdateExistingRole(outputRole, role);
+                    repository.UpdateWithTracking(outputRole);
                 }
             }
 
             await _unitOfWork.CommitAsync();
+            return _mapper.Map<RoleViewModel>(outputRole);
         }
 
         /// <summary>
