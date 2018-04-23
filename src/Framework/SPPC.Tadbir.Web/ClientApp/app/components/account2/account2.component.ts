@@ -150,12 +150,12 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
         this.sppcLoading.show();
 
-    var filter = this.currentFilter;
-    var order = this.currentOrder;
+        var filter = this.currentFilter;
+        var order = this.currentOrder;
 
-    if (this.totalRecords == this.skip) {
-        this.skip = this.skip - this.pageSize;                
-    }
+        if (this.totalRecords == this.skip) {
+            this.skip = this.skip - this.pageSize;                
+        }
 
 
 
@@ -247,7 +247,10 @@ export class Account2Component extends DefaultComponent implements OnInit {
         });
     }
 
-    
+    /**
+     * این متد برای حذف حساب بکار میرود
+     * @param confirm در صورتی که مفدار صحیح داشته باشد اکانت حذف میشود
+     */
     deleteAccount(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
@@ -266,7 +269,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
     }
 
     removeHandler(arg: any) {
-
+        
         this.prepareDeleteConfirm(arg.dataItem.name);
         
         this.deleteAccountId = arg.dataItem.id;

@@ -41,19 +41,7 @@ interface Item {
 })
 
 export class AccountFormComponent extends DefaultComponent {
-
-    //create a form controls
-    private editForm1 = new FormGroup({
-        id: new FormControl("", Validators.required)  ,
-        code: new FormControl("", Validators.required),
-        name: new FormControl("", Validators.required),
-        description: new FormControl(),
-        level: new FormControl(0),
-        fullCode: new FormControl("0")
-    });
-
     
-
     //create properties
     active: boolean = false;
     @Input() public isNew: boolean = false;
