@@ -87,9 +87,8 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     
     ngOnInit() {
-        this.getFiscalPeriod();
         
-        this.reloadGrid();    
+        //this.reloadGrid();    
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
@@ -98,8 +97,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
     {
         super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
         
-        this.getFiscalPeriod();
-
+        
         this.reloadGrid();
         
     }
@@ -277,17 +275,6 @@ export class Account2Component extends DefaultComponent implements OnInit {
     }
 
 
-    /* load fiscal periods */
-    getFiscalPeriod() {
-        this.sppcLoading.show();
-        this.showloadingMessage = true;
-        
-        this.fiscalPeriodService.getFiscalPeriod(this.CompanyId).subscribe(res => {
-            this.fiscalPeriodRows = res;
-            this.showloadingMessage = !(res.length == 0);
-            this.sppcLoading.hide();
-        });
-    }
 
     onFiscalPeriodChange(arg: any) {
 

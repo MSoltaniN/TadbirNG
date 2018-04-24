@@ -23,15 +23,19 @@ export class FiscalPeriodService extends BaseService{
      * این تابع دوره مالی رو براساس شرکت برمیگرداند
      * @param companyId کد شرکت
      */
-    getFiscalPeriod(companyId : number) {
+    getFiscalPeriod(companyId : number,ticket : string) {
 
         
         var userId = '';        
-        
+        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+        this.headers.append('X-Tadbir-AuthTicket', ticket);
+
+        if (ticket == '') return null;
+
      
         var url = String.Format(this.getFiscalUrl, companyId,this.UserId);
         
-        return this.http.get(url, this.options)
+        return this.http.get(url, { headers: this.headers })
             .map(response => <any>(<Response>response).json());
     }
 

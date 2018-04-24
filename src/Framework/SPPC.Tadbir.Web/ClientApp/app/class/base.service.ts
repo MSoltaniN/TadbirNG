@@ -14,7 +14,25 @@ export class BaseService extends EnviromentComponent {
 
         this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
 
-        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);        
+        var ticket: string = '';
+        if (localStorage.getItem('currentContext')) {
+            var item: string | null;
+            item = localStorage.getItem('currentContext');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+            if (currentContext.ticket != '') {
+                ticket = currentContext.ticket;
+            }
+        }
+        else if (sessionStorage.getItem('currentContext')) {
+            var item: string | null;
+            item = sessionStorage.getItem('currentContext');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+            if (currentContext.userName != '') {
+                ticket = currentContext.ticket;
+            }
+        }
+        
+        this.headers.append('X-Tadbir-AuthTicket', ticket);        
 
         if(this.CurrentLanguage == "fa")
             this.headers.append('Accept-Language', 'fa-IR,fa');

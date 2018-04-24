@@ -108,20 +108,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
         
         
-        //var userName = '';
-        //var ticket = '';
-
-        //if (localStorage.getItem('currentContext')) {
-        //    const userJson = localStorage.getItem('currentContext');
-        //    var currentUser = userJson !== null ? JSON.parse(userJson) : null;
-
-        //    if (currentUser != null) {
-        //        userName = currentUser.userName;        
-        //        ticket = currentUser.ticket;
-        //    }
-
-
-        //}
+        
 
         var companiesList = this.companyService.getCompanies(this.UserName, this.Ticket);
         if (companiesList != null) {
@@ -129,23 +116,34 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                 this.compenies = res;
             });
         }
+
+
     }
 
 
     getBranch(companyId: number) {
-
-        this.branchService.getBranches(companyId).subscribe(res => {
-            this.disabledBranch = false;
-            this.branches = res;            
-        });
+        
+        var branchList = this.branchService.getBranches(companyId, this.Ticket);
+        if (branchList != null) {
+            branchList.subscribe(res => {
+                this.disabledBranch = false;
+                this.branches = res;
+            });
+        }
+            
     }
 
     getFiscalPeriod(companyId : number) {
 
-        this.fiscalPeriodService.getFiscalPeriod(companyId).subscribe(res => {
-            this.disabledFiscalPeriod = false;
-            this.fiscalPeriods = res;                    
-        });
+        var fps = this.fiscalPeriodService.getFiscalPeriod(companyId, this.Ticket)
+        if (fps != null) {
+            fps.subscribe(res => {
+                this.disabledFiscalPeriod = false;
+                this.fiscalPeriods = res;
+            });
+        }
+
+        
     }
 
     isValidate(): boolean

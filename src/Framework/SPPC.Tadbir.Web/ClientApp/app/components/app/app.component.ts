@@ -132,14 +132,20 @@ export class AppComponent {
 
            
 
-            this.fiscalPeriodService.getFiscalPeriod(companyId).subscribe(res => {
-                //this.fiscalPeriods = res;
-                this.fiscalPeriodName = res.filter((p: any) => p.key == fpId)[0].value;
-            });
-
-            this.branchService.getBranches(companyId).subscribe(res => {
-                this.branchName = res.filter((p: any) => p.key == branchId)[0].value;
-            });
+            var fps = this.fiscalPeriodService.getFiscalPeriod(companyId, ticket);
+            if (fps != null) {
+                fps.subscribe(res => {
+                    //this.fiscalPeriods = res;
+                    this.fiscalPeriodName = res.filter((p: any) => p.key == fpId)[0].value;
+                });
+            }
+            
+            var branchList = this.branchService.getBranches(companyId, ticket);
+            if (branchList != null) {
+                branchList.subscribe(res => {
+                    this.branchName = res.filter((p: any) => p.key == branchId)[0].value;
+                });
+            }               
 
 
             var companiesList = this.companyService.getCompanies(this.userName, ticket);
