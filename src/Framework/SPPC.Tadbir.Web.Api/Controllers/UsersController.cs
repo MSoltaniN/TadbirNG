@@ -174,7 +174,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.User));
             }
 
-            if (String.Compare(user.Password, profile.OldPassword, true) != 0)
+            if (!CheckPassword(user.Password, profile.OldPassword))
             {
                 return BadRequest(_strings.Format(AppStrings.IncorrectOldPassword));
             }

@@ -1142,6 +1142,7 @@ INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUE
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (13, N'مدیریت حواله های انبار', N'IssueReceiptVoucher')
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (14, N'مدیریت فاکتورهای فروش', N'SalesInvoice')
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (15, N'مدیریت موجودی کالا', N'ProductInventory')
+INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (16, N'مدیریت شعب سازمانی', N'Branch')
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON
@@ -1218,6 +1219,10 @@ INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (70, 
 INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (71, 15, N'ایجاد موجودی کالا', 2)
 INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (72, 15, N'اصلاح موجودی کالا', 4)
 INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (73, 15, N'حذف موجودی کالا', 8)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (74, 16, N'مشاهده شعبه', 1)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (75, 16, N'ایجاد شعبه', 2)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (76, 16, N'اصلاح شعبه', 4)
+INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (77, 16, N'حذف شعبه', 8)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 SET IDENTITY_INSERT [Auth].[RolePermission] ON
@@ -1312,6 +1317,10 @@ INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VAL
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (89, 1, 71)
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (90, 1, 72)
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (91, 1, 73)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (92, 1, 74)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (93, 1, 75)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (94, 1, 76)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (95, 1, 77)
 SET IDENTITY_INSERT [Auth].[RolePermission] OFF
 
 SET ANSI_NULLS OFF
