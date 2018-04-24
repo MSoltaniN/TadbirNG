@@ -15,9 +15,31 @@ import { KeyCode } from '../../enum/KeyCode';
     (ngModelChange)="DateChange()" 
     [config]='dateConfig'
     theme="dp-material"
-    >
+    (onGoToCurrent)="onGoToCurrentDate()">
   </dp-date-picker>`,
-    styles: ['/deep/ dp-date-picker.dp-material .dp-picker-input { height: 26px !important; width:100% !important; } dp-date-picker{width:100%; direction:ltr;} /deep/ dp-day-calendar{position: fixed;}'],
+    styles: [`
+    /deep/ dp-date-picker.dp-material .dp-picker-input { width:100% !important; } 
+    dp-date-picker{width:100%; direction:ltr;} 
+    /deep/ dp-day-calendar{position: fixed;}
+    /deep/ sppc-datepicker input{
+    border-color: rgba(0, 0, 0, 0.15);
+    height: calc(1.42857em + (4px * 2) + (1px * 2)) !important;
+    /* border-style: solid; */
+    border-radius: 2px;
+    padding: 4px 8px;
+    width: 12.4em;
+    box-sizing: border-box;
+    border-width: 1px;
+    border-style: solid;
+    outline: 0;
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.42857em;
+    display: inline-flex;
+    vertical-align: middle;
+    position: relative;
+    -webkit-appearance: none;}
+       `],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -41,7 +63,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     constructor(private datepipe: DatePipe) {
     }
 
-       ngOnInit() {
+    ngOnInit() {
 
         var dateFormat = "YYYY/M/D"
         var lang = localStorage.getItem('lang');
@@ -55,7 +77,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
             mode: "day",
             format: dateFormat,
             locale: this.dateLocale,
-            showGoToCurrent: false,
+            showMultipleYearsNavigation: true
         };
     }
 
@@ -138,12 +160,18 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
         if (typeof this.dateObject === "object") {
             this.parseError = false;
             this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
-            moment.locale('en');  
+            moment.locale('en');
         }
         else {
             this.parseError = true;
             this.propagateChange("");
-        } 
+        }
+    }
+
+    onGoToCurrentDate() {
+        var currentDate = this.dateObject.toDate();
+        this.date = this.datepipe.transform(new Date().toString(), this.inputDateFormat);
+        this.dateObject = moment(this.date);
     }
 
     writeValue(value: any): void {
