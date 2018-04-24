@@ -26,15 +26,10 @@ export class TransactionLineService extends BaseService {
 
     private getAccountArticlesUrl = "http://37.59.93.7:8080/accounts/{0}/articles";
     getAccountArticles(accountId: number) {
-        var headers = new Headers();
-
-        headers.append("Content-Type", "application/json");
-
-        headers.append("X-Tadbir-AuthTicket", this.Ticket);
-
+      
         var url = String.Format(this.getAccountArticlesUrl, accountId.toString());
 
-        return this.http.get(url, { headers: headers })
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 
@@ -57,11 +52,7 @@ export class TransactionLineService extends BaseService {
 
     constructor(private http: Http) {
         super();
-
-
-        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
-        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
-        this.options = new RequestOptions({ headers: this.headers });
+        
     }
 
 
@@ -113,35 +104,28 @@ export class TransactionLineService extends BaseService {
     }
 
     getTransactionInfo(transactionId: number) {
-        var headers = this.headers;
         var url = String.Format(this._getTransactionInfo, transactionId);
-
-        var options = new RequestOptions({ headers: headers });
-
-        return this.http.get(url, options)
+        
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());;
     }
 
     editTransactionLine(transactionLine: TransactionLine): Observable<string> {
         var body = JSON.stringify(transactionLine);
-        var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
-
+        
         var url = String.Format(this._putModifiedTransactionLineUrl, transactionLine.id);
 
-        return this.http.put(url, body, options)
+        return this.http.put(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     insertTransactionLine(transactionId: number, transactionLine: TransactionLine): Observable<string> {
         var body = JSON.stringify(transactionLine);
-        var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
-
+      
         var url = String.Format(this._postNewTransactionLineUrl, transactionId);
 
-        return this.http.post(url, body, options)
+        return this.http.post(url, body,this.options)
             .map(res => res)
             .catch(this.handleError);
     }
@@ -157,9 +141,8 @@ export class TransactionLineService extends BaseService {
 
     getTransactionLineById(articleId: number) {
         var url = String.Format(this._getTransactionLineById, articleId);
-        var options = new RequestOptions({ headers: this.headers });
-
-        return this.http.get(url, options)
+       
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 

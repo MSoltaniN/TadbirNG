@@ -48,36 +48,25 @@ export class AccountService extends BaseService
 
     private _getAccountByIdUrl = Environment.BaseUrl + "/accounts/{0}";
 
-    headers: Headers;
-    options: RequestOptions;
+   
 
     constructor(private http: Http)
     {
-        super();
-
-        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8'});        
-        
-        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
-        
-        this.options = new RequestOptions({ headers: this.headers });        
+        super();             
     }
 
     getAccounts() {
-        var headers = this.headers;
-        //headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
-        //var url = this._getAccountsUrl;
+        
         var url = String.Format(this._getAccountsUrl, this.FiscalPeriodId, this.BranchId);
-        return this.http.get(url, { headers: headers })
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 
     getTotalCount() {
-        var headers = this.headers;
-        headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
-
+        
         var url = String.Format(this._getCountUrl, this.FiscalPeriodId, this.BranchId);
         
-        return this.http.get(url, { headers: headers })
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());;
             
     }
@@ -95,7 +84,8 @@ export class AccountService extends BaseService
 
         var base64Body = btoa(encodeURIComponent(postBody));
 
-        searchHeaders.set('X-Tadbir-GridOptions', base64Body);
+        if (searchHeaders)
+            searchHeaders.set('X-Tadbir-GridOptions', base64Body);
 
         var options = new RequestOptions({ headers: searchHeaders });
         
@@ -131,12 +121,11 @@ export class AccountService extends BaseService
         
         var base64Body = btoa(encodeURIComponent(postBody));
 
-        searchHeaders.set('X-Tadbir-GridOptions', base64Body);
+        if (searchHeaders)
+            searchHeaders.set('X-Tadbir-GridOptions', base64Body);
         
-
         var options = new RequestOptions({ headers: searchHeaders });
-               
-
+        
         var result: any = null;
         var totalCount = 0;
 
@@ -151,22 +140,18 @@ export class AccountService extends BaseService
     
     editAccount(account: Account): Observable<string> {
         var body = JSON.stringify(account);
-        var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
-
+        
         var url = String.Format(this._postModifiedAccountsUrl, account.id);
 
-        return this.http.put(url, body, options)
+        return this.http.put(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     insertAccount(account: Account): Observable<string> {
         var body = JSON.stringify(account);
-        var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
-
-        return this.http.post(this._postNewAccountsUrl, body, options)
+        
+        return this.http.post(this._postNewAccountsUrl, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
@@ -199,10 +184,7 @@ export class AccountService extends BaseService
         }
 
         let body = JSON.stringify({ paraph: '', items : accs});
-        let headers = this.headers
-        let options = new RequestOptions({ headers: headers });
-
-
+    
         return this.http.put(this._deleteGroupAccountsUrl,body, this.options)
             .map(response => response)
             .catch(this.handleError);
@@ -210,9 +192,8 @@ export class AccountService extends BaseService
 
     getAccountById(accountId: number) {
         var url = String.Format(this._getAccountByIdUrl, accountId);
-        var options = new RequestOptions({ headers: this.headers });
-
-        return this.http.get(url, options)
+    
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 

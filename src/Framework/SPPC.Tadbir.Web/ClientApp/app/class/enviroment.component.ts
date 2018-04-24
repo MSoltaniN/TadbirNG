@@ -8,6 +8,22 @@ export class EnviromentComponent {
 
     }
 
+    public get CurrentLanguage(): string {
+
+        var lang : string  = "fa" ;
+
+        if (localStorage.getItem('lang') != null) {
+            var item: string | null;
+            item = localStorage.getItem('lang');
+
+            if (item)
+                lang = item;
+
+        }       
+
+        return lang;
+    }
+
    
     public get FiscalPeriodId(): number {
 

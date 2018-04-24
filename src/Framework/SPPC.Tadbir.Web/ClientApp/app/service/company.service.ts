@@ -12,10 +12,7 @@ export class CompanyService extends BaseService {
 
     
     private getCompanyUrl = Environment.BaseUrl + "/lookup/companies/user/{0}";
-
-    headers: Headers;
-    options: RequestOptions;
-
+    
     constructor(private http: Http) {
         super();
     }

@@ -39,32 +39,21 @@ export class TransactionService extends BaseService {
     private fiscalPeriodId: string;
     private branchId: string;
 
-    headers: Headers;
-    options: RequestOptions;
-
     constructor(private http: Http) {
-
         super();
-
-        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
-        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
-        this.options = new RequestOptions({ headers: this.headers });
-
     }
 
 
     getTransactions() {
         var headers = this.headers;
         var url = String.Format(this._getTransactionsUrl, this.FiscalPeriodId, this.BranchId);
-        return this.http.get(url, { headers: headers })
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 
     getTotalCount() {
-        var headers = this.headers;
-        headers.append("If-Modified-Since", "Tue, 24 July 2017 00:00:00 GMT");
         var url = String.Format(this._getCountUrl, this.FiscalPeriodId, this.BranchId);
-        return this.http.get(url, { headers: headers })
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());;
     }
 
@@ -77,7 +66,8 @@ export class TransactionService extends BaseService {
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));
-        searchHeaders.set('X-Tadbir-GridOptions', base64Body);
+        if (searchHeaders)
+            searchHeaders.set('X-Tadbir-GridOptions', base64Body);
         var options = new RequestOptions({ headers: searchHeaders });
         return this.http.get(url, options)
             .map(response => <any>(<Response>response).json());;
@@ -100,7 +90,9 @@ export class TransactionService extends BaseService {
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));
-        searchHeaders.set('X-Tadbir-GridOptions', base64Body);
+
+        if (searchHeaders)
+            searchHeaders.set('X-Tadbir-GridOptions', base64Body);
         var options = new RequestOptions({ headers: searchHeaders });
 
         var result: any = null;
@@ -112,22 +104,18 @@ export class TransactionService extends BaseService {
 
     editTransaction(transaction: Transaction): Observable<string> {
         var body = JSON.stringify(transaction);
-        var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
-
+        
         var url = String.Format(this._postModifiedTransactionsUrl, transaction.id);
 
-        return this.http.put(url, body, options)
+        return this.http.put(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     insertTransaction(transaction: Transaction): Observable<string> {
-        var body = JSON.stringify(transaction);
-        var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
+        var body = JSON.stringify(transaction);  
 
-        return this.http.post(this._postNewTransactionsUrl, body, options)
+        return this.http.post(this._postNewTransactionsUrl, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
@@ -150,7 +138,7 @@ export class TransactionService extends BaseService {
         let headers = this.headers
         let options = new RequestOptions({ headers: headers, body: body });
 
-        return this.http.delete(this._deleteMultiTransactionsUrl, this.options)
+        return this.http.delete(this._deleteMultiTransactionsUrl, options)
             .map(response => response.json().message)
             .catch(this.handleError);
     }

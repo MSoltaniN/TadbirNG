@@ -48,10 +48,6 @@ export class UserService extends BaseService {
 
         super();
 
-        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
-        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
-        this.options = new RequestOptions({ headers: this.headers });
-
     }
 
     search(start?: number, count?: number, orderby?: string, filters?: Filter[]) {
@@ -83,42 +79,35 @@ export class UserService extends BaseService {
 
     editUser(user: User): Observable<string> {
         var body = JSON.stringify(user);
-        var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
-
+       
         var url = String.Format(this._putModifiedUsersUrl, user.id);
 
-        return this.http.put(url, body, options)
+        return this.http.put(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     insertUser(user: User): Observable<string> {
         var body = JSON.stringify(user);
-        var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
-
-        return this.http.post(this._postNewUsersUrl, body, options)
+   
+        return this.http.post(this._postNewUsersUrl, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     getUserById(userId: number) {
         var url = String.Format(this._getUserByIdUrl, userId);
-        var options = new RequestOptions({ headers: this.headers });
-
-        return this.http.get(url, options)
+       
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 
     changePassword(userProfileViewModel: UserProfileViewModel): Observable<string> {
         var body = JSON.stringify(userProfileViewModel);
-        var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
-
+        
         var url = String.Format(this._putChangePassword, userProfileViewModel.userName);
 
-        return this.http.put(url, body, options)
+        return this.http.put(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
