@@ -179,6 +179,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.IncorrectOldPassword));
             }
 
+            profile.NewPassword = _crypto.CreateHash(profile.NewPassword);
             await _repository.UpdateUserPasswordAsync(profile);
             return Ok();
         }
