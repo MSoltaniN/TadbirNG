@@ -10,6 +10,7 @@
       "Transaction": "Transaction",
       "Users": "Users",
       "Roles": "Roles",
+      "ChangePassword": "Change Password",
       "Exit": "Exit"
     }
   },
@@ -40,7 +41,8 @@
     "Transaction": "Transaction",
     "TransactionLine": "Voucher Article",
     "User": "User",
-    "Role": "Role"
+    "Role": "Role",
+    "Password": "Password"
   },
   "Account": {
     "New": "New Account",
@@ -120,6 +122,17 @@
     "UserNameLenght": "UserName can be max 64 characters long",
     "PersonLastNameLenght": "Last name can be max 64 characters long",
     "PersonFirstNameLenght": "First name can be max 64 characters long"
+  },
+  "ChangePassword": {
+    "Title": "Change password",
+    "OldPassword": "Old password",
+    "NewPassword": "New password",
+    "RepeatPassword": "Repeat new password",
+    "PasswordLenght": "Password must be at least 4 and last 32 characters long",
+    "OldPassRequired": "Password is Required",
+    "NewPassRequired": "New password is required",
+    "RepeatNewPassRequired": "Confirme New Password",
+    "NotEqual": "The password does not equal it"
   },
   "Role": {
     "Name": "Name",

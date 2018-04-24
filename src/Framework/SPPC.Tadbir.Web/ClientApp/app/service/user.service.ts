@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { User } from '../model/index';
+import { User, UserProfileViewModel } from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -24,6 +24,14 @@ export class UserInfo implements User {
     }
 }
 
+
+export class UserProfileViewModelInfo implements UserProfileViewModel {
+    userName: string;
+    oldPassword: string;
+    newPassword: string;
+    repeatPassword: string;
+}
+
 @Injectable()
 export class UserService extends BaseService {
 
@@ -31,6 +39,7 @@ export class UserService extends BaseService {
     private _postNewUsersUrl = Environment.BaseUrl + "/users";
     private _putModifiedUsersUrl = Environment.BaseUrl + "/users/{0}";
     private _getUserByIdUrl = Environment.BaseUrl + "/users/{0}";
+    private _putChangePassword = Environment.BaseUrl + "/users/{0}/password";//username
 
     headers: Headers;
     options: RequestOptions;
@@ -102,6 +111,17 @@ export class UserService extends BaseService {
             .map(response => <any>(<Response>response).json());
     }
 
+    changePassword(userProfileViewModel: UserProfileViewModel): Observable<string> {
+        var body = JSON.stringify(userProfileViewModel);
+        var headers = this.headers;
+        var options = new RequestOptions({ headers: headers });
+
+        var url = String.Format(this._putChangePassword, userProfileViewModel.userName);
+
+        return this.http.put(url, body, options)
+            .map(res => res)
+            .catch(this.handleError);
+    }
 
     private handleError(error: Response) {
         return Observable.throw(error.json());

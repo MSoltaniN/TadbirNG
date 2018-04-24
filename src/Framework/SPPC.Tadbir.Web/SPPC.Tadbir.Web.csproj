@@ -67,6 +67,7 @@
     <None Remove="ClientApp\app\components\transactionLine\transactionLine.component.ts" />
     <None Remove="ClientApp\app\components\transaction\transaction-form.component.ts" />
     <None Remove="ClientApp\app\components\transaction\transaction.component.ts" />
+    <None Remove="ClientApp\app\components\user\changePassword.component.ts" />
     <None Remove="ClientApp\app\components\user\user-form.component.ts" />
     <None Remove="ClientApp\app\components\user\user.component.ts" />
     <None Remove="ClientApp\app\controls\datepicker\sppc-datepicker.ts" />
@@ -77,6 +78,7 @@
     <None Remove="ClientApp\app\controls\sppcLoading\index.ts" />
     <None Remove="ClientApp\app\controls\sppcLoading\sppc-loading.component.ts" />
     <None Remove="ClientApp\app\controls\sppcLoading\sppc-loading.service.ts" />
+    <None Remove="ClientApp\app\directive\Validator\confirm-equal-validator.ts" />
     <None Remove="ClientApp\app\enum\KeyCode.ts" />
     <None Remove="ClientApp\app\model\account.ts" />
     <None Remove="ClientApp\app\model\fullaccount.ts" />
@@ -207,6 +209,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\transactionLine\transactionLine.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\user\changePassword.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\user\user-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\user\user.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\datepicker\sppc-datepicker.ts" />
@@ -222,6 +225,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\account2\account2.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\project\project.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-numberbox.ts" />
+    <TypeScriptCompile Include="ClientApp\app\directive\Validator\confirm-equal-validator.ts" />
     <TypeScriptCompile Include="ClientApp\app\enum\KeyCode.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\fullaccount.ts" />
