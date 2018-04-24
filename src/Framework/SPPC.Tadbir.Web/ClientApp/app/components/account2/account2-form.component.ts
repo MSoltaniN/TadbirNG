@@ -90,7 +90,7 @@ export class AccountFormComponent extends DefaultComponent {
     constructor(private accountService: AccountService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
         public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
 
-        super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account,true);
+        super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
 
         this.getFiscalPeriod();
 
