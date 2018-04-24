@@ -9,3 +9,10 @@ export interface User {
     lastLoginDate?: Date;
     isEnabled: boolean;
 }
+
+export interface UserProfileViewModel {
+    userName: string;
+    oldPassword: string;
+    newPassword: string;
+    repeatPassword: string;
+}

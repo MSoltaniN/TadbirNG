@@ -50,7 +50,7 @@ export class UserFormComponent extends DefaultComponent {
 
 
     @Input() public set model(user: User) {
-        debugger;
+
         //this.editForm.reset(user);
         this.editForm.reset(user);
         this.active = user !== undefined || this.isNew;

@@ -10,6 +10,7 @@
       "Transaction": "اسناد",
       "Users": "کاربران",
       "Roles": "نقش ها",
+      "ChangePassword": "تغییر کلمه عبور",
       "Exit": "خروج"
     }
 
@@ -43,7 +44,8 @@
     "Transaction": "اطلاعات سند",
     "TransactionLine": "آرتیکل سند",
     "User": "کاربر",
-    "Role": "نقش"
+    "Role": "نقش",
+    "Password": "کلمه عبور"
   },
   "Account": {
     "Code": "کد حساب",
@@ -119,6 +121,17 @@
     "UserNameLenght": "نام کاربری حداکثر ۶۴ کاراکتر میتواند داشته باشد",
     "PersonLastNameLenght": "نام خانوادگی حداکثر ۶۴ کاراکتر میتواند داشته باشد",
     "PersonFirstNameLenght": "نام حداکثر ۶۴ کاراکتر میتواند داشته باشد"
+  },
+  "ChangePassword": {
+    "Title": "تغییر کلمه عبور",
+    "OldPassword": "کلمه عبور فعلی",
+    "NewPassword": "کلمه عبور جدید",
+    "RepeatPassword": "تکرار کلمه عبور جدید",
+    "PasswordLenght": "کلمه عبور باید حداقل 4 و حداکثر 32 کاراکتر طول داشته باشد",
+    "OldPassRequired": "کلمه عبور فعلی اجباری می باشد",
+    "NewPassRequired": "کلمه عبور جدید اجباری می باشد",
+    "RepeatNewPassRequired": "تکرار کلمه عبور جدید اجباری  می باشد",
+    "NotEqual": "کلمه عبور با تکرار آن برابر نیست"
   },
   "Role": {
     "Name": "نام",

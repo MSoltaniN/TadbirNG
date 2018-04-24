@@ -30,8 +30,10 @@ import { RoleFormComponent } from './components/role/role-form.component';
 import { RoleUserFormComponent } from './components/role/role-user-form.component';
 import { RoleBranchFormComponent } from './components/role/role-branch-form.component';
 import { RoleDetailFormComponent } from './components/role/role-detail-form.component';
+import { ChangePasswordComponent } from './components/user/changePassword.component'
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
+import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
 
 
 import { Layout } from './enviroment';
@@ -105,6 +107,8 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         RoleUserFormComponent,
         RoleBranchFormComponent,
         RoleDetailFormComponent,
+        ChangePasswordComponent,
+        ConfirmEqualValidator,
         SppcDatePipe
 
     ],
@@ -150,6 +154,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
             { path: 'transaction', component: TransactionComponent, canActivate: [AuthGuard] },
             { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
             { path: 'roles', component: RoleComponent, canActivate: [AuthGuard] },
+            { path: 'changePassword', component: ChangePasswordComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])
     ],
