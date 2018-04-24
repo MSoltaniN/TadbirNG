@@ -28,24 +28,15 @@ export class LookupService extends BaseService {
     private _getCurrenciesUrl = Environment.BaseUrl+"/lookup/currencies"
     
 
-    headers: Headers;
-    options: RequestOptions;
-
     constructor(private http: Http) {
-
-        super();
-
-        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
-        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
-        this.options = new RequestOptions({ headers: this.headers });
-
+        super();      
     }
 
     GetAccountsLookup() {
 
         var url = String.Format(this._getAccountsUrl, this.FiscalPeriodId, this.BranchId);
 
-        return this.http.get(url, { headers: this.headers })
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
 
     }
@@ -54,7 +45,7 @@ export class LookupService extends BaseService {
 
         var url = String.Format(this._getDetailAccountsUrl, this.FiscalPeriodId, this.BranchId);
 
-        return this.http.get(url, { headers: this.headers })
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
 
     }
@@ -72,14 +63,14 @@ export class LookupService extends BaseService {
 
         var url = String.Format(this._getProjectsUrl, this.FiscalPeriodId, this.BranchId);
 
-        return this.http.get(url, { headers: this.headers })
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
 
     }
 
     GetCurrenciesLookup() {
 
-        return this.http.get(this._getCurrenciesUrl, { headers: this.headers })
+        return this.http.get(this._getCurrenciesUrl,this.options)
             .map(response => <any>(<Response>response).json());
 
     }

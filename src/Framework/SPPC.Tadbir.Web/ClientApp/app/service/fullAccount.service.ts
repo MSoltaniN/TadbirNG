@@ -30,26 +30,16 @@ export class FullAccountService extends BaseService {
     private _getDetailAccountsUrl = Environment.BaseUrl + "/lookup//faccounts/fp/{0}/branch/{1}";//fpId,branchId
     private _getCostCentersUrl = Environment.BaseUrl + "/lookup/costcenters/fp/{0}/branch/{1}";//fpId,branchId
     private _getProjectsUrl = Environment.BaseUrl + "/lookup/projects/fp/{0}/branch/{1}";//fpId,branchId
-    
-
-    headers: Headers;
-    options: RequestOptions;
-
+   
     constructor(private http: Http) {
-
-        super();
-
-        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
-        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
-        this.options = new RequestOptions({ headers: this.headers });
-
+        super();        
     }
 
     GetAccountsLookup() {
 
         var url = String.Format(this._getAccountsUrl, this.FiscalPeriodId, this.BranchId);
 
-        return this.http.get(url, { headers: this.headers })
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
 
     }
@@ -58,7 +48,7 @@ export class FullAccountService extends BaseService {
 
         var url = String.Format(this._getDetailAccountsUrl, this.FiscalPeriodId, this.BranchId);
 
-        return this.http.get(url, { headers: this.headers })
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
 
     }
@@ -67,7 +57,7 @@ export class FullAccountService extends BaseService {
 
         var url = String.Format(this._getCostCentersUrl, this.FiscalPeriodId, this.BranchId);
 
-        return this.http.get(url, { headers: this.headers })
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
 
     }
@@ -76,7 +66,7 @@ export class FullAccountService extends BaseService {
 
         var url = String.Format(this._getProjectsUrl, this.FiscalPeriodId, this.BranchId);
 
-        return this.http.get(url, { headers: this.headers })
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
 
     }

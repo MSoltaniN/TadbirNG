@@ -83,16 +83,9 @@ export class RoleService extends BaseService {
     private _putModifiedRoleBranchesUrl = Environment.BaseUrl + "/roles/{0}/branches";//roleId
     //detail
     private _getRoleDetailUrl = Environment.BaseUrl + "/roles/{0}/details";//roleId
-
-    headers: Headers;
-    options: RequestOptions;
-
+    
     constructor(private http: Http) {
-        super();
-
-        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
-        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
-        this.options = new RequestOptions({ headers: this.headers });
+        super();        
     }
 
     search(start?: number, count?: number, orderby?: string, filters?: Filter[]) {
@@ -110,7 +103,10 @@ export class RoleService extends BaseService {
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));
-        searchHeaders.set('X-Tadbir-GridOptions', base64Body);
+
+        if (searchHeaders)
+            searchHeaders.set('X-Tadbir-GridOptions', base64Body);
+
         var options = new RequestOptions({ headers: searchHeaders });
 
         var result: any = null;
@@ -124,38 +120,32 @@ export class RoleService extends BaseService {
 
     getNewRoleFullViewModel() {
         var url = this._getNewRoleFullViewModel;
-        var options = new RequestOptions({ headers: this.headers });
-
-        return this.http.get(url, options)
+      
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 
     getRoleFullViewModel(roleId: number) {
         var url = String.Format(this._getRoleFullViewModel, roleId);
-        var options = new RequestOptions({ headers: this.headers });
-
-        return this.http.get(url, options)
+       
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 
     editRole(roleFullViewModel: RoleFullViewModel): Observable<string> {
         var body = JSON.stringify(roleFullViewModel);
-        var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
-
+        
         var url = String.Format(this._putModifiedRolesUrl, roleFullViewModel.role.id);
 
-        return this.http.put(url, body, options)
+        return this.http.put(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     insertRole(roleFullViewModel: RoleFullViewModel): Observable<string> {
         var body = JSON.stringify(roleFullViewModel);
-        var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
-
-        return this.http.post(this._postNewRoleUrl, body, options)
+       
+        return this.http.post(this._postNewRoleUrl, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
@@ -171,29 +161,29 @@ export class RoleService extends BaseService {
 
     getRoleUsers(roleId: number) {
         var url = String.Format(this._getRoleUsersUrl, roleId);
-        var options = new RequestOptions({ headers: this.headers });
+        
 
-        return this.http.get(url, options)
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 
     modifiedRoleUsers(roleUsersViewModel: RoleUsersViewModel) {
         var body = JSON.stringify(roleUsersViewModel);
         var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
+        
 
         var url = String.Format(this._putModifiedRoleUsersUrl, roleUsersViewModel.id);
 
-        return this.http.put(url, body, options)
+        return this.http.put(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     getRoleBranches(roleId: number) {
         var url = String.Format(this._getRoleBranchesUrl, roleId);
-        var options = new RequestOptions({ headers: this.headers });
+        
 
-        return this.http.get(url, options)
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 
@@ -211,10 +201,9 @@ export class RoleService extends BaseService {
     }
 
     getRoleDetail(roleId: number) {
-        var url = String.Format(this._getRoleDetailUrl, roleId);
-        var options = new RequestOptions({ headers: this.headers });
+        var url = String.Format(this._getRoleDetailUrl, roleId);       
 
-        return this.http.get(url, options)
+        return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 
