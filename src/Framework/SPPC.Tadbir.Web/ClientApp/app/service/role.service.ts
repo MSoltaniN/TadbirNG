@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Role, Permission, RoleFullViewModel } from '../model/index';
+import { Role, Permission, RoleFullViewModel, RoleUsersViewModel, UserBriefViewModel, BranchViewModel, RoleBranchesViewModel, RoleDetailsViewModel} from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -35,6 +35,37 @@ export class RoleFullViewModelInfo implements RoleFullViewModel {
     permissions: Permission[];
 }
 
+export class RoleUsersViewModelInfo implements RoleUsersViewModel {
+    id: number;
+    name: string;
+    users: Array<UserBriefViewModel>;
+}
+
+export class BranchViewModelInfo implements BranchViewModel {
+    id: number;
+    name: string;
+    description?: string;
+    level: number;
+    companyId: number;
+    isAccessible: boolean;
+}
+
+export class RoleBranchesViewModelInfo implements RoleBranchesViewModel {
+    id: number;
+    name: string;
+    branches: Array<BranchViewModel>;
+}
+
+export class RoleDetailsViewModelInfo implements RoleDetailsViewModel {
+    role: Role;
+    permissions: Array<Permission>;
+    branches: Array<BranchViewModel>;
+    users: Array<UserBriefViewModel>;
+}
+
+
+
+
 @Injectable()
 export class RoleService extends BaseService {
 
@@ -44,6 +75,14 @@ export class RoleService extends BaseService {
     private _postNewRoleUrl = Environment.BaseUrl + "/roles";
     private _putModifiedRolesUrl = Environment.BaseUrl + "/roles/{0}";//roleId
     private _deleteRoleUrl = Environment.BaseUrl + "/roles/{0}";//roleId
+    //users
+    private _getRoleUsersUrl = Environment.BaseUrl + "/roles/{0}/users";//roleId
+    private _putModifiedRoleUsersUrl = Environment.BaseUrl + "/roles/{0}/users";//roleId
+    //branches
+    private _getRoleBranchesUrl = Environment.BaseUrl + "/roles/{0}/branches";//roleId
+    private _putModifiedRoleBranchesUrl = Environment.BaseUrl + "/roles/{0}/branches";//roleId
+    //detail
+    private _getRoleDetailUrl = Environment.BaseUrl + "/roles/{0}/details";//roleId
 
     headers: Headers;
     options: RequestOptions;
@@ -128,6 +167,55 @@ export class RoleService extends BaseService {
         return this.http.delete(deleteByIdUrl, this.options)
             .map(response => response)
             .catch(this.handleError);
+    }
+
+    getRoleUsers(roleId: number) {
+        var url = String.Format(this._getRoleUsersUrl, roleId);
+        var options = new RequestOptions({ headers: this.headers });
+
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response).json());
+    }
+
+    modifiedRoleUsers(roleUsersViewModel: RoleUsersViewModel) {
+        var body = JSON.stringify(roleUsersViewModel);
+        var headers = this.headers;
+        var options = new RequestOptions({ headers: headers });
+
+        var url = String.Format(this._putModifiedRoleUsersUrl, roleUsersViewModel.id);
+
+        return this.http.put(url, body, options)
+            .map(res => res)
+            .catch(this.handleError);
+    }
+
+    getRoleBranches(roleId: number) {
+        var url = String.Format(this._getRoleBranchesUrl, roleId);
+        var options = new RequestOptions({ headers: this.headers });
+
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response).json());
+    }
+
+    modifiedRoleBranches(roleBranchesViewModel: RoleBranchesViewModel) {
+
+        var body = JSON.stringify(roleBranchesViewModel);
+        var headers = this.headers;
+        var options = new RequestOptions({ headers: headers });
+
+        var url = String.Format(this._putModifiedRoleBranchesUrl, roleBranchesViewModel.id);
+
+        return this.http.put(url, body, options)
+            .map(res => res)
+            .catch(this.handleError);
+    }
+
+    getRoleDetail(roleId: number) {
+        var url = String.Format(this._getRoleDetailUrl, roleId);
+        var options = new RequestOptions({ headers: this.headers });
+
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response).json());
     }
 
     private handleError(error: Response) {

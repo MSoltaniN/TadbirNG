@@ -42,17 +42,23 @@
             <kendo-grid [data]="gridPermissionsData"
                         [selectable]="true"
                         [selectedKeys]="selectedRows"
-                        [kendoGridSelectBy]="selectionKey"
-                        [height]="410">
+                        [kendoGridSelectBy]="selectionKey">
                 <ng-template kendoGridNoRecordsTemplate>
                     {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
                 </ng-template>
-                <kendo-grid-checkbox-column showSelectAll="true" width="50"></kendo-grid-checkbox-column>
+                <kendo-grid-checkbox-column showSelectAll="true" width="40"></kendo-grid-checkbox-column>
 
                 <!-- template for mobile -->
-                <kendo-grid-column media="(max-width: 450px)" width="150" sppc-grid-column="Role.name">
-                </kendo-grid-column>
-                <kendo-grid-column media="(max-width: 450px)" width="150" sppc-grid-column="Role.groupName">
+                <kendo-grid-column media="(max-width: 450px)" title="">
+                    <ng-template kendoGridCellTemplate let-role>
+                        <dl>
+                            <dt>{{ 'Role.Name' | translate }}</dt>
+                            <dd>{{ role.name }}</dd>
+
+                            <dt>{{ 'Role.GroupName' | translate }}</dt>
+                            <dd>{{ role.groupName }}</dd>                           
+                        </dl>
+                    </ng-template>
                 </kendo-grid-column>
                 <!-- template for mobile -->
                 <!-- additional columns on large devices -->

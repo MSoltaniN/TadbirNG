@@ -16,7 +16,7 @@ import { BaseService } from '../class/base.service';
 export class TransactionLineInfo implements TransactionLine {
     constructor(public id: number = 0, public debit: number = 0, public credit: number = 0, public description?: string,
         public fiscalPeriodId: number = 0, public branchId: number = 0, public transactionId: number = 0, public currencyId: number = 0,
-        public accountId: number = 0 ) {
+        public accountId: number = 0) {
 
     }
 }
@@ -49,6 +49,7 @@ export class TransactionLineService extends BaseService {
     private _postNewTransactionLineUrl = Environment.BaseUrl + "/transactions/{0}/articles";//transactionId
     private _putModifiedTransactionLineUrl = Environment.BaseUrl + "/transactions/articles/{0}";//articleId
     private _getTransactionInfo = Environment.BaseUrl + "/transactions/{0}";//transactionId
+    private _getTransactionLineById = Environment.BaseUrl + "/transactions/articles/{0}";//articleId
 
     headers: Headers;
     options: RequestOptions;
@@ -58,7 +59,7 @@ export class TransactionLineService extends BaseService {
         super();
 
 
-        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });        
+        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
         this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
         this.options = new RequestOptions({ headers: this.headers });
     }
@@ -97,7 +98,7 @@ export class TransactionLineService extends BaseService {
 
         var url = String.Format(this._getTransactionLinesUrl, transactionId);
 
-        var searchHeaders = this.headers;        
+        var searchHeaders = this.headers;
 
         var postBody = JSON.stringify(postItem);
 
@@ -154,6 +155,13 @@ export class TransactionLineService extends BaseService {
             .catch(this.handleError);
     }
 
+    getTransactionLineById(articleId: number) {
+        var url = String.Format(this._getTransactionLineById, articleId);
+        var options = new RequestOptions({ headers: this.headers });
+
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response).json());
+    }
 
     private handleError(error: Response) {
         return Observable.throw(error.json());

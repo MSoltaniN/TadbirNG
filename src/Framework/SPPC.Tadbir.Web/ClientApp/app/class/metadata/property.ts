@@ -11,4 +11,5 @@ export interface Property {
      nameResourceId: string;
      scriptType: string;
      storageType: string;
+     minLength: number;
 }

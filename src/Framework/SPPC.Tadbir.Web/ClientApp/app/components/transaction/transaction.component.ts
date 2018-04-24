@@ -213,7 +213,13 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
     public editHandler(arg: any) {
 
-        this.editDataItem = arg.dataItem;
+        //this.editDataItem = arg.dataItem;
+        this.sppcLoading.show();
+        this.transactionService.getTransactionById(arg.dataItem.id).subscribe(res => {
+            this.editDataItem = res.item;
+            this.sppcLoading.hide();
+        })
+
         this.isNew = false;
         this.errorMessage = '';
     }

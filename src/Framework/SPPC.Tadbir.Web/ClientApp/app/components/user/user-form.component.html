@@ -47,11 +47,11 @@
         </div>
 
         <div class="form-group">
-            <label for="passwordHash" class="control-label">{{ 'User.Password' | translate }}</label>
+            <label for="password" class="control-label">{{ 'User.Password' | translate }}</label>
 
-            <input type="password" class="k-textbox" formControlName="passwordHash" />
+            <input type="password" class="k-textbox" formControlName="password" />
 
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.passwordHash.valid || editForm.controls.passwordHash.pristine">
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.password.valid || editForm.controls.password.pristine">
                 {{ 'UserValidations.PasswordLenght' | translate }}
             </div>
         </div>
