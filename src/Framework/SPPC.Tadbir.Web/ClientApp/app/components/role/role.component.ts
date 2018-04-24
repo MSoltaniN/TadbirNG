@@ -83,6 +83,12 @@ export class RoleComponent extends DefaultComponent implements OnInit {
 
     }
 
+    selectionKey(context: RowArgs): string {
+
+        return context.dataItem.id + " " + context.index;
+        //return context.dataItem.id;
+    }
+
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
         if (this.selectedRows.length > 1)
             this.groupDelete = true;
