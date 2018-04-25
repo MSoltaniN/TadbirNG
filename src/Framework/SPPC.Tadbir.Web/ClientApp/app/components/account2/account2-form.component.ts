@@ -54,7 +54,7 @@ export class AccountFormComponent extends DefaultComponent {
         this.active = account !== undefined || this.isNew;
         if (account != undefined) {
             this.selectedValue = account.fiscalPeriodId.toString();
-            if (this.fiscalPeriodRows == undefined) this.getFiscalPeriod();
+            //if (this.fiscalPeriodRows == undefined) this.getFiscalPeriod();
         }
         
     }
@@ -63,7 +63,7 @@ export class AccountFormComponent extends DefaultComponent {
     @Output() save: EventEmitter<Account> = new EventEmitter();
     //create properties
 
-    public fiscalPeriodRows: Array<Item>;
+    //public fiscalPeriodRows: Array<Item>;
     public selectedValue: string = '1';
 
    
@@ -92,16 +92,10 @@ export class AccountFormComponent extends DefaultComponent {
 
         super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
 
-        this.getFiscalPeriod();
+        //this.getFiscalPeriod();
 
         
     }
 
-    /* load fiscal periods */
-    getFiscalPeriod() {
-
-        this.fiscalPeriodService.getFiscalPeriod(this.CompanyId).subscribe(res => {
-            this.fiscalPeriodRows = res;
-        });
-    }
+   
 }
