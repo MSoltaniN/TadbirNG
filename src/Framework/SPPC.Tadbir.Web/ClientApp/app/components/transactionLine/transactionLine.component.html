@@ -38,10 +38,10 @@
                         <!-- template for mobile -->
                         <dl>
                             <dt>{{ 'TransactionLine.Debit' | translate }}</dt>
-                            <dd>{{ transactionLine.debit }}</dd>
+                            <dd>{{ transactionLine.debit | number }}</dd>
 
                             <dt>{{ 'TransactionLine.Credit' | translate }}</dt>
-                            <dd>{{ transactionLine.credit }}</dd>
+                            <dd>{{ transactionLine.credit | number }}</dd>
 
                             <dt>{{ 'TransactionLine.Description' | translate  }}</dt>
                             <dd>{{ transactionLine.description }}</dd>
@@ -53,11 +53,11 @@
                         <table>
                             <tr>
                                 <td>{{ 'TransactionLine.DebitSum' | translate }}</td>
-                                <td>{{ debitSum }}</td>
+                                <td>{{ debitSum | number }}</td>
                             </tr>
                             <tr>
                                 <td>{{ 'TransactionLine.CreditSum' | translate }}</td>
-                                <td>{{ creditSum }}</td>
+                                <td>{{ creditSum | number }}</td>
                             </tr>
                         </table>
                     </ng-template>
@@ -66,21 +66,21 @@
                 <!-- template for mid-size devices -->
                 <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px) and (max-width: 1024px)"></kendo-grid-checkbox-column>
 
-                <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="TransactionLine.debit">
+                <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" format="{0:n}" sppc-grid-column="TransactionLine.debit">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-grid-filter [metaData]="getMeta('debit')" [column]="column" [spinners]="true" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                     <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
-                        {{debitSum}}
+                        {{ debitSum | number }}
                     </ng-template>
                 </kendo-grid-column>
 
-                <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="TransactionLine.credit">
+                <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" format="{0:n}" sppc-grid-column="TransactionLine.credit">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-grid-filter [metaData]="getMeta('credit')" [column]="column" [spinners]="true" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                     <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
-                        {{creditSum}}
+                        {{ creditSum | number }}
                     </ng-template>
                 </kendo-grid-column>
 
@@ -98,21 +98,21 @@
                 <!-- additional columns on large devices -->
                 <kendo-grid-checkbox-column showSelectAll="true" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
 
-                <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="TransactionLine.debit">
+                <kendo-grid-column media="(min-width: 1024px)" width="200" format="{0:n}" sppc-grid-column="TransactionLine.debit">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-grid-filter [metaData]="getMeta('debit')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                     <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
-                        {{debitSum}}
+                        {{ debitSum | number }}
                     </ng-template>
                 </kendo-grid-column>
 
-                <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="TransactionLine.credit">
+                <kendo-grid-column media="(min-width: 1024px)" width="200" format="{0:n}" sppc-grid-column="TransactionLine.credit">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                         <sppc-grid-filter [metaData]="getMeta('credit')" [column]="column" [filter]="filter"></sppc-grid-filter>
                     </ng-template>
                     <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
-                        {{creditSum}}
+                        {{ creditSum | number }}
                     </ng-template>
                 </kendo-grid-column>
 

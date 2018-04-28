@@ -27,13 +27,14 @@ interface Item {
 @Component({
     selector: 'transactionLine-form-component',
     styles: [
-        "input[type=text],textarea { width: 100%; } .ddl-fAcc {width:49%}"
+        "input[type=text],textarea { width: 100%; } .ddl-fAcc {width:49%} /deep/ kendo-numerictextbox{ width:100% !important; }"
     ],
     templateUrl: './TransactionLine-form.component.html'
 })
 
 export class TransactionLineFormComponent extends DefaultComponent {
 
+    public decimals: number = 0;
     ////TODO
     //public dollarMask = createNumberMask({
     //    prefix: '$ ',
