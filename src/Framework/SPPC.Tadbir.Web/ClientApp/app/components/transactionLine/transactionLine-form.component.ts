@@ -34,31 +34,16 @@ interface Item {
 
 export class TransactionLineFormComponent extends DefaultComponent {
 
-    //TODO
-    public dollarMask = createNumberMask({
-        prefix: '$ ',
-        suffix: ''
-    })
+    ////TODO
+    //public dollarMask = createNumberMask({
+    //    prefix: '$ ',
+    //    suffix: ''
+    //})
 
-    public rialMask = createNumberMask({
-        prefix: '',
-        suffix: ' ریال'
-    })
-
-    //create a form controls
-    //private editForm = new FormGroup({
-    //    id: new FormControl(),
-    //    debit: new FormControl("", Validators.required),
-    //    credit: new FormControl("", Validators.required),
-    //    description: new FormControl("", Validators.maxLength(512)),
-    //    transactionId: new FormControl(),
-    //    currencyId: new FormControl("", Validators.required),
-
-    //    accountId: new FormControl("", Validators.required),
-    //    detailId: new FormControl(),
-    //    costCenterId: new FormControl(),
-    //    projectId: new FormControl()
-    //});
+    //public rialMask = createNumberMask({
+    //    prefix: '',
+    //    suffix: ' ریال'
+    //})
 
     //create properties
     public accountsRows: Array<Item>;

@@ -229,9 +229,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     public addNew() {
         this.isNew = true;
         this.errorMessage = '';
-        var article = new TransactionLineInfo();
-        article.transactionId = this.transactionId;
-        this.editDataItem = article;
+        this.editDataItem = new TransactionLineInfo();
     }
 
     public saveHandler(transactionLine: TransactionLine) {
@@ -258,6 +256,8 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
                 }));
         }
         else {
+            transactionLine.transactionId = this.transactionId;
+
             this.transactionLineService.insertTransactionLine(this.transactionId, transactionLine)
                 .subscribe((response: any) => {
 
