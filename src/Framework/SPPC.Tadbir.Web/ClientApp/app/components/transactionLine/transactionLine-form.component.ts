@@ -27,38 +27,24 @@ interface Item {
 @Component({
     selector: 'transactionLine-form-component',
     styles: [
-        "input[type=text],textarea { width: 100%; } .ddl-fAcc {width:49%}"
+        "input[type=text],textarea { width: 100%; } .ddl-fAcc {width:49%} /deep/ kendo-numerictextbox{ width:100% !important; }"
     ],
     templateUrl: './TransactionLine-form.component.html'
 })
 
 export class TransactionLineFormComponent extends DefaultComponent {
 
-    //TODO
-    public dollarMask = createNumberMask({
-        prefix: '$ ',
-        suffix: ''
-    })
+    public decimals: number = 0;
+    ////TODO
+    //public dollarMask = createNumberMask({
+    //    prefix: '$ ',
+    //    suffix: ''
+    //})
 
-    public rialMask = createNumberMask({
-        prefix: '',
-        suffix: ' ریال'
-    })
-
-    //create a form controls
-    //private editForm = new FormGroup({
-    //    id: new FormControl(),
-    //    debit: new FormControl("", Validators.required),
-    //    credit: new FormControl("", Validators.required),
-    //    description: new FormControl("", Validators.maxLength(512)),
-    //    transactionId: new FormControl(),
-    //    currencyId: new FormControl("", Validators.required),
-
-    //    accountId: new FormControl("", Validators.required),
-    //    detailId: new FormControl(),
-    //    costCenterId: new FormControl(),
-    //    projectId: new FormControl()
-    //});
+    //public rialMask = createNumberMask({
+    //    prefix: '',
+    //    suffix: ' ریال'
+    //})
 
     //create properties
     public accountsRows: Array<Item>;
