@@ -25,13 +25,13 @@ namespace <#= _namespace #>
         private <#= _class #>()
         {
         }
-<# foreach (string key in _keys)
+<# foreach (var entry in _resources)
    {#>
 
         /// <summary>
-        /// Key name for localized resource '<#= key #>'
+        /// Default text : <#= entry.Value #>
         /// </summary>
-        public const string <#= key #> = "<#= key #>";
+        public const string <#= entry.Key #> = "<#= entry.Key #>";
 <# } #>
     }
 }

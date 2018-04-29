@@ -71,29 +71,29 @@ namespace SPPC.Framework.Tools.ResXTool
             this.Write("()\r\n        {\r\n        }\r\n");
             
             #line 28 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ResXTool\ResXKeyClass.tt"
- foreach (string key in _keys)
+ foreach (var entry in _resources)
    {
             
             #line default
             #line hidden
-            this.Write("\r\n        /// <summary>\r\n        /// Key name for localized resource \'");
+            this.Write("\r\n        /// <summary>\r\n        /// Default text : ");
             
             #line 32 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ResXTool\ResXKeyClass.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(key));
+            this.Write(this.ToStringHelper.ToStringWithCulture(entry.Value));
             
             #line default
             #line hidden
-            this.Write("\'\r\n        /// </summary>\r\n        public const string ");
+            this.Write("\r\n        /// </summary>\r\n        public const string ");
             
             #line 34 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ResXTool\ResXKeyClass.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(key));
+            this.Write(this.ToStringHelper.ToStringWithCulture(entry.Key));
             
             #line default
             #line hidden
             this.Write(" = \"");
             
             #line 34 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ResXTool\ResXKeyClass.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(key));
+            this.Write(this.ToStringHelper.ToStringWithCulture(entry.Key));
             
             #line default
             #line hidden

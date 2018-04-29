@@ -14,27 +14,27 @@ namespace SPPC.Framework.Tools.ResXTool
         {
             _class = Path.GetFileNameWithoutExtension(resPath);
             _namespace = codeNamespace;
-            _keys = ExtractResourceKeys(resPath).ToArray();
+            _resources = ExtractResourceKeys(resPath);
             _version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
         }
 
-        private static IEnumerable<string> ExtractResourceKeys(string path)
+        private static IDictionary<string, string> ExtractResourceKeys(string path)
         {
-            var keys = new List<string>();
+            var resources = new Dictionary<string, string>();
             using (var resReader = new ResXResourceReader(path))
             {
                 foreach (DictionaryEntry entry in resReader)
                 {
-                    keys.Add(entry.Key.ToString());
+                    resources.Add(entry.Key.ToString(), entry.Value.ToString());
                 }
             }
 
-            return keys;
+            return resources;
         }
 
         private readonly string _namespace;
         private readonly string _class;
-        private string[] _keys;
+        private IDictionary<string, string> _resources;
         private string _version;
     }
 }
