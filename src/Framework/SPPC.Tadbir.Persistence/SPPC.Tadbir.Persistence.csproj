@@ -22,9 +22,37 @@
     <DocumentationFile>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.Persistence.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\bin\Release\netstandard2.0\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Mapping\Inventory\**" />
+    <Compile Remove="Mapping\Procurement\**" />
+    <Compile Remove="Mapping\Sales\**" />
+    <Compile Remove="Mapping\Warehousing\**" />
+    <EmbeddedResource Remove="Mapping\Inventory\**" />
+    <EmbeddedResource Remove="Mapping\Procurement\**" />
+    <EmbeddedResource Remove="Mapping\Sales\**" />
+    <EmbeddedResource Remove="Mapping\Warehousing\**" />
+    <None Remove="Mapping\Inventory\**" />
+    <None Remove="Mapping\Procurement\**" />
+    <None Remove="Mapping\Sales\**" />
+    <None Remove="Mapping\Warehousing\**" />
+  </ItemGroup>
+
   <ItemGroup>
     <Compile Remove="Class1.cs" />
+    <Compile Remove="Mapping\Contact\BusinessPartnerMap.cs" />
+    <Compile Remove="Mapping\Contact\CustomerMap.cs" />
+    <Compile Remove="Mapping\Core\ServiceJobMap.cs" />
     <Compile Remove="Mapping\Corporate\Branch.cs" />
+    <Compile Remove="Mapping\Corporate\BusinessUnitMap.cs" />
+    <Compile Remove="Mapping\Finance\FullAccountMap.cs" />
+    <Compile Remove="Mapping\Finance\FullDetailMap.cs" />
+    <Compile Remove="Mapping\Finance\FullDetailTypeMap.cs" />
+    <Compile Remove="Repository\InventoryRepository.cs" />
+    <Compile Remove="Repository\RequisitionRepository.cs" />
   </ItemGroup>
 
   <ItemGroup>

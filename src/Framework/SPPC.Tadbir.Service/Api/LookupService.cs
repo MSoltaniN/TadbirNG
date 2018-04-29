@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Service;
 using SPPC.Tadbir.Api;
-using SPPC.Tadbir.ViewModel.Inventory;
-using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.Service
 {
@@ -93,96 +91,6 @@ namespace SPPC.Tadbir.Service
         {
             var currencyLookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.Currencies);
             return currencyLookup;
-        }
-
-        /// <summary>
-        /// شرکای تجاری موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه شرکای تجاری موجود</returns>
-        public IEnumerable<KeyValue> LookupPartners()
-        {
-            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.Partners);
-            return lookup;
-        }
-
-        /// <summary>
-        /// واحد های سازمانی موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه واحد های سازمانی موجود</returns>
-        public IEnumerable<KeyValue> LookupBusinessUnits()
-        {
-            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.Units);
-            return lookup;
-        }
-
-        /// <summary>
-        /// انبارهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه انبارهای موجود</returns>
-        public IEnumerable<KeyValue> LookupWarehouses()
-        {
-            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.Warehouses);
-            return lookup;
-        }
-
-        /// <summary>
-        /// کالاهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه کالاهای موجود</returns>
-        public IEnumerable<KeyValue> LookupProducts()
-        {
-            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.Products);
-            return lookup;
-        }
-
-        /// <summary>
-        /// واحدهای اندازه گیری موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه واحدهای اندازه گیری موجود</returns>
-        public IEnumerable<KeyValue> LookupUnitsOfMeasurement()
-        {
-            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.UnitsOfMeasurement);
-            return lookup;
-        }
-
-        /// <summary>
-        /// انواع درخواست کالاهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه انواع درخواست کالاهای موجود</returns>
-        public IEnumerable<KeyValue> LookupRequisitionVoucherTypes()
-        {
-            var lookup = _apiClient.Get<IEnumerable<KeyValue>>(LookupApi.RequisitionVoucherTypes);
-            return lookup;
-        }
-
-        /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات درخواست کار را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>وابستگی های مورد نیاز درخواست کار</returns>
-        public VoucherDependsViewModel LookupRequisitionVoucherDepends()
-        {
-            var voucherDepends = _apiClient.Get<VoucherDependsViewModel>(LookupApi.RequisitionVoucherDepends);
-            return voucherDepends;
-        }
-
-        /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات سطر درخواست کار را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>وابستگی های مورد نیاز سطر درخواست کار</returns>
-        public VoucherLineDependsViewModel LookupRequisitionVoucherLineDepends()
-        {
-            var lineDepends = _apiClient.Get<VoucherLineDependsViewModel>(LookupApi.RequisitionVoucherLineDepends);
-            return lineDepends;
-        }
-
-        /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات سطر موجودی کالا را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>وابستگی های مورد نیاز سطر موجودی کالا</returns>
-        public InventoryDependsViewModel LookupProductInventoryDepends()
-        {
-            var depends = _apiClient.Get<InventoryDependsViewModel>(LookupApi.ProductInventoryDepends);
-            return depends;
         }
 
         private IApiClient _apiClient;

@@ -23,10 +23,22 @@
     <DocumentationFile>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.Interfaces.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\bin\Release\netstandard2.0\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
+    <Compile Remove="Api\InventoryApi.cs" />
+    <Compile Remove="Api\LookupApi.Inventory.cs" />
+    <Compile Remove="Api\LookupApi.Procurement.cs" />
+    <Compile Remove="Api\RequisitionApi.cs" />
     <Compile Remove="Api\SecurityApi.cs" />
     <Compile Remove="Class1.cs" />
     <Compile Remove="Persistence\IAccountRepository.Generated.cs" />
+    <Compile Remove="Persistence\IInventoryRepository.cs" />
+    <Compile Remove="Persistence\IRequisitionRepository.cs" />
+    <Compile Remove="Service\IInventoryService.cs" />
+    <Compile Remove="Service\IRequisitionService.cs" />
   </ItemGroup>
 
   <ItemGroup>

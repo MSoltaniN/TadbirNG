@@ -7,22 +7,17 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Model.Auth;
-using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.Model.Inventory;
 using SPPC.Tadbir.Model.Metadata;
-using SPPC.Tadbir.Model.Procurement;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Inventory;
 using SPPC.Tadbir.ViewModel.Metadata;
-using SPPC.Tadbir.ViewModel.Procurement;
 using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Mapper
@@ -74,8 +69,6 @@ namespace SPPC.Tadbir.Mapper
             MapFinanceTypes(mapperConfig);
             MapCorporateTypes(mapperConfig);
             MapWorkflowTypes(mapperConfig);
-            MapProcurementTypes(mapperConfig);
-            MapInventoryTypes(mapperConfig);
             MapContactTypes(mapperConfig);
             MapCoreTypes(mapperConfig);
             MapMetadataTypes(mapperConfig);
@@ -139,12 +132,6 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Project, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
-            mapperConfig.CreateMap<FullAccount, FullAccountViewModel>();
-            mapperConfig.CreateMap<FullAccountViewModel, FullAccount>()
-                .AfterMap((viewModel, model) => model.Account.Id = viewModel.AccountId ?? 0)
-                .AfterMap((viewModel, model) => model.Detail.Id = viewModel.DetailId ?? 0)
-                .AfterMap((viewModel, model) => model.CostCenter.Id = viewModel.CostCenterId ?? 0)
-                .AfterMap((viewModel, model) => model.Project.Id = viewModel.ProjectId ?? 0);
             mapperConfig.CreateMap<Transaction, TransactionFullViewModel>()
                 .ForMember(
                     dest => dest.Transaction,
@@ -218,9 +205,6 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.IsAccessible, opts => opts.UseValue(true));
             mapperConfig.CreateMap<BranchViewModel, Branch>()
                 .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId);
-            mapperConfig.CreateMap<BusinessUnit, KeyValue>()
-                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
         }
 
         private static void MapWorkflowTypes(IMapperConfigurationExpression mapperConfig)
@@ -311,149 +295,6 @@ namespace SPPC.Tadbir.Mapper
                                 .ToString()));
         }
 
-        private static void MapProcurementTypes(IMapperConfigurationExpression mapperConfig)
-        {
-            mapperConfig.CreateMap<RequisitionVoucherType, KeyValue>()
-                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
-            mapperConfig.CreateMap<RequisitionVoucher, VoucherSummaryViewModel>();
-            mapperConfig.CreateMap<RequisitionVoucher, RequisitionFullViewModel>()
-                .ForMember(
-                    dest => dest.Voucher,
-                    opts => opts.MapFrom(src => _autoMapper.Map<RequisitionVoucherViewModel>(src)))
-                .ForMember(dest => dest.Lines, opts => opts.Ignore())
-                .AfterMap((model, viewModel) => Array.ForEach(
-                    model.Lines.ToArray(),
-                    line => viewModel.Lines.Add(_autoMapper.Map<VoucherLineSummaryViewModel>(line))));
-            mapperConfig.CreateMap<RequisitionVoucher, RequisitionVoucherViewModel>()
-                .ForMember(
-                    dest => dest.OrderedDate,
-                    opts => opts.MapFrom(
-                        src => JalaliDateTime.FromDateTime(src.OrderedDate).ToShortDateString()))
-                .ForMember(
-                    dest => dest.RequiredDate,
-                    opts => opts.MapFrom(
-                        src => src.RequiredDate.HasValue
-                            ? JalaliDateTime.FromDateTime(src.RequiredDate.Value).ToShortDateString()
-                            : String.Empty))
-                .ForMember(
-                    dest => dest.PromisedDate,
-                    opts => opts.MapFrom(
-                        src => src.PromisedDate.HasValue
-                            ? JalaliDateTime.FromDateTime(src.PromisedDate.Value).ToShortDateString()
-                            : String.Empty));
-            mapperConfig.CreateMap<RequisitionVoucherViewModel, RequisitionVoucher>()
-                .ForMember(
-                    dest => dest.OrderedDate,
-                    opts => opts.MapFrom(
-                        src => JalaliDateTime.Parse(src.OrderedDate).ToGregorian()))
-                .ForMember(
-                    dest => dest.RequiredDate,
-                    opts => opts.MapFrom(
-                        src => !String.IsNullOrWhiteSpace(src.RequiredDate)
-                            ? JalaliDateTime.Parse(src.RequiredDate).ToGregorian()
-                            : (DateTime?)null))
-                .ForMember(
-                    dest => dest.PromisedDate,
-                    opts => opts.MapFrom(
-                        src => !String.IsNullOrWhiteSpace(src.PromisedDate)
-                            ? JalaliDateTime.Parse(src.PromisedDate).ToGregorian()
-                            : (DateTime?)null))
-                .AfterMap((viewModel, model) => model.Type.Id = viewModel.TypeId ?? 0)
-                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
-                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
-                .AfterMap((viewModel, model) => model.Requester.Id = viewModel.RequesterId ?? 0)
-                .AfterMap((viewModel, model) => model.FullAccount.Id = viewModel.FullAccount.Id)
-                .AfterMap((viewModel, model) => model.Receiver.Id = viewModel.ReceiverId ?? 0)
-                .AfterMap((viewModel, model) => model.RequesterUnit.Id = viewModel.RequesterUnitId ?? 0)
-                .AfterMap((viewModel, model) => model.ReceiverUnit.Id = viewModel.ReceiverUnitId ?? 0)
-                .AfterMap((viewModel, model) => model.Warehouse.Id = viewModel.WarehouseId ?? 0);
-
-            mapperConfig.CreateMap<RequisitionVoucherLine, VoucherLineSummaryViewModel>()
-                .ForMember(
-                    dest => dest.RequiredDate,
-                    opts => opts.MapFrom(
-                        src => JalaliDateTime.FromDateTime(src.RequiredDate).ToShortDateString()));
-            mapperConfig.CreateMap<RequisitionVoucherLine, RequisitionVoucherLineViewModel>()
-                .ForMember(
-                    dest => dest.DocumentAction,
-                    opts => opts.MapFrom(src => src.Action))
-                .ForMember(
-                    dest => dest.RequiredDate,
-                    opts => opts.MapFrom(
-                        src => JalaliDateTime.FromDateTime(src.RequiredDate).ToShortDateString()))
-                .ForMember(
-                    dest => dest.PromisedDate,
-                    opts => opts.MapFrom(
-                        src => src.PromisedDate.HasValue
-                            ? JalaliDateTime.FromDateTime(src.PromisedDate.Value).ToShortDateString()
-                            : String.Empty))
-                .ForMember(
-                    dest => dest.DeliveredDate,
-                    opts => opts.MapFrom(
-                        src => src.DeliveredDate.HasValue
-                            ? JalaliDateTime.FromDateTime(src.DeliveredDate.Value).ToShortDateString()
-                            : String.Empty))
-                .ForMember(
-                    dest => dest.LastOrderedDate,
-                    opts => opts.MapFrom(
-                        src => src.LastOrderedDate.HasValue
-                            ? JalaliDateTime.FromDateTime(src.LastOrderedDate.Value).ToShortDateString()
-                            : String.Empty));
-            mapperConfig.CreateMap<RequisitionVoucherLineViewModel, RequisitionVoucherLine>()
-                .ForMember(
-                    dest => dest.Action,
-                    opts => opts.MapFrom(src => src.DocumentAction))
-                .ForMember(
-                    dest => dest.RequiredDate,
-                    opts => opts.MapFrom(
-                        src => JalaliDateTime.Parse(src.RequiredDate).ToGregorian()))
-                .ForMember(
-                    dest => dest.PromisedDate,
-                    opts => opts.MapFrom(
-                        src => !String.IsNullOrWhiteSpace(src.PromisedDate)
-                            ? JalaliDateTime.Parse(src.PromisedDate).ToGregorian()
-                            : (DateTime?)null))
-                .ForMember(
-                    dest => dest.DeliveredDate,
-                    opts => opts.MapFrom(
-                        src => !String.IsNullOrWhiteSpace(src.DeliveredDate)
-                            ? JalaliDateTime.Parse(src.DeliveredDate).ToGregorian()
-                            : (DateTime?)null))
-                .ForMember(
-                    dest => dest.LastOrderedDate,
-                    opts => opts.MapFrom(
-                        src => !String.IsNullOrWhiteSpace(src.LastOrderedDate)
-                            ? JalaliDateTime.Parse(src.LastOrderedDate).ToGregorian()
-                            : (DateTime?)null))
-                .AfterMap((viewModel, model) => model.Voucher.Id = viewModel.VoucherId)
-                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
-                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
-                .AfterMap((viewModel, model) => model.Uom.Id = viewModel.UomId)
-                .AfterMap((viewModel, model) => model.Product.Id = viewModel.ProductId)
-                .AfterMap((viewModel, model) => model.Warehouse.Id = viewModel.WarehouseId);
-        }
-
-        private static void MapInventoryTypes(IMapperConfigurationExpression mapperConfig)
-        {
-            mapperConfig.CreateMap<Warehouse, KeyValue>()
-                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
-            mapperConfig.CreateMap<Product, KeyValue>()
-                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
-            mapperConfig.CreateMap<UnitOfMeasurement, KeyValue>()
-                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
-            mapperConfig.CreateMap<ProductInventory, ProductInventoryViewModel>();
-            mapperConfig.CreateMap<ProductInventoryViewModel, ProductInventory>()
-                .AfterMap((viewModel, model) => model.Product.Id = viewModel.ProductId ?? 0)
-                .AfterMap((viewModel, model) => model.Uom.Id = viewModel.UomId ?? 0)
-                .AfterMap((viewModel, model) => model.Warehouse.Id = viewModel.WarehouseId ?? 0)
-                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
-                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
-        }
-
         private static void MapCoreTypes(IMapperConfigurationExpression mapperConfig)
         {
             mapperConfig.CreateMap<DocumentAction, DocumentActionViewModel>()
@@ -496,9 +337,6 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapContactTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<BusinessPartner, KeyValue>()
-                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
         }
 
         private static void MapMetadataTypes(IMapperConfigurationExpression mapperConfig)

@@ -41,10 +41,8 @@ namespace SPPC.Tadbir.Web.Api
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<ILookupRepository, LookupRepository>();
-            services.AddTransient<IInventoryRepository, InventoryRepository>();
             services.AddTransient<ISecurityRepository, SecurityRepository>();
             services.AddTransient<ITransactionRepository, TransactionRepository>();
-            services.AddTransient<IRequisitionRepository, RequisitionRepository>();
             services.AddTransient<IMetadataRepository, MetadataRepository>();
             services.AddTransient<IMetadataDecorator, MetadataDecorator>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();

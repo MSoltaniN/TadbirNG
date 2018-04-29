@@ -51,19 +51,8 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public virtual DateTime ModifiedDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the collection of all financial transaction lines (articles) that use this currency in their monetary values
-        /// </summary>
-        public virtual IList<TransactionLine> TransactionLines { get; protected set; }
-
         private void InitReferences()
         {
-            this.TransactionLines = new List<TransactionLine>();
-
-            //// IMPORTANT NOTE: DO NOT add initialization statements for one-to-one and many-to-one relationships.
-            //// 1. Initializing one-to-one associations causes StackOverflowException (A initializes B and B initializes A)
-            //// 2. Initializing many-to-one associations causes most mapping tests to fail, because they will trigger many
-            //// unnecessary operations (INSERT and UPDATE) by in-memory SQLite database.
         }
     }
 }

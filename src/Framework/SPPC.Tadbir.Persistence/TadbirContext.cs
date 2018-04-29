@@ -8,14 +8,9 @@ using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.Model.Inventory;
 using SPPC.Tadbir.Model.Metadata;
-using SPPC.Tadbir.Model.Procurement;
-using SPPC.Tadbir.Model.Sales;
-using SPPC.Tadbir.Model.Warehousing;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Persistence.Mapping;
-using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -41,12 +36,9 @@ namespace SPPC.Tadbir.Persistence
         {
             AccountMap.BuildMapping(modelBuilder.Entity<Account>());
             BranchMap.BuildMapping(modelBuilder.Entity<Branch>());
-            BusinessPartnerMap.BuildMapping(modelBuilder.Entity<BusinessPartner>());
-            BusinessUnitMap.BuildMapping(modelBuilder.Entity<BusinessUnit>());
             CompanyMap.BuildMapping(modelBuilder.Entity<Company>());
             CostCenterMap.BuildMapping(modelBuilder.Entity<CostCenter>());
             CurrencyMap.BuildMapping(modelBuilder.Entity<Currency>());
-            CustomerMap.BuildMapping(modelBuilder.Entity<Customer>());
             DetailAccountMap.BuildMapping(modelBuilder.Entity<DetailAccount>());
             DocumentMap.BuildMapping(modelBuilder.Entity<Document>());
             DocumentActionMap.BuildMapping(modelBuilder.Entity<DocumentAction>());
@@ -54,36 +46,19 @@ namespace SPPC.Tadbir.Persistence
             DocumentTypeMap.BuildMapping(modelBuilder.Entity<DocumentType>());
             EntityMap.BuildMapping(modelBuilder.Entity<Entity>());
             FiscalPeriodMap.BuildMapping(modelBuilder.Entity<FiscalPeriod>());
-            FullAccountMap.BuildMapping(modelBuilder.Entity<FullAccount>());
-            FullDetailMap.BuildMapping(modelBuilder.Entity<FullDetail>());
-            FullDetailTypeMap.BuildMapping(modelBuilder.Entity<FullDetailType>());
-            InvoiceMap.BuildMapping(modelBuilder.Entity<Invoice>());
-            InvoiceLineMap.BuildMapping(modelBuilder.Entity<InvoiceLine>());
-            IssueReceiptVoucherMap.BuildMapping(modelBuilder.Entity<IssueReceiptVoucher>());
-            IssueReceiptVoucherLineMap.BuildMapping(modelBuilder.Entity<IssueReceiptVoucherLine>());
-            IssueReceiptVoucherTypeMap.BuildMapping(modelBuilder.Entity<IssueReceiptVoucherType>());
             PermissionMap.BuildMapping(modelBuilder.Entity<Permission>());
             PermissionGroupMap.BuildMapping(modelBuilder.Entity<PermissionGroup>());
             PersonMap.BuildMapping(modelBuilder.Entity<Person>());
-            ProductMap.BuildMapping(modelBuilder.Entity<Product>());
-            ProductCategoryMap.BuildMapping(modelBuilder.Entity<ProductCategory>());
-            ProductInventoryMap.BuildMapping(modelBuilder.Entity<ProductInventory>());
             ProjectMap.BuildMapping(modelBuilder.Entity<Project>());
             PropertyMap.BuildMapping(modelBuilder.Entity<Property>());
-            RequisitionVoucherMap.BuildMapping(modelBuilder.Entity<RequisitionVoucher>());
-            RequisitionVoucherLineMap.BuildMapping(modelBuilder.Entity<RequisitionVoucherLine>());
-            RequisitionVoucherTypeMap.BuildMapping(modelBuilder.Entity<RequisitionVoucherType>());
             RoleMap.BuildMapping(modelBuilder.Entity<Role>());
             RoleBranchMap.BuildMapping(modelBuilder.Entity<RoleBranch>());
             RoleFiscalPeriodMap.BuildMapping(modelBuilder.Entity<RoleFiscalPeriod>());
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());
-            ServiceJobMap.BuildMapping(modelBuilder.Entity<ServiceJob>());
             TransactionMap.BuildMapping(modelBuilder.Entity<Transaction>());
             TransactionLineMap.BuildMapping(modelBuilder.Entity<TransactionLine>());
-            UnitOfMeasurementMap.BuildMapping(modelBuilder.Entity<UnitOfMeasurement>());
             UserMap.BuildMapping(modelBuilder.Entity<User>());
             UserRoleMap.BuildMapping(modelBuilder.Entity<UserRole>());
-            WarehouseMap.BuildMapping(modelBuilder.Entity<Warehouse>());
             WorkItemMap.BuildMapping(modelBuilder.Entity<WorkItem>());
             WorkItemDocumentMap.BuildMapping(modelBuilder.Entity<WorkItemDocument>());
             WorkItemHistoryMap.BuildMapping(modelBuilder.Entity<WorkItemHistory>());

@@ -18,7 +18,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\InventoriesController.cs" />
     <Compile Remove="Controllers\LookupController.Finance.cs" />
+    <Compile Remove="Controllers\RequisitionsController.cs" />
     <Compile Remove="Controllers\ValuesController.cs" />
     <Compile Remove="Resources\Types\EntityNames.cs" />
     <Compile Remove="Resources\Types\Messages.cs" />

@@ -13,9 +13,7 @@
 using System;
 using System.Collections.Generic;
 using SPPC.Tadbir.Model.Contact;
-using SPPC.Tadbir.Model.Finance;
 using SPPC.Framework.Domain;
-using SPPC.Tadbir.Model.Core;
 
 namespace SPPC.Tadbir.Model.Auth
 {
@@ -71,26 +69,6 @@ namespace SPPC.Tadbir.Model.Auth
         public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the collection of all create action history by this user
-        /// </summary>
-        public virtual IList<DocumentAction> CreatedActions { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the collection of all modify action history by this user
-        /// </summary>
-        public virtual IList<DocumentAction> ModifiedActions { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the collection of all confirm action history by this user
-        /// </summary>
-        public virtual IList<DocumentAction> ConfirmedActions { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the collection of all approve action history by this user
-        /// </summary>
-        public virtual IList<DocumentAction> ApprovedActions { get; protected set; }
-
-        /// <summary>
         /// Gets or sets the business person that this user represents
         /// </summary>
         public virtual Person Person { get; set; }
@@ -104,12 +82,7 @@ namespace SPPC.Tadbir.Model.Auth
         private void InitReferences()
         {
             Person = new Person();
-            CreatedActions = new List<DocumentAction>();
-            ModifiedActions = new List<DocumentAction>();
-            ConfirmedActions = new List<DocumentAction>();
-            ApprovedActions = new List<DocumentAction>();
             UserRoles = new List<UserRole>();
-            ////Roles = new List<Role>();
         }
     }
 }

@@ -10,12 +10,10 @@ using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
-using SPPC.Tadbir.Model.Procurement;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
-using SPPC.Tadbir.ViewModel.Procurement;
 using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Mapper.Tests
@@ -549,64 +547,6 @@ namespace SPPC.Tadbir.Mapper.Tests
 
             // Act & Assert
             AssertMapperCanConvertFromSourceToDestination<DocumentViewModel, Document>();
-        }
-
-        #endregion
-
-        #region Procurement Type Mapping Tests
-
-        [Test]
-        public void ContainsMappingFromRequisitionVoucherToRequisitionVoucherViewModel()
-        {
-            // Arrange (Done in FixtureSetup)
-
-            // Act & Assert
-            AssertMappingIsDefined<RequisitionVoucher, RequisitionVoucherViewModel>();
-        }
-
-        [Test]
-        public void CanMapFromRequisitionVoucherToRequisitionVoucherViewModel()
-        {
-            // Arrange (Done in FixtureSetup)
-
-            // Act & Assert
-            AssertMapperCanConvertFromSourceToDestination<RequisitionVoucher, RequisitionVoucherViewModel>();
-        }
-
-        [Test]
-        public void ContainsMappingFromRequisitionVoucherLineToVoucherLineSummaryViewModel()
-        {
-            // Arrange (Done in FixtureSetup)
-
-            // Act & Assert
-            AssertMappingIsDefined<RequisitionVoucherLine, VoucherLineSummaryViewModel>();
-        }
-
-        [Test]
-        public void CanMapFromRequisitionVoucherLineToVoucherLineSummaryViewModel()
-        {
-            // Arrange (Done in FixtureSetup)
-
-            // Act & Assert
-            AssertMapperCanConvertFromSourceToDestination<RequisitionVoucherLine, VoucherLineSummaryViewModel>();
-        }
-
-        [Test]
-        public void ContainsMappingFromRequisitionVoucherToRequisitionFullViewModel()
-        {
-            // Arrange (Done in FixtureSetup)
-
-            // Act & Assert
-            AssertMappingIsDefined<RequisitionVoucher, RequisitionFullViewModel>();
-        }
-
-        [Test]
-        public void CanMapFromRequisitionVoucherToRequisitionFullViewModel()
-        {
-            // Arrange (Done in FixtureSetup)
-
-            // Act & Assert
-            AssertMapperCanConvertFromSourceToDestination<RequisitionVoucher, RequisitionFullViewModel>();
         }
 
         #endregion

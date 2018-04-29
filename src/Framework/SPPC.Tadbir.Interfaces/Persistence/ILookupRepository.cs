@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
-using SPPC.Tadbir.ViewModel.Inventory;
-using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -137,67 +135,5 @@ namespace SPPC.Tadbir.Persistence
         #endregion
 
         #endregion
-
-        #region Inventory Subsystem lookup
-
-        /// <summary>
-        /// انبارهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه انبارهای تعریف شده</returns>
-        IEnumerable<KeyValue> GetWarehouses();
-
-        /// <summary>
-        /// کالاهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه کالاهای تعریف شده</returns>
-        IEnumerable<KeyValue> GetProducts();
-
-        /// <summary>
-        /// واحدهای شمارش تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه واحدهای شمارش تعریف شده</returns>
-        IEnumerable<KeyValue> GetUnitsOfMeasurement();
-
-        /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات یک سطر موجودی کالا را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات پایه مورد نیاز سطر موجودی کالا</returns>
-        InventoryDependsViewModel GetInventoryDepends();
-
-        #endregion
-
-        #region Procurement Subsystem lookup
-
-        /// <summary>
-        /// انواع درخواست کالای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه انواع درخواست کالای تعریف شده</returns>
-        IEnumerable<KeyValue> GetRequisitionVoucherTypes();
-
-        /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات یک درخواست کالا را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات پایه مورد نیاز درخواست کالا</returns>
-        VoucherDependsViewModel GetRequisitionDepends();
-
-        /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات یک سطر درخواست کالا را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات پایه مورد نیاز سطر درخواست کالا</returns>
-        VoucherLineDependsViewModel GetRequisitionLineDepends();
-
-        #endregion
-
-        /// <summary>
-        /// شرکای کاری تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه شرکای کاری تعریف شده</returns>
-        IEnumerable<KeyValue> GetPartners();
-
-        /// <summary>
-        /// واحدهای سازمانی تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه واحدهای سازمانی تعریف شده</returns>
-        IEnumerable<KeyValue> GetBusinessUnits();
     }
 }

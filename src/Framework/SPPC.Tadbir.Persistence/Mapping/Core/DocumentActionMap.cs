@@ -34,15 +34,15 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(newid())");
 
             builder.HasOne(d => d.ApprovedBy)
-                .WithMany(p => p.ApprovedActions)
+                .WithMany()
                 .HasForeignKey("ApprovedByID")
                 .HasConstraintName("FK_Core_DocumentAction_Auth_ApprovedBy");
             builder.HasOne(d => d.ConfirmedBy)
-                .WithMany(p => p.ConfirmedActions)
+                .WithMany()
                 .HasForeignKey("ConfirmedByID")
                 .HasConstraintName("FK_Core_DocumentAction_Auth_ConfirmedBy");
             builder.HasOne(d => d.CreatedBy)
-                .WithMany(p => p.CreatedActions)
+                .WithMany()
                 .HasForeignKey("CreatedByID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Core_DocumentAction_Auth_CreatedBy");
@@ -52,7 +52,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Core_DocumentAction_Core_Document");
             builder.HasOne(d => d.ModifiedBy)
-                .WithMany(p => p.ModifiedActions)
+                .WithMany()
                 .HasForeignKey("ModifiedByID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Core_DocumentAction_Auth_ModifiedBy");

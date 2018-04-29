@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using SPPC.Framework.Helpers;
-using SPPC.Tadbir.ViewModel.Inventory;
-using SPPC.Tadbir.ViewModel.Procurement;
 
 namespace SPPC.Tadbir.Service
 {
@@ -55,59 +53,5 @@ namespace SPPC.Tadbir.Service
         /// </summary>
         /// <returns>مجموعه ارزهای موجود</returns>
         IEnumerable<KeyValue> LookupCurrencies();
-
-        /// <summary>
-        /// شرکای تجاری موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه شرکای تجاری موجود</returns>
-        IEnumerable<KeyValue> LookupPartners();
-
-        /// <summary>
-        /// واحد های سازمانی موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه واحد های سازمانی موجود</returns>
-        IEnumerable<KeyValue> LookupBusinessUnits();
-
-        /// <summary>
-        /// انبارهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه انبارهای موجود</returns>
-        IEnumerable<KeyValue> LookupWarehouses();
-
-        /// <summary>
-        /// کالاهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه کالاهای موجود</returns>
-        IEnumerable<KeyValue> LookupProducts();
-
-        /// <summary>
-        /// واحدهای اندازه گیری موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه واحدهای اندازه گیری موجود</returns>
-        IEnumerable<KeyValue> LookupUnitsOfMeasurement();
-
-        /// <summary>
-        /// انواع درخواست کالاهای موجود را به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه انواع درخواست کالاهای موجود</returns>
-        IEnumerable<KeyValue> LookupRequisitionVoucherTypes();
-
-        /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات درخواست کالا را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>وابستگی های مورد نیاز درخواست کار</returns>
-        VoucherDependsViewModel LookupRequisitionVoucherDepends();
-
-        /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات سطر درخواست کالا را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>وابستگی های مورد نیاز سطر درخواست کار</returns>
-        VoucherLineDependsViewModel LookupRequisitionVoucherLineDepends();
-
-        /// <summary>
-        /// اطلاعات پایه مورد نیاز برای ورود اطلاعات سطر موجودی کالا را خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>وابستگی های مورد نیاز سطر موجودی کالا</returns>
-        InventoryDependsViewModel LookupProductInventoryDepends();
     }
 }
