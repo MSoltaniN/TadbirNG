@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using SPPC.Framework.Common;
-using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
@@ -22,14 +17,18 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class AccountsController : Controller
+    public class AccountsController : ApiControllerBase<AccountViewModel>
     {
-        public AccountsController(
-            IAccountRepository repository,
-            IStringLocalizer<AppStrings> strings = null)
+        public AccountsController(IAccountRepository repository, IStringLocalizer<AppStrings> strings = null)
+            : base(strings)
         {
             _repository = repository;
             _strings = strings;
+        }
+
+        protected override string EntityNameKey
+        {
+            get { return AppStrings.Account; }
         }
 
         // GET: api/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
@@ -167,53 +166,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        private GridOptions GetGridOptions()
-        {
-            var options = Request.Headers[AppConstants.GridOptionsHeaderName];
-            if (String.IsNullOrEmpty(options))
-            {
-                return null;
-            }
-
-            var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
-            var json = WebUtility.UrlDecode(urlEncoded);
-            return Framework.Helpers.Json.To<GridOptions>(json);
-        }
-
-        private void SetItemCount(int count)
-        {
-            Response.Headers.Add(AppConstants.TotalCountHeaderName, count.ToString());
-        }
-
-        private IActionResult JsonReadResult<TData>(TData data)
-        {
-            var result = (data != null)
-                ? Json(data)
-                : NotFound() as IActionResult;
-
-            return result;
-        }
-
-        private IActionResult BasicValidationResult(AccountViewModel account, int accountId)
-        {
-            if (account == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.Account));
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (accountId != account.Id)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.Account));
-            }
-
-            return Ok();
-        }
-
         private async Task<IActionResult> ValidationResultAsync(AccountViewModel account, int accountId = 0)
         {
             var result = BasicValidationResult(account, accountId);
@@ -262,6 +214,5 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private IAccountRepository _repository;
-        private IStringLocalizer<AppStrings> _strings;
     }
 }

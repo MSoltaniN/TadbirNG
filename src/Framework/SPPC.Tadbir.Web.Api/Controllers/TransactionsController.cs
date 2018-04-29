@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
-using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
@@ -23,17 +20,22 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class TransactionsController : Controller
+    public class TransactionsController : ApiControllerBase<TransactionViewModel>
     {
         public TransactionsController(
             ITransactionRepository repository,
             ISecurityContextManager contextManager,
             IStringLocalizer<AppStrings> strings)
+            : base(strings)
         {
             Verify.ArgumentNotNull(contextManager, "contextManager");
             _repository = repository;
             _contextManager = contextManager;
-            _strings = strings;
+        }
+
+        protected override string EntityNameKey
+        {
+            get { return AppStrings.Voucher; }
         }
 
         #region Transaction CRUD Operations
@@ -259,15 +261,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        private IActionResult JsonReadResult<TData>(TData data)
-        {
-            var result = (data != null)
-                ? Json(data)
-                : NotFound() as IActionResult;
-
-            return result;
-        }
-
         private IActionResult BasicValidationResult<TModel>(TModel model, string modelType, int modelId = 0)
         {
             if (model == null)
@@ -304,24 +297,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return String.Empty;
         }
 
-        private GridOptions GetGridOptions()
-        {
-            var options = Request.Headers[AppConstants.GridOptionsHeaderName];
-            if (String.IsNullOrEmpty(options))
-            {
-                return null;
-            }
-
-            var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
-            var json = WebUtility.UrlDecode(urlEncoded);
-            return Framework.Helpers.Json.To<GridOptions>(json);
-        }
-
-        private void SetItemCount(int count)
-        {
-            Response.Headers.Add(AppConstants.TotalCountHeaderName, count.ToString());
-        }
-
         private void SetDocument(TransactionViewModel transaction)
         {
             if (transaction.Document.Id == 0)
@@ -349,6 +324,5 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private ITransactionRepository _repository;
         private ISecurityContextManager _contextManager;
-        private IStringLocalizer<AppStrings> _strings;
     }
 }

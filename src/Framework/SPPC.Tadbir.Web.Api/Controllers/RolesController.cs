@@ -19,12 +19,17 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class RolesController : Controller
+    public class RolesController : ApiControllerBase<RoleFullViewModel>
     {
         public RolesController(ISecurityRepository repository, IStringLocalizer<AppStrings> strings)
+            : base(strings)
         {
             _repository = repository;
-            _strings = strings;
+        }
+
+        protected override string EntityNameKey
+        {
+            get { return AppStrings.Role; }
         }
 
         // GET: api/roles
@@ -187,34 +192,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private GridOptions GetGridOptions()
-        {
-            var options = Request.Headers[AppConstants.GridOptionsHeaderName];
-            if (String.IsNullOrEmpty(options))
-            {
-                return null;
-            }
-
-            var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
-            var json = WebUtility.UrlDecode(urlEncoded);
-            return Framework.Helpers.Json.To<GridOptions>(json);
-        }
-
-        private void SetItemCount(int count)
-        {
-            Response.Headers.Add(AppConstants.TotalCountHeaderName, count.ToString());
-        }
-
-        private IActionResult JsonReadResult<TData>(TData data)
-        {
-            var result = (data != null)
-                ? Json(data)
-                : NotFound() as IActionResult;
-
-            return result;
-        }
-
-        private IActionResult BasicValidationResult(RoleFullViewModel role, int roleId = 0)
+        protected override IActionResult BasicValidationResult(RoleFullViewModel role, int roleId = 0)
         {
             if (role == null || role.Role == null)
             {
@@ -256,6 +234,5 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private ISecurityRepository _repository;
-        private IStringLocalizer<AppStrings> _strings;
     }
 }

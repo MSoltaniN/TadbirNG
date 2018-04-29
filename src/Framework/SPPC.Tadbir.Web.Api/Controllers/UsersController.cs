@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
-using SPPC.Framework.Presentation;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
@@ -21,18 +19,23 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class UsersController : Controller
+    public class UsersController : ApiControllerBase<UserViewModel>
     {
         public UsersController(
             ISecurityRepository repository,
             ICryptoService crypto,
             ITextEncoder<SecurityContext> encoder,
             IStringLocalizer<AppStrings> strings)
+            : base(strings)
         {
             _repository = repository;
             _crypto = crypto;
             _contextEncoder = encoder;
-            _strings = strings;
+        }
+
+        protected override string EntityNameKey
+        {
+            get { return AppStrings.User; }
         }
 
         // GET: api/users
@@ -249,53 +252,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 #endif
         }
 
-        private GridOptions GetGridOptions()
-        {
-            var options = Request.Headers[AppConstants.GridOptionsHeaderName];
-            if (String.IsNullOrEmpty(options))
-            {
-                return null;
-            }
-
-            var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
-            var json = WebUtility.UrlDecode(urlEncoded);
-            return Framework.Helpers.Json.To<GridOptions>(json);
-        }
-
-        private void SetItemCount(int count)
-        {
-            Response.Headers.Add(AppConstants.TotalCountHeaderName, count.ToString());
-        }
-
-        private IActionResult JsonReadResult<TData>(TData data)
-        {
-            var result = (data != null)
-                ? Json(data)
-                : NotFound() as IActionResult;
-
-            return result;
-        }
-
-        private IActionResult BasicValidationResult(UserViewModel user, int userId)
-        {
-            if (user == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.User));
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (userId != user.Id)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.User));
-            }
-
-            return Ok();
-        }
-
         private async Task<IActionResult> ValidationResultAsync(UserViewModel user, int userId = 0)
         {
             var result = BasicValidationResult(user, userId);
@@ -335,6 +291,5 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private ISecurityRepository _repository;
         private ICryptoService _crypto;
         private ITextEncoder<SecurityContext> _contextEncoder;
-        private IStringLocalizer<AppStrings> _strings;
     }
 }
