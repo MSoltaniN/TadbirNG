@@ -50,7 +50,6 @@
     <Compile Remove="Contact\CustomerViewModel.Generated.cs" />
     <Compile Remove="Core\ServiceJobViewModel.Generated.cs" />
     <Compile Remove="Corporate\BusinessUnitViewModel.Generated.cs" />
-    <Compile Remove="Finance\FullAccountViewModel.cs" />
     <Compile Remove="Finance\FullDetailTypeViewModel.Generated.cs" />
     <Compile Remove="Finance\FullDetailViewModel.Generated.cs" />
   </ItemGroup>

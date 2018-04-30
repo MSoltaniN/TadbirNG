@@ -15,7 +15,6 @@ using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
-using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -621,10 +620,10 @@ namespace SPPC.Tadbir.Persistence
 
         private static void UpdateExistingArticle(TransactionLine existing, TransactionLineViewModel article)
         {
-            existing.AccountId = article.AccountId ?? 0;
-            existing.DetailId = article.DetailId;
-            existing.CostCenterId = article.CostCenterId;
-            existing.ProjectId = article.ProjectId;
+            existing.AccountId = article.FullAccount.AccountId ?? 0;
+            existing.DetailId = article.FullAccount.DetailId;
+            existing.CostCenterId = article.FullAccount.CostCenterId;
+            existing.ProjectId = article.FullAccount.ProjectId;
             existing.CurrencyId = article.CurrencyId ?? 0;
             existing.Debit = article.Debit;
             existing.Credit = article.Credit;

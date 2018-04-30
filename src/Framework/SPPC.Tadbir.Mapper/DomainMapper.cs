@@ -168,7 +168,11 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
                 .AfterMap((viewModel, model) => model.Document.Id = viewModel.Document.Id);
-            mapperConfig.CreateMap<TransactionLine, TransactionLineViewModel>();
+            mapperConfig.CreateMap<TransactionLine, TransactionLineViewModel>()
+                .AfterMap((model, viewModel) => viewModel.FullAccount.AccountId = model.AccountId)
+                .AfterMap((model, viewModel) => viewModel.FullAccount.DetailId = model.DetailId)
+                .AfterMap((model, viewModel) => viewModel.FullAccount.CostCenterId = model.CostCenterId)
+                .AfterMap((model, viewModel) => viewModel.FullAccount.ProjectId = model.ProjectId);
             mapperConfig.CreateMap<TransactionLine, TransactionLineFullViewModel>()
                 .ForMember(
                     dest => dest.Article,
@@ -178,10 +182,10 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.Transaction.Id = viewModel.TransactionId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
-                .AfterMap((viewModel, model) => model.AccountId = viewModel.AccountId ?? 0)
-                .AfterMap((viewModel, model) => model.DetailId = viewModel.DetailId)
-                .AfterMap((viewModel, model) => model.CostCenterId = viewModel.CostCenterId)
-                .AfterMap((viewModel, model) => model.ProjectId = viewModel.ProjectId)
+                .AfterMap((viewModel, model) => model.AccountId = viewModel.FullAccount.AccountId ?? 0)
+                .AfterMap((viewModel, model) => model.DetailId = viewModel.FullAccount.DetailId)
+                .AfterMap((viewModel, model) => model.CostCenterId = viewModel.FullAccount.CostCenterId)
+                .AfterMap((viewModel, model) => model.ProjectId = viewModel.FullAccount.ProjectId)
                 .AfterMap((viewModel, model) => model.CurrencyId = viewModel.CurrencyId ?? 0);
 
             mapperConfig.CreateMap<Currency, KeyValue>()
