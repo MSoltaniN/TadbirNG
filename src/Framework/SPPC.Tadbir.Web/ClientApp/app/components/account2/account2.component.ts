@@ -1,8 +1,8 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
 
-import { AccountService, AccountInfo, TransactionLineService, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
+import { AccountService, AccountInfo, TransactionLineService, FiscalPeriodService } from '../../service/index';
 
-import { Account, TransactionLine } from '../../model/index';
+import { Account } from '../../model/index';
 
 import { ToastrService } from 'ngx-toastr'; /** add this component for message in client side */
 

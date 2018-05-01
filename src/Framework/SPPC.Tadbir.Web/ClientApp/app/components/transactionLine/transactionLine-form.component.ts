@@ -1,9 +1,9 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 //import { requiredValidatorLogic } from './required.directive';
-import { TransactionLineService, TransactionLineInfo, AccountService, LookupService } from '../../service/index';
+import { TransactionLineService, TransactionLineViewModelInfo, AccountService, LookupService } from '../../service/index';
 
-import { TransactionLine, FullAccount } from '../../model/index';
+import { TransactionLineViewModel } from '../../model/index';
 
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
@@ -15,6 +15,8 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import { Metadatas, Entities } from '../../enviroment';
+import { FullAccountService } from '../../service/fullAccount.service';
+
 
 
 
@@ -34,28 +36,20 @@ interface Item {
 
 export class TransactionLineFormComponent extends DefaultComponent {
 
-    public decimals: number = 0;
-    ////TODO
-    //public dollarMask = createNumberMask({
-    //    prefix: '$ ',
-    //    suffix: ''
-    //})
+    //TODO: create form with metadata
+    public editForm1 = new FormGroup({
+        id: new FormControl(),
+        transactionId: new FormControl(),
+        currencyId: new FormControl("", Validators.required),
+        debit: new FormControl("", Validators.required),
+        credit: new FormControl("", Validators.required),
+        description: new FormControl("", Validators.maxLength(512)),
+        fullAccount: new FormControl()
+    });
 
-    //public rialMask = createNumberMask({
-    //    prefix: '',
-    //    suffix: ' ریال'
-    //})
 
-    //create properties
-    public accountsRows: Array<Item>;
-    public detailAccountsRows: Array<Item>;
-    public costCentersRows: Array<Item>;
-    public projectsRows: Array<Item>;
     public currenciesRows: Array<Item>;
-    public selectedAccountValue: string;
-    public selectedDetailAccountValue: string;
-    public selectedCostCenterValue: string;
-    public selectedprojectValue: string;
+
     public selectedCurrencyValue: string;
 
     active: boolean = false;
@@ -63,34 +57,26 @@ export class TransactionLineFormComponent extends DefaultComponent {
     @Input() public errorMessage: string;
 
 
-    @Input() public set model(transactionLine: TransactionLine) {
+    @Input() public set model(transactionLineViewModel: TransactionLineViewModel) {
 
-        this.editForm.reset(transactionLine);
-        this.active = transactionLine !== undefined || this.isNew;
+        this.editForm1.reset(transactionLineViewModel);
 
-        if (transactionLine != undefined) {
-            if (transactionLine.accountId > 0)
-                this.selectedAccountValue = transactionLine.accountId.toString();
-            if (transactionLine.detailId != undefined)
-                this.selectedDetailAccountValue = transactionLine.detailId.toString();
-            if (transactionLine.costCenterId != undefined)
-                this.selectedCostCenterValue = transactionLine.costCenterId.toString();
-            if (transactionLine.projectId != undefined)
-                this.selectedprojectValue = transactionLine.projectId.toString();
+        this.active = transactionLineViewModel !== undefined || this.isNew;
 
-            if (transactionLine.currencyId > 0)
-                this.selectedCurrencyValue = transactionLine.currencyId.toString();
-        }
+        if (transactionLineViewModel != undefined && transactionLineViewModel.currencyId > 0)
+            this.selectedCurrencyValue = transactionLineViewModel.currencyId.toString();
+
     }
 
+
     @Output() cancel: EventEmitter<any> = new EventEmitter();
-    @Output() save: EventEmitter<TransactionLine> = new EventEmitter();
+    @Output() save: EventEmitter<TransactionLineViewModel> = new EventEmitter();
     //create properties
 
     //Events
     public onSave(e: any): void {
         e.preventDefault();
-        this.save.emit(this.editForm.value);
+        this.save.emit(this.editForm1.value);
         this.active = true;
     }
 
@@ -106,44 +92,15 @@ export class TransactionLineFormComponent extends DefaultComponent {
     }
     //Events
 
-
     constructor(private transactionLineService: TransactionLineService, private accountService: AccountService,
-        public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
+        public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService, private fullAccountService: FullAccountService,
         public renderer: Renderer2, public metadata: MetaDataService) {
 
         super(toastrService, translate, renderer, metadata, Entities.TransactionLine, Metadatas.TransactionArticles);
 
-        this.GetAccounts();
-        this.GetDetailAccounts();
-        this.GetCostCenters();
-        this.GetProjects();
         this.GetCurrencies();
     }
 
-    GetAccounts() {
-        this.lookupService.GetAccountsLookup().subscribe(res => {
-            this.accountsRows = res;
-        })
-
-    }
-
-    GetDetailAccounts() {
-        this.lookupService.GetDetailAccountsLookup().subscribe(res => {
-            this.detailAccountsRows = res;
-        })
-    }
-
-    GetCostCenters() {
-        this.lookupService.GetCostCentersLookup().subscribe(res => {
-            this.costCentersRows = res;
-        })
-    }
-
-    GetProjects() {
-        this.lookupService.GetProjectsLookup().subscribe(res => {
-            this.projectsRows = res;
-        })
-    }
 
     GetCurrencies() {
         this.lookupService.GetCurrenciesLookup().subscribe(res => {

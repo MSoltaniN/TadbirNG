@@ -1,8 +1,8 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { TransactionService, TransactionInfo, TransactionLineService, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
+import { TransactionService, TransactionInfo, TransactionLineService, FiscalPeriodService } from '../../service/index';
 
-import { Transaction, TransactionLine } from '../../model/index';
+import { Transaction } from '../../model/index';
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
 

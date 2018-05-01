@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { TransactionService, TransactionLineInfo, TransactionLineService, FiscalPeriodService } from '../../service/index';
-import { TransactionLine } from '../../model/index';
+import { TransactionService, TransactionLineViewModelInfo, TransactionLineService, FiscalPeriodService } from '../../service/index';
+import { TransactionLineViewModel } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs/Observable';
@@ -16,6 +16,7 @@ import { MessageType, Entities, Metadatas } from "../../enviroment";
 import { Filter } from "../../class/filter";
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
+
 
 
 @Component({
@@ -45,10 +46,10 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     showloadingMessage: boolean = true;
 
     newTransactionLine: boolean;
-    transactionLine: TransactionLine = new TransactionLineInfo;
+    transactionLineViewModel: TransactionLineViewModel = new TransactionLineViewModelInfo;
 
+    editDataItem?: TransactionLineViewModel = undefined;
 
-    editDataItem?: TransactionLine = undefined;
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
@@ -92,7 +93,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
             this.groupDelete = false;
     }
 
-    reloadGrid(insertedTransactionLine?: TransactionLine) {
+    reloadGrid(transactionLineViewModel?: TransactionLineViewModel) {
 
         this.sppcLoading.show();
 
@@ -110,19 +111,19 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
             var totalCount = 0;
 
 
-            if (insertedTransactionLine) {
-                var rows = (resData.list as Array<TransactionLine>);
-                var index = rows.findIndex(p => p.id == insertedTransactionLine.id);
+            if (transactionLineViewModel) {
+                var rows = (resData.list as Array<TransactionLineViewModel>);
+                var index = rows.findIndex(p => p.id == transactionLineViewModel.id);
                 if (index >= 0) {
                     resData.list.splice(index, 1);
-                    rows.splice(0, 0, insertedTransactionLine);
+                    rows.splice(0, 0, transactionLineViewModel);
                 }
                 else {
                     if (rows.length == this.pageSize) {
                         resData.list.splice(this.pageSize - 1, 1);
                     }
 
-                    rows.splice(0, 0, insertedTransactionLine);
+                    rows.splice(0, 0, transactionLineViewModel);
                 }
             }
 
@@ -212,8 +213,8 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
         this.sppcLoading.show();
 
         this.transactionLineService.getTransactionLineById(arg.dataItem.id).subscribe(res => {
-            this.editDataItem = res.item;
 
+            this.editDataItem = res.item;
             this.sppcLoading.hide();
         })
         this.isNew = false;
@@ -229,19 +230,19 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     public addNew() {
         this.isNew = true;
         this.errorMessage = '';
-        this.editDataItem = new TransactionLineInfo();
+        this.editDataItem = new TransactionLineViewModelInfo();
     }
 
-    public saveHandler(transactionLine: TransactionLine) {
+    public saveHandler(transactionLineViewModel: TransactionLineViewModel) {
 
-        transactionLine.branchId = this.BranchId;
-        transactionLine.fiscalPeriodId = this.FiscalPeriodId;
+        transactionLineViewModel.branchId = this.BranchId;
+        transactionLineViewModel.fiscalPeriodId = this.FiscalPeriodId;
         this.sppcLoading.show();
         if (!this.isNew) {
 
             this.isNew = false;
 
-            this.transactionLineService.editTransactionLine(transactionLine)
+            this.transactionLineService.editTransactionLine(transactionLineViewModel)
                 .subscribe(response => {
 
                     this.editDataItem = undefined;
@@ -250,15 +251,15 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
                     this.reloadGrid();
 
                 }, (error => {
-                    this.editDataItem = transactionLine;
+                    //this.editDataItem = transactionLineViewModel;
                     this.errorMessage = error;
 
                 }));
         }
         else {
-            transactionLine.transactionId = this.transactionId;
+            transactionLineViewModel.transactionId = this.transactionId;
 
-            this.transactionLineService.insertTransactionLine(this.transactionId, transactionLine)
+            this.transactionLineService.insertTransactionLine(this.transactionId, transactionLineViewModel)
                 .subscribe((response: any) => {
 
                     this.isNew = false;

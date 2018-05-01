@@ -1,8 +1,8 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { AccountService, AccountInfo, TransactionLineService, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
+import { AccountService, AccountInfo, TransactionLineService, FiscalPeriodService } from '../../service/index';
 
-import { Account, TransactionLine } from '../../model/index';
+import { Account } from '../../model/index';
 import { Property } from "../../class/metadata/property"
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
