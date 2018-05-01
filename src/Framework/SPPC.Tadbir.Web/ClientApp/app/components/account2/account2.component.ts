@@ -155,8 +155,8 @@ export class Account2Component extends DefaultComponent implements OnInit {
             this.skip = this.skip - this.pageSize;                
         }
 
-
-
+        //filter.push(new Filter("parentId", "null", "== {0}", "Int32"))
+        
     this.accountService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
 
         var resData = res.json();

@@ -20,7 +20,7 @@
                     [selectedKeys]="selectedRows"
                     [kendoGridSelectBy]="selectionKey"
                     (dataStateChange)="dataStateChange($event)"
-                    (selectedKeysChange)="onSelectedKeysChange($event)" >
+                    (selectedKeysChange)="onSelectedKeysChange($event)">
             <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                                  pagerOf="{{ 'Paging.Of' | translate }}"
                                  pagerItems="{{ 'Paging.Record' | translate }}">
@@ -56,9 +56,12 @@
             <!-- template for mobile -->
             <!-- template for mid-size devices -->
             <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px) and (max-width: 1024px)"></kendo-grid-checkbox-column>
+            <div *kendoGridDetailTemplate="let dataItem">
+                <nested-account [level]="dataItem.level"  [parentId]="dataItem.parentId"></nested-account>
+            </div>            
             <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Account.code">
                 <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                    <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [spinners]="true" [filter]="filter"></sppc-grid-filter>
+                    <sppc-grid-filter [metaData]="getMeta('code')" [column]="column" [spinners]="true" [filter]="filter"></sppc-grid-filter>
                 </ng-template>
             </kendo-grid-column>
             <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Account.name">
@@ -76,6 +79,9 @@
                     <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
                 </ng-template>
             </kendo-grid-command-column>
+            <div *kendoGridDetailTemplate="let dataItem">
+                <category-details [category]="dataItem"></category-details>
+            </div>
             <!-- template for mid-size devices -->
             <!-- additional columns on large devices -->
             <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
