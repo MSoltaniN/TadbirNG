@@ -6,6 +6,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
     public partial class AccountViewModel
     {
         /// <summary>
+        /// شناسه دیتابیسی حساب والد این حساب در ساختار درختی
+        /// </summary>
+        public int? ParentId { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی دوره مالی که این سرفصل حسابداری در آن تعریف شده است
         /// </summary>
         public int FiscalPeriodId { get; set; }

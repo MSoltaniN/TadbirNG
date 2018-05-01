@@ -10,5 +10,10 @@ namespace SPPC.Tadbir.Model.Finance
         /// مجموعه ای از سرفصل های حسابداری زیرشاخه (فرزند) در ساختار درختی
         /// </summary>
         public IList<Account> Children { get; protected set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی حساب والد این حساب در ساختار درختی
+        /// </summary>
+        public int? ParentId { get; set; }
     }
 }

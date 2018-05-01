@@ -14,6 +14,10 @@
     <OutputPath>..\..\..\testbin\Debug\netcoreapp2.0\</OutputPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\testbin\Release\netcoreapp2.0\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Api\AccountsControllerTests.cs" />
     <Compile Remove="Api\LookupControllerTests.cs" />
