@@ -135,6 +135,9 @@
   <data name="CannotDeleteUsedItem" xml:space="preserve">
     <value>The {0} {1} is used in one or more vouchers and cannot be deleted.</value>
   </data>
+  <data name="CannotUseNonLeafItem" xml:space="preserve">
+    <value>The {0} {1} has one or more subitems and cannot be used in operational vouchers</value>
+  </data>
   <data name="DebitAndCreditNotAllowed" xml:space="preserve">
     <value>Entering values for both Debit and Credit is not allowed.</value>
   </data>
@@ -200,5 +203,8 @@
   </data>
   <data name="VoucherLine" xml:space="preserve">
     <value>Voucher line</value>
+  </data>
+  <data name="VoucherNo" xml:space="preserve">
+    <value>Voucher number</value>
   </data>
 </root>

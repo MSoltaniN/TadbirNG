@@ -40,6 +40,13 @@ namespace SPPC.Tadbir.Persistence
         Task<EntityItemViewModel<VoucherViewModel>> GetVoucherMetadataAsync();
 
         /// <summary>
+        /// به روش آسنکرون، مدل نمایشی دوره مالی مورد استفاده در یک سند مالی را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucher">مدل نمایشی سند مالی مورد نظر</param>
+        /// <returns>مدل نمایشی دوره مالی به کار رفته در سند مالی</returns>
+        Task<FiscalPeriodViewModel> GetVoucherFiscalPeriodAsync(VoucherViewModel voucher);
+
+        /// <summary>
         /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
@@ -63,11 +70,11 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteVoucherAsync(int voucherId);
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات سند مالی داده شده را برای مطابقت با کلیه قواعد کاری برنامه اعتبارسنجی می کند
+        /// به روش آسنکرون، مشخص می کند که آیا شماره سند مورد نظر تکراری است یا نه
         /// </summary>
-        /// <param name="voucher">سند مالی که باید اعتبارسنجی شود</param>
-        /// <returns>مقدار بولی درست در صورت مطابقت کامل با قواعد کاری، در غیر این صورت مقدار بولی نادرست</returns>
-        Task<bool> IsValidVoucherAsync(VoucherViewModel voucher);
+        /// <param name="voucher">سند مالی که تکراری بودن شماره آن باید بررسی شود</param>
+        /// <returns>مقدار بولی درست در صورت تکراری بودن شماره، در غیر این صورت مقدار بولی نادرست</returns>
+        Task<bool> IsDuplicateVoucherNoAsync(VoucherViewModel voucher);
 
         #endregion
 
@@ -155,6 +162,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد آرتیکل های سند مالی بعد از اعمال فیلتر</returns>
         Task<int> GetArticleCountAsync(int voucherId, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، مدل نمایشی سرفصل حسابداری مشخص شده
+        /// را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
+        /// <returns>مدل نمایشی سرفصل حسابداری مورد استفاده در آرتیکل</returns>
+        Task<AccountViewModel> GetArticleAccountAsync(int accountId);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک سطر سند مالی (آرتیکل) را در محل ذخیره ایجاد یا اصلاح می کند
