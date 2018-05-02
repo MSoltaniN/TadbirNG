@@ -28,13 +28,13 @@ export class TransactionInfo implements Transaction {
 @Injectable()
 export class TransactionService extends BaseService {
 
-    private _getTransactionsUrl = Environment.BaseUrl + "/transactions/fp/{0}/branch/{1}";
-    private _getCountUrl = Environment.BaseUrl + "/transactions/fp/{0}/branch/{1}/count";
-    private _deleteTransactionsUrl = Environment.BaseUrl + "/transactions/{0}";
-    private _deleteMultiTransactionsUrl = Environment.BaseUrl + "/transactions";
-    private _postNewTransactionsUrl = Environment.BaseUrl + "/transactions";
-    private _postModifiedTransactionsUrl = Environment.BaseUrl + "/transactions/{0}";
-    private _getTransactionByIdUrl = Environment.BaseUrl + "/transactions/{0}";
+    private _getTransactionsUrl = Environment.BaseUrl + "/vouchers/fp/{0}/branch/{1}";
+    private _getCountUrl = Environment.BaseUrl + "/vouchers/fp/{0}/branch/{1}/count";
+    private _deleteTransactionsUrl = Environment.BaseUrl + "/vouchers/{0}";
+    private _deleteMultiTransactionsUrl = Environment.BaseUrl + "/vouchers";
+    private _postNewTransactionsUrl = Environment.BaseUrl + "/vouchers";
+    private _postModifiedTransactionsUrl = Environment.BaseUrl + "/vouchers/{0}";
+    private _getTransactionByIdUrl = Environment.BaseUrl + "/vouchers/{0}";
 
     private fiscalPeriodId: string;
     private branchId: string;
