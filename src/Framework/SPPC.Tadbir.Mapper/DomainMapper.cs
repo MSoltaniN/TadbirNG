@@ -117,6 +117,12 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<Account, AccountViewModel>();
             mapperConfig.CreateMap<AccountViewModel, Account>()
+                .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
+                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
+                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
+            mapperConfig.CreateMap<DetailAccount, DetailAccountViewModel>();
+            mapperConfig.CreateMap<DetailAccountViewModel, DetailAccount>()
+                .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
             mapperConfig.CreateMap<Account, AccountFullViewModel>();

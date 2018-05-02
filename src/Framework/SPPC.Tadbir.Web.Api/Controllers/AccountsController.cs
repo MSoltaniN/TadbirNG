@@ -23,7 +23,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             : base(strings)
         {
             _repository = repository;
-            _strings = strings;
         }
 
         protected override string EntityNameKey
@@ -207,7 +206,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (await _repository.IsUsedAccountAsync(item))
             {
                 var accountInfo = String.Format("'{0} ({1})'", accountItem.Item.Name, accountItem.Item.Code);
-                message = String.Format(_strings.Format(AppStrings.CannotDeleteUsedAccount), accountInfo);
+                message = String.Format(
+                    _strings[AppStrings.CannotDeleteUsedItem], _strings[AppStrings.Account], accountInfo);
             }
 
             return message;

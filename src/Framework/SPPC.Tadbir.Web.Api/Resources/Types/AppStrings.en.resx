@@ -132,11 +132,17 @@
   <data name="CannotDeleteAssignedRole" xml:space="preserve">
     <value>The role {0} is currently assigned to one or more users and cannot be deleted.</value>
   </data>
-  <data name="CannotDeleteUsedAccount" xml:space="preserve">
-    <value>The account {0} is used in one or more vouchers and cannot be deleted.</value>
+  <data name="CannotDeleteUsedItem" xml:space="preserve">
+    <value>The {0} {1} is used in one or more vouchers and cannot be deleted.</value>
   </data>
   <data name="DebitAndCreditNotAllowed" xml:space="preserve">
     <value>Entering values for both Debit and Credit is not allowed.</value>
+  </data>
+  <data name="DetailAccount" xml:space="preserve">
+    <value>Detail account</value>
+  </data>
+  <data name="DuplicateCodeValue" xml:space="preserve">
+    <value>{0} code is duplicate.</value>
   </data>
   <data name="DuplicateFieldValue" xml:space="preserve">
     <value>{0} is duplicate.</value>
