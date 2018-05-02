@@ -17,3 +17,5 @@ export * from './lookup.service';
 export * from './user.service';
 
 export * from './role.service';
+
+export * from './fullAccount.service';

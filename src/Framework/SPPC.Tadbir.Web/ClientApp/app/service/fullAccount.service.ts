@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { FullAccount } from '../model/index';
+import { FullAccountViewModel } from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -16,9 +16,9 @@ import { ToastrService } from 'ngx-toastr';
 import { BaseService } from '../class/base.service';
 
 
-export class FullAccountInfo implements FullAccount {
+export class FullAccountViewModelInfo implements FullAccountViewModel {
 
-    constructor(public id: number = 0, public accountId: number = 0, public detailId: number = 0, public costCenterId: number = 0, public projectId: number = 0) { }
+    constructor(public accountId: number = 0, public detailId: number = 0, public costCenterId: number = 0, public projectId: number = 0) { }
 
 }
 

@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { TransactionLine } from '../model/index';
+import { TransactionLineViewModel } from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -13,12 +13,29 @@ import { Context } from "../model/context";
 import { BaseService } from '../class/base.service';
 //import { FullAccountInfo } from './index';
 
-export class TransactionLineInfo implements TransactionLine {
-    constructor(public id: number = 0, public debit: number = 0, public credit: number = 0, public description?: string,
-        public fiscalPeriodId: number = 0, public branchId: number = 0, public transactionId: number = 0, public currencyId: number = 0,
-        public accountId: number = 0) {
+//export class TransactionLineInfo implements TransactionLine {
+//    constructor(public id: number = 0, public debit: number = 0, public credit: number = 0, public description?: string,
+//        public fiscalPeriodId: number = 0, public branchId: number = 0, public transactionId: number = 0, public currencyId: number = 0,
+//        public accountId: number = 0) {
 
-    }
+//    }
+//}
+
+export class TransactionLineViewModelInfo implements TransactionLineViewModel {
+    id: number = 0;
+    debit: number = 0;
+    credit: number = 0;
+    description?: string | undefined;
+    fiscalPeriodId: number = 0;
+    branchId: number = 0;
+    transactionId: number = 0;
+    currencyId: number = 0;
+    fullAccount: {
+        accountId: number;
+        detailId: number;
+        costCenterId: number;
+        projectId: number;
+    };
 }
 
 @Injectable()
@@ -26,7 +43,7 @@ export class TransactionLineService extends BaseService {
 
     private getAccountArticlesUrl = "http://37.59.93.7:8080/accounts/{0}/articles";
     getAccountArticles(accountId: number) {
-      
+
         var url = String.Format(this.getAccountArticlesUrl, accountId.toString());
 
         return this.http.get(url, this.options)
@@ -52,7 +69,7 @@ export class TransactionLineService extends BaseService {
 
     constructor(private http: Http) {
         super();
-        
+
     }
 
 
@@ -105,14 +122,14 @@ export class TransactionLineService extends BaseService {
 
     getTransactionInfo(transactionId: number) {
         var url = String.Format(this._getTransactionInfo, transactionId);
-        
+
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());;
     }
 
-    editTransactionLine(transactionLine: TransactionLine): Observable<string> {
+    editTransactionLine(transactionLine: TransactionLineViewModel): Observable<string> {
         var body = JSON.stringify(transactionLine);
-        
+
         var url = String.Format(this._putModifiedTransactionLineUrl, transactionLine.id);
 
         return this.http.put(url, body, this.options)
@@ -120,12 +137,12 @@ export class TransactionLineService extends BaseService {
             .catch(this.handleError);
     }
 
-    insertTransactionLine(transactionId: number, transactionLine: TransactionLine): Observable<string> {
+    insertTransactionLine(transactionId: number, transactionLine: TransactionLineViewModel): Observable<string> {
         var body = JSON.stringify(transactionLine);
-      
+
         var url = String.Format(this._postNewTransactionLineUrl, transactionId);
 
-        return this.http.post(url, body,this.options)
+        return this.http.post(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
@@ -141,7 +158,7 @@ export class TransactionLineService extends BaseService {
 
     getTransactionLineById(articleId: number) {
         var url = String.Format(this._getTransactionLineById, articleId);
-       
+
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }

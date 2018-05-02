@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { TransactionService, TransactionInfo, TransactionLineInfo, FiscalPeriodService } from '../../service/index';
-import { Transaction, TransactionLine } from '../../model/index';
+import { TransactionService, TransactionInfo, FiscalPeriodService } from '../../service/index';
+import { Transaction } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 
