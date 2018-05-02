@@ -54,14 +54,14 @@ export class TransactionLineService extends BaseService {
 
 
     //private _getTransactionLinesUrl = Environment.BaseUrl + "/transactions/{0}/details";//transactionId
-    private _getTransactionLinesUrl = Environment.BaseUrl + "/transactions/{0}/articles";//transactionId
+    private _getTransactionLinesUrl = Environment.BaseUrl + "/vouchers/{0}/articles";//voucherId
     ////private _deleteMultiTransactionLinesUrl = Environment.BaseUrl + "/transactions";
-    private _getCountUrl = Environment.BaseUrl + "/transactions/{0}/articles/count";
-    private _deleteTransactionLineUrl = Environment.BaseUrl + "/transactions/articles/{0}";//articleId
-    private _postNewTransactionLineUrl = Environment.BaseUrl + "/transactions/{0}/articles";//transactionId
-    private _putModifiedTransactionLineUrl = Environment.BaseUrl + "/transactions/articles/{0}";//articleId
-    private _getTransactionInfo = Environment.BaseUrl + "/transactions/{0}";//transactionId
-    private _getTransactionLineById = Environment.BaseUrl + "/transactions/articles/{0}";//articleId
+    private _getCountUrl = Environment.BaseUrl + "/vouchers/{0}/articles/count";
+    private _deleteTransactionLineUrl = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
+    private _postNewTransactionLineUrl = Environment.BaseUrl + "/vouchers/{0}/articles";//voucherId
+    private _putModifiedTransactionLineUrl = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
+    private _getTransactionInfo = Environment.BaseUrl + "/vouchers/{0}";//voucherId
+    private _getTransactionLineById = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
 
     headers: Headers;
     options: RequestOptions;

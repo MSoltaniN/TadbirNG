@@ -5,15 +5,15 @@ using SPPC.Tadbir.Model.Finance;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class TransactionLineMap
+    internal sealed class VoucherLineMap
     {
-        private TransactionLineMap()
+        private VoucherLineMap()
         {
         }
 
-        internal static void BuildMapping(EntityTypeBuilder<TransactionLine> builder)
+        internal static void BuildMapping(EntityTypeBuilder<VoucherLine> builder)
         {
-            builder.ToTable("TransactionLine", "Finance");
+            builder.ToTable("VoucherLine", "Finance");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("LineID");
@@ -34,42 +34,42 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .WithMany()
                 .HasForeignKey(d => d.AccountId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_TransactionLine_Finance_Account");
+                .HasConstraintName("FK_Finance_VoucherLine_Finance_Account");
             builder.HasOne(d => d.DetailAccount)
                 .WithMany()
                 .HasForeignKey(d => d.DetailId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_TransactionLine_Finance_DetailAccount");
+                .HasConstraintName("FK_Finance_VoucherLine_Finance_DetailAccount");
             builder.HasOne(d => d.CostCenter)
                 .WithMany()
                 .HasForeignKey(d => d.CostCenterId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_TransactionLine_Finance_CostCenter");
+                .HasConstraintName("FK_Finance_VoucherLine_Finance_CostCenter");
             builder.HasOne(d => d.Project)
                 .WithMany()
                 .HasForeignKey(d => d.ProjectId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_TransactionLine_Finance_Project");
+                .HasConstraintName("FK_Finance_VoucherLine_Finance_Project");
             builder.HasOne(d => d.Branch)
                 .WithMany()
                 .HasForeignKey("BranchID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_TransactionLine_Corporate_Branch");
+                .HasConstraintName("FK_Finance_VoucherLine_Corporate_Branch");
             builder.HasOne(d => d.Currency)
                 .WithMany()
                 .HasForeignKey(d => d.CurrencyId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_TransactionLine_Finance_Currency");
+                .HasConstraintName("FK_Finance_VoucherLine_Finance_Currency");
             builder.HasOne(d => d.FiscalPeriod)
                 .WithMany()
                 .HasForeignKey("FiscalPeriodID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_TransactionLine_Finance_FiscalPeriod");
-            builder.HasOne(d => d.Transaction)
+                .HasConstraintName("FK_Finance_VoucherLine_Finance_FiscalPeriod");
+            builder.HasOne(d => d.Voucher)
                 .WithMany(p => p.Lines)
-                .HasForeignKey("TransactionID")
+                .HasForeignKey("VoucherID")
                 .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Finance_TransactionLine_Finance_Transaction");
+                .HasConstraintName("FK_Finance_VoucherLine_Finance_Voucher");
         }
     }
 }

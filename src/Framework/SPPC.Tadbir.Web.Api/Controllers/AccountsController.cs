@@ -71,7 +71,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/accounts/{accountId:min(1)}/articles
         [Route(AccountApi.AccountArticlesUrl)]
-        [AuthorizeRequest(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetAccountArticlesAsync(int accountId)
         {
             var gridOptions = GetGridOptions();

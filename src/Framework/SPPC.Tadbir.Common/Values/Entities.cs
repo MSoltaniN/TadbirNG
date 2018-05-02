@@ -53,24 +53,24 @@ namespace SPPC.Tadbir.Values
         public const string AnAccount = "حسابی";
 
         /// <summary>
-        /// Localized name of Transaction entity (long form).
+        /// Localized name of Voucher entity (long form).
         /// </summary>
-        public const string TransactionLongName = "سند مالی";
+        public const string VoucherLongName = "سند مالی";
 
         /// <summary>
-        /// Localized name of Transaction entity.
+        /// Localized name of Voucher entity.
         /// </summary>
-        public const string Transaction = "سند";
+        public const string Voucher = "سند";
 
         /// <summary>
-        /// Localized name of Transaction entity (unknown).
+        /// Localized name of Voucher entity (unknown).
         /// </summary>
-        public const string ATransaction = "سندی";
+        public const string AVoucher = "سندی";
 
         /// <summary>
-        /// Localized name of Transaction entity (plural form).
+        /// Localized name of Voucher entity (plural form).
         /// </summary>
-        public const string Transactions = "اسناد";
+        public const string Vouchers = "اسناد";
 
         /// <summary>
         /// Localized name of ProductInventory entity.
@@ -118,9 +118,9 @@ namespace SPPC.Tadbir.Values
         public const string RequisitionVoucherAlt = "درخواست کالای";
 
         /// <summary>
-        /// Localized text for the caption for transaction lines (articles)
+        /// Localized text for the caption for voucher lines (articles)
         /// </summary>
-        public const string TransactionLines = "آرتیکل های سند";
+        public const string VoucherLines = "آرتیکل های سند";
 
         /// <summary>
         /// Localized name of Article.

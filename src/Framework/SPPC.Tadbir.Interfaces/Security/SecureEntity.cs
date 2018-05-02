@@ -60,7 +60,7 @@ namespace SPPC.Tadbir.Security
         /// <summary>
         /// نام موجودیت سند مالی
         /// </summary>
-        public const string Transaction = "Transaction";
+        public const string Voucher = "Voucher";
 
         /// <summary>
         /// نام موجودیت کاربر برنامه

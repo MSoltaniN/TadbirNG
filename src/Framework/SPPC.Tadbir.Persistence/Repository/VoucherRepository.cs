@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات اسناد مالی و آرتیکل های آنها را پیاده سازی می کند.
     /// </summary>
-    public class TransactionRepository : ITransactionRepository
+    public class VoucherRepository : IVoucherRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -29,14 +29,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="decorator">امکان ضمیمه کردن متادیتا به اطلاعات خوانده شده را فراهم می کند</param>
-        public TransactionRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataDecorator decorator)
+        public VoucherRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataDecorator decorator)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _decorator = decorator;
         }
 
-        #region Transaction Operations
+        #region Voucher Operations
 
         #region Asynchronous Methods
 
@@ -47,48 +47,48 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<EntityListViewModel<TransactionViewModel>> GetTransactionsAsync(
+        public async Task<EntityListViewModel<VoucherViewModel>> GetVouchersAsync(
             int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var query = GetTransactionQuery(
+            var query = GetVoucherQuery(
                 txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId, gridOptions);
-            var transactions = await query
-                .Select(txn => _mapper.Map<TransactionViewModel>(txn))
+            var vouchers = await query
+                .Select(txn => _mapper.Map<VoucherViewModel>(txn))
                 .ToListAsync();
-            foreach (var transaction in transactions)
+            foreach (var voucher in vouchers)
             {
-                await AddWorkItemInfoAsync(transaction);
+                await AddWorkItemInfoAsync(voucher);
             }
 
-            return await _decorator.GetDecoratedListAsync<Transaction, TransactionViewModel>(transactions);
+            return await _decorator.GetDecoratedListAsync<Voucher, VoucherViewModel>(vouchers);
         }
 
         /// <summary>
         /// به روش آسنکرون، سند مالی با شناسه دیتابیسی مشخص شده را از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
+        /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
         /// <returns>سند مالی مشخص شده با شناسه دیتابیسی</returns>
-        public async Task<EntityItemViewModel<TransactionViewModel>> GetTransactionAsync(int transactionId)
+        public async Task<EntityItemViewModel<VoucherViewModel>> GetVoucherAsync(int voucherId)
         {
-            TransactionViewModel transactionViewModel = null;
-            var query = GetTransactionQuery(txn => txn.Id == transactionId);
-            var transaction = await query.SingleOrDefaultAsync();
-            if (transaction != null)
+            VoucherViewModel voucherViewModel = null;
+            var query = GetVoucherQuery(txn => txn.Id == voucherId);
+            var voucher = await query.SingleOrDefaultAsync();
+            if (voucher != null)
             {
-                transactionViewModel = _mapper.Map<TransactionViewModel>(transaction);
-                AddWorkItemInfo(transactionViewModel);
+                voucherViewModel = _mapper.Map<VoucherViewModel>(voucher);
+                AddWorkItemInfo(voucherViewModel);
             }
 
-            return await _decorator.GetDecoratedItemAsync<Transaction, TransactionViewModel>(transactionViewModel);
+            return await _decorator.GetDecoratedItemAsync<Voucher, VoucherViewModel>(voucherViewModel);
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای سند مالی</returns>
-        public async Task<EntityItemViewModel<TransactionViewModel>> GetTransactionMetadataAsync()
+        public async Task<EntityItemViewModel<VoucherViewModel>> GetVoucherMetadataAsync()
         {
-            return await _decorator.GetDecoratedItemAsync<Transaction, TransactionViewModel>(null);
+            return await _decorator.GetDecoratedItemAsync<Voucher, VoucherViewModel>(null);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
+            var repository = _unitOfWork.GetAsyncRepository<Voucher>();
             var count = await repository
                 .GetCountByCriteriaAsync(
                     txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId,
@@ -112,58 +112,58 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک سند مالی را در دیتابیس ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="transaction">سند مالی برای ایجاد یا اصلاح</param>
+        /// <param name="voucher">سند مالی برای ایجاد یا اصلاح</param>
         /// <returns>مدل نمایشی سند ایجاد یا اصلاح شده</returns>
-        public async Task<TransactionViewModel> SaveTransactionAsync(TransactionViewModel transaction)
+        public async Task<VoucherViewModel> SaveVoucherAsync(VoucherViewModel voucher)
         {
-            Verify.ArgumentNotNull(transaction, "transaction");
-            Transaction transactionModel = default(Transaction);
-            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
-            if (transaction.Id == 0)
+            Verify.ArgumentNotNull(voucher, "voucher");
+            Voucher voucherModel = default(Voucher);
+            var repository = _unitOfWork.GetAsyncRepository<Voucher>();
+            if (voucher.Id == 0)
             {
-                transactionModel = _mapper.Map<Transaction>(transaction);
-                UpdateAction(transactionModel);
-                repository.Insert(transactionModel, txn => txn.Document, txn => txn.Document.Actions);
+                voucherModel = _mapper.Map<Voucher>(voucher);
+                UpdateAction(voucherModel);
+                repository.Insert(voucherModel, txn => txn.Document, txn => txn.Document.Actions);
             }
             else
             {
-                transactionModel = await repository
+                voucherModel = await repository
                     .GetEntityQuery()
-                    .Where(txn => txn.Id == transaction.Id)
+                    .Where(txn => txn.Id == voucher.Id)
                     .Include(txn => txn.FiscalPeriod)
                     .Include(txn => txn.Branch)
                     .Include(txn => txn.Document)
                         .ThenInclude(doc => doc.Actions)
                     .SingleOrDefaultAsync();
-                if (transactionModel != null)
+                if (voucherModel != null)
                 {
-                    UpdateExistingTransaction(transactionModel, transaction);
-                    UpdateAction(transactionModel);
-                    repository.Update(transactionModel, txn => txn.Document, txn => txn.Document.Actions);
+                    UpdateExistingVoucher(voucherModel, voucher);
+                    UpdateAction(voucherModel);
+                    repository.Update(voucherModel, txn => txn.Document, txn => txn.Document.Actions);
                 }
             }
 
             await _unitOfWork.CommitAsync();
-            return _mapper.Map<TransactionViewModel>(transactionModel);
+            return _mapper.Map<VoucherViewModel>(voucherModel);
         }
 
         /// <summary>
         /// به روش آسنکرون، سند مالی مشخص شده با شناسه دیتابیسی را از دیتابیس حذف می کند
         /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی سند مالی برای حذف</param>
-        public async Task DeleteTransactionAsync(int transactionId)
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی برای حذف</param>
+        public async Task DeleteVoucherAsync(int voucherId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Transaction>();
-            var transaction = await repository.GetByIDWithTrackingAsync(
-                transactionId, txn => txn.Lines, txn => txn.Document);
-            if (transaction != null)
+            var repository = _unitOfWork.GetAsyncRepository<Voucher>();
+            var voucher = await repository.GetByIDWithTrackingAsync(
+                voucherId, txn => txn.Lines, txn => txn.Document);
+            if (voucher != null)
             {
                 var documentRepository = _unitOfWork.GetAsyncRepository<Document>();
                 var document = await documentRepository.GetByIDWithTrackingAsync(
-                    transaction.Document.Id, doc => doc.Actions);
-                transaction.Lines.Clear();
+                    voucher.Document.Id, doc => doc.Actions);
+                voucher.Lines.Clear();
                 document.Actions.Clear();
-                repository.Delete(transaction);
+                repository.Delete(voucher);
                 documentRepository.Delete(document);
                 await _unitOfWork.CommitAsync();
             }
@@ -172,16 +172,16 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات سند مالی داده شده را برای مطابقت با کلیه قواعد کاری برنامه اعتبارسنجی می کند
         /// </summary>
-        /// <param name="transaction">سند مالی که باید اعتبارسنجی شود</param>
+        /// <param name="voucher">سند مالی که باید اعتبارسنجی شود</param>
         /// <returns>مقدار بولی درست در صورت مطابقت کامل با قواعد کاری، در غیر این صورت مقدار بولی نادرست</returns>
-        public async Task<bool> IsValidTransactionAsync(TransactionViewModel transaction)
+        public async Task<bool> IsValidVoucherAsync(VoucherViewModel voucher)
         {
-            Verify.ArgumentNotNull(transaction, "transaction");
+            Verify.ArgumentNotNull(voucher, "voucher");
             var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var fiscalPeriod = await repository.GetByIDAsync(transaction.FiscalPeriodId);
+            var fiscalPeriod = await repository.GetByIDAsync(voucher.FiscalPeriodId);
             bool isValid = (fiscalPeriod != null)
-                && (transaction.Date >= fiscalPeriod.StartDate)
-                && (transaction.Date <= fiscalPeriod.EndDate);
+                && (voucher.Date >= fiscalPeriod.StartDate)
+                && (voucher.Date <= fiscalPeriod.EndDate);
             return isValid;
         }
 
@@ -196,14 +196,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public IList<TransactionViewModel> GetTransactions(int fpId, int branchId, GridOptions gridOptions = null)
+        public IList<VoucherViewModel> GetVouchers(int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var query = GetTransactionQuery(
+            var query = GetVoucherQuery(
                 txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId, gridOptions);
-            var transactions = query
-                .Select(txn => _mapper.Map<TransactionViewModel>(txn))
+            var vouchers = query
+                .Select(txn => _mapper.Map<VoucherViewModel>(txn))
                 .ToList();
-            return transactions
+            return vouchers
                 .Select(txn => AddWorkItemInfo(txn))
                 .ToList();
         }
@@ -211,20 +211,20 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// سند مالی با شناسه دیتابیسی مشخص شده را از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
+        /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
         /// <returns>سند مالی مشخص شده با شناسه دیتابیسی</returns>
-        public TransactionViewModel GetTransaction(int transactionId)
+        public VoucherViewModel GetVoucher(int voucherId)
         {
-            TransactionViewModel transactionViewModel = null;
-            var query = GetTransactionQuery(txn => txn.Id == transactionId);
-            var transaction = query.SingleOrDefault();
-            if (transaction != null)
+            VoucherViewModel voucherViewModel = null;
+            var query = GetVoucherQuery(txn => txn.Id == voucherId);
+            var voucher = query.SingleOrDefault();
+            if (voucher != null)
             {
-                transactionViewModel = _mapper.Map<TransactionViewModel>(transaction);
-                AddWorkItemInfo(transactionViewModel);
+                voucherViewModel = _mapper.Map<VoucherViewModel>(voucher);
+                AddWorkItemInfo(voucherViewModel);
             }
 
-            return transactionViewModel;
+            return voucherViewModel;
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public int GetCount(int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetRepository<Transaction>();
+            var repository = _unitOfWork.GetRepository<Voucher>();
             var count = repository
                 .GetCountByCriteria(
                     txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId,
@@ -247,28 +247,28 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// اطلاعات یک سند مالی را در دیتابیس ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="transaction">سند مالی برای ایجاد یا اصلاح</param>
-        public void SaveTransaction(TransactionViewModel transaction)
+        /// <param name="voucher">سند مالی برای ایجاد یا اصلاح</param>
+        public void SaveVoucher(VoucherViewModel voucher)
         {
-            Verify.ArgumentNotNull(transaction, "transaction");
-            var repository = _unitOfWork.GetRepository<Transaction>();
-            if (transaction.Id == 0)
+            Verify.ArgumentNotNull(voucher, "voucher");
+            var repository = _unitOfWork.GetRepository<Voucher>();
+            if (voucher.Id == 0)
             {
-                var newTransaction = _mapper.Map<Transaction>(transaction);
-                UpdateAction(newTransaction);
-                repository.Insert(newTransaction, txn => txn.Document, txn => txn.Document.Actions);
+                var newVoucher = _mapper.Map<Voucher>(voucher);
+                UpdateAction(newVoucher);
+                repository.Insert(newVoucher, txn => txn.Document, txn => txn.Document.Actions);
             }
             else
             {
                 var existing = repository
                     .GetEntityQuery()
-                    .Where(txn => txn.Id == transaction.Id)
+                    .Where(txn => txn.Id == voucher.Id)
                     .Include(txn => txn.Document)
                         .ThenInclude(doc => doc.Actions)
                     .SingleOrDefault();
                 if (existing != null)
                 {
-                    UpdateExistingTransaction(existing, transaction);
+                    UpdateExistingVoucher(existing, voucher);
                     UpdateAction(existing);
                     repository.Update(existing, txn => txn.Document, txn => txn.Document.Actions);
                 }
@@ -280,20 +280,20 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// سند مالی مشخص شده با شناسه دیتابیسی را از دیتابیس حذف می کند
         /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی سند مالی برای حذف</param>
-        public void DeleteTransaction(int transactionId)
+        /// <param name="voucherId">شناسه دیتابیسی سند مالی برای حذف</param>
+        public void DeleteVoucher(int voucherId)
         {
-            var repository = _unitOfWork.GetRepository<Transaction>();
-            var transaction = repository.GetByIDWithTracking(
-                transactionId, txn => txn.Lines, txn => txn.Document);
-            if (transaction != null)
+            var repository = _unitOfWork.GetRepository<Voucher>();
+            var voucher = repository.GetByIDWithTracking(
+                voucherId, txn => txn.Lines, txn => txn.Document);
+            if (voucher != null)
             {
                 var documentRepository = _unitOfWork.GetRepository<Document>();
                 var document = documentRepository.GetByIDWithTracking(
-                    transaction.Document.Id, doc => doc.Actions);
-                transaction.Lines.Clear();
+                    voucher.Document.Id, doc => doc.Actions);
+                voucher.Lines.Clear();
                 document.Actions.Clear();
-                repository.Delete(transaction);
+                repository.Delete(voucher);
                 documentRepository.Delete(document);
                 _unitOfWork.Commit();
             }
@@ -302,81 +302,41 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// اطلاعات سند مالی داده شده را برای مطابقت با کلیه قواعد کاری برنامه اعتبارسنجی می کند
         /// </summary>
-        /// <param name="transaction">سند مالی که باید اعتبارسنجی شود</param>
+        /// <param name="voucher">سند مالی که باید اعتبارسنجی شود</param>
         /// <returns>مقدار بولی درست در صورت مطابقت کامل با قواعد کاری، در غیر این صورت مقدار بولی نادرست</returns>
-        public bool IsValidTransaction(TransactionViewModel transaction)
+        public bool IsValidVoucher(VoucherViewModel voucher)
         {
-            Verify.ArgumentNotNull(transaction, "transaction");
+            Verify.ArgumentNotNull(voucher, "voucher");
             var repository = _unitOfWork.GetRepository<FiscalPeriod>();
-            var fiscalPeriod = repository.GetByID(transaction.FiscalPeriodId);
+            var fiscalPeriod = repository.GetByID(voucher.FiscalPeriodId);
             bool isValid = (fiscalPeriod != null)
-                && (transaction.Date >= fiscalPeriod.StartDate)
-                && (transaction.Date <= fiscalPeriod.EndDate);
+                && (voucher.Date >= fiscalPeriod.StartDate)
+                && (voucher.Date <= fiscalPeriod.EndDate);
             return isValid;
         }
 
-        /// <summary>
-        /// اطلاعات خلاصه سند مشخص شده با شناسه دیتابیسی را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="transactionId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
-        /// <returns>اطلاعات خلاصه سند مالی مشخص شده با شناسه دیتابیسی</returns>
-        public TransactionSummaryViewModel GetTransactionSummary(int transactionId)
-        {
-            TransactionSummaryViewModel summary = default(TransactionSummaryViewModel);
-            var repository = _unitOfWork.GetRepository<Transaction>();
-            var transaction = repository.GetByID(transactionId);
-            if (transaction != null)
-            {
-                summary = _mapper.Map<TransactionSummaryViewModel>(transaction);
-            }
-
-            _unitOfWork.Commit();
-            return summary;
-        }
-
-        /// <summary>
-        /// اطلاعات خلاصه سند مشخص شده با شناسه دیتابیسی مستند اداری مرتبط را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="documentId">شناسه دیتابیسی یکی از مستندهای اداری موجود</param>
-        /// <returns>اطلاعات خلاصه سند مالی مشخص شده با شناسه دیتابیسی مستند اداری مرتبط</returns>
-        public TransactionSummaryViewModel GetTransactionSummaryFromDocument(int documentId)
-        {
-            TransactionSummaryViewModel summary = default(TransactionSummaryViewModel);
-            var repository = _unitOfWork.GetRepository<Transaction>();
-            var transaction = repository
-                .GetByCriteria(txn => txn.Document.Id == documentId)
-                .FirstOrDefault();
-            if (transaction != null)
-            {
-                summary = _mapper.Map<TransactionSummaryViewModel>(transaction);
-            }
-
-            _unitOfWork.Commit();
-            return summary;
-        }
-
         #endregion
 
         #endregion
 
-        #region Transaction Line Operations
+        #region Voucher Line Operations
 
         #region Asynchronous Methods
 
         /// <summary>
         /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
+        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        public async Task<EntityListViewModel<TransactionLineViewModel>> GetArticlesAsync(
-            int transactionId, GridOptions gridOptions = null)
+        public async Task<EntityListViewModel<VoucherLineViewModel>> GetArticlesAsync(
+            int voucherId, GridOptions gridOptions = null)
         {
-            var query = GetTransactionLinesQuery(transactionId, gridOptions);
+            var query = GetVoucherLinesQuery(voucherId, gridOptions);
             var lines = await query
-                .Select(line => _mapper.Map<TransactionLineViewModel>(line))
+                .Select(line => _mapper.Map<VoucherLineViewModel>(line))
                 .ToListAsync();
-            return await _decorator.GetDecoratedListAsync<TransactionLine, TransactionLineViewModel>(lines);
+            return await _decorator.GetDecoratedListAsync<VoucherLine, VoucherLineViewModel>(lines);
         }
 
         /// <summary>
@@ -384,60 +344,41 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
         /// <returns>اطلاعات آرتیکل مشخص شده با شناسه دیتابیسی</returns>
-        public async Task<EntityItemViewModel<TransactionLineViewModel>> GetArticleAsync(int articleId)
+        public async Task<EntityItemViewModel<VoucherLineViewModel>> GetArticleAsync(int articleId)
         {
-            TransactionLineViewModel articleViewModel = null;
-            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
+            VoucherLineViewModel articleViewModel = null;
+            var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
             var query = GetArticleDetailsQuery(repository, art => art.Id == articleId);
             var article = await query.SingleOrDefaultAsync();
             if (article != null)
             {
-                articleViewModel = _mapper.Map<TransactionLineViewModel>(article);
+                articleViewModel = _mapper.Map<VoucherLineViewModel>(article);
             }
 
-            return await _decorator.GetDecoratedItemAsync<TransactionLine, TransactionLineViewModel>(articleViewModel);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات کامل سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
-        /// <returns>اطلاعات کامل آرتیکل مشخص شده با شناسه دیتابیسی</returns>
-        public async Task<EntityItemViewModel<TransactionLineFullViewModel>> GetArticleDetailsAsync(int articleId)
-        {
-            TransactionLineFullViewModel articleDetails = null;
-            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
-            var query = GetArticleDetailsQuery(repository, art => art.Id == articleId);
-            var article = await query.SingleOrDefaultAsync();
-            if (article != null)
-            {
-                articleDetails = _mapper.Map<TransactionLineFullViewModel>(article);
-            }
-
-            return await _decorator.GetDecoratedItemAsync<TransactionLine, TransactionLineFullViewModel>(articleDetails);
+            return await _decorator.GetDecoratedItemAsync<VoucherLine, VoucherLineViewModel>(articleViewModel);
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی</returns>
-        public async Task<EntityItemViewModel<TransactionLineViewModel>> GetTransactionLineMetadataAsync()
+        public async Task<EntityItemViewModel<VoucherLineViewModel>> GetVoucherLineMetadataAsync()
         {
-            return await _decorator.GetDecoratedItemAsync<TransactionLine, TransactionLineViewModel>(null);
+            return await _decorator.GetDecoratedItemAsync<VoucherLine, VoucherLineViewModel>(null);
         }
 
         /// <summary>
         /// به روش آسنکرون، تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
+        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد آرتیکل های سند مالی بعد از اعمال فیلتر</returns>
-        public async Task<int> GetArticleCountAsync(int transactionId, GridOptions gridOptions = null)
+        public async Task<int> GetArticleCountAsync(int voucherId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
+            var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
             var count = await repository.GetCountByCriteriaAsync(
-                line => line.Transaction.Id == transactionId, gridOptions);
+                line => line.Voucher.Id == voucherId, gridOptions);
             return count;
         }
 
@@ -445,14 +386,14 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات یک سطر سند مالی (آرتیکل) را در دیتابیس ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
-        public async Task<TransactionLineViewModel> SaveArticleAsync(TransactionLineViewModel article)
+        public async Task<VoucherLineViewModel> SaveArticleAsync(VoucherLineViewModel article)
         {
             Verify.ArgumentNotNull(article, "article");
-            TransactionLine lineModel = default(TransactionLine);
-            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
+            VoucherLine lineModel = default(VoucherLine);
+            var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
             if (article.Id == 0)
             {
-                lineModel = _mapper.Map<TransactionLine>(article);
+                lineModel = _mapper.Map<VoucherLine>(article);
                 repository.Insert(lineModel);
             }
             else
@@ -466,7 +407,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             await _unitOfWork.CommitAsync();
-            return _mapper.Map<TransactionLineViewModel>(lineModel);
+            return _mapper.Map<VoucherLineViewModel>(lineModel);
         }
 
         /// <summary>
@@ -475,7 +416,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="articleId">شناسه دیتابیسی آرتیکل برای حذف</param>
         public async Task DeleteArticleAsync(int articleId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
+            var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
             var article = await repository.GetByIDAsync(articleId);
             if (article != null)
             {
@@ -486,7 +427,7 @@ namespace SPPC.Tadbir.Persistence
                 article.Branch = null;
                 article.Currency = null;
                 article.FiscalPeriod = null;
-                article.Transaction = null;
+                article.Voucher = null;
                 repository.Delete(article);
                 await _unitOfWork.CommitAsync();
             }
@@ -499,14 +440,14 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
+        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سند مشخص شده با شناسه عددی</returns>
-        public IList<TransactionLineViewModel> GetArticles(int transactionId, GridOptions gridOptions = null)
+        public IList<VoucherLineViewModel> GetArticles(int voucherId, GridOptions gridOptions = null)
         {
-            var query = GetTransactionLinesQuery(transactionId, gridOptions);
+            var query = GetVoucherLinesQuery(voucherId, gridOptions);
             var lines = query
-                .Select(line => _mapper.Map<TransactionLineViewModel>(line))
+                .Select(line => _mapper.Map<VoucherLineViewModel>(line))
                 .ToList();
             return lines;
         }
@@ -516,52 +457,33 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
         /// <returns>اطلاعات آرتیکل مشخص شده با شناسه دیتابیسی</returns>
-        public TransactionLineViewModel GetArticle(int articleId)
+        public VoucherLineViewModel GetArticle(int articleId)
         {
-            TransactionLineViewModel articleViewModel = null;
-            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            VoucherLineViewModel articleViewModel = null;
+            var repository = _unitOfWork.GetRepository<VoucherLine>();
             var article = repository.GetByID(
                 articleId,
-                art => art.Transaction, art => art.Account, art => art.Currency,
+                art => art.Voucher, art => art.Account, art => art.Currency,
                 art => art.Branch, art => art.FiscalPeriod);
             if (article != null)
             {
-                articleViewModel = _mapper.Map<TransactionLineViewModel>(article);
+                articleViewModel = _mapper.Map<VoucherLineViewModel>(article);
             }
 
             return articleViewModel;
         }
 
         /// <summary>
-        /// اطلاعات کامل سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
-        /// <returns>اطلاعات کامل آرتیکل مشخص شده با شناسه دیتابیسی</returns>
-        public TransactionLineFullViewModel GetArticleDetails(int articleId)
-        {
-            TransactionLineFullViewModel articleDetails = null;
-            var repository = _unitOfWork.GetRepository<TransactionLine>();
-            var query = GetArticleDetailsQuery(repository, art => art.Id == articleId);
-            var article = query.SingleOrDefault();
-            if (article != null)
-            {
-                articleDetails = _mapper.Map<TransactionLineFullViewModel>(article);
-            }
-
-            return articleDetails;
-        }
-
-        /// <summary>
         /// تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
+        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد آرتیکل های سند مالی بعد از اعمال فیلتر</returns>
-        public int GetArticleCount(int transactionId, GridOptions gridOptions = null)
+        public int GetArticleCount(int voucherId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetRepository<TransactionLine>();
-            var count = repository.GetCountByCriteria(line => line.Transaction.Id == transactionId, gridOptions);
+            var repository = _unitOfWork.GetRepository<VoucherLine>();
+            var count = repository.GetCountByCriteria(line => line.Voucher.Id == voucherId, gridOptions);
             return count;
         }
 
@@ -569,13 +491,13 @@ namespace SPPC.Tadbir.Persistence
         /// اطلاعات یک سطر سند مالی (آرتیکل) را در دیتابیس ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
-        public void SaveArticle(TransactionLineViewModel article)
+        public void SaveArticle(VoucherLineViewModel article)
         {
             Verify.ArgumentNotNull(article, "article");
-            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            var repository = _unitOfWork.GetRepository<VoucherLine>();
             if (article.Id == 0)
             {
-                var newArticle = _mapper.Map<TransactionLine>(article);
+                var newArticle = _mapper.Map<VoucherLine>(article);
                 repository.Insert(newArticle);
             }
             else
@@ -597,7 +519,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="articleId">شناسه دیتابیسی آرتیکل برای حذف</param>
         public void DeleteArticle(int articleId)
         {
-            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            var repository = _unitOfWork.GetRepository<VoucherLine>();
             var article = repository.GetByID(articleId);
             if (article != null)
             {
@@ -608,7 +530,7 @@ namespace SPPC.Tadbir.Persistence
                 article.Branch = null;
                 article.Currency = null;
                 article.FiscalPeriod = null;
-                article.Transaction = null;
+                article.Voucher = null;
                 repository.Delete(article);
                 _unitOfWork.Commit();
             }
@@ -618,7 +540,7 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
-        private static void UpdateExistingArticle(TransactionLine existing, TransactionLineViewModel article)
+        private static void UpdateExistingArticle(VoucherLine existing, VoucherLineViewModel article)
         {
             existing.AccountId = article.FullAccount.AccountId ?? 0;
             existing.DetailId = article.FullAccount.DetailId;
@@ -630,38 +552,38 @@ namespace SPPC.Tadbir.Persistence
             existing.Description = article.Description;
         }
 
-        private static void UpdateAction(Transaction transaction)
+        private static void UpdateAction(Voucher voucher)
         {
-            if (transaction.Id == 0)
+            if (voucher.Id == 0)
             {
-                var mainAction = transaction.Document.Actions.First();
-                mainAction.Document = transaction.Document;
+                var mainAction = voucher.Document.Actions.First();
+                mainAction.Document = voucher.Document;
                 mainAction.CreatedDate = DateTime.Now;
                 mainAction.ModifiedDate = DateTime.Now;
             }
             else
             {
-                var mainAction = transaction.Document.Actions.First();
+                var mainAction = voucher.Document.Actions.First();
                 mainAction.ModifiedDate = DateTime.Now;
             }
         }
 
-        private void UpdateExistingTransaction(Transaction existing, TransactionViewModel transaction)
+        private void UpdateExistingVoucher(Voucher existing, VoucherViewModel voucher)
         {
             var userRepository = _unitOfWork.GetRepository<User>();
-            existing.No = transaction.No;
-            existing.Date = transaction.Date;
-            existing.Description = transaction.Description;
-            existing.Document.EntityNo = transaction.No;
+            existing.No = voucher.No;
+            existing.Date = voucher.Date;
+            existing.Description = voucher.Description;
+            existing.Document.EntityNo = voucher.No;
             var mainAction = existing.Document.Actions.First();
-            mainAction.ModifiedBy = userRepository.GetByID(transaction.Document.Actions.First().ModifiedById);
+            mainAction.ModifiedBy = userRepository.GetByID(voucher.Document.Actions.First().ModifiedById);
         }
 
-        private IQueryable<Transaction> GetTransactionQuery(
-            Expression<Func<Transaction, bool>> criteria, GridOptions gridOptions = null)
+        private IQueryable<Voucher> GetVoucherQuery(
+            Expression<Func<Voucher, bool>> criteria, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetRepository<Transaction>();
-            var transactionsQuery = repository
+            var repository = _unitOfWork.GetRepository<Voucher>();
+            var vouchersQuery = repository
                 .GetEntityQuery(gridOptions)
                 .Include(txn => txn.Lines)
                 .Include(txn => txn.FiscalPeriod)
@@ -683,20 +605,20 @@ namespace SPPC.Tadbir.Persistence
                     .ThenInclude(doc => doc.Actions)
                         .ThenInclude(act => act.ApprovedBy)
                 .Where(criteria);
-            transactionsQuery = (gridOptions != null)
-                ? transactionsQuery
+            vouchersQuery = (gridOptions != null)
+                ? vouchersQuery
                     .Skip((gridOptions.Paging.PageIndex - 1) * gridOptions.Paging.PageSize)
                     .Take(gridOptions.Paging.PageSize)
-                : transactionsQuery;
-            return transactionsQuery;
+                : vouchersQuery;
+            return vouchersQuery;
         }
 
-        private IQueryable<TransactionLine> GetTransactionLinesQuery(int transactionId, GridOptions gridOptions = null)
+        private IQueryable<VoucherLine> GetVoucherLinesQuery(int voucherId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            var repository = _unitOfWork.GetRepository<VoucherLine>();
             var linesQuery = repository
                 .GetEntityQuery(gridOptions)
-                .Include(line => line.Transaction)
+                .Include(line => line.Voucher)
                 .Include(line => line.Account)
                 .Include(line => line.DetailAccount)
                 .Include(line => line.CostCenter)
@@ -704,7 +626,7 @@ namespace SPPC.Tadbir.Persistence
                 .Include(line => line.Currency)
                 .Include(line => line.FiscalPeriod)
                 .Include(line => line.Branch)
-                .Where(line => line.Transaction.Id == transactionId);
+                .Where(line => line.Voucher.Id == voucherId);
             linesQuery = (gridOptions != null)
                 ? linesQuery
                     .Skip((gridOptions.Paging.PageIndex - 1) * gridOptions.Paging.PageSize)
@@ -726,8 +648,8 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private IQueryable<TransactionLine> GetArticleDetailsQuery(
-            IRepository<TransactionLine> repository, Expression<Func<TransactionLine, bool>> criteria)
+        private IQueryable<VoucherLine> GetArticleDetailsQuery(
+            IRepository<VoucherLine> repository, Expression<Func<VoucherLine, bool>> criteria)
         {
             var query = repository
                 .GetEntityQuery()
@@ -735,7 +657,7 @@ namespace SPPC.Tadbir.Persistence
                 .Include(art => art.DetailAccount)
                 .Include(art => art.CostCenter)
                 .Include(art => art.Project)
-                .Include(art => art.Transaction)
+                .Include(art => art.Voucher)
                 .Include(art => art.FiscalPeriod)
                 .Include(art => art.Currency)
                 .Include(art => art.Branch)
@@ -744,40 +666,40 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private TransactionViewModel AddWorkItemInfo(TransactionViewModel transaction)
+        private VoucherViewModel AddWorkItemInfo(VoucherViewModel voucher)
         {
             var repository = _unitOfWork.GetRepository<WorkItemDocument>();
             var document = repository
-                .GetByCriteria(wid => wid.Document.Id == transaction.Document.Id
-                    && wid.DocumentType == DocumentTypeName.Transaction,
+                .GetByCriteria(wid => wid.Document.Id == voucher.Document.Id
+                    && wid.DocumentType == DocumentTypeName.Voucher,
                     wid => wid.Document, wid => wid.WorkItem)
                 .FirstOrDefault();
             if (document != null)
             {
-                transaction.WorkItemId = document.WorkItem.Id;
-                transaction.WorkItemTargetId = document.WorkItem.Target.Id;
-                transaction.WorkItemAction = document.WorkItem.Action;
+                voucher.WorkItemId = document.WorkItem.Id;
+                voucher.WorkItemTargetId = document.WorkItem.Target.Id;
+                voucher.WorkItemAction = document.WorkItem.Action;
             }
 
-            return transaction;
+            return voucher;
         }
 
-        private async Task<TransactionViewModel> AddWorkItemInfoAsync(TransactionViewModel transaction)
+        private async Task<VoucherViewModel> AddWorkItemInfoAsync(VoucherViewModel voucher)
         {
             var repository = _unitOfWork.GetAsyncRepository<WorkItemDocument>();
             var documents = await repository
-                .GetByCriteriaAsync(wid => wid.Document.Id == transaction.Document.Id
-                    && wid.DocumentType == DocumentTypeName.Transaction,
+                .GetByCriteriaAsync(wid => wid.Document.Id == voucher.Document.Id
+                    && wid.DocumentType == DocumentTypeName.Voucher,
                     wid => wid.Document, wid => wid.WorkItem);
             var document = documents.FirstOrDefault();
             if (document != null)
             {
-                transaction.WorkItemId = document.WorkItem.Id;
-                transaction.WorkItemTargetId = document.WorkItem.Target.Id;
-                transaction.WorkItemAction = document.WorkItem.Action;
+                voucher.WorkItemId = document.WorkItem.Id;
+                voucher.WorkItemTargetId = document.WorkItem.Target.Id;
+                voucher.WorkItemAction = document.WorkItem.Action;
             }
 
-            return transaction;
+            return voucher;
         }
 
         private IUnitOfWork _unitOfWork;

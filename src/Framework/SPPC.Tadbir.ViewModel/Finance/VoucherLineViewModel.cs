@@ -6,20 +6,20 @@ using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class TransactionLineViewModel
+    public partial class VoucherLineViewModel
     {
         /// <summary>
-        /// Gets or sets the identifier of the transaction that contains this line (article) item
+        /// شناسه دیتابیسی سند مالی که این آرتیکل برای آن ایجاد شده است
         /// </summary>
-        public int TransactionId { get; set; }
+        public int VoucherId { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the corporate branch in which this line (article) item is defined
+        /// شناسه دیتابیسی شعبه سازمانی که اطلاعات مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد
         /// </summary>
         public int BranchId { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the fiscal period in which this line (article) item is defined
+        /// شناسه دیتابیسی دوره مالی که وضعیت مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد
         /// </summary>
         public int FiscalPeriodId { get; set; }
 
@@ -29,7 +29,7 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public FullAccountViewModel FullAccount { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the currency that qualifies monetary values in this article.
+        /// شناسه دیتابیسی پول یا ارز مورد استفاده برای مبلغ بدهکار یا بستانکار این آرتیکل
         /// </summary>
         [Display(Name = FieldNames.CurrencyTypeField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

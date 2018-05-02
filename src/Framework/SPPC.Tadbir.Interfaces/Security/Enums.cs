@@ -263,33 +263,33 @@ namespace SPPC.Tadbir.Security
     }
 
     /// <summary>
-    /// Provides flag values for permissions currently defined for managing a financial transaction.
+    /// Provides flag values for permissions currently defined for managing a financial voucher.
     /// </summary>
     [Flags]
-    public enum TransactionPermissions
+    public enum VoucherPermissions
     {
         /// <summary>
-        /// Indicates no permission for managing a transaction
+        /// Indicates no permission for managing a voucher
         /// </summary>
         None = 0x0,
 
         /// <summary>
-        /// Indicates permission to view transaction list or details of a transaction
+        /// Indicates permission to view voucher list or details of a voucher
         /// </summary>
         View = 0x1,
 
         /// <summary>
-        /// Indicates permission to create a new transaction
+        /// Indicates permission to create a new voucher
         /// </summary>
         Create = 0x2,
 
         /// <summary>
-        /// Indicates permission to edit an existing transaction
+        /// Indicates permission to edit an existing voucher
         /// </summary>
         Edit = 0x4,
 
         /// <summary>
-        /// Indicates permission to delete an existing transaction
+        /// Indicates permission to delete an existing voucher
         /// </summary>
         Delete = 0x8,
 
@@ -314,7 +314,7 @@ namespace SPPC.Tadbir.Security
         Approve = 0x80,
 
         /// <summary>
-        /// Indicates all permissions available for managing a transaction
+        /// Indicates all permissions available for managing a voucher
         /// </summary>
         All = 0xff
     }

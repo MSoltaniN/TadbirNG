@@ -173,7 +173,7 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار "نادرست" را برمی گرداند</returns>
         public async Task<bool> IsUsedDetailAccountAsync(int faccountId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
+            var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
             var articles = await repository
                 .GetByCriteriaAsync(art => art.DetailAccount.Id == faccountId);
             return (articles.Count != 0);

@@ -10,9 +10,9 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات اسناد مالی و آرتیکل های آنها را تعریف می کند.
     /// </summary>
-    public interface ITransactionRepository
+    public interface IVoucherRepository
     {
-        #region Transaction Operations
+        #region Voucher Operations
 
         #region Asynchronous Methods
 
@@ -23,21 +23,21 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<EntityListViewModel<TransactionViewModel>> GetTransactionsAsync(
+        Task<EntityListViewModel<VoucherViewModel>> GetVouchersAsync(
             int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، سند مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">شناسه عددی یکی از اسناد مالی موجود</param>
+        /// <param name="voucherId">شناسه عددی یکی از اسناد مالی موجود</param>
         /// <returns>سند مالی مشخص شده با شناسه عددی</returns>
-        Task<EntityItemViewModel<TransactionViewModel>> GetTransactionAsync(int transactionId);
+        Task<EntityItemViewModel<VoucherViewModel>> GetVoucherAsync(int voucherId);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای سند مالی</returns>
-        Task<EntityItemViewModel<TransactionViewModel>> GetTransactionMetadataAsync();
+        Task<EntityItemViewModel<VoucherViewModel>> GetVoucherMetadataAsync();
 
         /// <summary>
         /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را
@@ -52,22 +52,22 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک سند مالی را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="transaction">سند مالی برای ایجاد یا اصلاح</param>
+        /// <param name="voucher">سند مالی برای ایجاد یا اصلاح</param>
         /// <returns>مدل نمایشی سند ایجاد یا اصلاح شده</returns>
-        Task<TransactionViewModel> SaveTransactionAsync(TransactionViewModel transaction);
+        Task<VoucherViewModel> SaveVoucherAsync(VoucherViewModel voucher);
 
         /// <summary>
         /// به روش آسنکرون، سند مالی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
         /// </summary>
-        /// <param name="transactionId">شناسه عددی سند مالی برای حذف</param>
-        Task DeleteTransactionAsync(int transactionId);
+        /// <param name="voucherId">شناسه عددی سند مالی برای حذف</param>
+        Task DeleteVoucherAsync(int voucherId);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات سند مالی داده شده را برای مطابقت با کلیه قواعد کاری برنامه اعتبارسنجی می کند
         /// </summary>
-        /// <param name="transaction">سند مالی که باید اعتبارسنجی شود</param>
+        /// <param name="voucher">سند مالی که باید اعتبارسنجی شود</param>
         /// <returns>مقدار بولی درست در صورت مطابقت کامل با قواعد کاری، در غیر این صورت مقدار بولی نادرست</returns>
-        Task<bool> IsValidTransactionAsync(TransactionViewModel transaction);
+        Task<bool> IsValidVoucherAsync(VoucherViewModel voucher);
 
         #endregion
 
@@ -80,14 +80,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        IList<TransactionViewModel> GetTransactions(int fpId, int branchId, GridOptions gridOptions = null);
+        IList<VoucherViewModel> GetVouchers(int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// سند مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">شناسه عددی یکی از اسناد مالی موجود</param>
+        /// <param name="voucherId">شناسه عددی یکی از اسناد مالی موجود</param>
         /// <returns>سند مالی مشخص شده با شناسه عددی</returns>
-        TransactionViewModel GetTransaction(int transactionId);
+        VoucherViewModel GetVoucher(int voucherId);
 
         /// <summary>
         /// تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را از محل ذخیره خوانده و برمی گرداند
@@ -101,87 +101,66 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// اطلاعات یک سند مالی را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="transaction">سند مالی برای ایجاد یا اصلاح</param>
-        void SaveTransaction(TransactionViewModel transaction);
+        /// <param name="voucher">سند مالی برای ایجاد یا اصلاح</param>
+        void SaveVoucher(VoucherViewModel voucher);
 
         /// <summary>
         /// سند مالی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
         /// </summary>
-        /// <param name="transactionId">شناسه عددی سند مالی برای حذف</param>
-        void DeleteTransaction(int transactionId);
+        /// <param name="voucherId">شناسه عددی سند مالی برای حذف</param>
+        void DeleteVoucher(int voucherId);
 
         /// <summary>
         /// اطلاعات سند مالی داده شده را برای مطابقت با کلیه قواعد کاری برنامه اعتبارسنجی می کند
         /// </summary>
-        /// <param name="transaction">سند مالی که باید اعتبارسنجی شود</param>
+        /// <param name="voucher">سند مالی که باید اعتبارسنجی شود</param>
         /// <returns>مقدار بولی درست در صورت مطابقت کامل با قواعد کاری، در غیر این صورت مقدار بولی نادرست</returns>
-        bool IsValidTransaction(TransactionViewModel transaction);
-
-        /// <summary>
-        /// اطلاعات خلاصه سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="transactionId">شناسه عددی یکی از اسناد مالی موجود</param>
-        /// <returns>اطلاعات خلاصه سند مالی مشخص شده با شناسه عددی</returns>
-        TransactionSummaryViewModel GetTransactionSummary(int transactionId);
-
-        /// <summary>
-        /// اطلاعات خلاصه سند مشخص شده با شناسه عددی مستند اداری مرتبط را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="documentId">شناسه عددی یکی از مستندهای اداری موجود</param>
-        /// <returns>اطلاعات خلاصه سند مالی مشخص شده با شناسه عددی مستند اداری مرتبط</returns>
-        TransactionSummaryViewModel GetTransactionSummaryFromDocument(int documentId);
+        bool IsValidVoucher(VoucherViewModel voucher);
 
         #endregion
 
         #endregion
 
-        #region Transaction Line Operations
+        #region Voucher Line Operations
 
         #region Asynchronous Methods
 
         /// <summary>
         /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
+        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        Task<EntityListViewModel<TransactionLineViewModel>> GetArticlesAsync(
-            int transactionId, GridOptions gridOptions = null);
+        Task<EntityListViewModel<VoucherLineViewModel>> GetArticlesAsync(
+            int voucherId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
         /// <returns>اطلاعات آرتیکل مشخص شده با شناسه عددی</returns>
-        Task<EntityItemViewModel<TransactionLineViewModel>> GetArticleAsync(int articleId);
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات کامل سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
-        /// <returns>اطلاعات کامل آرتیکل مشخص شده با شناسه عددی</returns>
-        Task<EntityItemViewModel<TransactionLineFullViewModel>> GetArticleDetailsAsync(int articleId);
+        Task<EntityItemViewModel<VoucherLineViewModel>> GetArticleAsync(int articleId);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی</returns>
-        Task<EntityItemViewModel<TransactionLineViewModel>> GetTransactionLineMetadataAsync();
+        Task<EntityItemViewModel<VoucherLineViewModel>> GetVoucherLineMetadataAsync();
 
         /// <summary>
         /// به روش آسنکرون، تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
+        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد آرتیکل های سند مالی بعد از اعمال فیلتر</returns>
-        Task<int> GetArticleCountAsync(int transactionId, GridOptions gridOptions = null);
+        Task<int> GetArticleCountAsync(int voucherId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک سطر سند مالی (آرتیکل) را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
-        Task<TransactionLineViewModel> SaveArticleAsync(TransactionLineViewModel article);
+        Task<VoucherLineViewModel> SaveArticleAsync(VoucherLineViewModel article);
 
         /// <summary>
         /// به روش آسنکرون، سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
@@ -196,39 +175,32 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
+        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        IList<TransactionLineViewModel> GetArticles(int transactionId, GridOptions gridOptions = null);
+        IList<VoucherLineViewModel> GetArticles(int voucherId, GridOptions gridOptions = null);
 
         /// <summary>
         /// اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
         /// <returns>اطلاعات آرتیکل مشخص شده با شناسه عددی</returns>
-        TransactionLineViewModel GetArticle(int articleId);
-
-        /// <summary>
-        /// اطلاعات کامل سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
-        /// <returns>اطلاعات کامل آرتیکل مشخص شده با شناسه عددی</returns>
-        TransactionLineFullViewModel GetArticleDetails(int articleId);
+        VoucherLineViewModel GetArticle(int articleId);
 
         /// <summary>
         /// تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="transactionId">شناسه یکی از اسناد مالی موجود</param>
+        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد آرتیکل های سند مالی بعد از اعمال فیلتر</returns>
-        int GetArticleCount(int transactionId, GridOptions gridOptions = null);
+        int GetArticleCount(int voucherId, GridOptions gridOptions = null);
 
         /// <summary>
         /// اطلاعات یک سطر سند مالی (آرتیکل) را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
-        void SaveArticle(TransactionLineViewModel article);
+        void SaveArticle(VoucherLineViewModel article);
 
         /// <summary>
         /// سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره حذف می کند

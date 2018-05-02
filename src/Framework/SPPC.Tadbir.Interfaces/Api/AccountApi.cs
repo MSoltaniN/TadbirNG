@@ -93,17 +93,17 @@ namespace SPPC.Tadbir.Api
         public const string AccountDetailsSyncUrl = "accounts/{accountId:min(1)}/details/sync";
 
         /// <summary>
-        /// API client URL for transaction articles that reference an account specified by identifier
+        /// API client URL for voucher articles that reference an account specified by identifier
         /// </summary>
         public const string AccountArticles = "accounts/{0}/articles";
 
         /// <summary>
-        /// API server route URL for transaction articles that reference an account specified by identifier
+        /// API server route URL for voucher articles that reference an account specified by identifier
         /// </summary>
         public const string AccountArticlesUrl = "accounts/{accountId:min(1)}/articles";
 
         /// <summary>
-        /// API server route URL for transaction articles that reference an account specified by identifier
+        /// API server route URL for voucher articles that reference an account specified by identifier
         /// </summary>
         public const string AccountArticlesSyncUrl = "accounts/{accountId:min(1)}/articles/sync";
     }
