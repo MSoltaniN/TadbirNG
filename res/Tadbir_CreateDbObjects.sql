@@ -324,26 +324,26 @@ CREATE TABLE [Finance].[Account] (
 )
 GO
 
-CREATE TABLE [Finance].[Transaction] (
-    [TransactionID]     INT              IDENTITY (1, 1) NOT NULL,
+CREATE TABLE [Finance].[Voucher] (
+    [VoucherID]         INT              IDENTITY (1, 1) NOT NULL,
 	[FiscalPeriodID]    INT              NOT NULL,
 	[BranchID]          INT              NOT NULL,
 	[DocumentID]        INT              NOT NULL,
     [No]                NVARCHAR(64)     NOT NULL,
     [Date]              DATETIME         NOT NULL,
     [Description]       NVARCHAR(512)    NULL,
-    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Transaction_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_Transaction_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_Transaction] PRIMARY KEY CLUSTERED ([TransactionID] ASC)
-    , CONSTRAINT [FK_Finance_Transaction_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_Transaction_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
-    , CONSTRAINT [FK_Finance_Transaction_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document] ([DocumentID])
+    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Voucher_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_Voucher_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_Voucher] PRIMARY KEY CLUSTERED ([VoucherID] ASC)
+    , CONSTRAINT [FK_Finance_Voucher_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_Voucher_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+    , CONSTRAINT [FK_Finance_Voucher_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document] ([DocumentID])
 )
 GO
 
-CREATE TABLE [Finance].[TransactionLine] (
+CREATE TABLE [Finance].[VoucherLine] (
     [LineID]          INT              IDENTITY (1, 1) NOT NULL,
-	[TransactionID]   INT              NOT NULL,
+	[VoucherID]       INT              NOT NULL,
 	[FiscalPeriodID]  INT              NOT NULL,
 	[BranchID]        INT              NOT NULL,
 	[AccountID]       INT              NOT NULL,
@@ -354,14 +354,17 @@ CREATE TABLE [Finance].[TransactionLine] (
     [Description]     NVARCHAR(512)    NULL,
     [Debit]           MONEY            NOT NULL,
     [Credit]          MONEY            NOT NULL,
-    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_TransactionLine_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_TransactionLine_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_TransactionLine] PRIMARY KEY CLUSTERED ([LineID] ASC)
-    , CONSTRAINT [FK_Finance_TransactionLine_Finance_Transaction] FOREIGN KEY ([TransactionID]) REFERENCES [Finance].[Transaction] ([TransactionID])
-    , CONSTRAINT [FK_Finance_TransactionLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_TransactionLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
-    , CONSTRAINT [FK_Finance_TransactionLine_Finance_FullAccount] FOREIGN KEY ([FullAccountID]) REFERENCES [Finance].[FullAccount] ([FullAccountID])
-    , CONSTRAINT [FK_Finance_TransactionLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
+    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_VoucherLine_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_VoucherLine_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_VoucherLine] PRIMARY KEY CLUSTERED ([LineID] ASC)
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Voucher] FOREIGN KEY ([VoucherID]) REFERENCES [Finance].[Voucher] ([VoucherID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_DetailAccount] FOREIGN KEY ([DetailID]) REFERENCES [Finance].[DetailAccount] ([DetailID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter] ([CostCenterID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project] ([ProjectID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
 )
 GO
 
@@ -993,8 +996,8 @@ SET IDENTITY_INSERT [Metadata].[Locale] OFF
 
 SET IDENTITY_INSERT [Metadata].[Entity] ON
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (1, 'Account', 1, 1)
-INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (2, 'Transaction', 0, 1)
-INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (3, 'TransactionLine', 0, 1)
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (2, 'Voucher', 0, 1)
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (3, 'VoucherLine', 0, 1)
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (4, 'User', 0, 0)
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (5, 'Role', 0, 0)
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (6, 'DetailAccount', 1, 1)
@@ -1174,7 +1177,7 @@ INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUE
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (4, N'مدیریت پروژه ها', N'Project')
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (5, N'مدیریت دوره های مالی', N'FiscalPeriod')
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (6, N'مدیریت ارزها', N'Currency')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (7, N'مدیریت اسناد مالی', N'Transaction')
+INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (7, N'مدیریت اسناد مالی', N'Voucher')
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (8, N'مدیریت واحدهای سازمانی', N'BusinessUnit')
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (9, N'مدیریت شرکای تجاری', N'BusinessPartner')
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (10, N'مدیریت کاربران', N'User')
