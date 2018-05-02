@@ -16,7 +16,7 @@ namespace SPPC.Tadbir.Values
         /// <summary>
         /// سند مالی
         /// </summary>
-        Transaction = 1,
+        Voucher = 1,
 
         /// <summary>
         /// درخواست کالا

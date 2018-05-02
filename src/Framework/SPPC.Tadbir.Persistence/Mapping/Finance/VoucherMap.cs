@@ -5,18 +5,18 @@ using SPPC.Tadbir.Model.Finance;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class TransactionMap
+    internal sealed class VoucherMap
     {
-        private TransactionMap()
+        private VoucherMap()
         {
         }
 
-        internal static void BuildMapping(EntityTypeBuilder<Transaction> builder)
+        internal static void BuildMapping(EntityTypeBuilder<Voucher> builder)
         {
-            builder.ToTable("Transaction", "Finance");
+            builder.ToTable("Voucher", "Finance");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
-                .HasColumnName("TransactionID");
+                .HasColumnName("VoucherID");
             builder.Property(e => e.Date)
                 .HasColumnType("datetime");
             builder.Property(e => e.Description)
@@ -35,17 +35,17 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .WithMany()
                 .HasForeignKey("BranchID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_Transaction_Corporate_Branch");
+                .HasConstraintName("FK_Finance_Voucher_Corporate_Branch");
             builder.HasOne(d => d.Document)
                 .WithMany()
                 .HasForeignKey("DocumentID")
                 .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Finance_Transaction_Core_Document");
+                .HasConstraintName("FK_Finance_Voucher_Core_Document");
             builder.HasOne(d => d.FiscalPeriod)
                 .WithMany()
                 .HasForeignKey("FiscalPeriodID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_Transaction_Finance_FiscalPeriod");
+                .HasConstraintName("FK_Finance_Voucher_Finance_FiscalPeriod");
         }
     }
 }

@@ -15,7 +15,7 @@ namespace SPPC.Tadbir.Values
         /// <summary>
         /// عنوان گردش کار : وضعیت سند
         /// </summary>
-        public const string TransactionState = "Transaction State";
+        public const string VoucherState = "Voucher State";
 
         /// <summary>
         /// متن فارسی متناظر با عنوان گردش کار داده شده را بدست آورده و برمی گرداند
@@ -34,10 +34,10 @@ namespace SPPC.Tadbir.Values
             return local;
         }
 
-        private const string _TransactionState = "وضعیت سند";
+        private const string _VoucherState = "وضعیت سند";
         private static IDictionary<string, string> _localValues = new Dictionary<string, string>
             {
-                { TransactionState, _TransactionState }
+                { VoucherState, _VoucherState }
             };
     }
 }

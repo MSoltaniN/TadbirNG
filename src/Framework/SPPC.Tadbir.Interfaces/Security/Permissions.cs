@@ -33,9 +33,9 @@ namespace SPPC.Tadbir.Security
         public static ProjectPermission Project = ProjectPermission.Instance;
 
         /// <summary>
-        /// Exposes all permissions currently applicable to managing a financial transaction.
+        /// Exposes all permissions currently applicable to managing a financial voucher.
         /// </summary>
-        public static TransactionPermission Transaction = TransactionPermission.Instance;
+        public static VoucherPermission Voucher = VoucherPermission.Instance;
 
         /// <summary>
         /// Exposes all permissions currently applicable to managing an application user.

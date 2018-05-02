@@ -54,6 +54,9 @@
     <Compile Remove="Finance\FullAccount.Generated.cs" />
     <Compile Remove="Finance\FullDetail.Generated.cs" />
     <Compile Remove="Finance\FullDetailType.Generated.cs" />
+    <Compile Remove="Finance\Transaction.Generated.cs" />
+    <Compile Remove="Finance\TransactionLine.cs" />
+    <Compile Remove="Finance\TransactionLine.Generated.cs" />
   </ItemGroup>
 
   <ItemGroup>

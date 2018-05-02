@@ -52,6 +52,13 @@
     <Compile Remove="Corporate\BusinessUnitViewModel.Generated.cs" />
     <Compile Remove="Finance\FullDetailTypeViewModel.Generated.cs" />
     <Compile Remove="Finance\FullDetailViewModel.Generated.cs" />
+    <Compile Remove="Finance\TransactionFullViewModel.cs" />
+    <Compile Remove="Finance\TransactionLineFullViewModel.cs" />
+    <Compile Remove="Finance\TransactionLineViewModel.cs" />
+    <Compile Remove="Finance\TransactionLineViewModel.Generated.cs" />
+    <Compile Remove="Finance\TransactionSummaryViewModel.cs" />
+    <Compile Remove="Finance\TransactionViewModel.cs" />
+    <Compile Remove="Finance\TransactionViewModel.Generated.cs" />
   </ItemGroup>
 
   <ItemGroup>

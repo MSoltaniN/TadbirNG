@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace SPPC.Tadbir.Model.Finance
 {
-    public partial class TransactionLine
+    public partial class VoucherLine
     {
         /// <summary>
         /// شناسه دیتابیسی مولفه سرفصل حسابداری از بردار حساب مورد استفاده در این آرتیکل مالی

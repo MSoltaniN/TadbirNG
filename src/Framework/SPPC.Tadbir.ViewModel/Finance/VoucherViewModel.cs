@@ -4,7 +4,7 @@ using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class TransactionViewModel
+    public partial class VoucherViewModel
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که این سرفصل حسابداری در آن تعریف شده است
