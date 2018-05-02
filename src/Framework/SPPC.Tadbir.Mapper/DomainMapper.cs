@@ -115,7 +115,8 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<Account, AccountViewModel>();
+            mapperConfig.CreateMap<Account, AccountViewModel>()
+                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<AccountViewModel, Account>()
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)

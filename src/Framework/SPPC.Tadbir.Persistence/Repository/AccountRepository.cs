@@ -51,7 +51,7 @@ namespace SPPC.Tadbir.Persistence
                     acc => acc.FiscalPeriod.Id == fpId
                         && acc.Branch.Id == branchId,
                     gridOptions,
-                    acc => acc.FiscalPeriod, acc => acc.Branch);
+                    acc => acc.FiscalPeriod, acc => acc.Branch, acc => acc.Parent, acc => acc.Children);
             return await _decorator.GetDecoratedListAsync<Account, AccountViewModel>(accounts
                 .Select(item => _mapper.Map<AccountViewModel>(item))
                 .ToList());
@@ -66,7 +66,9 @@ namespace SPPC.Tadbir.Persistence
         {
             EntityItemViewModel<AccountViewModel> item = null;
             var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
+            var account = await repository.GetByIDAsync(
+                accountId,
+                acc => acc.FiscalPeriod, acc => acc.Branch, acc => acc.Parent, acc => acc.Children);
             if (account != null)
             {
                 item = await _decorator.GetDecoratedItemAsync<Account, AccountViewModel>(

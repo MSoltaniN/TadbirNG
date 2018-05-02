@@ -21,6 +21,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int BranchId { get; set; }
 
         /// <summary>
+        /// تعداد حساب های زیرمجموعه این حساب در ساختار درختی
+        /// </summary>
+        public int ChildCount { get; set; }
+
+        /// <summary>
         /// یک رشته متنی برای این آبجکت برمی گرداند
         /// </summary>
         /// <returns>یک رشته متنی برای این آبجکت</returns>
