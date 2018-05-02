@@ -76,6 +76,7 @@ import { SppcDatePipe } from "./pipes/index"
 import { MetaDataService } from './service/metadata/metadata.service';
 import { BaseService } from './class/base.service';
 import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading/index';
+import { NestedAccountComponent } from './components/account2/nested-account.component';
 
 
 @NgModule({
@@ -85,6 +86,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         NavMenuComponent,
         Account2Component,
         AccountFormComponent,
+        NestedAccountComponent,
         LoginComponent,
         LoginCompleteComponent,
         LoginContainerComponent,
