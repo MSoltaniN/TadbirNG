@@ -22,7 +22,7 @@ export interface TransactionLineViewModel {
     description?: string;
     fiscalPeriodId: number;
     branchId: number;
-    transactionId: number;
+    voucherId: number;
     currencyId: number; 
     fullAccount: FullAccountViewModel;
 }

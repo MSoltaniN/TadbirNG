@@ -257,11 +257,9 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
                 }));
         }
         else {
-            transactionLineViewModel.transactionId = this.transactionId;
-
+            transactionLineViewModel.voucherId = this.transactionId;
             this.transactionLineService.insertTransactionLine(this.transactionId, transactionLineViewModel)
                 .subscribe((response: any) => {
-
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
@@ -269,7 +267,6 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
                     this.reloadGrid(insertedTransactionLine);
 
                 }, (error => {
-
                     this.isNew = true;
                     this.errorMessage = error;
 

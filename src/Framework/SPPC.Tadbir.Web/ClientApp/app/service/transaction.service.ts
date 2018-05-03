@@ -70,7 +70,7 @@ export class TransactionService extends BaseService {
             searchHeaders.set('X-Tadbir-GridOptions', base64Body);
         var options = new RequestOptions({ headers: searchHeaders });
         return this.http.get(url, options)
-            .map(response => <any>(<Response>response).json());;
+            .map(response => <any>(<Response>response).json());
     }
 
     currentContext?: Context = undefined;

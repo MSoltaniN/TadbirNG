@@ -28,7 +28,7 @@ export class TransactionLineViewModelInfo implements TransactionLineViewModel {
     description?: string | undefined;
     fiscalPeriodId: number = 0;
     branchId: number = 0;
-    transactionId: number = 0;
+    voucherId: number = 0;
     currencyId: number = 0;
     fullAccount: {
         accountId: number;
