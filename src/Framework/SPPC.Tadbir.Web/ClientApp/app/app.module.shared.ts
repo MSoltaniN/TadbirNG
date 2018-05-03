@@ -30,7 +30,9 @@ import { RoleFormComponent } from './components/role/role-form.component';
 import { RoleUserFormComponent } from './components/role/role-user-form.component';
 import { RoleBranchFormComponent } from './components/role/role-branch-form.component';
 import { RoleDetailFormComponent } from './components/role/role-detail-form.component';
-import { ChangePasswordComponent } from './components/user/changePassword.component'
+import { ChangePasswordComponent } from './components/user/changePassword.component';
+import { DetailAccountComponent } from './components/detailAccount/detailAccount.component';
+import { DetailAccountFormComponent } from './components/detailAccount/detailAccount-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -56,8 +58,9 @@ import { InputsModule } from '@progress/kendo-angular-inputs';
 import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
 import {
-    AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService,
+    AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService,
     BranchService, TransactionService, LookupService, FullAccountService
+
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
 
@@ -110,12 +113,14 @@ import { NestedAccountComponent } from './components/account2/nested-account.com
         RoleBranchFormComponent,
         RoleDetailFormComponent,
         ChangePasswordComponent,
+        DetailAccountComponent,
+        DetailAccountFormComponent,
         ConfirmEqualValidator,
         SppcDatePipe
 
     ],
     providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, LookupService, MetaDataService, SppcLoadingService,
-        UserService, RoleService, FullAccountService,
+        UserService, RoleService, FullAccountService, DetailAccountService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,
@@ -157,6 +162,7 @@ import { NestedAccountComponent } from './components/account2/nested-account.com
             { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
             { path: 'roles', component: RoleComponent, canActivate: [AuthGuard] },
             { path: 'changePassword', component: ChangePasswordComponent, canActivate: [AuthGuard] },
+            { path: 'detailAccount', component: DetailAccountComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])
     ],

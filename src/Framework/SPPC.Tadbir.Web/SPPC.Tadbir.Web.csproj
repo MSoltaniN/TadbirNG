@@ -51,6 +51,7 @@
     <None Remove="ClientApp\app\class\grid.orderby.ts" />
     <None Remove="ClientApp\app\class\metadata\property.ts" />
     <None Remove="ClientApp\app\components\account2\account2.component.ts" />
+    <None Remove="ClientApp\app\components\detailAccount\detailAccount-form.component.ts" />
     <None Remove="ClientApp\app\components\login\index.ts" />
     <None Remove="ClientApp\app\components\login\login.complete.component.ts" />
     <None Remove="ClientApp\app\components\login\login.component.ts" />
@@ -81,6 +82,7 @@
     <None Remove="ClientApp\app\directive\Validator\confirm-equal-validator.ts" />
     <None Remove="ClientApp\app\enum\KeyCode.ts" />
     <None Remove="ClientApp\app\model\account.ts" />
+    <None Remove="ClientApp\app\model\DetailAccount.ts" />
     <None Remove="ClientApp\app\model\fullaccount.ts" />
     <None Remove="ClientApp\app\model\index.ts" />
     <None Remove="ClientApp\app\model\role.ts" />
@@ -195,6 +197,7 @@
     <TypeScriptCompile Include="ClientApp\app\class\filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\grid.orderby.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\metadata\property.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\detailAccount\detailAccount-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.complete.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\login\login.component.ts" />
@@ -228,6 +231,7 @@
     <TypeScriptCompile Include="ClientApp\app\directive\Validator\confirm-equal-validator.ts" />
     <TypeScriptCompile Include="ClientApp\app\enum\KeyCode.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\DetailAccount.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\fullaccount.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\transaction.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\index.ts" />

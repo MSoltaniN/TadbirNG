@@ -10,6 +10,7 @@
       "Transaction": "اسناد",
       "Users": "کاربران",
       "Roles": "نقش ها",
+      "DetailAccount": "تفصیلی شناور",
       "ChangePassword": "تغییر کلمه عبور",
       "Exit": "خروج"
     }
@@ -45,7 +46,8 @@
     "TransactionLine": "آرتیکل سند",
     "User": "کاربر",
     "Role": "نقش",
-    "Password": "کلمه عبور"
+    "Password": "کلمه عبور",
+    "DetailAccount": "تفصیلی شناور"
   },
   "Account": {
     "Code": "کد حساب",
@@ -166,6 +168,25 @@
     "Name": "نام اجباری می باشد",
     "NameLenght": "نام حداکثر 64 کاراکتر میتواند داشته باشد",
     "DescriptionLenght": "توضیحات حداکثر 512 کاراکتر میتواند داشته باشد"
+  },
+  "DetailAccount": {
+    "New": "تفصیلی شناور جدید",
+    "Name": "نام",
+    "Code": "کد",
+    "FullCode": "کد کامل",
+    "Level": "سطح",
+    "Description": "شرح",
+    "Delete": "حذف تفصیلی شناور"
+  },
+  "DetailAccountValidation": {
+    "Name": "نام اجباری می باشد",
+    "NameMaxLength": "نام حداکثر 512 کاراکتر میتواند داشته باشد",
+    "DescriptionLenght": "شرح حداکثر 512 کاراکتر میتواند داشته باشد",
+    "Code": "کد اجباری می باشد",
+    "CodeMaxLength": "کد حداکثر 16 کاراکتر میتواند داشته باشد",
+    "FullCode": "کد کامل اجباری می باشد",
+    "FullCodeMaxLength": "کد کامل حداکثر 256 کاراکتر میتواند داشته باشد",
+    "Level": "سطح اجباری می باشد"
   },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی"

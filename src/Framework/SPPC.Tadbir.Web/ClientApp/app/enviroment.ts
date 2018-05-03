@@ -19,7 +19,8 @@ export const Metadatas = {
     Account: 'accounts',
     TransactionArticles: 'transactions/articles',
     User: 'users',
-    Role: 'roles'
+    Role: 'roles',
+    DetailAccount: 'faccounts'
 }
 
 
@@ -29,7 +30,8 @@ export const Entities = {
     TransactionLine: 'TransactionLine',
     User: 'User',
     Role: 'Role',
-    Password:'Password'
+    Password: 'Password',
+    DetailAccount:'DetailAccount'
 }
 
 
