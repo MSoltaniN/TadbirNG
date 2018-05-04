@@ -16,7 +16,9 @@ import { BaseService } from '../class/base.service';
 export class AccountInfo implements Account
 {    
     constructor(public id: number = 0, public code: string = "", public name: string = "",
-        public fiscalPeriodId: number = 0, public description: string = "",public branchId:number = 0,public level:number = 0,public fullCode:string = "0")
+        public fiscalPeriodId: number = 0, public description: string = "",
+        public branchId: number = 0, public level: number = 0, public fullCode: string = "0",
+        public childCount: number = 0, public parentId: number = 0)
     { }
     
 }

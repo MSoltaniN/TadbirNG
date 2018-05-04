@@ -188,39 +188,43 @@ export class DefaultComponent extends BaseComponent {
     * @param name is a name of column like 'id' , 'name' , 'fiscalperiod' , ... .    
     */    
     public getMeta(name: string): Property | undefined  {      
-        
-        if (localStorage.getItem(this.metaDataName) == undefined || localStorage.getItem(this.metaDataName) == null) {
-            this.metadataService.getMetaData(this.metaDataName).finally(() =>
-            {
+
+        if (this.metaDataName) {
+
+            if (localStorage.getItem(this.metaDataName) == undefined || localStorage.getItem(this.metaDataName) == null) {
+                this.metadataService.getMetaData(this.metaDataName).finally(() => {
+                    if (this.properties[this.metaDataName] == undefined || this.properties[this.metaDataName].length == 0) return undefined;
+
+                    var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());
+
+                    return result;
+
+                }).subscribe(res1 => {
+
+                    this.properties[this.metaDataName] = res1.metadata.properties;
+
+                    localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))
+                    var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());
+
+                    return result;
+                });
+            }
+            else {
+
+
+                var item: string | null;
+                item = localStorage.getItem(this.metaDataName);
+                this.properties[this.metaDataName] = JSON.parse(item != null ? item.toString() : "");
+
                 if (this.properties[this.metaDataName] == undefined || this.properties[this.metaDataName].length == 0) return undefined;
 
                 var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());
 
                 return result;
 
-            }).subscribe(res1 => {
+            }
 
-                this.properties[this.metaDataName] = res1.metadata.properties;
-
-                localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))
-                var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());
-
-                return result;
-            });
         }
-        else {
-            var item: string | null;
-            item = localStorage.getItem(this.metaDataName);
-            this.properties[this.metaDataName] = JSON.parse(item != null ? item.toString() : "");
-
-            if (this.properties[this.metaDataName] == undefined || this.properties[this.metaDataName].length == 0) return undefined;
-
-            var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());
-            
-            return result;
-        }   
-
-
     }
     
     /** return the current language */

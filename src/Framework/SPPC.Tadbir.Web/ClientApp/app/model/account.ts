@@ -10,5 +10,7 @@ export interface Account {
     branchId: number;
     fullCode: string;
     level: number;
+    childCount: number;
+    parentId?: number;
 }
 

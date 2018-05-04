@@ -56,14 +56,14 @@ export function getLayoutModule(layout: Layout) {
 export class NestedAccountComponent extends DefaultComponent implements OnInit {
 
     
-    @Input() public parentId?: number;
+    @Input() public parent: Object;
 
     @Input() public level: number;
 
     ngOnInit() {
 
         
-        if (this.parentId) {
+        if (this.parent) {
             this.show = this.level < 2
 
             this.level = this.level + 1;
@@ -168,8 +168,9 @@ export class NestedAccountComponent extends DefaultComponent implements OnInit {
             this.skip = this.skip - this.pageSize;
         }
 
-        if (this.parentId  && this.parentId > 0) {
-            filter.push(new Filter("ParentId", this.parentId.toString(),"== {0}","System.Int32"))
+        if (this.parent) {
+            var acc : Account = <Account>this.parent;
+            filter.push(new Filter("ParentId", acc.id.toString(),"== {0}","System.Int32"))
         }
         
         this.accountService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
@@ -348,6 +349,15 @@ export class NestedAccountComponent extends DefaultComponent implements OnInit {
         }
 
         this.sppcLoading.hide();
+    }
+
+
+    public showOnlyParent(dataItem: Account, index: number): boolean {
+        return dataItem.childCount > 0;
+    }
+
+    public checkShow(dataItem: Account) {
+        return dataItem != undefined && dataItem.childCount != undefined && dataItem.childCount > 0;
     }
 
 }

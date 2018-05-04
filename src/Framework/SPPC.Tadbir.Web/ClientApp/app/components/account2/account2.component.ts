@@ -345,6 +345,16 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
         this.sppcLoading.hide();
     }
+
+
+
+    public showOnlyParent(dataItem: Account, index: number): boolean {
+        return dataItem.childCount > 0;
+    }
+
+    public checkShow(dataItem: Account) {
+        return  dataItem != undefined && dataItem.childCount != undefined && dataItem.childCount > 0;
+    }
     
 }
 
