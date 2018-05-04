@@ -80,7 +80,6 @@ export class SppcFullAccount implements OnInit, ControlValueAccessor, Validator 
                 this.selectedprojectValue = this.fullAccount.projectId.toString();
         }
 
-        console.log(this.accountForm.value);
     }
 
     registerOnChange(fn: any): void {

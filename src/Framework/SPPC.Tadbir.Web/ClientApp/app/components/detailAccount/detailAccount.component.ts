@@ -1,8 +1,10 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { TransactionService, TransactionLineViewModelInfo, TransactionLineService, FiscalPeriodService } from '../../service/index';
-import { TransactionLineViewModel } from '../../model/index';
-import { ToastrService } from 'ngx-toastr';
+import { DetailAccountService, DetailAccountViewModelInfo } from '../../service/index';
+
+import { ToastrService } from 'ngx-toastr'; /** add this component for message in client side */
+
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
+
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 
@@ -12,32 +14,43 @@ import { String } from '../../class/source';
 import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
-import { MessageType, Entities, Metadatas } from "../../enviroment";
-import { Filter } from "../../class/filter";
-import { MetaDataService } from '../../service/metadata/metadata.service';
-import { SppcLoadingService } from '../../controls/sppcLoading/index';
 
+import { MessageType, Layout, Entities, Metadatas } from "../../enviroment";
+import { Filter } from "../../class/filter";
+
+import { RTL } from '@progress/kendo-angular-l10n';
+import { MetaDataService } from '../../service/metadata/metadata.service';
+import { Response } from '@angular/http';
+import { SppcLoadingService } from '../../controls/sppcLoading/index';
+import { GridResult } from '../../service/account.service';
+import { DetailAccountViewModel } from '../../model/index';
+
+export function getLayoutModule(layout: Layout) {
+    return layout.getLayout();
+}
 
 
 @Component({
-    selector: 'transactionLine',
-    templateUrl: './transactionLine.component.html',
-    styles: ["/deep/ .panel-primary { border-color: #989898; }"]
+    selector: 'detailAccount',
+    templateUrl: './detailAccount.component.html',
+    providers: [{
+        provide: RTL,
+        useFactory: getLayoutModule,
+        deps: [Layout]
+    }]
 })
 
 
-export class TransactionLineComponent extends DefaultComponent implements OnInit {
+export class DetailAccountComponent extends DefaultComponent {
 
     public rowData: GridDataResult;
     public selectedRows: string[] = [];
     public totalRecords: number;
 
-    public debitSum: number;
-    public creditSum: number;
-
-    //for add in delete messageText
+    ////for add in delete messageText
     deleteConfirm: boolean;
-    deleteTransactionLineId: number;
+    deleteDetailAccountsConfirm: boolean;
+    deleteDetailAccountId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
@@ -45,46 +58,51 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
     showloadingMessage: boolean = true;
 
-    newTransactionLine: boolean;
-    transactionLineViewModel: TransactionLineViewModel = new TransactionLineViewModelInfo;
+    newDetailAccount: boolean;
+    detailAccount: DetailAccountViewModel = new DetailAccountViewModelInfo
 
-    editDataItem?: TransactionLineViewModel = undefined;
 
+    editDataItem?: DetailAccountViewModel = undefined;
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
 
-    @Input() transactionId: number;
-
-
-    ngOnInit() {
-        this.reloadGrid();
-    }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private transactionLineService: TransactionLineService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.TransactionLine, Metadatas.TransactionArticles);
+        private detailAccountService: DetailAccountService, public renderer: Renderer2, public metadata: MetaDataService) {
+        super(toastrService, translate, renderer, metadata, Entities.DetailAccount, Metadatas.DetailAccount);
+
+        this.reloadGrid();
+
     }
 
-    getRowsCount() {
-        return this.transactionLineService.getCount(this.transactionId, this.currentOrder, this.currentFilter).map(response => <any>(<Response>response).json());
-    }
 
     selectionKey(context: RowArgs): string {
 
         return context.dataItem.id + " " + context.index;
-        //return context.dataItem.id;
     }
 
-    //deleteTransactionsLine() {
-    //    this.transactionLineService.deleteTransactions(this.selectedRows).subscribe(res => {
-    //        this.showMessage(this.deleteMsg, MessageType.Info);
-    //        this.selectedRows = [];
-    //        this.reloadGrid();
-    //    }, (error => {
-    //        this.showMessage(error, MessageType.Warning);
-    //    }));
-    //}
+    showConfirm() {
+        this.deleteDetailAccountsConfirm = true;
+    }
+
+    deleteDetailAccounts(confirm: boolean) {
+        if (confirm) {
+            this.sppcLoading.show();
+            //this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
+            //    this.showMessage(this.deleteMsg, MessageType.Info);
+            //    this.selectedRows = [];
+            //    this.reloadGrid();
+            //    this.groupDelete = false;
+            //}, (error => {
+            //    this.sppcLoading.hide();
+            //    this.showMessage(error, MessageType.Warning);
+            //}));
+        }
+
+        this.groupDelete = false;
+        this.deleteDetailAccountsConfirm = false;
+    }
 
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
         if (this.selectedRows.length > 1)
@@ -93,37 +111,37 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
             this.groupDelete = false;
     }
 
-    reloadGrid(transactionLineViewModel?: TransactionLineViewModel) {
+
+    reloadGrid(insertedDetailAccount?: DetailAccountViewModel) {
 
         this.sppcLoading.show();
-
+        
         var filter = this.currentFilter;
         var order = this.currentOrder;
 
-        if (this.totalRecords == this.skip && this.totalRecords != 0) {
+        if (this.totalRecords == this.skip) {
             this.skip = this.skip - this.pageSize;
         }
 
-        this.transactionLineService.search(this.transactionId, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+        this.detailAccountService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
 
             var resData = res.json();
-            this.properties = resData.metadata.properties;
             var totalCount = 0;
 
-
-            if (transactionLineViewModel) {
-                var rows = (resData.list as Array<TransactionLineViewModel>);
-                var index = rows.findIndex(p => p.id == transactionLineViewModel.id);
+            if (insertedDetailAccount) {
+                var rows = (resData as Array<DetailAccountViewModel>);
+                var index = rows.findIndex(p => p.id == insertedDetailAccount.id);
                 if (index >= 0) {
-                    resData.list.splice(index, 1);
-                    rows.splice(0, 0, transactionLineViewModel);
+                    resData.splice(index, 1);
+                    rows.splice(0, 0, insertedDetailAccount);
                 }
                 else {
                     if (rows.length == this.pageSize) {
-                        resData.list.splice(this.pageSize - 1, 1);
+                        resData.splice(this.pageSize - 1, 1);
                     }
 
-                    rows.splice(0, 0, transactionLineViewModel);
+                    rows.splice(0, 0, insertedDetailAccount);
+
                 }
             }
 
@@ -137,23 +155,18 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
             }
 
             this.rowData = {
-                data: resData.list,
+                data: resData,
                 total: totalCount
             }
 
-            this.showloadingMessage = !(resData.list.length == 0);
+            this.showloadingMessage = !(resData.length == 0);
             this.totalRecords = totalCount;
-            
-
-        })
-
-        this.transactionLineService.getTransactionInfo(this.transactionId).subscribe(res => {
-            this.debitSum = res.item.debitSum;
-            this.creditSum = res.item.creditSum;
-
             this.sppcLoading.hide();
+
         })
     }
+
+
 
     dataStateChange(state: DataStateChangeEvent): void {
         this.currentFilter = this.getFilters(state.filter);
@@ -177,15 +190,15 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
     pageChange(event: PageChangeEvent): void {
         this.skip = event.skip;
-        //this.reloadGrid();
+        this.reloadGrid();
     }
 
 
-    deleteTransactionLine(confirm: boolean) {
+    deleteDetailAccount(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.transactionLineService.delete(this.deleteTransactionLineId).subscribe(response => {
-                this.deleteTransactionLineId = 0;
+            this.detailAccountService.delete(this.deleteDetailAccountId).subscribe(response => {
+                this.deleteDetailAccountId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
@@ -202,19 +215,19 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
         this.prepareDeleteConfirm(arg.dataItem.name);
 
-        this.deleteTransactionLineId = arg.dataItem.id;
+        this.deleteDetailAccountId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
 
-    //transaction form events
+
+
+    //detail account form events
     public editHandler(arg: any) {
 
         this.sppcLoading.show();
-
-        this.transactionLineService.getTransactionLineById(arg.dataItem.id).subscribe(res => {
-
-            this.editDataItem = res.item;
+        this.detailAccountService.getDetailAccountById(arg.dataItem.id).subscribe(res => {
+            this.editDataItem = res;
             this.sppcLoading.hide();
         })
         this.isNew = false;
@@ -223,55 +236,51 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
     public cancelHandler() {
         this.editDataItem = undefined;
-        this.isNew = false;
         this.errorMessage = '';
     }
 
     public addNew() {
         this.isNew = true;
+        this.editDataItem = new DetailAccountViewModelInfo();
         this.errorMessage = '';
-        this.editDataItem = new TransactionLineViewModelInfo();
     }
 
-    public saveHandler(transactionLineViewModel: TransactionLineViewModel) {
+    public saveHandler(detailAccountViewModel: DetailAccountViewModel) {
 
-        transactionLineViewModel.branchId = this.BranchId;
-        transactionLineViewModel.fiscalPeriodId = this.FiscalPeriodId;
+        detailAccountViewModel.branchId = this.BranchId;
+        detailAccountViewModel.fiscalPeriodId = this.FiscalPeriodId;
+
         this.sppcLoading.show();
+
         if (!this.isNew) {
-
             this.isNew = false;
-
-            this.transactionLineService.editTransactionLine(transactionLineViewModel)
+            this.detailAccountService.editDetailAccount(detailAccountViewModel)
                 .subscribe(response => {
-
                     this.editDataItem = undefined;
-
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
-
                 }, (error => {
-                    //this.editDataItem = transactionLineViewModel;
+                    this.editDataItem = detailAccountViewModel;
                     this.errorMessage = error;
 
                 }));
         }
         else {
-            transactionLineViewModel.voucherId = this.transactionId;
-            this.transactionLineService.insertTransactionLine(this.transactionId, transactionLineViewModel)
+            this.detailAccountService.insertDetailAccount(detailAccountViewModel)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedTransactionLine = JSON.parse(response._body);
-                    this.reloadGrid(insertedTransactionLine);
+                    var insertedDetailAccount = JSON.parse(response._body);
+                    this.reloadGrid(insertedDetailAccount);
 
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
-
                 }));
+
         }
+
         this.sppcLoading.hide();
     }
 

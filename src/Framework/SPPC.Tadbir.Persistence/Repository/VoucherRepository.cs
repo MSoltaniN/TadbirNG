@@ -110,6 +110,19 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مدل نمایشی دوره مالی مورد استفاده در یک سند مالی را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucher">مدل نمایشی سند مالی مورد نظر</param>
+        /// <returns>مدل نمایشی دوره مالی به کار رفته در سند مالی</returns>
+        public async Task<FiscalPeriodViewModel> GetVoucherFiscalPeriodAsync(VoucherViewModel voucher)
+        {
+            Verify.ArgumentNotNull(voucher, "voucher");
+            var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var fiscalPeriod = await repository.GetByIDAsync(voucher.FiscalPeriodId);
+            return _mapper.Map<FiscalPeriodViewModel>(fiscalPeriod);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات یک سند مالی را در دیتابیس ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="voucher">سند مالی برای ایجاد یا اصلاح</param>
@@ -170,19 +183,20 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات سند مالی داده شده را برای مطابقت با کلیه قواعد کاری برنامه اعتبارسنجی می کند
+        /// به روش آسنکرون، مشخص می کند که آیا شماره سند مورد نظر تکراری است یا نه
         /// </summary>
-        /// <param name="voucher">سند مالی که باید اعتبارسنجی شود</param>
-        /// <returns>مقدار بولی درست در صورت مطابقت کامل با قواعد کاری، در غیر این صورت مقدار بولی نادرست</returns>
-        public async Task<bool> IsValidVoucherAsync(VoucherViewModel voucher)
+        /// <param name="voucher">سند مالی که تکراری بودن شماره آن باید بررسی شود</param>
+        /// <returns>مقدار بولی درست در صورت تکراری بودن شماره، در غیر این صورت مقدار بولی نادرست</returns>
+        public async Task<bool> IsDuplicateVoucherNoAsync(VoucherViewModel voucher)
         {
             Verify.ArgumentNotNull(voucher, "voucher");
-            var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var fiscalPeriod = await repository.GetByIDAsync(voucher.FiscalPeriodId);
-            bool isValid = (fiscalPeriod != null)
-                && (voucher.Date >= fiscalPeriod.StartDate)
-                && (voucher.Date <= fiscalPeriod.EndDate);
-            return isValid;
+            var repository = _unitOfWork.GetAsyncRepository<Voucher>();
+            var duplicates = await repository
+                .GetByCriteriaAsync(vch => vch.Id != voucher.Id
+                    && vch.No == voucher.No
+                    && vch.FiscalPeriod.Id == voucher.FiscalPeriodId
+                    && vch.Branch.Id == voucher.BranchId);
+            return (duplicates.Count > 0);
         }
 
         #endregion
@@ -380,6 +394,25 @@ namespace SPPC.Tadbir.Persistence
             var count = await repository.GetCountByCriteriaAsync(
                 line => line.Voucher.Id == voucherId, gridOptions);
             return count;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مدل نمایشی سرفصل حسابداری مشخص شده
+        /// را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
+        /// <returns>مدل نمایشی سرفصل حسابداری مورد استفاده در آرتیکل</returns>
+        public async Task<AccountViewModel> GetArticleAccountAsync(int accountId)
+        {
+            var articleAccount = default(AccountViewModel);
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
+            if (account != null)
+            {
+                articleAccount = _mapper.Map<AccountViewModel>(account);
+            }
+
+            return articleAccount;
         }
 
         /// <summary>

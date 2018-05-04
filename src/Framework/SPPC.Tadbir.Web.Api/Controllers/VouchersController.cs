@@ -76,15 +76,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Create)]
         public async Task<IActionResult> PostNewVoucherAsync([FromBody] VoucherViewModel voucher)
         {
-            var result = BasicValidationResult(voucher, AppStrings.Voucher);
+            var result = await VoucherValidationResultAsync(voucher);
             if (result is BadRequestObjectResult)
             {
                 return result;
-            }
-
-            if (!await _repository.IsValidVoucherAsync(voucher))
-            {
-                return BadRequest(_strings.Format(AppStrings.OutOfFiscalPeriodDate));
             }
 
             SetDocument(voucher);
@@ -99,15 +94,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedVoucherAsync(
             int voucherId, [FromBody] VoucherViewModel voucher)
         {
-            var result = BasicValidationResult(voucher, AppStrings.Voucher, voucherId);
+            var result = await VoucherValidationResultAsync(voucher, voucherId);
             if (result is BadRequestObjectResult)
             {
                 return result;
-            }
-
-            if (!await _repository.IsValidVoucherAsync(voucher))
-            {
-                return BadRequest(_strings.Format(AppStrings.OutOfFiscalPeriodDate));
             }
 
             SetDocument(voucher);
@@ -169,20 +159,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PostNewArticleAsync(
             int voucherId, [FromBody] VoucherLineViewModel article)
         {
-            var result = BasicValidationResult(article, AppStrings.VoucherLine);
+            var result = await VoucherLineValidationResultAsync(article);
             if (result is BadRequestObjectResult)
             {
                 return result;
-            }
-
-            if (article.VoucherId != voucherId)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, AppStrings.VoucherLine));
-            }
-
-            if ((article.Debit > 0m) && (article.Credit > 0m))
-            {
-                return BadRequest(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
             }
 
             var outputLine = await _repository.SaveArticleAsync(article);
@@ -196,15 +176,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedArticleAsync(
             int articleId, [FromBody] VoucherLineViewModel article)
         {
-            var result = BasicValidationResult(article, AppStrings.VoucherLine, articleId);
+            var result = await VoucherLineValidationResultAsync(article, articleId);
             if (result is BadRequestObjectResult)
             {
                 return result;
-            }
-
-            if ((article.Debit > 0m) && (article.Credit > 0m))
-            {
-                return BadRequest(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
             }
 
             var outputLine = await _repository.SaveArticleAsync(article);
@@ -248,6 +223,56 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (modelId != id)
             {
                 return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, modelType));
+            }
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> VoucherValidationResultAsync(VoucherViewModel voucher, int voucherId = 0)
+        {
+            var result = BasicValidationResult(voucher, AppStrings.Voucher, voucherId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (await _repository.IsDuplicateVoucherNoAsync(voucher))
+            {
+                return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.VoucherNo));
+            }
+
+            var fiscalPeriod = await _repository.GetVoucherFiscalPeriodAsync(voucher);
+            if (fiscalPeriod == null
+                || voucher.Date < fiscalPeriod.StartDate
+                || voucher.Date > fiscalPeriod.EndDate)
+            {
+                return BadRequest(_strings.Format(AppStrings.OutOfFiscalPeriodDate));
+            }
+
+            return Ok();
+        }
+
+        private async Task<IActionResult> VoucherLineValidationResultAsync(
+            VoucherLineViewModel article, int articleId = 0)
+        {
+            var result = BasicValidationResult(article, AppStrings.VoucherLine, articleId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if ((article.Debit > 0m) && (article.Credit > 0m))
+            {
+                return BadRequest(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
+            }
+
+            var account = await _repository.GetArticleAccountAsync(article.FullAccount.AccountId.Value);
+            if (account.ChildCount > 0)
+            {
+                string accountInfo = String.Format("{0} ({1})", account.Name, account.FullCode);
+                string message = String.Format(
+                    _strings.Format(AppStrings.CannotUseNonLeafItem), _strings.Format(AppStrings.Account), accountInfo);
+                return BadRequest(message);
             }
 
             return Ok();
