@@ -111,7 +111,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     selectionKey(context: RowArgs): string {        
 
-        if (context.dataItem) return "";
+        if (context.dataItem == undefined) return "";
 
         return context.dataItem.id + " " + context.index;
     }
