@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Transaction } from '../model/index';
+import { Voucher } from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -16,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 import { BaseService } from '../class/base.service';
 
 
-export class TransactionInfo implements Transaction {
+export class VoucherInfo implements Voucher {
 
     constructor(public id: number = 0, public description: string = "", public fiscalPeriodId: number = 0, public branchId: number = 0,
         public no: string = "", public date: Date = new Date()) {
@@ -26,15 +26,15 @@ export class TransactionInfo implements Transaction {
 }
 
 @Injectable()
-export class TransactionService extends BaseService {
+export class VoucherService extends BaseService {
 
-    private _getTransactionsUrl = Environment.BaseUrl + "/vouchers/fp/{0}/branch/{1}";
+    private _getVouchersUrl = Environment.BaseUrl + "/vouchers/fp/{0}/branch/{1}";
     private _getCountUrl = Environment.BaseUrl + "/vouchers/fp/{0}/branch/{1}/count";
-    private _deleteTransactionsUrl = Environment.BaseUrl + "/vouchers/{0}";
-    private _deleteMultiTransactionsUrl = Environment.BaseUrl + "/vouchers";
-    private _postNewTransactionsUrl = Environment.BaseUrl + "/vouchers";
-    private _postModifiedTransactionsUrl = Environment.BaseUrl + "/vouchers/{0}";
-    private _getTransactionByIdUrl = Environment.BaseUrl + "/vouchers/{0}";
+    private _deleteVouchersUrl = Environment.BaseUrl + "/vouchers/{0}";
+    private _deleteMultiVouchersUrl = Environment.BaseUrl + "/vouchers";
+    private _postNewVouchersUrl = Environment.BaseUrl + "/vouchers";
+    private _postModifiedVouchersUrl = Environment.BaseUrl + "/vouchers/{0}";
+    private _getVoucherByIdUrl = Environment.BaseUrl + "/vouchers/{0}";
 
     private fiscalPeriodId: string;
     private branchId: string;
@@ -44,9 +44,9 @@ export class TransactionService extends BaseService {
     }
 
 
-    getTransactions() {
+    getVouchers() {
         var headers = this.headers;
-        var url = String.Format(this._getTransactionsUrl, this.FiscalPeriodId, this.BranchId);
+        var url = String.Format(this._getVouchersUrl, this.FiscalPeriodId, this.BranchId);
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
@@ -86,7 +86,7 @@ export class TransactionService extends BaseService {
                 sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
         var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
-        var url = String.Format(this._getTransactionsUrl, this.FiscalPeriodId, this.BranchId);
+        var url = String.Format(this._getVouchersUrl, this.FiscalPeriodId, this.BranchId);
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));
@@ -102,27 +102,27 @@ export class TransactionService extends BaseService {
             .map(response => <any>(<Response>response));
     }
 
-    editTransaction(transaction: Transaction): Observable<string> {
-        var body = JSON.stringify(transaction);
+    editVoucher(voucher: Voucher): Observable<string> {
+        var body = JSON.stringify(voucher);
         
-        var url = String.Format(this._postModifiedTransactionsUrl, transaction.id);
+        var url = String.Format(this._postModifiedVouchersUrl, voucher.id);
 
         return this.http.put(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
-    insertTransaction(transaction: Transaction): Observable<string> {
-        var body = JSON.stringify(transaction);  
+    insertVoucher(voucher: Voucher): Observable<string> {
+        var body = JSON.stringify(voucher);  
 
-        return this.http.post(this._postNewTransactionsUrl, body, this.options)
+        return this.http.post(this._postNewVouchersUrl, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
-    delete(transactionId: number): Observable<string> {
+    delete(voucherId: number): Observable<string> {
 
-        var deleteByIdUrl = String.Format(this._deleteTransactionsUrl, transactionId.toString());
+        var deleteByIdUrl = String.Format(this._deleteVouchersUrl, voucherId.toString());
 
         return this.http.delete(deleteByIdUrl, this.options)
             .map(response => response)
@@ -131,20 +131,20 @@ export class TransactionService extends BaseService {
 
     // this method comment beacause method in controller not implemented
 
-    deleteTransactions(transactions: string[]): Observable<string> {
+    deleteVouchers(vouchers: string[]): Observable<string> {
 
-        let body = JSON.stringify(transactions);
+        let body = JSON.stringify(vouchers);
 
         let headers = this.headers
         let options = new RequestOptions({ headers: headers, body: body });
 
-        return this.http.delete(this._deleteMultiTransactionsUrl, options)
+        return this.http.delete(this._deleteMultiVouchersUrl, options)
             .map(response => response.json().message)
             .catch(this.handleError);
     }
 
-    getTransactionById(transactionId: number) {
-        var url = String.Format(this._getTransactionByIdUrl, transactionId);
+    getVoucherById(voucherId: number) {
+        var url = String.Format(this._getVoucherByIdUrl, voucherId);
         var options = new RequestOptions({ headers: this.headers });
 
         return this.http.get(url, options)

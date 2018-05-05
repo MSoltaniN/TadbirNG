@@ -19,10 +19,10 @@ import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { Account2Component } from './components/account2/account2.component';
 import { AccountFormComponent } from './components/account2/account2-form.component';
-import { TransactionComponent } from './components/transaction/transaction.component';
-import { TransactionFormComponent } from './components/transaction/transaction-form.component';
-import { TransactionLineComponent } from './components/transactionLine/transactionLine.component';
-import { TransactionLineFormComponent } from './components/transactionLine/transactionLine-form.component'
+import { VoucherComponent } from './components/voucher/voucher.component';
+import { VoucherFormComponent } from './components/voucher/voucher-form.component';
+import { VoucherLineComponent } from './components/voucherLine/voucherLine.component';
+import { VoucherLineFormComponent } from './components/voucherLine/voucherLine-form.component'
 import { UserComponent } from './components/user/user.component';
 import { UserFormComponent } from './components/user/user-form.component';
 import { RoleComponent } from './components/role/role.component';
@@ -58,8 +58,8 @@ import { InputsModule } from '@progress/kendo-angular-inputs';
 import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
 import {
-    AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService,
-    BranchService, TransactionService, LookupService, FullAccountService
+    AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService,
+    BranchService, VoucherService, LookupService, FullAccountService
 
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
@@ -101,10 +101,10 @@ import { NestedAccountComponent } from './components/account2/nested-account.com
         SppcFullAccount,
         SppcGridColumn,
         SppcGridFilter,
-        TransactionComponent,
-        TransactionFormComponent,
-        TransactionLineComponent,
-        TransactionLineFormComponent,
+        VoucherComponent,
+        VoucherFormComponent,
+        VoucherLineComponent,
+        VoucherLineFormComponent,
         UserComponent,
         UserFormComponent,
         RoleComponent,
@@ -119,7 +119,7 @@ import { NestedAccountComponent } from './components/account2/nested-account.com
         SppcDatePipe
 
     ],
-    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, LookupService, MetaDataService, SppcLoadingService,
+    providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
         UserService, RoleService, FullAccountService, DetailAccountService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
@@ -158,7 +158,7 @@ import { NestedAccountComponent } from './components/account2/nested-account.com
             { path: 'account2', component: Account2Component, canActivate: [AuthGuard] },
             { path: 'login', component: LoginContainerComponent },
             { path: 'logout', component: LogoutComponent },
-            { path: 'transaction', component: TransactionComponent, canActivate: [AuthGuard] },
+            { path: 'voucher', component: VoucherComponent, canActivate: [AuthGuard] },
             { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
             { path: 'roles', component: RoleComponent, canActivate: [AuthGuard] },
             { path: 'changePassword', component: ChangePasswordComponent, canActivate: [AuthGuard] },

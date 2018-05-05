@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { TransactionService, TransactionLineViewModelInfo, TransactionLineService, FiscalPeriodService } from '../../service/index';
-import { TransactionLineViewModel } from '../../model/index';
+import { VoucherLineViewModelInfo, VoucherLineService, FiscalPeriodService } from '../../service/index';
+import { VoucherLineViewModel } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs/Observable';
@@ -20,13 +20,13 @@ import { SppcLoadingService } from '../../controls/sppcLoading/index';
 
 
 @Component({
-    selector: 'transactionLine',
-    templateUrl: './transactionLine.component.html',
+    selector: 'voucherLine',
+    templateUrl: './voucherLine.component.html',
     styles: ["/deep/ .panel-primary { border-color: #989898; }"]
 })
 
 
-export class TransactionLineComponent extends DefaultComponent implements OnInit {
+export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
     public rowData: GridDataResult;
     public selectedRows: string[] = [];
@@ -37,7 +37,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
     //for add in delete messageText
     deleteConfirm: boolean;
-    deleteTransactionLineId: number;
+    deleteVoucherLineId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
@@ -45,16 +45,16 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
     showloadingMessage: boolean = true;
 
-    newTransactionLine: boolean;
-    transactionLineViewModel: TransactionLineViewModel = new TransactionLineViewModelInfo;
+    newVoucherLine: boolean;
+    voucherLineViewModel: VoucherLineViewModel = new VoucherLineViewModelInfo;
 
-    editDataItem?: TransactionLineViewModel = undefined;
+    editDataItem?: VoucherLineViewModel = undefined;
 
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
 
-    @Input() transactionId: number;
+    @Input() voucherId: number;
 
 
     ngOnInit() {
@@ -62,12 +62,12 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private transactionLineService: TransactionLineService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.TransactionLine, Metadatas.TransactionArticles);
+        private voucherLineService: VoucherLineService, public renderer: Renderer2, public metadata: MetaDataService) {
+        super(toastrService, translate, renderer, metadata, Entities.VoucherLine, Metadatas.VoucherArticles);
     }
 
     getRowsCount() {
-        return this.transactionLineService.getCount(this.transactionId, this.currentOrder, this.currentFilter).map(response => <any>(<Response>response).json());
+        return this.voucherLineService.getCount(this.voucherId, this.currentOrder, this.currentFilter).map(response => <any>(<Response>response).json());
     }
 
     selectionKey(context: RowArgs): string {
@@ -76,7 +76,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
         //return context.dataItem.id;
     }
 
-    //deleteTransactionsLine() {
+    deleteTransactionsLine() {
     //    this.transactionLineService.deleteTransactions(this.selectedRows).subscribe(res => {
     //        this.showMessage(this.deleteMsg, MessageType.Info);
     //        this.selectedRows = [];
@@ -84,7 +84,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     //    }, (error => {
     //        this.showMessage(error, MessageType.Warning);
     //    }));
-    //}
+    }
 
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
         if (this.selectedRows.length > 1)
@@ -93,7 +93,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
             this.groupDelete = false;
     }
 
-    reloadGrid(transactionLineViewModel?: TransactionLineViewModel) {
+    reloadGrid(voucherLineViewModel?: VoucherLineViewModel) {
 
         this.sppcLoading.show();
 
@@ -104,26 +104,26 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
             this.skip = this.skip - this.pageSize;
         }
 
-        this.transactionLineService.search(this.transactionId, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+        this.voucherLineService.search(this.voucherId, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
 
             var resData = res.json();
             this.properties = resData.metadata.properties;
             var totalCount = 0;
 
 
-            if (transactionLineViewModel) {
-                var rows = (resData.list as Array<TransactionLineViewModel>);
-                var index = rows.findIndex(p => p.id == transactionLineViewModel.id);
+            if (voucherLineViewModel) {
+                var rows = (resData.list as Array<VoucherLineViewModel>);
+                var index = rows.findIndex(p => p.id == voucherLineViewModel.id);
                 if (index >= 0) {
                     resData.list.splice(index, 1);
-                    rows.splice(0, 0, transactionLineViewModel);
+                    rows.splice(0, 0, voucherLineViewModel);
                 }
                 else {
                     if (rows.length == this.pageSize) {
                         resData.list.splice(this.pageSize - 1, 1);
                     }
 
-                    rows.splice(0, 0, transactionLineViewModel);
+                    rows.splice(0, 0, voucherLineViewModel);
                 }
             }
 
@@ -147,7 +147,7 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
         })
 
-        this.transactionLineService.getTransactionInfo(this.transactionId).subscribe(res => {
+        this.voucherLineService.getVoucherInfo(this.voucherId).subscribe(res => {
             this.debitSum = res.item.debitSum;
             this.creditSum = res.item.creditSum;
 
@@ -181,11 +181,11 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     }
 
 
-    deleteTransactionLine(confirm: boolean) {
+    deleteVoucherLine(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.transactionLineService.delete(this.deleteTransactionLineId).subscribe(response => {
-                this.deleteTransactionLineId = 0;
+            this.voucherLineService.delete(this.deleteVoucherLineId).subscribe(response => {
+                this.deleteVoucherLineId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
@@ -202,17 +202,17 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
 
         this.prepareDeleteConfirm(arg.dataItem.name);
 
-        this.deleteTransactionLineId = arg.dataItem.id;
+        this.deleteVoucherLineId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
 
-    //transaction form events
+    //voucher form events
     public editHandler(arg: any) {
 
         this.sppcLoading.show();
 
-        this.transactionLineService.getTransactionLineById(arg.dataItem.id).subscribe(res => {
+        this.voucherLineService.getVoucherLineById(arg.dataItem.id).subscribe(res => {
 
             this.editDataItem = res.item;
             this.sppcLoading.hide();
@@ -230,19 +230,19 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
     public addNew() {
         this.isNew = true;
         this.errorMessage = '';
-        this.editDataItem = new TransactionLineViewModelInfo();
+        this.editDataItem = new VoucherLineViewModelInfo();
     }
 
-    public saveHandler(transactionLineViewModel: TransactionLineViewModel) {
+    public saveHandler(voucherLineViewModel: VoucherLineViewModel) {
 
-        transactionLineViewModel.branchId = this.BranchId;
-        transactionLineViewModel.fiscalPeriodId = this.FiscalPeriodId;
+        voucherLineViewModel.branchId = this.BranchId;
+        voucherLineViewModel.fiscalPeriodId = this.FiscalPeriodId;
         this.sppcLoading.show();
         if (!this.isNew) {
 
             this.isNew = false;
 
-            this.transactionLineService.editTransactionLine(transactionLineViewModel)
+            this.voucherLineService.editVoucherLine(voucherLineViewModel)
                 .subscribe(response => {
 
                     this.editDataItem = undefined;
@@ -251,20 +251,20 @@ export class TransactionLineComponent extends DefaultComponent implements OnInit
                     this.reloadGrid();
 
                 }, (error => {
-                    //this.editDataItem = transactionLineViewModel;
+                    //this.editDataItem = voucherLineViewModel;
                     this.errorMessage = error;
 
                 }));
         }
         else {
-            transactionLineViewModel.voucherId = this.transactionId;
-            this.transactionLineService.insertTransactionLine(this.transactionId, transactionLineViewModel)
+            voucherLineViewModel.voucherId = this.voucherId;
+            this.voucherLineService.insertVoucherLine(this.voucherId, voucherLineViewModel)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedTransactionLine = JSON.parse(response._body);
-                    this.reloadGrid(insertedTransactionLine);
+                    var insertedVoucherLine = JSON.parse(response._body);
+                    this.reloadGrid(insertedVoucherLine);
 
                 }, (error => {
                     this.isNew = true;

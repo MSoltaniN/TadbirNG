@@ -1,7 +1,7 @@
 ﻿<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en','new-dialog':isNew , 'edit-dialog':!isNew}"
               (close)="closeForm()">
     <kendo-dialog-titlebar>
-        {{ isNew ?  ('Transaction.New' | translate) :  ('Buttons.Edit' | translate) }}
+        {{ isNew ?  ('Voucher.New' | translate) :  ('Buttons.Edit' | translate) }}
     </kendo-dialog-titlebar>
     <div *ngIf="errorMessage != ''">
         <div class="alert alert-danger">
@@ -11,33 +11,33 @@
     <form novalidate [formGroup]="editForm">
         <div class="clearfix edit-form-body">
             <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.currentlang === 'fa' && !isNew}">
-                <label for="date" class="control-label">{{ 'Transaction.Date' | translate }}</label>
+                <label for="date" class="control-label">{{ 'Voucher.Date' | translate }}</label>
 
                 <sppc-datepicker formControlName="date"></sppc-datepicker>
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.date.valid || editForm.controls.date.pristine">
-                    {{ 'TransactionValidation.Date' | translate }}
+                    {{ 'VoucherValidation.Date' | translate }}
                 </div>
             </div>
 
             <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.currentlang === 'fa' && !isNew}">
-                <label for="no" class="control-label">{{ 'Transaction.No' | translate }}</label>
+                <label for="no" class="control-label">{{ 'Voucher.No' | translate }}</label>
 
                 <input type="text" class="k-textbox" formControlName="no" />
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.no.valid || editForm.controls.no.pristine">
-                    <span *ngIf="editForm.controls.no.errors?.required">{{ 'TransactionValidation.No' | translate }}</span>
-                    <span *ngIf="editForm.controls.no.errors?.maxlength">{{ 'TransactionValidation.NoLenght' | translate }}</span>
+                    <span *ngIf="editForm.controls.no.errors?.required">{{ 'VoucherValidation.No' | translate }}</span>
+                    <span *ngIf="editForm.controls.no.errors?.maxlength">{{ 'VoucherValidation.NoLenght' | translate }}</span>
                 </div>
             </div>
 
             <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.currentlang === 'fa' && !isNew}">
-                <label for="description" class="control-label">{{ 'Transaction.Description' | translate }}</label>
+                <label for="description" class="control-label">{{ 'Voucher.Description' | translate }}</label>
 
                 <textarea class="k-textarea" formControlName="description"></textarea>
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
-                    {{ 'TransactionValidation.DescriptionLenght' | translate }}
+                    {{ 'VoucherValidation.DescriptionLenght' | translate }}
                 </div>
             </div>
 
@@ -50,7 +50,7 @@
     </form>
 
     <div *ngIf="!isNew">
-        <transactionLine [transactionId]="transaction_Id"></transactionLine>
+        <voucherLine [voucherId]="voucher_Id"></voucherLine>
     </div>
 
     <kendo-dialog-actions *ngIf="isNew">

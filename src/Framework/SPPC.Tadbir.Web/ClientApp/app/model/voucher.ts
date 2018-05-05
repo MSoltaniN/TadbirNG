@@ -1,5 +1,5 @@
 ﻿
-export interface Transaction {
+export interface Voucher {
     id: number;
     description?: string;
     fiscalPeriodId: number;

@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { TransactionLineViewModel } from '../model/index';
+import { VoucherLineViewModel } from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -21,7 +21,7 @@ import { BaseService } from '../class/base.service';
 //    }
 //}
 
-export class TransactionLineViewModelInfo implements TransactionLineViewModel {
+export class VoucherLineViewModelInfo implements VoucherLineViewModel {
     id: number = 0;
     debit: number = 0;
     credit: number = 0;
@@ -39,7 +39,7 @@ export class TransactionLineViewModelInfo implements TransactionLineViewModel {
 }
 
 @Injectable()
-export class TransactionLineService extends BaseService {
+export class VoucherLineService extends BaseService {
 
     private getAccountArticlesUrl = "http://37.59.93.7:8080/accounts/{0}/articles";
     getAccountArticles(accountId: number) {
@@ -53,15 +53,13 @@ export class TransactionLineService extends BaseService {
 
 
 
-    //private _getTransactionLinesUrl = Environment.BaseUrl + "/transactions/{0}/details";//transactionId
-    private _getTransactionLinesUrl = Environment.BaseUrl + "/vouchers/{0}/articles";//voucherId
-    ////private _deleteMultiTransactionLinesUrl = Environment.BaseUrl + "/transactions";
+    private _getVoucherLinesUrl = Environment.BaseUrl + "/vouchers/{0}/articles";//voucherId
     private _getCountUrl = Environment.BaseUrl + "/vouchers/{0}/articles/count";
-    private _deleteTransactionLineUrl = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
-    private _postNewTransactionLineUrl = Environment.BaseUrl + "/vouchers/{0}/articles";//voucherId
-    private _putModifiedTransactionLineUrl = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
-    private _getTransactionInfo = Environment.BaseUrl + "/vouchers/{0}";//voucherId
-    private _getTransactionLineById = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
+    private _deleteVoucherLineUrl = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
+    private _postNewVoucherLineUrl = Environment.BaseUrl + "/vouchers/{0}/articles";//voucherId
+    private _putModifiedVoucherLineUrl = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
+    private _getVoucherInfo = Environment.BaseUrl + "/vouchers/{0}";//voucherId
+    private _getVoucherLineById = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
 
     headers: Headers;
     options: RequestOptions;
@@ -75,9 +73,9 @@ export class TransactionLineService extends BaseService {
 
 
     ////get count of records base on Grid filters and order value
-    getCount(transactionId: number, orderby?: string, filters?: any[]) {
+    getCount(voucherId: number, orderby?: string, filters?: any[]) {
         var headers = this.headers;
-        var url = String.Format(this._getCountUrl, transactionId);
+        var url = String.Format(this._getCountUrl, voucherId);
         var postItem = { filters: filters };
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
@@ -90,7 +88,7 @@ export class TransactionLineService extends BaseService {
 
     }
 
-    search(transactionId: number, start?: number, count?: number, orderby?: string, filters?: Filter[]) {
+    search(voucherId: number, start?: number, count?: number, orderby?: string, filters?: Filter[]) {
 
         var gridPaging = { pageIndex: start, pageSize: count };
 
@@ -104,7 +102,7 @@ export class TransactionLineService extends BaseService {
         }
         var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
 
-        var url = String.Format(this._getTransactionLinesUrl, transactionId);
+        var url = String.Format(this._getVoucherLinesUrl, voucherId);
 
         var searchHeaders = this.headers;
 
@@ -120,44 +118,44 @@ export class TransactionLineService extends BaseService {
             .map(response => <any>(<Response>response));
     }
 
-    getTransactionInfo(transactionId: number) {
-        var url = String.Format(this._getTransactionInfo, transactionId);
+    getVoucherInfo(voucherId: number) {
+        var url = String.Format(this._getVoucherInfo, voucherId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());;
     }
 
-    editTransactionLine(transactionLine: TransactionLineViewModel): Observable<string> {
-        var body = JSON.stringify(transactionLine);
+    editVoucherLine(voucherLine: VoucherLineViewModel): Observable<string> {
+        var body = JSON.stringify(voucherLine);
 
-        var url = String.Format(this._putModifiedTransactionLineUrl, transactionLine.id);
+        var url = String.Format(this._putModifiedVoucherLineUrl, voucherLine.id);
 
         return this.http.put(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
-    insertTransactionLine(transactionId: number, transactionLine: TransactionLineViewModel): Observable<string> {
-        var body = JSON.stringify(transactionLine);
+    insertVoucherLine(voucherId: number, voucherLine: VoucherLineViewModel): Observable<string> {
+        var body = JSON.stringify(voucherLine);
 
-        var url = String.Format(this._postNewTransactionLineUrl, transactionId);
+        var url = String.Format(this._postNewVoucherLineUrl, voucherId);
 
         return this.http.post(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
-    delete(transactionLineId: number): Observable<string> {
+    delete(VoucherLineId: number): Observable<string> {
 
-        var deleteByIdUrl = String.Format(this._deleteTransactionLineUrl, transactionLineId);
+        var deleteByIdUrl = String.Format(this._deleteVoucherLineUrl, VoucherLineId);
 
         return this.http.delete(deleteByIdUrl, this.options)
             .map(response => response)
             .catch(this.handleError);
     }
 
-    getTransactionLineById(articleId: number) {
-        var url = String.Format(this._getTransactionLineById, articleId);
+    getVoucherLineById(articleId: number) {
+        var url = String.Format(this._getVoucherLineById, articleId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());

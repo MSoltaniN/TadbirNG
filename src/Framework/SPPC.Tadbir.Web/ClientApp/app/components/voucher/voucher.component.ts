@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { TransactionService, TransactionInfo, FiscalPeriodService } from '../../service/index';
-import { Transaction } from '../../model/index';
+import { VoucherService, VoucherInfo, FiscalPeriodService } from '../../service/index';
+import { Voucher } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 
@@ -26,8 +26,8 @@ export function getLayoutModule(layout: Layout) {
 }
 
 @Component({
-    selector: 'transaction',
-    templateUrl: './transaction.component.html',
+    selector: 'voucher',
+    templateUrl: './voucher.component.html',
     providers: [{
         provide: RTL,
         useFactory: getLayoutModule,
@@ -36,7 +36,7 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class TransactionComponent extends DefaultComponent implements OnInit {
+export class VoucherComponent extends DefaultComponent implements OnInit {
 
     public rowData: GridDataResult;
     public selectedRows: string[] = [];
@@ -46,7 +46,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
     //for add in delete messageText
     deleteConfirm: boolean;
-    deleteTransactionId: number;
+    deleteVoucherId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
@@ -54,11 +54,11 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
     showloadingMessage: boolean = true;
 
-    newTransaction: boolean;
-    transaction: Transaction = new TransactionInfo
+    newVoucher: boolean;
+    voucher: Voucher = new VoucherInfo
 
 
-    editDataItem?: Transaction = undefined;
+    editDataItem?: Voucher = undefined;
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
@@ -68,13 +68,13 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private transactionService: TransactionService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.Transaction, Metadatas.Transaction);
+        private voucherService: VoucherService, public renderer: Renderer2, public metadata: MetaDataService) {
+        super(toastrService, translate, renderer, metadata, Entities.Voucher, Metadatas.Voucher);
 
     }
 
     getRowsCount() {
-        return this.transactionService.getCount(this.currentOrder, this.currentFilter).map(response => <any>(<Response>response).json());
+        return this.voucherService.getCount(this.currentOrder, this.currentFilter).map(response => <any>(<Response>response).json());
     }
 
     selectionKey(context: RowArgs): string {
@@ -83,9 +83,9 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
         //return context.dataItem.id;
     }
 
-    deleteTransactions() {
+    deleteVouchers() {
         this.sppcLoading.show();
-        this.transactionService.deleteTransactions(this.selectedRows).subscribe(res => {
+        this.voucherService.deleteVouchers(this.selectedRows).subscribe(res => {
             this.showMessage(this.deleteMsg, MessageType.Info);
             this.selectedRows = [];
             this.reloadGrid();
@@ -102,7 +102,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid(insertedTransaction?: Transaction) {
+    reloadGrid(insertedVoucher?: Voucher) {
 
         this.sppcLoading.show();
 
@@ -113,26 +113,26 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
             this.skip = this.skip - this.pageSize;
         }
 
-        this.transactionService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+        this.voucherService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
 
             var resData = res.json();
             this.properties = resData.metadata.properties;
             var totalCount = 0;
 
 
-            if (insertedTransaction) {
-                var rows = (resData.list as Array<Transaction>);
-                var index = rows.findIndex(p => p.id == insertedTransaction.id);
+            if (insertedVoucher) {
+                var rows = (resData.list as Array<Voucher>);
+                var index = rows.findIndex(p => p.id == insertedVoucher.id);
                 if (index >= 0) {
                     resData.list.splice(index, 1);
-                    rows.splice(0, 0, insertedTransaction);
+                    rows.splice(0, 0, insertedVoucher);
                 }
                 else {
                     if (rows.length == this.pageSize) {
                         resData.list.splice(this.pageSize - 1, 1);
                     }
 
-                    rows.splice(0, 0, insertedTransaction);
+                    rows.splice(0, 0, insertedVoucher);
                 }
             }
 
@@ -185,11 +185,11 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    deleteTransaction(confirm: boolean) {
+    deleteVoucher(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.transactionService.delete(this.deleteTransactionId).subscribe(response => {
-                this.deleteTransactionId = 0;
+            this.voucherService.delete(this.deleteVoucherId).subscribe(response => {
+                this.deleteVoucherId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
@@ -206,7 +206,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
         this.prepareDeleteConfirm(arg.dataItem.name);
 
-        this.deleteTransactionId = arg.dataItem.id;
+        this.deleteVoucherId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
@@ -215,7 +215,7 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
         //this.editDataItem = arg.dataItem;
         this.sppcLoading.show();
-        this.transactionService.getTransactionById(arg.dataItem.id).subscribe(res => {
+        this.voucherService.getVoucherById(arg.dataItem.id).subscribe(res => {
             this.editDataItem = res.item;
             this.sppcLoading.hide();
         })
@@ -232,18 +232,18 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
 
     public addNew() {
         this.isNew = true;
-        this.editDataItem = new TransactionInfo();
+        this.editDataItem = new VoucherInfo();
         this.errorMessage = '';
     }
 
-    public saveHandler(transaction: Transaction) {
+    public saveHandler(voucher: Voucher) {
 
-        transaction.branchId = this.BranchId;
-        transaction.fiscalPeriodId = this.FiscalPeriodId;
+        voucher.branchId = this.BranchId;
+        voucher.fiscalPeriodId = this.FiscalPeriodId;
 
         this.sppcLoading.show();
         if (!this.isNew) {
-            this.transactionService.editTransaction(transaction)
+            this.voucherService.editVoucher(voucher)
                 .subscribe(response => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -255,14 +255,14 @@ export class TransactionComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
-            this.transactionService.insertTransaction(transaction)
+            this.voucherService.insertVoucher(voucher)
                 .subscribe((response: any) => {
 
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedTransaction = JSON.parse(response._body);
-                    this.reloadGrid(insertedTransaction);
+                    var insertedVoucher = JSON.parse(response._body);
+                    this.reloadGrid(insertedVoucher);
 
                 }, (error => {
 

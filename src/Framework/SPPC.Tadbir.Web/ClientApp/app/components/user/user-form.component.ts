@@ -1,6 +1,5 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-//import { TransactionLineService, TransactionLineInfo, AccountService, LookupService } from '../../service/index';
 
 import { User } from '../../model/index';
 

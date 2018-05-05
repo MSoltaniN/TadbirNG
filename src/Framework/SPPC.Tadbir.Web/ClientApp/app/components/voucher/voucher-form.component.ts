@@ -1,8 +1,8 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { TransactionService, TransactionInfo, TransactionLineService, FiscalPeriodService } from '../../service/index';
+import { VoucherService, VoucherInfo, VoucherLineService, FiscalPeriodService } from '../../service/index';
 
-import { Transaction } from '../../model/index';
+import { Voucher } from '../../model/index';
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
 
@@ -26,14 +26,14 @@ interface Item {
 
 
 @Component({
-    selector: 'transaction-form-component',
+    selector: 'voucher-form-component',
     styles: [
         "input[type=text],textarea { width: 100%; } /deep/ .new-dialog > .k-dialog {width: 450px !important; min-width: 250px !important;}",
         "/deep/ .edit-dialog > .k-dialog {width: 100% !important; min-width: 250px !important; height:100%}",
         "/deep/ .edit-dialog .k-window-titlebar{ padding: 5px 16px !important;}",
         "/deep/ .edit-dialog .edit-form-body { background: #f6f6f6; border: solid 1px #989898; border-radius: 4px; padding-top: 10px;}"
     ],
-    templateUrl: './transaction-form.component.html',
+    templateUrl: './voucher-form.component.html',
     providers: [{
         provide: RTL,
         useFactory: getLayoutModule,
@@ -41,7 +41,7 @@ interface Item {
     }]
 })
 
-export class TransactionFormComponent extends DefaultComponent {
+export class VoucherFormComponent extends DefaultComponent {
 
     ////create a form controls
     //private editForm = new FormGroup({
@@ -52,25 +52,25 @@ export class TransactionFormComponent extends DefaultComponent {
     //});
 
     //create properties
-    public transaction_Id: number;
+    public voucher_Id: number;
     active: boolean = false;
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string;
 
-    @Input() public set model(transaction: Transaction) {
+    @Input() public set model(voucher: Voucher) {
 
-        this.editForm.reset(transaction);
+        this.editForm.reset(voucher);
 
-        this.active = transaction !== undefined || this.isNew;
+        this.active = voucher !== undefined || this.isNew;
 
-        if (transaction != undefined) {
-            this.transaction_Id = transaction.id;
+        if (voucher != undefined) {
+            this.voucher_Id = voucher.id;
         }
 
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
-    @Output() save: EventEmitter<Transaction> = new EventEmitter();
+    @Output() save: EventEmitter<Voucher> = new EventEmitter();
     //create properties
 
     //Events
@@ -96,10 +96,10 @@ export class TransactionFormComponent extends DefaultComponent {
     }
     //Events
 
-    constructor(private transactionService: TransactionService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
+    constructor(private voucherLineService: VoucherLineService, private fiscalPeriodService: FiscalPeriodService,
         public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
 
-        super(toastrService, translate, renderer, metadata, Entities.Transaction, Metadatas.Transaction);
+        super(toastrService, translate, renderer, metadata, Entities.Voucher, Metadatas.Voucher);
 
     }
 

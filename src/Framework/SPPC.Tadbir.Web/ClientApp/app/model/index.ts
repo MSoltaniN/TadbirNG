@@ -1,8 +1,8 @@
 ﻿export * from './account';
 
-export * from './transaction-line';
+export * from './voucher-line';
 
-export * from './transaction';
+export * from './voucher';
 
 export * from './fullaccount';
 

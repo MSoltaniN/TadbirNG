@@ -1,9 +1,9 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 //import { requiredValidatorLogic } from './required.directive';
-import { TransactionLineService, TransactionLineViewModelInfo, AccountService, LookupService } from '../../service/index';
+//import { VoucherLineService, VoucherLineViewModelInfo, AccountService, LookupService } from '../../service/index';
 
-import { TransactionLineViewModel } from '../../model/index';
+import { VoucherLineViewModel } from '../../model/index';
 
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
@@ -16,6 +16,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import { Metadatas, Entities } from '../../enviroment';
 import { FullAccountService } from '../../service/fullAccount.service';
+import { VoucherLineService, AccountService, LookupService } from '../../service/index';
 
 
 
@@ -27,19 +28,19 @@ interface Item {
 
 
 @Component({
-    selector: 'transactionLine-form-component',
+    selector: 'voucherLine-form-component',
     styles: [
         "input[type=text],textarea { width: 100%; } .ddl-fAcc {width:49%} /deep/ kendo-numerictextbox{ width:100% !important; }"
     ],
-    templateUrl: './TransactionLine-form.component.html'
+    templateUrl: './voucherLine-form.component.html'
 })
 
-export class TransactionLineFormComponent extends DefaultComponent {
+export class VoucherLineFormComponent extends DefaultComponent {
 
     //TODO: create form with metadata
     public editForm1 = new FormGroup({
         id: new FormControl(),
-        transactionId: new FormControl(),
+        voucherId: new FormControl(),
         currencyId: new FormControl("", Validators.required),
         debit: new FormControl("", Validators.required),
         credit: new FormControl("", Validators.required),
@@ -57,20 +58,20 @@ export class TransactionLineFormComponent extends DefaultComponent {
     @Input() public errorMessage: string;
 
 
-    @Input() public set model(transactionLineViewModel: TransactionLineViewModel) {
+    @Input() public set model(voucherLineViewModel: VoucherLineViewModel) {
 
-        this.editForm1.reset(transactionLineViewModel);
+        this.editForm1.reset(voucherLineViewModel);
 
-        this.active = transactionLineViewModel !== undefined || this.isNew;
+        this.active = voucherLineViewModel !== undefined || this.isNew;
 
-        if (transactionLineViewModel != undefined && transactionLineViewModel.currencyId > 0)
-            this.selectedCurrencyValue = transactionLineViewModel.currencyId.toString();
+        if (voucherLineViewModel != undefined && voucherLineViewModel.currencyId > 0)
+            this.selectedCurrencyValue = voucherLineViewModel.currencyId.toString();
 
     }
 
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
-    @Output() save: EventEmitter<TransactionLineViewModel> = new EventEmitter();
+    @Output() save: EventEmitter<VoucherLineViewModel> = new EventEmitter();
     //create properties
 
     //Events
@@ -92,11 +93,11 @@ export class TransactionLineFormComponent extends DefaultComponent {
     }
     //Events
 
-    constructor(private transactionLineService: TransactionLineService, private accountService: AccountService,
+    constructor(private voucherLineService: VoucherLineService, private accountService: AccountService,
         public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService, private fullAccountService: FullAccountService,
         public renderer: Renderer2, public metadata: MetaDataService) {
 
-        super(toastrService, translate, renderer, metadata, Entities.TransactionLine, Metadatas.TransactionArticles);
+        super(toastrService, translate, renderer, metadata, Entities.VoucherLine, Metadatas.VoucherArticles);
 
         this.GetCurrencies();
     }
