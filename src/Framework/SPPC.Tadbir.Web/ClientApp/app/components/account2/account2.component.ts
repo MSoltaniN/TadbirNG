@@ -54,6 +54,10 @@ export function getLayoutModule(layout: Layout) {
 
 export class Account2Component extends DefaultComponent implements OnInit {
 
+    @Input() public parent: Account;
+
+    @Input() public isChild: boolean = false;
+
     public rowData: GridDataResult;
     
     public selectedRows: string[] = [];
@@ -88,7 +92,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
     
     ngOnInit() {
         
-        //this.reloadGrid();    
+        this.reloadGrid();    
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
@@ -96,9 +100,6 @@ export class Account2Component extends DefaultComponent implements OnInit {
         private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService)
     {
         super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
-        
-        
-        this.reloadGrid();
         
     }
     
@@ -109,6 +110,8 @@ export class Account2Component extends DefaultComponent implements OnInit {
     }
 
     selectionKey(context: RowArgs): string {        
+
+        if (context.dataItem) return "";
 
         return context.dataItem.id + " " + context.index;
     }
@@ -155,7 +158,12 @@ export class Account2Component extends DefaultComponent implements OnInit {
             this.skip = this.skip - this.pageSize;                
         }
 
-        filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
+        if (this.parent)  {
+            if(this.parent.childCount > 0)
+                filter.push(new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"))
+        }
+        else
+            filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
 
 
     this.accountService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
@@ -302,6 +310,7 @@ export class Account2Component extends DefaultComponent implements OnInit {
     public addNew() {
         this.isNew = true;
         this.editDataItem = new AccountInfo(); 
+        
         this.errorMessage = '';
     }    
 
@@ -328,6 +337,10 @@ export class Account2Component extends DefaultComponent implements OnInit {
                 }));            
         }
         else {
+            
+            if (this.parent)
+                account.parentId = this.parent.id;
+
             this.accountService.insertAccount(account)
                 .subscribe((response: any) => {
                     this.isNew = false;

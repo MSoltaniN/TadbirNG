@@ -1,7 +1,6 @@
-﻿<!--<div class="col-xs-12 col-md-12 col-sm-12" >-->
-<div class="panel panel-primary">
-    <div class="panel-heading">{{ 'Entity.Account' | translate }}</div>
-    <div class="panel-body">
+﻿<div  [ngClass]="{'panel panel-primary' : !isChild }">
+    <div *ngIf="!isChild" class="panel-heading">{{ 'Entity.Account' | translate }}</div>
+    <div  [ngClass]="{'panel-body' : !isChild }" >
         <kendo-grid [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
                     [sortable]="true"
                     [pageSize]="pageSize"
@@ -59,7 +58,7 @@
             <ng-template kendoGridDetailTemplate let-dataItem
                          [kendoGridDetailTemplateShowIf]="showOnlyParent">
                 <div ng-if="dataItem.childCount > 0">
-                    <nested-account [level]="1" [parent]="dataItem"></nested-account>
+                    <account2 [isChild]="true" [parent]="dataItem"></account2>
                 </div>
             </ng-template>
                 <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Account.code">
@@ -142,4 +141,4 @@
         </kendo-dialog-actions>
     </kendo-dialog>
 </div>    
-<!--</div>-->
+
