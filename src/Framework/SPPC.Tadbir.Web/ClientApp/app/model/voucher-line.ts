@@ -15,7 +15,7 @@
 //    projectId?: number;    
 //}
 
-export interface TransactionLineViewModel {
+export interface VoucherLineViewModel {
     id: number;
     debit: number;
     credit: number;

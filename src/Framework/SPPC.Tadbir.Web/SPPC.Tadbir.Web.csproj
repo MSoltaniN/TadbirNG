@@ -64,13 +64,13 @@
     <None Remove="ClientApp\app\components\role\role-form.component.ts" />
     <None Remove="ClientApp\app\components\role\role-user-form.component.ts" />
     <None Remove="ClientApp\app\components\role\role.component.ts" />
-    <None Remove="ClientApp\app\components\transactionLine\transactionLine-form.component.ts" />
-    <None Remove="ClientApp\app\components\transactionLine\transactionLine.component.ts" />
-    <None Remove="ClientApp\app\components\transaction\transaction-form.component.ts" />
-    <None Remove="ClientApp\app\components\transaction\transaction.component.ts" />
     <None Remove="ClientApp\app\components\user\changePassword.component.ts" />
     <None Remove="ClientApp\app\components\user\user-form.component.ts" />
     <None Remove="ClientApp\app\components\user\user.component.ts" />
+    <None Remove="ClientApp\app\components\voucherLine\voucherLine-form.component.ts" />
+    <None Remove="ClientApp\app\components\voucherLine\voucherLine.component.ts" />
+    <None Remove="ClientApp\app\components\voucher\voucher-form.component.ts" />
+    <None Remove="ClientApp\app\components\voucher\voucher.component.ts" />
     <None Remove="ClientApp\app\controls\datepicker\sppc-datepicker.ts" />
     <None Remove="ClientApp\app\controls\fullAccount\sppc-fullAccount.ts" />
     <None Remove="ClientApp\app\controls\grid\sppc-date-filter.ts" />
@@ -86,8 +86,8 @@
     <None Remove="ClientApp\app\model\fullaccount.ts" />
     <None Remove="ClientApp\app\model\index.ts" />
     <None Remove="ClientApp\app\model\role.ts" />
-    <None Remove="ClientApp\app\model\transaction.ts" />
     <None Remove="ClientApp\app\model\user.ts" />
+    <None Remove="ClientApp\app\model\voucher.ts" />
     <None Remove="ClientApp\app\pipes\index.ts" />
     <None Remove="ClientApp\app\pipes\sppc.date.pipe.ts" />
     <None Remove="ClientApp\app\service\fiscal-period.service.ts" />
@@ -96,8 +96,8 @@
     <None Remove="ClientApp\app\service\lookup.service.ts" />
     <None Remove="ClientApp\app\service\metadata\metadata.service.ts" />
     <None Remove="ClientApp\app\service\role.service.ts" />
-    <None Remove="ClientApp\app\service\transaction.service.ts" />
     <None Remove="ClientApp\app\service\user.service.ts" />
+    <None Remove="ClientApp\app\service\voucher.service.ts" />
     <None Remove="ClientApp\enviroment.ts" />
     <None Remove="Properties\PublishProfiles\FolderProfile1.pubxml" />
   </ItemGroup>
@@ -208,10 +208,10 @@
     <TypeScriptCompile Include="ClientApp\app\components\role\role-user-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\transactionLine\transactionLine-form.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\transactionLine\transactionLine.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction-form.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\transaction\transaction.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\voucherLine\voucherLine-form.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\voucherLine\voucherLine.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\voucher\voucher-form.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\voucher\voucher.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\user\changePassword.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\user\user-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\user\user.component.ts" />
@@ -233,7 +233,7 @@
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\DetailAccount.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\fullaccount.ts" />
-    <TypeScriptCompile Include="ClientApp\app\model\transaction.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\voucher.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\context.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\role.ts" />
@@ -246,10 +246,10 @@
     <TypeScriptCompile Include="ClientApp\app\service\metadata\metadata.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\fullAccount.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\role.service.ts" />
-    <TypeScriptCompile Include="ClientApp\app\service\transaction-line.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\voucher-line.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\enviroment.ts" />
-    <TypeScriptCompile Include="ClientApp\app\service\transaction.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\voucher.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\user.service.ts" />
   </ItemGroup>
 

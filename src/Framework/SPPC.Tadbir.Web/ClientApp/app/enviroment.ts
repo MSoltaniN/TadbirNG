@@ -15,9 +15,9 @@ export enum MessageType {
 //}
 
 export const Metadatas = {
-    Transaction: 'vouchers',
+    Voucher: 'vouchers',
     Account: 'accounts',
-    TransactionArticles: 'transactions/articles',
+    VoucherArticles: 'vouchers/articles',
     User: 'users',
     Role: 'roles',
     DetailAccount: 'faccounts'
@@ -25,9 +25,9 @@ export const Metadatas = {
 
 
 export const Entities = {
-    Transaction: 'Transaction',
+    Voucher: 'Voucher',
     Account: 'Account',
-    TransactionLine: 'TransactionLine',
+    VoucherLine: 'VoucherLine',
     User: 'User',
     Role: 'Role',
     Password: 'Password',

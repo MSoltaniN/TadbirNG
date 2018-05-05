@@ -118,7 +118,7 @@ export class DetailAccountComponent extends DefaultComponent {
         
         var filter = this.currentFilter;
         var order = this.currentOrder;
-
+        debugger;
         if (this.totalRecords == this.skip) {
             this.skip = this.skip - this.pageSize;
         }

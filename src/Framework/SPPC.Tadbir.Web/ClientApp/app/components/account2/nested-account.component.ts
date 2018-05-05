@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
 
-import { AccountService, AccountInfo, TransactionLineService, FiscalPeriodService } from '../../service/index';
+import { AccountService, AccountInfo, VoucherLineService, FiscalPeriodService } from '../../service/index';
 
 import { Account } from '../../model/index';
 
@@ -111,7 +111,7 @@ export class NestedAccountComponent extends DefaultComponent implements OnInit {
     
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private accountService: AccountService, private transactionLineService: TransactionLineService,
+        private accountService: AccountService, private voucherLineService: VoucherLineService,
         private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
 

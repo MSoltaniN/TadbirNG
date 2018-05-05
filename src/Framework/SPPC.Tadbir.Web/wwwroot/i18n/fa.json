@@ -7,7 +7,7 @@
     "Name": "سیستم جامع تدبیر",
     "Menu": {
       "Account": "حساب",
-      "Transaction": "اسناد",
+      "Voucher": "اسناد",
       "Users": "کاربران",
       "Roles": "نقش ها",
       "DetailAccount": "تفصیلی شناور",
@@ -42,8 +42,8 @@
   },
   "Entity": {
     "Account": "اطلاعات حساب",
-    "Transaction": "اطلاعات سند",
-    "TransactionLine": "آرتیکل سند",
+    "Voucher": "اطلاعات سند",
+    "VoucherLine": "آرتیکل سند",
     "User": "کاربر",
     "Role": "نقش",
     "Password": "کلمه عبور",
@@ -59,7 +59,7 @@
     "Delete": "حذف حساب",
     "List": "لیست حساب ها"
   },
-  "TransactionLine": {
+  "VoucherLine": {
     "Debit": "بدهکار",
     "Credit": "بستانکار",
     "DebitSum": "جمع بدهکار",
@@ -72,7 +72,7 @@
     "Account": "بردار حساب"
 
   },
-  "TransactionLineValidation": {
+  "VoucherLineValidation": {
     "Debit": "بدهکار اجباری می باشد",
     "Credit": "بستانکار اجباری می باشد",
     "Account": "حساب اجباری می باشد",
@@ -85,7 +85,7 @@
   "Branch": {
     "BranchName": "شعبه"
   },
-  "Transaction": {
+  "Voucher": {
     "No": "شماره سند مالی",
     "Date": "تاریخ",
     "Description": "توضیحات",
@@ -95,7 +95,7 @@
     "New": "سند جدید"
 
   },
-  "TransactionValidation": {
+  "VoucherValidation": {
     "No": "شماره سند مالی اجباری می باشد",
     "Date": "تاریخ اجباری می باشد",
     "DescriptionLenght": "توضیحات حداکثر 512 کاراکتر میتواند داشته باشد",

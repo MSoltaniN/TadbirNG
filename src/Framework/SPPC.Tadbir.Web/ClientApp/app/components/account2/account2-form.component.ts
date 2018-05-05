@@ -1,6 +1,6 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { AccountService, AccountInfo, TransactionLineService, FiscalPeriodService } from '../../service/index';
+import { AccountService, AccountInfo, VoucherLineService, FiscalPeriodService } from '../../service/index';
 
 import { Account } from '../../model/index';
 import { Property } from "../../class/metadata/property"
@@ -87,7 +87,7 @@ export class AccountFormComponent extends DefaultComponent {
     }
     //Events
 
-    constructor(private accountService: AccountService, private transactionLineService: TransactionLineService, private fiscalPeriodService: FiscalPeriodService,
+    constructor(private accountService: AccountService, private voucherLineService: VoucherLineService, private fiscalPeriodService: FiscalPeriodService,
         public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
 
         super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);

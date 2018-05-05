@@ -7,7 +7,7 @@
     "Name": "Tadbir Accounting System",
     "Menu": {
       "Account": "Account",
-      "Transaction": "Transaction",
+      "Voucher": "Voucher",
       "Users": "Users",
       "Roles": "Roles",
       "DetailAccount": "Detail Account",
@@ -39,8 +39,8 @@
   },
   "Entity": {
     "Account": "Account",
-    "Transaction": "Transaction",
-    "TransactionLine": "Voucher Article",
+    "Voucher": "Voucher",
+    "VoucherLine": "Voucher Article",
     "User": "User",
     "Role": "Role",
     "Password": "Password",
@@ -60,7 +60,7 @@
 
 
   },
-  "TransactionLine": {
+  "VoucherLine": {
     "Debit": "Debit",
     "Credit": "Credit",
     "DebitSum": "Debit Sum",
@@ -73,7 +73,7 @@
     "Account": "Account"
 
   },
-  "TransactionLineValidation": {
+  "VoucherLineValidation": {
     "DescriptionLenght": "Description can be max 512 characters long",
     "Debit": "debit is required",
     "Credit": "credit is required",
@@ -86,8 +86,8 @@
   "Branch": {
     "BranchName": "Branch"
   },
-  "Transaction": {
-    "New": "New Transaction",
+  "Voucher": {
+    "New": "New voucher",
     "Edit": "Edit",
     "Delete": "Delete",
     "No": "Voucher No",
@@ -96,7 +96,7 @@
     "BranchId": "Branch",
     "FiscalPeriodId": "Fiscal"
   },
-  "TransactionValidation": {
+  "VoucherValidation": {
     "No": "voucher no is required",
     "Date": "date is required",
     "DescriptionLenght": "Description can be max 512 characters long",
