@@ -58,6 +58,8 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
     @Input() public isChild: boolean = false;
 
+    public parentId?: number = undefined;
+
     public rowData: GridDataResult;
     
     public selectedRows: string[] = [];
@@ -307,10 +309,14 @@ export class Account2Component extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public addNew() {
+    public addNew(parentAccountId? : number) {
         this.isNew = true;
         this.editDataItem = new AccountInfo(); 
-        
+
+        //آی دی مربوط به حساب سطح بالاتر برای درج در زیر حساب ها در متغیر parentId مقدار دهی میشود
+        if (parentAccountId)
+            this.parentId = parentAccountId;
+
         this.errorMessage = '';
     }    
 
@@ -318,7 +324,8 @@ export class Account2Component extends DefaultComponent implements OnInit {
 
         account.branchId = this.BranchId;
         account.fiscalPeriodId = this.FiscalPeriodId;
-        //TODO: این کد بعدا باید تغییر پیدا کند البته با اقای اسلامیه هماهنگ شده است 
+
+        //TODO: این کد بعدا باید تغییر پیدا کند البته با اقای اسلامیه هماهنگ شده است
         account.fullCode = account.code;
 
         this.sppcLoading.show();
@@ -337,9 +344,16 @@ export class Account2Component extends DefaultComponent implements OnInit {
                 }));            
         }
         else {
-            
-            if (this.parent)
+
+            //set parentid for childs accounts
+            if (this.parentId) {
+                account.parentId = this.parentId;
+                this.parentId = undefined;
+            }
+            else if (this.parent)
                 account.parentId = this.parent.id;
+
+            //set parentid for childs accounts
 
             this.accountService.insertAccount(account)
                 .subscribe((response: any) => {

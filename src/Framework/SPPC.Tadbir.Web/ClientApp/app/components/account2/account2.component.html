@@ -41,15 +41,15 @@
                     <dl>
                         <dt>{{ 'Account.Code' | translate }}</dt>
                         <dd>{{ account.code }}</dd>
-                        <dt>{{ 'Account.Fiscal' | translate }}</dt>
-                        <dd>{{ account.fiscalPeriodId }}</dd>
-                        <dt>{{ 'Account.Branch' | translate }}</dt>
-                        <dd>{{ account.branch }}</dd>
+                        <dt>{{ 'Account.Name' | translate }}</dt>
+                        <dd>{{ account.name }}</dd>
                         <dt>{{ 'Account.Description' | translate }}</dt>
                         <dd>{{ account.description }}</dd>
                     </dl>
+                    <button kendoGridAddCommand (click)="addNew(account.id)" type="button">{{ 'Buttons.New' | translate }}</button>
                     <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
                     <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+
                 </ng-template>
             </kendo-grid-column>
             <!-- template for mobile -->
@@ -61,62 +61,67 @@
                     <account2 [isChild]="true" [parent]="dataItem"></account2>
                 </div>
             </ng-template>
-                <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Account.code">
-                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [spinners]="true" [filter]="filter"></sppc-grid-filter>
-                    </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Account.name">
-                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                    </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
-                    <ng-template kendoGridCellTemplate>
-                        <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                    </ng-template>
-                </kendo-grid-command-column>
-                <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Delete' | translate }}  ">
-                    <ng-template kendoGridCellTemplate>
-                        <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
-                    </ng-template>
-                </kendo-grid-command-column>
-                <!-- template for mid-size devices -->
-                <!-- additional columns on large devices -->
-                <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
-                <kendo-grid-column width="130" media="(min-width: 1024px)" sppc-grid-column="Account.code">
-                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-grid-filter [metaData]="getMeta('code')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                    </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="Account.name">
-                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                    </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column media="(min-width: 1024px)" width="130" sppc-grid-column="Account.level">
-                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-grid-filter [metaData]="getMeta('level')" [column]="column" [spinners]="false" [filter]="filter"></sppc-grid-filter>
-                    </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="Account.description">
-                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                        <sppc-grid-filter [metaData]="getMeta('descrption')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                    </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-command-column media="(min-width: 1024px)" width="70" title="{{ 'Buttons.Edit' | translate }}">
-                    <ng-template kendoGridCellTemplate>
-                        <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                    </ng-template>
-                </kendo-grid-command-column>
-                <kendo-grid-command-column media="(min-width: 1024px)" width="70" title="{{ 'Buttons.Delete' | translate }}  ">
-                    <ng-template kendoGridCellTemplate>
-                        <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
-                    </ng-template>
-                </kendo-grid-command-column>
-                <!-- additional columns on large devices -->
+            <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Account.code">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [spinners]="true" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Account.name">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-command-column width="75" media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.New' | translate }}">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <button kendoGridAddCommand (click)="addNew(dataItem.id)" type="button">{{ 'Buttons.New' | translate }}</button>
+                </ng-template>
+            </kendo-grid-command-column>
+            <kendo-grid-command-column width="75" media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
+                <ng-template kendoGridCellTemplate>
+                    <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                </ng-template>
+            </kendo-grid-command-column>
+            <kendo-grid-command-column width="75" media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Delete' | translate }}  ">
+                <ng-template kendoGridCellTemplate>
+                    <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                </ng-template>
+            </kendo-grid-command-column>
+            <!-- template for mid-size devices -->
+            <!-- additional columns on large devices -->
+            <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
+            <kendo-grid-column width="130" media="(min-width: 1024px)" sppc-grid-column="Account.code">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <sppc-grid-filter [metaData]="getMeta('code')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="Account.name">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="Account.description">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <sppc-grid-filter [metaData]="getMeta('descrption')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-command-column width="75" media="(min-width: 1024px)" title="{{ 'Buttons.New' | translate }}">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <button kendoGridAddCommand (click)="addNew(dataItem.id)" type="button">{{ 'Buttons.New' | translate }}</button>
+                </ng-template>
+            </kendo-grid-command-column>
+            <kendo-grid-command-column width="75" media="(min-width: 1024px)"  title="{{ 'Buttons.Edit' | translate }}">
+                <ng-template kendoGridCellTemplate>
+                    <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                </ng-template>
+            </kendo-grid-command-column>
+            <kendo-grid-command-column width="75" media="(min-width: 1024px)"  title="{{ 'Buttons.Delete' | translate }}  ">
+                <ng-template kendoGridCellTemplate>
+                    <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                </ng-template>
+            </kendo-grid-command-column>
+            <!-- additional columns on large devices -->
 
-</kendo-grid>
+        </kendo-grid>
         <account-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
                                 (save)="saveHandler($event)"
                                 (cancel)="cancelHandler()">
