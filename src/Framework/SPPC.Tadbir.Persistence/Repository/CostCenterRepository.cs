@@ -132,11 +132,11 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مرکز هزینه مشخص شده با شناسه عددی را از دیتابیس حذف می کند
         /// </summary>
-        /// <param name="costcenterId">شناسه عددی مرکز هزینه مورد نظر برای حذف</param>
-        public async Task DeleteCostCenterAsync(int costcenterId)
+        /// <param name="costCenterId">شناسه عددی مرکز هزینه مورد نظر برای حذف</param>
+        public async Task DeleteCostCenterAsync(int costCenterId)
         {
             var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDAsync(costcenterId);
+            var costCenter = await repository.GetByIDAsync(costCenterId);
             if (costCenter != null)
             {
                 costCenter.FiscalPeriod = null;

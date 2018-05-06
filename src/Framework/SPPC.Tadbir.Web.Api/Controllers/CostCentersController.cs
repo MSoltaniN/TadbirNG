@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -131,8 +129,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
-            var detailItem = await _repository.GetCostCenterAsync(item);
-            if (detailItem == null)
+            var costCenter = await _repository.GetCostCenterAsync(item);
+            if (costCenter == null)
             {
                 message = String.Format(
                     _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.CostCenter), item);
@@ -140,7 +138,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsUsedCostCenterAsync(item))
             {
-                var costCenterInfo = String.Format("'{0} ({1})'", detailItem.Name, detailItem.Code);
+                var costCenterInfo = String.Format("'{0} ({1})'", costCenter.Name, costCenter.Code);
                 message = String.Format(
                     _strings[AppStrings.CannotDeleteUsedItem], _strings[AppStrings.CostCenter], costCenterInfo);
             }

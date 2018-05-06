@@ -180,6 +180,9 @@
   <data name="OutOfFiscalPeriodDate" xml:space="preserve">
     <value>تاریخ وارد شده خارج از محدوده تاریخی دوره مالی جاری قرار دارد.</value>
   </data>
+  <data name="Project" xml:space="preserve">
+    <value>پروژه</value>
+  </data>
   <data name="RequestFailedConflict" xml:space="preserve">
     <value>درخواست مورد نظر به دلیل متناقض بودن اطلاعات {0} انجام نشد.</value>
   </data>

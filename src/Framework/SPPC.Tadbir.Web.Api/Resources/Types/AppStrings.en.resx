@@ -180,6 +180,9 @@
   <data name="OutOfFiscalPeriodDate" xml:space="preserve">
     <value>Entered date is out of range for current fiscal period.</value>
   </data>
+  <data name="Project" xml:space="preserve">
+    <value>Project</value>
+  </data>
   <data name="RequestFailedConflict" xml:space="preserve">
     <value>Request failed because conflicts were detected in {0} data.</value>
   </data>
