@@ -125,6 +125,7 @@ export class RoleFormComponent extends DefaultComponent {
     ////Events
 
     selectionKey(context: RowArgs): string {
+        if (context.dataItem == undefined) return "";
         return context.dataItem.id;
     }
 
