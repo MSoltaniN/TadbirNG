@@ -17,8 +17,8 @@ import { TextMaskModule } from 'angular2-text-mask';
 
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
-import { Account2Component } from './components/account2/account2.component';
-import { AccountFormComponent } from './components/account2/account2-form.component';
+import { Account2Component } from './components/account/account.component';
+import { AccountFormComponent } from './components/account/account-form.component';
 import { VoucherComponent } from './components/voucher/voucher.component';
 import { VoucherFormComponent } from './components/voucher/voucher-form.component';
 import { VoucherLineComponent } from './components/voucherLine/voucherLine.component';
