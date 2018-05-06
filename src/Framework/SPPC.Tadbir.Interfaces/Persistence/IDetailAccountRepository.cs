@@ -70,9 +70,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، مشخص می کند که آیا تفصیلی شناور انتخاب شده توسط رکوردهای اطلاعاتی دیگر
         /// در حال استفاده است یا نه
         /// </summary>
-        /// <param name="accountId">شناسه یکتای یکی از تفصیلی های شناور موجود</param>
+        /// <param name="faccountId">شناسه یکتای یکی از تفصیلی های شناور موجود</param>
         /// <returns>در حالتی که تفصیلی شناور مشخص شده در حال استفاده باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
-        Task<bool> IsUsedDetailAccountAsync(int accountId);
+        Task<bool> IsUsedDetailAccountAsync(int faccountId);
     }
 }

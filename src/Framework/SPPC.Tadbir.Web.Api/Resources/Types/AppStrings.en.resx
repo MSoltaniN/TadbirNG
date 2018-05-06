@@ -138,6 +138,9 @@
   <data name="CannotUseNonLeafItem" xml:space="preserve">
     <value>The {0} {1} has one or more subitems and cannot be used in operational vouchers</value>
   </data>
+  <data name="CostCenter" xml:space="preserve">
+    <value>Cost center</value>
+  </data>
   <data name="DebitAndCreditNotAllowed" xml:space="preserve">
     <value>Entering values for both Debit and Credit is not allowed.</value>
   </data>
