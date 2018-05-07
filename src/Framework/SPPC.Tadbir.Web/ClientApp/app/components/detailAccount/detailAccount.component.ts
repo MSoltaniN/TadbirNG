@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
 import { DetailAccountService, DetailAccountViewModelInfo } from '../../service/index';
-
-import { ToastrService } from 'ngx-toastr'; /** add this component for message in client side */
+import { DetailAccountViewModel } from '../../model/index';
+import { ToastrService } from 'ngx-toastr';
 
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 
@@ -23,7 +23,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { Response } from '@angular/http';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { GridResult } from '../../service/account.service';
-import { DetailAccountViewModel } from '../../model/index';
+
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
@@ -258,7 +258,6 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
         this.isNew = true;
         this.editDataItem = new DetailAccountViewModelInfo();
 
-        //آی دی مربوط به حساب تفصیلی شناور بالاتر برای درج در زیر حساب ها در متغیر parentId مقدار دهی میشود
         if (parentDetailAccountId)
             this.parentId = parentDetailAccountId;
 
@@ -286,7 +285,6 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
-            debugger;
             //set parentid for childs accounts
             if (this.parentId) {
                 detailAccountViewModel.parentId = this.parentId;
