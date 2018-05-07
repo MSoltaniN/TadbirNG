@@ -35,6 +35,8 @@ import { DetailAccountComponent } from './components/detailAccount/detailAccount
 import { DetailAccountFormComponent } from './components/detailAccount/detailAccount-form.component';
 import { CostCenterComponent } from './components/costCenter/costCenter.component';
 import { CostCenterFormComponent } from './components/costCenter/costCenter-form.component';
+import { ProjectComponent } from './components/project/project.component';
+import { ProjectFormComponent } from './components/project/project-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -61,7 +63,7 @@ import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
 import {
     AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
-    BranchService, VoucherService, LookupService, FullAccountService
+    BranchService, VoucherService, LookupService, FullAccountService, ProjectService
 
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
@@ -118,13 +120,15 @@ import { NestedAccountComponent } from './components/account2/nested-account.com
         DetailAccountComponent,
         DetailAccountFormComponent,
         CostCenterComponent,
+        ProjectComponent,
+        ProjectFormComponent,
         CostCenterFormComponent,
         ConfirmEqualValidator,
         SppcDatePipe
 
     ],
     providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
-        UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService,
+        UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,
@@ -168,6 +172,7 @@ import { NestedAccountComponent } from './components/account2/nested-account.com
             { path: 'changePassword', component: ChangePasswordComponent, canActivate: [AuthGuard] },
             { path: 'detailAccount', component: DetailAccountComponent, canActivate: [AuthGuard] },
             { path: 'costCenter', component: CostCenterComponent, canActivate: [AuthGuard] },
+            { path: 'projects', component: ProjectComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])
     ],

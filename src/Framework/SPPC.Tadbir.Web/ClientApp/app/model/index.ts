@@ -14,3 +14,5 @@ export * from './detailAccount';
 
 export * from './CostCenter';
 
+export * from './Project';
+
