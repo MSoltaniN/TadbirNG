@@ -20,7 +20,8 @@ export const Metadatas = {
     VoucherArticles: 'vouchers/articles',
     User: 'users',
     Role: 'roles',
-    DetailAccount: 'faccounts'
+    DetailAccount: 'faccounts',
+    CostCenter:'ccenters'
 }
 
 
@@ -31,7 +32,8 @@ export const Entities = {
     User: 'User',
     Role: 'Role',
     Password: 'Password',
-    DetailAccount:'DetailAccount'
+    DetailAccount: 'DetailAccount',
+    CostCenter:'CostCenter'
 }
 
 

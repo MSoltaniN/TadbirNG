@@ -11,6 +11,7 @@
       "Users": "کاربران",
       "Roles": "نقش ها",
       "DetailAccount": "تفصیلی شناور",
+      "CostCenter": "مرکز هزینه",
       "ChangePassword": "تغییر کلمه عبور",
       "Exit": "خروج"
     }
@@ -47,7 +48,8 @@
     "User": "کاربر",
     "Role": "نقش",
     "Password": "کلمه عبور",
-    "DetailAccount": "تفصیلی شناور"
+    "DetailAccount": "تفصیلی شناور",
+    "CostCenter": "مرکز هزینه"
   },
   "Account": {
     "Code": "کد حساب",
@@ -185,8 +187,25 @@
     "Code": "کد اجباری می باشد",
     "CodeMaxLength": "کد حداکثر 16 کاراکتر میتواند داشته باشد",
     "FullCode": "کد کامل اجباری می باشد",
-    "FullCodeMaxLength": "کد کامل حداکثر 256 کاراکتر میتواند داشته باشد",
-    "Level": "سطح اجباری می باشد"
+    "FullCodeMaxLength": "کد کامل حداکثر 256 کاراکتر میتواند داشته باشد"
+  },
+  "CostCenter": {
+    "New": "مرکز هزینه جدید",
+    "Name": "نام",
+    "Code": "کد",
+    "FullCode": "کد کامل",
+    "Level": "سطح",
+    "Description": "شرح",
+    "Delete": "حذف مرکز هزینه"
+  },
+  "CostCenterValidation": {
+    "Name": "نام اجباری می باشد",
+    "NameMaxLength": "نام حداکثر 512 کاراکتر میتواند داشته باشد",
+    "DescriptionLenght": "شرح حداکثر 512 کاراکتر میتواند داشته باشد",
+    "Code": "کد اجباری می باشد",
+    "CodeMaxLength": "کد حداکثر 16 کاراکتر میتواند داشته باشد",
+    "FullCode": "کد کامل اجباری می باشد",
+    "FullCodeMaxLength": "کد کامل حداکثر 256 کاراکتر میتواند داشته باشد"
   },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی"
