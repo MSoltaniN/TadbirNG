@@ -39,7 +39,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(d => d.Parent)
                 .WithMany(p => p.Children)
-                .HasForeignKey("ParentID")
+                .HasForeignKey(e => e.ParentId)
                 .HasConstraintName("FK_Finance_Project_Finance_Parent");
             builder.HasOne(d => d.Branch)
                 .WithMany()

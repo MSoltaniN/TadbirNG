@@ -138,6 +138,9 @@
   <data name="CannotUseNonLeafItem" xml:space="preserve">
     <value>{0} {1} دارای زیرمجموعه بوده و نمی توان در اسناد عملیاتی از آن استفاده کرد.</value>
   </data>
+  <data name="CostCenter" xml:space="preserve">
+    <value>مرکز هزینه</value>
+  </data>
   <data name="DebitAndCreditNotAllowed" xml:space="preserve">
     <value>وارد کردن همزمان مبالغ بدهکار و بستانکار در آرتیکل نادرست است.</value>
   </data>
@@ -176,6 +179,9 @@
   </data>
   <data name="OutOfFiscalPeriodDate" xml:space="preserve">
     <value>تاریخ وارد شده خارج از محدوده تاریخی دوره مالی جاری قرار دارد.</value>
+  </data>
+  <data name="Project" xml:space="preserve">
+    <value>پروژه</value>
   </data>
   <data name="RequestFailedConflict" xml:space="preserve">
     <value>درخواست مورد نظر به دلیل متناقض بودن اطلاعات {0} انجام نشد.</value>

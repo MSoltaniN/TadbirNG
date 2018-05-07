@@ -126,6 +126,16 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
+            mapperConfig.CreateMap<CostCenter, CostCenterViewModel>();
+            mapperConfig.CreateMap<CostCenterViewModel, CostCenter>()
+                .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
+                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
+                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
+            mapperConfig.CreateMap<Project, ProjectViewModel>();
+            mapperConfig.CreateMap<ProjectViewModel, Project>()
+                .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
+                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
+                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
             mapperConfig.CreateMap<Account, AccountFullViewModel>();
             mapperConfig.CreateMap<Account, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))

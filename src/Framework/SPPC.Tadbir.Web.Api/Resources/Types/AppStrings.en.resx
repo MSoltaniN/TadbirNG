@@ -138,6 +138,9 @@
   <data name="CannotUseNonLeafItem" xml:space="preserve">
     <value>The {0} {1} has one or more subitems and cannot be used in operational vouchers</value>
   </data>
+  <data name="CostCenter" xml:space="preserve">
+    <value>Cost center</value>
+  </data>
   <data name="DebitAndCreditNotAllowed" xml:space="preserve">
     <value>Entering values for both Debit and Credit is not allowed.</value>
   </data>
@@ -176,6 +179,9 @@
   </data>
   <data name="OutOfFiscalPeriodDate" xml:space="preserve">
     <value>Entered date is out of range for current fiscal period.</value>
+  </data>
+  <data name="Project" xml:space="preserve">
+    <value>Project</value>
   </data>
   <data name="RequestFailedConflict" xml:space="preserve">
     <value>Request failed because conflicts were detected in {0} data.</value>

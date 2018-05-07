@@ -1,0 +1,151 @@
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
+using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.Web.Api.Extensions;
+using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.Web.Api.Resources.Types;
+
+namespace SPPC.Tadbir.Web.Api.Controllers
+{
+    [Produces("application/json")]
+    public class CostCentersController : ApiControllerBase<CostCenterViewModel>
+    {
+        public CostCentersController(
+            ICostCenterRepository repository, IStringLocalizer<AppStrings> strings = null)
+            : base(strings)
+        {
+            _repository = repository;
+        }
+
+        protected override string EntityNameKey
+        {
+            get { return AppStrings.CostCenter; }
+        }
+
+        // GET: api/ccenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [Route(CostCenterApi.FiscalPeriodBranchCostCentersUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
+        public async Task<IActionResult> GetCostCentersAsync(int fpId, int branchId)
+        {
+            var gridOptions = GetGridOptions();
+            int itemCount = await _repository.GetCountAsync(fpId, branchId, gridOptions);
+            SetItemCount(itemCount);
+            var costCenters = await _repository.GetCostCentersAsync(fpId, branchId, gridOptions);
+            return Json(costCenters);
+        }
+
+        // GET: api/ccenters/{ccenterId:min(1)}
+        [Route(CostCenterApi.CostCenterUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
+        public async Task<IActionResult> GetCostCenterAsync(int ccenterId)
+        {
+            var costCenter = await _repository.GetCostCenterAsync(ccenterId);
+            return JsonReadResult(costCenter);
+        }
+
+        // GET: api/ccenters/metadata
+        [Route(CostCenterApi.CostCenterMetadataUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
+        public async Task<IActionResult> GetCostCenterMetadataAsync()
+        {
+            var metadata = await _repository.GetCostCenterMetadataAsync();
+            return JsonReadResult(metadata);
+        }
+
+        // POST: api/ccenters
+        [HttpPost]
+        [Route(CostCenterApi.CostCentersUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Create)]
+        public async Task<IActionResult> PostNewCostCenterAsync([FromBody] CostCenterViewModel costCenter)
+        {
+            var result = await ValidationResultAsync(costCenter);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var outputItem = await _repository.SaveCostCenterAsync(costCenter);
+            return StatusCode(StatusCodes.Status201Created, outputItem);
+        }
+
+        // PUT: api/ccenters/{ccenterId:min(1)}
+        [HttpPut]
+        [Route(CostCenterApi.CostCenterUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Edit)]
+        public async Task<IActionResult> PutModifiedCostCenterAsync(
+            int ccenterId, [FromBody] CostCenterViewModel costCenter)
+        {
+            var result = await ValidationResultAsync(costCenter, ccenterId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            var outputItem = await _repository.SaveCostCenterAsync(costCenter);
+            result = (outputItem != null)
+                ? Ok(outputItem)
+                : NotFound() as IActionResult;
+            return result;
+        }
+
+        // DELETE: api/ccenters/{ccenterId:min(1)}
+        [HttpDelete]
+        [Route(CostCenterApi.CostCenterUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Delete)]
+        public async Task<IActionResult> DeleteExistingCostCenterAsync(int ccenterId)
+        {
+            string result = await ValidateDeleteAsync(ccenterId);
+            if (!String.IsNullOrEmpty(result))
+            {
+                return BadRequest(result);
+            }
+
+            await _repository.DeleteCostCenterAsync(ccenterId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        private async Task<IActionResult> ValidationResultAsync(CostCenterViewModel costCenter, int ccenterId = 0)
+        {
+            var result = BasicValidationResult(costCenter, ccenterId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (await _repository.IsDuplicateCostCenterAsync(costCenter))
+            {
+                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.CostCenter));
+            }
+
+            return Ok();
+        }
+
+        private async Task<string> ValidateDeleteAsync(int item)
+        {
+            string message = String.Empty;
+            var costCenter = await _repository.GetCostCenterAsync(item);
+            if (costCenter == null)
+            {
+                message = String.Format(
+                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.CostCenter), item);
+            }
+
+            if (await _repository.IsUsedCostCenterAsync(item))
+            {
+                var costCenterInfo = String.Format("'{0} ({1})'", costCenter.Name, costCenter.Code);
+                message = String.Format(
+                    _strings[AppStrings.CannotDeleteUsedItem], _strings[AppStrings.CostCenter], costCenterInfo);
+            }
+
+            return message;
+        }
+
+        private ICostCenterRepository _repository;
+    }
+}

@@ -78,7 +78,7 @@ export class DetailAccountComponent extends DefaultComponent {
 
 
     selectionKey(context: RowArgs): string {
-
+        if (context.dataItem == undefined) return "";
         return context.dataItem.id + " " + context.index;
     }
 
@@ -118,7 +118,7 @@ export class DetailAccountComponent extends DefaultComponent {
         
         var filter = this.currentFilter;
         var order = this.currentOrder;
-        debugger;
+
         if (this.totalRecords == this.skip) {
             this.skip = this.skip - this.pageSize;
         }
