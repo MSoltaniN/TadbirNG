@@ -136,9 +136,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Project), item);
             }
 
+            var projectInfo = String.Format("'{0} ({1})'", project.Name, project.Code);
+            var hasChildren = await _repository.HasChildrenAsync(item);
+            if (hasChildren == true)
+            {
+                message = String.Format(
+                    _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.Project], projectInfo);
+            }
+
             if (await _repository.IsUsedProjectAsync(item))
             {
-                var projectInfo = String.Format("'{0} ({1})'", project.Name, project.Code);
                 message = String.Format(
                     _strings[AppStrings.CannotDeleteUsedItem], _strings[AppStrings.Project], projectInfo);
             }

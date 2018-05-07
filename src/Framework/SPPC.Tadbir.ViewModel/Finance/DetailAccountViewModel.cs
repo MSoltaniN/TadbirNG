@@ -19,5 +19,10 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// شناسه دیتابیسی شعبه سازمانی که این تفصیلی شناور در آن تعریف شده است
         /// </summary>
         public int BranchId { get; set; }
+
+        /// <summary>
+        /// تعداد شناورهای زیرمجموعه این تفصیلی شناور در ساختار درختی
+        /// </summary>
+        public int ChildCount { get; set; }
     }
 }

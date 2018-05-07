@@ -132,11 +132,14 @@
   <data name="CannotDeleteAssignedRole" xml:space="preserve">
     <value>The role {0} is currently assigned to one or more users and cannot be deleted.</value>
   </data>
+  <data name="CannotDeleteNonLeafItem" xml:space="preserve">
+    <value>The {0} {1} has one or more subitems and cannot be deleted.</value>
+  </data>
   <data name="CannotDeleteUsedItem" xml:space="preserve">
     <value>The {0} {1} is used in one or more vouchers and cannot be deleted.</value>
   </data>
   <data name="CannotUseNonLeafItem" xml:space="preserve">
-    <value>The {0} {1} has one or more subitems and cannot be used in operational vouchers</value>
+    <value>The {0} {1} has one or more subitems and cannot be used in operational vouchers.</value>
   </data>
   <data name="CostCenter" xml:space="preserve">
     <value>Cost center</value>

@@ -97,6 +97,14 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> IsUsedAccountAsync(int accountId);
 
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده دارای حساب زیرمجموعه هست یا نه
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <returns>در حالتی که حساب مشخص شده دارای حساب زیرمجموعه باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool?> HasChildrenAsync(int accountId);
+
         #endregion
 
         #region Synchronous Methods (May be removed in the future)

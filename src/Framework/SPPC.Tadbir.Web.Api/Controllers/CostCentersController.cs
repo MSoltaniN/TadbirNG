@@ -136,9 +136,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.CostCenter), item);
             }
 
+            var costCenterInfo = String.Format("'{0} ({1})'", costCenter.Name, costCenter.Code);
+            var hasChildren = await _repository.HasChildrenAsync(item);
+            if (hasChildren == true)
+            {
+                message = String.Format(
+                    _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.CostCenter], costCenterInfo);
+            }
+
             if (await _repository.IsUsedCostCenterAsync(item))
             {
-                var costCenterInfo = String.Format("'{0} ({1})'", costCenter.Name, costCenter.Code);
                 message = String.Format(
                     _strings[AppStrings.CannotDeleteUsedItem], _strings[AppStrings.CostCenter], costCenterInfo);
             }

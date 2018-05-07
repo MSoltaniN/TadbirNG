@@ -74,5 +74,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در حالتی که مرکز هزینه مشخص شده در حال استفاده باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> IsUsedCostCenterAsync(int costCenterId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا مرکز هزینه انتخاب شده دارای زیرمجموعه هست یا نه
+        /// </summary>
+        /// <param name="costCenterId">شناسه یکتای یکی از مراکز هزینه موجود</param>
+        /// <returns>در حالتی که مرکز هزینه مشخص شده دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool?> HasChildrenAsync(int costCenterId);
     }
 }

@@ -275,6 +275,33 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
+            var detailAccount = await _repository.GetArticleDetailAccountAsync(article.FullAccount.DetailId.Value);
+            if (detailAccount.ChildCount > 0)
+            {
+                string detailInfo = String.Format("{0} ({1})", detailAccount.Name, detailAccount.FullCode);
+                string message = String.Format(
+                    _strings.Format(AppStrings.CannotUseNonLeafItem), _strings.Format(AppStrings.DetailAccount), detailInfo);
+                return BadRequest(message);
+            }
+
+            var costCenter = await _repository.GetArticleCostCenterAsync(article.FullAccount.CostCenterId.Value);
+            if (costCenter.ChildCount > 0)
+            {
+                string costCenterInfo = String.Format("{0} ({1})", costCenter.Name, costCenter.FullCode);
+                string message = String.Format(
+                    _strings.Format(AppStrings.CannotUseNonLeafItem), _strings.Format(AppStrings.CostCenter), costCenterInfo);
+                return BadRequest(message);
+            }
+
+            var project = await _repository.GetArticleProjectAsync(article.FullAccount.ProjectId.Value);
+            if (project.ChildCount > 0)
+            {
+                string projectInfo = String.Format("{0} ({1})", project.Name, project.FullCode);
+                string message = String.Format(
+                    _strings.Format(AppStrings.CannotUseNonLeafItem), _strings.Format(AppStrings.Project), projectInfo);
+                return BadRequest(message);
+            }
+
             return Ok();
         }
 

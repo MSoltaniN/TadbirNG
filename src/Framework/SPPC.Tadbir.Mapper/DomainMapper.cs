@@ -121,17 +121,20 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
-            mapperConfig.CreateMap<DetailAccount, DetailAccountViewModel>();
+            mapperConfig.CreateMap<DetailAccount, DetailAccountViewModel>()
+                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<DetailAccountViewModel, DetailAccount>()
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
-            mapperConfig.CreateMap<CostCenter, CostCenterViewModel>();
+            mapperConfig.CreateMap<CostCenter, CostCenterViewModel>()
+                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<CostCenterViewModel, CostCenter>()
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
-            mapperConfig.CreateMap<Project, ProjectViewModel>();
+            mapperConfig.CreateMap<Project, ProjectViewModel>()
+                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<ProjectViewModel, Project>()
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)

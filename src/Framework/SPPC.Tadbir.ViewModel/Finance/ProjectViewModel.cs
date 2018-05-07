@@ -19,5 +19,10 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// شناسه دیتابیسی پروژه والد در ساختار درختی
         /// </summary>
         public int? ParentId { get; set; }
+
+        /// <summary>
+        /// تعداد پروژه های زیرمجموعه این پروژه در ساختار درختی
+        /// </summary>
+        public int ChildCount { get; set; }
     }
 }

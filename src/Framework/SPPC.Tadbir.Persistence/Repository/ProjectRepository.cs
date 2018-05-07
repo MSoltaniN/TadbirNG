@@ -179,6 +179,25 @@ namespace SPPC.Tadbir.Persistence
             return (articles.Count != 0);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا پروژه انتخاب شده دارای زیرمجموعه هست یا نه
+        /// </summary>
+        /// <param name="projectId">شناسه یکتای یکی از پروژه های موجود</param>
+        /// <returns>در حالتی که پروژه مشخص شده دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool?> HasChildrenAsync(int projectId)
+        {
+            bool? hasChildren = null;
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
+            if (project != null)
+            {
+                hasChildren = project.Children.Count > 0;
+            }
+
+            return hasChildren;
+        }
+
         private static void UpdateExistingProject(ProjectViewModel projectViewModel, Project project)
         {
             project.Code = projectViewModel.Code;

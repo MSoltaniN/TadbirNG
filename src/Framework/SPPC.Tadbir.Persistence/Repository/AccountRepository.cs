@@ -226,6 +226,25 @@ namespace SPPC.Tadbir.Persistence
             return (articles.Count != 0);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده دارای حساب زیرمجموعه هست یا نه
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <returns>در حالتی که حساب مشخص شده دارای حساب زیرمجموعه باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool?> HasChildrenAsync(int accountId)
+        {
+            bool? hasChildren = null;
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
+            if (account != null)
+            {
+                hasChildren = account.Children.Count > 0;
+            }
+
+            return hasChildren;
+        }
+
         #endregion
 
         #region Synchronous Methods (May be removed in the future)

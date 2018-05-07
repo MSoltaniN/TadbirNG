@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -138,9 +136,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.DetailAccount), item);
             }
 
+            var detailInfo = String.Format("'{0} ({1})'", detailItem.Name, detailItem.Code);
+            var hasChildren = await _repository.HasChildrenAsync(item);
+            if (hasChildren == true)
+            {
+                message = String.Format(
+                    _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.DetailAccount], detailInfo);
+            }
+
             if (await _repository.IsUsedDetailAccountAsync(item))
             {
-                var detailInfo = String.Format("'{0} ({1})'", detailItem.Name, detailItem.Code);
                 message = String.Format(
                     _strings[AppStrings.CannotDeleteUsedItem], _strings[AppStrings.DetailAccount], detailInfo);
             }

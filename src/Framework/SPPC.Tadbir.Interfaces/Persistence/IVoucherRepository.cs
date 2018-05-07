@@ -172,6 +172,30 @@ namespace SPPC.Tadbir.Persistence
         Task<AccountViewModel> GetArticleAccountAsync(int accountId);
 
         /// <summary>
+        /// به روش آسنکرون، مدل نمایشی تفصیلی شناور مشخص شده
+        /// را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="faccountId">شناسه دیتابیسی یکی از تفصیلی های شناور موجود</param>
+        /// <returns>مدل نمایشی تفصیلی شناور مورد استفاده در آرتیکل</returns>
+        Task<DetailAccountViewModel> GetArticleDetailAccountAsync(int faccountId);
+
+        /// <summary>
+        /// به روش آسنکرون، مدل نمایشی مرکز هزینه مشخص شده
+        /// را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="costCenterId">شناسه دیتابیسی یکی از مراکز هزینه موجود</param>
+        /// <returns>مدل نمایشی مرکز هزینه مورد استفاده در آرتیکل</returns>
+        Task<CostCenterViewModel> GetArticleCostCenterAsync(int costCenterId);
+
+        /// <summary>
+        /// به روش آسنکرون، مدل نمایشی پروژه مشخص شده
+        /// را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه دیتابیسی یکی از پروژه های موجود</param>
+        /// <returns>مدل نمایشی پروژه مورد استفاده در آرتیکل</returns>
+        Task<ProjectViewModel> GetArticleProjectAsync(int projectId);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات یک سطر سند مالی (آرتیکل) را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
