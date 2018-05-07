@@ -47,7 +47,7 @@ namespace SPPC.Tadbir.Persistence
                     cc => cc.FiscalPeriod.Id == fpId
                         && cc.Branch.Id == branchId,
                     gridOptions,
-                    cc => cc.FiscalPeriod, cc => cc.Branch);
+                    cc => cc.FiscalPeriod, cc => cc.Branch, cc => cc.Parent, cc => cc.Children);
             return costCenters
                 .Select(item => _mapper.Map<CostCenterViewModel>(item))
                 .ToList();
@@ -81,7 +81,7 @@ namespace SPPC.Tadbir.Persistence
             CostCenterViewModel item = null;
             var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
             var costCenter = await repository.GetByIDAsync(
-                costCenterId, cc => cc.FiscalPeriod, cc => cc.Branch);
+                costCenterId, cc => cc.FiscalPeriod, cc => cc.Branch, cc => cc.Parent, cc => cc.Children);
             if (costCenter != null)
             {
                 item = _mapper.Map<CostCenterViewModel>(costCenter);

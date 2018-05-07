@@ -47,7 +47,7 @@ namespace SPPC.Tadbir.Persistence
                     prj => prj.FiscalPeriod.Id == fpId
                         && prj.Branch.Id == branchId,
                     gridOptions,
-                    prj => prj.FiscalPeriod, prj => prj.Branch);
+                    prj => prj.FiscalPeriod, prj => prj.Branch, prj => prj.Parent, prj => prj.Children);
             return projects
                 .Select(item => _mapper.Map<ProjectViewModel>(item))
                 .ToList();
@@ -81,7 +81,7 @@ namespace SPPC.Tadbir.Persistence
             ProjectViewModel item = null;
             var repository = _unitOfWork.GetAsyncRepository<Project>();
             var project = await repository.GetByIDAsync(
-                projectId, prj => prj.FiscalPeriod, prj => prj.Branch);
+                projectId, prj => prj.FiscalPeriod, prj => prj.Branch, prj => prj.Parent, prj => prj.Children);
             if (project != null)
             {
                 item = _mapper.Map<ProjectViewModel>(project);
