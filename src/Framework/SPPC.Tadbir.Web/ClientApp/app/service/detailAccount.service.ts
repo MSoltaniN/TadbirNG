@@ -23,6 +23,7 @@ export class DetailAccountViewModelInfo implements DetailAccountViewModel {
     level: number = 0;
     description?: string | undefined;
     parentId?: number | undefined;
+    childCount: number = 0;
     fiscalPeriodId: number = 0;
     branchId: number = 0;
 }

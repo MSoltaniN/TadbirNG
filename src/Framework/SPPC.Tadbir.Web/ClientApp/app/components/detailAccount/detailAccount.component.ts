@@ -41,7 +41,12 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class DetailAccountComponent extends DefaultComponent {
+export class DetailAccountComponent extends DefaultComponent implements OnInit {
+
+    @Input() public parent: DetailAccountViewModel;
+    @Input() public isChild: boolean = false;
+
+    public parentId?: number = undefined;
 
     public rowData: GridDataResult;
     public selectedRows: string[] = [];
@@ -67,13 +72,14 @@ export class DetailAccountComponent extends DefaultComponent {
     errorMessage: string;
     groupDelete: boolean = false;
 
+    ngOnInit() {
+
+        this.reloadGrid();
+    }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
         private detailAccountService: DetailAccountService, public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, Entities.DetailAccount, Metadatas.DetailAccount);
-
-        this.reloadGrid();
-
     }
 
 
@@ -122,6 +128,17 @@ export class DetailAccountComponent extends DefaultComponent {
         if (this.totalRecords == this.skip) {
             this.skip = this.skip - this.pageSize;
         }
+
+        if (this.totalRecords == this.skip) {
+            this.skip = this.skip - this.pageSize;
+        }
+
+        if (this.parent) {
+            if (this.parent.childCount > 0)
+                filter.push(new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"))
+        }
+        else
+            filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))        
 
         this.detailAccountService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
 
@@ -219,9 +236,6 @@ export class DetailAccountComponent extends DefaultComponent {
         this.deleteConfirm = true;
     }
 
-
-
-
     //detail account form events
     public editHandler(arg: any) {
 
@@ -239,11 +253,17 @@ export class DetailAccountComponent extends DefaultComponent {
         this.errorMessage = '';
     }
 
-    public addNew() {
+
+    public addNew(parentDetailAccountId?: number) {
         this.isNew = true;
         this.editDataItem = new DetailAccountViewModelInfo();
+
+        //آی دی مربوط به حساب تفصیلی شناور بالاتر برای درج در زیر حساب ها در متغیر parentId مقدار دهی میشود
+        if (parentDetailAccountId)
+            this.parentId = parentDetailAccountId;
+
         this.errorMessage = '';
-    }
+    } 
 
     public saveHandler(detailAccountViewModel: DetailAccountViewModel) {
 
@@ -266,6 +286,16 @@ export class DetailAccountComponent extends DefaultComponent {
                 }));
         }
         else {
+            debugger;
+            //set parentid for childs accounts
+            if (this.parentId) {
+                detailAccountViewModel.parentId = this.parentId;
+                this.parentId = undefined;
+            }
+            else if (this.parent)
+                detailAccountViewModel.parentId = this.parent.id;
+            //set parentid for childs accounts
+
             this.detailAccountService.insertDetailAccount(detailAccountViewModel)
                 .subscribe((response: any) => {
                     this.isNew = false;
@@ -282,6 +312,14 @@ export class DetailAccountComponent extends DefaultComponent {
         }
 
         this.sppcLoading.hide();
+    }
+
+    public showOnlyParent(dataItem: DetailAccountViewModel, index: number): boolean {
+        return dataItem.childCount > 0;
+    }
+
+    public checkShow(dataItem: DetailAccountViewModel) {
+        return dataItem != undefined && dataItem.childCount != undefined && dataItem.childCount > 0;
     }
 
 }

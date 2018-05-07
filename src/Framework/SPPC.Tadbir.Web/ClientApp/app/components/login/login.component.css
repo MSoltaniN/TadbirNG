@@ -29,3 +29,11 @@
     width: 30px;    
     cursor: pointer;
 }
+
+.chkRememberMe-right {
+    margin-right: 10px;
+}
+
+.chkRememberMe-left {
+    margin-left: 10px;
+}
