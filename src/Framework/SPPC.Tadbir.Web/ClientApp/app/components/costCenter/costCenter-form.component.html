@@ -1,0 +1,62 @@
+﻿<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              (close)="closeForm()" [minWidth]="250" [width]="450">
+    <kendo-dialog-titlebar>
+        {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
+    </kendo-dialog-titlebar>
+
+    <div *ngIf="errorMessage != ''">
+        <div class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+    </div>
+
+    <form novalidate [formGroup]="editForm">
+        <div class="form-group">
+            <label for="name" class="control-label">{{ 'CostCenter.Name' | translate }}</label>
+
+            <input type="text" class="k-textbox" formControlName="name" />
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
+                <span *ngIf="editForm.controls.name.errors?.required">{{ 'CostCenterValidation.Name' | translate }}</span>
+                <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'CostCenterValidation.NameMaxLength' | translate }}</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="code" class="control-label">{{ 'CostCenter.Code' | translate }}</label>
+
+            <input type="text" class="k-textbox" formControlName="code" />
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
+                <span *ngIf="editForm.controls.code.errors?.required">{{ 'CostCenterValidation.Code' | translate }}</span>
+                <span *ngIf="editForm.controls.code.errors?.maxlength">{{ 'CostCenterValidation.CodeMaxLength' | translate }}</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="fullCode" class="control-label">{{ 'CostCenter.FullCode' | translate }}</label>
+
+            <input type="text" class="k-textbox" formControlName="fullCode" />
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fullCode.valid || editForm.controls.fullCode.pristine">
+                <span *ngIf="editForm.controls.fullCode.errors?.required">{{ 'CostCenterValidation.FullCode' | translate }}</span>
+                <span *ngIf="editForm.controls.fullCode.errors?.maxlength">{{ 'CostCenterValidation.FullCodeMaxLength' | translate }}</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="description" class="control-label">{{ 'CostCenter.Description' | translate }}</label>
+
+            <textarea class="k-textarea" formControlName="description"></textarea>
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+                {{ 'CostCenterValidation.DescriptionLenght' | translate }}
+            </div>
+        </div>
+    </form>
+
+    <kendo-dialog-actions>
+        <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+        <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

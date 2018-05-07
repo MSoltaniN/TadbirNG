@@ -12,3 +12,5 @@ export * from './role';
 
 export * from './detailAccount';
 
+export * from './CostCenter';
+

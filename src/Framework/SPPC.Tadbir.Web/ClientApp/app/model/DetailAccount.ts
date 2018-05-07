@@ -7,6 +7,7 @@ export interface DetailAccountViewModel {
     level: number;
     description?: string;
     parentId?: number;
+    childCount: number;
     fiscalPeriodId: number;
     branchId: number;
 }

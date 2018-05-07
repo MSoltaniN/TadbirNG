@@ -11,6 +11,7 @@
       "Users": "Users",
       "Roles": "Roles",
       "DetailAccount": "Detail Account",
+      "CostCenter": "Cost Center",
       "ChangePassword": "Change Password",
       "Exit": "Exit"
     }
@@ -32,7 +33,7 @@
     "Cancel": "Cancel",
     "Yes": "Yes",
     "No": "No",
-    "New": "New Account",
+    "New": "New",
     "Edit": "Edit",
     "Delete": "Delete",
     "GroupDelete": "Delete Group"
@@ -44,7 +45,8 @@
     "User": "User",
     "Role": "Role",
     "Password": "Password",
-    "DetailAccount": "Detail Account"
+    "DetailAccount": "Detail Account",
+    "CostCenter": "Cost Center"
   },
   "Account": {
     "New": "New Account",
@@ -186,8 +188,25 @@
     "Code": "code is required",
     "CodeMaxLength": "Code can be max 512 characters long",
     "FullCode": "full code is required",
-    "FullCodeMaxLength": "Full code can be max 512 characters long",
-    "Level": "level is required"
+    "FullCodeMaxLength": "Full code can be max 512 characters long"
+  },
+  "CostCenter": {
+    "New": "New Cost Center",
+    "Name": "Name",
+    "Code": "Code",
+    "FullCode": "Full Code",
+    "Level": "Level",
+    "Description": "Description",
+    "Delete": "Delete Cost Center"
+  },
+  "CostCenterValidation": {
+    "Name": "name is required",
+    "NameMaxLength": "Name can be max 512 characters long",
+    "DescriptionLenght": "Description can be max 512 characters long",
+    "Code": "code is required",
+    "CodeMaxLength": "Code can be max 512 characters long",
+    "FullCode": "full code is required",
+    "FullCodeMaxLength": "Full code can be max 512 characters long"
   },
   "Fiscal": {
     "FiscalPeriod": "Fiscal Period"
