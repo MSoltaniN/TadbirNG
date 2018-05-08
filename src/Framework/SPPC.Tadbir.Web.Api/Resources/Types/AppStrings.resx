@@ -141,11 +141,17 @@
   <data name="CannotUseNonLeafItem" xml:space="preserve">
     <value>{0} {1} دارای زیرمجموعه بوده و نمی توان در اسناد عملیاتی از آن استفاده کرد.</value>
   </data>
+  <data name="Code" xml:space="preserve">
+    <value>کد</value>
+  </data>
   <data name="CostCenter" xml:space="preserve">
     <value>مرکز هزینه</value>
   </data>
   <data name="DebitAndCreditNotAllowed" xml:space="preserve">
     <value>وارد کردن همزمان مبالغ بدهکار و بستانکار در آرتیکل نادرست است.</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>شرح</value>
   </data>
   <data name="DetailAccount" xml:space="preserve">
     <value>تفصیلی شناور</value>
@@ -155,6 +161,12 @@
   </data>
   <data name="DuplicateFieldValue" xml:space="preserve">
     <value>{0} تکراری است.</value>
+  </data>
+  <data name="FieldIsRequired" xml:space="preserve">
+    <value>وارد کردن {0} اجباری است.</value>
+  </data>
+  <data name="FullCode" xml:space="preserve">
+    <value>کد کامل</value>
   </data>
   <data name="GroupAction" xml:space="preserve">
     <value>اقدام گروهی</value>
@@ -177,6 +189,9 @@
   <data name="MissingNewAndRepeatPasswords" xml:space="preserve">
     <value>رمز ورود جدید یا تکرار آن وارد نشده است.</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>نام</value>
+  </data>
   <data name="NewAndRepeatPasswordsDontMatch" xml:space="preserve">
     <value>رمز ورود جدید و تکرار آن متفاوت هستند.</value>
   </data>
@@ -194,6 +209,12 @@
   </data>
   <data name="Role" xml:space="preserve">
     <value>نقش</value>
+  </data>
+  <data name="TextFieldHasRange" xml:space="preserve">
+    <value>طول {0} باید بین {1} و {2} حرف باشد.</value>
+  </data>
+  <data name="TextFieldIsTooLong" xml:space="preserve">
+    <value>{0} می تواند حداکثر {1} حرف داشته باشد.</value>
   </data>
   <data name="User" xml:space="preserve">
     <value>کاربر</value>

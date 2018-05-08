@@ -141,11 +141,17 @@
   <data name="CannotUseNonLeafItem" xml:space="preserve">
     <value>The {0} {1} has one or more subitems and cannot be used in operational vouchers.</value>
   </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
   <data name="CostCenter" xml:space="preserve">
     <value>Cost center</value>
   </data>
   <data name="DebitAndCreditNotAllowed" xml:space="preserve">
     <value>Entering values for both Debit and Credit is not allowed.</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
   </data>
   <data name="DetailAccount" xml:space="preserve">
     <value>Detail account</value>
@@ -155,6 +161,12 @@
   </data>
   <data name="DuplicateFieldValue" xml:space="preserve">
     <value>{0} is duplicate.</value>
+  </data>
+  <data name="FieldIsRequired" xml:space="preserve">
+    <value>{0} is required.</value>
+  </data>
+  <data name="FullCode" xml:space="preserve">
+    <value>Full code</value>
   </data>
   <data name="GroupAction" xml:space="preserve">
     <value>group action</value>
@@ -177,6 +189,9 @@
   <data name="MissingNewAndRepeatPasswords" xml:space="preserve">
     <value>New password and/or repeat password are missing.</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="NewAndRepeatPasswordsDontMatch" xml:space="preserve">
     <value>New password and repeat password do not match.</value>
   </data>
@@ -194,6 +209,12 @@
   </data>
   <data name="Role" xml:space="preserve">
     <value>Role</value>
+  </data>
+  <data name="TextFieldHasRange" xml:space="preserve">
+    <value>{0} must have between {1} and {2} characters.</value>
+  </data>
+  <data name="TextFieldIsTooLong" xml:space="preserve">
+    <value>{0} can have a maximum of {1} characters.</value>
   </data>
   <data name="User" xml:space="preserve">
     <value>User</value>
