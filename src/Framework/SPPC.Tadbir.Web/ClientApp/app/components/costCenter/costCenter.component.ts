@@ -285,7 +285,6 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
-            debugger;
             //set parentid for childs accounts
             if (this.parentId) {
                 costCenterViewModel.parentId = this.parentId;

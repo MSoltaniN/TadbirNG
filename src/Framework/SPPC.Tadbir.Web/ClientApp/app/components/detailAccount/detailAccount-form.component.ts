@@ -1,6 +1,5 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { DetailAccountService } from '../../service/index';
 import { DetailAccountViewModel } from '../../model/index';
 
 import { Property } from "../../class/metadata/property"
@@ -77,8 +76,7 @@ export class DetailAccountFormComponent extends DefaultComponent {
     }
     //Events
 
-    constructor(private detailAccountService: DetailAccountService,
-        public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
 
         super(toastrService, translate, renderer, metadata, Entities.DetailAccount, Metadatas.DetailAccount);
     }

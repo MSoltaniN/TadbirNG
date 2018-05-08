@@ -12,6 +12,7 @@
       "Roles": "نقش ها",
       "DetailAccount": "تفصیلی شناور",
       "CostCenter": "مرکز هزینه",
+      "Project": "پروژه",
       "ChangePassword": "تغییر کلمه عبور",
       "Exit": "خروج"
     }
@@ -49,7 +50,8 @@
     "Role": "نقش",
     "Password": "کلمه عبور",
     "DetailAccount": "تفصیلی شناور",
-    "CostCenter": "مرکز هزینه"
+    "CostCenter": "مرکز هزینه",
+    "Project": "پروژه"
   },
   "Account": {
     "Code": "کد حساب",
@@ -199,6 +201,24 @@
     "Delete": "حذف مرکز هزینه"
   },
   "CostCenterValidation": {
+    "Name": "نام اجباری می باشد",
+    "NameMaxLength": "نام حداکثر 512 کاراکتر میتواند داشته باشد",
+    "DescriptionLenght": "شرح حداکثر 512 کاراکتر میتواند داشته باشد",
+    "Code": "کد اجباری می باشد",
+    "CodeMaxLength": "کد حداکثر 16 کاراکتر میتواند داشته باشد",
+    "FullCode": "کد کامل اجباری می باشد",
+    "FullCodeMaxLength": "کد کامل حداکثر 256 کاراکتر میتواند داشته باشد"
+  },
+  "Project": {
+    "New": "پروژه جدید",
+    "Name": "نام",
+    "Code": "کد",
+    "FullCode": "کد کامل",
+    "Level": "سطح",
+    "Description": "شرح",
+    "Delete": "حذف پروژه"
+  },
+  "ProjectValidation": {
     "Name": "نام اجباری می باشد",
     "NameMaxLength": "نام حداکثر 512 کاراکتر میتواند داشته باشد",
     "DescriptionLenght": "شرح حداکثر 512 کاراکتر میتواند داشته باشد",

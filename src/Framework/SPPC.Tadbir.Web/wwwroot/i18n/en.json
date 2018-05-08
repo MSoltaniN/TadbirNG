@@ -12,6 +12,7 @@
       "Roles": "Roles",
       "DetailAccount": "Detail Account",
       "CostCenter": "Cost Center",
+      "Project": "Project",
       "ChangePassword": "Change Password",
       "Exit": "Exit"
     }
@@ -46,7 +47,8 @@
     "Role": "Role",
     "Password": "Password",
     "DetailAccount": "Detail Account",
-    "CostCenter": "Cost Center"
+    "CostCenter": "Cost Center",
+    "Project": "Project"
   },
   "Account": {
     "New": "New Account",
@@ -200,6 +202,24 @@
     "Delete": "Delete Cost Center"
   },
   "CostCenterValidation": {
+    "Name": "name is required",
+    "NameMaxLength": "Name can be max 512 characters long",
+    "DescriptionLenght": "Description can be max 512 characters long",
+    "Code": "code is required",
+    "CodeMaxLength": "Code can be max 512 characters long",
+    "FullCode": "full code is required",
+    "FullCodeMaxLength": "Full code can be max 512 characters long"
+  },
+  "Project": {
+    "New": "New Project",
+    "Name": "Name",
+    "Code": "Code",
+    "FullCode": "Full Code",
+    "Level": "Level",
+    "Description": "Description",
+    "Delete": "Delete Project"
+  },
+  "ProjectValidation": {
     "Name": "name is required",
     "NameMaxLength": "Name can be max 512 characters long",
     "DescriptionLenght": "Description can be max 512 characters long",
