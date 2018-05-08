@@ -270,6 +270,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\app\directive\grid\" />
+    <Folder Include="ClientApp\app\service\api\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
