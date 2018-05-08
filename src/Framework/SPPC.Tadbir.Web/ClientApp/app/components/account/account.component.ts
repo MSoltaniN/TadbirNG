@@ -42,8 +42,8 @@ export function getLayoutModule(layout: Layout) {
 
 
 @Component({
-    selector: 'account2',
-    templateUrl: './account2.component.html',
+    selector: 'account',
+    templateUrl: './account.component.html',
     providers: [{
         provide: RTL,
         useFactory: getLayoutModule,

@@ -8,6 +8,7 @@ import { Headers, RequestOptions, BaseRequestOptions, Http } from '@angular/http
 import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationStrategy, DatePipe } from '@angular/common';
 // third party module to display toast 
 import { ToastrModule } from 'ngx-toastr';
+import { TreeViewModule } from '@progress/kendo-angular-treeview';
 
 //import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
@@ -79,7 +80,8 @@ import { SppcDatePipe } from "./pipes/index"
 import { MetaDataService } from './service/metadata/metadata.service';
 import { BaseService } from './class/base.service';
 import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading/index';
-import { NestedAccountComponent } from './components/account2/nested-account.component';
+
+
 
 
 @NgModule({
@@ -88,8 +90,7 @@ import { NestedAccountComponent } from './components/account2/nested-account.com
         SppcLoadingComponent,
         NavMenuComponent,
         Account2Component,
-        AccountFormComponent,
-        NestedAccountComponent,
+        AccountFormComponent,        
         LoginComponent,
         LoginCompleteComponent,
         LoginContainerComponent,
@@ -116,7 +117,7 @@ import { NestedAccountComponent } from './components/account2/nested-account.com
         DetailAccountComponent,
         DetailAccountFormComponent,
         ConfirmEqualValidator,
-        SppcDatePipe
+        SppcDatePipe        
 
     ],
     providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
@@ -152,6 +153,7 @@ import { NestedAccountComponent } from './components/account2/nested-account.com
         BrowserModule,
         DpDatePickerModule,
         TextMaskModule,
+        TreeViewModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'login', pathMatch: 'full' },

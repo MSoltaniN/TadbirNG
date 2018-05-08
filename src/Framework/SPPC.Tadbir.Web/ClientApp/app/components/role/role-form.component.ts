@@ -16,6 +16,7 @@ import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
+import { TreeNode, TreeNodeInfo } from '../../model/role';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -42,13 +43,10 @@ export function getLayoutModule(layout: Layout) {
 
 export class RoleFormComponent extends DefaultComponent {
 
-    ////create a form controls
-    //private editForm = new FormGroup({
-    //    id: new FormControl(),
-    //    name: new FormControl("", [Validators.required, Validators.maxLength(64)]),
-    //    description: new FormControl("", [Validators.maxLength(512)]),
-    //});
+   
 
+    public treeData: TreeNodeInfo[] = new Array<TreeNodeInfo>();
+    
     //create properties
     gridPermissionsData: any;
     public selectedRows: number[] = [];
@@ -64,8 +62,33 @@ export class RoleFormComponent extends DefaultComponent {
         this.active = role !== undefined || this.isNew;
     }
 
-    @Input() public set permissionModel(permission: Permission) {
+    @Input() public set permissionModel(permission: any) {
+        
+        if (permission != undefined) {
+            var groupId = 0;
+            this.treeData = new Array<TreeNodeInfo>();
 
+            for (let permissionItem of permission) {
+                //var result = this.treeData.filter(f => f.id == permissionItem.groupId);
+                //if (result==undefined || result.length == 0)
+                
+                if (groupId != permissionItem.groupId) {
+                    this.treeData.push(new TreeNodeInfo(permissionItem.groupId, undefined, permissionItem.groupName))
+                    groupId = permissionItem.groupId;
+
+                }
+
+                if (groupId == permissionItem.groupId)
+                    this.treeData.push(new TreeNodeInfo(parseInt(permissionItem.id.toString() + permissionItem.groupId.toString() + '00')
+                        , permissionItem.groupId, permissionItem.name))
+
+                
+
+            }
+
+           
+        }
+        
         this.gridPermissionsData = permission;
         this.showloadingMessage = !(permission != undefined);
 

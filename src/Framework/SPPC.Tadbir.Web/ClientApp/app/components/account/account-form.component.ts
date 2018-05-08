@@ -31,7 +31,7 @@ interface Item {
     styles: [
         "input[type=text] { width: 100%; }"
     ],
-    templateUrl: './account2-form.component.html',
+    templateUrl: './account-form.component.html',
     providers: [{
         provide: RTL,
         useFactory: getLayoutModule,

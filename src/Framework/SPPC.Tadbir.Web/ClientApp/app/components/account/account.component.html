@@ -58,7 +58,7 @@
             <ng-template kendoGridDetailTemplate let-dataItem
                          [kendoGridDetailTemplateShowIf]="showOnlyParent">
                 <div ng-if="dataItem.childCount > 0">
-                    <account2 [isChild]="true" [parent]="dataItem"></account2>
+                    <account [isChild]="true" [parent]="dataItem"></account>
                 </div>
             </ng-template>
             <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Account.code">
