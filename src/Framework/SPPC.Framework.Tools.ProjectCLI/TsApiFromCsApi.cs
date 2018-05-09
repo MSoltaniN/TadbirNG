@@ -78,7 +78,7 @@ string hint = GetFieldValue(_csType, String.Format("{0}Url", field));
             
             #line default
             #line hidden
-            this.Write("\r\n    public ");
+            this.Write("\r\n    public static ");
             
             #line 29 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsApiFromCsApi.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(field));
