@@ -18,6 +18,11 @@ namespace SPPC.Tadbir.ViewModel.Auth
         }
 
         /// <summary>
+        /// Gets or sets the unique identifier for this role
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets a <see cref="RoleViewModel"/> object containing the main role data.
         /// </summary>
         public RoleViewModel Role { get; set; }

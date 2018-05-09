@@ -511,6 +511,7 @@ namespace SPPC.Tadbir.Persistence
 
                 role = new RoleFullViewModel()
                 {
+                    Id = roleId,
                     Role = _mapper.Map<RoleViewModel>(existing)
                 };
                 Array.ForEach(enabledPermissions
