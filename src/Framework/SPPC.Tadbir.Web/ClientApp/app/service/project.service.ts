@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { ProjectViewModel } from '../model/index';
+import { Project } from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -15,7 +15,7 @@ import { BaseComponent } from "../class/base.component"
 import { ToastrService } from 'ngx-toastr';
 import { BaseService } from '../class/base.service';
 
-export class ProjectViewModelInfo implements ProjectViewModel {
+export class ProjectInfo implements Project {
     id: number = 0;
     code: string;
     fullCode: string;
@@ -71,7 +71,7 @@ export class ProjectService extends BaseService {
             .map(response => <any>(<Response>response));
     }
 
-    editProject(model: ProjectViewModel): Observable<string> {
+    editProject(model: Project): Observable<string> {
         var body = JSON.stringify(model);
 
         var url = String.Format(this._putModifiedProjectUrl, model.id);
@@ -81,7 +81,7 @@ export class ProjectService extends BaseService {
             .catch(this.handleError);
     }
 
-    insertProject(model: ProjectViewModel): Observable<string> {
+    insertProject(model: Project): Observable<string> {
         var body = JSON.stringify(model);
 
         return this.http.post(this._postNewProjectUrl, body, this.options)

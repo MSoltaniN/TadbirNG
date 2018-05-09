@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { CostCenterViewModel } from '../model/index';
+import { CostCenter } from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -15,7 +15,7 @@ import { BaseComponent } from "../class/base.component"
 import { ToastrService } from 'ngx-toastr';
 import { BaseService } from '../class/base.service';
 
-export class CostCenterViewModelInfo implements CostCenterViewModel {
+export class CostCenterInfo implements CostCenter {
     id: number = 0;
     code: string;
     fullCode: string;
@@ -71,7 +71,7 @@ export class CostCenterService extends BaseService {
             .map(response => <any>(<Response>response));
     }
 
-    editCostCenter(model: CostCenterViewModel): Observable<string> {
+    editCostCenter(model: CostCenter): Observable<string> {
         var body = JSON.stringify(model);
 
         var url = String.Format(this._putModifiedCostCenterUrl, model.id);
@@ -81,7 +81,7 @@ export class CostCenterService extends BaseService {
             .catch(this.handleError);
     }
 
-    insertCostCenter(model: CostCenterViewModel): Observable<string> {
+    insertCostCenter(model: CostCenter): Observable<string> {
         var body = JSON.stringify(model);
 
         return this.http.post(this._postNewCostCenterUrl, body, this.options)

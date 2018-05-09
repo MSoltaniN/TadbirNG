@@ -5,7 +5,7 @@ import { RoleService, RoleInfo } from '../../service/index';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy, State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 
-import { Role, RoleFullViewModel, Permission } from '../../model/index';
+import { Role, RoleFull, Permission } from '../../model/index';
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
 
@@ -79,7 +79,7 @@ export class RoleFormComponent extends DefaultComponent {
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
-    @Output() save: EventEmitter<RoleFullViewModel> = new EventEmitter();
+    @Output() save: EventEmitter<RoleFull> = new EventEmitter();
     //create properties
 
 
@@ -100,12 +100,12 @@ export class RoleFormComponent extends DefaultComponent {
             }
         }
 
-        var viewModel: RoleFullViewModel;
-        viewModel = {
+        var model: RoleFull;
+        model = {
             role: this.editForm.value,
             permissions: this.gridPermissionsData
         }
-        this.save.emit(viewModel);
+        this.save.emit(model);
         this.active = true;
         this.selectedRows = [];
     }

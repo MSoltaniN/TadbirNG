@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { VoucherLineViewModel } from '../model/index';
+import { VoucherLine } from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -11,17 +11,9 @@ import { HttpParams } from "@angular/common/http";
 import { Environment, MessageType } from "../enviroment";
 import { Context } from "../model/context";
 import { BaseService } from '../class/base.service';
-//import { FullAccountInfo } from './index';
 
-//export class TransactionLineInfo implements TransactionLine {
-//    constructor(public id: number = 0, public debit: number = 0, public credit: number = 0, public description?: string,
-//        public fiscalPeriodId: number = 0, public branchId: number = 0, public transactionId: number = 0, public currencyId: number = 0,
-//        public accountId: number = 0) {
 
-//    }
-//}
-
-export class VoucherLineViewModelInfo implements VoucherLineViewModel {
+export class VoucherLineInfo implements VoucherLine {
     id: number = 0;
     debit: number = 0;
     credit: number = 0;
@@ -125,7 +117,7 @@ export class VoucherLineService extends BaseService {
             .map(response => <any>(<Response>response).json());;
     }
 
-    editVoucherLine(voucherLine: VoucherLineViewModel): Observable<string> {
+    editVoucherLine(voucherLine: VoucherLine): Observable<string> {
         var body = JSON.stringify(voucherLine);
 
         var url = String.Format(this._putModifiedVoucherLineUrl, voucherLine.id);
@@ -135,7 +127,7 @@ export class VoucherLineService extends BaseService {
             .catch(this.handleError);
     }
 
-    insertVoucherLine(voucherId: number, voucherLine: VoucherLineViewModel): Observable<string> {
+    insertVoucherLine(voucherId: number, voucherLine: VoucherLine): Observable<string> {
         var body = JSON.stringify(voucherLine);
 
         var url = String.Format(this._postNewVoucherLineUrl, voucherId);

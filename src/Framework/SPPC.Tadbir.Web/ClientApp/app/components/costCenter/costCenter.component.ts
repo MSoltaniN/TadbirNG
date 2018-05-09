@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { CostCenterService, CostCenterViewModelInfo } from '../../service/index';
-import { CostCenterViewModel } from '../../model/index';
+import { CostCenterService, CostCenterInfo } from '../../service/index';
+import { CostCenter } from '../../model/index';
 import { ToastrService } from 'ngx-toastr'; /** add this component for message in client side */
 
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
@@ -43,7 +43,7 @@ export function getLayoutModule(layout: Layout) {
 
 export class CostCenterComponent extends DefaultComponent implements OnInit {
 
-    @Input() public parent: CostCenterViewModel;
+    @Input() public parent: CostCenter;
     @Input() public isChild: boolean = false;
 
     public parentId?: number = undefined;
@@ -64,10 +64,10 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     showloadingMessage: boolean = true;
 
     newCostCenter: boolean;
-    costCenter: CostCenterViewModel = new CostCenterViewModelInfo;
+    costCenter: CostCenter = new CostCenterInfo;
 
 
-    editDataItem?: CostCenterViewModel = undefined;
+    editDataItem?: CostCenter = undefined;
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
@@ -118,7 +118,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     }
 
 
-    reloadGrid(insertedCostCenter?: CostCenterViewModel) {
+    reloadGrid(insertedCostCenter?: CostCenter) {
 
         this.sppcLoading.show();
         
@@ -146,7 +146,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
             var totalCount = 0;
 
             if (insertedCostCenter) {
-                var rows = (resData as Array<CostCenterViewModel>);
+                var rows = (resData as Array<CostCenter>);
                 var index = rows.findIndex(p => p.id == insertedCostCenter.id);
                 if (index >= 0) {
                     resData.splice(index, 1);
@@ -256,7 +256,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
 
     public addNew(parentCostCenterId?: number) {
         this.isNew = true;
-        this.editDataItem = new CostCenterViewModelInfo();
+        this.editDataItem = new CostCenterInfo();
 
         if (parentCostCenterId)
             this.parentId = parentCostCenterId;
@@ -264,22 +264,22 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     } 
 
-    public saveHandler(costCenterViewModel: CostCenterViewModel) {
+    public saveHandler(costCenter: CostCenter) {
 
-        costCenterViewModel.branchId = this.BranchId;
-        costCenterViewModel.fiscalPeriodId = this.FiscalPeriodId;
+        costCenter.branchId = this.BranchId;
+        costCenter.fiscalPeriodId = this.FiscalPeriodId;
 
         this.sppcLoading.show();
 
         if (!this.isNew) {
             this.isNew = false;
-            this.costCenterService.editCostCenter(costCenterViewModel)
+            this.costCenterService.editCostCenter(costCenter)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
                 }, (error => {
-                    this.editDataItem = costCenterViewModel;
+                    this.editDataItem = costCenter;
                     this.errorMessage = error;
 
                 }));
@@ -287,14 +287,14 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         else {
             //set parentid for childs accounts
             if (this.parentId) {
-                costCenterViewModel.parentId = this.parentId;
+                costCenter.parentId = this.parentId;
                 this.parentId = undefined;
             }
             else if (this.parent)
-                costCenterViewModel.parentId = this.parent.id;
+                costCenter.parentId = this.parent.id;
             //set parentid for childs accounts
 
-            this.costCenterService.insertCostCenter(costCenterViewModel)
+            this.costCenterService.insertCostCenter(costCenter)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -312,11 +312,11 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         this.sppcLoading.hide();
     }
 
-    public showOnlyParent(dataItem: CostCenterViewModel, index: number): boolean {
+    public showOnlyParent(dataItem: CostCenter, index: number): boolean {
         return dataItem.childCount > 0;
     }
 
-    public checkShow(dataItem: CostCenterViewModel) {
+    public checkShow(dataItem: CostCenter) {
         return dataItem != undefined && dataItem.childCount != undefined && dataItem.childCount > 0;
     }
 

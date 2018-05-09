@@ -1,6 +1,6 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { CostCenterViewModel } from '../../model/index';
+import { CostCenter } from '../../model/index';
 
 import { Property } from "../../class/metadata/property"
 import { TranslateService } from "ng2-translate";
@@ -47,14 +47,14 @@ export class CostCenterFormComponent extends DefaultComponent {
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string = '';
 
-    @Input() public set model(costCenterViewModel: CostCenterViewModel) {
-        this.editForm.reset(costCenterViewModel);
+    @Input() public set model(costCenter: CostCenter) {
+        this.editForm.reset(costCenter);
 
-        this.active = costCenterViewModel !== undefined || this.isNew;
+        this.active = costCenter !== undefined || this.isNew;
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
-    @Output() save: EventEmitter<CostCenterViewModel> = new EventEmitter();
+    @Output() save: EventEmitter<CostCenter> = new EventEmitter();
     //create properties
 
     //Events

@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { DetailAccountViewModel } from '../model/index';
+import { DetailAccount } from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -15,7 +15,7 @@ import { BaseComponent } from "../class/base.component"
 import { ToastrService } from 'ngx-toastr';
 import { BaseService } from '../class/base.service';
 
-export class DetailAccountViewModelInfo implements DetailAccountViewModel {
+export class DetailAccountInfo implements DetailAccount {
     id: number = 0;
     code: string;
     fullCode: string;
@@ -71,18 +71,18 @@ export class DetailAccountService extends BaseService {
             .map(response => <any>(<Response>response));
     }
 
-    editDetailAccount(detailAccountViewModel: DetailAccountViewModel): Observable<string> {
-        var body = JSON.stringify(detailAccountViewModel);
+    editDetailAccount(detailAccount: DetailAccount): Observable<string> {
+        var body = JSON.stringify(detailAccount);
 
-        var url = String.Format(this._putModifiedDetailAccountUrl, detailAccountViewModel.id);
+        var url = String.Format(this._putModifiedDetailAccountUrl, detailAccount.id);
 
         return this.http.put(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
-    insertDetailAccount(detailAccountViewModel: DetailAccountViewModel): Observable<string> {
-        var body = JSON.stringify(detailAccountViewModel);
+    insertDetailAccount(detailAccount: DetailAccount): Observable<string> {
+        var body = JSON.stringify(detailAccount);
 
         return this.http.post(this._postNewDetailAccountUrl, body, this.options)
             .map(res => res)

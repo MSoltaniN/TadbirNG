@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { User, UserProfileViewModel } from '../model/index';
+import { User, UserProfile } from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -17,15 +17,16 @@ import { BaseService } from '../class/base.service';
 
 
 export class UserInfo implements User {
-
-    constructor(public id: number = 0, public userName: string = "", public personFirstName: string = "", public personLastName: string = "", public password: string = "",
-        public isEnabled: boolean = false, public lastLoginDate: Date = new Date()) {
-
-    }
+    personFirstName: string;
+    personLastName: string;
+    id: number=0;
+    userName: string;
+    password: string;
+    lastLoginDate?: Date | undefined;
+    isEnabled: boolean = false;
 }
 
-
-export class UserProfileViewModelInfo implements UserProfileViewModel {
+export class UserProfileInfo implements UserProfile {
     userName: string;
     oldPassword: string;
     newPassword: string;
@@ -102,10 +103,10 @@ export class UserService extends BaseService {
             .map(response => <any>(<Response>response).json());
     }
 
-    changePassword(userProfileViewModel: UserProfileViewModel): Observable<string> {
-        var body = JSON.stringify(userProfileViewModel);
+    changePassword(userProfile: UserProfile): Observable<string> {
+        var body = JSON.stringify(userProfile);
         
-        var url = String.Format(this._putChangePassword, userProfileViewModel.userName);
+        var url = String.Format(this._putChangePassword, userProfile.userName);
 
         return this.http.put(url, body, this.options)
             .map(res => res)
