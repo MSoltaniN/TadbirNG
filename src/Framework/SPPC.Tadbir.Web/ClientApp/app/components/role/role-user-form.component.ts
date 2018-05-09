@@ -1,10 +1,10 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
-import { RoleUsersViewModelInfo } from '../../service/index';
+import { RoleUsersInfo } from '../../service/index';
 
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy, State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 
-import { RoleUsersViewModel } from '../../model/index';
+import { RoleUsers } from '../../model/index';
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
 
@@ -46,18 +46,18 @@ export class RoleUserFormComponent extends DefaultComponent {
     public gridData: any;
     public selectedRows: number[] = [];
     public showloadingMessage: boolean = true;
-    public model: RoleUsersViewModel;
+    public model: RoleUsers;
     public roleName: string;
 
     @Input() public usersList: boolean = false;
     @Input() public errorMessage: string = '';
 
-    @Input() public set roleUserViewModel(roleUserViewModel: RoleUsersViewModel) {
-        this.model = roleUserViewModel;
+    @Input() public set roleUser(roleUser: RoleUsers) {
+        this.model = roleUser;
         this.selectedRows = [];
-        if (roleUserViewModel != undefined) {
-            this.gridData = roleUserViewModel.users;
-            this.roleName = roleUserViewModel.name;
+        if (roleUser != undefined) {
+            this.gridData = roleUser.users;
+            this.roleName = roleUser.name;
 
             for (let userItem of this.gridData) {
                 if (userItem.hasRole) {
@@ -68,7 +68,7 @@ export class RoleUserFormComponent extends DefaultComponent {
     }
 
     @Output() cancelRoleUsers: EventEmitter<any> = new EventEmitter();
-    @Output() saveRoleUsers: EventEmitter<RoleUsersViewModel> = new EventEmitter();
+    @Output() saveRoleUsers: EventEmitter<RoleUsers> = new EventEmitter();
     ////create properties
 
 

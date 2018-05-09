@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Voucher } from '../model/index';
+import { Voucher, DocumentAction } from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -17,11 +17,33 @@ import { BaseService } from '../class/base.service';
 
 
 export class VoucherInfo implements Voucher {
+    fiscalPeriodId: number = 0;
+    branchId: number = 0;
+    workItemId: number;
+    workItemTargetId: number;
+    workItemAction: string;
+    debitSum: number;
+    creditSum: number;
+    document: {
+        typeId: number;
+        statusId: number;
+        statusName: string;
+        actions: Array<DocumentAction>;
+        id: number;
+        entityNo: string;
+        no: string;
+        operationalStatus: string;
+    };
+    id: number = 0;
+    no: string;
+    date: Date = new Date();
+    description?: string | undefined;
 
-    constructor(public id: number = 0, public description: string = "", public fiscalPeriodId: number = 0, public branchId: number = 0,
-        public no: string = "", public date: Date = new Date()) {
 
-    }
+    //constructor(public id: number = 0, public description: string = "", public fiscalPeriodId: number = 0, public branchId: number = 0,
+    //    public no: string = "", public date: Date = new Date()) {
+
+    //}
 
 }
 
@@ -104,7 +126,7 @@ export class VoucherService extends BaseService {
 
     editVoucher(voucher: Voucher): Observable<string> {
         var body = JSON.stringify(voucher);
-        
+
         var url = String.Format(this._postModifiedVouchersUrl, voucher.id);
 
         return this.http.put(url, body, this.options)
@@ -113,7 +135,7 @@ export class VoucherService extends BaseService {
     }
 
     insertVoucher(voucher: Voucher): Observable<string> {
-        var body = JSON.stringify(voucher);  
+        var body = JSON.stringify(voucher);
 
         return this.http.post(this._postNewVouchersUrl, body, this.options)
             .map(res => res)

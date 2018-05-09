@@ -1,6 +1,6 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { DetailAccountViewModel } from '../../model/index';
+import { DetailAccount } from '../../model/index';
 
 import { Property } from "../../class/metadata/property"
 import { TranslateService } from "ng2-translate";
@@ -47,14 +47,14 @@ export class DetailAccountFormComponent extends DefaultComponent {
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string = '';
 
-    @Input() public set model(detailAccountViewModel: DetailAccountViewModel) {
-        this.editForm.reset(detailAccountViewModel);
+    @Input() public set model(detailAccount: DetailAccount) {
+        this.editForm.reset(detailAccount);
 
-        this.active = detailAccountViewModel !== undefined || this.isNew;
+        this.active = detailAccount !== undefined || this.isNew;
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
-    @Output() save: EventEmitter<DetailAccountViewModel> = new EventEmitter();
+    @Output() save: EventEmitter<DetailAccount> = new EventEmitter();
     //create properties
 
     //Events

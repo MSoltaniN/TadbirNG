@@ -83,11 +83,9 @@
     <None Remove="ClientApp\app\directive\Validator\confirm-equal-validator.ts" />
     <None Remove="ClientApp\app\enum\KeyCode.ts" />
     <None Remove="ClientApp\app\model\account.ts" />
-    <None Remove="ClientApp\app\model\CostCenter.ts" />
     <None Remove="ClientApp\app\model\DetailAccount.ts" />
     <None Remove="ClientApp\app\model\fullaccount.ts" />
     <None Remove="ClientApp\app\model\index.ts" />
-    <None Remove="ClientApp\app\model\Project.ts" />
     <None Remove="ClientApp\app\model\role.ts" />
     <None Remove="ClientApp\app\model\user.ts" />
     <None Remove="ClientApp\app\model\voucher.ts" />
@@ -235,9 +233,7 @@
     <TypeScriptCompile Include="ClientApp\app\directive\Validator\confirm-equal-validator.ts" />
     <TypeScriptCompile Include="ClientApp\app\enum\KeyCode.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
-    <TypeScriptCompile Include="ClientApp\app\model\Project.ts" />
-    <TypeScriptCompile Include="ClientApp\app\model\CostCenter.ts" />
-    <TypeScriptCompile Include="ClientApp\app\model\DetailAccount.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\detailAccount.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\fullaccount.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\voucher.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\index.ts" />
@@ -270,7 +266,6 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\app\directive\grid\" />
-    <Folder Include="ClientApp\app\service\api\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

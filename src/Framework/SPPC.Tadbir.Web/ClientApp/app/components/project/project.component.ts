@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { ProjectService, ProjectViewModelInfo } from '../../service/index';
-import { ProjectViewModel } from '../../model/index';
+import { ProjectService, ProjectInfo } from '../../service/index';
+import { Project } from '../../model/index';
 import { ToastrService } from 'ngx-toastr'; 
 
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
@@ -43,7 +43,7 @@ export function getLayoutModule(layout: Layout) {
 
 export class ProjectComponent extends DefaultComponent implements OnInit {
 
-    @Input() public parent: ProjectViewModel;
+    @Input() public parent: Project;
     @Input() public isChild: boolean = false;
 
     public parentId?: number = undefined;
@@ -64,10 +64,10 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     showloadingMessage: boolean = true;
 
     newProject: boolean;
-    project: ProjectViewModel = new ProjectViewModelInfo;
+    project: Project = new ProjectInfo;
 
 
-    editDataItem?: ProjectViewModel = undefined;
+    editDataItem?: Project = undefined;
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
@@ -118,7 +118,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     }
 
 
-    reloadGrid(insertedProject?: ProjectViewModel) {
+    reloadGrid(insertedProject?: Project) {
 
         this.sppcLoading.show();
 
@@ -146,7 +146,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
             var totalCount = 0;
 
             if (insertedProject) {
-                var rows = (resData as Array<ProjectViewModel>);
+                var rows = (resData as Array<Project>);
                 var index = rows.findIndex(p => p.id == insertedProject.id);
                 if (index >= 0) {
                     resData.splice(index, 1);
@@ -254,7 +254,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
 
     public addNew(parentProjectId?: number) {
         this.isNew = true;
-        this.editDataItem = new ProjectViewModelInfo();
+        this.editDataItem = new ProjectInfo();
 
         if (parentProjectId)
             this.parentId = parentProjectId;
@@ -262,22 +262,22 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public saveHandler(projectViewModel: ProjectViewModel) {
+    public saveHandler(project: Project) {
 
-        projectViewModel.branchId = this.BranchId;
-        projectViewModel.fiscalPeriodId = this.FiscalPeriodId;
+        project.branchId = this.BranchId;
+        project.fiscalPeriodId = this.FiscalPeriodId;
 
         this.sppcLoading.show();
 
         if (!this.isNew) {
             this.isNew = false;
-            this.projectService.editProject(projectViewModel)
+            this.projectService.editProject(project)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
                 }, (error => {
-                    this.editDataItem = projectViewModel;
+                    this.editDataItem = project;
                     this.errorMessage = error;
 
                 }));
@@ -285,14 +285,14 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
         else {
             //set parentid for childs accounts
             if (this.parentId) {
-                projectViewModel.parentId = this.parentId;
+                project.parentId = this.parentId;
                 this.parentId = undefined;
             }
             else if (this.parent)
-                projectViewModel.parentId = this.parent.id;
+                project.parentId = this.parent.id;
             //set parentid for childs accounts
 
-            this.projectService.insertProject(projectViewModel)
+            this.projectService.insertProject(project)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -310,11 +310,11 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
         this.sppcLoading.hide();
     }
 
-    public showOnlyParent(dataItem: ProjectViewModel, index: number): boolean {
+    public showOnlyParent(dataItem: Project, index: number): boolean {
         return dataItem.childCount > 0;
     }
 
-    public checkShow(dataItem: ProjectViewModel) {
+    public checkShow(dataItem: Project) {
         return dataItem != undefined && dataItem.childCount != undefined && dataItem.childCount > 0;
     }
 

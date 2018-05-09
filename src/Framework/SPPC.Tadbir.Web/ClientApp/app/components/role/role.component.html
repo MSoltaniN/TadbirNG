@@ -82,16 +82,16 @@
                              (save)="saveHandler($event)"
                              (cancel)="cancelHandler()">
         </role-form-component>
-        <role-user-form-component [usersList]="usersList" [roleUserViewModel]="roleUsersData" [errorMessage]="errorMessage"
+        <role-user-form-component [usersList]="usersList" [roleUser]="roleUsersData" [errorMessage]="errorMessage"
                                   (saveRoleUsers)="saveRoleUsersHandler($event)"
                                   (cancelRoleUsers)="cancelRoleUsersHandler()">
 
         </role-user-form-component>
-        <role-branch-form-component [roleBranches]="roleBranches" [roleBranchesViewModel]="roleBranchesData" [errorMessage]="errorMessage"
+        <role-branch-form-component [inputRoleBranches]="roleBranches" [roleBranches]="roleBranchesData" [errorMessage]="errorMessage"
                                     (saveRoleBranches)="saveRoleBranchesHandler($event)"
                                     (cancelRoleBranches)="cancelRoleBranchesHandler()">
         </role-branch-form-component>
-        <role-detail-form-component [roleDetail]="roleDetail" [roleDetailsViewModel]="roleDetailData" [errorMessage]="errorMessage"
+        <role-detail-form-component [roleDetail]="roleDetail" [roleDetails]="roleDetailData" [errorMessage]="errorMessage"
                                     (cancelRoleDetail)="cancelRoleDetailHandler()">
         </role-detail-form-component>
     </div>

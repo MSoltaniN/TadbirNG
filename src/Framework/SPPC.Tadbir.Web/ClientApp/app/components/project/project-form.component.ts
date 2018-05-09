@@ -1,6 +1,6 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { ProjectViewModel } from '../../model/index';
+import { Project } from '../../model/index';
 
 import { Property } from "../../class/metadata/property"
 import { TranslateService } from "ng2-translate";
@@ -47,14 +47,14 @@ export class ProjectFormComponent extends DefaultComponent {
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string = '';
 
-    @Input() public set model(projectViewModel: ProjectViewModel) {
-        this.editForm.reset(projectViewModel);
+    @Input() public set model(project: Project) {
+        this.editForm.reset(project);
 
-        this.active = projectViewModel !== undefined || this.isNew;
+        this.active = project !== undefined || this.isNew;
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
-    @Output() save: EventEmitter<ProjectViewModel> = new EventEmitter();
+    @Output() save: EventEmitter<Project> = new EventEmitter();
     //create properties
 
     //Events
