@@ -62,8 +62,15 @@ export class RoleFormComponent extends DefaultComponent {
         this.active = role !== undefined || this.isNew;
     }
 
+    public checkedKeys: string[] = [];
+
+
+
     @Input() public set permissionModel(permission: any) {
-        
+
+        var levelIndex0: number = -1;
+        var levelIndex1: number = 0;
+
         if (permission != undefined) {
             var groupId = 0;
             this.treeData = new Array<TreeNodeInfo>();
@@ -74,24 +81,29 @@ export class RoleFormComponent extends DefaultComponent {
                 this.treeData.push(new TreeNodeInfo(-1, undefined, "Accounting"));
 
             for (let permissionItem of permission) {
-                //var result = this.treeData.filter(f => f.id == permissionItem.groupId);
-                //if (result==undefined || result.length == 0)
+
                 
                 if (groupId != permissionItem.groupId) {
                     this.treeData.push(new TreeNodeInfo(permissionItem.groupId, -1, permissionItem.groupName))
                     groupId = permissionItem.groupId;
 
+                    levelIndex0++;
+                    levelIndex1 = -1;
                 }
 
-                if (groupId == permissionItem.groupId)
+                if (groupId == permissionItem.groupId) {
                     this.treeData.push(new TreeNodeInfo(parseInt(permissionItem.id.toString() + permissionItem.groupId.toString() + '00')
                         , permissionItem.groupId, permissionItem.name))
 
-                
+                    levelIndex1++;
+                }
+
+                if (permissionItem.isEnabled)
+                    this.checkedKeys.push('0_' + levelIndex0.toString() + '_' + levelIndex1.toString());
+
 
             }
-
-           
+            
         }
         
         this.gridPermissionsData = permission;
