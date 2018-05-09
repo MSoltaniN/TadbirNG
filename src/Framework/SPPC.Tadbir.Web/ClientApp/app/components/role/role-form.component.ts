@@ -68,12 +68,17 @@ export class RoleFormComponent extends DefaultComponent {
             var groupId = 0;
             this.treeData = new Array<TreeNodeInfo>();
 
+            if(this.CurrentLanguage == "fa")
+                this.treeData.push(new TreeNodeInfo(-1, undefined, "حسابداری"));
+            else
+                this.treeData.push(new TreeNodeInfo(-1, undefined, "Accounting"));
+
             for (let permissionItem of permission) {
                 //var result = this.treeData.filter(f => f.id == permissionItem.groupId);
                 //if (result==undefined || result.length == 0)
                 
                 if (groupId != permissionItem.groupId) {
-                    this.treeData.push(new TreeNodeInfo(permissionItem.groupId, undefined, permissionItem.groupName))
+                    this.treeData.push(new TreeNodeInfo(permissionItem.groupId, -1, permissionItem.groupName))
                     groupId = permissionItem.groupId;
 
                 }
