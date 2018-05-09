@@ -1,0 +1,58 @@
+﻿{
+  "commands": [
+    {
+      "name": "tsvm",
+      "parameters": [
+        {
+          "name": "types",
+          "required": true,
+          "allowMultiple": true
+        }
+      ],
+      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateTsModelCommand, ProjectCLI"
+    },
+    {
+      "name": "tsapi",
+      "parameters": [
+        {
+          "name": "types",
+          "required": true,
+          "allowMultiple": true
+        }
+      ],
+      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateTsApiCommand, ProjectCLI"
+    },
+    {
+      "name": "jsres",
+      "parameters": [
+        {
+          "name": "area",
+          "required": true,
+          "alloMultiple": true
+        },
+        {
+          "name": "lang",
+          "required": true,
+          "allowMultiple": true
+        }
+      ],
+      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateJsResourceCommand, ProjectCLI"
+    },
+    {
+      "name": "reskey",
+      "parameters": [
+        {
+          "name": "res",
+          "required": true,
+          "allowMultiple": false
+        },
+        {
+          "name": "ns",
+          "required": false,
+          "allowMultiple": false
+        }
+      ],
+      "handlerType": ""
+    }
+  ]
+}

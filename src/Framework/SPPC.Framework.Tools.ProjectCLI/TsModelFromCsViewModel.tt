@@ -19,13 +19,14 @@
 // ------------------------------------------------------------------------------
 
 <#
+string typeName = _csType.Name.Replace("ViewModel", String.Empty);
 foreach(var type in GetReferencedModelTypes(_csType))
 { #>
 import { <#= type #> } from "./<#= type.CamelCase() #>";
 <# }
 #>
 
-export interface <#= _csType.Name.Replace("ViewModel", String.Empty) #> {
+export interface <#= typeName #> {
 <#
 var modelProperties = _csType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 foreach(var property in modelProperties)

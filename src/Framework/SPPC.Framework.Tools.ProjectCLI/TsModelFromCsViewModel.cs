@@ -51,6 +51,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
             
             #line 21 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
 
+string typeName = _csType.Name.Replace("ViewModel", String.Empty);
 foreach(var type in GetReferencedModelTypes(_csType))
 { 
             
@@ -58,21 +59,21 @@ foreach(var type in GetReferencedModelTypes(_csType))
             #line hidden
             this.Write("import { ");
             
-            #line 24 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
+            #line 25 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(type));
             
             #line default
             #line hidden
             this.Write(" } from \"./");
             
-            #line 24 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
+            #line 25 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(type.CamelCase()));
             
             #line default
             #line hidden
             this.Write("\";\r\n");
             
-            #line 25 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
+            #line 26 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
  }
 
             
@@ -80,14 +81,14 @@ foreach(var type in GetReferencedModelTypes(_csType))
             #line hidden
             this.Write("\r\nexport interface ");
             
-            #line 28 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(_csType.Name.Replace("ViewModel", String.Empty)));
+            #line 29 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(typeName));
             
             #line default
             #line hidden
             this.Write(" {\r\n");
             
-            #line 29 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
+            #line 30 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
 
 var modelProperties = _csType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 foreach(var property in modelProperties)
@@ -103,27 +104,27 @@ foreach(var property in modelProperties)
             #line hidden
             this.Write("    ");
             
-            #line 38 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
+            #line 39 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(name));
             
             #line default
             #line hidden
             this.Write(": ");
             
-            #line 38 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
+            #line 39 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(GetTypescriptTypeName(property)));
             
             #line default
             #line hidden
             this.Write(";\r\n");
             
-            #line 39 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
+            #line 40 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\TsModelFromCsViewModel.tt"
 
 } 
             
             #line default
             #line hidden
-            this.Write("}");
+            this.Write("}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

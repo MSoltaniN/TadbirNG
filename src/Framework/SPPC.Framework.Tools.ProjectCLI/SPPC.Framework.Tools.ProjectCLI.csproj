@@ -52,6 +52,14 @@
     <Compile Include="..\FrameworkSolutionInfo.cs">
       <Link>FrameworkSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Shell\CliCommand.cs" />
+    <Compile Include="Shell\CliConfiguration.cs" />
+    <Compile Include="Shell\CliParameter.cs" />
+    <Compile Include="Shell\CliResult.cs" />
+    <Compile Include="Commands\GenerateJsResourceCommand.cs" />
+    <Compile Include="Commands\GenerateTsApiCommand.cs" />
+    <Compile Include="Commands\GenerateTsModelCommand.cs" />
+    <Compile Include="Shell\ICliCommand.cs" />
     <Compile Include="JsResFromCsViewModels.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -79,6 +87,7 @@
     <Compile Include="TsModelFromCsViewModel.Custom.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cli-config.json" />
     <None Include="packages.config" />
     <None Include="TsModelFromCsViewModel.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
