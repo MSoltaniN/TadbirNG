@@ -52,6 +52,13 @@
     <Compile Include="..\FrameworkSolutionInfo.cs">
       <Link>FrameworkSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Commands\GenerateKeyClassCommand.cs" />
+    <Compile Include="ResXKeyClass.cs">
+      <DependentUpon>ResXKeyClass.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ResXKeyClass.Custom.cs" />
     <Compile Include="Shell\CliCommand.cs" />
     <Compile Include="Shell\CliConfiguration.cs" />
     <Compile Include="Shell\CliParameter.cs" />
@@ -87,7 +94,7 @@
     <Compile Include="TsModelFromCsViewModel.Custom.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="cli-config.json" />
+    <EmbeddedResource Include="cli-config.json" />
     <None Include="packages.config" />
     <None Include="TsModelFromCsViewModel.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
@@ -119,6 +126,12 @@
     <None Include="TsApiFromCsApi.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TsApiFromCsApi.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ResXKeyClass.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ResXKeyClass.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

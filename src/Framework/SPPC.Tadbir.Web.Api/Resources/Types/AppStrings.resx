@@ -198,6 +198,9 @@
   <data name="OutOfFiscalPeriodDate" xml:space="preserve">
     <value>تاریخ وارد شده خارج از محدوده تاریخی دوره مالی جاری قرار دارد.</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>رمز ورود</value>
+  </data>
   <data name="Project" xml:space="preserve">
     <value>پروژه</value>
   </data>

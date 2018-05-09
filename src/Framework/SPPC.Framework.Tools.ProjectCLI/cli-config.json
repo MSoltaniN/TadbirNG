@@ -52,7 +52,7 @@
           "allowMultiple": false
         }
       ],
-      "handlerType": ""
+      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateKeyClassCommand, ProjectCLI"
     }
   ]
 }

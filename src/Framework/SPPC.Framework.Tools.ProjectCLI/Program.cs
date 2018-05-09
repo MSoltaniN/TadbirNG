@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using SPPC.Framework.Common;
@@ -41,6 +40,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
             }
 
             Console.WriteLine("Done.");
+            Console.WriteLine();
             return CliResult.Done;
         }
 
@@ -56,14 +56,14 @@ namespace SPPC.Framework.Tools.ProjectCLI
 
         private static bool EnsureHasConfiguration()
         {
-            string configPath = ConfigurationManager.AppSettings["ConfigPath"];
-            if (!File.Exists(configPath))
+            using (Stream stream = typeof(Program).Assembly.GetManifestResourceStream(_jsonConfigUri))
             {
-                Console.WriteLine("ERROR: CLI configuration file is missing.");
-                return false;
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    string jsonConfig = reader.ReadToEnd();
+                    _config = Json.To<CliConfiguration>(jsonConfig);
+                }
             }
-
-            _config = Json.To<CliConfiguration>(File.ReadAllText(configPath));
             return true;
         }
 
@@ -149,6 +149,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
             return param;
         }
 
+        private static readonly string _jsonConfigUri = "SPPC.Framework.Tools.ProjectCLI.cli-config.json";
         private static readonly string _commandParam = "cmd";
         private static CliConfiguration _config;
     }

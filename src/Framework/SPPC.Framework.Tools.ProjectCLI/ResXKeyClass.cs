@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace SPPC.Framework.Tools.ResXTool
+namespace SPPC.Framework.Tools.ProjectCLI
 {
     using System.Linq;
     using System.Text;
