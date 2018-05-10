@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { User, UserProfile } from '../model/index';
+import { UserApi } from './api/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -36,11 +37,11 @@ export class UserProfileInfo implements UserProfile {
 @Injectable()
 export class UserService extends BaseService {
 
-    private _getUsersUrl = Environment.BaseUrl + "/users";
-    private _postNewUsersUrl = Environment.BaseUrl + "/users";
-    private _putModifiedUsersUrl = Environment.BaseUrl + "/users/{0}";
-    private _getUserByIdUrl = Environment.BaseUrl + "/users/{0}";
-    private _putChangePassword = Environment.BaseUrl + "/users/{0}/password";//username
+    //private _getUsersUrl = Environment.BaseUrl + "/users";
+    //private _postNewUsersUrl = Environment.BaseUrl + "/users";
+    //private _putModifiedUsersUrl = Environment.BaseUrl + "/users/{0}";
+    //private _getUserByIdUrl = Environment.BaseUrl + "/users/{0}";
+    //private _putChangePassword = Environment.BaseUrl + "/users/{0}/password";//username
 
     headers: Headers;
     options: RequestOptions;
@@ -62,7 +63,7 @@ export class UserService extends BaseService {
                 sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
         var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
-        var url = this._getUsersUrl;
+        var url = UserApi.Users;
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));
@@ -80,8 +81,8 @@ export class UserService extends BaseService {
 
     editUser(user: User): Observable<string> {
         var body = JSON.stringify(user);
-       
-        var url = String.Format(this._putModifiedUsersUrl, user.id);
+
+        var url = String.Format(UserApi.User, user.id);
 
         return this.http.put(url, body, this.options)
             .map(res => res)
@@ -90,14 +91,14 @@ export class UserService extends BaseService {
 
     insertUser(user: User): Observable<string> {
         var body = JSON.stringify(user);
-   
-        return this.http.post(this._postNewUsersUrl, body, this.options)
+
+        return this.http.post(UserApi.Users, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     getUserById(userId: number) {
-        var url = String.Format(this._getUserByIdUrl, userId);
+        var url = String.Format(UserApi.User, userId);
        
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
@@ -105,8 +106,8 @@ export class UserService extends BaseService {
 
     changePassword(userProfile: UserProfile): Observable<string> {
         var body = JSON.stringify(userProfile);
-        
-        var url = String.Format(this._putChangePassword, userProfile.userName);
+
+        var url = String.Format(UserApi.UserPassword, userProfile.userName);
 
         return this.http.put(url, body, this.options)
             .map(res => res)

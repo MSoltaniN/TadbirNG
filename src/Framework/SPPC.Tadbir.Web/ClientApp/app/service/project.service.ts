@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Project } from '../model/index';
+import { ProjectApi } from './api/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -31,11 +32,11 @@ export class ProjectInfo implements Project {
 @Injectable()
 export class ProjectService extends BaseService {
 
-    private _getProjectsUrl = Environment.BaseUrl + "/projects/fp/{0}/branch/{1}";//fpId,branchId
-    private _postNewProjectUrl = Environment.BaseUrl + "/projects";
-    private _putModifiedProjectUrl = Environment.BaseUrl + "/projects/{0}";//projectId
-    private _getProjectByIdUrl = Environment.BaseUrl + "/projects/{0}";//projectId
-    private _deleteProjectUrl = Environment.BaseUrl + "/projects/{0}";//projectId
+    //private _getProjectsUrl = Environment.BaseUrl + "/projects/fp/{0}/branch/{1}";//fpId,branchId
+    //private _postNewProjectUrl = Environment.BaseUrl + "/projects";
+    //private _putModifiedProjectUrl = Environment.BaseUrl + "/projects/{0}";//projectId
+    //private _getProjectByIdUrl = Environment.BaseUrl + "/projects/{0}";//projectId
+    //private _deleteProjectUrl = Environment.BaseUrl + "/projects/{0}";//projectId
 
     headers: Headers;
     options: RequestOptions;
@@ -57,7 +58,7 @@ export class ProjectService extends BaseService {
                 sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
         var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
-        var url = String.Format(this._getProjectsUrl, this.FiscalPeriodId, this.BranchId);
+        var url = String.Format(ProjectApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId);
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));
@@ -74,7 +75,7 @@ export class ProjectService extends BaseService {
     editProject(model: Project): Observable<string> {
         var body = JSON.stringify(model);
 
-        var url = String.Format(this._putModifiedProjectUrl, model.id);
+        var url = String.Format(ProjectApi.Project, model.id);
 
         return this.http.put(url, body, this.options)
             .map(res => res)
@@ -84,14 +85,14 @@ export class ProjectService extends BaseService {
     insertProject(model: Project): Observable<string> {
         var body = JSON.stringify(model);
 
-        return this.http.post(this._postNewProjectUrl, body, this.options)
+        return this.http.post(ProjectApi.Projects, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     delete(projectId: number): Observable<string> {
 
-        var deleteByIdUrl = String.Format(this._deleteProjectUrl, projectId.toString());
+        var deleteByIdUrl = String.Format(ProjectApi.Project, projectId.toString());
 
         return this.http.delete(deleteByIdUrl, this.options)
             .map(response => response)
@@ -99,7 +100,7 @@ export class ProjectService extends BaseService {
     }
 
     getProjectById(projectId: number) {
-        var url = String.Format(this._getProjectByIdUrl, projectId);
+        var url = String.Format(ProjectApi.Project, projectId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());

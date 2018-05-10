@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Role, Permission, RoleFull, RoleUsers, UserBrief, Branch, RoleBranches, RoleDetails } from '../model/index';
+import { RoleApi } from './api/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -73,20 +74,20 @@ export class RoleDetailsInfo implements RoleDetails {
 @Injectable()
 export class RoleService extends BaseService {
 
-    private _getRolesUrl = Environment.BaseUrl + "/roles";
-    private _getRoleFull = Environment.BaseUrl + "/roles/{0}";//roleId
-    private _getNewRoleFull = Environment.BaseUrl + "/roles/new";
-    private _postNewRoleUrl = Environment.BaseUrl + "/roles";
-    private _putModifiedRolesUrl = Environment.BaseUrl + "/roles/{0}";//roleId
-    private _deleteRoleUrl = Environment.BaseUrl + "/roles/{0}";//roleId
-    //users
-    private _getRoleUsersUrl = Environment.BaseUrl + "/roles/{0}/users";//roleId
-    private _putModifiedRoleUsersUrl = Environment.BaseUrl + "/roles/{0}/users";//roleId
-    //branches
-    private _getRoleBranchesUrl = Environment.BaseUrl + "/roles/{0}/branches";//roleId
-    private _putModifiedRoleBranchesUrl = Environment.BaseUrl + "/roles/{0}/branches";//roleId
-    //detail
-    private _getRoleDetailUrl = Environment.BaseUrl + "/roles/{0}/details";//roleId
+    //private _getRolesUrl = Environment.BaseUrl + "/roles";
+    //private _getRoleFull = Environment.BaseUrl + "/roles/{0}";//roleId
+    //private _getNewRoleFull = Environment.BaseUrl + "/roles/new";
+    //private _postNewRoleUrl = Environment.BaseUrl + "/roles";
+    //private _putModifiedRolesUrl = Environment.BaseUrl + "/roles/{0}";//roleId
+    //private _deleteRoleUrl = Environment.BaseUrl + "/roles/{0}";//roleId
+    ////users
+    //private _getRoleUsersUrl = Environment.BaseUrl + "/roles/{0}/users";//roleId
+    //private _putModifiedRoleUsersUrl = Environment.BaseUrl + "/roles/{0}/users";//roleId
+    ////branches
+    //private _getRoleBranchesUrl = Environment.BaseUrl + "/roles/{0}/branches";//roleId
+    //private _putModifiedRoleBranchesUrl = Environment.BaseUrl + "/roles/{0}/branches";//roleId
+    ////detail
+    //private _getRoleDetailUrl = Environment.BaseUrl + "/roles/{0}/details";//roleId
 
     constructor(private http: Http) {
         super();
@@ -103,7 +104,7 @@ export class RoleService extends BaseService {
                 sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
         var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
-        var url = this._getRolesUrl;
+        var url = RoleApi.Roles;
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));
@@ -123,14 +124,14 @@ export class RoleService extends BaseService {
     }
 
     getNewRoleFull() {
-        var url = this._getNewRoleFull;
+        var url = RoleApi.NewRole;
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 
     getRoleFull(roleId: number) {
-        var url = String.Format(this._getRoleFull, roleId);
+        var url = String.Format(RoleApi.Role, roleId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
@@ -139,7 +140,7 @@ export class RoleService extends BaseService {
     editRole(roleFull: RoleFull): Observable<string> {
         var body = JSON.stringify(roleFull);
 
-        var url = String.Format(this._putModifiedRolesUrl, roleFull.role.id);
+        var url = String.Format(RoleApi.Role, roleFull.role.id);
 
         return this.http.put(url, body, this.options)
             .map(res => res)
@@ -149,14 +150,14 @@ export class RoleService extends BaseService {
     insertRole(roleFull: RoleFull): Observable<string> {
         var body = JSON.stringify(roleFull);
 
-        return this.http.post(this._postNewRoleUrl, body, this.options)
+        return this.http.post(RoleApi.Roles, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     delete(roleId: number): Observable<string> {
 
-        var deleteByIdUrl = String.Format(this._deleteRoleUrl, roleId.toString());
+        var deleteByIdUrl = String.Format(RoleApi.Role, roleId.toString());
 
         return this.http.delete(deleteByIdUrl, this.options)
             .map(response => response)
@@ -164,7 +165,7 @@ export class RoleService extends BaseService {
     }
 
     getRoleUsers(roleId: number) {
-        var url = String.Format(this._getRoleUsersUrl, roleId);
+        var url = String.Format(RoleApi.RoleUsers, roleId);
 
 
         return this.http.get(url, this.options)
@@ -176,7 +177,7 @@ export class RoleService extends BaseService {
         var headers = this.headers;
 
 
-        var url = String.Format(this._putModifiedRoleUsersUrl, roleUsers.id);
+        var url = String.Format(RoleApi.RoleUsers, roleUsers.id);
 
         return this.http.put(url, body, this.options)
             .map(res => res)
@@ -184,7 +185,7 @@ export class RoleService extends BaseService {
     }
 
     getRoleBranches(roleId: number) {
-        var url = String.Format(this._getRoleBranchesUrl, roleId);
+        var url = String.Format(RoleApi.RoleBranches, roleId);
 
 
         return this.http.get(url, this.options)
@@ -197,7 +198,7 @@ export class RoleService extends BaseService {
         var headers = this.headers;
         var options = new RequestOptions({ headers: headers });
 
-        var url = String.Format(this._putModifiedRoleBranchesUrl, roleBranches.id);
+        var url = String.Format(RoleApi.RoleBranches, roleBranches.id);
 
         return this.http.put(url, body, options)
             .map(res => res)
@@ -205,7 +206,7 @@ export class RoleService extends BaseService {
     }
 
     getRoleDetail(roleId: number) {
-        var url = String.Format(this._getRoleDetailUrl, roleId);
+        var url = String.Format(RoleApi.RoleDetails, roleId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());

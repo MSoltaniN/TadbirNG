@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { CostCenter } from '../model/index';
+import { CostCenterApi } from './api/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -31,11 +32,11 @@ export class CostCenterInfo implements CostCenter {
 @Injectable()
 export class CostCenterService extends BaseService {
 
-    private _getCostCentersUrl = Environment.BaseUrl + "/ccenters/fp/{0}/branch/{1}";//fpId,branchId
-    private _postNewCostCenterUrl = Environment.BaseUrl + "/ccenters";
-    private _putModifiedCostCenterUrl = Environment.BaseUrl + "/ccenters/{0}";//cCenterId
-    private _getCostCenterByIdUrl = Environment.BaseUrl + "/ccenters/{0}";//cCenterId
-    private _deleteCostCenterUrl = Environment.BaseUrl + "/ccenters/{0}";//cCenterId
+    //private _getCostCentersUrl = Environment.BaseUrl + "/ccenters/fp/{0}/branch/{1}";//fpId,branchId
+    //private _postNewCostCenterUrl = Environment.BaseUrl + "/ccenters";
+    //private _putModifiedCostCenterUrl = Environment.BaseUrl + "/ccenters/{0}";//cCenterId
+    //private _getCostCenterByIdUrl = Environment.BaseUrl + "/ccenters/{0}";//cCenterId
+    //private _deleteCostCenterUrl = Environment.BaseUrl + "/ccenters/{0}";//cCenterId
 
     headers: Headers;
     options: RequestOptions;
@@ -57,7 +58,7 @@ export class CostCenterService extends BaseService {
                 sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
         var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
-        var url = String.Format(this._getCostCentersUrl, this.FiscalPeriodId, this.BranchId);
+        var url = String.Format(CostCenterApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId);
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));
@@ -74,7 +75,7 @@ export class CostCenterService extends BaseService {
     editCostCenter(model: CostCenter): Observable<string> {
         var body = JSON.stringify(model);
 
-        var url = String.Format(this._putModifiedCostCenterUrl, model.id);
+        var url = String.Format(CostCenterApi.CostCenter, model.id);
 
         return this.http.put(url, body, this.options)
             .map(res => res)
@@ -84,14 +85,14 @@ export class CostCenterService extends BaseService {
     insertCostCenter(model: CostCenter): Observable<string> {
         var body = JSON.stringify(model);
 
-        return this.http.post(this._postNewCostCenterUrl, body, this.options)
+        return this.http.post(CostCenterApi.CostCenters, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     delete(costCenterId: number): Observable<string> {
 
-        var deleteByIdUrl = String.Format(this._deleteCostCenterUrl, costCenterId.toString());
+        var deleteByIdUrl = String.Format(CostCenterApi.CostCenter, costCenterId.toString());
 
         return this.http.delete(deleteByIdUrl, this.options)
             .map(response => response)
@@ -99,7 +100,7 @@ export class CostCenterService extends BaseService {
     }
 
     getCostCenterById(costCenterId: number) {
-        var url = String.Format(this._getCostCenterByIdUrl, costCenterId);
+        var url = String.Format(CostCenterApi.CostCenter, costCenterId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());

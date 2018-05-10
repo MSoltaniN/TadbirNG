@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Account } from '../model/index';
+import { AccountApi } from './api/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -11,6 +12,8 @@ import { HttpParams } from "@angular/common/http";
 import { Environment } from "../enviroment";
 import { Context } from "../model/context";
 import { BaseService } from '../class/base.service';
+
+
 
 
 export class AccountInfo implements Account
@@ -32,42 +35,21 @@ export class GridResult  {
 export class AccountService extends BaseService
 {   
 
-    private _getAccountsUrl = Environment.BaseUrl + "/accounts/fp/{0}/branch/{1}";
-
-    private _getAllAccountsUrl = Environment.BaseUrl + "/accounts";
-
-    private _getTotalCountUrl = Environment.BaseUrl + "/Account/TotalCount";
-
-    private _getCountUrl = Environment.BaseUrl + "/accounts/fp/{0}/branch/{1}/count";
-
-    private _deleteAccountsUrl = Environment.BaseUrl + "/accounts/{0}";
-
-    private _deleteGroupAccountsUrl = Environment.BaseUrl + "/accounts";
-
-    private _postNewAccountsUrl = Environment.BaseUrl + "/accounts";
-
-    private _postModifiedAccountsUrl = Environment.BaseUrl + "/accounts/{0}";
-
-    private _getAccountByIdUrl = Environment.BaseUrl + "/accounts/{0}";
-
-   
-
     constructor(private http: Http)
     {
         super();             
     }
 
     getAccounts() {
-        
-        var url = String.Format(this._getAccountsUrl, this.FiscalPeriodId, this.BranchId);
+
+        var url = String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId);
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 
     getTotalCount() {
-        
-        var url = String.Format(this._getCountUrl, this.FiscalPeriodId, this.BranchId);
-        
+
+        var url = String.Format(AccountApi.FiscalPeriodBranchItemCount, this.FiscalPeriodId, this.BranchId);        
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());;
             
@@ -76,8 +58,8 @@ export class AccountService extends BaseService
     //get count of records base on Grid filters and order value
     getCount(orderby?: string, filters?: any[]) {
         var headers = this.headers;
-        
-        var url = String.Format(this._getCountUrl, this.FiscalPeriodId, this.BranchId);
+
+        var url = String.Format(AccountApi.FiscalPeriodBranchItemCount, this.FiscalPeriodId, this.BranchId);
         
         var postItem = { filters: filters };
         var searchHeaders = this.headers;
@@ -96,7 +78,6 @@ export class AccountService extends BaseService
 
     }
 
-
     currentContext?: Context = undefined;
     
     search(start?: number, count?: number, orderby?: string, filters?: Filter[]) {
@@ -114,8 +95,8 @@ export class AccountService extends BaseService
                 sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
         var postItem = { Paging : gridPaging, filters : filters, sortColumns: sort };
-        
-        var url = String.Format(this._getAccountsUrl, this.FiscalPeriodId, this.BranchId);
+
+        var url = String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId);
 
         var searchHeaders = this.headers;
         
@@ -136,14 +117,11 @@ export class AccountService extends BaseService
        
     }
 
-   
-   
 
-    
     editAccount(account: Account): Observable<string> {
         var body = JSON.stringify(account);
-        
-        var url = String.Format(this._postModifiedAccountsUrl, account.id);
+
+        var url = String.Format(AccountApi.Account, account.id);
 
         return this.http.put(url, body, this.options)
             .map(res => res)
@@ -152,8 +130,8 @@ export class AccountService extends BaseService
 
     insertAccount(account: Account): Observable<string> {
         var body = JSON.stringify(account);
-        
-        return this.http.post(this._postNewAccountsUrl, body, this.options)
+
+        return this.http.post(AccountApi.Accounts, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
@@ -162,7 +140,7 @@ export class AccountService extends BaseService
     {
         //ToDo : call api for delete entity
 
-        var deleteByIdUrl = String.Format(this._deleteAccountsUrl, accountId.toString());
+        var deleteByIdUrl = String.Format(AccountApi.Account, accountId.toString());
 
         return this.http.delete(deleteByIdUrl,this.options)
             .map(response => response)
@@ -186,14 +164,14 @@ export class AccountService extends BaseService
         }
 
         let body = JSON.stringify({ paraph: '', items : accs});
-    
-        return this.http.put(this._deleteGroupAccountsUrl,body, this.options)
+
+        return this.http.put(AccountApi.Accounts, body, this.options)
             .map(response => response)
             .catch(this.handleError);
     }
 
     getAccountById(accountId: number) {
-        var url = String.Format(this._getAccountByIdUrl, accountId);
+        var url = String.Format(AccountApi.Account, accountId);
     
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());

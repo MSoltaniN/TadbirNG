@@ -91,6 +91,7 @@
     <None Remove="ClientApp\app\model\voucher.ts" />
     <None Remove="ClientApp\app\pipes\index.ts" />
     <None Remove="ClientApp\app\pipes\sppc.date.pipe.ts" />
+    <None Remove="ClientApp\app\service\api\index.ts" />
     <None Remove="ClientApp\app\service\fiscal-period.service.ts" />
     <None Remove="ClientApp\app\service\fullAccount.service.ts" />
     <None Remove="ClientApp\app\service\index.ts" />
@@ -242,6 +243,7 @@
     <TypeScriptCompile Include="ClientApp\app\model\user.ts" />
     <TypeScriptCompile Include="ClientApp\app\pipes\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\pipes\sppc.date.pipe.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\api\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\fiscal-period.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\lookup.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\message\sppc-message.service.ts" />

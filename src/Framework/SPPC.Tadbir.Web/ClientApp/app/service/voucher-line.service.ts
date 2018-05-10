@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { VoucherLine } from '../model/index';
+import { VoucherApi } from './api/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -45,13 +46,13 @@ export class VoucherLineService extends BaseService {
 
 
 
-    private _getVoucherLinesUrl = Environment.BaseUrl + "/vouchers/{0}/articles";//voucherId
-    private _getCountUrl = Environment.BaseUrl + "/vouchers/{0}/articles/count";
-    private _deleteVoucherLineUrl = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
-    private _postNewVoucherLineUrl = Environment.BaseUrl + "/vouchers/{0}/articles";//voucherId
-    private _putModifiedVoucherLineUrl = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
-    private _getVoucherInfo = Environment.BaseUrl + "/vouchers/{0}";//voucherId
-    private _getVoucherLineById = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
+    //private _getVoucherLinesUrl = Environment.BaseUrl + "/vouchers/{0}/articles";//voucherId
+    //private _getCountUrl = Environment.BaseUrl + "/vouchers/{0}/articles/count";
+    //private _deleteVoucherLineUrl = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
+    //private _postNewVoucherLineUrl = Environment.BaseUrl + "/vouchers/{0}/articles";//voucherId
+    //private _putModifiedVoucherLineUrl = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
+    //private _getVoucherInfo = Environment.BaseUrl + "/vouchers/{0}";//voucherId
+    //private _getVoucherLineById = Environment.BaseUrl + "/vouchers/articles/{0}";//articleId
 
     headers: Headers;
     options: RequestOptions;
@@ -67,7 +68,7 @@ export class VoucherLineService extends BaseService {
     ////get count of records base on Grid filters and order value
     getCount(voucherId: number, orderby?: string, filters?: any[]) {
         var headers = this.headers;
-        var url = String.Format(this._getCountUrl, voucherId);
+        var url = String.Format(VoucherApi.VoucherArticleCount, voucherId);
         var postItem = { filters: filters };
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
@@ -94,7 +95,7 @@ export class VoucherLineService extends BaseService {
         }
         var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
 
-        var url = String.Format(this._getVoucherLinesUrl, voucherId);
+        var url = String.Format(VoucherApi.VoucherArticles, voucherId);
 
         var searchHeaders = this.headers;
 
@@ -111,7 +112,7 @@ export class VoucherLineService extends BaseService {
     }
 
     getVoucherInfo(voucherId: number) {
-        var url = String.Format(this._getVoucherInfo, voucherId);
+        var url = String.Format(VoucherApi.Voucher, voucherId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());;
@@ -120,7 +121,7 @@ export class VoucherLineService extends BaseService {
     editVoucherLine(voucherLine: VoucherLine): Observable<string> {
         var body = JSON.stringify(voucherLine);
 
-        var url = String.Format(this._putModifiedVoucherLineUrl, voucherLine.id);
+        var url = String.Format(VoucherApi.VoucherArticle, voucherLine.id);
 
         return this.http.put(url, body, this.options)
             .map(res => res)
@@ -130,7 +131,7 @@ export class VoucherLineService extends BaseService {
     insertVoucherLine(voucherId: number, voucherLine: VoucherLine): Observable<string> {
         var body = JSON.stringify(voucherLine);
 
-        var url = String.Format(this._postNewVoucherLineUrl, voucherId);
+        var url = String.Format(VoucherApi.VoucherArticles, voucherId);
 
         return this.http.post(url, body, this.options)
             .map(res => res)
@@ -139,7 +140,7 @@ export class VoucherLineService extends BaseService {
 
     delete(VoucherLineId: number): Observable<string> {
 
-        var deleteByIdUrl = String.Format(this._deleteVoucherLineUrl, VoucherLineId);
+        var deleteByIdUrl = String.Format(VoucherApi.VoucherArticle, VoucherLineId);
 
         return this.http.delete(deleteByIdUrl, this.options)
             .map(response => response)
@@ -147,7 +148,7 @@ export class VoucherLineService extends BaseService {
     }
 
     getVoucherLineById(articleId: number) {
-        var url = String.Format(this._getVoucherLineById, articleId);
+        var url = String.Format(VoucherApi.VoucherArticle, articleId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
