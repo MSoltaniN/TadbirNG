@@ -1,6 +1,6 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
-import { RoleService, RoleInfo } from '../../service/index';
+import { RoleService, RoleInfo, RoleFullInfo } from '../../service/index';
 
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy, State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
@@ -79,7 +79,7 @@ export class RoleFormComponent extends DefaultComponent {
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
-    @Output() save: EventEmitter<RoleFull> = new EventEmitter();
+    @Output() save: EventEmitter<RoleFullInfo> = new EventEmitter();
     //create properties
 
 
@@ -100,8 +100,9 @@ export class RoleFormComponent extends DefaultComponent {
             }
         }
 
-        var model: RoleFull;
+        var model: RoleFullInfo;
         model = {
+            id: this.editForm.value.id,
             role: this.editForm.value,
             permissions: this.gridPermissionsData
         }
@@ -133,7 +134,7 @@ export class RoleFormComponent extends DefaultComponent {
         public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
 
         super(toastrService, translate, renderer, metadata, Entities.Role, Metadatas.Role);
-
+        console.log(this.editForm);
     }
 
 

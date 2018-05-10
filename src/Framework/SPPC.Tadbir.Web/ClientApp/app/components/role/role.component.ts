@@ -321,7 +321,6 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     }
 
     public saveHandler(roleFull: RoleFull) {
-        debugger;
         this.sppcLoading.show();
         if (!this.isNew) {
             this.roleService.editRole(roleFull)

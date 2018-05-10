@@ -36,6 +36,7 @@ export class PermissionInfo implements Permission {
 }
 
 export class RoleFullInfo implements RoleFull {
+    id: number = 0;
     role: Role;
     permissions: Permission[];
 }
