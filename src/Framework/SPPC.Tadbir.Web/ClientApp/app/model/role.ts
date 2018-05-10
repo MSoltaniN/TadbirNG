@@ -31,6 +31,7 @@ export class TreeNodeInfo implements TreeNode {
 
 
 export interface RoleFullViewModel {
+    id: number;
     role: Role;
     permissions: Array<Permission>;
 }

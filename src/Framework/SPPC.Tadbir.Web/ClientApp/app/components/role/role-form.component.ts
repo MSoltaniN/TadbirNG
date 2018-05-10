@@ -63,8 +63,8 @@ export class RoleFormComponent extends DefaultComponent {
     }
 
     public checkedKeys: string[] = [];
-
-
+    
+    private permissonDictionary: { [id: string]: Permission; } = {}
 
     @Input() public set permissionModel(permission: any) {
 
@@ -73,12 +73,15 @@ export class RoleFormComponent extends DefaultComponent {
 
         if (permission != undefined) {
             var groupId = 0;
+
+            this.checkedKeys = [];
             this.treeData = new Array<TreeNodeInfo>();
 
             if(this.CurrentLanguage == "fa")
                 this.treeData.push(new TreeNodeInfo(-1, undefined, "حسابداری"));
             else
                 this.treeData.push(new TreeNodeInfo(-1, undefined, "Accounting"));
+            
 
             for (let permissionItem of permission) {
 
@@ -98,10 +101,13 @@ export class RoleFormComponent extends DefaultComponent {
                     levelIndex1++;
                 }
 
+
+
                 if (permissionItem.isEnabled)
                     this.checkedKeys.push('0_' + levelIndex0.toString() + '_' + levelIndex1.toString());
 
-
+                this.permissonDictionary['0_' + levelIndex0.toString() + '_' + levelIndex1.toString()] = permissionItem;
+                    
             }
             
         }
@@ -128,22 +134,39 @@ export class RoleFormComponent extends DefaultComponent {
     public onSave(e: any): void {
         e.preventDefault();
 
-        for (let permissionItem of this.gridPermissionsData) {
-            permissionItem.isEnabled = false;
+        var permissionData: Array<Permission> = new Array<Permission>();
+        
+        for (let key in this.permissonDictionary) {
+            //permissionItem.isEnabled = false;
+            this.permissonDictionary[key].isEnabled = false;
         }
 
-        for (let permissionSelected of this.selectedRows) {
-            for (let permissionItem of this.gridPermissionsData) {
-                if (permissionItem.id == permissionSelected) {
-                    permissionItem.isEnabled = true;
-                }
+        for (let checked of this.checkedKeys) {
+            if (checked.split('_').length == 3) {
+                var obj = this.permissonDictionary[checked];
+                obj.isEnabled = true;
             }
         }
 
+        
+        for (let key in this.permissonDictionary) {
+            //permissionItem.isEnabled = false;
+            permissionData.push(this.permissonDictionary[key]);
+        }
+
+        //for (let permissionSelected of this.selectedRows) {
+        //    for (let permissionItem of this.gridPermissionsData) {
+        //        if (permissionItem.id == permissionSelected) {
+        //            permissionItem.isEnabled = true;
+        //        }
+        //    }
+        //}
+
         var viewModel: RoleFullViewModel;
         viewModel = {
+            id : this.editForm.value.id,
             role: this.editForm.value,
-            permissions: this.gridPermissionsData
+            permissions: permissionData
         }
         this.save.emit(viewModel);
         this.active = true;
