@@ -275,7 +275,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            var detailAccount = await _repository.GetArticleDetailAccountAsync(article.FullAccount.DetailId.Value);
+            var detailAccount = await _repository.GetArticleDetailAccountAsync(article.FullAccount.DetailId ?? 0);
             if (detailAccount != null && detailAccount.ChildCount > 0)
             {
                 string detailInfo = String.Format("{0} ({1})", detailAccount.Name, detailAccount.FullCode);
@@ -284,7 +284,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            var costCenter = await _repository.GetArticleCostCenterAsync(article.FullAccount.CostCenterId.Value);
+            var costCenter = await _repository.GetArticleCostCenterAsync(article.FullAccount.CostCenterId ?? 0);
             if (costCenter != null && costCenter.ChildCount > 0)
             {
                 string costCenterInfo = String.Format("{0} ({1})", costCenter.Name, costCenter.FullCode);
@@ -293,7 +293,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            var project = await _repository.GetArticleProjectAsync(article.FullAccount.ProjectId.Value);
+            var project = await _repository.GetArticleProjectAsync(article.FullAccount.ProjectId ?? 0);
             if (project != null && project.ChildCount > 0)
             {
                 string projectInfo = String.Format("{0} ({1})", project.Name, project.FullCode);
