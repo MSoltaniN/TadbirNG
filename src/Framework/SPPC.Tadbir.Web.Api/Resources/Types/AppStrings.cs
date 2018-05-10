@@ -20,6 +20,9 @@ namespace SPPC.Tadbir.Web.Api.Resources.Types
         {
         }
 
+        
+        public const string CannotDeleteNonLeafItem = "CannotDeleteNonLeafItem";
+
         /// <summary>
         /// Key name for localized resource 'Account'
         /// </summary>

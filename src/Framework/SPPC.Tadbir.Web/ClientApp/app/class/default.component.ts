@@ -94,7 +94,9 @@ export class DefaultComponent extends BaseComponent {
     private fillFormValidators() {
 
         var p: Property | undefined = undefined;
-        
+
+        if (this.properties[this.metaDataName] == undefined) return;
+
         for (let entry of this.properties[this.metaDataName]) {
 
             var name: string = entry.name.toLowerCase().substring(0, 1) + entry.name.substring(1);

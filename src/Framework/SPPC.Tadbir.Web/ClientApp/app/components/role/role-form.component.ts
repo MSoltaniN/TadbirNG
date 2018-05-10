@@ -81,30 +81,49 @@ export class RoleFormComponent extends DefaultComponent {
                 this.treeData.push(new TreeNodeInfo(-1, undefined, "حسابداری"));
             else
                 this.treeData.push(new TreeNodeInfo(-1, undefined, "Accounting"));
-            
 
+            var checkedParent: string = '';
+            var indexId: number = -1;
+            
             for (let permissionItem of permission) {
 
                 
                 if (groupId != permissionItem.groupId) {
                     this.treeData.push(new TreeNodeInfo(permissionItem.groupId, -1, permissionItem.groupName))
-                    groupId = permissionItem.groupId;
 
                     levelIndex0++;
                     levelIndex1 = -1;
+
+                    checkedParent = '0_' + levelIndex0.toString();
+
+                    this.checkedKeys.push(checkedParent);
+
+                    indexId++;
+
+                    groupId = permissionItem.groupId;
+                    
+
+                    
                 }
 
                 if (groupId == permissionItem.groupId) {
                     this.treeData.push(new TreeNodeInfo(parseInt(permissionItem.id.toString() + permissionItem.groupId.toString() + '00')
-                        , permissionItem.groupId, permissionItem.name))
-
+                        , permissionItem.groupId, permissionItem.name))                    
+                    
                     levelIndex1++;
                 }
+                    
 
-
-
-                if (permissionItem.isEnabled)
-                    this.checkedKeys.push('0_' + levelIndex0.toString() + '_' + levelIndex1.toString());
+                if (permissionItem.isEnabled) {
+                    this.checkedKeys.push('0_' + levelIndex0.toString() + '_' + levelIndex1.toString());                    
+                }
+                else {
+                    if (indexId >= 0 && this.checkedKeys[indexId].length == 3)
+                    {
+                        this.checkedKeys.splice(indexId, 1);
+                        indexId--;
+                    }
+                }
 
                 this.permissonDictionary['0_' + levelIndex0.toString() + '_' + levelIndex1.toString()] = permissionItem;
                     
