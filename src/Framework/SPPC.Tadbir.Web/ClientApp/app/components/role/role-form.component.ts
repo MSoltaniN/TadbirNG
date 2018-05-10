@@ -5,7 +5,7 @@ import { RoleService, RoleInfo, RoleFullInfo } from '../../service/index';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy, State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 
-import { Role, RoleFull, Permission } from '../../model/index';
+import { Role, RoleFull, Permission, RoleFullViewModel } from '../../model/index';
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
 
@@ -156,10 +156,12 @@ export class RoleFormComponent extends DefaultComponent {
 
         var viewModel: RoleFullViewModel;
         viewModel = {
+            id: this.editForm.value.id,
             role: this.editForm.value,
             permissions: permissionData
         }
-        this.save.emit(model);
+
+        this.save.emit(viewModel);
         this.active = true;
         this.selectedRows = [];
     }

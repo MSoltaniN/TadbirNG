@@ -58,7 +58,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     roleFull: RoleFull = new RoleFullInfo;
 
 
-    editDataItem?: Role = undefined;
+    editDataItem?: Role |undefined = undefined;
     permissionsData: Permission;
     roleUsersData: RoleUsersInfo;
     roleBranchesData: RoleBranchesInfo;

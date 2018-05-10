@@ -22,6 +22,7 @@ export class RoleInfo implements Role {
     id: number = 0;
     name: string;
     description?: string | undefined;
+    flag: number;
     //constructor(public id: number = 0, public name: string = "", public description: string="", public permissions: string[] = []) { }
 }
 
