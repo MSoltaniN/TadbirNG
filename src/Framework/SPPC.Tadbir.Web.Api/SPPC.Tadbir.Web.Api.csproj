@@ -64,7 +64,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ResXTool.exe -res:$(ProjectDir)Resources\Types\AppStrings.resx -ns:$(ProjectName).Resources.Types" />
+    <Exec Command="$(ProjectDir)..\..\..\bin\Debug\ProjectCLI.exe -cmd:reskey -res:$(ProjectDir)Resources\Types\AppStrings.resx -ns:$(ProjectName).Resources.Types" />
   </Target>
 
 </Project>

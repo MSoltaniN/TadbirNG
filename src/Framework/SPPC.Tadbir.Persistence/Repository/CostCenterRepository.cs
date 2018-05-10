@@ -47,7 +47,7 @@ namespace SPPC.Tadbir.Persistence
                     cc => cc.FiscalPeriod.Id == fpId
                         && cc.Branch.Id == branchId,
                     gridOptions,
-                    cc => cc.FiscalPeriod, cc => cc.Branch);
+                    cc => cc.FiscalPeriod, cc => cc.Branch, cc => cc.Parent, cc => cc.Children);
             return costCenters
                 .Select(item => _mapper.Map<CostCenterViewModel>(item))
                 .ToList();
@@ -81,7 +81,7 @@ namespace SPPC.Tadbir.Persistence
             CostCenterViewModel item = null;
             var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
             var costCenter = await repository.GetByIDAsync(
-                costCenterId, cc => cc.FiscalPeriod, cc => cc.Branch);
+                costCenterId, cc => cc.FiscalPeriod, cc => cc.Branch, cc => cc.Parent, cc => cc.Children);
             if (costCenter != null)
             {
                 item = _mapper.Map<CostCenterViewModel>(costCenter);
@@ -177,6 +177,25 @@ namespace SPPC.Tadbir.Persistence
             var articles = await repository
                 .GetByCriteriaAsync(art => art.CostCenter.Id == costCenterId);
             return (articles.Count != 0);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا مرکز هزینه انتخاب شده دارای زیرمجموعه هست یا نه
+        /// </summary>
+        /// <param name="costCenterId">شناسه یکتای یکی از مراکز هزینه موجود</param>
+        /// <returns>در حالتی که مرکز هزینه مشخص شده دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool?> HasChildrenAsync(int costCenterId)
+        {
+            bool? hasChildren = null;
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Children);
+            if (costCenter != null)
+            {
+                hasChildren = costCenter.Children.Count > 0;
+            }
+
+            return hasChildren;
         }
 
         private static void UpdateExistingCostCenter(CostCenterViewModel costCenterViewModel, CostCenter costCenter)

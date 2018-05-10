@@ -74,5 +74,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در حالتی که تفصیلی شناور مشخص شده در حال استفاده باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> IsUsedDetailAccountAsync(int faccountId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا تفصیلی شناور انتخاب شده دارای شناور زیرمجموعه هست یا نه
+        /// </summary>
+        /// <param name="faccountId">شناسه یکتای یکی از شناور های موجود</param>
+        /// <returns>در حالتی که تفصیلی شناور مشخص شده دارای شناور زیرمجموعه باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool?> HasChildrenAsync(int faccountId);
     }
 }

@@ -21,3 +21,7 @@ export * from './role.service';
 export * from './fullAccount.service';
 
 export * from './detailAccount.service';
+
+export * from './costCenter.service';
+
+export * from './project.service';

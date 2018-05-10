@@ -47,7 +47,7 @@ namespace SPPC.Tadbir.Persistence
                     prj => prj.FiscalPeriod.Id == fpId
                         && prj.Branch.Id == branchId,
                     gridOptions,
-                    prj => prj.FiscalPeriod, prj => prj.Branch);
+                    prj => prj.FiscalPeriod, prj => prj.Branch, prj => prj.Parent, prj => prj.Children);
             return projects
                 .Select(item => _mapper.Map<ProjectViewModel>(item))
                 .ToList();
@@ -81,7 +81,7 @@ namespace SPPC.Tadbir.Persistence
             ProjectViewModel item = null;
             var repository = _unitOfWork.GetAsyncRepository<Project>();
             var project = await repository.GetByIDAsync(
-                projectId, prj => prj.FiscalPeriod, prj => prj.Branch);
+                projectId, prj => prj.FiscalPeriod, prj => prj.Branch, prj => prj.Parent, prj => prj.Children);
             if (project != null)
             {
                 item = _mapper.Map<ProjectViewModel>(project);
@@ -177,6 +177,25 @@ namespace SPPC.Tadbir.Persistence
             var articles = await repository
                 .GetByCriteriaAsync(art => art.Project.Id == projectId);
             return (articles.Count != 0);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا پروژه انتخاب شده دارای زیرمجموعه هست یا نه
+        /// </summary>
+        /// <param name="projectId">شناسه یکتای یکی از پروژه های موجود</param>
+        /// <returns>در حالتی که پروژه مشخص شده دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool?> HasChildrenAsync(int projectId)
+        {
+            bool? hasChildren = null;
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
+            if (project != null)
+            {
+                hasChildren = project.Children.Count > 0;
+            }
+
+            return hasChildren;
         }
 
         private static void UpdateExistingProject(ProjectViewModel projectViewModel, Project project)

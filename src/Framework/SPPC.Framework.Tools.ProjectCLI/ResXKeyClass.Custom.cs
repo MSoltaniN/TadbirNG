@@ -2,11 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Resources;
 
-namespace SPPC.Framework.Tools.ResXTool
+namespace SPPC.Framework.Tools.ProjectCLI
 {
     public partial class ResXKeyClass
     {

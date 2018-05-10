@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { User, UserProfileViewModel } from '../model/index';
+import { User, UserProfile } from '../model/index';
+import { UserApi } from './api/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -17,15 +18,16 @@ import { BaseService } from '../class/base.service';
 
 
 export class UserInfo implements User {
-
-    constructor(public id: number = 0, public userName: string = "", public personFirstName: string = "", public personLastName: string = "", public password: string = "",
-        public isEnabled: boolean = false, public lastLoginDate: Date = new Date()) {
-
-    }
+    personFirstName: string;
+    personLastName: string;
+    id: number=0;
+    userName: string;
+    password: string;
+    lastLoginDate?: Date | undefined;
+    isEnabled: boolean = false;
 }
 
-
-export class UserProfileViewModelInfo implements UserProfileViewModel {
+export class UserProfileInfo implements UserProfile {
     userName: string;
     oldPassword: string;
     newPassword: string;
@@ -35,11 +37,11 @@ export class UserProfileViewModelInfo implements UserProfileViewModel {
 @Injectable()
 export class UserService extends BaseService {
 
-    private _getUsersUrl = Environment.BaseUrl + "/users";
-    private _postNewUsersUrl = Environment.BaseUrl + "/users";
-    private _putModifiedUsersUrl = Environment.BaseUrl + "/users/{0}";
-    private _getUserByIdUrl = Environment.BaseUrl + "/users/{0}";
-    private _putChangePassword = Environment.BaseUrl + "/users/{0}/password";//username
+    //private _getUsersUrl = Environment.BaseUrl + "/users";
+    //private _postNewUsersUrl = Environment.BaseUrl + "/users";
+    //private _putModifiedUsersUrl = Environment.BaseUrl + "/users/{0}";
+    //private _getUserByIdUrl = Environment.BaseUrl + "/users/{0}";
+    //private _putChangePassword = Environment.BaseUrl + "/users/{0}/password";//username
 
     headers: Headers;
     options: RequestOptions;
@@ -61,7 +63,7 @@ export class UserService extends BaseService {
                 sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
         var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
-        var url = this._getUsersUrl;
+        var url = UserApi.Users;
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));
@@ -79,8 +81,8 @@ export class UserService extends BaseService {
 
     editUser(user: User): Observable<string> {
         var body = JSON.stringify(user);
-       
-        var url = String.Format(this._putModifiedUsersUrl, user.id);
+
+        var url = String.Format(UserApi.User, user.id);
 
         return this.http.put(url, body, this.options)
             .map(res => res)
@@ -89,23 +91,23 @@ export class UserService extends BaseService {
 
     insertUser(user: User): Observable<string> {
         var body = JSON.stringify(user);
-   
-        return this.http.post(this._postNewUsersUrl, body, this.options)
+
+        return this.http.post(UserApi.Users, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     getUserById(userId: number) {
-        var url = String.Format(this._getUserByIdUrl, userId);
+        var url = String.Format(UserApi.User, userId);
        
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 
-    changePassword(userProfileViewModel: UserProfileViewModel): Observable<string> {
-        var body = JSON.stringify(userProfileViewModel);
-        
-        var url = String.Format(this._putChangePassword, userProfileViewModel.userName);
+    changePassword(userProfile: UserProfile): Observable<string> {
+        var body = JSON.stringify(userProfile);
+
+        var url = String.Format(UserApi.UserPassword, userProfile.userName);
 
         return this.http.put(url, body, this.options)
             .map(res => res)

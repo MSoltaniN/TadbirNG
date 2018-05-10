@@ -3,7 +3,7 @@
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy, State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 
-import { RoleBranchesViewModel, RoleDetailsViewModel } from '../../model/index';
+import { RoleBranches, RoleDetails } from '../../model/index';
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
 
@@ -115,8 +115,8 @@ export class RoleDetailFormComponent extends DefaultComponent {
             this.gridBranchesData = roleDetailsViewModel.branches;
             this.gridUsersData = roleDetailsViewModel.users;
 
-            this.roleName = roleDetailsViewModel.role.name;
-            this.roleDescription = roleDetailsViewModel.role.description != null ? roleDetailsViewModel.role.description:"";
+            this.roleName = roleDetails.role.name;
+            this.roleDescription = roleDetails.role.description != null ? roleDetails.role.description:"";
 
             this.showloadingPermissionMessage = !(this.gridPermissionData.length == 0);
             this.showloadingBranchesMessage = !(this.gridBranchesData.length == 0);

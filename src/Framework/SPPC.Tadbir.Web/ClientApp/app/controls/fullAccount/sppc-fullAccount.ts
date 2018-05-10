@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LookupService, FullAccountService, FullAccountViewModelInfo } from '../../service/index';
+import { LookupService, FullAccountService, FullAccountInfo } from '../../service/index';
 
 interface Item {
     key: string,
@@ -58,7 +58,7 @@ export class SppcFullAccount implements OnInit, ControlValueAccessor, Validator 
     }
 
 
-    @Input() fullAccount: FullAccountViewModelInfo;
+    @Input() fullAccount: FullAccountInfo;
 
     propagateChange: any = () => { };
 

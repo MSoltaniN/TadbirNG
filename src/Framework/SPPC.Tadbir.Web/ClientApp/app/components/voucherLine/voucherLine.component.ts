@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { VoucherLineViewModelInfo, VoucherLineService, FiscalPeriodService } from '../../service/index';
-import { VoucherLineViewModel } from '../../model/index';
+import { VoucherLineInfo, VoucherLineService, FiscalPeriodService } from '../../service/index';
+import { VoucherLine } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs/Observable';
@@ -46,9 +46,9 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     showloadingMessage: boolean = true;
 
     newVoucherLine: boolean;
-    voucherLineViewModel: VoucherLineViewModel = new VoucherLineViewModelInfo;
+    voucherLine: VoucherLine = new VoucherLineInfo;
 
-    editDataItem?: VoucherLineViewModel = undefined;
+    editDataItem?: VoucherLine = undefined;
 
     isNew: boolean;
     errorMessage: string;
@@ -92,7 +92,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid(voucherLineViewModel?: VoucherLineViewModel) {
+    reloadGrid(voucherLine?: VoucherLine) {
 
         this.sppcLoading.show();
 
@@ -110,19 +110,19 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
             var totalCount = 0;
 
 
-            if (voucherLineViewModel) {
-                var rows = (resData.list as Array<VoucherLineViewModel>);
-                var index = rows.findIndex(p => p.id == voucherLineViewModel.id);
+            if (voucherLine) {
+                var rows = (resData.list as Array<VoucherLine>);
+                var index = rows.findIndex(p => p.id == voucherLine.id);
                 if (index >= 0) {
                     resData.list.splice(index, 1);
-                    rows.splice(0, 0, voucherLineViewModel);
+                    rows.splice(0, 0, voucherLine);
                 }
                 else {
                     if (rows.length == this.pageSize) {
                         resData.list.splice(this.pageSize - 1, 1);
                     }
 
-                    rows.splice(0, 0, voucherLineViewModel);
+                    rows.splice(0, 0, voucherLine);
                 }
             }
 
@@ -229,19 +229,19 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     public addNew() {
         this.isNew = true;
         this.errorMessage = '';
-        this.editDataItem = new VoucherLineViewModelInfo();
+        this.editDataItem = new VoucherLineInfo();
     }
 
-    public saveHandler(voucherLineViewModel: VoucherLineViewModel) {
+    public saveHandler(voucherLine: VoucherLine) {
 
-        voucherLineViewModel.branchId = this.BranchId;
-        voucherLineViewModel.fiscalPeriodId = this.FiscalPeriodId;
+        voucherLine.branchId = this.BranchId;
+        voucherLine.fiscalPeriodId = this.FiscalPeriodId;
         this.sppcLoading.show();
         if (!this.isNew) {
 
             this.isNew = false;
 
-            this.voucherLineService.editVoucherLine(voucherLineViewModel)
+            this.voucherLineService.editVoucherLine(voucherLine)
                 .subscribe(response => {
 
                     this.editDataItem = undefined;
@@ -250,14 +250,14 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
                     this.reloadGrid();
 
                 }, (error => {
-                    //this.editDataItem = voucherLineViewModel;
+                    //this.editDataItem = voucherLine;
                     this.errorMessage = error;
 
                 }));
         }
         else {
-            voucherLineViewModel.voucherId = this.voucherId;
-            this.voucherLineService.insertVoucherLine(this.voucherId, voucherLineViewModel)
+            voucherLine.voucherId = this.voucherId;
+            this.voucherLineService.insertVoucherLine(this.voucherId, voucherLine)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;

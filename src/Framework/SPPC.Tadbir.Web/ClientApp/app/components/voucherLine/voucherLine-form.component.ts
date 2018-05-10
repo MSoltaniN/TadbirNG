@@ -1,9 +1,9 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 //import { requiredValidatorLogic } from './required.directive';
-//import { VoucherLineService, VoucherLineViewModelInfo, AccountService, LookupService } from '../../service/index';
+//import { VoucherLineService, VoucherLineInfo, AccountService, LookupService } from '../../service/index';
 
-import { VoucherLineViewModel } from '../../model/index';
+import { VoucherLine } from '../../model/index';
 
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
@@ -51,27 +51,27 @@ export class VoucherLineFormComponent extends DefaultComponent {
 
     public currenciesRows: Array<Item>;
 
-    public selectedCurrencyValue: string;
+    public selectedCurrencyValue: string | undefined;
 
     active: boolean = false;
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string;
 
 
-    @Input() public set model(voucherLineViewModel: VoucherLineViewModel) {
+    @Input() public set model(voucherLine: VoucherLine) {
 
-        this.editForm1.reset(voucherLineViewModel);
+        this.editForm1.reset(voucherLine);
 
-        this.active = voucherLineViewModel !== undefined || this.isNew;
+        this.active = voucherLine !== undefined || this.isNew;
 
-        if (voucherLineViewModel != undefined && voucherLineViewModel.currencyId > 0)
-            this.selectedCurrencyValue = voucherLineViewModel.currencyId.toString();
+        if (voucherLine != undefined && voucherLine.currencyId != undefined)
+            this.selectedCurrencyValue = voucherLine.currencyId.toString();
 
     }
 
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
-    @Output() save: EventEmitter<VoucherLineViewModel> = new EventEmitter();
+    @Output() save: EventEmitter<VoucherLine> = new EventEmitter();
     //create properties
 
     //Events

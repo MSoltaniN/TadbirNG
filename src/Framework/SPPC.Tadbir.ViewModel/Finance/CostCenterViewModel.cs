@@ -19,5 +19,10 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// شناسه دیتابیسی مرکز هزینه والد در ساختار درختی
         /// </summary>
         public int? ParentId { get; set; }
+
+        /// <summary>
+        /// تعداد مراکز هزینه زیرمجموعه این مرکز هزینه در ساختار درختی
+        /// </summary>
+        public int ChildCount { get; set; }
     }
 }

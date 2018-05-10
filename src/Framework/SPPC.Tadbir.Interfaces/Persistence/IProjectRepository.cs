@@ -73,5 +73,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در حالتی که پروژه مشخص شده در حال استفاده باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> IsUsedProjectAsync(int projectId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا پروژه انتخاب شده دارای زیرمجموعه هست یا نه
+        /// </summary>
+        /// <param name="projectId">شناسه یکتای یکی از پروژه های موجود</param>
+        /// <returns>در حالتی که پروژه مشخص شده دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool?> HasChildrenAsync(int projectId);
     }
 }

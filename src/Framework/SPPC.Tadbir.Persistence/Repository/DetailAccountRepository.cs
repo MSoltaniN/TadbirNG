@@ -47,7 +47,7 @@ namespace SPPC.Tadbir.Persistence
                     facc => facc.FiscalPeriod.Id == fpId
                         && facc.Branch.Id == branchId,
                     gridOptions,
-                    facc => facc.FiscalPeriod, facc => facc.Branch);
+                    facc => facc.FiscalPeriod, facc => facc.Branch, facc => facc.Parent, facc => facc.Children);
             return detailAccounts
                 .Select(item => _mapper.Map<DetailAccountViewModel>(item))
                 .ToList();
@@ -81,7 +81,7 @@ namespace SPPC.Tadbir.Persistence
             DetailAccountViewModel item = null;
             var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
             var detailAccount = await repository.GetByIDAsync(
-                faccountId, facc => facc.FiscalPeriod, facc => facc.Branch);
+                faccountId, facc => facc.FiscalPeriod, facc => facc.Branch, facc => facc.Parent, facc => facc.Children);
             if (detailAccount != null)
             {
                 item = _mapper.Map<DetailAccountViewModel>(detailAccount);
@@ -177,6 +177,25 @@ namespace SPPC.Tadbir.Persistence
             var articles = await repository
                 .GetByCriteriaAsync(art => art.DetailAccount.Id == faccountId);
             return (articles.Count != 0);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا تفصیلی شناور انتخاب شده دارای شناور زیرمجموعه هست یا نه
+        /// </summary>
+        /// <param name="faccountId">شناسه یکتای یکی از شناور های موجود</param>
+        /// <returns>در حالتی که تفصیلی شناور مشخص شده دارای شناور زیرمجموعه باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool?> HasChildrenAsync(int faccountId)
+        {
+            bool? hasChildren = null;
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var detailAccount = await repository.GetByIDAsync(faccountId, facc => facc.Children);
+            if (detailAccount != null)
+            {
+                hasChildren = detailAccount.Children.Count > 0;
+            }
+
+            return hasChildren;
         }
 
         private static void UpdateExistingDetailAccount(DetailAccountViewModel detailViewModel, DetailAccount detail)

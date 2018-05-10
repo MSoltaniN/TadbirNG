@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { DetailAccountService, DetailAccountViewModelInfo } from '../../service/index';
-
-import { ToastrService } from 'ngx-toastr'; /** add this component for message in client side */
+import { DetailAccountService, DetailAccountInfo } from '../../service/index';
+import { DetailAccount } from '../../model/index';
+import { ToastrService } from 'ngx-toastr';
 
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 
@@ -23,7 +23,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { Response } from '@angular/http';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { GridResult } from '../../service/account.service';
-import { DetailAccountViewModel } from '../../model/index';
+
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
@@ -41,7 +41,12 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class DetailAccountComponent extends DefaultComponent {
+export class DetailAccountComponent extends DefaultComponent implements OnInit {
+
+    @Input() public parent: DetailAccount;
+    @Input() public isChild: boolean = false;
+
+    public parentId?: number = undefined;
 
     public rowData: GridDataResult;
     public selectedRows: string[] = [];
@@ -59,21 +64,22 @@ export class DetailAccountComponent extends DefaultComponent {
     showloadingMessage: boolean = true;
 
     newDetailAccount: boolean;
-    detailAccount: DetailAccountViewModel = new DetailAccountViewModelInfo
+    detailAccount: DetailAccount = new DetailAccountInfo
 
 
-    editDataItem?: DetailAccountViewModel = undefined;
+    editDataItem?: DetailAccount = undefined;
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
 
+    ngOnInit() {
+
+        this.reloadGrid();
+    }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
         private detailAccountService: DetailAccountService, public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, Entities.DetailAccount, Metadatas.DetailAccount);
-
-        this.reloadGrid();
-
     }
 
 
@@ -112,7 +118,7 @@ export class DetailAccountComponent extends DefaultComponent {
     }
 
 
-    reloadGrid(insertedDetailAccount?: DetailAccountViewModel) {
+    reloadGrid(insertedDetailAccount?: DetailAccount) {
 
         this.sppcLoading.show();
         
@@ -123,13 +129,24 @@ export class DetailAccountComponent extends DefaultComponent {
             this.skip = this.skip - this.pageSize;
         }
 
+        if (this.totalRecords == this.skip) {
+            this.skip = this.skip - this.pageSize;
+        }
+
+        if (this.parent) {
+            if (this.parent.childCount > 0)
+                filter.push(new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"))
+        }
+        else
+            filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))        
+
         this.detailAccountService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
 
             var resData = res.json();
             var totalCount = 0;
 
             if (insertedDetailAccount) {
-                var rows = (resData as Array<DetailAccountViewModel>);
+                var rows = (resData as Array<DetailAccount>);
                 var index = rows.findIndex(p => p.id == insertedDetailAccount.id);
                 if (index >= 0) {
                     resData.splice(index, 1);
@@ -219,9 +236,6 @@ export class DetailAccountComponent extends DefaultComponent {
         this.deleteConfirm = true;
     }
 
-
-
-
     //detail account form events
     public editHandler(arg: any) {
 
@@ -239,34 +253,48 @@ export class DetailAccountComponent extends DefaultComponent {
         this.errorMessage = '';
     }
 
-    public addNew() {
+
+    public addNew(parentDetailAccountId?: number) {
         this.isNew = true;
-        this.editDataItem = new DetailAccountViewModelInfo();
+        this.editDataItem = new DetailAccountInfo();
+
+        if (parentDetailAccountId)
+            this.parentId = parentDetailAccountId;
+
         this.errorMessage = '';
-    }
+    } 
 
-    public saveHandler(detailAccountViewModel: DetailAccountViewModel) {
+    public saveHandler(detailAccount: DetailAccount) {
 
-        detailAccountViewModel.branchId = this.BranchId;
-        detailAccountViewModel.fiscalPeriodId = this.FiscalPeriodId;
+        detailAccount.branchId = this.BranchId;
+        detailAccount.fiscalPeriodId = this.FiscalPeriodId;
 
         this.sppcLoading.show();
 
         if (!this.isNew) {
             this.isNew = false;
-            this.detailAccountService.editDetailAccount(detailAccountViewModel)
+            this.detailAccountService.editDetailAccount(detailAccount)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
                 }, (error => {
-                    this.editDataItem = detailAccountViewModel;
+                    this.editDataItem = detailAccount;
                     this.errorMessage = error;
 
                 }));
         }
         else {
-            this.detailAccountService.insertDetailAccount(detailAccountViewModel)
+            //set parentid for childs accounts
+            if (this.parentId) {
+                detailAccount.parentId = this.parentId;
+                this.parentId = undefined;
+            }
+            else if (this.parent)
+                detailAccount.parentId = this.parent.id;
+            //set parentid for childs accounts
+
+            this.detailAccountService.insertDetailAccount(detailAccount)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -282,6 +310,14 @@ export class DetailAccountComponent extends DefaultComponent {
         }
 
         this.sppcLoading.hide();
+    }
+
+    public showOnlyParent(dataItem: DetailAccount, index: number): boolean {
+        return dataItem.childCount > 0;
+    }
+
+    public checkShow(dataItem: DetailAccount) {
+        return dataItem != undefined && dataItem.childCount != undefined && dataItem.childCount > 0;
     }
 
 }

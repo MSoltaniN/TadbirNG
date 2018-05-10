@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { DetailAccountViewModel } from '../model/index';
+import { DetailAccount } from '../model/index';
+import { DetailAccountApi } from './api/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -15,7 +16,7 @@ import { BaseComponent } from "../class/base.component"
 import { ToastrService } from 'ngx-toastr';
 import { BaseService } from '../class/base.service';
 
-export class DetailAccountViewModelInfo implements DetailAccountViewModel {
+export class DetailAccountInfo implements DetailAccount {
     id: number = 0;
     code: string;
     fullCode: string;
@@ -23,6 +24,7 @@ export class DetailAccountViewModelInfo implements DetailAccountViewModel {
     level: number = 0;
     description?: string | undefined;
     parentId?: number | undefined;
+    childCount: number = 0;
     fiscalPeriodId: number = 0;
     branchId: number = 0;
 }
@@ -30,11 +32,11 @@ export class DetailAccountViewModelInfo implements DetailAccountViewModel {
 @Injectable()
 export class DetailAccountService extends BaseService {
 
-    private _getDetailAccountsUrl = Environment.BaseUrl + "/faccounts/fp/{0}/branch/{1}";//fpId,branchId
-    private _postNewDetailAccountUrl = Environment.BaseUrl + "/faccounts";
-    private _putModifiedDetailAccountUrl = Environment.BaseUrl + "/faccounts/{0}";//faccountId
-    private _getDetailAccountByIdUrl = Environment.BaseUrl + "/faccounts/{0}";//faccountId
-    private _deleteDetailAccountUrl = Environment.BaseUrl + "/faccounts/{0}";//faccountId
+    //private _getDetailAccountsUrl = Environment.BaseUrl + "/faccounts/fp/{0}/branch/{1}";//fpId,branchId
+    //private _postNewDetailAccountUrl = Environment.BaseUrl + "/faccounts";
+    //private _putModifiedDetailAccountUrl = Environment.BaseUrl + "/faccounts/{0}";//faccountId
+    //private _getDetailAccountByIdUrl = Environment.BaseUrl + "/faccounts/{0}";//faccountId
+    //private _deleteDetailAccountUrl = Environment.BaseUrl + "/faccounts/{0}";//faccountId
 
     headers: Headers;
     options: RequestOptions;
@@ -56,7 +58,7 @@ export class DetailAccountService extends BaseService {
                 sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
         var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
-        var url = String.Format(this._getDetailAccountsUrl, this.FiscalPeriodId, this.BranchId);
+        var url = String.Format(DetailAccountApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId);
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));
@@ -70,27 +72,27 @@ export class DetailAccountService extends BaseService {
             .map(response => <any>(<Response>response));
     }
 
-    editDetailAccount(detailAccountViewModel: DetailAccountViewModel): Observable<string> {
-        var body = JSON.stringify(detailAccountViewModel);
+    editDetailAccount(detailAccount: DetailAccount): Observable<string> {
+        var body = JSON.stringify(detailAccount);
 
-        var url = String.Format(this._putModifiedDetailAccountUrl, detailAccountViewModel.id);
+        var url = String.Format(DetailAccountApi.DetailAccount, detailAccount.id);
 
         return this.http.put(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
-    insertDetailAccount(detailAccountViewModel: DetailAccountViewModel): Observable<string> {
-        var body = JSON.stringify(detailAccountViewModel);
+    insertDetailAccount(detailAccount: DetailAccount): Observable<string> {
+        var body = JSON.stringify(detailAccount);
 
-        return this.http.post(this._postNewDetailAccountUrl, body, this.options)
+        return this.http.post(DetailAccountApi.DetailAccounts, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     delete(detailAccountId: number): Observable<string> {
 
-        var deleteByIdUrl = String.Format(this._deleteDetailAccountUrl, detailAccountId.toString());
+        var deleteByIdUrl = String.Format(DetailAccountApi.DetailAccount, detailAccountId.toString());
 
         return this.http.delete(deleteByIdUrl, this.options)
             .map(response => response)
@@ -98,7 +100,7 @@ export class DetailAccountService extends BaseService {
     }
 
     getDetailAccountById(detailAccountId: number) {
-        var url = String.Format(this._getDetailAccountByIdUrl, detailAccountId);
+        var url = String.Format(DetailAccountApi.DetailAccount, detailAccountId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());

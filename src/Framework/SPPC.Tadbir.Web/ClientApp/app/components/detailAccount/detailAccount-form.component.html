@@ -16,7 +16,7 @@
 
             <input type="text" class="k-textbox" formControlName="name" />
 
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">                
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
                 <span *ngIf="editForm.controls.name.errors?.required">{{ 'DetailAccountValidation.Name' | translate }}</span>
                 <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'DetailAccountValidation.NameMaxLength' | translate }}</span>
             </div>
@@ -43,16 +43,6 @@
                 <span *ngIf="editForm.controls.fullCode.errors?.maxlength">{{ 'DetailAccountValidation.FullCodeMaxLength' | translate }}</span>
             </div>
         </div>
-
-        <!--<div class="form-group">
-            <label for="level" class="control-label">{{ 'DetailAccount.Level' | translate }}</label>
-
-            <input type="text" class="k-textbox" formControlName="level" />
-
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.level.valid || editForm.controls.level.pristine">
-                {{ 'DetailAccountValidation.Level' | translate }}
-            </div>
-        </div>-->
 
         <div class="form-group">
             <label for="description" class="control-label">{{ 'DetailAccount.Description' | translate }}</label>

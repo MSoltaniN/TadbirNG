@@ -1,0 +1,46 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Collections.Generic" #>
+,
+  "AllValidations": {
+<#
+for (int index = 0; index < _types.Length; index++)
+{
+  var type = _types[index];
+  string typeName = type.Name.Replace("ViewModel", String.Empty); #>
+    "<#= typeName #>": {
+<#
+  var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+  for (int i = 0; i < properties.Length; i++)
+  {
+    var property = properties[i];
+    var metadata = GetPropertyMetadata(property);
+	if (metadata.IsRequired)
+    { #>
+      "<#= metadata.Name #>IsRequired": "<#= metadata.IsRequiredMessage #>",
+<#  }
+    if (metadata.HasMaxLength)
+    { #>
+      "<#= metadata.Name #>IsTooLong": "<#= metadata.MaxLengthMessage #>",
+<#  }
+    else if (metadata.HasMinLength)
+    { #>
+      "<#= metadata.Name #>LengthRange": "<#= metadata.LengthRangeMessage #>",
+<#  } #>
+<#
+  } #>
+      "NoError": ""
+    }<#
+  if (index < _types.Length - 1)
+  { #>,
+<#
+  }
+  else
+  { #>
+
+<#
+  }
+} #>
+  }

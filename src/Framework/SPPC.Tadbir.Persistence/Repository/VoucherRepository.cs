@@ -416,6 +416,63 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مدل نمایشی تفصیلی شناور مشخص شده
+        /// را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="faccountId">شناسه دیتابیسی یکی از تفصیلی های شناور موجود</param>
+        /// <returns>مدل نمایشی تفصیلی شناور مورد استفاده در آرتیکل</returns>
+        public async Task<DetailAccountViewModel> GetArticleDetailAccountAsync(int faccountId)
+        {
+            var articleDetailAccount = default(DetailAccountViewModel);
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var detailAccount = await repository.GetByIDAsync(faccountId, acc => acc.Children);
+            if (detailAccount != null)
+            {
+                articleDetailAccount = _mapper.Map<DetailAccountViewModel>(detailAccount);
+            }
+
+            return articleDetailAccount;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مدل نمایشی مرکز هزینه مشخص شده
+        /// را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="costCenterId">شناسه دیتابیسی یکی از مراکز هزینه موجود</param>
+        /// <returns>مدل نمایشی مرکز هزینه مورد استفاده در آرتیکل</returns>
+        public async Task<CostCenterViewModel> GetArticleCostCenterAsync(int costCenterId)
+        {
+            var articleCostCenter = default(CostCenterViewModel);
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var costCenter = await repository.GetByIDAsync(costCenterId, acc => acc.Children);
+            if (costCenter != null)
+            {
+                articleCostCenter = _mapper.Map<CostCenterViewModel>(costCenter);
+            }
+
+            return articleCostCenter;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مدل نمایشی پروژه مشخص شده
+        /// را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه دیتابیسی یکی از پروژه های موجود</param>
+        /// <returns>مدل نمایشی پروژه مورد استفاده در آرتیکل</returns>
+        public async Task<ProjectViewModel> GetArticleProjectAsync(int projectId)
+        {
+            var articleProject = default(ProjectViewModel);
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var project = await repository.GetByIDAsync(projectId, acc => acc.Children);
+            if (project != null)
+            {
+                articleProject = _mapper.Map<ProjectViewModel>(project);
+            }
+
+            return articleProject;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات یک سطر سند مالی (آرتیکل) را در دیتابیس ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>

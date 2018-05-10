@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { RoleService, RoleInfo, RoleFullViewModelInfo, PermissionInfo, RoleUsersViewModelInfo, RoleBranchesViewModelInfo, RoleDetailsViewModelInfo } from '../../service/index';
-import { Role, RoleFullViewModel, Permission, RoleUsersViewModel, RoleBranchesViewModel } from '../../model/index';
+import { RoleService, RoleInfo, RoleFullInfo, PermissionInfo, RoleUsersInfo, RoleBranchesInfo, RoleDetailsInfo } from '../../service/index';
+import { Role, RoleFull, Permission, RoleUsers, RoleBranches } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 
@@ -55,14 +55,14 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     showloadingMessage: boolean = true;
 
     newRole: boolean;
-    roleFullViewModel: RoleFullViewModel = new RoleFullViewModelInfo;
+    roleFull: RoleFull = new RoleFullInfo;
 
 
     editDataItem?: Role = undefined;
     permissionsData: Permission;
-    roleUsersData: RoleUsersViewModelInfo;
-    roleBranchesData: RoleBranchesViewModelInfo;
-    roleDetailData: RoleDetailsViewModelInfo;
+    roleUsersData: RoleUsersInfo;
+    roleBranchesData: RoleBranchesInfo;
+    roleDetailData: RoleDetailsInfo;
 
 
     isNew: boolean;
@@ -189,11 +189,11 @@ export class RoleComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    saveRoleUsersHandler(roleUsersViewModel: RoleUsersViewModel) {
+    saveRoleUsersHandler(roleUsers: RoleUsers) {
 
         this.sppcLoading.show();
 
-        this.roleService.modifiedRoleUsers(roleUsersViewModel)
+        this.roleService.modifiedRoleUsers(roleUsers)
             .subscribe(response => {
                 this.usersList = false;
                 this.showMessage(this.updateMsg, MessageType.Succes); 
@@ -226,10 +226,10 @@ export class RoleComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    saveRoleBranchesHandler(roleBranchesViewModel: RoleBranchesViewModel) {
+    saveRoleBranchesHandler(roleBranches: RoleBranches) {
         this.sppcLoading.show();
 
-        this.roleService.modifiedRoleBranches(roleBranchesViewModel)
+        this.roleService.modifiedRoleBranches(roleBranches)
             .subscribe(response => {
                 this.roleBranches = false;
                 this.showMessage(this.updateMsg, MessageType.Succes);
@@ -292,7 +292,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     public editHandler(arg: any) {
         this.sppcLoading.show();
 
-        this.roleService.getRoleFullViewModel(arg.dataItem.id).subscribe(res => {
+        this.roleService.getRoleFull(arg.dataItem.id).subscribe(res => {
             this.editDataItem = res.role;
             this.permissionsData = res.permissions;
 
@@ -313,18 +313,17 @@ export class RoleComponent extends DefaultComponent implements OnInit {
         this.sppcLoading.show();
         this.isNew = true;
         this.editDataItem = new RoleInfo();
-        this.roleService.getNewRoleFullViewModel().subscribe(res => {
+        this.roleService.getNewRoleFull().subscribe(res => {
             this.permissionsData = res.permissions;
         });
         this.errorMessage = '';
         this.sppcLoading.hide();
     }
 
-    public saveHandler(roleFullViewModel: RoleFullViewModel) {
-
+    public saveHandler(roleFull: RoleFull) {
         this.sppcLoading.show();
         if (!this.isNew) {
-            this.roleService.editRole(roleFullViewModel)
+            this.roleService.editRole(roleFull)
                     .subscribe(response => {
                         this.isNew = false;
                         this.editDataItem = undefined;
@@ -335,7 +334,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
                     }));
             }
             else {
-                this.roleService.insertRole(roleFullViewModel)
+                this.roleService.insertRole(roleFull)
                     .subscribe((response: any) => {
                         this.isNew = false;
                         this.editDataItem = undefined;

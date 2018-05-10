@@ -34,6 +34,10 @@ import { RoleDetailFormComponent } from './components/role/role-detail-form.comp
 import { ChangePasswordComponent } from './components/user/changePassword.component';
 import { DetailAccountComponent } from './components/detailAccount/detailAccount.component';
 import { DetailAccountFormComponent } from './components/detailAccount/detailAccount-form.component';
+import { CostCenterComponent } from './components/costCenter/costCenter.component';
+import { CostCenterFormComponent } from './components/costCenter/costCenter-form.component';
+import { ProjectComponent } from './components/project/project.component';
+import { ProjectFormComponent } from './components/project/project-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -59,8 +63,8 @@ import { InputsModule } from '@progress/kendo-angular-inputs';
 import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
 import {
-    AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService,
-    BranchService, VoucherService, LookupService, FullAccountService
+    AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
+    BranchService, VoucherService, LookupService, FullAccountService, ProjectService
 
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
@@ -116,12 +120,16 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         ChangePasswordComponent,
         DetailAccountComponent,
         DetailAccountFormComponent,
+        CostCenterComponent,
+        ProjectComponent,
+        ProjectFormComponent,
+        CostCenterFormComponent,
         ConfirmEqualValidator,
         SppcDatePipe        
 
     ],
     providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
-        UserService, RoleService, FullAccountService, DetailAccountService,
+        UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,
@@ -165,6 +173,8 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
             { path: 'roles', component: RoleComponent, canActivate: [AuthGuard] },
             { path: 'changePassword', component: ChangePasswordComponent, canActivate: [AuthGuard] },
             { path: 'detailAccount', component: DetailAccountComponent, canActivate: [AuthGuard] },
+            { path: 'costCenter', component: CostCenterComponent, canActivate: [AuthGuard] },
+            { path: 'projects', component: ProjectComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])
     ],

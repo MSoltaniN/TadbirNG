@@ -12,20 +12,21 @@ import { Context } from "../model/context";
 import { BaseComponent } from "../class/base.component"
 import { ToastrService } from 'ngx-toastr';
 import { BaseService } from '../class/base.service';
+import { LookupApi } from './api/index';
 
 
 
 @Injectable()
 export class LookupService extends BaseService {
 
-    //FullAccount
-    private _getAccountsUrl = Environment.BaseUrl + "/lookup/accounts/fp/{0}/branch/{1}";//fpId,branchId
-    private _getDetailAccountsUrl = Environment.BaseUrl + "/lookup//faccounts/fp/{0}/branch/{1}";//fpId,branchId
-    private _getCostCentersUrl = Environment.BaseUrl + "/lookup/costcenters/fp/{0}/branch/{1}";//fpId,branchId
-    private _getProjectsUrl = Environment.BaseUrl + "/lookup/projects/fp/{0}/branch/{1}";//fpId,branchId
+    ////FullAccount
+    //private _getAccountsUrl = Environment.BaseUrl + "/lookup/accounts/fp/{0}/branch/{1}";//fpId,branchId
+    //private _getDetailAccountsUrl = Environment.BaseUrl + "/lookup//faccounts/fp/{0}/branch/{1}";//fpId,branchId
+    //private _getCostCentersUrl = Environment.BaseUrl + "/lookup/costcenters/fp/{0}/branch/{1}";//fpId,branchId
+    //private _getProjectsUrl = Environment.BaseUrl + "/lookup/projects/fp/{0}/branch/{1}";//fpId,branchId
 
-    //Curency
-    private _getCurrenciesUrl = Environment.BaseUrl+"/lookup/currencies"
+    ////Curency
+    //private _getCurrenciesUrl = Environment.BaseUrl+"/lookup/currencies"
     
 
     constructor(private http: Http) {
@@ -34,7 +35,7 @@ export class LookupService extends BaseService {
 
     GetAccountsLookup() {
 
-        var url = String.Format(this._getAccountsUrl, this.FiscalPeriodId, this.BranchId);
+        var url = String.Format(LookupApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
@@ -43,7 +44,7 @@ export class LookupService extends BaseService {
 
     GetDetailAccountsLookup() {
 
-        var url = String.Format(this._getDetailAccountsUrl, this.FiscalPeriodId, this.BranchId);
+        var url = String.Format(LookupApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
@@ -52,7 +53,7 @@ export class LookupService extends BaseService {
 
     GetCostCentersLookup() {
 
-        var url = String.Format(this._getCostCentersUrl, this.FiscalPeriodId, this.BranchId);
+        var url = String.Format(LookupApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId);
 
         return this.http.get(url, { headers: this.headers })
             .map(response => <any>(<Response>response).json());
@@ -61,7 +62,7 @@ export class LookupService extends BaseService {
 
     GetProjectsLookup() {
 
-        var url = String.Format(this._getProjectsUrl, this.FiscalPeriodId, this.BranchId);
+        var url = String.Format(LookupApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
@@ -70,7 +71,7 @@ export class LookupService extends BaseService {
 
     GetCurrenciesLookup() {
 
-        return this.http.get(this._getCurrenciesUrl,this.options)
+        return this.http.get(LookupApi.Currencies, this.options)
             .map(response => <any>(<Response>response).json());
 
     }
