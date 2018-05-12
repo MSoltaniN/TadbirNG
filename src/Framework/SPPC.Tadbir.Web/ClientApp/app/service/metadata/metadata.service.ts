@@ -26,8 +26,8 @@ export class MetaDataService extends BaseService {
     headers: Headers;
     options: RequestOptions;
 
-    constructor(private http: Http) {        
-        super();
+    constructor(public http: Http) {
+        super(http);
     }
 
     /**

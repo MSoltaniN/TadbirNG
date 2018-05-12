@@ -16,6 +16,7 @@ import { MessageType, Entities, Metadatas } from "../../enviroment";
 import { Filter } from "../../class/filter";
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
+import { VoucherApi } from '../../service/api/index';
 
 
 
@@ -66,10 +67,6 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
         super(toastrService, translate, renderer, metadata, Entities.VoucherLine, Metadatas.VoucherArticles);
     }
 
-    getRowsCount() {
-        return this.voucherLineService.getCount(this.voucherId, this.currentOrder, this.currentFilter).map(response => <any>(<Response>response).json());
-    }
-
     selectionKey(context: RowArgs): string {
         if (context.dataItem == undefined) return "";
         return context.dataItem.id + " " + context.index;
@@ -93,23 +90,16 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     }
 
     reloadGrid(voucherLine?: VoucherLine) {
-
         this.sppcLoading.show();
-
         var filter = this.currentFilter;
         var order = this.currentOrder;
-
         if (this.totalRecords == this.skip && this.totalRecords != 0) {
             this.skip = this.skip - this.pageSize;
         }
-
-        this.voucherLineService.search(this.voucherId, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-
+        this.voucherLineService.getAll(String.Format(VoucherApi.VoucherArticles, this.voucherId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
             var resData = res.json();
             this.properties = resData.metadata.properties;
             var totalCount = 0;
-
-
             if (voucherLine) {
                 var rows = (resData.list as Array<VoucherLine>);
                 var index = rows.findIndex(p => p.id == voucherLine.id);
@@ -121,11 +111,9 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
                     if (rows.length == this.pageSize) {
                         resData.list.splice(this.pageSize - 1, 1);
                     }
-
                     rows.splice(0, 0, voucherLine);
                 }
             }
-
             if (res.headers != null) {
                 var headers = res.headers != undefined ? res.headers : null;
                 if (headers != null) {
@@ -134,16 +122,12 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
                         totalCount = parseInt(retheader.toString());
                 }
             }
-
             this.rowData = {
                 data: resData.list,
                 total: totalCount
             }
-
             this.showloadingMessage = !(resData.list.length == 0);
-            this.totalRecords = totalCount;
-            
-
+            this.totalRecords = totalCount;            
         })
 
         this.voucherLineService.getVoucherInfo(this.voucherId).subscribe(res => {
@@ -159,9 +143,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
         if (state.sort)
             if (state.sort.length > 0)
                 this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
-
         this.state = state;
-
         this.skip = state.skip;
         this.reloadGrid();
     }
@@ -169,21 +151,18 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     public sortChange(sort: SortDescriptor[]): void {
         if (sort)
             this.currentOrder = sort[0].field + " " + sort[0].dir;
-
         this.reloadGrid();
     }
-
 
     pageChange(event: PageChangeEvent): void {
         this.skip = event.skip;
         //this.reloadGrid();
     }
 
-
     deleteVoucherLine(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.voucherLineService.delete(this.deleteVoucherLineId).subscribe(response => {
+            this.voucherLineService.delete(VoucherApi.VoucherArticle,this.deleteVoucherLineId).subscribe(response => {
                 this.deleteVoucherLineId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
@@ -198,21 +177,15 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     }
 
     removeHandler(arg: any) {
-
         this.prepareDeleteConfirm(arg.dataItem.name);
-
         this.deleteVoucherLineId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
-
     //voucher form events
     public editHandler(arg: any) {
-
         this.sppcLoading.show();
-
-        this.voucherLineService.getVoucherLineById(arg.dataItem.id).subscribe(res => {
-
+        this.voucherLineService.getById(VoucherApi.VoucherArticle,arg.dataItem.id).subscribe(res => {
             this.editDataItem = res.item;
             this.sppcLoading.hide();
         })
@@ -233,42 +206,33 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     }
 
     public saveHandler(voucherLine: VoucherLine) {
-
         voucherLine.branchId = this.BranchId;
         voucherLine.fiscalPeriodId = this.FiscalPeriodId;
         this.sppcLoading.show();
         if (!this.isNew) {
-
             this.isNew = false;
-
-            this.voucherLineService.editVoucherLine(voucherLine)
+            this.voucherLineService.edit<VoucherLine>(VoucherApi.VoucherArticle, voucherLine, voucherLine.id)
                 .subscribe(response => {
-
                     this.editDataItem = undefined;
-
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
-
                 }, (error => {
                     //this.editDataItem = voucherLine;
                     this.errorMessage = error;
-
                 }));
         }
         else {
             voucherLine.voucherId = this.voucherId;
-            this.voucherLineService.insertVoucherLine(this.voucherId, voucherLine)
+            this.voucherLineService.insert<VoucherLine>(String.Format(VoucherApi.VoucherArticles, this.voucherId), voucherLine)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     var insertedVoucherLine = JSON.parse(response._body);
                     this.reloadGrid(insertedVoucherLine);
-
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
-
                 }));
         }
         this.sppcLoading.hide();

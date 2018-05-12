@@ -22,7 +22,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { Response } from '@angular/http';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
-import { GridResult } from '../../service/account.service';
+import { ProjectApi } from '../../service/api/index';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -73,7 +73,6 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     groupDelete: boolean = false;
 
     ngOnInit() {
-
         this.reloadGrid();
     }
 
@@ -81,7 +80,6 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
         private projectService: ProjectService, public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, Entities.Project, Metadatas.Project);
     }
-
 
     selectionKey(context: RowArgs): string {
         if (context.dataItem == undefined) return "";
@@ -117,34 +115,25 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-
     reloadGrid(insertedProject?: Project) {
-
         this.sppcLoading.show();
-
         var filter = this.currentFilter;
         var order = this.currentOrder;
-
         if (this.totalRecords == this.skip) {
             this.skip = this.skip - this.pageSize;
         }
-
         if (this.totalRecords == this.skip) {
             this.skip = this.skip - this.pageSize;
         }
-
         if (this.parent) {
             if (this.parent.childCount > 0)
                 filter.push(new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"))
         }
         else
             filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
-
-        this.projectService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-
+        this.projectService.getAll(ProjectApi.FiscalPeriodBranchProjects,this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
             var resData = res.json();
             var totalCount = 0;
-
             if (insertedProject) {
                 var rows = (resData as Array<Project>);
                 var index = rows.findIndex(p => p.id == insertedProject.id);
@@ -156,12 +145,9 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
                     if (rows.length == this.pageSize) {
                         resData.splice(this.pageSize - 1, 1);
                     }
-
                     rows.splice(0, 0, insertedProject);
-
                 }
             }
-
             if (res.headers != null) {
                 var headers = res.headers != undefined ? res.headers : null;
                 if (headers != null) {
@@ -170,16 +156,13 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
                         totalCount = parseInt(retheader.toString());
                 }
             }
-
             this.rowData = {
                 data: resData,
                 total: totalCount
             }
-
             this.showloadingMessage = !(resData.length == 0);
             this.totalRecords = totalCount;
             this.sppcLoading.hide();
-
         })
     }
 
@@ -188,9 +171,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
         if (state.sort)
             if (state.sort.length > 0)
                 this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
-
         this.state = state;
-
         this.skip = state.skip;
         this.reloadGrid();
     }
@@ -198,21 +179,18 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     public sortChange(sort: SortDescriptor[]): void {
         if (sort)
             this.currentOrder = sort[0].field + " " + sort[0].dir;
-
         this.reloadGrid();
     }
-
 
     pageChange(event: PageChangeEvent): void {
         this.skip = event.skip;
         this.reloadGrid();
     }
 
-
     deleteProject(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.projectService.delete(this.deleteProjectId).subscribe(response => {
+            this.projectService.delete(ProjectApi.Project,this.deleteProjectId).subscribe(response => {
                 this.deleteProjectId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
@@ -227,18 +205,15 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     }
 
     removeHandler(arg: any) {
-
         this.prepareDeleteConfirm(arg.dataItem.name);
-
         this.deleteProjectId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
     //detail account form events
     public editHandler(arg: any) {
-
         this.sppcLoading.show();
-        this.projectService.getProjectById(arg.dataItem.id).subscribe(res => {
+        this.projectService.getById(ProjectApi.Project,arg.dataItem.id).subscribe(res => {
             this.editDataItem = res;
             this.sppcLoading.hide();
         })
@@ -251,27 +226,21 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-
     public addNew(parentProjectId?: number) {
         this.isNew = true;
         this.editDataItem = new ProjectInfo();
-
         if (parentProjectId)
             this.parentId = parentProjectId;
-
         this.errorMessage = '';
     }
 
     public saveHandler(project: Project) {
-
         project.branchId = this.BranchId;
         project.fiscalPeriodId = this.FiscalPeriodId;
-
         this.sppcLoading.show();
-
         if (!this.isNew) {
             this.isNew = false;
-            this.projectService.editProject(project)
+            this.projectService.edit<Project>(ProjectApi.Project,project, project.id)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
@@ -279,7 +248,6 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
                 }, (error => {
                     this.editDataItem = project;
                     this.errorMessage = error;
-
                 }));
         }
         else {
@@ -292,21 +260,18 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
                 project.parentId = this.parent.id;
             //set parentid for childs accounts
 
-            this.projectService.insertProject(project)
+            this.projectService.insert<Project>(ProjectApi.Projects,project)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     var insertedDetailAccount = JSON.parse(response._body);
                     this.reloadGrid(insertedDetailAccount);
-
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
                 }));
-
         }
-
         this.sppcLoading.hide();
     }
 
