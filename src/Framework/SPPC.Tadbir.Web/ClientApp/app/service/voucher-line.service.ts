@@ -15,7 +15,7 @@ export class VoucherLineInfo implements VoucherLine {
     fiscalPeriodId: number = 0;
     branchId: number = 0;
     voucherId: number = 0;
-    currencyId: number = 0;
+    currencyId: number;
     fullAccount: {
         accountId: number;
         detailId: number;
