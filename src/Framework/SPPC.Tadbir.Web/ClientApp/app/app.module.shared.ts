@@ -18,7 +18,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
-import { Account2Component } from './components/account/account.component';
+import { AccountComponent } from './components/account/account.component';
 import { AccountFormComponent } from './components/account/account-form.component';
 import { VoucherComponent } from './components/voucher/voucher.component';
 import { VoucherFormComponent } from './components/voucher/voucher-form.component';
@@ -93,7 +93,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         AppComponent,
         SppcLoadingComponent,
         NavMenuComponent,
-        Account2Component,
+        AccountComponent,
         AccountFormComponent,        
         LoginComponent,
         LoginCompleteComponent,
@@ -165,7 +165,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         TranslateModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'login', pathMatch: 'full' },
-            { path: 'account2', component: Account2Component, canActivate: [AuthGuard] },
+            { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
             { path: 'login', component: LoginContainerComponent },
             { path: 'logout', component: LogoutComponent },
             { path: 'voucher', component: VoucherComponent, canActivate: [AuthGuard] },

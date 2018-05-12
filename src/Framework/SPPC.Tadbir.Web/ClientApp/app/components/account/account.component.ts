@@ -52,7 +52,7 @@ export function getLayoutModule(layout: Layout) {
 })
 
 
-export class Account2Component extends DefaultComponent implements OnInit {
+export class AccountComponent extends DefaultComponent implements OnInit {
 
     @Input() public parent: Account;
 

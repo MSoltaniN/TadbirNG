@@ -52,7 +52,7 @@ export class RoleFormComponent extends DefaultComponent {
     public selectedRows: number[] = [];
     active: boolean = false;
     showloadingMessage: boolean = true;
-
+    
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string = '';
 
@@ -68,8 +68,10 @@ export class RoleFormComponent extends DefaultComponent {
 
     @Input() public set permissionModel(permission: any) {
 
-        var levelIndex0: number = -1;
-        var levelIndex1: number = 0;
+        var level0Index: number = -1;
+        var level1Index: number = 0;
+        var selectAll: boolean = true;
+
 
         if (permission != undefined) {
             var groupId = 0;
@@ -91,10 +93,10 @@ export class RoleFormComponent extends DefaultComponent {
                 if (groupId != permissionItem.groupId) {
                     this.treeData.push(new TreeNodeInfo(permissionItem.groupId, -1, permissionItem.groupName))
 
-                    levelIndex0++;
-                    levelIndex1 = -1;
+                    level0Index++;
+                    level1Index = -1;
 
-                    checkedParent = '0_' + levelIndex0.toString();
+                    checkedParent = '0_' + level0Index.toString();
 
                     this.checkedKeys.push(checkedParent);
 
@@ -110,25 +112,30 @@ export class RoleFormComponent extends DefaultComponent {
                     this.treeData.push(new TreeNodeInfo(parseInt(permissionItem.id.toString() + permissionItem.groupId.toString() + '00')
                         , permissionItem.groupId, permissionItem.name))                    
                     
-                    levelIndex1++;
+                    level1Index++;
                 }
                     
 
                 if (permissionItem.isEnabled) {
-                    this.checkedKeys.push('0_' + levelIndex0.toString() + '_' + levelIndex1.toString());                    
+                    this.checkedKeys.push('0_' + level0Index.toString() + '_' + level1Index.toString());                    
                 }
                 else {
                     if (indexId >= 0 && this.checkedKeys[indexId].length == 3)
                     {
                         this.checkedKeys.splice(indexId, 1);
                         indexId = -1;
+                        selectAll = false;
                     }
                 }
 
-                this.permissonDictionary['0_' + levelIndex0.toString() + '_' + levelIndex1.toString()] = permissionItem;
+                this.permissonDictionary['0_' + level0Index.toString() + '_' + level1Index.toString()] = permissionItem;
                     
             }
-            
+
+
+            if (selectAll) {
+                this.checkedKeys.push('0');
+            }
         }
         
         this.gridPermissionsData = permission;
