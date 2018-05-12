@@ -18,6 +18,7 @@ import { Filter } from "../../class/filter";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
+import { RoleApi } from '../../service/api/index';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -80,7 +81,6 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
         public roleService: RoleService, public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, Entities.Role, Metadatas.Role);
-
     }
 
     selectionKey(context: RowArgs): string {
@@ -96,23 +96,15 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     }
 
     reloadGrid(insertedRole?: Role) {
-
         this.sppcLoading.show();
-
         var filter = this.currentFilter;
         var order = this.currentOrder;
-
         if (this.totalRecords == this.skip && this.totalRecords != 0) {
             this.skip = this.skip - this.pageSize;
         }
-
-        this.roleService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-
+        this.roleService.getAll(RoleApi.Roles,this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
             var resData = res.json();
-            //this.properties = resData.metadata.properties;
             var totalCount = 0;
-
-
             if (insertedRole) {
                 var rows = (resData as Array<Role>);
                 var index = rows.findIndex(p => p.id == insertedRole.id);
@@ -124,11 +116,9 @@ export class RoleComponent extends DefaultComponent implements OnInit {
                     if (rows.length == this.pageSize) {
                         resData.splice(this.pageSize - 1, 1);
                     }
-
                     rows.splice(0, 0, insertedRole);
                 }
             }
-
             if (res.headers != null) {
                 var headers = res.headers != undefined ? res.headers : null;
                 if (headers != null) {
@@ -137,30 +127,23 @@ export class RoleComponent extends DefaultComponent implements OnInit {
                         totalCount = parseInt(retheader.toString());
                 }
             }
-
             this.rowData = {
                 data: resData,
                 total: totalCount
             }
-
             this.showloadingMessage = !(resData.length == 0);
             this.totalRecords = totalCount;
             this.sppcLoading.hide();
-
         })
-
     }
 
     detailHandler(roleId: number) {
         this.roleDetail = true;
         this.sppcLoading.show();
-
         this.roleService.getRoleDetail(roleId).subscribe(res => {
             this.roleDetailData = res;
-
             this.sppcLoading.hide();
         });
-
         this.errorMessage = '';
     }
 
@@ -173,7 +156,6 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     userHandler(roleId: number) {
         this.usersList = true;
         this.sppcLoading.show();
-
         this.roleService.getRoleUsers(roleId).subscribe(res => {
             this.roleUsersData = res;
 
@@ -190,33 +172,25 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     }
 
     saveRoleUsersHandler(roleUsers: RoleUsers) {
-
         this.sppcLoading.show();
-
         this.roleService.modifiedRoleUsers(roleUsers)
             .subscribe(response => {
                 this.usersList = false;
                 this.showMessage(this.updateMsg, MessageType.Succes); 
-
                 this.sppcLoading.hide();
             }, (error => {
-
                 this.sppcLoading.hide();
                 this.errorMessage = error;
             }));
     }
 
-
     branchHandler(roleId: number) {
         this.roleBranches = true;
         this.sppcLoading.show();
-
         this.roleService.getRoleBranches(roleId).subscribe(res => {
             this.roleBranchesData = res;
-
             this.sppcLoading.hide();
-        })
-       
+        })       
         this.errorMessage = '';
     }
 
@@ -228,7 +202,6 @@ export class RoleComponent extends DefaultComponent implements OnInit {
 
     saveRoleBranchesHandler(roleBranches: RoleBranches) {
         this.sppcLoading.show();
-
         this.roleService.modifiedRoleBranches(roleBranches)
             .subscribe(response => {
                 this.roleBranches = false;
@@ -239,7 +212,6 @@ export class RoleComponent extends DefaultComponent implements OnInit {
                 this.sppcLoading.hide();
             }));       
     }
-
 
     dataStateChange(state: DataStateChangeEvent): void {
         this.currentFilter = this.getFilters(state.filter);
@@ -257,7 +229,6 @@ export class RoleComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-
     pageChange(event: PageChangeEvent): void {
         this.skip = event.skip;
         this.reloadGrid();
@@ -266,7 +237,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     deleteRole(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.roleService.delete(this.deleteRoleId).subscribe(response => {
+            this.roleService.delete(RoleApi.Role,this.deleteRoleId).subscribe(response => {
                 this.deleteRoleId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
@@ -275,32 +246,25 @@ export class RoleComponent extends DefaultComponent implements OnInit {
                 this.showMessage(error, MessageType.Warning);
             }));
         }
-
         //hide confirm dialog
         this.deleteConfirm = false;
     }
 
     removeHandler(arg: any) {
-
         this.prepareDeleteConfirm(arg.dataItem.name);
-
         this.deleteRoleId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
-
     public editHandler(arg: any) {
         this.sppcLoading.show();
-
         this.roleService.getRoleFull(arg.dataItem.id).subscribe(res => {
             this.editDataItem = res.role;
             this.permissionsData = res.permissions;
-
             this.sppcLoading.hide();
         });
         this.isNew = false;
-        this.errorMessage = '';
-       
+        this.errorMessage = '';       
     }
 
     public cancelHandler() {
@@ -323,7 +287,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     public saveHandler(roleFull: RoleFull) {
         this.sppcLoading.show();
         if (!this.isNew) {
-            this.roleService.editRole(roleFull)
+            this.roleService.edit<RoleFull>(RoleApi.Role,roleFull, roleFull.id)
                     .subscribe(response => {
                         this.isNew = false;
                         this.editDataItem = undefined;
@@ -334,7 +298,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
                     }));
             }
             else {
-                this.roleService.insertRole(roleFull)
+            this.roleService.insert<RoleFull>(RoleApi.Roles,roleFull)
                     .subscribe((response: any) => {
                         this.isNew = false;
                         this.editDataItem = undefined;

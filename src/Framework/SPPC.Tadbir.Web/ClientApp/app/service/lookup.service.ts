@@ -19,18 +19,8 @@ import { LookupApi } from './api/index';
 @Injectable()
 export class LookupService extends BaseService {
 
-    ////FullAccount
-    //private _getAccountsUrl = Environment.BaseUrl + "/lookup/accounts/fp/{0}/branch/{1}";//fpId,branchId
-    //private _getDetailAccountsUrl = Environment.BaseUrl + "/lookup//faccounts/fp/{0}/branch/{1}";//fpId,branchId
-    //private _getCostCentersUrl = Environment.BaseUrl + "/lookup/costcenters/fp/{0}/branch/{1}";//fpId,branchId
-    //private _getProjectsUrl = Environment.BaseUrl + "/lookup/projects/fp/{0}/branch/{1}";//fpId,branchId
-
-    ////Curency
-    //private _getCurrenciesUrl = Environment.BaseUrl+"/lookup/currencies"
-    
-
-    constructor(private http: Http) {
-        super();      
+    constructor(public http: Http) {
+        super(http);
     }
 
     GetAccountsLookup() {
@@ -70,9 +60,7 @@ export class LookupService extends BaseService {
     }
 
     GetCurrenciesLookup() {
-
         return this.http.get(LookupApi.Currencies, this.options)
             .map(response => <any>(<Response>response).json());
-
     }
 }

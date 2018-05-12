@@ -70,59 +70,11 @@ export class RoleDetailsInfo implements RoleDetails {
     users: Array<UserBrief>;
 }
 
-
-
-
 @Injectable()
 export class RoleService extends BaseService {
 
-    //private _getRolesUrl = Environment.BaseUrl + "/roles";
-    //private _getRoleFull = Environment.BaseUrl + "/roles/{0}";//roleId
-    //private _getNewRoleFull = Environment.BaseUrl + "/roles/new";
-    //private _postNewRoleUrl = Environment.BaseUrl + "/roles";
-    //private _putModifiedRolesUrl = Environment.BaseUrl + "/roles/{0}";//roleId
-    //private _deleteRoleUrl = Environment.BaseUrl + "/roles/{0}";//roleId
-    ////users
-    //private _getRoleUsersUrl = Environment.BaseUrl + "/roles/{0}/users";//roleId
-    //private _putModifiedRoleUsersUrl = Environment.BaseUrl + "/roles/{0}/users";//roleId
-    ////branches
-    //private _getRoleBranchesUrl = Environment.BaseUrl + "/roles/{0}/branches";//roleId
-    //private _putModifiedRoleBranchesUrl = Environment.BaseUrl + "/roles/{0}/branches";//roleId
-    ////detail
-    //private _getRoleDetailUrl = Environment.BaseUrl + "/roles/{0}/details";//roleId
-
-    constructor(private http: Http) {
-        super();
-    }
-
-    search(start?: number, count?: number, orderby?: string, filters?: Filter[]) {
-        var headers = this.headers;
-        var gridPaging = { pageIndex: start, pageSize: count };
-        var sort = new Array<GridOrderBy>();
-        if (orderby) {
-            var orderByParts = orderby.split(' ');
-            var fieldName = orderByParts[0];
-            if (orderByParts[1] != 'undefined')
-                sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
-        }
-        var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
-        var url = RoleApi.Roles;
-        var searchHeaders = this.headers;
-        var postBody = JSON.stringify(postItem);
-        var base64Body = btoa(encodeURIComponent(postBody));
-
-        if (searchHeaders)
-            searchHeaders.set('X-Tadbir-GridOptions', base64Body);
-
-        var options = new RequestOptions({ headers: searchHeaders });
-
-        var result: any = null;
-        var totalCount = 0;
-
-        var res = this.http.get(url, options)
-            .map(response => <any>(<Response>response));
-
-        return res;
+    constructor(public http: Http) {
+        super(http);
     }
 
     getNewRoleFull() {
@@ -139,37 +91,9 @@ export class RoleService extends BaseService {
             .map(response => <any>(<Response>response).json());
     }
 
-    editRole(roleFull: RoleFull): Observable<string> {
-        var body = JSON.stringify(roleFull);
-
-        var url = String.Format(RoleApi.Role, roleFull.role.id);
-
-        return this.http.put(url, body, this.options)
-            .map(res => res)
-            .catch(this.handleError);
-    }
-
-    insertRole(roleFull: RoleFull): Observable<string> {
-        var body = JSON.stringify(roleFull);
-
-        return this.http.post(RoleApi.Roles, body, this.options)
-            .map(res => res)
-            .catch(this.handleError);
-    }
-
-    delete(roleId: number): Observable<string> {
-
-        var deleteByIdUrl = String.Format(RoleApi.Role, roleId.toString());
-
-        return this.http.delete(deleteByIdUrl, this.options)
-            .map(response => response)
-            .catch(this.handleError);
-    }
 
     getRoleUsers(roleId: number) {
         var url = String.Format(RoleApi.RoleUsers, roleId);
-
-
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
@@ -213,10 +137,5 @@ export class RoleService extends BaseService {
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
-
-    private handleError(error: Response) {
-        return Observable.throw(error.json());
-    }
-
 
 }

@@ -37,86 +37,16 @@ export class UserProfileInfo implements UserProfile {
 @Injectable()
 export class UserService extends BaseService {
 
-    //private _getUsersUrl = Environment.BaseUrl + "/users";
-    //private _postNewUsersUrl = Environment.BaseUrl + "/users";
-    //private _putModifiedUsersUrl = Environment.BaseUrl + "/users/{0}";
-    //private _getUserByIdUrl = Environment.BaseUrl + "/users/{0}";
-    //private _putChangePassword = Environment.BaseUrl + "/users/{0}/password";//username
-
-    headers: Headers;
-    options: RequestOptions;
-
-    constructor(private http: Http) {
-
-        super();
-
-    }
-
-    search(start?: number, count?: number, orderby?: string, filters?: Filter[]) {
-        var headers = this.headers;
-        var gridPaging = { pageIndex: start, pageSize: count };
-        var sort = new Array<GridOrderBy>();
-        if (orderby) {
-            var orderByParts = orderby.split(' ');
-            var fieldName = orderByParts[0];
-            if (orderByParts[1] != 'undefined')
-                sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
-        }
-        var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
-        var url = UserApi.Users;
-        var searchHeaders = this.headers;
-        var postBody = JSON.stringify(postItem);
-        var base64Body = btoa(encodeURIComponent(postBody));
-        searchHeaders.set('X-Tadbir-GridOptions', base64Body);
-        var options = new RequestOptions({ headers: searchHeaders });
-
-        var result: any = null;
-        var totalCount = 0;
-
-        var res = this.http.get(url, options)
-            .map(response => <any>(<Response>response));
-
-        return res;
-    }
-
-    editUser(user: User): Observable<string> {
-        var body = JSON.stringify(user);
-
-        var url = String.Format(UserApi.User, user.id);
-
-        return this.http.put(url, body, this.options)
-            .map(res => res)
-            .catch(this.handleError);
-    }
-
-    insertUser(user: User): Observable<string> {
-        var body = JSON.stringify(user);
-
-        return this.http.post(UserApi.Users, body, this.options)
-            .map(res => res)
-            .catch(this.handleError);
-    }
-
-    getUserById(userId: number) {
-        var url = String.Format(UserApi.User, userId);
-       
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+    constructor(public http: Http) {
+        super(http);
     }
 
     changePassword(userProfile: UserProfile): Observable<string> {
         var body = JSON.stringify(userProfile);
-
         var url = String.Format(UserApi.UserPassword, userProfile.userName);
-
         return this.http.put(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
-
-    private handleError(error: Response) {
-        return Observable.throw(error.json());
-    }
-
 
 }

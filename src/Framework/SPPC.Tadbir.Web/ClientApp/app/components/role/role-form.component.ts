@@ -83,7 +83,7 @@ export class RoleFormComponent extends DefaultComponent {
                 this.treeData.push(new TreeNodeInfo(-1, undefined, "Accounting"));
 
             var checkedParent: string = '';
-            var indexId: number = -1;
+            var indexId: number = 0;
             
             for (let permissionItem of permission) {
 
@@ -98,7 +98,7 @@ export class RoleFormComponent extends DefaultComponent {
 
                     this.checkedKeys.push(checkedParent);
 
-                    indexId++;
+                    indexId = this.checkedKeys.length - 1;
 
                     groupId = permissionItem.groupId;
                     
@@ -121,7 +121,7 @@ export class RoleFormComponent extends DefaultComponent {
                     if (indexId >= 0 && this.checkedKeys[indexId].length == 3)
                     {
                         this.checkedKeys.splice(indexId, 1);
-                        indexId--;
+                        indexId = -1;
                     }
                 }
 
@@ -154,6 +154,7 @@ export class RoleFormComponent extends DefaultComponent {
         e.preventDefault();
 
         var permissionData: Array<Permission> = new Array<Permission>();
+        var allChildChecked: Array<string> = new Array<string>();
         
         for (let key in this.permissonDictionary) {
             //permissionItem.isEnabled = false;
@@ -162,16 +163,30 @@ export class RoleFormComponent extends DefaultComponent {
 
         for (let checked of this.checkedKeys) {
             if (checked.split('_').length == 3) {
-                var obj = this.permissonDictionary[checked];
-                obj.isEnabled = true;
+                this.permissonDictionary[checked].isEnabled = true;               
+            }
+
+            if (checked.split('_').length == 2) {
+                allChildChecked.push(checked);
             }
         }
 
         
         for (let key in this.permissonDictionary) {
-            //permissionItem.isEnabled = false;
-            permissionData.push(this.permissonDictionary[key]);
+            //permissionItem.isEnabled = false;    
+            var parentKey: string = '';
+            if (key.split('_').length == 3) parentKey = key.substring(0, 3);
+
+            if (allChildChecked.filter(k => k == parentKey).length > 0)
+            {
+                this.permissonDictionary[key].isEnabled = true;
+            }
+
+            if (permissionData.filter(p => p.id == this.permissonDictionary[key].id).length == 0)
+                permissionData.push(this.permissonDictionary[key]);
+
         }
+
 
         var viewModel: RoleFullViewModel;
         viewModel = {

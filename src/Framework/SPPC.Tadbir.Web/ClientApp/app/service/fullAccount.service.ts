@@ -27,13 +27,8 @@ export class FullAccountInfo implements FullAccount {
 @Injectable()
 export class FullAccountService extends BaseService {
 
-    //private _getAccountsUrl = Environment.BaseUrl + "/lookup/accounts/fp/{0}/branch/{1}";//fpId,branchId
-    //private _getDetailAccountsUrl = Environment.BaseUrl + "/lookup/faccounts/fp/{0}/branch/{1}";//fpId,branchId
-    //private _getCostCentersUrl = Environment.BaseUrl + "/lookup/costcenters/fp/{0}/branch/{1}";//fpId,branchId
-    //private _getProjectsUrl = Environment.BaseUrl + "/lookup/projects/fp/{0}/branch/{1}";//fpId,branchId
-   
-    constructor(private http: Http) {
-        super();        
+    constructor(public http: Http) {
+        super(http);
     }
 
     GetAccountsLookup() {
