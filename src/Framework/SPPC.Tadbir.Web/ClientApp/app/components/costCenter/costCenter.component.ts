@@ -22,7 +22,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { Response } from '@angular/http';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
-import { GridResult } from '../../service/account.service';
+import { CostCenterApi } from '../../service/api/index';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -82,7 +82,6 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         super(toastrService, translate, renderer, metadata, Entities.CostCenter, Metadatas.CostCenter);
     }
 
-
     selectionKey(context: RowArgs): string {
         if (context.dataItem == undefined) return "";
         return context.dataItem.id + " " + context.index;
@@ -117,34 +116,25 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-
     reloadGrid(insertedCostCenter?: CostCenter) {
-
-        this.sppcLoading.show();
-        
+        this.sppcLoading.show();        
         var filter = this.currentFilter;
         var order = this.currentOrder;
-
         if (this.totalRecords == this.skip) {
             this.skip = this.skip - this.pageSize;
         }
-
         if (this.totalRecords == this.skip) {
             this.skip = this.skip - this.pageSize;
         }
-
         if (this.parent) {
             if (this.parent.childCount > 0)
                 filter.push(new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"))
         }
         else
-            filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))        
-
-        this.costCenterService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-
+            filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
+        this.costCenterService.getAll(CostCenterApi.FiscalPeriodBranchCostCenters, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
             var resData = res.json();
             var totalCount = 0;
-
             if (insertedCostCenter) {
                 var rows = (resData as Array<CostCenter>);
                 var index = rows.findIndex(p => p.id == insertedCostCenter.id);
@@ -158,10 +148,8 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
                     }
 
                     rows.splice(0, 0, insertedCostCenter);
-
                 }
             }
-
             if (res.headers != null) {
                 var headers = res.headers != undefined ? res.headers : null;
                 if (headers != null) {
@@ -170,29 +158,22 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
                         totalCount = parseInt(retheader.toString());
                 }
             }
-
             this.rowData = {
                 data: resData,
                 total: totalCount
             }
-
             this.showloadingMessage = !(resData.length == 0);
             this.totalRecords = totalCount;
             this.sppcLoading.hide();
-
         })
     }
-
-
 
     dataStateChange(state: DataStateChangeEvent): void {
         this.currentFilter = this.getFilters(state.filter);
         if (state.sort)
             if (state.sort.length > 0)
                 this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
-
         this.state = state;
-
         this.skip = state.skip;
         this.reloadGrid();
     }
@@ -200,21 +181,18 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     public sortChange(sort: SortDescriptor[]): void {
         if (sort)
             this.currentOrder = sort[0].field + " " + sort[0].dir;
-
         this.reloadGrid();
     }
-
 
     pageChange(event: PageChangeEvent): void {
         this.skip = event.skip;
         this.reloadGrid();
     }
 
-
     deleteCostCenter(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.costCenterService.delete(this.deleteCostCenterId).subscribe(response => {
+            this.costCenterService.delete(CostCenterApi.CostCenter, this.deleteCostCenterId).subscribe(response => {
                 this.deleteCostCenterId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
@@ -229,18 +207,15 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     }
 
     removeHandler(arg: any) {
-
         this.prepareDeleteConfirm(arg.dataItem.name);
-
         this.deleteCostCenterId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
     //detail account form events
     public editHandler(arg: any) {
-
         this.sppcLoading.show();
-        this.costCenterService.getCostCenterById(arg.dataItem.id).subscribe(res => {
+        this.costCenterService.getById(CostCenterApi.CostCenter, arg.dataItem.id).subscribe(res => {
             this.editDataItem = res;
             this.sppcLoading.hide();
         })
@@ -253,27 +228,21 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-
     public addNew(parentCostCenterId?: number) {
         this.isNew = true;
-        this.editDataItem = new CostCenterInfo();
-
+        this.editDataItem = new CostCenterInfo();    
         if (parentCostCenterId)
             this.parentId = parentCostCenterId;
-
         this.errorMessage = '';
     } 
 
     public saveHandler(costCenter: CostCenter) {
-
         costCenter.branchId = this.BranchId;
         costCenter.fiscalPeriodId = this.FiscalPeriodId;
-
         this.sppcLoading.show();
-
         if (!this.isNew) {
             this.isNew = false;
-            this.costCenterService.editCostCenter(costCenter)
+            this.costCenterService.edit<CostCenter>(CostCenterApi.CostCenter, costCenter, costCenter.id)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
@@ -281,7 +250,6 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
                 }, (error => {
                     this.editDataItem = costCenter;
                     this.errorMessage = error;
-
                 }));
         }
         else {
@@ -294,21 +262,18 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
                 costCenter.parentId = this.parent.id;
             //set parentid for childs accounts
 
-            this.costCenterService.insertCostCenter(costCenter)
+            this.costCenterService.insert<CostCenter>(CostCenterApi.CostCenters,costCenter)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     var insertedDetailAccount = JSON.parse(response._body);
                     this.reloadGrid(insertedDetailAccount);
-
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
                 }));
-
         }
-
         this.sppcLoading.hide();
     }
 

@@ -21,10 +21,14 @@
         <div class="form-group">
             <label for="currencyId" class="control-label">{{ 'VoucherLine.Currency' | translate }}</label>
 
-            <kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="ddl-fAcc"
-                                [textField]="'value'" [value]="selectedCurrencyValue" [(ngModel)]="selectedCurrencyValue" [valueField]="'key'">
-            </kendo-dropdownlist>
+            <!--<kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="ddl-fAcc"
+                        [textField]="'value'" [value]="selectedCurrencyValue" [(ngModel)]="selectedCurrencyValue" [valueField]="'key'">
+    </kendo-dropdownlist>-->
 
+            <kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="ddl-fAcc"
+                                [textField]="'value'" [value]="selectedCurrencyValue" [(ngModel)]="selectedCurrencyValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
+            </kendo-dropdownlist>
+            <br />
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.currencyId.valid || editForm1.controls.currencyId.pristine">
                 {{ 'VoucherLineValidation.Currency' | translate }}
             </div>

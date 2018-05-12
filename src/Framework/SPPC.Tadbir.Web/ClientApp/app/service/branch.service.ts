@@ -12,27 +12,19 @@ import { LookupApi } from './api/index';
 @Injectable()
 export class BranchService extends BaseService {
     
-    //private getBranchUrl = Environment.BaseUrl + "/lookup/branches/company/{0}/user/{1}"; //{0}=companyId  , {1}=userId
-    
-    constructor(private http: Http) {
-        super();
+
+    constructor(public http: Http) {
+        super(http);
     }
 
 
     getBranches(companyId : number, ticket :string) {
-
         this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
         this.headers.append('X-Tadbir-AuthTicket', ticket);
-
         if (ticket == '') return null;
-
-        var url = String.Format(LookupApi.UserAccessibleCompanyBranches, companyId, this.UserId);
-        
+        var url = String.Format(LookupApi.UserAccessibleCompanyBranches, companyId, this.UserId);        
         return this.http.get(url, { headers: this.headers })
             .map(response => <any>(<Response>response).json());
     }
-
-
-    
 
 }
