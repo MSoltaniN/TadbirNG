@@ -123,6 +123,9 @@
   <data name="AccountCode" xml:space="preserve">
     <value>کد حساب</value>
   </data>
+  <data name="AccountId" xml:space="preserve">
+    <value>حساب</value>
+  </data>
   <data name="AdminRoleIsReadonly" xml:space="preserve">
     <value>اصلاح یا حذف نقش راهبر سیستم امکانپذیر نیست.</value>
   </data>
@@ -147,8 +150,26 @@
   <data name="CostCenter" xml:space="preserve">
     <value>مرکز هزینه</value>
   </data>
+  <data name="Credit" xml:space="preserve">
+    <value>بستانکار</value>
+  </data>
+  <data name="CreditSum" xml:space="preserve">
+    <value>جمع بستانکار</value>
+  </data>
+  <data name="CurrencyId" xml:space="preserve">
+    <value>نوع ارز</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>تاریخ</value>
+  </data>
+  <data name="Debit" xml:space="preserve">
+    <value>بدهکار</value>
+  </data>
   <data name="DebitAndCreditNotAllowed" xml:space="preserve">
     <value>وارد کردن همزمان مبالغ بدهکار و بستانکار در آرتیکل نادرست است.</value>
+  </data>
+  <data name="DebitSum" xml:space="preserve">
+    <value>جمع بدهکار</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>شرح</value>
@@ -162,8 +183,17 @@
   <data name="DuplicateFieldValue" xml:space="preserve">
     <value>{0} تکراری است.</value>
   </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>تاریخ پایان</value>
+  </data>
+  <data name="EntityName" xml:space="preserve">
+    <value>نام موجودیت</value>
+  </data>
   <data name="FieldIsRequired" xml:space="preserve">
     <value>وارد کردن {0} اجباری است.</value>
+  </data>
+  <data name="FieldsDoNotMatch" xml:space="preserve">
+    <value>{0} و {1} متفاوت هستند.</value>
   </data>
   <data name="FullCode" xml:space="preserve">
     <value>کد کامل</value>
@@ -195,14 +225,32 @@
   <data name="NewAndRepeatPasswordsDontMatch" xml:space="preserve">
     <value>رمز ورود جدید و تکرار آن متفاوت هستند.</value>
   </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>رمز ورود جید</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>شماره</value>
+  </data>
+  <data name="OldPassword" xml:space="preserve">
+    <value>رمز ورود قدیم</value>
+  </data>
   <data name="OutOfFiscalPeriodDate" xml:space="preserve">
     <value>تاریخ وارد شده خارج از محدوده تاریخی دوره مالی جاری قرار دارد.</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>رمز ورود</value>
   </data>
+  <data name="PersonFirstName" xml:space="preserve">
+    <value>نام</value>
+  </data>
+  <data name="PersonLastName" xml:space="preserve">
+    <value>نام خانوادگی</value>
+  </data>
   <data name="Project" xml:space="preserve">
     <value>پروژه</value>
+  </data>
+  <data name="RepeatPassword" xml:space="preserve">
+    <value>تکرار رمز ورود</value>
   </data>
   <data name="RequestFailedConflict" xml:space="preserve">
     <value>درخواست مورد نظر به دلیل متناقض بودن اطلاعات {0} انجام نشد.</value>
@@ -212,6 +260,9 @@
   </data>
   <data name="Role" xml:space="preserve">
     <value>نقش</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>تاریخ شروع</value>
   </data>
   <data name="TextFieldHasRange" xml:space="preserve">
     <value>طول {0} باید بین {1} و {2} حرف باشد.</value>

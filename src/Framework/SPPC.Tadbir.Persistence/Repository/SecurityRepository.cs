@@ -1187,24 +1187,12 @@ namespace SPPC.Tadbir.Persistence
                 .Where(id => !currentItems.Contains(id))
                 .ToArray();
 
-                foreach (int id in removedItems)
-                {
-                    // change by nouri
-                    if (existing.RolePermissions
-                        .Count(rp => rp.PermissionId == id) == 1)
-                    {
-                        existing.RolePermissions.Remove(existing.RolePermissions
-                            .Where(rp => rp.PermissionId == id).Single());
-                    }
-                    else
-                    {
-                        var removedPermission = existing.RolePermissions.Where(rp => rp.PermissionId == id).ToList();
-                        foreach (var re in removedPermission)
-                        {
-                            existing.RolePermissions.Remove(re);
-                        }
-                    }
-                }
+            foreach (int id in removedItems)
+            {
+                existing.RolePermissions.Remove(existing.RolePermissions
+                    .Where(rp => rp.PermissionId == id)
+                    .Single());
+            }
         }
 
         private static void UpdateExistingRole(Role existing, RoleFullViewModel role)

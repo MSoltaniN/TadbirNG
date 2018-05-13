@@ -15,6 +15,22 @@ namespace SPPC.Framework.Tools.ProjectCLI
             _cachedResources = cachedResources;
         }
 
+        private bool HasValidation(Type type)
+        {
+            int count = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(prop => HasAttribute(prop, typeof(RequiredAttribute))
+                    || HasAttribute(prop, typeof(StringLengthAttribute))
+                    || HasAttribute(prop, typeof(CompareAttribute)))
+                .Count();
+            return count > 0;
+        }
+
+        private bool HasAttribute(PropertyInfo property, Type attributeType)
+        {
+            return (Reflector.GetPropertyAttribute(
+                property.DeclaringType, property.Name, attributeType) != null);
+        }
+
         private PropertyMetadata GetPropertyMetadata(PropertyInfo property)
         {
             var metadata = new PropertyMetadata() { Name = property.Name };
@@ -45,6 +61,17 @@ namespace SPPC.Framework.Tools.ProjectCLI
                     metadata.MaxLengthMessage = String.Format(
                         _cachedResources["TextFieldIsTooLong"], _cachedResources[property.Name], maxLength);
                 }
+            }
+
+            var compareAttribute = Reflector.GetPropertyAttribute(
+                property.DeclaringType, property.Name, typeof(CompareAttribute)) as CompareAttribute;
+            if (compareAttribute != null)
+            {
+                metadata.HasCompare = true;
+                metadata.CompareToProperty = compareAttribute.OtherProperty;
+                metadata.CompareMessage = String.Format(
+                    _cachedResources["FieldsDoNotMatch"], _cachedResources[property.Name],
+                    _cachedResources[compareAttribute.OtherProperty]);
             }
 
             return metadata;

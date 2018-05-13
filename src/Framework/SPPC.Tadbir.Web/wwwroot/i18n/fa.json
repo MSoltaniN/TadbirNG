@@ -260,8 +260,121 @@
       "SelectBranch": "لطفا شعبه را انتخاب کنید",
       "SelectFiscalPeriod": "لطفا دوره مالی را انتخاب کنید"
     }
+  },
+  "AllValidations": {
+    "Account": {
+      "CodeIsRequired": "وارد کردن کد اجباری است.",
+      "CodeIsTooLong": "کد می تواند حداکثر 16 حرف داشته باشد.",
+      "FullCodeIsRequired": "وارد کردن کد کامل اجباری است.",
+      "FullCodeIsTooLong": "کد کامل می تواند حداکثر 512 حرف داشته باشد.",
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 512 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "CostCenter": {
+      "CodeIsRequired": "وارد کردن کد اجباری است.",
+      "CodeIsTooLong": "کد می تواند حداکثر 16 حرف داشته باشد.",
+      "FullCodeIsRequired": "وارد کردن کد کامل اجباری است.",
+      "FullCodeIsTooLong": "کد کامل می تواند حداکثر 256 حرف داشته باشد.",
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 256 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "Currency": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "DetailAccount": {
+      "CodeIsRequired": "وارد کردن کد اجباری است.",
+      "CodeIsTooLong": "کد می تواند حداکثر 16 حرف داشته باشد.",
+      "FullCodeIsRequired": "وارد کردن کد کامل اجباری است.",
+      "FullCodeIsTooLong": "کد کامل می تواند حداکثر 512 حرف داشته باشد.",
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 256 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "FiscalPeriod": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "StartDateIsRequired": "وارد کردن تاریخ شروع اجباری است.",
+      "EndDateIsRequired": "وارد کردن تاریخ پایان اجباری است.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "FullAccount": {
+      "AccountIdIsRequired": "وارد کردن حساب اجباری است.",
+      "NoError": ""
+    },
+    "Project": {
+      "CodeIsRequired": "وارد کردن کد اجباری است.",
+      "CodeIsTooLong": "کد می تواند حداکثر 16 حرف داشته باشد.",
+      "FullCodeIsRequired": "وارد کردن کد کامل اجباری است.",
+      "FullCodeIsTooLong": "کد کامل می تواند حداکثر 256 حرف داشته باشد.",
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 256 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "VoucherLine": {
+      "CurrencyIdIsRequired": "وارد کردن نوع ارز اجباری است.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "Voucher": {
+      "NoIsRequired": "وارد کردن شماره اجباری است.",
+      "NoIsTooLong": "شماره می تواند حداکثر 64 حرف داشته باشد.",
+      "DateIsRequired": "وارد کردن تاریخ اجباری است.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "Login": {
+      "UserNameIsRequired": "وارد کردن نام کاربری اجباری است.",
+      "UserNameIsTooLong": "نام کاربری می تواند حداکثر 64 حرف داشته باشد.",
+      "PasswordIsRequired": "وارد کردن رمز ورود اجباری است.",
+      "PasswordIsTooLong": "رمز ورود می تواند حداکثر 32 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "PermissionGroup": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "EntityNameIsTooLong": "نام موجودیت می تواند حداکثر 64 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "Permission": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "Role": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "UserProfile": {
+      "OldPasswordIsRequired": "وارد کردن رمز ورود قدیم اجباری است.",
+      "NewPasswordIsRequired": "وارد کردن رمز ورود جید اجباری است.",
+      "NewPasswordLengthRange": "طول رمز ورود جید باید بین 6 و 20 حرف باشد.",
+      "RepeatPasswordIsRequired": "وارد کردن تکرار رمز ورود اجباری است.",
+      "RepeatPasswordAndNewPasswordDoNotMatch": "تکرار رمز ورود و رمز ورود جید متفاوت هستند.",
+      "NoError": ""
+    },
+    "User": {
+      "PersonFirstNameIsRequired": "وارد کردن نام اجباری است.",
+      "PersonFirstNameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "PersonLastNameIsRequired": "وارد کردن نام خانوادگی اجباری است.",
+      "PersonLastNameIsTooLong": "نام خانوادگی می تواند حداکثر 64 حرف داشته باشد.",
+      "UserNameIsRequired": "وارد کردن نام کاربری اجباری است.",
+      "UserNameIsTooLong": "نام کاربری می تواند حداکثر 64 حرف داشته باشد.",
+      "PasswordIsRequired": "وارد کردن رمز ورود اجباری است.",
+      "PasswordLengthRange": "طول رمز ورود باید بین 4 و 32 حرف باشد.",
+      "NoError": ""
+    }
   }
-
-
-
 }
