@@ -22,7 +22,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
 
         public void Execute()
         {
-            string tsModelPath = ConfigurationManager.AppSettings["TsModelPath"];
+            string tsAppPath = ConfigurationManager.AppSettings["TsAppPath"];
             string csAssembly = ConfigurationManager.AppSettings["CsViewModelAssemblies"];
             string csOutPath = ConfigurationManager.AppSettings["CsOutputPath"];
             var assembly = Assembly.Load(csAssembly);
@@ -41,7 +41,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
                     .Replace("ViewModel", String.Empty)
                     .CamelCase();
                 string fullName = String.Format("{0}.{1}", csAssembly, typeName);
-                string generatedPath = String.Format(@"{0}\{1}.ts", tsModelPath, tsTypeName);
+                string generatedPath = String.Format(@"{0}\model\{1}.ts", tsAppPath, tsTypeName);
                 string assemblyPath = String.Format(@"{0}\{1}.dll", csOutPath, csAssembly);
                 var csType = assembly.GetType(fullName);
 
