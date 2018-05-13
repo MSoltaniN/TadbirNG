@@ -260,7 +260,8 @@
       "SelectBranch": "لطفا شعبه را انتخاب کنید",
       "SelectFiscalPeriod": "لطفا دوره مالی را انتخاب کنید"
     }
-  },
+  }
+,
   "AllValidations": {
     "Account": {
       "CodeIsRequired": "وارد کردن کد اجباری است.",
@@ -359,10 +360,10 @@
     },
     "UserProfile": {
       "OldPasswordIsRequired": "وارد کردن رمز ورود قدیم اجباری است.",
-      "NewPasswordIsRequired": "وارد کردن رمز ورود جید اجباری است.",
-      "NewPasswordLengthRange": "طول رمز ورود جید باید بین 6 و 20 حرف باشد.",
+      "NewPasswordIsRequired": "وارد کردن رمز ورود جدید اجباری است.",
+      "NewPasswordLengthRange": "طول رمز ورود جدید باید بین 6 و 20 حرف باشد.",
       "RepeatPasswordIsRequired": "وارد کردن تکرار رمز ورود اجباری است.",
-      "RepeatPasswordAndNewPasswordDoNotMatch": "تکرار رمز ورود و رمز ورود جید متفاوت هستند.",
+      "RepeatPasswordAndNewPasswordDoNotMatch": "تکرار رمز ورود و رمز ورود جدید متفاوت هستند.",
       "NoError": ""
     },
     "User": {

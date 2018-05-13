@@ -226,7 +226,7 @@
     <value>رمز ورود جدید و تکرار آن متفاوت هستند.</value>
   </data>
   <data name="NewPassword" xml:space="preserve">
-    <value>رمز ورود جید</value>
+    <value>رمز ورود جدید</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>شماره</value>
