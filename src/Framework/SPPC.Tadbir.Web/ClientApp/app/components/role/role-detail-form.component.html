@@ -36,12 +36,10 @@
         <div class="panel-body">
             <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
                 <kendo-treeview [nodes]="treeData" textField="name"
-                                kendoTreeViewExpandable
-                                kendoTreeViewCheckable
+                                kendoTreeViewExpandable                                
                                 kendoTreeViewFlatDataBinding
                                 idField="id"
-                                parentIdField="parentId"
-                                [(checkedKeys)]="checkedKeys">
+                                parentIdField="parentId" >
                 </kendo-treeview>
             </div>
             <div *ngIf="false">

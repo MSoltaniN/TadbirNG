@@ -57,72 +57,75 @@ export class RoleDetailFormComponent extends DefaultComponent {
     public treeData: TreeNodeInfo[] = new Array<TreeNodeInfo>();
     public roleDescription: string;
 
-    public checkedKeys: string[] = [];
-
+    private permissonDictionary: { [id: string]: Permission; } = {}
+    
 
     @Input() public roleDetail: boolean = false;
     @Input() public errorMessage: string = '';
 
 
-    @Input() public set roleDetailsViewModel(roleDetailsViewModel: RoleDetailsViewModel) {
+    @Input() public set roleDetails(roleDetails: RoleDetails) {
 
-        if (roleDetailsViewModel != undefined) {
+        
+        var level0Index: number = -1;
+        var level1Index: number = 0;
 
-            var levelIndex0: number = -1;
-            var levelIndex1: number = 0;
-            var permission = roleDetailsViewModel.permissions;
+        if (roleDetails != undefined) {
 
-            if (permission != undefined) {
-                var groupId = 0;
-                this.treeData = new Array<TreeNodeInfo>();
+            var groupId = 0;
 
-                if (this.CurrentLanguage == "fa")
-                    this.treeData.push(new TreeNodeInfo(-1, undefined, "حسابداری"));
-                else
-                    this.treeData.push(new TreeNodeInfo(-1, undefined, "Accounting"));
+            this.treeData = new Array<TreeNodeInfo>();
 
-                var sortedPermission = permission.sort(function (a: Permission, b: Permission) {
-                    return a.id - b.id;
-                });
+            if (this.CurrentLanguage == "fa")
+                this.treeData.push(new TreeNodeInfo(-1, undefined, "حسابداری"));
+            else
+                this.treeData.push(new TreeNodeInfo(-1, undefined, "Accounting"));
 
-                for (let permissionItem of sortedPermission) {
+            var indexId: number = 0;
+            var selectAll: boolean = true;
 
+            var sortedPermission = roleDetails.permissions.sort(function (a: Permission, b: Permission) {
+                return a.id - b.id;
+            });
 
-                    if (groupId != permissionItem.groupId) {
-                        this.treeData.push(new TreeNodeInfo(permissionItem.groupId, -1, permissionItem.groupName))
-                        groupId = permissionItem.groupId;
-
-                        levelIndex0++;
-                        levelIndex1 = -1;
-                    }
-
-                    if (groupId == permissionItem.groupId) {
-                        this.treeData.push(new TreeNodeInfo(parseInt(permissionItem.id.toString() + permissionItem.groupId.toString() + '00')
-                            , permissionItem.groupId, permissionItem.name))
-
-                        levelIndex1++;
-                    }
-
-                    if (permissionItem.isEnabled)
-                        this.checkedKeys.push('0_' + levelIndex0.toString() + '_' + levelIndex1.toString());
+            for (let permissionItem of sortedPermission) {
 
 
+                if (groupId != permissionItem.groupId) {
+                    this.treeData.push(new TreeNodeInfo(permissionItem.groupId, -1, permissionItem.groupName))
+
+                    level0Index++;
+                    level1Index = -1;
+                    
+                    groupId = permissionItem.groupId;
                 }
 
-            }
+                if (groupId == permissionItem.groupId) {
+                    this.treeData.push(new TreeNodeInfo(parseInt(permissionItem.id.toString() + permissionItem.groupId.toString() + '00')
+                        , permissionItem.groupId, permissionItem.name))
 
+                    level1Index++;
+                }
+                
+                this.permissonDictionary['0_' + level0Index.toString() + '_' + level1Index.toString()] = permissionItem;
 
-            this.gridPermissionData = roleDetailsViewModel.permissions;
-            this.gridBranchesData = roleDetailsViewModel.branches;
-            this.gridUsersData = roleDetailsViewModel.users;
+            }   
+            
+            this.gridBranchesData = roleDetails.branches;
+            this.gridUsersData = roleDetails.users;
 
-            this.roleName = roleDetailsViewModel.role.name;
-            this.roleDescription = roleDetailsViewModel.role.description != null ? roleDetailsViewModel.role.description:"";
+            this.roleName = roleDetails.role.name;
+            this.roleDescription = roleDetails.role.description != null ? roleDetails.role.description : "";
 
-            this.showloadingPermissionMessage = !(this.gridPermissionData.length == 0);
+            this.showloadingPermissionMessage = !(this.treeData.length == 0);
             this.showloadingBranchesMessage = !(this.gridBranchesData.length == 0);
             this.showloadingUsersMessage = !(this.gridUsersData.length == 0);
+
+
         }
+
+        //this.gridPermissionData = roleDetails.permissions;
+        
     }
 
     @Output() cancelRoleDetail: EventEmitter<any> = new EventEmitter();
