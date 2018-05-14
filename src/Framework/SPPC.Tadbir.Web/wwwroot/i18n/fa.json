@@ -261,6 +261,9 @@
       "UserNameIsTooLong": "نام کاربری می تواند حداکثر 64 حرف داشته باشد.",
       "PasswordIsRequired": "وارد کردن رمز ورود اجباری است.",
       "PasswordIsTooLong": "رمز ورود می تواند حداکثر 32 حرف داشته باشد.",
+      "CompanyIsRequired": "لطفا شرکت را انتخاب کنید.",
+      "BranchIsRequired": "لطفا شعبه را انتخاب کنید.",
+      "FiscalPeriodIsRequired": "لطفا دوره مالی را انتخاب کنید.",
       "NoError": ""
     },
     "PermissionGroup": {

@@ -261,6 +261,9 @@
       "UserNameIsTooLong": "User name can have a maximum of 64 characters.",
       "PasswordIsRequired": "Password is required.",
       "PasswordIsTooLong": "Password can have a maximum of 32 characters.",
+      "CompanyIsRequired": "Company is required.",
+      "BranchIsRequired": "Branch is required.",
+      "FiscalPeriodIsRequired": "Fiscal period is required.",
       "NoError": ""
     },
     "PermissionGroup": {
