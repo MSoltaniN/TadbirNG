@@ -23,6 +23,8 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { Response } from '@angular/http';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { ProjectApi } from '../../service/api/index';
+import { SecureEntity } from '../../security/secureEntity';
+import { ProjectPermissions } from '../../security/permissions';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -52,6 +54,12 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     public selectedRows: string[] = [];
     public totalRecords: number;
 
+    //permission flag
+    viewAccess: boolean;
+    insertAccess: boolean;
+    editAccess: boolean;
+    deleteAccess: boolean;
+
     ////for add in delete messageText
     deleteConfirm: boolean;
     deleteProjectsConfirm: boolean;
@@ -73,6 +81,11 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     groupDelete: boolean = false;
 
     ngOnInit() {
+        this.viewAccess = this.isAccess(SecureEntity.Project, ProjectPermissions.View);
+        this.insertAccess = this.isAccess(SecureEntity.Project, ProjectPermissions.Create);
+        this.editAccess = this.isAccess(SecureEntity.Project, ProjectPermissions.Edit);
+        this.deleteAccess = this.isAccess(SecureEntity.Project, ProjectPermissions.Delete);
+
         this.reloadGrid();
     }
 
@@ -116,54 +129,63 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     }
 
     reloadGrid(insertedProject?: Project) {
-        this.sppcLoading.show();
-        var filter = this.currentFilter;
-        var order = this.currentOrder;
-        if (this.totalRecords == this.skip) {
-            this.skip = this.skip - this.pageSize;
-        }
-        if (this.totalRecords == this.skip) {
-            this.skip = this.skip - this.pageSize;
-        }
-        if (this.parent) {
-            if (this.parent.childCount > 0)
-                filter.push(new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"))
-        }
-        else
-            filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
-        this.projectService.getAll(ProjectApi.FiscalPeriodBranchProjects,this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-            var resData = res.json();
-            var totalCount = 0;
-            if (insertedProject) {
-                var rows = (resData as Array<Project>);
-                var index = rows.findIndex(p => p.id == insertedProject.id);
-                if (index >= 0) {
-                    resData.splice(index, 1);
-                    rows.splice(0, 0, insertedProject);
-                }
-                else {
-                    if (rows.length == this.pageSize) {
-                        resData.splice(this.pageSize - 1, 1);
+        if (this.viewAccess) {
+            this.sppcLoading.show();
+            var filter = this.currentFilter;
+            var order = this.currentOrder;
+            if (this.totalRecords == this.skip) {
+                this.skip = this.skip - this.pageSize;
+            }
+            if (this.totalRecords == this.skip) {
+                this.skip = this.skip - this.pageSize;
+            }
+            if (this.parent) {
+                if (this.parent.childCount > 0)
+                    filter.push(new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"))
+            }
+            else
+                filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
+            this.projectService.getAll(ProjectApi.FiscalPeriodBranchProjects, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+                var resData = res.json();
+                var totalCount = 0;
+                if (insertedProject) {
+                    var rows = (resData as Array<Project>);
+                    var index = rows.findIndex(p => p.id == insertedProject.id);
+                    if (index >= 0) {
+                        resData.splice(index, 1);
+                        rows.splice(0, 0, insertedProject);
                     }
-                    rows.splice(0, 0, insertedProject);
+                    else {
+                        if (rows.length == this.pageSize) {
+                            resData.splice(this.pageSize - 1, 1);
+                        }
+                        rows.splice(0, 0, insertedProject);
+                    }
                 }
-            }
-            if (res.headers != null) {
-                var headers = res.headers != undefined ? res.headers : null;
-                if (headers != null) {
-                    var retheader = headers.get('X-Total-Count');
-                    if (retheader != null)
-                        totalCount = parseInt(retheader.toString());
+                if (res.headers != null) {
+                    var headers = res.headers != undefined ? res.headers : null;
+                    if (headers != null) {
+                        var retheader = headers.get('X-Total-Count');
+                        if (retheader != null)
+                            totalCount = parseInt(retheader.toString());
+                    }
                 }
-            }
+                this.rowData = {
+                    data: resData,
+                    total: totalCount
+                }
+                this.showloadingMessage = !(resData.length == 0);
+                this.totalRecords = totalCount;
+                this.sppcLoading.hide();
+            })
+        }
+        else {
             this.rowData = {
-                data: resData,
-                total: totalCount
+                data: [],
+                total: 0
             }
-            this.showloadingMessage = !(resData.length == 0);
-            this.totalRecords = totalCount;
-            this.sppcLoading.hide();
-        })
+        }
+        
     }
 
     dataStateChange(state: DataStateChangeEvent): void {

@@ -172,7 +172,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
     selectParams()
     {
-
         if (this.isValidate()) {
             
             if (this.authenticationService.islogin()) {
@@ -183,6 +182,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                     currentUser.branchId = parseInt(this.branchId);
                     currentUser.companyId = parseInt(this.companyId);
                     currentUser.fpId = parseInt(this.fiscalPeriodId);
+                    currentUser.permissions = JSON.parse(atob(this.Ticket)).User.Permissions;
 
                     if (this.authenticationService.isRememberMe())
                         localStorage.setItem('currentContext', JSON.stringify(currentUser));

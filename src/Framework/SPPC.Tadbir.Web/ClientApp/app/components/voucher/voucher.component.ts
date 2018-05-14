@@ -20,6 +20,8 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { VoucherApi } from '../../service/api/index';
+import { SecureEntity } from '../../security/secureEntity';
+import { VoucherPermissions } from '../../security/permissions';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -45,6 +47,12 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     public totalRecords: number;
     public fpId: number;
 
+    //permission flag
+    viewAccess: boolean;
+    insertAccess: boolean;
+    editAccess: boolean;
+    deleteAccess: boolean;
+
     //for add in delete messageText
     deleteConfirm: boolean;
     deleteVoucherId: number;
@@ -65,6 +73,11 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     groupDelete: boolean = false;
 
     ngOnInit() {
+        this.viewAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.View);
+        this.insertAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.Create);
+        this.editAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.Edit);
+        this.deleteAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.Delete);
+
         this.reloadGrid();
     }
 
@@ -98,46 +111,54 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     }
 
     reloadGrid(insertedVoucher?: Voucher) {
-        this.sppcLoading.show();
-        var filter = this.currentFilter;
-        var order = this.currentOrder;
-        if (this.totalRecords == this.skip && this.totalRecords != 0) {
-            this.skip = this.skip - this.pageSize;
-        }
-        this.voucherService.getAll(VoucherApi.FiscalPeriodBranchVouchers, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-            var resData = res.json();
-            this.properties = resData.metadata.properties;
-            var totalCount = 0;
-            if (insertedVoucher) {
-                var rows = (resData.list as Array<Voucher>);
-                var index = rows.findIndex(p => p.id == insertedVoucher.id);
-                if (index >= 0) {
-                    resData.list.splice(index, 1);
-                    rows.splice(0, 0, insertedVoucher);
-                }
-                else {
-                    if (rows.length == this.pageSize) {
-                        resData.list.splice(this.pageSize - 1, 1);
+        if (this.viewAccess) {
+            this.sppcLoading.show();
+            var filter = this.currentFilter;
+            var order = this.currentOrder;
+            if (this.totalRecords == this.skip && this.totalRecords != 0) {
+                this.skip = this.skip - this.pageSize;
+            }
+            this.voucherService.getAll(VoucherApi.FiscalPeriodBranchVouchers, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+                var resData = res.json();
+                this.properties = resData.metadata.properties;
+                var totalCount = 0;
+                if (insertedVoucher) {
+                    var rows = (resData.list as Array<Voucher>);
+                    var index = rows.findIndex(p => p.id == insertedVoucher.id);
+                    if (index >= 0) {
+                        resData.list.splice(index, 1);
+                        rows.splice(0, 0, insertedVoucher);
                     }
-                    rows.splice(0, 0, insertedVoucher);
+                    else {
+                        if (rows.length == this.pageSize) {
+                            resData.list.splice(this.pageSize - 1, 1);
+                        }
+                        rows.splice(0, 0, insertedVoucher);
+                    }
                 }
-            }
-            if (res.headers != null) {
-                var headers = res.headers != undefined ? res.headers : null;
-                if (headers != null) {
-                    var retheader = headers.get('X-Total-Count');
-                    if (retheader != null)
-                        totalCount = parseInt(retheader.toString());
+                if (res.headers != null) {
+                    var headers = res.headers != undefined ? res.headers : null;
+                    if (headers != null) {
+                        var retheader = headers.get('X-Total-Count');
+                        if (retheader != null)
+                            totalCount = parseInt(retheader.toString());
+                    }
                 }
-            }
+                this.rowData = {
+                    data: resData.list,
+                    total: totalCount
+                }
+                this.showloadingMessage = !(resData.list.length == 0);
+                this.totalRecords = totalCount;
+                this.sppcLoading.hide();
+            })
+        }
+        else {
             this.rowData = {
-                data: resData.list,
-                total: totalCount
+                data: [],
+                total: 0
             }
-            this.showloadingMessage = !(resData.list.length == 0);
-            this.totalRecords = totalCount;
-            this.sppcLoading.hide();
-        })        
+        }
     }
 
     dataStateChange(state: DataStateChangeEvent): void {
@@ -221,7 +242,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                 }, (error => {
                     this.errorMessage = error;
 
-                }));            
+                }));
         }
         else {
             this.voucherService.insert<Voucher>(VoucherApi.Vouchers, voucher)
@@ -234,7 +255,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
-                }));            
+                }));
         }
         this.sppcLoading.hide();
     }

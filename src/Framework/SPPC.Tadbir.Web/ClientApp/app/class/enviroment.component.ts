@@ -1,16 +1,17 @@
-﻿
+﻿import { PermissionBrief } from "../model/index";
+
+
 export class EnviromentComponent {
 
 
 
-    constructor()
-    {
+    constructor() {
 
     }
 
     public get CurrentLanguage(): string {
 
-        var lang : string  = "fa" ;
+        var lang: string = "fa";
 
         if (localStorage.getItem('lang') != null) {
             var item: string | null;
@@ -19,12 +20,12 @@ export class EnviromentComponent {
             if (item)
                 lang = item;
 
-        }       
+        }
 
         return lang;
     }
 
-   
+
     public get FiscalPeriodId(): number {
 
         var fpId = 0;
@@ -38,11 +39,11 @@ export class EnviromentComponent {
 
         }
         else if (sessionStorage.getItem('currentContext') != null) {
-                var item: string | null;
-                item = sessionStorage.getItem('currentContext');
-                var currentContext = JSON.parse(item != null ? item.toString() : "");
+            var item: string | null;
+            item = sessionStorage.getItem('currentContext');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
 
-                fpId = currentContext ? parseInt(currentContext.fpId) : 0;
+            fpId = currentContext ? parseInt(currentContext.fpId) : 0;
 
         }
 
@@ -130,7 +131,7 @@ export class EnviromentComponent {
 
             var jsonContext = atob(currentContext.ticket);
             var context = JSON.parse(jsonContext);
-            
+
             userId = currentContext ? parseInt(context.User.Id) : 0;
 
         }
@@ -170,6 +171,41 @@ export class EnviromentComponent {
 
         }
         return userName;
+    }
+
+    public get Permissions(): Array<PermissionBrief> {
+        let permission: Array<PermissionBrief> = [];
+        if (localStorage.getItem('currentContext') != null) {
+            var item: string | null;
+            item = localStorage.getItem('currentContext');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+            permission = currentContext.permissions;
+        }
+        else if (sessionStorage.getItem('currentContext') != null) {
+            var item: string | null;
+            item = sessionStorage.getItem('currentContext');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+            permission = currentContext.permissions;
+        }
+        return permission;
+    }
+
+    /**
+     * اگر کاربر حق دسترسی داشته باشه مقدار true وگرنه مقدار false برمیگرداند
+     * @param entityName نام entity (app/security/SecureEntity.ts)
+     * @param action مجوز دسترسی (app/security/permissions.ts)
+     */
+    public isAccess(entityName: string, action: number): boolean {
+        let access: boolean = false;
+        let permissions: Array<PermissionBrief> = this.Permissions;
+        let permission: PermissionBrief;
+        let permissionIndex = permissions.findIndex(f => f.EntityName == entityName);
+        if (permissionIndex >= 0) {
+            permission = permissions[permissionIndex];
+            if ((permission.Flags & action) == action)
+                access = true;
+        }
+        return access;
     }
 
 }
