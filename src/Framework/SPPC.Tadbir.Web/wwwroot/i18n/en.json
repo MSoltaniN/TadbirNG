@@ -5,6 +5,7 @@
     "Loading": "loading ...",
     "RecordNotFound": "Record not found!",
     "Name": "Tadbir Accounting System",
+    "NotViewAccess": "You do not have access to view information",
     "Menu": {
       "Account": "Account",
       "Voucher": "Voucher",
@@ -61,8 +62,6 @@
     "Branch": "Branch",
     "Description": "Description",
     "List": "Account list"
-
-
   },
   "VoucherLine": {
     "Debit": "Debit",
@@ -73,16 +72,7 @@
     "New": "New Article",
     "Delete": "Delete Article",
     "Currency": "Currency",
-
     "Account": "Account"
-
-  },
-  "VoucherLineValidation": {
-    "DescriptionLenght": "Description can be max 512 characters long",
-    "Debit": "debit is required",
-    "Credit": "credit is required",
-    "Account": "account is required",
-    "Currency": "currency is required"
   },
   "Company": {
     "CompanyName": "Company"
@@ -100,12 +90,6 @@
     "BranchId": "Branch",
     "FiscalPeriodId": "Fiscal"
   },
-  "VoucherValidation": {
-    "No": "voucher no is required",
-    "Date": "date is required",
-    "DescriptionLenght": "Description can be max 512 characters long",
-    "NoLenght": "Voucher No can be max 64 characters long"
-  },
   "User": {
     "New": "New User",
     "Edit": "Edit",
@@ -119,26 +103,11 @@
     "Active": "Active",
     "Inactive": "Inactive"
   },
-  "UserValidations": {
-    "PersonFirstName": "first name is required",
-    "PersonLastName": "last neme is required ",
-    "UserName": "user name is required",
-    "Password": "password is required",
-    "PasswordLenght": "Password must be at least 4 and last 32 characters long",
-    "UserNameLenght": "UserName can be max 64 characters long",
-    "PersonLastNameLenght": "Last name can be max 64 characters long",
-    "PersonFirstNameLenght": "First name can be max 64 characters long"
-  },
   "ChangePassword": {
     "Title": "Change password",
     "OldPassword": "Old password",
     "NewPassword": "New password",
-    "RepeatPassword": "Repeat new password",
-    "PasswordLenght": "Password must be at least 4 and last 32 characters long",
-    "OldPassRequired": "Password is Required",
-    "NewPassRequired": "New password is required",
-    "RepeatNewPassRequired": "Confirme New Password",
-    "NotEqual": "The password does not equal it"
+    "RepeatPassword": "Repeat new password"   
   },
   "Role": {
     "Name": "Name",
@@ -169,11 +138,6 @@
   "RoleDetail": {
     "RoleDetailTitle": "Role details '{0}'"
   },
-  "RoleValidation": {
-    "Name": "name is required",
-    "NameLenght": "Description can be max 64 characters long",
-    "DescriptionLenght": "Description can be max 512 characters long"
-  },
   "DetailAccount": {
     "New": "New Detail Account",
     "Name": "Name",
@@ -182,16 +146,7 @@
     "Level": "Level",
     "Description": "Description",
     "Delete": "Delete Detail Account"
-  },
-  "DetailAccountValidation": {
-    "Name": "name is required",
-    "NameMaxLength": "Name can be max 512 characters long",
-    "DescriptionLenght": "Description can be max 512 characters long",
-    "Code": "code is required",
-    "CodeMaxLength": "Code can be max 512 characters long",
-    "FullCode": "full code is required",
-    "FullCodeMaxLength": "Full code can be max 512 characters long"
-  },
+  },  
   "CostCenter": {
     "New": "New Cost Center",
     "Name": "Name",
@@ -200,15 +155,6 @@
     "Level": "Level",
     "Description": "Description",
     "Delete": "Delete Cost Center"
-  },
-  "CostCenterValidation": {
-    "Name": "name is required",
-    "NameMaxLength": "Name can be max 512 characters long",
-    "DescriptionLenght": "Description can be max 512 characters long",
-    "Code": "code is required",
-    "CodeMaxLength": "Code can be max 512 characters long",
-    "FullCode": "full code is required",
-    "FullCodeMaxLength": "Full code can be max 512 characters long"
   },
   "Project": {
     "New": "New Project",
@@ -219,15 +165,6 @@
     "Description": "Description",
     "Delete": "Delete Project"
   },
-  "ProjectValidation": {
-    "Name": "name is required",
-    "NameMaxLength": "Name can be max 512 characters long",
-    "DescriptionLenght": "Description can be max 512 characters long",
-    "Code": "code is required",
-    "CodeMaxLength": "Code can be max 512 characters long",
-    "FullCode": "full code is required",
-    "FullCodeMaxLength": "Full code can be max 512 characters long"
-  },
   "Fiscal": {
     "FiscalPeriod": "Fiscal Period"
   },
@@ -235,17 +172,9 @@
     "Record": "Record",
     "Of": "Of"
   },
-  "Validations": {
-    "AccountCode": "account code is required",
-    "AccountName": "account name is required",
-    "FiscalPeriodId": "fiscal period is required",
-    "BranchId": "branch id is required",
-    "DocumentID": "document id is required"
-  },
   "Grid": {
     "noRecords": "row not found!!!!!!!!!!"
   },
-
   "Login": {
     "Ok": "Ok",
     "Title": "Login",
@@ -253,17 +182,127 @@
     "UserName": "User Name",
     "Password": "Password",
     "BtnLogin": "Login",
-    "RememberMe": "Remember me",
-    "Validation": {
-      "UserRequired": "username is required",
-      "PasswordRequired": "password is required",
-      "UserIncorrect": "username or password is incorrect",
-      "SelectCompany": "please select company",
-      "SelectBranch": "please select branch",
-      "SelectFiscalPeriod": "please select fiscal"
+    "RememberMe": "Remember me"
+  },
+  "AllValidations": {
+    "Account": {
+      "CodeIsRequired": "Code is required.",
+      "CodeIsTooLong": "Code can have a maximum of 16 characters.",
+      "FullCodeIsRequired": "Full code is required.",
+      "FullCodeIsTooLong": "Full code can have a maximum of 512 characters.",
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "Name can have a maximum of 512 characters.",
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+      "NoError": ""
+    },
+    "CostCenter": {
+      "CodeIsRequired": "Code is required.",
+      "CodeIsTooLong": "Code can have a maximum of 16 characters.",
+      "FullCodeIsRequired": "Full code is required.",
+      "FullCodeIsTooLong": "Full code can have a maximum of 256 characters.",
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "Name can have a maximum of 256 characters.",
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+      "NoError": ""
+    },
+    "Currency": {
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "Name can have a maximum of 64 characters.",
+      "NoError": ""
+    },
+    "DetailAccount": {
+      "CodeIsRequired": "Code is required.",
+      "CodeIsTooLong": "Code can have a maximum of 16 characters.",
+      "FullCodeIsRequired": "Full code is required.",
+      "FullCodeIsTooLong": "Full code can have a maximum of 512 characters.",
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "Name can have a maximum of 256 characters.",
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+      "NoError": ""
+    },
+    "FiscalPeriod": {
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "Name can have a maximum of 64 characters.",
+      "StartDateIsRequired": "Start date is required.",
+      "EndDateIsRequired": "End date is required.",
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+      "NoError": ""
+    },
+    "FullAccount": {
+      "AccountIdIsRequired": "Account is required.",
+      "NoError": ""
+    },
+    "Project": {
+      "CodeIsRequired": "Code is required.",
+      "CodeIsTooLong": "Code can have a maximum of 16 characters.",
+      "FullCodeIsRequired": "Full code is required.",
+      "FullCodeIsTooLong": "Full code can have a maximum of 256 characters.",
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "Name can have a maximum of 256 characters.",
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+      "NoError": ""
+    },
+    "VoucherLine": {
+      "CurrencyIdIsRequired": "Currency is required.",
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+      "DebitIsRequired": "Debit is required.",
+      "CreditIsRequired": "Credit is required.",
+      "NoError": ""
+    },
+    "Voucher": {
+      "NoIsRequired": "Number is required.",
+      "NoIsTooLong": "Number can have a maximum of 64 characters.",
+      "DateIsRequired": "Date is required.",
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+      "NoError": ""
+    },
+    "Login": {
+      "UserNameIsRequired": "User name is required.",
+      "UserNameIsTooLong": "User name can have a maximum of 64 characters.",
+      "PasswordIsRequired": "Password is required.",
+      "PasswordIsTooLong": "Password can have a maximum of 32 characters.",
+      "CompanyIsRequired": "Company is required.",
+      "BranchIsRequired": "Branch is required.",
+      "FiscalPeriodIsRequired": "Fiscal period is required.",
+      "NoError": ""
+    },
+    "PermissionGroup": {
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "Name can have a maximum of 64 characters.",
+      "EntityNameIsTooLong": "Entity name can have a maximum of 64 characters.",
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+      "NoError": ""
+    },
+    "Permission": {
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "Name can have a maximum of 128 characters.",
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+      "NoError": ""
+    },
+    "Role": {
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "Name can have a maximum of 64 characters.",
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+      "NoError": ""
+    },
+    "UserProfile": {
+      "OldPasswordIsRequired": "Old password is required.",
+      "NewPasswordIsRequired": "New password is required.",
+      "NewPasswordLengthRange": "New password must have between 6 and 20 characters.",
+      "RepeatPasswordIsRequired": "Repeat password is required.",
+      "RepeatPasswordAndNewPasswordDoNotMatch": "Repeat password and New password do not match.",
+      "NoError": ""
+    },
+    "User": {
+      "PersonFirstNameIsRequired": "First name is required.",
+      "PersonFirstNameIsTooLong": "First name can have a maximum of 64 characters.",
+      "PersonLastNameIsRequired": "Last name is required.",
+      "PersonLastNameIsTooLong": "Last name can have a maximum of 64 characters.",
+      "UserNameIsRequired": "User name is required.",
+      "UserNameIsTooLong": "User name can have a maximum of 64 characters.",
+      "PasswordIsRequired": "Password is required.",
+      "PasswordLengthRange": "Password must have between 4 and 32 characters.",
+      "NoError": ""
     }
-
   }
-
-
 }

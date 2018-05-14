@@ -2,29 +2,33 @@
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
-    
+
 import { Environment } from "../../enviroment";
 
 import { Context } from "../../model/context";
+import { PermissionBrief } from '../../model/index';
 
 export class ContextInfo implements Context {
-    constructor( public userName: string = "", public password: string = "",
-        public firstName: string = "", public lastName: string = "", public ticket: string = '',
-        public fpId:number = 0,public branchId:number = 0,public companyId:number = 0)
-    { }
-
+    userName: string = "";
+    password: string = "";
+    firstName: string = "";
+    lastName: string = "";
+    ticket: string = "";
+    fpId: number = 0;
+    branchId: number = 0;
+    companyId: number = 0;
+    permissions: PermissionBrief[];
 }
 
 @Injectable()
 export class AuthenticationService {
 
-    
-    constructor(private http: Http)
-    {
-           
+
+    constructor(private http: Http) {
+
     }
 
-    login(username: string, password: string, remember:boolean) {
+    login(username: string, password: string, remember: boolean) {
         return this.http.put(Environment.BaseUrl + '/users/login', { username: username, password: password }/*, this.options*/)
             .map((response: Response) => {
                 // login successful if there's a jwt token in the response           
@@ -36,25 +40,22 @@ export class AuthenticationService {
                         user.userName = username;
 
                         // در صورتی که تیک بخاطر سپردن بخورد در حافظه storage ذخیره می شود
-                        if(remember)
+                        if (remember)
                             localStorage.setItem('currentContext', JSON.stringify(user));
                         else // در صورتی که تیک بخاطر سپردن بخورد در حافظه session ذخیره می شود
                             sessionStorage.setItem('currentContext', JSON.stringify(user));
                     }
-                }              
-            })              
-           
+                }
+            })
+
     }
 
-    islogin()
-    {
-        if (localStorage.getItem('currentContext'))
-        {
+    islogin() {
+        if (localStorage.getItem('currentContext')) {
             var item: string | null;
             item = localStorage.getItem('currentContext');
-            var currentContext = JSON.parse(item != null ? item.toString() : ""); 
-            if (currentContext.userName != '')
-            {
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+            if (currentContext.userName != '') {
                 return true;
             }
         }
@@ -71,9 +72,9 @@ export class AuthenticationService {
     }
 
     isRememberMe() {
-        if (localStorage.getItem('currentContext')) {            
-            return true;            
-        }        
+        if (localStorage.getItem('currentContext')) {
+            return true;
+        }
 
         return false;
     }
@@ -86,7 +87,7 @@ export class AuthenticationService {
         }
         else if (sessionStorage.getItem('currentContext')) {
             item = sessionStorage.getItem('currentContext');
-        }    
+        }
 
         if (item) {
             var currentUser: ContextInfo = item !== null ? JSON.parse(item) : null;

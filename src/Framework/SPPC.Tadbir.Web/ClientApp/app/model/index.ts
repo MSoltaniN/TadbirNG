@@ -17,4 +17,5 @@ export * from './roleUsers';
 export * from './branch';
 export * from './roleBranches';
 export * from './roleDetails';
+export * from './permissionBrief';
 

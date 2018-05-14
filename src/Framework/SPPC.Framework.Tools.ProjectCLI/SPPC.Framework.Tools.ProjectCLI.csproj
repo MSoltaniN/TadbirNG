@@ -53,6 +53,7 @@
       <Link>FrameworkSolutionInfo.cs</Link>
     </Compile>
     <Compile Include="Commands\GenerateKeyClassCommand.cs" />
+    <Compile Include="Commands\GenerateTsSecurityCommand.cs" />
     <Compile Include="ResXKeyClass.cs">
       <DependentUpon>ResXKeyClass.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -88,6 +89,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TsModelFromCsViewModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TsPermissionsFromCsPermissions.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TsPermissionsFromCsPermissions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TsPermissionsFromCsPermissions.Custom.cs" />
+    <Compile Include="TsConstTypeFromCsValueClass.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TsConstTypeFromCsValueClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TsConstTypeFromCsValueClass.Custom.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -133,6 +146,18 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>ResXKeyClass.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TsPermissionsFromCsPermissions.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TsPermissionsFromCsPermissions.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TsConstTypeFromCsValueClass.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>TsConstTypeFromCsValueClass.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

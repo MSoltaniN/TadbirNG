@@ -22,7 +22,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
         public void Execute()
         {
             string tsApiPath = ConfigurationManager.AppSettings["TsApiPath"];
-            string csAssembly = ConfigurationManager.AppSettings["CsApiAssembly"];
+            string csAssembly = ConfigurationManager.AppSettings["CsInterfacesAssembly"];
             string csNamespace = ConfigurationManager.AppSettings["CsApiNamespace"];
             string csOutPath = ConfigurationManager.AppSettings["CsOutputPath"];
             var assembly = Assembly.Load(csAssembly);

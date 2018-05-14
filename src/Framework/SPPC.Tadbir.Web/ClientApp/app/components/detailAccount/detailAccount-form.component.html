@@ -17,8 +17,8 @@
             <input type="text" class="k-textbox" formControlName="name" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-                <span *ngIf="editForm.controls.name.errors?.required">{{ 'DetailAccountValidation.Name' | translate }}</span>
-                <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'DetailAccountValidation.NameMaxLength' | translate }}</span>
+                <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.DetailAccount.NameIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.DetailAccount.NameIsTooLong' | translate }}</span>
             </div>
         </div>
 
@@ -28,8 +28,8 @@
             <input type="text" class="k-textbox" formControlName="code" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
-                <span *ngIf="editForm.controls.code.errors?.required">{{ 'DetailAccountValidation.Code' | translate }}</span>
-                <span *ngIf="editForm.controls.code.errors?.maxlength">{{ 'DetailAccountValidation.CodeMaxLength' | translate }}</span>
+                <span *ngIf="editForm.controls.code.errors?.required">{{ 'AllValidations.DetailAccount.CodeIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.code.errors?.maxlength">{{ 'AllValidations.DetailAccount.CodeIsTooLong' | translate }}</span>
             </div>
         </div>
 
@@ -39,8 +39,8 @@
             <input type="text" class="k-textbox" formControlName="fullCode" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fullCode.valid || editForm.controls.fullCode.pristine">
-                <span *ngIf="editForm.controls.fullCode.errors?.required">{{ 'DetailAccountValidation.FullCode' | translate }}</span>
-                <span *ngIf="editForm.controls.fullCode.errors?.maxlength">{{ 'DetailAccountValidation.FullCodeMaxLength' | translate }}</span>
+                <span *ngIf="editForm.controls.fullCode.errors?.required">{{ 'AllValidations.DetailAccount.FullCodeIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.fullCode.errors?.maxlength">{{ 'AllValidations.DetailAccount.FullCodeIsTooLong' | translate }}</span>
             </div>
         </div>
 
@@ -50,7 +50,7 @@
             <textarea class="k-textarea" formControlName="description"></textarea>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
-                {{ 'DetailAccountValidation.DescriptionLenght' | translate }}
+                {{ 'AllValidations.DetailAccount.DescriptionIsTooLong' | translate }}
             </div>
         </div>
     </form>

@@ -16,7 +16,7 @@ export class CompanyService extends BaseService {
     }
 
 
-    getCompanies(userName : string,ticket : string) {        
+    getCompanies(userName: string, ticket: string) {
         this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
         this.headers.append('X-Tadbir-AuthTicket', ticket);
         if (ticket == '') return null;

@@ -18,5 +18,11 @@ namespace SPPC.Framework.Tools.ProjectCLI
         public bool HasMaxLength { get; set; }
 
         public string MaxLengthMessage { get; set; }
+
+        public bool HasCompare { get; set; }
+
+        public string CompareToProperty { get; set; }
+
+        public string CompareMessage { get; set; }
     }
 }

@@ -35,6 +35,8 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { Response } from '@angular/http';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { AccountApi } from '../../service/api/index';
+import { SecureEntity } from '../../security/secureEntity';
+import { AccountPermissions } from '../../security/permissions';
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
@@ -55,21 +57,21 @@ export function getLayoutModule(layout: Layout) {
 export class AccountComponent extends DefaultComponent implements OnInit {
 
     @Input() public parent: Account;
-
     @Input() public isChild: boolean = false;
 
     public parentId?: number = undefined;
-
     public rowData: GridDataResult;
-
     public selectedRows: string[] = [];
     public accountArticleRows: any[];
-
     public fiscalPeriodRows: any[];
-
     public totalRecords: number;
-
     public fpId: number;
+
+    //permission flag
+    viewAccess: boolean;
+    insertAccess: boolean;
+    editAccess: boolean;
+    deleteAccess: boolean;
 
     //for add in delete messageText
     deleteConfirm: boolean;
@@ -93,6 +95,11 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
 
     ngOnInit() {
+        this.viewAccess = this.isAccess(SecureEntity.Account, AccountPermissions.View);
+        this.insertAccess = this.isAccess(SecureEntity.Account, AccountPermissions.Create);
+        this.editAccess = this.isAccess(SecureEntity.Account, AccountPermissions.Edit);
+        this.deleteAccess = this.isAccess(SecureEntity.Account, AccountPermissions.Delete);
+
         this.reloadGrid();
     }
 
@@ -138,52 +145,60 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     }
 
     reloadGrid(insertedAccount?: Account) {
-        this.sppcLoading.show();
-        var filter = this.currentFilter;
-        var order = this.currentOrder;
-        if (this.totalRecords == this.skip) {
-            this.skip = this.skip - this.pageSize;
-        }
-        if (this.parent) {
-            if (this.parent.childCount > 0)
-                filter.push(new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"))
-        }
-        else
-            filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
-        this.accountService.getAll(AccountApi.FiscalPeriodBranchAccounts, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-            var resData = res.json();
-            this.properties = resData.metadata.properties;
-            var totalCount = 0;
-            if (insertedAccount) {
-                var rows = (resData.list as Array<Account>);
-                var index = rows.findIndex(p => p.id == insertedAccount.id);
-                if (index >= 0) {
-                    resData.list.splice(index, 1);
-                    rows.splice(0, 0, insertedAccount);
-                }
-                else {
-                    if (rows.length == this.pageSize) {
-                        resData.list.splice(this.pageSize - 1, 1);
+        if (this.viewAccess) {
+            this.sppcLoading.show();
+            var filter = this.currentFilter;
+            var order = this.currentOrder;
+            if (this.totalRecords == this.skip) {
+                this.skip = this.skip - this.pageSize;
+            }
+            if (this.parent) {
+                if (this.parent.childCount > 0)
+                    filter.push(new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"))
+            }
+            else
+                filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
+            this.accountService.getAll(AccountApi.FiscalPeriodBranchAccounts, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+                var resData = res.json();
+                this.properties = resData.metadata.properties;
+                var totalCount = 0;
+                if (insertedAccount) {
+                    var rows = (resData.list as Array<Account>);
+                    var index = rows.findIndex(p => p.id == insertedAccount.id);
+                    if (index >= 0) {
+                        resData.list.splice(index, 1);
+                        rows.splice(0, 0, insertedAccount);
                     }
-                    rows.splice(0, 0, insertedAccount);
+                    else {
+                        if (rows.length == this.pageSize) {
+                            resData.list.splice(this.pageSize - 1, 1);
+                        }
+                        rows.splice(0, 0, insertedAccount);
+                    }
                 }
-            }
-            if (res.headers != null) {
-                var headers = res.headers != undefined ? res.headers : null;
-                if (headers != null) {
-                    var retheader = headers.get('X-Total-Count');
-                    if (retheader != null)
-                        totalCount = parseInt(retheader.toString());
+                if (res.headers != null) {
+                    var headers = res.headers != undefined ? res.headers : null;
+                    if (headers != null) {
+                        var retheader = headers.get('X-Total-Count');
+                        if (retheader != null)
+                            totalCount = parseInt(retheader.toString());
+                    }
                 }
-            }
+                this.rowData = {
+                    data: resData.list,
+                    total: totalCount
+                }
+                this.showloadingMessage = !(resData.list.length == 0);
+                this.totalRecords = totalCount;
+                this.sppcLoading.hide();
+            })
+        }
+        else {
             this.rowData = {
-                data: resData.list,
-                total: totalCount
+                data: [],
+                total: 0
             }
-            this.showloadingMessage = !(resData.list.length == 0);
-            this.totalRecords = totalCount;
-            this.sppcLoading.hide();
-        })
+        }
     }
 
     dataStateChange(state: DataStateChangeEvent): void {

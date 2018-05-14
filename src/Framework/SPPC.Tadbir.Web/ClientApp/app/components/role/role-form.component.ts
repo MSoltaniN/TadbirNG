@@ -230,7 +230,6 @@ export class RoleFormComponent extends DefaultComponent {
         public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
 
         super(toastrService, translate, renderer, metadata, Entities.Role, Metadatas.Role);
-        console.log(this.editForm);
     }
 
 

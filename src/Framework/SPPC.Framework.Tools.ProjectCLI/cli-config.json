@@ -9,6 +9,7 @@
           "allowMultiple": true
         }
       ],
+      "description": "Generates TypeScript view model interfaces from existing C# view model classes.",
       "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateTsModelCommand, ProjectCLI"
     },
     {
@@ -20,6 +21,7 @@
           "allowMultiple": true
         }
       ],
+      "description": "Generates TypeScript Api classes from existing C# classes.",
       "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateTsApiCommand, ProjectCLI"
     },
     {
@@ -36,6 +38,7 @@
           "allowMultiple": true
         }
       ],
+      "description": "Generates localized JSON objects containing multi-language strings.",
       "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateJsResourceCommand, ProjectCLI"
     },
     {
@@ -52,7 +55,15 @@
           "allowMultiple": false
         }
       ],
+      "description": "Generates a C# class containing existing keys in resource files as constant string fields.",
       "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateKeyClassCommand, ProjectCLI"
+    },
+    {
+      "name": "tssec",
+      "parameters": [
+      ],
+      "description": "Generates TypeScript security types from existing C# types.",
+      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateTsSecurityCommand, ProjectCLI"
     }
   ]
 }

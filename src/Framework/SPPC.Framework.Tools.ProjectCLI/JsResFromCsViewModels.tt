@@ -9,6 +9,11 @@
 for (int index = 0; index < _types.Length; index++)
 {
   var type = _types[index];
+  if (!HasValidation(type))
+  {
+    continue;
+  }
+
   string typeName = type.Name.Replace("ViewModel", String.Empty); #>
     "<#= typeName #>": {
 <#
@@ -20,6 +25,10 @@ for (int index = 0; index < _types.Length; index++)
 	if (metadata.IsRequired)
     { #>
       "<#= metadata.Name #>IsRequired": "<#= metadata.IsRequiredMessage #>",
+<#  }
+	if (metadata.HasCompare)
+    { #>
+      "<#= metadata.Name #>And<#= metadata.CompareToProperty #>DoNotMatch": "<#= metadata.CompareMessage #>",
 <#  }
     if (metadata.HasMaxLength)
     { #>

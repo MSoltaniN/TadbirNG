@@ -17,7 +17,8 @@
             <input type="text" class="k-textbox" formControlName="code" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
-                {{ 'Validations.AccountCode' | translate }}
+                <span *ngIf="editForm.controls.code.errors?.required">{{ 'AllValidations.Account.CodeIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.code.errors?.maxlength">{{ 'AllValidations.Account.CodeIsTooLong' | translate }}</span>
             </div>
         </div>
         <!--<div class="form-group">
@@ -26,19 +27,24 @@
         <!--<div class="form-group">
         <sppc-numberbox class="k-textbox" value="13" ></sppc-numberbox>
     </div>-->       
-            <div class="form-group">
-                <label for="name" class="control-label">{{ 'Account.Name' | translate }}</label>
+        <div class="form-group">
+            <label for="name" class="control-label">{{ 'Account.Name' | translate }}</label>
 
-                <input type="text" class="k-textbox" formControlName="name" />
+            <input type="text" class="k-textbox" formControlName="name" />
 
-                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-                    {{ 'Validations.AccountName' | translate }}
-                </div>
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
+                <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.Account.NameIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.Account.NameIsTooLong' | translate }}</span>
             </div>
+        </div>
             <div class="form-group">
                 <label for="description" class="control-label">{{ 'Account.Description' | translate }}</label>
 
-                <input type="text" class="k-textbox" formControlName="description" />
+                <textarea class="k-textarea" formControlName="description"></textarea>
+
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+                    {{ 'AllValidations.Account.DescriptionIsTooLong' | translate }}
+                </div>
             </div>
     </form>
 

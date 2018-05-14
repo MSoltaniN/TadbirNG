@@ -26,11 +26,11 @@
                                  pagerItems="{{ 'Paging.Record' | translate }}">
             </kendo-grid-messages>
             <ng-template kendoGridNoRecordsTemplate>
-                {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+                {{viewAccess ? (showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)) : ('App.NotViewAccess' | translate)}}
             </ng-template>
             <ng-template kendoGridToolbarTemplate>
-                <button kendoGridAddCommand (click)="addNew()" type="button">{{ 'Buttons.New' | translate }}</button>
-                <button *ngIf="groupDelete" class="k-button" (click)="showConfirm()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
+                <button kendoGridAddCommand *ngIf="insertAccess" (click)="addNew()" type="button">{{ 'Buttons.New' | translate }}</button>
+                <button *ngIf="groupDelete && deleteAccess" class="k-button" (click)="showConfirm()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
             </ng-template>
             <!-- template for mobile -->
             <kendo-grid-column media="(max-width: 450px)" title="">
@@ -45,11 +45,11 @@
                         <dt>{{ 'Role.Description' | translate }}</dt>
                         <dd>{{ role.description }}</dd>
                     </dl>
-                    <button kendoGridEditCommand *ngIf="role.id!=1" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                    <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
-                    <button kendoButton (click)="userHandler(role.id)" [primary]="true">{{ 'Role.Users' | translate }}</button>
-                    <button kendoButton (click)="branchHandler(role.id)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
-                    <button kendoGridRemoveCommand *ngIf="role.id!=1">{{ 'Buttons.Delete' | translate }}</button>
+                    <button kendoGridEditCommand *ngIf="role.id!=1 && editAccess" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                    <button kendoButton *ngIf="viewAccess" (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
+                    <button kendoButton *ngIf="assignUsersAccess" (click)="userHandler(role.id)" [primary]="true">{{ 'Role.Users' | translate }}</button>
+                    <button kendoButton *ngIf="assignBranchesAccess" (click)="branchHandler(role.id)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
+                    <button kendoGridRemoveCommand *ngIf="role.id!=1 && deleteAccess">{{ 'Buttons.Delete' | translate }}</button>
                 </ng-template>
             </kendo-grid-column>
             <!-- template for mobile -->
@@ -68,11 +68,11 @@
 
             <kendo-grid-command-column media="(min-width: 450px)" width="230">
                 <ng-template kendoGridCellTemplate let-role>
-                    <button kendoGridEditCommand *ngIf="role.id!=1" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                    <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
-                    <button kendoButton (click)="userHandler(role.id)" [primary]="true">{{ 'Role.Users' | translate }}</button>
-                    <button kendoButton (click)="branchHandler(role.id)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
-                    <button kendoGridRemoveCommand *ngIf="role.id!=1">{{ 'Buttons.Delete' | translate }}</button>
+                    <button kendoGridEditCommand *ngIf="role.id!=1 && editAccess" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                    <button kendoButton *ngIf="viewAccess" (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
+                    <button kendoButton *ngIf="assignUsersAccess" (click)="userHandler(role.id)" [primary]="true">{{ 'Role.Users' | translate }}</button>
+                    <button kendoButton *ngIf="assignBranchesAccess" (click)="branchHandler(role.id)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
+                    <button kendoGridRemoveCommand *ngIf="role.id!=1 && deleteAccess">{{ 'Buttons.Delete' | translate }}</button>
                 </ng-template>
             </kendo-grid-command-column>
             <!-- additional columns on large devices -->

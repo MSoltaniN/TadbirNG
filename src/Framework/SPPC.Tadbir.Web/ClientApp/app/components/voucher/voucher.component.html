@@ -27,11 +27,11 @@
                                      pagerItems="{{ 'Paging.Record' | translate }}">
                 </kendo-grid-messages>
                 <ng-template kendoGridNoRecordsTemplate>
-                    {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+                    {{viewAccess ? (showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)) : ('App.NotViewAccess' | translate)}}
                 </ng-template>
                 <ng-template kendoGridToolbarTemplate>
-                    <button kendoGridAddCommand (click)="addNew()" type="button">{{ 'Voucher.New' | translate }}</button>
-                    <button *ngIf="groupDelete" class="k-button" (click)="deleteVouchers()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
+                    <button kendoGridAddCommand *ngIf="insertAccess" (click)="addNew()" type="button">{{ 'Voucher.New' | translate }}</button>
+                    <button *ngIf="groupDelete && deleteAccess" class="k-button" (click)="deleteVouchers()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
                 </ng-template>
                 <!-- template for mobile -->
                 <kendo-grid-column media="(max-width: 449px)" title="">
@@ -47,8 +47,8 @@
                             <dt>{{ 'Voucher.Description' | translate  }}</dt>
                             <dd>{{ voucher.description }}</dd>
                         </dl>
-                        <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                        <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                        <button kendoGridEditCommand *ngIf="editAccess" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                        <button kendoGridRemoveCommand *ngIf="deleteAccess">{{ 'Buttons.Delete' | translate }}</button>
                     </ng-template>
                 </kendo-grid-column>
                 <!-- template for mobile -->
@@ -67,12 +67,12 @@
                         {{ voucher.date | SppcDate }}
                     </ng-template>
                 </kendo-grid-column>
-                <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
+                <kendo-grid-command-column *ngIf="editAccess" media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
                     <ng-template kendoGridCellTemplate>
                         <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
                     </ng-template>
                 </kendo-grid-command-column>
-                <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Delete' | translate }}  ">
+                <kendo-grid-command-column *ngIf="deleteAccess" media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Delete' | translate }}  ">
                     <ng-template kendoGridCellTemplate>
                         <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
                     </ng-template>
@@ -101,12 +101,12 @@
                     </ng-template>
                 </kendo-grid-column>
 
-                <kendo-grid-command-column media="(min-width: 1024px)" width="60" title="{{ 'Buttons.Edit' | translate }}">
+                <kendo-grid-command-column *ngIf="editAccess" media="(min-width: 1024px)" width="60" title="{{ 'Buttons.Edit' | translate }}">
                     <ng-template kendoGridCellTemplate>
                         <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
                     </ng-template>
                 </kendo-grid-command-column>
-                <kendo-grid-command-column media="(min-width: 1024px)" width="60" title="{{ 'Buttons.Delete' | translate }}  ">
+                <kendo-grid-command-column *ngIf="deleteAccess" media="(min-width: 1024px)" width="60" title="{{ 'Buttons.Delete' | translate }}  ">
                     <ng-template kendoGridCellTemplate>
                         <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
                     </ng-template>
