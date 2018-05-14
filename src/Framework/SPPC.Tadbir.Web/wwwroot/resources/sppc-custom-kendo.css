@@ -5270,7 +5270,7 @@ kendo-sortable,
 .k-window-title {
     margin: 0;
     font-size: 19px;
-    line-height: 1;
+    /*line-height: 1;*/
     text-overflow: ellipsis;
     overflow: hidden;
     cursor: default;

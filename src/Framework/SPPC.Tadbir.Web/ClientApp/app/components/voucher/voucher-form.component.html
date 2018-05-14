@@ -16,7 +16,7 @@
                 <sppc-datepicker formControlName="date"></sppc-datepicker>
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.date.valid || editForm.controls.date.pristine">
-                    {{ 'VoucherValidation.Date' | translate }}
+                    {{ 'AllValidations.Voucher.DateIsRequired' | translate }}
                 </div>
             </div>
 
@@ -26,8 +26,8 @@
                 <input type="text" class="k-textbox" formControlName="no" />
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.no.valid || editForm.controls.no.pristine">
-                    <span *ngIf="editForm.controls.no.errors?.required">{{ 'VoucherValidation.No' | translate }}</span>
-                    <span *ngIf="editForm.controls.no.errors?.maxlength">{{ 'VoucherValidation.NoLenght' | translate }}</span>
+                    <span *ngIf="editForm.controls.no.errors?.required">{{ 'AllValidations.Voucher.NoIsRequired' | translate }}</span>
+                    <span *ngIf="editForm.controls.no.errors?.maxlength">{{ 'AllValidations.Voucher.NoIsTooLong' | translate }}</span>
                 </div>
             </div>
 
@@ -37,7 +37,7 @@
                 <textarea class="k-textarea" formControlName="description"></textarea>
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
-                    {{ 'VoucherValidation.DescriptionLenght' | translate }}
+                    {{ 'AllValidations.Voucher.DescriptionIsTooLong' | translate }}
                 </div>
             </div>
 

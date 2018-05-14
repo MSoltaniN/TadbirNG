@@ -17,8 +17,8 @@
             <input type="text" class="k-textbox" formControlName="name" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-                <span *ngIf="editForm.controls.name.errors?.required">{{ 'ProjectValidation.Name' | translate }}</span>
-                <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'ProjectValidation.NameMaxLength' | translate }}</span>
+                <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.Project.NameIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.Project.NameIsTooLong' | translate }}</span>
             </div>
         </div>
 
@@ -28,8 +28,8 @@
             <input type="text" class="k-textbox" formControlName="code" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
-                <span *ngIf="editForm.controls.code.errors?.required">{{ 'ProjectValidation.Code' | translate }}</span>
-                <span *ngIf="editForm.controls.code.errors?.maxlength">{{ 'ProjectValidation.CodeMaxLength' | translate }}</span>
+                <span *ngIf="editForm.controls.code.errors?.required">{{ 'AllValidations.Project.CodeIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.code.errors?.maxlength">{{ 'AllValidations.Project.CodeIsTooLong' | translate }}</span>
             </div>
         </div>
 
@@ -39,8 +39,8 @@
             <input type="text" class="k-textbox" formControlName="fullCode" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fullCode.valid || editForm.controls.fullCode.pristine">
-                <span *ngIf="editForm.controls.fullCode.errors?.required">{{ 'ProjectValidation.FullCode' | translate }}</span>
-                <span *ngIf="editForm.controls.fullCode.errors?.maxlength">{{ 'ProjectValidation.FullCodeMaxLength' | translate }}</span>
+                <span *ngIf="editForm.controls.fullCode.errors?.required">{{ 'AllValidations.Project.FullCodeIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.fullCode.errors?.maxlength">{{ 'AllValidations.Project.FullCodeIsTooLong' | translate }}</span>
             </div>
         </div>
 
@@ -50,7 +50,7 @@
             <textarea class="k-textarea" formControlName="description"></textarea>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
-                {{ 'ProjectValidation.DescriptionLenght' | translate }}
+                {{ 'AllValidations.Project.DescriptionIsTooLong' | translate }}
             </div>
         </div>
     </form>

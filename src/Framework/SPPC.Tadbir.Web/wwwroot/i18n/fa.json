@@ -17,16 +17,13 @@
       "ChangePassword": "تغییر کلمه عبور",
       "Exit": "خروج"
     }
-
   },
-
   "Enviroment": {
     "FiscalPeriod": "دوره مالی",
     "Company": "شرکت",
     "User": "کاربر جاری",
     "Branch": "شعبه"
   },
-
   "Messages": {
     "Inserted": "{0} با موفقیت ثبت شد",
     "Updated": "{0} با موفقیت ویرایش شد",
@@ -55,13 +52,15 @@
     "Project": "پروژه"
   },
   "Account": {
+    "New": "حساب جدید",
+    "Edit": "ویرایش",
+    "Delete": "حذف",
     "Code": "کد حساب",
     "Name": "نام حساب",
     "FiscalPeriodId": "دوره مالی",
-    "Branch": "شعبه",
     "Level": "سطح",
+    "Branch": "شعبه",
     "Description": "توضیحات",
-    "Delete": "حذف حساب",
     "List": "لیست حساب ها"
   },
   "VoucherLine": {
@@ -73,16 +72,7 @@
     "New": "آرتیکل جدید",
     "Delete": "حذف آرتیکل",
     "Currency": "واحد پول",
-
     "Account": "بردار حساب"
-
-  },
-  "VoucherLineValidation": {
-    "Debit": "بدهکار اجباری می باشد",
-    "Credit": "بستانکار اجباری می باشد",
-    "Account": "حساب اجباری می باشد",
-    "Currency": "واحد پول اجباری می باشد",
-    "DescriptionLenght": "توضیحات حداکثر 512 کاراکتر میتواند داشته باشد"
   },
   "Company": {
     "CompanyName": "شرکت"
@@ -91,20 +81,14 @@
     "BranchName": "شعبه"
   },
   "Voucher": {
+    "New": "سند جدید",
+    "Edit": "ویرایش",
+    "Delete": "حذف سند",
     "No": "شماره سند مالی",
     "Date": "تاریخ",
     "Description": "توضیحات",
     "BranchId": "شعبه",
-    "FiscalPeriodId": "دوره مالی",
-    "Delete": "حذف سند",
-    "New": "سند جدید"
-
-  },
-  "VoucherValidation": {
-    "No": "شماره سند مالی اجباری می باشد",
-    "Date": "تاریخ اجباری می باشد",
-    "DescriptionLenght": "توضیحات حداکثر 512 کاراکتر میتواند داشته باشد",
-    "NoLenght": "شماره سند مالی حداکثر ۶۴ کاراکتر میتواند داشته باشد"
+    "FiscalPeriodId": "دوره مالی"
   },
   "User": {
     "New": "کاربر جدید",
@@ -119,26 +103,11 @@
     "Active": "فعال",
     "Inactive": "غیرفعال"
   },
-  "UserValidations": {
-    "PersonFirstName": "نام اجباری می باشد",
-    "PersonLastName": "نام خانوادگی اجباری می باشد",
-    "UserName": "نام کاربری اجباری می باشد",
-    "Password": "پسورد اجباری می باشد",
-    "PasswordLenght": "کلمه عبور باید حداقل 4 و حداکثر 32 کاراکتر طول داشته باشد",
-    "UserNameLenght": "نام کاربری حداکثر ۶۴ کاراکتر میتواند داشته باشد",
-    "PersonLastNameLenght": "نام خانوادگی حداکثر ۶۴ کاراکتر میتواند داشته باشد",
-    "PersonFirstNameLenght": "نام حداکثر ۶۴ کاراکتر میتواند داشته باشد"
-  },
   "ChangePassword": {
     "Title": "تغییر کلمه عبور",
     "OldPassword": "کلمه عبور فعلی",
     "NewPassword": "کلمه عبور جدید",
-    "RepeatPassword": "تکرار کلمه عبور جدید",
-    "PasswordLenght": "کلمه عبور باید حداقل 4 و حداکثر 32 کاراکتر طول داشته باشد",
-    "OldPassRequired": "کلمه عبور فعلی اجباری می باشد",
-    "NewPassRequired": "کلمه عبور جدید اجباری می باشد",
-    "RepeatNewPassRequired": "تکرار کلمه عبور جدید اجباری  می باشد",
-    "NotEqual": "کلمه عبور با تکرار آن برابر نیست"
+    "RepeatPassword": "تکرار کلمه عبور جدید"
   },
   "Role": {
     "Name": "نام",
@@ -169,11 +138,6 @@
   "RoleDetail": {
     "RoleDetailTitle": "جزئیات نقش '{0}'"
   },
-  "RoleValidation": {
-    "Name": "نام اجباری می باشد",
-    "NameLenght": "نام حداکثر 64 کاراکتر میتواند داشته باشد",
-    "DescriptionLenght": "توضیحات حداکثر 512 کاراکتر میتواند داشته باشد"
-  },
   "DetailAccount": {
     "New": "تفصیلی شناور جدید",
     "Name": "نام",
@@ -182,15 +146,6 @@
     "Level": "سطح",
     "Description": "شرح",
     "Delete": "حذف تفصیلی شناور"
-  },
-  "DetailAccountValidation": {
-    "Name": "نام اجباری می باشد",
-    "NameMaxLength": "نام حداکثر 512 کاراکتر میتواند داشته باشد",
-    "DescriptionLenght": "شرح حداکثر 512 کاراکتر میتواند داشته باشد",
-    "Code": "کد اجباری می باشد",
-    "CodeMaxLength": "کد حداکثر 16 کاراکتر میتواند داشته باشد",
-    "FullCode": "کد کامل اجباری می باشد",
-    "FullCodeMaxLength": "کد کامل حداکثر 256 کاراکتر میتواند داشته باشد"
   },
   "CostCenter": {
     "New": "مرکز هزینه جدید",
@@ -201,15 +156,6 @@
     "Description": "شرح",
     "Delete": "حذف مرکز هزینه"
   },
-  "CostCenterValidation": {
-    "Name": "نام اجباری می باشد",
-    "NameMaxLength": "نام حداکثر 512 کاراکتر میتواند داشته باشد",
-    "DescriptionLenght": "شرح حداکثر 512 کاراکتر میتواند داشته باشد",
-    "Code": "کد اجباری می باشد",
-    "CodeMaxLength": "کد حداکثر 16 کاراکتر میتواند داشته باشد",
-    "FullCode": "کد کامل اجباری می باشد",
-    "FullCodeMaxLength": "کد کامل حداکثر 256 کاراکتر میتواند داشته باشد"
-  },
   "Project": {
     "New": "پروژه جدید",
     "Name": "نام",
@@ -219,15 +165,6 @@
     "Description": "شرح",
     "Delete": "حذف پروژه"
   },
-  "ProjectValidation": {
-    "Name": "نام اجباری می باشد",
-    "NameMaxLength": "نام حداکثر 512 کاراکتر میتواند داشته باشد",
-    "DescriptionLenght": "شرح حداکثر 512 کاراکتر میتواند داشته باشد",
-    "Code": "کد اجباری می باشد",
-    "CodeMaxLength": "کد حداکثر 16 کاراکتر میتواند داشته باشد",
-    "FullCode": "کد کامل اجباری می باشد",
-    "FullCodeMaxLength": "کد کامل حداکثر 256 کاراکتر میتواند داشته باشد"
-  },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی"
   },
@@ -235,15 +172,8 @@
     "Record": "رکورد",
     "Of": "از"
   },
-  "Validations": {
-    "AccountCode": "کد حساب اجباری می باشد",
-    "AccountName": "نام حساب اجباری می باشد",
-    "FiscalPeriodId": "دوره مالی اجباری می باشد",
-    "BranchId": "کد شعبه اجباری می باشد",
-    "DocumentID": "شماره مستند اداری اجباری می باشد"
-  },
   "Grid": {
-    "noRecords": "هیچ رکورذی یافت نشد!!!!!!!!!!"
+    "noRecords": "هیچ رکوردی یافت نشد!!!!!!!!!!"
   },
   "Login": {
     "Ok": "تایید",
@@ -252,17 +182,8 @@
     "UserName": "نام کاربر",
     "Password": "کلمه عبور",
     "BtnLogin": "ورود",
-    "RememberMe": "مرا به خاطر بسپار",
-    "Validation": {
-      "UserRequired": "نام کاربر را وارد کنید",
-      "PasswordRequired": "کلمه عبور را وارد کنید",
-      "UserIncorrect": "نام کاربری يا کلمه عبور اشتباه می باشد",
-      "SelectCompany": "لطفا شرکت را انتخاب کنید",
-      "SelectBranch": "لطفا شعبه را انتخاب کنید",
-      "SelectFiscalPeriod": "لطفا دوره مالی را انتخاب کنید"
-    }
-  }
-,
+    "RememberMe": "مرا به خاطر بسپار"
+  },
   "AllValidations": {
     "Account": {
       "CodeIsRequired": "وارد کردن کد اجباری است.",
@@ -324,6 +245,8 @@
     "VoucherLine": {
       "CurrencyIdIsRequired": "وارد کردن نوع ارز اجباری است.",
       "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "DebitIsRequired": "وارد کردن بدهکار اجباری است.",
+      "CreditIsRequired": "وارد کردن بستانکار اجباری است.",
       "NoError": ""
     },
     "Voucher": {

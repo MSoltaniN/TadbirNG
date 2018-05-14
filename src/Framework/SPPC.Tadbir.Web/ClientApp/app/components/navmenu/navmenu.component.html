@@ -13,7 +13,7 @@
         <div class='navbar-collapse collapse'>
             <ul class='nav navbar-nav'>
                 <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Account', 1)">
-                    <a [routerLink]="['/account2']">
+                    <a [routerLink]="['/account']">
                         <span class='glyphicon glyphicon-tasks'></span><span class="menuitem">{{ 'App.Menu.Account' | translate }}</span>
                     </a>
                 </li>

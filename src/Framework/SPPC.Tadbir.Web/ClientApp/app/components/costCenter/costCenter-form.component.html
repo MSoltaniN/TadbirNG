@@ -17,8 +17,8 @@
             <input type="text" class="k-textbox" formControlName="name" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-                <span *ngIf="editForm.controls.name.errors?.required">{{ 'CostCenterValidation.Name' | translate }}</span>
-                <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'CostCenterValidation.NameMaxLength' | translate }}</span>
+                <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.CostCenter.NameIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.CostCenter.NameIsTooLong' | translate }}</span>
             </div>
         </div>
 
@@ -28,8 +28,8 @@
             <input type="text" class="k-textbox" formControlName="code" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
-                <span *ngIf="editForm.controls.code.errors?.required">{{ 'CostCenterValidation.Code' | translate }}</span>
-                <span *ngIf="editForm.controls.code.errors?.maxlength">{{ 'CostCenterValidation.CodeMaxLength' | translate }}</span>
+                <span *ngIf="editForm.controls.code.errors?.required">{{ 'AllValidations.CostCenter.CodeIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.code.errors?.maxlength">{{ 'AllValidations.CostCenter.CodeIsTooLong' | translate }}</span>
             </div>
         </div>
 
@@ -39,8 +39,8 @@
             <input type="text" class="k-textbox" formControlName="fullCode" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fullCode.valid || editForm.controls.fullCode.pristine">
-                <span *ngIf="editForm.controls.fullCode.errors?.required">{{ 'CostCenterValidation.FullCode' | translate }}</span>
-                <span *ngIf="editForm.controls.fullCode.errors?.maxlength">{{ 'CostCenterValidation.FullCodeMaxLength' | translate }}</span>
+                <span *ngIf="editForm.controls.fullCode.errors?.required">{{ 'AllValidations.CostCenter.FullCodeIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.fullCode.errors?.maxlength">{{ 'AllValidations.CostCenter.FullCodeIsTooLong' | translate }}</span>
             </div>
         </div>
 
@@ -50,7 +50,7 @@
             <textarea class="k-textarea" formControlName="description"></textarea>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
-                {{ 'CostCenterValidation.DescriptionLenght' | translate }}
+                {{ 'AllValidations.CostCenter.DescriptionIsTooLong' | translate }}
             </div>
         </div>
     </form>

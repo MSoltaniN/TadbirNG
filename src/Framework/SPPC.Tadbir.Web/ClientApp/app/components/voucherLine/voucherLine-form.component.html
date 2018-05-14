@@ -21,42 +21,32 @@
         <div class="form-group">
             <label for="currencyId" class="control-label">{{ 'VoucherLine.Currency' | translate }}</label>
 
-            <!--<kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="ddl-fAcc"
-                        [textField]="'value'" [value]="selectedCurrencyValue" [(ngModel)]="selectedCurrencyValue" [valueField]="'key'">
-    </kendo-dropdownlist>-->
-
             <kendo-dropdownlist [data]="currenciesRows" [valuePrimitive]="true" formControlName="currencyId" class="ddl-fAcc"
                                 [textField]="'value'" [value]="selectedCurrencyValue" [(ngModel)]="selectedCurrencyValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
             </kendo-dropdownlist>
             <br />
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.currencyId.valid || editForm1.controls.currencyId.pristine">
-                {{ 'VoucherLineValidation.Currency' | translate }}
+                {{ 'AllValidations.VoucherLine.CurrencyIdIsRequired' | translate }}
             </div>
         </div>
 
         <div class="form-group">
             <label for="debit" class="control-label">{{ 'VoucherLine.Debit' | translate }}</label>
 
-            <!--<input type="text" class="k-textbox" formControlName="debit" [textMask]="{mask: dollarMask}" (focus)="$event.target.select()" />-->
-            <!--<input type="text" class="k-textbox" formControlName="debit" />-->
-
             <kendo-numerictextbox formControlName="debit" [spinners]="false" format="n"></kendo-numerictextbox>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.debit.valid || editForm1.controls.debit.pristine">
-                {{ 'VoucherLineValidation.Debit' | translate }}
+                {{ 'AllValidations.VoucherLine.DebitIsRequired' | translate }}
             </div>
         </div>
 
         <div class="form-group">
             <label for="credit" class="control-label">{{ 'VoucherLine.Credit' | translate }}</label>
 
-            <!--<input type="text" class="k-textbox" formControlName="credit" [textMask]="{mask: rialMask}" (focus)="$event.target.select()" />-->
-            <!--<input type="text" class="k-textbox" formControlName="credit"/>-->
-
             <kendo-numerictextbox formControlName="credit" [spinners]="false" format="n"></kendo-numerictextbox>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.credit.valid || editForm1.controls.credit.pristine">
-                {{ 'VoucherLineValidation.Credit' | translate }}
+                {{ 'AllValidations.VoucherLine.CreditIsRequired' | translate }}
             </div>
         </div>
 
@@ -66,7 +56,7 @@
             <textarea class="k-textarea" formControlName="description"></textarea>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.description.valid || editForm1.controls.description.pristine">
-                {{ 'VoucherLineValidation.DescriptionLenght' | translate }}
+                {{ 'AllValidations.VoucherLine.DescriptionIsTooLong' | translate }}
             </div>
         </div>
     </form>

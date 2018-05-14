@@ -29,7 +29,7 @@ interface Item {
 @Component({
     selector: 'account-form-component',
     styles: [
-        "input[type=text] { width: 100%; }"
+        "input[type=text],textarea { width: 100%; }"
     ],
     templateUrl: './account-form.component.html',
     providers: [{

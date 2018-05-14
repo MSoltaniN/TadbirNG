@@ -17,8 +17,8 @@
                 <input type="text"  class="k-textbox" formControlName="name" />
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-                    <span *ngIf="editForm.controls.name.errors?.required">{{ 'RoleValidation.Name' | translate }}</span>
-                    <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'RoleValidation.NameLenght' | translate }}</span>
+                    <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.Role.NameIsRequired' | translate }}</span>
+                    <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.Role.NameIsTooLong' | translate }}</span>
                 </div>
             </div>
 
@@ -28,7 +28,7 @@
                 <textarea class="k-textarea"  formControlName="description"></textarea>
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
-                    {{ 'RoleValidation.DescriptionLenght' | translate }}
+                    {{ 'AllValidations.Role.DescriptionIsTooLong' | translate }}
                 </div>
             </div>
         </form>
