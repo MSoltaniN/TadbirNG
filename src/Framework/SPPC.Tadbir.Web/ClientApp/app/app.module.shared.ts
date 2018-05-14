@@ -68,7 +68,7 @@ import {
 
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
-
+import { SppcGridReorder } from "./directive/grid/sppc-grid-reorder";
 import { SppcGridFilter } from './controls/grid/sppc-grid-filter';
 
 
@@ -105,6 +105,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         SppcDatepicker,
         SppcFullAccount,
         SppcGridColumn,
+        SppcGridReorder,
         SppcGridFilter,
         VoucherComponent,
         VoucherFormComponent,
