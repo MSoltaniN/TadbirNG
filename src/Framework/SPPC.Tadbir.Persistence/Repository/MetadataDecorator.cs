@@ -20,6 +20,11 @@ namespace SPPC.Tadbir.Persistence
             _repository = repository;
         }
 
+        public IMetadataRepository Repository
+        {
+            get { return _repository; }
+        }
+
         /// <summary>
         /// به روش آسنکرون، اطلاعات متادیتا را به یک رکورد اطلاعاتی ضمیمه می کند
         /// </summary>

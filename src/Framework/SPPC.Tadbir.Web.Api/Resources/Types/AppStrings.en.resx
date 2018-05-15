@@ -126,6 +126,15 @@
   <data name="AccountId" xml:space="preserve">
     <value>Account</value>
   </data>
+  <data name="Accounting" xml:space="preserve">
+    <value>Accounting</value>
+  </data>
+  <data name="Accounts" xml:space="preserve">
+    <value>Accounts</value>
+  </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Administration</value>
+  </data>
   <data name="AdminRoleIsReadonly" xml:space="preserve">
     <value>System Administrator role cannot be modified or deleted.</value>
   </data>
@@ -144,11 +153,17 @@
   <data name="CannotUseNonLeafItem" xml:space="preserve">
     <value>The {0} {1} has one or more subitems and cannot be used in operational vouchers.</value>
   </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change password</value>
+  </data>
   <data name="Code" xml:space="preserve">
     <value>Code</value>
   </data>
   <data name="CostCenter" xml:space="preserve">
     <value>Cost center</value>
+  </data>
+  <data name="CostCenters" xml:space="preserve">
+    <value>Cost centers</value>
   </data>
   <data name="Credit" xml:space="preserve">
     <value>Credit</value>
@@ -176,6 +191,9 @@
   </data>
   <data name="DetailAccount" xml:space="preserve">
     <value>Detail account</value>
+  </data>
+  <data name="DetailAccounts" xml:space="preserve">
+    <value>Detail accounts</value>
   </data>
   <data name="DuplicateCodeValue" xml:space="preserve">
     <value>{0} code is duplicate.</value>
@@ -216,6 +234,9 @@
   <data name="ItemNotFound" xml:space="preserve">
     <value>{0} could not be found.</value>
   </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Logout</value>
+  </data>
   <data name="MissingNewAndRepeatPasswords" xml:space="preserve">
     <value>New password and/or repeat password are missing.</value>
   </data>
@@ -246,8 +267,14 @@
   <data name="PersonLastName" xml:space="preserve">
     <value>Last name</value>
   </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
   <data name="Project" xml:space="preserve">
     <value>Project</value>
+  </data>
+  <data name="Projects" xml:space="preserve">
+    <value>Projects</value>
   </data>
   <data name="RepeatPassword" xml:space="preserve">
     <value>Repeat password</value>
@@ -260,6 +287,9 @@
   </data>
   <data name="Role" xml:space="preserve">
     <value>Role</value>
+  </data>
+  <data name="Roles" xml:space="preserve">
+    <value>Roles</value>
   </data>
   <data name="StartDate" xml:space="preserve">
     <value>Start date</value>
@@ -282,6 +312,9 @@
   <data name="UserName" xml:space="preserve">
     <value>User name</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
   <data name="Voucher" xml:space="preserve">
     <value>Voucher</value>
   </data>
@@ -290,5 +323,8 @@
   </data>
   <data name="VoucherNo" xml:space="preserve">
     <value>Voucher number</value>
+  </data>
+  <data name="Vouchers" xml:space="preserve">
+    <value>Vouchers</value>
   </data>
 </root>

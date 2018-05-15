@@ -45,10 +45,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetVouchersAsync(int fpId, int branchId)
         {
-            var gridOptions = GetGridOptions();
-            int itemCount = await _repository.GetCountAsync(fpId, branchId, gridOptions);
+            int itemCount = await _repository.GetCountAsync(fpId, branchId, GridOptions);
             SetItemCount(itemCount);
-            var vouchers = await _repository.GetVouchersAsync(fpId, branchId, gridOptions);
+            var vouchers = await _repository.GetVouchersAsync(fpId, branchId, GridOptions);
             return Json(vouchers);
         }
 
@@ -127,10 +126,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetArticlesAsync(int voucherId)
         {
-            var gridOptions = GetGridOptions();
-            int itemCount = await _repository.GetArticleCountAsync(voucherId, gridOptions);
+            int itemCount = await _repository.GetArticleCountAsync(voucherId, GridOptions);
             SetItemCount(itemCount);
-            var articles = await _repository.GetArticlesAsync(voucherId, gridOptions);
+            var articles = await _repository.GetArticlesAsync(voucherId, GridOptions);
             return Json(articles);
         }
 

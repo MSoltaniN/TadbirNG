@@ -1382,16 +1382,16 @@ INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VAL
 SET IDENTITY_INSERT [Auth].[RolePermission] OFF
 
 SET IDENTITY_INSERT [Metadata].[Command] ON
-INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (1, NULL, 1, N'Accounting')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (1, NULL, NULL, N'Accounting')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (2, 1, 1, N'Accounts')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (3, 1, 5, N'DetailAccounts')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (4, 1, 9, N'CostCenters')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (5, 1, 13, N'Projects')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (6, 1, 25, N'Vouchers')
-INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (7, NULL, 1, N'Administration')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (7, NULL, NULL, N'Administration')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (8, 7, 41, N'Users')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (9, 7, 44, N'Roles')
-INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (10, NULL, 1, N'Profile')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (10, NULL, NULL, N'Profile')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (11, 10, NULL, N'ChangePassword')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (12, 10, NULL, N'LogOut')
 SET IDENTITY_INSERT [Metadata].[Command] OFF

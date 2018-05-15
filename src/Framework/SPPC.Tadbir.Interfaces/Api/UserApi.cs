@@ -121,5 +121,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for user metadata.
         /// </summary>
         public const string UserMetadataUrl = "users/metadata";
+
+        /// <summary>
+        /// API client URL for commands accessible to a user specified by unique identifier.
+        /// </summary>
+        public const string CurrentUserCommands = "users/current/commands";
+
+        /// <summary>
+        /// API server route URL for commands accessible to a user specified by unique identifier.
+        /// </summary>
+        public const string CurrentUserCommandsUrl = "users/current/commands";
     }
 }

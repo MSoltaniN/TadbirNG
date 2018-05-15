@@ -54,6 +54,10 @@ namespace SPPC.Tadbir.Persistence
         /// such a user defined; otherwise, returns null.</returns>
         Task<UserContextViewModel> GetUserContextAsync(int userId);
 
+        Task<IList<int>> GetUserPermissionIdsAsync(int userId);
+
+        Task<IList<CommandViewModel>> GetUserCommandsAsync(int userId);
+
         /// <summary>
         /// به روش آسنکرون، تعداد کاربران تعریف شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>

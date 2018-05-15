@@ -33,10 +33,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetProjectsAsync(int fpId, int branchId)
         {
-            var gridOptions = GetGridOptions();
-            int itemCount = await _repository.GetCountAsync(fpId, branchId, gridOptions);
+            int itemCount = await _repository.GetCountAsync(fpId, branchId, GridOptions);
             SetItemCount(itemCount);
-            var projects = await _repository.GetProjectsAsync(fpId, branchId, gridOptions);
+            var projects = await _repository.GetProjectsAsync(fpId, branchId, GridOptions);
             return Json(projects);
         }
 
