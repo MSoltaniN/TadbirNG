@@ -18,8 +18,8 @@
             <input type="text" class="k-textbox" formControlName="personFirstName" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.personFirstName.valid || editForm.controls.personFirstName.pristine">
-                <span *ngIf="editForm.controls.personFirstName.errors?.required">{{ 'UserValidations.PersonFirstName' | translate }}</span>
-                <span *ngIf="editForm.controls.personFirstName.errors?.maxlength">{{ 'UserValidations.PersonFirstNameLenght' | translate }}</span>
+                <span *ngIf="editForm.controls.personFirstName.errors?.required">{{ 'AllValidations.User.PersonFirstNameIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.personFirstName.errors?.maxlength">{{ 'AllValidations.User.PersonFirstNameIsTooLong' | translate }}</span>
             </div>
         </div>
 
@@ -29,8 +29,8 @@
             <input type="text" class="k-textbox" formControlName="personLastName" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.personLastName.valid || editForm.controls.personLastName.pristine">
-                <span *ngIf="editForm.controls.personLastName.errors?.required">{{ 'UserValidations.PersonLastName' | translate }}</span>
-                <span *ngIf="editForm.controls.personLastName.errors?.maxlength">{{ 'UserValidations.PersonLastNameLenght' | translate }}</span>
+                <span *ngIf="editForm.controls.personLastName.errors?.required">{{ 'AllValidations.User.PersonLastNameIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.personLastName.errors?.maxlength">{{ 'AllValidations.User.PersonLastNameIsTooLong' | translate }}</span>
             </div>
 
         </div>
@@ -41,8 +41,8 @@
             <input type="text" class="k-textbox" formControlName="userName" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.userName.valid || editForm.controls.userName.pristine">
-                <span *ngIf="editForm.controls.userName.errors?.required">{{ 'UserValidations.UserName' | translate }}</span>
-                <span *ngIf="editForm.controls.userName.errors?.maxlength">{{ 'UserValidations.UserNameLenght' | translate }}</span>
+                <span *ngIf="editForm.controls.userName.errors?.required">{{ 'AllValidations.User.UserNameIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.userName.errors?.maxlength">{{ 'AllValidations.User.UserNameIsTooLong' | translate }}</span>
             </div>
         </div>
 
@@ -52,7 +52,9 @@
             <input type="password" class="k-textbox" formControlName="password" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.password.valid || editForm.controls.password.pristine">
-                {{ 'UserValidations.PasswordLenght' | translate }}
+                <span *ngIf="editForm.controls.password.errors?.required">{{ 'AllValidations.User.PasswordIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.password.errors?.maxlength">{{ 'AllValidations.User.PasswordLengthRange' | translate }}</span>
+                <span *ngIf="editForm.controls.password.errors?.minlength">{{ 'AllValidations.User.PasswordLengthRange' | translate }}</span>
             </div>
         </div>
 

@@ -6,33 +6,26 @@ import { String } from '../class/source';
 import { expect } from 'chai';
 import { Environment } from "../enviroment";
 import { BaseService } from '../class/base.service';
+import { LookupApi } from './api/index';
 
 @Injectable()
 export class CompanyService extends BaseService {
 
-    
-    private getCompanyUrl = Environment.BaseUrl + "/lookup/companies/user/{0}";
-    
-    constructor(private http: Http) {
-        super();
+    constructor(public http: Http) {
+        super(http);
     }
 
 
-    getCompanies(userName : string,ticket : string) {
-        
+    getCompanies(userName: string, ticket: string) {
         this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
         this.headers.append('X-Tadbir-AuthTicket', ticket);
-
         if (ticket == '') return null;
         var jsonContext = atob(ticket);
         var context = JSON.parse(jsonContext);
-
         var userId = context.User.Id;
-        var url = String.Format(this.getCompanyUrl, userId);
-        
+        var url = String.Format(LookupApi.UserAccessibleCompanies, userId);        
         return this.http.get(url, { headers: this.headers })
             .map(response => <any>(<Response>response).json());
     }
-
 
 }

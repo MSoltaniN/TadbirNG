@@ -1,6 +1,6 @@
-﻿import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator } from '@angular/forms';
-import { LookupService } from '../../service/index';
+﻿import { Component, OnInit, Input, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { LookupService, FullAccountService, FullAccountInfo } from '../../service/index';
 
 interface Item {
     key: string,
@@ -28,38 +28,58 @@ export class SppcFullAccount implements OnInit, ControlValueAccessor, Validator 
 
     private parseError: boolean = false;
 
+    accountForm: FormGroup;
+
     public accountsRows: Array<Item>;
     public detailAccountsRows: Array<Item>;
     public costCentersRows: Array<Item>;
     public projectsRows: Array<Item>;
-    public selectedAccountValue: string = '2';
-    public selectedDetailAccountValue: number;
-    public selectedCostCenterValue: number;
-    public selectedprojectValue: number;
 
-    constructor(private lookupService: LookupService) {
+    public selectedAccountValue: string;
+    public selectedDetailAccountValue: string;
+    public selectedCostCenterValue: string;
+    public selectedprojectValue: string;
+
+
+    constructor(private lookupService: LookupService, private fullAccountService: FullAccountService, private formBuilder: FormBuilder) {
         this.GetAccounts();
         this.GetDetailAccounts();
         this.GetCostCenters();
         this.GetProjects();
-
-        console.log(this.selectedAccountValue);
     }
 
-    ngOnInit() { }
+    ngOnInit() {
+        this.accountForm = this.formBuilder.group({
+            accountId: ['', Validators.required],
+            detailId: '',
+            costCenterId: '',
+            projectId: ''
+        });
+    }
 
 
-    @Input() fullAccount: any;
+    @Input() fullAccount: FullAccountInfo;
 
     propagateChange: any = () => { };
 
 
     writeValue(value: any): void {
-        //debugger;
+
         if (value) {
+            this.accountForm.setValue(value);
+            
             this.fullAccount = value;
-            //this.selectedaccountValue = 1;
+
+            if (this.fullAccount.accountId != null)    
+                this.selectedAccountValue = this.fullAccount.accountId.toString();
+            if (this.fullAccount.detailId != null)
+                this.selectedDetailAccountValue = this.fullAccount.detailId.toString();
+            if (this.fullAccount.costCenterId != null)
+                this.selectedCostCenterValue = this.fullAccount.costCenterId.toString();
+            if (this.fullAccount.projectId != null)
+                this.selectedprojectValue = this.fullAccount.projectId.toString();
         }
+
     }
 
     registerOnChange(fn: any): void {
@@ -68,17 +88,22 @@ export class SppcFullAccount implements OnInit, ControlValueAccessor, Validator 
 
     registerOnTouched(fn: any): void { }
 
+    ddlChange(value: any) {
+        this.propagateChange(this.accountForm.value);
+    }
+
     public validate(c: FormControl) {
+
+        if (this.accountForm.valid)
+            this.parseError = false;
+        else
+            this.parseError = true;
+
         return (!this.parseError) ? null : {
             jsonParseError: {
                 valid: false,
             },
         };
-    }
-
-    public valueChange(value: any): void {
-        debugger;
-        this.selectedAccountValue = value;
     }
 
     GetAccounts() {

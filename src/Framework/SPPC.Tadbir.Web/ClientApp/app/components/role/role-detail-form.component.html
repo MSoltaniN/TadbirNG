@@ -34,69 +34,78 @@
     <div class="panel panel-primary">
         <div class="panel-heading">{{ 'Role.Permissions' | translate }}</div>
         <div class="panel-body">
-
-            <kendo-grid [data]="gridPermissionData">
-                <ng-template kendoGridNoRecordsTemplate>
-                    {{showloadingPermissionMessage  ? ('App.Loading' | translate) : ('Role.RecordNotFound' | translate)}}
-                </ng-template>
-
-                <!-- template for mobile -->
-                <kendo-grid-column media="(max-width: 450px)" title="">
-                    <ng-template kendoGridCellTemplate let-role>
-                        <dl>
-                            <dt>{{ 'Role.Name' | translate }}</dt>
-                            <dd>{{ role.name }}</dd>
-
-                            <dt>{{ 'Role.GroupName' | translate }}</dt>
-                            <dd>{{ role.groupName }}</dd>
-                        </dl>
+            <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
+                <kendo-treeview [nodes]="treeData" textField="name"
+                                kendoTreeViewExpandable                                
+                                kendoTreeViewFlatDataBinding
+                                idField="id"
+                                parentIdField="parentId" >
+                </kendo-treeview>
+            </div>
+            <div *ngIf="false">
+                <kendo-grid [data]="gridPermissionData">
+                    <ng-template kendoGridNoRecordsTemplate>
+                        {{showloadingPermissionMessage  ? ('App.Loading' | translate) : ('Role.RecordNotFound' | translate)}}
                     </ng-template>
-                </kendo-grid-column>
-                <!-- template for mobile -->
-                <!-- additional columns on large devices -->
-                <kendo-grid-column media="(min-width: 450px)" width="300" sppc-grid-column="Role.name">
-                </kendo-grid-column>
-                <kendo-grid-column media="(min-width: 450px)" width="300" sppc-grid-column="Role.groupName">
-                </kendo-grid-column>
-                <kendo-grid-column media="(min-width: 450px)" sppc-grid-column="Role.description">
-                </kendo-grid-column>
-                <!-- additional columns on large devices -->
 
-            </kendo-grid>
+                    <!-- template for mobile -->
+                    <kendo-grid-column media="(max-width: 450px)" title="">
+                        <ng-template kendoGridCellTemplate let-role>
+                            <dl>
+                                <dt>{{ 'Role.Name' | translate }}</dt>
+                                <dd>{{ role.name }}</dd>
+
+                                <dt>{{ 'Role.GroupName' | translate }}</dt>
+                                <dd>{{ role.groupName }}</dd>
+                            </dl>
+                        </ng-template>
+                    </kendo-grid-column>
+                    <!-- template for mobile -->
+                    <!-- additional columns on large devices -->
+                    <kendo-grid-column media="(min-width: 450px)" width="300" sppc-grid-column="Role.name">
+                    </kendo-grid-column>
+                    <kendo-grid-column media="(min-width: 450px)" width="300" sppc-grid-column="Role.groupName">
+                    </kendo-grid-column>
+                    <kendo-grid-column media="(min-width: 450px)" sppc-grid-column="Role.description">
+                    </kendo-grid-column>
+                    <!-- additional columns on large devices -->
+
+                </kendo-grid>
+
+            </div>            
         </div>
     </div>
 
     <div class="panel panel-primary">
         <div class="panel-heading">{{ 'Role.Branches' | translate }}</div>
-        <div class="panel-body">
-
+        <div class="panel-body">            
             <kendo-grid [data]="gridBranchesData">
-                <ng-template kendoGridNoRecordsTemplate>
-                    {{showloadingBranchesMessage  ? ('App.Loading' | translate) : ('RoleBranches.RecordNotFound' | translate)}}
-                </ng-template>
-
-                <!-- template for mobile -->
-                <kendo-grid-column media="(max-width: 450px)" title="">
-                    <ng-template kendoGridCellTemplate let-roleBranches>
-                        <dl>
-                            <dt>{{ 'RoleBranches.Name' | translate }}</dt>
-                            <dd>{{ roleBranches.name }}</dd>
-
-                            <dt>{{ 'RoleBranches.Description' | translate }}</dt>
-                            <dd>{{ roleBranches.description }}</dd>
-                        </dl>
-
+                    <ng-template kendoGridNoRecordsTemplate>
+                        {{showloadingBranchesMessage  ? ('App.Loading' | translate) : ('RoleBranches.RecordNotFound' | translate)}}
                     </ng-template>
-                </kendo-grid-column>
-                <!-- template for mobile -->
-                <!-- additional columns on large devices -->
-                <kendo-grid-column media="(min-width: 450px)" width="400" sppc-grid-column="RoleBranches.name">
-                </kendo-grid-column>
-                <kendo-grid-column media="(min-width: 450px)" sppc-grid-column="RoleBranches.description">
-                </kendo-grid-column>
-                <!-- additional columns on large devices -->
 
-            </kendo-grid>
+                    <!-- template for mobile -->
+                    <kendo-grid-column media="(max-width: 450px)" title="">
+                        <ng-template kendoGridCellTemplate let-roleBranches>
+                            <dl>
+                                <dt>{{ 'RoleBranches.Name' | translate }}</dt>
+                                <dd>{{ roleBranches.name }}</dd>
+
+                                <dt>{{ 'RoleBranches.Description' | translate }}</dt>
+                                <dd>{{ roleBranches.description }}</dd>
+                            </dl>
+
+                        </ng-template>
+                    </kendo-grid-column>
+                    <!-- template for mobile -->
+                    <!-- additional columns on large devices -->
+                    <kendo-grid-column media="(min-width: 450px)" width="400" sppc-grid-column="RoleBranches.name">
+                    </kendo-grid-column>
+                    <kendo-grid-column media="(min-width: 450px)" sppc-grid-column="RoleBranches.description">
+                    </kendo-grid-column>
+                    <!-- additional columns on large devices -->
+
+                </kendo-grid>            
         </div>
     </div>
 

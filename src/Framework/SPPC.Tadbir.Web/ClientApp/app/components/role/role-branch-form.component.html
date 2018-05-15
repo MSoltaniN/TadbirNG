@@ -1,4 +1,4 @@
-﻿<kendo-dialog *ngIf="roleBranches" class="user-dialog" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+﻿<kendo-dialog *ngIf="inputRoleBranches" class="user-dialog" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               (close)="closeForm()">
     <kendo-dialog-titlebar>
         {{ getTitleText('RoleBranches.RoleBranchesTitle' | translate) }}

@@ -3,7 +3,7 @@
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy, State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 
-import { RoleBranchesViewModel, RoleDetailsViewModel } from '../../model/index';
+import { RoleBranches, RoleDetails, RoleDetailsViewModel } from '../../model/index';
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
 
@@ -15,6 +15,8 @@ import { DefaultComponent } from "../../class/default.component";
 
 import { Layout } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
+import { TreeNodeInfo } from '../../model/role';
+import { Permission } from '../../model/permission';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -52,25 +54,78 @@ export class RoleDetailFormComponent extends DefaultComponent {
     public showloadingUsersMessage: boolean = true;
 
     public roleName: string;
+    public treeData: TreeNodeInfo[] = new Array<TreeNodeInfo>();
     public roleDescription: string;
+
+    private permissonDictionary: { [id: string]: Permission; } = {}
+    
 
     @Input() public roleDetail: boolean = false;
     @Input() public errorMessage: string = '';
 
-    @Input() public set roleDetailsViewModel(roleDetailsViewModel: RoleDetailsViewModel) {
 
-        if (roleDetailsViewModel != undefined) {
-            this.gridPermissionData = roleDetailsViewModel.permissions;
-            this.gridBranchesData = roleDetailsViewModel.branches;
-            this.gridUsersData = roleDetailsViewModel.users;
+    @Input() public set roleDetails(roleDetails: RoleDetails) {
 
-            this.roleName = roleDetailsViewModel.role.name;
-            this.roleDescription = roleDetailsViewModel.role.description != null ? roleDetailsViewModel.role.description:"";
+        
+        var level0Index: number = -1;
+        var level1Index: number = 0;
 
-            this.showloadingPermissionMessage = !(this.gridPermissionData.length == 0);
+        if (roleDetails != undefined) {
+
+            var groupId = 0;
+
+            this.treeData = new Array<TreeNodeInfo>();
+
+            if (this.CurrentLanguage == "fa")
+                this.treeData.push(new TreeNodeInfo(-1, undefined, "حسابداری"));
+            else
+                this.treeData.push(new TreeNodeInfo(-1, undefined, "Accounting"));
+
+            var indexId: number = 0;
+            var selectAll: boolean = true;
+
+            var sortedPermission = roleDetails.permissions.sort(function (a: Permission, b: Permission) {
+                return a.id - b.id;
+            });
+
+            for (let permissionItem of sortedPermission) {
+
+
+                if (groupId != permissionItem.groupId) {
+                    this.treeData.push(new TreeNodeInfo(permissionItem.groupId, -1, permissionItem.groupName))
+
+                    level0Index++;
+                    level1Index = -1;
+                    
+                    groupId = permissionItem.groupId;
+                }
+
+                if (groupId == permissionItem.groupId) {
+                    this.treeData.push(new TreeNodeInfo(parseInt(permissionItem.id.toString() + permissionItem.groupId.toString() + '00')
+                        , permissionItem.groupId, permissionItem.name))
+
+                    level1Index++;
+                }
+                
+                this.permissonDictionary['0_' + level0Index.toString() + '_' + level1Index.toString()] = permissionItem;
+
+            }   
+            
+            this.gridBranchesData = roleDetails.branches;
+            this.gridUsersData = roleDetails.users;
+
+            this.roleName = roleDetails.role.name;
+            this.roleDescription = roleDetails.role.description != null ? roleDetails.role.description : "";
+
+            this.showloadingPermissionMessage = !(this.treeData.length == 0);
             this.showloadingBranchesMessage = !(this.gridBranchesData.length == 0);
             this.showloadingUsersMessage = !(this.gridUsersData.length == 0);
+
+
         }
+
+        //this.gridPermissionData = roleDetails.permissions;
+        
     }
 
     @Output() cancelRoleDetail: EventEmitter<any> = new EventEmitter();

@@ -115,8 +115,28 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<Account, AccountViewModel>();
+            mapperConfig.CreateMap<Account, AccountViewModel>()
+                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<AccountViewModel, Account>()
+                .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
+                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
+                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
+            mapperConfig.CreateMap<DetailAccount, DetailAccountViewModel>()
+                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
+            mapperConfig.CreateMap<DetailAccountViewModel, DetailAccount>()
+                .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
+                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
+                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
+            mapperConfig.CreateMap<CostCenter, CostCenterViewModel>()
+                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
+            mapperConfig.CreateMap<CostCenterViewModel, CostCenter>()
+                .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
+                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
+                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
+            mapperConfig.CreateMap<Project, ProjectViewModel>()
+                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
+            mapperConfig.CreateMap<ProjectViewModel, Project>()
+                .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
             mapperConfig.CreateMap<Account, AccountFullViewModel>();
@@ -132,25 +152,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Project, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
-            mapperConfig.CreateMap<Transaction, TransactionFullViewModel>()
-                .ForMember(
-                    dest => dest.Transaction,
-                    opts => opts.MapFrom(
-                        src => _autoMapper.Map<TransactionViewModel>(src)));
-            mapperConfig.CreateMap<Transaction, TransactionViewModel>()
-                .ForMember(
-                    dest => dest.DebitSum,
-                    opts => opts.MapFrom(
-                        src => src.Lines
-                            .Select(line => line.Debit)
-                            .Sum()))
-                .ForMember(
-                    dest => dest.CreditSum,
-                    opts => opts.MapFrom(
-                        src => src.Lines
-                            .Select(line => line.Credit)
-                            .Sum()));
-            mapperConfig.CreateMap<Transaction, TransactionSummaryViewModel>()
+            mapperConfig.CreateMap<Voucher, VoucherViewModel>()
                 .ForMember(
                     dest => dest.DebitSum,
                     opts => opts.MapFrom(
@@ -164,22 +166,17 @@ namespace SPPC.Tadbir.Mapper
                             .Select(line => line.Credit)
                             .Sum()));
 
-            mapperConfig.CreateMap<TransactionViewModel, Transaction>()
+            mapperConfig.CreateMap<VoucherViewModel, Voucher>()
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
                 .AfterMap((viewModel, model) => model.Document.Id = viewModel.Document.Id);
-            mapperConfig.CreateMap<TransactionLine, TransactionLineViewModel>()
+            mapperConfig.CreateMap<VoucherLine, VoucherLineViewModel>()
                 .AfterMap((model, viewModel) => viewModel.FullAccount.AccountId = model.AccountId)
                 .AfterMap((model, viewModel) => viewModel.FullAccount.DetailId = model.DetailId)
                 .AfterMap((model, viewModel) => viewModel.FullAccount.CostCenterId = model.CostCenterId)
                 .AfterMap((model, viewModel) => viewModel.FullAccount.ProjectId = model.ProjectId);
-            mapperConfig.CreateMap<TransactionLine, TransactionLineFullViewModel>()
-                .ForMember(
-                    dest => dest.Article,
-                    opts => opts.MapFrom(
-                        src => _autoMapper.Map<TransactionLineViewModel>(src)));
-            mapperConfig.CreateMap<TransactionLineViewModel, TransactionLine>()
-                .AfterMap((viewModel, model) => model.Transaction.Id = viewModel.TransactionId)
+            mapperConfig.CreateMap<VoucherLineViewModel, VoucherLine>()
+                .AfterMap((viewModel, model) => model.Voucher.Id = viewModel.VoucherId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
                 .AfterMap((viewModel, model) => model.AccountId = viewModel.FullAccount.AccountId ?? 0)
@@ -192,6 +189,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
 
+            mapperConfig.CreateMap<FiscalPeriod, FiscalPeriodViewModel>();
             mapperConfig.CreateMap<FiscalPeriod, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
@@ -262,7 +260,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.Status,
                     opts => opts.MapFrom(
-                        src => TransactionStatus.ToLocalValue(src.Document.Status.Name)))
+                        src => VoucherStatus.ToLocalValue(src.Document.Status.Name)))
                 .ForMember(
                     dest => dest.OperationalStatus,
                     opts => opts.MapFrom(
@@ -347,6 +345,8 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<Entity, EntityViewModel>();
             mapperConfig.CreateMap<Property, PropertyViewModel>();
+            mapperConfig.CreateMap<Command, CommandViewModel>()
+                .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

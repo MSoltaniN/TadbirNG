@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { RoleService, RoleInfo, RoleFullViewModelInfo, PermissionInfo, RoleUsersViewModelInfo, RoleBranchesViewModelInfo, RoleDetailsViewModelInfo } from '../../service/index';
-import { Role, RoleFullViewModel, Permission, RoleUsersViewModel, RoleBranchesViewModel } from '../../model/index';
+import { RoleService, RoleInfo, RoleFullInfo, PermissionInfo, RoleUsersInfo, RoleBranchesInfo, RoleDetailsInfo } from '../../service/index';
+import { Role, RoleFull, Permission, RoleUsers, RoleBranches } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 
@@ -10,7 +10,7 @@ import "rxjs/Rx";
 import { TranslateService } from 'ng2-translate';
 import { String } from '../../class/source';
 
-import { SortDescriptor, orderBy, State, CompositeFilterDescriptor  } from '@progress/kendo-data-query';
+import { SortDescriptor, orderBy, State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
 import { MessageType, Layout, Entities, Metadatas } from "../../enviroment";
 import { Filter } from "../../class/filter";
@@ -18,6 +18,9 @@ import { Filter } from "../../class/filter";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
+import { RoleApi } from '../../service/api/index';
+import { SecureEntity } from '../../security/secureEntity';
+import { RolePermissions } from '../../security/permissions';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -44,6 +47,14 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     public selectedRows: string[] = [];
     public totalRecords: number;
 
+    //permission flag
+    viewAccess: boolean;
+    insertAccess: boolean;
+    editAccess: boolean;
+    deleteAccess: boolean;
+    assignUsersAccess: boolean;
+    assignBranchesAccess: boolean;
+
     //for add in delete messageText
     deleteConfirm: boolean;
     deleteRoleId: number;
@@ -55,14 +66,14 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     showloadingMessage: boolean = true;
 
     newRole: boolean;
-    roleFullViewModel: RoleFullViewModel = new RoleFullViewModelInfo;
+    roleFull: RoleFull = new RoleFullInfo;
 
 
-    editDataItem?: Role = undefined;
+    editDataItem?: Role | undefined = undefined;
     permissionsData: Permission;
-    roleUsersData: RoleUsersViewModelInfo;
-    roleBranchesData: RoleBranchesViewModelInfo;
-    roleDetailData: RoleDetailsViewModelInfo;
+    roleUsersData: RoleUsersInfo;
+    roleBranchesData: RoleBranchesInfo;
+    roleDetailData: RoleDetailsInfo;
 
 
     isNew: boolean;
@@ -74,19 +85,24 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     groupDelete: boolean = false;
 
     ngOnInit() {
+        this.viewAccess = this.isAccess(SecureEntity.Role, RolePermissions.View);
+        this.insertAccess = this.isAccess(SecureEntity.Role, RolePermissions.Create);
+        this.editAccess = this.isAccess(SecureEntity.Role, RolePermissions.Edit);
+        this.deleteAccess = this.isAccess(SecureEntity.Role, RolePermissions.Delete);
+        this.assignUsersAccess = this.isAccess(SecureEntity.Role, RolePermissions.AssignUsers);
+        this.assignBranchesAccess = this.isAccess(SecureEntity.Role, RolePermissions.AssignBranches);
+
         this.reloadGrid();
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
         public roleService: RoleService, public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, Entities.Role, Metadatas.Role);
-
     }
 
     selectionKey(context: RowArgs): string {
-
+        if (context.dataItem == undefined) return "";
         return context.dataItem.id + " " + context.index;
-        //return context.dataItem.id;
     }
 
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
@@ -97,71 +113,63 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     }
 
     reloadGrid(insertedRole?: Role) {
-
-        this.sppcLoading.show();
-
-        var filter = this.currentFilter;
-        var order = this.currentOrder;
-
-        if (this.totalRecords == this.skip && this.totalRecords != 0) {
-            this.skip = this.skip - this.pageSize;
-        }
-
-        this.roleService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-
-            var resData = res.json();
-            //this.properties = resData.metadata.properties;
-            var totalCount = 0;
-
-
-            if (insertedRole) {
-                var rows = (resData as Array<Role>);
-                var index = rows.findIndex(p => p.id == insertedRole.id);
-                if (index >= 0) {
-                    resData.splice(index, 1);
-                    rows.splice(0, 0, insertedRole);
-                }
-                else {
-                    if (rows.length == this.pageSize) {
-                        resData.splice(this.pageSize - 1, 1);
+        if (this.viewAccess) {
+            this.sppcLoading.show();
+            var filter = this.currentFilter;
+            var order = this.currentOrder;
+            if (this.totalRecords == this.skip && this.totalRecords != 0) {
+                this.skip = this.skip - this.pageSize;
+            }
+            this.roleService.getAll(RoleApi.Roles, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+                var resData = res.json();
+                var totalCount = 0;
+                if (insertedRole) {
+                    var rows = (resData as Array<Role>);
+                    var index = rows.findIndex(p => p.id == insertedRole.id);
+                    if (index >= 0) {
+                        resData.splice(index, 1);
+                        rows.splice(0, 0, insertedRole);
                     }
-
-                    rows.splice(0, 0, insertedRole);
+                    else {
+                        if (rows.length == this.pageSize) {
+                            resData.splice(this.pageSize - 1, 1);
+                        }
+                        rows.splice(0, 0, insertedRole);
+                    }
                 }
-            }
-
-            if (res.headers != null) {
-                var headers = res.headers != undefined ? res.headers : null;
-                if (headers != null) {
-                    var retheader = headers.get('X-Total-Count');
-                    if (retheader != null)
-                        totalCount = parseInt(retheader.toString());
+                if (res.headers != null) {
+                    var headers = res.headers != undefined ? res.headers : null;
+                    if (headers != null) {
+                        var retheader = headers.get('X-Total-Count');
+                        if (retheader != null)
+                            totalCount = parseInt(retheader.toString());
+                    }
                 }
-            }
-
+                this.rowData = {
+                    data: resData,
+                    total: totalCount
+                }
+                this.showloadingMessage = !(resData.length == 0);
+                this.totalRecords = totalCount;
+                this.sppcLoading.hide();
+            })
+        }
+        else {
             this.rowData = {
-                data: resData,
-                total: totalCount
+                data: [],
+                total: 0
             }
-
-            this.showloadingMessage = !(resData.length == 0);
-            this.totalRecords = totalCount;
-            this.sppcLoading.hide();
-
-        })
+        }
 
     }
 
     detailHandler(roleId: number) {
         this.roleDetail = true;
         this.sppcLoading.show();
-
         this.roleService.getRoleDetail(roleId).subscribe(res => {
             this.roleDetailData = res;
-
             this.sppcLoading.hide();
         });
-
         this.errorMessage = '';
     }
 
@@ -174,7 +182,6 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     userHandler(roleId: number) {
         this.usersList = true;
         this.sppcLoading.show();
-
         this.roleService.getRoleUsers(roleId).subscribe(res => {
             this.roleUsersData = res;
 
@@ -190,34 +197,26 @@ export class RoleComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    saveRoleUsersHandler(roleUsersViewModel: RoleUsersViewModel) {
-
+    saveRoleUsersHandler(roleUsers: RoleUsers) {
         this.sppcLoading.show();
-
-        this.roleService.modifiedRoleUsers(roleUsersViewModel)
+        this.roleService.modifiedRoleUsers(roleUsers)
             .subscribe(response => {
                 this.usersList = false;
-                this.showMessage(this.updateMsg, MessageType.Succes); 
-
+                this.showMessage(this.updateMsg, MessageType.Succes);
                 this.sppcLoading.hide();
             }, (error => {
-
                 this.sppcLoading.hide();
                 this.errorMessage = error;
             }));
     }
 
-
     branchHandler(roleId: number) {
         this.roleBranches = true;
         this.sppcLoading.show();
-
         this.roleService.getRoleBranches(roleId).subscribe(res => {
             this.roleBranchesData = res;
-
             this.sppcLoading.hide();
         })
-       
         this.errorMessage = '';
     }
 
@@ -227,10 +226,9 @@ export class RoleComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    saveRoleBranchesHandler(roleBranchesViewModel: RoleBranchesViewModel) {
+    saveRoleBranchesHandler(roleBranches: RoleBranches) {
         this.sppcLoading.show();
-
-        this.roleService.modifiedRoleBranches(roleBranchesViewModel)
+        this.roleService.modifiedRoleBranches(roleBranches)
             .subscribe(response => {
                 this.roleBranches = false;
                 this.showMessage(this.updateMsg, MessageType.Succes);
@@ -238,9 +236,8 @@ export class RoleComponent extends DefaultComponent implements OnInit {
             }, (error => {
                 this.errorMessage = error;
                 this.sppcLoading.hide();
-            }));       
+            }));
     }
-
 
     dataStateChange(state: DataStateChangeEvent): void {
         this.currentFilter = this.getFilters(state.filter);
@@ -258,7 +255,6 @@ export class RoleComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-
     pageChange(event: PageChangeEvent): void {
         this.skip = event.skip;
         this.reloadGrid();
@@ -267,7 +263,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     deleteRole(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.roleService.delete(this.deleteRoleId).subscribe(response => {
+            this.roleService.delete(RoleApi.Role, this.deleteRoleId).subscribe(response => {
                 this.deleteRoleId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
@@ -276,32 +272,25 @@ export class RoleComponent extends DefaultComponent implements OnInit {
                 this.showMessage(error, MessageType.Warning);
             }));
         }
-
         //hide confirm dialog
         this.deleteConfirm = false;
     }
 
     removeHandler(arg: any) {
-
         this.prepareDeleteConfirm(arg.dataItem.name);
-
         this.deleteRoleId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
-
     public editHandler(arg: any) {
         this.sppcLoading.show();
-
-        this.roleService.getRoleFullViewModel(arg.dataItem.id).subscribe(res => {
+        this.roleService.getRoleFull(arg.dataItem.id).subscribe(res => {
             this.editDataItem = res.role;
             this.permissionsData = res.permissions;
-
             this.sppcLoading.hide();
         });
         this.isNew = false;
         this.errorMessage = '';
-       
     }
 
     public cancelHandler() {
@@ -314,40 +303,39 @@ export class RoleComponent extends DefaultComponent implements OnInit {
         this.sppcLoading.show();
         this.isNew = true;
         this.editDataItem = new RoleInfo();
-        this.roleService.getNewRoleFullViewModel().subscribe(res => {
+        this.roleService.getNewRoleFull().subscribe(res => {
             this.permissionsData = res.permissions;
         });
         this.errorMessage = '';
         this.sppcLoading.hide();
     }
 
-    public saveHandler(roleFullViewModel: RoleFullViewModel) {
-
+    public saveHandler(roleFull: RoleFull) {
         this.sppcLoading.show();
         if (!this.isNew) {
-            this.roleService.editRole(roleFullViewModel)
-                    .subscribe(response => {
-                        this.isNew = false;
-                        this.editDataItem = undefined;
-                        this.showMessage(this.updateMsg, MessageType.Succes);
-                        this.reloadGrid();
-                    }, (error => {
-                        this.errorMessage = error;
-                    }));
-            }
-            else {
-                this.roleService.insertRole(roleFullViewModel)
-                    .subscribe((response: any) => {
-                        this.isNew = false;
-                        this.editDataItem = undefined;
-                        this.showMessage(this.insertMsg, MessageType.Succes);
-                        var insertedRole = JSON.parse(response._body);
-                        this.reloadGrid(insertedRole);
-                    }, (error => {
-                        this.isNew = true;
-                        this.errorMessage = error;
-                    }));
-            }
+            this.roleService.edit<RoleFull>(RoleApi.Role, roleFull, roleFull.id)
+                .subscribe(response => {
+                    this.isNew = false;
+                    this.editDataItem = undefined;
+                    this.showMessage(this.updateMsg, MessageType.Succes);
+                    this.reloadGrid();
+                }, (error => {
+                    this.errorMessage = error;
+                }));
+        }
+        else {
+            this.roleService.insert<RoleFull>(RoleApi.Roles, roleFull)
+                .subscribe((response: any) => {
+                    this.isNew = false;
+                    this.editDataItem = undefined;
+                    this.showMessage(this.insertMsg, MessageType.Succes);
+                    var insertedRole = JSON.parse(response._body);
+                    this.reloadGrid(insertedRole);
+                }, (error => {
+                    this.isNew = true;
+                    this.errorMessage = error;
+                }));
+        }
         this.sppcLoading.hide();
     }
 

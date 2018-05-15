@@ -19,6 +19,9 @@ import { Filter } from "../../class/filter";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
+import { UserApi } from '../../service/api/index';
+import { SecureEntity } from '../../security/secureEntity';
+import { UserPermissions } from '../../security/permissions';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -42,6 +45,12 @@ export class UserComponent extends DefaultComponent implements OnInit {
     public selectedRows: string[] = [];
     public totalRecords: number;
 
+    //permission flag
+    viewAccess: boolean;
+    insertAccess: boolean;
+    editAccess: boolean;
+    deleteAccess: boolean;
+
     //for add in delete messageText
     deleteUserId: number;
 
@@ -60,22 +69,22 @@ export class UserComponent extends DefaultComponent implements OnInit {
     errorMessage: string;
 
     ngOnInit() {
+        this.viewAccess = this.isAccess(SecureEntity.User, UserPermissions.View);
+        this.insertAccess = this.isAccess(SecureEntity.User, UserPermissions.Create);
+        this.editAccess = this.isAccess(SecureEntity.User, UserPermissions.Edit);
+
         this.reloadGrid();
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
         private userService: UserService, public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, Entities.User, Metadatas.User);
-
     }
-
 
     selectionKey(context: RowArgs): string {
-
+        if (context.dataItem == undefined) return "";
         return context.dataItem.id + " " + context.index;
-        //return context.dataItem.id;
     }
-
 
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
         //if (this.selectedRows.length > 1)
@@ -85,74 +94,62 @@ export class UserComponent extends DefaultComponent implements OnInit {
     }
 
     reloadGrid(insertedUser?: User) {
-
-        this.sppcLoading.show();
-
-        var filter = this.currentFilter;
-        var order = this.currentOrder;
-
-
-
-        if (this.totalRecords == this.skip && this.totalRecords != 0) {
-            this.skip = this.skip - this.pageSize;
-        }
-
-        this.userService.search(this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-            var resData = res.json();
-            //this.properties = resData.metadata.properties;
-            var totalCount = 0;
-
-
-            if (insertedUser) {
-                var rows = (resData as Array<User>);
-                var index = rows.findIndex(p => p.id == insertedUser.id);
-                if (index >= 0) {
-                    resData.splice(index, 1);
-                    rows.splice(0, 0, insertedUser);
-                }
-                else {
-                    if (rows.length == this.pageSize) {
-                        resData.splice(this.pageSize - 1, 1);
+        if (this.viewAccess) {
+            this.sppcLoading.show();
+            var filter = this.currentFilter;
+            var order = this.currentOrder;
+            if (this.totalRecords == this.skip && this.totalRecords != 0) {
+                this.skip = this.skip - this.pageSize;
+            }
+            this.userService.getAll(UserApi.Users, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+                var resData = res.json();
+                var totalCount = 0;
+                if (insertedUser) {
+                    var rows = (resData as Array<User>);
+                    var index = rows.findIndex(p => p.id == insertedUser.id);
+                    if (index >= 0) {
+                        resData.splice(index, 1);
+                        rows.splice(0, 0, insertedUser);
                     }
-
-                    rows.splice(0, 0, insertedUser);
+                    else {
+                        if (rows.length == this.pageSize) {
+                            resData.splice(this.pageSize - 1, 1);
+                        }
+                        rows.splice(0, 0, insertedUser);
+                    }
                 }
-            }
-
-            if (res.headers != null) {
-                var headers = res.headers != undefined ? res.headers : null;
-                if (headers != null) {
-                    var retheader = headers.get('X-Total-Count');
-                    if (retheader != null)
-                        totalCount = parseInt(retheader.toString());
+                if (res.headers != null) {
+                    var headers = res.headers != undefined ? res.headers : null;
+                    if (headers != null) {
+                        var retheader = headers.get('X-Total-Count');
+                        if (retheader != null)
+                            totalCount = parseInt(retheader.toString());
+                    }
                 }
-            }
-
+                this.rowData = {
+                    data: resData,
+                    total: totalCount
+                }
+                this.showloadingMessage = !(resData.length == 0);
+                this.totalRecords = totalCount;
+                this.sppcLoading.hide();
+            })
+        }
+        else {
             this.rowData = {
-                data: resData,
-                total: totalCount
+                data: [],
+                total: 0
             }
-
-            this.showloadingMessage = !(resData.length == 0);
-            this.totalRecords = totalCount;
-            this.sppcLoading.hide();
-
-        }, (error => {
-                console.log(error);
-        }))
-
+        }
+        
     }
-
-
 
     dataStateChange(state: DataStateChangeEvent): void {
         this.currentFilter = this.getFilters(state.filter);
         if (state.sort)
             if (state.sort.length > 0)
                 this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
-
         this.state = state;
-
         this.skip = state.skip;
         this.reloadGrid();
     }
@@ -164,22 +161,17 @@ export class UserComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-
     pageChange(event: PageChangeEvent): void {
         this.skip = event.skip;
         this.reloadGrid();
     }
 
-
     public editHandler(arg: any) {
-
         this.sppcLoading.show();
-
-        this.userService.getUserById(arg.dataItem.id).subscribe(res => {
+        this.userService.getById(UserApi.User,arg.dataItem.id).subscribe(res => {
             this.editDataItem = res;
             this.sppcLoading.hide();
         })
-
         this.isNew = false;
         this.errorMessage = '';
     }
@@ -199,7 +191,7 @@ export class UserComponent extends DefaultComponent implements OnInit {
     public saveHandler(user: User) {
         this.sppcLoading.show();
         if (!this.isNew) {
-            this.userService.editUser(user)
+            this.userService.edit<User>(UserApi.User, user, user.id)
                 .subscribe(response => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -210,20 +202,16 @@ export class UserComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
-            this.userService.insertUser(user)
+            this.userService.insert<User>(UserApi.Users,user)
                 .subscribe((response: any) => {
-
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     var insertedUser = JSON.parse(response._body);
                     this.reloadGrid(insertedUser);
-
                 }, (error => {
-
                     this.isNew = true;
                     this.errorMessage = error;
-
                 }));
         }
         this.sppcLoading.hide();

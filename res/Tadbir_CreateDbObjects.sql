@@ -173,6 +173,20 @@ CREATE TABLE [Auth].[RolePermission] (
     , CONSTRAINT [PK_Auth_RolePermission] PRIMARY KEY CLUSTERED ([RolePermissionID] ASC)
     , CONSTRAINT [FK_Auth_RolePermission_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role] ([RoleID])
     , CONSTRAINT [FK_Auth_RolePermission_Auth_Permission] FOREIGN KEY ([PermissionID]) REFERENCES [Auth].[Permission] ([PermissionID])
+    , CONSTRAINT [UK_RolePermission] UNIQUE NONCLUSTERED ([RoleID] ASC, [PermissionID] ASC)
+)
+GO
+
+CREATE TABLE [Metadata].[Command] (
+    [CommandID]      INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]       INT              NULL,
+    [PermissionID]   INT              NOT NULL,
+    [TitleKey]       NVARCHAR(64)     NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Command_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Command_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_Command] PRIMARY KEY CLUSTERED ([CommandID] ASC)
+    , CONSTRAINT [FK_Metadata_Command_Metadata_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Metadata].[Command]([CommandID])
+    , CONSTRAINT [FK_Metadata_Command_Auth_Permission] FOREIGN KEY ([PermissionID]) REFERENCES [Auth].[Permission]([PermissionID])
 )
 GO
 
@@ -324,26 +338,26 @@ CREATE TABLE [Finance].[Account] (
 )
 GO
 
-CREATE TABLE [Finance].[Transaction] (
-    [TransactionID]     INT              IDENTITY (1, 1) NOT NULL,
+CREATE TABLE [Finance].[Voucher] (
+    [VoucherID]         INT              IDENTITY (1, 1) NOT NULL,
 	[FiscalPeriodID]    INT              NOT NULL,
 	[BranchID]          INT              NOT NULL,
 	[DocumentID]        INT              NOT NULL,
     [No]                NVARCHAR(64)     NOT NULL,
     [Date]              DATETIME         NOT NULL,
     [Description]       NVARCHAR(512)    NULL,
-    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Transaction_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_Transaction_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_Transaction] PRIMARY KEY CLUSTERED ([TransactionID] ASC)
-    , CONSTRAINT [FK_Finance_Transaction_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_Transaction_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
-    , CONSTRAINT [FK_Finance_Transaction_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document] ([DocumentID])
+    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Voucher_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_Voucher_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_Voucher] PRIMARY KEY CLUSTERED ([VoucherID] ASC)
+    , CONSTRAINT [FK_Finance_Voucher_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_Voucher_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+    , CONSTRAINT [FK_Finance_Voucher_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document] ([DocumentID])
 )
 GO
 
-CREATE TABLE [Finance].[TransactionLine] (
+CREATE TABLE [Finance].[VoucherLine] (
     [LineID]          INT              IDENTITY (1, 1) NOT NULL,
-	[TransactionID]   INT              NOT NULL,
+	[VoucherID]       INT              NOT NULL,
 	[FiscalPeriodID]  INT              NOT NULL,
 	[BranchID]        INT              NOT NULL,
 	[AccountID]       INT              NOT NULL,
@@ -354,14 +368,17 @@ CREATE TABLE [Finance].[TransactionLine] (
     [Description]     NVARCHAR(512)    NULL,
     [Debit]           MONEY            NOT NULL,
     [Credit]          MONEY            NOT NULL,
-    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_TransactionLine_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_TransactionLine_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_TransactionLine] PRIMARY KEY CLUSTERED ([LineID] ASC)
-    , CONSTRAINT [FK_Finance_TransactionLine_Finance_Transaction] FOREIGN KEY ([TransactionID]) REFERENCES [Finance].[Transaction] ([TransactionID])
-    , CONSTRAINT [FK_Finance_TransactionLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_TransactionLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
-    , CONSTRAINT [FK_Finance_TransactionLine_Finance_FullAccount] FOREIGN KEY ([FullAccountID]) REFERENCES [Finance].[FullAccount] ([FullAccountID])
-    , CONSTRAINT [FK_Finance_TransactionLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
+    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_VoucherLine_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Finance_VoucherLine_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_VoucherLine] PRIMARY KEY CLUSTERED ([LineID] ASC)
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Voucher] FOREIGN KEY ([VoucherID]) REFERENCES [Finance].[Voucher] ([VoucherID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Account] FOREIGN KEY ([AccountID]) REFERENCES [Finance].[Account] ([AccountID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_DetailAccount] FOREIGN KEY ([DetailID]) REFERENCES [Finance].[DetailAccount] ([DetailID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_CostCenter] FOREIGN KEY ([CostCenterID]) REFERENCES [Finance].[CostCenter] ([CostCenterID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Project] FOREIGN KEY ([ProjectID]) REFERENCES [Finance].[Project] ([ProjectID])
+    , CONSTRAINT [FK_Finance_VoucherLine_Finance_Currency] FOREIGN KEY ([CurrencyID]) REFERENCES [Finance].[Currency] ([CurrencyID])
 )
 GO
 
@@ -993,10 +1010,13 @@ SET IDENTITY_INSERT [Metadata].[Locale] OFF
 
 SET IDENTITY_INSERT [Metadata].[Entity] ON
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (1, 'Account', 1, 1)
-INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (2, 'Transaction', 0, 1)
-INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (3, 'TransactionLine', 0, 1)
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (2, 'Voucher', 0, 1)
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (3, 'VoucherLine', 0, 1)
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (4, 'User', 0, 0)
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (5, 'Role', 0, 0)
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (6, 'DetailAccount', 1, 1)
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (7, 'CostCenter', 1, 1)
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (8, 'Project', 1, 1)
 SET IDENTITY_INSERT [Metadata].[Entity] OFF
 
 SET IDENTITY_INSERT [Metadata].[Property] ON
@@ -1031,31 +1051,69 @@ INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, Stora
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
     VALUES (15, 3, 'CurrencyId', 'System.Int32', 'int', 'number', 0, 0, 0, 'CurrencyId_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (16, 3, 'AccountId', 'System.Int32', 'int', 'number', 0, 0, 0, 'AccountId_Field')
+    VALUES (16, 3, 'FullAccount', 'System.Object', '(n/a)', 'object', 0, 0, 0, 'FullAccount_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (17, 3, 'DetailId', 'System.Int32', 'int', 'number', 0, 0, 1, 'DetailId_Field')
+    VALUES (17, 3, 'FullAccount.AccountId', 'System.Int32', 'int', 'number', 0, 0, 0, 'AccountId_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (18, 3, 'CostCenterId', 'System.Int32', 'int', 'number', 0, 0, 1, 'CostCenterId_Field')
+    VALUES (18, 3, 'FullAccount.DetailId', 'System.Int32', 'int', 'number', 0, 0, 1, 'DetailId_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (19, 3, 'ProjectId', 'System.Int32', 'int', 'number', 0, 0, 1, 'ProjectId_Field')
+    VALUES (19, 3, 'FullAccount.CostCenterId', 'System.Int32', 'int', 'number', 0, 0, 1, 'CostCenterId_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (20, 4, 'Id', 'System.Int32', 'int', 'number', 0, 0, 0, 'Id_Field')
+    VALUES (20, 3, 'FullAccount.ProjectId', 'System.Int32', 'int', 'number', 0, 0, 1, 'ProjectId_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (21, 4, 'UserName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'UserName_Field')
+    VALUES (21, 4, 'Id', 'System.Int32', 'int', 'number', 0, 0, 0, 'Id_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (22, 4, 'UserName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'UserName_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], MinLength, IsFixedLength, IsNullable, NameResourceId)
-    VALUES (22, 4, 'Password', 'System.String', 'nvarchar(32)', 'string', 32, 4, 0, 0, 'Password_Field')
+    VALUES (23, 4, 'Password', 'System.String', 'nvarchar(32)', 'string', 32, 4, 0, 0, 'Password_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (23, 4, 'LastLoginDate', 'System.DateTime', 'datetime', 'Date', 0, 0, 1, 'LastLoginDate_Field')
+    VALUES (24, 4, 'LastLoginDate', 'System.DateTime', 'datetime', 'Date', 0, 0, 1, 'LastLoginDate_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (24, 4, 'IsEnabled', 'System.Boolean', 'bit', 'boolean', 0, 0, 0, 'Status_Field')
+    VALUES (25, 4, 'IsEnabled', 'System.Boolean', 'bit', 'boolean', 0, 0, 0, 'Status_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (25, 4, 'PersonFirstName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'FirstName_Field')
+    VALUES (26, 4, 'PersonFirstName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'FirstName_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (26, 4, 'PersonLastName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'LastName_Field')
+    VALUES (27, 4, 'PersonLastName', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'LastName_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (27, 5, 'Name', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'Name_Field')
+    VALUES (28, 5, 'Name', 'System.String', 'nvarchar(64)', 'string', 64, 0, 0, 'Name_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
-    VALUES (28, 5, 'Description', 'System.String', 'nvarchar(512)', 'string', 512, 0, 1, 'Description_Field')
+    VALUES (29, 5, 'Description', 'System.String', 'nvarchar(512)', 'string', 512, 0, 1, 'Description_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (30, 6, 'Id', 'System.Int32', 'int', 'number', 0, 0, 0, 'Id_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (31, 6, 'Code', 'System.String', 'nvarchar', 'string', 16, 0, 0, 'Code_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (32, 6, 'FullCode', 'System.String', 'nvarchar', 'string', 256, 0, 0, 'FullCode_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (33, 6, 'Name', 'System.String', 'nvarchar', 'string', 512, 0, 0, 'Name_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (34, 6, 'Level', 'System.Int16', 'smallint', '', 0, 0, 0, 'Level_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (35, 6, 'Description', 'System.String', 'nvarchar', 'string', 512, 0, 1, 'Description_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (36, 7, 'Id', 'System.Int32', 'int', 'number', 0, 0, 0, 'Id_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (37, 7, 'Code', 'System.String', 'nvarchar', 'string', 16, 0, 0, 'Code_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (38, 7, 'FullCode', 'System.String', 'nvarchar', 'string', 256, 0, 0, 'FullCode_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (39, 7, 'Name', 'System.String', 'nvarchar', 'string', 512, 0, 0, 'Name_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (40, 7, 'Level', 'System.Int16', 'smallint', '', 0, 0, 0, 'Level_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (41, 7, 'Description', 'System.String', 'nvarchar', 'string', 512, 0, 1, 'Description_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (42, 8, 'Id', 'System.Int32', 'int', 'number', 0, 0, 0, 'Id_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (43, 8, 'Code', 'System.String', 'nvarchar', 'string', 16, 0, 0, 'Code_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (44, 8, 'FullCode', 'System.String', 'nvarchar', 'string', 256, 0, 0, 'FullCode_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (45, 8, 'Name', 'System.String', 'nvarchar', 'string', 512, 0, 0, 'Name_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (46, 8, 'Level', 'System.Int16', 'smallint', '', 0, 0, 0, 'Level_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (47, 8, 'Description', 'System.String', 'nvarchar', 'string', 512, 0, 1, 'Description_Field')
 SET IDENTITY_INSERT [Metadata].[Property] OFF
 
 SET IDENTITY_INSERT [Metadata].[LocalText] ON
@@ -1133,7 +1191,7 @@ INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUE
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (4, N'مدیریت پروژه ها', N'Project')
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (5, N'مدیریت دوره های مالی', N'FiscalPeriod')
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (6, N'مدیریت ارزها', N'Currency')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (7, N'مدیریت اسناد مالی', N'Transaction')
+INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (7, N'مدیریت اسناد مالی', N'Voucher')
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (8, N'مدیریت واحدهای سازمانی', N'BusinessUnit')
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (9, N'مدیریت شرکای تجاری', N'BusinessPartner')
 INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (10, N'مدیریت کاربران', N'User')
@@ -1322,6 +1380,21 @@ INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VAL
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (94, 1, 76)
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (95, 1, 77)
 SET IDENTITY_INSERT [Auth].[RolePermission] OFF
+
+SET IDENTITY_INSERT [Metadata].[Command] ON
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (1, NULL, 1, N'Accounting')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (2, 1, 1, N'Accounts')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (3, 1, 5, N'DetailAccounts')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (4, 1, 9, N'CostCenters')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (5, 1, 13, N'Projects')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (6, 1, 25, N'Vouchers')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (7, NULL, 1, N'Administration')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (8, 7, 41, N'Users')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (9, 7, 44, N'Roles')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (10, NULL, 1, N'Profile')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (11, 10, NULL, N'ChangePassword')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (12, 10, NULL, N'LogOut')
+SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 SET ANSI_NULLS OFF
 GO

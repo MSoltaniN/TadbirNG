@@ -1,10 +1,10 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
-import { RoleUsersViewModelInfo } from '../../service/index';
+import { RoleUsersInfo } from '../../service/index';
 
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy, State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 
-import { RoleBranchesViewModel } from '../../model/index';
+import { RoleBranches } from '../../model/index';
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
 
@@ -46,18 +46,18 @@ export class RoleBranchFormComponent extends DefaultComponent {
     public gridData: any;
     public selectedRows: number[] = [];
     public showloadingMessage: boolean = true;
-    public model: RoleBranchesViewModel;
+    public model: RoleBranches;
     public roleName: string;
 
-    @Input() public roleBranches: boolean = false;
+    @Input() public inputRoleBranches: boolean = false;
     @Input() public errorMessage: string = '';
 
-    @Input() public set roleBranchesViewModel(roleBranchesViewModel: RoleBranchesViewModel) {
-        this.model = roleBranchesViewModel;
+    @Input() public set roleBranches(roleBranches: RoleBranches) {
+        this.model = roleBranches;
         this.selectedRows = [];
-        if (roleBranchesViewModel != undefined) {
-            this.gridData = roleBranchesViewModel.branches;
-            this.roleName = roleBranchesViewModel.name;
+        if (roleBranches != undefined) {
+            this.gridData = roleBranches.branches;
+            this.roleName = roleBranches.name;
 
             for (let branchItem of this.gridData) {
                 if (branchItem.isAccessible) {
@@ -68,7 +68,7 @@ export class RoleBranchFormComponent extends DefaultComponent {
     }
 
     @Output() cancelRoleBranches: EventEmitter<any> = new EventEmitter();
-    @Output() saveRoleBranches: EventEmitter<RoleBranchesViewModel> = new EventEmitter();
+    @Output() saveRoleBranches: EventEmitter<RoleBranches> = new EventEmitter();
     ////create properties
 
 
@@ -93,13 +93,14 @@ export class RoleBranchFormComponent extends DefaultComponent {
     }
 
     private closeForm(): void {
-        this.roleBranches = false;
+        this.inputRoleBranches = false;
         this.selectedRows = [];
         this.cancelRoleBranches.emit();
     }
     ////Events
 
     selectionKey(context: RowArgs): string {
+        if (context.dataItem == undefined) return "";
         return context.dataItem.id;
     }
 

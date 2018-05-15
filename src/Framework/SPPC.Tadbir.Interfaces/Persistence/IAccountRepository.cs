@@ -53,7 +53,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از آرتیکل های مالی که از حساب مشخص شده استفاده می کندد</returns>
-        Task<EntityListViewModel<TransactionLineViewModel>> GetAccountArticlesAsync(
+        Task<EntityListViewModel<VoucherLineViewModel>> GetAccountArticlesAsync(
             int accountId, GridOptions gridOptions = null);
 
         /// <summary>
@@ -97,6 +97,14 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> IsUsedAccountAsync(int accountId);
 
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده دارای حساب زیرمجموعه هست یا نه
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <returns>در حالتی که حساب مشخص شده دارای حساب زیرمجموعه باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool?> HasChildrenAsync(int accountId);
+
         #endregion
 
         #region Synchronous Methods (May be removed in the future)
@@ -133,7 +141,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از آرتیکل های مالی که از حساب مشخص شده استفاده می کندد</returns>
-        IList<TransactionLineViewModel> GetAccountArticles(int accountId, GridOptions gridOptions = null);
+        IList<VoucherLineViewModel> GetAccountArticles(int accountId, GridOptions gridOptions = null);
 
         /// <summary>
         /// تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده را

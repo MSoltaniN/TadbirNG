@@ -151,19 +151,19 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         var isValidate: boolean = true;
 
         if (this.companyId == '') {
-            this.showMessage(this.getText("Login.Validation.SelectCompany"), MessageType.Info, '', MessagePosition.TopCenter);
+            this.showMessage(this.getText("AllValidations.Login.CompanyIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
             isValidate = false;
             return isValidate;
         }
 
         if (this.branchId == '')
         {
-            this.showMessage(this.getText("Login.Validation.SelectBranch"), MessageType.Info, '', MessagePosition.TopCenter);
+            this.showMessage(this.getText("AllValidations.Login.BranchIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
             isValidate = false;
         }
 
         if (this.fiscalPeriodId == '') {
-            this.showMessage(this.getText("Login.Validation.SelectFiscalPeriod"), MessageType.Info, '', MessagePosition.TopCenter);
+            this.showMessage(this.getText("AllValidations.Login.FiscalPeriodIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
             isValidate = false;
         }
 
@@ -172,7 +172,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
     selectParams()
     {
-
         if (this.isValidate()) {
             
             if (this.authenticationService.islogin()) {
@@ -183,6 +182,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                     currentUser.branchId = parseInt(this.branchId);
                     currentUser.companyId = parseInt(this.companyId);
                     currentUser.fpId = parseInt(this.fiscalPeriodId);
+                    currentUser.permissions = JSON.parse(atob(this.Ticket)).User.Permissions;
 
                     if (this.authenticationService.isRememberMe())
                         localStorage.setItem('currentContext', JSON.stringify(currentUser));

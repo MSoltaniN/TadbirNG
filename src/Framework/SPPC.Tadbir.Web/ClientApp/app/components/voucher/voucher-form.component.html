@@ -1,0 +1,61 @@
+﻿<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en','new-dialog':isNew , 'edit-dialog':!isNew}"
+              (close)="closeForm()">
+    <kendo-dialog-titlebar>
+        {{ isNew ?  ('Voucher.New' | translate) :  ('Buttons.Edit' | translate) }}
+    </kendo-dialog-titlebar>
+    <div *ngIf="errorMessage != ''">
+        <div class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+    </div>
+    <form novalidate [formGroup]="editForm">
+        <div class="clearfix edit-form-body">
+            <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.currentlang === 'fa' && !isNew}">
+                <label for="date" class="control-label">{{ 'Voucher.Date' | translate }}</label>
+
+                <sppc-datepicker formControlName="date"></sppc-datepicker>
+
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.date.valid || editForm.controls.date.pristine">
+                    {{ 'AllValidations.Voucher.DateIsRequired' | translate }}
+                </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.currentlang === 'fa' && !isNew}">
+                <label for="no" class="control-label">{{ 'Voucher.No' | translate }}</label>
+
+                <input type="text" class="k-textbox" formControlName="no" />
+
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.no.valid || editForm.controls.no.pristine">
+                    <span *ngIf="editForm.controls.no.errors?.required">{{ 'AllValidations.Voucher.NoIsRequired' | translate }}</span>
+                    <span *ngIf="editForm.controls.no.errors?.maxlength">{{ 'AllValidations.Voucher.NoIsTooLong' | translate }}</span>
+                </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.currentlang === 'fa' && !isNew}">
+                <label for="description" class="control-label">{{ 'Voucher.Description' | translate }}</label>
+
+                <textarea class="k-textarea" formControlName="description"></textarea>
+
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+                    {{ 'AllValidations.Voucher.DescriptionIsTooLong' | translate }}
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 pull-left" *ngIf="!isNew">
+                <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)" primary="true">{{ 'Buttons.Ok' | translate }}</button>
+                <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+            </div>
+        </div>
+
+    </form>
+
+    <div *ngIf="!isNew">
+        <voucherLine [voucherId]="voucher_Id"></voucherLine>
+    </div>
+
+    <kendo-dialog-actions *ngIf="isNew">
+        <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+        <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+    </kendo-dialog-actions>
+
+</kendo-dialog>

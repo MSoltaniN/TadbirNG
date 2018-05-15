@@ -15,21 +15,27 @@ export enum MessageType {
 //}
 
 export const Metadatas = {
-    Transaction: 'transactions',
+    Voucher: 'vouchers',
     Account: 'accounts',
-    TransactionArticles: 'transactions/articles',
+    VoucherArticles: 'vouchers/articles',
     User: 'users',
-    Role: 'roles'
+    Role: 'roles',
+    DetailAccount: 'faccounts',
+    CostCenter: 'ccenters',
+    Project:'projects'
 }
 
 
 export const Entities = {
-    Transaction: 'Transaction',
+    Voucher: 'Voucher',
     Account: 'Account',
-    TransactionLine: 'TransactionLine',
+    VoucherLine: 'VoucherLine',
     User: 'User',
     Role: 'Role',
-    Password:'Password'
+    Password: 'Password',
+    DetailAccount: 'DetailAccount',
+    CostCenter: 'CostCenter',
+    Project:'Project'
 }
 
 

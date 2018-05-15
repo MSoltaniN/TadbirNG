@@ -236,111 +236,75 @@ namespace SPPC.Tadbir.Mapper.Tests
         }
 
         [Test]
-        public void ContainsMappingFromTransactionToTransactionFullViewModel()
+        public void ContainsMappingFromVoucherToVoucherViewModel()
         {
             // Arrange (Done in FixtureSetup)
 
             // Act & Assert
-            AssertMappingIsDefined<Transaction, TransactionFullViewModel>();
+            AssertMappingIsDefined<Voucher, VoucherViewModel>();
         }
 
         [Test]
-        public void CanMapFromTransactionToTransactionFullViewModel()
+        public void CanMapFromVoucherToVoucherViewModel()
         {
             // Arrange (Done in FixtureSetup)
 
             // Act & Assert
-            AssertMapperCanConvertFromSourceToDestination<Transaction, TransactionFullViewModel>();
+            AssertMapperCanConvertFromSourceToDestination<Voucher, VoucherViewModel>();
         }
 
         [Test]
-        public void ContainsMappingFromTransactionToTransactionViewModel()
+        public void ContainsMappingFromVoucherViewModelToVoucher()
         {
             // Arrange (Done in FixtureSetup)
 
             // Act & Assert
-            AssertMappingIsDefined<Transaction, TransactionViewModel>();
+            AssertMappingIsDefined<VoucherViewModel, Voucher>();
         }
 
         [Test]
-        public void CanMapFromTransactionToTransactionViewModel()
+        public void CanMapFromVoucherViewModelToVoucher()
         {
             // Arrange (Done in FixtureSetup)
 
             // Act & Assert
-            AssertMapperCanConvertFromSourceToDestination<Transaction, TransactionViewModel>();
+            AssertMapperCanConvertFromSourceToDestination<VoucherViewModel, Voucher>();
         }
 
         [Test]
-        public void ContainsMappingFromTransactionViewModelToTransaction()
+        public void ContainsMappingFromVoucherLineToVoucherLineViewModel()
         {
             // Arrange (Done in FixtureSetup)
 
             // Act & Assert
-            AssertMappingIsDefined<TransactionViewModel, Transaction>();
+            AssertMappingIsDefined<VoucherLine, VoucherLineViewModel>();
         }
 
         [Test]
-        public void CanMapFromTransactionViewModelToTransaction()
+        public void CanMapFromVoucherLineToVoucherLineViewModel()
         {
             // Arrange (Done in FixtureSetup)
 
             // Act & Assert
-            AssertMapperCanConvertFromSourceToDestination<TransactionViewModel, Transaction>();
+            AssertMapperCanConvertFromSourceToDestination<VoucherLine, VoucherLineViewModel>();
         }
 
         [Test]
-        public void ContainsMappingFromTransactionLineToTransactionLineViewModel()
+        public void ContainsMappingFromVoucherLineViewModelToVoucherLine()
         {
             // Arrange (Done in FixtureSetup)
 
             // Act & Assert
-            AssertMappingIsDefined<TransactionLine, TransactionLineViewModel>();
+            AssertMappingIsDefined<VoucherLineViewModel, VoucherLine>();
         }
 
         [Test]
-        public void CanMapFromTransactionLineToTransactionLineViewModel()
+        public void CanMapFromVoucherLineViewModelToVoucherLine()
         {
             // Arrange (Done in FixtureSetup)
 
             // Act & Assert
-            AssertMapperCanConvertFromSourceToDestination<TransactionLine, TransactionLineViewModel>();
-        }
-
-        [Test]
-        public void ContainsMappingFromTransactionLineToTransactionLineFullViewModel()
-        {
-            // Arrange (Done in FixtureSetup)
-
-            // Act & Assert
-            AssertMappingIsDefined<TransactionLine, TransactionLineFullViewModel>();
-        }
-
-        [Test]
-        public void CanMapFromTransactionLineToTransactionLineFullViewModel()
-        {
-            // Arrange (Done in FixtureSetup)
-
-            // Act & Assert
-            AssertMapperCanConvertFromSourceToDestination<TransactionLine, TransactionLineFullViewModel>();
-        }
-
-        [Test]
-        public void ContainsMappingFromTransactionLineViewModelToTransactionLine()
-        {
-            // Arrange (Done in FixtureSetup)
-
-            // Act & Assert
-            AssertMappingIsDefined<TransactionLineViewModel, TransactionLine>();
-        }
-
-        [Test]
-        public void CanMapFromTransactionLineViewModelToTransactionLine()
-        {
-            // Arrange (Done in FixtureSetup)
-
-            // Act & Assert
-            AssertMapperCanConvertFromSourceToDestination<TransactionLineViewModel, TransactionLine>();
+            AssertMapperCanConvertFromSourceToDestination<VoucherLineViewModel, VoucherLine>();
         }
 
         [Test]

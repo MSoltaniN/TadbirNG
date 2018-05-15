@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Values
         /// <summary>
         /// مستند عملیاتی سند مالی
         /// </summary>
-        public const string Transaction = "Transaction";
+        public const string Voucher = "Voucher";
 
         /// <summary>
         /// مستند عملیاتی درخواست کالا
@@ -44,11 +44,11 @@ namespace SPPC.Tadbir.Values
             return local;
         }
 
-        private const string _Transaction = "سند مالی";
+        private const string _Voucher = "سند مالی";
         private const string _RequisitionVoucher = "درخواست کالا";
         private static IDictionary<string, string> _localValues = new Dictionary<string, string>
             {
-                { Transaction, _Transaction },
+                { Voucher, _Voucher },
                 { RequisitionVoucher, _RequisitionVoucher }
             };
     }

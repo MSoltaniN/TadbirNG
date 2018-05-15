@@ -26,10 +26,10 @@
                                  pagerItems="{{ 'Paging.Record' | translate }}">
             </kendo-grid-messages>
             <ng-template kendoGridNoRecordsTemplate>
-                {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
+                {{viewAccess ? (showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)) : ('App.NotViewAccess' | translate)}}
             </ng-template>
             <ng-template kendoGridToolbarTemplate>
-                <button kendoGridAddCommand (click)="addNew()" type="button">{{ 'User.New' | translate }}</button>
+                <button kendoGridAddCommand *ngIf="insertAccess" (click)="addNew()" type="button">{{ 'User.New' | translate }}</button>
             </ng-template>
             <!-- template for mobile -->
             <kendo-grid-column media="(max-width: 449px)" title="">
@@ -62,7 +62,7 @@
                             </ng-template>
                         </dd>
                     </dl>
-                    <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                    <button kendoGridEditCommand *ngIf="editAccess" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
                 </ng-template>
             </kendo-grid-column>
             <!-- template for mobile -->
@@ -94,7 +94,7 @@
                     </ng-template>
                 </ng-template>
             </kendo-grid-column>
-            <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
+            <kendo-grid-command-column *ngIf="editAccess" media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
                 <ng-template kendoGridCellTemplate>
                     <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
                 </ng-template>
@@ -120,7 +120,7 @@
             </kendo-grid-column>
 
             <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="User.lastLoginDate">
-                <ng-template kendoGridFilterCellTemplate let-filter let-column="column" let-Transaction>
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                     <sppc-grid-filter [metaData]="getMeta('lastLoginDate')" [column]="column" [filter]="filter"></sppc-grid-filter>
                 </ng-template>
                 <ng-template kendoGridCellTemplate let-user>
@@ -143,7 +143,7 @@
                 </ng-template>
             </kendo-grid-column>
 
-            <kendo-grid-command-column media="(min-width: 1024px)" width="60" title="{{ 'Buttons.Edit' | translate }}">
+            <kendo-grid-command-column *ngIf="editAccess" media="(min-width: 1024px)" width="60" title="{{ 'Buttons.Edit' | translate }}">
                 <ng-template kendoGridCellTemplate>
                     <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
                 </ng-template>

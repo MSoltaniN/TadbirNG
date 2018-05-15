@@ -51,7 +51,7 @@ namespace SPPC.Tadbir.Persistence
                     acc => acc.FiscalPeriod.Id == fpId
                         && acc.Branch.Id == branchId,
                     gridOptions,
-                    acc => acc.FiscalPeriod, acc => acc.Branch);
+                    acc => acc.FiscalPeriod, acc => acc.Branch, acc => acc.Parent, acc => acc.Children);
             return await _decorator.GetDecoratedListAsync<Account, AccountViewModel>(accounts
                 .Select(item => _mapper.Map<AccountViewModel>(item))
                 .ToList());
@@ -66,7 +66,9 @@ namespace SPPC.Tadbir.Persistence
         {
             EntityItemViewModel<AccountViewModel> item = null;
             var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId, acc => acc.FiscalPeriod, acc => acc.Branch);
+            var account = await repository.GetByIDAsync(
+                accountId,
+                acc => acc.FiscalPeriod, acc => acc.Branch, acc => acc.Parent, acc => acc.Children);
             if (account != null)
             {
                 item = await _decorator.GetDecoratedItemAsync<Account, AccountViewModel>(
@@ -113,16 +115,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از آرتیکل های مالی که از حساب مشخص شده استفاده می کندد</returns>
-        public async Task<EntityListViewModel<TransactionLineViewModel>> GetAccountArticlesAsync(
+        public async Task<EntityListViewModel<VoucherLineViewModel>> GetAccountArticlesAsync(
             int accountId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
+            var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
             var query = GetArticleDetailsQuery(
                 repository, line => line.Account.Id == accountId, gridOptions);
             var list = await query
-                .Select(line => _mapper.Map<TransactionLineViewModel>(line))
+                .Select(line => _mapper.Map<VoucherLineViewModel>(line))
                 .ToListAsync();
-            return await _decorator.GetDecoratedListAsync<TransactionLine, TransactionLineViewModel>(list);
+            return await _decorator.GetDecoratedListAsync<VoucherLine, VoucherLineViewModel>(list);
         }
 
         /// <summary>
@@ -218,10 +220,29 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار "نادرست" را برمی گرداند</returns>
         public async Task<bool> IsUsedAccountAsync(int accountId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<TransactionLine>();
+            var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
             var articles = await repository
                 .GetByCriteriaAsync(art => art.Account.Id == accountId);
             return (articles.Count != 0);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده دارای حساب زیرمجموعه هست یا نه
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <returns>در حالتی که حساب مشخص شده دارای حساب زیرمجموعه باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool?> HasChildrenAsync(int accountId)
+        {
+            bool? hasChildren = null;
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
+            if (account != null)
+            {
+                hasChildren = account.Children.Count > 0;
+            }
+
+            return hasChildren;
         }
 
         #endregion
@@ -295,13 +316,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از آرتیکل های مالی که از حساب مشخص شده استفاده می کندد</returns>
-        public IList<TransactionLineViewModel> GetAccountArticles(int accountId, GridOptions gridOptions = null)
+        public IList<VoucherLineViewModel> GetAccountArticles(int accountId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            var repository = _unitOfWork.GetRepository<VoucherLine>();
             var query = GetArticleDetailsQuery(
                 repository, line => line.Account.Id == accountId, gridOptions);
             return query
-                .Select(line => _mapper.Map<TransactionLineViewModel>(line))
+                .Select(line => _mapper.Map<VoucherLineViewModel>(line))
                 .ToList();
         }
 
@@ -392,7 +413,7 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار "نادرست" را برمی گرداند</returns>
         public bool IsUsedAccount(int accountId)
         {
-            var repository = _unitOfWork.GetRepository<TransactionLine>();
+            var repository = _unitOfWork.GetRepository<VoucherLine>();
             var articleCount = repository
                 .GetByCriteria(art => art.Account.Id == accountId)
                 .Count();
@@ -421,8 +442,8 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private IQueryable<TransactionLine> GetArticleDetailsQuery(
-            IRepository<TransactionLine> repository, Expression<Func<TransactionLine, bool>> criteria,
+        private IQueryable<VoucherLine> GetArticleDetailsQuery(
+            IRepository<VoucherLine> repository, Expression<Func<VoucherLine, bool>> criteria,
             GridOptions gridOptions = null)
         {
             var query = repository
@@ -431,7 +452,7 @@ namespace SPPC.Tadbir.Persistence
                 .Include(art => art.DetailAccount)
                 .Include(art => art.CostCenter)
                 .Include(art => art.Project)
-                .Include(art => art.Transaction)
+                .Include(art => art.Voucher)
                 .Include(art => art.FiscalPeriod)
                 .Include(art => art.Currency)
                 .Include(art => art.Branch)

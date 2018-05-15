@@ -1,7 +1,7 @@
 ﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
-import { UserProfileViewModel } from '../../model/index';
+import { UserProfile } from '../../model/index';
 
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
@@ -13,7 +13,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 
 import { Metadatas, Entities, MessageType } from '../../enviroment';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
-import { UserService, UserProfileViewModelInfo } from '../../service/index';
+import { UserService, UserProfileInfo } from '../../service/index';
 
 
 
@@ -36,7 +36,7 @@ export class ChangePasswordComponent extends DefaultComponent {
         repeatPassword: new FormControl("", [Validators.required, Validators.minLength(4), Validators.maxLength(32)]),
     });
 
-    public model: UserProfileViewModel;
+    public model: UserProfile;
     public user_Name: string = "";
     public errorMessage: string = "";
 

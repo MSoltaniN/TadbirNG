@@ -8,6 +8,7 @@ import { Headers, RequestOptions, BaseRequestOptions, Http } from '@angular/http
 import { APP_BASE_HREF, CommonModule, Location, LocationStrategy, HashLocationStrategy, DatePipe } from '@angular/common';
 // third party module to display toast 
 import { ToastrModule } from 'ngx-toastr';
+import { TreeViewModule } from '@progress/kendo-angular-treeview';
 
 //import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
@@ -17,12 +18,12 @@ import { TextMaskModule } from 'angular2-text-mask';
 
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
-import { Account2Component } from './components/account2/account2.component';
-import { AccountFormComponent } from './components/account2/account2-form.component';
-import { TransactionComponent } from './components/transaction/transaction.component';
-import { TransactionFormComponent } from './components/transaction/transaction-form.component';
-import { TransactionLineComponent } from './components/transactionLine/transactionLine.component';
-import { TransactionLineFormComponent } from './components/transactionLine/transactionLine-form.component'
+import { AccountComponent } from './components/account/account.component';
+import { AccountFormComponent } from './components/account/account-form.component';
+import { VoucherComponent } from './components/voucher/voucher.component';
+import { VoucherFormComponent } from './components/voucher/voucher-form.component';
+import { VoucherLineComponent } from './components/voucherLine/voucherLine.component';
+import { VoucherLineFormComponent } from './components/voucherLine/voucherLine-form.component'
 import { UserComponent } from './components/user/user.component';
 import { UserFormComponent } from './components/user/user-form.component';
 import { RoleComponent } from './components/role/role.component';
@@ -30,7 +31,13 @@ import { RoleFormComponent } from './components/role/role-form.component';
 import { RoleUserFormComponent } from './components/role/role-user-form.component';
 import { RoleBranchFormComponent } from './components/role/role-branch-form.component';
 import { RoleDetailFormComponent } from './components/role/role-detail-form.component';
-import { ChangePasswordComponent } from './components/user/changePassword.component'
+import { ChangePasswordComponent } from './components/user/changePassword.component';
+import { DetailAccountComponent } from './components/detailAccount/detailAccount.component';
+import { DetailAccountFormComponent } from './components/detailAccount/detailAccount-form.component';
+import { CostCenterComponent } from './components/costCenter/costCenter.component';
+import { CostCenterFormComponent } from './components/costCenter/costCenter-form.component';
+import { ProjectComponent } from './components/project/project.component';
+import { ProjectFormComponent } from './components/project/project-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -56,11 +63,12 @@ import { InputsModule } from '@progress/kendo-angular-inputs';
 import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
 import {
-    AccountService, TransactionLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService,
-    BranchService, TransactionService, LookupService
+    AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
+    BranchService, VoucherService, LookupService, FullAccountService, ProjectService
+
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
-
+import { SppcGridReorder } from "./directive/grid/sppc-grid-reorder";
 import { SppcGridFilter } from './controls/grid/sppc-grid-filter';
 
 
@@ -76,7 +84,8 @@ import { SppcDatePipe } from "./pipes/index"
 import { MetaDataService } from './service/metadata/metadata.service';
 import { BaseService } from './class/base.service';
 import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading/index';
-import { NestedAccountComponent } from './components/account2/nested-account.component';
+
+
 
 
 @NgModule({
@@ -84,9 +93,8 @@ import { NestedAccountComponent } from './components/account2/nested-account.com
         AppComponent,
         SppcLoadingComponent,
         NavMenuComponent,
-        Account2Component,
-        AccountFormComponent,
-        NestedAccountComponent,
+        AccountComponent,
+        AccountFormComponent,        
         LoginComponent,
         LoginCompleteComponent,
         LoginContainerComponent,
@@ -97,11 +105,12 @@ import { NestedAccountComponent } from './components/account2/nested-account.com
         SppcDatepicker,
         SppcFullAccount,
         SppcGridColumn,
+        SppcGridReorder,
         SppcGridFilter,
-        TransactionComponent,
-        TransactionFormComponent,
-        TransactionLineComponent,
-        TransactionLineFormComponent,
+        VoucherComponent,
+        VoucherFormComponent,
+        VoucherLineComponent,
+        VoucherLineFormComponent,
         UserComponent,
         UserFormComponent,
         RoleComponent,
@@ -110,12 +119,18 @@ import { NestedAccountComponent } from './components/account2/nested-account.com
         RoleBranchFormComponent,
         RoleDetailFormComponent,
         ChangePasswordComponent,
+        DetailAccountComponent,
+        DetailAccountFormComponent,
+        CostCenterComponent,
+        ProjectComponent,
+        ProjectFormComponent,
+        CostCenterFormComponent,
         ConfirmEqualValidator,
-        SppcDatePipe
+        SppcDatePipe        
 
     ],
-    providers: [AccountService, TransactionLineService, FiscalPeriodService, BranchService, CompanyService, TransactionService, LookupService, MetaDataService, SppcLoadingService,
-        UserService, RoleService,
+    providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
+        UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,
@@ -147,16 +162,20 @@ import { NestedAccountComponent } from './components/account2/nested-account.com
         BrowserModule,
         DpDatePickerModule,
         TextMaskModule,
+        TreeViewModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'login', pathMatch: 'full' },
-            { path: 'account2', component: Account2Component, canActivate: [AuthGuard] },
+            { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
             { path: 'login', component: LoginContainerComponent },
             { path: 'logout', component: LogoutComponent },
-            { path: 'transaction', component: TransactionComponent, canActivate: [AuthGuard] },
+            { path: 'voucher', component: VoucherComponent, canActivate: [AuthGuard] },
             { path: 'users', component: UserComponent, canActivate: [AuthGuard] },
             { path: 'roles', component: RoleComponent, canActivate: [AuthGuard] },
             { path: 'changePassword', component: ChangePasswordComponent, canActivate: [AuthGuard] },
+            { path: 'detailAccount', component: DetailAccountComponent, canActivate: [AuthGuard] },
+            { path: 'costCenter', component: CostCenterComponent, canActivate: [AuthGuard] },
+            { path: 'projects', component: ProjectComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])
     ],

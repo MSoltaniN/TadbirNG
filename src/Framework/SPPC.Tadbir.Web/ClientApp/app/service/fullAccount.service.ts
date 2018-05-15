@@ -14,11 +14,12 @@ import { Context } from "../model/context";
 import { BaseComponent } from "../class/base.component"
 import { ToastrService } from 'ngx-toastr';
 import { BaseService } from '../class/base.service';
+import { LookupApi } from './api/index';
 
 
 export class FullAccountInfo implements FullAccount {
 
-    constructor(public id: number = 0, public accountId: number = 0, public detailId: number = 0, public costCenterId: number = 0, public projectId: number = 0) { }
+    constructor(public accountId: number = 0, public detailId: number = 0, public costCenterId: number = 0, public projectId: number = 0) { }
 
 }
 
@@ -26,18 +27,13 @@ export class FullAccountInfo implements FullAccount {
 @Injectable()
 export class FullAccountService extends BaseService {
 
-    private _getAccountsUrl = Environment.BaseUrl + "/lookup/accounts/fp/{0}/branch/{1}";//fpId,branchId
-    private _getDetailAccountsUrl = Environment.BaseUrl + "/lookup//faccounts/fp/{0}/branch/{1}";//fpId,branchId
-    private _getCostCentersUrl = Environment.BaseUrl + "/lookup/costcenters/fp/{0}/branch/{1}";//fpId,branchId
-    private _getProjectsUrl = Environment.BaseUrl + "/lookup/projects/fp/{0}/branch/{1}";//fpId,branchId
-   
-    constructor(private http: Http) {
-        super();        
+    constructor(public http: Http) {
+        super(http);
     }
 
     GetAccountsLookup() {
 
-        var url = String.Format(this._getAccountsUrl, this.FiscalPeriodId, this.BranchId);
+        var url = String.Format(LookupApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
@@ -46,7 +42,7 @@ export class FullAccountService extends BaseService {
 
     GetDetailAccountsLookup() {
 
-        var url = String.Format(this._getDetailAccountsUrl, this.FiscalPeriodId, this.BranchId);
+        var url = String.Format(LookupApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
@@ -55,7 +51,7 @@ export class FullAccountService extends BaseService {
 
     GetCostCentersLookup() {
 
-        var url = String.Format(this._getCostCentersUrl, this.FiscalPeriodId, this.BranchId);
+        var url = String.Format(LookupApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
@@ -64,7 +60,7 @@ export class FullAccountService extends BaseService {
 
     GetProjectsLookup() {
 
-        var url = String.Format(this._getProjectsUrl, this.FiscalPeriodId, this.BranchId);
+        var url = String.Format(LookupApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId);
 
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());

@@ -511,6 +511,7 @@ namespace SPPC.Tadbir.Persistence
 
                 role = new RoleFullViewModel()
                 {
+                    Id = roleId,
                     Role = _mapper.Map<RoleViewModel>(existing)
                 };
                 Array.ForEach(enabledPermissions
@@ -1185,6 +1186,7 @@ namespace SPPC.Tadbir.Persistence
                 .Select(rp => rp.PermissionId)
                 .Where(id => !currentItems.Contains(id))
                 .ToArray();
+
             foreach (int id in removedItems)
             {
                 existing.RolePermissions.Remove(existing.RolePermissions

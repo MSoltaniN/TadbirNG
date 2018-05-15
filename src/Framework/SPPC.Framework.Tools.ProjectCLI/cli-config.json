@@ -1,0 +1,69 @@
+﻿{
+  "commands": [
+    {
+      "name": "tsvm",
+      "parameters": [
+        {
+          "name": "types",
+          "required": true,
+          "allowMultiple": true
+        }
+      ],
+      "description": "Generates TypeScript view model interfaces from existing C# view model classes.",
+      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateTsModelCommand, ProjectCLI"
+    },
+    {
+      "name": "tsapi",
+      "parameters": [
+        {
+          "name": "types",
+          "required": true,
+          "allowMultiple": true
+        }
+      ],
+      "description": "Generates TypeScript Api classes from existing C# classes.",
+      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateTsApiCommand, ProjectCLI"
+    },
+    {
+      "name": "jsres",
+      "parameters": [
+        {
+          "name": "area",
+          "required": true,
+          "alloMultiple": true
+        },
+        {
+          "name": "lang",
+          "required": true,
+          "allowMultiple": true
+        }
+      ],
+      "description": "Generates localized JSON objects containing multi-language strings.",
+      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateJsResourceCommand, ProjectCLI"
+    },
+    {
+      "name": "reskey",
+      "parameters": [
+        {
+          "name": "res",
+          "required": true,
+          "allowMultiple": false
+        },
+        {
+          "name": "ns",
+          "required": false,
+          "allowMultiple": false
+        }
+      ],
+      "description": "Generates a C# class containing existing keys in resource files as constant string fields.",
+      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateKeyClassCommand, ProjectCLI"
+    },
+    {
+      "name": "tssec",
+      "parameters": [
+      ],
+      "description": "Generates TypeScript security types from existing C# types.",
+      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateTsSecurityCommand, ProjectCLI"
+    }
+  ]
+}
