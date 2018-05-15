@@ -345,6 +345,8 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<Entity, EntityViewModel>();
             mapperConfig.CreateMap<Property, PropertyViewModel>();
+            mapperConfig.CreateMap<Command, CommandViewModel>()
+                .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

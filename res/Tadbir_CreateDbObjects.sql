@@ -177,6 +177,19 @@ CREATE TABLE [Auth].[RolePermission] (
 )
 GO
 
+CREATE TABLE [Metadata].[Command] (
+    [CommandID]      INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]       INT              NULL,
+    [PermissionID]   INT              NOT NULL,
+    [TitleKey]       NVARCHAR(64)     NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Command_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Command_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_Command] PRIMARY KEY CLUSTERED ([CommandID] ASC)
+    , CONSTRAINT [FK_Metadata_Command_Metadata_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Metadata].[Command]([CommandID])
+    , CONSTRAINT [FK_Metadata_Command_Auth_Permission] FOREIGN KEY ([PermissionID]) REFERENCES [Auth].[Permission]([PermissionID])
+)
+GO
+
 CREATE TABLE [Core].[DocumentType] (
     [TypeID]                INT              IDENTITY (1, 1) NOT NULL,
     [Name]                  NVARCHAR(64)     NOT NULL,
@@ -1367,6 +1380,21 @@ INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VAL
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (94, 1, 76)
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (95, 1, 77)
 SET IDENTITY_INSERT [Auth].[RolePermission] OFF
+
+SET IDENTITY_INSERT [Metadata].[Command] ON
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (1, NULL, 1, N'Accounting')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (2, 1, 1, N'Accounts')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (3, 1, 5, N'DetailAccounts')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (4, 1, 9, N'CostCenters')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (5, 1, 13, N'Projects')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (6, 1, 25, N'Vouchers')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (7, NULL, 1, N'Administration')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (8, 7, 41, N'Users')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (9, 7, 44, N'Roles')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (10, NULL, 1, N'Profile')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (11, 10, NULL, N'ChangePassword')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (12, 10, NULL, N'LogOut')
+SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 SET ANSI_NULLS OFF
 GO

@@ -65,7 +65,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/lookup/companies/user/{userId:min(1)}
         [Route(LookupApi.UserAccessibleCompaniesUrl)]
-        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public async Task<IActionResult> GetUserAccessibleCompaniesAsync(int userId)
         {
             var accessibleCompanies = await _repository.GetUserAccessibleCompaniesAsync(userId);
