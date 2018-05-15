@@ -73,7 +73,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/lookup/fps/company/{companyId:min(1)}/user/{userId:min(1)}
         [Route(LookupApi.UserAccessibleCompanyFiscalPeriodsUrl)]
-        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
         public async Task<IActionResult> GetFiscalPeriodsLookupAsync(int companyId, int userId)
         {
             var fiscalPeriodLookup = await _repository.GetUserAccessibleFiscalPeriodsAsync(companyId, userId);
@@ -82,7 +81,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/lookup/branches/company/{companyId:min(1)}/user/{userId:min(1)}
         [Route(LookupApi.UserAccessibleCompanyBranchesUrl)]
-        [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
         public async Task<IActionResult> GetBranchesLookupAsync(int companyId, int userId)
         {
             var branchLookup = await _repository.GetUserAccessibleBranchesAsync(companyId, userId);
