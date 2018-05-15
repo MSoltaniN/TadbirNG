@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Net;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -37,10 +37,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public async Task<IActionResult> GetRolesAsync()
         {
-            var gridOptions = GetGridOptions();
-            int itemCount = await _repository.GetRoleCountAsync(gridOptions);
+            int itemCount = await _repository.GetRoleCountAsync(GridOptions);
             SetItemCount(itemCount);
-            var roles = await _repository.GetRolesAsync(gridOptions);
+            var roles = await _repository.GetRolesAsync(GridOptions);
             return Json(roles);
         }
 
@@ -49,6 +48,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetNewRoleAsync()
         {
             var newRole = await _repository.GetNewRoleAsync();
+            LocalizeRole(newRole);
             return Json(newRole);
         }
 
@@ -58,6 +58,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetRoleAsync(int roleId)
         {
             var role = await _repository.GetRoleAsync(roleId);
+            LocalizeRole(role);
             return JsonReadResult(role);
         }
 
@@ -67,6 +68,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetRoleDetailsAsync(int roleId)
         {
             var role = await _repository.GetRoleDetailsAsync(roleId);
+            LocalizeRoleDetails(role);
             return JsonReadResult(role);
         }
 
@@ -231,6 +233,42 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
+        }
+
+        private void LocalizeRole(RoleFullViewModel role)
+        {
+            role.Role.Permissions = role.Role.Permissions
+                .Select(name => GetLocalName(name))
+                .ToList();
+            Array.ForEach(role.Permissions.ToArray(), perm =>
+            {
+                perm.Name = GetLocalName(perm.Name);
+                perm.GroupName = GetLocalName(perm.GroupName);
+            });
+        }
+
+        private void LocalizeRoleDetails(RoleDetailsViewModel role)
+        {
+            role.Role.Permissions = role.Role.Permissions
+                .Select(name => GetLocalName(name))
+                .ToList();
+            Array.ForEach(role.Permissions.ToArray(), perm =>
+            {
+                perm.Name = GetLocalName(perm.Name);
+                perm.GroupName = GetLocalName(perm.GroupName);
+            });
+        }
+
+        private string GetLocalName(string nameKey)
+        {
+            string name = nameKey;
+            var items = nameKey.Split(',');
+            if (items.Length == 2)
+            {
+                name = _strings.Format(items[0], items[1]);
+            }
+
+            return name;
         }
 
         private ISecurityRepository _repository;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -43,10 +44,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
         public async Task<IActionResult> GetUsersAsync()
         {
-            var gridOptions = GetGridOptions();
-            int itemCount = await _repository.GetUserCountAsync(gridOptions);
+            int itemCount = await _repository.GetUserCountAsync(GridOptions);
             SetItemCount(itemCount);
-            var users = await _repository.GetUsersAsync(gridOptions);
+            var users = await _repository.GetUsersAsync(GridOptions);
             return Json(users);
         }
 
@@ -81,6 +81,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var metadata = await _repository.GetUserMetadataAsync();
             return JsonReadResult(metadata);
+        }
+
+        // GET: api/users/current/commands
+        [Route(UserApi.CurrentUserCommandsUrl)]
+        public async Task<IActionResult> GetCurrentUserCommandsAsync()
+        {
+            var commands = await _repository.GetUserCommandsAsync(SecurityContext.User.Id);
+            Array.ForEach(commands.ToArray(), cmd =>
+                {
+                    cmd.Title = _strings[cmd.Title];
+                    Array.ForEach(cmd.Children.ToArray(), child => child.Title = _strings[child.Title]);
+                });
+            return JsonReadResult(commands);
         }
 
         // POST: api/users

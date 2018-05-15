@@ -96,7 +96,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.Permissions,
                     opts => opts.MapFrom(
-                        src => src.RolePermissions.Select(rp => rp.Permission).Select(perm => perm.Name)));
+                        src => src.RolePermissions.Select(rp => rp.Permission).Select(perm => perm.Name).ToList()));
             mapperConfig.CreateMap<RoleViewModel, Role>()
                 .ForMember(dest => dest.RolePermissions, opts => opts.Ignore());
             mapperConfig.CreateMap<Role, RoleBranchesViewModel>()
@@ -345,6 +345,8 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<Entity, EntityViewModel>();
             mapperConfig.CreateMap<Property, PropertyViewModel>();
+            mapperConfig.CreateMap<Command, CommandViewModel>()
+                .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

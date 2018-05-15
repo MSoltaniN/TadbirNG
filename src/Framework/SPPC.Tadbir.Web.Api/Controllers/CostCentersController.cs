@@ -33,10 +33,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetCostCentersAsync(int fpId, int branchId)
         {
-            var gridOptions = GetGridOptions();
-            int itemCount = await _repository.GetCountAsync(fpId, branchId, gridOptions);
+            int itemCount = await _repository.GetCountAsync(fpId, branchId, GridOptions);
             SetItemCount(itemCount);
-            var costCenters = await _repository.GetCostCentersAsync(fpId, branchId, gridOptions);
+            var costCenters = await _repository.GetCostCentersAsync(fpId, branchId, GridOptions);
             return Json(costCenters);
         }
 

@@ -36,6 +36,7 @@ namespace SPPC.Tadbir.Persistence
         {
             AccountMap.BuildMapping(modelBuilder.Entity<Account>());
             BranchMap.BuildMapping(modelBuilder.Entity<Branch>());
+            CommandMap.BuildMapping(modelBuilder.Entity<Command>());
             CompanyMap.BuildMapping(modelBuilder.Entity<Company>());
             CostCenterMap.BuildMapping(modelBuilder.Entity<CostCenter>());
             CurrencyMap.BuildMapping(modelBuilder.Entity<Currency>());

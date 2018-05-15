@@ -11,6 +11,8 @@ namespace SPPC.Tadbir.Persistence
     /// </summary>
     public interface IMetadataDecorator
     {
+        IMetadataRepository Repository { get; }
+
         /// <summary>
         /// به روش آسنکرون، اطلاعات متادیتا را به یک رکورد اطلاعاتی ضمیمه می کند
         /// </summary>

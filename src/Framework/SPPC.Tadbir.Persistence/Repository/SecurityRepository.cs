@@ -149,6 +149,47 @@ namespace SPPC.Tadbir.Persistence
             return userContext;
         }
 
+        public async Task<IList<int>> GetUserPermissionIdsAsync(int userId)
+        {
+            var permissionIds = new List<int>();
+            var query = GetUserPermissionsQuery(userId);
+            var user = await query.SingleOrDefaultAsync();
+            if (user != null)
+            {
+                Array.ForEach(user.UserRoles.Select(ur => ur.Role).ToArray(),
+                    role => permissionIds.AddRange(role.RolePermissions.Select(rp => rp.PermissionId)));
+            }
+
+            return permissionIds
+                .Distinct()
+                .ToList();
+        }
+
+        public async Task<IList<CommandViewModel>> GetUserCommandsAsync(int userId)
+        {
+            var topCommands = await _decorator.Repository.GetTopLevelCommandsAsync();
+            var userCommands = new List<CommandViewModel>(topCommands.Count);
+            var userPermissions = await GetUserPermissionIdsAsync(userId);
+            foreach (var command in topCommands)
+            {
+                var topCommand = new CommandViewModel() { Id = command.Id, Title = command.Title };
+                foreach (var child in command.Children)
+                {
+                    if (child.PermissionId == null || userPermissions.Contains(child.PermissionId.Value))
+                    {
+                        topCommand.Children.Add(child);
+                    }
+                }
+
+                if (topCommand.Children.Count > 0)
+                {
+                    userCommands.Add(topCommand);
+                }
+            }
+
+            return userCommands;
+        }
+
         /// <summary>
         /// به روش آسنکرون، تعداد کاربران تعریف شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
@@ -1386,6 +1427,17 @@ namespace SPPC.Tadbir.Persistence
                 Permission = permission,
                 PermissionId = permission.Id
             };
+        }
+
+        private IQueryable<User> GetUserPermissionsQuery(int userId)
+        {
+            var repository = _unitOfWork.GetRepository<User>();
+            var query = repository.GetEntityQuery()
+                .Where(usr => usr.Id == userId)
+                .Include(usr => usr.UserRoles)
+                    .ThenInclude(ur => ur.Role)
+                        .ThenInclude(r => r.RolePermissions);
+            return query;
         }
 
         private IUnitOfWork _unitOfWork;

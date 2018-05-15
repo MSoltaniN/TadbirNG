@@ -126,6 +126,15 @@
   <data name="AccountId" xml:space="preserve">
     <value>حساب</value>
   </data>
+  <data name="Accounting" xml:space="preserve">
+    <value>حسابداری</value>
+  </data>
+  <data name="Accounts" xml:space="preserve">
+    <value>حساب ها</value>
+  </data>
+  <data name="Administration" xml:space="preserve">
+    <value>راهبری</value>
+  </data>
   <data name="AdminRoleIsReadonly" xml:space="preserve">
     <value>اصلاح یا حذف نقش راهبر سیستم امکانپذیر نیست.</value>
   </data>
@@ -144,11 +153,17 @@
   <data name="CannotUseNonLeafItem" xml:space="preserve">
     <value>{0} {1} دارای زیرمجموعه بوده و نمی توان در اسناد عملیاتی از آن استفاده کرد.</value>
   </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>تغییر رمز ورود</value>
+  </data>
   <data name="Code" xml:space="preserve">
     <value>کد</value>
   </data>
   <data name="CostCenter" xml:space="preserve">
     <value>مرکز هزینه</value>
+  </data>
+  <data name="CostCenters" xml:space="preserve">
+    <value>مراکز هزینه</value>
   </data>
   <data name="Credit" xml:space="preserve">
     <value>بستانکار</value>
@@ -176,6 +191,9 @@
   </data>
   <data name="DetailAccount" xml:space="preserve">
     <value>تفصیلی شناور</value>
+  </data>
+  <data name="DetailAccounts" xml:space="preserve">
+    <value>تفصیلی های شناور</value>
   </data>
   <data name="DuplicateCodeValue" xml:space="preserve">
     <value>کد {0} تکراری است.</value>
@@ -216,6 +234,9 @@
   <data name="ItemNotFound" xml:space="preserve">
     <value>{0} مورد نظر یافت نشد.</value>
   </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>خروج</value>
+  </data>
   <data name="MissingNewAndRepeatPasswords" xml:space="preserve">
     <value>رمز ورود جدید یا تکرار آن وارد نشده است.</value>
   </data>
@@ -246,8 +267,14 @@
   <data name="PersonLastName" xml:space="preserve">
     <value>نام خانوادگی</value>
   </data>
+  <data name="Profile" xml:space="preserve">
+    <value>پروفایل</value>
+  </data>
   <data name="Project" xml:space="preserve">
     <value>پروژه</value>
+  </data>
+  <data name="Projects" xml:space="preserve">
+    <value>پروژه ها</value>
   </data>
   <data name="RepeatPassword" xml:space="preserve">
     <value>تکرار رمز ورود</value>
@@ -260,6 +287,9 @@
   </data>
   <data name="Role" xml:space="preserve">
     <value>نقش</value>
+  </data>
+  <data name="Roles" xml:space="preserve">
+    <value>نقش ها</value>
   </data>
   <data name="StartDate" xml:space="preserve">
     <value>تاریخ شروع</value>
@@ -282,6 +312,9 @@
   <data name="UserName" xml:space="preserve">
     <value>نام کاربری</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>کاربران</value>
+  </data>
   <data name="Voucher" xml:space="preserve">
     <value>سند</value>
   </data>
@@ -290,5 +323,116 @@
   </data>
   <data name="VoucherNo" xml:space="preserve">
     <value>شماره سند</value>
+  </data>
+  <data name="Vouchers" xml:space="preserve">
+    <value>اسناد مالی</value>
+  </data>
+  <data name="BizPartners" xml:space="preserve">
+    <value>شرکای تجاری</value>
+  </data>
+  <data name="BizUnits" xml:space="preserve">
+    <value>واحدهای سازمانی</value>
+  </data>
+  <data name="Branches" xml:space="preserve">
+    <value>شعب سازمانی</value>
+  </data>
+  <data name="CreateEntity" xml:space="preserve">
+    <value>ایجاد {0}</value>
+  </data>
+  <data name="Currencies" xml:space="preserve">
+    <value>ارزها</value>
+  </data>
+  <data name="DeleteEntity" xml:space="preserve">
+    <value>حذف {0}</value>
+  </data>
+  <data name="EditEntity" xml:space="preserve">
+    <value>اصلاح {0}</value>
+  </data>
+  <data name="Inventories" xml:space="preserve">
+    <value>موجودی کالا</value>
+  </data>
+  <data name="IRVouchers" xml:space="preserve">
+    <value>رسید و حواله</value>
+  </data>
+  <data name="ManageEntities" xml:space="preserve">
+    <value>مدیریت {0}</value>
+  </data>
+  <data name="ReqVouchers" xml:space="preserve">
+    <value>درخواست های کالا</value>
+  </data>
+  <data name="SalesInvoices" xml:space="preserve">
+    <value>فاکتورهای فروش</value>
+  </data>
+  <data name="ViewEntities" xml:space="preserve">
+    <value>مشاهده {0}</value>
+  </data>
+  <data name="ApproveEntity" xml:space="preserve">
+    <value>تصویب {0}</value>
+  </data>
+  <data name="AssignEntityToRole" xml:space="preserve">
+    <value>تخصیص {0} به نقش</value>
+  </data>
+  <data name="BizPartner" xml:space="preserve">
+    <value>شریک تجاری</value>
+  </data>
+  <data name="BizUnit" xml:space="preserve">
+    <value>واحد سازمانی</value>
+  </data>
+  <data name="Branch" xml:space="preserve">
+    <value>شعبه</value>
+  </data>
+  <data name="ConfirmEntity" xml:space="preserve">
+    <value>تایید {0}</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>ارز</value>
+  </data>
+  <data name="ExportEntityToIssueVoucher" xml:space="preserve">
+    <value>تبدیل {0} به حواله انبار</value>
+  </data>
+  <data name="ExportEntityToSalesInvoice" xml:space="preserve">
+    <value>تبدیل {0} به فاکتور فروش</value>
+  </data>
+  <data name="FiscalPeriod" xml:space="preserve">
+    <value>دوره مالی</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>موجودی کالا</value>
+  </data>
+  <data name="IssueVoucher" xml:space="preserve">
+    <value>حواله انبار</value>
+  </data>
+  <data name="MonetizedIssueVoucher" xml:space="preserve">
+    <value>حواله ریالی</value>
+  </data>
+  <data name="MonetizeEntity" xml:space="preserve">
+    <value>ریالی کردن {0}</value>
+  </data>
+  <data name="PrepareEntity" xml:space="preserve">
+    <value>تنظیم {0}</value>
+  </data>
+  <data name="RegisterEntity" xml:space="preserve">
+    <value>ثبت مالی {0}</value>
+  </data>
+  <data name="RejectReviewEntity" xml:space="preserve">
+    <value>بررسی مجدد {0}</value>
+  </data>
+  <data name="ReviewEntity" xml:space="preserve">
+    <value>بررسی {0}</value>
+  </data>
+  <data name="SalesInvoice" xml:space="preserve">
+    <value>فاکتور فروش</value>
+  </data>
+  <data name="SaveEntity" xml:space="preserve">
+    <value>ثبت {0}</value>
+  </data>
+  <data name="ValuedIssueVoucher" xml:space="preserve">
+    <value>حواله مقداری</value>
+  </data>
+  <data name="FiscalPeriods" xml:space="preserve">
+    <value>دوره های مالی</value>
+  </data>
+  <data name="ReqVoucher" xml:space="preserve">
+    <value>درخواست کالا</value>
   </data>
 </root>

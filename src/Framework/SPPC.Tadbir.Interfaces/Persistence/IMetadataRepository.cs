@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Domain;
 using SPPC.Tadbir.ViewModel.Metadata;
@@ -24,5 +25,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="entityName">نام (شناسه متنی) موجودیت مورد نظر</param>
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
         Task<EntityViewModel> GetEntityMetadataAsync(string entityName);
+
+        Task<IList<CommandViewModel>> GetTopLevelCommandsAsync();
     }
 }
