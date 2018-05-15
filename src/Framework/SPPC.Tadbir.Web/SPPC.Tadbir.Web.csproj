@@ -77,6 +77,7 @@
     <None Remove="ClientApp\app\controls\sppcLoading\index.ts" />
     <None Remove="ClientApp\app\controls\sppcLoading\sppc-loading.component.ts" />
     <None Remove="ClientApp\app\controls\sppcLoading\sppc-loading.service.ts" />
+    <None Remove="ClientApp\app\directive\grid\sppc-grid-reorder.ts" />
     <None Remove="ClientApp\app\directive\Validator\confirm-equal-validator.ts" />
     <None Remove="ClientApp\app\enum\KeyCode.ts" />
     <None Remove="ClientApp\app\model\account.ts" />
@@ -229,6 +230,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\account\account.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\project\project.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-numberbox.ts" />
+    <TypeScriptCompile Include="ClientApp\app\directive\grid\sppc-grid-reorder.ts" />
     <TypeScriptCompile Include="ClientApp\app\directive\Validator\confirm-equal-validator.ts" />
     <TypeScriptCompile Include="ClientApp\app\enum\KeyCode.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
@@ -262,10 +264,6 @@
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" />
     <PackageReference Include="StyleCop.MSBuild" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ClientApp\app\directive\grid\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
