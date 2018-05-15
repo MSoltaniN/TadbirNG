@@ -96,7 +96,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.Permissions,
                     opts => opts.MapFrom(
-                        src => src.RolePermissions.Select(rp => rp.Permission).Select(perm => perm.Name)));
+                        src => src.RolePermissions.Select(rp => rp.Permission).Select(perm => perm.Name).ToList()));
             mapperConfig.CreateMap<RoleViewModel, Role>()
                 .ForMember(dest => dest.RolePermissions, opts => opts.Ignore());
             mapperConfig.CreateMap<Role, RoleBranchesViewModel>()

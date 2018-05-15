@@ -15,6 +15,16 @@ INSERT INTO [Finance].[FiscalPeriod] (FiscalPeriodID, CompanyID, Name, StartDate
 INSERT INTO [Finance].[FiscalPeriod] (FiscalPeriodID, CompanyID, Name, StartDate, EndDate) VALUES (2, 1, N'سال مالی 1396', N'2017-03-21', N'2018-03-20')
 SET IDENTITY_INSERT [Finance].[FiscalPeriod] OFF
 
+SET IDENTITY_INSERT [Auth].[RoleBranch] ON
+INSERT INTO [Auth].[RoleBranch] (RoleBranchID, RoleID, BranchID) VALUES (1, 1, 1)
+INSERT INTO [Auth].[RoleBranch] (RoleBranchID, RoleID, BranchID) VALUES (2, 1, 2)
+SET IDENTITY_INSERT [Auth].[RoleBranch] OFF
+
+SET IDENTITY_INSERT [Auth].[RoleFiscalPeriod] ON
+INSERT INTO [Auth].[RoleFiscalPeriod] (RoleFiscalPeriodID, RoleID, FiscalPeriodID) VALUES (1, 1, 1)
+INSERT INTO [Auth].[RoleFiscalPeriod] (RoleFiscalPeriodID, RoleID, FiscalPeriodID) VALUES (2, 1, 2)
+SET IDENTITY_INSERT [Auth].[RoleFiscalPeriod] OFF
+
 SET IDENTITY_INSERT [Finance].[Account] ON
 INSERT INTO [Finance].[Account] (AccountID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (1, 1, 1, N'100', N'100', N'دارایی های جاری', 0)
 INSERT INTO [Finance].[Account] (AccountID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (2, 1, 1, N'107', N'107', N'دارایی های ثابت مشهود', 0)

@@ -327,4 +327,112 @@
   <data name="Vouchers" xml:space="preserve">
     <value>Vouchers</value>
   </data>
+  <data name="BizPartners" xml:space="preserve">
+    <value>business partners</value>
+  </data>
+  <data name="BizUnits" xml:space="preserve">
+    <value>business units</value>
+  </data>
+  <data name="Branches" xml:space="preserve">
+    <value>branches</value>
+  </data>
+  <data name="CreateEntity" xml:space="preserve">
+    <value>Create {0}</value>
+  </data>
+  <data name="Currencies" xml:space="preserve">
+    <value>currencies</value>
+  </data>
+  <data name="DeleteEntity" xml:space="preserve">
+    <value>Delete {0}</value>
+  </data>
+  <data name="EditEntity" xml:space="preserve">
+    <value>Edit {0}</value>
+  </data>
+  <data name="Inventories" xml:space="preserve">
+    <value>inventories</value>
+  </data>
+  <data name="IRVouchers" xml:space="preserve">
+    <value>issue/receipt vouchers</value>
+  </data>
+  <data name="ManageEntities" xml:space="preserve">
+    <value>Manage {0}</value>
+  </data>
+  <data name="ReqVouchers" xml:space="preserve">
+    <value>requisition vouchers</value>
+  </data>
+  <data name="SalesInvoices" xml:space="preserve">
+    <value>sales invoice</value>
+  </data>
+  <data name="ViewEntities" xml:space="preserve">
+    <value>View {0}</value>
+  </data>
+  <data name="ApproveEntity" xml:space="preserve">
+    <value>Approve {0}</value>
+  </data>
+  <data name="AssignEntityToRole" xml:space="preserve">
+    <value>Assign {0} to role</value>
+  </data>
+  <data name="BizPartner" xml:space="preserve">
+    <value>business partner</value>
+  </data>
+  <data name="BizUnit" xml:space="preserve">
+    <value>business unit</value>
+  </data>
+  <data name="Branch" xml:space="preserve">
+    <value>branch</value>
+  </data>
+  <data name="ConfirmEntity" xml:space="preserve">
+    <value>Confirm {0}</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>currency</value>
+  </data>
+  <data name="ExportEntityToIssueVoucher" xml:space="preserve">
+    <value>Export {0} to issue voucher</value>
+  </data>
+  <data name="ExportEntityToSalesInvoice" xml:space="preserve">
+    <value>Export {0} to sales invoice</value>
+  </data>
+  <data name="FiscalPeriod" xml:space="preserve">
+    <value>fiscal period</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>product inventory</value>
+  </data>
+  <data name="IssueVoucher" xml:space="preserve">
+    <value>issue voucher</value>
+  </data>
+  <data name="MonetizedIssueVoucher" xml:space="preserve">
+    <value>monetized issue voucher</value>
+  </data>
+  <data name="MonetizeEntity" xml:space="preserve">
+    <value>Monetize {0}</value>
+  </data>
+  <data name="PrepareEntity" xml:space="preserve">
+    <value>Prepare {0}</value>
+  </data>
+  <data name="RegisterEntity" xml:space="preserve">
+    <value>Register {0}</value>
+  </data>
+  <data name="RejectReviewEntity" xml:space="preserve">
+    <value>Reject reviewed {0}</value>
+  </data>
+  <data name="ReviewEntity" xml:space="preserve">
+    <value>Review {0}</value>
+  </data>
+  <data name="SalesInvoice" xml:space="preserve">
+    <value>sales invoice</value>
+  </data>
+  <data name="SaveEntity" xml:space="preserve">
+    <value>Save {0}</value>
+  </data>
+  <data name="ValuedIssueVoucher" xml:space="preserve">
+    <value>valued issue voucher</value>
+  </data>
+  <data name="FiscalPeriods" xml:space="preserve">
+    <value>fiscal periods</value>
+  </data>
+  <data name="ReqVoucher" xml:space="preserve">
+    <value>requisition voucher</value>
+  </data>
 </root>

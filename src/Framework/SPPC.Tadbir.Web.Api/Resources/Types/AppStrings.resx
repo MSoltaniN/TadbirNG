@@ -327,4 +327,112 @@
   <data name="Vouchers" xml:space="preserve">
     <value>اسناد مالی</value>
   </data>
+  <data name="BizPartners" xml:space="preserve">
+    <value>شرکای تجاری</value>
+  </data>
+  <data name="BizUnits" xml:space="preserve">
+    <value>واحدهای سازمانی</value>
+  </data>
+  <data name="Branches" xml:space="preserve">
+    <value>شعب سازمانی</value>
+  </data>
+  <data name="CreateEntity" xml:space="preserve">
+    <value>ایجاد {0}</value>
+  </data>
+  <data name="Currencies" xml:space="preserve">
+    <value>ارزها</value>
+  </data>
+  <data name="DeleteEntity" xml:space="preserve">
+    <value>حذف {0}</value>
+  </data>
+  <data name="EditEntity" xml:space="preserve">
+    <value>اصلاح {0}</value>
+  </data>
+  <data name="Inventories" xml:space="preserve">
+    <value>موجودی کالا</value>
+  </data>
+  <data name="IRVouchers" xml:space="preserve">
+    <value>رسید و حواله</value>
+  </data>
+  <data name="ManageEntities" xml:space="preserve">
+    <value>مدیریت {0}</value>
+  </data>
+  <data name="ReqVouchers" xml:space="preserve">
+    <value>درخواست های کالا</value>
+  </data>
+  <data name="SalesInvoices" xml:space="preserve">
+    <value>فاکتورهای فروش</value>
+  </data>
+  <data name="ViewEntities" xml:space="preserve">
+    <value>مشاهده {0}</value>
+  </data>
+  <data name="ApproveEntity" xml:space="preserve">
+    <value>تصویب {0}</value>
+  </data>
+  <data name="AssignEntityToRole" xml:space="preserve">
+    <value>تخصیص {0} به نقش</value>
+  </data>
+  <data name="BizPartner" xml:space="preserve">
+    <value>شریک تجاری</value>
+  </data>
+  <data name="BizUnit" xml:space="preserve">
+    <value>واحد سازمانی</value>
+  </data>
+  <data name="Branch" xml:space="preserve">
+    <value>شعبه</value>
+  </data>
+  <data name="ConfirmEntity" xml:space="preserve">
+    <value>تایید {0}</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>ارز</value>
+  </data>
+  <data name="ExportEntityToIssueVoucher" xml:space="preserve">
+    <value>تبدیل {0} به حواله انبار</value>
+  </data>
+  <data name="ExportEntityToSalesInvoice" xml:space="preserve">
+    <value>تبدیل {0} به فاکتور فروش</value>
+  </data>
+  <data name="FiscalPeriod" xml:space="preserve">
+    <value>دوره مالی</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>موجودی کالا</value>
+  </data>
+  <data name="IssueVoucher" xml:space="preserve">
+    <value>حواله انبار</value>
+  </data>
+  <data name="MonetizedIssueVoucher" xml:space="preserve">
+    <value>حواله ریالی</value>
+  </data>
+  <data name="MonetizeEntity" xml:space="preserve">
+    <value>ریالی کردن {0}</value>
+  </data>
+  <data name="PrepareEntity" xml:space="preserve">
+    <value>تنظیم {0}</value>
+  </data>
+  <data name="RegisterEntity" xml:space="preserve">
+    <value>ثبت مالی {0}</value>
+  </data>
+  <data name="RejectReviewEntity" xml:space="preserve">
+    <value>بررسی مجدد {0}</value>
+  </data>
+  <data name="ReviewEntity" xml:space="preserve">
+    <value>بررسی {0}</value>
+  </data>
+  <data name="SalesInvoice" xml:space="preserve">
+    <value>فاکتور فروش</value>
+  </data>
+  <data name="SaveEntity" xml:space="preserve">
+    <value>ثبت {0}</value>
+  </data>
+  <data name="ValuedIssueVoucher" xml:space="preserve">
+    <value>حواله مقداری</value>
+  </data>
+  <data name="FiscalPeriods" xml:space="preserve">
+    <value>دوره های مالی</value>
+  </data>
+  <data name="ReqVoucher" xml:space="preserve">
+    <value>درخواست کالا</value>
+  </data>
 </root>
