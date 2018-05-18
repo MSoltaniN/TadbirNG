@@ -120,7 +120,7 @@ export class RoleFormComponent extends DefaultComponent {
                     this.checkedKeys.push('0_' + level0Index.toString() + '_' + level1Index.toString());                    
                 }
                 else {
-                    if (indexId >= 0 && this.checkedKeys[indexId].length == 3)
+                    if (indexId >= 0 &&  this.checkedKeys[indexId].split('_').length == 2)
                     {
                         this.checkedKeys.splice(indexId, 1);
                         indexId = -1;
@@ -182,7 +182,7 @@ export class RoleFormComponent extends DefaultComponent {
         for (let key in this.permissonDictionary) {
             //permissionItem.isEnabled = false;    
             var parentKey: string = '';
-            if (key.split('_').length == 3) parentKey = key.substring(0, 3);
+            if (key.split('_').length == 3) parentKey = key.split('_')[0] + '_' + key.split('_')[1];
 
             if (allChildChecked.filter(k => k == parentKey).length > 0)
             {
