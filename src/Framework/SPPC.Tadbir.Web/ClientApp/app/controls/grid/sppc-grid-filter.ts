@@ -1,6 +1,6 @@
 ﻿
 import { Component, Input } from '@angular/core';
-import { CompositeFilterDescriptor } from "@progress/kendo-data-query/dist/es/main";
+import { CompositeFilterDescriptor } from "@progress/kendo-data-query";  //npm shrinkwrap
 import { Property } from '../../class/metadata/property';
 
 @Component({
