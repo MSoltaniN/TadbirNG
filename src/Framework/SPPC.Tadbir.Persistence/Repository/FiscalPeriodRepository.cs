@@ -144,7 +144,7 @@ namespace SPPC.Tadbir.Persistence
         {
             fiscalPeriod.Name = fiscalPeriodModel.Name;
             fiscalPeriod.StartDate = fiscalPeriodModel.StartDate;
-            fiscalPeriod.EndDate = fiscalPeriod.EndDate;
+            fiscalPeriod.EndDate = fiscalPeriodModel.EndDate;
             fiscalPeriod.Description = fiscalPeriodModel.Description;
             fiscalPeriod.Company.Id = fiscalPeriodModel.CompanyId;
         }
