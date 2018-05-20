@@ -355,6 +355,63 @@ CREATE TABLE [Finance].[Voucher] (
 )
 GO
 
+CREATE TABLE [Finance].[DetailAccount] (
+    [DetailID]          INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]          INT              NULL,
+	[FiscalPeriodID] INT                 NOT NULL,
+	[BranchID]       INT                 NOT NULL,
+    [Code]              NVARCHAR(16)     NOT NULL,
+    [FullCode]          NVARCHAR(256)    NOT NULL,
+    [Name]              NVARCHAR(256)    NOT NULL,
+    [Level]             SMALLINT         CONSTRAINT [DF_Finance_DetailAccount_Level] DEFAULT (0) NOT NULL,
+    [Description]       NVARCHAR(512)    NULL,
+    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_DetailAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_DetailAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_DetailAccount] PRIMARY KEY CLUSTERED ([DetailID] ASC)
+    , CONSTRAINT [FK_Finance_DetailAccount_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Finance_DetailAccount_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_DetailAccount_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+)
+GO
+
+CREATE TABLE [Finance].[CostCenter] (
+    [CostCenterID]   INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]       INT              NULL,
+	[FiscalPeriodID] INT              NOT NULL,
+	[BranchID]       INT              NOT NULL,
+    [Code]           NVARCHAR(16)     NOT NULL,
+    [FullCode]       NVARCHAR(256)    NOT NULL,
+    [Name]           NVARCHAR(256)    NOT NULL,
+    [Level]          SMALLINT         CONSTRAINT [DF_Finance_CostCenter_Level] DEFAULT (0) NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CostCenter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_CostCenter_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_CostCenter] PRIMARY KEY CLUSTERED ([CostCenterID] ASC)
+    , CONSTRAINT [FK_Finance_CostCenter_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Finance_CostCenter_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_CostCenter_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+)
+GO
+
+CREATE TABLE [Finance].[Project] (
+    [ProjectID]      INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]       INT              NULL,
+	[FiscalPeriodID] INT              NOT NULL,
+	[BranchID]       INT              NOT NULL,
+    [Code]           NVARCHAR(16)     NOT NULL,
+    [FullCode]       NVARCHAR(256)    NOT NULL,
+    [Name]           NVARCHAR(256)    NOT NULL,
+    [Level]          SMALLINT         CONSTRAINT [DF_Finance_Project_Level] DEFAULT (0) NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Project_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_Project_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_Project] PRIMARY KEY CLUSTERED ([ProjectID] ASC)
+    , CONSTRAINT [FK_Finance_Project_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[Project]([ProjectID])
+    , CONSTRAINT [FK_Finance_Project_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_Project_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+)
+GO
+
 CREATE TABLE [Finance].[VoucherLine] (
     [LineID]          INT              IDENTITY (1, 1) NOT NULL,
 	[VoucherID]       INT              NOT NULL,
@@ -580,63 +637,6 @@ CREATE TABLE [Corporate].[BusinessUnit] (
     [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Corporate_BusinessUnit_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]     DATETIME         CONSTRAINT [DF_Corporate_BusinessUnit_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Corporate_BusinessUnit] PRIMARY KEY CLUSTERED ([UnitID] ASC)
-)
-GO
-
-CREATE TABLE [Finance].[DetailAccount] (
-    [DetailID]          INT              IDENTITY (1, 1) NOT NULL,
-    [ParentID]          INT              NULL,
-	[FiscalPeriodID] INT                 NOT NULL,
-	[BranchID]       INT                 NOT NULL,
-    [Code]              NVARCHAR(16)     NOT NULL,
-    [FullCode]          NVARCHAR(256)    NOT NULL,
-    [Name]              NVARCHAR(256)    NOT NULL,
-    [Level]             SMALLINT         CONSTRAINT [DF_Finance_DetailAccount_Level] DEFAULT (0) NOT NULL,
-    [Description]       NVARCHAR(512)    NULL,
-    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_DetailAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_DetailAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_DetailAccount] PRIMARY KEY CLUSTERED ([DetailID] ASC)
-    , CONSTRAINT [FK_Finance_DetailAccount_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[DetailAccount]([DetailID])
-    , CONSTRAINT [FK_Finance_DetailAccount_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_DetailAccount_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
-)
-GO
-
-CREATE TABLE [Finance].[CostCenter] (
-    [CostCenterID]   INT              IDENTITY (1, 1) NOT NULL,
-    [ParentID]       INT              NULL,
-	[FiscalPeriodID] INT              NOT NULL,
-	[BranchID]       INT              NOT NULL,
-    [Code]           NVARCHAR(16)     NOT NULL,
-    [FullCode]       NVARCHAR(256)    NOT NULL,
-    [Name]           NVARCHAR(256)    NOT NULL,
-    [Level]          SMALLINT         CONSTRAINT [DF_Finance_CostCenter_Level] DEFAULT (0) NOT NULL,
-    [Description]    NVARCHAR(512)    NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CostCenter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_CostCenter_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_CostCenter] PRIMARY KEY CLUSTERED ([CostCenterID] ASC)
-    , CONSTRAINT [FK_Finance_CostCenter_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
-    , CONSTRAINT [FK_Finance_CostCenter_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_CostCenter_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
-)
-GO
-
-CREATE TABLE [Finance].[Project] (
-    [ProjectID]      INT              IDENTITY (1, 1) NOT NULL,
-    [ParentID]       INT              NULL,
-	[FiscalPeriodID] INT              NOT NULL,
-	[BranchID]       INT              NOT NULL,
-    [Code]           NVARCHAR(16)     NOT NULL,
-    [FullCode]       NVARCHAR(256)    NOT NULL,
-    [Name]           NVARCHAR(256)    NOT NULL,
-    [Level]          SMALLINT         CONSTRAINT [DF_Finance_Project_Level] DEFAULT (0) NOT NULL,
-    [Description]    NVARCHAR(512)    NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Project_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_Project_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_Project] PRIMARY KEY CLUSTERED ([ProjectID] ASC)
-    , CONSTRAINT [FK_Finance_Project_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[Project]([ProjectID])
-    , CONSTRAINT [FK_Finance_Project_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_Project_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
 )
 GO
 
@@ -1017,6 +1017,7 @@ INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrat
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (6, 'DetailAccount', 1, 1)
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (7, 'CostCenter', 1, 1)
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (8, 'Project', 1, 1)
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (9, 'FiscalPeriod', 1, 1)
 SET IDENTITY_INSERT [Metadata].[Entity] OFF
 
 SET IDENTITY_INSERT [Metadata].[Property] ON
@@ -1114,6 +1115,16 @@ INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, Stora
     VALUES (46, 8, 'Level', 'System.Int16', 'smallint', '', 0, 0, 0, 'Level_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
     VALUES (47, 8, 'Description', 'System.String', 'nvarchar', 'string', 512, 0, 1, 'Description_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (48, 9, 'Id', 'System.Int32', 'int', 'number', 0, 0, 0, 'Id_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (49, 9, 'Name', 'System.String', 'nvarchar', 'string', 64, 0, 0, 'Name_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (50, 9, 'StartDate', 'System.DateTime', 'datetime', 'Date', 0, 0, 0, 'StartDate_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (51, 9, 'EndDate', 'System.DateTime', 'datetime', 'Date', 0, 0, 0, 'EndDate_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (52, 9, 'Description', 'System.String', 'nvarchar', 'string', 512, 0, 1, 'Description_Field')
 SET IDENTITY_INSERT [Metadata].[Property] OFF
 
 SET IDENTITY_INSERT [Metadata].[LocalText] ON
