@@ -38,7 +38,8 @@
     "New": "جدید",
     "Edit": "ویرایش",
     "Delete": "حذف",
-    "GroupDelete": "حذف گروهی"
+    "GroupDelete": "حذف گروهی",
+    "Setting" :  "تنظیمات"
   },
   "Entity": {
     "Account": "اطلاعات حساب",
