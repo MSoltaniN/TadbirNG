@@ -230,7 +230,6 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
     }
 
     public saveHandler(fiscalPeriod: FiscalPeriod) {
-        debugger;
         fiscalPeriod.companyId = this.CompanyId;    
         this.sppcLoading.show();
         if (!this.isNew) {
