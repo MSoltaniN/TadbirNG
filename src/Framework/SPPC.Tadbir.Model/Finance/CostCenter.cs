@@ -15,5 +15,10 @@ namespace SPPC.Tadbir.Model.Finance
         /// شناسه دیتابیسی مرکز هزینه والد در ساختار درختی
         /// </summary>
         public int? ParentId { get; set; }
+
+        /// <summary>
+        /// مجموعه ای از سرفصل های حسابداری مرتبط با این مرکز هزینه
+        /// </summary>
+        public IList<AccountCostCenter> AccountCostCenters { get; protected set; }
     }
 }
