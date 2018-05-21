@@ -84,6 +84,7 @@ import { SppcDatePipe } from "./pipes/index"
 import { MetaDataService } from './service/metadata/metadata.service';
 import { BaseService } from './class/base.service';
 import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading/index';
+import { SppcGridResize } from './directive/grid/sppc-grid-resize';
 
 
 
@@ -106,6 +107,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         SppcFullAccount,
         SppcGridColumn,
         SppcGridReorder,
+        SppcGridResize,
         SppcGridFilter,
         VoucherComponent,
         VoucherFormComponent,
