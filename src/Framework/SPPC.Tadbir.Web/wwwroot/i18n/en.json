@@ -39,7 +39,8 @@
     "New": "New",
     "Edit": "Edit",
     "Delete": "Delete",
-    "GroupDelete": "Delete Group"
+    "GroupDelete": "Delete Group",
+    "Setting": "Setting"
   },
   "Entity": {
     "Account": "Account",

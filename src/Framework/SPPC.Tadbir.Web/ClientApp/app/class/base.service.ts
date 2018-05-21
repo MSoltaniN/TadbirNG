@@ -29,11 +29,10 @@ export class BaseService extends EnviromentComponent {
             var item: string | null;
             item = sessionStorage.getItem('currentContext');
             var currentContext = JSON.parse(item != null ? item.toString() : "");
-            if (currentContext.userName != '') {
+            if (currentContext.ticket != '') {
                 ticket = currentContext.ticket;
             }
         }
-
         this.headers.append('X-Tadbir-AuthTicket', ticket);
 
         if (this.CurrentLanguage == "fa")
