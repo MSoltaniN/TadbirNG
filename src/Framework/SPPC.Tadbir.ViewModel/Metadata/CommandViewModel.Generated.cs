@@ -39,8 +39,6 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// <summary>
         /// عنوان محلی شده این دستور در زبان جاری برنامه
         /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Title { get; set; }
     }
 }

@@ -1,0 +1,154 @@
+﻿   
+ <div class="panel panel-primary">
+     <div class="panel-heading">{{ 'Entity.FiscalPeriod' | translate }}</div>
+        <div class="panel-body">
+            <kendo-grid #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+                        [data]="rowData"
+                        [sortable]="true"
+                        [pageSize]="pageSize"
+                        [skip]="skip"
+                        [filter]="state.filter"
+                        [pageable]="true"
+                        [resizable]="true"
+                        [filterable]="true"
+                        [scrollable]="'none'"
+                        (pageChange)="pageChange($event)"
+                        (sortChange)="sortChange($event)"
+                        (edit)="editHandler($event)"
+                        (remove)="removeHandler($event)"
+                        [sort]="state.sort"
+                        [selectable]="true"
+                        [selectedKeys]="selectedRows"
+                        [kendoGridSelectBy]="selectionKey"
+                        (dataStateChange)="dataStateChange($event)"
+                        (selectedKeysChange)="onSelectedKeysChange($event)">
+                <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                                     pagerOf="{{ 'Paging.Of' | translate }}"
+                                     pagerItems="{{ 'Paging.Record' | translate }}">
+                </kendo-grid-messages>
+                <ng-template kendoGridNoRecordsTemplate>
+                    {{viewAccess ? (showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)) : ('App.NotViewAccess' | translate)}}
+                </ng-template>
+                <ng-template kendoGridToolbarTemplate>
+                    <button kendoGridAddCommand *ngIf="insertAccess" (click)="addNew()" type="button">{{ 'FiscalPeriod.New' | translate }}</button>
+                    <button *ngIf="groupDelete && deleteAccess" class="k-button" (click)="deleteFiscalPeriods()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
+                </ng-template>
+                <!-- template for mobile -->
+                <kendo-grid-column media="(max-width: 449px)" title="">
+                    <ng-template kendoGridCellTemplate let-fiscalPeriod>
+                        <dl>
+                            <dt>{{ 'FiscalPeriod.Name' | translate }}</dt>
+                            <dd>{{ fiscalPeriod.name }}</dd>
+
+                            <dt>{{ 'FiscalPeriod.StartDate' | translate }}</dt>
+                            <dd>{{ fiscalPeriod.startDate | SppcDate }}</dd>
+
+                            <dt>{{ 'FiscalPeriod.EndDate' | translate }}</dt>
+                            <dd>{{ fiscalPeriod.endDate | SppcDate }}</dd>
+
+                            <dt>{{ 'FiscalPeriod.Description' | translate  }}</dt>
+                            <dd>{{ fiscalPeriod.description }}</dd>
+                        </dl>
+                        <button kendoGridEditCommand *ngIf="editAccess" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                        <button kendoGridRemoveCommand *ngIf="deleteAccess">{{ 'Buttons.Delete' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-column>
+                <!-- template for mobile -->
+                <!-- template for mid-size devices -->
+                <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px) and (max-width: 1024px)"></kendo-grid-checkbox-column>
+                <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="FiscalPeriod.name">
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                        <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="FiscalPeriod.startDate">
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                        <sppc-grid-filter [metaData]="getMeta('startDate')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                    </ng-template>
+                    <ng-template kendoGridCellTemplate let-fiscalPeriod>
+                        {{ fiscalPeriod.startDate | SppcDate }}
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="FiscalPeriod.endDate">
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                        <sppc-grid-filter [metaData]="getMeta('endDate')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                    </ng-template>
+                    <ng-template kendoGridCellTemplate let-fiscalPeriod>
+                        {{ fiscalPeriod.endDate | SppcDate }}
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-command-column *ngIf="editAccess" media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
+                    <ng-template kendoGridCellTemplate>
+                        <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-command-column>
+                <kendo-grid-command-column *ngIf="deleteAccess" media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Delete' | translate }}  ">
+                    <ng-template kendoGridCellTemplate>
+                        <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-command-column>
+                <!-- template for mid-size devices -->
+                <!-- additional columns on large devices -->
+                <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
+                <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="FiscalPeriod.name">
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                        <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                    </ng-template>
+                </kendo-grid-column>
+
+                <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="FiscalPeriod.startDate">
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column" let-FiscalPeriod>
+                        <sppc-grid-filter [metaData]="getMeta('startDate')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                    </ng-template>
+                    <ng-template kendoGridCellTemplate let-fiscalPeriod>
+                        {{ fiscalPeriod.startDate | SppcDate }}
+                    </ng-template>
+                </kendo-grid-column>
+
+                <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="FiscalPeriod.endDate">
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column" let-FiscalPeriod>
+                        <sppc-grid-filter [metaData]="getMeta('endDate')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                    </ng-template>
+                    <ng-template kendoGridCellTemplate let-fiscalPeriod>
+                        {{ fiscalPeriod.endDate | SppcDate }}
+                    </ng-template>
+                </kendo-grid-column>
+
+                <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="FiscalPeriod.description">
+                    <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                        <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                    </ng-template>
+                </kendo-grid-column>
+
+                <kendo-grid-command-column *ngIf="editAccess" media="(min-width: 1024px)" width="60" title="{{ 'Buttons.Edit' | translate }}">
+                    <ng-template kendoGridCellTemplate>
+                        <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-command-column>
+                <kendo-grid-command-column *ngIf="deleteAccess" media="(min-width: 1024px)" width="60" title="{{ 'Buttons.Delete' | translate }}  ">
+                    <ng-template kendoGridCellTemplate>
+                        <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                    </ng-template>
+                </kendo-grid-command-column>
+                <!-- additional columns on large devices -->
+
+            </kendo-grid>
+            <fiscalPeriod-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
+                                        (save)="saveHandler($event)"
+                                        (cancel)="cancelHandler()">
+            </fiscalPeriod-form-component>
+        </div>
+        <kendo-dialog title="{{'FiscalPeriod.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteFiscalPeriod(false)" [minWidth]="250" [width]="450">
+            <p>
+                {{ deleteConfirmMsg }}
+            </p>
+            <kendo-dialog-actions>
+                <button class="k-button" (click)="deleteFiscalPeriod(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+                <button class="k-button" (click)="deleteFiscalPeriod(false)">{{ 'Buttons.No' | translate }}</button>
+            </kendo-dialog-actions>
+        </kendo-dialog>
+    </div>
+
+
+
+

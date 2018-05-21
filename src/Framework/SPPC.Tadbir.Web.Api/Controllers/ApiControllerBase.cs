@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Resources.Types;
@@ -24,17 +25,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             get;
         }
 
-        protected GridOptions GetGridOptions()
+        protected SecurityContext SecurityContext
         {
-            var options = Request.Headers[AppConstants.GridOptionsHeaderName];
-            if (String.IsNullOrEmpty(options))
-            {
-                return null;
-            }
+            get { return GetSecurityContext(); }
+        }
 
-            var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
-            var json = WebUtility.UrlDecode(urlEncoded);
-            return Framework.Helpers.Json.To<GridOptions>(json);
+        protected GridOptions GridOptions
+        {
+            get { return GetGridOptions(); }
         }
 
         protected void SetItemCount(int count)
@@ -70,6 +68,31 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
+        }
+
+        private SecurityContext GetSecurityContext()
+        {
+            var context = Request.Headers[AppConstants.ContextHeaderName];
+            if (String.IsNullOrEmpty(context))
+            {
+                return null;
+            }
+
+            var json = Encoding.UTF8.GetString(Transform.FromBase64String(context));
+            return Framework.Helpers.Json.To<SecurityContext>(json);
+        }
+
+        private GridOptions GetGridOptions()
+        {
+            var options = Request.Headers[AppConstants.GridOptionsHeaderName];
+            if (String.IsNullOrEmpty(options))
+            {
+                return null;
+            }
+
+            var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
+            var json = WebUtility.UrlDecode(urlEncoded);
+            return Framework.Helpers.Json.To<GridOptions>(json);
         }
 
         protected IStringLocalizer<AppStrings> _strings;

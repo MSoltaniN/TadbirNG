@@ -96,7 +96,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.Permissions,
                     opts => opts.MapFrom(
-                        src => src.RolePermissions.Select(rp => rp.Permission).Select(perm => perm.Name)));
+                        src => src.RolePermissions.Select(rp => rp.Permission).Select(perm => perm.Name).ToList()));
             mapperConfig.CreateMap<RoleViewModel, Role>()
                 .ForMember(dest => dest.RolePermissions, opts => opts.Ignore());
             mapperConfig.CreateMap<Role, RoleBranchesViewModel>()
@@ -193,6 +193,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<FiscalPeriod, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+            mapperConfig.CreateMap<FiscalPeriodViewModel, FiscalPeriod>()
+               .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId);
         }
 
         private static void MapCorporateTypes(IMapperConfigurationExpression mapperConfig)

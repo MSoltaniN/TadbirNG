@@ -8,6 +8,6 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// <summary>
         /// Gets or sets the collection of permission names that are enabled for this role.
         /// </summary>
-        public IEnumerable<string> Permissions { get; set; }
+        public IList<string> Permissions { get; set; }
     }
 }

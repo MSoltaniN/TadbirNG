@@ -126,6 +126,15 @@
   <data name="AccountId" xml:space="preserve">
     <value>Account</value>
   </data>
+  <data name="Accounting" xml:space="preserve">
+    <value>Accounting</value>
+  </data>
+  <data name="Accounts" xml:space="preserve">
+    <value>Accounts</value>
+  </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Administration</value>
+  </data>
   <data name="AdminRoleIsReadonly" xml:space="preserve">
     <value>System Administrator role cannot be modified or deleted.</value>
   </data>
@@ -144,11 +153,17 @@
   <data name="CannotUseNonLeafItem" xml:space="preserve">
     <value>The {0} {1} has one or more subitems and cannot be used in operational vouchers.</value>
   </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change password</value>
+  </data>
   <data name="Code" xml:space="preserve">
     <value>Code</value>
   </data>
   <data name="CostCenter" xml:space="preserve">
     <value>Cost center</value>
+  </data>
+  <data name="CostCenters" xml:space="preserve">
+    <value>Cost centers</value>
   </data>
   <data name="Credit" xml:space="preserve">
     <value>Credit</value>
@@ -176,6 +191,9 @@
   </data>
   <data name="DetailAccount" xml:space="preserve">
     <value>Detail account</value>
+  </data>
+  <data name="DetailAccounts" xml:space="preserve">
+    <value>Detail accounts</value>
   </data>
   <data name="DuplicateCodeValue" xml:space="preserve">
     <value>{0} code is duplicate.</value>
@@ -216,6 +234,9 @@
   <data name="ItemNotFound" xml:space="preserve">
     <value>{0} could not be found.</value>
   </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Logout</value>
+  </data>
   <data name="MissingNewAndRepeatPasswords" xml:space="preserve">
     <value>New password and/or repeat password are missing.</value>
   </data>
@@ -246,8 +267,14 @@
   <data name="PersonLastName" xml:space="preserve">
     <value>Last name</value>
   </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
   <data name="Project" xml:space="preserve">
     <value>Project</value>
+  </data>
+  <data name="Projects" xml:space="preserve">
+    <value>Projects</value>
   </data>
   <data name="RepeatPassword" xml:space="preserve">
     <value>Repeat password</value>
@@ -260,6 +287,9 @@
   </data>
   <data name="Role" xml:space="preserve">
     <value>Role</value>
+  </data>
+  <data name="Roles" xml:space="preserve">
+    <value>Roles</value>
   </data>
   <data name="StartDate" xml:space="preserve">
     <value>Start date</value>
@@ -282,6 +312,9 @@
   <data name="UserName" xml:space="preserve">
     <value>User name</value>
   </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
   <data name="Voucher" xml:space="preserve">
     <value>Voucher</value>
   </data>
@@ -290,5 +323,116 @@
   </data>
   <data name="VoucherNo" xml:space="preserve">
     <value>Voucher number</value>
+  </data>
+  <data name="Vouchers" xml:space="preserve">
+    <value>Vouchers</value>
+  </data>
+  <data name="BizPartners" xml:space="preserve">
+    <value>business partners</value>
+  </data>
+  <data name="BizUnits" xml:space="preserve">
+    <value>business units</value>
+  </data>
+  <data name="Branches" xml:space="preserve">
+    <value>branches</value>
+  </data>
+  <data name="CreateEntity" xml:space="preserve">
+    <value>Create {0}</value>
+  </data>
+  <data name="Currencies" xml:space="preserve">
+    <value>currencies</value>
+  </data>
+  <data name="DeleteEntity" xml:space="preserve">
+    <value>Delete {0}</value>
+  </data>
+  <data name="EditEntity" xml:space="preserve">
+    <value>Edit {0}</value>
+  </data>
+  <data name="Inventories" xml:space="preserve">
+    <value>inventories</value>
+  </data>
+  <data name="IRVouchers" xml:space="preserve">
+    <value>issue/receipt vouchers</value>
+  </data>
+  <data name="ManageEntities" xml:space="preserve">
+    <value>Manage {0}</value>
+  </data>
+  <data name="ReqVouchers" xml:space="preserve">
+    <value>requisition vouchers</value>
+  </data>
+  <data name="SalesInvoices" xml:space="preserve">
+    <value>sales invoice</value>
+  </data>
+  <data name="ViewEntities" xml:space="preserve">
+    <value>View {0}</value>
+  </data>
+  <data name="ApproveEntity" xml:space="preserve">
+    <value>Approve {0}</value>
+  </data>
+  <data name="AssignEntityToRole" xml:space="preserve">
+    <value>Assign {0} to role</value>
+  </data>
+  <data name="BizPartner" xml:space="preserve">
+    <value>business partner</value>
+  </data>
+  <data name="BizUnit" xml:space="preserve">
+    <value>business unit</value>
+  </data>
+  <data name="Branch" xml:space="preserve">
+    <value>branch</value>
+  </data>
+  <data name="ConfirmEntity" xml:space="preserve">
+    <value>Confirm {0}</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>currency</value>
+  </data>
+  <data name="ExportEntityToIssueVoucher" xml:space="preserve">
+    <value>Export {0} to issue voucher</value>
+  </data>
+  <data name="ExportEntityToSalesInvoice" xml:space="preserve">
+    <value>Export {0} to sales invoice</value>
+  </data>
+  <data name="FiscalPeriod" xml:space="preserve">
+    <value>fiscal period</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>product inventory</value>
+  </data>
+  <data name="IssueVoucher" xml:space="preserve">
+    <value>issue voucher</value>
+  </data>
+  <data name="MonetizedIssueVoucher" xml:space="preserve">
+    <value>monetized issue voucher</value>
+  </data>
+  <data name="MonetizeEntity" xml:space="preserve">
+    <value>Monetize {0}</value>
+  </data>
+  <data name="PrepareEntity" xml:space="preserve">
+    <value>Prepare {0}</value>
+  </data>
+  <data name="RegisterEntity" xml:space="preserve">
+    <value>Register {0}</value>
+  </data>
+  <data name="RejectReviewEntity" xml:space="preserve">
+    <value>Reject reviewed {0}</value>
+  </data>
+  <data name="ReviewEntity" xml:space="preserve">
+    <value>Review {0}</value>
+  </data>
+  <data name="SalesInvoice" xml:space="preserve">
+    <value>sales invoice</value>
+  </data>
+  <data name="SaveEntity" xml:space="preserve">
+    <value>Save {0}</value>
+  </data>
+  <data name="ValuedIssueVoucher" xml:space="preserve">
+    <value>valued issue voucher</value>
+  </data>
+  <data name="FiscalPeriods" xml:space="preserve">
+    <value>fiscal periods</value>
+  </data>
+  <data name="ReqVoucher" xml:space="preserve">
+    <value>requisition voucher</value>
   </data>
 </root>

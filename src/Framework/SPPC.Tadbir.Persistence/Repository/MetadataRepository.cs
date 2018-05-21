@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Framework.Domain;
@@ -49,6 +50,16 @@ namespace SPPC.Tadbir.Persistence
             return entityMetadata
                 .Select(ent => _mapper.Map<EntityViewModel>(ent))
                 .FirstOrDefault();
+        }
+
+        public async Task<IList<CommandViewModel>> GetTopLevelCommandsAsync()
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Command>();
+            var topCommands = await repository.GetByCriteriaAsync(
+                cmd => cmd.Parent == null, cmd => cmd.Children);
+            return topCommands
+                .Select(cmd => _mapper.Map<CommandViewModel>(cmd))
+                .ToList();
         }
 
         private IUnitOfWork _unitOfWork;

@@ -180,7 +180,7 @@ GO
 CREATE TABLE [Metadata].[Command] (
     [CommandID]      INT              IDENTITY (1, 1) NOT NULL,
     [ParentID]       INT              NULL,
-    [PermissionID]   INT              NOT NULL,
+    [PermissionID]   INT              NULL,
     [TitleKey]       NVARCHAR(64)     NOT NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Command_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Command_ModifiedDate] DEFAULT (getdate()) NOT NULL
@@ -352,6 +352,63 @@ CREATE TABLE [Finance].[Voucher] (
     , CONSTRAINT [FK_Finance_Voucher_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_Voucher_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
     , CONSTRAINT [FK_Finance_Voucher_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document] ([DocumentID])
+)
+GO
+
+CREATE TABLE [Finance].[DetailAccount] (
+    [DetailID]          INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]          INT              NULL,
+	[FiscalPeriodID] INT                 NOT NULL,
+	[BranchID]       INT                 NOT NULL,
+    [Code]              NVARCHAR(16)     NOT NULL,
+    [FullCode]          NVARCHAR(256)    NOT NULL,
+    [Name]              NVARCHAR(256)    NOT NULL,
+    [Level]             SMALLINT         CONSTRAINT [DF_Finance_DetailAccount_Level] DEFAULT (0) NOT NULL,
+    [Description]       NVARCHAR(512)    NULL,
+    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_DetailAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_DetailAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_DetailAccount] PRIMARY KEY CLUSTERED ([DetailID] ASC)
+    , CONSTRAINT [FK_Finance_DetailAccount_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[DetailAccount]([DetailID])
+    , CONSTRAINT [FK_Finance_DetailAccount_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_DetailAccount_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+)
+GO
+
+CREATE TABLE [Finance].[CostCenter] (
+    [CostCenterID]   INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]       INT              NULL,
+	[FiscalPeriodID] INT              NOT NULL,
+	[BranchID]       INT              NOT NULL,
+    [Code]           NVARCHAR(16)     NOT NULL,
+    [FullCode]       NVARCHAR(256)    NOT NULL,
+    [Name]           NVARCHAR(256)    NOT NULL,
+    [Level]          SMALLINT         CONSTRAINT [DF_Finance_CostCenter_Level] DEFAULT (0) NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CostCenter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_CostCenter_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_CostCenter] PRIMARY KEY CLUSTERED ([CostCenterID] ASC)
+    , CONSTRAINT [FK_Finance_CostCenter_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
+    , CONSTRAINT [FK_Finance_CostCenter_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_CostCenter_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+)
+GO
+
+CREATE TABLE [Finance].[Project] (
+    [ProjectID]      INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]       INT              NULL,
+	[FiscalPeriodID] INT              NOT NULL,
+	[BranchID]       INT              NOT NULL,
+    [Code]           NVARCHAR(16)     NOT NULL,
+    [FullCode]       NVARCHAR(256)    NOT NULL,
+    [Name]           NVARCHAR(256)    NOT NULL,
+    [Level]          SMALLINT         CONSTRAINT [DF_Finance_Project_Level] DEFAULT (0) NOT NULL,
+    [Description]    NVARCHAR(512)    NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Project_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_Project_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_Project] PRIMARY KEY CLUSTERED ([ProjectID] ASC)
+    , CONSTRAINT [FK_Finance_Project_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[Project]([ProjectID])
+    , CONSTRAINT [FK_Finance_Project_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
+    , CONSTRAINT [FK_Finance_Project_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
 )
 GO
 
@@ -580,63 +637,6 @@ CREATE TABLE [Corporate].[BusinessUnit] (
     [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Corporate_BusinessUnit_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]     DATETIME         CONSTRAINT [DF_Corporate_BusinessUnit_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Corporate_BusinessUnit] PRIMARY KEY CLUSTERED ([UnitID] ASC)
-)
-GO
-
-CREATE TABLE [Finance].[DetailAccount] (
-    [DetailID]          INT              IDENTITY (1, 1) NOT NULL,
-    [ParentID]          INT              NULL,
-	[FiscalPeriodID] INT                 NOT NULL,
-	[BranchID]       INT                 NOT NULL,
-    [Code]              NVARCHAR(16)     NOT NULL,
-    [FullCode]          NVARCHAR(256)    NOT NULL,
-    [Name]              NVARCHAR(256)    NOT NULL,
-    [Level]             SMALLINT         CONSTRAINT [DF_Finance_DetailAccount_Level] DEFAULT (0) NOT NULL,
-    [Description]       NVARCHAR(512)    NULL,
-    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_DetailAccount_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Finance_DetailAccount_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_DetailAccount] PRIMARY KEY CLUSTERED ([DetailID] ASC)
-    , CONSTRAINT [FK_Finance_DetailAccount_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[DetailAccount]([DetailID])
-    , CONSTRAINT [FK_Finance_DetailAccount_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_DetailAccount_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
-)
-GO
-
-CREATE TABLE [Finance].[CostCenter] (
-    [CostCenterID]   INT              IDENTITY (1, 1) NOT NULL,
-    [ParentID]       INT              NULL,
-	[FiscalPeriodID] INT              NOT NULL,
-	[BranchID]       INT              NOT NULL,
-    [Code]           NVARCHAR(16)     NOT NULL,
-    [FullCode]       NVARCHAR(256)    NOT NULL,
-    [Name]           NVARCHAR(256)    NOT NULL,
-    [Level]          SMALLINT         CONSTRAINT [DF_Finance_CostCenter_Level] DEFAULT (0) NOT NULL,
-    [Description]    NVARCHAR(512)    NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_CostCenter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_CostCenter_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_CostCenter] PRIMARY KEY CLUSTERED ([CostCenterID] ASC)
-    , CONSTRAINT [FK_Finance_CostCenter_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[CostCenter]([CostCenterID])
-    , CONSTRAINT [FK_Finance_CostCenter_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_CostCenter_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
-)
-GO
-
-CREATE TABLE [Finance].[Project] (
-    [ProjectID]      INT              IDENTITY (1, 1) NOT NULL,
-    [ParentID]       INT              NULL,
-	[FiscalPeriodID] INT              NOT NULL,
-	[BranchID]       INT              NOT NULL,
-    [Code]           NVARCHAR(16)     NOT NULL,
-    [FullCode]       NVARCHAR(256)    NOT NULL,
-    [Name]           NVARCHAR(256)    NOT NULL,
-    [Level]          SMALLINT         CONSTRAINT [DF_Finance_Project_Level] DEFAULT (0) NOT NULL,
-    [Description]    NVARCHAR(512)    NULL,
-    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_Project_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_Project_ModifiedDate] DEFAULT (getdate()) NOT NULL
-    , CONSTRAINT [PK_Finance_Project] PRIMARY KEY CLUSTERED ([ProjectID] ASC)
-    , CONSTRAINT [FK_Finance_Project_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[Project]([ProjectID])
-    , CONSTRAINT [FK_Finance_Project_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
-    , CONSTRAINT [FK_Finance_Project_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
 )
 GO
 
@@ -1017,6 +1017,7 @@ INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrat
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (6, 'DetailAccount', 1, 1)
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (7, 'CostCenter', 1, 1)
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (8, 'Project', 1, 1)
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (9, 'FiscalPeriod', 1, 1)
 SET IDENTITY_INSERT [Metadata].[Entity] OFF
 
 SET IDENTITY_INSERT [Metadata].[Property] ON
@@ -1114,6 +1115,16 @@ INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, Stora
     VALUES (46, 8, 'Level', 'System.Int16', 'smallint', '', 0, 0, 0, 'Level_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
     VALUES (47, 8, 'Description', 'System.String', 'nvarchar', 'string', 512, 0, 1, 'Description_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (48, 9, 'Id', 'System.Int32', 'int', 'number', 0, 0, 0, 'Id_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (49, 9, 'Name', 'System.String', 'nvarchar', 'string', 64, 0, 0, 'Name_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (50, 9, 'StartDate', 'System.DateTime', 'datetime', 'Date', 0, 0, 0, 'StartDate_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (51, 9, 'EndDate', 'System.DateTime', 'datetime', 'Date', 0, 0, 0, 'EndDate_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (52, 9, 'Description', 'System.String', 'nvarchar', 'string', 512, 0, 1, 'Description_Field')
 SET IDENTITY_INSERT [Metadata].[Property] OFF
 
 SET IDENTITY_INSERT [Metadata].[LocalText] ON
@@ -1185,102 +1196,102 @@ INSERT INTO [Auth].[UserRole] (UserRoleID, UserID, RoleID) VALUES (1, 1, 1)
 SET IDENTITY_INSERT [Auth].[UserRole] OFF
 
 SET IDENTITY_INSERT [Auth].[PermissionGroup] ON
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (1, N'مدیریت سرفصل های مالی', N'Account')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (2, N'مدیریت تفصیلی های شناور', N'DetailAccount')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (3, N'مدیریت مراکز هزینه', N'CostCenter')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (4, N'مدیریت پروژه ها', N'Project')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (5, N'مدیریت دوره های مالی', N'FiscalPeriod')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (6, N'مدیریت ارزها', N'Currency')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (7, N'مدیریت اسناد مالی', N'Voucher')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (8, N'مدیریت واحدهای سازمانی', N'BusinessUnit')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (9, N'مدیریت شرکای تجاری', N'BusinessPartner')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (10, N'مدیریت کاربران', N'User')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (11, N'مدیریت نقش ها', N'Role')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (12, N'مدیریت درخواست های کالا', N'RequisitionVoucher')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (13, N'مدیریت حواله های انبار', N'IssueReceiptVoucher')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (14, N'مدیریت فاکتورهای فروش', N'SalesInvoice')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (15, N'مدیریت موجودی کالا', N'ProductInventory')
-INSERT INTO [Auth].[PermissionGroup] (PermissionGroupID, Name, EntityName) VALUES (16, N'مدیریت شعب سازمانی', N'Branch')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (1, N'ManageEntities,Accounts', N'Account')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (2, N'ManageEntities,DetailAccounts', N'DetailAccount')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (3, N'ManageEntities,CostCenters', N'CostCenter')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (4, N'ManageEntities,Projects', N'Project')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (5, N'ManageEntities,FiscalPeriods', N'FiscalPeriod')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (6, N'ManageEntities,Currencies', N'Currency')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (7, N'ManageEntities,Vouchers', N'Voucher')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (8, N'ManageEntities,BizUnits', N'BusinessUnit')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (9, N'ManageEntities,BizPartners', N'BusinessPartner')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (10, N'ManageEntities,Users', N'User')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (11, N'ManageEntities,Roles', N'Role')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (12, N'ManageEntities,ReqVouchers', N'RequisitionVoucher')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (13, N'ManageEntities,IRVouchers', N'IssueReceiptVoucher')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (14, N'ManageEntities,SalesInvoices', N'SalesInvoice')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (15, N'ManageEntities,Inventories', N'ProductInventory')
+INSERT INTO [Auth].[PermissionGroup] ([PermissionGroupID], [Name], [EntityName]) VALUES (16, N'ManageEntities,Branches', N'Branch')
 SET IDENTITY_INSERT [Auth].[PermissionGroup] OFF
 
 SET IDENTITY_INSERT [Auth].[Permission] ON
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (1, 1, N'مشاهده حساب ها', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (2, 1, N'ایجاد حساب', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (3, 1, N'اصلاح حساب', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (4, 1, N'حذف حساب', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (5, 2, N'مشاهده تفصیلی های شناور', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (6, 2, N'ایجاد تفصیلی شناور', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (7, 2, N'اصلاح تفصیلی شناور', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (8, 2, N'حذف تفصیلی شناور', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (9, 3, N'مشاهده مراکز هزینه', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (10, 3, N'ایجاد مرکز هزینه', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (11, 3, N'اصلاح مرکز هزینه', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (12, 3, N'حذف مرکز هزینه', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (13, 4, N'مشاهده پروژه ها', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (14, 4, N'ایجاد پروژه', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (15, 4, N'اصلاح پروژه', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (16, 4, N'حذف پروژه', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (17, 5, N'مشاهده دوره های مالی', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (18, 5, N'ایجاد دوره مالی', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (19, 5, N'اصلاح دوره مالی', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (20, 5, N'حذف دوره مالی', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (21, 6, N'مشاهده ارزها', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (22, 6, N'ایجاد ارز', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (23, 6, N'اصلاح ارز', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (24, 6, N'حذف ارز', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (25, 7, N'مشاهده اسناد', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (26, 7, N'ایجاد سند', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (27, 7, N'اصلاح سند', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (28, 7, N'حذف سند', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (29, 7, N'تنظیم سند', 16)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (30, 7, N'بررسی سند', 32)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (31, 7, N'تایید سند', 64)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (32, 7, N'تصویب سند', 128)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (33, 8, N'مشاهده واحدهای سازمانی', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (34, 8, N'ایجاد واحد سازمانی', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (35, 8, N'اصلاح واحد سازمانی', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (36, 8, N'حذف واحد سازمانی', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (37, 9, N'مشاهده شرکای تجاری', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (38, 9, N'ایجاد شریک تجاری', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (39, 9, N'اصلاح شریک تجاری', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (40, 9, N'حذف شریک تجاری', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (41, 10, N'مشاهده کاربران', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (42, 10, N'ایجاد کاربر', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (43, 10, N'اصلاح کاربر', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (44, 11, N'مشاهده نقش ها', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (45, 11, N'ایجاد نقش', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (46, 11, N'اصلاح نقش', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (47, 11, N'حذف نقش', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (48, 11, N'تخصیص کاربر به نقش', 16)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (49, 11, N'تخصیص شعبه به نقش', 32)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (50, 12, N'مشاهده درخواست های کالا', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (51, 12, N'ایجاد درخواست کالا', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (52, 12, N'اصلاح درخواست کالا', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (53, 12, N'حذف درخواست کالا', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (54, 12, N'تنظیم درخواست کالا', 16)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (55, 12, N'تایید درخواست کالا', 32)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (56, 12, N'تصویب درخواست کالا', 64)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (57, 13, N'تبدیل درخواست کالا به حواله', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (58, 13, N'ثبت حواله انبار', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (59, 13, N'بررسی مجدد حواله انبار', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (60, 13, N'تایید حواله انبار', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (61, 13, N'تصویب حواله انبار', 16)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (62, 13, N'ریالی کردن حواله مقداری', 32)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (63, 14, N'تبدیل حواله به فاکتور فروش', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (64, 14, N'ثبت فاکتور فروش', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (65, 14, N'بررسی مجدد فاکتور فروش', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (66, 14, N'تایید فاکتور فروش', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (67, 14, N'تصویب فاکتور فروش', 16)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (68, 14, N'ثبت مالی فاکتور فروش', 256)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (69, 14, N'ثبت مالی حواله ریالی', 512)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (70, 15, N'مشاهده موجودی کالا', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (71, 15, N'ایجاد موجودی کالا', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (72, 15, N'اصلاح موجودی کالا', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (73, 15, N'حذف موجودی کالا', 8)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (74, 16, N'مشاهده شعبه', 1)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (75, 16, N'ایجاد شعبه', 2)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (76, 16, N'اصلاح شعبه', 4)
-INSERT INTO [Auth].[Permission] (PermissionID, GroupID, Name, Flag) VALUES (77, 16, N'حذف شعبه', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (1, 1, N'ViewEntities,Accounts', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (2, 1, N'CreateEntity,Account', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (3, 1, N'EditEntity,Account', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (4, 1, N'DeleteEntity,Account', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (5, 2, N'ViewEntities,DetailAccounts', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (6, 2, N'CreateEntity,DetailAccount', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (7, 2, N'EditEntity,DetailAccount', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (8, 2, N'DeleteEntity,DetailAccount', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (9, 3, N'ViewEntities,CostCenters', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (10, 3, N'CreateEntity,CostCenter', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (11, 3, N'EditEntity,CostCenter', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (12, 3, N'DeleteEntity,CostCenter', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (13, 4, N'ViewEntities,Projects', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (14, 4, N'CreateEntity,Project', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (15, 4, N'EditEntity,Project', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (16, 4, N'DeleteEntity,Project', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (17, 5, N'ViewEntities,FiscalPeriods', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (18, 5, N'CreateEntity,FiscalPeriod', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (19, 5, N'EditEntity,FiscalPeriod', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (20, 5, N'DeleteEntity,FiscalPeriod', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (21, 6, N'ViewEntities,Currencies', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (22, 6, N'CreateEntity,Currency', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (23, 6, N'EditEntity,Currency', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (24, 6, N'DeleteEntity,Currency', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (25, 7, N'ViewEntities,Vouchers', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (26, 7, N'CreateEntity,Voucher', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (27, 7, N'EditEntity,Voucher', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (28, 7, N'DeleteEntity,Voucher', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (29, 7, N'PrepareEntity,Voucher', 16)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (30, 7, N'ReviewEntity,Voucher', 32)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (31, 7, N'ConfirmEntity,Voucher', 64)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (32, 7, N'ApproveEntity,Voucher', 128)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (33, 8, N'ViewEntities,BizUnits', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (34, 8, N'CreateEntity,BizUnit', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (35, 8, N'EditEntity,BizUnit', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (36, 8, N'DeleteEntity,BizUnit', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (37, 9, N'ViewEntities,BizPartners', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (38, 9, N'CreateEntity,BizPartner', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (39, 9, N'EditEntity,BizPartner', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (40, 9, N'DeleteEntity,BizPartner', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (41, 10, N'ViewEntities,Users', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (42, 10, N'CreateEntity,User', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (43, 10, N'EditEntity,User', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (44, 11, N'ViewEntities,Roles', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (45, 11, N'CreateEntity,Role', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (46, 11, N'EditEntity,Role', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (47, 11, N'DeleteEntity,Role', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (48, 11, N'AssignEntityToRole,User', 16)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (49, 11, N'AssignEntityToRole,Branch', 32)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (50, 12, N'ViewEntities,ReqVouchers', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (51, 12, N'CreateEntity,ReqVoucher', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (52, 12, N'EditEntity,ReqVoucher', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (53, 12, N'DeleteEntity,ReqVoucher', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (54, 12, N'PrepareEntity,ReqVoucher', 16)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (55, 12, N'ConfirmEntity,ReqVoucher', 32)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (56, 12, N'ApproveEntity,ReqVoucher', 64)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (57, 13, N'ExportEntityToIssueVoucher,ReqVoucher', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (58, 13, N'SaveEntity,IssueVoucher', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (59, 13, N'RejectReviewEntity,IssueVoucher', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (60, 13, N'ConfirmEntity,IssueVoucher', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (61, 13, N'ApproveEntity,IssueVoucher', 16)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (62, 13, N'MonetizeEntity,ValuedIssueVoucher', 32)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (63, 14, N'ExportEntityToSalesInvoice,IssueVoucher', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (64, 14, N'SaveEntity,SalesInvoice', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (65, 14, N'RejectReviewEntity,SalesInvoice', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (66, 14, N'ConfirmEntity,SalesInvoice', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (67, 14, N'ApproveEntity,SalesInvoice', 16)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (68, 14, N'RegisterEntity,SalesInvoice', 256)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (69, 14, N'RegisterEntity,MonetizedIssueVoucher', 512)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (70, 15, N'ViewEntities,Inventories', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (71, 15, N'CreateEntity,Inventory', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (72, 15, N'EditEntity,Inventory', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (73, 15, N'DeleteEntity,Inventory', 8)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (74, 16, N'ViewEntities,Branches', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (75, 16, N'CreateEntity,Branch', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (76, 16, N'EditEntity,Branch', 4)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (77, 16, N'DeleteEntity,Branch', 8)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 SET IDENTITY_INSERT [Auth].[RolePermission] ON
@@ -1382,16 +1393,16 @@ INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VAL
 SET IDENTITY_INSERT [Auth].[RolePermission] OFF
 
 SET IDENTITY_INSERT [Metadata].[Command] ON
-INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (1, NULL, 1, N'Accounting')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (1, NULL, NULL, N'Accounting')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (2, 1, 1, N'Accounts')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (3, 1, 5, N'DetailAccounts')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (4, 1, 9, N'CostCenters')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (5, 1, 13, N'Projects')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (6, 1, 25, N'Vouchers')
-INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (7, NULL, 1, N'Administration')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (7, NULL, NULL, N'Administration')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (8, 7, 41, N'Users')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (9, 7, 44, N'Roles')
-INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (10, NULL, 1, N'Profile')
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (10, NULL, NULL, N'Profile')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (11, 10, NULL, N'ChangePassword')
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey) VALUES (12, 10, NULL, N'LogOut')
 SET IDENTITY_INSERT [Metadata].[Command] OFF

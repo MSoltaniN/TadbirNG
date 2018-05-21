@@ -38,6 +38,8 @@ import { CostCenterComponent } from './components/costCenter/costCenter.componen
 import { CostCenterFormComponent } from './components/costCenter/costCenter-form.component';
 import { ProjectComponent } from './components/project/project.component';
 import { ProjectFormComponent } from './components/project/project-form.component';
+import { FiscalPeriodComponent } from './components/fiscalPeriod/fiscalPeriod.component';
+import { FiscalPeriodFormComponent } from './components/fiscalPeriod/fiscalPeriod-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -126,6 +128,8 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         ProjectFormComponent,
         CostCenterFormComponent,
         ConfirmEqualValidator,
+        FiscalPeriodComponent,
+        FiscalPeriodFormComponent,
         SppcDatePipe        
 
     ],
@@ -176,6 +180,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
             { path: 'detailAccount', component: DetailAccountComponent, canActivate: [AuthGuard] },
             { path: 'costCenter', component: CostCenterComponent, canActivate: [AuthGuard] },
             { path: 'projects', component: ProjectComponent, canActivate: [AuthGuard] },
+            { path: 'fiscalperiod', component: FiscalPeriodComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])
     ],

@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from "ng2-translate";
 
 import { String } from './source';
-import { State } from "@progress/kendo-data-query/dist/es/state";
+import { State } from "@progress/kendo-data-query";
 import { BaseComponent } from "./base.component"
 import { Property } from "./metadata/property"
 

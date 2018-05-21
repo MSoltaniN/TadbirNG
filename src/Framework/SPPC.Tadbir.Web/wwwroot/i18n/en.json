@@ -14,6 +14,7 @@
       "DetailAccount": "Detail Account",
       "CostCenter": "Cost Center",
       "Project": "Project",
+      "FiscalPeriod": "Fiscal Period",
       "ChangePassword": "Change Password",
       "Exit": "Exit"
     }
@@ -50,7 +51,8 @@
     "Password": "Password",
     "DetailAccount": "Detail Account",
     "CostCenter": "Cost Center",
-    "Project": "Project"
+    "Project": "Project",
+    "FiscalPeriod": "Fiscal Period"
   },
   "Account": {
     "New": "New Account",
@@ -108,7 +110,7 @@
     "Title": "Change password",
     "OldPassword": "Old password",
     "NewPassword": "New password",
-    "RepeatPassword": "Repeat new password"   
+    "RepeatPassword": "Repeat new password"
   },
   "Role": {
     "Name": "Name",
@@ -147,7 +149,7 @@
     "Level": "Level",
     "Description": "Description",
     "Delete": "Delete Detail Account"
-  },  
+  },
   "CostCenter": {
     "New": "New Cost Center",
     "Name": "Name",
@@ -165,6 +167,14 @@
     "Level": "Level",
     "Description": "Description",
     "Delete": "Delete Project"
+  },
+  "FiscalPeriod": {
+    "New": "New Fiscal Period",
+    "Delete": "Delete Fiscal Period",
+    "Name": "Name",
+    "StartDate": "Start Date",
+    "EndDate": "End Date",
+    "Description": "Description"
   },
   "Fiscal": {
     "FiscalPeriod": "Fiscal Period"
