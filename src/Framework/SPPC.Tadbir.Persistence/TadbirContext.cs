@@ -35,6 +35,9 @@ namespace SPPC.Tadbir.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             AccountMap.BuildMapping(modelBuilder.Entity<Account>());
+            AccountDetailAccountMap.BuildMapping(modelBuilder.Entity<AccountDetailAccount>());
+            AccountCostCenterMap.BuildMapping(modelBuilder.Entity<AccountCostCenter>());
+            AccountProjectMap.BuildMapping(modelBuilder.Entity<AccountProject>());
             BranchMap.BuildMapping(modelBuilder.Entity<Branch>());
             CommandMap.BuildMapping(modelBuilder.Entity<Command>());
             CompanyMap.BuildMapping(modelBuilder.Entity<Company>());

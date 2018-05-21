@@ -77,6 +77,7 @@ namespace SPPC.Tadbir.Model.Finance
         private void InitReferences()
         {
             RoleFiscalPeriods = new List<RoleFiscalPeriod>();
+            Company = new Company();
         }
     }
 }

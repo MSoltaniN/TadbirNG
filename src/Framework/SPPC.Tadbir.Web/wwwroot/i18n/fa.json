@@ -14,6 +14,7 @@
       "DetailAccount": "تفصیلی شناور",
       "CostCenter": "مرکز هزینه",
       "Project": "پروژه",
+      "FiscalPeriod": "دوره مالی",
       "ChangePassword": "تغییر کلمه عبور",
       "Exit": "خروج"
     }
@@ -38,7 +39,8 @@
     "New": "جدید",
     "Edit": "ویرایش",
     "Delete": "حذف",
-    "GroupDelete": "حذف گروهی"
+    "GroupDelete": "حذف گروهی",
+    "Setting" :  "تنظیمات"
   },
   "Entity": {
     "Account": "اطلاعات حساب",
@@ -49,7 +51,8 @@
     "Password": "کلمه عبور",
     "DetailAccount": "تفصیلی شناور",
     "CostCenter": "مرکز هزینه",
-    "Project": "پروژه"
+    "Project": "پروژه",
+    "FiscalPeriod": "دوره مالی"
   },
   "Account": {
     "New": "حساب جدید",
@@ -164,6 +167,14 @@
     "Level": "سطح",
     "Description": "شرح",
     "Delete": "حذف پروژه"
+  },
+  "FiscalPeriod": {
+    "New": "دوره مالی جدید",
+    "Delete": "حذف دوره مالی",
+    "Name": "نام",
+    "StartDate": "تاریخ شروع",
+    "EndDate": "تاریخ پایان",
+    "Description": "شرح"
   },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی"

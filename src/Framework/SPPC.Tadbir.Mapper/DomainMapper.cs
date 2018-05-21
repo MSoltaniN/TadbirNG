@@ -123,6 +123,7 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
             mapperConfig.CreateMap<DetailAccount, DetailAccountViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
+            mapperConfig.CreateMap<DetailAccount, AccountItemBriefViewModel>();
             mapperConfig.CreateMap<DetailAccountViewModel, DetailAccount>()
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
@@ -193,6 +194,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<FiscalPeriod, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+            mapperConfig.CreateMap<FiscalPeriodViewModel, FiscalPeriod>()
+               .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId);
         }
 
         private static void MapCorporateTypes(IMapperConfigurationExpression mapperConfig)
