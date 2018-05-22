@@ -13,6 +13,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
+    [Produces("application/json")]
     public class BranchesController : ApiControllerBase<BranchViewModel>
     {
         public BranchesController(
@@ -122,7 +123,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (hasChildren == true)
             {
                 message = String.Format(
-                    _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.Branch], branch.Name);
+                   _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.Branch], String.Format("'{0}'", branch.Name));
             }
 
             return message;

@@ -41,8 +41,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetAsyncRepository<Branch>();
             var branches = await repository
                 .GetByCriteriaAsync(
-                    fp => fp.Company.Id == companyId,
-                    gridOptions, fp => fp.Company);
+                    b => b.Company.Id == companyId,
+                    gridOptions, b => b.Company, b => b.Parent, b => b.Children);
             return branches
                 .Select(item => _mapper.Map<BranchViewModel>(item))
                 .ToList();
