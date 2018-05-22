@@ -78,6 +78,7 @@
     <None Remove="ClientApp\app\controls\sppcLoading\index.ts" />
     <None Remove="ClientApp\app\controls\sppcLoading\sppc-loading.component.ts" />
     <None Remove="ClientApp\app\controls\sppcLoading\sppc-loading.service.ts" />
+    <None Remove="ClientApp\app\directive\grid\component\grid-setting-form.component.ts" />
     <None Remove="ClientApp\app\directive\grid\sppc-grid-reorder.ts" />
     <None Remove="ClientApp\app\directive\grid\sppc-grid-resize.ts" />
     <None Remove="ClientApp\app\directive\grid\sppc-grid-setting.ts" />
@@ -235,6 +236,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\account\account.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\project\project.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-numberbox.ts" />
+    <TypeScriptCompile Include="ClientApp\app\directive\grid\component\grid-setting-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\directive\grid\sppc-grid-reorder.ts" />
     <TypeScriptCompile Include="ClientApp\app\directive\grid\sppc-grid-resize.ts" />
     <TypeScriptCompile Include="ClientApp\app\directive\grid\sppc-grid-setting.ts" />

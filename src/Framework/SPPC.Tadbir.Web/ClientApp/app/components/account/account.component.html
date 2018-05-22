@@ -31,7 +31,7 @@
             <ng-template kendoGridToolbarTemplate>
                 <button kendoGridAddCommand *ngIf="insertAccess" (click)="addNew()" type="button">{{ 'Buttons.New' | translate }}</button>
                 <button *ngIf="groupDelete && deleteAccess" class="k-button" (click)="showConfirm()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
-                <button *ngIf="false">{{ 'Buttons.Setting' | translate }}</button>
+                <button *ngIf="false" sppc-grid-setting >{{ 'Buttons.Setting' | translate }}</button>
             </ng-template>
             <!-- template for mobile -->
             <kendo-grid-column media="(max-width: 450px)" title="">
@@ -127,6 +127,7 @@
                                 (cancel)="cancelHandler()">
         </account-form-component>
     </div>
+    <grid-setting-form-component #setting></grid-setting-form-component>
     <kendo-dialog title="{{'Account.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteAccount(false)" [minWidth]="250" [width]="450">
         <p>
             {{ this.deleteConfirmMsg }}

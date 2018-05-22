@@ -87,6 +87,8 @@ import { MetaDataService } from './service/metadata/metadata.service';
 import { BaseService } from './class/base.service';
 import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading/index';
 import { SppcGridResize } from './directive/grid/sppc-grid-resize';
+import { GridSettingFormComponent } from './directive/grid/component/grid-setting-form.component';
+import { SppcGridSetting } from './directive/grid/sppc-grid-setting';
 
 
 
@@ -111,6 +113,7 @@ import { SppcGridResize } from './directive/grid/sppc-grid-resize';
         SppcGridReorder,
         SppcGridResize,
         SppcGridFilter,
+        SppcGridSetting,
         VoucherComponent,
         VoucherFormComponent,
         VoucherLineComponent,
@@ -119,6 +122,7 @@ import { SppcGridResize } from './directive/grid/sppc-grid-resize';
         UserFormComponent,
         RoleComponent,
         RoleFormComponent,
+        GridSettingFormComponent,
         RoleUserFormComponent,
         RoleBranchFormComponent,
         RoleDetailFormComponent,
