@@ -23,7 +23,8 @@ export const Metadatas = {
     DetailAccount: 'faccounts',
     CostCenter: 'ccenters',
     Project: 'projects',
-    FiscalPeriod: 'fperiods'
+    FiscalPeriod: 'fperiods',
+    Branch: 'branches'
 }
 
 
@@ -37,7 +38,8 @@ export const Entities = {
     DetailAccount: 'DetailAccount',
     CostCenter: 'CostCenter',
     Project: 'Project',
-    FiscalPeriod: 'FiscalPeriod'
+    FiscalPeriod: 'FiscalPeriod',
+    Branch: 'Branch'
 }
 
 
@@ -54,7 +56,7 @@ export enum MessagePosition {
 
 
 export const Environment = {
-    BaseUrl: 'http://130.185.76.7:8080',
+    BaseUrl: 'http://localhost:8801',
     AdminTicket: 'eyJVc2VyIjp7IklkIjoxLCJQZXJzb25GaXJzdE5hbWUiOiIiLCJQZXJzb25MYXN0TmFtZSI6IiIsIkJyYW5jaGVzIjpbMSwyXSwiUm9sZXMiOlsxXSwiUGVybWlzc2lvbnMiOlt7IkVudGl0eU5hbWUiOiJBY2NvdW50IiwiRmxhZ3MiOjE1fSx7IkVudGl0eU5hbWUiOiJUcmFuc2FjdGlvbiIsIkZsYWdzIjoxMDIzfSx7IkVudGl0eU5hbWUiOiJVc2VyIiwiRmxhZ3MiOjd9LHsiRW50aXR5TmFtZSI6IlJvbGUiLCJGbGFncyI6NjN9LHsiRW50aXR5TmFtZSI6IlJlcXVpc2l0aW9uVm91Y2hlciIsIkZsYWdzIjoxMjd9LHsiRW50aXR5TmFtZSI6Iklzc3VlUmVjZWlwdFZvdWNoZXIiLCJGbGFncyI6NjN9LHsiRW50aXR5TmFtZSI6IlNhbGVzSW52b2ljZSIsIkZsYWdzIjozMX0seyJFbnRpdHlOYW1lIjoiUHJvZHVjdEludmVudG9yeSIsIkZsYWdzIjoxNX1dfX0=',
     BranchId: 1,
     FiscalPeriodId: 1
