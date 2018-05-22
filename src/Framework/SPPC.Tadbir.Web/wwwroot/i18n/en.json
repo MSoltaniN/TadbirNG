@@ -15,6 +15,7 @@
       "CostCenter": "Cost Center",
       "Project": "Project",
       "FiscalPeriod": "Fiscal Period",
+      "Branch": "Branches",
       "ChangePassword": "Change Password",
       "Exit": "Exit"
     }
@@ -52,7 +53,8 @@
     "DetailAccount": "Detail Account",
     "CostCenter": "Cost Center",
     "Project": "Project",
-    "FiscalPeriod": "Fiscal Period"
+    "FiscalPeriod": "Fiscal Period",
+    "Branch": "Branch"
   },
   "Account": {
     "New": "New Account",
@@ -81,7 +83,11 @@
     "CompanyName": "Company"
   },
   "Branch": {
-    "BranchName": "Branch"
+    "BranchName": "Branch",
+    "New": "New Branch",
+    "Delete": "Delete Branch",
+    "Name": "Name",
+    "Description": "Description"
   },
   "Voucher": {
     "New": "New voucher",
@@ -313,6 +319,18 @@
       "UserNameIsTooLong": "User name can have a maximum of 64 characters.",
       "PasswordIsRequired": "Password is required.",
       "PasswordLengthRange": "Password must have between 4 and 32 characters.",
+      "NoError": ""
+    },
+    "Branch": {
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "Name can have a maximum of 128 characters.",
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+      "NoError": ""
+    },
+    "Company": {
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "Name can have a maximum of 128 characters.",
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
       "NoError": ""
     }
   }

@@ -47,6 +47,7 @@
     <None Remove="ClientApp\app\class\filter.ts" />
     <None Remove="ClientApp\app\class\grid.orderby.ts" />
     <None Remove="ClientApp\app\class\metadata\property.ts" />
+    <None Remove="ClientApp\app\components\branch\branch-form.component.ts" />
     <None Remove="ClientApp\app\components\costCenter\costCenter-form.component.ts" />
     <None Remove="ClientApp\app\components\detailAccount\detailAccount-form.component.ts" />
     <None Remove="ClientApp\app\components\fiscalPeriod\fiscalPeriod-form.component.ts" />
@@ -201,6 +202,7 @@
     <TypeScriptCompile Include="ClientApp\app\class\filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\grid.orderby.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\metadata\property.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\branch\branch-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\costCenter\costCenter-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\detailAccount\detailAccount-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\fiscalPeriod\fiscalPeriod-form.component.ts" />

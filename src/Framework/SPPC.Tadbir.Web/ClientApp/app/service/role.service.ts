@@ -48,14 +48,14 @@ export class RoleUsersInfo implements RoleUsers {
     users: Array<UserBrief>;
 }
 
-export class BranchInfo implements Branch {
-    id: number;
-    name: string;
-    description?: string;
-    level: number;
-    companyId: number;
-    isAccessible: boolean;
-}
+//export class BranchInfo implements Branch {
+//    id: number;
+//    name: string;
+//    description?: string;
+//    level: number;
+//    companyId: number;
+//    isAccessible: boolean;
+//}
 
 export class RoleBranchesInfo implements RoleBranches {
     id: number;

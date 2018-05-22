@@ -23,7 +23,8 @@ export const Metadatas = {
     DetailAccount: 'faccounts',
     CostCenter: 'ccenters',
     Project: 'projects',
-    FiscalPeriod: 'fperiods'
+    FiscalPeriod: 'fperiods',
+    Branch: 'branches'
 }
 
 
@@ -37,7 +38,8 @@ export const Entities = {
     DetailAccount: 'DetailAccount',
     CostCenter: 'CostCenter',
     Project: 'Project',
-    FiscalPeriod: 'FiscalPeriod'
+    FiscalPeriod: 'FiscalPeriod',
+    Branch: 'Branch'
 }
 
 

@@ -19,4 +19,5 @@ export * from './roleBranches';
 export * from './roleDetails';
 export * from './permissionBrief';
 export * from './fiscalPeriod';
+export * from './branch';
 
