@@ -149,6 +149,40 @@ namespace SPPC.Tadbir.Persistence
             fiscalPeriod.Company.Id = fiscalPeriodModel.CompanyId;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مشخص میکند که آیا تاریخ شروع دوره مالی بعد از تاریخ پایان دوره مالی است؟
+        /// </summary>
+        /// <param name="fiscalPeriod">مدل نمایشی دوره مالی مورد نظر</param>
+        /// <returns>اگر تاریخ شروع دوره مالی بعد از تاریخ پایان دوره مالی باشد مقدار "درست" در غیر این صورت مقدار "نادرست" برمیگرداند</returns>
+        public async Task<bool> IsStartDateAfterEndDateAsync(FiscalPeriodViewModel fiscalPeriod)
+        {
+            if (fiscalPeriod.EndDate.Subtract(fiscalPeriod.StartDate).Days < 1)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص میکند که آیا این دوره مالی با سایر دوره های مالی شرکت مربوطه هم پوشانی دارد یا خیر؟
+        /// </summary>
+        /// <param name="fiscalPeriod">مدل نمایشی دوره مالی مورد نظر</param>
+        /// <returns>اگر دوره مالی هم پوشان با مدل نمایشی مورد نظر وجود داشته باشد مقدار "درست" در غیر این صورت مقدار "نادرست" برمیگرداند</returns>
+        public async Task<bool> IsOverlapFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriod)
+        {
+            Verify.ArgumentNotNull(fiscalPeriod, "fiscalPeriod");
+            var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var fiscalPeriods = await repository
+                .GetByCriteriaAsync(
+                fp => fp.Company.Id == fiscalPeriod.CompanyId
+                && ((fp.StartDate > fiscalPeriod.StartDate && fp.StartDate < fiscalPeriod.EndDate)
+                || (fp.StartDate < fiscalPeriod.StartDate && fp.EndDate > fiscalPeriod.EndDate)
+                || (fp.EndDate > fiscalPeriod.StartDate && fp.EndDate < fiscalPeriod.EndDate)));
+
+            return (fiscalPeriods.Count > 0);
+        }
+
         private IUnitOfWork _unitOfWork;
         private IDomainMapper _mapper;
         private IMetadataDecorator _decorator;

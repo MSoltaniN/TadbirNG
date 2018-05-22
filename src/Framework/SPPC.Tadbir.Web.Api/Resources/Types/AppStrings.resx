@@ -435,4 +435,10 @@
   <data name="ReqVoucher" xml:space="preserve">
     <value>درخواست کالا</value>
   </data>
+  <data name="DateOverlap" xml:space="preserve">
+    <value>تاریخ دوره مالی با دوره مالی دیگری همپوشانی دارد.</value>
+  </data>
+  <data name="PriorityDate" xml:space="preserve">
+    <value>تاریخ پایان {0} باید بعد از تاریخ شروع {0} باشد</value>
+  </data>
 </root>

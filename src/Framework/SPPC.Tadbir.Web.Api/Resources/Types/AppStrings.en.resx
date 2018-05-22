@@ -435,4 +435,10 @@
   <data name="ReqVoucher" xml:space="preserve">
     <value>requisition voucher</value>
   </data>
+  <data name="DateOverlap" xml:space="preserve">
+    <value>The date of the fiscal period overlaps with another fiscal period.</value>
+  </data>
+  <data name="PriorityDate" xml:space="preserve">
+    <value>The end date {0} must be after the start date {0}</value>
+  </data>
 </root>
