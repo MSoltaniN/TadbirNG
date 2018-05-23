@@ -39,5 +39,17 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="relations">اطلاعات تفصیلی های شناور مرتبط با یک حساب</param>
         Task SaveAccountDetailAccountsAsync(AccountItemRelationsViewModel relations);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت مراکز هزینه مرتبط با یک حساب را ذخیره می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات مراکز هزینه مرتبط با یک حساب</param>
+        Task SaveAccountCostCentersAsync(AccountItemRelationsViewModel relations);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت پروژه های مرتبط با یک حساب را ذخیره می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات پروژه های مرتبط با یک حساب</param>
+        Task SaveAccountProjectsAsync(AccountItemRelationsViewModel relations);
     }
 }

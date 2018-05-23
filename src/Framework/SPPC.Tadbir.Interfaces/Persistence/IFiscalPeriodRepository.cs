@@ -56,11 +56,12 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteFiscalPeriodAsync(int fperiodId);
 
         /// <summary>
-        /// به روش آسنکرون، مشخص میکند که آیا تاریخ شروع دوره مالی بعد از تاریخ پایان دوره مالی است؟
+        /// مشخص میکند که آیا تاریخ شروع دوره مالی بعد از تاریخ پایان دوره مالی است؟
         /// </summary>
         /// <param name="fiscalPeriod">مدل نمایشی دوره مالی مورد نظر</param>
-        /// <returns>اگر تاریخ شروع دوره مالی بعد از تاریخ پایان دوره مالی باشد مقدار "درست" در غیر این صورت مقدار "نادرست" برمیگرداند</returns>
-        Task<bool> IsStartDateAfterEndDateAsync(FiscalPeriodViewModel fiscalPeriod);
+        /// <returns>اگر تاریخ شروع دوره مالی بعد از تاریخ پایان دوره مالی باشد مقدار "درست"
+        /// در غیر این صورت مقدار "نادرست" برمیگرداند</returns>
+        bool IsStartDateAfterEndDate(FiscalPeriodViewModel fiscalPeriod);
 
         /// <summary>
         /// به روش آسنکرون، مشخص میکند که آیا این دوره مالی با سایر دوره های مالی شرکت مربوطه هم پوشانی دارد یا خیر؟

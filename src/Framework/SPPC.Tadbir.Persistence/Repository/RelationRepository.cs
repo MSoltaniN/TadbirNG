@@ -111,30 +111,93 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(relations, "relations");
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var existing = await repository.GetByIDWithTrackingAsync(relations.Id, acc => acc.AccountDetailAccounts);
-            if (existing != null && AreRelationsModified(existing, relations))
+            if (existing != null &&
+                AreRelationsModified(
+                    existing.AccountDetailAccounts
+                        .Select(ada => ada.DetailId)
+                        .ToArray(),
+                    relations))
             {
                 if (existing.AccountDetailAccounts.Count > 0)
                 {
-                    RemoveDisconnectedItems(existing, relations);
+                    RemoveDisconnectedDetails(existing, relations);
                 }
 
-                AddNewConnectedItems(existing, relations);
+                AddConnectedDetails(existing, relations);
                 repository.Update(existing);
                 await _unitOfWork.CommitAsync();
             }
         }
 
-        private static bool AreRelationsModified(Account existing, AccountItemRelationsViewModel relations)
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت مراکز هزینه مرتبط با یک حساب را ذخیره می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات مراکز هزینه مرتبط با یک حساب</param>
+        public async Task SaveAccountCostCentersAsync(AccountItemRelationsViewModel relations)
         {
-            var existingItems = existing.AccountDetailAccounts
-                .Select(ada => ada.DetailId)
-                .ToArray();
-            var connectedItems = relations.RelatedItemIds
-                .ToArray();
-            return (!AreEqual(existingItems, connectedItems));
+            Verify.ArgumentNotNull(relations, "relations");
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var existing = await repository.GetByIDWithTrackingAsync(relations.Id, acc => acc.AccountCostCenters);
+            if (existing != null &&
+                AreRelationsModified(
+                    existing.AccountCostCenters
+                        .Select(ac => ac.CostCenterId)
+                        .ToArray(),
+                    relations))
+            {
+                if (existing.AccountCostCenters.Count > 0)
+                {
+                    RemoveDisconnectedCostCenters(existing, relations);
+                }
+
+                AddConnectedCostCenters(existing, relations);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
         }
 
-        private static void RemoveDisconnectedItems(Account existing, AccountItemRelationsViewModel relations)
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت پروژه های مرتبط با یک حساب را ذخیره می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات پروژه های مرتبط با یک حساب</param>
+        public async Task SaveAccountProjectsAsync(AccountItemRelationsViewModel relations)
+        {
+            Verify.ArgumentNotNull(relations, "relations");
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var existing = await repository.GetByIDWithTrackingAsync(relations.Id, acc => acc.AccountProjects);
+            if (existing != null &&
+                AreRelationsModified(
+                    existing.AccountProjects
+                        .Select(ap => ap.ProjectId)
+                        .ToArray(),
+                    relations))
+            {
+                if (existing.AccountProjects.Count > 0)
+                {
+                    RemoveDisconnectedProjects(existing, relations);
+                }
+
+                AddConnectedProjects(existing, relations);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        private static bool AreRelationsModified(int[] existingIds, AccountItemRelationsViewModel relations)
+        {
+            var connectedItems = relations
+                .RelatedItemIds
+                .ToArray();
+            return (!AreEqual(existingIds, connectedItems));
+        }
+
+        private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
+        {
+            return left.Count() == right.Count()
+                && left.All(value => right.Contains(value));
+        }
+
+        private static void RemoveDisconnectedDetails(Account existing, AccountItemRelationsViewModel relations)
         {
             var currentItems = relations.RelatedItemIds;
             var disconnectedItems = existing.AccountDetailAccounts
@@ -149,16 +212,42 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
+        private static void RemoveDisconnectedCostCenters(Account existing, AccountItemRelationsViewModel relations)
         {
-            return left.Count() == right.Count()
-                && left.All(value => right.Contains(value));
+            var currentItems = relations.RelatedItemIds;
+            var disconnectedItems = existing.AccountCostCenters
+                .Select(ac => ac.CostCenterId)
+                .Where(id => !currentItems.Contains(id))
+                .ToArray();
+            foreach (int id in disconnectedItems)
+            {
+                existing.AccountCostCenters.Remove(existing.AccountCostCenters
+                    .Where(ac => ac.CostCenterId == id)
+                    .Single());
+            }
         }
 
-        private void AddNewConnectedItems(Account existing, AccountItemRelationsViewModel relations)
+        private static void RemoveDisconnectedProjects(Account existing, AccountItemRelationsViewModel relations)
+        {
+            var currentItems = relations.RelatedItemIds;
+            var disconnectedItems = existing.AccountProjects
+                .Select(ap => ap.ProjectId)
+                .Where(id => !currentItems.Contains(id))
+                .ToArray();
+            foreach (int id in disconnectedItems)
+            {
+                existing.AccountProjects.Remove(existing.AccountProjects
+                    .Where(ap => ap.ProjectId == id)
+                    .Single());
+            }
+        }
+
+        private void AddConnectedDetails(Account existing, AccountItemRelationsViewModel relations)
         {
             var repository = _unitOfWork.GetRepository<DetailAccount>();
-            var currentItems = existing.AccountDetailAccounts.Select(ada => ada.DetailId);
+            var currentItems = existing
+                .AccountDetailAccounts
+                .Select(ada => ada.DetailId);
             var newItems = relations.RelatedItemIds
                 .Where(id => !currentItems.Contains(id));
             foreach (var item in newItems)
@@ -173,6 +262,52 @@ namespace SPPC.Tadbir.Persistence
                     DetailId = detailAccount.Id
                 };
                 existing.AccountDetailAccounts.Add(accountDetailAccount);
+            }
+        }
+
+        private void AddConnectedCostCenters(Account existing, AccountItemRelationsViewModel relations)
+        {
+            var repository = _unitOfWork.GetRepository<CostCenter>();
+            var currentItems = existing
+                .AccountCostCenters
+                .Select(ac => ac.CostCenterId);
+            var newItems = relations.RelatedItemIds
+                .Where(id => !currentItems.Contains(id));
+            foreach (var item in newItems)
+            {
+                var costCenter = repository.GetByIDWithTracking(
+                    item, cc => cc.Branch, facc => facc.FiscalPeriod);
+                var accountCostCenter = new AccountCostCenter()
+                {
+                    Account = existing,
+                    AccountId = existing.Id,
+                    CostCenter = costCenter,
+                    CostCenterId = costCenter.Id
+                };
+                existing.AccountCostCenters.Add(accountCostCenter);
+            }
+        }
+
+        private void AddConnectedProjects(Account existing, AccountItemRelationsViewModel relations)
+        {
+            var repository = _unitOfWork.GetRepository<Project>();
+            var currentItems = existing
+                .AccountProjects
+                .Select(ap => ap.ProjectId);
+            var newItems = relations.RelatedItemIds
+                .Where(id => !currentItems.Contains(id));
+            foreach (var item in newItems)
+            {
+                var project = repository.GetByIDWithTracking(
+                    item, prj => prj.Branch, facc => facc.FiscalPeriod);
+                var accountProject = new AccountProject()
+                {
+                    Account = existing,
+                    AccountId = existing.Id,
+                    Project = project,
+                    ProjectId = project.Id
+                };
+                existing.AccountProjects.Add(accountProject);
             }
         }
 

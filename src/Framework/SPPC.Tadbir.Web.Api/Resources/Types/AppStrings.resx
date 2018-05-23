@@ -441,4 +441,7 @@
   <data name="PriorityDate" xml:space="preserve">
     <value>تاریخ پایان {0} باید بعد از تاریخ شروع {0} باشد</value>
   </data>
+  <data name="AccountRelations" xml:space="preserve">
+    <value>ارتباطات بردار حساب</value>
+  </data>
 </root>
