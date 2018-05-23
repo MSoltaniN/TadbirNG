@@ -26,6 +26,11 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
         Task<EntityViewModel> GetEntityMetadataAsync(string entityName);
 
+        /// <summary>
+        /// اطلاعات نمایشی تمام دستوراتی که در بالاترین سطح ساختار درختی قرار دارند را
+        /// از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از دستورات در بالاترین سطح</returns>
         Task<IList<CommandViewModel>> GetTopLevelCommandsAsync();
     }
 }

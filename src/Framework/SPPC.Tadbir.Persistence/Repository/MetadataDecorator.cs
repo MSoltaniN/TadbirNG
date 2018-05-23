@@ -20,6 +20,9 @@ namespace SPPC.Tadbir.Persistence
             _repository = repository;
         }
 
+        /// <summary>
+        /// آبجکت مورد استفاده برای خواندن اطلاعات متادیتا
+        /// </summary>
         public IMetadataRepository Repository
         {
             get { return _repository; }

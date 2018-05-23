@@ -1,22 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class AccountRelationsController : Controller
+    public class AccountRelationsController : ApiControllerBase<AccountItemRelationsViewModel>
     {
-        public AccountRelationsController(IRelationRepository repository)
+        public AccountRelationsController(IRelationRepository repository, IStringLocalizer<AppStrings> strings)
+            : base(strings)
         {
             _repository = repository;
+        }
+
+        protected override string EntityNameKey
+        {
+            get { return "Relationships"; }     // Temporarily hard-coded
         }
 
         // GET: api/relations/account/{accountId:min(1)}/faccounts
@@ -26,6 +32,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var detailAccounts = await _repository.GetRelatedDetailAccountsAsync(accountId);
             return Json(detailAccounts);
+        }
+
+        // PUT: api/relations/account/{accountId:min(1)}/faccounts
+        [HttpPut]
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
+        [Route(AccountRelationApi.DetailAccountsRelatedToAccountUrl)]
+        public async Task<IActionResult> PutModifiedAccountDetailAccountsAsync(
+            int accountId, [FromBody] AccountItemRelationsViewModel relations)
+        {
+            var result = BasicValidationResult(relations, accountId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SaveAccountDetailAccountsAsync(relations);
+            return Ok();
         }
 
         // GET: api/relations/account/{accountId:min(1)}/ccenters
