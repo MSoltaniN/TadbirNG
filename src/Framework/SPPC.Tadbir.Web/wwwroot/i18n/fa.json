@@ -16,6 +16,7 @@
       "Project": "پروژه",
       "FiscalPeriod": "دوره مالی",
       "Branch": "شعب",
+      "Company": "شرکت",
       "ChangePassword": "تغییر کلمه عبور",
       "Exit": "خروج"
     }
@@ -54,7 +55,8 @@
     "CostCenter": "مرکز هزینه",
     "Project": "پروژه",
     "FiscalPeriod": "دوره مالی",
-    "Branch": "شعبه"
+    "Branch": "شعبه",
+    "Company": "شرکت"
   },
   "Account": {
     "New": "حساب جدید",
@@ -80,7 +82,11 @@
     "Account": "بردار حساب"
   },
   "Company": {
-    "CompanyName": "شرکت"
+    "CompanyName": "شرکت",
+    "New": "شرکت جدید",
+    "Delete": "حذف شرکت",
+    "Name": "نام",
+    "Description": "شرح"
   },
   "Branch": {
     "BranchName": "شعبه",
