@@ -47,6 +47,7 @@
     <None Remove="ClientApp\app\class\filter.ts" />
     <None Remove="ClientApp\app\class\grid.orderby.ts" />
     <None Remove="ClientApp\app\class\metadata\property.ts" />
+    <None Remove="ClientApp\app\components\branch\branch-form.component.ts" />
     <None Remove="ClientApp\app\components\costCenter\costCenter-form.component.ts" />
     <None Remove="ClientApp\app\components\detailAccount\detailAccount-form.component.ts" />
     <None Remove="ClientApp\app\components\fiscalPeriod\fiscalPeriod-form.component.ts" />
@@ -78,7 +79,9 @@
     <None Remove="ClientApp\app\controls\sppcLoading\index.ts" />
     <None Remove="ClientApp\app\controls\sppcLoading\sppc-loading.component.ts" />
     <None Remove="ClientApp\app\controls\sppcLoading\sppc-loading.service.ts" />
+    <None Remove="ClientApp\app\directive\grid\component\grid-setting-form.component.ts" />
     <None Remove="ClientApp\app\directive\grid\sppc-grid-reorder.ts" />
+    <None Remove="ClientApp\app\directive\grid\sppc-grid-resize.ts" />
     <None Remove="ClientApp\app\directive\grid\sppc-grid-setting.ts" />
     <None Remove="ClientApp\app\directive\Validator\confirm-equal-validator.ts" />
     <None Remove="ClientApp\app\enum\KeyCode.ts" />
@@ -199,6 +202,7 @@
     <TypeScriptCompile Include="ClientApp\app\class\filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\grid.orderby.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\metadata\property.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\branch\branch-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\costCenter\costCenter-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\detailAccount\detailAccount-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\fiscalPeriod\fiscalPeriod-form.component.ts" />
@@ -234,7 +238,9 @@
     <TypeScriptCompile Include="ClientApp\app\components\account\account.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\project\project.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-numberbox.ts" />
+    <TypeScriptCompile Include="ClientApp\app\directive\grid\component\grid-setting-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\directive\grid\sppc-grid-reorder.ts" />
+    <TypeScriptCompile Include="ClientApp\app\directive\grid\sppc-grid-resize.ts" />
     <TypeScriptCompile Include="ClientApp\app\directive\grid\sppc-grid-setting.ts" />
     <TypeScriptCompile Include="ClientApp\app\directive\Validator\confirm-equal-validator.ts" />
     <TypeScriptCompile Include="ClientApp\app\enum\KeyCode.ts" />

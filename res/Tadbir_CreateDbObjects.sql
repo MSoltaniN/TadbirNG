@@ -1054,6 +1054,7 @@ INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrat
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (7, 'CostCenter', 1, 1)
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (8, 'Project', 1, 1)
 INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (9, 'FiscalPeriod', 1, 1)
+INSERT INTO [Metadata].[Entity] (EntityID, Name, IsHierarchy, IsCartableIntegrated) VALUES (10, 'Branch', 1, 1)
 SET IDENTITY_INSERT [Metadata].[Entity] OFF
 
 SET IDENTITY_INSERT [Metadata].[Property] ON
@@ -1161,6 +1162,10 @@ INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, Stora
     VALUES (51, 9, 'EndDate', 'System.DateTime', 'datetime', 'Date', 0, 0, 0, 'EndDate_Field')
 INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
     VALUES (52, 9, 'Description', 'System.String', 'nvarchar', 'string', 512, 0, 1, 'Description_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (53, 10, 'Name', 'System.String', 'nvarchar', 'string', 128, 0, 0, 'Name_Field')
+INSERT INTO [Metadata].[Property] (PropertyID, EntityID, Name, DotNetType, StorageType, ScriptType, [Length], IsFixedLength, IsNullable, NameResourceId)
+    VALUES (54, 10, 'Description', 'System.String', 'nvarchar', 'string', 512, 0, 1, 'Description_Field')
 SET IDENTITY_INSERT [Metadata].[Property] OFF
 
 SET IDENTITY_INSERT [Metadata].[LocalText] ON

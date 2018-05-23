@@ -62,7 +62,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Create)]
         public async Task<IActionResult> PostNewFiscalPeriodAsync([FromBody] FiscalPeriodViewModel fiscalPeriod)
         {
-            var result = BasicValidationResult(fiscalPeriod);
+            var result = await ValidationResultAsync(fiscalPeriod);
+            // var result = BasicValidationResult(fiscalPeriod);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -79,7 +80,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedFiscalPeriodAsync(
             int fpId, [FromBody] FiscalPeriodViewModel fiscalPeriod)
         {
-            var result = BasicValidationResult(fiscalPeriod, fpId);
+            var result = await ValidationResultAsync(fiscalPeriod, fpId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -106,6 +107,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             await _repository.DeleteFiscalPeriodAsync(fpId);
             return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        private async Task<IActionResult> ValidationResultAsync(FiscalPeriodViewModel fiscalPeriod, int fperiodId = 0)
+        {
+            var result = BasicValidationResult(fiscalPeriod, fperiodId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            if (await _repository.IsStartDateAfterEndDateAsync(fiscalPeriod))
+            {
+                return BadRequest(_strings.Format(AppStrings.PriorityDate, AppStrings.FiscalPeriod));
+            }
+
+            if (await _repository.IsOverlapFiscalPeriodAsync(fiscalPeriod))
+            {
+                return BadRequest(_strings.Format(AppStrings.DateOverlap));
+            }
+
+            return Ok();
         }
 
         private IFiscalPeriodRepository _repository;

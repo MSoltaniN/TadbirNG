@@ -40,6 +40,8 @@ import { ProjectComponent } from './components/project/project.component';
 import { ProjectFormComponent } from './components/project/project-form.component';
 import { FiscalPeriodComponent } from './components/fiscalPeriod/fiscalPeriod.component';
 import { FiscalPeriodFormComponent } from './components/fiscalPeriod/fiscalPeriod-form.component';
+import { BranchComponent } from './components/branch/branch.component';
+import { BranchFormComponent } from './components/branch/branch-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -86,6 +88,9 @@ import { SppcDatePipe } from "./pipes/index"
 import { MetaDataService } from './service/metadata/metadata.service';
 import { BaseService } from './class/base.service';
 import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading/index';
+import { SppcGridResize } from './directive/grid/sppc-grid-resize';
+import { GridSettingFormComponent } from './directive/grid/component/grid-setting-form.component';
+import { SppcGridSetting } from './directive/grid/sppc-grid-setting';
 
 
 
@@ -108,7 +113,9 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         SppcFullAccount,
         SppcGridColumn,
         SppcGridReorder,
+        SppcGridResize,
         SppcGridFilter,
+        SppcGridSetting,
         VoucherComponent,
         VoucherFormComponent,
         VoucherLineComponent,
@@ -117,6 +124,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         UserFormComponent,
         RoleComponent,
         RoleFormComponent,
+        GridSettingFormComponent,
         RoleUserFormComponent,
         RoleBranchFormComponent,
         RoleDetailFormComponent,
@@ -130,6 +138,8 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
         ConfirmEqualValidator,
         FiscalPeriodComponent,
         FiscalPeriodFormComponent,
+        BranchComponent,
+        BranchFormComponent,
         SppcDatePipe        
 
     ],
@@ -181,6 +191,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
             { path: 'costCenter', component: CostCenterComponent, canActivate: [AuthGuard] },
             { path: 'projects', component: ProjectComponent, canActivate: [AuthGuard] },
             { path: 'fiscalperiod', component: FiscalPeriodComponent, canActivate: [AuthGuard] },
+            { path: 'branches', component: BranchComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])
     ],

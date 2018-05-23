@@ -83,6 +83,8 @@ namespace SPPC.Tadbir.Model.Corporate
         private void InitReferences()
         {
             RoleBranches = new List<RoleBranch>();
+            Children = new List<Branch>();
+            Company = new Company();
         }
     }
 }

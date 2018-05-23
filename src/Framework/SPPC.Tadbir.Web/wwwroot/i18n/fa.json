@@ -15,6 +15,7 @@
       "CostCenter": "مرکز هزینه",
       "Project": "پروژه",
       "FiscalPeriod": "دوره مالی",
+      "Branch": "شعب",
       "ChangePassword": "تغییر کلمه عبور",
       "Exit": "خروج"
     }
@@ -40,7 +41,7 @@
     "Edit": "ویرایش",
     "Delete": "حذف",
     "GroupDelete": "حذف گروهی",
-    "Setting" :  "تنظیمات"
+    "Setting": "تنظیمات"
   },
   "Entity": {
     "Account": "اطلاعات حساب",
@@ -52,7 +53,8 @@
     "DetailAccount": "تفصیلی شناور",
     "CostCenter": "مرکز هزینه",
     "Project": "پروژه",
-    "FiscalPeriod": "دوره مالی"
+    "FiscalPeriod": "دوره مالی",
+    "Branch": "شعبه"
   },
   "Account": {
     "New": "حساب جدید",
@@ -81,7 +83,11 @@
     "CompanyName": "شرکت"
   },
   "Branch": {
-    "BranchName": "شعبه"
+    "BranchName": "شعبه",
+    "New": "شعبه جدید",
+    "Delete": "حذف شعبه",
+    "Name": "نام",
+    "Description": "شرح"
   },
   "Voucher": {
     "New": "سند جدید",
@@ -313,6 +319,18 @@
       "UserNameIsTooLong": "نام کاربری می تواند حداکثر 64 حرف داشته باشد.",
       "PasswordIsRequired": "وارد کردن رمز ورود اجباری است.",
       "PasswordLengthRange": "طول رمز ورود باید بین 4 و 32 حرف باشد.",
+      "NoError": ""
+    },
+    "Branch": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "Company": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
       "NoError": ""
     }
   }
