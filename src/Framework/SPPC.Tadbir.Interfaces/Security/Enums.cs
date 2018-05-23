@@ -560,4 +560,41 @@ namespace SPPC.Tadbir.Security
         /// </summary>
         All = 0x7f
     }
+
+    /// <summary>
+    /// Provides flag values for permissions currently defined for managing a company.
+    /// </summary>
+    [Flags]
+    public enum CompanyPermissions
+    {
+        /// <summary>
+        /// Indicates no permission for managing a company
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// Indicates permission to view company list or details of a company
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// Indicates permission to create a new company
+        /// </summary>
+        Create = 0x2,
+
+        /// <summary>
+        /// Indicates permission to edit an existing company
+        /// </summary>
+        Edit = 0x4,
+
+        /// <summary>
+        /// Indicates permission to delete an existing company
+        /// </summary>
+        Delete = 0x8,
+
+        /// <summary>
+        /// Indicates all permissions available for managing a company
+        /// </summary>
+        All = 0xf
+    }
 }

@@ -441,4 +441,10 @@
   <data name="PriorityDate" xml:space="preserve">
     <value>The end date {0} must be after the start date {0}</value>
   </data>
+  <data name="Companies" xml:space="preserve">
+    <value>Companies</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>Company</value>
+  </data>
 </root>

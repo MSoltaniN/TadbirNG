@@ -81,5 +81,10 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت درخواست کالا
         /// </summary>
         public const string Requisition = "RequisitionVoucher";
+
+        /// <summary>
+        /// نام موجودیت شرکت
+        /// </summary>
+        public const string Company = "Company";
     }
 }

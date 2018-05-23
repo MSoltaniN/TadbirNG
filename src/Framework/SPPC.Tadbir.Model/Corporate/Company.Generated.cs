@@ -68,10 +68,16 @@ namespace SPPC.Tadbir.Model.Corporate
         /// </summary>
         public virtual IList<FiscalPeriod> FiscalPeriods { get; protected set; }
 
+        /// <summary>
+        /// Gets or sets the parent of this company in the main company hierarchy
+        /// </summary>
+        public virtual Company Parent { get; set; }
+
         private void InitReferences()
         {
             this.Branches = new List<Branch>();
             this.FiscalPeriods = new List<FiscalPeriod>();
+            Children = new List<Company>();
 
             //// IMPORTANT NOTE: DO NOT add initialization statements for one-to-one and many-to-one relationships.
             //// 1. Initializing one-to-one associations causes StackOverflowException (A initializes B and B initializes A)

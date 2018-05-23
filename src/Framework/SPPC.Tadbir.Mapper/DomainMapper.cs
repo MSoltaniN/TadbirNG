@@ -207,15 +207,14 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
             mapperConfig.CreateMap<Branch, BranchViewModel>()
-                .ForMember(dest => dest.IsAccessible, opts => opts.UseValue(true));
-            mapperConfig.CreateMap<BranchViewModel, Branch>()
-                .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId);
-
-            mapperConfig.CreateMap<Branch, BranchViewModel>()
                 .ForMember(dest => dest.IsAccessible, opts => opts.UseValue(true))
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<BranchViewModel, Branch>()
                 .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId)
+                .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId);
+            mapperConfig.CreateMap<Company, CompanyViewModel>()
+                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
+            mapperConfig.CreateMap<CompanyViewModel, Company>()
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId);
         }
 

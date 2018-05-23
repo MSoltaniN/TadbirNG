@@ -31,7 +31,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/branches/company/{companyId:min(1)}
         [Route(BranchApi.CompanyBranchesUrl)]
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
-        public async Task<IActionResult> GetFiscalPeriodsAsync(int companyId)
+        public async Task<IActionResult> GetBranchesAsync(int companyId)
         {
             int itemCount = await _repository.GetCountAsync(companyId, GridOptions);
             SetItemCount(itemCount);
