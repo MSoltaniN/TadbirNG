@@ -63,7 +63,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PostNewFiscalPeriodAsync([FromBody] FiscalPeriodViewModel fiscalPeriod)
         {
             var result = await ValidationResultAsync(fiscalPeriod);
-            // var result = BasicValidationResult(fiscalPeriod);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -117,7 +116,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            if (await _repository.IsStartDateAfterEndDateAsync(fiscalPeriod))
+            if (_repository.IsStartDateAfterEndDate(fiscalPeriod))
             {
                 return BadRequest(_strings.Format(AppStrings.PriorityDate, AppStrings.FiscalPeriod));
             }

@@ -54,8 +54,19 @@ namespace SPPC.Tadbir.Persistence
         /// such a user defined; otherwise, returns null.</returns>
         Task<UserContextViewModel> GetUserContextAsync(int userId);
 
+        /// <summary>
+        /// دسترسی های امنیتی داده شده به یک کاربر را به صورت مجموعه ای از شناسه های یکتا
+        /// از محل ذخیره خوانده و بر می گرداند
+        /// </summary>
+        /// <param name="userId">شناسه یکتای یکی از کاربران موجود</param>
+        /// <returns>مجموعه شناسه های دسترسی های داده شده به کاربر</returns>
         Task<IList<int>> GetUserPermissionIdsAsync(int userId);
 
+        /// <summary>
+        /// اطلاعات نمایشی تمام دستورات قابل دسترسی توسط کاربر مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userId">شناسه یکتای یکی از کاربران موجود</param>
+        /// <returns>مجموعه ای از دستورات قابل دسترسی توسط کاربر</returns>
         Task<IList<CommandViewModel>> GetUserCommandsAsync(int userId);
 
         /// <summary>

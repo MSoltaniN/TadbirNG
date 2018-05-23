@@ -52,6 +52,11 @@ namespace SPPC.Tadbir.Persistence
                 .FirstOrDefault();
         }
 
+        /// <summary>
+        /// اطلاعات نمایشی تمام دستوراتی که در بالاترین سطح ساختار درختی قرار دارند را
+        /// از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ای از دستورات در بالاترین سطح</returns>
         public async Task<IList<CommandViewModel>> GetTopLevelCommandsAsync()
         {
             var repository = _unitOfWork.GetAsyncRepository<Command>();

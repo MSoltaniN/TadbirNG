@@ -447,4 +447,7 @@
   <data name="Company" xml:space="preserve">
     <value>شرکت</value>
   </data>
+  <data name="AccountRelations" xml:space="preserve">
+    <value>ارتباطات بردار حساب</value>
+  </data>
 </root>

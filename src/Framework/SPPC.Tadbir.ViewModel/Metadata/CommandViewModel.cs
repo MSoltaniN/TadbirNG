@@ -5,6 +5,9 @@ namespace SPPC.Tadbir.ViewModel.Metadata
 {
     public partial class CommandViewModel
     {
+        /// <summary>
+        /// شناسه دیتابیسی دسترسی مورد نیاز برای مشاهده و اجرای این دستور
+        /// </summary>
         public int? PermissionId { get; set; }
 
         /// <summary>

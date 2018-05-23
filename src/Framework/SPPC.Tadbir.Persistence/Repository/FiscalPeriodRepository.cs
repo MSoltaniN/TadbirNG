@@ -140,21 +140,12 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private static void UpdateExistingFiscalPeriod(FiscalPeriodViewModel fiscalPeriodModel, FiscalPeriod fiscalPeriod)
-        {
-            fiscalPeriod.Name = fiscalPeriodModel.Name;
-            fiscalPeriod.StartDate = fiscalPeriodModel.StartDate;
-            fiscalPeriod.EndDate = fiscalPeriodModel.EndDate;
-            fiscalPeriod.Description = fiscalPeriodModel.Description;
-            fiscalPeriod.Company.Id = fiscalPeriodModel.CompanyId;
-        }
-
         /// <summary>
-        /// به روش آسنکرون، مشخص میکند که آیا تاریخ شروع دوره مالی بعد از تاریخ پایان دوره مالی است؟
+        /// مشخص میکند که آیا تاریخ شروع دوره مالی بعد از تاریخ پایان دوره مالی است؟
         /// </summary>
         /// <param name="fiscalPeriod">مدل نمایشی دوره مالی مورد نظر</param>
         /// <returns>اگر تاریخ شروع دوره مالی بعد از تاریخ پایان دوره مالی باشد مقدار "درست" در غیر این صورت مقدار "نادرست" برمیگرداند</returns>
-        public async Task<bool> IsStartDateAfterEndDateAsync(FiscalPeriodViewModel fiscalPeriod)
+        public bool IsStartDateAfterEndDate(FiscalPeriodViewModel fiscalPeriod)
         {
             if (fiscalPeriod.EndDate.Subtract(fiscalPeriod.StartDate).Days < 1)
             {
@@ -181,6 +172,15 @@ namespace SPPC.Tadbir.Persistence
                 || (fp.EndDate > fiscalPeriod.StartDate && fp.EndDate < fiscalPeriod.EndDate)));
 
             return (fiscalPeriods.Count > 0);
+        }
+
+        private static void UpdateExistingFiscalPeriod(FiscalPeriodViewModel fiscalPeriodModel, FiscalPeriod fiscalPeriod)
+        {
+            fiscalPeriod.Name = fiscalPeriodModel.Name;
+            fiscalPeriod.StartDate = fiscalPeriodModel.StartDate;
+            fiscalPeriod.EndDate = fiscalPeriodModel.EndDate;
+            fiscalPeriod.Description = fiscalPeriodModel.Description;
+            fiscalPeriod.Company.Id = fiscalPeriodModel.CompanyId;
         }
 
         private IUnitOfWork _unitOfWork;

@@ -447,4 +447,7 @@
   <data name="Company" xml:space="preserve">
     <value>Company</value>
   </data>
+  <data name="AccountRelations" xml:space="preserve">
+    <value>Account relationships</value>
+  </data>
 </root>
