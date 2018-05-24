@@ -149,6 +149,12 @@ namespace SPPC.Tadbir.Persistence
             return userContext;
         }
 
+        /// <summary>
+        /// دسترسی های امنیتی داده شده به یک کاربر را به صورت مجموعه ای از شناسه های دیتابیسی
+        /// از دیتابیس خوانده و بر می گرداند
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
+        /// <returns>مجموعه شناسه های دسترسی های داده شده به کاربر</returns>
         public async Task<IList<int>> GetUserPermissionIdsAsync(int userId)
         {
             var permissionIds = new List<int>();
@@ -165,6 +171,11 @@ namespace SPPC.Tadbir.Persistence
                 .ToList();
         }
 
+        /// <summary>
+        /// اطلاعات نمایشی تمام دستورات قابل دسترسی توسط کاربر مشخص شده را از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
+        /// <returns>مجموعه ای از دستورات قابل دسترسی توسط کاربر</returns>
         public async Task<IList<CommandViewModel>> GetUserCommandsAsync(int userId)
         {
             var topCommands = await _decorator.Repository.GetTopLevelCommandsAsync();

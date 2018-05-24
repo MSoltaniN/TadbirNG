@@ -152,6 +152,28 @@ namespace SPPC.Tadbir.Security
     }
 
     /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی در مدیریت ارتباطات بین مولفه های بردار حساب را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum AccountRelationPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به مدیریت ارتباطات
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده ارتباطات موجود بین مولفه های مختلف
+        /// </summary>
+        ViewRelationships = 0x1,
+
+        /// <summary>
+        /// دسترسی مدیریت ارتباطات بین مولفه های مختلف
+        /// </summary>
+        ManageRelationships = 0x2,
+    }
+
+    /// <summary>
     /// فلگ های تعریف شده برای دسترسی های امنیتی به ارزها را تعریف می کند
     /// </summary>
     [Flags]
@@ -559,5 +581,42 @@ namespace SPPC.Tadbir.Security
         /// دسترسی به تمام عملیات درخواست کالا
         /// </summary>
         All = 0x7f
+    }
+
+    /// <summary>
+    /// Provides flag values for permissions currently defined for managing a company.
+    /// </summary>
+    [Flags]
+    public enum CompanyPermissions
+    {
+        /// <summary>
+        /// Indicates no permission for managing a company
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// Indicates permission to view company list or details of a company
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// Indicates permission to create a new company
+        /// </summary>
+        Create = 0x2,
+
+        /// <summary>
+        /// Indicates permission to edit an existing company
+        /// </summary>
+        Edit = 0x4,
+
+        /// <summary>
+        /// Indicates permission to delete an existing company
+        /// </summary>
+        Delete = 0x8,
+
+        /// <summary>
+        /// Indicates all permissions available for managing a company
+        /// </summary>
+        All = 0xf
     }
 }

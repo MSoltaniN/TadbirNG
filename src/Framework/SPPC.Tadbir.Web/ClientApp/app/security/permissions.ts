@@ -144,3 +144,12 @@ export enum RequisitionPermissions {
     Approve = 64,
     All = 127
 }
+
+export enum CompanyPermissions {
+    None = 0,
+    View = 1,
+    Create = 2,
+    Edit = 4,
+    Delete = 8,
+    All = 15
+}

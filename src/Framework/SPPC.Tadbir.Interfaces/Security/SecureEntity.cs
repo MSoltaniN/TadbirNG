@@ -33,6 +33,11 @@ namespace SPPC.Tadbir.Security
         public const string Project = "Project";
 
         /// <summary>
+        /// نام موجودیت مجازی ارتباطات بردار حساب
+        /// </summary>
+        public const string AccountRelations = "AccountRelations";
+
+        /// <summary>
         /// نام موجودیت ارز
         /// </summary>
         public const string Currency = "Currency";
@@ -81,5 +86,10 @@ namespace SPPC.Tadbir.Security
         /// نام موجودیت درخواست کالا
         /// </summary>
         public const string Requisition = "RequisitionVoucher";
+
+        /// <summary>
+        /// نام موجودیت شرکت
+        /// </summary>
+        public const string Company = "Company";
     }
 }

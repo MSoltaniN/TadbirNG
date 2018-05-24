@@ -16,6 +16,7 @@
       "Project": "Project",
       "FiscalPeriod": "Fiscal Period",
       "Branch": "Branches",
+      "Company": "Company",
       "ChangePassword": "Change Password",
       "Exit": "Exit"
     }
@@ -58,7 +59,8 @@
     "CostCenter": "Cost Center",
     "Project": "Project",
     "FiscalPeriod": "Fiscal Period",
-    "Branch": "Branch"
+    "Branch": "Branch",
+    "Company": "Company"
   },
   "Account": {
     "NewSubAccount": "New sub account",
@@ -85,7 +87,11 @@
     "Account": "Account"
   },
   "Company": {
-    "CompanyName": "Company"
+    "CompanyName": "Company",
+    "New": "New Company",
+    "Delete": "Delete Company",
+    "Name": "Name",
+    "Description": "Description"
   },
   "Branch": {
     "BranchName": "Branch",

@@ -11,6 +11,9 @@ namespace SPPC.Tadbir.Persistence
     /// </summary>
     public interface IMetadataDecorator
     {
+        /// <summary>
+        /// آبجکت مورد استفاده برای خواندن اطلاعات متادیتا
+        /// </summary>
         IMetadataRepository Repository { get; }
 
         /// <summary>

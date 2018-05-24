@@ -24,5 +24,6 @@ export const SecureEntity = {
     User: 'User',
     Role: 'Role',
     ProductInventory: 'ProductInventory',
-    Requisition: 'RequisitionVoucher'
+    Requisition: 'RequisitionVoucher',
+    Company: 'Company'
 }

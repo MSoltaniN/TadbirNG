@@ -42,6 +42,8 @@ import { FiscalPeriodComponent } from './components/fiscalPeriod/fiscalPeriod.co
 import { FiscalPeriodFormComponent } from './components/fiscalPeriod/fiscalPeriod-form.component';
 import { BranchComponent } from './components/branch/branch.component';
 import { BranchFormComponent } from './components/branch/branch-form.component';
+import { CompanyComponent } from './components/company/company.component';
+import { CompanyFormComponent } from './components/company/company-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -140,6 +142,8 @@ import { SppcGridSetting } from './directive/grid/sppc-grid-setting';
         FiscalPeriodFormComponent,
         BranchComponent,
         BranchFormComponent,
+        CompanyComponent,
+        CompanyFormComponent,
         SppcDatePipe        
 
     ],
@@ -192,6 +196,7 @@ import { SppcGridSetting } from './directive/grid/sppc-grid-setting';
             { path: 'projects', component: ProjectComponent, canActivate: [AuthGuard] },
             { path: 'fiscalperiod', component: FiscalPeriodComponent, canActivate: [AuthGuard] },
             { path: 'branches', component: BranchComponent, canActivate: [AuthGuard] },
+            { path: 'companies', component: CompanyComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])
     ],
