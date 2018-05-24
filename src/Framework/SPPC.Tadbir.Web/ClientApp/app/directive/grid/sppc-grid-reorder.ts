@@ -117,7 +117,6 @@ export class SppcGridReorder {
     ngOnInit() {
         this.grid.reorderable = true;
         
-
     }
 
     ngOnChanges() {
@@ -128,6 +127,15 @@ export class SppcGridReorder {
     }
 
     ngAfterContentInit(): void {
+
+        this.grid.leafColumns.toArray().forEach((item, index, arr) => {
+
+            if ((item.constructor.name == "CheckboxColumnComponent") || (item.constructor.name == "CommandColumnComponent")) {
+                item.reorderable = false;
+            }
+
+        });
+
 
         var i: number = 0;
         var id: string = this.elRef.nativeElement.id;

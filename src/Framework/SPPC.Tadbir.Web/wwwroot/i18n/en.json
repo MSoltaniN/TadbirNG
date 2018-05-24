@@ -43,6 +43,10 @@
     "GroupDelete": "Delete Group",
     "Setting": "Setting"
   },
+  "GridSetting": {
+    "Visibility": "Visibility",
+    "FieldName": "Field Name"
+  },
   "Entity": {
     "Account": "Account",
     "Voucher": "Voucher",
@@ -57,6 +61,7 @@
     "Branch": "Branch"
   },
   "Account": {
+    "NewSubAccount": "New sub account",
     "New": "New Account",
     "Edit": "Edit",
     "Delete": "Delete",

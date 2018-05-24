@@ -89,7 +89,7 @@ import { MetaDataService } from './service/metadata/metadata.service';
 import { BaseService } from './class/base.service';
 import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading/index';
 import { SppcGridResize } from './directive/grid/sppc-grid-resize';
-import { GridSettingFormComponent } from './directive/grid/component/grid-setting-form.component';
+import { GridSettingComponent } from './directive/grid/component/grid-setting.component';
 import { SppcGridSetting } from './directive/grid/sppc-grid-setting';
 
 
@@ -124,7 +124,7 @@ import { SppcGridSetting } from './directive/grid/sppc-grid-setting';
         UserFormComponent,
         RoleComponent,
         RoleFormComponent,
-        GridSettingFormComponent,
+        GridSettingComponent,
         RoleUserFormComponent,
         RoleBranchFormComponent,
         RoleDetailFormComponent,

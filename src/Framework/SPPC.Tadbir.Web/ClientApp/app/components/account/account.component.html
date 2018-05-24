@@ -19,7 +19,7 @@
                     [selectedKeys]="selectedRows"
                     [kendoGridSelectBy]="selectionKey"
                     (dataStateChange)="dataStateChange($event)"
-                    (selectedKeysChange)="onSelectedKeysChange($event)"
+                    (selectedKeysChange)="onSelectedKeysChange($event)"                    
                     sppc-grid-reorder   sppc-grid-resize >
             <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                                  pagerOf="{{ 'Paging.Of' | translate }}"
@@ -29,9 +29,9 @@
                 {{viewAccess ? (showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)) : ('App.NotViewAccess' | translate)}}
             </ng-template>
             <ng-template kendoGridToolbarTemplate>
-                <button kendoGridAddCommand *ngIf="insertAccess" (click)="addNew()" type="button">{{ 'Buttons.New' | translate }}</button>
+                <button kendoGridAddCommand *ngIf="insertAccess" (click)="addNew()" [icon]="'plus-outline'"  >{{ 'Account.New' | translate }}</button>
                 <button *ngIf="groupDelete && deleteAccess" class="k-button" (click)="showConfirm()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
-                <button *ngIf="false" sppc-grid-setting >{{ 'Buttons.Setting' | translate }}</button>
+                <grid-setting></grid-setting>
             </ng-template>
             <!-- template for mobile -->
             <kendo-grid-column media="(max-width: 450px)" title="">
@@ -71,24 +71,16 @@
                     <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
                 </ng-template>
             </kendo-grid-column>
-            <kendo-grid-command-column *ngIf="insertAccess" width="75" media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.New' | translate }}">
+            <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px) and (max-width: 1024px)">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                    <button kendoGridAddCommand (click)="addNew(dataItem.id)" type="button">{{ 'Buttons.New' | translate }}</button>
+                    <button [icon]="'plus'" (click)="addNew(dataItem.id)" *ngIf="insertAccess" kendoGridAddCommand title="{{ 'Account.NewSubAccount' | translate }}"></button>
+                    <button [icon]="'edit'" *ngIf="editAccess" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
+                    <button [icon]="'delete'" *ngIf="deleteAccess" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
                 </ng-template>
-            </kendo-grid-command-column>
-            <kendo-grid-command-column *ngIf="editAccess" width="75" media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Edit' | translate }}">
-                <ng-template kendoGridCellTemplate>
-                    <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                </ng-template>
-            </kendo-grid-command-column>
-            <kendo-grid-command-column *ngIf="deleteAccess" width="75" media="(min-width: 450px) and (max-width: 1024px)" title="{{ 'Buttons.Delete' | translate }}  ">
-                <ng-template kendoGridCellTemplate>
-                    <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
-                </ng-template>
-            </kendo-grid-command-column>
+            </kendo-grid-command-column>            
             <!-- template for mid-size devices -->
             <!-- additional columns on large devices -->
-            <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
+            <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 1024px)" ></kendo-grid-checkbox-column>
             <kendo-grid-column width="130" media="(min-width: 1024px)" sppc-grid-column="Account.code">
                 <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                     <sppc-grid-filter [metaData]="getMeta('code')" [column]="column" [filter]="filter"></sppc-grid-filter>
@@ -103,20 +95,12 @@
                 <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                     <sppc-grid-filter [metaData]="getMeta('descrption')" [column]="column" [filter]="filter"></sppc-grid-filter>
                 </ng-template>
-            </kendo-grid-column>
-            <kendo-grid-command-column *ngIf="insertAccess" width="75" media="(min-width: 1024px)" title="{{ 'Buttons.New' | translate }}">
+            </kendo-grid-column>            
+            <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                    <button kendoGridAddCommand (click)="addNew(dataItem.id)" type="button">{{ 'Buttons.New' | translate }}</button>
-                </ng-template>
-            </kendo-grid-command-column>
-            <kendo-grid-command-column *ngIf="editAccess" width="75" media="(min-width: 1024px)"  title="{{ 'Buttons.Edit' | translate }}">
-                <ng-template kendoGridCellTemplate>
-                    <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                </ng-template>
-            </kendo-grid-command-column>
-            <kendo-grid-command-column *ngIf="deleteAccess" width="75" media="(min-width: 1024px)"  title="{{ 'Buttons.Delete' | translate }}  ">
-                <ng-template kendoGridCellTemplate>
-                    <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+                    <button [icon]="'plus'" (click)="addNew(dataItem.id)" *ngIf="insertAccess" kendoGridAddCommand  title="{{ 'Account.NewSubAccount' | translate }}"></button>
+                    <button [icon]="'edit'" *ngIf="editAccess" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
+                    <button [icon]="'delete'" *ngIf="deleteAccess" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
                 </ng-template>
             </kendo-grid-command-column>
             <!-- additional columns on large devices -->
@@ -126,8 +110,7 @@
                                 (save)="saveHandler($event)"
                                 (cancel)="cancelHandler()">
         </account-form-component>
-    </div>
-    <grid-setting-form-component #setting></grid-setting-form-component>
+    </div>    
     <kendo-dialog title="{{'Account.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteAccount(false)" [minWidth]="250" [width]="450">
         <p>
             {{ this.deleteConfirmMsg }}

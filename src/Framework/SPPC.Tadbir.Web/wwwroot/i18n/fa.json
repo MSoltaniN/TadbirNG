@@ -43,6 +43,10 @@
     "GroupDelete": "حذف گروهی",
     "Setting": "تنظیمات"
   },
+  "GridSetting": {
+    "Visibility": "نمایش/عدم نمایش ستون",
+    "FieldName" :  "نام ستون"
+  },
   "Entity": {
     "Account": "اطلاعات حساب",
     "Voucher": "اطلاعات سند",
@@ -57,7 +61,8 @@
     "Branch": "شعبه"
   },
   "Account": {
-    "New": "حساب جدید",
+    "New": "حساب جدید", 
+    "NewSubAccount": "درج زیر حساب جدید",
     "Edit": "ویرایش",
     "Delete": "حذف",
     "Code": "کد حساب",
