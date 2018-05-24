@@ -53,18 +53,18 @@ namespace SPPC.Tadbir.Persistence
                 var relatedItemIds = account.AccountDetailAccounts.Select(ada => ada.DetailId);
                 if (useLeafItems)
                 {
-                    detailAccounts = await _itemRepository.GetLeafDetailAccounts(
+                    detailAccounts = await _itemRepository.GetLeafDetailAccountsAsync(
                         account.FiscalPeriod.Id, account.Branch.Id);
                 }
                 else
                 {
-                    detailAccounts = await _itemRepository.GetRootDetailAccounts(
+                    detailAccounts = await _itemRepository.GetRootDetailAccountsAsync(
                         account.FiscalPeriod.Id, account.Branch.Id);
                 }
 
                 Array.ForEach(
                     detailAccounts
-                        .Where(det => relatedItemIds.Contains(det.Id))
+                        .Where(item => relatedItemIds.Contains(item.Id))
                         .ToArray(),
                     item => item.IsSelected = true);
             }
@@ -96,16 +96,16 @@ namespace SPPC.Tadbir.Persistence
                 var relatedItemIds = account.AccountCostCenters.Select(ac => ac.CostCenterId);
                 if (useLeafItems)
                 {
-                    costCenters = await _itemRepository.GetLeafCostCenters(account.FiscalPeriod.Id, account.Branch.Id);
+                    costCenters = await _itemRepository.GetLeafCostCentersAsync(account.FiscalPeriod.Id, account.Branch.Id);
                 }
                 else
                 {
-                    costCenters = await _itemRepository.GetRootCostCenters(account.FiscalPeriod.Id, account.Branch.Id);
+                    costCenters = await _itemRepository.GetRootCostCentersAsync(account.FiscalPeriod.Id, account.Branch.Id);
                 }
 
                 Array.ForEach(
                     costCenters
-                        .Where(det => relatedItemIds.Contains(det.Id))
+                        .Where(item => relatedItemIds.Contains(item.Id))
                         .ToArray(),
                     item => item.IsSelected = true);
             }
@@ -135,21 +135,144 @@ namespace SPPC.Tadbir.Persistence
                 var relatedItemIds = account.AccountProjects.Select(ap => ap.ProjectId);
                 if (useLeafItems)
                 {
-                    projects = await _itemRepository.GetLeafProjects(account.FiscalPeriod.Id, account.Branch.Id);
+                    projects = await _itemRepository.GetLeafProjectsAsync(account.FiscalPeriod.Id, account.Branch.Id);
                 }
                 else
                 {
-                    projects = await _itemRepository.GetRootProjects(account.FiscalPeriod.Id, account.Branch.Id);
+                    projects = await _itemRepository.GetRootProjectsAsync(account.FiscalPeriod.Id, account.Branch.Id);
                 }
 
                 Array.ForEach(
                     projects
-                        .Where(det => relatedItemIds.Contains(det.Id))
+                        .Where(item => relatedItemIds.Contains(item.Id))
                         .ToArray(),
                     item => item.IsSelected = true);
             }
 
             return projects;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از حساب های مرتبط با تفصیلی شناور مشخص شده را
+        /// از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="detailId">شناسه دیتابیسی یکی از تفصیلی های شناور موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <returns>مجموعه ای از حساب های مرتبط با تفصیلی شناور مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetDetailAccountAccountsAsync(
+            int detailId, bool useLeafItems = true)
+        {
+            IList<AccountItemBriefViewModel> accounts = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var query = repository.GetEntityQuery()
+                .Where(facc => facc.Id == detailId)
+                .Include(facc => facc.FiscalPeriod)
+                .Include(facc => facc.Branch)
+                .Include(facc => facc.AccountDetailAccounts)
+                    .ThenInclude(ada => ada.DetailAccount);
+            var detail = await query.SingleOrDefaultAsync();
+            if (detail != null)
+            {
+                var relatedItemIds = detail.AccountDetailAccounts.Select(ada => ada.AccountId);
+                if (useLeafItems)
+                {
+                    accounts = await _itemRepository.GetLeafAccountsAsync(
+                        detail.FiscalPeriod.Id, detail.Branch.Id);
+                }
+                else
+                {
+                    accounts = await _itemRepository.GetRootAccountsAsync(
+                        detail.FiscalPeriod.Id, detail.Branch.Id);
+                }
+
+                Array.ForEach(
+                    accounts
+                        .Where(item => relatedItemIds.Contains(item.Id))
+                        .ToArray(),
+                    item => item.IsSelected = true);
+            }
+
+            return accounts;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از حساب های مرتبط با مرکز هزینه مشخص شده را
+        /// از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="costCenterId">شناسه دیتابیسی یکی از مراکز هزینه موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <returns>مجموعه ای از حساب های مرتبط با مرکز هزینه مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetCostCenterAccountsAsync(
+            int costCenterId, bool useLeafItems = true)
+        {
+            IList<AccountItemBriefViewModel> accounts = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var query = repository.GetEntityQuery()
+                .Where(cc => cc.Id == costCenterId)
+                .Include(cc => cc.FiscalPeriod)
+                .Include(cc => cc.Branch)
+                .Include(cc => cc.AccountCostCenters)
+                    .ThenInclude(ac => ac.Account);
+            var costCenter = await query.SingleOrDefaultAsync();
+            if (costCenter != null)
+            {
+                var relatedItemIds = costCenter.AccountCostCenters.Select(ac => ac.AccountId);
+                if (useLeafItems)
+                {
+                    accounts = await _itemRepository.GetLeafAccountsAsync(costCenter.FiscalPeriod.Id, costCenter.Branch.Id);
+                }
+                else
+                {
+                    accounts = await _itemRepository.GetRootAccountsAsync(costCenter.FiscalPeriod.Id, costCenter.Branch.Id);
+                }
+
+                Array.ForEach(
+                    accounts
+                        .Where(item => relatedItemIds.Contains(item.Id))
+                        .ToArray(),
+                    item => item.IsSelected = true);
+            }
+
+            return accounts;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از حساب های مرتبط با پروژه مشخص شده را
+        /// از دیتابیس خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه دیتابیسی یکی از پروژه های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <returns>مجموعه ای از حساب های مرتبط با پروژه مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetProjectAccountsAsync(
+            int projectId, bool useLeafItems = true)
+        {
+            IList<AccountItemBriefViewModel> accounts = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var query = repository.GetEntityQuery()
+                .Where(prj => prj.Id == projectId)
+                .Include(prj => prj.AccountProjects)
+                    .ThenInclude(ap => ap.Account);
+            var project = await query.SingleOrDefaultAsync();
+            if (project != null)
+            {
+                var relatedItemIds = project.AccountProjects.Select(ap => ap.AccountId);
+                if (useLeafItems)
+                {
+                    accounts = await _itemRepository.GetLeafAccountsAsync(project.FiscalPeriod.Id, project.Branch.Id);
+                }
+                else
+                {
+                    accounts = await _itemRepository.GetRootAccountsAsync(project.FiscalPeriod.Id, project.Branch.Id);
+                }
+
+                Array.ForEach(
+                    accounts
+                        .Where(item => relatedItemIds.Contains(item.Id))
+                        .ToArray(),
+                    item => item.IsSelected = true);
+            }
+
+            return accounts;
         }
 
         /// <summary>
@@ -161,8 +284,7 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(relations, "relations");
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var existing = await repository.GetByIDWithTrackingAsync(relations.Id, acc => acc.AccountDetailAccounts);
-            if (existing != null &&
-                AreRelationsModified(
+            if (existing != null && AreRelationsModified(
                     existing.AccountDetailAccounts
                         .Select(ada => ada.DetailId)
                         .ToArray(),
@@ -188,8 +310,7 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(relations, "relations");
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var existing = await repository.GetByIDWithTrackingAsync(relations.Id, acc => acc.AccountCostCenters);
-            if (existing != null &&
-                AreRelationsModified(
+            if (existing != null && AreRelationsModified(
                     existing.AccountCostCenters
                         .Select(ac => ac.CostCenterId)
                         .ToArray(),
@@ -215,8 +336,7 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(relations, "relations");
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var existing = await repository.GetByIDWithTrackingAsync(relations.Id, acc => acc.AccountProjects);
-            if (existing != null &&
-                AreRelationsModified(
+            if (existing != null && AreRelationsModified(
                     existing.AccountProjects
                         .Select(ap => ap.ProjectId)
                         .ToArray(),
@@ -228,6 +348,84 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 AddConnectedProjects(existing, relations);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت حساب های مرتبط با یک تفصیلی شناور را ذخیره می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات حساب های مرتبط با یک تفصیلی شناور</param>
+        public async Task SaveDetailAccountAccountsAsync(AccountItemRelationsViewModel relations)
+        {
+            Verify.ArgumentNotNull(relations, "relations");
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var existing = await repository.GetByIDWithTrackingAsync(relations.Id, facc => facc.AccountDetailAccounts);
+            if (existing != null && AreRelationsModified(
+                    existing.AccountDetailAccounts
+                        .Select(ada => ada.AccountId)
+                        .ToArray(),
+                    relations))
+            {
+                if (existing.AccountDetailAccounts.Count > 0)
+                {
+                    RemoveDisconnectedAccounts(existing, relations);
+                }
+
+                AddConnectedAccounts(existing, relations);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت حساب های مرتبط با یک مرکز هزینه را ذخیره می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات حساب های مرتبط با یک مرکز هزینه</param>
+        public async Task SaveCostCenterAccountsAsync(AccountItemRelationsViewModel relations)
+        {
+            Verify.ArgumentNotNull(relations, "relations");
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var existing = await repository.GetByIDWithTrackingAsync(relations.Id, cc => cc.AccountCostCenters);
+            if (existing != null && AreRelationsModified(
+                    existing.AccountCostCenters
+                        .Select(ac => ac.AccountId)
+                        .ToArray(),
+                    relations))
+            {
+                if (existing.AccountCostCenters.Count > 0)
+                {
+                    RemoveDisconnectedAccounts(existing, relations);
+                }
+
+                AddConnectedAccounts(existing, relations);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت حساب های مرتبط با یک پروژه را ذخیره می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات حساب های مرتبط با یک پروژه</param>
+        public async Task SaveProjectAccountsAsync(AccountItemRelationsViewModel relations)
+        {
+            Verify.ArgumentNotNull(relations, "relations");
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var existing = await repository.GetByIDWithTrackingAsync(relations.Id, prj => prj.AccountProjects);
+            if (existing != null && AreRelationsModified(
+                    existing.AccountProjects
+                        .Select(ap => ap.AccountId)
+                        .ToArray(),
+                    relations))
+            {
+                if (existing.AccountProjects.Count > 0)
+                {
+                    RemoveDisconnectedAccounts(existing, relations);
+                }
+
+                AddConnectedAccounts(existing, relations);
                 repository.Update(existing);
                 await _unitOfWork.CommitAsync();
             }
@@ -292,6 +490,51 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private static void RemoveDisconnectedAccounts(DetailAccount existing, AccountItemRelationsViewModel relations)
+        {
+            var currentItems = relations.RelatedItemIds;
+            var disconnectedItems = existing.AccountDetailAccounts
+                .Select(ada => ada.AccountId)
+                .Where(id => !currentItems.Contains(id))
+                .ToArray();
+            foreach (int id in disconnectedItems)
+            {
+                existing.AccountDetailAccounts.Remove(existing.AccountDetailAccounts
+                    .Where(ada => ada.AccountId == id)
+                    .Single());
+            }
+        }
+
+        private static void RemoveDisconnectedAccounts(CostCenter existing, AccountItemRelationsViewModel relations)
+        {
+            var currentItems = relations.RelatedItemIds;
+            var disconnectedItems = existing.AccountCostCenters
+                .Select(ac => ac.AccountId)
+                .Where(id => !currentItems.Contains(id))
+                .ToArray();
+            foreach (int id in disconnectedItems)
+            {
+                existing.AccountCostCenters.Remove(existing.AccountCostCenters
+                    .Where(ac => ac.AccountId == id)
+                    .Single());
+            }
+        }
+
+        private static void RemoveDisconnectedAccounts(Project existing, AccountItemRelationsViewModel relations)
+        {
+            var currentItems = relations.RelatedItemIds;
+            var disconnectedItems = existing.AccountProjects
+                .Select(ap => ap.AccountId)
+                .Where(id => !currentItems.Contains(id))
+                .ToArray();
+            foreach (int id in disconnectedItems)
+            {
+                existing.AccountProjects.Remove(existing.AccountProjects
+                    .Where(ap => ap.AccountId == id)
+                    .Single());
+            }
+        }
+
         private void AddConnectedDetails(Account existing, AccountItemRelationsViewModel relations)
         {
             var repository = _unitOfWork.GetRepository<DetailAccount>();
@@ -326,7 +569,7 @@ namespace SPPC.Tadbir.Persistence
             foreach (var item in newItems)
             {
                 var costCenter = repository.GetByIDWithTracking(
-                    item, cc => cc.Branch, facc => facc.FiscalPeriod);
+                    item, cc => cc.Branch, cc => cc.FiscalPeriod);
                 var accountCostCenter = new AccountCostCenter()
                 {
                     Account = existing,
@@ -349,13 +592,82 @@ namespace SPPC.Tadbir.Persistence
             foreach (var item in newItems)
             {
                 var project = repository.GetByIDWithTracking(
-                    item, prj => prj.Branch, facc => facc.FiscalPeriod);
+                    item, prj => prj.Branch, prj => prj.FiscalPeriod);
                 var accountProject = new AccountProject()
                 {
                     Account = existing,
                     AccountId = existing.Id,
                     Project = project,
                     ProjectId = project.Id
+                };
+                existing.AccountProjects.Add(accountProject);
+            }
+        }
+
+        private void AddConnectedAccounts(DetailAccount existing, AccountItemRelationsViewModel relations)
+        {
+            var repository = _unitOfWork.GetRepository<Account>();
+            var currentItems = existing
+                .AccountDetailAccounts
+                .Select(ada => ada.AccountId);
+            var newItems = relations.RelatedItemIds
+                .Where(id => !currentItems.Contains(id));
+            foreach (var item in newItems)
+            {
+                var account = repository.GetByIDWithTracking(
+                    item, acc => acc.Branch, acc => acc.FiscalPeriod);
+                var accountDetailAccount = new AccountDetailAccount()
+                {
+                    DetailAccount = existing,
+                    DetailId = existing.Id,
+                    Account = account,
+                    AccountId = account.Id
+                };
+                existing.AccountDetailAccounts.Add(accountDetailAccount);
+            }
+        }
+
+        private void AddConnectedAccounts(CostCenter existing, AccountItemRelationsViewModel relations)
+        {
+            var repository = _unitOfWork.GetRepository<Account>();
+            var currentItems = existing
+                .AccountCostCenters
+                .Select(ac => ac.AccountId);
+            var newItems = relations.RelatedItemIds
+                .Where(id => !currentItems.Contains(id));
+            foreach (var item in newItems)
+            {
+                var account = repository.GetByIDWithTracking(
+                    item, acc => acc.Branch, acc => acc.FiscalPeriod);
+                var accountCostCenter = new AccountCostCenter()
+                {
+                    Account = account,
+                    AccountId = account.Id,
+                    CostCenter = existing,
+                    CostCenterId = existing.Id
+                };
+                existing.AccountCostCenters.Add(accountCostCenter);
+            }
+        }
+
+        private void AddConnectedAccounts(Project existing, AccountItemRelationsViewModel relations)
+        {
+            var repository = _unitOfWork.GetRepository<Account>();
+            var currentItems = existing
+                .AccountProjects
+                .Select(ap => ap.AccountId);
+            var newItems = relations.RelatedItemIds
+                .Where(id => !currentItems.Contains(id));
+            foreach (var item in newItems)
+            {
+                var account = repository.GetByIDWithTracking(
+                    item, acc => acc.Branch, acc => acc.FiscalPeriod);
+                var accountProject = new AccountProject()
+                {
+                    Account = account,
+                    AccountId = account.Id,
+                    Project = existing,
+                    ProjectId = existing.Id
                 };
                 existing.AccountProjects.Add(accountProject);
             }

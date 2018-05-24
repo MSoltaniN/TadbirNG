@@ -26,12 +26,84 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// حساب های زیرمجموعه را برای حساب مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه یکی از حساب های موجود</param>
+        /// <returns>مدل نمایشی حساب های زیرمجموعه</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetChildAccounts(int accountId)
+        {
+            var children = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
+            if (account != null)
+            {
+                children.AddRange(account.Children.Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc)));
+            }
+
+            return children;
+        }
+
+        /// <summary>
+        /// شناورهای زیرمجموعه را برای تفصیلی شناور مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="detailId">شناسه یکی از تفصیلی های شناور موجود</param>
+        /// <returns>مدل نمایشی تفصیلی های شناور زیرمجموعه</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetChildDetailAccounts(int detailId)
+        {
+            var children = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var detail = await repository.GetByIDAsync(detailId, facc => facc.Children);
+            if (detail != null)
+            {
+                children.AddRange(detail.Children.Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc)));
+            }
+
+            return children;
+        }
+
+        /// <summary>
+        /// مراکز هزینه زیرمجموعه را برای مرکز هزینه مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="costCenterId">شناسه یکی از مراکز هزینه موجود</param>
+        /// <returns>مدل نمایشی مراکز هزینه زیرمجموعه</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetChildCostCenters(int costCenterId)
+        {
+            var children = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Children);
+            if (costCenter != null)
+            {
+                children.AddRange(costCenter.Children.Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc)));
+            }
+
+            return children;
+        }
+
+        /// <summary>
+        /// پروژه های زیرمجموعه را برای پروژه مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه یکی از پروژه های موجود</param>
+        /// <returns>مدل نمایشی پروژه های زیرمجموعه</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetChildProjects(int projectId)
+        {
+            var children = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
+            if (project != null)
+            {
+                children.AddRange(project.Children.Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj)));
+            }
+
+            return children;
+        }
+
+        /// <summary>
         /// مجموعه ای از سرفصل های حسابداری در دوره مالی و شعبه مشخص شده که در آخرین سطح ساختار درختی قرار دارند
         /// </summary>
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <returns>مجموعه سرفصل های حسابداری در آخرین سطح</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetLeafAccounts(int fpId, int branchId)
+        public async Task<IList<AccountItemBriefViewModel>> GetLeafAccountsAsync(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var leafAccounts = await repository
@@ -49,7 +121,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <returns>مجموعه تفصیلی های شناور در آخرین سطح</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetLeafDetailAccounts(int fpId, int branchId)
+        public async Task<IList<AccountItemBriefViewModel>> GetLeafDetailAccountsAsync(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
             var leafDetails = await repository
@@ -67,7 +139,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <returns>مجموعه مراکز هزینه در آخرین سطح</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetLeafCostCenters(int fpId, int branchId)
+        public async Task<IList<AccountItemBriefViewModel>> GetLeafCostCentersAsync(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
             var leafCenters = await repository
@@ -85,7 +157,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <returns>مجموعه پروژه ها در آخرین سطح</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetLeafProjects(int fpId, int branchId)
+        public async Task<IList<AccountItemBriefViewModel>> GetLeafProjectsAsync(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetAsyncRepository<Project>();
             var leafProjects = await repository
@@ -103,16 +175,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <returns>مجموعه سرفصل های حسابداری در بالاترین سطح</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetRootAccounts(int fpId, int branchId)
+        public async Task<IList<AccountItemBriefViewModel>> GetRootAccountsAsync(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var topProjects = await repository
+            var rootAccounts = await repository
                 .GetByCriteriaAsync(
                     acc => acc.FiscalPeriod.Id == fpId
                         && acc.Branch.Id == branchId
                         && acc.Parent == null,
                     acc => acc.Children);
-            return topProjects
+            return rootAccounts
                 .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
                 .ToList();
         }
@@ -123,16 +195,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <returns>مجموعه تفصیلی های شناور در بالاترین سطح</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetRootDetailAccounts(int fpId, int branchId)
+        public async Task<IList<AccountItemBriefViewModel>> GetRootDetailAccountsAsync(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
-            var topDetails = await repository
+            var rootDetails = await repository
                 .GetByCriteriaAsync(
                     facc => facc.FiscalPeriod.Id == fpId
                         && facc.Branch.Id == branchId
                         && facc.Parent == null,
                     facc => facc.Children);
-            return topDetails
+            return rootDetails
                 .Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc))
                 .ToList();
         }
@@ -143,16 +215,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <returns>مجموعه مراکز هزینه در بالاترین سطح</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetRootCostCenters(int fpId, int branchId)
+        public async Task<IList<AccountItemBriefViewModel>> GetRootCostCentersAsync(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
-            var topCenters = await repository
+            var rootCenters = await repository
                 .GetByCriteriaAsync(
                     cc => cc.FiscalPeriod.Id == fpId
                         && cc.Branch.Id == branchId
                         && cc.Parent == null,
                     cc => cc.Children);
-            return topCenters
+            return rootCenters
                 .Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc))
                 .ToList();
         }
@@ -163,16 +235,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <returns>مجموعه پروژه ها در بالاترین سطح</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetRootProjects(int fpId, int branchId)
+        public async Task<IList<AccountItemBriefViewModel>> GetRootProjectsAsync(int fpId, int branchId)
         {
             var repository = _unitOfWork.GetAsyncRepository<Project>();
-            var topProjects = await repository
+            var rootProjects = await repository
                 .GetByCriteriaAsync(
                     prj => prj.FiscalPeriod.Id == fpId
                         && prj.Branch.Id == branchId
                         && prj.Parent == null,
                     prj => prj.Children);
-            return topProjects
+            return rootProjects
                 .Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj))
                 .ToList();
         }
