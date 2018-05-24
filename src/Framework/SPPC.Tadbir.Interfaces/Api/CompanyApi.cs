@@ -48,6 +48,5 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for company metadata
         /// </summary>
         public const string CompanyMetadataUrl = "companies/metadata";
-
     }
 }

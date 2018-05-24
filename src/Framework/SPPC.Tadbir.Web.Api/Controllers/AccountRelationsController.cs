@@ -14,10 +14,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     [Produces("application/json")]
     public class AccountRelationsController : ApiControllerBase<AccountItemRelationsViewModel>
     {
-        public AccountRelationsController(IRelationRepository repository, IStringLocalizer<AppStrings> strings)
+        public AccountRelationsController(
+            IRelationRepository repository, IConfigRepository configRepository, IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
             _repository = repository;
+            _configRepository = configRepository;
         }
 
         protected override string EntityNameKey
@@ -30,7 +32,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.DetailAccountsRelatedToAccountUrl)]
         public async Task<IActionResult> GetAccountDetailAccountsAsync(int accountId)
         {
-            var detailAccounts = await _repository.GetRelatedDetailAccountsAsync(accountId);
+            var config = _configRepository.GetRelationsConfig();
+            var detailAccounts = await _repository.GetAccountDetailAccountsAsync(accountId, config.UseLeafDetails);
             return Json(detailAccounts);
         }
 
@@ -56,7 +59,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.CostCentersRelatedToAccountUrl)]
         public async Task<IActionResult> GetAccountCostCentersAsync(int accountId)
         {
-            var costCenters = await _repository.GetRelatedCostCentersAsync(accountId);
+            var config = _configRepository.GetRelationsConfig();
+            var costCenters = await _repository.GetAccountCostCentersAsync(accountId, config.UseLeafCostCenters);
             return Json(costCenters);
         }
 
@@ -82,7 +86,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.ProjectsRelatedToAccountUrl)]
         public async Task<IActionResult> GetAccountProjectsAsync(int accountId)
         {
-            var projects = await _repository.GetRelatedProjectsAsync(accountId);
+            var config = _configRepository.GetRelationsConfig();
+            var projects = await _repository.GetAccountProjectsAsync(accountId, config.UseLeafProjects);
             return Json(projects);
         }
 
@@ -104,5 +109,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private IRelationRepository _repository;
+        private IConfigRepository _configRepository;
     }
 }

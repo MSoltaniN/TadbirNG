@@ -15,24 +15,27 @@ namespace SPPC.Tadbir.Persistence
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <returns>مجموعه ای از تفصیلی های شناور مرتبط با حساب مشخص شده</returns>
-        Task<IList<AccountItemBriefViewModel>> GetRelatedDetailAccountsAsync(int accountId);
+        Task<IList<AccountItemBriefViewModel>> GetAccountDetailAccountsAsync(int accountId, bool useLeafItems = true);
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از مراکز هزینه مرتبط با حساب مشخص شده را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <returns>مجموعه ای از مراکز هزینه مرتبط با حساب مشخص شده</returns>
-        Task<IList<AccountItemBriefViewModel>> GetRelatedCostCentersAsync(int accountId);
+        Task<IList<AccountItemBriefViewModel>> GetAccountCostCentersAsync(int accountId, bool useLeafItems = true);
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از پروژه های مرتبط با حساب مشخص شده را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <returns>مجموعه ای از پروژه های مرتبط با حساب مشخص شده</returns>
-        Task<IList<AccountItemBriefViewModel>> GetRelatedProjectsAsync(int accountId);
+        Task<IList<AccountItemBriefViewModel>> GetAccountProjectsAsync(int accountId, bool useLeafItems = true);
 
         /// <summary>
         /// به روش آسنکرون، آخرین وضعیت تفصیلی های شناور مرتبط با یک حساب را ذخیره می کند

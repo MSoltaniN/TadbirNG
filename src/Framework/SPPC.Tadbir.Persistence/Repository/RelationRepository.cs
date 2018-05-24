@@ -21,10 +21,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        public RelationRepository(IUnitOfWork unitOfWork, IDomainMapper mapper)
+        /// <param name="itemRepository">پیاده سازی اینترفیس مربوط به عملیات بردار حساب</param>
+        public RelationRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IAccountItemRepository itemRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _itemRepository = itemRepository;
         }
 
         /// <summary>
@@ -32,21 +34,39 @@ namespace SPPC.Tadbir.Persistence
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <returns>مجموعه ای از تفصیلی های شناور مرتبط با حساب مشخص شده</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetRelatedDetailAccountsAsync(int accountId)
+        public async Task<IList<AccountItemBriefViewModel>> GetAccountDetailAccountsAsync(
+            int accountId, bool useLeafItems = true)
         {
-            var detailAccounts = new List<AccountItemBriefViewModel>();
+            IList<AccountItemBriefViewModel> detailAccounts = new List<AccountItemBriefViewModel>();
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var query = repository.GetEntityQuery()
                 .Where(acc => acc.Id == accountId)
+                .Include(acc => acc.FiscalPeriod)
+                .Include(acc => acc.Branch)
                 .Include(acc => acc.AccountDetailAccounts)
                     .ThenInclude(ada => ada.DetailAccount);
             var account = await query.SingleOrDefaultAsync();
             if (account != null)
             {
-                detailAccounts.AddRange(account.AccountDetailAccounts
-                    .Select(ada => ada.DetailAccount)
-                    .Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc)));
+                var relatedItemIds = account.AccountDetailAccounts.Select(ada => ada.DetailId);
+                if (useLeafItems)
+                {
+                    detailAccounts = await _itemRepository.GetLeafDetailAccounts(
+                        account.FiscalPeriod.Id, account.Branch.Id);
+                }
+                else
+                {
+                    detailAccounts = await _itemRepository.GetRootDetailAccounts(
+                        account.FiscalPeriod.Id, account.Branch.Id);
+                }
+
+                Array.ForEach(
+                    detailAccounts
+                        .Where(det => relatedItemIds.Contains(det.Id))
+                        .ToArray(),
+                    item => item.IsSelected = true);
             }
 
             return detailAccounts;
@@ -57,21 +77,37 @@ namespace SPPC.Tadbir.Persistence
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <returns>مجموعه ای از مراکز هزینه مرتبط با حساب مشخص شده</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetRelatedCostCentersAsync(int accountId)
+        public async Task<IList<AccountItemBriefViewModel>> GetAccountCostCentersAsync(
+            int accountId, bool useLeafItems = true)
         {
-            var costCenters = new List<AccountItemBriefViewModel>();
+            IList<AccountItemBriefViewModel> costCenters = new List<AccountItemBriefViewModel>();
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var query = repository.GetEntityQuery()
                 .Where(acc => acc.Id == accountId)
+                .Include(acc => acc.FiscalPeriod)
+                .Include(acc => acc.Branch)
                 .Include(acc => acc.AccountCostCenters)
                     .ThenInclude(acc => acc.CostCenter);
             var account = await query.SingleOrDefaultAsync();
             if (account != null)
             {
-                costCenters.AddRange(account.AccountCostCenters
-                    .Select(acc => acc.CostCenter)
-                    .Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc)));
+                var relatedItemIds = account.AccountCostCenters.Select(ac => ac.CostCenterId);
+                if (useLeafItems)
+                {
+                    costCenters = await _itemRepository.GetLeafCostCenters(account.FiscalPeriod.Id, account.Branch.Id);
+                }
+                else
+                {
+                    costCenters = await _itemRepository.GetRootCostCenters(account.FiscalPeriod.Id, account.Branch.Id);
+                }
+
+                Array.ForEach(
+                    costCenters
+                        .Where(det => relatedItemIds.Contains(det.Id))
+                        .ToArray(),
+                    item => item.IsSelected = true);
             }
 
             return costCenters;
@@ -82,10 +118,12 @@ namespace SPPC.Tadbir.Persistence
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <returns>مجموعه ای از پروژه های مرتبط با حساب مشخص شده</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetRelatedProjectsAsync(int accountId)
+        public async Task<IList<AccountItemBriefViewModel>> GetAccountProjectsAsync(
+            int accountId, bool useLeafItems = true)
         {
-            var projects = new List<AccountItemBriefViewModel>();
+            IList<AccountItemBriefViewModel> projects = new List<AccountItemBriefViewModel>();
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var query = repository.GetEntityQuery()
                 .Where(acc => acc.Id == accountId)
@@ -94,9 +132,21 @@ namespace SPPC.Tadbir.Persistence
             var account = await query.SingleOrDefaultAsync();
             if (account != null)
             {
-                projects.AddRange(account.AccountProjects
-                    .Select(ap => ap.Project)
-                    .Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj)));
+                var relatedItemIds = account.AccountProjects.Select(ap => ap.ProjectId);
+                if (useLeafItems)
+                {
+                    projects = await _itemRepository.GetLeafProjects(account.FiscalPeriod.Id, account.Branch.Id);
+                }
+                else
+                {
+                    projects = await _itemRepository.GetRootProjects(account.FiscalPeriod.Id, account.Branch.Id);
+                }
+
+                Array.ForEach(
+                    projects
+                        .Where(det => relatedItemIds.Contains(det.Id))
+                        .ToArray(),
+                    item => item.IsSelected = true);
             }
 
             return projects;
@@ -313,5 +363,6 @@ namespace SPPC.Tadbir.Persistence
 
         private IUnitOfWork _unitOfWork;
         private IDomainMapper _mapper;
+        private IAccountItemRepository _itemRepository;
     }
 }

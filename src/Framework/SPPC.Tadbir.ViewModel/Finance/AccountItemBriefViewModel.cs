@@ -24,8 +24,13 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string FullCode { get; set; }
 
         /// <summary>
-        /// شرح یا توضیحات این بخش
+        /// مشخص می کند که آیا وضعیت این بخش انتخاب شده است یا نه؟
         /// </summary>
-        public string Description { get; set; }
+        public bool IsSelected { get; set; }
+
+        /// <summary>
+        /// تعداد زیرشاخه های این بخش
+        /// </summary>
+        public int ChildCount { get; set; }
     }
 }
