@@ -62,18 +62,14 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
 
     ////for add in delete messageText
     deleteConfirm: boolean;
-    deleteCostCentersConfirm: boolean;
-    deleteCostCenterId: number;
+    deleteModelConfirm: boolean;
+    deleteModelId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
-
-    newCostCenter: boolean;
-    costCenter: CostCenter = new CostCenterInfo;
-
 
     editDataItem?: CostCenter = undefined;
     isNew: boolean;
@@ -100,10 +96,10 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     }
 
     showConfirm() {
-        this.deleteCostCentersConfirm = true;
+        this.deleteModelConfirm = true;
     }
 
-    deleteCostCenters(confirm: boolean) {
+    deleteModels(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
             //this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
@@ -118,7 +114,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         }
 
         this.groupDelete = false;
-        this.deleteCostCentersConfirm = false;
+        this.deleteModelConfirm = false;
     }
 
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
@@ -128,7 +124,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid(insertedCostCenter?: CostCenter) {
+    reloadGrid(insertedModel?: CostCenter) {
         if (this.viewAccess) {
             this.sppcLoading.show();
             var filter = this.currentFilter;
@@ -148,19 +144,19 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
             this.costCenterService.getAll(String.Format(CostCenterApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
-                if (insertedCostCenter) {
+                if (insertedModel) {
                     var rows = (resData as Array<CostCenter>);
-                    var index = rows.findIndex(p => p.id == insertedCostCenter.id);
+                    var index = rows.findIndex(p => p.id == insertedModel.id);
                     if (index >= 0) {
                         resData.splice(index, 1);
-                        rows.splice(0, 0, insertedCostCenter);
+                        rows.splice(0, 0, insertedModel);
                     }
                     else {
                         if (rows.length == this.pageSize) {
                             resData.splice(this.pageSize - 1, 1);
                         }
 
-                        rows.splice(0, 0, insertedCostCenter);
+                        rows.splice(0, 0, insertedModel);
                     }
                 }
                 if (res.headers != null) {
@@ -209,11 +205,11 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    deleteCostCenter(confirm: boolean) {
+    deleteModel(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.costCenterService.delete(String.Format(CostCenterApi.CostCenter, this.deleteCostCenterId)).subscribe(response => {
-                this.deleteCostCenterId = 0;
+            this.costCenterService.delete(String.Format(CostCenterApi.CostCenter, this.deleteModelId)).subscribe(response => {
+                this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
@@ -228,7 +224,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
 
     removeHandler(arg: any) {
         this.prepareDeleteConfirm(arg.dataItem.name);
-        this.deleteCostCenterId = arg.dataItem.id;
+        this.deleteModelId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
@@ -248,47 +244,47 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public addNew(parentCostCenterId?: number) {
+    public addNew(parentModelId?: number) {
         this.isNew = true;
         this.editDataItem = new CostCenterInfo();
-        if (parentCostCenterId)
-            this.parentId = parentCostCenterId;
+        if (parentModelId)
+            this.parentId = parentModelId;
         this.errorMessage = '';
     }
 
-    public saveHandler(costCenter: CostCenter) {
-        costCenter.branchId = this.BranchId;
-        costCenter.fiscalPeriodId = this.FiscalPeriodId;
+    public saveHandler(model: CostCenter) {
+        model.branchId = this.BranchId;
+        model.fiscalPeriodId = this.FiscalPeriodId;
         this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
-            this.costCenterService.edit<CostCenter>(String.Format(CostCenterApi.CostCenter, costCenter.id), costCenter)
+            this.costCenterService.edit<CostCenter>(String.Format(CostCenterApi.CostCenter, model.id), model)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
                 }, (error => {
-                    this.editDataItem = costCenter;
+                    this.editDataItem = model;
                     this.errorMessage = error;
                 }));
         }
         else {
             //set parentid for childs accounts
             if (this.parentId) {
-                costCenter.parentId = this.parentId;
+                model.parentId = this.parentId;
                 this.parentId = undefined;
             }
             else if (this.parent)
-                costCenter.parentId = this.parent.id;
+                model.parentId = this.parent.id;
             //set parentid for childs accounts
 
-            this.costCenterService.insert<CostCenter>(CostCenterApi.CostCenters, costCenter)
+            this.costCenterService.insert<CostCenter>(CostCenterApi.CostCenters, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedDetailAccount = JSON.parse(response._body);
-                    this.reloadGrid(insertedDetailAccount);
+                    var insertedModel = JSON.parse(response._body);
+                    this.reloadGrid(insertedModel);
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;

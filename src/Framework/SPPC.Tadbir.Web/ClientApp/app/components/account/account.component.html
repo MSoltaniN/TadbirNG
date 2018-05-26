@@ -111,22 +111,22 @@
                                 (cancel)="cancelHandler()">
         </account-form-component>
     </div>    
-    <kendo-dialog title="{{'Account.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteAccount(false)" [minWidth]="250" [width]="450">
+    <kendo-dialog title="{{'Account.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
         <p>
             {{ this.deleteConfirmMsg }}
         </p>
         <kendo-dialog-actions>
-            <button class="k-button" (click)="deleteAccount(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-            <button class="k-button" (click)="deleteAccount(false)">{{ 'Buttons.No' | translate }}</button>
+            <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+            <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
         </kendo-dialog-actions>
     </kendo-dialog>
-    <kendo-dialog title="{{'Account.Delete' | translate}}" *ngIf="deleteAccountsConfirm" (close)="deleteAccounts(false)" [minWidth]="250" [width]="450">
+    <kendo-dialog title="{{'Account.Delete' | translate}}" *ngIf="deleteModelsConfirm" (close)="deleteModels(false)" [minWidth]="250" [width]="450">
         <p>
             {{ this.deleteConfirmMsg }}
         </p>
         <kendo-dialog-actions>
-            <button class="k-button" (click)="deleteAccounts(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-            <button class="k-button" (click)="deleteAccounts(false)">{{ 'Buttons.No' | translate }}</button>
+            <button class="k-button" (click)="deleteModels(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+            <button class="k-button" (click)="deleteModels(false)">{{ 'Buttons.No' | translate }}</button>
         </kendo-dialog-actions>
     </kendo-dialog>
 </div>    

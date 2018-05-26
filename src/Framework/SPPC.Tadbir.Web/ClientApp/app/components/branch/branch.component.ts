@@ -62,18 +62,14 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
     ////for add in delete messageText
     deleteConfirm: boolean;
-    deleteBranchesConfirm: boolean;
-    deleteBranchId: number;
+    deleteModelsConfirm: boolean;
+    deleteModelId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
-
-    newBranch: boolean;
-    branch: Branch = new BranchInfo;
-
 
     editDataItem?: Branch = undefined;
     isNew: boolean;
@@ -100,10 +96,10 @@ export class BranchComponent extends DefaultComponent implements OnInit {
     }
 
     showConfirm() {
-        this.deleteBranchesConfirm = true;
+        this.deleteModelsConfirm = true;
     }
 
-    deleteBranches(confirm: boolean) {
+    deleteModels(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
             //this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
@@ -118,7 +114,7 @@ export class BranchComponent extends DefaultComponent implements OnInit {
         }
 
         this.groupDelete = false;
-        this.deleteBranchesConfirm = false;
+        this.deleteModelsConfirm = false;
     }
 
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
@@ -128,7 +124,7 @@ export class BranchComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid(insertedBranch?: Branch) {
+    reloadGrid(insertedModel?: Branch) {
         if (this.viewAccess) {
             this.sppcLoading.show();
             var filter = this.currentFilter;
@@ -148,19 +144,19 @@ export class BranchComponent extends DefaultComponent implements OnInit {
             this.branchService.getAll(String.Format(BranchApi.CompanyBranches, this.CompanyId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
-                if (insertedBranch) {
+                if (insertedModel) {
                     var rows = (resData as Array<Branch>);
-                    var index = rows.findIndex(p => p.id == insertedBranch.id);
+                    var index = rows.findIndex(p => p.id == insertedModel.id);
                     if (index >= 0) {
                         resData.splice(index, 1);
-                        rows.splice(0, 0, insertedBranch);
+                        rows.splice(0, 0, insertedModel);
                     }
                     else {
                         if (rows.length == this.pageSize) {
                             resData.splice(this.pageSize - 1, 1);
                         }
 
-                        rows.splice(0, 0, insertedBranch);
+                        rows.splice(0, 0, insertedModel);
                     }
                 }
                 if (res.headers != null) {
@@ -209,11 +205,11 @@ export class BranchComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    deleteBranch(confirm: boolean) {
+    deleteModel(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.branchService.delete(String.Format(BranchApi.Branch, this.deleteBranchId)).subscribe(response => {
-                this.deleteBranchId = 0;
+            this.branchService.delete(String.Format(BranchApi.Branch, this.deleteModelId)).subscribe(response => {
+                this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
@@ -228,7 +224,7 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
     removeHandler(arg: any) {
         this.prepareDeleteConfirm(arg.dataItem.name);
-        this.deleteBranchId = arg.dataItem.id;
+        this.deleteModelId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
@@ -248,46 +244,46 @@ export class BranchComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public addNew(parentBranchId?: number) {
+    public addNew(parentModelId?: number) {
         this.isNew = true;
         this.editDataItem = new BranchInfo();
-        if (parentBranchId)
-            this.parentId = parentBranchId;
+        if (parentModelId)
+            this.parentId = parentModelId;
         this.errorMessage = '';
     }
 
-    public saveHandler(branch: Branch) {
-        branch.companyId = this.CompanyId;
+    public saveHandler(model: Branch) {
+        model.companyId = this.CompanyId;
         this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
-            this.branchService.edit<Branch>(String.Format(BranchApi.Branch, branch.id), branch)
+            this.branchService.edit<Branch>(String.Format(BranchApi.Branch, model.id), model)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
                 }, (error => {
-                    this.editDataItem = branch;
+                    this.editDataItem = model;
                     this.errorMessage = error;
                 }));
         }
         else {
             //set parentid for childs accounts
             if (this.parentId) {
-                branch.parentId = this.parentId;
+                model.parentId = this.parentId;
                 this.parentId = undefined;
             }
             else if (this.parent)
-                branch.parentId = this.parent.id;
+                model.parentId = this.parent.id;
             //set parentid for childs accounts
 
-            this.branchService.insert<Branch>(BranchApi.Branches, branch)
+            this.branchService.insert<Branch>(BranchApi.Branches, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedBranch = JSON.parse(response._body);
-                    this.reloadGrid(insertedBranch);
+                    var insertedModel = JSON.parse(response._body);
+                    this.reloadGrid(insertedModel);
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;

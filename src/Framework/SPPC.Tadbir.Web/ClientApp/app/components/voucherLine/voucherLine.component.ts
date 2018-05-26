@@ -38,16 +38,13 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
     //for add in delete messageText
     deleteConfirm: boolean;
-    deleteVoucherLineId: number;
+    deleteModelId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
-
-    newVoucherLine: boolean;
-    voucherLine: VoucherLine = new VoucherLineInfo;
 
     editDataItem?: VoucherLine = undefined;
 
@@ -72,7 +69,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
         return context.dataItem.id + " " + context.index;
     }
 
-    deleteTransactionsLine() {
+    deleteModels() {
     //    this.transactionLineService.deleteTransactions(this.selectedRows).subscribe(res => {
     //        this.showMessage(this.deleteMsg, MessageType.Info);
     //        this.selectedRows = [];
@@ -89,7 +86,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid(voucherLine?: VoucherLine) {
+    reloadGrid(insertedModel?: VoucherLine) {
         this.sppcLoading.show();
         var filter = this.currentFilter;
         var order = this.currentOrder;
@@ -100,18 +97,18 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
             var resData = res.json();
             this.properties = resData.metadata.properties;
             var totalCount = 0;
-            if (voucherLine) {
+            if (insertedModel) {
                 var rows = (resData.list as Array<VoucherLine>);
-                var index = rows.findIndex(p => p.id == voucherLine.id);
+                var index = rows.findIndex(p => p.id == insertedModel.id);
                 if (index >= 0) {
                     resData.list.splice(index, 1);
-                    rows.splice(0, 0, voucherLine);
+                    rows.splice(0, 0, insertedModel);
                 }
                 else {
                     if (rows.length == this.pageSize) {
                         resData.list.splice(this.pageSize - 1, 1);
                     }
-                    rows.splice(0, 0, voucherLine);
+                    rows.splice(0, 0, insertedModel);
                 }
             }
             if (res.headers != null) {
@@ -159,11 +156,11 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
         //this.reloadGrid();
     }
 
-    deleteVoucherLine(confirm: boolean) {
+    deleteModel(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.voucherLineService.delete(String.Format(VoucherApi.VoucherArticle,this.deleteVoucherLineId)).subscribe(response => {
-                this.deleteVoucherLineId = 0;
+            this.voucherLineService.delete(String.Format(VoucherApi.VoucherArticle,this.deleteModelId)).subscribe(response => {
+                this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
@@ -178,7 +175,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
     removeHandler(arg: any) {
         this.prepareDeleteConfirm(arg.dataItem.name);
-        this.deleteVoucherLineId = arg.dataItem.id;
+        this.deleteModelId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
@@ -205,13 +202,13 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
         this.editDataItem = new VoucherLineInfo();
     }
 
-    public saveHandler(voucherLine: VoucherLine) {
-        voucherLine.branchId = this.BranchId;
-        voucherLine.fiscalPeriodId = this.FiscalPeriodId;
+    public saveHandler(model: VoucherLine) {
+        model.branchId = this.BranchId;
+        model.fiscalPeriodId = this.FiscalPeriodId;
         this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
-            this.voucherLineService.edit<VoucherLine>(String.Format(VoucherApi.VoucherArticle, voucherLine.id), voucherLine)
+            this.voucherLineService.edit<VoucherLine>(String.Format(VoucherApi.VoucherArticle, model.id), model)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
@@ -222,14 +219,14 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
-            voucherLine.voucherId = this.voucherId;
-            this.voucherLineService.insert<VoucherLine>(String.Format(VoucherApi.VoucherArticles, this.voucherId), voucherLine)
+            model.voucherId = this.voucherId;
+            this.voucherLineService.insert<VoucherLine>(String.Format(VoucherApi.VoucherArticles, this.voucherId), model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedVoucherLine = JSON.parse(response._body);
-                    this.reloadGrid(insertedVoucherLine);
+                    var insertedModel = JSON.parse(response._body);
+                    this.reloadGrid(insertedModel);
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;

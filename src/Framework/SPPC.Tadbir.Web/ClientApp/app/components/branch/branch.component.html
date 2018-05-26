@@ -29,7 +29,7 @@
             </ng-template>
             <ng-template kendoGridToolbarTemplate>
                 <button kendoGridAddCommand *ngIf="insertAccess" (click)="addNew()" type="button">{{ 'Branch.New' | translate }}</button>
-                <button *ngIf="groupDelete && deleteAccess" class="k-button" (click)="deleteBranches()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
+                <button *ngIf="groupDelete && deleteAccess" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
             </ng-template>
 
             <!-- template for mobile -->
@@ -94,22 +94,22 @@
                                       (cancel)="cancelHandler()">
         </branch-form-component>
     </div>
-    <kendo-dialog title="{{'Branch.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteBranch(false)" [minWidth]="250" [width]="450">
+    <kendo-dialog title="{{'Branch.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
         <p>
             {{ deleteConfirmMsg }}
         </p>
         <kendo-dialog-actions>
-            <button class="k-button" (click)="deleteBranch(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-            <button class="k-button" (click)="deleteBranch(false)">{{ 'Buttons.No' | translate }}</button>
+            <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+            <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
         </kendo-dialog-actions>
     </kendo-dialog>
-    <kendo-dialog title="{{'Branch.Delete' | translate}}" *ngIf="deleteBranchesConfirm" (close)="deleteBranches(false)" [minWidth]="250" [width]="450">
+    <kendo-dialog title="{{'Branch.Delete' | translate}}" *ngIf="deleteModelsConfirm" (close)="deleteModels(false)" [minWidth]="250" [width]="450">
         <p>
             {{ this.deleteConfirmMsg }}
         </p>
         <kendo-dialog-actions>
-            <button class="k-button" (click)="deleteBranches(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-            <button class="k-button" (click)="deleteBranches(false)">{{ 'Buttons.No' | translate }}</button>
+            <button class="k-button" (click)="deleteModels(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+            <button class="k-button" (click)="deleteModels(false)">{{ 'Buttons.No' | translate }}</button>
         </kendo-dialog-actions>
     </kendo-dialog>
 </div>

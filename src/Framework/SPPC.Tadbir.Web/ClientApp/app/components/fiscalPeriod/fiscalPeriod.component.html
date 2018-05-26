@@ -31,7 +31,7 @@
                 </ng-template>
                 <ng-template kendoGridToolbarTemplate>
                     <button kendoGridAddCommand *ngIf="insertAccess" (click)="addNew()" type="button">{{ 'FiscalPeriod.New' | translate }}</button>
-                    <button *ngIf="groupDelete && deleteAccess" class="k-button" (click)="deleteFiscalPeriods()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
+                    <button *ngIf="groupDelete && deleteAccess" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
                 </ng-template>
                 <!-- template for mobile -->
                 <kendo-grid-column media="(max-width: 449px)" title="">
@@ -138,13 +138,13 @@
                                         (cancel)="cancelHandler()">
             </fiscalPeriod-form-component>
         </div>
-        <kendo-dialog title="{{'FiscalPeriod.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteFiscalPeriod(false)" [minWidth]="250" [width]="450">
+        <kendo-dialog title="{{'FiscalPeriod.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
             <p>
                 {{ deleteConfirmMsg }}
             </p>
             <kendo-dialog-actions>
-                <button class="k-button" (click)="deleteFiscalPeriod(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-                <button class="k-button" (click)="deleteFiscalPeriod(false)">{{ 'Buttons.No' | translate }}</button>
+                <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+                <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
             </kendo-dialog-actions>
         </kendo-dialog>
     </div>

@@ -9,7 +9,7 @@ import { BaseService } from '../class/base.service';
 import { LookupApi } from './api/index';
 import { Company } from '../model/index';
 import { GridOrderBy } from '../class/grid.orderby';
-import { Filter } from '../class/filter';
+
 
 
 export class CompanyInfo implements Company {

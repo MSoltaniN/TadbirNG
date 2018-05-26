@@ -43,9 +43,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     public rowData: GridDataResult;
     public selectedRows: string[] = [];
-    public fiscalPeriodRows: any[];
     public totalRecords: number;
-    public fpId: number;
 
     //permission flag
     viewAccess: boolean;
@@ -55,17 +53,13 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     //for add in delete messageText
     deleteConfirm: boolean;
-    deleteVoucherId: number;
+    deleteModelId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
-
-    newVoucher: boolean;
-    voucher: Voucher = new VoucherInfo
-
 
     editDataItem?: Voucher = undefined;
     isNew: boolean;
@@ -91,7 +85,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
         return context.dataItem.id + " " + context.index;
     }
 
-    deleteVouchers() {
+    deleteModels() {
         //this.sppcLoading.show();
         //this.voucherService.groupDelete(VoucherApi.Vouchers, this.selectedRows).subscribe(res => {
         //    this.showMessage(this.deleteMsg, MessageType.Info);
@@ -110,7 +104,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid(insertedVoucher?: Voucher) {
+    reloadGrid(insertedModel?: Voucher) {
         if (this.viewAccess) {
             this.sppcLoading.show();
             var filter = this.currentFilter;
@@ -122,18 +116,18 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                 var resData = res.json();
                 this.properties = resData.metadata.properties;
                 var totalCount = 0;
-                if (insertedVoucher) {
+                if (insertedModel) {
                     var rows = (resData.list as Array<Voucher>);
-                    var index = rows.findIndex(p => p.id == insertedVoucher.id);
+                    var index = rows.findIndex(p => p.id == insertedModel.id);
                     if (index >= 0) {
                         resData.list.splice(index, 1);
-                        rows.splice(0, 0, insertedVoucher);
+                        rows.splice(0, 0, insertedModel);
                     }
                     else {
                         if (rows.length == this.pageSize) {
                             resData.list.splice(this.pageSize - 1, 1);
                         }
-                        rows.splice(0, 0, insertedVoucher);
+                        rows.splice(0, 0, insertedModel);
                     }
                 }
                 if (res.headers != null) {
@@ -183,11 +177,11 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    deleteVoucher(confirm: boolean) {
+    deleteModel(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.voucherService.delete(String.Format(VoucherApi.Voucher, this.deleteVoucherId)).subscribe(response => {
-                this.deleteVoucherId = 0;
+            this.voucherService.delete(String.Format(VoucherApi.Voucher, this.deleteModelId)).subscribe(response => {
+                this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
@@ -202,7 +196,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     removeHandler(arg: any) {
         this.prepareDeleteConfirm(arg.dataItem.name);
-        this.deleteVoucherId = arg.dataItem.id;
+        this.deleteModelId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
@@ -228,12 +222,12 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public saveHandler(voucher: Voucher) {
-        voucher.branchId = this.BranchId;
-        voucher.fiscalPeriodId = this.FiscalPeriodId;
+    public saveHandler(model: Voucher) {
+        model.branchId = this.BranchId;
+        model.fiscalPeriodId = this.FiscalPeriodId;
         this.sppcLoading.show();
         if (!this.isNew) {
-            this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, voucher.id), voucher)
+            this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model)
                 .subscribe(response => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -245,13 +239,13 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
-            this.voucherService.insert<Voucher>(VoucherApi.Vouchers, voucher)
+            this.voucherService.insert<Voucher>(VoucherApi.Vouchers, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedVoucher = JSON.parse(response._body);
-                    this.reloadGrid(insertedVoucher);
+                    var insertedModel = JSON.parse(response._body);
+                    this.reloadGrid(insertedModel);
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
