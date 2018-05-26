@@ -3,7 +3,7 @@ import { Directive, Host, Input, HostListener, ElementRef } from "@angular/core"
 import { GridComponent, ColumnComponent, CheckboxColumnComponent, ColumnBase } from "@progress/kendo-angular-grid";
 import { TranslateService } from "ng2-translate";
 import { DefaultComponent } from "../../class/default.component";
-import { CommandColumnComponent } from "@progress/kendo-angular-grid/dist/es2015/columns/command-column.component";
+
 
 
 @Directive({

@@ -40,7 +40,7 @@ export class SppcGridReorder {
 
         this.grid.leafColumns.toArray().forEach((item, index, arr) => {
 
-            if ((item.constructor.name == "CheckboxColumnComponent") || (item.constructor.name == "CommandColumnComponent")) {
+            if (!(item instanceof ColumnComponent)) {
                 item.reorderable = false;
             }
 

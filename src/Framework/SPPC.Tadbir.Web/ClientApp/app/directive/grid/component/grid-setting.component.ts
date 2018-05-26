@@ -60,7 +60,8 @@ export class GridSettingComponent extends BaseComponent implements OnInit {
             this.rowData = JSON.parse(rowDataString);
 
         this.grid.leafColumns.toArray().forEach((item, index, arr) => {
-            if (item.constructor.name == "ColumnComponent") {
+            
+            if (item instanceof ColumnComponent) {
                 var arrayIndex = this.rowData.findIndex(p => p.field == (<ColumnComponent>item).field)
                 var arrayItem: any = null;
                 if (arrayIndex >= 0)
@@ -70,13 +71,15 @@ export class GridSettingComponent extends BaseComponent implements OnInit {
                 var row = { visibility: true, name: item.displayTitle, field: (<ColumnComponent>item).field, disabled: false };
                 if (arrayItem) {
                     row.visibility = arrayItem.visibility;
-                    this.rowData[arrayItem] = row;
+                    
                     item.hidden = !row.visibility;
 
                     var hiddenColumns = this.rowData.filter(p => p.visibility == false);
 
                     if (row.visibility && hiddenColumns.length == this.rowData.length - 1)
                         row.disabled = true;
+
+                    this.rowData[arrayIndex] = row;
 
                 }
                 else
@@ -99,7 +102,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit {
         hidden = !event.target.checked;
         
         this.grid.columns.toArray().forEach((item, index, arr) => {
-            if (item.constructor.name == "ColumnComponent") {
+            if (item instanceof ColumnComponent) {
                 if ((<ColumnComponent>item).field == name) {
                     item.hidden = hidden;
 
