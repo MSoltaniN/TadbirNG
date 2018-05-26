@@ -120,7 +120,7 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
-            this.fiscalPeriodService.getAllByCompanyId(FiscalPeriodApi.CompanyFiscalPeriods, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.fiscalPeriodService.getAll(String.Format(FiscalPeriodApi.CompanyFiscalPeriods, this.CompanyId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
                 if (insertedFPeriod) {
@@ -187,7 +187,7 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
     deleteFiscalPeriod(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.fiscalPeriodService.delete(FiscalPeriodApi.FiscalPeriod, this.deleteFPeriodId).subscribe(response => {
+            this.fiscalPeriodService.delete(String.Format(FiscalPeriodApi.FiscalPeriod, this.deleteFPeriodId)).subscribe(response => {
                 this.deleteFPeriodId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
@@ -209,7 +209,7 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
 
     public editHandler(arg: any) {
         this.sppcLoading.show();
-        this.fiscalPeriodService.getById(FiscalPeriodApi.FiscalPeriod, arg.dataItem.id).subscribe(res => {
+        this.fiscalPeriodService.getById(String.Format(FiscalPeriodApi.FiscalPeriod, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
             this.sppcLoading.hide();
         })
@@ -233,7 +233,7 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
         fiscalPeriod.companyId = this.CompanyId;    
         this.sppcLoading.show();
         if (!this.isNew) {
-            this.fiscalPeriodService.edit<FiscalPeriod>(FiscalPeriodApi.FiscalPeriod, fiscalPeriod, fiscalPeriod.id)
+            this.fiscalPeriodService.edit<FiscalPeriod>(String.Format(FiscalPeriodApi.FiscalPeriod, fiscalPeriod.id), fiscalPeriod)
                 .subscribe(response => {
                     this.isNew = false;
                     this.editDataItem = undefined;

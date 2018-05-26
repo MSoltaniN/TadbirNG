@@ -120,7 +120,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
-            this.roleService.getAll(RoleApi.Roles, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.roleService.getAll(String.Format(RoleApi.Roles, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
                 if (insertedRole) {
@@ -263,7 +263,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     deleteRole(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.roleService.delete(RoleApi.Role, this.deleteRoleId).subscribe(response => {
+            this.roleService.delete(String.Format(RoleApi.Role, this.deleteRoleId)).subscribe(response => {
                 this.deleteRoleId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
@@ -313,7 +313,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     public saveHandler(roleFull: RoleFull) {
         this.sppcLoading.show();
         if (!this.isNew) {
-            this.roleService.edit<RoleFull>(RoleApi.Role, roleFull, roleFull.id)
+            this.roleService.edit<RoleFull>(String.Format(RoleApi.Role, roleFull.id), roleFull)
                 .subscribe(response => {
                     this.isNew = false;
                     this.editDataItem = undefined;

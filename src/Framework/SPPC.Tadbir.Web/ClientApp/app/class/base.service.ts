@@ -48,7 +48,7 @@ export class BaseService extends EnviromentComponent {
 
     /**
      * لیست رکوردها بر اساس فیلتر و مرتب سازی
-     * @param apiUrl آدرس api
+     * @param apiUrl آدرس‌ کامل api
      * @param start شماره شروع رکورد
      * @param count تعداد رکورد
      * @param orderby مرتب سازی
@@ -65,7 +65,6 @@ export class BaseService extends EnviromentComponent {
                 sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
         var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
-        var url = String.Format(apiUrl, this.FiscalPeriodId, this.BranchId);
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));
@@ -74,25 +73,24 @@ export class BaseService extends EnviromentComponent {
         var options = new RequestOptions({ headers: searchHeaders });
         var result: any = null;
         var totalCount = 0;
-        return this.http.get(url, options)
+        return this.http.get(apiUrl, options)
             .map(response => <any>(<Response>response));
     }
 
     /**
      * گرفتن رکورد با استفاده از id رکورد
-     * @param apiUrl آدرس api
+     * @param apiUrl آدرس کامل api
      * @param modelId شماره id رکورد
      */
-    public getById(apiUrl: string, modelId: number) {
-        var url = String.Format(apiUrl, modelId);
+    public getById(apiUrl: string) {
         var options = new RequestOptions({ headers: this.headers });
-        return this.http.get(url, options)
+        return this.http.get(apiUrl, options)
             .map(response => <any>(<Response>response).json());
     }
 
     /**
      * ایجاد رکورد جدید
-     * @param apiUrl آدرس api
+     * @param apiUrl آدرس کامل api
      * @param model رکورد جدید برای افزودن
      */
     public insert<T>(apiUrl: string, model: T): Observable<string> {
@@ -104,26 +102,24 @@ export class BaseService extends EnviromentComponent {
 
     /**
      * ویرایش رکورد
-     * @param apiUrl آدرس api
+     * @param apiUrl آدرس کامل api
      * @param model رکورد برای ویرایش
      * @param modelId شماره id مدل
      */
-    public edit<T>(apiUrl: string, model: T, modelId: number): Observable<string> {
+    public edit<T>(apiUrl: string, model: T): Observable<string> {
         var body = JSON.stringify(model);
-        var url = String.Format(apiUrl, modelId);
-        return this.http.put(url, body, this.options)
+        return this.http.put(apiUrl, body, this.options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     /**
      * حذف رکورد جاری
-     * @param apiUrl آدرس api
+     * @param apiUrl آدرس کامل api
      * @param modelId شماره id رکورد
      */
-    public delete(apiUrl: string, modelId: number): Observable<string> {
-        var deleteByIdUrl = String.Format(apiUrl, modelId);
-        return this.http.delete(deleteByIdUrl, this.options)
+    public delete(apiUrl: string): Observable<string> {
+        return this.http.delete(apiUrl, this.options)
             .map(response => response)
             .catch(this.handleError);
     }
@@ -147,13 +143,12 @@ export class BaseService extends EnviromentComponent {
     }
     /**
      * تعداد رکورد بر اساس فیلتر و مرتب سازی
-     * @param apiUrl آدرس api
+     * @param apiUrl آدرس کامل api
      * @param orderby مرتب سازی
      * @param filters فیلترها
      */
     public getCount(apiUrl: string, orderby?: string, filters?: any[]) {
         var headers = this.headers;
-        var url = String.Format(apiUrl, this.FiscalPeriodId, this.BranchId);
         var postItem = { filters: filters };
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
@@ -161,7 +156,7 @@ export class BaseService extends EnviromentComponent {
         if (searchHeaders)
             searchHeaders.set('X-Tadbir-GridOptions', base64Body);
         var options = new RequestOptions({ headers: searchHeaders });
-        return this.http.get(url, options)
+        return this.http.get(apiUrl, options)
             .map(response => <any>(<Response>response).json());
     }
 

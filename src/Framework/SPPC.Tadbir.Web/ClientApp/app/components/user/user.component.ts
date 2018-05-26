@@ -101,7 +101,7 @@ export class UserComponent extends DefaultComponent implements OnInit {
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
-            this.userService.getAll(UserApi.Users, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.userService.getAll(String.Format(UserApi.Users, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
                 if (insertedUser) {
@@ -168,7 +168,7 @@ export class UserComponent extends DefaultComponent implements OnInit {
 
     public editHandler(arg: any) {
         this.sppcLoading.show();
-        this.userService.getById(UserApi.User,arg.dataItem.id).subscribe(res => {
+        this.userService.getById(String.Format(UserApi.User,arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
             this.sppcLoading.hide();
         })
@@ -191,7 +191,7 @@ export class UserComponent extends DefaultComponent implements OnInit {
     public saveHandler(user: User) {
         this.sppcLoading.show();
         if (!this.isNew) {
-            this.userService.edit<User>(UserApi.User, user, user.id)
+            this.userService.edit<User>(String.Format(UserApi.User, user.id), user)
                 .subscribe(response => {
                     this.isNew = false;
                     this.editDataItem = undefined;

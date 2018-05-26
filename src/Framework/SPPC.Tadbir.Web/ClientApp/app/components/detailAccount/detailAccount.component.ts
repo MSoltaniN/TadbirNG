@@ -145,7 +145,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
             }
             else
                 filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
-            this.detailAccountService.getAll(DetailAccountApi.FiscalPeriodBranchDetailAccounts, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.detailAccountService.getAll(String.Format(DetailAccountApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
                 if (insertedDetailAccount) {
@@ -213,7 +213,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     deleteDetailAccount(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.detailAccountService.delete(DetailAccountApi.DetailAccount, this.deleteDetailAccountId).subscribe(response => {
+            this.detailAccountService.delete(String.Format(DetailAccountApi.DetailAccount, this.deleteDetailAccountId)).subscribe(response => {
                 this.deleteDetailAccountId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
@@ -236,7 +236,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     //detail account form events
     public editHandler(arg: any) {
         this.sppcLoading.show();
-        this.detailAccountService.getById(DetailAccountApi.DetailAccount, arg.dataItem.id).subscribe(res => {
+        this.detailAccountService.getById(String.Format(DetailAccountApi.DetailAccount, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
             this.sppcLoading.hide();
         })
@@ -263,7 +263,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
         this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
-            this.detailAccountService.edit<DetailAccount>(DetailAccountApi.DetailAccount, detailAccount, detailAccount.id)
+            this.detailAccountService.edit<DetailAccount>(String.Format(DetailAccountApi.DetailAccount, detailAccount.id), detailAccount)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);

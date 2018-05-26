@@ -145,7 +145,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
             }
             else
                 filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
-            this.costCenterService.getAll(CostCenterApi.FiscalPeriodBranchCostCenters, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.costCenterService.getAll(String.Format(CostCenterApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
                 if (insertedCostCenter) {
@@ -212,7 +212,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     deleteCostCenter(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.costCenterService.delete(CostCenterApi.CostCenter, this.deleteCostCenterId).subscribe(response => {
+            this.costCenterService.delete(String.Format(CostCenterApi.CostCenter, this.deleteCostCenterId)).subscribe(response => {
                 this.deleteCostCenterId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
@@ -235,7 +235,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     //detail account form events
     public editHandler(arg: any) {
         this.sppcLoading.show();
-        this.costCenterService.getById(CostCenterApi.CostCenter, arg.dataItem.id).subscribe(res => {
+        this.costCenterService.getById(String.Format(CostCenterApi.CostCenter, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
             this.sppcLoading.hide();
         })
@@ -262,7 +262,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
-            this.costCenterService.edit<CostCenter>(CostCenterApi.CostCenter, costCenter, costCenter.id)
+            this.costCenterService.edit<CostCenter>(String.Format(CostCenterApi.CostCenter, costCenter.id), costCenter)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);

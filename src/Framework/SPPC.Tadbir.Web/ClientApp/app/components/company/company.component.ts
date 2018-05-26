@@ -144,7 +144,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                 if (this.parent.childCount > 0)
                     url = String.Format(CompanyApi.CompanyChildren, this.parent.id);
             }
-            this.companyService.getAllByCompanyId(url, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.companyService.getAll(url, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
                 if (insertedCompany) {
@@ -211,7 +211,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
     deleteCompany(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.companyService.delete(CompanyApi.Company, this.deleteCompanyId).subscribe(response => {
+            this.companyService.delete(String.Format(CompanyApi.Company, this.deleteCompanyId)).subscribe(response => {
                 this.deleteCompanyId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
@@ -234,7 +234,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
     //detail account form events
     public editHandler(arg: any) {
         this.sppcLoading.show();
-        this.companyService.getById(CompanyApi.Company, arg.dataItem.id).subscribe(res => {
+        this.companyService.getById(String.Format(CompanyApi.Company, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
             this.sppcLoading.hide();
         })
@@ -262,7 +262,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
         this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
-            this.companyService.edit<Company>(CompanyApi.Company, company, company.id)
+            this.companyService.edit<Company>(String.Format(CompanyApi.Company, company.id), company)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);

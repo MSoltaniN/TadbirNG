@@ -145,7 +145,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
             }
             else
                 filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
-            this.projectService.getAll(ProjectApi.FiscalPeriodBranchProjects, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.projectService.getAll(String.Format(ProjectApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
                 if (insertedProject) {
@@ -212,7 +212,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     deleteProject(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.projectService.delete(ProjectApi.Project,this.deleteProjectId).subscribe(response => {
+            this.projectService.delete(String.Format(ProjectApi.Project,this.deleteProjectId)).subscribe(response => {
                 this.deleteProjectId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
@@ -235,7 +235,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     //detail account form events
     public editHandler(arg: any) {
         this.sppcLoading.show();
-        this.projectService.getById(ProjectApi.Project,arg.dataItem.id).subscribe(res => {
+        this.projectService.getById(String.Format(ProjectApi.Project,arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
             this.sppcLoading.hide();
         })
@@ -262,7 +262,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
         this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
-            this.projectService.edit<Project>(ProjectApi.Project,project, project.id)
+            this.projectService.edit<Project>(String.Format(ProjectApi.Project, project.id),project)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);

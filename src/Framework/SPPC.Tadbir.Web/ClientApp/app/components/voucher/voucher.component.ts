@@ -118,7 +118,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
-            this.voucherService.getAll(VoucherApi.FiscalPeriodBranchVouchers, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.voucherService.getAll(String.Format(VoucherApi.FiscalPeriodBranchVouchers, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 this.properties = resData.metadata.properties;
                 var totalCount = 0;
@@ -186,7 +186,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     deleteVoucher(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.voucherService.delete(VoucherApi.Voucher, this.deleteVoucherId).subscribe(response => {
+            this.voucherService.delete(String.Format(VoucherApi.Voucher, this.deleteVoucherId)).subscribe(response => {
                 this.deleteVoucherId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
@@ -208,7 +208,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     public editHandler(arg: any) {
         this.sppcLoading.show();
-        this.voucherService.getById(VoucherApi.Voucher, arg.dataItem.id).subscribe(res => {
+        this.voucherService.getById(String.Format(VoucherApi.Voucher, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res.item;
             this.sppcLoading.hide();
         })
@@ -233,7 +233,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
         voucher.fiscalPeriodId = this.FiscalPeriodId;
         this.sppcLoading.show();
         if (!this.isNew) {
-            this.voucherService.edit<Voucher>(VoucherApi.Voucher, voucher, voucher.id)
+            this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, voucher.id), voucher)
                 .subscribe(response => {
                     this.isNew = false;
                     this.editDataItem = undefined;

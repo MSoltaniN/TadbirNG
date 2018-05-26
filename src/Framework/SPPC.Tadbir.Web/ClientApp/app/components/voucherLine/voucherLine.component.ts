@@ -162,7 +162,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     deleteVoucherLine(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.voucherLineService.delete(VoucherApi.VoucherArticle,this.deleteVoucherLineId).subscribe(response => {
+            this.voucherLineService.delete(String.Format(VoucherApi.VoucherArticle,this.deleteVoucherLineId)).subscribe(response => {
                 this.deleteVoucherLineId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
@@ -185,7 +185,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     //voucher form events
     public editHandler(arg: any) {
         this.sppcLoading.show();
-        this.voucherLineService.getById(VoucherApi.VoucherArticle,arg.dataItem.id).subscribe(res => {
+        this.voucherLineService.getById(String.Format(VoucherApi.VoucherArticle,arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res.item;
             this.sppcLoading.hide();
         })
@@ -211,7 +211,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
         this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
-            this.voucherLineService.edit<VoucherLine>(VoucherApi.VoucherArticle, voucherLine, voucherLine.id)
+            this.voucherLineService.edit<VoucherLine>(String.Format(VoucherApi.VoucherArticle, voucherLine.id), voucherLine)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);

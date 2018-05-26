@@ -30,30 +30,7 @@ export class FiscalPeriodService extends BaseService{
     }
 
 
-    public getAllByCompanyId(apiUrl: string, start?: number, count?: number, orderby?: string, filters?: Filter[]) {
-        var headers = this.headers;
-        var gridPaging = { pageIndex: start, pageSize: count };
-        var sort = new Array<GridOrderBy>();
-        if (orderby) {
-            var orderByParts = orderby.split(' ');
-            var fieldName = orderByParts[0];
-            if (orderByParts[1] != 'undefined')
-                sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
-        }
-        var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
-        var url = String.Format(apiUrl, this.CompanyId);
-        var searchHeaders = this.headers;
-        var postBody = JSON.stringify(postItem);
-        var base64Body = btoa(encodeURIComponent(postBody));
-        if (searchHeaders)
-            searchHeaders.set('X-Tadbir-GridOptions', base64Body);
-        var options = new RequestOptions({ headers: searchHeaders });
-        var result: any = null;
-        var totalCount = 0;
-        return this.http.get(url, options)
-            .map(response => <any>(<Response>response));
-    }
-
+    
     /**
      * این تابع دوره مالی رو براساس شرکت برمیگرداند
      * @param companyId کد شرکت
