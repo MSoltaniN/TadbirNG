@@ -12,62 +12,33 @@ import { CommandColumnComponent } from "@progress/kendo-angular-grid/dist/es2015
 })
 
 export class SppcGridResize {
-    constructor( @Host() private grid: GridComponent, private elRef: ElementRef, private translate: TranslateService) {
+    constructor(@Host() private grid: GridComponent, private elRef: ElementRef, private translate: TranslateService, @Host() public defaultComponent: DefaultComponent) {
         
     }
 
     @Input('sppc-grid-column') value: string;
 
     @HostListener('columnResize', ['$event']) columnResize(event: any) {
-        //console.log(`column reorderd from ${event.oldIndex} to ${event.newIndex}`);
-
-        var columnSizeList: { [id: number]: number; } = {}
-
-        
-            var items = this.grid.leafColumns.toArray();
-
-        
-            var resizeValues: Array < number > = [];
-            var id: string = this.elRef.nativeElement.id + "_size";
-
-            var newWidth = event.newWidth;
-            
-            var resizeColumnIndex = this.grid.columnList.toArray().findIndex(o => o == event[0].column);
-            
-            var resizes = localStorage.getItem(id);
-            if(resizes)
-                columnSizeList = JSON.parse(resizes);
-
-            
-            columnSizeList[resizeColumnIndex] = event[0].newWidth;
-            
-        
-        
-            localStorage.setItem(id, JSON.stringify(columnSizeList));
-
-        
+       
+        this.resizeEvent(event);        
     }
 
     ngOnInit() {
-        this.grid.resizable = true;
-        
 
-    }
-
-    ngOnChanges() {
-
-
-        
-
+        this.grid.resizable = true;        
     }
 
     ngAfterContentInit(): void {
 
-        
+        this.resizeOnLoad();            
+    }
+
+    /** تغییر اندازه ستون ها در زمان لود گرید */
+    private resizeOnLoad() {
         var id: string = this.elRef.nativeElement.id + "_size";
         var resizeIndexList: { [id: number]: number; } = {}
 
-        var resizeJson :string | null = localStorage.getItem(id);;
+        var resizeJson: string | null = localStorage.getItem(id);;
         if (resizeJson) {
             resizeIndexList = JSON.parse(resizeJson != null ? resizeJson.toString() : "")
 
@@ -78,15 +49,42 @@ export class SppcGridResize {
                     var indexId = all.findIndex(o => o == item);
 
                     if (resizeIndexList[indexId])
-                        item.width = resizeIndexList[indexId]; 
-                    
+                        item.width = resizeIndexList[indexId];
+
                 });
 
-
-                
             }
         }
-            
+    }
+
+    /**
+     * رویداد مربوط به تغییر اندازه ستون های گرید
+     * @param event
+     */
+    private resizeEvent(event: any) {
+        var columnSizeList: { [id: number]: number; } = {}
+
+
+        var items = this.grid.leafColumns.toArray();
+
+
+        var resizeValues: Array<number> = [];
+        var id: string = this.elRef.nativeElement.id + this.defaultComponent.UserId + "_size";
+
+        var newWidth = event.newWidth;
+
+        var resizeColumnIndex = this.grid.columnList.toArray().findIndex(o => o == event[0].column);
+
+        var resizes = localStorage.getItem(id);
+        if (resizes)
+            columnSizeList = JSON.parse(resizes);
+
+
+        columnSizeList[resizeColumnIndex] = event[0].newWidth;
+
+
+
+        localStorage.setItem(id, JSON.stringify(columnSizeList));
     }
 
     

@@ -1,4 +1,4 @@
-﻿<button  (click)="showSetting()" kendoButton  [icon]="'gear'" [ngClass]="{'pull-left' : rtl ,'pull-right' : !rtl}" type="button" title="{{ 'Buttons.Setting' | translate }}" ></button>
+﻿<button class="hidden-xs"  (click)="showSetting()" kendoButton  [icon]="'gear'" [ngClass]="{'pull-left' : rtl ,'pull-right' : !rtl}" type="button" title="{{ 'Buttons.Setting' | translate }}" ></button>
 <kendo-dialog *ngIf="show" (close)="closeSetting()" title="{{'Buttons.Setting' | translate}}" [minWidth]="250" [width]="450">
     <kendo-grid id="grdColumns" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"                
                 [data]="rowData"

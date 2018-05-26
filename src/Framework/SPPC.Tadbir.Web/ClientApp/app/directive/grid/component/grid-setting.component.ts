@@ -6,6 +6,7 @@ import { TranslateService } from "ng2-translate";
 import { SppcLoadingService } from "../../../controls/sppcLoading/index";
 import { BaseComponent } from "../../../class/base.component";
 import { GridDataResult, GridComponent, ColumnComponent } from "@progress/kendo-angular-grid";
+import { DefaultComponent } from "../../../class/default.component";
 
 
 export function getLayoutModule(layout: Layout) {
@@ -33,18 +34,26 @@ export class GridSettingComponent extends BaseComponent implements OnInit {
     //public rowData: GridDataResult;
 
     constructor(public toastrService: ToastrService, public translate: TranslateService,
-        @Host() private grid: GridComponent, private elRef: ElementRef) {
+        @Host() private grid: GridComponent, private elRef: ElementRef, @Host() public defaultComponent: DefaultComponent) {
+
         super(toastrService);
     }
 
     ngOnInit() {
+
+        this.loadSetting();        
+    }
+
+
+    /** چپ چین کردن دکمه تنظیمات و لود کردن ستون ها در گرید */
+    private loadSetting() {
 
         if (this.CurrentLanguage == 'fa')
             this.rtl = true;
         else
             this.rtl = false;
 
-        var id: string = this.elRef.nativeElement.id + "_hidden";
+        var id: string = this.elRef.nativeElement.id + "_" + this.defaultComponent.UserId + "_hidden";
 
         var rowDataString = localStorage.getItem(id);
         if (rowDataString)
@@ -57,15 +66,15 @@ export class GridSettingComponent extends BaseComponent implements OnInit {
                 if (arrayIndex >= 0)
                     arrayItem = this.rowData[arrayIndex];
 
-                
-                var row = { visibility: true, name: item.displayTitle, field: (<ColumnComponent>item).field, disabled : false};
+
+                var row = { visibility: true, name: item.displayTitle, field: (<ColumnComponent>item).field, disabled: false };
                 if (arrayItem) {
                     row.visibility = arrayItem.visibility;
-                    this.rowData[arrayItem] = row;                    
+                    this.rowData[arrayItem] = row;
                     item.hidden = !row.visibility;
 
                     var hiddenColumns = this.rowData.filter(p => p.visibility == false);
-                    
+
                     if (row.visibility && hiddenColumns.length == this.rowData.length - 1)
                         row.disabled = true;
 
@@ -74,16 +83,17 @@ export class GridSettingComponent extends BaseComponent implements OnInit {
                     this.rowData.push(row);
             }
         });
-
-        
-        
-        
     }
 
+    /**
+     * رویداد نمایش یا عدم نمایش ستون در گرید و ذخیره آن در حافظه مرورگر
+     * @param name نام ستون مربوطه در گرید
+     * @param event پارامتر رویداد
+     */
     changeVisibility(name :string, event : any) {
 
 
-        var id: string = this.elRef.nativeElement.id + "_hidden";
+        var id: string = this.elRef.nativeElement.id + "_" + this.defaultComponent.UserId  + "_hidden";
         var hidden: boolean;
         
         hidden = !event.target.checked;
@@ -116,10 +126,12 @@ export class GridSettingComponent extends BaseComponent implements OnInit {
 
     }
 
+    /** نمایش فرم تنظیمات گرید */
     public showSetting() {
         this.show = true;
     }
 
+    /** بستن فرم تنظیمات گرید */
     public closeSetting() {
         this.show = false;
     }
