@@ -5,8 +5,6 @@ import {  AuthenticationService } from '../../service/login/index';
 import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
 
-import { CompanyService, BranchService, FiscalPeriodService } from '../../service/index';
-
 import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
 import { ContextInfo } from "../../service/login/authentication.service";
@@ -64,9 +62,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         private authenticationService: AuthenticationService,
         public toastrService: ToastrService, 
         public translate: TranslateService,
-        public branchService: BranchService,
-        public companyService: CompanyService,
-        private fiscalPeriodService: FiscalPeriodService,
         @Host() parent: LoginContainerComponent,
         public renderer: Renderer2,
         public metadata: MetaDataService) 
@@ -90,60 +85,34 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         this.getFiscalPeriod(value);        
     }
 
-
-    //getFiscalPeriod(companyId:number) {
-
-    //    if(companyId > 0)
-    //    {
-            
-    //        this.fiscalPeriodService.getFiscalPeriod(0).subscribe(res => {
-    //            this.ficalPeriods = res;
-    //        });
-            
-    //    }
-    //}
-
-
     getCompany() {
-
-        
-        
-        
-
-        var companiesList = this.companyService.getCompanies(this.UserName, this.Ticket);
+        var companiesList = this.authenticationService.getCompanies(this.UserName, this.Ticket);
         if (companiesList != null) {
             companiesList.subscribe(res => {
                 this.compenies = res;
             });
         }
-
-
     }
 
 
     getBranch(companyId: number) {
-        
-        var branchList = this.branchService.getBranches(companyId, this.Ticket);
+        var branchList = this.authenticationService.getBranches(companyId, this.Ticket);
         if (branchList != null) {
             branchList.subscribe(res => {
                 this.disabledBranch = false;
                 this.branches = res;
             });
-        }
-            
+        }           
     }
 
     getFiscalPeriod(companyId : number) {
-
-        var fps = this.fiscalPeriodService.getFiscalPeriod(companyId, this.Ticket)
+        var fps = this.authenticationService.getFiscalPeriod(companyId, this.Ticket)
         if (fps != null) {
             fps.subscribe(res => {
                 this.disabledFiscalPeriod = false;
                 this.fiscalPeriods = res;
             });
-        }
-
-        
+        }   
     }
 
     isValidate(): boolean
