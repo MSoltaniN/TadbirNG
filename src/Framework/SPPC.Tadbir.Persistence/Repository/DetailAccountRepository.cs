@@ -91,6 +91,24 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، شناورهای زیرمجموعه را برای تفصیلی شناور مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="detailId">شناسه یکی از تفصیلی های شناور موجود</param>
+        /// <returns>مدل نمایشی تفصیلی های شناور زیرمجموعه</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetDetailAccountChildrenAsync(int detailId)
+        {
+            var children = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var detail = await repository.GetByIDAsync(detailId, facc => facc.Children);
+            if (detail != null)
+            {
+                children.AddRange(detail.Children.Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc)));
+            }
+
+            return children;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای تفصیلی شناور را از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای تفصیلی شناور</returns>

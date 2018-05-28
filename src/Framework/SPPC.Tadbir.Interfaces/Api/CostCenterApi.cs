@@ -43,6 +43,16 @@ namespace SPPC.Tadbir.Api
         public const string CostCenterUrl = "ccenters/{ccenterId:min(1)}";
 
         /// <summary>
+        /// API client URL for all child cost centers under a specific cost center in hierarchy
+        /// </summary>
+        public const string CostCenterChildren = "ccenters/{0}/children";
+
+        /// <summary>
+        /// API server route URL for all child cost centers under a specific cost center in hierarchy
+        /// </summary>
+        public const string CostCenterChildrenUrl = "ccenters/{ccenterId:min(1)}/children";
+
+        /// <summary>
         /// API client URL for cost center metadata
         /// </summary>
         public const string CostCenterMetadata = "ccenters/metadata";

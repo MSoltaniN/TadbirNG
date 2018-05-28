@@ -91,6 +91,24 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، پروژه های زیرمجموعه را برای پروژه مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه یکی از پروژه های موجود</param>
+        /// <returns>مدل نمایشی پروژه های زیرمجموعه</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetProjectChildrenAsync(int projectId)
+        {
+            var children = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
+            if (project != null)
+            {
+                children.AddRange(project.Children.Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj)));
+            }
+
+            return children;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای پروژه را از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای پروژه</returns>

@@ -40,6 +40,13 @@ namespace SPPC.Tadbir.Persistence
         Task<ProjectViewModel> GetProjectAsync(int projectId);
 
         /// <summary>
+        /// به روش آسنکرون، پروژه های زیرمجموعه را برای پروژه مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه یکی از پروژه های موجود</param>
+        /// <returns>مدل نمایشی پروژه های زیرمجموعه</returns>
+        Task<IList<AccountItemBriefViewModel>> GetProjectChildrenAsync(int projectId);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای پروژه را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای پروژه</returns>

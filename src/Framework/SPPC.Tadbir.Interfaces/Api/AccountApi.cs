@@ -53,6 +53,16 @@ namespace SPPC.Tadbir.Api
         public const string AccountSyncUrl = "accounts/{accountId:min(1)}/sync";
 
         /// <summary>
+        /// API client URL for all child accounts under a specific account in hierarchy
+        /// </summary>
+        public const string AccountChildren = "accounts/{0}/children";
+
+        /// <summary>
+        /// API server route URL for all child accounts under a specific account in hierarchy
+        /// </summary>
+        public const string AccountChildrenUrl = "accounts/{accountId:min(1)}/children";
+
+        /// <summary>
         /// API client URL for all accounts
         /// </summary>
         public const string Accounts = "accounts";

@@ -26,82 +26,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// حساب های زیرمجموعه را برای حساب مشخص شده خوانده و برمی گرداند
+        /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری در آخرین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="accountId">شناسه یکی از حساب های موجود</param>
-        /// <returns>مدل نمایشی حساب های زیرمجموعه</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetChildAccounts(int accountId)
-        {
-            var children = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
-            if (account != null)
-            {
-                children.AddRange(account.Children.Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc)));
-            }
-
-            return children;
-        }
-
-        /// <summary>
-        /// شناورهای زیرمجموعه را برای تفصیلی شناور مشخص شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="detailId">شناسه یکی از تفصیلی های شناور موجود</param>
-        /// <returns>مدل نمایشی تفصیلی های شناور زیرمجموعه</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetChildDetailAccounts(int detailId)
-        {
-            var children = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
-            var detail = await repository.GetByIDAsync(detailId, facc => facc.Children);
-            if (detail != null)
-            {
-                children.AddRange(detail.Children.Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc)));
-            }
-
-            return children;
-        }
-
-        /// <summary>
-        /// مراکز هزینه زیرمجموعه را برای مرکز هزینه مشخص شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="costCenterId">شناسه یکی از مراکز هزینه موجود</param>
-        /// <returns>مدل نمایشی مراکز هزینه زیرمجموعه</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetChildCostCenters(int costCenterId)
-        {
-            var children = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Children);
-            if (costCenter != null)
-            {
-                children.AddRange(costCenter.Children.Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc)));
-            }
-
-            return children;
-        }
-
-        /// <summary>
-        /// پروژه های زیرمجموعه را برای پروژه مشخص شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="projectId">شناسه یکی از پروژه های موجود</param>
-        /// <returns>مدل نمایشی پروژه های زیرمجموعه</returns>
-        public async Task<IList<AccountItemBriefViewModel>> GetChildProjects(int projectId)
-        {
-            var children = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
-            var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
-            if (project != null)
-            {
-                children.AddRange(project.Children.Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj)));
-            }
-
-            return children;
-        }
-
-        /// <summary>
-        /// مجموعه ای از سرفصل های حسابداری در دوره مالی و شعبه مشخص شده که در آخرین سطح ساختار درختی قرار دارند
-        /// </summary>
-        /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <returns>مجموعه سرفصل های حسابداری در آخرین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetLeafAccountsAsync(int fpId, int branchId)
         {
@@ -116,10 +44,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// مجموعه ای از تفصیلی های شناور در دوره مالی و شعبه مشخص شده که در آخرین سطح ساختار درختی قرار دارند
+        /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور در آخرین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <returns>مجموعه تفصیلی های شناور در آخرین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetLeafDetailAccountsAsync(int fpId, int branchId)
         {
@@ -134,10 +62,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// مجموعه ای از مراکز هزینه در دوره مالی و شعبه مشخص شده که در آخرین سطح ساختار درختی قرار دارند
+        /// به روش آسنکرون، مجموعه ای از مراکز هزینه در آخرین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <returns>مجموعه مراکز هزینه در آخرین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetLeafCostCentersAsync(int fpId, int branchId)
         {
@@ -152,10 +80,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// مجموعه ای از پروژه ها در دوره مالی و شعبه مشخص شده که در آخرین سطح ساختار درختی قرار دارند
+        /// به روش آسنکرون، مجموعه ای از پروژه ها در آخرین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <returns>مجموعه پروژه ها در آخرین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetLeafProjectsAsync(int fpId, int branchId)
         {
@@ -170,10 +98,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// مجموعه ای از سرفصل های حسابداری در دوره مالی و شعبه مشخص شده که در بالاترین سطح ساختار درختی قرار دارند
+        /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری در اولین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <returns>مجموعه سرفصل های حسابداری در بالاترین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetRootAccountsAsync(int fpId, int branchId)
         {
@@ -190,10 +118,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// مجموعه ای از تفصیلی های شناور در دوره مالی و شعبه مشخص شده که در بالاترین سطح ساختار درختی قرار دارند
+        /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور در اولین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <returns>مجموعه تفصیلی های شناور در بالاترین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetRootDetailAccountsAsync(int fpId, int branchId)
         {
@@ -210,10 +138,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// مجموعه ای از مراکز هزینه در دوره مالی و شعبه مشخص شده که در بالاترین سطح ساختار درختی قرار دارند
+        /// به روش آسنکرون، مجموعه ای از مراکز هزینه در اولین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <returns>مجموعه مراکز هزینه در بالاترین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetRootCostCentersAsync(int fpId, int branchId)
         {
@@ -230,10 +158,10 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// مجموعه ای از پروژه ها در دوره مالی و شعبه مشخص شده که در بالاترین سطح ساختار درختی قرار دارند
+        /// به روش آسنکرون، مجموعه ای از پروژه ها در اولین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <returns>مجموعه پروژه ها در بالاترین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetRootProjectsAsync(int fpId, int branchId)
         {

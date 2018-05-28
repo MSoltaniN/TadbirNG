@@ -11,34 +11,6 @@ namespace SPPC.Tadbir.Persistence
     public interface IAccountItemRepository
     {
         /// <summary>
-        /// حساب های زیرمجموعه را برای حساب مشخص شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه یکی از حساب های موجود</param>
-        /// <returns>مدل نمایشی حساب های زیرمجموعه</returns>
-        Task<IList<AccountItemBriefViewModel>> GetChildAccounts(int accountId);
-
-        /// <summary>
-        /// شناورهای زیرمجموعه را برای تفصیلی شناور مشخص شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="detailId">شناسه یکی از تفصیلی های شناور موجود</param>
-        /// <returns>مدل نمایشی تفصیلی های شناور زیرمجموعه</returns>
-        Task<IList<AccountItemBriefViewModel>> GetChildDetailAccounts(int detailId);
-
-        /// <summary>
-        /// مراکز هزینه زیرمجموعه را برای مرکز هزینه مشخص شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="costCenterId">شناسه یکی از مراکز هزینه موجود</param>
-        /// <returns>مدل نمایشی مراکز هزینه زیرمجموعه</returns>
-        Task<IList<AccountItemBriefViewModel>> GetChildCostCenters(int costCenterId);
-
-        /// <summary>
-        /// پروژه های زیرمجموعه را برای پروژه مشخص شده خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="projectId">شناسه یکی از پروژه های موجود</param>
-        /// <returns>مدل نمایشی پروژه های زیرمجموعه</returns>
-        Task<IList<AccountItemBriefViewModel>> GetChildProjects(int projectId);
-
-        /// <summary>
         /// مجموعه ای از سرفصل های حسابداری در دوره مالی و شعبه مشخص شده که در آخرین سطح ساختار درختی قرار دارند
         /// </summary>
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>

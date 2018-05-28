@@ -100,6 +100,24 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری زیرمجموعه یک سرفصل حسابداری مشخص را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه یکی از سرفصل های حسابداری موجود</param>
+        /// <returns>مجموعه ای از سرفصل های حسابداری زیرمجموعه</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetAccountChildrenAsync(int accountId)
+        {
+            var children = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
+            if (account != null)
+            {
+                children.AddRange(account.Children.Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc)));
+            }
+
+            return children;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای حساب را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای حساب</returns>

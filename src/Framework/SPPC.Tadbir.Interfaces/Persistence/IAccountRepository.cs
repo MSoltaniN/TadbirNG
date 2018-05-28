@@ -41,6 +41,13 @@ namespace SPPC.Tadbir.Persistence
         Task<EntityItemViewModel<AccountFullViewModel>> GetAccountDetailAsync(int accountId);
 
         /// <summary>
+        /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری زیرمجموعه یک سرفصل حسابداری مشخص را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه یکی از سرفصل های حسابداری موجود</param>
+        /// <returns>مجموعه ای از سرفصل های حسابداری زیرمجموعه</returns>
+        Task<IList<AccountItemBriefViewModel>> GetAccountChildrenAsync(int accountId);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای حساب را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای حساب</returns>

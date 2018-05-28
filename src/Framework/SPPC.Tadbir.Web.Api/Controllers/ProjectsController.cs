@@ -48,6 +48,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(project);
         }
 
+        // GET: api/projects/{projectId:min(1)}/children
+        [Route(ProjectApi.ProjectChildrenUrl)]
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
+        public async Task<IActionResult> GetProjectChildrenAsync(int projectId)
+        {
+            var children = await _repository.GetProjectChildrenAsync(projectId);
+            return JsonReadResult(children);
+        }
+
         // GET: api/projects/metadata
         [Route(ProjectApi.ProjectMetadataUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]

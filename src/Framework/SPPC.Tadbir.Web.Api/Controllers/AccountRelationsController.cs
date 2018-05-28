@@ -27,6 +27,48 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             get { return AppStrings.AccountRelations; }
         }
 
+        // GET: api/relations/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        [Route(AccountRelationApi.FiscalPeriodBranchAccountsUrl)]
+        public async Task<IActionResult> GetConnectableAccountsAsync(int fpId, int branchId)
+        {
+            var config = _configRepository.GetRelationsConfig();
+            var accounts = await _repository.GetConnectableAccountsAsync(fpId, branchId, config.UseLeafAccounts);
+            return Json(accounts);
+        }
+
+        // GET: api/relations/faccounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
+        [Route(AccountRelationApi.FiscalPeriodBranchDetailAccountsUrl)]
+        public async Task<IActionResult> GetConnectableDetailAccountsAsync(int fpId, int branchId)
+        {
+            var config = _configRepository.GetRelationsConfig();
+            var detailAccounts = await _repository.GetConnectableDetailAccountsAsync(
+                fpId, branchId, config.UseLeafDetails);
+            return Json(detailAccounts);
+        }
+
+        // GET: api/relations/ccenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
+        [Route(AccountRelationApi.FiscalPeriodBranchCostCentersUrl)]
+        public async Task<IActionResult> GetConnectableCostCentersAsync(int fpId, int branchId)
+        {
+            var config = _configRepository.GetRelationsConfig();
+            var costCenters = await _repository.GetConnectableCostCentersAsync(
+                fpId, branchId, config.UseLeafCostCenters);
+            return Json(costCenters);
+        }
+
+        // GET: api/relations/projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
+        [Route(AccountRelationApi.FiscalPeriodBranchProjectsUrl)]
+        public async Task<IActionResult> GetConnectableProjectsAsync(int fpId, int branchId)
+        {
+            var config = _configRepository.GetRelationsConfig();
+            var projects = await _repository.GetConnectableProjectsAsync(fpId, branchId, config.UseLeafProjects);
+            return Json(projects);
+        }
+
         // GET: api/relations/account/{accountId:min(1)}/faccounts
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.DetailAccountsRelatedToAccountUrl)]
