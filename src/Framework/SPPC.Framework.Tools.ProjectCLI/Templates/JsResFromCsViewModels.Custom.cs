@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using SPPC.Framework.Common;
 
-namespace SPPC.Framework.Tools.ProjectCLI
+namespace SPPC.Framework.Tools.ProjectCLI.Templates
 {
     public partial class JsResFromCsViewModels
     {

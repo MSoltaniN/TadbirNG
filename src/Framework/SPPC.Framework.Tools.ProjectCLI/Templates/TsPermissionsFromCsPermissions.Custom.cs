@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace SPPC.Framework.Tools.ProjectCLI
+namespace SPPC.Framework.Tools.ProjectCLI.Templates
 {
     public partial class TsPermissionsFromCsPermissions
     {

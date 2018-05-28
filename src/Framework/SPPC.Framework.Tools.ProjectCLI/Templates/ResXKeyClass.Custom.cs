@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Resources;
 
-namespace SPPC.Framework.Tools.ProjectCLI
+namespace SPPC.Framework.Tools.ProjectCLI.Templates
 {
     public partial class ResXKeyClass
     {

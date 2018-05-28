@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace SPPC.Framework.Tools.ProjectCLI
+namespace SPPC.Framework.Tools.ProjectCLI.Templates
 {
     public partial class TsConstTypeFromCsValueClass
     {

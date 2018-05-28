@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace SPPC.Framework.Tools.ProjectCLI
+namespace SPPC.Framework.Tools.ProjectCLI.Templates
 {
     using System.Linq;
     using System.Reflection;
@@ -18,7 +18,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+    #line 1 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public partial class JsResFromCsViewModels : JsResFromCsViewModelsBase
     {
@@ -30,7 +30,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
         {
             this.Write(",\r\n  \"AllValidations\": {\r\n");
             
-            #line 8 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 8 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
 
 for (int index = 0; index < _types.Length; index++)
 {
@@ -46,14 +46,14 @@ for (int index = 0; index < _types.Length; index++)
             #line hidden
             this.Write("    \"");
             
-            #line 18 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 18 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(typeName));
             
             #line default
             #line hidden
             this.Write("\": {\r\n");
             
-            #line 19 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 19 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
 
   var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
   for (int i = 0; i < properties.Length; i++)
@@ -67,21 +67,21 @@ for (int index = 0; index < _types.Length; index++)
             #line hidden
             this.Write("      \"");
             
-            #line 27 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 27 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(metadata.Name));
             
             #line default
             #line hidden
             this.Write("IsRequired\": \"");
             
-            #line 27 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 27 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(metadata.IsRequiredMessage));
             
             #line default
             #line hidden
             this.Write("\",\r\n");
             
-            #line 28 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 28 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
   }
 	if (metadata.HasCompare)
     { 
@@ -90,28 +90,28 @@ for (int index = 0; index < _types.Length; index++)
             #line hidden
             this.Write("      \"");
             
-            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(metadata.Name));
             
             #line default
             #line hidden
             this.Write("And");
             
-            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(metadata.CompareToProperty));
             
             #line default
             #line hidden
             this.Write("DoNotMatch\": \"");
             
-            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 31 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(metadata.CompareMessage));
             
             #line default
             #line hidden
             this.Write("\",\r\n");
             
-            #line 32 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 32 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
   }
     if (metadata.HasMaxLength)
     { 
@@ -120,21 +120,21 @@ for (int index = 0; index < _types.Length; index++)
             #line hidden
             this.Write("      \"");
             
-            #line 35 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 35 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(metadata.Name));
             
             #line default
             #line hidden
             this.Write("IsTooLong\": \"");
             
-            #line 35 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 35 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(metadata.MaxLengthMessage));
             
             #line default
             #line hidden
             this.Write("\",\r\n");
             
-            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 36 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
   }
     else if (metadata.HasMinLength)
     { 
@@ -143,27 +143,27 @@ for (int index = 0; index < _types.Length; index++)
             #line hidden
             this.Write("      \"");
             
-            #line 39 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 39 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(metadata.Name));
             
             #line default
             #line hidden
             this.Write("LengthRange\": \"");
             
-            #line 39 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 39 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(metadata.LengthRangeMessage));
             
             #line default
             #line hidden
             this.Write("\",\r\n");
             
-            #line 40 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 40 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
   } 
             
             #line default
             #line hidden
             
-            #line 41 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 41 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
 
   } 
             
@@ -171,7 +171,7 @@ for (int index = 0; index < _types.Length; index++)
             #line hidden
             this.Write("      \"NoError\": \"\"\r\n    }");
             
-            #line 44 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 44 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
 
   if (index < _types.Length - 1)
   { 
@@ -180,7 +180,7 @@ for (int index = 0; index < _types.Length; index++)
             #line hidden
             this.Write(",\r\n");
             
-            #line 47 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 47 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
 
   }
   else
@@ -190,7 +190,7 @@ for (int index = 0; index < _types.Length; index++)
             #line hidden
             this.Write("\r\n");
             
-            #line 52 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\JsResFromCsViewModels.tt"
+            #line 52 "D:\GitHub\babaksoft\Projects\SPPC\framework\src\Framework\SPPC.Framework.Tools.ProjectCLI\Templates\JsResFromCsViewModels.tt"
 
   }
 } 
