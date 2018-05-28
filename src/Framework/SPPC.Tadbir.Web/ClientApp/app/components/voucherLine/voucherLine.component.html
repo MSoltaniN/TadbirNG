@@ -29,7 +29,7 @@
                 </ng-template>
                 <ng-template kendoGridToolbarTemplate>
                     <button kendoGridAddCommand (click)="addNew()" type="button">{{ 'VoucherLine.New' | translate }}</button>
-                    <button *ngIf="groupDelete" class="k-button" (click)="deleteVouchers()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
+                    <button *ngIf="groupDelete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
                 </ng-template>
 
                 <!-- template for mobile -->
@@ -140,13 +140,13 @@
                                             (cancel)="cancelHandler()">
             </voucherLine-form-component>
         </div>
-        <kendo-dialog title="{{'VoucherLine.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteVoucherLine(false)" [minWidth]="250" [width]="450">
+        <kendo-dialog title="{{'VoucherLine.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
             <p>
                 {{ deleteConfirmMsg }}
             </p>
             <kendo-dialog-actions>
-                <button class="k-button" (click)="deleteVoucherLine(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-                <button class="k-button" (click)="deleteVoucherLine(false)">{{ 'Buttons.No' | translate }}</button>
+                <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+                <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
             </kendo-dialog-actions>
         </kendo-dialog>
     </div>

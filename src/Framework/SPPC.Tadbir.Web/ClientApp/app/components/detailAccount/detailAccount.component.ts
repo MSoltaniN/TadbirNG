@@ -62,18 +62,14 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     ////for add in delete messageText
     deleteConfirm: boolean;
-    deleteDetailAccountsConfirm: boolean;
-    deleteDetailAccountId: number;
+    deleteModelsConfirm: boolean;
+    deleteModelId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
-
-    newDetailAccount: boolean;
-    detailAccount: DetailAccount = new DetailAccountInfo
-
 
     editDataItem?: DetailAccount = undefined;
     isNew: boolean;
@@ -100,10 +96,10 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     }
 
     showConfirm() {
-        this.deleteDetailAccountsConfirm = true;
+        this.deleteModelsConfirm = true;
     }
 
-    deleteDetailAccounts(confirm: boolean) {
+    deleteModels(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
             //this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
@@ -118,7 +114,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
         }
 
         this.groupDelete = false;
-        this.deleteDetailAccountsConfirm = false;
+        this.deleteModelsConfirm = false;
     }
 
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
@@ -128,7 +124,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid(insertedDetailAccount?: DetailAccount) {
+    reloadGrid(insertedModel?: DetailAccount) {
         if (this.viewAccess) {
             this.sppcLoading.show();
             var filter = this.currentFilter;
@@ -145,21 +141,21 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
             }
             else
                 filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
-            this.detailAccountService.getAll(DetailAccountApi.FiscalPeriodBranchDetailAccounts, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.detailAccountService.getAll(String.Format(DetailAccountApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
-                if (insertedDetailAccount) {
+                if (insertedModel) {
                     var rows = (resData as Array<DetailAccount>);
-                    var index = rows.findIndex(p => p.id == insertedDetailAccount.id);
+                    var index = rows.findIndex(p => p.id == insertedModel.id);
                     if (index >= 0) {
                         resData.splice(index, 1);
-                        rows.splice(0, 0, insertedDetailAccount);
+                        rows.splice(0, 0, insertedModel);
                     }
                     else {
                         if (rows.length == this.pageSize) {
                             resData.splice(this.pageSize - 1, 1);
                         }
-                        rows.splice(0, 0, insertedDetailAccount);
+                        rows.splice(0, 0, insertedModel);
                     }
                 }
                 if (res.headers != null) {
@@ -210,11 +206,11 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    deleteDetailAccount(confirm: boolean) {
+    deleteModel(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.detailAccountService.delete(DetailAccountApi.DetailAccount, this.deleteDetailAccountId).subscribe(response => {
-                this.deleteDetailAccountId = 0;
+            this.detailAccountService.delete(String.Format(DetailAccountApi.DetailAccount, this.deleteModelId)).subscribe(response => {
+                this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
@@ -229,14 +225,14 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     removeHandler(arg: any) {
         this.prepareDeleteConfirm(arg.dataItem.name);
-        this.deleteDetailAccountId = arg.dataItem.id;
+        this.deleteModelId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
     //detail account form events
     public editHandler(arg: any) {
         this.sppcLoading.show();
-        this.detailAccountService.getById(DetailAccountApi.DetailAccount, arg.dataItem.id).subscribe(res => {
+        this.detailAccountService.getById(String.Format(DetailAccountApi.DetailAccount, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
             this.sppcLoading.hide();
         })
@@ -249,47 +245,47 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public addNew(parentDetailAccountId?: number) {
+    public addNew(parentModelId?: number) {
         this.isNew = true;
         this.editDataItem = new DetailAccountInfo();
-        if (parentDetailAccountId)
-            this.parentId = parentDetailAccountId;
+        if (parentModelId)
+            this.parentId = parentModelId;
         this.errorMessage = '';
     }
 
-    public saveHandler(detailAccount: DetailAccount) {
-        detailAccount.branchId = this.BranchId;
-        detailAccount.fiscalPeriodId = this.FiscalPeriodId;
+    public saveHandler(model: DetailAccount) {
+        model.branchId = this.BranchId;
+        model.fiscalPeriodId = this.FiscalPeriodId;
         this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
-            this.detailAccountService.edit<DetailAccount>(DetailAccountApi.DetailAccount, detailAccount, detailAccount.id)
+            this.detailAccountService.edit<DetailAccount>(String.Format(DetailAccountApi.DetailAccount, model.id), model)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
                 }, (error => {
-                    this.editDataItem = detailAccount;
+                    this.editDataItem = model;
                     this.errorMessage = error;
                 }));
         }
         else {
             //set parentid for childs accounts
             if (this.parentId) {
-                detailAccount.parentId = this.parentId;
+                model.parentId = this.parentId;
                 this.parentId = undefined;
             }
             else if (this.parent)
-                detailAccount.parentId = this.parent.id;
+                model.parentId = this.parent.id;
             //set parentid for childs accounts
 
-            this.detailAccountService.insert<DetailAccount>(DetailAccountApi.DetailAccounts, detailAccount)
+            this.detailAccountService.insert<DetailAccount>(DetailAccountApi.DetailAccounts, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedDetailAccount = JSON.parse(response._body);
-                    this.reloadGrid(insertedDetailAccount);
+                    var insertedModel = JSON.parse(response._body);
+                    this.reloadGrid(insertedModel);
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;

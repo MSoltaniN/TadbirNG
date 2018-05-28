@@ -45,9 +45,7 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
 
     public rowData: GridDataResult;
     public selectedRows: string[] = [];
-    public fiscalPeriodRows: any[];
     public totalRecords: number;
-    public fpId: number;
 
     //permission flag
     viewAccess: boolean;
@@ -57,17 +55,13 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
 
     //for add in delete messageText
     deleteConfirm: boolean;
-    deleteFPeriodId: number;
+    deleteModelId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
-
-    newFPeriod: boolean;
-    fPeriod: FiscalPeriod = new FiscalPeriodInfo
-
 
     editDataItem?: FiscalPeriod = undefined;
     isNew: boolean;
@@ -93,7 +87,7 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
         return context.dataItem.id + " " + context.index;
     }
 
-    deleteFiscalPeriods() {
+    deleteModels() {
         //this.sppcLoading.show();
         //this.voucherService.groupDelete(VoucherApi.Vouchers, this.selectedRows).subscribe(res => {
         //    this.showMessage(this.deleteMsg, MessageType.Info);
@@ -112,7 +106,7 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid(insertedFPeriod?: FiscalPeriod) {
+    reloadGrid(insertedModel?: FiscalPeriod) {
         if (this.viewAccess) {
             this.sppcLoading.show();
             var filter = this.currentFilter;
@@ -120,21 +114,21 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
-            this.fiscalPeriodService.getAllByCompanyId(FiscalPeriodApi.CompanyFiscalPeriods, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.fiscalPeriodService.getAll(String.Format(FiscalPeriodApi.CompanyFiscalPeriods, this.CompanyId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
-                if (insertedFPeriod) {
+                if (insertedModel) {
                     var rows = (resData as Array<FiscalPeriod>);
-                    var index = rows.findIndex(p => p.id == insertedFPeriod.id);
+                    var index = rows.findIndex(p => p.id == insertedModel.id);
                     if (index >= 0) {
                         resData.splice(index, 1);
-                        rows.splice(0, 0, insertedFPeriod);
+                        rows.splice(0, 0, insertedModel);
                     }
                     else {
                         if (rows.length == this.pageSize) {
                             resData.splice(this.pageSize - 1, 1);
                         }
-                        rows.splice(0, 0, insertedFPeriod);
+                        rows.splice(0, 0, insertedModel);
                     }
                 }
                 if (res.headers != null) {
@@ -184,11 +178,11 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    deleteFiscalPeriod(confirm: boolean) {
+    deleteModel(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.fiscalPeriodService.delete(FiscalPeriodApi.FiscalPeriod, this.deleteFPeriodId).subscribe(response => {
-                this.deleteFPeriodId = 0;
+            this.fiscalPeriodService.delete(String.Format(FiscalPeriodApi.FiscalPeriod, this.deleteModelId)).subscribe(response => {
+                this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
@@ -203,13 +197,13 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
 
     removeHandler(arg: any) {
         this.prepareDeleteConfirm(arg.dataItem.name);
-        this.deleteFPeriodId = arg.dataItem.id;
+        this.deleteModelId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
     public editHandler(arg: any) {
         this.sppcLoading.show();
-        this.fiscalPeriodService.getById(FiscalPeriodApi.FiscalPeriod, arg.dataItem.id).subscribe(res => {
+        this.fiscalPeriodService.getById(String.Format(FiscalPeriodApi.FiscalPeriod, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
             this.sppcLoading.hide();
         })
@@ -229,11 +223,11 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public saveHandler(fiscalPeriod: FiscalPeriod) {
-        fiscalPeriod.companyId = this.CompanyId;    
+    public saveHandler(model: FiscalPeriod) {
+        model.companyId = this.CompanyId;    
         this.sppcLoading.show();
         if (!this.isNew) {
-            this.fiscalPeriodService.edit<FiscalPeriod>(FiscalPeriodApi.FiscalPeriod, fiscalPeriod, fiscalPeriod.id)
+            this.fiscalPeriodService.edit<FiscalPeriod>(String.Format(FiscalPeriodApi.FiscalPeriod, model.id), model)
                 .subscribe(response => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -245,13 +239,13 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
-            this.fiscalPeriodService.insert<FiscalPeriod>(FiscalPeriodApi.FiscalPeriods, fiscalPeriod)
+            this.fiscalPeriodService.insert<FiscalPeriod>(FiscalPeriodApi.FiscalPeriods, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedFPeriod = JSON.parse(response._body);
-                    this.reloadGrid(insertedFPeriod);
+                    var insertedModel = JSON.parse(response._body);
+                    this.reloadGrid(insertedModel);
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;

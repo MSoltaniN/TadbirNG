@@ -57,17 +57,13 @@ export class RoleComponent extends DefaultComponent implements OnInit {
 
     //for add in delete messageText
     deleteConfirm: boolean;
-    deleteRoleId: number;
+    deleteModelId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
-
-    newRole: boolean;
-    roleFull: RoleFull = new RoleFullInfo;
-
 
     editDataItem?: Role | undefined = undefined;
     permissionsData: Permission;
@@ -112,7 +108,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid(insertedRole?: Role) {
+    reloadGrid(insertedModel?: Role) {
         if (this.viewAccess) {
             this.sppcLoading.show();
             var filter = this.currentFilter;
@@ -120,21 +116,21 @@ export class RoleComponent extends DefaultComponent implements OnInit {
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
-            this.roleService.getAll(RoleApi.Roles, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.roleService.getAll(String.Format(RoleApi.Roles, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
-                if (insertedRole) {
+                if (insertedModel) {
                     var rows = (resData as Array<Role>);
-                    var index = rows.findIndex(p => p.id == insertedRole.id);
+                    var index = rows.findIndex(p => p.id == insertedModel.id);
                     if (index >= 0) {
                         resData.splice(index, 1);
-                        rows.splice(0, 0, insertedRole);
+                        rows.splice(0, 0, insertedModel);
                     }
                     else {
                         if (rows.length == this.pageSize) {
                             resData.splice(this.pageSize - 1, 1);
                         }
-                        rows.splice(0, 0, insertedRole);
+                        rows.splice(0, 0, insertedModel);
                     }
                 }
                 if (res.headers != null) {
@@ -263,8 +259,8 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     deleteRole(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.roleService.delete(RoleApi.Role, this.deleteRoleId).subscribe(response => {
-                this.deleteRoleId = 0;
+            this.roleService.delete(String.Format(RoleApi.Role, this.deleteModelId)).subscribe(response => {
+                this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
@@ -278,7 +274,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
 
     removeHandler(arg: any) {
         this.prepareDeleteConfirm(arg.dataItem.name);
-        this.deleteRoleId = arg.dataItem.id;
+        this.deleteModelId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
@@ -310,10 +306,10 @@ export class RoleComponent extends DefaultComponent implements OnInit {
         this.sppcLoading.hide();
     }
 
-    public saveHandler(roleFull: RoleFull) {
+    public saveHandler(model: RoleFull) {
         this.sppcLoading.show();
         if (!this.isNew) {
-            this.roleService.edit<RoleFull>(RoleApi.Role, roleFull, roleFull.id)
+            this.roleService.edit<RoleFull>(String.Format(RoleApi.Role, model.id), model)
                 .subscribe(response => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -324,13 +320,13 @@ export class RoleComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
-            this.roleService.insert<RoleFull>(RoleApi.Roles, roleFull)
+            this.roleService.insert<RoleFull>(RoleApi.Roles, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedRole = JSON.parse(response._body);
-                    this.reloadGrid(insertedRole);
+                    var insertedModel = JSON.parse(response._body);
+                    this.reloadGrid(insertedModel);
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;

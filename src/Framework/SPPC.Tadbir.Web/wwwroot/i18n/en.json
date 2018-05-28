@@ -31,7 +31,7 @@
     "Inserted": "{0} inserted successfully",
     "Updated": "{0} updated successfully",
     "Deleted": "{0} deleted successfully",
-    "DeleteConfirm": "are you sure to delete {0} ?"
+    "DeleteConfirm": "are you sure to delete '{0}' ?"
   },
   "Buttons": {
     "Ok": "Ok",
@@ -43,6 +43,10 @@
     "Delete": "Delete",
     "GroupDelete": "Delete Group",
     "Setting": "Setting"
+  },
+  "GridSetting": {
+    "Visibility": "Visibility",
+    "FieldName": "Field Name"
   },
   "Entity": {
     "Account": "Account",
@@ -59,6 +63,7 @@
     "Company": "Company"
   },
   "Account": {
+    "NewSubAccount": "New sub account",
     "New": "New Account",
     "Edit": "Edit",
     "Delete": "Delete",

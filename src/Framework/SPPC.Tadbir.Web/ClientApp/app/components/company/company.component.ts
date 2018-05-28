@@ -62,18 +62,14 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
 
     ////for add in delete messageText
     deleteConfirm: boolean;
-    deleteCompaniesConfirm: boolean;
-    deleteCompanyId: number;
+    deleteModelsConfirm: boolean;
+    deleteModelId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
-
-    newCompany: boolean;
-    company: Company = new CompanyInfo;
-
 
     editDataItem?: Company = undefined;
     isNew: boolean;
@@ -100,10 +96,10 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
     }
 
     showConfirm() {
-        this.deleteCompaniesConfirm = true;
+        this.deleteModelsConfirm = true;
     }
 
-    deleteCompanies(confirm: boolean) {
+    deleteModels(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
             //this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
@@ -118,7 +114,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
         }
 
         this.groupDelete = false;
-        this.deleteCompaniesConfirm = false;
+        this.deleteModelsConfirm = false;
     }
 
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
@@ -128,7 +124,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid(insertedCompany?: Company) {
+    reloadGrid(insertedModel?: Company) {
         if (this.viewAccess) {
             this.sppcLoading.show();
             var filter = this.currentFilter;
@@ -144,22 +140,22 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                 if (this.parent.childCount > 0)
                     url = String.Format(CompanyApi.CompanyChildren, this.parent.id);
             }
-            this.companyService.getAllByCompanyId(url, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.companyService.getAll(url, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
-                if (insertedCompany) {
+                if (insertedModel) {
                     var rows = (resData as Array<Company>);
-                    var index = rows.findIndex(p => p.id == insertedCompany.id);
+                    var index = rows.findIndex(p => p.id == insertedModel.id);
                     if (index >= 0) {
                         resData.splice(index, 1);
-                        rows.splice(0, 0, insertedCompany);
+                        rows.splice(0, 0, insertedModel);
                     }
                     else {
                         if (rows.length == this.pageSize) {
                             resData.splice(this.pageSize - 1, 1);
                         }
 
-                        rows.splice(0, 0, insertedCompany);
+                        rows.splice(0, 0, insertedModel);
                     }
                 }
                 if (res.headers != null) {
@@ -208,11 +204,11 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    deleteCompany(confirm: boolean) {
+    deleteModel(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.companyService.delete(CompanyApi.Company, this.deleteCompanyId).subscribe(response => {
-                this.deleteCompanyId = 0;
+            this.companyService.delete(String.Format(CompanyApi.Company, this.deleteModelId)).subscribe(response => {
+                this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
@@ -227,14 +223,14 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
 
     removeHandler(arg: any) {
         this.prepareDeleteConfirm(arg.dataItem.name);
-        this.deleteCompanyId = arg.dataItem.id;
+        this.deleteModelId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
     //detail account form events
     public editHandler(arg: any) {
         this.sppcLoading.show();
-        this.companyService.getById(CompanyApi.Company, arg.dataItem.id).subscribe(res => {
+        this.companyService.getById(String.Format(CompanyApi.Company, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
             this.sppcLoading.hide();
         })
@@ -247,48 +243,48 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public addNew(parentCompanyId?: number) {
+    public addNew(parentModelId?: number) {
         this.isNew = true;
         this.editDataItem = new CompanyInfo();
-        if (parentCompanyId == undefined)
+        if (parentModelId == undefined)
             this.parentId = this.CompanyId;
         else
-            if (parentCompanyId)
-                this.parentId = parentCompanyId;
+            if (parentModelId)
+                this.parentId = parentModelId;
         this.errorMessage = '';
     }
 
-    public saveHandler(company: Company) {
+    public saveHandler(model: Company) {
         this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
-            this.companyService.edit<Company>(CompanyApi.Company, company, company.id)
+            this.companyService.edit<Company>(String.Format(CompanyApi.Company, model.id), model)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
                 }, (error => {
-                    this.editDataItem = company;
+                    this.editDataItem = model;
                     this.errorMessage = error;
                 }));
         }
         else {
             //set parentid for childs accounts
             if (this.parentId) {
-                company.parentId = this.parentId;
+                model.parentId = this.parentId;
                 this.parentId = undefined;
             }
             else if (this.parent)
-                company.parentId = this.parent.id;
+                model.parentId = this.parent.id;
             //set parentid for childs accounts
 
-            this.companyService.insert<Company>(CompanyApi.Companies, company)
+            this.companyService.insert<Company>(CompanyApi.Companies, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedCompany = JSON.parse(response._body);
-                    this.reloadGrid(insertedCompany);
+                    var insertedModel = JSON.parse(response._body);
+                    this.reloadGrid(insertedModel);
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;

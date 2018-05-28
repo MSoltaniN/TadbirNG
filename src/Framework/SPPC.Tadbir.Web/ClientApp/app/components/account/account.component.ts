@@ -63,9 +63,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     public rowData: GridDataResult;
     public selectedRows: string[] = [];
     public accountArticleRows: any[];
-    public fiscalPeriodRows: any[];
     public totalRecords: number;
-    public fpId: number;
 
     //permission flag
     viewAccess: boolean;
@@ -75,18 +73,14 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
     //for add in delete messageText
     deleteConfirm: boolean;
-    deleteAccountsConfirm: boolean;
-    deleteAccountId: number;
+    deleteModelsConfirm: boolean;
+    deleteModelId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
-
-    newAccount: boolean;
-    account: Account = new AccountInfo
-
 
     editDataItem?: Account = undefined;
     isNew: boolean;
@@ -116,10 +110,10 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     }
 
     showConfirm() {
-        this.deleteAccountsConfirm = true;
+        this.deleteModelsConfirm = true;
     }
 
-    deleteAccounts(confirm: boolean) {
+    deleteModels(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
             this.accountService.groupDelete(AccountApi.Accounts, this.selectedRows).subscribe(res => {
@@ -134,7 +128,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         }
 
         this.groupDelete = false;
-        this.deleteAccountsConfirm = false;
+        this.deleteModelsConfirm = false;
     }
 
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
@@ -144,7 +138,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid(insertedAccount?: Account) {
+    reloadGrid(insertedModel?: Account) {
         if (this.viewAccess) {
             this.sppcLoading.show();
             var filter = this.currentFilter;
@@ -158,22 +152,22 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             }
             else
                 filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
-            this.accountService.getAll(AccountApi.FiscalPeriodBranchAccounts, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 this.properties = resData.metadata.properties;
                 var totalCount = 0;
-                if (insertedAccount) {
+                if (insertedModel) {
                     var rows = (resData.list as Array<Account>);
-                    var index = rows.findIndex(p => p.id == insertedAccount.id);
+                    var index = rows.findIndex(p => p.id == insertedModel.id);
                     if (index >= 0) {
                         resData.list.splice(index, 1);
-                        rows.splice(0, 0, insertedAccount);
+                        rows.splice(0, 0, insertedModel);
                     }
                     else {
                         if (rows.length == this.pageSize) {
                             resData.list.splice(this.pageSize - 1, 1);
                         }
-                        rows.splice(0, 0, insertedAccount);
+                        rows.splice(0, 0, insertedModel);
                     }
                 }
                 if (res.headers != null) {
@@ -223,9 +217,9 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     }
 
     /* lazy loading for account articles */
-    lazyProjectLoad(account: any) {
+    lazyProjectLoad(model: any) {
         this.sppcLoading.show();
-        this.voucherLineService.getAccountArticles(account.data.id).subscribe(res => {
+        this.voucherLineService.getAccountArticles(model.data.id).subscribe(res => {
             this.accountArticleRows = res;
             //this.accountArticleRows.set(account.data.accountId, res);
             this.sppcLoading.hide();
@@ -234,11 +228,11 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         });
     }
 
-    deleteAccount(confirm: boolean) {
+    deleteModel(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.accountService.delete(AccountApi.Account, this.deleteAccountId).subscribe(response => {
-                this.deleteAccountId = 0;
+            this.accountService.delete(String.Format(AccountApi.Account, this.deleteModelId)).subscribe(response => {
+                this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
@@ -252,14 +246,14 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
     removeHandler(arg: any) {
         this.prepareDeleteConfirm(arg.dataItem.name);
-        this.deleteAccountId = arg.dataItem.id;
+        this.deleteModelId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
     //account form events
     public editHandler(arg: any) {
         this.sppcLoading.show();
-        this.accountService.getById(AccountApi.Account, arg.dataItem.id).subscribe(res => {
+        this.accountService.getById(String.Format(AccountApi.Account, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res.item;
             this.sppcLoading.hide();
         })
@@ -272,32 +266,32 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public addNew(parentAccountId?: number) {
+    public addNew(parentModelId?: number) {
         this.isNew = true;
         this.editDataItem = new AccountInfo();
 
         //آی دی مربوط به حساب سطح بالاتر برای درج در زیر حساب ها در متغیر parentId مقدار دهی میشود
-        if (parentAccountId)
-            this.parentId = parentAccountId;
+        if (parentModelId)
+            this.parentId = parentModelId;
 
         this.errorMessage = '';
     }
 
-    public saveHandler(account: Account) {
-        account.branchId = this.BranchId;
-        account.fiscalPeriodId = this.FiscalPeriodId;
+    public saveHandler(model: Account) {
+        model.branchId = this.BranchId;
+        model.fiscalPeriodId = this.FiscalPeriodId;
         //TODO: این کد بعدا باید تغییر پیدا کند البته با اقای اسلامیه هماهنگ شده است
-        account.fullCode = account.code;
+        model.fullCode = model.code;
         this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
-            this.accountService.edit<Account>(AccountApi.Account, account, account.id)
+            this.accountService.edit<Account>(String.Format(AccountApi.Account, model.id), model)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
                 }, (error => {
-                    this.editDataItem = account;
+                    this.editDataItem = model;
                     this.errorMessage = error;
 
                 }));
@@ -305,19 +299,19 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         else {
             //set parentid for childs accounts
             if (this.parentId) {
-                account.parentId = this.parentId;
+                model.parentId = this.parentId;
                 this.parentId = undefined;
             }
             else if (this.parent)
-                account.parentId = this.parent.id;
+                model.parentId = this.parent.id;
             //set parentid for childs accounts
-            this.accountService.insert<Account>(AccountApi.Accounts, account)
+            this.accountService.insert<Account>(AccountApi.Accounts, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedAccount = JSON.parse(response._body);
-                    this.reloadGrid(insertedAccount);
+                    var insertedModel = JSON.parse(response._body);
+                    this.reloadGrid(insertedModel);
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;

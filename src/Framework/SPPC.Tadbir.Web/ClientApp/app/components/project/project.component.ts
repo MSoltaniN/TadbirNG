@@ -62,18 +62,14 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
 
     ////for add in delete messageText
     deleteConfirm: boolean;
-    deleteProjectsConfirm: boolean;
-    deleteProjectId: number;
+    deleteModelsConfirm: boolean;
+    deleteModelId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
-
-    newProject: boolean;
-    project: Project = new ProjectInfo;
-
 
     editDataItem?: Project = undefined;
     isNew: boolean;
@@ -100,10 +96,10 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     }
 
     showConfirm() {
-        this.deleteProjectsConfirm = true;
+        this.deleteModelsConfirm = true;
     }
 
-    deleteProjects(confirm: boolean) {
+    deleteModels(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
             //this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
@@ -118,7 +114,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
         }
 
         this.groupDelete = false;
-        this.deleteProjectsConfirm = false;
+        this.deleteModelsConfirm = false;
     }
 
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
@@ -128,7 +124,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid(insertedProject?: Project) {
+    reloadGrid(insertedModel?: Project) {
         if (this.viewAccess) {
             this.sppcLoading.show();
             var filter = this.currentFilter;
@@ -145,21 +141,21 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
             }
             else
                 filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
-            this.projectService.getAll(ProjectApi.FiscalPeriodBranchProjects, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.projectService.getAll(String.Format(ProjectApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
-                if (insertedProject) {
+                if (insertedModel) {
                     var rows = (resData as Array<Project>);
-                    var index = rows.findIndex(p => p.id == insertedProject.id);
+                    var index = rows.findIndex(p => p.id == insertedModel.id);
                     if (index >= 0) {
                         resData.splice(index, 1);
-                        rows.splice(0, 0, insertedProject);
+                        rows.splice(0, 0, insertedModel);
                     }
                     else {
                         if (rows.length == this.pageSize) {
                             resData.splice(this.pageSize - 1, 1);
                         }
-                        rows.splice(0, 0, insertedProject);
+                        rows.splice(0, 0, insertedModel);
                     }
                 }
                 if (res.headers != null) {
@@ -209,11 +205,11 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    deleteProject(confirm: boolean) {
+    deleteModel(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
-            this.projectService.delete(ProjectApi.Project,this.deleteProjectId).subscribe(response => {
-                this.deleteProjectId = 0;
+            this.projectService.delete(String.Format(ProjectApi.Project,this.deleteModelId)).subscribe(response => {
+                this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
@@ -228,14 +224,14 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
 
     removeHandler(arg: any) {
         this.prepareDeleteConfirm(arg.dataItem.name);
-        this.deleteProjectId = arg.dataItem.id;
+        this.deleteModelId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
     //detail account form events
     public editHandler(arg: any) {
         this.sppcLoading.show();
-        this.projectService.getById(ProjectApi.Project,arg.dataItem.id).subscribe(res => {
+        this.projectService.getById(String.Format(ProjectApi.Project,arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
             this.sppcLoading.hide();
         })
@@ -248,41 +244,41 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public addNew(parentProjectId?: number) {
+    public addNew(parentModelId?: number) {
         this.isNew = true;
         this.editDataItem = new ProjectInfo();
-        if (parentProjectId)
-            this.parentId = parentProjectId;
+        if (parentModelId)
+            this.parentId = parentModelId;
         this.errorMessage = '';
     }
 
-    public saveHandler(project: Project) {
-        project.branchId = this.BranchId;
-        project.fiscalPeriodId = this.FiscalPeriodId;
+    public saveHandler(model: Project) {
+        model.branchId = this.BranchId;
+        model.fiscalPeriodId = this.FiscalPeriodId;
         this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
-            this.projectService.edit<Project>(ProjectApi.Project,project, project.id)
+            this.projectService.edit<Project>(String.Format(ProjectApi.Project, model.id), model)
                 .subscribe(response => {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
                 }, (error => {
-                    this.editDataItem = project;
+                    this.editDataItem = model;
                     this.errorMessage = error;
                 }));
         }
         else {
             //set parentid for childs accounts
             if (this.parentId) {
-                project.parentId = this.parentId;
+                model.parentId = this.parentId;
                 this.parentId = undefined;
             }
             else if (this.parent)
-                project.parentId = this.parent.id;
+                model.parentId = this.parent.id;
             //set parentid for childs accounts
 
-            this.projectService.insert<Project>(ProjectApi.Projects,project)
+            this.projectService.insert<Project>(ProjectApi.Projects, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;

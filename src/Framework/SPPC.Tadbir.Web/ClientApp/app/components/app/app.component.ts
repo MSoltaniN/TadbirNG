@@ -2,10 +2,9 @@ import { Component, Inject } from '@angular/core';
 import { Context } from "../../model/context";
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { FiscalPeriodService } from '../../service/fiscal-period.service';
-import { CompanyService } from '../../service/company.service';
-import { BranchService } from '../../service/branch.service';
 import { DOCUMENT } from '@angular/platform-browser';
+import { AuthenticationService } from '../../service/login/index';
+
 
 @Component({
     selector: 'app',
@@ -37,15 +36,14 @@ export class AppComponent {
 
 
 
-    constructor(location: Location, router: Router, public branchService: BranchService,
-        public companyService: CompanyService,
-        private fiscalPeriodService: FiscalPeriodService, @Inject(DOCUMENT) private document: Document) {
+    constructor(location: Location, router: Router, public authenticationService: AuthenticationService,
+         @Inject(DOCUMENT) private document: Document) {
 
 
         if (localStorage.getItem('currentContext') != null) {
             var item: string | null;
             item = localStorage.getItem('currentContext');
-            this.currentContext = JSON.parse(item != null ? item.toString() : "");            
+            this.currentContext = JSON.parse(item != null ? item.toString() : "");
         }
 
         var language = localStorage.getItem('lang');
@@ -54,10 +52,10 @@ export class AppComponent {
         }
         else {
             this.lang = "fa";
-            
-        }        
 
-        
+        }
+
+
 
         if (this.currentContext != undefined) {
             this.showNavbar = true;
@@ -68,10 +66,9 @@ export class AppComponent {
                 this.showNavbar = false;
 
                 this.isLogin = true;
-                
+
             }
-            else
-            {
+            else {
                 this.isLogin = false;
                 this.showNavbar = true;
 
@@ -91,76 +88,76 @@ export class AppComponent {
                 }
 
 
-        var branchId: number = 0;
-        var companyId: number = 0;
-        var fpId: number = 0;
-        var ticket: string = "";        
-        
-
-        var contextIsEmpty: boolean = true;
-
-        if (localStorage.getItem('currentContext') != null) {
-            var item: string | null;
-            item = localStorage.getItem('currentContext');
-            var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-            branchId = currentContext ? parseInt(currentContext.branchId) : 0;
-            companyId = currentContext ? parseInt(currentContext.companyId) : 0;
-            fpId = currentContext ? parseInt(currentContext.fpId) : 0;
-            ticket = currentContext ? currentContext.ticket : "";
-            this.userName = currentContext ? currentContext.userName.toString() : "";
-            
-
-            contextIsEmpty = false;
-        }
-        else if (sessionStorage.getItem('currentContext') != null) {
-            var item: string | null;
-            item = sessionStorage.getItem('currentContext');
-            var currentContext = JSON.parse(item != null ? item.toString() : "");
-
-            branchId = currentContext ? parseInt(currentContext.branchId) : 0;
-            companyId = currentContext ? parseInt(currentContext.companyId) : 0;
-            fpId = currentContext ? parseInt(currentContext.fpId) : 0;
-            ticket = currentContext ? currentContext.ticket.toString() : "";
-            this.userName = currentContext ? currentContext.userName.toString() : "";
-            
-
-            contextIsEmpty = false;
-        }
-
-        if (!contextIsEmpty) {
-
-           
-
-            var fps = this.fiscalPeriodService.getFiscalPeriod(companyId, ticket);
-            if (fps != null) {
-                fps.subscribe(res => {
-                    //this.fiscalPeriods = res;
-                    this.fiscalPeriodName = res.filter((p: any) => p.key == fpId)[0].value;
-                });
-            }
-            
-            var branchList = this.branchService.getBranches(companyId, ticket);
-            if (branchList != null) {
-                branchList.subscribe(res => {
-                    this.branchName = res.filter((p: any) => p.key == branchId)[0].value;
-                });
-            }               
+                var branchId: number = 0;
+                var companyId: number = 0;
+                var fpId: number = 0;
+                var ticket: string = "";
 
 
-            var companiesList = this.companyService.getCompanies(this.userName, ticket);
-            if (companiesList != null) {
-                companiesList.subscribe(res => {
-                    this.companyName = res.filter((p: any) => p.key == companyId)[0].value;;
+                var contextIsEmpty: boolean = true;
 
-                });
-            }
+                if (localStorage.getItem('currentContext') != null) {
+                    var item: string | null;
+                    item = localStorage.getItem('currentContext');
+                    var currentContext = JSON.parse(item != null ? item.toString() : "");
 
-        }
+                    branchId = currentContext ? parseInt(currentContext.branchId) : 0;
+                    companyId = currentContext ? parseInt(currentContext.companyId) : 0;
+                    fpId = currentContext ? parseInt(currentContext.fpId) : 0;
+                    ticket = currentContext ? currentContext.ticket : "";
+                    this.userName = currentContext ? currentContext.userName.toString() : "";
+
+
+                    contextIsEmpty = false;
+                }
+                else if (sessionStorage.getItem('currentContext') != null) {
+                    var item: string | null;
+                    item = sessionStorage.getItem('currentContext');
+                    var currentContext = JSON.parse(item != null ? item.toString() : "");
+
+                    branchId = currentContext ? parseInt(currentContext.branchId) : 0;
+                    companyId = currentContext ? parseInt(currentContext.companyId) : 0;
+                    fpId = currentContext ? parseInt(currentContext.fpId) : 0;
+                    ticket = currentContext ? currentContext.ticket.toString() : "";
+                    this.userName = currentContext ? currentContext.userName.toString() : "";
+
+
+                    contextIsEmpty = false;
+                }
+
+                if (!contextIsEmpty) {
+
+
+
+                    var fps = this.authenticationService.getFiscalPeriod(companyId, ticket);
+                    if (fps != null) {
+                        fps.subscribe(res => {
+                            //this.fiscalPeriods = res;
+                            this.fiscalPeriodName = res.filter((p: any) => p.key == fpId)[0].value;
+                        });
+                    }
+
+                    var branchList = this.authenticationService.getBranches(companyId, ticket);
+                    if (branchList != null) {
+                        branchList.subscribe(res => {
+                            this.branchName = res.filter((p: any) => p.key == branchId)[0].value;
+                        });
+                    }
+
+
+                    var companiesList = this.authenticationService.getCompanies(this.userName, ticket);
+                    if (companiesList != null) {
+                        companiesList.subscribe(res => {
+                            this.companyName = res.filter((p: any) => p.key == companyId)[0].value;;
+
+                        });
+                    }
+
+                }
 
             }
         });
 
-        
+
     }
 }

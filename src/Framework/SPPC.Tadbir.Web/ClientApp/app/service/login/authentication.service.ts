@@ -8,6 +8,9 @@ import { Environment } from "../../enviroment";
 import { Context } from "../../model/context";
 import { PermissionBrief } from '../../model/index';
 
+import { String } from '../../class/source';
+import { LookupApi } from '../api/index';
+
 export class ContextInfo implements Context {
     userName: string = "";
     password: string = "";
@@ -104,5 +107,44 @@ export class AuthenticationService {
 
         if (sessionStorage.getItem('currentContext'))
             sessionStorage.removeItem('currentContext');
+    }
+
+    getCompanies(userName: string, ticket: string) {
+        var header = new Headers({ 'Content-Type': 'application/json; charset=utf-8' })
+        header.append('X-Tadbir-AuthTicket', ticket);
+
+        if (ticket == '') return null;
+        var jsonContext = atob(ticket);
+        var context = JSON.parse(jsonContext);
+        var userId = context.User.Id;
+        var url = String.Format(LookupApi.UserAccessibleCompanies, userId);
+        return this.http.get(url, { headers: header })
+            .map(response => <any>(<Response>response).json());
+    }
+
+    getBranches(companyId: number, ticket: string) {
+        var header = new Headers({ 'Content-Type': 'application/json; charset=utf-8' })
+        header.append('X-Tadbir-AuthTicket', ticket);
+
+        if (ticket == '') return null;
+        var jsonContext = atob(ticket);
+        var context = JSON.parse(jsonContext);
+        var userId = context.User.Id;
+        var url = String.Format(LookupApi.UserAccessibleCompanyBranches, companyId, userId);
+        return this.http.get(url, { headers: header })
+            .map(response => <any>(<Response>response).json());
+    }
+
+    getFiscalPeriod(companyId: number, ticket: string) {
+        var header = new Headers({ 'Content-Type': 'application/json; charset=utf-8' })
+        header.append('X-Tadbir-AuthTicket', ticket);
+
+        if (ticket == '') return null;
+        var jsonContext = atob(ticket);
+        var context = JSON.parse(jsonContext);
+        var userId = context.User.Id;
+        var url = String.Format(LookupApi.UserAccessibleCompanyFiscalPeriods, companyId, userId);
+        return this.http.get(url, { headers: header })
+            .map(response => <any>(<Response>response).json());
     }
 }

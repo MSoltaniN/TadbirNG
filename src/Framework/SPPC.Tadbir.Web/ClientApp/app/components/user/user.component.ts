@@ -52,17 +52,13 @@ export class UserComponent extends DefaultComponent implements OnInit {
     deleteAccess: boolean;
 
     //for add in delete messageText
-    deleteUserId: number;
+    deleteModelId: number;
 
     currentFilter: Filter[] = [];
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
-
-    newUser: boolean;
-    user: User = new UserInfo;
-
 
     editDataItem?: User = undefined;
     isNew: boolean;
@@ -93,7 +89,7 @@ export class UserComponent extends DefaultComponent implements OnInit {
         //    this.groupDelete = false;
     }
 
-    reloadGrid(insertedUser?: User) {
+    reloadGrid(insertedModel?: User) {
         if (this.viewAccess) {
             this.sppcLoading.show();
             var filter = this.currentFilter;
@@ -101,21 +97,21 @@ export class UserComponent extends DefaultComponent implements OnInit {
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
-            this.userService.getAll(UserApi.Users, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.userService.getAll(String.Format(UserApi.Users, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;
-                if (insertedUser) {
+                if (insertedModel) {
                     var rows = (resData as Array<User>);
-                    var index = rows.findIndex(p => p.id == insertedUser.id);
+                    var index = rows.findIndex(p => p.id == insertedModel.id);
                     if (index >= 0) {
                         resData.splice(index, 1);
-                        rows.splice(0, 0, insertedUser);
+                        rows.splice(0, 0, insertedModel);
                     }
                     else {
                         if (rows.length == this.pageSize) {
                             resData.splice(this.pageSize - 1, 1);
                         }
-                        rows.splice(0, 0, insertedUser);
+                        rows.splice(0, 0, insertedModel);
                     }
                 }
                 if (res.headers != null) {
@@ -168,7 +164,7 @@ export class UserComponent extends DefaultComponent implements OnInit {
 
     public editHandler(arg: any) {
         this.sppcLoading.show();
-        this.userService.getById(UserApi.User,arg.dataItem.id).subscribe(res => {
+        this.userService.getById(String.Format(UserApi.User,arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
             this.sppcLoading.hide();
         })
@@ -188,10 +184,10 @@ export class UserComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public saveHandler(user: User) {
+    public saveHandler(model: User) {
         this.sppcLoading.show();
         if (!this.isNew) {
-            this.userService.edit<User>(UserApi.User, user, user.id)
+            this.userService.edit<User>(String.Format(UserApi.User, model.id), model)
                 .subscribe(response => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -202,13 +198,13 @@ export class UserComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
-            this.userService.insert<User>(UserApi.Users,user)
+            this.userService.insert<User>(UserApi.Users, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedUser = JSON.parse(response._body);
-                    this.reloadGrid(insertedUser);
+                    var insertedModel = JSON.parse(response._body);
+                    this.reloadGrid(insertedModel);
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
