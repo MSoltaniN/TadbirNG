@@ -4,6 +4,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using SPPC.Framework.Tools.ProjectCLI.Templates;
 
 namespace SPPC.Framework.Tools.ProjectCLI
 {
