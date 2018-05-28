@@ -33,6 +33,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BabakSoft.Platform.Common">
+      <HintPath>..\..\..\lib\BabakSoft.Platform.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="BabakSoft.Platform.Extensions">
+      <HintPath>..\..\..\lib\BabakSoft.Platform.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="BabakSoft.Platform.Interfaces">
+      <HintPath>..\..\..\lib\BabakSoft.Platform.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="BabakSoft.Platform.Metadata">
+      <HintPath>..\..\..\lib\BabakSoft.Platform.Metadata.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\lib\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -52,8 +64,16 @@
     <Compile Include="..\FrameworkSolutionInfo.cs">
       <Link>FrameworkSolutionInfo.cs</Link>
     </Compile>
+    <Compile Include="Commands\GenerateCsModelCommand.cs" />
     <Compile Include="Commands\GenerateKeyClassCommand.cs" />
     <Compile Include="Commands\GenerateTsSecurityCommand.cs" />
+    <Compile Include="NamespaceUtil.cs" />
+    <Compile Include="Templates\CsPocoFromXmlMetadata.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CsPocoFromXmlMetadata.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\CsPocoFromXmlMetadata.Custom.cs" />
     <Compile Include="Templates\ResXKeyClass.cs">
       <DependentUpon>ResXKeyClass.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -154,6 +174,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Templates\CsPocoFromXmlMetadata.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CsPocoFromXmlMetadata.cs</LastGenOutput>
+    </None>
     <Content Include="Templates\TsConstTypeFromCsValueClass.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TsConstTypeFromCsValueClass.cs</LastGenOutput>

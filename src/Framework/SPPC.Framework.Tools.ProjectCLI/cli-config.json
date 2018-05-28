@@ -64,6 +64,18 @@
       ],
       "description": "Generates TypeScript security types from existing C# types.",
       "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateTsSecurityCommand, ProjectCLI"
+    },
+    {
+      "name": "csmodel",
+      "parameters": [
+        {
+          "name": "items",
+          "required": true,
+          "allowMultiple": true
+        }
+      ],
+      "description": "Generates C# model layer classes from XML entity metadata.",
+      "handlerType": "SPPC.Framework.Tools.ProjectCLI.GenerateCsModelCommand, ProjectCLI"
     }
   ]
 }
