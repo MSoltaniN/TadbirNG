@@ -38,6 +38,11 @@ namespace SPPC.Framework.Values
         public const string TextFieldIsTooLong = "{0} می تواند حداکثر {1} حرف داشته باشد.";
 
         /// <summary>
+        /// Localized text for a message indicating that the value entered for a text field is too short.
+        /// </summary>
+        public const string TextFieldIsTooShort = "{0} باید حداقل {1} حرف داشته باشد.";
+
+        /// <summary>
         /// Localized text for a message indicating that the length of a text field must fall within a specific range.
         /// </summary>
         public const string TextFieldHasLengthRange = "طول {0} باید بین {2} تا {1} حرف باشد.";
@@ -46,6 +51,11 @@ namespace SPPC.Framework.Values
         /// Localized text for a message indicating that a number is less than a minimum allowed value.
         /// </summary>
         public const string NumberIsTooSmall = "مقدار {0} باید حداقل {1} یا بزرگتر باشد.";
+
+        /// <summary>
+        /// Localized text for a message indicating that the value of a numeric field must fall within a specific range.
+        /// </summary>
+        public const string NumberHasValueRange = "مقدار {0} باید بین {2} تا {1} باشد.";
 
         /// <summary>
         /// Localized text for a message indicating that a field requires numeric value.

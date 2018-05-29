@@ -762,7 +762,7 @@
         </Property>
       </Properties>
       <Relations>
-        <Relation multiplicity="OneToOne" endpointName="User" entityName="User" hasKey="False" joinTable="" description="Application user that represents this user in security subsystem" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToOne" endpointName="User" entityName="User" hasKey="True" joinTable="" description="Application user that represents this user in security subsystem" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="Project" area="Finance" identifier="Id" description="اطلاعات یک پروژه مورد استفاده برای ثبت پیشامدهای مالی سازمان را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
