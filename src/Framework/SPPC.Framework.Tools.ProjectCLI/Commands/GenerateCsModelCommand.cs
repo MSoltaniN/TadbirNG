@@ -28,6 +28,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
             string csViewModelPath = ConfigurationManager.AppSettings["CsViewModelPath"];
             string csPersistPath = ConfigurationManager.AppSettings["CsPersistPath"];
             string xmlRepoPath = ConfigurationManager.AppSettings["XmlRepoPath"];
+            string codeGenPath = ConfigurationManager.AppSettings["CodeGenPath"];
             var repository = LoadXmlMetadataRepository(xmlRepoPath);
             foreach (var entityName in _entities)
             {
@@ -41,10 +42,14 @@ namespace SPPC.Framework.Tools.ProjectCLI
                     continue;
                 }
 
+                Console.WriteLine("Generating model layer classes for entity '{0}' ...", entity.Name);
                 GeneratePoco(entity, csModelPath);
                 GenerateViewModel(entity, csViewModelPath);
                 GenerateEFCoreMapping(entity, csPersistPath);
+                Console.WriteLine();
             }
+
+            GenerateSqlScript(repository, _entities, codeGenPath);
         }
 
         private Repository LoadXmlMetadataRepository(string path)
@@ -62,7 +67,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
                 ? Path.Combine(directory, entity.Area, fileName)
                 : Path.Combine(directory, fileName);
 
-            Console.WriteLine("Generating POCO class for entity '{0}' ...", entity.Name);
+            Console.WriteLine("    => POCO class in Model project...");
             var template = new CsPocoFromXmlMetadata(entity);
             string transformed = template.TransformText();
             File.WriteAllText(path, transformed);
@@ -75,7 +80,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
                 ? Path.Combine(directory, entity.Area, fileName)
                 : Path.Combine(directory, fileName);
 
-            Console.WriteLine("Generating view model class for entity '{0}' ...", entity.Name);
+            Console.WriteLine("    => View model class in ViewModel project...");
             var template = new CsViewModelFromMetadata(entity);
             string transformed = template.TransformText();
             File.WriteAllText(path, transformed);
@@ -88,8 +93,20 @@ namespace SPPC.Framework.Tools.ProjectCLI
                 ? Path.Combine(directory, "Mapping", entity.Area, fileName)
                 : Path.Combine(directory, "Mapping", fileName);
 
-            Console.WriteLine("Generating EF Core mapping class for entity '{0}' ...", entity.Name);
+            Console.WriteLine("    => EF Core mapping class in Persistence project...");
             var template = new CsFluentMappingFromMetadata(entity);
+            string transformed = template.TransformText();
+            File.WriteAllText(path, transformed);
+        }
+
+        private void GenerateSqlScript(Repository repository, string[] entityNames, string directory)
+        {
+            string fileName = "CreateDbObjects.Generated.sql";
+            string path = Path.Combine(directory, fileName);
+
+            Console.WriteLine("Generating SQL CREATE TABLE scripts in path '{0}' ...", directory);
+            var entities = repository.Entities.Where(entity => entityNames.Contains(entity.Name)).ToArray();
+            var template = new SqlCreateTableFromMetadata(entities);
             string transformed = template.TransformText();
             File.WriteAllText(path, transformed);
         }
