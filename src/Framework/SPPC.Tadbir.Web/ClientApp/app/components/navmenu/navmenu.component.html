@@ -62,6 +62,11 @@
                         <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.Company' | translate }}</span>
                     </a>
                 </li>
+                <li [routerLinkActive]="['link-active']" *ngIf="isAccess('AccountRelations', 1)">
+                    <a [routerLink]="['/accountrelations']">
+                        <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.AccountRelations' | translate }}</span>
+                    </a>
+                </li>
                 <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/changePassword']">
                         <span class='glyphicon glyphicon-eye-open'></span><span class="menuitem">{{ 'App.Menu.ChangePassword' | translate }}</span>

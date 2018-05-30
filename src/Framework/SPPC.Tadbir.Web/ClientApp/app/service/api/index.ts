@@ -10,5 +10,6 @@ export * from './lookupApi';
 export * from './fiscalPeriodApi';
 export * from './branchApi';
 export * from './companyApi';
+export * from './accountRelationApi';
 
 
