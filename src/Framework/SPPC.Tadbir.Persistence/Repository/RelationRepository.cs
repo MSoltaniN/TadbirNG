@@ -191,6 +191,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var query = repository.GetEntityQuery()
                 .Where(acc => acc.Id == accountId)
+                .Include(acc => acc.FiscalPeriod)
+                .Include(acc => acc.Branch)
                 .Include(acc => acc.AccountProjects)
                     .ThenInclude(ap => ap.Project);
             var account = await query.SingleOrDefaultAsync();
@@ -314,6 +316,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetAsyncRepository<Project>();
             var query = repository.GetEntityQuery()
                 .Where(prj => prj.Id == projectId)
+                .Include(cc => cc.FiscalPeriod)
+                .Include(cc => cc.Branch)
                 .Include(prj => prj.AccountProjects)
                     .ThenInclude(ap => ap.Account);
             var project = await query.SingleOrDefaultAsync();
