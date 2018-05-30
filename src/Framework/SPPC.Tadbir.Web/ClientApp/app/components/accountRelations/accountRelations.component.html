@@ -32,7 +32,7 @@
                         <kendo-treeview [nodes]="mainComponentCategories"
                                         [textField]="['name']"
                                         kendoTreeViewExpandable
-                                        [kendoTreeViewCheckable]="{ mode: 'single' }"
+                                        [kendoTreeViewCheckable]="{ mode: 'single', checkChildren: false , checkParents: false }"
                                         [checkBy]="checkById"
                                         [(checkedKeys)]="mainComponentCheckedKeys"
                                         [hasChildren]="hasChildren"
@@ -65,7 +65,7 @@
                         <kendo-treeview [nodes]="relatedComponentCategories"
                                         [textField]="['name']"
                                         kendoTreeViewExpandable
-                                        kendoTreeViewCheckable
+                                        [kendoTreeViewCheckable]="{ mode: 'multiple', checkChildren: false , checkParents: false }"
                                         [checkBy]="checkById"
                                         [(checkedKeys)]="relatedComponentCheckedKeys"
                                         [hasChildren]="hasChildren"

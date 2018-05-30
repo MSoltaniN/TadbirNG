@@ -19,10 +19,8 @@ import { AccountRelationApi, AccountApi, DetailAccountApi, CostCenterApi, Projec
 import { SecureEntity } from '../../security/secureEntity';
 import { AccountRelationPermissions } from '../../security/permissions';
 import { AccountRelationsService } from '../../service/index';
-import { TreeItemLookup, TreeItem } from '@progress/kendo-angular-treeview';
+import { TreeItemLookup, TreeItem, CheckableSettings } from '@progress/kendo-angular-treeview';
 import { AccountItemRelationsInfo } from '../../service/accountRelations.service';
-
-//import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -166,8 +164,6 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     }
 
     public handleMainComponentChecking(itemLookup: TreeItemLookup): void {
-        debugger;
-        itemLookup.children = [];
         this.isEnableSaveBtn = false;
         var itemId = itemLookup.item.dataItem.id;
         if (this.mainComponentCheckedKeys.find(f => f == itemId) == itemId) {
@@ -360,8 +356,8 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
             this.sppcLoading.hide();
             this.showMessage(this.updateMsg, MessageType.Succes);
         }, (error => {
-                this.errorMessage = error;
-                this.sppcLoading.hide();
+            this.errorMessage = error;
+            this.sppcLoading.hide();
         }));
     }
 
