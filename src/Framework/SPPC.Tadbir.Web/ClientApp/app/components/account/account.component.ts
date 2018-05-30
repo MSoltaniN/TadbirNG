@@ -25,8 +25,6 @@ import { String } from '../../class/source';
 
 import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
-import { DefaultComponent } from "../../class/default.component";
-
 import { MessageType, Layout, Entities, Metadatas } from "../../enviroment";
 import { Filter } from "../../class/filter";
 
@@ -37,6 +35,7 @@ import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { AccountApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { AccountPermissions } from '../../security/permissions';
+import { DefaultComponent } from '../../class/default.component';
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
@@ -49,12 +48,15 @@ export function getLayoutModule(layout: Layout) {
     providers: [{
         provide: RTL,
         useFactory: getLayoutModule,
-        deps: [Layout]
+        deps: [Layout]        
     }]
 })
 
 
 export class AccountComponent extends DefaultComponent implements OnInit {
+
+    
+
 
     @Input() public parent: Account;
     @Input() public isChild: boolean = false;
@@ -64,7 +66,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     public selectedRows: string[] = [];
     public accountArticleRows: any[];
     public totalRecords: number;
-
+    
     //permission flag
     viewAccess: boolean;
     insertAccess: boolean;
@@ -101,6 +103,8 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         private accountService: AccountService, private voucherLineService: VoucherLineService,
         private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
+
+        
     }
 
 

@@ -92,9 +92,11 @@ import { BaseService } from './class/base.service';
 import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading/index';
 import { SppcGridResize } from './directive/grid/sppc-grid-resize';
 import { GridSettingComponent } from './directive/grid/component/grid-setting.component';
-import { SppcGridSetting } from './directive/grid/sppc-grid-setting';
-
-
+import { SppcCheckAccess } from './directive/grid/sppc-check-access';
+import { LocalizationService } from "@progress/kendo-angular-l10n";
+import { EditService } from '@progress/kendo-angular-grid/dist/es2015/editing/edit.service';
+import { EnviromentComponent } from './class/enviroment.component';
+import { Permissions } from './security/permissions';
 
 
 @NgModule({
@@ -116,8 +118,7 @@ import { SppcGridSetting } from './directive/grid/sppc-grid-setting';
         SppcGridColumn,
         SppcGridReorder,
         SppcGridResize,
-        SppcGridFilter,
-        SppcGridSetting,
+        SppcGridFilter,        
         VoucherComponent,
         VoucherFormComponent,
         VoucherLineComponent,
@@ -144,31 +145,22 @@ import { SppcGridSetting } from './directive/grid/sppc-grid-setting';
         BranchFormComponent,
         CompanyComponent,
         CompanyFormComponent,
-        SppcDatePipe        
-
+        SppcDatePipe,      
+        SppcCheckAccess
+        
     ],
-    providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
+    providers: [ AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
         UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService,
-        { provide: LocationStrategy, useClass: HashLocationStrategy },
-        //{
-        //    provide: RTL,
-        //    useFactory: function () {
-        //        var lang = localStorage.getItem('lang');
-        //        if (lang == "en") {
-        //            return false;
-        //        } 
-        //        else 
-        //            return true;
-        //    }            
-        //},
+        { provide: LocationStrategy, useClass: HashLocationStrategy },        
         { provide: MessageService, useClass: GridMessageService },
         AuthGuard,
         AuthenticationService,
         DatePipe,
-        Layout
+        Layout,
+        EnviromentComponent,
+        Permissions
     ],
-    imports: [
-        //Ng4LoadingSpinnerModule.forRoot(),
+    imports: [       
         ButtonsModule,
         CommonModule,
         HttpModule,
