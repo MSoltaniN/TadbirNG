@@ -41,7 +41,8 @@ export const Entities = {
     Project: 'Project',
     FiscalPeriod: 'FiscalPeriod',
     Branch: 'Branch',
-    Company: 'Company'
+    Company: 'Company',
+    AccountRelations:"AccountRelations"
 }
 
 

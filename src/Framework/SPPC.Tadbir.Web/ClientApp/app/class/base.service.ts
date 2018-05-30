@@ -16,29 +16,7 @@ export class BaseService extends EnviromentComponent {
 
         this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
 
-        //var ticket: string = '';
-        //if (localStorage.getItem('currentContext')) {
-        //    var item: string | null;
-        //    item = localStorage.getItem('currentContext');
-        //    var currentContext = JSON.parse(item != null ? item.toString() : "");
-        //    if (currentContext.ticket != '') {
-        //        ticket = currentContext.ticket;
-        //    }
-        //}
-        //else if (sessionStorage.getItem('currentContext')) {
-        //    var item: string | null;
-        //    item = sessionStorage.getItem('currentContext');
-        //    var currentContext = JSON.parse(item != null ? item.toString() : "");
-        //    if (currentContext.ticket != '') {
-        //        ticket = currentContext.ticket;
-        //    }
-        //}
-
-       
-
         this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
-
-        debugger;
 
         if (this.CurrentLanguage == "fa")
             this.headers.append('Accept-Language', 'fa-IR,fa');
@@ -60,12 +38,6 @@ export class BaseService extends EnviromentComponent {
      * @param filters فیلتر
      */
     public getAll(apiUrl: string, start?: number, count?: number, orderby?: string, filters?: Filter[]) {
-        debugger;
-        console.log(this.Ticket);
-        var headers = this.headers;
-
-        console.log(headers);
-
         var gridPaging = { pageIndex: start, pageSize: count };
         var sort = new Array<GridOrderBy>();
         if (orderby) {
@@ -81,8 +53,6 @@ export class BaseService extends EnviromentComponent {
         if (searchHeaders)
             searchHeaders.set('X-Tadbir-GridOptions', base64Body);
         var options = new RequestOptions({ headers: searchHeaders });
-        var result: any = null;
-        var totalCount = 0;
         return this.http.get(apiUrl, options)
             .map(response => <any>(<Response>response));
     }

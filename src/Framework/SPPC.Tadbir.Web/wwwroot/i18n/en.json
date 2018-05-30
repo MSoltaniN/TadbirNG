@@ -17,6 +17,7 @@
       "FiscalPeriod": "Fiscal Period",
       "Branch": "Branches",
       "Company": "Company",
+      "AccountRelations": "Account Relations",
       "ChangePassword": "Change Password",
       "Exit": "Exit"
     }
@@ -60,7 +61,8 @@
     "Project": "Project",
     "FiscalPeriod": "Fiscal Period",
     "Branch": "Branch",
-    "Company": "Company"
+    "Company": "Company",
+    "AccountRelations": "Account Relations"
   },
   "Account": {
     "NewSubAccount": "New sub account",
@@ -184,6 +186,15 @@
     "Level": "Level",
     "Description": "Description",
     "Delete": "Delete Project"
+  },
+  "AccountRelations": {
+    "MainComponent": "Main component",
+    "RelatedComponent": "Related component",
+    "Account": "Account",
+    "DetailAccount": "Detail Account",
+    "CostCenter": "Cost Center",
+    "Project": "Project",
+    "Select": "-- Select --"
   },
   "FiscalPeriod": {
     "New": "New Fiscal Period",
