@@ -21,4 +21,6 @@ export * from './permissionBrief';
 export * from './fiscalPeriod';
 export * from './branch';
 export * from './company';
+export * from './accountItemBrief';
+export * from './accountItemRelations';
 

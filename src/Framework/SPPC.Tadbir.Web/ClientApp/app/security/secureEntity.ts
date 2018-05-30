@@ -15,6 +15,7 @@ export const SecureEntity = {
     DetailAccount: 'DetailAccount',
     CostCenter: 'CostCenter',
     Project: 'Project',
+    AccountRelations : "AccountRelations",
     Currency: 'Currency',
     FiscalPeriod: 'FiscalPeriod',
     Branch: 'Branch',
@@ -26,4 +27,5 @@ export const SecureEntity = {
     ProductInventory: 'ProductInventory',
     Requisition: 'RequisitionVoucher',
     Company: 'Company'
+
 }

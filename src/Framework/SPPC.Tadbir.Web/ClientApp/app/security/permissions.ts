@@ -49,6 +49,12 @@ export enum ProjectPermissions {
     All = 15
 }
 
+export enum AccountRelationPermissions {
+    None = 0,
+    ViewRelationships = 1,
+    ManageRelationships = 2
+}
+
 export enum CurrencyPermissions {
     None = 0,
     View = 1,

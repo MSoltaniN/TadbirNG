@@ -41,6 +41,13 @@ namespace SPPC.Tadbir.Persistence
         Task<CostCenterViewModel> GetCostCenterAsync(int costCenterId);
 
         /// <summary>
+        /// به روش آسنکرون، مراکز هزینه زیرمجموعه را برای مرکز هزینه مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="costCenterId">شناسه یکی از مراکز هزینه موجود</param>
+        /// <returns>مدل نمایشی مراکز هزینه زیرمجموعه</returns>
+        Task<IList<AccountItemBriefViewModel>> GetCostCenterChildrenAsync(int costCenterId);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای مرکز هزینه را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای مرکز هزینه</returns>

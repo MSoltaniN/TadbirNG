@@ -14,8 +14,6 @@ namespace SPPC.Tadbir.Persistence
     {
         #region Voucher Operations
 
-        #region Asynchronous Methods
-
         /// <summary>
         /// به روش آسنکرون، کلیه اسناد مالی را که در دوره مالی و شعبه مشخص شده تعریف شده اند، از محل ذخیره خوانده و برمی گرداند
         /// </summary>
@@ -78,59 +76,7 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
-        #region Synchronous Methods (May be removed in the future)
-
-        /// <summary>
-        /// کلیه اسناد مالی را که در دوره مالی و شعبه مشخص شده تعریف شده اند، از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        IList<VoucherViewModel> GetVouchers(int fpId, int branchId, GridOptions gridOptions = null);
-
-        /// <summary>
-        /// سند مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="voucherId">شناسه عددی یکی از اسناد مالی موجود</param>
-        /// <returns>سند مالی مشخص شده با شناسه عددی</returns>
-        VoucherViewModel GetVoucher(int voucherId);
-
-        /// <summary>
-        /// تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        int GetCount(int fpId, int branchId, GridOptions gridOptions = null);
-
-        /// <summary>
-        /// اطلاعات یک سند مالی را در محل ذخیره ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="voucher">سند مالی برای ایجاد یا اصلاح</param>
-        void SaveVoucher(VoucherViewModel voucher);
-
-        /// <summary>
-        /// سند مالی مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
-        /// </summary>
-        /// <param name="voucherId">شناسه عددی سند مالی برای حذف</param>
-        void DeleteVoucher(int voucherId);
-
-        /// <summary>
-        /// اطلاعات سند مالی داده شده را برای مطابقت با کلیه قواعد کاری برنامه اعتبارسنجی می کند
-        /// </summary>
-        /// <param name="voucher">سند مالی که باید اعتبارسنجی شود</param>
-        /// <returns>مقدار بولی درست در صورت مطابقت کامل با قواعد کاری، در غیر این صورت مقدار بولی نادرست</returns>
-        bool IsValidVoucher(VoucherViewModel voucher);
-
-        #endregion
-
-        #endregion
-
         #region Voucher Line Operations
-
-        #region Asynchronous Methods
 
         /// <summary>
         /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
@@ -206,48 +152,6 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="articleId">شناسه عددی آرتیکل برای حذف</param>
         Task DeleteArticleAsync(int articleId);
-
-        #endregion
-
-        #region Synchronous Methods (May be removed in the future)
-
-        /// <summary>
-        /// آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        IList<VoucherLineViewModel> GetArticles(int voucherId, GridOptions gridOptions = null);
-
-        /// <summary>
-        /// اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
-        /// <returns>اطلاعات آرتیکل مشخص شده با شناسه عددی</returns>
-        VoucherLineViewModel GetArticle(int articleId);
-
-        /// <summary>
-        /// تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
-        /// از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد آرتیکل های سند مالی بعد از اعمال فیلتر</returns>
-        int GetArticleCount(int voucherId, GridOptions gridOptions = null);
-
-        /// <summary>
-        /// اطلاعات یک سطر سند مالی (آرتیکل) را در محل ذخیره ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
-        void SaveArticle(VoucherLineViewModel article);
-
-        /// <summary>
-        /// سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
-        /// </summary>
-        /// <param name="articleId">شناسه عددی آرتیکل برای حذف</param>
-        void DeleteArticle(int articleId);
-
-        #endregion
 
         #endregion
     }

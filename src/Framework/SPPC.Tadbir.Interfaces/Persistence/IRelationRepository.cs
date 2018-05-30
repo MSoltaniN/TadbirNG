@@ -11,6 +11,46 @@ namespace SPPC.Tadbir.Persistence
     public interface IRelationRepository
     {
         /// <summary>
+        /// به روش آسنکرون، سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <returns>سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
+        Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsAsync(
+            int fpId, int branchId, bool useLeafItems = true);
+
+        /// <summary>
+        /// به روش آسنکرون، تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <returns>تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
+        Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountsAsync(
+            int fpId, int branchId, bool useLeafItems = true);
+
+        /// <summary>
+        /// به روش آسنکرون، مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <returns>مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
+        Task<IList<AccountItemBriefViewModel>> GetConnectableCostCentersAsync(
+            int fpId, int branchId, bool useLeafItems = true);
+
+        /// <summary>
+        /// به روش آسنکرون، پروژه های قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <returns>پروژه های قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
+        Task<IList<AccountItemBriefViewModel>> GetConnectableProjectsAsync(
+            int fpId, int branchId, bool useLeafItems = true);
+
+        /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور مرتبط با حساب مشخص شده را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>

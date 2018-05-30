@@ -43,6 +43,16 @@ namespace SPPC.Tadbir.Api
         public const string ProjectUrl = "projects/{projectId:min(1)}";
 
         /// <summary>
+        /// API client URL for all child projects under a specific project in hierarchy
+        /// </summary>
+        public const string ProjectChildren = "projects/{0}/children";
+
+        /// <summary>
+        /// API server route URL for all child projects under a specific project in hierarchy
+        /// </summary>
+        public const string ProjectChildrenUrl = "projects/{projectId:min(1)}/children";
+
+        /// <summary>
         /// API client URL for project metadata
         /// </summary>
         public const string ProjectMetadata = "projects/metadata";

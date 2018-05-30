@@ -91,6 +91,24 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مراکز هزینه زیرمجموعه را برای مرکز هزینه مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="costCenterId">شناسه یکی از مراکز هزینه موجود</param>
+        /// <returns>مدل نمایشی مراکز هزینه زیرمجموعه</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetCostCenterChildrenAsync(int costCenterId)
+        {
+            var children = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Children);
+            if (costCenter != null)
+            {
+                children.AddRange(costCenter.Children.Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc)));
+            }
+
+            return children;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای مرکز هزینه را از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای مرکز هزینه</returns>

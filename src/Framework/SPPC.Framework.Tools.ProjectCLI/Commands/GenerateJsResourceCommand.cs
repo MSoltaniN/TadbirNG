@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Resources;
 using System.Text;
 using SPPC.Framework.Common;
+using SPPC.Framework.Tools.ProjectCLI.Templates;
 
 namespace SPPC.Framework.Tools.ProjectCLI
 {

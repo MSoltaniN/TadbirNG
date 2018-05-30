@@ -48,6 +48,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(costCenter);
         }
 
+        // GET: api/ccenters/{ccenterId:min(1)}/children
+        [Route(CostCenterApi.CostCenterChildrenUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
+        public async Task<IActionResult> GetCostCenterChildrenAsync(int ccenterId)
+        {
+            var children = await _repository.GetCostCenterChildrenAsync(ccenterId);
+            return JsonReadResult(children);
+        }
+
         // GET: api/ccenters/metadata
         [Route(CostCenterApi.CostCenterMetadataUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SPPC.Tadbir
+namespace SPPC.Tadbir.Configuration
 {
     /// <summary>
     /// تنظیمات مورد استفاده در مدیریت ارتباطات بین مولفه های بردار حساب را نگهداری می کند

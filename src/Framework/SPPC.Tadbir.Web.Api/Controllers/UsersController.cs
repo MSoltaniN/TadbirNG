@@ -184,7 +184,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             //// NOTE: DO NOT check ModelState here, because plain-text passwords are replaced by hash values.
 
-            var user = _repository.GetUser(userName);
+            var user = await _repository.GetUserAsync(userName);
             if (user == null)
             {
                 return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.User));
@@ -251,7 +251,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
 #if DEBUG
             string ticket = null;
-            var userContext = _repository.GetUserContext(userId);
+            var userContext = _repository.GetUserContextAsync(userId).Result;
             if (userContext != null)
             {
                 var contextEncoder = new Base64Encoder<SecurityContext>();

@@ -54,7 +54,7 @@
       </Properties>
       <Relations>
         <Relation multiplicity="ManyToOne" endpointName="Parent" entityName="Account" hasKey="True" joinTable="" description="حساب والد (پدر) برای این سرفصل حسابداری که در سطح بالایی آن در ساختار درختی تعریف شده" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="False" joinTable="" description="دوره مالی که این سرفصل حسابداری در آن تعریف شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="FiscalPeriod" entityName="FiscalPeriod" hasKey="True" joinTable="" description="دوره مالی که این سرفصل حسابداری در آن تعریف شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="شعبه سازمانی که این سرفصل حسابداری در آن تعریف شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToMany" endpointName="DetailAccount" entityName="DetailAccount" hasKey="False" joinTable="AccountDetailAccount" description="مجموعه ای از تفصیلی های شناور مرتبط با این حساب" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToMany" endpointName="CostCenter" entityName="CostCenter" hasKey="False" joinTable="AccountCostCenter" description="مجموعه ای از مراکز هزینه مرتبط با این حساب" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
@@ -762,7 +762,7 @@
         </Property>
       </Properties>
       <Relations>
-        <Relation multiplicity="OneToOne" endpointName="User" entityName="User" hasKey="False" joinTable="" description="Application user that represents this user in security subsystem" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToOne" endpointName="User" entityName="User" hasKey="True" joinTable="" description="Application user that represents this user in security subsystem" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="Project" area="Finance" identifier="Id" description="اطلاعات یک پروژه مورد استفاده برای ثبت پیشامدهای مالی سازمان را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">

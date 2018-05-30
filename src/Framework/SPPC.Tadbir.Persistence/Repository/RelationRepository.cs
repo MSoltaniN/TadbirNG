@@ -30,6 +30,70 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <returns>سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsAsync(
+            int fpId, int branchId, bool useLeafItems = true)
+        {
+            var accounts = useLeafItems
+                ? await _itemRepository.GetLeafAccountsAsync(fpId, branchId)
+                : await _itemRepository.GetRootAccountsAsync(fpId, branchId);
+            return accounts;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <returns>تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountsAsync(
+            int fpId, int branchId, bool useLeafItems = true)
+        {
+            var detailAccounts = useLeafItems
+                ? await _itemRepository.GetLeafDetailAccountsAsync(fpId, branchId)
+                : await _itemRepository.GetRootDetailAccountsAsync(fpId, branchId);
+            return detailAccounts;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <returns>مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableCostCentersAsync(
+            int fpId, int branchId, bool useLeafItems = true)
+        {
+            var costCenters = useLeafItems
+                ? await _itemRepository.GetLeafCostCentersAsync(fpId, branchId)
+                : await _itemRepository.GetRootCostCentersAsync(fpId, branchId);
+            return costCenters;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، پروژه های قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <returns>پروژه های قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableProjectsAsync(
+            int fpId, int branchId, bool useLeafItems = true)
+        {
+            var projects = useLeafItems
+                ? await _itemRepository.GetLeafProjectsAsync(fpId, branchId)
+                : await _itemRepository.GetRootProjectsAsync(fpId, branchId);
+            return projects;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور مرتبط با حساب مشخص شده را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
@@ -127,6 +191,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var query = repository.GetEntityQuery()
                 .Where(acc => acc.Id == accountId)
+                .Include(acc => acc.FiscalPeriod)
+                .Include(acc => acc.Branch)
                 .Include(acc => acc.AccountProjects)
                     .ThenInclude(ap => ap.Project);
             var account = await query.SingleOrDefaultAsync();
@@ -250,6 +316,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetAsyncRepository<Project>();
             var query = repository.GetEntityQuery()
                 .Where(prj => prj.Id == projectId)
+                .Include(cc => cc.FiscalPeriod)
+                .Include(cc => cc.Branch)
                 .Include(prj => prj.AccountProjects)
                     .ThenInclude(ap => ap.Account);
             var project = await query.SingleOrDefaultAsync();

@@ -32,8 +32,6 @@ namespace SPPC.Tadbir.Persistence
 
         #region Finance Subsystem Lookup
 
-        #region Asynchronous Methods
-
         /// <summary>
         /// به روش آسنکرون، سرفصل های حسابداری تعریف شده در دوره مالی و شعبه مشخص شده را
         /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
@@ -215,114 +213,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         #endregion
-
-        #region Synchronous Methods (May be removed in the future)
-
-        /// <summary>
-        /// سرفصل های حسابداری تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
-        /// <returns>مجموعه سرفصل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        public IEnumerable<KeyValue> GetAccounts(int fpId, int branchId)
-        {
-            var repository = _unitOfWork.GetRepository<Account>();
-            var accounts = repository
-                .GetByCriteria(acc => acc.FiscalPeriod.Id == fpId
-                    && acc.Branch.Id == branchId)
-                .OrderBy(acc => acc.FullCode)
-                .Select(acc => _mapper.Map<KeyValue>(acc));
-            return accounts;
-        }
-
-        /// <summary>
-        /// تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
-        /// <returns>مجموعه تفصیلی های شناور تعریف شده در دوره و شعبه مشخص شده</returns>
-        public IEnumerable<KeyValue> GetDetailAccounts(int fpId, int branchId)
-        {
-            var repository = _unitOfWork.GetRepository<DetailAccount>();
-            var detailAccounts = repository
-                .GetByCriteria(det => det.FiscalPeriod.Id == fpId
-                    && det.Branch.Id == branchId)
-                .OrderBy(det => det.FullCode)
-                .Select(det => _mapper.Map<KeyValue>(det));
-            return detailAccounts;
-        }
-
-        /// <summary>
-        /// مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
-        /// <returns>مجموعه مراکز هزینه تعریف شده در دوره و شعبه مشخص شده</returns>
-        public IEnumerable<KeyValue> GetCostCenters(int fpId, int branchId)
-        {
-            var repository = _unitOfWork.GetRepository<CostCenter>();
-            var costCenters = repository
-                .GetByCriteria(cc => cc.FiscalPeriod.Id == fpId
-                    && cc.Branch.Id == branchId)
-                .OrderBy(cc => cc.FullCode)
-                .Select(cc => _mapper.Map<KeyValue>(cc));
-            return costCenters;
-        }
-
-        /// <summary>
-        /// پروژه های تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
-        /// <returns>مجموعه پروژه های تعریف شده در دوره و شعبه مشخص شده</returns>
-        public IEnumerable<KeyValue> GetProjects(int fpId, int branchId)
-        {
-            var repository = _unitOfWork.GetRepository<Project>();
-            var projects = repository
-                .GetByCriteria(prj => prj.FiscalPeriod.Id == fpId
-                    && prj.Branch.Id == branchId)
-                .OrderBy(prj => prj.FullCode)
-                .Select(prj => _mapper.Map<KeyValue>(prj));
-            return projects;
-        }
-
-        /// <summary>
-        /// ارزهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه ارز های تعریف شده</returns>
-        public IEnumerable<KeyValue> GetCurrencies()
-        {
-            var repository = _unitOfWork.GetRepository<Currency>();
-            var currencies = repository
-                .GetAll()
-                .OrderBy(curr => curr.Name)
-                .Select(curr => _mapper.Map<KeyValue>(curr));
-            return currencies;
-        }
-
-        /// <summary>
-        /// دوره های مالی تعریف شده در یک شرکت مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <param name="companyId">شناسه دیتابیسی یکی از شرکت های موجود</param>
-        /// <returns>مجموعه دوره های مالی تعریف شده در یک شرکت مشخص شده</returns>
-        public IEnumerable<KeyValue> GetFiscalPeriods(int companyId)
-        {
-            var repository = _unitOfWork.GetRepository<FiscalPeriod>();
-            var fiscalPeriods = repository
-                .GetByCriteria(fp => fp.Company.Id == companyId)
-                .OrderBy(fp => fp.Name)
-                .Select(fp => _mapper.Map<KeyValue>(fp));
-            return fiscalPeriods;
-        }
-
-        #endregion
-
-        #endregion
-
-        private static void CopyCollection(IEnumerable<KeyValue> source, IList<KeyValue> destination)
-        {
-            Array.ForEach(source.ToArray(), item => destination.Add(item));
-        }
 
         private IQueryable<User> GetUserQuery(int userId)
         {

@@ -193,7 +193,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingArticleAsync(int articleId)
         {
-            var article = _repository.GetArticle(articleId);
+            var article = await _repository.GetArticleAsync(articleId);
             if (article == null)
             {
                 return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.VoucherLine));

@@ -38,8 +38,6 @@ namespace SPPC.Tadbir.Persistence
 
         #region Voucher Operations
 
-        #region Asynchronous Methods
-
         /// <summary>
         /// به روش آسنکرون، کلیه اسناد مالی را که در دوره مالی و شعبه مشخص شده تعریف شده اند، از دیتابیس خوانده و برمی گرداند
         /// </summary>
@@ -201,141 +199,7 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
-        #region Synchronous Methods (May be removed in the future)
-
-        /// <summary>
-        /// کلیه اسناد مالی را که در دوره مالی و شعبه مشخص شده تعریف شده اند، از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public IList<VoucherViewModel> GetVouchers(int fpId, int branchId, GridOptions gridOptions = null)
-        {
-            var query = GetVoucherQuery(
-                txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId, gridOptions);
-            var vouchers = query
-                .Select(txn => _mapper.Map<VoucherViewModel>(txn))
-                .ToList();
-            return vouchers
-                .Select(txn => AddWorkItemInfo(txn))
-                .ToList();
-        }
-
-        /// <summary>
-        /// سند مالی با شناسه دیتابیسی مشخص شده را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
-        /// <returns>سند مالی مشخص شده با شناسه دیتابیسی</returns>
-        public VoucherViewModel GetVoucher(int voucherId)
-        {
-            VoucherViewModel voucherViewModel = null;
-            var query = GetVoucherQuery(txn => txn.Id == voucherId);
-            var voucher = query.SingleOrDefault();
-            if (voucher != null)
-            {
-                voucherViewModel = _mapper.Map<VoucherViewModel>(voucher);
-                AddWorkItemInfo(voucherViewModel);
-            }
-
-            return voucherViewModel;
-        }
-
-        /// <summary>
-        /// تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public int GetCount(int fpId, int branchId, GridOptions gridOptions = null)
-        {
-            var repository = _unitOfWork.GetRepository<Voucher>();
-            var count = repository
-                .GetCountByCriteria(
-                    txn => txn.FiscalPeriod.Id == fpId && txn.Branch.Id == branchId,
-                    gridOptions);
-            return count;
-        }
-
-        /// <summary>
-        /// اطلاعات یک سند مالی را در دیتابیس ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="voucher">سند مالی برای ایجاد یا اصلاح</param>
-        public void SaveVoucher(VoucherViewModel voucher)
-        {
-            Verify.ArgumentNotNull(voucher, "voucher");
-            var repository = _unitOfWork.GetRepository<Voucher>();
-            if (voucher.Id == 0)
-            {
-                var newVoucher = _mapper.Map<Voucher>(voucher);
-                UpdateAction(newVoucher);
-                repository.Insert(newVoucher, txn => txn.Document, txn => txn.Document.Actions);
-            }
-            else
-            {
-                var existing = repository
-                    .GetEntityQuery()
-                    .Where(txn => txn.Id == voucher.Id)
-                    .Include(txn => txn.Document)
-                        .ThenInclude(doc => doc.Actions)
-                    .SingleOrDefault();
-                if (existing != null)
-                {
-                    UpdateExistingVoucher(existing, voucher);
-                    UpdateAction(existing);
-                    repository.Update(existing, txn => txn.Document, txn => txn.Document.Actions);
-                }
-            }
-
-            _unitOfWork.Commit();
-        }
-
-        /// <summary>
-        /// سند مالی مشخص شده با شناسه دیتابیسی را از دیتابیس حذف می کند
-        /// </summary>
-        /// <param name="voucherId">شناسه دیتابیسی سند مالی برای حذف</param>
-        public void DeleteVoucher(int voucherId)
-        {
-            var repository = _unitOfWork.GetRepository<Voucher>();
-            var voucher = repository.GetByIDWithTracking(
-                voucherId, txn => txn.Lines, txn => txn.Document);
-            if (voucher != null)
-            {
-                var documentRepository = _unitOfWork.GetRepository<Document>();
-                var document = documentRepository.GetByIDWithTracking(
-                    voucher.Document.Id, doc => doc.Actions);
-                voucher.Lines.Clear();
-                document.Actions.Clear();
-                repository.Delete(voucher);
-                documentRepository.Delete(document);
-                _unitOfWork.Commit();
-            }
-        }
-
-        /// <summary>
-        /// اطلاعات سند مالی داده شده را برای مطابقت با کلیه قواعد کاری برنامه اعتبارسنجی می کند
-        /// </summary>
-        /// <param name="voucher">سند مالی که باید اعتبارسنجی شود</param>
-        /// <returns>مقدار بولی درست در صورت مطابقت کامل با قواعد کاری، در غیر این صورت مقدار بولی نادرست</returns>
-        public bool IsValidVoucher(VoucherViewModel voucher)
-        {
-            Verify.ArgumentNotNull(voucher, "voucher");
-            var repository = _unitOfWork.GetRepository<FiscalPeriod>();
-            var fiscalPeriod = repository.GetByID(voucher.FiscalPeriodId);
-            bool isValid = (fiscalPeriod != null)
-                && (voucher.Date >= fiscalPeriod.StartDate)
-                && (voucher.Date <= fiscalPeriod.EndDate);
-            return isValid;
-        }
-
-        #endregion
-
-        #endregion
-
         #region Voucher Line Operations
-
-        #region Asynchronous Methods
 
         /// <summary>
         /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
@@ -525,111 +389,6 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
-        #region Synchronous Methods (May be removed in the future)
-
-        /// <summary>
-        /// آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>آرتیکل های سند مشخص شده با شناسه عددی</returns>
-        public IList<VoucherLineViewModel> GetArticles(int voucherId, GridOptions gridOptions = null)
-        {
-            var query = GetVoucherLinesQuery(voucherId, gridOptions);
-            var lines = query
-                .Select(line => _mapper.Map<VoucherLineViewModel>(line))
-                .ToList();
-            return lines;
-        }
-
-        /// <summary>
-        /// اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
-        /// <returns>اطلاعات آرتیکل مشخص شده با شناسه دیتابیسی</returns>
-        public VoucherLineViewModel GetArticle(int articleId)
-        {
-            VoucherLineViewModel articleViewModel = null;
-            var repository = _unitOfWork.GetRepository<VoucherLine>();
-            var article = repository.GetByID(
-                articleId,
-                art => art.Voucher, art => art.Account, art => art.Currency,
-                art => art.Branch, art => art.FiscalPeriod);
-            if (article != null)
-            {
-                articleViewModel = _mapper.Map<VoucherLineViewModel>(article);
-            }
-
-            return articleViewModel;
-        }
-
-        /// <summary>
-        /// تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
-        /// از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد آرتیکل های سند مالی بعد از اعمال فیلتر</returns>
-        public int GetArticleCount(int voucherId, GridOptions gridOptions = null)
-        {
-            var repository = _unitOfWork.GetRepository<VoucherLine>();
-            var count = repository.GetCountByCriteria(line => line.Voucher.Id == voucherId, gridOptions);
-            return count;
-        }
-
-        /// <summary>
-        /// اطلاعات یک سطر سند مالی (آرتیکل) را در دیتابیس ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
-        public void SaveArticle(VoucherLineViewModel article)
-        {
-            Verify.ArgumentNotNull(article, "article");
-            var repository = _unitOfWork.GetRepository<VoucherLine>();
-            if (article.Id == 0)
-            {
-                var newArticle = _mapper.Map<VoucherLine>(article);
-                repository.Insert(newArticle);
-            }
-            else
-            {
-                var existing = repository.GetByID(article.Id);
-                if (existing != null)
-                {
-                    UpdateExistingArticle(existing, article);
-                    repository.Update(existing);
-                }
-            }
-
-            _unitOfWork.Commit();
-        }
-
-        /// <summary>
-        /// سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از محل ذخیره حذف می کند
-        /// </summary>
-        /// <param name="articleId">شناسه دیتابیسی آرتیکل برای حذف</param>
-        public void DeleteArticle(int articleId)
-        {
-            var repository = _unitOfWork.GetRepository<VoucherLine>();
-            var article = repository.GetByID(articleId);
-            if (article != null)
-            {
-                article.Account = null;
-                article.DetailAccount = null;
-                article.CostCenter = null;
-                article.Project = null;
-                article.Branch = null;
-                article.Currency = null;
-                article.FiscalPeriod = null;
-                article.Voucher = null;
-                repository.Delete(article);
-                _unitOfWork.Commit();
-            }
-        }
-
-        #endregion
-
-        #endregion
-
         private static void UpdateExistingArticle(VoucherLine existing, VoucherLineViewModel article)
         {
             existing.AccountId = article.FullAccount.AccountId ?? 0;
@@ -723,19 +482,6 @@ namespace SPPC.Tadbir.Persistence
                     .Take(gridOptions.Paging.PageSize)
                 : linesQuery;
             return linesQuery;
-        }
-
-        private IQueryable<WorkItemHistory> GetHistoryQuery(
-            IRepository<WorkItemHistory> repository, Expression<Func<WorkItemHistory, bool>> criteria)
-        {
-            var query = repository
-                .GetEntityQuery()
-                .Include(hist => hist.User)
-                .Include(hist => hist.Role)
-                .Where(criteria)
-                .OrderByDescending(hist => hist.Date)
-                .OrderByDescending(hist => hist.Time);
-            return query;
         }
 
         private IQueryable<VoucherLine> GetArticleDetailsQuery(

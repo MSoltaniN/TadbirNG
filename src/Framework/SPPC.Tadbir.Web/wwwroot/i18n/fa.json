@@ -17,6 +17,7 @@
       "FiscalPeriod": "دوره مالی",
       "Branch": "شعب",
       "Company": "شرکت",
+      "AccountRelations": "ارتباطات حساب",
       "ChangePassword": "تغییر کلمه عبور",
       "Exit": "خروج"
     }
@@ -46,7 +47,7 @@
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
-    "FieldName" :  "نام ستون"
+    "FieldName": "نام ستون"
   },
   "Entity": {
     "Account": "اطلاعات حساب",
@@ -60,10 +61,11 @@
     "Project": "پروژه",
     "FiscalPeriod": "دوره مالی",
     "Branch": "شعبه",
-    "Company": "شرکت"
+    "Company": "شرکت",
+    "AccountRelations": "ارتباطات حساب"
   },
   "Account": {
-    "New": "حساب جدید", 
+    "New": "حساب جدید",
     "NewSubAccount": "درج زیر حساب جدید",
     "Edit": "ویرایش",
     "Delete": "حذف",
@@ -184,6 +186,15 @@
     "Level": "سطح",
     "Description": "شرح",
     "Delete": "حذف پروژه"
+  },
+  "AccountRelations": {
+    "MainComponent": "مولفه اصلی",
+    "RelatedComponent": "مولفه مرتبط",
+    "Account": "حساب",
+    "DetailAccount": "تفصیلی شناور",
+    "CostCenter": "مرکز هزینه",
+    "Project": "پروژه",
+    "Select": "-- انتخاب کنید --"
   },
   "FiscalPeriod": {
     "New": "دوره مالی جدید",

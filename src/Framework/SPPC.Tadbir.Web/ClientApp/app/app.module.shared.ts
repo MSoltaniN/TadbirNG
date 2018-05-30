@@ -44,6 +44,7 @@ import { BranchComponent } from './components/branch/branch.component';
 import { BranchFormComponent } from './components/branch/branch-form.component';
 import { CompanyComponent } from './components/company/company.component';
 import { CompanyFormComponent } from './components/company/company-form.component';
+import { AccountRelationsComponent } from './components/accountRelations/accountRelations.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -70,7 +71,7 @@ import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
 import {
     AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
-    BranchService, VoucherService, LookupService, FullAccountService, ProjectService
+    BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService
 
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
@@ -145,13 +146,25 @@ import { Permissions } from './security/permissions';
         BranchFormComponent,
         CompanyComponent,
         CompanyFormComponent,
-        SppcDatePipe,      
-        SppcCheckAccess
-        
+        SppcDatePipe,     
+        SppcCheckAccess        
+        AccountRelationsComponent                
+
     ],
-    providers: [ AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
+    providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
         UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService,
-        { provide: LocationStrategy, useClass: HashLocationStrategy },        
+        { provide: LocationStrategy, useClass: HashLocationStrategy },
+        //{
+        //    provide: RTL,
+        //    useFactory: function () {
+        //        var lang = localStorage.getItem('lang');
+        //        if (lang == "en") {
+        //            return false;
+        //        } 
+        //        else 
+        //            return true;
+        //    }            
+        //},
         { provide: MessageService, useClass: GridMessageService },
         AuthGuard,
         AuthenticationService,
@@ -189,6 +202,7 @@ import { Permissions } from './security/permissions';
             { path: 'fiscalperiod', component: FiscalPeriodComponent, canActivate: [AuthGuard] },
             { path: 'branches', component: BranchComponent, canActivate: [AuthGuard] },
             { path: 'companies', component: CompanyComponent, canActivate: [AuthGuard] },
+            { path: 'accountrelations', component: AccountRelationsComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])
     ],

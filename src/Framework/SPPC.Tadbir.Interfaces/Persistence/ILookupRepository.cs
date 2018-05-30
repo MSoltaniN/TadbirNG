@@ -13,8 +13,6 @@ namespace SPPC.Tadbir.Persistence
     {
         #region Finance Subsystem lookup
 
-        #region Asynchronous Methods
-
         /// <summary>
         /// به روش آسنکرون، سرفصل های حسابداری تعریف شده در دوره مالی و شعبه مشخص شده را
         /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
@@ -82,57 +80,6 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
         /// <returns>مجموعه شعب سازمانی تعریف شده در یک شرکت مشخص شده</returns>
         Task<IEnumerable<KeyValue>> GetUserAccessibleBranchesAsync(int companyId, int userId);
-
-        #endregion
-
-        #region Synchronous Methods (May be removed in the future)
-
-        /// <summary>
-        /// سرفصل های حسابداری تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
-        /// <returns>مجموعه سرفصل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        IEnumerable<KeyValue> GetAccounts(int fpId, int branchId);
-
-        /// <summary>
-        /// تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
-        /// <returns>مجموعه تفصیلی های شناور تعریف شده در دوره و شعبه مشخص شده</returns>
-        IEnumerable<KeyValue> GetDetailAccounts(int fpId, int branchId);
-
-        /// <summary>
-        /// مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
-        /// <returns>مجموعه مراکز هزینه تعریف شده در دوره و شعبه مشخص شده</returns>
-        IEnumerable<KeyValue> GetCostCenters(int fpId, int branchId);
-
-        /// <summary>
-        /// پروژه های تعریف شده در دوره مالی و شعبه مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
-        /// <returns>مجموعه پروژه های تعریف شده در دوره و شعبه مشخص شده</returns>
-        IEnumerable<KeyValue> GetProjects(int fpId, int branchId);
-
-        /// <summary>
-        /// ارزهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <returns>مجموعه ارز های تعریف شده</returns>
-        IEnumerable<KeyValue> GetCurrencies();
-
-        /// <summary>
-        /// دوره های مالی تعریف شده در یک شرکت مشخص شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
-        /// </summary>
-        /// <param name="companyId">شناسه دیتابیسی یکی از شرکت های موجود</param>
-        /// <returns>مجموعه دوره های مالی تعریف شده در یک شرکت مشخص شده</returns>
-        IEnumerable<KeyValue> GetFiscalPeriods(int companyId);
-
-        #endregion
 
         #endregion
     }
