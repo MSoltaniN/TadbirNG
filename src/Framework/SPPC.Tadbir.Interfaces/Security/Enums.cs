@@ -489,9 +489,14 @@ namespace SPPC.Tadbir.Security
         AssignBranches = 0x20,
 
         /// <summary>
+        /// Indicates permission to allow/disallow access to one or more fiscal periods in a role
+        /// </summary>
+        AssignFiscalPeriods = 0x40,
+
+        /// <summary>
         /// Indicates all permissions available for managing a role
         /// </summary>
-        All = 0x3f
+        All = 0x7f
     }
 
     /// <summary>

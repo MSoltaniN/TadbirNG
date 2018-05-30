@@ -203,6 +203,19 @@ namespace SPPC.Tadbir.Persistence
         /// associations to the specified role</param>
         Task SaveRoleUsersAsync(RoleUsersViewModel role);
 
+        /// <summary>
+        /// به روش آسنکرون، دوره های مالی قابل دسترسی توسط یک نقش را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="roleId">شناسه یکی از نقش های موجود</param>
+        /// <returns>اطلاعات نمایشی دوره های مالی قابل دسترسی</returns>
+        Task<RoleItemsViewModel> GetRoleFiscalPeriodsAsync(int roleId);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت دوره های مالی قابل دسترسی توسط یک نقش را ذخیره می کند
+        /// </summary>
+        /// <param name="role">اطلاعات نمایشی دوره های مالی قابل دسترسی</param>
+        Task SaveRoleFiscalPeriodsAsync(RoleItemsViewModel role);
+
         #endregion
     }
 }

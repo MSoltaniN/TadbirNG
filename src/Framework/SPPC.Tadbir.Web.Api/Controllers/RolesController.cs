@@ -194,6 +194,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // GET: api/roles/{roleId:min(1)}/fperiods
+        [Route(RoleApi.RoleFiscalPeriodsUrl)]
+        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
+        public async Task<IActionResult> GetRoleFiscalPeriodsAsync(int roleId)
+        {
+            var users = await _repository.GetRoleFiscalPeriodsAsync(roleId);
+            return JsonReadResult(users);
+        }
+
+        // PUT: api/roles/{roleId:min(1)}/fperiods
+        [HttpPut]
+        [Route(RoleApi.RoleFiscalPeriodsUrl)]
+        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.AssignFiscalPeriods)]
+        public async Task<IActionResult> PutModifiedRoleFiscalPeriodsAsync(
+            int roleId, [FromBody] RoleItemsViewModel roleFiscalPeriods)
+        {
+            var result = BasicValidationResult(roleFiscalPeriods, roleId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SaveRoleFiscalPeriodsAsync(roleFiscalPeriods);
+            return Ok();
+        }
+
         protected override IActionResult BasicValidationResult(RoleFullViewModel role, int roleId = 0)
         {
             if (role == null || role.Role == null)

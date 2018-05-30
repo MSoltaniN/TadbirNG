@@ -10,6 +10,7 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Corporate;
+using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Corporate;
@@ -681,6 +682,68 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، دوره های مالی قابل دسترسی توسط یک نقش را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="roleId">شناسه یکی از نقش های موجود</param>
+        /// <returns>اطلاعات نمایشی دوره های مالی قابل دسترسی</returns>
+        public async Task<RoleItemsViewModel> GetRoleFiscalPeriodsAsync(int roleId)
+        {
+            RoleItemsViewModel role = null;
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var existing = await repository
+                .GetEntityQuery()
+                .Include(r => r.RoleFiscalPeriods)
+                    .ThenInclude(rfp => rfp.FiscalPeriod)
+                .Where(r => r.Id == roleId)
+                .SingleOrDefaultAsync();
+            if (existing != null)
+            {
+                var enabledPeriods = existing.RoleFiscalPeriods
+                    .Select(rfp => rfp.FiscalPeriod)
+                    .Select(fp => _mapper.Map<RelatedItemViewModel>(fp))
+                    .ToArray();
+                var periodRepository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
+                var allPeriods = await periodRepository
+                    .GetAllAsync();
+                var disabledPeriods = allPeriods
+                    .Select(fp => _mapper.Map<RelatedItemViewModel>(fp))
+                    .Except(enabledPeriods, new EntityEqualityComparer<RelatedItemViewModel>())
+                    .ToArray();
+                Array.ForEach(enabledPeriods, item => item.IsSelected = true);
+
+                role = _mapper.Map<RoleItemsViewModel>(existing);
+                Array.ForEach(enabledPeriods
+                    .Concat(disabledPeriods)
+                    .OrderBy(item => item.Id)
+                    .ToArray(), item => role.RelatedItems.Add(item));
+            }
+
+            return role;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت دوره های مالی قابل دسترسی توسط یک نقش را ذخیره می کند
+        /// </summary>
+        /// <param name="role">اطلاعات نمایشی دوره های مالی قابل دسترسی</param>
+        public async Task SaveRoleFiscalPeriodsAsync(RoleItemsViewModel role)
+        {
+            Verify.ArgumentNotNull(role, "role");
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var existing = await repository.GetByIDWithTrackingAsync(role.Id, r => r.RoleFiscalPeriods);
+            if (existing != null && AreFiscalPeriodsModified(existing, role))
+            {
+                if (existing.RoleFiscalPeriods.Count > 0)
+                {
+                    RemoveInaccessibleFiscalPeriods(existing, role);
+                }
+
+                AddNewFiscalPeriods(existing, role);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
         #endregion
 
         private static void RemoveDisabledPermissions(Role existing, RoleFullViewModel role)
@@ -743,6 +806,18 @@ namespace SPPC.Tadbir.Persistence
             return (!AreEqual(existingItems, enabledItems));
         }
 
+        private static bool AreFiscalPeriodsModified(Role existing, RoleItemsViewModel roleItems)
+        {
+            var existingItems = existing.RoleFiscalPeriods
+                .Select(rfp => rfp.FiscalPeriodId)
+                .ToArray();
+            var enabledItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected)
+                .Select(item => item.Id)
+                .ToArray();
+            return (!AreEqual(existingItems, enabledItems));
+        }
+
         private static void RemoveInaccessibleBranches(Role existing, RoleBranchesViewModel role)
         {
             var currentItems = role.Branches
@@ -773,6 +848,23 @@ namespace SPPC.Tadbir.Persistence
             {
                 existing.UserRoles.Remove(existing.UserRoles
                     .Where(ur => ur.UserId == id)
+                    .Single());
+            }
+        }
+
+        private static void RemoveInaccessibleFiscalPeriods(Role existing, RoleItemsViewModel roleItems)
+        {
+            var currentItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected)
+                .Select(item => item.Id);
+            var removedItems = existing.RoleFiscalPeriods
+                .Select(rfp => rfp.FiscalPeriodId)
+                .Where(id => !currentItems.Contains(id))
+                .ToArray();
+            foreach (int id in removedItems)
+            {
+                existing.RoleFiscalPeriods.Remove(existing.RoleFiscalPeriods
+                    .Where(rfp => rfp.FiscalPeriodId == id)
                     .Single());
             }
         }
@@ -870,6 +962,27 @@ namespace SPPC.Tadbir.Persistence
                     RoleId = existing.Id
                 };
                 existing.UserRoles.Add(userRole);
+            }
+        }
+
+        private void AddNewFiscalPeriods(Role existing, RoleItemsViewModel roleItems)
+        {
+            var repository = _unitOfWork.GetRepository<FiscalPeriod>();
+            var currentItems = existing.RoleFiscalPeriods.Select(rfp => rfp.FiscalPeriodId);
+            var newItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected
+                    && !currentItems.Contains(item.Id));
+            foreach (var item in newItems)
+            {
+                var fiscalPeriod = repository.GetByIDWithTracking(item.Id);
+                var roleFiscalPeriod = new RoleFiscalPeriod()
+                {
+                    FiscalPeriod = fiscalPeriod,
+                    FiscalPeriodId = fiscalPeriod.Id,
+                    Role = existing,
+                    RoleId = existing.Id
+                };
+                existing.RoleFiscalPeriods.Add(roleFiscalPeriod);
             }
         }
 

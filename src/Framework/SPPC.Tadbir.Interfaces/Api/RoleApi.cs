@@ -23,11 +23,6 @@ namespace SPPC.Tadbir.Api
         public const string RolesUrl = "roles";
 
         /// <summary>
-        /// API server route URL for all roles
-        /// </summary>
-        public const string RolesSyncUrl = "roles/sync";
-
-        /// <summary>
         /// API client URL for a role specified by unique identifier.
         /// </summary>
         public const string Role = "roles/{0}";
@@ -36,11 +31,6 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a role specified by unique identifier.
         /// </summary>
         public const string RoleUrl = "roles/{roleId:min(1)}";
-
-        /// <summary>
-        /// API server route URL for a role specified by unique identifier.
-        /// </summary>
-        public const string RoleSyncUrl = "roles/{roleId:min(1)}/sync";
 
         /// <summary>
         /// API client URL for full details of a role specified by unique identifier.
@@ -53,11 +43,6 @@ namespace SPPC.Tadbir.Api
         public const string RoleDetailsUrl = "roles/{roleId:min(1)}/details";
 
         /// <summary>
-        /// API server route URL for full details of a role specified by unique identifier.
-        /// </summary>
-        public const string RoleDetailsSyncUrl = "roles/{roleId:min(1)}/details/sync";
-
-        /// <summary>
         /// API client URL for branches accessible to a role specified by unique identifier.
         /// </summary>
         public const string RoleBranches = "roles/{0}/branches";
@@ -66,11 +51,6 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for branches accessible to a role specified by unique identifier.
         /// </summary>
         public const string RoleBranchesUrl = "roles/{roleId:min(1)}/branches";
-
-        /// <summary>
-        /// API server route URL for branches accessible to a role specified by unique identifier.
-        /// </summary>
-        public const string RoleBranchesSyncUrl = "roles/{roleId:min(1)}/branches/sync";
 
         /// <summary>
         /// API client URL for users assigned to a role specified by unique identifier.
@@ -83,9 +63,14 @@ namespace SPPC.Tadbir.Api
         public const string RoleUsersUrl = "roles/{roleId:min(1)}/users";
 
         /// <summary>
-        /// API server route URL for users assigned to a role specified by unique identifier.
+        /// API client URL for fiscal periods accessible to a role specified by unique identifier.
         /// </summary>
-        public const string RoleUsersSyncUrl = "roles/{roleId:min(1)}/users/sync";
+        public const string RoleFiscalPeriods = "roles/{0}/fperiods";
+
+        /// <summary>
+        /// API server route URL for fiscal periods accessible to a role specified by unique identifier.
+        /// </summary>
+        public const string RoleFiscalPeriodsUrl = "roles/{roleId:min(1)}/fperiods";
 
         /// <summary>
         /// API client URL for a new role that contains all available permissions.
@@ -96,11 +81,6 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a new role that contains all available permissions.
         /// </summary>
         public const string NewRoleUrl = "roles/new";
-
-        /// <summary>
-        /// API server route URL for a new role that contains all available permissions.
-        /// </summary>
-        public const string NewRoleSyncUrl = "roles/new/sync";
 
         /// <summary>
         /// API client URL for role metadata

@@ -13,6 +13,7 @@ using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
@@ -103,6 +104,8 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Branches, opts => opts.Ignore());
             mapperConfig.CreateMap<Role, RoleUsersViewModel>()
                 .ForMember(dest => dest.Users, opts => opts.Ignore());
+            mapperConfig.CreateMap<Role, RoleItemsViewModel>()
+                .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
 
             mapperConfig.CreateMap<Permission, PermissionViewModel>()
                 .ForMember(dest => dest.IsEnabled, opts => opts.UseValue(true));
@@ -203,6 +206,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
             mapperConfig.CreateMap<FiscalPeriodViewModel, FiscalPeriod>()
                .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId);
+            mapperConfig.CreateMap<FiscalPeriod, RelatedItemViewModel>();
         }
 
         private static void MapCorporateTypes(IMapperConfigurationExpression mapperConfig)
