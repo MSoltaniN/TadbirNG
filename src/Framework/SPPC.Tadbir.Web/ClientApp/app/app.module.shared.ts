@@ -146,8 +146,8 @@ import { Permissions } from './security/permissions';
         BranchFormComponent,
         CompanyComponent,
         CompanyFormComponent,
-        SppcDatePipe,     
-        SppcCheckAccess        
+        SppcDatePipe,
+        SppcCheckAccess,
         AccountRelationsComponent                
 
     ],
