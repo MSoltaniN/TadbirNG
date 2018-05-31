@@ -111,32 +111,32 @@ namespace SPPC.Tadbir.Service
         /// Retrieves information about all branches accessible by a role specified by unique identifier.
         /// </summary>
         /// <param name="roleId">Unique identifier of an existing role</param>
-        /// <returns>A <see cref="RoleBranchesViewModel"/> object containing accessible branches, if the role can be found;
+        /// <returns>A <see cref="RoleItemsViewModel"/> object containing accessible branches, if the role can be found;
         /// otherwise, returns null.</returns>
-        RoleBranchesViewModel GetRoleBranches(int roleId);
+        RoleItemsViewModel GetRoleBranches(int roleId);
 
         /// <summary>
         /// Updates accessible branches for a role specified by unique identifier.
         /// </summary>
-        /// <param name="branches">A <see cref="RoleBranchesViewModel"/> object containing accessible branches for the role
+        /// <param name="branches">A <see cref="RoleItemsViewModel"/> object containing accessible branches for the role
         /// </param>
         /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
-        ServiceResponse SaveRoleBranches(RoleBranchesViewModel branches);
+        ServiceResponse SaveRoleBranches(RoleItemsViewModel branches);
 
         /// <summary>
         /// Retrieves information about all users that have a role specified by unique identifier.
         /// </summary>
         /// <param name="roleId">Unique identifier of an existing role</param>
-        /// <returns>A <see cref="RoleUsersViewModel"/> object containing assigned users, if the role can be found;
+        /// <returns>A <see cref="RoleItemsViewModel"/> object containing assigned users, if the role can be found;
         /// otherwise, returns null.</returns>
-        RoleUsersViewModel GetRoleUsers(int roleId);
+        RoleItemsViewModel GetRoleUsers(int roleId);
 
         /// <summary>
         /// Updates assigned users for a role specified by unique identifier.
         /// </summary>
-        /// <param name="users">A <see cref="RoleUsersViewModel"/> object containing users assigned to the role
+        /// <param name="users">A <see cref="RoleItemsViewModel"/> object containing users assigned to the role
         /// </param>
         /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
-        ServiceResponse SaveRoleUsers(RoleUsersViewModel users);
+        ServiceResponse SaveRoleUsers(RoleItemsViewModel users);
     }
 }

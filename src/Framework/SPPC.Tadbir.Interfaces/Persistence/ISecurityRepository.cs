@@ -176,32 +176,30 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsAssignedRoleAsync(int roleId);
 
         /// <summary>
-        /// Asynchronously retrieves branch associations for a role specified by identifier.
+        /// به روش آسنکرون، شعبه های قابل دسترسی توسط یک نقش را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="roleId">Unique identifier of an existing role</param>
-        /// <returns>An object that contains information about all branches accessible by specified role</returns>
-        Task<RoleBranchesViewModel> GetRoleBranchesAsync(int roleId);
+        /// <param name="roleId">شناسه یکی از نقش های موجود</param>
+        /// <returns>اطلاعات نمایشی شعبه های قابل دسترسی</returns>
+        Task<RoleItemsViewModel> GetRoleBranchesAsync(int roleId);
 
         /// <summary>
-        /// Asynchronously updates branch associations for a role specified by identifier.
+        /// به روش آسنکرون، آخرین وضعیت شعبه های قابل دسترسی توسط یک نقش را ذخیره می کند
         /// </summary>
-        /// <param name="role">A <see cref="RoleBranchesViewModel"/> object that contains information about all branch
-        /// associations to the specified role</param>
-        Task SaveRoleBranchesAsync(RoleBranchesViewModel role);
+        /// <param name="roleBranches">اطلاعات نمایشی شعبه های قابل دسترسی</param>
+        Task SaveRoleBranchesAsync(RoleItemsViewModel roleBranches);
 
         /// <summary>
-        /// Asynchronously retrieves user associations for a role specified by identifier.
+        /// به روش آسنکرون، کاربران یک نقش را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="roleId">Unique identifier of an existing role</param>
-        /// <returns>An object that contains information about all users assigned to specified role</returns>
-        Task<RoleUsersViewModel> GetRoleUsersAsync(int roleId);
+        /// <param name="roleId">شناسه یکی از نقش های موجود</param>
+        /// <returns>اطلاعات نمایشی کاربران</returns>
+        Task<RoleItemsViewModel> GetRoleUsersAsync(int roleId);
 
         /// <summary>
-        /// Asynchronously updates user associations for a role specified by identifier.
+        /// به روش آسنکرون، آخرین وضعیت کاربران یک نقش را ذخیره می کند
         /// </summary>
-        /// <param name="role">A <see cref="RoleUsersViewModel"/> object that contains information about all user
-        /// associations to the specified role</param>
-        Task SaveRoleUsersAsync(RoleUsersViewModel role);
+        /// <param name="roleUsers">اطلاعات نمایشی کاربران</param>
+        Task SaveRoleUsersAsync(RoleItemsViewModel roleUsers);
 
         /// <summary>
         /// به روش آسنکرون، دوره های مالی قابل دسترسی توسط یک نقش را خوانده و برمی گرداند
@@ -213,8 +211,8 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، آخرین وضعیت دوره های مالی قابل دسترسی توسط یک نقش را ذخیره می کند
         /// </summary>
-        /// <param name="role">اطلاعات نمایشی دوره های مالی قابل دسترسی</param>
-        Task SaveRoleFiscalPeriodsAsync(RoleItemsViewModel role);
+        /// <param name="rolePeriods">اطلاعات نمایشی دوره های مالی قابل دسترسی</param>
+        Task SaveRoleFiscalPeriodsAsync(RoleItemsViewModel rolePeriods);
 
         #endregion
     }

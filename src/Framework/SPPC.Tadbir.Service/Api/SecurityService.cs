@@ -225,21 +225,21 @@ namespace SPPC.Tadbir.Service
         /// Retrieves information about all branches accessible by a role specified by unique identifier.
         /// </summary>
         /// <param name="roleId">Unique identifier of an existing role</param>
-        /// <returns>A <see cref="RoleBranchesViewModel"/> object containing accessible branches, if the role can be found;
+        /// <returns>A <see cref="RoleItemsViewModel"/> object containing accessible branches, if the role can be found;
         /// otherwise, returns null.</returns>
-        public RoleBranchesViewModel GetRoleBranches(int roleId)
+        public RoleItemsViewModel GetRoleBranches(int roleId)
         {
-            var branches = _apiClient.Get<RoleBranchesViewModel>(RoleApi.RoleBranches, roleId);
+            var branches = _apiClient.Get<RoleItemsViewModel>(RoleApi.RoleBranches, roleId);
             return branches;
         }
 
         /// <summary>
         /// Updates accessible branches for a role specified by unique identifier.
         /// </summary>
-        /// <param name="branches">A <see cref="RoleBranchesViewModel"/> object containing accessible branches for the role
+        /// <param name="branches">A <see cref="RoleItemsViewModel"/> object containing accessible branches for the role
         /// </param>
         /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
-        public ServiceResponse SaveRoleBranches(RoleBranchesViewModel branches)
+        public ServiceResponse SaveRoleBranches(RoleItemsViewModel branches)
         {
             Verify.ArgumentNotNull(branches, "branches");
             ServiceResponse response = _apiClient.Update(branches, RoleApi.RoleBranches, branches.Id);
@@ -250,21 +250,21 @@ namespace SPPC.Tadbir.Service
         /// Retrieves information about all users that have a role specified by unique identifier.
         /// </summary>
         /// <param name="roleId">Unique identifier of an existing role</param>
-        /// <returns>A <see cref="RoleUsersViewModel"/> object containing assigned users, if the role can be found;
+        /// <returns>A <see cref="RoleItemsViewModel"/> object containing assigned users, if the role can be found;
         /// otherwise, returns null.</returns>
-        public RoleUsersViewModel GetRoleUsers(int roleId)
+        public RoleItemsViewModel GetRoleUsers(int roleId)
         {
-            var users = _apiClient.Get<RoleUsersViewModel>(RoleApi.RoleUsers, roleId);
+            var users = _apiClient.Get<RoleItemsViewModel>(RoleApi.RoleUsers, roleId);
             return users;
         }
 
         /// <summary>
         /// Updates assigned users for a role specified by unique identifier.
         /// </summary>
-        /// <param name="users">A <see cref="RoleUsersViewModel"/> object containing users assigned to the role
+        /// <param name="users">A <see cref="RoleItemsViewModel"/> object containing users assigned to the role
         /// </param>
         /// <returns>A <see cref="ServiceResponse"/> object that contains details about the result of operation</returns>
-        public ServiceResponse SaveRoleUsers(RoleUsersViewModel users)
+        public ServiceResponse SaveRoleUsers(RoleItemsViewModel users)
         {
             Verify.ArgumentNotNull(users, "users");
             ServiceResponse response = _apiClient.Update(users, RoleApi.RoleUsers, users.Id);

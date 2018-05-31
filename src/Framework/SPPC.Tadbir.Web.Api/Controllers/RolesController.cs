@@ -157,7 +157,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(RoleApi.RoleBranchesUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.AssignBranches)]
-        public async Task<IActionResult> PutModifiedRoleBranchesAsync(int roleId, [FromBody] RoleBranchesViewModel roleBranches)
+        public async Task<IActionResult> PutModifiedRoleBranchesAsync(
+            int roleId, [FromBody] RoleItemsViewModel roleBranches)
         {
             var result = BasicValidationResult(roleBranches, roleId);
             if (result is BadRequestObjectResult)
@@ -182,7 +183,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPut]
         [Route(RoleApi.RoleUsersUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.AssignUsers)]
-        public async Task<IActionResult> PutModifiedRoleUsersAsync(int roleId, [FromBody] RoleUsersViewModel roleUsers)
+        public async Task<IActionResult> PutModifiedRoleUsersAsync(
+            int roleId, [FromBody] RoleItemsViewModel roleUsers)
         {
             var result = BasicValidationResult(roleUsers, roleId);
             if (result is BadRequestObjectResult)
@@ -199,8 +201,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
         public async Task<IActionResult> GetRoleFiscalPeriodsAsync(int roleId)
         {
-            var users = await _repository.GetRoleFiscalPeriodsAsync(roleId);
-            return JsonReadResult(users);
+            var fiscalPeriods = await _repository.GetRoleFiscalPeriodsAsync(roleId);
+            return JsonReadResult(fiscalPeriods);
         }
 
         // PUT: api/roles/{roleId:min(1)}/fperiods

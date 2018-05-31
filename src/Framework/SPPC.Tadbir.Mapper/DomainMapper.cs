@@ -89,6 +89,11 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<User, UserBriefViewModel>()
                 .ForMember(dest => dest.HasRole, opts => opts.UseValue(true));
+            mapperConfig.CreateMap<User, RelatedItemViewModel>()
+                .ForMember(
+                    dest => dest.Name,
+                    opts => opts.MapFrom(
+                        src => String.Format("{0} {1}", src.Person.FirstName, src.Person.LastName)));
             mapperConfig.CreateMap<UserBriefViewModel, User>();
             mapperConfig.CreateMap<User, UserContextViewModel>()
                 .ForMember(dest => dest.Roles, opts => opts.Ignore());
@@ -100,10 +105,6 @@ namespace SPPC.Tadbir.Mapper
                         src => src.RolePermissions.Select(rp => rp.Permission).Select(perm => perm.Name).ToList()));
             mapperConfig.CreateMap<RoleViewModel, Role>()
                 .ForMember(dest => dest.RolePermissions, opts => opts.Ignore());
-            mapperConfig.CreateMap<Role, RoleBranchesViewModel>()
-                .ForMember(dest => dest.Branches, opts => opts.Ignore());
-            mapperConfig.CreateMap<Role, RoleUsersViewModel>()
-                .ForMember(dest => dest.Users, opts => opts.Ignore());
             mapperConfig.CreateMap<Role, RoleItemsViewModel>()
                 .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
 
@@ -223,6 +224,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<BranchViewModel, Branch>()
                 .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId)
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId);
+            mapperConfig.CreateMap<Branch, RelatedItemViewModel>();
             mapperConfig.CreateMap<Company, CompanyViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<CompanyViewModel, Company>()
