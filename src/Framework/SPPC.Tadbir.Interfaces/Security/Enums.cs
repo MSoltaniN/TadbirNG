@@ -242,9 +242,14 @@ namespace SPPC.Tadbir.Security
         Delete = 0x8,
 
         /// <summary>
+        /// دسترسی اعطای دسترسی به یک دوره مالی برای یک یا چند نقش
+        /// </summary>
+        AssignRoles = 0x10,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت دوره های مالی
         /// </summary>
-        All = 0xf
+        All = 0x1f
     }
 
     /// <summary>
@@ -279,9 +284,14 @@ namespace SPPC.Tadbir.Security
         Delete = 0x8,
 
         /// <summary>
+        /// دسترسی اعطای دسترسی به یک شعبه برای یک یا چند نقش
+        /// </summary>
+        AssignRoles = 0x10,
+
+        /// <summary>
         /// دسترسی کامل به عملیات تعریف شده برای مدیریت شعب سازمانی
         /// </summary>
-        All = 0xf
+        All = 0x1f
     }
 
     /// <summary>
@@ -442,9 +452,14 @@ namespace SPPC.Tadbir.Security
         Edit = 0x4,
 
         /// <summary>
+        /// Indicates permission to assign one or more roles to a user
+        /// </summary>
+        AssignRoles = 0x8,
+
+        /// <summary>
         /// Indicates all permissions available for managing a user
         /// </summary>
-        All = 0x7
+        All = 0xf
     }
 
     /// <summary>

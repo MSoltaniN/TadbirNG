@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// عملیات مورد نیاز برای مدیریت شعب را پیاده سازی میکند.
+    /// عملیات مورد نیاز برای مدیریت شعب را تعریف میکند.
     /// </summary>
     public interface IBranchRepository
     {
@@ -35,6 +36,19 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه عددی یکی از شعب سازمانی موجود</param>
         /// <returns>شعبه سازمانی مشخص شده با شناسه عددی</returns>
         Task<BranchViewModel> GetBranchAsync(int branchId);
+
+        /// <summary>
+        /// به روش آسنکرون، نقش های دارای دسترسی به یک شعبه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
+        /// <returns>اطلاعات نمایشی نقش های دارای دسترسی</returns>
+        Task<RelatedItemsViewModel> GetBranchRolesAsync(int branchId);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت نقش های دارای دسترسی به یک شعبه را ذخیره می کند
+        /// </summary>
+        /// <param name="branchRoles">اطلاعات نمایشی نقش های دارای دسترسی</param>
+        Task SaveBranchRolesAsync(RelatedItemsViewModel branchRoles);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای شعبه سازمانی را از محل ذخیره خوانده و برمی گرداند

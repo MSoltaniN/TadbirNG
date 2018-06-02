@@ -23,11 +23,6 @@ namespace SPPC.Tadbir.Api
         public const string UsersUrl = "users";
 
         /// <summary>
-        /// API server route URL for all users
-        /// </summary>
-        public const string UsersSyncUrl = "users/sync";
-
-        /// <summary>
         /// API client URL for a user specified by unique identifier.
         /// </summary>
         public const string User = "users/{0}";
@@ -36,11 +31,6 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a user specified by unique identifier.
         /// </summary>
         public const string UserUrl = "users/{userId:min(1)}";
-
-        /// <summary>
-        /// API server route URL for a user specified by unique identifier.
-        /// </summary>
-        public const string UserSyncUrl = "users/{userId:min(1)}/sync";
 
         /// <summary>
         /// API client URL for a user's last login statistics.
@@ -53,11 +43,6 @@ namespace SPPC.Tadbir.Api
         public const string UserLastLoginUrl = "users/{userId:min(1)}/login";
 
         /// <summary>
-        /// API server route URL for a user's last login statistics.
-        /// </summary>
-        public const string UserLastLoginSyncUrl = "users/{userId:min(1)}/login/sync";
-
-        /// <summary>
         /// API client URL for a user specified by user name.
         /// </summary>
         public const string UserByName = "users/name/{0}";
@@ -66,11 +51,6 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a user specified by user name.
         /// </summary>
         public const string UserByNameUrl = "users/name/{userName}";
-
-        /// <summary>
-        /// API server route URL for a user specified by user name.
-        /// </summary>
-        public const string UserByNameSyncUrl = "users/name/{userName}/sync";
 
         /// <summary>
         /// API client URL for the password of a user specified by user name.
@@ -83,9 +63,14 @@ namespace SPPC.Tadbir.Api
         public const string UserPasswordUrl = "users/{userName}/password";
 
         /// <summary>
-        /// API server route URL for the password of a user specified by user name.
+        /// API client URL for all roles assigned to a user specified by identifier.
         /// </summary>
-        public const string UserPasswordSyncUrl = "users/{userName}/password/sync";
+        public const string UserRoles = "users/{0}/roles";
+
+        /// <summary>
+        /// API server route URL for all roles assigned to a user specified by identifier.
+        /// </summary>
+        public const string UserRolesUrl = "users/{userId:min(1)}/roles";
 
         /// <summary>
         /// API client URL for application context related to a user specified by identifier.
@@ -96,11 +81,6 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for application context related to a user specified by identifier.
         /// </summary>
         public const string UserContextUrl = "users/{userId:min(1)}/context";
-
-        /// <summary>
-        /// API server route URL for application context related to a user specified by identifier.
-        /// </summary>
-        public const string UserContextSyncUrl = "users/{userId:min(1)}/context/sync";
 
         /// <summary>
         /// API client URL for login status of all users.

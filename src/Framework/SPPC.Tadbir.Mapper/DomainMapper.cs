@@ -89,6 +89,8 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<User, UserBriefViewModel>()
                 .ForMember(dest => dest.HasRole, opts => opts.UseValue(true));
+            mapperConfig.CreateMap<User, RelatedItemsViewModel>()
+                .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
             mapperConfig.CreateMap<User, RelatedItemViewModel>()
                 .ForMember(
                     dest => dest.Name,
@@ -105,8 +107,9 @@ namespace SPPC.Tadbir.Mapper
                         src => src.RolePermissions.Select(rp => rp.Permission).Select(perm => perm.Name).ToList()));
             mapperConfig.CreateMap<RoleViewModel, Role>()
                 .ForMember(dest => dest.RolePermissions, opts => opts.Ignore());
-            mapperConfig.CreateMap<Role, RoleItemsViewModel>()
+            mapperConfig.CreateMap<Role, RelatedItemsViewModel>()
                 .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
+            mapperConfig.CreateMap<Role, RelatedItemViewModel>();
 
             mapperConfig.CreateMap<Permission, PermissionViewModel>()
                 .ForMember(dest => dest.IsEnabled, opts => opts.UseValue(true));
@@ -207,6 +210,8 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
             mapperConfig.CreateMap<FiscalPeriodViewModel, FiscalPeriod>()
                .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId);
+            mapperConfig.CreateMap<FiscalPeriod, RelatedItemsViewModel>()
+                .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
             mapperConfig.CreateMap<FiscalPeriod, RelatedItemViewModel>();
         }
 
@@ -224,6 +229,8 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<BranchViewModel, Branch>()
                 .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId)
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId);
+            mapperConfig.CreateMap<Branch, RelatedItemsViewModel>()
+                .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
             mapperConfig.CreateMap<Branch, RelatedItemViewModel>();
             mapperConfig.CreateMap<Company, CompanyViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));

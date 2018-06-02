@@ -5,6 +5,7 @@ using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -106,6 +107,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             await _repository.DeleteFiscalPeriodAsync(fpId);
             return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        // GET: api/fperiods/{fpId:min(1)}/roles
+        [Route(FiscalPeriodApi.FiscalPeriodRolesUrl)]
+        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.View)]
+        public async Task<IActionResult> GetFiscalPeriodRolesAsync(int fpId)
+        {
+            var roles = await _repository.GetFiscalPeriodRolesAsync(fpId);
+            return JsonReadResult(roles);
+        }
+
+        // PUT: api/fperiods/{fpId:min(1)}/roles
+        [HttpPut]
+        [Route(FiscalPeriodApi.FiscalPeriodRolesUrl)]
+        [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.AssignRoles)]
+        public async Task<IActionResult> PutModifiedFiscalPeriodRolesAsync(
+            int fpId, [FromBody] RelatedItemsViewModel fiscalPeriodRoles)
+        {
+            var result = BasicValidationResult(fiscalPeriodRoles, fpId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SaveFiscalPeriodRolesAsync(fiscalPeriodRoles);
+            return Ok();
         }
 
         private async Task<IActionResult> ValidationResultAsync(FiscalPeriodViewModel fiscalPeriod, int fperiodId = 0)

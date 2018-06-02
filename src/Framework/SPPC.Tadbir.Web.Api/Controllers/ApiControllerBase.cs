@@ -51,6 +51,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         protected virtual IActionResult BasicValidationResult(TViewModel item, int itemId = 0)
         {
+            return GetBasicValidationResult(item, itemId);
+        }
+
+        protected virtual IActionResult BasicValidationResult<TOtherModel>(TOtherModel item, int itemId = 0)
+        {
+            return GetBasicValidationResult(item, itemId);
+        }
+
+        private IActionResult GetBasicValidationResult(object item, int itemId)
+        {
             if (item == null)
             {
                 return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, EntityNameKey));

@@ -557,9 +557,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="roleId">شناسه یکی از نقش های موجود</param>
         /// <returns>اطلاعات نمایشی شعبه های قابل دسترسی</returns>
-        public async Task<RoleItemsViewModel> GetRoleBranchesAsync(int roleId)
+        public async Task<RelatedItemsViewModel> GetRoleBranchesAsync(int roleId)
         {
-            RoleItemsViewModel role = null;
+            RelatedItemsViewModel roleBranches = null;
             var repository = _unitOfWork.GetAsyncRepository<Role>();
             var existing = await repository
                 .GetEntityQuery()
@@ -582,21 +582,21 @@ namespace SPPC.Tadbir.Persistence
                     .ToArray();
                 Array.ForEach(enabledBranches, item => item.IsSelected = true);
 
-                role = _mapper.Map<RoleItemsViewModel>(existing);
+                roleBranches = _mapper.Map<RelatedItemsViewModel>(existing);
                 Array.ForEach(enabledBranches
                     .Concat(disabledBranches)
                     .OrderBy(item => item.Id)
-                    .ToArray(), item => role.RelatedItems.Add(item));
+                    .ToArray(), item => roleBranches.RelatedItems.Add(item));
             }
 
-            return role;
+            return roleBranches;
         }
 
         /// <summary>
         /// به روش آسنکرون، آخرین وضعیت شعبه های قابل دسترسی توسط یک نقش را ذخیره می کند
         /// </summary>
         /// <param name="roleBranches">اطلاعات نمایشی شعبه های قابل دسترسی</param>
-        public async Task SaveRoleBranchesAsync(RoleItemsViewModel roleBranches)
+        public async Task SaveRoleBranchesAsync(RelatedItemsViewModel roleBranches)
         {
             Verify.ArgumentNotNull(roleBranches, "role");
             var repository = _unitOfWork.GetAsyncRepository<Role>();
@@ -619,9 +619,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="roleId">شناسه یکی از نقش های موجود</param>
         /// <returns>اطلاعات نمایشی کاربران</returns>
-        public async Task<RoleItemsViewModel> GetRoleUsersAsync(int roleId)
+        public async Task<RelatedItemsViewModel> GetRoleUsersAsync(int roleId)
         {
-            RoleItemsViewModel role = null;
+            RelatedItemsViewModel roleUsers = null;
             var repository = _unitOfWork.GetAsyncRepository<Role>();
             var existing = await repository
                 .GetEntityQuery()
@@ -645,23 +645,23 @@ namespace SPPC.Tadbir.Persistence
                     .ToArray();
                 Array.ForEach(enabledUsers, item => item.IsSelected = true);
 
-                role = _mapper.Map<RoleItemsViewModel>(existing);
+                roleUsers = _mapper.Map<RelatedItemsViewModel>(existing);
                 Array.ForEach(enabledUsers
                     .Concat(disabledUsers)
                     .OrderBy(item => item.Id)
-                    .ToArray(), item => role.RelatedItems.Add(item));
+                    .ToArray(), item => roleUsers.RelatedItems.Add(item));
             }
 
-            return role;
+            return roleUsers;
         }
 
         /// <summary>
         /// به روش آسنکرون، آخرین وضعیت کاربران یک نقش را ذخیره می کند
         /// </summary>
         /// <param name="roleUsers">اطلاعات نمایشی کاربران</param>
-        public async Task SaveRoleUsersAsync(RoleItemsViewModel roleUsers)
+        public async Task SaveRoleUsersAsync(RelatedItemsViewModel roleUsers)
         {
-            Verify.ArgumentNotNull(roleUsers, "role");
+            Verify.ArgumentNotNull(roleUsers, "roleUsers");
             var repository = _unitOfWork.GetAsyncRepository<Role>();
             var existing = await repository.GetByIDWithTrackingAsync(roleUsers.Id, r => r.UserRoles);
             if (existing != null && AreUsersModified(existing, roleUsers))
@@ -682,9 +682,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="roleId">شناسه یکی از نقش های موجود</param>
         /// <returns>اطلاعات نمایشی دوره های مالی قابل دسترسی</returns>
-        public async Task<RoleItemsViewModel> GetRoleFiscalPeriodsAsync(int roleId)
+        public async Task<RelatedItemsViewModel> GetRoleFiscalPeriodsAsync(int roleId)
         {
-            RoleItemsViewModel role = null;
+            RelatedItemsViewModel rolePeriods = null;
             var repository = _unitOfWork.GetAsyncRepository<Role>();
             var existing = await repository
                 .GetEntityQuery()
@@ -707,23 +707,23 @@ namespace SPPC.Tadbir.Persistence
                     .ToArray();
                 Array.ForEach(enabledPeriods, item => item.IsSelected = true);
 
-                role = _mapper.Map<RoleItemsViewModel>(existing);
+                rolePeriods = _mapper.Map<RelatedItemsViewModel>(existing);
                 Array.ForEach(enabledPeriods
                     .Concat(disabledPeriods)
                     .OrderBy(item => item.Id)
-                    .ToArray(), item => role.RelatedItems.Add(item));
+                    .ToArray(), item => rolePeriods.RelatedItems.Add(item));
             }
 
-            return role;
+            return rolePeriods;
         }
 
         /// <summary>
         /// به روش آسنکرون، آخرین وضعیت دوره های مالی قابل دسترسی توسط یک نقش را ذخیره می کند
         /// </summary>
         /// <param name="rolePeriods">اطلاعات نمایشی دوره های مالی قابل دسترسی</param>
-        public async Task SaveRoleFiscalPeriodsAsync(RoleItemsViewModel rolePeriods)
+        public async Task SaveRoleFiscalPeriodsAsync(RelatedItemsViewModel rolePeriods)
         {
-            Verify.ArgumentNotNull(rolePeriods, "role");
+            Verify.ArgumentNotNull(rolePeriods, "rolePeriods");
             var repository = _unitOfWork.GetAsyncRepository<Role>();
             var existing = await repository.GetByIDWithTrackingAsync(rolePeriods.Id, r => r.RoleFiscalPeriods);
             if (existing != null && AreFiscalPeriodsModified(existing, rolePeriods))
@@ -734,6 +734,68 @@ namespace SPPC.Tadbir.Persistence
                 }
 
                 AddNewFiscalPeriods(existing, rolePeriods);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، نقش های یک کاربر را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userId">شناسه یکی از کاربران موجود</param>
+        /// <returns>اطلاعات نمایشی نقش ها</returns>
+        public async Task<RelatedItemsViewModel> GetUserRolesAsync(int userId)
+        {
+            RelatedItemsViewModel userRoles = null;
+            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var existing = await repository
+                .GetEntityQuery()
+                .Include(u => u.UserRoles)
+                    .ThenInclude(ur => ur.Role)
+                .Where(u => u.Id == userId)
+                .SingleOrDefaultAsync();
+            if (existing != null)
+            {
+                var enabledRoles = existing.UserRoles
+                    .Select(ur => ur.Role)
+                    .Select(r => _mapper.Map<RelatedItemViewModel>(r))
+                    .ToArray();
+                var roleRepository = _unitOfWork.GetAsyncRepository<Role>();
+                var allRoles = await roleRepository
+                    .GetAllAsync();
+                var disabledRoles = allRoles
+                    .Select(r => _mapper.Map<RelatedItemViewModel>(r))
+                    .Except(enabledRoles, new EntityEqualityComparer<RelatedItemViewModel>())
+                    .ToArray();
+                Array.ForEach(enabledRoles, item => item.IsSelected = true);
+
+                userRoles = _mapper.Map<RelatedItemsViewModel>(existing);
+                Array.ForEach(enabledRoles
+                    .Concat(disabledRoles)
+                    .OrderBy(item => item.Id)
+                    .ToArray(), item => userRoles.RelatedItems.Add(item));
+            }
+
+            return userRoles;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت نقش های یک کاربر را ذخیره می کند
+        /// </summary>
+        /// <param name="userRoles">اطلاعات نمایشی نقش ها</param>
+        public async Task SaveUserRolesAsync(RelatedItemsViewModel userRoles)
+        {
+            Verify.ArgumentNotNull(userRoles, "userRoles");
+            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var existing = await repository.GetByIDWithTrackingAsync(userRoles.Id, r => r.UserRoles);
+            if (existing != null && AreRolesModified(existing, userRoles))
+            {
+                if (existing.UserRoles.Count > 0)
+                {
+                    RemoveUnassignedRoles(existing, userRoles);
+                }
+
+                AddNewRoles(existing, userRoles);
                 repository.Update(existing);
                 await _unitOfWork.CommitAsync();
             }
@@ -777,7 +839,7 @@ namespace SPPC.Tadbir.Persistence
             return (!AreEqual(existingItems, enabledItems));
         }
 
-        private static bool AreBranchesModified(Role existing, RoleItemsViewModel roleItems)
+        private static bool AreBranchesModified(Role existing, RelatedItemsViewModel roleItems)
         {
             var existingItems = existing.RoleBranches
                 .Select(rb => rb.BranchId)
@@ -789,7 +851,7 @@ namespace SPPC.Tadbir.Persistence
             return (!AreEqual(existingItems, enabledItems));
         }
 
-        private static bool AreUsersModified(Role existing, RoleItemsViewModel roleItems)
+        private static bool AreUsersModified(Role existing, RelatedItemsViewModel roleItems)
         {
             var existingItems = existing.UserRoles
                 .Select(ur => ur.UserId)
@@ -801,7 +863,7 @@ namespace SPPC.Tadbir.Persistence
             return (!AreEqual(existingItems, enabledItems));
         }
 
-        private static bool AreFiscalPeriodsModified(Role existing, RoleItemsViewModel roleItems)
+        private static bool AreFiscalPeriodsModified(Role existing, RelatedItemsViewModel roleItems)
         {
             var existingItems = existing.RoleFiscalPeriods
                 .Select(rfp => rfp.FiscalPeriodId)
@@ -813,7 +875,19 @@ namespace SPPC.Tadbir.Persistence
             return (!AreEqual(existingItems, enabledItems));
         }
 
-        private static void RemoveInaccessibleBranches(Role existing, RoleItemsViewModel roleItems)
+        private static bool AreRolesModified(User existing, RelatedItemsViewModel roleItems)
+        {
+            var existingItems = existing.UserRoles
+                .Select(ur => ur.RoleId)
+                .ToArray();
+            var enabledItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected)
+                .Select(item => item.Id)
+                .ToArray();
+            return (!AreEqual(existingItems, enabledItems));
+        }
+
+        private static void RemoveInaccessibleBranches(Role existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected)
@@ -830,7 +904,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private static void RemoveUnassignedUsers(Role existing, RoleItemsViewModel role)
+        private static void RemoveUnassignedUsers(Role existing, RelatedItemsViewModel role)
         {
             var currentItems = role.RelatedItems
                 .Where(item => item.IsSelected)
@@ -847,7 +921,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private static void RemoveInaccessibleFiscalPeriods(Role existing, RoleItemsViewModel roleItems)
+        private static void RemoveInaccessibleFiscalPeriods(Role existing, RelatedItemsViewModel roleItems)
         {
             var currentItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected)
@@ -860,6 +934,23 @@ namespace SPPC.Tadbir.Persistence
             {
                 existing.RoleFiscalPeriods.Remove(existing.RoleFiscalPeriods
                     .Where(rfp => rfp.FiscalPeriodId == id)
+                    .Single());
+            }
+        }
+
+        private static void RemoveUnassignedRoles(User existing, RelatedItemsViewModel role)
+        {
+            var currentItems = role.RelatedItems
+                .Where(item => item.IsSelected)
+                .Select(item => item.Id);
+            var removedItems = existing.UserRoles
+                .Select(ur => ur.RoleId)
+                .Where(id => !currentItems.Contains(id))
+                .ToArray();
+            foreach (int id in removedItems)
+            {
+                existing.UserRoles.Remove(existing.UserRoles
+                    .Where(ur => ur.RoleId == id)
                     .Single());
             }
         }
@@ -918,7 +1009,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private void AddNewBranches(Role existing, RoleItemsViewModel roleItems)
+        private void AddNewBranches(Role existing, RelatedItemsViewModel roleItems)
         {
             var repository = _unitOfWork.GetRepository<Branch>();
             var currentItems = existing.RoleBranches.Select(rb => rb.BranchId);
@@ -939,7 +1030,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private void AddNewUsers(Role existing, RoleItemsViewModel roleItems)
+        private void AddNewUsers(Role existing, RelatedItemsViewModel roleItems)
         {
             var repository = _unitOfWork.GetRepository<User>();
             var currentItems = existing.UserRoles.Select(ur => ur.UserId);
@@ -960,7 +1051,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private void AddNewFiscalPeriods(Role existing, RoleItemsViewModel roleItems)
+        private void AddNewFiscalPeriods(Role existing, RelatedItemsViewModel roleItems)
         {
             var repository = _unitOfWork.GetRepository<FiscalPeriod>();
             var currentItems = existing.RoleFiscalPeriods.Select(rfp => rfp.FiscalPeriodId);
@@ -978,6 +1069,27 @@ namespace SPPC.Tadbir.Persistence
                     RoleId = existing.Id
                 };
                 existing.RoleFiscalPeriods.Add(roleFiscalPeriod);
+            }
+        }
+
+        private void AddNewRoles(User existing, RelatedItemsViewModel roleItems)
+        {
+            var repository = _unitOfWork.GetRepository<Role>();
+            var currentItems = existing.UserRoles.Select(ur => ur.RoleId);
+            var newItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected
+                    && !currentItems.Contains(item.Id));
+            foreach (var item in newItems)
+            {
+                var role = repository.GetByIDWithTracking(item.Id);
+                var userRole = new UserRole()
+                {
+                    User = existing,
+                    UserId = existing.Id,
+                    Role = role,
+                    RoleId = role.Id
+                };
+                existing.UserRoles.Add(userRole);
             }
         }
 

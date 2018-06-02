@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -180,39 +180,52 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="roleId">شناسه یکی از نقش های موجود</param>
         /// <returns>اطلاعات نمایشی شعبه های قابل دسترسی</returns>
-        Task<RoleItemsViewModel> GetRoleBranchesAsync(int roleId);
+        Task<RelatedItemsViewModel> GetRoleBranchesAsync(int roleId);
 
         /// <summary>
         /// به روش آسنکرون، آخرین وضعیت شعبه های قابل دسترسی توسط یک نقش را ذخیره می کند
         /// </summary>
         /// <param name="roleBranches">اطلاعات نمایشی شعبه های قابل دسترسی</param>
-        Task SaveRoleBranchesAsync(RoleItemsViewModel roleBranches);
+        Task SaveRoleBranchesAsync(RelatedItemsViewModel roleBranches);
 
         /// <summary>
         /// به روش آسنکرون، کاربران یک نقش را خوانده و برمی گرداند
         /// </summary>
         /// <param name="roleId">شناسه یکی از نقش های موجود</param>
         /// <returns>اطلاعات نمایشی کاربران</returns>
-        Task<RoleItemsViewModel> GetRoleUsersAsync(int roleId);
+        Task<RelatedItemsViewModel> GetRoleUsersAsync(int roleId);
 
         /// <summary>
         /// به روش آسنکرون، آخرین وضعیت کاربران یک نقش را ذخیره می کند
         /// </summary>
         /// <param name="roleUsers">اطلاعات نمایشی کاربران</param>
-        Task SaveRoleUsersAsync(RoleItemsViewModel roleUsers);
+        Task SaveRoleUsersAsync(RelatedItemsViewModel roleUsers);
 
         /// <summary>
         /// به روش آسنکرون، دوره های مالی قابل دسترسی توسط یک نقش را خوانده و برمی گرداند
         /// </summary>
         /// <param name="roleId">شناسه یکی از نقش های موجود</param>
         /// <returns>اطلاعات نمایشی دوره های مالی قابل دسترسی</returns>
-        Task<RoleItemsViewModel> GetRoleFiscalPeriodsAsync(int roleId);
+        Task<RelatedItemsViewModel> GetRoleFiscalPeriodsAsync(int roleId);
 
         /// <summary>
         /// به روش آسنکرون، آخرین وضعیت دوره های مالی قابل دسترسی توسط یک نقش را ذخیره می کند
         /// </summary>
         /// <param name="rolePeriods">اطلاعات نمایشی دوره های مالی قابل دسترسی</param>
-        Task SaveRoleFiscalPeriodsAsync(RoleItemsViewModel rolePeriods);
+        Task SaveRoleFiscalPeriodsAsync(RelatedItemsViewModel rolePeriods);
+
+        /// <summary>
+        /// به روش آسنکرون، نقش های یک کاربر را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userId">شناسه یکی از کاربران موجود</param>
+        /// <returns>اطلاعات نمایشی نقش ها</returns>
+        Task<RelatedItemsViewModel> GetUserRolesAsync(int userId);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت نقش های یک کاربر را ذخیره می کند
+        /// </summary>
+        /// <param name="userRoles">اطلاعات نمایشی نقش ها</param>
+        Task SaveUserRolesAsync(RelatedItemsViewModel userRoles);
 
         #endregion
     }

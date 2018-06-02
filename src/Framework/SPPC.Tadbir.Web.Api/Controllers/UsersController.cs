@@ -12,6 +12,7 @@ using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -242,6 +243,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             await _repository.UpdateUserLastLoginAsync(user.Id);
             string userTicket = await GetUserTicketAsync(user.Id);
             Response.Headers.Add(AppConstants.ContextHeaderName, userTicket);
+            return Ok();
+        }
+
+        // GET: api/users/{userId:min(1)}/roles
+        [Route(UserApi.UserRolesUrl)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.View)]
+        public async Task<IActionResult> GetUserRolesAsync(int userId)
+        {
+            var roles = await _repository.GetUserRolesAsync(userId);
+            return JsonReadResult(roles);
+        }
+
+        // PUT: api/users/{userId:min(1)}/roles
+        [HttpPut]
+        [Route(UserApi.UserRolesUrl)]
+        [AuthorizeRequest(SecureEntity.User, (int)UserPermissions.AssignRoles)]
+        public async Task<IActionResult> PutModifiedUserRolesAsync(
+            int userId, [FromBody] RelatedItemsViewModel userRoles)
+        {
+            var result = BasicValidationResult(userRoles, userId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SaveUserRolesAsync(userRoles);
             return Ok();
         }
 
