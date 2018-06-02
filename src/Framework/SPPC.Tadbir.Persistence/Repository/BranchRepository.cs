@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -94,6 +98,68 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، نقش های دارای دسترسی به یک شعبه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
+        /// <returns>اطلاعات نمایشی نقش های دارای دسترسی</returns>
+        public async Task<RelatedItemsViewModel> GetBranchRolesAsync(int branchId)
+        {
+            RelatedItemsViewModel branchRoles = null;
+            var repository = _unitOfWork.GetAsyncRepository<Branch>();
+            var existing = await repository
+                .GetEntityQuery()
+                .Include(br => br.RoleBranches)
+                    .ThenInclude(rb => rb.Role)
+                .Where(br => br.Id == branchId)
+                .SingleOrDefaultAsync();
+            if (existing != null)
+            {
+                var enabledRoles = existing.RoleBranches
+                    .Select(rb => rb.Role)
+                    .Select(r => _mapper.Map<RelatedItemViewModel>(r))
+                    .ToArray();
+                var roleRepository = _unitOfWork.GetAsyncRepository<Role>();
+                var allRoles = await roleRepository
+                    .GetAllAsync();
+                var disabledRoles = allRoles
+                    .Select(r => _mapper.Map<RelatedItemViewModel>(r))
+                    .Except(enabledRoles, new EntityEqualityComparer<RelatedItemViewModel>())
+                    .ToArray();
+                Array.ForEach(enabledRoles, item => item.IsSelected = true);
+
+                branchRoles = _mapper.Map<RelatedItemsViewModel>(existing);
+                Array.ForEach(enabledRoles
+                    .Concat(disabledRoles)
+                    .OrderBy(item => item.Id)
+                    .ToArray(), item => branchRoles.RelatedItems.Add(item));
+            }
+
+            return branchRoles;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت نقش های دارای دسترسی به یک شعبه را ذخیره می کند
+        /// </summary>
+        /// <param name="branchRoles">اطلاعات نمایشی نقش های دارای دسترسی</param>
+        public async Task SaveBranchRolesAsync(RelatedItemsViewModel branchRoles)
+        {
+            Verify.ArgumentNotNull(branchRoles, "branchRoles");
+            var repository = _unitOfWork.GetAsyncRepository<Branch>();
+            var existing = await repository.GetByIDWithTrackingAsync(branchRoles.Id, br => br.RoleBranches);
+            if (existing != null && AreRolesModified(existing, branchRoles))
+            {
+                if (existing.RoleBranches.Count > 0)
+                {
+                    RemoveInaccessibleRoles(existing, branchRoles);
+                }
+
+                AddNewRoles(existing, branchRoles);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات یک شعبه سازمانی را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="branch">شعبه سازمانی مورد نظر برای ایجاد یا اصلاح</param>
@@ -164,6 +230,62 @@ namespace SPPC.Tadbir.Persistence
             branch.Name = branchViewModel.Name;
             branch.Level = branchViewModel.Level;
             branch.Description = branchViewModel.Description;
+        }
+
+        private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
+        {
+            return left.Count() == right.Count()
+                && left.All(value => right.Contains(value));
+        }
+
+        private static bool AreRolesModified(Branch existing, RelatedItemsViewModel roleItems)
+        {
+            var existingItems = existing.RoleBranches
+                .Select(rb => rb.RoleId)
+                .ToArray();
+            var enabledItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected)
+                .Select(item => item.Id)
+                .ToArray();
+            return (!AreEqual(existingItems, enabledItems));
+        }
+
+        private static void RemoveInaccessibleRoles(Branch existing, RelatedItemsViewModel roleItems)
+        {
+            var currentItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected)
+                .Select(item => item.Id);
+            var removedItems = existing.RoleBranches
+                .Select(rb => rb.RoleId)
+                .Where(id => !currentItems.Contains(id))
+                .ToArray();
+            foreach (int id in removedItems)
+            {
+                existing.RoleBranches.Remove(existing.RoleBranches
+                    .Where(rb => rb.RoleId == id)
+                    .Single());
+            }
+        }
+
+        private void AddNewRoles(Branch existing, RelatedItemsViewModel roleItems)
+        {
+            var repository = _unitOfWork.GetRepository<Role>();
+            var currentItems = existing.RoleBranches.Select(rb => rb.RoleId);
+            var newItems = roleItems.RelatedItems
+                .Where(item => item.IsSelected
+                    && !currentItems.Contains(item.Id));
+            foreach (var item in newItems)
+            {
+                var role = repository.GetByIDWithTracking(item.Id);
+                var roleBranch = new RoleBranch()
+                {
+                    Branch = existing,
+                    BranchId = existing.Id,
+                    Role = role,
+                    RoleId = role.Id
+                };
+                existing.RoleBranches.Add(roleBranch);
+            }
         }
 
         private IUnitOfWork _unitOfWork;

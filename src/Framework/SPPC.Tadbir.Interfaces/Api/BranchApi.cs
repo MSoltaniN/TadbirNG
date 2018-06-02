@@ -16,33 +16,43 @@
         public const string CompanyBranchesUrl = "branches/company/{companyId:min(1)}";
 
         /// <summary>
-        /// API client URL for all branche items
+        /// API client URL for all branch items
         /// </summary>
         public const string Branches = "branches";
 
         /// <summary>
-        /// API server route URL for all branche items
+        /// API server route URL for all branch items
         /// </summary>
         public const string BranchesUrl = "branches";
 
         /// <summary>
-        /// API client URL for a branche item specified by unique identifier
+        /// API client URL for a branch item specified by unique identifier
         /// </summary>
         public const string Branch = "branches/{0}";
 
         /// <summary>
-        /// API server route URL for a branche item specified by unique identifier
+        /// API server route URL for a branch item specified by unique identifier
         /// </summary>
         public const string BranchUrl = "branches/{branchId:min(1)}";
 
         /// <summary>
-        /// API client URL for branche metadata
+        /// API client URL for branch metadata
         /// </summary>
         public const string BranchMetadata = "branches/metadata";
 
         /// <summary>
-        /// API server route URL for branche metadata
+        /// API server route URL for branch metadata
         /// </summary>
         public const string BranchMetadataUrl = "branches/metadata";
+
+        /// <summary>
+        /// API client URL for all roles who can access a branch item specified by unique identifier
+        /// </summary>
+        public const string BranchRoles = "branches/{0}";
+
+        /// <summary>
+        /// API server route URL for all roles who can access a branch item specified by unique identifier
+        /// </summary>
+        public const string BranchRolesUrl = "branches/{branchId:min(1)}/roles";
     }
 }

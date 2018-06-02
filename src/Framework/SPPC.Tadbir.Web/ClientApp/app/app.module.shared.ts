@@ -153,7 +153,8 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         AccountRelationsComponent,
         SppcGridDateFilter,
         TestDr,
-        SppcGridDatepicker
+        SppcGridDatepicker,
+        AccountRelationsComponent
     ],
     providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
         UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService,

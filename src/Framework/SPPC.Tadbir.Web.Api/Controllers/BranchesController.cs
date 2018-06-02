@@ -6,6 +6,7 @@ using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -107,6 +108,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             await _repository.DeleteBranchAsync(branchId);
             return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        // GET: api/branches/{branchId:min(1)}/roles
+        [Route(BranchApi.BranchRolesUrl)]
+        [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
+        public async Task<IActionResult> GetBranchRolesAsync(int branchId)
+        {
+            var roles = await _repository.GetBranchRolesAsync(branchId);
+            return JsonReadResult(roles);
+        }
+
+        // PUT: api/branches/{branchId:min(1)}/roles
+        [HttpPut]
+        [Route(BranchApi.BranchRolesUrl)]
+        [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.AssignRoles)]
+        public async Task<IActionResult> PutModifiedBranchRolesAsync(
+            int branchId, [FromBody] RelatedItemsViewModel branchRoles)
+        {
+            var result = BasicValidationResult(branchRoles, branchId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SaveBranchRolesAsync(branchRoles);
+            return Ok();
         }
 
         private async Task<string> ValidateDeleteAsync(int item)

@@ -450,4 +450,7 @@
   <data name="AccountRelations" xml:space="preserve">
     <value>ارتباطات بردار حساب</value>
   </data>
+  <data name="AssignRoleToEntity" xml:space="preserve">
+    <value>تخصیص نقش به {0}</value>
+  </data>
 </root>

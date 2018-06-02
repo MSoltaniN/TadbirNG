@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    ///  عملیات مورد نیاز برای مدیریت اطلاعات د.ره مالی را پیاده سازی می کند.
+    ///  عملیات مورد نیاز برای مدیریت اطلاعات دوره مالی را تعریف می کند.
     /// </summary>
     public interface IFiscalPeriodRepository
     {
@@ -41,6 +42,19 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای دوره مالی</returns>
         Task<EntityItemViewModel<FiscalPeriodViewModel>> GetFiscalPeriodMetadataAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، نقش های دارای دسترسی به یک دوره مالی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
+        /// <returns>اطلاعات نمایشی نقش های دارای دسترسی</returns>
+        Task<RelatedItemsViewModel> GetFiscalPeriodRolesAsync(int fpId);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت نقش های دارای دسترسی به یک دوره مالی را ذخیره می کند
+        /// </summary>
+        /// <param name="periodRoles">اطلاعات نمایشی نقش های دارای دسترسی</param>
+        Task SaveFiscalPeriodRolesAsync(RelatedItemsViewModel periodRoles);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک دوره مالی را در محل ذخیره ایجاد یا اصلاح می کند

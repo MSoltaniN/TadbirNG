@@ -450,4 +450,7 @@
   <data name="AccountRelations" xml:space="preserve">
     <value>Account relationships</value>
   </data>
+  <data name="AssignRoleToEntity" xml:space="preserve">
+    <value>Assign role to {0}</value>
+  </data>
 </root>
