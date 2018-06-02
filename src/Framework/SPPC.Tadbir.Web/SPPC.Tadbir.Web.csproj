@@ -74,7 +74,9 @@
     <None Remove="ClientApp\app\components\voucher\voucher-form.component.ts" />
     <None Remove="ClientApp\app\components\voucher\voucher.component.ts" />
     <None Remove="ClientApp\app\controls\datepicker\sppc-datepicker.ts" />
+    <None Remove="ClientApp\app\controls\datepicker\sppc-grid-datepicker.ts" />
     <None Remove="ClientApp\app\controls\fullAccount\sppc-fullAccount.ts" />
+    <None Remove="ClientApp\app\controls\grid\spp-grid-date-filter.ts" />
     <None Remove="ClientApp\app\controls\grid\sppc-date-filter.ts" />
     <None Remove="ClientApp\app\controls\grid\sppc-grid-filter.ts" />
     <None Remove="ClientApp\app\controls\sppc-grid-messages.ts" />
@@ -231,8 +233,10 @@
     <TypeScriptCompile Include="ClientApp\app\components\user\user-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\user\user.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\datepicker\sppc-datepicker.ts" />
+    <TypeScriptCompile Include="ClientApp\app\controls\datepicker\sppc-grid-datepicker.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\dropdownlist\sppc-dropdownlist.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\fullAccount\sppc-fullAccount.ts" />
+    <TypeScriptCompile Include="ClientApp\app\controls\grid\spp-grid-date-filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\grid\sppc-date-filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\grid\sppc-grid-filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\sppcLoading\index.ts" />

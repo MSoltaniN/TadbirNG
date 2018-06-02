@@ -88,7 +88,7 @@
 
                 <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="Voucher.date">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column" let-Voucher>
-                        <sppc-grid-filter [metaData]="getMeta('date')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                        <sppc-grid-filter [metaData]="getMeta('date')" [column]="column" [filter]="filter"></sppc-grid-filter>                       
                     </ng-template>
                     <ng-template kendoGridCellTemplate let-voucher>
                         {{ voucher.date | SppcDate }}

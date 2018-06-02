@@ -98,6 +98,8 @@ import { LocalizationService } from "@progress/kendo-angular-l10n";
 import { EditService } from '@progress/kendo-angular-grid/dist/es2015/editing/edit.service';
 import { EnviromentComponent } from './class/enviroment.component';
 import { Permissions } from './security/permissions';
+import { SppcGridDateFilter, TestDr } from './controls/grid/spp-grid-date-filter';
+import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
 
 
 @NgModule({
@@ -148,8 +150,10 @@ import { Permissions } from './security/permissions';
         CompanyFormComponent,
         SppcDatePipe,     
         SppcCheckAccess,
-        AccountRelationsComponent                
-
+        AccountRelationsComponent,
+        SppcGridDateFilter,
+        TestDr,
+        SppcGridDatepicker
     ],
     providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
         UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService,
@@ -206,7 +210,10 @@ import { Permissions } from './security/permissions';
             { path: '**', redirectTo: 'account' }
         ])
     ],
-    schemas: [NO_ERRORS_SCHEMA]
+    schemas: [NO_ERRORS_SCHEMA],
+    entryComponents: [
+        SppcGridDatepicker
+    ]
 })
 export class AppModuleShared {
 }
