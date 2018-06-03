@@ -40,5 +40,10 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// عنوان محلی شده این دستور در زبان جاری برنامه
         /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// آدرس وب مسیر اجرای دستور در برنامه
+        /// </summary>
+        public virtual string RouteUrl { get; set; }
     }
 }

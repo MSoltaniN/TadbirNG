@@ -453,4 +453,7 @@
   <data name="AssignRoleToEntity" xml:space="preserve">
     <value>تخصیص نقش به {0}</value>
   </data>
+  <data name="Organization" xml:space="preserve">
+    <value>سازمان</value>
+  </data>
 </root>

@@ -453,4 +453,7 @@
   <data name="AssignRoleToEntity" xml:space="preserve">
     <value>Assign role to {0}</value>
   </data>
+  <data name="Organization" xml:space="preserve">
+    <value>Organization</value>
+  </data>
 </root>

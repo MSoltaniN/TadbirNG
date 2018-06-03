@@ -43,6 +43,11 @@ namespace SPPC.Tadbir.Model.Metadata
         public virtual string TitleKey { get; set; }
 
         /// <summary>
+        /// آدرس وب مسیر اجرای دستور در برنامه
+        /// </summary>
+        public virtual string RouteUrl { get; set; }
+
+        /// <summary>
         /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
         /// </summary>
         public virtual Guid RowGuid { get; set; }
