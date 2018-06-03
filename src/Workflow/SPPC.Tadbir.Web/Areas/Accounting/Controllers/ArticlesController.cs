@@ -10,20 +10,20 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 {
     public class ArticlesController : Controller
     {
-        public ArticlesController(ITransactionService service, ILookupService lookupService)
+        public ArticlesController(IVoucherService service, ILookupService lookupService)
         {
             _service = service;
             _lookupService = lookupService;
         }
 
         // GET: accounting/articles/create?transactionId={id}
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Edit)]
         public ActionResult Create(int transactionId)
         {
             InitLookups();
-            var article = new TransactionLineViewModel()
+            var article = new VoucherLineViewModel()
             {
-                TransactionId = transactionId,
+                VoucherId = transactionId,
                 FiscalPeriodId = TempContext.CurrentFiscalPeriodId,
                 BranchId = TempContext.CurrentBranchId
             };
@@ -33,8 +33,8 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         // POST: accounting/articles/create?transactionId={id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
-        public ActionResult Create(TransactionLineViewModel article, int transactionId)
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Edit)]
+        public ActionResult Create(VoucherLineViewModel article, int transactionId)
         {
             if (article == null)
             {
@@ -59,7 +59,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/articles/edit/id
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Edit)]
         public ActionResult Edit(int id)
         {
             var article = _service.GetArticle(id);
@@ -75,8 +75,8 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         // POST: accounting/articles/edit/id?transactionId={tid}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
-        public ActionResult Edit(TransactionLineViewModel article, int transactionId)
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Edit)]
+        public ActionResult Edit(VoucherLineViewModel article, int transactionId)
         {
             if (article == null)
             {
@@ -101,7 +101,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/articles/details/id
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public ActionResult Details(int id)
         {
             var article = _service.GetDetailArticleInfo(id);
@@ -114,7 +114,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/articles/delete/id?transactionId={tid}
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
         public ActionResult Delete(int id, int transactionId)
         {
             _service.DeleteArticle(id);
@@ -128,7 +128,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             ViewBag.CurrencyLookup = _lookupService.LookupCurrencies();
         }
 
-        private ITransactionService _service;
+        private IVoucherService _service;
         private ILookupService _lookupService;
     }
 }

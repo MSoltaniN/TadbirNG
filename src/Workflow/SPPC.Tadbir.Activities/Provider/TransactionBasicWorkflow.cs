@@ -19,7 +19,7 @@ namespace SPPC.Tadbir.Workflow
         public override void Prepare(int entityId, int documentId, string paraph = null)
         {
             var prepare = StateOperation.Prepare(
-                CurrentUserId, entityId, documentId, DocumentTypeName.Transaction, paraph);
+                CurrentUserId, entityId, documentId, DocumentTypeName.Voucher, paraph);
             InvokeServiceOperation(prepare);
             LogOperation(entityId, "Prepare", "prepared");
         }
@@ -33,7 +33,7 @@ namespace SPPC.Tadbir.Workflow
         public override void Review(int entityId, int documentId, string paraph = null)
         {
             var review = StateOperation.Review(
-                CurrentUserId, entityId, documentId, DocumentTypeName.Transaction, paraph);
+                CurrentUserId, entityId, documentId, DocumentTypeName.Voucher, paraph);
             InvokeServiceOperation(review);
             LogOperation(entityId, "Review", "reviewed");
         }
@@ -47,7 +47,7 @@ namespace SPPC.Tadbir.Workflow
         public override void RejectReviewed(int entityId, int documentId, string paraph = null)
         {
             var reject = StateOperation.RejectReview(
-                CurrentUserId, entityId, documentId, DocumentTypeName.Transaction, paraph);
+                CurrentUserId, entityId, documentId, DocumentTypeName.Voucher, paraph);
             InvokeServiceOperation(reject);
             LogOperation(entityId, "Reject", "rejected");
         }
@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Workflow
         public override void Confirm(int entityId, int documentId, string paraph = null)
         {
             var confirm = StateOperation.Confirm(
-                CurrentUserId, entityId, documentId, DocumentTypeName.Transaction, paraph);
+                CurrentUserId, entityId, documentId, DocumentTypeName.Voucher, paraph);
             InvokeServiceOperation(confirm);
             LogOperation(entityId, "Confirm", "confirmed");
         }
@@ -75,7 +75,7 @@ namespace SPPC.Tadbir.Workflow
         public override void Approve(int entityId, int documentId, string paraph = null)
         {
             var approve = StateOperation.Approve(
-                CurrentUserId, entityId, documentId, DocumentTypeName.Transaction, paraph);
+                CurrentUserId, entityId, documentId, DocumentTypeName.Voucher, paraph);
             InvokeServiceOperation(approve);
             LogOperation(entityId, "Approve", "approved");
         }

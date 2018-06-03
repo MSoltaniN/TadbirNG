@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.Workflow
         public virtual void Prepare(int entityId, int documentId, string paraph = null)
         {
             var prepare = StateOperation.Prepare(
-                CurrentUserId, entityId, documentId, DocumentTypeName.Transaction, paraph);
+                CurrentUserId, entityId, documentId, DocumentTypeName.Voucher, paraph);
             using (var client = new DocumentStateClient())
             {
                 client.Prepare(prepare);
@@ -44,7 +44,7 @@ namespace SPPC.Tadbir.Workflow
         public virtual void Review(int entityId, int documentId, string paraph = null)
         {
             var review = StateOperation.Review(
-                CurrentUserId, entityId, documentId, DocumentTypeName.Transaction, paraph);
+                CurrentUserId, entityId, documentId, DocumentTypeName.Voucher, paraph);
             using (var client = new DocumentStateClient())
             {
                 client.Review(review);
@@ -63,7 +63,7 @@ namespace SPPC.Tadbir.Workflow
         public virtual void RejectReviewed(int entityId, int documentId, string paraph = null)
         {
             var reject = StateOperation.RejectReview(
-                CurrentUserId, entityId, documentId, DocumentTypeName.Transaction, paraph);
+                CurrentUserId, entityId, documentId, DocumentTypeName.Voucher, paraph);
             using (var client = new DocumentStateClient())
             {
                 client.Reject(reject);
@@ -82,7 +82,7 @@ namespace SPPC.Tadbir.Workflow
         public virtual void Confirm(int entityId, int documentId, string paraph = null)
         {
             var confirm = StateOperation.Confirm(
-                CurrentUserId, entityId, documentId, DocumentTypeName.Transaction, paraph);
+                CurrentUserId, entityId, documentId, DocumentTypeName.Voucher, paraph);
             using (var client = new DocumentStateClient())
             {
                 client.Confirm(confirm);
@@ -101,7 +101,7 @@ namespace SPPC.Tadbir.Workflow
         public virtual void Approve(int entityId, int documentId, string paraph = null)
         {
             var approve = StateOperation.Approve(
-                CurrentUserId, entityId, documentId, DocumentTypeName.Transaction, paraph);
+                CurrentUserId, entityId, documentId, DocumentTypeName.Voucher, paraph);
             using (var client = new DocumentStateClient())
             {
                 client.Approve(approve);

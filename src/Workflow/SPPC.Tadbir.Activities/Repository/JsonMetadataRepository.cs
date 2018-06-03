@@ -50,6 +50,11 @@ namespace SPPC.Tadbir.Service
             throw new NotImplementedException();
         }
 
+        public Task<IList<CommandViewModel>> GetTopLevelCommandsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         private const string ResourceName = "SPPC.Tadbir.Metadata.JsonRepository.state-workflow.json";
     }
 }

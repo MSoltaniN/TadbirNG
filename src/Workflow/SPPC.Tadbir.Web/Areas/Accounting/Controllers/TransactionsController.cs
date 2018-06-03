@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 {
     public class TransactionsController : Controller
     {
-        public TransactionsController(ITransactionService service)
+        public TransactionsController(IVoucherService service)
         {
             _service = service;
         }
@@ -25,10 +25,10 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         #region Transaction CRUD Actions
 
         // GET: accounting/transactions[?page={page}]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public ViewResult Index(int? page = null)
         {
-            var transactions = _service.GetTransactions(TempContext.CurrentFiscalPeriodId, TempContext.CurrentBranchId);
+            var transactions = _service.GetVouchers(TempContext.CurrentFiscalPeriodId, TempContext.CurrentBranchId);
             int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(transactions.ToPagedList(pageNumber, pageSize));
@@ -52,10 +52,10 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/transactions/create
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Create)]
         public ViewResult Create()
         {
-            var transaction = new TransactionViewModel()
+            var transaction = new VoucherViewModel()
             {
                 FiscalPeriodId = TempContext.CurrentFiscalPeriodId,
                 BranchId = TempContext.CurrentBranchId,
@@ -68,8 +68,8 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         // POST: accounting/transactions/create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Create)]
-        public ActionResult Create(TransactionViewModel transaction)
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Create)]
+        public ActionResult Create(VoucherViewModel transaction)
         {
             if (transaction == null)
             {
@@ -78,7 +78,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
 
             if (ModelState.IsValid)
             {
-                var response = _service.SaveTransaction(transaction);
+                var response = _service.SaveVoucher(transaction);
                 if (response.Result == ServiceResult.ValidationFailed)
                 {
                     ModelState.AddModelError("Date", response.Message);
@@ -92,7 +92,7 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/transactions/edit/id
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Edit)]
         public ActionResult Edit(int id)
         {
             var transaction = _service.GetDetailTransactionInfo(id);
@@ -107,34 +107,34 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         // POST: accounting/transactions/edit/id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Edit)]
-        public ActionResult Edit(TransactionFullViewModel fullTransaction)
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Edit)]
+        public ActionResult Edit(VoucherFullViewModel fullVoucher)
         {
-            if (fullTransaction == null)
+            if (fullVoucher == null)
             {
                 return RedirectToAction("index", "error", new { area = String.Empty });
             }
 
             if (ModelState.IsValid)
             {
-                var response = _service.SaveTransaction(fullTransaction.Transaction);
+                var response = _service.SaveVoucher(fullVoucher.Voucher);
                 if (response.Result == ServiceResult.ValidationFailed)
                 {
-                    ModelState.AddModelError("Transaction.Date", response.Message);
-                    return View(fullTransaction);
+                    ModelState.AddModelError("Voucher.Date", response.Message);
+                    return View(fullVoucher);
                 }
 
                 return RedirectToAction("index");
             }
 
-            return View(fullTransaction);
+            return View(fullVoucher);
         }
 
         // GET: accounting/transactions/details/id
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.View)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public ActionResult Details(int id)
         {
-            var transaction = _service.GetDetailTransactionInfo(id);
+            var transaction = _service.GetDetailVoucherInfo(id);
             if (transaction == null)
             {
                 return RedirectToAction("notfound", "error", new { area = String.Empty });
@@ -144,10 +144,10 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         }
 
         // GET: accounting/transactions/delete/id
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Delete)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
         public ActionResult Delete(int id)
         {
-            _service.DeleteTransaction(id);
+            _service.DeleteVoucher(id);
             return RedirectToAction("index");
         }
 
@@ -156,92 +156,92 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
         #region Transaction Workflow Actions
 
         // GET: accounting/transactions/prepare/id[?paraph={encoded-text}]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Prepare)]
         public ActionResult Prepare(int id, string paraph = null)
         {
-            var response = _service.PrepareTransaction(id, paraph);
+            var response = _service.PrepareVoucher(id, paraph);
             return GetNextResult(response);
         }
 
         // GET: accounting/transactions/review/id[?paraph={encoded-text}]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Review)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Review)]
         public ActionResult Review(int id, string paraph = null)
         {
-            var response = _service.ReviewTransaction(id, paraph);
+            var response = _service.ReviewVoucher(id, paraph);
             return GetNextResult(response);
         }
 
         // GET: accounting/transactions/reject/id[?paraph={encoded-text}]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Confirm)]
         public ActionResult Reject(int id, string paraph = null)
         {
-            var response = _service.RejectTransaction(id, paraph);
+            var response = _service.RejectVoucher(id, paraph);
             return GetNextResult(response);
         }
 
         // GET: accounting/transactions/confirm/id[?paraph={encoded-text}]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Confirm)]
         public ActionResult Confirm(int id, string paraph = null)
         {
-            var response = _service.ConfirmTransaction(id, paraph);
+            var response = _service.ConfirmVoucher(id, paraph);
             return GetNextResult(response);
         }
 
         // GET: accounting/transactions/approve/id[?paraph={encoded-text}]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Approve)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Approve)]
         public ActionResult Approve(int id, string paraph = null)
         {
-            var response = _service.ApproveTransaction(id, paraph);
+            var response = _service.ApproveVoucher(id, paraph);
             return GetNextResult(response);
         }
 
         // GET: accounting/transactions/prepare?id0={id0}[&id1={id1}&...&paraph={encoded-text}]
         [ActionName("GroupPrepare")]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Prepare)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Prepare)]
         public ActionResult Prepare(string paraph = null)
         {
             var items = GetGroupOperationItems();
-            var response = _service.PrepareTransactions(items, paraph);
+            var response = _service.PrepareVouchers(items, paraph);
             return GetNextResult(response);
         }
 
         // GET: accounting/transactions/review?id0={id0}[&id1={id1}&...&paraph={encoded-text}]
         [ActionName("GroupReview")]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Review)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Review)]
         public ActionResult Review(string paraph = null)
         {
             var items = GetGroupOperationItems();
-            var response = _service.ReviewTransactions(items, paraph);
+            var response = _service.ReviewVouchers(items, paraph);
             return GetNextResult(response);
         }
 
         // GET: accounting/transactions/reject?id0={id0}[&id1={id1}&...&paraph={encoded-text}]
         [ActionName("GroupReject")]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Confirm)]
         public ActionResult Reject(string paraph = null)
         {
             var items = GetGroupOperationItems();
-            var response = _service.RejectTransactions(items, paraph);
+            var response = _service.RejectVouchers(items, paraph);
             return GetNextResult(response);
         }
 
         // GET: accounting/transactions/confirm?id0={id0}[&id1={id1}&...&paraph={encoded-text}]
         [ActionName("GroupConfirm")]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Confirm)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Confirm)]
         public ActionResult Confirm(string paraph = null)
         {
             var items = GetGroupOperationItems();
-            var response = _service.ConfirmTransactions(items, paraph);
+            var response = _service.ConfirmVouchers(items, paraph);
             return GetNextResult(response);
         }
 
         // GET: accounting/transactions/approve?id0={id0}[&id1={id1}&...&paraph={encoded-text}]
         [ActionName("GroupApprove")]
-        [AppAuthorize(SecureEntity.Transaction, (int)TransactionPermissions.Approve)]
+        [AppAuthorize(SecureEntity.Voucher, (int)VoucherPermissions.Approve)]
         public ActionResult Approve(string paraph = null)
         {
             var items = GetGroupOperationItems();
-            var response = _service.ApproveTransactions(items, paraph);
+            var response = _service.ApproveVouchers(items, paraph);
             return GetNextResult(response);
         }
 
@@ -310,6 +310,6 @@ namespace SPPC.Tadbir.Web.Areas.Accounting.Controllers
             return items;
         }
 
-        private ITransactionService _service;
+        private IVoucherService _service;
     }
 }
