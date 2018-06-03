@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "ClientApp/dist/main-server.min.js",
+    "inputFiles": [
+      "ClientApp/dist/main-server.js"
+    ]
+  },
+  {
+    "outputFileName": "ClientApp/dist/vendor.min.js",
+    "inputFiles": [
+      "ClientApp/dist/vendor.js"
+    ]
+  }
+]

@@ -5,15 +5,7 @@ import { Property } from '../../class/metadata/property';
 
 @Component({
     selector: 'sppc-grid-filter',
-    templateUrl:  './sppc-grid-filter.html',
-    //template: `<kendo-grid-string-filter-cell [column]="column"  [filter]="filter"  >
-    //                        <kendo-filter-eq-operator></kendo-filter-eq-operator>
-    //                        <kendo-filter-neq-operator></kendo-filter-neq-operator>
-    //                        <kendo-filter-contains-operator></kendo-filter-contains-operator>
-    //                        <kendo-filter-not-contains-operator></kendo-filter-not-contains-operator>
-    //                        <kendo-filter-startswith-operator></kendo-filter-startswith-operator>
-    //                        <kendo-filter-endswith-operator></kendo-filter-endswith-operator>
-    //                    </kendo-grid-string-filter-cell> `
+    templateUrl:  './sppc-grid-filter.html'    
 })
 export class SppcGridFilter {
 
@@ -21,6 +13,7 @@ export class SppcGridFilter {
     @Input() public filter: CompositeFilterDescriptor;
     @Input() public isNumber: boolean = false;
     @Input() public isString: boolean = false;
+    @Input() public isDate: boolean = false;
 
     @Input('metaData')
     public set metaData(value: Property | undefined) {
@@ -33,6 +26,7 @@ export class SppcGridFilter {
                 this.isString = true;
                 break;
             case "date":
+                this.isDate = true;
                 break;
             default:
                 break;
