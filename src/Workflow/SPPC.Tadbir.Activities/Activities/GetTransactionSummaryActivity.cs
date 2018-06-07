@@ -10,7 +10,7 @@ namespace SPPC.Tadbir.Workflow
     /// <summary>
     /// این فعالیت اطلاعات خلاصه مربوط به یک سند مالی را از دیتابیس می خواند.
     /// </summary>
-    public sealed class GetTransactionSummaryActivity : CodeActivity<TransactionSummaryViewModel>
+    public sealed class GetTransactionSummaryActivity : CodeActivity<VoucherViewModel>
     {
         /// <summary>
         /// آرگومان اجباری برای نگهداری شناسه دیتابیسی سند مالی که اطلاعات خلاصه آن مورد نیاز است
@@ -24,20 +24,21 @@ namespace SPPC.Tadbir.Workflow
         /// <param name="context">اطلاعات محیط اجرایی فعالیت در زمان اجرای آن</param>
         /// <returns>اطلاعات خلاصه یک سند مالی موجود. اگر سند مالی با شناسه دیتابیسی داده شده وجود نداشته باشد
         /// مقدار null برمیگرداند.</returns>
-        protected override TransactionSummaryViewModel Execute(CodeActivityContext context)
+        protected override VoucherViewModel Execute(CodeActivityContext context)
         {
             Verify.ArgumentNotNull(context, "context");
             InitializeDependencies(context);
             int transactionId = context.GetValue(TransactionId);
-            var summary = _repository.GetTransactionSummary(transactionId);
+            var result = _repository.GetVoucherAsync(transactionId).Result;
+            var summary = result?.Item;
             return summary;
         }
 
         private void InitializeDependencies(CodeActivityContext context)
         {
-            _repository = context.GetDependency<ITransactionRepository>("WF");
+            _repository = context.GetDependency<IVoucherRepository>("WF");
         }
 
-        private ITransactionRepository _repository;
+        private IVoucherRepository _repository;
     }
 }

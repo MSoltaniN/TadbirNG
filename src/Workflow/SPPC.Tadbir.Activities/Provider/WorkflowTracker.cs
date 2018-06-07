@@ -39,7 +39,7 @@ namespace SPPC.Tadbir.Workflow
             }
             else
             {
-                var editionViewModel = _settingsRepository.GetDefaultWorkflowEdition(WorkflowTitle.TransactionState);
+                var editionViewModel = _settingsRepository.GetDefaultWorkflowEdition(WorkflowTitle.VoucherState);
                 edition = editionViewModel.Name;
             }
 

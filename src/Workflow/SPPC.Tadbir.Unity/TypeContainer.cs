@@ -77,7 +77,7 @@ namespace SPPC.Tadbir.Unity
             // =========== Persistence Persistence Layer dependencies ===========
             _container.RegisterType<IUnitOfWork, UnitOfWork>();
             _container.RegisterType<IAccountRepository, AccountRepository>();
-            _container.RegisterType<ITransactionRepository, TransactionRepository>();
+            _container.RegisterType<IVoucherRepository, VoucherRepository>();
             //_container.RegisterType<ITransactionRepository, TransactionRepository>(
             //    "WF", new InjectionConstructor(
             //        new ResolvedParameter<IUnitOfWork>("WF"), new ResolvedParameter<IDomainMapper>()));
@@ -91,8 +91,6 @@ namespace SPPC.Tadbir.Unity
             //_container.RegisterType<ISettingsRepository, ConfigSettingsRepository>();
             _container.RegisterType<ITrackingRepository, TrackingRepository>();
             _container.RegisterType<IWorkflowRepository, WorkflowRepository>();
-            _container.RegisterType<IRequisitionRepository, RequisitionRepository>();
-            _container.RegisterType<IInventoryRepository, InventoryRepository>();
             //_container.RegisterType<IMetadataRepository, JsonMetadataRepository>();
         }
 
@@ -103,13 +101,13 @@ namespace SPPC.Tadbir.Unity
         {
             _container.RegisterType<IApiClient, ApiClient>();
             _container.RegisterType<IAccountService, AccountService>();
-            _container.RegisterType<ITransactionService, TransactionService>();
+            _container.RegisterType<IVoucherService, VoucherService>();
             _container.RegisterType<ILookupService, LookupService>();
             //_container.RegisterType<ISecurityService, SecurityService>();
             _container.RegisterType<ICryptoService, CryptoService>();
             _container.RegisterType<ICartableService, CartableService>();
             //_container.RegisterType<ISecurityContextManager, SecurityContextManager>();
-            //_container.RegisterType<ISecurityContextManager, ServiceContextManager>("API");
+            _container.RegisterType<ISecurityContextManager, ServiceContextManager>("API");
             _container.RegisterType<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
             //_container.RegisterType<IDocumentWorkflow, DocumentWorkflow>();
             //_container.RegisterType<ITransactionWorkflow, TransactionWorkflow>(WorkflowEdition.StateMachine);
@@ -119,8 +117,6 @@ namespace SPPC.Tadbir.Unity
             //_container.RegisterType<ISettingsService, ConfigSettingsService>();
             _container.RegisterType<IWorkflowService, WorkflowService>();
             //_container.RegisterType<IWorkflowTracker, WorkflowTracker>();
-            _container.RegisterType<IRequisitionService, RequisitionService>();
-            _container.RegisterType<IInventoryService, InventoryService>();
         }
 
         /// <summary>

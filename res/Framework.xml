@@ -120,6 +120,12 @@
           <ColumnView name="Title Key" visible="True" width="120" />
           <ValidationRule name="TitleKey_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
         </Property>
+        <Property name="RouteUrl" type="String" isValidated="True" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRouteUrl" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="RouteUrl" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Route Url" visible="True" width="120" />
+          <ValidationRule name="RouteUrl_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
