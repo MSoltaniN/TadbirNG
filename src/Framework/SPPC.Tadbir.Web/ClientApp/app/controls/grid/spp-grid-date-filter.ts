@@ -1,4 +1,4 @@
-﻿import { Directive, OnInit, ElementRef, ViewContainerRef, Component, Input, ViewChild, Renderer2, ComponentFactoryResolver, Inject, ApplicationRef, Injector, EmbeddedViewRef, AfterViewInit } from "@angular/core";
+﻿import { Directive, OnInit, ElementRef, ViewContainerRef, Component, Input, ViewChild, Renderer2, ComponentFactoryResolver, Inject, ApplicationRef, Injector, EmbeddedViewRef, AfterViewInit, Host } from "@angular/core";
 import { StringFilterComponent } from "@progress/kendo-angular-grid/dist/es2015/filtering/string-filter.component";
 import { LocalizationService } from "@progress/kendo-angular-l10n";
 import { FilterService, BaseFilterCellComponent } from "@progress/kendo-angular-grid";
@@ -7,7 +7,8 @@ import { DefaultComponent } from "../../class/default.component";
 import { DatePickerDirective } from "ng2-jalali-date-picker";
 import { SppcDatepicker } from "../datepicker/sppc-datepicker";
 import { SppcGridDatepicker } from "../datepicker/sppc-grid-datepicker";
-
+declare var jquery: any;
+declare var $: any;
 
 @Component({
     selector: 'sppc-grid-date-filter',
@@ -76,20 +77,26 @@ export class TestDr implements OnInit  {
         this.conn = con;
         this.elrf = el;
         this.factoryResolver = componentFactoryResolver;
+
+       
     }
 
     ngOnInit(): void {
         
         var id = Guid.newGuid();
         this.hiddenId = id;
-        this.elrf.nativeElement.childNodes[1].childNodes[2].outerHTML = "<input style='visibility:hidden;width: 0px;margin:0;padding:0;' class='k-textbox'" +   " id='" + id + "'" + " kendofilterinput='' kendogridfocusable=''>";
+
+        this.elrf.nativeElement.childNodes[1].childNodes[2].style = 'visibility:hidden;width: 0px;margin:0;padding:0;';
+        this.elrf.nativeElement.childNodes[1].childNodes[2].setAttribute('id', id);        
         
+        setTimeout(() => {
+            this.appendComponent(SppcGridDatepicker, this.elrf.nativeElement.childNodes[1].childNodes[2], this.elrf.nativeElement.childNodes[1]);
+        }, 1);
+       
     }
 
     ngAfterContentInit() {
-        setTimeout(() => {
-            this.appendComponent(SppcGridDatepicker, this.elrf.nativeElement.childNodes[1].childNodes[2], this.elrf.nativeElement.childNodes[1]);    
-        }, 1);
+        
         
     }
 
@@ -99,18 +106,22 @@ export class TestDr implements OnInit  {
             .create(this.injector);
 
 
+        (<SppcGridDatepicker>componentRef.instance).destinationElementId = this.hiddenId;
+            
+
         this.appRef.attachView(componentRef.hostView);
 
         const domElem = (componentRef.hostView as EmbeddedViewRef<any>)
             .rootNodes[0] as HTMLElement;
-
-        domElem.addEventListener('change', this.onChange.bind(this));
- 
+        
+        var input = (domElem.childNodes[0].childNodes[1].childNodes[1].childNodes[1]) as HTMLElement;
+        input.id = "date_" + this.hiddenId;
+        
         this.renderer.insertBefore(host, domElem,before);
 
     }
 
-    onChange(event : any) {
+    onChange(event: any) {        
         var elHidden = document.getElementById(this.hiddenId);
         if(elHidden)
             elHidden.nodeValue = event.value;

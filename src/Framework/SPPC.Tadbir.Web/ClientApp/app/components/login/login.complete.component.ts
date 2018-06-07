@@ -86,33 +86,26 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     }
 
     getCompany() {
-        var companiesList = this.authenticationService.getCompanies(this.UserName, this.Ticket);
-        if (companiesList != null) {
-            companiesList.subscribe(res => {
-                this.compenies = res;
-            });
-        }
+        
+        this.authenticationService.getCompanies(this.UserName, this.Ticket).subscribe(res => {
+            this.compenies = res;
+        });;
     }
 
 
     getBranch(companyId: number) {
-        var branchList = this.authenticationService.getBranches(companyId, this.Ticket);
-        if (branchList != null) {
-            branchList.subscribe(res => {
+        this.authenticationService.getBranches(companyId, this.Ticket).subscribe(res => {
                 this.disabledBranch = false;
                 this.branches = res;
-            });
-        }           
+            });                   
     }
 
     getFiscalPeriod(companyId : number) {
-        var fps = this.authenticationService.getFiscalPeriod(companyId, this.Ticket)
-        if (fps != null) {
-            fps.subscribe(res => {
+        
+        this.authenticationService.getFiscalPeriod(companyId, this.Ticket).subscribe(res => {
                 this.disabledFiscalPeriod = false;
                 this.fiscalPeriods = res;
-            });
-        }   
+            });        
     }
 
     isValidate(): boolean
