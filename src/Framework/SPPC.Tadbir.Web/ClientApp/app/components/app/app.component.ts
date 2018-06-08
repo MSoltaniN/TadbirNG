@@ -71,7 +71,7 @@ export class AppComponent {
             else {
                 this.isLogin = false;
                 this.showNavbar = true;
-
+                
                 var spacePad = this.document.getElementById('spacePad')
                 var currentLang = localStorage.getItem('lang')
                 if (currentLang == 'fa' || currentLang == null) {

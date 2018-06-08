@@ -121,7 +121,7 @@ export enum UserPermissions {
     All = 7
 }
 
-export enum RolePermissions {
+export enum RolePermissions{
     None = 0,
     View = 1,
     Create = 2,
@@ -173,7 +173,55 @@ export class Permissions {
             case "account":
                 id = <any>AccountPermissions[<any>premissionName];                
                 break;            
+            case "detailaccount":
+                id = <any>DetailAccountPermissions[<any>premissionName];
+                break;
+            case "costcenter":
+                id = <any>CostCenterPermissions[<any>premissionName];
+                break;
+            case "project":
+                id = <any>ProjectPermissions[<any>premissionName];
+                break;
+            case "accountrelations":
+                id = <any>AccountRelationPermissions[<any>premissionName];
+                break;
+            case "currency":
+                id = <any>CurrencyPermissions[<any>premissionName];
+                break;
+            case "fiscalperiod":
+                id = <any>FiscalPeriodPermissions[<any>premissionName];
+                break;
+            case "branch":
+                id = <any>BranchPermissions[<any>premissionName];
+                break;
+            case "voucher":
+                id = <any>VoucherPermissions[<any>premissionName];
+                break;
+            case "businessunit":
+                id = <any>BusinessUnitPermissions[<any>premissionName];
+                break;
+            case "businesspartner":
+                id = <any>BusinessPartnerPermissions[<any>premissionName];
+                break;
+            case "user":
+                id = <any>UserPermissions[<any>premissionName];
+                break;
+            case "role":
+                id = <any>RolePermissions[<any>premissionName];
+                break;
+            case "productinventory":
+                id = <any>ProductInventoryPermissions[<any>premissionName];
+                break;
+            case "requisition":
+                id = <any>RequisitionPermissions[<any>premissionName];
+                break;
+            case "company":
+                id = <any>CompanyPermissions[<any>premissionName];
+                break;
+                
         }
+
+
 
         return id;
         

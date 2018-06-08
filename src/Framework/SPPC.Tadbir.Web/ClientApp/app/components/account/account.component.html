@@ -1,6 +1,6 @@
 ﻿<div  [ngClass]="{'panel panel-primary' : !isChild }">
     <div *ngIf="!isChild" class="panel-heading">{{ 'Entity.Account' | translate }}</div>
-    <div  [ngClass]="{'panel-body' : !isChild }" >
+    <div SppcCheckAccess="View" [ngClass]="{'panel-body' : !isChild }" >
         <kendo-grid id="grdAccount" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
                     [sortable]="true"
                     [pageSize]="pageSize"
@@ -30,7 +30,7 @@
                 </ng-template>
                 <ng-template kendoGridToolbarTemplate>
                     <button SppcCheckAccess="Create" kendoGridAddCommand  (click)="addNew()" [icon]="'plus-outline'"  >{{ 'Account.New' | translate }}</button>
-                <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="showConfirm()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
+                    <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="showConfirm()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
                 <grid-setting></grid-setting>
             </ng-template>
             <!-- template for mobile -->
@@ -48,7 +48,7 @@
                         <dt>{{ 'Account.Description' | translate }}</dt>
                         <dd>{{ account.description }}</dd>
                     </dl>
-                    <button SppcCheckAccess="Insert" kendoGridAddCommand (click)="addNew(account.id)" type="button">{{ 'Buttons.New' | translate }}</button>
+                    <button SppcCheckAccess="Create" kendoGridAddCommand (click)="addNew(account.id)" type="button">{{ 'Buttons.New' | translate }}</button>
                     <button kendoGridEditCommand *ngIf="editAccess" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>                    
                 </ng-template>
             </kendo-grid-column>
@@ -73,7 +73,7 @@
             </kendo-grid-column>
             <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px) and (max-width: 1024px)">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                    <button [icon]="'plus'" (click)="addNew(dataItem.id)" kendoGridAddCommand SppcCheckAccess="Insert" title="{{ 'Account.NewSubAccount' | translate }}"></button>
+                    <button [icon]="'plus'" (click)="addNew(dataItem.id)" kendoGridAddCommand SppcCheckAccess="Create" title="{{ 'Account.NewSubAccount' | translate }}"></button>
                     <button [icon]="'edit'" *ngIf="editAccess" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
                     <button [icon]="'delete'" *ngIf="deleteAccess" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
                 </ng-template>
@@ -98,7 +98,7 @@
             </kendo-grid-column>            
             <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                    <button [icon]="'plus'" (click)="addNew(dataItem.id)" *ngIf="insertAccess" kendoGridAddCommand  title="{{ 'Account.NewSubAccount' | translate }}"></button>
+                    <button [icon]="'plus'" (click)="addNew(dataItem.id)" SppcCheckAccess="Create" kendoGridAddCommand  title="{{ 'Account.NewSubAccount' | translate }}"></button>
                     <button [icon]="'edit'" *ngIf="editAccess" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
                     <button [icon]="'delete'" *ngIf="deleteAccess" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
                 </ng-template>
