@@ -371,6 +371,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.mainComponentDropdownSelected = 0;
         this.relatedComponentDropdownSelected = 0;
         this.errorMessage = String.Empty;
+        this.isDisableRelatedComponnet = true;
     }
 
 }
