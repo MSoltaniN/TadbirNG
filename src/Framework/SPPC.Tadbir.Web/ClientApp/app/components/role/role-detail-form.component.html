@@ -43,7 +43,7 @@
                 </kendo-treeview>
             </div>
             <div *ngIf="false">
-                <kendo-grid [data]="gridPermissionData">
+                <kendo-grid id="grdPermissionData" [data]="gridPermissionData">
                     <ng-template kendoGridNoRecordsTemplate>
                         {{showloadingPermissionMessage  ? ('App.Loading' | translate) : ('Role.RecordNotFound' | translate)}}
                     </ng-template>
@@ -79,7 +79,7 @@
     <div class="panel panel-primary">
         <div class="panel-heading">{{ 'Role.Branches' | translate }}</div>
         <div class="panel-body">            
-            <kendo-grid [data]="gridBranchesData">
+            <kendo-grid id="gridBranchesData" [data]="gridBranchesData">
                     <ng-template kendoGridNoRecordsTemplate>
                         {{showloadingBranchesMessage  ? ('App.Loading' | translate) : ('RoleBranches.RecordNotFound' | translate)}}
                     </ng-template>
@@ -114,7 +114,7 @@
         <div class="panel-heading">{{ 'Role.Users' | translate }}</div>
         <div class="panel-body">
 
-            <kendo-grid [data]="gridUsersData">
+            <kendo-grid id="gridUsersData" [data]="gridUsersData">
                 <ng-template kendoGridNoRecordsTemplate>
                     {{showloadingUsersMessage  ? ('App.Loading' | translate) : ('RoleUsers.RecordNotFound' | translate)}}
                 </ng-template>

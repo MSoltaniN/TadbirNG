@@ -1,7 +1,7 @@
 ﻿<div class="panel panel-primary">
     <div class="panel-heading">{{ 'Entity.Role' | translate }}</div>
     <div SppcCheckAccess="View" class="panel-body">
-        <kendo-grid [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
+        <kendo-grid id="grdRole" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
                     [sortable]="true"
                     [pageSize]="pageSize"
                     [skip]="skip"
