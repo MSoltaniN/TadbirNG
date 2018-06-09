@@ -56,9 +56,6 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
     //permission flag
     viewAccess: boolean;
-    insertAccess: boolean;
-    editAccess: boolean;
-    deleteAccess: boolean;
 
     ////for add in delete messageText
     deleteConfirm: boolean;
@@ -78,9 +75,6 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Branch, BranchPermissions.View);
-        this.insertAccess = this.isAccess(SecureEntity.Branch, BranchPermissions.Create);
-        this.editAccess = this.isAccess(SecureEntity.Branch, BranchPermissions.Edit);
-        this.deleteAccess = this.isAccess(SecureEntity.Branch, BranchPermissions.Delete);
 
         this.reloadGrid();
     }

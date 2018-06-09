@@ -48,8 +48,6 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
     //permission flag
     viewAccess: boolean;
-    manageAccess: boolean;
-
 
     public mainComponent: Array<Item>;
     public relatedComponent: Array<Item>;
@@ -73,7 +71,6 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
     public ngOnInit(): void {
         this.viewAccess = this.isAccess(SecureEntity.AccountRelations, AccountRelationPermissions.ViewRelationships);
-        this.manageAccess = this.isAccess(SecureEntity.AccountRelations, AccountRelationPermissions.ManageRelationships);
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,

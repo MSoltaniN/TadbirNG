@@ -69,9 +69,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     
     //permission flag
     viewAccess: boolean;
-    insertAccess: boolean;
-    editAccess: boolean;
-    deleteAccess: boolean;
 
     //for add in delete messageText
     deleteConfirm: boolean;
@@ -92,19 +89,13 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Account, AccountPermissions.View);
-        this.insertAccess = this.isAccess(SecureEntity.Account, AccountPermissions.Create);
-        this.editAccess = this.isAccess(SecureEntity.Account, AccountPermissions.Edit);
-        this.deleteAccess = this.isAccess(SecureEntity.Account, AccountPermissions.Delete);
-
         this.reloadGrid();
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
         private accountService: AccountService, private voucherLineService: VoucherLineService,
         private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
-
-        
+        super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account); 
     }
 
 

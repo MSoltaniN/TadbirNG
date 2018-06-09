@@ -56,10 +56,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
 
     //permission flag
     viewAccess: boolean;
-    insertAccess: boolean;
-    editAccess: boolean;
-    deleteAccess: boolean;
-
+    
     ////for add in delete messageText
     deleteConfirm: boolean;
     deleteModelConfirm: boolean;
@@ -77,11 +74,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     groupDelete: boolean = false;
 
     ngOnInit() {
-        this.viewAccess = this.isAccess(SecureEntity.CostCenter, CostCenterPermissions.View);
-        this.insertAccess = this.isAccess(SecureEntity.CostCenter, CostCenterPermissions.Create);
-        this.editAccess = this.isAccess(SecureEntity.CostCenter, CostCenterPermissions.Edit);
-        this.deleteAccess = this.isAccess(SecureEntity.CostCenter, CostCenterPermissions.Delete);
-
+        this.viewAccess = this.isAccess(SecureEntity.CostCenter, CostCenterPermissions.View);        
         this.reloadGrid();
     }
 

@@ -56,9 +56,6 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     //permission flag
     viewAccess: boolean;
-    insertAccess: boolean;
-    editAccess: boolean;
-    deleteAccess: boolean;
 
     ////for add in delete messageText
     deleteConfirm: boolean;
@@ -78,10 +75,6 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.DetailAccount, DetailAccountPermissions.View);
-        this.insertAccess = this.isAccess(SecureEntity.DetailAccount, DetailAccountPermissions.Create);
-        this.editAccess = this.isAccess(SecureEntity.DetailAccount, DetailAccountPermissions.Edit);
-        this.deleteAccess = this.isAccess(SecureEntity.DetailAccount, DetailAccountPermissions.Delete);
-
         this.reloadGrid();
     }
 
