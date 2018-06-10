@@ -147,6 +147,7 @@
     "RoleDetail": "جزئیات نقش"
   },
   "RoleUsers": {
+    "Name": "نام و نام خانوادگی",
     "UserName": "نام کاربری",
     "PersonFirstName": "نام",
     "PersonLastName": "نام خانوادگی",
@@ -155,7 +156,7 @@
     "RecordNotFound": "این نقش به هیچ کاربری تخصیص داده نشده است"
   },
   "RoleBranches": {
-    "Name": "نام",
+    "Name": "نام شعبه",
     "Description": "توضیحات",
     "RoleBranchesTitle": "شعب قابل دسترسی توسط '{0}'",
     "RecordNotFound": "این نقش به هیچ شعبه ای دسترسی ندارد"

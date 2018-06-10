@@ -1,5 +1,5 @@
-﻿<kendo-dialog *ngIf="inputRoleBranches" class="user-dialog" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
-              (close)="closeForm()">
+﻿<kendo-dialog *ngIf="inputRoleBranches" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              (close)="closeForm()" [minWidth]="250" [width]="450">
     <kendo-dialog-titlebar>
         {{ getTitleText('RoleBranches.RoleBranchesTitle' | translate) }}
     </kendo-dialog-titlebar>
@@ -23,27 +23,10 @@
 
                 <kendo-grid-checkbox-column showSelectAll="true" width="40"></kendo-grid-checkbox-column>
 
-                <!-- template for mobile -->
-                <kendo-grid-column media="(max-width: 450px)" title="">
-                    <ng-template kendoGridCellTemplate let-roleBranches>
-                        <dl>
-                            <dt>{{ 'RoleBranches.Name' | translate }}</dt>
-                            <dd>{{ roleBranches.name }}</dd>
 
-                            <dt>{{ 'RoleBranches.Description' | translate }}</dt>
-                            <dd>{{ roleBranches.description }}</dd>                            
-                        </dl>
-
-                    </ng-template>
-                </kendo-grid-column>
-                <!-- template for mobile -->
-
-                <!-- additional columns on large devices -->
-                <kendo-grid-column media="(min-width: 450px)" width="400" sppc-grid-column="RoleBranches.name">
-                </kendo-grid-column>
-                <kendo-grid-column media="(min-width: 450px)" sppc-grid-column="RoleBranches.description">
-                </kendo-grid-column>                
-                <!-- additional columns on large devices -->
+                <kendo-grid-column sppc-grid-column="RoleBranches.name">
+                </kendo-grid-column>              
+     
 
             </kendo-grid>
         </div>

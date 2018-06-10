@@ -3,7 +3,7 @@
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy, State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 
-import { RoleBranches, RoleDetails, RoleDetailsViewModel } from '../../model/index';
+import { RoleDetails, RoleDetailsViewModel } from '../../model/index';
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
 

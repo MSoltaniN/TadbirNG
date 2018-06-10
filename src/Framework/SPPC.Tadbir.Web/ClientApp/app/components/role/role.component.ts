@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { RoleService, RoleInfo, RoleFullInfo, PermissionInfo, RoleUsersInfo, RoleBranchesInfo, RoleDetailsInfo } from '../../service/index';
-import { Role, RoleFull, Permission, RoleUsers, RoleBranches } from '../../model/index';
+import { RoleService, RoleInfo, RoleFullInfo, PermissionInfo, RoleDetailsInfo, RelatedItemsInfo } from '../../service/index';
+import { Role, RoleFull, Permission, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 
@@ -62,8 +62,8 @@ export class RoleComponent extends DefaultComponent implements OnInit {
 
     editDataItem?: Role | undefined = undefined;
     permissionsData: Permission;
-    roleUsersData: RoleUsersInfo;
-    roleBranchesData: RoleBranchesInfo;
+    roleUsersData: RelatedItemsInfo;
+    roleBranchesData: RelatedItemsInfo;
     roleDetailData: RoleDetailsInfo;
 
 
@@ -73,6 +73,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     roleDetail: boolean;
 
     errorMessage: string;
+    roleName: string;
     groupDelete: boolean = false;
 
     ngOnInit() {
@@ -164,12 +165,12 @@ export class RoleComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    userHandler(roleId: number) {
+    userHandler(roleId: number, roleName: string) {
         this.usersList = true;
         this.sppcLoading.show();
         this.roleService.getRoleUsers(roleId).subscribe(res => {
             this.roleUsersData = res;
-
+            this.roleName = roleName;
             this.sppcLoading.hide();
         });
 
@@ -177,12 +178,12 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     }
 
     cancelRoleUsersHandler() {
-        //this.roleUsersData = undefined;
         this.usersList = false;
         this.errorMessage = '';
+        this.roleName = '';
     }
 
-    saveRoleUsersHandler(roleUsers: RoleUsers) {
+    saveRoleUsersHandler(roleUsers: RelatedItems) {
         this.sppcLoading.show();
         this.roleService.modifiedRoleUsers(roleUsers)
             .subscribe(response => {
@@ -195,23 +196,24 @@ export class RoleComponent extends DefaultComponent implements OnInit {
             }));
     }
 
-    branchHandler(roleId: number) {
+    branchHandler(roleId: number, roleName: string) {
         this.roleBranches = true;
         this.sppcLoading.show();
         this.roleService.getRoleBranches(roleId).subscribe(res => {
             this.roleBranchesData = res;
+            this.roleName = roleName;
             this.sppcLoading.hide();
         })
         this.errorMessage = '';
     }
 
     cancelRoleBranchesHandler() {
-        //this.roleUsersData = undefined;
         this.roleBranches = false;
         this.errorMessage = '';
+        this.roleName = '';
     }
 
-    saveRoleBranchesHandler(roleBranches: RoleBranches) {
+    saveRoleBranchesHandler(roleBranches: RelatedItems) {
         this.sppcLoading.show();
         this.roleService.modifiedRoleBranches(roleBranches)
             .subscribe(response => {

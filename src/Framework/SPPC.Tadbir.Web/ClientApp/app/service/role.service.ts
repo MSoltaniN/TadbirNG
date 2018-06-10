@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { Role, Permission, RoleFull, RoleUsers, UserBrief, Branch, RoleBranches, RoleDetails } from '../model/index';
+import { Role, Permission, RoleFull, UserBrief, Branch, RoleDetails, RelatedItems, RelatedItem } from '../model/index';
 import { RoleApi } from './api/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -23,7 +23,6 @@ export class RoleInfo implements Role {
     name: string;
     description?: string | undefined;
     flag: number;
-    //constructor(public id: number = 0, public name: string = "", public description: string="", public permissions: string[] = []) { }
 }
 
 export class PermissionInfo implements Permission {
@@ -42,25 +41,9 @@ export class RoleFullInfo implements RoleFull {
     permissions: Permission[];
 }
 
-export class RoleUsersInfo implements RoleUsers {
+export class RelatedItemsInfo implements RelatedItems {
     id: number;
-    name: string;
-    users: Array<UserBrief>;
-}
-
-//export class BranchInfo implements Branch {
-//    id: number;
-//    name: string;
-//    description?: string;
-//    level: number;
-//    companyId: number;
-//    isAccessible: boolean;
-//}
-
-export class RoleBranchesInfo implements RoleBranches {
-    id: number;
-    name: string;
-    branches: Array<Branch>;
+    relatedItems: RelatedItem[];
 }
 
 export class RoleDetailsInfo implements RoleDetails {
@@ -98,7 +81,7 @@ export class RoleService extends BaseService {
             .map(response => <any>(<Response>response).json());
     }
 
-    modifiedRoleUsers(roleUsers: RoleUsers) {
+    modifiedRoleUsers(roleUsers: RelatedItems) {
         var body = JSON.stringify(roleUsers);
         var headers = this.headers;
 
@@ -118,7 +101,7 @@ export class RoleService extends BaseService {
             .map(response => <any>(<Response>response).json());
     }
 
-    modifiedRoleBranches(roleBranches: RoleBranches) {
+    modifiedRoleBranches(roleBranches: RelatedItems) {
 
         var body = JSON.stringify(roleBranches);
         var headers = this.headers;

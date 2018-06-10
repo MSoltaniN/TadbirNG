@@ -147,6 +147,7 @@
     "RoleDetail": "Role detail"
   },
   "RoleUsers": {
+    "Name": "Name",
     "UserName": "User Name",
     "PersonFirstName": "First Name",
     "PersonLastName": "Last Name",
@@ -155,7 +156,7 @@
     "RecordNotFound": "This role has not been assigned to any user"
   },
   "RoleBranches": {
-    "Name": "Name",
+    "Name": " Branch Name",
     "Description": "Description",
     "RoleBranchesTitle": "Branches accessible by '{0}'",
     "RecordNotFound": "This role has no branch"

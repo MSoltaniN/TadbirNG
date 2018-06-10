@@ -13,9 +13,7 @@ export * from './userProfile';
 export * from './permission';
 export * from './roleFull';
 export * from './userBrief';
-export * from './roleUsers';
 export * from './branch';
-export * from './roleBranches';
 export * from './roleDetails';
 export * from './permissionBrief';
 export * from './fiscalPeriod';
@@ -23,4 +21,6 @@ export * from './branch';
 export * from './company';
 export * from './accountItemBrief';
 export * from './accountItemRelations';
+export * from './relatedItems';
+export * from './relatedItem';
 
