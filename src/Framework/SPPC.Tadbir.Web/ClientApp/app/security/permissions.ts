@@ -121,7 +121,7 @@ export enum UserPermissions {
     All = 7
 }
 
-export enum RolePermissions{
+export enum RolePermissions {
     None = 0,
     View = 1,
     Create = 2,
@@ -129,6 +129,7 @@ export enum RolePermissions{
     Delete = 8,
     AssignUsers = 16,
     AssignBranches = 32,
+    AssignFiscalPeriods = 64,
     All = 63
 }
 
@@ -171,8 +172,8 @@ export class Permissions {
 
         switch (entity.toLowerCase()) {
             case "account":
-                id = <any>AccountPermissions[<any>premissionName];                
-                break;            
+                id = <any>AccountPermissions[<any>premissionName];
+                break;
             case "detailaccount":
                 id = <any>DetailAccountPermissions[<any>premissionName];
                 break;
@@ -218,13 +219,13 @@ export class Permissions {
             case "company":
                 id = <any>CompanyPermissions[<any>premissionName];
                 break;
-                
+
         }
 
 
 
         return id;
-        
+
     }
 };
 

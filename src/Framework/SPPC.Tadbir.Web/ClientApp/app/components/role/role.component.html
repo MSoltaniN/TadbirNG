@@ -47,10 +47,11 @@
                         <dd>{{ role.description }}</dd>
                     </dl>
 
-                    <button kendoGridEditCommand SppcCheckAccess="Edit" *ngIf="role.id!=1" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
                     <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
-                    <button kendoButton SppcCheckAccess="AssignUsers" (click)="userHandler(role.id)" [primary]="true">{{ 'Role.Users' | translate }}</button>
-                    <button kendoButton SppcCheckAccess="AssignBranches" (click)="branchHandler(role.id)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
+                    <button kendoButton SppcCheckAccess="AssignUsers" (click)="userHandler(role.id,role.name)" [primary]="true">{{ 'Role.Users' | translate }}</button>
+                    <button kendoButton SppcCheckAccess="AssignBranches" (click)="branchHandler(role.id,role.name)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
+                    <button kendoButton SppcCheckAccess="AssignFiscalPeriods" (click)="fiscalPeriodHandler(role.id,role.name)" [primary]="true">{{ 'Role.FiscalPeriod' | translate }}</button>
+                    <button kendoGridEditCommand SppcCheckAccess="Edit" *ngIf="role.id!=1" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
                     <button kendoGridRemoveCommand SppcCheckAccess="Delete" *ngIf="role.id!=1">{{ 'Buttons.Delete' | translate }}</button>
                 </ng-template>
             </kendo-grid-column>
@@ -68,12 +69,13 @@
                 </ng-template>
             </kendo-grid-column>
 
-            <kendo-grid-command-column media="(min-width: 450px)" width="230">
+            <kendo-grid-command-column media="(min-width: 450px)" width="320">
                 <ng-template kendoGridCellTemplate let-role>
-                    <button kendoGridEditCommand SppcCheckAccess="Edit" *ngIf="role.id!=1" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
                     <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
-                    <button kendoButton SppcCheckAccess="AssignUsers" (click)="userHandler(role.id)" [primary]="true">{{ 'Role.Users' | translate }}</button>
-                    <button kendoButton SppcCheckAccess="AssignBranches" (click)="branchHandler(role.id)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
+                    <button kendoButton SppcCheckAccess="AssignUsers" (click)="userHandler(role.id,role.name)" [primary]="true">{{ 'Role.Users' | translate }}</button>
+                    <button kendoButton SppcCheckAccess="AssignBranches" (click)="branchHandler(role.id,role.name)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
+                    <button kendoButton SppcCheckAccess="AssignFiscalPeriods" (click)="fiscalPeriodHandler(role.id,role.name)" [primary]="true">{{ 'Role.FiscalPeriod' | translate }}</button>
+                    <button kendoGridEditCommand SppcCheckAccess="Edit" *ngIf="role.id!=1" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
                     <button kendoGridRemoveCommand SppcCheckAccess="Delete" *ngIf="role.id!=1">{{ 'Buttons.Delete' | translate }}</button>
                 </ng-template>
             </kendo-grid-command-column>
@@ -84,15 +86,18 @@
                              (save)="saveHandler($event)"
                              (cancel)="cancelHandler()">
         </role-form-component>
-        <role-user-form-component [usersList]="usersList" [roleUser]="roleUsersData" [errorMessage]="errorMessage"
+        <role-user-form-component [usersList]="usersList" [roleUser]="roleUsersData" [errorMessage]="errorMessage" [roleName]="roleName"
                                   (saveRoleUsers)="saveRoleUsersHandler($event)"
                                   (cancelRoleUsers)="cancelRoleUsersHandler()">
-
         </role-user-form-component>
-        <role-branch-form-component [inputRoleBranches]="roleBranches" [roleBranches]="roleBranchesData" [errorMessage]="errorMessage"
+        <role-branch-form-component [inputRoleBranches]="roleBranches" [roleBranches]="roleBranchesData" [errorMessage]="errorMessage" [roleName]="roleName"
                                     (saveRoleBranches)="saveRoleBranchesHandler($event)"
                                     (cancelRoleBranches)="cancelRoleBranchesHandler()">
         </role-branch-form-component>
+        <role-fiscalPeriod-form-component [fiscalPeriodList]="roleFiscalPeriod" [roleFiscalPeriod]="roleFiscalPeriodsData" [errorMessage]="errorMessage" [roleName]="roleName"
+                                  (saveRoleFiscalPeriod)="saveRoleFiscalPeriodHandler($event)"
+                                  (cancelRoleFiscalPeriod)="cancelRoleFiscalPeriodHandler()">
+        </role-fiscalPeriod-form-component>
         <role-detail-form-component [roleDetail]="roleDetail" [roleDetails]="roleDetailData" [errorMessage]="errorMessage"
                                     (cancelRoleDetail)="cancelRoleDetailHandler()">
         </role-detail-form-component>
