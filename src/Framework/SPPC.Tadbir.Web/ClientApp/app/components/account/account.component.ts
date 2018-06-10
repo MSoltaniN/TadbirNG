@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
+﻿import { Component, OnInit, Input, Renderer2, ViewChildren, QueryList, ElementRef, Host, Output, SkipSelf, Optional } from '@angular/core';
 
 import { AccountService, AccountInfo, VoucherLineService, FiscalPeriodService } from '../../service/index';
 
@@ -56,11 +56,11 @@ export function getLayoutModule(layout: Layout) {
 export class AccountComponent extends DefaultComponent implements OnInit {
 
     
-
+    public Childrens: Array<AccountComponent>;
 
     @Input() public parent: Account;
     @Input() public isChild: boolean = false;
-
+    
     public parentId?: number = undefined;
     public rowData: GridDataResult;
     public selectedRows: string[] = [];
@@ -85,19 +85,32 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
-
+    
 
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Account, AccountPermissions.View);
         this.reloadGrid();
+        if(this.parentAccount)
+            this.parentAccount.addChildAccount(this);
     }
-
+    
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
         private accountService: AccountService, private voucherLineService: VoucherLineService,
-        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService) {
+        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService,
+        @SkipSelf() @Host() @Optional() private parentAccount: AccountComponent) {
         super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account); 
     }
 
+    /**
+     * کامپوننت های فرزند را در متغیری اضافه میکند
+     * @param accountComponent کامپوننت حساب
+     */
+    public addChildAccount(accountComponent : AccountComponent) {
+
+        if (this.Childrens == undefined) this.Childrens = new Array<AccountComponent>();
+        if (this.Childrens.findIndex(p=>p.parent.id == accountComponent.parent.id) == -1)
+            this.Childrens.push(accountComponent);
+    }
 
     selectionKey(context: RowArgs): string {
         if (context.dataItem == undefined) return "";
@@ -133,7 +146,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    reloadGrid(insertedModel?: Account) {
+    public reloadGrid(insertedModel?: Account) {
         if (this.viewAccess) {
             this.sppcLoading.show();
             var filter = this.currentFilter;
@@ -306,7 +319,17 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     var insertedModel = JSON.parse(response._body);
+
+                    if (this.Childrens) {                        
+                        var childFiltered = this.Childrens.filter(f => f.parent.id == model.parentId);
+                        if (childFiltered.length > 0) {
+                            childFiltered[0].reloadGrid(insertedModel);
+                            return;
+                        }                        
+                    }
+
                     this.reloadGrid(insertedModel);
+                    
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
