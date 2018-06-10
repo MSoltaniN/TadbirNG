@@ -499,6 +499,198 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، ارتباطات زیرشاخه های یک حساب با یک تفصیلی شناور را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه حساب پدر</param>
+        /// <param name="faccountId">شناسه تفصیلی شناور مرتبط</param>
+        /// <returns>ارتباطات زیرشاخه های حساب پدر با تفصیلی شناور</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetChildAccountsRelatedToDetailAccount(
+            int accountId, int faccountId)
+        {
+            var children = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await GetAccountChildrenQuery(repository, accountId)
+                .SingleOrDefaultAsync();
+            if (account != null)
+            {
+                children.AddRange(account.Children.Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc)));
+                var relationRepository = _unitOfWork.GetAsyncRepository<AccountDetailAccount>();
+                var relatedItems = await relationRepository
+                    .GetByCriteriaAsync(item => item.DetailId == faccountId && item.Account.ParentId == accountId);
+                var relatedItemIds = relatedItems
+                    .Select(item => item.AccountId)
+                    .ToArray();
+                Array.ForEach(
+                    children
+                        .Where(item => relatedItemIds.Contains(item.Id))
+                        .ToArray(),
+                    item => item.IsSelected = true);
+            }
+
+            return children;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ارتباطات زیرشاخه های یک حساب با یک مرکز هزینه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه حساب پدر</param>
+        /// <param name="costCenterId">شناسه مرکز هزینه مرتبط</param>
+        /// <returns>ارتباطات زیرشاخه های حساب پدر با مرکز هزینه</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetChildAccountsRelatedToCostCenter(
+            int accountId, int costCenterId)
+        {
+            var children = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await GetAccountChildrenQuery(repository, accountId)
+                .SingleOrDefaultAsync();
+            if (account != null)
+            {
+                children.AddRange(account.Children.Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc)));
+                var relationRepository = _unitOfWork.GetAsyncRepository<AccountCostCenter>();
+                var relatedItems = await relationRepository
+                    .GetByCriteriaAsync(item => item.CostCenterId == costCenterId && item.Account.ParentId == accountId);
+                var relatedItemIds = relatedItems
+                    .Select(item => item.AccountId)
+                    .ToArray();
+                Array.ForEach(
+                    children
+                        .Where(item => relatedItemIds.Contains(item.Id))
+                        .ToArray(),
+                    item => item.IsSelected = true);
+            }
+
+            return children;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ارتباطات زیرشاخه های یک حساب با یک پروژه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه حساب پدر</param>
+        /// <param name="projectId">شناسه پروژه مرتبط</param>
+        /// <returns>ارتباطات زیرشاخه های حساب پدر با پروژه</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetChildAccountsRelatedToProject(
+            int accountId, int projectId)
+        {
+            var children = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var account = await GetAccountChildrenQuery(repository, accountId)
+                .SingleOrDefaultAsync();
+            if (account != null)
+            {
+                children.AddRange(account.Children.Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc)));
+                var relationRepository = _unitOfWork.GetAsyncRepository<AccountProject>();
+                var relatedItems = await relationRepository
+                    .GetByCriteriaAsync(item => item.ProjectId == projectId && item.Account.ParentId == accountId);
+                var relatedItemIds = relatedItems
+                    .Select(item => item.AccountId)
+                    .ToArray();
+                Array.ForEach(
+                    children
+                        .Where(item => relatedItemIds.Contains(item.Id))
+                        .ToArray(),
+                    item => item.IsSelected = true);
+            }
+
+            return children;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ارتباطات زیرشاخه های یک تفصیلی شناور با یک حساب را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="faccountId">شناسه تفصیلی شناور پدر</param>
+        /// <param name="accountId">شناسه حساب مرتبط</param>
+        /// <returns>ارتباطات زیرشاخه های تفصیلی شناور پدر با حساب</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetChildDetailAccountsRelatedToAccount(
+            int faccountId, int accountId)
+        {
+            var children = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var detailAccount = await GetDetailAccountChildrenQuery(repository, faccountId)
+                .SingleOrDefaultAsync();
+            if (detailAccount != null)
+            {
+                children.AddRange(detailAccount.Children.Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc)));
+                var relationRepository = _unitOfWork.GetAsyncRepository<AccountDetailAccount>();
+                var relatedItems = await relationRepository
+                    .GetByCriteriaAsync(item => item.AccountId == accountId && item.DetailAccount.ParentId == faccountId);
+                var relatedItemIds = relatedItems
+                    .Select(item => item.DetailId)
+                    .ToArray();
+                Array.ForEach(
+                    children
+                        .Where(item => relatedItemIds.Contains(item.Id))
+                        .ToArray(),
+                    item => item.IsSelected = true);
+            }
+
+            return children;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ارتباطات زیرشاخه های یک مرکز هزینه با یک حساب را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="costCenterId">شناسه مرکز هزینه پدر</param>
+        /// <param name="accountId">شناسه حساب مرتبط</param>
+        /// <returns>ارتباطات زیرشاخه های مرکز هزینه پدر با حساب</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetChildCostCentersRelatedToAccount(
+            int costCenterId, int accountId)
+        {
+            var children = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var costCenter = await GetCostCenterChildrenQuery(repository, costCenterId)
+                .SingleOrDefaultAsync();
+            if (costCenter != null)
+            {
+                children.AddRange(costCenter.Children.Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc)));
+                var relationRepository = _unitOfWork.GetAsyncRepository<AccountCostCenter>();
+                var relatedItems = await relationRepository
+                    .GetByCriteriaAsync(item => item.AccountId == accountId && item.CostCenter.ParentId == costCenterId);
+                var relatedItemIds = relatedItems
+                    .Select(item => item.CostCenterId)
+                    .ToArray();
+                Array.ForEach(
+                    children
+                        .Where(item => relatedItemIds.Contains(item.Id))
+                        .ToArray(),
+                    item => item.IsSelected = true);
+            }
+
+            return children;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، ارتباطات زیرشاخه های یک پروژه با یک حساب را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه پروژه پدر</param>
+        /// <param name="accountId">شناسه حساب مرتبط</param>
+        /// <returns>ارتباطات زیرشاخه های پروژه پدر با حساب</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetChildProjectsRelatedToAccount(
+            int projectId, int accountId)
+        {
+            var children = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var project = await GetProjectChildrenQuery(repository, projectId)
+                .SingleOrDefaultAsync();
+            if (project != null)
+            {
+                children.AddRange(project.Children.Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj)));
+                var relationRepository = _unitOfWork.GetAsyncRepository<AccountProject>();
+                var relatedItems = await relationRepository
+                    .GetByCriteriaAsync(item => item.AccountId == accountId && item.Project.ParentId == projectId);
+                var relatedItemIds = relatedItems
+                    .Select(item => item.ProjectId)
+                    .ToArray();
+                Array.ForEach(
+                    children
+                        .Where(item => relatedItemIds.Contains(item.Id))
+                        .ToArray(),
+                    item => item.IsSelected = true);
+            }
+
+            return children;
+        }
+
         private static bool AreRelationsModified(int[] existingIds, AccountItemRelationsViewModel relations)
         {
             var connectedItems = relations
@@ -739,6 +931,42 @@ namespace SPPC.Tadbir.Persistence
                 };
                 existing.AccountProjects.Add(accountProject);
             }
+        }
+
+        private IQueryable<Account> GetAccountChildrenQuery(IRepository<Account> repository, int accountId)
+        {
+            return repository
+                .GetEntityQuery()
+                .Include(acc => acc.Children)
+                    .ThenInclude(acc => acc.Children)
+                .Where(acc => acc.Id == accountId);
+        }
+
+        private IQueryable<DetailAccount> GetDetailAccountChildrenQuery(IRepository<DetailAccount> repository, int faccountId)
+        {
+            return repository
+                .GetEntityQuery()
+                .Include(facc => facc.Children)
+                    .ThenInclude(facc => facc.Children)
+                .Where(facc => facc.Id == faccountId);
+        }
+
+        private IQueryable<CostCenter> GetCostCenterChildrenQuery(IRepository<CostCenter> repository, int costCenterId)
+        {
+            return repository
+                .GetEntityQuery()
+                .Include(cc => cc.Children)
+                    .ThenInclude(cc => cc.Children)
+                .Where(cc => cc.Id == costCenterId);
+        }
+
+        private IQueryable<Project> GetProjectChildrenQuery(IRepository<Project> repository, int projectId)
+        {
+            return repository
+                .GetEntityQuery()
+                .Include(prj => prj.Children)
+                    .ThenInclude(prj => prj.Children)
+                .Where(prj => prj.Id == projectId);
         }
 
         private IUnitOfWork _unitOfWork;

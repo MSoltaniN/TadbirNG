@@ -231,6 +231,60 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // GET: api/relations/accounts/{accountId:min(1)}/children/faccounts/{faccountId:min(1)}
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.ChildAccountsRelatedToDetailAccountUrl)]
+        public async Task<IActionResult> GetChildAccountsRelatedToDetailAccount(int accountId, int faccountId)
+        {
+            var chidren = await _repository.GetChildAccountsRelatedToDetailAccount(accountId, faccountId);
+            return Json(chidren);
+        }
+
+        // GET: api/relations/accounts/{accountId:min(1)}/children/ccenters/{ccenterId:min(1)}
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.ChildAccountsRelatedToCostCenterUrl)]
+        public async Task<IActionResult> GetChildAccountsRelatedToCostCenter(int accountId, int ccenterId)
+        {
+            var chidren = await _repository.GetChildAccountsRelatedToCostCenter(accountId, ccenterId);
+            return Json(chidren);
+        }
+
+        // GET: api/relations/accounts/{accountId:min(1)}/children/projects/{projectId:min(1)}
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.ChildAccountsRelatedToProjectUrl)]
+        public async Task<IActionResult> GetChildAccountsRelatedToProject(int accountId, int projectId)
+        {
+            var chidren = await _repository.GetChildAccountsRelatedToProject(accountId, projectId);
+            return Json(chidren);
+        }
+
+        // GET: api/relations/faccounts/{faccountId:min(1)}/children/accounts/{accountId:min(1)}
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.ChildDetailAccountsRelatedToAccountUrl)]
+        public async Task<IActionResult> GetChildDetailAccountsRelatedToAccount(int faccountId, int accountId)
+        {
+            var children = await _repository.GetChildDetailAccountsRelatedToAccount(faccountId, accountId);
+            return Json(children);
+        }
+
+        // GET: api/relations/ccenters/{ccenterId:min(1)}/children/accounts/{accountId:min(1)}
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.ChildCostCentersRelatedToAccountUrl)]
+        public async Task<IActionResult> GetChildCostCentersRelatedToAccount(int ccenterId, int accountId)
+        {
+            var children = await _repository.GetChildCostCentersRelatedToAccount(ccenterId, accountId);
+            return Json(children);
+        }
+
+        // GET: api/relations/projects/{projectId:min(1)}/children/accounts/{accountId:min(1)}
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.ChildProjectsRelatedToAccountUrl)]
+        public async Task<IActionResult> GetChildProjectsRelatedToAccount(int projectId, int accountId)
+        {
+            var children = await _repository.GetChildProjectsRelatedToAccount(projectId, accountId);
+            return Json(children);
+        }
+
         private IRelationRepository _repository;
         private IConfigRepository _configRepository;
     }
