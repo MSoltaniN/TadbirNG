@@ -91,6 +91,7 @@
   "Company": {
     "CompanyName": "شرکت",
     "New": "شرکت جدید",
+    "NewSubCompany": "درج زیر شرکت جدید",
     "Delete": "حذف شرکت",
     "Name": "نام",
     "Description": "شرح"
@@ -98,6 +99,7 @@
   "Branch": {
     "BranchName": "شعبه",
     "New": "شعبه جدید",
+    "NewSubBrench": "درج زیر شعبه جدید",
     "Delete": "حذف شعبه",
     "Name": "نام",
     "Description": "شرح"
@@ -132,6 +134,7 @@
     "RepeatPassword": "تکرار کلمه عبور جدید"
   },
   "Role": {
+    "New": "نقش جدید",
     "Name": "نام",
     "Description": "شرح",
     "Permissions": "دسترسی ها",
@@ -162,6 +165,7 @@
   },
   "DetailAccount": {
     "New": "تفصیلی شناور جدید",
+    "NewSubDetailAccount": "درج زیر تفصیلی شناور جدید",
     "Name": "نام",
     "Code": "کد",
     "FullCode": "کد کامل",
@@ -171,6 +175,7 @@
   },
   "CostCenter": {
     "New": "مرکز هزینه جدید",
+    "NewSubCostCenter": "درج زیر مرکز هزینه جدید",
     "Name": "نام",
     "Code": "کد",
     "FullCode": "کد کامل",
@@ -180,6 +185,7 @@
   },
   "Project": {
     "New": "پروژه جدید",
+    "NewSubProject": "درج زیر پروژه جدید",
     "Name": "نام",
     "Code": "کد",
     "FullCode": "کد کامل",
@@ -221,7 +227,8 @@
     "UserName": "نام کاربر",
     "Password": "کلمه عبور",
     "BtnLogin": "ورود",
-    "RememberMe": "مرا به خاطر بسپار"
+    "RememberMe": "مرا به خاطر بسپار",
+    "UserIncorrect": "نام کاربری يا کلمه عبور اشتباه می باشد"
   },
   "AllValidations": {
     "Account": {

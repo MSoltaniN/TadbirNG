@@ -53,7 +53,8 @@ export class GridSettingComponent extends BaseComponent implements OnInit {
         else
             this.rtl = false;
 
-        var id: string = this.elRef.nativeElement.id + "_" + this.defaultComponent.UserId + "_hidden";
+        var id: string = this.grid.wrapper.nativeElement.id + "_" + this.defaultComponent.UserId + "_hidden";
+        if (this.grid.wrapper.nativeElement.id == "") return;
 
         var rowDataString = localStorage.getItem(id);
         if (rowDataString)
@@ -96,7 +97,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit {
     changeVisibility(name :string, event : any) {
 
 
-        var id: string = this.elRef.nativeElement.id + "_" + this.defaultComponent.UserId  + "_hidden";
+        var id: string = this.grid.wrapper.nativeElement.id + "_" + this.defaultComponent.UserId  + "_hidden";
         var hidden: boolean;
         
         hidden = !event.target.checked;

@@ -56,9 +56,6 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
 
     //permission flag
     viewAccess: boolean;
-    insertAccess: boolean;
-    editAccess: boolean;
-    deleteAccess: boolean;
 
     ////for add in delete messageText
     deleteConfirm: boolean;
@@ -78,10 +75,6 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
 
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Project, ProjectPermissions.View);
-        this.insertAccess = this.isAccess(SecureEntity.Project, ProjectPermissions.Create);
-        this.editAccess = this.isAccess(SecureEntity.Project, ProjectPermissions.Edit);
-        this.deleteAccess = this.isAccess(SecureEntity.Project, ProjectPermissions.Delete);
-
         this.reloadGrid();
     }
 

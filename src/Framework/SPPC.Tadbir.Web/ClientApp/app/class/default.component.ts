@@ -15,6 +15,8 @@ import { Http } from '@angular/http';
 import { AppModule } from '../app.module.server';
 import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 
+import * as moment from 'jalali-moment';
+
 @Injectable()
 export class DefaultComponent extends BaseComponent {
 
@@ -329,7 +331,15 @@ export class DefaultComponent extends BaseComponent {
                     if (metadata != undefined)
                         dataType = metadata.dotNetType;
 
-                    filters.push(new Filter(filter.filters[i].field, filter.filters[i].value, operator, dataType));
+                    var filterValue = filter.filters[i].value;
+
+                    
+                    if (dataType == "System.DateTime") {
+                        var date = moment.from(filterValue, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD');
+                        filterValue = date;
+                    }
+
+                    filters.push(new Filter(filter.filters[i].field, filterValue, operator, dataType));
 
                 }
             }

@@ -157,7 +157,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         AccountRelationsComponent
     ],
     providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
-        UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService,
+        UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,

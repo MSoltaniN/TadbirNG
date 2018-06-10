@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild, Renderer2, Host } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator } from '@angular/forms'
 import { DatePipe } from '@angular/common'
 
@@ -6,10 +6,14 @@ import * as moment from 'jalali-moment';
 import { DatePickerDirective, DatePickerComponent } from 'ng2-jalali-date-picker';
 import { KeyCode } from '../../enum/KeyCode';
 
+
+
 @Component({
     selector: 'sppc-grid-datepicker',
     template: `<dp-date-picker
-    class="k-textbox"    
+    class="k-textbox" 
+    [(ngModel)]="dateObject"
+    (onChange)="DateChange($event)" 
     [config]='dateConfig'
     theme="dp-material">
   </dp-date-picker>`,
@@ -56,17 +60,17 @@ export class SppcGridDatepicker implements OnInit, OnDestroy, ControlValueAccess
     private parseError: boolean = false;
     public inputDateFormat: string = 'yyyy/M/d hh:mm';
 
-    constructor(private datepipe: DatePipe) {
+    constructor(private datepipe: DatePipe, private render: Renderer2) {
     }
 
     ngOnInit() {
 
-        var dateFormat = "YYYY/M/D"
+        var dateFormat = "YYYY/MM/DD"
         var lang = localStorage.getItem('lang');
         if (lang) {
             this.dateLocale = lang;
             if (lang == "en")
-                dateFormat = "M/D/YYYY";
+                dateFormat = "MM/DD/YYYY";
         }
 
         this.dateConfig = {
@@ -82,10 +86,27 @@ export class SppcGridDatepicker implements OnInit, OnDestroy, ControlValueAccess
     }
 
     @Input() date: any;
-    public dateObject = moment();
+    public dateObject : any;
     propagateChange: any = () => { };
 
+    public destinationElementId: string;
 
+    DateChange(event : any) {
+        
+        if (this.dateObject) {
+            var date = this.dateObject.format('YYYY/MM/DD');
+
+            var hiddenElement = document.getElementById(this.destinationElementId) as any;
+            if (hiddenElement) {
+                hiddenElement.setAttribute('ng-reflect-model', date);
+                hiddenElement.value = date;
+                var eve = new Event('input');
+                hiddenElement.dispatchEvent(eve);
+            }
+            
+        }
+    }
+    
 
     writeValue(value: any): void {
         if (value) {

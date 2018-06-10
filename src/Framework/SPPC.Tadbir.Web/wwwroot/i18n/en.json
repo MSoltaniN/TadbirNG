@@ -91,6 +91,7 @@
   "Company": {
     "CompanyName": "Company",
     "New": "New Company",
+    "NewSubCompany": "New Sub Company",
     "Delete": "Delete Company",
     "Name": "Name",
     "Description": "Description"
@@ -98,6 +99,7 @@
   "Branch": {
     "BranchName": "Branch",
     "New": "New Branch",
+    "NewSubBrench": "New Sub Branch",
     "Delete": "Delete Branch",
     "Name": "Name",
     "Description": "Description"
@@ -132,6 +134,7 @@
     "RepeatPassword": "Repeat new password"
   },
   "Role": {
+    "New": "New Role",
     "Name": "Name",
     "Description": "Description",
     "Permissions": "Permissions",
@@ -162,6 +165,7 @@
   },
   "DetailAccount": {
     "New": "New Detail Account",
+    "NewSubDetailAccount": "New Sub Detail Account",
     "Name": "Name",
     "Code": "Code",
     "FullCode": "Full Code",
@@ -171,6 +175,7 @@
   },
   "CostCenter": {
     "New": "New Cost Center",
+    "NewSubCostCenter": "New Sub Cost Center",
     "Name": "Name",
     "Code": "Code",
     "FullCode": "Full Code",
@@ -180,6 +185,7 @@
   },
   "Project": {
     "New": "New Project",
+    "NewSubProject": "New Sub Project",
     "Name": "Name",
     "Code": "Code",
     "FullCode": "Full Code",
@@ -221,7 +227,8 @@
     "UserName": "User Name",
     "Password": "Password",
     "BtnLogin": "Login",
-    "RememberMe": "Remember me"
+    "RememberMe": "Remember me",
+    "UserIncorrect": "username or password is incorrect"
   },
   "AllValidations": {
     "Account": {

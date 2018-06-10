@@ -47,9 +47,6 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     //permission flag
     viewAccess: boolean;
-    insertAccess: boolean;
-    editAccess: boolean;
-    deleteAccess: boolean;
 
     //for add in delete messageText
     deleteConfirm: boolean;
@@ -68,10 +65,6 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.View);
-        this.insertAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.Create);
-        this.editAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.Edit);
-        this.deleteAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.Delete);
-
         this.reloadGrid();
     }
 

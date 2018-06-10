@@ -49,11 +49,6 @@ export class RoleComponent extends DefaultComponent implements OnInit {
 
     //permission flag
     viewAccess: boolean;
-    insertAccess: boolean;
-    editAccess: boolean;
-    deleteAccess: boolean;
-    assignUsersAccess: boolean;
-    assignBranchesAccess: boolean;
 
     //for add in delete messageText
     deleteConfirm: boolean;
@@ -82,12 +77,6 @@ export class RoleComponent extends DefaultComponent implements OnInit {
 
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Role, RolePermissions.View);
-        this.insertAccess = this.isAccess(SecureEntity.Role, RolePermissions.Create);
-        this.editAccess = this.isAccess(SecureEntity.Role, RolePermissions.Edit);
-        this.deleteAccess = this.isAccess(SecureEntity.Role, RolePermissions.Delete);
-        this.assignUsersAccess = this.isAccess(SecureEntity.Role, RolePermissions.AssignUsers);
-        this.assignBranchesAccess = this.isAccess(SecureEntity.Role, RolePermissions.AssignBranches);
-
         this.reloadGrid();
     }
 

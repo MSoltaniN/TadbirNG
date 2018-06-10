@@ -56,9 +56,6 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
 
     //permission flag
     viewAccess: boolean;
-    insertAccess: boolean;
-    editAccess: boolean;
-    deleteAccess: boolean;
 
     ////for add in delete messageText
     deleteConfirm: boolean;
@@ -78,10 +75,6 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
 
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Company, CompanyPermissions.View);
-        this.insertAccess = this.isAccess(SecureEntity.Company, CompanyPermissions.Create);
-        this.editAccess = this.isAccess(SecureEntity.Company, CompanyPermissions.Edit);
-        this.deleteAccess = this.isAccess(SecureEntity.Company, CompanyPermissions.Delete);
-
         this.reloadGrid();
     }
 

@@ -48,8 +48,6 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
     //permission flag
     viewAccess: boolean;
-    manageAccess: boolean;
-
 
     public mainComponent: Array<Item>;
     public relatedComponent: Array<Item>;
@@ -64,16 +62,17 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     public mainComponentCheckedKeys: any[] = [];
     public mainComponentSelectedItem: number = 0;
     public mainComponentDropdownSelected: number = 0;
+    public mainComponentExpandedKeys: any[] = [];
 
     public relatedComponentCategories: any;
     public relatedComponentCheckedKeys: any[] = [];
     public relatedComponentDropdownSelected: number = 0;
+    public relatedComponentExpandedKeys: any[] = [];
 
     public errorMessage = String.Empty;
 
     public ngOnInit(): void {
         this.viewAccess = this.isAccess(SecureEntity.AccountRelations, AccountRelationPermissions.ViewRelationships);
-        this.manageAccess = this.isAccess(SecureEntity.AccountRelations, AccountRelationPermissions.ManageRelationships);
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
@@ -91,6 +90,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
     public handleMainComponentDropDownChange(item: any) {
         this.mainComponentCheckedKeys = [];
+        this.mainComponentExpandedKeys = [];
         this.relatedComponentCheckedKeys = [];
         this.mainComponentDropdownSelected = 0;
         this.mainComponentSelectedItem = 0;
@@ -247,6 +247,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.sppcLoading.show();
         this.isDisableRelatedComponnet = false;
         this.relatedComponentCheckedKeys = [];
+        this.relatedComponentExpandedKeys = [];
         var apiUrl = String.Empty;
         if (this.relatedComponentDropdownSelected > 0 && this.mainComponentSelectedItem > 0) {
             switch (this.relatedComponentDropdownSelected) {
@@ -371,6 +372,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.mainComponentDropdownSelected = 0;
         this.relatedComponentDropdownSelected = 0;
         this.errorMessage = String.Empty;
+        this.isDisableRelatedComponnet = true;
     }
 
 }

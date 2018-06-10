@@ -10,79 +10,84 @@
         <div *ngIf="!viewAccess">
             {{ 'App.NotViewAccess' | translate }}
         </div>
-        <div class="row" id="main-section" *ngIf="viewAccess">
-            <div class="col-sm-6" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
-                <div class="section-header">
-                    <span class="control-label">{{ 'AccountRelations.MainComponent' | translate }}</span>
+        <div *ngIf="viewAccess">
+            <div class="row" id="main-section">
+                <div class="col-sm-6" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+                    <div class="section-header">
+                        <span class="control-label">{{ 'AccountRelations.MainComponent' | translate }}</span>
 
-                    <kendo-dropdownlist [data]="mainComponent" [valuePrimitive]="true"
-                                        [textField]="'value'" [(ngModel)]="selectedMainComponentValue" [value]="mainComponentDropdownSelected" [valueField]="'key'" [defaultItem]="{ value: 'AccountRelations.Select' | translate , key: 0}"
-                                        (valueChange)="handleMainComponentDropDownChange($event)">
-                        <ng-template kendoDropDownListValueTemplate let-dataItem>
-                            {{ dataItem.value | translate }}
-                        </ng-template>
-                        <ng-template kendoDropDownListItemTemplate let-dataItem>
-                            {{ dataItem.value | translate }}
-                        </ng-template>
-                    </kendo-dropdownlist>
-                </div>
-                <div class="section-body">
-
-                    <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
-                        <kendo-treeview [nodes]="mainComponentCategories"
-                                        [textField]="['name']"
-                                        kendoTreeViewExpandable
-                                        [kendoTreeViewCheckable]="{ mode: 'single', checkChildren: false , checkParents: false }"
-                                        [checkBy]="checkById"
-                                        [(checkedKeys)]="mainComponentCheckedKeys"
-                                        [hasChildren]="hasChildren"
-                                        [children]="fetchMainComponentChildren"
-                                        (checkedChange)="handleMainComponentChecking($event)">
-                            <ng-template kendoTreeViewNodeTemplate let-dataItem>
-                                {{dataItem.name}} - ({{dataItem.fullCode}})
+                        <kendo-dropdownlist [data]="mainComponent" [valuePrimitive]="true"
+                                            [textField]="'value'" [(ngModel)]="selectedMainComponentValue" [value]="mainComponentDropdownSelected" [valueField]="'key'" [defaultItem]="{ value: 'AccountRelations.Select' | translate , key: 0}"
+                                            (valueChange)="handleMainComponentDropDownChange($event)">
+                            <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                {{ dataItem.value | translate }}
                             </ng-template>
-                        </kendo-treeview>
+                            <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                {{ dataItem.value | translate }}
+                            </ng-template>
+                        </kendo-dropdownlist>
+                    </div>
+                    <div class="section-body">
+
+                        <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
+                            <kendo-treeview [nodes]="mainComponentCategories"
+                                            [textField]="['name']"
+                                            kendoTreeViewExpandable
+                                            [kendoTreeViewCheckable]="{ mode: 'single', checkChildren: false , checkParents: false }"
+                                            [checkBy]="checkById"
+                                            [(checkedKeys)]="mainComponentCheckedKeys"
+                                            [hasChildren]="hasChildren"
+                                            [children]="fetchMainComponentChildren"
+                                            (checkedChange)="handleMainComponentChecking($event)"
+                                            [(expandedKeys)]="mainComponentExpandedKeys">
+                                <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                                    {{dataItem.name}} - ({{dataItem.fullCode}})
+                                </ng-template>
+                            </kendo-treeview>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="section-header">
-                    <span class="control-label">{{ 'AccountRelations.RelatedComponent' | translate }}</span>
+                <div class="col-sm-6">
+                    <div class="section-header">
+                        <span class="control-label">{{ 'AccountRelations.RelatedComponent' | translate }}</span>
 
-                    <kendo-dropdownlist [data]="relatedComponent" [valuePrimitive]="true"
-                                        [textField]="'value'" [(ngModel)]="selectedRelatedComponentValue" [value]="relatedComponentDropdownSelected" [valueField]="'key'" [defaultItem]="{ value: 'AccountRelations.Select' | translate, key: 0}"
-                                        [disabled]="isDisableRelatedComponnet" (valueChange)="handleRelatedComponentDropDownChange($event)">
-                        <ng-template kendoDropDownListValueTemplate let-dataItem>
-                            {{ dataItem.value | translate }}
-                        </ng-template>
-                        <ng-template kendoDropDownListItemTemplate let-dataItem>
-                            {{ dataItem.value | translate }}
-                        </ng-template>
-                    </kendo-dropdownlist>
-                </div>
-                <div class="section-body">
-                    <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
-                        <kendo-treeview [nodes]="relatedComponentCategories"
-                                        [textField]="['name']"
-                                        kendoTreeViewExpandable
-                                        [kendoTreeViewCheckable]="{ mode: 'multiple', checkChildren: false , checkParents: false }"
-                                        [checkBy]="checkById"
-                                        [(checkedKeys)]="relatedComponentCheckedKeys"
-                                        [hasChildren]="hasChildren"
-                                        [children]="fetchRelatedComponentChildren">
-                            <ng-template kendoTreeViewNodeTemplate let-dataItem>
-                                {{dataItem.name}} - ({{dataItem.fullCode}})
+                        <kendo-dropdownlist [data]="relatedComponent" [valuePrimitive]="true"
+                                            [textField]="'value'" [(ngModel)]="selectedRelatedComponentValue" [value]="relatedComponentDropdownSelected" [valueField]="'key'" [defaultItem]="{ value: 'AccountRelations.Select' | translate, key: 0}"
+                                            [disabled]="isDisableRelatedComponnet" (valueChange)="handleRelatedComponentDropDownChange($event)">
+                            <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                {{ dataItem.value | translate }}
                             </ng-template>
-                        </kendo-treeview>
+                            <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                {{ dataItem.value | translate }}
+                            </ng-template>
+                        </kendo-dropdownlist>
+                    </div>
+                    <div class="section-body">
+                        <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
+                            <kendo-treeview [nodes]="relatedComponentCategories"
+                                            [textField]="['name']"
+                                            kendoTreeViewExpandable
+                                            [kendoTreeViewCheckable]="{ mode: 'multiple', checkChildren: false , checkParents: false }"
+                                            [checkBy]="checkById"
+                                            [(checkedKeys)]="relatedComponentCheckedKeys"
+                                            [hasChildren]="hasChildren"
+                                            [children]="fetchRelatedComponentChildren"
+                                            [(expandedKeys)]="relatedComponentExpandedKeys">
+                                <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                                    {{dataItem.name}} - ({{dataItem.fullCode}})
+                                </ng-template>
+                            </kendo-treeview>
+                        </div>
                     </div>
                 </div>
+                <div class="clearfix"></div>
             </div>
-            <div class="clearfix"></div>
+            <div class="form-group" [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}">
+                <button class="k-button k-primary" SppcCheckAccess="ManageRelationships" [disabled]="!isEnableSaveBtn" (click)="onSave()" primary="true">{{ 'Buttons.Ok' | translate }}</button>
+                <button class="k-button" (click)="onCancel()">{{ 'Buttons.Cancel' | translate }}</button>
+            </div>
         </div>
-        <div class="form-group" [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}" *ngIf="viewAccess">
-            <button class="k-button k-primary" *ngIf="manageAccess" [disabled]="!isEnableSaveBtn" (click)="onSave()" primary="true">{{ 'Buttons.Ok' | translate }}</button>
-            <button class="k-button" (click)="onCancel()">{{ 'Buttons.Cancel' | translate }}</button>
-        </div>
+
     </div>
 </div>
 

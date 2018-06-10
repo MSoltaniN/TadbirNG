@@ -47,9 +47,6 @@ export class UserComponent extends DefaultComponent implements OnInit {
 
     //permission flag
     viewAccess: boolean;
-    insertAccess: boolean;
-    editAccess: boolean;
-    deleteAccess: boolean;
 
     //for add in delete messageText
     deleteModelId: number;
@@ -66,9 +63,6 @@ export class UserComponent extends DefaultComponent implements OnInit {
 
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.User, UserPermissions.View);
-        this.insertAccess = this.isAccess(SecureEntity.User, UserPermissions.Create);
-        this.editAccess = this.isAccess(SecureEntity.User, UserPermissions.Edit);
-
         this.reloadGrid();
     }
 
