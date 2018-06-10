@@ -64,12 +64,14 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     permissionsData: Permission;
     roleUsersData: RelatedItemsInfo;
     roleBranchesData: RelatedItemsInfo;
+    roleFiscalPeriodsData: RelatedItemsInfo;
     roleDetailData: RoleDetailsInfo;
 
 
     isNew: boolean;
     usersList: boolean;
     roleBranches: boolean;
+    roleFiscalPeriod: boolean;
     roleDetail: boolean;
 
     errorMessage: string;
@@ -218,6 +220,36 @@ export class RoleComponent extends DefaultComponent implements OnInit {
         this.roleService.modifiedRoleBranches(roleBranches)
             .subscribe(response => {
                 this.roleBranches = false;
+                this.showMessage(this.updateMsg, MessageType.Succes);
+                this.sppcLoading.hide();
+            }, (error => {
+                this.errorMessage = error;
+                this.sppcLoading.hide();
+            }));
+    }
+
+    fiscalPeriodHandler(roleId: number, roleName: string) {
+        this.roleFiscalPeriod = true;
+        this.sppcLoading.show();
+        this.roleService.getRoleFiscalPeriods(roleId).subscribe(res => {
+            this.roleFiscalPeriodsData = res;
+            this.roleName = roleName;
+            this.sppcLoading.hide();
+        })
+        this.errorMessage = '';
+    }
+
+    cancelRoleFiscalPeriodHandler() {
+        this.roleFiscalPeriod = false;
+        this.errorMessage = '';
+        this.roleName = '';
+    }
+
+    saveRoleFiscalPeriodHandler(roleBranches: RelatedItems) {
+        this.sppcLoading.show();
+        this.roleService.modifiedRoleFiscalPeriods(roleBranches)
+            .subscribe(response => {
+                this.roleFiscalPeriod = false;
                 this.showMessage(this.updateMsg, MessageType.Succes);
                 this.sppcLoading.hide();
             }, (error => {

@@ -143,6 +143,7 @@
     "Users": "Users",
     "Branches": "Branches",
     "Detail": "Detail",
+    "FiscalPeriod": "Fiscal Period",
     "RecordNotFound": "This role has no permission",
     "RoleDetail": "Role detail"
   },
@@ -160,6 +161,10 @@
     "Description": "Description",
     "RoleBranchesTitle": "Branches accessible by '{0}'",
     "RecordNotFound": "This role has no branch"
+  },
+  "RoleFiscalPeriod": {
+    "Name": "Fiscal Period Name",
+    "RoleFiscalPeriodTitle": "Fiscal periods accessible by '{0}'"
   },
   "RoleDetail": {
     "RoleDetailTitle": "Role details '{0}'"

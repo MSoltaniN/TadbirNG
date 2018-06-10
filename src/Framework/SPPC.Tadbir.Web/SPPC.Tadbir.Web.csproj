@@ -63,6 +63,7 @@
     <None Remove="ClientApp\app\components\project\project-form.component.ts" />
     <None Remove="ClientApp\app\components\role\role-branch-form.component.ts" />
     <None Remove="ClientApp\app\components\role\role-detail-form.component.ts" />
+    <None Remove="ClientApp\app\components\role\role-fiscalPeriod-form.component.ts" />
     <None Remove="ClientApp\app\components\role\role-form.component.ts" />
     <None Remove="ClientApp\app\components\role\role-user-form.component.ts" />
     <None Remove="ClientApp\app\components\role\role.component.ts" />
@@ -222,6 +223,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\project\project-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role-detail-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role-branch-form.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\role\role-fiscalPeriod-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role-user-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role.component.ts" />

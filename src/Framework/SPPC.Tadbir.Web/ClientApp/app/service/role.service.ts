@@ -95,20 +95,31 @@ export class RoleService extends BaseService {
 
     getRoleBranches(roleId: number) {
         var url = String.Format(RoleApi.RoleBranches, roleId);
-
-
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
     }
 
     modifiedRoleBranches(roleBranches: RelatedItems) {
-
         var body = JSON.stringify(roleBranches);
         var headers = this.headers;
         var options = new RequestOptions({ headers: headers });
-
         var url = String.Format(RoleApi.RoleBranches, roleBranches.id);
+        return this.http.put(url, body, options)
+            .map(res => res)
+            .catch(this.handleError);
+    }
 
+    getRoleFiscalPeriods(roleId: number) {
+        var url = String.Format(RoleApi.RoleFiscalPeriods, roleId);
+        return this.http.get(url, this.options)
+            .map(response => <any>(<Response>response).json());
+    }
+
+    modifiedRoleFiscalPeriods(roleFPeriods: RelatedItems) {
+        var body = JSON.stringify(roleFPeriods);
+        var headers = this.headers;
+        var options = new RequestOptions({ headers: headers });
+        var url = String.Format(RoleApi.RoleFiscalPeriods, roleFPeriods.id);
         return this.http.put(url, body, options)
             .map(res => res)
             .catch(this.handleError);

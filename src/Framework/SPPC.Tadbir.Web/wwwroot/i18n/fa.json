@@ -143,6 +143,7 @@
     "Users": "کاربران",
     "Branches": "شعب",
     "Detail": "جزئیات",
+    "FiscalPeriod": "دوره مالی",
     "RecordNotFound": "این نقش هیچ دسترسی ندارد",
     "RoleDetail": "جزئیات نقش"
   },
@@ -160,6 +161,10 @@
     "Description": "توضیحات",
     "RoleBranchesTitle": "شعب قابل دسترسی توسط '{0}'",
     "RecordNotFound": "این نقش به هیچ شعبه ای دسترسی ندارد"
+  },
+  "RoleFiscalPeriod": {
+    "Name": "نام دوره مالی",
+    "RoleFiscalPeriodTitle": "دوره های مالی  قابل دسترسی توسط '{0}'"
   },
   "RoleDetail": {
     "RoleDetailTitle": "جزئیات نقش '{0}'"
