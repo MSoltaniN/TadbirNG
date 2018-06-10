@@ -38,7 +38,8 @@
                                             [(checkedKeys)]="mainComponentCheckedKeys"
                                             [hasChildren]="hasChildren"
                                             [children]="fetchMainComponentChildren"
-                                            (checkedChange)="handleMainComponentChecking($event)">
+                                            (checkedChange)="handleMainComponentChecking($event)"
+                                            [(expandedKeys)]="mainComponentExpandedKeys">
                                 <ng-template kendoTreeViewNodeTemplate let-dataItem>
                                     {{dataItem.name}} - ({{dataItem.fullCode}})
                                 </ng-template>
@@ -70,7 +71,8 @@
                                             [checkBy]="checkById"
                                             [(checkedKeys)]="relatedComponentCheckedKeys"
                                             [hasChildren]="hasChildren"
-                                            [children]="fetchRelatedComponentChildren">
+                                            [children]="fetchRelatedComponentChildren"
+                                            [(expandedKeys)]="relatedComponentExpandedKeys">
                                 <ng-template kendoTreeViewNodeTemplate let-dataItem>
                                     {{dataItem.name}} - ({{dataItem.fullCode}})
                                 </ng-template>

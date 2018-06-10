@@ -111,5 +111,71 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all accounts related to a project specified by unique identifier
         /// </summary>
         public const string AccountsRelatedToProjectUrl = "relations/project/{projectId:min(1)}/accounts";
+
+        /// <summary>
+        /// API client URL for all child accounts related to a detail account specified by unique identifier
+        /// </summary>
+        public const string ChildAccountsRelatedToDetailAccount = "relations/accounts/{0}/children/faccounts/{1}";
+
+        /// <summary>
+        /// API server route URL for all child accounts related to a detail account specified by unique identifier
+        /// </summary>
+        public const string ChildAccountsRelatedToDetailAccountUrl =
+            "relations/accounts/{accountId:min(1)}/children/faccounts/{faccountId:min(1)}";
+
+        /// <summary>
+        /// API client URL for all child accounts related to a cost center specified by unique identifier
+        /// </summary>
+        public const string ChildAccountsRelatedToCostCenter = "relations/accounts/{0}/children/ccenters/{1}";
+
+        /// <summary>
+        /// API server route URL for all child accounts related to a cost center specified by unique identifier
+        /// </summary>
+        public const string ChildAccountsRelatedToCostCenterUrl =
+            "relations/accounts/{accountId:min(1)}/children/ccenters/{ccenterId:min(1)}";
+
+        /// <summary>
+        /// API client URL for all child accounts related to a project specified by unique identifier
+        /// </summary>
+        public const string ChildAccountsRelatedToProject = "relations/accounts/{0}/children/projects/{1}";
+
+        /// <summary>
+        /// API server route URL for all child accounts related to a project specified by unique identifier
+        /// </summary>
+        public const string ChildAccountsRelatedToProjectUrl =
+            "relations/accounts/{accountId:min(1)}/children/projects/{projectId:min(1)}";
+
+        /// <summary>
+        /// API client URL for all child detail accounts related to an account specified by unique identifier
+        /// </summary>
+        public const string ChildDetailAccountsRelatedToAccount = "relations/faccounts/{0}/children/accounts/{1}";
+
+        /// <summary>
+        /// API server route URL for all child detail accounts related to an account specified by unique identifier
+        /// </summary>
+        public const string ChildDetailAccountsRelatedToAccountUrl =
+            "relations/faccounts/{faccountId:min(1)}/children/accounts/{accountId:min(1)}";
+
+        /// <summary>
+        /// API client URL for all child cost centers related to an account specified by unique identifier
+        /// </summary>
+        public const string ChildCostCentersRelatedToAccount = "relations/ccenters/{0}/children/accounts/{1}";
+
+        /// <summary>
+        /// API server route URL for all child cost centers related to an account specified by unique identifier
+        /// </summary>
+        public const string ChildCostCentersRelatedToAccountUrl =
+            "relations/ccenters/{ccenterId:min(1)}/children/accounts/{accountId:min(1)}";
+
+        /// <summary>
+        /// API client URL for all child projects related to an account specified by unique identifier
+        /// </summary>
+        public const string ChildProjectsRelatedToAccount = "relations/projects/{0}/children/accounts/{1}";
+
+        /// <summary>
+        /// API server route URL for all child projects related to an account specified by unique identifier
+        /// </summary>
+        public const string ChildProjectsRelatedToAccountUrl =
+            "relations/projects/{projectId:min(1)}/children/accounts/{accountId:min(1)}";
     }
 }

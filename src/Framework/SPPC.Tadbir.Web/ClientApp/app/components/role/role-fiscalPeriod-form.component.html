@@ -1,7 +1,7 @@
-﻿<kendo-dialog *ngIf="usersList" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+﻿<kendo-dialog *ngIf="fiscalPeriodList" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               (close)="closeForm()" [minWidth]="250" [width]="450">
     <kendo-dialog-titlebar>
-        {{ getTitleText('RoleUsers.RoleUsersTitle' | translate) }}
+        {{ getTitleText('RoleFiscalPeriod.RoleFiscalPeriodTitle' | translate) }}
     </kendo-dialog-titlebar>
 
     <div *ngIf="errorMessage != ''">
@@ -13,7 +13,7 @@
     <div class="panel panel-primary">
         <div class="panel-body">
 
-            <kendo-grid id="gridRoleUserFormData" [data]="gridData"
+            <kendo-grid [data]="gridData"
                         [selectable]="true"
                         [selectedKeys]="selectedRows"
                         [kendoGridSelectBy]="selectionKey">
@@ -23,7 +23,7 @@
 
                 <kendo-grid-checkbox-column showSelectAll="true" width="40"></kendo-grid-checkbox-column>
                 
-                <kendo-grid-column sppc-grid-column="RoleUsers.name">
+                <kendo-grid-column sppc-grid-column="RoleFiscalPeriod.name">
                 </kendo-grid-column>
 
             </kendo-grid>

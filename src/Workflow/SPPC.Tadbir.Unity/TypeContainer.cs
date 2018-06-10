@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Web;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Service;
@@ -75,7 +77,12 @@ namespace SPPC.Tadbir.Unity
         public void RegisterPersistenceTypes()
         {
             // =========== Persistence Persistence Layer dependencies ===========
+            var contextOptions = new DbContextOptionsBuilder<TadbirContext>()
+                .UseSqlServer(_connectionString)
+                .Options;
+
             _container.RegisterType<IUnitOfWork, UnitOfWork>();
+            _container.RegisterType<DbContext, TadbirContext>(new InjectionConstructor(contextOptions));
             _container.RegisterType<IAccountRepository, AccountRepository>();
             _container.RegisterType<IVoucherRepository, VoucherRepository>();
             //_container.RegisterType<ITransactionRepository, TransactionRepository>(
@@ -166,6 +173,7 @@ namespace SPPC.Tadbir.Unity
         #endregion
 
         private readonly IUnityContainer _container;
+        private const string _connectionString = "Server=(localdb)\\v11.0;Database=TadbirDemo;Trusted_Connection=True;MultipleActiveResultSets=true";
         private bool _disposed = false;
     }
 }

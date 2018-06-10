@@ -63,6 +63,7 @@
     <None Remove="ClientApp\app\components\project\project-form.component.ts" />
     <None Remove="ClientApp\app\components\role\role-branch-form.component.ts" />
     <None Remove="ClientApp\app\components\role\role-detail-form.component.ts" />
+    <None Remove="ClientApp\app\components\role\role-fiscalPeriod-form.component.ts" />
     <None Remove="ClientApp\app\components\role\role-form.component.ts" />
     <None Remove="ClientApp\app\components\role\role-user-form.component.ts" />
     <None Remove="ClientApp\app\components\role\role.component.ts" />
@@ -222,6 +223,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\project\project-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role-detail-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role-branch-form.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\role\role-fiscalPeriod-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role-user-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role.component.ts" />
@@ -237,7 +239,6 @@
     <TypeScriptCompile Include="ClientApp\app\controls\dropdownlist\sppc-dropdownlist.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\fullAccount\sppc-fullAccount.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\grid\spp-grid-date-filter.ts" />
-    <TypeScriptCompile Include="ClientApp\app\controls\grid\sppc-date-filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\grid\sppc-grid-filter.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\sppcLoading\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\controls\sppcLoading\sppc-loading.component.ts" />
@@ -279,11 +280,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.0" />
     <PackageReference Include="StyleCop.MSBuild" Version="5.0.0" />
   </ItemGroup>
 

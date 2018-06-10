@@ -143,10 +143,12 @@
     "Users": "کاربران",
     "Branches": "شعب",
     "Detail": "جزئیات",
+    "FiscalPeriod": "دوره مالی",
     "RecordNotFound": "این نقش هیچ دسترسی ندارد",
     "RoleDetail": "جزئیات نقش"
   },
   "RoleUsers": {
+    "Name": "نام و نام خانوادگی",
     "UserName": "نام کاربری",
     "PersonFirstName": "نام",
     "PersonLastName": "نام خانوادگی",
@@ -155,10 +157,14 @@
     "RecordNotFound": "این نقش به هیچ کاربری تخصیص داده نشده است"
   },
   "RoleBranches": {
-    "Name": "نام",
+    "Name": "نام شعبه",
     "Description": "توضیحات",
     "RoleBranchesTitle": "شعب قابل دسترسی توسط '{0}'",
     "RecordNotFound": "این نقش به هیچ شعبه ای دسترسی ندارد"
+  },
+  "RoleFiscalPeriod": {
+    "Name": "نام دوره مالی",
+    "RoleFiscalPeriodTitle": "دوره های مالی  قابل دسترسی توسط '{0}'"
   },
   "RoleDetail": {
     "RoleDetailTitle": "جزئیات نقش '{0}'"
@@ -227,7 +233,8 @@
     "UserName": "نام کاربر",
     "Password": "کلمه عبور",
     "BtnLogin": "ورود",
-    "RememberMe": "مرا به خاطر بسپار"
+    "RememberMe": "مرا به خاطر بسپار",
+    "UserIncorrect": "نام کاربری يا کلمه عبور اشتباه می باشد"
   },
   "AllValidations": {
     "Account": {

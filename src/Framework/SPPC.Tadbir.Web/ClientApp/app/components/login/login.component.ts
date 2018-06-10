@@ -86,7 +86,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
                 }
             },
             error => {
-                this.toastrService.error(this.getText("Login.Validation.UserIncorrect") , '', { positionClass: 'toast-top-center' });
+                this.toastrService.error(this.getText("Login.UserIncorrect") , '', { positionClass: 'toast-top-center' });
                 this.loading = false;
             });
     }

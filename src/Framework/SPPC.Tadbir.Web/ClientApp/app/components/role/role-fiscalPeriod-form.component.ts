@@ -23,8 +23,9 @@ export function getLayoutModule(layout: Layout) {
 
 
 @Component({
-    selector: 'role-user-form-component',
-    templateUrl: './role-user-form.component.html',
+    selector: 'role-fiscalPeriod-form-component',
+    templateUrl: './role-fiscalPeriod-form.component.html',
+    styles: ['/deep/ .k-window-title{font-size:15px}'],
     providers: [{
         provide: RTL,
         useFactory: getLayoutModule,
@@ -33,7 +34,7 @@ export function getLayoutModule(layout: Layout) {
 
 })
 
-export class RoleUserFormComponent extends DefaultComponent {
+export class RoleFiscalPeriodFormComponent extends DefaultComponent {
 
 
     ////create properties
@@ -43,26 +44,26 @@ export class RoleUserFormComponent extends DefaultComponent {
     public model: RelatedItems;
 
 
-    @Input() public usersList: boolean = false;
+    @Input() public fiscalPeriodList: boolean = false;
     @Input() public errorMessage: string = '';
     @Input() public roleName: string = '';
 
-    @Input() public set roleUser(roleUser: RelatedItems) {
-        this.model = roleUser;
+    @Input() public set roleFiscalPeriod(roleFiscalPeriod: RelatedItems) {
+        this.model = roleFiscalPeriod;
         this.selectedRows = [];
-        if (roleUser != undefined) {
-            this.gridData = roleUser.relatedItems;
+        if (roleFiscalPeriod != undefined) {
+            this.gridData = roleFiscalPeriod.relatedItems;
 
-            for (let userItem of this.gridData) {
-                if (userItem.isSelected) {
-                    this.selectedRows.push(userItem.id)
+            for (let fPeriodItem of this.gridData) {
+                if (fPeriodItem.isSelected) {
+                    this.selectedRows.push(fPeriodItem.id)
                 }
             }
         }
     }
 
-    @Output() cancelRoleUsers: EventEmitter<any> = new EventEmitter();
-    @Output() saveRoleUsers: EventEmitter<RelatedItems> = new EventEmitter();
+    @Output() cancelRoleFiscalPeriod: EventEmitter<any> = new EventEmitter();
+    @Output() saveRoleFiscalPeriod: EventEmitter<RelatedItems> = new EventEmitter();
     ////create properties
 
     //////Events
@@ -70,11 +71,11 @@ export class RoleUserFormComponent extends DefaultComponent {
         e.preventDefault();
         this.model.relatedItems.forEach(f => f.isSelected = false);
 
-        for (let userSelected of this.selectedRows) {
-            let userIndex = this.model.relatedItems.findIndex(f => f.id == userSelected);
+        for (let fPeriodSelected of this.selectedRows) {
+            let userIndex = this.model.relatedItems.findIndex(f => f.id == fPeriodSelected);
             this.model.relatedItems[userIndex].isSelected = true;
         }
-        this.saveRoleUsers.emit(this.model);        
+        this.saveRoleFiscalPeriod.emit(this.model);        
     }
 
     public onCancel(e: any): void {
@@ -83,9 +84,9 @@ export class RoleUserFormComponent extends DefaultComponent {
     }
 
     private closeForm(): void {
-        this.usersList = false;
+        this.fiscalPeriodList = false;
         this.selectedRows = [];
-        this.cancelRoleUsers.emit();
+        this.cancelRoleFiscalPeriod.emit();
     }
     ////Events
 

@@ -62,10 +62,12 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     public mainComponentCheckedKeys: any[] = [];
     public mainComponentSelectedItem: number = 0;
     public mainComponentDropdownSelected: number = 0;
+    public mainComponentExpandedKeys: any[] = [];
 
     public relatedComponentCategories: any;
     public relatedComponentCheckedKeys: any[] = [];
     public relatedComponentDropdownSelected: number = 0;
+    public relatedComponentExpandedKeys: any[] = [];
 
     public errorMessage = String.Empty;
 
@@ -88,6 +90,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
     public handleMainComponentDropDownChange(item: any) {
         this.mainComponentCheckedKeys = [];
+        this.mainComponentExpandedKeys = [];
         this.relatedComponentCheckedKeys = [];
         this.mainComponentDropdownSelected = 0;
         this.mainComponentSelectedItem = 0;
@@ -244,6 +247,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.sppcLoading.show();
         this.isDisableRelatedComponnet = false;
         this.relatedComponentCheckedKeys = [];
+        this.relatedComponentExpandedKeys = [];
         var apiUrl = String.Empty;
         if (this.relatedComponentDropdownSelected > 0 && this.mainComponentSelectedItem > 0) {
             switch (this.relatedComponentDropdownSelected) {

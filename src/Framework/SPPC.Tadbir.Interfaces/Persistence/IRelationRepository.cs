@@ -139,5 +139,53 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="relations">اطلاعات حساب های مرتبط با یک پروژه</param>
         Task SaveProjectAccountsAsync(AccountItemRelationsViewModel relations);
+
+        /// <summary>
+        /// به روش آسنکرون، ارتباطات زیرشاخه های یک حساب با یک تفصیلی شناور را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه حساب پدر</param>
+        /// <param name="faccountId">شناسه تفصیلی شناور مرتبط</param>
+        /// <returns>ارتباطات زیرشاخه های حساب پدر با تفصیلی شناور</returns>
+        Task<IList<AccountItemBriefViewModel>> GetChildAccountsRelatedToDetailAccount(int accountId, int faccountId);
+
+        /// <summary>
+        /// به روش آسنکرون، ارتباطات زیرشاخه های یک حساب با یک مرکز هزینه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه حساب پدر</param>
+        /// <param name="costCenterId">شناسه مرکز هزینه مرتبط</param>
+        /// <returns>ارتباطات زیرشاخه های حساب پدر با مرکز هزینه</returns>
+        Task<IList<AccountItemBriefViewModel>> GetChildAccountsRelatedToCostCenter(int accountId, int costCenterId);
+
+        /// <summary>
+        /// به روش آسنکرون، ارتباطات زیرشاخه های یک حساب با یک پروژه را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه حساب پدر</param>
+        /// <param name="projectId">شناسه پروژه مرتبط</param>
+        /// <returns>ارتباطات زیرشاخه های حساب پدر با پروژه</returns>
+        Task<IList<AccountItemBriefViewModel>> GetChildAccountsRelatedToProject(int accountId, int projectId);
+
+        /// <summary>
+        /// به روش آسنکرون، ارتباطات زیرشاخه های یک تفصیلی شناور با یک حساب را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="faccountId">شناسه تفصیلی شناور پدر</param>
+        /// <param name="accountId">شناسه حساب مرتبط</param>
+        /// <returns>ارتباطات زیرشاخه های تفصیلی شناور پدر با حساب</returns>
+        Task<IList<AccountItemBriefViewModel>> GetChildDetailAccountsRelatedToAccount(int faccountId, int accountId);
+
+        /// <summary>
+        /// به روش آسنکرون، ارتباطات زیرشاخه های یک مرکز هزینه با یک حساب را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="costCenterId">شناسه مرکز هزینه پدر</param>
+        /// <param name="accountId">شناسه حساب مرتبط</param>
+        /// <returns>ارتباطات زیرشاخه های مرکز هزینه پدر با حساب</returns>
+        Task<IList<AccountItemBriefViewModel>> GetChildCostCentersRelatedToAccount(int costCenterId, int accountId);
+
+        /// <summary>
+        /// به روش آسنکرون، ارتباطات زیرشاخه های یک پروژه با یک حساب را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه پروژه پدر</param>
+        /// <param name="accountId">شناسه حساب مرتبط</param>
+        /// <returns>ارتباطات زیرشاخه های پروژه پدر با حساب</returns>
+        Task<IList<AccountItemBriefViewModel>> GetChildProjectsRelatedToAccount(int projectId, int accountId);
     }
 }

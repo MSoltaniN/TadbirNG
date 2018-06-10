@@ -30,6 +30,7 @@ import { RoleComponent } from './components/role/role.component';
 import { RoleFormComponent } from './components/role/role-form.component';
 import { RoleUserFormComponent } from './components/role/role-user-form.component';
 import { RoleBranchFormComponent } from './components/role/role-branch-form.component';
+import { RoleFiscalPeriodFormComponent } from './components/role/role-fiscalPeriod-form.component';
 import { RoleDetailFormComponent } from './components/role/role-detail-form.component';
 import { ChangePasswordComponent } from './components/user/changePassword.component';
 import { DetailAccountComponent } from './components/detailAccount/detailAccount.component';
@@ -133,6 +134,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         GridSettingComponent,
         RoleUserFormComponent,
         RoleBranchFormComponent,
+        RoleFiscalPeriodFormComponent,
         RoleDetailFormComponent,
         ChangePasswordComponent,
         DetailAccountComponent,

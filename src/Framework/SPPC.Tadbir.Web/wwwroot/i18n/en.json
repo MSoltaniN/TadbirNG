@@ -143,10 +143,12 @@
     "Users": "Users",
     "Branches": "Branches",
     "Detail": "Detail",
+    "FiscalPeriod": "Fiscal Period",
     "RecordNotFound": "This role has no permission",
     "RoleDetail": "Role detail"
   },
   "RoleUsers": {
+    "Name": "Name",
     "UserName": "User Name",
     "PersonFirstName": "First Name",
     "PersonLastName": "Last Name",
@@ -155,10 +157,14 @@
     "RecordNotFound": "This role has not been assigned to any user"
   },
   "RoleBranches": {
-    "Name": "Name",
+    "Name": " Branch Name",
     "Description": "Description",
     "RoleBranchesTitle": "Branches accessible by '{0}'",
     "RecordNotFound": "This role has no branch"
+  },
+  "RoleFiscalPeriod": {
+    "Name": "Fiscal Period Name",
+    "RoleFiscalPeriodTitle": "Fiscal periods accessible by '{0}'"
   },
   "RoleDetail": {
     "RoleDetailTitle": "Role details '{0}'"
@@ -227,7 +233,8 @@
     "UserName": "User Name",
     "Password": "Password",
     "BtnLogin": "Login",
-    "RememberMe": "Remember me"
+    "RememberMe": "Remember me",
+    "UserIncorrect": "username or password is incorrect"
   },
   "AllValidations": {
     "Account": {
