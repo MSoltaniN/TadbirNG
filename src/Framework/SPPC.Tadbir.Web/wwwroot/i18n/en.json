@@ -227,7 +227,8 @@
     "UserName": "User Name",
     "Password": "Password",
     "BtnLogin": "Login",
-    "RememberMe": "Remember me"
+    "RememberMe": "Remember me",
+    "UserIncorrect": "username or password is incorrect"
   },
   "AllValidations": {
     "Account": {
