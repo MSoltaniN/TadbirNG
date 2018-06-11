@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Service
         /// <returns>Base64-encoded form of given object</returns>
         public string Encode(T data)
         {
-            var json = Json.From(data, false);
+            var json = JsonHelper.From(data, false);
             return Transform.ToBase64String(Encoding.UTF8.GetBytes(json));
         }
 
@@ -33,7 +33,7 @@ namespace SPPC.Tadbir.Service
         {
             Verify.ArgumentNotNullOrEmptyString(encodedData, "encodedData");
             string json = Encoding.UTF8.GetString(Transform.FromBase64String(encodedData));
-            T data = Json.To<T>(json);
+            T data = JsonHelper.To<T>(json);
             return data;
         }
     }

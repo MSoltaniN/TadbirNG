@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Finance;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class FiscalPeriodMap
+    internal static class FiscalPeriodMap
     {
-        private FiscalPeriodMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<FiscalPeriod> builder)
         {
             builder.ToTable("FiscalPeriod", "Finance");

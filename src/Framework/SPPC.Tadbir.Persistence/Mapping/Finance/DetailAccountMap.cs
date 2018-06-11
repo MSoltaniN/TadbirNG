@@ -5,12 +5,8 @@ using SPPC.Tadbir.Model.Finance;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class DetailAccountMap
+    internal static class DetailAccountMap
     {
-        private DetailAccountMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<DetailAccount> builder)
         {
             builder.ToTable("DetailAccount", "Finance");

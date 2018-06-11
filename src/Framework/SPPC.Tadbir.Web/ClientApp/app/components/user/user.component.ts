@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { UserService, UserInfo } from '../../service/index';
-import { User } from '../../model/index';
+import { UserService, UserInfo, RelatedItemsInfo } from '../../service/index';
+import { User, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 
@@ -56,8 +56,10 @@ export class UserComponent extends DefaultComponent implements OnInit {
     public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
+    rolesList: boolean = false;
 
     editDataItem?: User = undefined;
+    userRolesData: RelatedItemsInfo;
     isNew: boolean;
     errorMessage: string;
 
@@ -176,6 +178,36 @@ export class UserComponent extends DefaultComponent implements OnInit {
         this.isNew = true;
         this.editDataItem = new UserInfo();
         this.errorMessage = '';
+    }
+
+    public rolesHandler(userId: number) {
+        this.rolesList = true;
+        this.sppcLoading.show();
+        this.userService.getUserRoles(userId).subscribe(res => {
+            this.userRolesData = res;
+            this.sppcLoading.hide();
+        });
+
+        this.errorMessage = '';
+    }
+
+    public cancelUserRolesHandler() {
+        this.rolesList = false;
+        this.errorMessage = '';
+    }
+
+    public saveUserRolesHandler(userRoles: RelatedItems) {
+        debugger;
+        this.sppcLoading.show();
+        this.userService.modifiedUserRoles(userRoles)
+            .subscribe(response => {
+                this.rolesList = false;
+                this.showMessage(this.getText("User.UpdateRoles"), MessageType.Succes);
+                this.sppcLoading.hide();
+            }, (error => {
+                this.sppcLoading.hide();
+                this.errorMessage = error;
+            }));
     }
 
     public saveHandler(model: User) {

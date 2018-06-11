@@ -417,6 +417,24 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private static IQueryable<VoucherLine> GetArticleDetailsQuery(
+            IRepository<VoucherLine> repository, Expression<Func<VoucherLine, bool>> criteria)
+        {
+            var query = repository
+                .GetEntityQuery()
+                .Include(art => art.Account)
+                .Include(art => art.DetailAccount)
+                .Include(art => art.CostCenter)
+                .Include(art => art.Project)
+                .Include(art => art.Voucher)
+                .Include(art => art.FiscalPeriod)
+                .Include(art => art.Currency)
+                .Include(art => art.Branch)
+                    .ThenInclude(br => br.Company)
+                .Where(criteria);
+            return query;
+        }
+
         private void UpdateExistingVoucher(Voucher existing, VoucherViewModel voucher)
         {
             var userRepository = _unitOfWork.GetRepository<User>();
@@ -482,24 +500,6 @@ namespace SPPC.Tadbir.Persistence
                     .Take(gridOptions.Paging.PageSize)
                 : linesQuery;
             return linesQuery;
-        }
-
-        private IQueryable<VoucherLine> GetArticleDetailsQuery(
-            IRepository<VoucherLine> repository, Expression<Func<VoucherLine, bool>> criteria)
-        {
-            var query = repository
-                .GetEntityQuery()
-                .Include(art => art.Account)
-                .Include(art => art.DetailAccount)
-                .Include(art => art.CostCenter)
-                .Include(art => art.Project)
-                .Include(art => art.Voucher)
-                .Include(art => art.FiscalPeriod)
-                .Include(art => art.Currency)
-                .Include(art => art.Branch)
-                    .ThenInclude(br => br.Company)
-                .Where(criteria);
-            return query;
         }
 
         private VoucherViewModel AddWorkItemInfo(VoucherViewModel voucher)

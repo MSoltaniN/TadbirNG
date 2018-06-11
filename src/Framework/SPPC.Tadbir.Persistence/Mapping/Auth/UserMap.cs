@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Auth;
@@ -8,12 +6,8 @@ using SPPC.Tadbir.Model.Contact;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class UserMap
+    internal static class UserMap
     {
-        private UserMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("User", "Auth");

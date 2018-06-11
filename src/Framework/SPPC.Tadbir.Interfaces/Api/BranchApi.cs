@@ -48,7 +48,7 @@
         /// <summary>
         /// API client URL for all roles who can access a branch item specified by unique identifier
         /// </summary>
-        public const string BranchRoles = "branches/{0}";
+        public const string BranchRoles = "branches/{0}/roles";
 
         /// <summary>
         /// API server route URL for all roles who can access a branch item specified by unique identifier

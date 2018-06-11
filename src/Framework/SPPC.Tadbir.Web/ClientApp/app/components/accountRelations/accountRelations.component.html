@@ -72,7 +72,8 @@
                                             [(checkedKeys)]="relatedComponentCheckedKeys"
                                             [hasChildren]="hasChildren"
                                             [children]="fetchRelatedComponentChildren"
-                                            [(expandedKeys)]="relatedComponentExpandedKeys">
+                                            [(expandedKeys)]="relatedComponentExpandedKeys"
+                                            (childrenLoaded)="childrenLoadedHandler($event)">
                                 <ng-template kendoTreeViewNodeTemplate let-dataItem>
                                     {{dataItem.name}} - ({{dataItem.fullCode}})
                                 </ng-template>

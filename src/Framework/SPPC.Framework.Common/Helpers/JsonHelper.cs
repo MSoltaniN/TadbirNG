@@ -8,7 +8,7 @@ namespace SPPC.Framework.Helpers
     /// <summary>
     /// Provides basic support for JavaScript Object Notation (JSON) serialization/deserialization.
     /// </summary>
-    public static class Json
+    public static class JsonHelper
     {
         /// <summary>
         /// Serializes an object into JSON format.

@@ -1,11 +1,6 @@
 using System;
-using SPPC.Tadbir.Persistence;
-using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Unity;
-using SPPC.Workflow.Web.Api.Controllers;
-using SPPC.Tadbir.Workflow;
 using Unity;
-using Unity.Injection;
 
 namespace SPPC.Workflow.Web.Api
 {
@@ -58,15 +53,6 @@ namespace SPPC.Workflow.Web.Api
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
         public static void RegisterTypes(IUnityContainer container)
         {
-            // NOTE: The following Unity configurations cannot be done inside the main Unity configuration assembly
-            // (SPPC.Tadbir.Unity) because it requires adding a reference to this assembly (SPPC.Tadbir.Web.Api) and
-            // this assembly already depends on Unity configuration assembly (circular dependencies are not allowed).
-            container.RegisterType<VouchersController>(
-                new InjectionConstructor(
-                    new ResolvedParameter<IVoucherRepository>(),
-                    new ResolvedParameter<IDocumentWorkflow>(),
-                    new ResolvedParameter<ISecurityContextManager>("API")));
-
             _unityWrapper = new TypeContainer(container);
             _unityWrapper.RegisterAll();
         }

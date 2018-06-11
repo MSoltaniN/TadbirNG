@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Web;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
@@ -11,6 +11,7 @@ using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Repository;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
+using SPPC.Tadbir.Workflow;
 //using SPPC.Tadbir.Workflow;
 using SPPC.Workflow.Persistence;
 using Unity;
@@ -98,7 +99,8 @@ namespace SPPC.Tadbir.Unity
             //_container.RegisterType<ISettingsRepository, ConfigSettingsRepository>();
             _container.RegisterType<ITrackingRepository, TrackingRepository>();
             _container.RegisterType<IWorkflowRepository, WorkflowRepository>();
-            //_container.RegisterType<IMetadataRepository, JsonMetadataRepository>();
+            _container.RegisterType<IMetadataDecorator, MetadataDecorator>();
+            _container.RegisterType<IMetadataRepository, MetadataRepository>();
         }
 
         /// <summary>
@@ -114,14 +116,15 @@ namespace SPPC.Tadbir.Unity
             _container.RegisterType<ICryptoService, CryptoService>();
             _container.RegisterType<ICartableService, CartableService>();
             //_container.RegisterType<ISecurityContextManager, SecurityContextManager>();
-            _container.RegisterType<ISecurityContextManager, ServiceContextManager>("API");
+            _container.RegisterType<ISecurityContextManager, ServiceContextManager>();
             _container.RegisterType<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
-            //_container.RegisterType<IDocumentWorkflow, DocumentWorkflow>();
+            _container.RegisterType<IVoucherWorkflow, VoucherWorkflow>();
             //_container.RegisterType<ITransactionWorkflow, TransactionWorkflow>(WorkflowEdition.StateMachine);
             //_container.RegisterType<ITransactionWorkflow, TransactionDecisionWorkflow>(WorkflowEdition.Flowchart);
             //_container.RegisterType<ITransactionWorkflow, TransactionTimeoutWorkflow>(WorkflowEdition.Timeout);
             //_container.RegisterType<ITransactionWorkflow, TransactionBasicWorkflow>(WorkflowEdition.Sequential);
             //_container.RegisterType<ISettingsService, ConfigSettingsService>();
+            _container.RegisterType<IWorkflowService, WorkflowService>();
             _container.RegisterType<IWorkflowService, WorkflowService>();
             //_container.RegisterType<IWorkflowTracker, WorkflowTracker>();
         }
@@ -132,12 +135,13 @@ namespace SPPC.Tadbir.Unity
         /// </summary>
         public void RegisterWebDependentTypes()
         {
-            _container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
-                new HttpContextWrapper(HttpContext.Current)));
-            _container.RegisterType<HttpRequestBase>(new InjectionFactory(_ =>
-                new HttpRequestWrapper(HttpContext.Current.Request)));
-            _container.RegisterType<HttpResponseBase>(new InjectionFactory(_ =>
-                new HttpResponseWrapper(HttpContext.Current.Response)));
+            //_container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
+            //    new HttpContextWrapper(HttpContext.Current)));
+            //_container.RegisterType<HttpRequestBase>(new InjectionFactory(_ =>
+            //    new HttpRequestWrapper(HttpContext.Current.Request)));
+            //_container.RegisterType<HttpResponseBase>(new InjectionFactory(_ =>
+            //    new HttpResponseWrapper(HttpContext.Current.Response)));
+            _container.RegisterType<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         #region IDisposable Support

@@ -5,12 +5,8 @@ using SPPC.Tadbir.Model.Finance;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class VoucherMap
+    internal static class VoucherMap
     {
-        private VoucherMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<Voucher> builder)
         {
             builder.ToTable("Voucher", "Finance");

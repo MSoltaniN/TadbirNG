@@ -13,7 +13,7 @@
                     [scrollable]="'none'"
                     (pageChange)="pageChange($event)"
                     (sortChange)="sortChange($event)"
-                    (edit)="editHandler($event)"                    
+                    (edit)="editHandler($event)"
                     [sort]="state.sort"
                     [selectable]="true"
                     [selectedKeys]="selectedRows"
@@ -42,8 +42,7 @@
                         <dt>{{ 'User.PersonLastName' | translate }}</dt>
                         <dd>{{ user.personLastName }}</dd>
 
-                        <dt>{{ 'User.UserName' | translate  }}</dt>
-                        }}
+                        <dt>{{ 'User.UserName' | translate  }}</dt>                        
                         <dd>{{ user.userName }}</dd>
 
                         <dt>{{ 'User.LastLoginDate' | translate }}</dt>
@@ -61,6 +60,7 @@
                         </dd>
                     </dl>
                     <button kendoGridEditCommand SppcCheckAccess="Edit" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                    <button kendoButton (click)="rolesHandler(user.id)" [primary]="true">{{ 'User.Roles' | translate }}</button>
                 </ng-template>
             </kendo-grid-column>
             <!-- template for mobile -->
@@ -93,8 +93,9 @@
                 </ng-template>
             </kendo-grid-column>
             <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)">
-                <ng-template kendoGridCellTemplate>
+                <ng-template kendoGridCellTemplate let-user>
                     <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
+                    <button kendoButton (click)="rolesHandler(user.id)" [primary]="true">{{ 'User.Roles' | translate }}</button>
                 </ng-template>
             </kendo-grid-command-column>
             <!-- template for mid-size devices -->
@@ -142,8 +143,9 @@
             </kendo-grid-column>
 
             <kendo-grid-command-column media="(min-width: 1024px)" width="60">
-                <ng-template kendoGridCellTemplate>
+                <ng-template kendoGridCellTemplate let-user>
                     <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
+                    <button kendoButton (click)="rolesHandler(user.id)" [primary]="true">{{ 'User.Roles' | translate }}</button>
                 </ng-template>
             </kendo-grid-command-column>
             <!-- additional columns on large devices -->
@@ -153,6 +155,11 @@
                              (save)="saveHandler($event)"
                              (cancel)="cancelHandler()">
         </user-form-component>
+
+        <user-roles-form-component [rolesList]="rolesList" [userRoles]="userRolesData" [errorMessage]="errorMessage"
+                                  (saveUserRoles)="saveUserRolesHandler($event)"
+                                  (cancelUserRoles)="cancelUserRolesHandler()">
+        </user-roles-form-component>
     </div>
 
 </div>

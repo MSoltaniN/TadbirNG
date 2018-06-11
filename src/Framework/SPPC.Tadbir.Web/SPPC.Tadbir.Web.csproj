@@ -69,6 +69,7 @@
     <None Remove="ClientApp\app\components\role\role.component.ts" />
     <None Remove="ClientApp\app\components\user\changePassword.component.ts" />
     <None Remove="ClientApp\app\components\user\user-form.component.ts" />
+    <None Remove="ClientApp\app\components\user\user-roles-form.component.ts" />
     <None Remove="ClientApp\app\components\user\user.component.ts" />
     <None Remove="ClientApp\app\components\voucherLine\voucherLine-form.component.ts" />
     <None Remove="ClientApp\app\components\voucherLine\voucherLine.component.ts" />
@@ -227,6 +228,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\role\role-user-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\role\role.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\user\user-roles-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\voucherLine\voucherLine-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\voucherLine\voucherLine.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\voucher\voucher-form.component.ts" />

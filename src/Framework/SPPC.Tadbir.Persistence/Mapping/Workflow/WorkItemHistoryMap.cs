@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Workflow;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class WorkItemHistoryMap
+    internal static class WorkItemHistoryMap
     {
-        private WorkItemHistoryMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<WorkItemHistory> builder)
         {
             builder.ToTable("WorkItemHistory", "Workflow");

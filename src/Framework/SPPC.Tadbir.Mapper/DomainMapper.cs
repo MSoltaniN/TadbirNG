@@ -70,7 +70,7 @@ namespace SPPC.Tadbir.Mapper
             MapFinanceTypes(mapperConfig);
             MapCorporateTypes(mapperConfig);
             MapWorkflowTypes(mapperConfig);
-            MapContactTypes(mapperConfig);
+            ////MapContactTypes(mapperConfig);
             MapCoreTypes(mapperConfig);
             MapMetadataTypes(mapperConfig);
         }
@@ -366,9 +366,10 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.Status.Id = viewModel.StatusId);
         }
 
-        private static void MapContactTypes(IMapperConfigurationExpression mapperConfig)
-        {
-        }
+        // NOTE: Temporarily commented out to prevent CA warning.
+        ////private static void MapContactTypes(IMapperConfigurationExpression mapperConfig)
+        ////{
+        ////}
 
         private static void MapMetadataTypes(IMapperConfigurationExpression mapperConfig)
         {

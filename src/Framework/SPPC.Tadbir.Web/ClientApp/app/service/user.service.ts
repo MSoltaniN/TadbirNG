@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { User, UserProfile } from '../model/index';
+import { User, UserProfile, RelatedItems } from '../model/index';
 import { UserApi } from './api/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -59,13 +59,20 @@ export class UserService extends BaseService {
             .catch(this.handleError);
     }
 
-    getCurrentUserCommands() {
 
-        var url = UserApi.UserCommand;
-
+    getUserRoles(userId: number) {
+        var url = String.Format(UserApi.UserRoles, userId);
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
+    }
 
+    modifiedUserRoles(userRoles: RelatedItems) {
+        var body = JSON.stringify(userRoles);
+        var headers = this.headers;
+        var url = String.Format(UserApi.UserRoles, userRoles.id);
+        return this.http.put(url, body, this.options)
+            .map(res => res)
+            .catch(this.handleError);
     }
 
 }

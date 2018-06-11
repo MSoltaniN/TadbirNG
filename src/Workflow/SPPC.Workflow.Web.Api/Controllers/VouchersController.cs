@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
 using SPPC.Framework.Common;
@@ -16,23 +17,18 @@ namespace SPPC.Workflow.Web.Api.Controllers
 {
     public class VouchersController : ApiController
     {
-        public VouchersController(IVoucherRepository repository, IDocumentWorkflow workflow,
-            ISecurityContextManager contextManager)
+        public VouchersController(IVoucherRepository repository, IVoucherWorkflow workflow)
         {
-            Verify.ArgumentNotNull(contextManager, "contextManager");
-            Verify.ArgumentNotNull(workflow, "workflow");
             _repository = repository;
-            _contextManager = contextManager;
             _workflow = workflow;
-            _workflow.CurrentContext = _contextManager.CurrentContext;
         }
 
         // PUT: api/vouchers/{voucherId:int}/prepare
         [Route(VoucherApi.PrepareVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Prepare)]
-        public IHttpActionResult PutVoucherAsPrepared(int voucherId, [FromBody] ActionDetailViewModel detail)
+        public async Task<IHttpActionResult> PutVoucherAsPreparedAsync(int voucherId, [FromBody] ActionDetailViewModel detail)
         {
-            var result = BasicValidationResult(voucherId, DocumentActionName.Prepare);
+            var result = await BasicValidationResultAsync(voucherId, DocumentActionName.Prepare);
             if (result is BadRequestErrorMessageResult)
             {
                 return result;
@@ -40,16 +36,16 @@ namespace SPPC.Workflow.Web.Api.Controllers
 
             var voucher = (result as OkNegotiatedContentResult<VoucherViewModel>).Content;
             var paraph = detail?.Paraph;
-            _workflow.Prepare(voucher.Id, voucher.Document.Id, DocumentTypeName.Voucher, paraph);
+            _workflow.Prepare(voucher.Id, voucher.Document.Id, paraph);
             return Ok();
         }
 
         // PUT: api/transactions/{transactionId:int}/review
         [Route(VoucherApi.ReviewVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Review)]
-        public IHttpActionResult PutTransactionAsReviewed(int voucherId, [FromBody] ActionDetailViewModel detail)
+        public async Task<IHttpActionResult> PutTransactionAsReviewedAsync(int voucherId, [FromBody] ActionDetailViewModel detail)
         {
-            var result = BasicValidationResult(voucherId, DocumentActionName.Review);
+            var result = await BasicValidationResultAsync(voucherId, DocumentActionName.Review);
             if (result is BadRequestErrorMessageResult)
             {
                 return result;
@@ -57,16 +53,16 @@ namespace SPPC.Workflow.Web.Api.Controllers
 
             var voucher = (result as OkNegotiatedContentResult<VoucherViewModel>).Content;
             var paraph = detail?.Paraph;
-            _workflow.Review(voucher.Id, voucher.Document.Id, DocumentTypeName.Voucher, paraph);
+            _workflow.Review(voucher.Id, voucher.Document.Id, paraph);
             return Ok();
         }
 
         // PUT: api/transactions/{transactionId:int}/reject
         [Route(VoucherApi.RejectVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Confirm)]
-        public IHttpActionResult PutTransactionAsRejected(int voucherId, [FromBody] ActionDetailViewModel detail)
+        public async Task<IHttpActionResult> PutTransactionAsRejectedAsync(int voucherId, [FromBody] ActionDetailViewModel detail)
         {
-            var result = BasicValidationResult(voucherId, DocumentActionName.Reject);
+            var result = await BasicValidationResultAsync(voucherId, DocumentActionName.Reject);
             if (result is BadRequestErrorMessageResult)
             {
                 return result;
@@ -74,16 +70,16 @@ namespace SPPC.Workflow.Web.Api.Controllers
 
             var voucher = (result as OkNegotiatedContentResult<VoucherViewModel>).Content;
             var paraph = detail?.Paraph;
-            _workflow.Reject(voucher.Id, voucher.Document.Id, DocumentTypeName.Voucher, paraph);
+            _workflow.Reject(voucher.Id, voucher.Document.Id, paraph);
             return Ok();
         }
 
         // PUT: api/transactions/{transactionId:int}/confirm
         [Route(VoucherApi.ConfirmVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Confirm)]
-        public IHttpActionResult PutTransactionAsConfirmed(int voucherId, [FromBody] ActionDetailViewModel detail)
+        public async Task<IHttpActionResult> PutTransactionAsConfirmedAsync(int voucherId, [FromBody] ActionDetailViewModel detail)
         {
-            var result = BasicValidationResult(voucherId, DocumentActionName.Confirm);
+            var result = await BasicValidationResultAsync(voucherId, DocumentActionName.Confirm);
             if (result is BadRequestErrorMessageResult)
             {
                 return result;
@@ -91,16 +87,16 @@ namespace SPPC.Workflow.Web.Api.Controllers
 
             var voucher = (result as OkNegotiatedContentResult<VoucherViewModel>).Content;
             var paraph = detail?.Paraph;
-            _workflow.Confirm(voucher.Id, voucher.Document.Id, DocumentTypeName.Voucher, paraph);
+            _workflow.Confirm(voucher.Id, voucher.Document.Id, paraph);
             return Ok();
         }
 
         // PUT: api/transactions/{transactionId:int}/approve
         [Route(VoucherApi.ApproveVoucherUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Approve)]
-        public IHttpActionResult PutTransactionAsApproved(int voucherId, [FromBody] ActionDetailViewModel detail)
+        public async Task<IHttpActionResult> PutTransactionAsApprovedAsync(int voucherId, [FromBody] ActionDetailViewModel detail)
         {
-            var result = BasicValidationResult(voucherId, DocumentActionName.Approve);
+            var result = await BasicValidationResultAsync(voucherId, DocumentActionName.Approve);
             if (result is BadRequestErrorMessageResult)
             {
                 return result;
@@ -108,11 +104,11 @@ namespace SPPC.Workflow.Web.Api.Controllers
 
             var voucher = (result as OkNegotiatedContentResult<VoucherViewModel>).Content;
             var paraph = detail?.Paraph;
-            _workflow.Approve(voucher.Id, voucher.Document.Id, DocumentTypeName.Voucher, paraph);
+            _workflow.Approve(voucher.Id, voucher.Document.Id, paraph);
             return Ok();
         }
 
-        private IHttpActionResult BasicValidationResult(int voucherId, string operation)
+        private async Task<IHttpActionResult> BasicValidationResultAsync(int voucherId, string operation)
         {
             string message = String.Format("Operation '{0}' did not succeed because the voucher does not exist.", operation);
             if (voucherId <= 0)
@@ -120,7 +116,7 @@ namespace SPPC.Workflow.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            var result = _repository.GetVoucherAsync(voucherId).Result;
+            var result = await _repository.GetVoucherAsync(voucherId);
             var voucher = result?.Item;
             if (voucher == null)
             {
@@ -153,7 +149,6 @@ namespace SPPC.Workflow.Web.Api.Controllers
         }
 
         private readonly IVoucherRepository _repository;
-        private readonly IDocumentWorkflow _workflow;
-        private readonly ISecurityContextManager _contextManager;
+        private readonly IVoucherWorkflow _workflow;
     }
 }

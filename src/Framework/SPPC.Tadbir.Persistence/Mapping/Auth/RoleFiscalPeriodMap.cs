@@ -5,12 +5,8 @@ using SPPC.Tadbir.Model.Auth;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class RoleFiscalPeriodMap
+    internal static class RoleFiscalPeriodMap
     {
-        private RoleFiscalPeriodMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<RoleFiscalPeriod> builder)
         {
             builder.ToTable("RoleFiscalPeriod", "Auth");

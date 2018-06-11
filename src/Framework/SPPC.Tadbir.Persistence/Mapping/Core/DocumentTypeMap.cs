@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Core;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class DocumentTypeMap
+    internal static class DocumentTypeMap
     {
-        private DocumentTypeMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<DocumentType> builder)
         {
             builder.ToTable("DocumentType", "Core");

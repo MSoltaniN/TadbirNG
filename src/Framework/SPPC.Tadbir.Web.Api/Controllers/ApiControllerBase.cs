@@ -89,7 +89,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var json = Encoding.UTF8.GetString(Transform.FromBase64String(context));
-            return Framework.Helpers.Json.To<SecurityContext>(json);
+            return Framework.Helpers.JsonHelper.To<SecurityContext>(json);
         }
 
         private GridOptions GetGridOptions()
@@ -102,7 +102,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
             var json = WebUtility.UrlDecode(urlEncoded);
-            return Framework.Helpers.Json.To<GridOptions>(json);
+            return Framework.Helpers.JsonHelper.To<GridOptions>(json);
         }
 
         protected IStringLocalizer<AppStrings> _strings;

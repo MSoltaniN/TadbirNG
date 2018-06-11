@@ -42,7 +42,7 @@ namespace SPPC.Framework.Service
             var serviceResponse = GetResponse(response);
             if (serviceResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
             {
-                value = Json.To<T>(response.Content.ReadAsStringAsync().Result);
+                value = JsonHelper.To<T>(response.Content.ReadAsStringAsync().Result);
             }
 
             return value;
@@ -62,13 +62,13 @@ namespace SPPC.Framework.Service
             T value = default(T);
             var request = new HttpRequestMessage(HttpMethod.Get, GetApiResourceUrl(apiUrl, apiUrlArgs))
             {
-                Content = new StringContent(Json.From(data, false), Encoding.UTF8, "application/json")
+                Content = new StringContent(JsonHelper.From(data, false), Encoding.UTF8, "application/json")
             };
             var response = _httpClient.SendAsync(request).Result;
             var serviceResponse = GetResponse(response);
             if (serviceResponse.Succeeded && response.StatusCode != HttpStatusCode.NotFound)
             {
-                value = Json.To<T>(response.Content.ReadAsStringAsync().Result);
+                value = JsonHelper.To<T>(response.Content.ReadAsStringAsync().Result);
             }
 
             return value;
@@ -151,7 +151,7 @@ namespace SPPC.Framework.Service
             if (response.StatusCode == HttpStatusCode.BadRequest)
             {
                 var message = response.Content.ReadAsStringAsync().Result;
-                var serviceMessage = Json.To<ServiceMessage>(message);
+                var serviceMessage = JsonHelper.To<ServiceMessage>(message);
                 serviceResponse = new ServiceResponse(ServiceResult.ValidationFailed, serviceMessage.Message);
             }
             else if (response.StatusCode == HttpStatusCode.InternalServerError)

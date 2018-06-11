@@ -125,7 +125,11 @@
     "IsEnabled": "Status",
     "Password": "Password",
     "Active": "Active",
-    "Inactive": "Inactive"
+    "Inactive": "Inactive",
+    "Roles": "Roles",
+    "RolesTitle": "User Roles List",
+    "Name": "Role Name",
+    "UpdateRoles": "User roles have been successfully edited"
   },
   "ChangePassword": {
     "Title": "Change password",
