@@ -23,7 +23,7 @@ namespace SPPC.Framework.Service.Extensions
         /// <returns>Asynchronous <see cref="Task"/> object for this operation</returns>
         public static Task<HttpResponseMessage> PostAsJsonAsync<T>(this HttpClient httpClient, Uri url, T data)
         {
-            var content = GetJsonContent(url, data);
+            var content = GetJsonContent(data);
             return httpClient.PostAsync(url, content);
         }
 
@@ -37,11 +37,11 @@ namespace SPPC.Framework.Service.Extensions
         /// <returns>Asynchronous <see cref="Task"/> object for this operation</returns>
         public static Task<HttpResponseMessage> PutAsJsonAsync<T>(this HttpClient httpClient, Uri url, T data)
         {
-            var content = GetJsonContent(url, data);
+            var content = GetJsonContent(data);
             return httpClient.PutAsync(url, content);
         }
 
-        private static StringContent GetJsonContent<T>(Uri url, T data)
+        private static StringContent GetJsonContent<T>(T data)
         {
             var jsonData = JsonConvert.SerializeObject(data);
             var content = new StringContent(jsonData);

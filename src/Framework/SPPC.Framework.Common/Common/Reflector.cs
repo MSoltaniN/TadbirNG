@@ -52,7 +52,7 @@ namespace SPPC.Framework.Common
 
             VerifyIsValidProperty(sourceType, name);
             var propInfo = sourceType.GetProperty(name);
-            return propInfo.GetValue(null, new object[] { });
+            return propInfo.GetValue(null, Array.Empty<object>());
         }
 
         /// <summary>

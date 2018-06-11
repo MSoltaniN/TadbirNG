@@ -9,6 +9,7 @@ namespace SPPC.Framework.Tools.ProjectCLI
 {
     class Program
     {
+        [STAThread]
         static int Main(string[] args)
         {
             DisplayBanner();
@@ -56,14 +57,13 @@ namespace SPPC.Framework.Tools.ProjectCLI
 
         private static bool EnsureHasConfiguration()
         {
-            using (Stream stream = typeof(Program).Assembly.GetManifestResourceStream(_jsonConfigUri))
+            using (StreamReader reader = new StreamReader(
+                typeof(Program).Assembly.GetManifestResourceStream(_jsonConfigUri)))
             {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    string jsonConfig = reader.ReadToEnd();
-                    _config = Json.To<CliConfiguration>(jsonConfig);
-                }
+                string jsonConfig = reader.ReadToEnd();
+                _config = JsonHelper.To<CliConfiguration>(jsonConfig);
             }
+
             return true;
         }
 

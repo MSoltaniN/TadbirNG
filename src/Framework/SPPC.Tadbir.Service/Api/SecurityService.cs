@@ -272,15 +272,6 @@ namespace SPPC.Tadbir.Service
             return response;
         }
 
-        /// <summary>
-        /// Associates the specified principal object with current Web context.
-        /// </summary>
-        /// <param name="principal">Principal instance corresponding to the current user</param>
-        private void LoginPrincipal(IPrincipal principal)
-        {
-            throw ExceptionBuilder.NewInvalidOperationException("ERROR: Operation is currently disabled.");
-        }
-
         private bool IsAuthenticated(UserViewModel user, string password)
         {
             bool isAuthenticated = false;

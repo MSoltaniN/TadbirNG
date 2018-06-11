@@ -5,12 +5,8 @@ using SPPC.Tadbir.Model.Metadata;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class EntityMap
+    internal static class EntityMap
     {
-        private EntityMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<Entity> builder)
         {
             builder.ToTable("Entity", "Metadata");

@@ -270,7 +270,7 @@ namespace SPPC.Tadbir.Persistence
             account.Description = accountViewModel.Description;
         }
 
-        private IQueryable<Account> GetAccountDetailsQuery(IRepository<Account> repository, int accountId)
+        private static IQueryable<Account> GetAccountDetailsQuery(IRepository<Account> repository, int accountId)
         {
             var query = repository
                 .GetEntityQuery()
@@ -281,7 +281,7 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private IQueryable<VoucherLine> GetArticleDetailsQuery(
+        private static IQueryable<VoucherLine> GetArticleDetailsQuery(
             IRepository<VoucherLine> repository, Expression<Func<VoucherLine, bool>> criteria,
             GridOptions gridOptions = null)
         {

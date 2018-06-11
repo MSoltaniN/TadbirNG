@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class CompanyMap
+    internal static class CompanyMap
     {
-        private CompanyMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<Company> builder)
         {
             builder.ToTable("Company", "Corporate");

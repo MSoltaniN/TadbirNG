@@ -37,6 +37,21 @@
     <Compile Remove="Persistence\IAccountRepository.Generated.cs" />
     <Compile Remove="Persistence\IInventoryRepository.cs" />
     <Compile Remove="Persistence\IRequisitionRepository.cs" />
+    <Compile Remove="Security\AccountPermission.cs" />
+    <Compile Remove="Security\BranchPermission.cs" />
+    <Compile Remove="Security\BusinessPartnerPermission.cs" />
+    <Compile Remove="Security\BusinessUnitPermission.cs" />
+    <Compile Remove="Security\CostCenterPermission.cs" />
+    <Compile Remove="Security\CurrencyPermission.cs" />
+    <Compile Remove="Security\DetailAccountPermission.cs" />
+    <Compile Remove="Security\FiscalPeriodPermission.cs" />
+    <Compile Remove="Security\Permissions.cs" />
+    <Compile Remove="Security\ProductInventoryPermission.cs" />
+    <Compile Remove="Security\ProjectPermission.cs" />
+    <Compile Remove="Security\RequisitionPermission.cs" />
+    <Compile Remove="Security\RolePermission.cs" />
+    <Compile Remove="Security\UserPermission.cs" />
+    <Compile Remove="Security\VoucherPermission.cs" />
     <Compile Remove="Service\IInventoryService.cs" />
     <Compile Remove="Service\IRequisitionService.cs" />
   </ItemGroup>

@@ -46,14 +46,14 @@ namespace SPPC.Framework.Presentation
         /// <returns>نمایش متنی برای این نمونه</returns>
         public override string ToString()
         {
-            string op = OperatorFromFieldType(FieldTypeName);
+            string op = OperatorFromFieldType();
             string toString = !String.IsNullOrEmpty(Value)
                 ? String.Format("{0}{1}", FieldName, String.Format(op, Value))
                 : String.Format("{0} {1}", FieldName, Operator);
             return toString;
         }
 
-        private string OperatorFromFieldType(string typeName)
+        private string OperatorFromFieldType()
         {
             string op = null;
             if (FieldTypeName == "System.String")

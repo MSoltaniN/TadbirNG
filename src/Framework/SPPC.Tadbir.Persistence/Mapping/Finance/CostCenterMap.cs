@@ -5,12 +5,8 @@ using SPPC.Tadbir.Model.Finance;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class CostCenterMap
+    internal static class CostCenterMap
     {
-        private CostCenterMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<CostCenter> builder)
         {
             builder.ToTable("CostCenter", "Finance");

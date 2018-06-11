@@ -5,12 +5,8 @@ using SPPC.Tadbir.Model.Contact;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class PersonMap
+    internal static class PersonMap
     {
-        private PersonMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<Person> builder)
         {
             builder.ToTable("Person", "Contact");

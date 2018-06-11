@@ -480,7 +480,7 @@ namespace SPPC.Framework.Persistence
 
         #endregion
 
-        private IQueryable<TEntity> GetEntityWithNavigationQuery(
+        private static IQueryable<TEntity> GetEntityWithNavigationQuery(
             IQueryable<TEntity> query,
             GridOptions gridOptions,
             params Expression<Func<TEntity, object>>[] relatedProperties)

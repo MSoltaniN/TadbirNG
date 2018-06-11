@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Auth;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class PermissionMap
+    internal static class PermissionMap
     {
-        private PermissionMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<Permission> builder)
         {
             builder.ToTable("Permission", "Auth");

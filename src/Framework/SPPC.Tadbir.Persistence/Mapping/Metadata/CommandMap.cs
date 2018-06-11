@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Metadata;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class CommandMap
+    internal static class CommandMap
     {
-        private CommandMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<Command> builder)
         {
             builder.ToTable("Command", "Metadata");

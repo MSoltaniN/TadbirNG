@@ -5,12 +5,8 @@ using SPPC.Tadbir.Model.Auth;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class RolePermissionMap
+    internal static class RolePermissionMap
     {
-        private RolePermissionMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<RolePermission> builder)
         {
             builder.ToTable("RolePermission", "Auth");

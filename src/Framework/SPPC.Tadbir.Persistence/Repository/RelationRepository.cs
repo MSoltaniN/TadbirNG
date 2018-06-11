@@ -795,6 +795,42 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private static IQueryable<Account> GetAccountChildrenQuery(IRepository<Account> repository, int accountId)
+        {
+            return repository
+                .GetEntityQuery()
+                .Include(acc => acc.Children)
+                    .ThenInclude(acc => acc.Children)
+                .Where(acc => acc.Id == accountId);
+        }
+
+        private static IQueryable<DetailAccount> GetDetailAccountChildrenQuery(IRepository<DetailAccount> repository, int faccountId)
+        {
+            return repository
+                .GetEntityQuery()
+                .Include(facc => facc.Children)
+                    .ThenInclude(facc => facc.Children)
+                .Where(facc => facc.Id == faccountId);
+        }
+
+        private static IQueryable<CostCenter> GetCostCenterChildrenQuery(IRepository<CostCenter> repository, int costCenterId)
+        {
+            return repository
+                .GetEntityQuery()
+                .Include(cc => cc.Children)
+                    .ThenInclude(cc => cc.Children)
+                .Where(cc => cc.Id == costCenterId);
+        }
+
+        private static IQueryable<Project> GetProjectChildrenQuery(IRepository<Project> repository, int projectId)
+        {
+            return repository
+                .GetEntityQuery()
+                .Include(prj => prj.Children)
+                    .ThenInclude(prj => prj.Children)
+                .Where(prj => prj.Id == projectId);
+        }
+
         private void AddConnectedDetails(Account existing, AccountItemRelationsViewModel relations)
         {
             var repository = _unitOfWork.GetRepository<DetailAccount>();
@@ -931,42 +967,6 @@ namespace SPPC.Tadbir.Persistence
                 };
                 existing.AccountProjects.Add(accountProject);
             }
-        }
-
-        private IQueryable<Account> GetAccountChildrenQuery(IRepository<Account> repository, int accountId)
-        {
-            return repository
-                .GetEntityQuery()
-                .Include(acc => acc.Children)
-                    .ThenInclude(acc => acc.Children)
-                .Where(acc => acc.Id == accountId);
-        }
-
-        private IQueryable<DetailAccount> GetDetailAccountChildrenQuery(IRepository<DetailAccount> repository, int faccountId)
-        {
-            return repository
-                .GetEntityQuery()
-                .Include(facc => facc.Children)
-                    .ThenInclude(facc => facc.Children)
-                .Where(facc => facc.Id == faccountId);
-        }
-
-        private IQueryable<CostCenter> GetCostCenterChildrenQuery(IRepository<CostCenter> repository, int costCenterId)
-        {
-            return repository
-                .GetEntityQuery()
-                .Include(cc => cc.Children)
-                    .ThenInclude(cc => cc.Children)
-                .Where(cc => cc.Id == costCenterId);
-        }
-
-        private IQueryable<Project> GetProjectChildrenQuery(IRepository<Project> repository, int projectId)
-        {
-            return repository
-                .GetEntityQuery()
-                .Include(prj => prj.Children)
-                    .ThenInclude(prj => prj.Children)
-                .Where(prj => prj.Id == projectId);
         }
 
         private IUnitOfWork _unitOfWork;

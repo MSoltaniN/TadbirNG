@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="All Rules (Softened)" Description="This rule set is a modified version of a Microsoft rule set that contains all rules. Some projects may make further modifications by enabling or disabling certain rules. When one or more rules are disabled, a complimentary document must provide justifications for changes." ToolsVersion="14.0">
     <Rules AnalyzerId="AsyncUsageAnalyzers" RuleNamespace="AsyncUsageAnalyzers">
-        <Rule Id="UseConfigureAwait" Action="Warning" />
+        <Rule Id="UseConfigureAwait" Action="None" />
     </Rules>
     <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
         <Rule Id="CA1020" Action="None" />
@@ -19,8 +19,11 @@
         <Rule Id="CA1702" Action="None" />
         <Rule Id="CA1708" Action="None" />
         <Rule Id="CA1716" Action="None" />
+        <Rule Id="CA1810" Action="None" />
         <Rule Id="CA2001" Action="None" />
+        <Rule Id="CA2007" Action="None" />
         <Rule Id="CA2101" Action="None" />
+        <Rule Id="CA2208" Action="None" />
         <Rule Id="CA2210" Action="None" />
         <Rule Id="CA2214" Action="None" />
     </Rules>

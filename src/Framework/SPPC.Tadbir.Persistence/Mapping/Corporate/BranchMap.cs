@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class BranchMap
+    internal static class BranchMap
     {
-        private BranchMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<Branch> builder)
         {
             builder.ToTable("Branch", "Corporate");
