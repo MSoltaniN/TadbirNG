@@ -118,6 +118,7 @@ export enum UserPermissions {
     View = 1,
     Create = 2,
     Edit = 4,
+    AssignRoles = 8,
     All = 7
 }
 

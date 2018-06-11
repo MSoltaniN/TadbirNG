@@ -26,6 +26,7 @@ import { VoucherLineComponent } from './components/voucherLine/voucherLine.compo
 import { VoucherLineFormComponent } from './components/voucherLine/voucherLine-form.component'
 import { UserComponent } from './components/user/user.component';
 import { UserFormComponent } from './components/user/user-form.component';
+import { UserRolesFormComponent } from './components/user/user-roles-form.component';
 import { RoleComponent } from './components/role/role.component';
 import { RoleFormComponent } from './components/role/role-form.component';
 import { RoleUserFormComponent } from './components/role/role-user-form.component';
@@ -129,6 +130,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         VoucherLineFormComponent,
         UserComponent,
         UserFormComponent,
+        UserRolesFormComponent,
         RoleComponent,
         RoleFormComponent,
         GridSettingComponent,
