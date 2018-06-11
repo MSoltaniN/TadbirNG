@@ -7,12 +7,14 @@ namespace SPPC.Tadbir.Workflow
     /// <summary>
     /// عملیات گردش کار کنترل وضعیت سند مالی را تعریف می کند.
     /// </summary>
-    public interface ITransactionWorkflow
+    public interface IVoucherWorkflow
     {
         /// <summary>
         /// اطلاعات امنیتی کاربر جاری در برنامه
         /// </summary>
-        ISecurityContextManager ContextManager { get; set; }
+        ISecurityContextManager ContextManager { get; }
+
+        bool ValidateAction(string documentType, string status, string action);
 
         /// <summary>
         /// یک سند مالی پیش نویس را در حالت ثبت نشده و وضعیت عملیاتی تنظیم شده قرار می دهد.
@@ -36,7 +38,7 @@ namespace SPPC.Tadbir.Workflow
         /// <param name="documentId">شناسه دیتابیسی مستند مرتبط با سند مالی که باید وضعیتش تغییر کند</param>
         /// <param name="entityId">شناسه دیتابیسی موجودیت</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        void RejectReviewed(int entityId, int documentId, string paraph = null);
+        void Reject(int entityId, int documentId, string paraph = null);
 
         /// <summary>
         /// یک سند مالی ثبت نشده و بررسی شده را در حالت ثبت عادی و وضعیت عملیاتی تایید شده قرار می دهد.

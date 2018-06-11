@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SPPC.Framework.Common;
+using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.Workflow
@@ -12,8 +13,13 @@ namespace SPPC.Tadbir.Workflow
     /// در این پیاده سازی، چنانچه اقدامات بررسی و تایید در طول زمان مشخصی (در حال حاضر 4 دقیقه) انجام نشوند،
     /// کارهای مرتبط با آنها به صورت خودکار به کارتابل نقش سازمانی مافوق منتقل می شود.
     /// </remarks>
-    public class TransactionTimeoutWorkflow : TransactionWorkflow, ITransactionWorkflow
+    public class VoucherTimeoutWorkflow : VoucherWorkflow, IVoucherWorkflow
     {
+        public VoucherTimeoutWorkflow(ISecurityContextManager contextManager)
+            : base(contextManager)
+        {
+        }
+
         /// <summary>
         /// یک سند مالی پیش نویس را در حالت ثبت نشده و وضعیت عملیاتی تنظیم شده قرار می دهد.
         /// </summary>
@@ -58,7 +64,7 @@ namespace SPPC.Tadbir.Workflow
         /// <param name="entityId">شناسه دیتابیسی سند مالی که باید وضعیتش تغییر کند</param>
         /// <param name="documentId">شناسه دیتابیسی مستند مرتبط با سند مالی که باید حالت و وضعیتش تغییر کند</param>
         /// <param name="paraph">پاراف متنی که کاربر پیش از اقدام می تواند وارد کند</param>
-        public override void RejectReviewed(int entityId, int documentId, string paraph = null)
+        public override void Reject(int entityId, int documentId, string paraph = null)
         {
             var reject = StateOperation.RejectReview(
                 CurrentUserId, entityId, documentId, DocumentTypeName.Voucher, paraph);

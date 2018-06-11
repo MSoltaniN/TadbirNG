@@ -100,15 +100,15 @@
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Provider\TransactionBasicWorkflow.cs" />
-    <Compile Include="Provider\TransactionDecisionWorkflow.cs" />
-    <Compile Include="Provider\TransactionTimeoutWorkflow.cs" />
-    <Compile Include="Provider\TransactionWorkflow.cs" />
+    <Compile Include="Provider\VoucherBasicWorkflow.cs" />
+    <Compile Include="Provider\VoucherDecisionWorkflow.cs" />
+    <Compile Include="Provider\VoucherTimeoutWorkflow.cs" />
+    <Compile Include="Provider\VoucherWorkflow.cs" />
     <Compile Include="Provider\WorkflowTracker.cs" />
     <Compile Include="Repository\ConfigSettingsRepository.cs" />
     <Compile Include="Repository\JsonMetadataRepository.cs" />
     <Compile Include="Workflow\IDocumentWorkflow.cs" />
-    <Compile Include="Workflow\ITransactionWorkflow.cs" />
+    <Compile Include="Workflow\IVoucherWorkflow.cs" />
     <Compile Include="Workflow\IWorkflowTracker.cs" />
     <Compile Include="Workflow\StateOperation.cs" />
     <Compile Include="Workflow\StateOperationValidator.cs" />
