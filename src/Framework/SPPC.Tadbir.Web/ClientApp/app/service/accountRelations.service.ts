@@ -19,7 +19,7 @@ export class AccountRelationsService extends BaseService {
         super(http);
     }
 
-    public getAccountCategories(apiUrl: string) {
+    public getMainComponentModel(apiUrl: string) {
         var options = new RequestOptions({ headers: this.headers });
         return this.http.get(apiUrl, options)
             .map(response => <any>(<Response>response));

@@ -68,6 +68,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     public relatedComponentCheckedKeys: any[] = [];
     public relatedComponentDropdownSelected: number = 0;
     public relatedComponentExpandedKeys: any[] = [];
+    public fechedRelatedComponentChildren: Observable<any>;
 
     public errorMessage = String.Empty;
 
@@ -91,10 +92,11 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     public handleMainComponentDropDownChange(item: any) {
         this.mainComponentCheckedKeys = [];
         this.mainComponentExpandedKeys = [];
-        this.relatedComponentCheckedKeys = [];
         this.mainComponentDropdownSelected = 0;
         this.mainComponentSelectedItem = 0;
+        this.relatedComponentCheckedKeys = [];
         this.relatedComponentCategories = undefined;
+        this.relatedComponentDropdownSelected = 0;
 
         if (item > 0) {
             var apiUrl = String.Empty;
@@ -132,7 +134,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                         break;
                     }
             }
-            this.accountRelationsService.getAccountCategories(apiUrl).subscribe(res => {
+            this.accountRelationsService.getMainComponentModel(apiUrl).subscribe(res => {                
                 this.mainComponentCategories = res.json();
                 this.sppcLoading.hide();
             });
@@ -220,19 +222,34 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         var apiUrl = String.Empty;
         switch (this.relatedComponentDropdownSelected) {
             case 1: {
-                apiUrl = String.Format(AccountApi.AccountChildren, item.id);
+                switch (this.mainComponentDropdownSelected) {
+                    case 2: {
+                        apiUrl = String.Format(AccountRelationApi.ChildAccountsRelatedToDetailAccount, item.id, this.mainComponentSelectedItem);
+                        break;
+                    }
+                    case 3: {
+                        apiUrl = String.Format(AccountRelationApi.ChildAccountsRelatedToCostCenter, item.id, this.mainComponentSelectedItem);
+                        break;
+                    }
+                    case 4: {
+                        apiUrl = String.Format(AccountRelationApi.ChildAccountsRelatedToProject, item.id, this.mainComponentSelectedItem);
+                        break;
+                    }
+                    default:
+                        break;
+                }
                 break;
             }
             case 2: {
-                apiUrl = String.Format(DetailAccountApi.DetailAccountChildren, item.id);
+                apiUrl = String.Format(AccountRelationApi.ChildDetailAccountsRelatedToAccount, item.id, this.mainComponentSelectedItem);
                 break;
             }
             case 3: {
-                apiUrl = String.Format(CostCenterApi.CostCenterChildren, item.id);
+                apiUrl = String.Format(AccountRelationApi.ChildCostCentersRelatedToAccount, item.id, this.mainComponentSelectedItem);
                 break;
             }
             case 4: {
-                apiUrl = String.Format(ProjectApi.ProjectChildren, item.id);
+                apiUrl = String.Format(AccountRelationApi.ChildProjectsRelatedToAccount, item.id, this.mainComponentSelectedItem);
                 break;
             }
             default:
@@ -240,11 +257,22 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                     break;
                 }
         }
-        return this.accountRelationsService.getChildrens(apiUrl);
+        var result = this.accountRelationsService.getChildrens(apiUrl);
+        this.fechedRelatedComponentChildren = result;
+        return result;
+    }
+
+    public childrenLoadedHandler = (dataItem: any) => {
+        this.fechedRelatedComponentChildren.subscribe(res => {
+            for (let item of res) {
+                if (item.isSelected && !this.relatedComponentCheckedKeys.find(f => f == item.id)) {
+                    this.relatedComponentCheckedKeys.push(item.id);
+                }
+            }
+        })
     }
 
     loadRelatedComponent() {
-        this.sppcLoading.show();
         this.isDisableRelatedComponnet = false;
         this.relatedComponentCheckedKeys = [];
         this.relatedComponentExpandedKeys = [];
@@ -289,7 +317,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                     break;
                 }
             }
-
+            this.sppcLoading.show();
             this.accountRelationsService.getRelatedComponentModel(apiUrl).subscribe(res => {
                 this.relatedComponentCategories = res;
 
