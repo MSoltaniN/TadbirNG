@@ -75,4 +75,13 @@ export class UserService extends BaseService {
             .catch(this.handleError);
     }
 
+    getCurrentUserCommands() {
+
+        var url = UserApi.CurrentUserCommands;
+
+        return this.http.get(url, this.options)
+            .map(response => <any>(<Response>response).json());
+
+    }
+
 }
