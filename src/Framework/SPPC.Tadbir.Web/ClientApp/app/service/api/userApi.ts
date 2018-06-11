@@ -37,4 +37,8 @@ export class UserApi {
 
     // users/metadata
     public static UserMetadata = Environment.BaseUrl + "/users/metadata";
+
+    // users/current/commands
+    public static UserCommand = Environment.BaseUrl + "/users/current/commands";
+
 }

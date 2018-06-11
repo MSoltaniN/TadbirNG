@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { DOCUMENT } from '@angular/platform-browser';
 import { AuthenticationService } from '../../service/login/index';
+import { UserService } from '../../service/user.service';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class AppComponent {
 
 
 
-    constructor(location: Location, router: Router, public authenticationService: AuthenticationService,
+    constructor(location: Location, router: Router, public authenticationService: AuthenticationService,public userService:UserService,
          @Inject(DOCUMENT) private document: Document) {
 
 
@@ -55,7 +56,7 @@ export class AppComponent {
 
         }
 
-
+        
 
         if (this.currentContext != undefined) {
             this.showNavbar = true;

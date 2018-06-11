@@ -15,6 +15,7 @@ import { Context } from "../model/context";
 import { BaseComponent } from "../class/base.component"
 import { ToastrService } from 'ngx-toastr';
 import { BaseService } from '../class/base.service';
+import { Command } from '../model/command';
 
 
 export class UserInfo implements User {
@@ -34,6 +35,15 @@ export class UserProfileInfo implements UserProfile {
     repeatPassword: string;
 }
 
+export class CommandInfo implements Command {
+    permissionId?: number | undefined;
+    children: Command[];
+    id: number;
+    title: string;
+    routeUrl: string;
+   
+}
+
 @Injectable()
 export class UserService extends BaseService {
 
@@ -47,6 +57,15 @@ export class UserService extends BaseService {
         return this.http.put(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);
+    }
+
+    getCurrentUserCommands() {
+
+        var url = UserApi.UserCommand;
+
+        return this.http.get(url, this.options)
+            .map(response => <any>(<Response>response).json());
+
     }
 
 }

@@ -3,6 +3,7 @@ import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from "ng2-translate";
 import { MetaDataService } from '../../service/metadata/metadata.service';
+import { UserService } from '../../service/user.service';
 
 
 @Component({
@@ -12,9 +13,15 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 })
 export class NavMenuComponent extends DefaultComponent {
     constructor(public toastrService: ToastrService,
-        public translate: TranslateService, public renderer: Renderer2,public metadata: MetaDataService) {
+        public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService, public userService: UserService) {
 
-        super(toastrService, translate, renderer, metadata,'','');
+        super(toastrService, translate, renderer, metadata, '', '');
+
+
+        var commands: any;
+        this.userService.getCurrentUserCommands().subscribe(res => {
+            commands = res;
+        })
     }
 
 }

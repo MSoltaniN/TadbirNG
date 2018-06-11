@@ -9,29 +9,35 @@
     }
 }
 
-/*.body-content 
+@media (max-width: 430px) {
+    div .navbar-collapse collapse {
+        overflow-y: scroll !important;
+        max-height: 300px !important;
+    }
+}
+
+    /*.body-content 
 {
     height:90%;
 }*/
-
-.footer {
-    position: fixed;
-    background: #fff;
-    padding: 7px;
-    color: #444;
-    border-top: 1px solid #d2d6de;       
-    width: 100%;
-    bottom: 0;
-    font-family:SPPC!important;
-}
-
+    .footer {
+        position: fixed;
+        background: #fff;
+        padding: 7px;
+        color: #444;
+        border-top: 1px solid #d2d6de;
+        width: 100%;
+        bottom: 0;
+        font-family: SPPC !important;
+    }
 
 
 
-kendo-pager {
-    z-index: 0 !important;
-}
 
-/deep/ .spinner {
-    z-index: 100010 !important;
-}
+    kendo-pager {
+        z-index: 0 !important;
+    }
+
+    /deep/ .spinner {
+        z-index: 100010 !important;
+    }
