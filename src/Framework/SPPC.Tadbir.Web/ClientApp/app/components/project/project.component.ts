@@ -122,9 +122,6 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
             this.sppcLoading.show();
             var filter = this.currentFilter;
             var order = this.currentOrder;
-            if (this.totalRecords == this.skip) {
-                this.skip = this.skip - this.pageSize;
-            }
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }

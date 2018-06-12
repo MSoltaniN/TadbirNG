@@ -125,9 +125,6 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
-            if (this.totalRecords == this.skip) {
-                this.skip = this.skip - this.pageSize;
-            }
             if (this.parent) {
                 if (this.parent.childCount > 0)
                     filter.push(new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"))

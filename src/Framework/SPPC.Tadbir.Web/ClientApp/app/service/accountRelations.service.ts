@@ -19,12 +19,6 @@ export class AccountRelationsService extends BaseService {
         super(http);
     }
 
-    public getAccountCategories(apiUrl: string) {
-        var options = new RequestOptions({ headers: this.headers });
-        return this.http.get(apiUrl, options)
-            .map(response => <any>(<Response>response));
-    }
-
     public getChildrens(apiUrl: string) {
         var options = new RequestOptions({ headers: this.headers });
         return this.http.get(apiUrl, options)
