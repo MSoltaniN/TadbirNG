@@ -44,6 +44,7 @@ import { FiscalPeriodComponent } from './components/fiscalPeriod/fiscalPeriod.co
 import { FiscalPeriodFormComponent } from './components/fiscalPeriod/fiscalPeriod-form.component';
 import { BranchComponent } from './components/branch/branch.component';
 import { BranchFormComponent } from './components/branch/branch-form.component';
+import { BranchRolesFormComponent } from './components/branch/branch-roles-form.component';
 import { CompanyComponent } from './components/company/company.component';
 import { CompanyFormComponent } from './components/company/company-form.component';
 import { AccountRelationsComponent } from './components/accountRelations/accountRelations.component';
@@ -150,6 +151,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         FiscalPeriodFormComponent,
         BranchComponent,
         BranchFormComponent,
+        BranchRolesFormComponent,
         CompanyComponent,
         CompanyFormComponent,
         SppcDatePipe,     

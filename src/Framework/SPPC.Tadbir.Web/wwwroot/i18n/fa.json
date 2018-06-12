@@ -102,7 +102,10 @@
     "NewSubBrench": "درج زیر شعبه جدید",
     "Delete": "حذف شعبه",
     "Name": "نام",
-    "Description": "شرح"
+    "Description": "شرح",
+    "Roles": "نقش ها",
+    "UpdateRoles": "نقش های شعبه با موفقیت ویرایش شد",
+    "RolesTitle": "لیست نقش های قابل دسترس به شعبه"
   },
   "Voucher": {
     "New": "سند جدید",

@@ -48,6 +48,7 @@
                     <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(branch.id)" [icon]="'plus-outline'" type="button">{{ 'Buttons.New' | translate }}</button>
                     <button kendoGridEditCommand SppcCheckAccess="Edit" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
                     <button kendoGridRemoveCommand SppcCheckAccess="Delete">{{ 'Buttons.Delete' | translate }}</button>
+                    <button kendoButton (click)="rolesHandler(branch.id)" [primary]="true">{{ 'Branch.Roles' | translate }}</button>
                 </ng-template>
             </kendo-grid-column>
             <!-- template for mobile -->
@@ -78,15 +79,21 @@
                     <button [icon]="'plus'" (click)="addNew(dataItem.id)" kendoGridAddCommand SppcCheckAccess="Create" title="{{ 'Branch.NewSubBrench' | translate }}"></button>
                     <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
                     <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
+                    <button kendoButton (click)="rolesHandler(dataItem.id)" [primary]="true">{{ 'Branch.Roles' | translate }}</button>
                 </ng-template>
-            </kendo-grid-command-column>           
+            </kendo-grid-command-column>
             <!-- additional columns on large devices -->
 
         </kendo-grid>
         <branch-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
-                                      (save)="saveHandler($event)"
-                                      (cancel)="cancelHandler()">
+                               (save)="saveHandler($event)"
+                               (cancel)="cancelHandler()">
         </branch-form-component>
+
+        <branch-roles-form-component [rolesList]="rolesList" [branchRoles]="branchRolesData" [errorMessage]="errorMessage"
+                                   (saveBranchRoles)="saveBranchRolesHandler($event)"
+                                   (cancelBranchRoles)="cancelBranchRolesHandler()">
+        </branch-roles-form-component>
     </div>
     <kendo-dialog title="{{'Branch.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
         <p>

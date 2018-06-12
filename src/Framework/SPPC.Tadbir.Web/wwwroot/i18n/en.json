@@ -102,7 +102,10 @@
     "NewSubBrench": "New Sub Branch",
     "Delete": "Delete Branch",
     "Name": "Name",
-    "Description": "Description"
+    "Description": "Description",
+    "Roles": "Roles",
+    "UpdateRoles": "Branch roles have been successfully edited",
+    "RolesTitle": "List of available roles to the branch"
   },
   "Voucher": {
     "New": "New voucher",

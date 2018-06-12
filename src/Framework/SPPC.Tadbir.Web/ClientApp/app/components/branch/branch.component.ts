@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { BranchService, BranchInfo } from '../../service/index';
-import { Branch } from '../../model/index';
+import { BranchService, BranchInfo, RelatedItemsInfo } from '../../service/index';
+import { Branch, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr'; /** add this component for message in client side */
 
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
@@ -67,8 +67,10 @@ export class BranchComponent extends DefaultComponent implements OnInit {
     public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
+    rolesList: boolean = false;
 
     editDataItem?: Branch = undefined;
+    branchRolesData: RelatedItemsInfo;
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
@@ -244,6 +246,35 @@ export class BranchComponent extends DefaultComponent implements OnInit {
         if (parentModelId)
             this.parentId = parentModelId;
         this.errorMessage = '';
+    }
+
+    public rolesHandler(branchId: number) {
+        this.rolesList = true;
+        this.sppcLoading.show();
+        this.branchService.getBranchRoles(branchId).subscribe(res => {
+            this.branchRolesData = res;
+            this.sppcLoading.hide();
+        });
+
+        this.errorMessage = '';
+    }
+
+    public cancelBranchRolesHandler() {
+        this.rolesList = false;
+        this.errorMessage = '';
+    }
+
+    public saveBranchRolesHandler(userRoles: RelatedItems) {
+        this.sppcLoading.show();
+        this.branchService.modifiedBranchRoles(userRoles)
+            .subscribe(response => {
+                this.rolesList = false;
+                this.showMessage(this.getText("Branch.UpdateRoles"), MessageType.Succes);
+                this.sppcLoading.hide();
+            }, (error => {
+                this.sppcLoading.hide();
+                this.errorMessage = error;
+            }));
     }
 
     public saveHandler(model: Branch) {

@@ -79,6 +79,7 @@ export enum BranchPermissions {
     Create = 2,
     Edit = 4,
     Delete = 8,
+    AssignRoles = 16,
     All = 15
 }
 
