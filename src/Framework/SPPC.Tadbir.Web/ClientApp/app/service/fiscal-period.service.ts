@@ -1,7 +1,9 @@
 ﻿import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { BaseService } from '../class/base.service';
-import { FiscalPeriod } from '../model/index';
+import { FiscalPeriod, RelatedItems } from '../model/index';
+import { String } from '../class/source';
+import { FiscalPeriodApi } from './api/index';
 
 
 export class FiscalPeriodInfo implements FiscalPeriod {
@@ -21,5 +23,19 @@ export class FiscalPeriodService extends BaseService{
         super(http);
     }
 
+    getFiscalPeriodRoles(fPeriodId: number) {
+        var url = String.Format(FiscalPeriodApi.FiscalPeriodRoles, fPeriodId);
+        return this.http.get(url, this.options)
+            .map(response => <any>(<Response>response).json());
+    }
+
+    modifiedFiscalPeriodRoles(fPeriodIdRoles: RelatedItems) {
+        var body = JSON.stringify(fPeriodIdRoles);
+        var headers = this.headers;
+        var url = String.Format(FiscalPeriodApi.FiscalPeriodRoles, fPeriodIdRoles.id);
+        return this.http.put(url, body, this.options)
+            .map(res => res)
+            .catch(this.handleError);
+    }
 
 }

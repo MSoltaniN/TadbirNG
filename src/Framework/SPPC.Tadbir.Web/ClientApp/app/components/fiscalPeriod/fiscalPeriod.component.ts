@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
-import { FiscalPeriodService, FiscalPeriodInfo } from '../../service/index';
-import { FiscalPeriod } from '../../model/index';
+import { FiscalPeriodService, FiscalPeriodInfo, RelatedItemsInfo } from '../../service/index';
+import { FiscalPeriod, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 
@@ -59,8 +59,11 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
     public sort: SortDescriptor[] = [];
 
     showloadingMessage: boolean = true;
+    rolesList: boolean = false;
 
     editDataItem?: FiscalPeriod = undefined;
+    fiscalPeriodRolesData: RelatedItemsInfo;
+
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
@@ -214,6 +217,36 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
         this.isNew = true;
         this.editDataItem = new FiscalPeriodInfo();
         this.errorMessage = '';
+    }
+
+    public rolesHandler(fPeriodId: number) {
+        this.rolesList = true;
+        this.sppcLoading.show();
+        this.fiscalPeriodService.getFiscalPeriodRoles(fPeriodId).subscribe(res => {
+            this.fiscalPeriodRolesData = res;
+            this.sppcLoading.hide();
+        });
+
+        this.errorMessage = '';
+    }
+
+    public cancelFiscalPeriodRolesHandler() {
+        this.rolesList = false;
+        this.errorMessage = '';
+    }
+
+    public saveFiscalPeriodRolesHandler(fPeriodRoles: RelatedItems) {
+        debugger;
+        this.sppcLoading.show();
+        this.fiscalPeriodService.modifiedFiscalPeriodRoles(fPeriodRoles)
+            .subscribe(response => {
+                this.rolesList = false;
+                this.showMessage(this.getText("FiscalPeriod.UpdateRoles"), MessageType.Succes);
+                this.sppcLoading.hide();
+            }, (error => {
+                this.sppcLoading.hide();
+                this.errorMessage = error;
+            }));
     }
 
     public saveHandler(model: FiscalPeriod) {

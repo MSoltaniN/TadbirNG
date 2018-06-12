@@ -42,6 +42,7 @@ import { ProjectComponent } from './components/project/project.component';
 import { ProjectFormComponent } from './components/project/project-form.component';
 import { FiscalPeriodComponent } from './components/fiscalPeriod/fiscalPeriod.component';
 import { FiscalPeriodFormComponent } from './components/fiscalPeriod/fiscalPeriod-form.component';
+import { FiscalPeriodRolesFormComponent } from './components/fiscalPeriod/fiscalPeriod-roles-form.component';
 import { BranchComponent } from './components/branch/branch.component';
 import { BranchFormComponent } from './components/branch/branch-form.component';
 import { BranchRolesFormComponent } from './components/branch/branch-roles-form.component';
@@ -149,6 +150,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         ConfirmEqualValidator,
         FiscalPeriodComponent,
         FiscalPeriodFormComponent,
+        FiscalPeriodRolesFormComponent,
         BranchComponent,
         BranchFormComponent,
         BranchRolesFormComponent,

@@ -221,7 +221,10 @@
     "Name": "Name",
     "StartDate": "Start Date",
     "EndDate": "End Date",
-    "Description": "Description"
+    "Description": "Description",
+    "UpdateRoles": "Fiscal Period roles have been successfully edited",
+    "Roles": "Roles",
+    "RolesTitle": "Fiscal Period Roles List"
   },
   "Fiscal": {
     "FiscalPeriod": "Fiscal Period"

@@ -221,7 +221,10 @@
     "Name": "نام",
     "StartDate": "تاریخ شروع",
     "EndDate": "تاریخ پایان",
-    "Description": "شرح"
+    "Description": "شرح",
+    "UpdateRoles": "نقش های دوره مالی با موفقیت ویرایش شد",
+    "Roles": "نقش ها",
+    "RolesTitle": "لیست نقش های دوره مالی"
   },
   "Fiscal": {
     "FiscalPeriod": "دوره مالی"
