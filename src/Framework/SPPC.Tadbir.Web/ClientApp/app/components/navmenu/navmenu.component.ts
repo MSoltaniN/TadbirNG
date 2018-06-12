@@ -22,6 +22,15 @@ export class NavMenuComponent extends DefaultComponent {
         this.userService.getCurrentUserCommands().subscribe(res => {
             commands = res;
         })
+
+        this.isNavbarCollapsed = false;
+       
+    }
+
+    isNavbarCollapsed: boolean = false;
+
+    navClick() {
+        this.isNavbarCollapsed = true;
     }
 
 }

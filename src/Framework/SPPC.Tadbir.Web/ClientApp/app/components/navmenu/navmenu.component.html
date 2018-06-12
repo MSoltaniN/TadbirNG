@@ -10,9 +10,9 @@
             <a class='navbar-brand' [routerLink]="['/account']">{{ 'App.Name' | translate }}</a>
         </div>
         <div class='clearfix'></div>
-        <div class='navbar-collapse collapse'>
+        <div class='navbar-collapse collapse' [ngbCollapse]="isNavbarCollapsed">
             <ul class='nav navbar-nav'>
-                <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Account', 1)">
+                <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Account', 1)" (click)="navClick($event)">
                     <a [routerLink]="['/account']">
                         <span class='glyphicon glyphicon-tasks'></span><span class="menuitem">{{ 'App.Menu.Account' | translate }}</span>
                     </a>

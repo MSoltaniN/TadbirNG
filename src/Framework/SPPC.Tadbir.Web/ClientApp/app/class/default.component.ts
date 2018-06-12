@@ -218,6 +218,9 @@ export class DefaultComponent extends BaseComponent {
 
                 var item: string | null;
                 item = localStorage.getItem(this.metaDataName);
+
+                if (this.properties == undefined) this.properties = {};
+
                 this.properties[this.metaDataName] = JSON.parse(item != null ? item.toString() : "");
 
                 if (this.properties[this.metaDataName] == undefined || this.properties[this.metaDataName].length == 0) return undefined;

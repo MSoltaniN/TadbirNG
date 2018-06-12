@@ -162,18 +162,18 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                 filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
             this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
-                this.properties = resData.properties;
+                //this.properties = resData.properties;
                 var totalCount = 0;
                 if (insertedModel) {
-                    var rows = (resData.list as Array<Account>);
+                    var rows = (resData as Array<Account>);
                     var index = rows.findIndex(p => p.id == insertedModel.id);
                     if (index >= 0) {
-                        resData.list.splice(index, 1);
+                        resData.splice(index, 1);
                         rows.splice(0, 0, insertedModel);
                     }
                     else {
                         if (rows.length == this.pageSize) {
-                            resData.list.splice(this.pageSize - 1, 1);
+                            resData.splice(this.pageSize - 1, 1);
                         }
                         rows.splice(0, 0, insertedModel);
                     }
@@ -187,10 +187,10 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                     }
                 }
                 this.rowData = {
-                    data: resData.list,
+                    data: resData,
                     total: totalCount
                 }
-                this.showloadingMessage = !(resData.list.length == 0);
+                this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
                 this.sppcLoading.hide();
             })
