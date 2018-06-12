@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای کاربر را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای کاربر</returns>
-        Task<EntityItemViewModel<UserViewModel>> GetUserMetadataAsync();
+        Task<EntityViewModel> GetUserMetadataAsync();
 
         /// <summary>
         /// Asynchronously retrieves context information for a user specified by unique identifier from repository.
@@ -146,7 +146,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای نقش را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای نقش</returns>
-        Task<EntityItemViewModel<RoleViewModel>> GetRoleMetadataAsync();
+        Task<EntityViewModel> GetRoleMetadataAsync();
 
         /// <summary>
         /// به روش آسنکرون، تعداد نقش های تعریف شده را از محل ذخیره خوانده و برمی گرداند

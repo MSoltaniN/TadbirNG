@@ -25,12 +25,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="decorator">امکان ضمیمه کردن متادیتا به اطلاعات خوانده شده را فراهم می کند</param>
-        public BranchRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataDecorator decorator)
+        /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        public BranchRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _decorator = decorator;
+            _metadataRepository = metadataRepository;
         }
 
         /// <summary>
@@ -92,9 +92,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای شعبه سازمانی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای شعبه سازمانی</returns>
-        public async Task<EntityItemViewModel<BranchViewModel>> GetBranchMetadataAsync()
+        public async Task<EntityViewModel> GetBranchMetadataAsync()
         {
-            return await _decorator.GetDecoratedItemAsync<Branch, BranchViewModel>(null);
+            return await _metadataRepository.GetEntityMetadataAsync<Branch>();
         }
 
         /// <summary>
@@ -290,6 +290,6 @@ namespace SPPC.Tadbir.Persistence
 
         private IUnitOfWork _unitOfWork;
         private IDomainMapper _mapper;
-        private IMetadataDecorator _decorator;
+        private IMetadataRepository _metadataRepository;
     }
 }

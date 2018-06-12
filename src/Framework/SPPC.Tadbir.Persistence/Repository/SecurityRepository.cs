@@ -28,12 +28,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="decorator">امکان ضمیمه کردن متادیتا به اطلاعات خوانده شده را فراهم می کند</param>
-        public SecurityRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataDecorator decorator)
+        /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        public SecurityRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _decorator = decorator;
+            _metadataRepository = metadataRepository;
         }
 
         #region User Management operations
@@ -97,9 +97,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای کاربر را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای کاربر</returns>
-        public async Task<EntityItemViewModel<UserViewModel>> GetUserMetadataAsync()
+        public async Task<EntityViewModel> GetUserMetadataAsync()
         {
-            return await _decorator.GetDecoratedItemAsync<User, UserViewModel>(null);
+            return await _metadataRepository.GetEntityMetadataAsync<User>();
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از دستورات قابل دسترسی توسط کاربر</returns>
         public async Task<IList<CommandViewModel>> GetUserCommandsAsync(int userId)
         {
-            var topCommands = await _decorator.Repository.GetTopLevelCommandsAsync();
+            var topCommands = await _metadataRepository.GetTopLevelCommandsAsync();
             var userCommands = new List<CommandViewModel>(topCommands.Count);
             var userPermissions = await GetUserPermissionIdsAsync(userId);
             foreach (var command in topCommands)
@@ -454,9 +454,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای نقش را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای نقش</returns>
-        public async Task<EntityItemViewModel<RoleViewModel>> GetRoleMetadataAsync()
+        public async Task<EntityViewModel> GetRoleMetadataAsync()
         {
-            return await _decorator.GetDecoratedItemAsync<Role, RoleViewModel>(null);
+            return await _metadataRepository.GetEntityMetadataAsync<Role>();
         }
 
         /// <summary>
@@ -1127,6 +1127,6 @@ namespace SPPC.Tadbir.Persistence
 
         private IUnitOfWork _unitOfWork;
         private IDomainMapper _mapper;
-        private IMetadataDecorator _decorator;
+        private IMetadataRepository _metadataRepository;
     }
 }

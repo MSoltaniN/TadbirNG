@@ -24,12 +24,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="decorator">امکان ضمیمه کردن متادیتا به اطلاعات خوانده شده را فراهم می کند</param>
-        public AccountRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataDecorator decorator)
+        /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        public AccountRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _decorator = decorator;
+            _metadataRepository = metadataRepository;
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<EntityListViewModel<AccountViewModel>> GetAccountsAsync(
+        public async Task<IList<AccountViewModel>> GetAccountsAsync(
             int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<Account>();
@@ -50,9 +50,9 @@ namespace SPPC.Tadbir.Persistence
                         && acc.Branch.Id == branchId,
                     gridOptions,
                     acc => acc.FiscalPeriod, acc => acc.Branch, acc => acc.Parent, acc => acc.Children);
-            return await _decorator.GetDecoratedListAsync<Account, AccountViewModel>(accounts
+            return accounts
                 .Select(item => _mapper.Map<AccountViewModel>(item))
-                .ToList());
+                .ToList();
         }
 
         /// <summary>
@@ -60,17 +60,16 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>
         /// <returns>حساب مشخص شده با شناسه عددی</returns>
-        public async Task<EntityItemViewModel<AccountViewModel>> GetAccountAsync(int accountId)
+        public async Task<AccountViewModel> GetAccountAsync(int accountId)
         {
-            EntityItemViewModel<AccountViewModel> item = null;
+            AccountViewModel item = null;
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetByIDAsync(
                 accountId,
                 acc => acc.FiscalPeriod, acc => acc.Branch, acc => acc.Parent, acc => acc.Children);
             if (account != null)
             {
-                item = await _decorator.GetDecoratedItemAsync<Account, AccountViewModel>(
-                    _mapper.Map<AccountViewModel>(account));
+                item = _mapper.Map<AccountViewModel>(account);
             }
 
             return item;
@@ -82,16 +81,15 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>
         /// <returns>حساب مشخص شده با شناسه عددی به همراه اطلاعات کامل آن</returns>
-        public async Task<EntityItemViewModel<AccountFullViewModel>> GetAccountDetailAsync(int accountId)
+        public async Task<AccountFullViewModel> GetAccountDetailAsync(int accountId)
         {
-            EntityItemViewModel<AccountFullViewModel> item = null;
+            AccountFullViewModel item = null;
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var query = GetAccountDetailsQuery(repository, accountId);
             var account = await query.SingleOrDefaultAsync();
             if (account != null)
             {
-                item = await _decorator.GetDecoratedItemAsync<Account, AccountFullViewModel>(
-                    _mapper.Map<AccountFullViewModel>(account));
+                item = _mapper.Map<AccountFullViewModel>(account);
             }
 
             return item;
@@ -119,9 +117,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای حساب را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای حساب</returns>
-        public async Task<EntityItemViewModel<AccountViewModel>> GetAccountMetadataAsync()
+        public async Task<EntityViewModel> GetAccountMetadataAsync()
         {
-            return await _decorator.GetDecoratedItemAsync<Account, AccountViewModel>(null);
+            return await _metadataRepository.GetEntityMetadataAsync<Account>();
         }
 
         /// <summary>
@@ -131,7 +129,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از آرتیکل های مالی که از حساب مشخص شده استفاده می کندد</returns>
-        public async Task<EntityListViewModel<VoucherLineViewModel>> GetAccountArticlesAsync(
+        public async Task<IList<VoucherLineViewModel>> GetAccountArticlesAsync(
             int accountId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
@@ -140,7 +138,7 @@ namespace SPPC.Tadbir.Persistence
             var list = await query
                 .Select(line => _mapper.Map<VoucherLineViewModel>(line))
                 .ToListAsync();
-            return await _decorator.GetDecoratedListAsync<VoucherLine, VoucherLineViewModel>(list);
+            return list;
         }
 
         /// <summary>
@@ -307,6 +305,6 @@ namespace SPPC.Tadbir.Persistence
 
         private IUnitOfWork _unitOfWork;
         private IDomainMapper _mapper;
-        private IMetadataDecorator _decorator;
+        private IMetadataRepository _metadataRepository;
     }
 }

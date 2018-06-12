@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<EntityListViewModel<AccountViewModel>> GetAccountsAsync(
+        Task<IList<AccountViewModel>> GetAccountsAsync(
             int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>
         /// <returns>حساب مشخص شده با شناسه عددی</returns>
-        Task<EntityItemViewModel<AccountViewModel>> GetAccountAsync(int accountId);
+        Task<AccountViewModel> GetAccountAsync(int accountId);
 
         /// <summary>
         /// به روش آسنکرون، حساب با شناسه عددی مشخص شده را به همراه اطلاعات کامل آن
@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>
         /// <returns>حساب مشخص شده با شناسه عددی به همراه اطلاعات کامل آن</returns>
-        Task<EntityItemViewModel<AccountFullViewModel>> GetAccountDetailAsync(int accountId);
+        Task<AccountFullViewModel> GetAccountDetailAsync(int accountId);
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری زیرمجموعه یک سرفصل حسابداری مشخص را خوانده و برمی گرداند
@@ -49,7 +49,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای حساب را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای حساب</returns>
-        Task<EntityItemViewModel<AccountViewModel>> GetAccountMetadataAsync();
+        Task<EntityViewModel> GetAccountMetadataAsync();
 
         /// <summary>
         /// به روش آسنکرون، کلیه آرتیکل های مالی را که از حساب مشخص شده استفاده می کندد را
@@ -58,7 +58,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از آرتیکل های مالی که از حساب مشخص شده استفاده می کندد</returns>
-        Task<EntityListViewModel<VoucherLineViewModel>> GetAccountArticlesAsync(
+        Task<IList<VoucherLineViewModel>> GetAccountArticlesAsync(
             int accountId, GridOptions gridOptions = null);
 
         /// <summary>

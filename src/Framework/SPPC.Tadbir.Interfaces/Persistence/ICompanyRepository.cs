@@ -40,7 +40,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای شرکت را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فرا داده ای تعریف شده برای شرکت</returns>
-        Task<EntityItemViewModel<CompanyViewModel>> GetCompanyMetadataAsync();
+        Task<EntityViewModel> GetCompanyMetadataAsync();
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک شرکت را در محل ذخیره ایجاد یا اصلاح می کند

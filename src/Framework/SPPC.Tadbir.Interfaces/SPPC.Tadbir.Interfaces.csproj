@@ -36,6 +36,7 @@
     <Compile Remove="Class1.cs" />
     <Compile Remove="Persistence\IAccountRepository.Generated.cs" />
     <Compile Remove="Persistence\IInventoryRepository.cs" />
+    <Compile Remove="Persistence\IMetadataDecorator.cs" />
     <Compile Remove="Persistence\IRequisitionRepository.cs" />
     <Compile Remove="Security\AccountPermission.cs" />
     <Compile Remove="Security\BranchPermission.cs" />

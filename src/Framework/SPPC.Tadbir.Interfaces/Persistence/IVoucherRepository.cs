@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<EntityListViewModel<VoucherViewModel>> GetVouchersAsync(
+        Task<IList<VoucherViewModel>> GetVouchersAsync(
             int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
@@ -29,13 +29,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="voucherId">شناسه عددی یکی از اسناد مالی موجود</param>
         /// <returns>سند مالی مشخص شده با شناسه عددی</returns>
-        Task<EntityItemViewModel<VoucherViewModel>> GetVoucherAsync(int voucherId);
+        Task<VoucherViewModel> GetVoucherAsync(int voucherId);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای سند مالی</returns>
-        Task<EntityItemViewModel<VoucherViewModel>> GetVoucherMetadataAsync();
+        Task<EntityViewModel> GetVoucherMetadataAsync();
 
         /// <summary>
         /// به روش آسنکرون، مدل نمایشی دوره مالی مورد استفاده در یک سند مالی را از محل ذخیره خوانده و برمی گرداند
@@ -84,7 +84,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        Task<EntityListViewModel<VoucherLineViewModel>> GetArticlesAsync(
+        Task<IList<VoucherLineViewModel>> GetArticlesAsync(
             int voucherId, GridOptions gridOptions = null);
 
         /// <summary>
@@ -92,13 +92,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="articleId">شناسه عددی آرتیکل موجود</param>
         /// <returns>اطلاعات آرتیکل مشخص شده با شناسه عددی</returns>
-        Task<EntityItemViewModel<VoucherLineViewModel>> GetArticleAsync(int articleId);
+        Task<VoucherLineViewModel> GetArticleAsync(int articleId);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی</returns>
-        Task<EntityItemViewModel<VoucherLineViewModel>> GetVoucherLineMetadataAsync();
+        Task<EntityViewModel> GetVoucherLineMetadataAsync();
 
         /// <summary>
         /// به روش آسنکرون، تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)

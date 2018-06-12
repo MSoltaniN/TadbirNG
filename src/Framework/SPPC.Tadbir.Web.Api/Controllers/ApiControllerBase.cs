@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
@@ -89,7 +90,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var json = Encoding.UTF8.GetString(Transform.FromBase64String(context));
-            return Framework.Helpers.JsonHelper.To<SecurityContext>(json);
+            return JsonHelper.To<SecurityContext>(json);
         }
 
         private GridOptions GetGridOptions()
@@ -102,7 +103,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var urlEncoded = Encoding.UTF8.GetString(Transform.FromBase64String(options));
             var json = WebUtility.UrlDecode(urlEncoded);
-            return Framework.Helpers.JsonHelper.To<GridOptions>(json);
+            return JsonHelper.To<GridOptions>(json);
         }
 
         protected IStringLocalizer<AppStrings> _strings;

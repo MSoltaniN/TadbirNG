@@ -28,12 +28,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="decorator">امکان ضمیمه کردن متادیتا به اطلاعات خوانده شده را فراهم می کند</param>
-        public VoucherRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataDecorator decorator)
+        /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        public VoucherRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _decorator = decorator;
+            _metadataRepository = metadataRepository;
         }
 
         #region Voucher Operations
@@ -45,7 +45,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<EntityListViewModel<VoucherViewModel>> GetVouchersAsync(
+        public async Task<IList<VoucherViewModel>> GetVouchersAsync(
             int fpId, int branchId, GridOptions gridOptions = null)
         {
             var query = GetVoucherQuery(
@@ -58,7 +58,7 @@ namespace SPPC.Tadbir.Persistence
                 await AddWorkItemInfoAsync(voucher);
             }
 
-            return await _decorator.GetDecoratedListAsync<Voucher, VoucherViewModel>(vouchers);
+            return vouchers;
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
         /// <returns>سند مالی مشخص شده با شناسه دیتابیسی</returns>
-        public async Task<EntityItemViewModel<VoucherViewModel>> GetVoucherAsync(int voucherId)
+        public async Task<VoucherViewModel> GetVoucherAsync(int voucherId)
         {
             VoucherViewModel voucherViewModel = null;
             var query = GetVoucherQuery(txn => txn.Id == voucherId);
@@ -77,16 +77,16 @@ namespace SPPC.Tadbir.Persistence
                 AddWorkItemInfo(voucherViewModel);
             }
 
-            return await _decorator.GetDecoratedItemAsync<Voucher, VoucherViewModel>(voucherViewModel);
+            return voucherViewModel;
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای سند مالی</returns>
-        public async Task<EntityItemViewModel<VoucherViewModel>> GetVoucherMetadataAsync()
+        public async Task<EntityViewModel> GetVoucherMetadataAsync()
         {
-            return await _decorator.GetDecoratedItemAsync<Voucher, VoucherViewModel>(null);
+            return await _metadataRepository.GetEntityMetadataAsync<Voucher>();
         }
 
         /// <summary>
@@ -207,14 +207,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        public async Task<EntityListViewModel<VoucherLineViewModel>> GetArticlesAsync(
+        public async Task<IList<VoucherLineViewModel>> GetArticlesAsync(
             int voucherId, GridOptions gridOptions = null)
         {
             var query = GetVoucherLinesQuery(voucherId, gridOptions);
             var lines = await query
                 .Select(line => _mapper.Map<VoucherLineViewModel>(line))
                 .ToListAsync();
-            return await _decorator.GetDecoratedListAsync<VoucherLine, VoucherLineViewModel>(lines);
+            return lines;
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
         /// <returns>اطلاعات آرتیکل مشخص شده با شناسه دیتابیسی</returns>
-        public async Task<EntityItemViewModel<VoucherLineViewModel>> GetArticleAsync(int articleId)
+        public async Task<VoucherLineViewModel> GetArticleAsync(int articleId)
         {
             VoucherLineViewModel articleViewModel = null;
             var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
@@ -233,16 +233,16 @@ namespace SPPC.Tadbir.Persistence
                 articleViewModel = _mapper.Map<VoucherLineViewModel>(article);
             }
 
-            return await _decorator.GetDecoratedItemAsync<VoucherLine, VoucherLineViewModel>(articleViewModel);
+            return articleViewModel;
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی</returns>
-        public async Task<EntityItemViewModel<VoucherLineViewModel>> GetVoucherLineMetadataAsync()
+        public async Task<EntityViewModel> GetVoucherLineMetadataAsync()
         {
-            return await _decorator.GetDecoratedItemAsync<VoucherLine, VoucherLineViewModel>(null);
+            return await _metadataRepository.GetEntityMetadataAsync<VoucherLine>();
         }
 
         /// <summary>
@@ -540,6 +540,6 @@ namespace SPPC.Tadbir.Persistence
 
         private IUnitOfWork _unitOfWork;
         private IDomainMapper _mapper;
-        private IMetadataDecorator _decorator;
+        private IMetadataRepository _metadataRepository;
     }
 }
