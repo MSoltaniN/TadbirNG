@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace SPPC.Framework.Presentation
 {
@@ -56,22 +56,25 @@ namespace SPPC.Framework.Presentation
         private string OperatorFromFieldType()
         {
             string op = null;
-            if (FieldTypeName == "System.String")
+            var quotedTypes = new string[]
+            {
+                "System.String", "System.DateTime", "System.TimeSpan"
+            };
+
+            if (quotedTypes.Contains(FieldTypeName))
             {
                 op = Operator.Replace("{0}", "\"{0}\"");
             }
-            else if (FieldTypeName == "System.DateTime")
-            {
-                op = Operator.Replace("{0}", "DateTime.Parse(\"{0}\")");
-            }
             else if (FieldTypeName == "System.Date")
             {
-                op = Operator.Replace("{0}", "DateTime.Parse(\"{0}\")");
+                op = Operator.Replace("{0}", "\"{0}\"");
                 op = String.Format(".Date{0}", op);
             }
-            else if (FieldTypeName == "System.TimeSpan")
+            else if (FieldTypeName == "System.Date?")
             {
-                op = Operator.Replace("{0}", "TimeSpan.Parse(\"{0}\")");
+                string transformed = Operator.Replace("{0}", "\"{0}\"");
+                transformed = String.Format(" != null && {0}{1}", FieldName, transformed);
+                op = transformed;
             }
             else
             {
