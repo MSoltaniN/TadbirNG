@@ -15,7 +15,7 @@ import { Environment } from "../../enviroment";
 export class DetailAccountApi {
 
     // faccounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-    public static FiscalPeriodBranchDetailAccounts = Environment.BaseUrl + "/faccounts/fp/{0}/branch/{0}";
+    public static FiscalPeriodBranchDetailAccounts = Environment.BaseUrl + "/faccounts/fp/{0}/branch/{1}";
 
     // faccounts
     public static DetailAccounts = Environment.BaseUrl + "/faccounts";

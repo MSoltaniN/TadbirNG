@@ -15,7 +15,7 @@ import { Environment } from "../../enviroment";
 export class ProjectApi {
 
     // projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-    public static FiscalPeriodBranchProjects = Environment.BaseUrl + "/projects/fp/{0}/branch/{0}";
+    public static FiscalPeriodBranchProjects = Environment.BaseUrl + "/projects/fp/{0}/branch/{1}";
 
     // projects
     public static Projects = Environment.BaseUrl + "/projects";

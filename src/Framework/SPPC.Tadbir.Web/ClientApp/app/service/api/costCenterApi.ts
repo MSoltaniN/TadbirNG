@@ -15,7 +15,7 @@ import { Environment } from "../../enviroment";
 export class CostCenterApi {
 
     // ccenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-    public static FiscalPeriodBranchCostCenters = Environment.BaseUrl + "/ccenters/fp/{0}/branch/{0}";
+    public static FiscalPeriodBranchCostCenters = Environment.BaseUrl + "/ccenters/fp/{0}/branch/{1}";
 
     // ccenters
     public static CostCenters = Environment.BaseUrl + "/ccenters";
