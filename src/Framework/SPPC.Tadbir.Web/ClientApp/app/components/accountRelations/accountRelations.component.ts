@@ -134,7 +134,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                         break;
                     }
             }
-            this.accountRelationsService.getRelatedComponentModel(apiUrl).subscribe(res => {                
+            this.accountRelationsService.getMainComponentModel(apiUrl).subscribe(res => {                
                 this.mainComponentCategories = res.json();
                 this.sppcLoading.hide();
             });
