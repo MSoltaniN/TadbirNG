@@ -128,7 +128,7 @@ export class BranchComponent extends DefaultComponent implements OnInit {
             if (this.totalRecords == this.skip) {
                 this.skip = this.skip - this.pageSize;
             }
-            if (this.totalRecords == this.skip) {
+            if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
             if (this.parent) {
