@@ -55,7 +55,7 @@ export class DefaultComponent extends BaseComponent {
 
                 }).subscribe(res1 => {
 
-                    this.properties[this.metaDataName] = res1.metadata.properties;
+                    this.properties[this.metaDataName] = res1.properties;
 
                     localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))
 
@@ -127,7 +127,7 @@ export class DefaultComponent extends BaseComponent {
 
             }).subscribe(res1 => {
 
-                this.properties[this.metaDataName] = res1.metadata.properties;
+                this.properties[this.metaDataName] = res1.properties;
 
                 localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))
 
@@ -205,7 +205,7 @@ export class DefaultComponent extends BaseComponent {
 
                 }).subscribe(res1 => {
 
-                    this.properties[this.metaDataName] = res1.metadata.properties;
+                    this.properties[this.metaDataName] = res1.properties;
 
                     localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))
                     var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());

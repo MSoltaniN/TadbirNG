@@ -107,7 +107,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
             }
             this.voucherService.getAll(String.Format(VoucherApi.FiscalPeriodBranchVouchers, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
-                this.properties = resData.metadata.properties;
+                this.properties = resData.properties;
                 var totalCount = 0;
                 if (insertedModel) {
                     var rows = (resData.list as Array<Voucher>);

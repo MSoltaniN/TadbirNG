@@ -162,7 +162,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                 filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
             this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
-                this.properties = resData.metadata.properties;
+                this.properties = resData.properties;
                 var totalCount = 0;
                 if (insertedModel) {
                     var rows = (resData.list as Array<Account>);

@@ -95,7 +95,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
         }
         this.voucherLineService.getAll(String.Format(VoucherApi.VoucherArticles, this.voucherId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
             var resData = res.json();
-            this.properties = resData.metadata.properties;
+            this.properties = resData.properties;
             var totalCount = 0;
             if (insertedModel) {
                 var rows = (resData.list as Array<VoucherLine>);
