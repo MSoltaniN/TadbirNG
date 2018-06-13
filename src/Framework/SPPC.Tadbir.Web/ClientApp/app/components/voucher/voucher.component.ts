@@ -196,7 +196,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     public editHandler(arg: any) {
         this.sppcLoading.show();
         this.voucherService.getById(String.Format(VoucherApi.Voucher, arg.dataItem.id)).subscribe(res => {
-            this.editDataItem = res.item;
+            this.editDataItem = res;
             this.sppcLoading.hide();
         })
         this.isNew = false;
