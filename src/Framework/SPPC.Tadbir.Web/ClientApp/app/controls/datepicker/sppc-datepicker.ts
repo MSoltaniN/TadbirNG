@@ -11,11 +11,12 @@ import { KeyCode } from '../../enum/KeyCode';
     template: `<dp-date-picker
     class="k-textbox"
     [(ngModel)]="dateObject"
-    (keydown)="ChangeDateKey($event.keyCode)"
-    (ngModelChange)="DateChange()" 
+    (keydown)="onChangeDateKey($event.keyCode)"
+    (ngModelChange)="onDateChange()" 
+    (onGoToCurrent)="onGoToCurrentDate()"
     [config]='dateConfig'
     theme="dp-material"
-    (onGoToCurrent)="onGoToCurrentDate()">
+    (focusout)="onDateFocusOut()">
   </dp-date-picker>`,
     styles: [`
     /deep/ dp-date-picker.dp-material .dp-picker-input { width:100% !important; } 
@@ -58,25 +59,31 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     public dateConfig: any;
     public dateLocale: string = 'fa';
     private parseError: boolean = false;
-    public inputDateFormat: string = 'yyyy/M/d hh:mm';
+    public inputDateFormat: string = 'yyyy/MM/dd hh:mm';
+    public dateFormat: string = "YYYY/MM/DD";
+    public spliterChar: string = "/";
+
+    @Input() date: any;
+    @Input() initDate: boolean = true;
+    public dateObject = moment();
+    propagateChange: any = () => { };
 
     constructor(private datepipe: DatePipe) {
     }
 
     ngOnInit() {
-
-        var dateFormat = "YYYY/M/D"
         var lang = localStorage.getItem('lang');
         if (lang) {
             this.dateLocale = lang;
             if (lang == "en")
-                dateFormat = "M/D/YYYY";
+                this.dateFormat = "MM/DD/YYYY";
         }
 
         this.dateConfig = {
             mode: "day",
-            format: dateFormat,
+            format: this.dateFormat,
             locale: this.dateLocale,
+            showGoToCurrent: true,
             showMultipleYearsNavigation: true
         };
     }
@@ -85,64 +92,48 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
         moment.locale('en');
     }
 
-    @Input() date: any;
-    public dateObject = moment();
-    propagateChange: any = () => { };
-
-    public ChangeDateKey(event: any) {
-
+    public onChangeDateKey(event: any) {
+        
         var allowKey = false;
 
         switch (event) {
             case KeyCode.Space: {
-                var currentDate = this.dateObject.toDate();
-                this.date = this.datepipe.transform(new Date().toString(), this.inputDateFormat);
-                this.dateObject = moment(this.date);
+                this.dateObject = moment();
                 break;
             }
             case KeyCode.Page_Up: {
-                var currentDate = this.dateObject.toDate();
-                this.date = this.datepipe.transform(currentDate.setFullYear(currentDate.getFullYear() + 1), this.inputDateFormat);
-                this.dateObject = moment(this.date);
+                var newDate = this.dateObject.add(1, 'years');
+                this.dateObject = moment(newDate);
                 break;
             }
             case KeyCode.Page_Down: {
-                var currentDate = this.dateObject.toDate();
-                this.date = this.datepipe.transform(currentDate.setFullYear(currentDate.getFullYear() - 1), this.inputDateFormat);
-                this.dateObject = moment(this.date);
+                var newDate = this.dateObject.add(-1, 'years');
+                this.dateObject = moment(newDate);
                 break;
             }
             case KeyCode.Down_Arrow: {
-                var currentDate = this.dateObject.toDate();
-                this.date = this.datepipe.transform(currentDate.setMonth(currentDate.getMonth() - 1), this.inputDateFormat);
-                this.dateObject = moment(this.date);
+                var newDate = this.dateObject.add(-1, 'months');
+                this.dateObject = moment(newDate);
                 break;
             }
             case KeyCode.Up_Arrow: {
-                var currentDate = this.dateObject.toDate();
-                this.date = this.datepipe.transform(currentDate.setMonth(currentDate.getMonth() + 1), this.inputDateFormat);
-                this.dateObject = moment(this.date);
+                var newDate = this.dateObject.add(1, 'months');
+                this.dateObject = moment(newDate);
                 break;
             }
             case KeyCode.Left_Arrow: {
-                var currentDate = this.dateObject.toDate();
-                this.date = this.datepipe.transform(currentDate.setDate(currentDate.getDate() - 1), this.inputDateFormat);
-                this.dateObject = moment(this.date);
+                var newDate = this.dateObject.add(-1, 'days');
+                this.dateObject = moment(newDate);
                 break;
             }
             case KeyCode.Right_Arrow: {
-                var currentDate = this.dateObject.toDate();
-                this.date = this.datepipe.transform(currentDate.setDate(currentDate.getDate() + 1), this.inputDateFormat);
-                this.dateObject = moment(this.date);
+                var newDate = this.dateObject.add(1, 'days');
+                this.dateObject = moment(newDate);
                 break;
             }
             default: {
                 if ((event >= 48 && event <= 57) || (event >= 96 && event <= 105) || (event == 191) || (event == 111) || (event == 8)) {
                     allowKey = true;
-
-                    if (this.dateLocale == "fa") {
-                        moment.locale('fa');
-                    }
                 }
                 else {
                     allowKey = false;
@@ -155,23 +146,150 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
     }
 
-    DateChange() {
+    onDateChange() {
+        this.parseError = typeof this.dateObject === "object" ? false : true;
+    }
+
+    onDateFocusOut() {
+        this.parseError = false;
 
         if (typeof this.dateObject === "object") {
             this.parseError = false;
             this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
-            moment.locale('en');
         }
         else {
-            this.parseError = true;
-            this.propagateChange("");
+            let strDate: string = this.dateObject;
+            let dateArray: any;
+
+            if (strDate === undefined) {
+                this.parseError = true;
+            }
+            else {
+
+                let yearDate: number = 0;
+                let monthDate: number = 0;
+                let dayDate: number = 0;
+
+                var formatArray = this.dateFormat.split(this.spliterChar);
+                dateArray = strDate.split(this.spliterChar);
+                if (dateArray.length == 3) {
+                    for (var i = 0; i < formatArray.length; i++) {
+
+                        switch (formatArray[i]) {
+                            case "YYYY": {
+                                yearDate = +dateArray[i];
+                                break;
+                            }
+                            case "YY": {
+                                yearDate = +dateArray[i];
+                                break;
+                            }
+                            case "MM": {
+                                monthDate = +dateArray[i];
+                                break;
+                            }
+                            case "M": {
+                                monthDate = +dateArray[i];
+                                break;
+                            }
+                            case "DD": {
+                                dayDate = +dateArray[i];
+                                break;
+                            }
+                            case "D": {
+                                dayDate = +dateArray[i];
+                                break;
+                            }
+                            default: {
+                                this.parseError = true;
+                                break;
+                            }
+                        }
+
+                    }
+
+                    for (var i = 0; i < formatArray.length; i++) {
+
+                        switch (formatArray[i]) {
+                            case "YYYY": {
+                                if (dateArray[i].length < 4) {
+                                    this.parseError = true;
+                                }
+                                break;
+                            }
+                            case "YY": {
+                                if (dateArray[i].length < 2) {
+                                    this.parseError = true;
+                                }
+                                break;
+                            }
+                            case "MM": {
+                                var month = +dateArray[i];
+                                if (month == 0 || month > 12) {
+                                    this.parseError = true;
+                                }
+                                else {
+                                    if (month < 10) {
+                                        dateArray[i] = "0" + month.toString();
+                                    }
+                                }
+
+                                break;
+                            }
+                            case "M": {
+                                var month = +dateArray[i];
+                                if (month == 0 || month > 12) {
+                                    this.parseError = true;
+                                }
+                                break;
+                            }
+                            case "DD": {
+                                var day = +dateArray[i];
+                                if (day == 0 || day > 31 || (monthDate > 6 && day > 30)) {
+                                    this.parseError = true;
+                                }
+                                else {
+                                    if (day < 10) {
+                                        dateArray[i] = "0" + day.toString();
+                                    }
+                                }
+                                break;
+                            }
+                            case "D": {
+                                var day = +dateArray[i];
+                                if (day == 0 || day > 31 || (monthDate > 6 && day > 30)) {
+                                    this.parseError = true;
+                                }
+                                break;
+                            }
+                            default: {
+                                this.parseError = true;
+                                break;
+                            }
+                        }
+
+                    }
+                }
+                else {
+                    this.parseError = true;
+                }
+            }
+
+
+            if (this.parseError) {
+                this.propagateChange("");
+            }
+            else {
+                this.dateObject = this.dateLocale == 'fa' ? moment(dateArray.join(this.spliterChar), 'jYYYY/jM/jD') : moment(dateArray.join(this.spliterChar).toString()).locale('en');
+                this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
+            }
+
         }
+
     }
 
     onGoToCurrentDate() {
-        var currentDate = this.dateObject.toDate();
-        this.date = this.datepipe.transform(new Date().toString(), this.inputDateFormat);
-        this.dateObject = moment(this.date);
+        this.dateObject = moment();
     }
 
     writeValue(value: any): void {
@@ -194,5 +312,6 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
             },
         };
     }
+
 
 }

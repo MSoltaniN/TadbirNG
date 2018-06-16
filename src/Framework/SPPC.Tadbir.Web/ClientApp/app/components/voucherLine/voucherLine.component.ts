@@ -98,15 +98,15 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
             this.properties = resData.properties;
             var totalCount = 0;
             if (insertedModel) {
-                var rows = (resData.list as Array<VoucherLine>);
+                var rows = (resData as Array<VoucherLine>);
                 var index = rows.findIndex(p => p.id == insertedModel.id);
                 if (index >= 0) {
-                    resData.list.splice(index, 1);
+                    resData.splice(index, 1);
                     rows.splice(0, 0, insertedModel);
                 }
                 else {
                     if (rows.length == this.pageSize) {
-                        resData.list.splice(this.pageSize - 1, 1);
+                        resData.splice(this.pageSize - 1, 1);
                     }
                     rows.splice(0, 0, insertedModel);
                 }
@@ -120,10 +120,10 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
                 }
             }
             this.rowData = {
-                data: resData.list,
+                data: resData,
                 total: totalCount
             }
-            this.showloadingMessage = !(resData.list.length == 0);
+            this.showloadingMessage = !(resData.length == 0);
             this.totalRecords = totalCount;            
         })
 
@@ -183,7 +183,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     public editHandler(arg: any) {
         this.sppcLoading.show();
         this.voucherLineService.getById(String.Format(VoucherApi.VoucherArticle,arg.dataItem.id)).subscribe(res => {
-            this.editDataItem = res.item;
+            this.editDataItem = res;
             this.sppcLoading.hide();
         })
         this.isNew = false;
