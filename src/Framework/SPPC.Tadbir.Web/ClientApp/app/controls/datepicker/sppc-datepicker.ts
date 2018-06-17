@@ -232,6 +232,9 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
                                     if (month < 10) {
                                         dateArray[i] = "0" + month.toString();
                                     }
+                                    else {
+                                        dateArray[i] = month.toString();
+                                    }
                                 }
 
                                 break;
@@ -240,6 +243,9 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
                                 var month = +dateArray[i];
                                 if (month == 0 || month > 12) {
                                     this.parseError = true;
+                                }
+                                else {
+                                    dateArray[i] = month.toString();
                                 }
                                 break;
                             }
@@ -252,6 +258,9 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
                                     if (day < 10) {
                                         dateArray[i] = "0" + day.toString();
                                     }
+                                    else {
+                                        dateArray[i] = day.toString();
+                                    }
                                 }
                                 break;
                             }
@@ -259,6 +268,9 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
                                 var day = +dateArray[i];
                                 if (day == 0 || day > 31 || (monthDate > 6 && day > 30)) {
                                     this.parseError = true;
+                                }
+                                else {
+                                    dateArray[i] = day.toString();
                                 }
                                 break;
                             }
