@@ -41,7 +41,7 @@ export class CommandInfo implements Command {
     id: number;
     title: string;
     routeUrl: string;
-   
+    icon: string;
 }
 
 @Injectable()

@@ -262,7 +262,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     public editHandler(arg: any) {
         this.sppcLoading.show();
         this.accountService.getById(String.Format(AccountApi.Account, arg.dataItem.id)).subscribe(res => {
-            this.editDataItem = res.item;
+            this.editDataItem = res;
             this.sppcLoading.hide();
         })
         this.isNew = false;

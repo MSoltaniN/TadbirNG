@@ -15,5 +15,6 @@ export interface Command {
     children: Array<Command>;
     id: number;
     title: string;
-    routeUrl : string;
+    routeUrl: string;
+    icon: string;
 }
