@@ -32,7 +32,7 @@
     "Inserted": "{0} inserted successfully",
     "Updated": "{0} updated successfully",
     "Deleted": "{0} deleted successfully",
-    "DeleteConfirm": "are you sure to delete '{0}' ?"
+    "DeleteConfirm": "are you sure to delete {0} ?"
   },
   "Buttons": {
     "Ok": "Ok",

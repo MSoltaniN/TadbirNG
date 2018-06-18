@@ -128,8 +128,8 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
         })
 
         this.voucherLineService.getVoucherInfo(this.voucherId).subscribe(res => {
-            this.debitSum = res.item.debitSum;
-            this.creditSum = res.item.creditSum;
+            this.debitSum = res.debitSum;
+            this.creditSum = res.creditSum;
 
             this.sppcLoading.hide();
         })
