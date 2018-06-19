@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common'
 import * as moment from 'jalali-moment';
 import { DatePickerDirective, DatePickerComponent } from 'ng2-jalali-date-picker';
 import { KeyCode } from '../../enum/KeyCode';
+import { AuthenticationService } from '../../service/login/index';
 
 @Component({
     selector: 'sppc-datepicker',
@@ -64,7 +65,11 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     public spliterChar: string = "/";
 
     @Input() date: any;
-    @Input() initDate: boolean = true;
+    //@Input() initDate: boolean = true;
+
+    @Input() minDate: any;
+    @Input() maxDate: any;
+
     public dateObject = moment();
     propagateChange: any = () => { };
 
@@ -72,6 +77,46 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     }
 
     ngOnInit() {
+        var startDate;
+        var endDate;
+        var nowDate = new Date();
+        var endDiff;
+        var startDiff;
+        var endDiffDays=0;
+        var startDiffDays=0;
+
+        if (this.minDate) {
+            this.minDate = this.datepipe.transform(this.minDate, this.inputDateFormat);
+            startDate = new Date(this.minDate.split(' ')[0]);
+        }
+
+        if (this.maxDate) {
+            this.maxDate = this.datepipe.transform(this.maxDate, this.inputDateFormat);
+            endDate = new Date(this.maxDate.split(' ')[0]);
+        }
+
+        if (endDate != null) {
+            endDiff = nowDate.getTime() - endDate.getTime();
+            endDiffDays = endDiff / (1000 * 3600 * 24);
+            if (endDiffDays > 1) {
+                this.dateObject = moment(endDate);
+            }
+        }
+
+        if (startDate != null) {
+            startDiff = startDate.getTime() - nowDate.getTime();
+             startDiffDays = startDiff / (1000 * 3600 * 24);
+            if (startDiffDays > 1) {
+                this.dateObject = moment(startDate);
+            }
+        }
+
+        if (startDate != null && endDate != null) {
+            if (endDiffDays < 1 && startDiffDays < 1) {
+                this.dateObject = moment();
+            }
+        }
+
         var lang = localStorage.getItem('lang');
         if (lang) {
             this.dateLocale = lang;
@@ -83,17 +128,21 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
             mode: "day",
             format: this.dateFormat,
             locale: this.dateLocale,
+            min: this.minDate,
+            max: this.maxDate,
             showGoToCurrent: true,
             showMultipleYearsNavigation: true
+
         };
+
     }
 
     ngOnDestroy() {
         moment.locale('en');
     }
 
-    public onChangeDateKey(event: any) {
-        
+    onChangeDateKey(event: any) {
+
         var allowKey = false;
 
         switch (event) {

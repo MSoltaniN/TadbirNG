@@ -190,6 +190,50 @@ export class EnviromentComponent {
         return permission;
     }
 
+    public get FiscalPeriodStartDate(): Date {
+        var startDate = undefined;
+
+        if (localStorage.getItem('fiscalPeriod') != null) {
+            var item: string | null;
+            item = localStorage.getItem('fiscalPeriod');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+
+            startDate = currentContext ? currentContext.startDate : undefined;
+
+        }
+        else if (sessionStorage.getItem('fiscalPeriod') != null) {
+            var item: string | null;
+            item = sessionStorage.getItem('fiscalPeriod');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+
+            startDate = currentContext ? currentContext.startDate : undefined;
+
+        }
+        return startDate;
+    }
+
+    public get FiscalPeriodEndDate(): Date {
+        var endDate = undefined;
+
+        if (localStorage.getItem('fiscalPeriod') != null) {
+            var item: string | null;
+            item = localStorage.getItem('fiscalPeriod');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+
+            endDate = currentContext ? currentContext.endDate : undefined;
+
+        }
+        else if (sessionStorage.getItem('fiscalPeriod') != null) {
+            var item: string | null;
+            item = sessionStorage.getItem('fiscalPeriod');
+            var currentContext = JSON.parse(item != null ? item.toString() : "");
+
+            endDate = currentContext ? currentContext.endDate : undefined;
+
+        }
+        return endDate;
+    }
+
     /**
      * اگر کاربر حق دسترسی داشته باشه مقدار true وگرنه مقدار false برمیگرداند
      * @param entityName نام entity (app/security/SecureEntity.ts)

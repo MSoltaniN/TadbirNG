@@ -25,7 +25,7 @@ export class VoucherInfo implements Voucher {
     };
     id: number = 0;
     no: string;
-    date: Date = new Date();
+    date: Date;
     description?: string | undefined;
 }
 

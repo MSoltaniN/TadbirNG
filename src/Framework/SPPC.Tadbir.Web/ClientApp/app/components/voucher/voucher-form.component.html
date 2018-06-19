@@ -13,7 +13,7 @@
             <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.currentlang === 'fa' && !isNew}">
                 <label for="date" class="control-label">{{ 'Voucher.Date' | translate }}</label>
 
-                <sppc-datepicker formControlName="date"></sppc-datepicker>
+                <sppc-datepicker formControlName="date" [minDate]="FiscalPeriodStartDate" [maxDate]="FiscalPeriodEndDate"></sppc-datepicker>
 
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.date.valid || editForm.controls.date.pristine">
                     {{ 'AllValidations.Voucher.DateIsRequired' | translate }}
