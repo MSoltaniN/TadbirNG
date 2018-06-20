@@ -12,8 +12,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using SPPC.Framework.Values;
 
 namespace SPPC.Tadbir.ViewModel.Metadata
 {
@@ -44,6 +42,16 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         /// <summary>
         /// آدرس وب مسیر اجرای دستور در برنامه
         /// </summary>
-        public virtual string RouteUrl { get; set; }
+        public string RouteUrl { get; set; }
+
+        /// <summary>
+        /// نام علامت تصویری یا آیکون مورد استفاده در واسط کاربری دستور
+        /// </summary>
+        public string IconName { get; set; }
+
+        /// <summary>
+        /// کلید ترکیبی میان بُر برای فراخوانی دستور از طریق صفحه کلید
+        /// </summary>
+        public string HotKey { get; set; }
     }
 }

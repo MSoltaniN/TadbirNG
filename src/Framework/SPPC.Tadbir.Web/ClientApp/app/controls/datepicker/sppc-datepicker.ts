@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common'
 import * as moment from 'jalali-moment';
 import { DatePickerDirective, DatePickerComponent } from 'ng2-jalali-date-picker';
 import { KeyCode } from '../../enum/KeyCode';
+import { AuthenticationService } from '../../service/login/index';
 
 @Component({
     selector: 'sppc-datepicker',
@@ -12,7 +13,7 @@ import { KeyCode } from '../../enum/KeyCode';
     class="k-textbox"
     [(ngModel)]="dateObject"
     (keydown)="onChangeDateKey($event.keyCode)"
-    (ngModelChange)="onDateChange()" 
+    (onChange)="onDateChange()" 
     (onGoToCurrent)="onGoToCurrentDate()"
     [config]='dateConfig'
     theme="dp-material"
@@ -64,14 +65,65 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     public spliterChar: string = "/";
 
     @Input() date: any;
-    @Input() initDate: boolean = true;
-    public dateObject = moment();
+    @Input() isDisplayDate: boolean = true;
+    @Input() displayDate: any;
+
+    @Input() minDate: any;
+    @Input() maxDate: any;
+
+    public dateObject: moment.Moment | null;
+    editDateValue: any;
+    i: number = 0;
+
+
     propagateChange: any = () => { };
 
     constructor(private datepipe: DatePipe) {
     }
 
     ngOnInit() {
+        var startDate;
+        var endDate;
+        var nowDate = new Date();
+        var endDiff;
+        var startDiff;
+        var endDiffDays = 0;
+        var startDiffDays = 0;
+
+        if (this.minDate) {
+            this.minDate = this.datepipe.transform(this.minDate, this.inputDateFormat);
+            startDate = new Date(this.minDate.split(' ')[0]);
+        }
+
+        if (this.maxDate) {
+            this.maxDate = this.datepipe.transform(this.maxDate, this.inputDateFormat);
+            endDate = new Date(this.maxDate.split(' ')[0]);
+        }
+
+        this.dateObject = moment();
+
+        if (endDate != null) {
+            endDiff = nowDate.getTime() - endDate.getTime();
+            endDiffDays = endDiff / (1000 * 3600 * 24);
+            if (endDiffDays > 1) {
+                this.dateObject = moment(endDate);
+            }
+        }
+
+        if (startDate != null) {
+            startDiff = startDate.getTime() - nowDate.getTime();
+            startDiffDays = startDiff / (1000 * 3600 * 24);
+            if (startDiffDays > 1) {
+                this.dateObject = moment(startDate);
+            }
+        }
+
+        if (startDate != null && endDate != null) {
+            if (endDiffDays < 1 && startDiffDays < 1) {
+                this.dateObject = moment();
+            }
+        }
+
         var lang = localStorage.getItem('lang');
         if (lang) {
             this.dateLocale = lang;
@@ -79,21 +131,28 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
                 this.dateFormat = "MM/DD/YYYY";
         }
 
+        if (this.displayDate) {
+            this.displayDate = this.datepipe.transform(this.displayDate, this.inputDateFormat);
+            this.dateObject = moment(this.displayDate);
+        }
+
         this.dateConfig = {
             mode: "day",
             format: this.dateFormat,
             locale: this.dateLocale,
+            min: this.minDate,
+            max: this.maxDate,
             showGoToCurrent: true,
             showMultipleYearsNavigation: true
         };
+
     }
 
     ngOnDestroy() {
         moment.locale('en');
     }
 
-    public onChangeDateKey(event: any) {
-        
+    onChangeDateKey(event: any) {
         var allowKey = false;
 
         switch (event) {
@@ -102,32 +161,32 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
                 break;
             }
             case KeyCode.Page_Up: {
-                var newDate = this.dateObject.add(1, 'years');
+                var newDate = this.dateObject != null ? this.dateObject.add(1, 'years') : moment();
                 this.dateObject = moment(newDate);
                 break;
             }
             case KeyCode.Page_Down: {
-                var newDate = this.dateObject.add(-1, 'years');
+                var newDate = this.dateObject != null ? this.dateObject.add(-1, 'years') : moment();
                 this.dateObject = moment(newDate);
                 break;
             }
             case KeyCode.Down_Arrow: {
-                var newDate = this.dateObject.add(-1, 'months');
+                var newDate = this.dateObject != null ? this.dateObject.add(-1, 'months') : moment();
                 this.dateObject = moment(newDate);
                 break;
             }
             case KeyCode.Up_Arrow: {
-                var newDate = this.dateObject.add(1, 'months');
+                var newDate = this.dateObject != null ? this.dateObject.add(1, 'months') : moment();
                 this.dateObject = moment(newDate);
                 break;
             }
             case KeyCode.Left_Arrow: {
-                var newDate = this.dateObject.add(-1, 'days');
+                var newDate = this.dateObject != null ? this.dateObject.add(-1, 'days') : moment();
                 this.dateObject = moment(newDate);
                 break;
             }
             case KeyCode.Right_Arrow: {
-                var newDate = this.dateObject.add(1, 'days');
+                var newDate = this.dateObject != null ? this.dateObject.add(1, 'days') : moment();
                 this.dateObject = moment(newDate);
                 break;
             }
@@ -147,157 +206,171 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     }
 
     onDateChange() {
-        this.parseError = typeof this.dateObject === "object" ? false : true;
+        this.i++;
+        if (!this.isDisplayDate && this.i <= 2) {
+            this.dateObject = null;
+
+            if (this.editDateValue) {
+                this.dateObject = this.editDateValue;
+            }
+        }
+        this.parseError = typeof this.dateObject === "object" && this.dateObject != null ? false : true;
     }
 
     onDateFocusOut() {
+
         this.parseError = false;
 
-        if (typeof this.dateObject === "object") {
-            this.parseError = false;
-            this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
-        }
-        else {
-            let strDate: string = this.dateObject;
-            let dateArray: any;
-
-            if (strDate === undefined) {
-                this.parseError = true;
+        if (this.dateObject != null) {
+            if (typeof this.dateObject === "object") {
+                this.parseError = false;
+                this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
             }
             else {
+                //this.parseError = false;
+                let strDate: string = this.dateObject;
+                let dateArray: any;
 
-                let yearDate: number = 0;
-                let monthDate: number = 0;
-                let dayDate: number = 0;
+                if (strDate === undefined) {
+                    this.parseError = true;
+                }
+                else {
 
-                var formatArray = this.dateFormat.split(this.spliterChar);
-                dateArray = strDate.split(this.spliterChar);
-                if (dateArray.length == 3) {
-                    for (var i = 0; i < formatArray.length; i++) {
+                    let yearDate: number = 0;
+                    let monthDate: number = 0;
+                    let dayDate: number = 0;
 
-                        switch (formatArray[i]) {
-                            case "YYYY": {
-                                yearDate = +dateArray[i];
-                                break;
+                    var formatArray = this.dateFormat.split(this.spliterChar);
+                    dateArray = strDate.split(this.spliterChar);
+                    if (dateArray.length == 3) {
+                        for (var i = 0; i < formatArray.length; i++) {
+
+                            switch (formatArray[i]) {
+                                case "YYYY": {
+                                    yearDate = +dateArray[i];
+                                    break;
+                                }
+                                case "YY": {
+                                    yearDate = +dateArray[i];
+                                    break;
+                                }
+                                case "MM": {
+                                    monthDate = +dateArray[i];
+                                    break;
+                                }
+                                case "M": {
+                                    monthDate = +dateArray[i];
+                                    break;
+                                }
+                                case "DD": {
+                                    dayDate = +dateArray[i];
+                                    break;
+                                }
+                                case "D": {
+                                    dayDate = +dateArray[i];
+                                    break;
+                                }
+                                default: {
+                                    this.parseError = true;
+                                    break;
+                                }
                             }
-                            case "YY": {
-                                yearDate = +dateArray[i];
-                                break;
-                            }
-                            case "MM": {
-                                monthDate = +dateArray[i];
-                                break;
-                            }
-                            case "M": {
-                                monthDate = +dateArray[i];
-                                break;
-                            }
-                            case "DD": {
-                                dayDate = +dateArray[i];
-                                break;
-                            }
-                            case "D": {
-                                dayDate = +dateArray[i];
-                                break;
-                            }
-                            default: {
-                                this.parseError = true;
-                                break;
-                            }
+
                         }
 
-                    }
+                        for (var i = 0; i < formatArray.length; i++) {
 
-                    for (var i = 0; i < formatArray.length; i++) {
+                            switch (formatArray[i]) {
+                                case "YYYY": {
+                                    if (dateArray[i].length < 4) {
+                                        this.parseError = true;
+                                    }
+                                    break;
+                                }
+                                case "YY": {
+                                    if (dateArray[i].length < 2) {
+                                        this.parseError = true;
+                                    }
+                                    break;
+                                }
+                                case "MM": {
+                                    var month = +dateArray[i];
+                                    if (month == 0 || month > 12) {
+                                        this.parseError = true;
+                                    }
+                                    else {
+                                        if (month < 10) {
+                                            dateArray[i] = "0" + month.toString();
+                                        }
+                                        else {
+                                            dateArray[i] = month.toString();
+                                        }
+                                    }
 
-                        switch (formatArray[i]) {
-                            case "YYYY": {
-                                if (dateArray[i].length < 4) {
-                                    this.parseError = true;
+                                    break;
                                 }
-                                break;
-                            }
-                            case "YY": {
-                                if (dateArray[i].length < 2) {
-                                    this.parseError = true;
-                                }
-                                break;
-                            }
-                            case "MM": {
-                                var month = +dateArray[i];
-                                if (month == 0 || month > 12) {
-                                    this.parseError = true;
-                                }
-                                else {
-                                    if (month < 10) {
-                                        dateArray[i] = "0" + month.toString();
+                                case "M": {
+                                    var month = +dateArray[i];
+                                    if (month == 0 || month > 12) {
+                                        this.parseError = true;
                                     }
                                     else {
                                         dateArray[i] = month.toString();
                                     }
+                                    break;
                                 }
-
-                                break;
-                            }
-                            case "M": {
-                                var month = +dateArray[i];
-                                if (month == 0 || month > 12) {
-                                    this.parseError = true;
+                                case "DD": {
+                                    var day = +dateArray[i];
+                                    if (day == 0 || day > 31 || (monthDate > 6 && day > 30)) {
+                                        this.parseError = true;
+                                    }
+                                    else {
+                                        if (day < 10) {
+                                            dateArray[i] = "0" + day.toString();
+                                        }
+                                        else {
+                                            dateArray[i] = day.toString();
+                                        }
+                                    }
+                                    break;
                                 }
-                                else {
-                                    dateArray[i] = month.toString();
-                                }
-                                break;
-                            }
-                            case "DD": {
-                                var day = +dateArray[i];
-                                if (day == 0 || day > 31 || (monthDate > 6 && day > 30)) {
-                                    this.parseError = true;
-                                }
-                                else {
-                                    if (day < 10) {
-                                        dateArray[i] = "0" + day.toString();
+                                case "D": {
+                                    var day = +dateArray[i];
+                                    if (day == 0 || day > 31 || (monthDate > 6 && day > 30)) {
+                                        this.parseError = true;
                                     }
                                     else {
                                         dateArray[i] = day.toString();
                                     }
+                                    break;
                                 }
-                                break;
-                            }
-                            case "D": {
-                                var day = +dateArray[i];
-                                if (day == 0 || day > 31 || (monthDate > 6 && day > 30)) {
+                                default: {
                                     this.parseError = true;
+                                    break;
                                 }
-                                else {
-                                    dateArray[i] = day.toString();
-                                }
-                                break;
                             }
-                            default: {
-                                this.parseError = true;
-                                break;
-                            }
-                        }
 
+                        }
+                    }
+                    else {
+                        this.parseError = true;
                     }
                 }
-                else {
-                    this.parseError = true;
+
+
+                if (this.parseError) {
+                    this.propagateChange("");
                 }
-            }
+                else {
+                    this.dateObject = this.dateLocale == 'fa' ? moment(dateArray.join(this.spliterChar), 'jYYYY/jM/jD') : moment(dateArray.join(this.spliterChar).toString()).locale('en');
+                    this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
+                }
 
-
-            if (this.parseError) {
-                this.propagateChange("");
             }
-            else {
-                this.dateObject = this.dateLocale == 'fa' ? moment(dateArray.join(this.spliterChar), 'jYYYY/jM/jD') : moment(dateArray.join(this.spliterChar).toString()).locale('en');
-                this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
-            }
-
         }
-
+        else {
+            //this.parseError = true;
+        }
     }
 
     onGoToCurrentDate() {
@@ -307,7 +380,10 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     writeValue(value: any): void {
         if (value) {
             this.date = this.datepipe.transform(value, this.inputDateFormat);
-            this.dateObject = moment(this.date);
+            this.editDateValue = moment(this.date);
+            if (this.isDisplayDate) {
+                this.dateObject = moment(this.date);
+            }
         }
     }
 

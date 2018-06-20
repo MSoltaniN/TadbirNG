@@ -9,7 +9,7 @@ import { Context } from "../../model/context";
 import { PermissionBrief } from '../../model/index';
 
 import { String } from '../../class/source';
-import { LookupApi } from '../api/index';
+import { LookupApi, FiscalPeriodApi } from '../api/index';
 
 export class ContextInfo implements Context {
     userName: string = "";
@@ -107,6 +107,12 @@ export class AuthenticationService {
 
         if (sessionStorage.getItem('currentContext'))
             sessionStorage.removeItem('currentContext');
+
+        if (localStorage.getItem('fiscalPeriod'))
+            localStorage.removeItem('fiscalPeriod');
+
+        if (sessionStorage.getItem('fiscalPeriod'))
+            sessionStorage.removeItem('fiscalPeriod');
     }
 
     getCompanies(userName: string, ticket: string) : Observable<any> {
@@ -145,6 +151,14 @@ export class AuthenticationService {
         var userId = context.User.Id;
         var url = String.Format(LookupApi.UserAccessibleCompanyFiscalPeriods, companyId, userId);
         return this.http.get(url, { headers: header })
+            .map(response => <any>(<Response>response).json());
+    }
+
+    getFiscalPeriodById(fpId: number, ticket: string) {
+        var header = new Headers({ 'Content-Type': 'application/json; charset=utf-8' })
+        header.append('X-Tadbir-AuthTicket', ticket);
+
+        return this.http.get(String.Format(FiscalPeriodApi.FiscalPeriod, fpId), { headers: header })
             .map(response => <any>(<Response>response).json());
     }
 }

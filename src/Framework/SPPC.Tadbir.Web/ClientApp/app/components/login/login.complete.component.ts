@@ -1,11 +1,11 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import {  AuthenticationService } from '../../service/login/index';
+import { AuthenticationService } from '../../service/login/index';
 import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
 
-import {LoginContainerComponent} from "./login.container.component";
+import { LoginContainerComponent } from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
 import { ContextInfo } from "../../service/login/authentication.service";
 import { MessageType, Layout, MessagePosition, SessionKeys } from "../../enviroment";
@@ -19,25 +19,25 @@ import { Command } from '../../model/command';
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
-}  
+}
 
 @Component({
     selector: 'logincomplete',
     templateUrl: 'login.complete.component.html',
     styleUrls: ['./login.complete.component.css'],
     providers: [{
-        provide: RTL,        
+        provide: RTL,
         useFactory: getLayoutModule,
         deps: [Layout]
     }]
-   
+
 })
 
 
 export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     model: any = {};
     loading = false;
-    returnUrl: string;    
+    returnUrl: string;
     ticket: string = '';
 
 
@@ -62,7 +62,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
-        public toastrService: ToastrService, 
+        public toastrService: ToastrService,
         public translate: TranslateService,
         @Host() parent: LoginContainerComponent,
         public renderer: Renderer2,
@@ -79,17 +79,17 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
     }
 
-   
+
     public companyChange(value: any): void {
         this.disabledBranch = true;
         this.disabledFiscalPeriod = true;
 
         this.getBranch(value);
-        this.getFiscalPeriod(value);        
+        this.getFiscalPeriod(value);
     }
 
     getCompany() {
-        
+
         this.authenticationService.getCompanies(this.UserName, this.Ticket).subscribe(res => {
             this.compenies = res;
         });;
@@ -98,21 +98,20 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
     getBranch(companyId: number) {
         this.authenticationService.getBranches(companyId, this.Ticket).subscribe(res => {
-                this.disabledBranch = false;
-                this.branches = res;
-            });                   
+            this.disabledBranch = false;
+            this.branches = res;
+        });
     }
 
-    getFiscalPeriod(companyId : number) {
-        
+    getFiscalPeriod(companyId: number) {
+
         this.authenticationService.getFiscalPeriod(companyId, this.Ticket).subscribe(res => {
-                this.disabledFiscalPeriod = false;
-                this.fiscalPeriods = res;
-            });        
+            this.disabledFiscalPeriod = false;
+            this.fiscalPeriods = res;
+        });
     }
 
-    isValidate(): boolean
-    {
+    isValidate(): boolean {
         var isValidate: boolean = true;
 
         if (this.companyId == '') {
@@ -121,8 +120,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
             return isValidate;
         }
 
-        if (this.branchId == '')
-        {
+        if (this.branchId == '') {
             this.showMessage(this.getText("AllValidations.Login.BranchIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
             isValidate = false;
         }
@@ -135,10 +133,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         return isValidate;
     }
 
-    selectParams()
-    {
+    selectParams() {
         if (this.isValidate()) {
-            
+
             if (this.authenticationService.islogin()) {
 
                 var currentUser = this.authenticationService.getCurrentUser();
@@ -182,6 +179,12 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
             else
                 sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
 
+            this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
+                if (this.authenticationService.isRememberMe())
+                    localStorage.setItem('fiscalPeriod', JSON.stringify(res));
+                else
+                    sessionStorage.setItem('fiscalPeriod', JSON.stringify(res));
+            })
             if (this.route.snapshot.queryParams['returnUrl'] != undefined) {
                 var url = this.route.snapshot.queryParams['returnUrl'];
                 this.router.navigate([url]);

@@ -115,7 +115,7 @@
     </div>
     <kendo-dialog title="{{'Voucher.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
         <p>
-            {{ deleteConfirmMsg }}
+            {{ this.deleteConfirmMsg }}
         </p>
         <kendo-dialog-actions>
             <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>

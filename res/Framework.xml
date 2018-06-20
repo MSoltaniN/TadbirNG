@@ -120,11 +120,23 @@
           <ColumnView name="Title Key" visible="True" width="120" />
           <ValidationRule name="TitleKey_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
         </Property>
-        <Property name="RouteUrl" type="String" isValidated="True" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="RouteUrl" type="String" isValidated="True" description="آدرس وب مسیر اجرای دستور در برنامه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRouteUrl" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="RouteUrl" type="nvarchar(256)" nullable="True" />
           <ColumnView name="Route Url" visible="True" width="120" />
           <ValidationRule name="RouteUrl_Validation" required="False" minimum="" maximum="256" format="" type="Length" />
+        </Property>
+        <Property name="IconName" type="String" isValidated="True" description="نام علامت تصویری یا آیکون مورد استفاده در واسط کاربری دستور" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtIconName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="IconName" type="varchar(64)" nullable="True" />
+          <ColumnView name="Icon Name" visible="True" width="120" />
+          <ValidationRule name="IconName_Validation" required="False" minimum="" maximum="64" format="" type="Length" />
+        </Property>
+        <Property name="HotKey" type="String" isValidated="True" description="کلید ترکیبی میان بُر برای فراخوانی دستور از طریق صفحه کلید" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtHotKey" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="HotKey" type="varchar(32)" nullable="True" />
+          <ColumnView name="Hot Key" visible="True" width="120" />
+          <ValidationRule name="HotKey_Validation" required="False" minimum="" maximum="32" format="" type="Length" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />

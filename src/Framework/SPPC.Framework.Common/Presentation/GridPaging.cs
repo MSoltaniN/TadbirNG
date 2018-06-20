@@ -42,5 +42,18 @@ namespace SPPC.Framework.Presentation
         /// تعداد سطرهای مورد نیاز در هر صفحه از نمای جدولی
         /// </summary>
         public int PageSize { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که آیا صفحه بندی در نمونه داده شده فعال است یا نه؟
+        /// </summary>
+        /// <param name="gridPaging">نمونه مورد آزمایش</param>
+        /// <returns>اگر نمونه داده شده یک آبجکت معتبر و صفحه بندی آن فعال باشد مقدار درست و در غیر این صورت
+        /// مقدار نادرست را برمی گرداند.</returns>
+        public static bool IsPagingEnabled(GridPaging gridPaging)
+        {
+            return (gridPaging != null
+                && gridPaging.PageIndex > 0
+                && gridPaging.PageSize != Int32.MaxValue);
+        }
     }
 }

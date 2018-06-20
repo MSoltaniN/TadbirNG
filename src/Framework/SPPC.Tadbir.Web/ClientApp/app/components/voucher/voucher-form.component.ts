@@ -100,7 +100,6 @@ export class VoucherFormComponent extends DefaultComponent {
         public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
 
         super(toastrService, translate, renderer, metadata, Entities.Voucher, Metadatas.Voucher);
-
     }
 
 }
