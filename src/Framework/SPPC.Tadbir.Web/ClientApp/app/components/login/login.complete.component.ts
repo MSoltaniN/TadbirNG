@@ -8,11 +8,13 @@ import { ToastrService } from 'ngx-toastr';
 import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
 import { ContextInfo } from "../../service/login/authentication.service";
-import { MessageType, Layout, MessagePosition } from "../../enviroment";
+import { MessageType, Layout, MessagePosition, SessionKeys } from "../../enviroment";
 
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { TranslateService } from 'ng2-translate';
+import { UserService } from '../../service/index';
+import { Command } from '../../model/command';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -64,7 +66,8 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         public translate: TranslateService,
         @Host() parent: LoginContainerComponent,
         public renderer: Renderer2,
-        public metadata: MetaDataService) 
+        public metadata: MetaDataService,
+        public userService: UserService) 
     {
         super(toastrService, translate, renderer, metadata,'','');
             
@@ -146,21 +149,49 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                     currentUser.fpId = parseInt(this.fiscalPeriodId);
                     currentUser.permissions = JSON.parse(atob(this.Ticket)).User.Permissions;
 
-                    if (this.authenticationService.isRememberMe())
-                        localStorage.setItem('currentContext', JSON.stringify(currentUser));
-                    else
-                        sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
+                    
+                    this.loadMenuAndRoute(currentUser);
 
-                    if (this.route.snapshot.queryParams['returnUrl'] != undefined) {
-                        var url = this.route.snapshot.queryParams['returnUrl'];
-                        this.router.navigate([url]);
-                    }
-                    else
-                        this.router.navigate(['/account2']);
                 }
             }
         }
     }
 
+
+    loadMenuAndRoute(currentUser : ContextInfo) {
+
+        //#region load menu
+        var menuList: Array < Command > = new Array<Command>();
+
+        var commands: any;
+        this.userService.getCurrentUserCommands().subscribe((res: Array<Command>) => {
+            var list: Array<Command> = res;
+
+            list.forEach((obj: Command) => {
+                obj.children.forEach((childObj: Command) => {
+                    childObj.icon = 'glyphicon glyphicon-' + childObj.icon;
+                    menuList.push(childObj);
+                })
+            });
+
+            sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(menuList));
+
+
+            if (this.authenticationService.isRememberMe())
+                localStorage.setItem('currentContext', JSON.stringify(currentUser));
+            else
+                sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
+
+            if (this.route.snapshot.queryParams['returnUrl'] != undefined) {
+                var url = this.route.snapshot.queryParams['returnUrl'];
+                this.router.navigate([url]);
+            }
+            else
+                this.router.navigate(['/account2']);
+
+        });
+
+        //#endregion
+    }
 
 }
