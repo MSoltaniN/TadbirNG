@@ -192,7 +192,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                 this.router.navigate([url]);
             }
             else
-                this.router.navigate(['/account2']);
+                this.router.navigate(['/account']);
 
         });
 

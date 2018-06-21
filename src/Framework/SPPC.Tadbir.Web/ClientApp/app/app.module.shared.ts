@@ -73,6 +73,8 @@ import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { CalendarModule } from '@progress/kendo-angular-dateinputs';
 
+import { HotkeyModule } from 'angular2-hotkeys';
+
 import {
     AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
     BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService
@@ -194,6 +196,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         ReactiveFormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
+        HotkeyModule.forRoot(),
         DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule,
         BrowserModule,
         DpDatePickerModule,
