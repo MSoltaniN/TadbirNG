@@ -145,7 +145,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                     currentUser.companyId = parseInt(this.companyId);
                     currentUser.fpId = parseInt(this.fiscalPeriodId);
                     currentUser.permissions = JSON.parse(atob(this.Ticket)).User.Permissions;
-
+                    
                     
                     this.loadMenuAndRoute(currentUser);
 
@@ -161,12 +161,13 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         var menuList: Array < Command > = new Array<Command>();
 
         var commands: any;
-        this.userService.getCurrentUserCommands().subscribe((res: Array<Command>) => {
+
+        this.userService.getCurrentUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
             var list: Array<Command> = res;
 
             list.forEach((obj: Command) => {
                 obj.children.forEach((childObj: Command) => {
-                    childObj.icon = 'glyphicon glyphicon-' + childObj.icon;
+                    childObj.iconName = 'glyphicon glyphicon-' + childObj.iconName;
                     menuList.push(childObj);
                 })
             });
@@ -185,6 +186,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                 else
                     sessionStorage.setItem('fiscalPeriod', JSON.stringify(res));
             })
+
             if (this.route.snapshot.queryParams['returnUrl'] != undefined) {
                 var url = this.route.snapshot.queryParams['returnUrl'];
                 this.router.navigate([url]);

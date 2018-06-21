@@ -1,4 +1,4 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, Renderer2, Renderer, ElementRef } from '@angular/core';
 import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from "ng2-translate";
@@ -19,9 +19,9 @@ export class NavMenuComponent extends DefaultComponent {
     public icons: { [id: string]: string; } = {};
 
     constructor(public toastrService: ToastrService,
-        public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
+        public translate: TranslateService, public renderer2: Renderer2, public metadata: MetaDataService,public el: ElementRef) {
 
-        super(toastrService, translate, renderer, metadata, '', '');
+        super(toastrService, translate, renderer2, metadata, '', '');
 
         var menus = sessionStorage.getItem(SessionKeys.Menu);
         if(menus)
@@ -30,10 +30,11 @@ export class NavMenuComponent extends DefaultComponent {
        
     }
 
-    isNavbarCollapsed: boolean = false;
-
-    navClick() {
-        this.isNavbarCollapsed = true;
+    onMenuClick() {
+        this.renderer2.removeClass(this.el.nativeElement.querySelector('.navbar-collapse'), 'in');
     }
 
+    isCollapsed: boolean = true;
+
+   
 }

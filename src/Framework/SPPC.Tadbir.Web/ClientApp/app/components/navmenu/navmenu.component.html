@@ -10,82 +10,82 @@
             <a class='navbar-brand' [routerLink]="['/account']">{{ 'App.Name' | translate }}</a>
         </div>
         <div class='clearfix'></div>
-        <div class='navbar-collapse collapse' [ngbCollapse]="isNavbarCollapsed">
+        <div class='navbar-collapse collapse' >
             <ul class='nav navbar-nav'>
-                <li [routerLinkActive]="['link-active']" *ngFor="let cmd of menuList;">
+                <li [routerLinkActive]="['link-active']" *ngFor="let cmd of menuList;" (click)="onMenuClick()">
                     <a routerLink="/{{cmd.routeUrl}}">
-                        <span class="{{icons[cmd.routeUrl]}}"></span><span class="menuitem nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">{{ cmd.title }}</span>
+                        <span class="{{cmd.iconName}}"></span><span class="menuitem nav-link" data-toggle="collapse" data-target=".navbar-collapse.show">{{ cmd.title }}</span>
                     </a>
                 </li>
             </ul>
-                <!--<ul class='nav navbar-nav'>
-        <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Account', 1)" (click)="navClick($event)">
-            <a [routerLink]="['/account']">
-                <span class='glyphicon glyphicon-tasks'></span><span class="menuitem">{{ 'App.Menu.Account' | translate }}</span>
-            </a>
-        </li>
-        <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Voucher', 1)">
-            <a [routerLink]="['/voucher']">
-                <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.Voucher' | translate }}</span>
-            </a>
-        </li>
-        <li [routerLinkActive]="['link-active']" *ngIf="isAccess('User', 1)">
-            <a [routerLink]="['/users']">
-                <span class='glyphicon glyphicon-user'></span><span class="menuitem">{{ 'App.Menu.Users' | translate }}</span>
-            </a>
-        </li>
-        <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Role', 1)">
-            <a [routerLink]="['/roles']">
-                <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.Roles' | translate }}</span>
-            </a>
-        </li>
-        <li [routerLinkActive]="['link-active']" *ngIf="isAccess('DetailAccount', 1)">
-            <a [routerLink]="['/detailAccount']">
-                <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.DetailAccount' | translate }}</span>
-            </a>
-        </li>
-        <li [routerLinkActive]="['link-active']" *ngIf="isAccess('CostCenter', 1)">
-            <a [routerLink]="['/costCenter']">
-                <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.CostCenter' | translate }}</span>
-            </a>
-        </li>
-        <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Project', 1)">
-            <a [routerLink]="['/projects']">
-                <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.Project' | translate }}</span>
-            </a>
-        </li>
-        <li [routerLinkActive]="['link-active']" *ngIf="isAccess('FiscalPeriod', 1)">
-            <a [routerLink]="['/fiscalperiod']">
-                <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.FiscalPeriod' | translate }}</span>
-            </a>
-        </li>
-        <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Branch', 1)">
-            <a [routerLink]="['/branches']">
-                <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.Branch' | translate }}</span>
-            </a>
-        </li>
-        <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Company', 1)">
-            <a [routerLink]="['/companies']">
-                <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.Company' | translate }}</span>
-            </a>
-        </li>
-        <li [routerLinkActive]="['link-active']" *ngIf="isAccess('AccountRelations', 1)">
-            <a [routerLink]="['/accountrelations']">
-                <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.AccountRelations' | translate }}</span>
-            </a>
-        </li>
-        <li [routerLinkActive]="['link-active']">
-            <a [routerLink]="['/changePassword']">
-                <span class='glyphicon glyphicon-eye-open'></span><span class="menuitem">{{ 'App.Menu.ChangePassword' | translate }}</span>
-            </a>
-        </li>
-        <li [routerLinkActive]="['link-active']">
-            <a [routerLink]="['/logout']">
-                <span class='glyphicon glyphicon-log-out'></span><span class="menuitem">{{ 'App.Menu.Exit' | translate }}</span>
-            </a>
-        </li>
-    </ul>
-        -->
-</div>
+            <!--<ul class='nav navbar-nav'>
+            <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Account', 1)" (click)="navClick($event)">
+                <a [routerLink]="['/account']">
+                    <span class='glyphicon glyphicon-tasks'></span><span class="menuitem">{{ 'App.Menu.Account' | translate }}</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Voucher', 1)">
+                <a [routerLink]="['/voucher']">
+                    <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.Voucher' | translate }}</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['link-active']" *ngIf="isAccess('User', 1)">
+                <a [routerLink]="['/users']">
+                    <span class='glyphicon glyphicon-user'></span><span class="menuitem">{{ 'App.Menu.Users' | translate }}</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Role', 1)">
+                <a [routerLink]="['/roles']">
+                    <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.Roles' | translate }}</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['link-active']" *ngIf="isAccess('DetailAccount', 1)">
+                <a [routerLink]="['/detailAccount']">
+                    <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.DetailAccount' | translate }}</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['link-active']" *ngIf="isAccess('CostCenter', 1)">
+                <a [routerLink]="['/costCenter']">
+                    <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.CostCenter' | translate }}</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Project', 1)">
+                <a [routerLink]="['/projects']">
+                    <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.Project' | translate }}</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['link-active']" *ngIf="isAccess('FiscalPeriod', 1)">
+                <a [routerLink]="['/fiscalperiod']">
+                    <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.FiscalPeriod' | translate }}</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Branch', 1)">
+                <a [routerLink]="['/branches']">
+                    <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.Branch' | translate }}</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['link-active']" *ngIf="isAccess('Company', 1)">
+                <a [routerLink]="['/companies']">
+                    <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.Company' | translate }}</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['link-active']" *ngIf="isAccess('AccountRelations', 1)">
+                <a [routerLink]="['/accountrelations']">
+                    <span class='glyphicon glyphicon-list'></span><span class="menuitem">{{ 'App.Menu.AccountRelations' | translate }}</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['link-active']">
+                <a [routerLink]="['/changePassword']">
+                    <span class='glyphicon glyphicon-eye-open'></span><span class="menuitem">{{ 'App.Menu.ChangePassword' | translate }}</span>
+                </a>
+            </li>
+            <li [routerLinkActive]="['link-active']">
+                <a [routerLink]="['/logout']">
+                    <span class='glyphicon glyphicon-log-out'></span><span class="menuitem">{{ 'App.Menu.Exit' | translate }}</span>
+                </a>
+            </li>
+        </ul>
+            -->
+        </div>
     </div>
 </div>

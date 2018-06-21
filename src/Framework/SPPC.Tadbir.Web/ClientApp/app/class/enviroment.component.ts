@@ -163,7 +163,7 @@ export class EnviromentComponent {
 
         }
         else if (sessionStorage.getItem('currentContext') != null) {
-            var item: string | null;
+            var item: string | null;    
             item = sessionStorage.getItem('currentContext');
             var currentContext = JSON.parse(item != null ? item.toString() : "");
 
