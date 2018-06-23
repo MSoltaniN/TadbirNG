@@ -246,6 +246,10 @@
     "RememberMe": "مرا به خاطر بسپار",
     "UserIncorrect": "نام کاربری يا کلمه عبور اشتباه می باشد"
   },
+  "Sppc-DateRange": {
+    "FromDate": "از تاریخ",
+    "ToDate": "تا تاریخ"
+  },
   "AllValidations": {
     "Account": {
       "CodeIsRequired": "وارد کردن کد اجباری است.",

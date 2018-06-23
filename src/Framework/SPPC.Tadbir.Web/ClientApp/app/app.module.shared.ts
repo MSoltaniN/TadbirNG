@@ -61,6 +61,7 @@ import { SppcMaskTextBox } from './controls/textbox/sppc-mask-textbox';
 import { SppcNumberBox } from './controls/textbox/sppc-numberbox';
 import { SppcDropDownList } from './controls/dropdownlist/sppc-dropdownlist';
 import { SppcDatepicker } from './controls/datepicker/sppc-datepicker';
+import { SppcDateRangeSelector } from './controls/dateRangeSelector/sppc-dateRangeSelector';
 import { SppcFullAccount } from './controls/fullAccount/sppc-fullAccount'
 
 import { BrowserModule } from "@angular/platform-browser";
@@ -123,6 +124,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         SppcNumberBox,
         SppcDropDownList,
         SppcDatepicker,
+        SppcDateRangeSelector,
         SppcFullAccount,
         SppcGridColumn,
         SppcGridReorder,

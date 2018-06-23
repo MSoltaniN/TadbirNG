@@ -246,6 +246,10 @@
     "RememberMe": "Remember me",
     "UserIncorrect": "username or password is incorrect"
   },
+  "Sppc-DateRange": {
+    "FromDate": "From Date",
+    "ToDate": "To Date"
+  },
   "AllValidations": {
     "Account": {
       "CodeIsRequired": "Code is required.",

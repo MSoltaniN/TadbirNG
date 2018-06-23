@@ -215,10 +215,12 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
             }
         }
         this.parseError = typeof this.dateObject === "object" && this.dateObject != null ? false : true;
+        if (this.dateObject == undefined) {
+            this.propagateChange("");
+        }
     }
 
     onDateFocusOut() {
-
         this.parseError = false;
 
         if (this.dateObject != null) {
