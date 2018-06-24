@@ -182,6 +182,32 @@ export class AppComponent {
 
     public hotKeyMap: { [id: string]: string; } = {}
 
+    doSomething(event: any) {
+        // read keyCode or other properties 
+        // from event and execute a command
+        var ctrl = event.ctrlKey ? 'ctrl' : '';
+        var shift = event.shiftKey ? 'shift' : '';
+        var alt = event.altKey ? 'alt' : '';
+        
+        var key = event.code.replace('Key', '').toLowerCase();
+        
+        var url = '';
+
+        console.log(event);
+
+        for (var it in this.hotKeyMap) {            
+            if (it.indexOf(ctrl) >= 0 && it.indexOf(alt) >= 0 && it.indexOf(alt) >= 0 && it.indexOf(key) >= 0)
+                url = this.hotKeyMap[it];
+        }
+
+        if (url != '') {
+            this.router.navigate([url]);
+        }
+
+        
+        
+    }
+    
     initHotKeys() {
 
         var menuList: Array<Command> = new Array<Command>();
@@ -198,15 +224,7 @@ export class AppComponent {
                 hotKeys.push(obj.hotKey.toLowerCase());
             }
         });
-
-        this.hotkeysService.add(new Hotkey(hotKeys, (event: KeyboardEvent, combo: string): ExtendedKeyboardEvent => {
-
-            var url = this.hotKeyMap[combo];
-            this.router.navigate([url]);
-
-            let e: ExtendedKeyboardEvent = event;
-            e.returnValue = false; // Prevent bubbling
-            return e;
-        }))
+        
     }
+    
 }
