@@ -16,6 +16,9 @@ GO
 CREATE SCHEMA [Auth]
 GO
 
+CREATE SCHEMA [Config]
+GO
+
 CREATE SCHEMA [Contact]
 GO
 
@@ -174,6 +177,40 @@ CREATE TABLE [Auth].[RolePermission] (
     , CONSTRAINT [FK_Auth_RolePermission_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role] ([RoleID])
     , CONSTRAINT [FK_Auth_RolePermission_Auth_Permission] FOREIGN KEY ([PermissionID]) REFERENCES [Auth].[Permission] ([PermissionID])
     , CONSTRAINT [UK_RolePermission] UNIQUE NONCLUSTERED ([RoleID] ASC, [PermissionID] ASC)
+)
+GO
+
+CREATE TABLE [Config].[Setting] (
+    [SettingID]      INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]       INT              NULL,
+    [Subsystem]      VARCHAR(32)      NULL,
+    [TitleKey]       VARCHAR(128)     NOT NULL,
+    [Type]           SMALLINT         NOT NULL,
+    [ScopeType]      SMALLINT         NOT NULL,
+    [ModelType]      VARCHAR(128)     NOT NULL,
+    [Values]         NVARCHAR(2048)   NOT NULL,
+    [DescriptionKey] VARCHAR(1028)    NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Config_Setting_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Config_Setting_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Config_Setting] PRIMARY KEY CLUSTERED ([SettingID] ASC)
+    , CONSTRAINT [FK_Config_Setting_Config_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Config].[Setting]([SettingID])
+)
+GO
+
+CREATE TABLE [Config].[UserSetting] (
+    [UserSettingID]  INT              IDENTITY (1, 1) NOT NULL,
+    [SettingID]      INT              NOT NULL,
+    [EntityViewID]   INT              NULL,
+    [UserID]         INT              NULL,
+    [RoleID]         INT              NULL,
+    [ModelType]      VARCHAR(128)     NOT NULL,
+    [Values]         NVARCHAR(2048)   NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Config_UserSetting_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Config_UserSetting_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Config_UserSetting] PRIMARY KEY CLUSTERED ([UserSettingID] ASC)
+    , CONSTRAINT [FK_Config_UserSetting_Config_Setting] FOREIGN KEY ([SettingID]) REFERENCES [Config].[Setting]([SettingID])
+    , CONSTRAINT [FK_Config_UserSetting_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Config_UserSetting_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role]([RoleID])
 )
 GO
 
