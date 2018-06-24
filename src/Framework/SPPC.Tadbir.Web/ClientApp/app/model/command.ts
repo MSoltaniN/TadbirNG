@@ -16,5 +16,6 @@ export interface Command {
     id: number;
     title: string;
     routeUrl: string;
-    icon: string;
+    iconName: string;
+    hotKey: string;
 }

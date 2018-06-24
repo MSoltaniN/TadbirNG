@@ -1,6 +1,12 @@
 ﻿<div class="panel panel-primary">
     <div class="panel-heading">{{ 'Entity.Voucher' | translate }}</div>
+    <div>
+
+    </div>
     <div SppcCheckAccess="View" class="panel-body">
+
+
+
         <kendo-grid id="grdVoucher" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
                     [data]="rowData"
                     [sortable]="true"
@@ -30,9 +36,20 @@
                 {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
             </ng-template>
             <ng-template kendoGridToolbarTemplate>
+
+                <sppc-dateRangeSelector [Field]="'date'" 
+                                        [minDate]="FiscalPeriodStartDate" 
+                                        [maxDate]="FiscalPeriodEndDate" 
+                                        [isDisplayFromDate]="true" 
+                                        [isDisplayToDate]="true" 
+                                        [displayFromDate]="FiscalPeriodStartDate"
+                                        [displayToDate]="FiscalPeriodEndDate">
+                </sppc-dateRangeSelector>
+
                 <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'Voucher.New' | translate }}</button>
                 <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
                 <grid-setting></grid-setting>
+
             </ng-template>
             <!-- template for mobile -->
             <kendo-grid-column media="(max-width: 449px)" title="">

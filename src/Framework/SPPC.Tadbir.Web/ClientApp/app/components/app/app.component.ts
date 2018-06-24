@@ -5,6 +5,9 @@ import { Location } from '@angular/common';
 import { DOCUMENT } from '@angular/platform-browser';
 import { AuthenticationService } from '../../service/login/index';
 import { UserService } from '../../service/user.service';
+import { HotkeysService, Hotkey } from 'angular2-hotkeys';
+import { SessionKeys } from '../../enviroment';
+import { Command } from '../../model/command';
 
 
 @Component({
@@ -35,11 +38,12 @@ export class AppComponent {
 
     public fiscalPeriods: any = {};
 
+    
 
+    constructor(location: Location, public router: Router, public authenticationService: AuthenticationService,public userService:UserService,
+        @Inject(DOCUMENT) private document: Document, private hotkeysService: HotkeysService) {
 
-    constructor(location: Location, router: Router, public authenticationService: AuthenticationService,public userService:UserService,
-         @Inject(DOCUMENT) private document: Document) {
-
+        //#region init Lang
 
         if (localStorage.getItem('currentContext') != null) {
             var item: string | null;
@@ -56,11 +60,16 @@ export class AppComponent {
 
         }
 
-        
+        //#endregion
 
+        //#region Hide navbar
         if (this.currentContext != undefined) {
             this.showNavbar = true;
         }
+
+        //#endregion
+
+        //#region Event in Each Route 
 
         router.events.subscribe((val) => {
             if (location.path().toLowerCase() == '/login' || location.path().toString().indexOf('/login?returnUrl=') >= 0) {
@@ -70,6 +79,9 @@ export class AppComponent {
 
             }
             else {
+
+                //#region add class to element
+
                 this.isLogin = false;
                 this.showNavbar = true;
                 
@@ -88,6 +100,9 @@ export class AppComponent {
                     }
                 }
 
+                //#endregion
+
+                //#region init enviroment variables
 
                 var branchId: number = 0;
                 var companyId: number = 0;
@@ -156,9 +171,42 @@ export class AppComponent {
 
                 }
 
+                //#endregion
             }
         });
 
+        //#endregion
 
+        this.initHotKeys();
+    }
+
+    public hotKeyMap: { [id: string]: string; } = {}
+
+    initHotKeys() {
+
+        var menuList: Array<Command> = new Array<Command>();
+        var hotKeys: Array<string> = new Array<string>();
+        
+
+        var menus = sessionStorage.getItem(SessionKeys.Menu);
+        if (menus)
+            menuList = JSON.parse(menus);
+
+        menuList.forEach((obj: Command) => {
+            if (obj.hotKey != '' && obj.hotKey != null) {
+                this.hotKeyMap[obj.hotKey.toLowerCase()] = obj.routeUrl;
+                hotKeys.push(obj.hotKey.toLowerCase());
+            }
+        });
+
+        this.hotkeysService.add(new Hotkey(hotKeys, (event: KeyboardEvent, combo: string): ExtendedKeyboardEvent => {
+
+            var url = this.hotKeyMap[combo];
+            this.router.navigate([url]);
+
+            let e: ExtendedKeyboardEvent = event;
+            e.returnValue = false; // Prevent bubbling
+            return e;
+        }))
     }
 }

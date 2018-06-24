@@ -46,6 +46,12 @@ export const Entities = {
 }
 
 
+export const SessionKeys = {
+    Menu : 'menu'
+}
+
+
+
 export enum MessagePosition {
     TopLeft,
     TopCenter,

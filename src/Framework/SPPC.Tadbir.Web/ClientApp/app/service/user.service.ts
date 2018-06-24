@@ -41,7 +41,8 @@ export class CommandInfo implements Command {
     id: number;
     title: string;
     routeUrl: string;
-    icon: string;
+    iconName: string;
+    hotKey: string;
 }
 
 @Injectable()
@@ -75,10 +76,11 @@ export class UserService extends BaseService {
             .catch(this.handleError);
     }
 
-    getCurrentUserCommands() {
+    getCurrentUserCommands(ticket : string) {
 
         var url = UserApi.CurrentUserCommands;
-
+        if (this.headers)
+            this.headers.set('X-Tadbir-AuthTicket', ticket);
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
 

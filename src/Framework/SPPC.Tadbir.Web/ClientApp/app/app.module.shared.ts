@@ -61,6 +61,7 @@ import { SppcMaskTextBox } from './controls/textbox/sppc-mask-textbox';
 import { SppcNumberBox } from './controls/textbox/sppc-numberbox';
 import { SppcDropDownList } from './controls/dropdownlist/sppc-dropdownlist';
 import { SppcDatepicker } from './controls/datepicker/sppc-datepicker';
+import { SppcDateRangeSelector } from './controls/dateRangeSelector/sppc-dateRangeSelector';
 import { SppcFullAccount } from './controls/fullAccount/sppc-fullAccount'
 
 import { BrowserModule } from "@angular/platform-browser";
@@ -72,6 +73,8 @@ import { DialogModule } from '@progress/kendo-angular-dialog';
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { CalendarModule } from '@progress/kendo-angular-dateinputs';
+
+import { HotkeyModule } from 'angular2-hotkeys';
 
 import {
     AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
@@ -121,6 +124,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         SppcNumberBox,
         SppcDropDownList,
         SppcDatepicker,
+        SppcDateRangeSelector,
         SppcFullAccount,
         SppcGridColumn,
         SppcGridReorder,
@@ -194,6 +198,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         ReactiveFormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot(),
+        HotkeyModule.forRoot(),
         DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule,
         BrowserModule,
         DpDatePickerModule,
