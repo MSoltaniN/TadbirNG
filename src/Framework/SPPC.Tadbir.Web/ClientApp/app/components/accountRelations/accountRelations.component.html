@@ -26,8 +26,21 @@
                                 {{ dataItem.value | translate }}
                             </ng-template>
                         </kendo-dropdownlist>
+
+                        <input type="text" class="k-textbox" [(ngModel)]="searchValue" (keydown)="onKeyMainComponent($event.keyCode)"/>
+
+                        <button class="k-button k-primary btn-search" 
+                                [disabled]="!isEnableMainComponentSearchBtn" 
+                                (click)="onMainComponentSearch()">جستجو</button>
+
                     </div>
                     <div class="section-body">
+
+                        <div *ngIf="noResultMessage">                            
+                            <div class="alert alert-danger">
+                                {{ 'AccountRelations.NotFound' | translate }}
+                            </div>                            
+                        </div>
 
                         <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
                             <kendo-treeview [nodes]="mainComponentCategories"
@@ -61,9 +74,25 @@
                                 {{ dataItem.value | translate }}
                             </ng-template>
                         </kendo-dropdownlist>
+
+                        <input type="text" class="k-textbox" [(ngModel)]="relatedSearchValue" (keydown)="onKeyRelatedComponent($event.keyCode)" />
+
+                        <button class="k-button k-primary btn-search"
+                                [disabled]="!isEnableRelatedComponentSearchBtn"
+                                (click)="onRelatedComponentSearch()">
+                            جستجو
+                        </button>
+
                     </div>
                     <div class="section-body">
                         <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
+
+                            <div *ngIf="noRelatedResultMessage">
+                                <div class="alert alert-danger">
+                                    {{ 'AccountRelations.NoRelateion' | translate }}
+                                </div>
+                            </div>
+
                             <kendo-treeview [nodes]="relatedComponentCategories"
                                             [textField]="['name']"
                                             kendoTreeViewExpandable
@@ -84,7 +113,7 @@
                 <div class="clearfix"></div>
             </div>
             <div class="form-group" [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}">
-                <button class="k-button k-primary" SppcCheckAccess="ManageRelationships" [disabled]="!isEnableSaveBtn" (click)="onSave()" primary="true">{{ 'Buttons.Ok' | translate }}</button>
+                <!--<button class="k-button k-primary" SppcCheckAccess="ManageRelationships" [disabled]="!isEnableSaveBtn" (click)="onSave()" primary="true">{{ 'Buttons.Ok' | translate }}</button>-->
                 <button class="k-button" (click)="onCancel()">{{ 'Buttons.Cancel' | translate }}</button>
             </div>
         </div>

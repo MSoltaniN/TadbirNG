@@ -21,6 +21,8 @@ import { AccountRelationPermissions } from '../../security/permissions';
 import { AccountRelationsService } from '../../service/index';
 import { TreeItemLookup, TreeItem, CheckableSettings } from '@progress/kendo-angular-treeview';
 import { AccountItemRelationsInfo } from '../../service/accountRelations.service';
+import { Filter } from '../../class/filter';
+import { KeyCode } from '../../enum/KeyCode';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -46,6 +48,11 @@ interface Item {
 
 export class AccountRelationsComponent extends DefaultComponent implements OnInit {
 
+    public searchValue: string;
+    public noResultMessage: boolean = false;
+    public relatedSearchValue: string;
+    public noRelatedResultMessage: boolean = false;
+
     //permission flag
     viewAccess: boolean;
 
@@ -56,19 +63,23 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
     public isDisableRelatedComponnet: boolean = true;
     public isSelectedMainComponent: boolean = false;
-    public isEnableSaveBtn: boolean = false;
+    //public isEnableSaveBtn: boolean = false;
 
     public mainComponentCategories: any;
     public mainComponentCheckedKeys: any[] = [];
     public mainComponentSelectedItem: number = 0;
     public mainComponentDropdownSelected: number = 0;
     public mainComponentExpandedKeys: any[] = [];
+    public isEnableMainComponentSearchBtn: boolean = false;
+    public mainComponentApiUrl: string;
 
     public relatedComponentCategories: any;
     public relatedComponentCheckedKeys: any[] = [];
     public relatedComponentDropdownSelected: number = 0;
     public relatedComponentExpandedKeys: any[] = [];
     public fechedRelatedComponentChildren: Observable<any>;
+    public isEnableRelatedComponentSearchBtn: boolean = false;
+    public relatedComponentApiUrl: string;
 
     public errorMessage = String.Empty;
 
@@ -90,6 +101,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
 
     public handleMainComponentDropDownChange(item: any) {
+        this.mainComponentCategories = undefined;
         this.mainComponentCheckedKeys = [];
         this.mainComponentExpandedKeys = [];
         this.mainComponentDropdownSelected = 0;
@@ -99,16 +111,15 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.relatedComponentDropdownSelected = 0;
 
         if (item > 0) {
-            var apiUrl = String.Empty;
             this.isDisableRelatedComponnet = false;
+            this.isEnableMainComponentSearchBtn = true;
             this.mainComponentDropdownSelected = item;
-            this.sppcLoading.show();
             this.relatedComponent = [
                 { value: "AccountRelations.Account", key: 1 }
             ];
             switch (item) {
                 case 1: {
-                    apiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId);
+                    this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId);
                     this.relatedComponent = [
                         { value: "AccountRelations.DetailAccount", key: 2 },
                         { value: "AccountRelations.CostCenter", key: 3 },
@@ -117,38 +128,34 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                     break;
                 }
                 case 2: {
-                    apiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId);
+                    this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId);
                     break
                 }
                 case 3: {
-                    apiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId);
+                    this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId);
                     break
                 }
                 case 4: {
-                    apiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId);
+                    this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId);
                     break
                 }
                 default:
                     {
-                        this.sppcLoading.hide();
                         break;
                     }
             }
-            this.accountRelationsService.getMainComponentModel(apiUrl).subscribe(res => {                
-                this.mainComponentCategories = res.json();
-                this.sppcLoading.hide();
-            });
         }
         else {
             this.mainComponentDropdownSelected = 0;
             this.selectedRelatedComponentValue = null;
             this.isDisableRelatedComponnet = true;
+            this.isEnableMainComponentSearchBtn = false;
             this.mainComponentCategories = undefined;
             this.relatedComponentCategories = undefined;
             this.relatedComponentCheckedKeys = [];
             this.relatedComponentDropdownSelected = 0;
             this.mainComponentSelectedItem = 0;
-            this.isEnableSaveBtn = false;
+            //this.isEnableSaveBtn = false;
         }
     }
 
@@ -156,17 +163,19 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.relatedComponentCheckedKeys = [];
         if (item > 0) {
             this.relatedComponentDropdownSelected = item;
+            this.isEnableRelatedComponentSearchBtn = true;
             this.loadRelatedComponent();
         }
         else {
             this.relatedComponentDropdownSelected = 0;
             this.relatedComponentCategories = undefined;
-            this.isEnableSaveBtn = false;
+            //this.isEnableSaveBtn = false;
+            this.isEnableRelatedComponentSearchBtn = false;
         }
     }
 
     public handleMainComponentChecking(itemLookup: TreeItemLookup): void {
-        this.isEnableSaveBtn = false;
+        //this.isEnableSaveBtn = false;
         var itemId = itemLookup.item.dataItem.id;
         if (this.mainComponentCheckedKeys.find(f => f == itemId) == itemId) {
             this.mainComponentCheckedKeys = [];
@@ -218,49 +227,49 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         return this.accountRelationsService.getChildrens(apiUrl);
     }
 
-    public fetchRelatedComponentChildren = (item: any) => {
-        var apiUrl = String.Empty;
-        switch (this.relatedComponentDropdownSelected) {
-            case 1: {
-                switch (this.mainComponentDropdownSelected) {
-                    case 2: {
-                        apiUrl = String.Format(AccountRelationApi.ChildAccountsRelatedToDetailAccount, item.id, this.mainComponentSelectedItem);
-                        break;
-                    }
-                    case 3: {
-                        apiUrl = String.Format(AccountRelationApi.ChildAccountsRelatedToCostCenter, item.id, this.mainComponentSelectedItem);
-                        break;
-                    }
-                    case 4: {
-                        apiUrl = String.Format(AccountRelationApi.ChildAccountsRelatedToProject, item.id, this.mainComponentSelectedItem);
-                        break;
-                    }
-                    default:
-                        break;
-                }
-                break;
-            }
-            case 2: {
-                apiUrl = String.Format(AccountRelationApi.ChildDetailAccountsRelatedToAccount, item.id, this.mainComponentSelectedItem);
-                break;
-            }
-            case 3: {
-                apiUrl = String.Format(AccountRelationApi.ChildCostCentersRelatedToAccount, item.id, this.mainComponentSelectedItem);
-                break;
-            }
-            case 4: {
-                apiUrl = String.Format(AccountRelationApi.ChildProjectsRelatedToAccount, item.id, this.mainComponentSelectedItem);
-                break;
-            }
-            default:
-                {
-                    break;
-                }
-        }
-        var result = this.accountRelationsService.getChildrens(apiUrl);
-        this.fechedRelatedComponentChildren = result;
-        return result;
-    }
+    //public fetchRelatedComponentChildren = (item: any) => {
+    //    var apiUrl = String.Empty;
+    //    switch (this.relatedComponentDropdownSelected) {
+    //        case 1: {
+    //            switch (this.mainComponentDropdownSelected) {
+    //                case 2: {
+    //                    apiUrl = String.Format(AccountRelationApi.ChildAccountsRelatedToDetailAccount, item.id, this.mainComponentSelectedItem);
+    //                    break;
+    //                }
+    //                case 3: {
+    //                    apiUrl = String.Format(AccountRelationApi.ChildAccountsRelatedToCostCenter, item.id, this.mainComponentSelectedItem);
+    //                    break;
+    //                }
+    //                case 4: {
+    //                    apiUrl = String.Format(AccountRelationApi.ChildAccountsRelatedToProject, item.id, this.mainComponentSelectedItem);
+    //                    break;
+    //                }
+    //                default:
+    //                    break;
+    //            }
+    //            break;
+    //        }
+    //        case 2: {
+    //            apiUrl = String.Format(AccountRelationApi.ChildDetailAccountsRelatedToAccount, item.id, this.mainComponentSelectedItem);
+    //            break;
+    //        }
+    //        case 3: {
+    //            apiUrl = String.Format(AccountRelationApi.ChildCostCentersRelatedToAccount, item.id, this.mainComponentSelectedItem);
+    //            break;
+    //        }
+    //        case 4: {
+    //            apiUrl = String.Format(AccountRelationApi.ChildProjectsRelatedToAccount, item.id, this.mainComponentSelectedItem);
+    //            break;
+    //        }
+    //        default:
+    //            {
+    //                break;
+    //            }
+    //    }
+    //    var result = this.accountRelationsService.getChildrens(apiUrl);
+    //    this.fechedRelatedComponentChildren = result;
+    //    return result;
+    //}
 
     public childrenLoadedHandler = (dataItem: any) => {
         this.fechedRelatedComponentChildren.subscribe(res => {
@@ -276,22 +285,22 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.isDisableRelatedComponnet = false;
         this.relatedComponentCheckedKeys = [];
         this.relatedComponentExpandedKeys = [];
-        var apiUrl = String.Empty;
+
         if (this.relatedComponentDropdownSelected > 0 && this.mainComponentSelectedItem > 0) {
             switch (this.relatedComponentDropdownSelected) {
                 case 1: {
                     if (this.mainComponentDropdownSelected > 0) {
                         switch (this.mainComponentDropdownSelected) {
                             case 2: {
-                                apiUrl = String.Format(AccountRelationApi.AccountsRelatedToDetailAccount, this.mainComponentSelectedItem);
+                                this.relatedComponentApiUrl = String.Format(AccountRelationApi.AccountsRelatedToDetailAccount, this.mainComponentSelectedItem);
                                 break;
                             }
                             case 3: {
-                                apiUrl = String.Format(AccountRelationApi.AccountsRelatedToCostCenter, this.mainComponentSelectedItem);
+                                this.relatedComponentApiUrl = String.Format(AccountRelationApi.AccountsRelatedToCostCenter, this.mainComponentSelectedItem);
                                 break;
                             }
                             case 4: {
-                                apiUrl = String.Format(AccountRelationApi.AccountsRelatedToProject, this.mainComponentSelectedItem);
+                                this.relatedComponentApiUrl = String.Format(AccountRelationApi.AccountsRelatedToProject, this.mainComponentSelectedItem);
                                 break;
                             }
                             default: {
@@ -302,15 +311,15 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                     break;
                 }
                 case 2: {
-                    apiUrl = String.Format(AccountRelationApi.DetailAccountsRelatedToAccount, this.mainComponentSelectedItem);
+                    this.relatedComponentApiUrl = String.Format(AccountRelationApi.DetailAccountsRelatedToAccount, this.mainComponentSelectedItem);
                     break;
                 }
                 case 3: {
-                    apiUrl = String.Format(AccountRelationApi.CostCentersRelatedToAccount, this.mainComponentSelectedItem);
+                    this.relatedComponentApiUrl = String.Format(AccountRelationApi.CostCentersRelatedToAccount, this.mainComponentSelectedItem);
                     break;
                 }
                 case 4: {
-                    apiUrl = String.Format(AccountRelationApi.ProjectsRelatedToAccount, this.mainComponentSelectedItem);
+                    this.relatedComponentApiUrl = String.Format(AccountRelationApi.ProjectsRelatedToAccount, this.mainComponentSelectedItem);
                     break;
                 }
                 default: {
@@ -318,17 +327,20 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                 }
             }
             this.sppcLoading.show();
-            this.accountRelationsService.getRelatedComponentModel(apiUrl).subscribe(res => {
+            this.accountRelationsService.getRelatedComponentModel(this.relatedComponentApiUrl).subscribe(res => {
                 this.relatedComponentCategories = res;
-
                 for (let item of res) {
                     if (item.isSelected) {
                         this.relatedComponentCheckedKeys.push(item.id)
                     }
                 }
+                if (this.relatedComponentCategories.length == 0)
+                    this.noRelatedResultMessage = true;
+                else
+                    this.noRelatedResultMessage = false;
                 this.sppcLoading.hide();
             })
-            this.isEnableSaveBtn = true;
+            //this.isEnableSaveBtn = true;
         }
         this.sppcLoading.hide();
     }
@@ -396,13 +408,77 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.mainComponentCheckedKeys = [];
         this.relatedComponentCheckedKeys = [];
         this.mainComponentSelectedItem = 0;
-        this.isEnableSaveBtn = false;
+        //this.isEnableSaveBtn = false;
         this.mainComponentDropdownSelected = 0;
         this.relatedComponentDropdownSelected = 0;
         this.errorMessage = String.Empty;
         this.isDisableRelatedComponnet = true;
+        this.isEnableMainComponentSearchBtn = false;
+        this.isEnableRelatedComponentSearchBtn = false;
+
+        this.relatedComponentApiUrl = String.Empty;
+        this.mainComponentApiUrl = String.Empty;
+
+        this.searchValue = String.Empty;
+        this.relatedSearchValue = String.Empty;
     }
 
+    onMainComponentSearch() {
+        var filters: Filter[] = [];
+        if (this.searchValue) {
+            filters.push(new Filter("Name", this.searchValue, ".Contains({0})", "System.String"));
+        }
+
+        this.sppcLoading.show();
+        this.accountRelationsService.getMainComponentModel(this.mainComponentApiUrl, filters).subscribe(res => {
+            this.mainComponentCategories = res.json();
+            if (this.mainComponentCategories.length == 0)
+                this.noResultMessage = true;
+            else
+                this.noResultMessage = false;
+
+           
+
+            this.sppcLoading.hide();
+        });
+    }
+
+    onKeyMainComponent(e: any) {
+        if (KeyCode.Enter == e && this.mainComponentApiUrl) {
+            this.onMainComponentSearch();
+        }
+    }
+
+    onRelatedComponentSearch() {
+        this.sppcLoading.show();
+        var filters: Filter[] = [];
+        if (this.relatedSearchValue) {
+            filters.push(new Filter("Name", this.relatedSearchValue, ".Contains({0})", "System.String"));
+        }
+
+        this.accountRelationsService.getRelatedComponentModel(this.relatedComponentApiUrl, filters).subscribe(res => {
+            this.relatedComponentCategories = res;
+            for (let item of res) {
+                if (item.isSelected) {
+                    this.relatedComponentCheckedKeys.push(item.id)
+                }
+            }
+            if (this.relatedComponentCategories.length == 0)
+                this.noRelatedResultMessage = true;
+            else
+                this.noRelatedResultMessage = false;
+
+            
+
+            this.sppcLoading.hide();
+        })
+    }
+
+    onKeyRelatedComponent(e: any) {
+        if (KeyCode.Enter == e && this.relatedComponentApiUrl) {
+            this.onRelatedComponentSearch();
+        }
+    }
 }
 
 

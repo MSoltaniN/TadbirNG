@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import { map } from 'rxjs/operators/map';
 import { AccountItemRelations } from '../model/index';
+import { Filter } from '../class/filter';
 
 
 
@@ -25,14 +26,32 @@ export class AccountRelationsService extends BaseService {
             .map(response => <any>(<Response>response).json());
     }
 
-    public getRelatedComponentModel(apiUrl: string) {
-        var options = new RequestOptions({ headers: this.headers });
+    public getRelatedComponentModel(apiUrl: string, filters?: Filter[]) {
+        var intMaxValue = 2147483647
+        var gridPaging = { pageIndex: 1, pageSize: intMaxValue };
+        var postItem = { Paging: gridPaging, filters: filters, sortColumns: null };
+        var searchHeaders = this.headers;
+        var postBody = JSON.stringify(postItem);
+        var base64Body = btoa(encodeURIComponent(postBody));
+        if (searchHeaders)
+            searchHeaders.set('X-Tadbir-GridOptions', base64Body);
+        var options = new RequestOptions({ headers: searchHeaders });
+
         return this.http.get(apiUrl, options)
             .map(response => <any>(<Response>response).json());
     }
 
-    public getMainComponentModel(apiUrl: string) {
-        var options = new RequestOptions({ headers: this.headers });
+    public getMainComponentModel(apiUrl: string, filters?: Filter[]) {
+        var intMaxValue = 2147483647
+        var gridPaging = { pageIndex: 1, pageSize: intMaxValue };
+        var postItem = { Paging: gridPaging, filters: filters, sortColumns: null };
+        var searchHeaders = this.headers;
+        var postBody = JSON.stringify(postItem);
+        var base64Body = btoa(encodeURIComponent(postBody));
+        if (searchHeaders)
+            searchHeaders.set('X-Tadbir-GridOptions', base64Body);
+        var options = new RequestOptions({ headers: searchHeaders });
+
         return this.http.get(apiUrl, options)
             .map(response => <any>(<Response>response));
     }

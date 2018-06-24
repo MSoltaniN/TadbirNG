@@ -1,5 +1,6 @@
 ﻿
 export enum KeyCode {
+    Enter = 13,
     Shift = 16,
     Space = 32,
     Page_Up = 33,
