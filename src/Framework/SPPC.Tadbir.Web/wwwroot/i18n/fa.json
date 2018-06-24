@@ -213,7 +213,9 @@
     "DetailAccount": "تفصیلی شناور",
     "CostCenter": "مرکز هزینه",
     "Project": "پروژه",
-    "Select": "-- انتخاب کنید --"
+    "Select": "-- انتخاب کنید --",
+    "NotFound": "نتیجه ای یافت نشد",
+    "NoRelateion": "رابطه ای ایجاد نشده است"
   },
   "FiscalPeriod": {
     "New": "دوره مالی جدید",

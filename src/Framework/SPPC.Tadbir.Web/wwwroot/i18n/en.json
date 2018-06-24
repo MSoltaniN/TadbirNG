@@ -213,7 +213,9 @@
     "DetailAccount": "Detail Account",
     "CostCenter": "Cost Center",
     "Project": "Project",
-    "Select": "-- Select --"
+    "Select": "-- Select --",
+    "NotFound": "No results found",
+    "NoRelateion": "No relation has been created"
   },
   "FiscalPeriod": {
     "New": "New Fiscal Period",
