@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using SPPC.Tadbir.Configuration;
+using SPPC.Tadbir.Configuration.Models;
 
 namespace SPPC.Tadbir.Persistence
 {
