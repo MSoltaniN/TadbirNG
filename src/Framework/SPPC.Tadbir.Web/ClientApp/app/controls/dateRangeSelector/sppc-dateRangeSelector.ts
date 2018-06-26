@@ -61,36 +61,35 @@ export class SppcDateRangeSelector extends BaseFilterCellComponent implements On
             toDate: ''
         });
 
-        this.onChanges();
-    }
-
-    onChanges(): void {
+        this.setFilter(this.displayFromDate, this.displayToDate);
 
         this.myForm.valueChanges.subscribe(val => {
+            this.setFilter(val.fromDate, val.toDate);
+        });
+    }
 
-            const filters = [];
+    setFilter(fDate: string, tDate: string) {
+        const filters = [];
 
-            if (val.fromDate != undefined && val.fromDate != "") {
-                filters.push({
-                    field: this.Field,
-                    operator: "gte",
-                    value: val.fromDate
-                });
-            }
-
-            if (val.toDate != undefined && val.toDate != "") {
-                filters.push({
-                    field: this.Field,
-                    operator: "lte",
-                    value: val.toDate
-                });
-            }
-
-            this.filterService.filter({
-                logic: "and",
-                filters: filters
+        if (fDate != undefined && fDate != "") {
+            filters.push({
+                field: this.Field,
+                operator: "gte",
+                value: fDate
             });
+        }
 
+        if (tDate != undefined && tDate != "") {
+            filters.push({
+                field: this.Field,
+                operator: "lte",
+                value: tDate
+            });
+        }
+
+        this.filterService.filter({
+            logic: "and",
+            filters: filters
         });
     }
 

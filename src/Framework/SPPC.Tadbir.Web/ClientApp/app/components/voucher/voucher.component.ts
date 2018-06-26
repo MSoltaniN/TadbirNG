@@ -99,7 +99,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     reloadGrid(insertedModel?: Voucher) {
         if (this.viewAccess) {
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
             var filter = this.currentFilter;
             var order = this.currentOrder;
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
@@ -137,7 +137,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                 }
                 this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
-                this.sppcLoading.hide();
+                //this.sppcLoading.hide();
             })
         }
         else {
