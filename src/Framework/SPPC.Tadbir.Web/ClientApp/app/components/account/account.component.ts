@@ -128,14 +128,15 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.selectedRows = [];
                 this.reloadGrid();
-                this.groupDelete = false;
+                //this.groupDelete = false;
+                return;
             }, (error => {
                 this.sppcLoading.hide();
                 this.showMessage(error, MessageType.Warning);
             }));
         }
 
-        this.groupDelete = false;
+        //this.groupDelete = false;
         this.deleteModelsConfirm = false;
     }
 
@@ -327,8 +328,8 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                             return;
                         }                        
                     }
-                    
-                    this.reloadGrid(insertedModel);
+                    if(model.parentId == undefined)
+                        this.reloadGrid(insertedModel);
                     
                 }, (error => {
                     this.isNew = true;
