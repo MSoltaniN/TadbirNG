@@ -61,22 +61,19 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// تنظیمات موجود برای مدیریت ارتباطات بین مولفه های بردار حساب را خوانده و برمی گرداند
+        /// تمام تنظیمات کاربری موجود برای فرم های لیستی را برای کاربر مشخص شده خوانده و برمی گرداند
         /// </summary>
-        /// <returns></returns>
-        public async Task<RelationsConfig> GetRelationsConfigAsync()
+        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
+        /// <returns>تنظیمات کاربری موجود برای فرم های لیستی</returns>
+        public async Task<IList<UserSettingViewModel>> GetListViewConfigByUserAsync(int userId)
         {
-            var relationsConfig = default(RelationsConfig);
-            var repository = _unitOfWork.GetAsyncRepository<Setting>();
+            IList<UserSettingViewModel> configList = new List<UserSettingViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<UserSetting>();
             var configItems = await repository
-                .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(RelationsConfig).Name);
-            var config = configItems.SingleOrDefault();
-            if (config != null)
-            {
-                relationsConfig = _mapper.Map<RelationsConfig>(config);
-            }
+                .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(ListFormViewConfig).Name
+                    && cfg.User.Id == userId);
 
-            return relationsConfig;
+            return configList;
         }
 
         private readonly IUnitOfWork _unitOfWork;

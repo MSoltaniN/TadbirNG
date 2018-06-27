@@ -55,7 +55,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey("RoleID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_UserSetting_Auth_Role");
-            builder.HasOne(e => e.Entity)
+            builder.HasOne(e => e.EntityView)
                 .WithMany()
                 .HasForeignKey("EntityViewID")
                 .OnDelete(DeleteBehavior.ClientSetNull)

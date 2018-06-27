@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using SPPC.Framework.Domain;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Metadata;
 
 namespace SPPC.Tadbir.Model.Config
 {

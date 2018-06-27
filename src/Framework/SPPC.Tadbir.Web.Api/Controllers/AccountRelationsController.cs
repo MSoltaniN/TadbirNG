@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             Verify.ArgumentNotNull(configRepository, "configRepository");
             _repository = repository;
-            _config = configRepository.GetRelationsConfigAsync().Result;
+            _config = configRepository.GetConfigByTypeAsync<RelationsConfig>().Result;
         }
 
         protected override string EntityNameKey

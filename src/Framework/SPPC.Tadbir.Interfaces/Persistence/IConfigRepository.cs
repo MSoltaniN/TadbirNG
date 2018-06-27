@@ -25,9 +25,10 @@ namespace SPPC.Tadbir.Persistence
         Task<TConfig> GetConfigByTypeAsync<TConfig>();
 
         /// <summary>
-        /// تنظیمات موجود برای مدیریت ارتباطات بین مولفه های بردار حساب را از محل ذخیره خوانده و برمی گرداند
+        /// تمام تنظیمات کاربری موجود برای فرم های لیستی را برای کاربر مشخص شده خوانده و برمی گرداند
         /// </summary>
-        /// <returns></returns>
-        Task<RelationsConfig> GetRelationsConfigAsync();
+        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
+        /// <returns>تنظیمات کاربری موجود برای فرم های لیستی</returns>
+        Task<IList<UserSettingViewModel>> GetListViewConfigByUserAsync(int userId);
     }
 }
