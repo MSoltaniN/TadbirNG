@@ -336,12 +336,6 @@ export class DefaultComponent extends BaseComponent {
 
                     var filterValue = filter.filters[i].value;
 
-                    //TODO این کد آقای نوری نوشتند برای فیلتر تاریخ در گرید هست احتمالا باید حذف شود
-                    //if (dataType == "System.DateTime") {
-                    //    var date = moment.from(filterValue, 'fa', 'YYYY/MM/DD').format('YYYY/MM/DD');
-                    //    filterValue = date;
-                    //}
-
                     filters.push(new Filter(filter.filters[i].field, filterValue, operator, dataType));
 
                 }
