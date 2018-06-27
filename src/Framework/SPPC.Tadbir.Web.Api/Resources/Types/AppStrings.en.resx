@@ -456,4 +456,34 @@
   <data name="Organization" xml:space="preserve">
     <value>Organization</value>
   </data>
+  <data name="AccountRelationsSettings" xml:space="preserve">
+    <value>Account relationships</value>
+  </data>
+  <data name="AccountRelationsSettingsDescription" xml:space="preserve">
+    <value>Available options for controlling possible relationships between account components</value>
+  </data>
+  <data name="DateRangeFilterSettings" xml:space="preserve">
+    <value>Date ranges</value>
+  </data>
+  <data name="DateRangeFilterSettingsDescription" xml:space="preserve">
+    <value>Available options for filtering list views by a date range</value>
+  </data>
+  <data name="EntityRowAccessSettings" xml:space="preserve">
+    <value>Accessible entity records</value>
+  </data>
+  <data name="EntityRowAccessSettingsDescription" xml:space="preserve">
+    <value>Available options for controlling access to entity records</value>
+  </data>
+  <data name="ListFormViewSettings" xml:space="preserve">
+    <value>List forms</value>
+  </data>
+  <data name="ListFormViewSettingsDescription" xml:space="preserve">
+    <value>Available options for displaying records in list forms and reports</value>
+  </data>
+  <data name="NumberCurrencySettings" xml:space="preserve">
+    <value>Numbers and currencies</value>
+  </data>
+  <data name="NumberCurrencySettingsDescription" xml:space="preserve">
+    <value>Available options for displaying numeric and currency values</value>
+  </data>
 </root>

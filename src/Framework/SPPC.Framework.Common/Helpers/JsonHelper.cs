@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 using SPPC.Framework.Common;
@@ -63,14 +64,15 @@ namespace SPPC.Framework.Helpers
         /// Deserializes a well-formed JSON value into an object.
         /// </summary>
         /// <param name="json">Value having JSON format</param>
+        /// <param name="type">Type of object to deserialize from JSON</param>
         /// <returns>Object deserialized from specified JSON value</returns>
-        public static object To(string json)
+        public static object To(string json, Type type)
         {
             Verify.ArgumentNotNullOrWhitespace(json, "json");
             using (var reader = new JsonTextReader(new StringReader(json)))
             {
                 var serializer = new JsonSerializer();
-                object value = serializer.Deserialize(reader);
+                object value = serializer.Deserialize(reader, type);
                 return value;
             }
         }

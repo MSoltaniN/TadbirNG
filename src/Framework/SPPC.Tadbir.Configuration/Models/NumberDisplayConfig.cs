@@ -37,7 +37,7 @@ namespace SPPC.Tadbir.Configuration.Models
 
         /// <summary>
         /// نحوه خواندن و اعمال تنظیمات جداکننده، که می تواند از تنظیمات موجود در سیستم عامل
-        /// یا از تنظیمات سفارشی برنامه استفاده کند 
+        /// یا از تنظیمات سفارشی برنامه استفاده کند
         /// </summary>
         public string SeparatorMode { get; set; }
 

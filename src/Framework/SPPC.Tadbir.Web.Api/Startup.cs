@@ -52,7 +52,7 @@ namespace SPPC.Tadbir.Web.Api
             services.AddTransient<ICompanyRepository, CompanyRepository>();
             services.AddTransient<IRelationRepository, RelationRepository>();
             services.AddTransient<IMetadataRepository, MetadataRepository>();
-            services.AddTransient<IConfigRepository, WebConfigRepository>();
+            services.AddTransient<IConfigRepository, ConfigRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IDomainMapper, DomainMapper>();
             services.AddTransient<DbContext, TadbirContext>();

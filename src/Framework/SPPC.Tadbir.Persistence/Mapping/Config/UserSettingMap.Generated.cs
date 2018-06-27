@@ -17,12 +17,8 @@ using SPPC.Tadbir.Model.Config;
 
 namespace SPPC.Tadbir.Persistence.Mapping
 {
-    internal sealed class UserSettingMap
+    internal static class UserSettingMap
     {
-        private UserSettingMap()
-        {
-        }
-
         internal static void BuildMapping(EntityTypeBuilder<UserSetting> builder)
         {
             builder.ToTable("UserSetting", "Config");
@@ -34,7 +30,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .IsRequired()
                 .HasMaxLength(128);
             builder.Property(e => e.Values)
-                .HasColumnName("[Values]")
+                .HasColumnName("Values")
                 .IsRequired()
                 .HasMaxLength(2048);
             builder.Property(e => e.RowGuid)

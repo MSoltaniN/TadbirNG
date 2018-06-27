@@ -6,7 +6,10 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Service.Security;
+using SPPC.Tadbir.Configuration;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
@@ -15,6 +18,7 @@ using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -70,7 +74,7 @@ namespace SPPC.Tadbir.Mapper
             MapFinanceTypes(mapperConfig);
             MapCorporateTypes(mapperConfig);
             MapWorkflowTypes(mapperConfig);
-            ////MapContactTypes(mapperConfig);
+            MapConfigTypes(mapperConfig);
             MapCoreTypes(mapperConfig);
             MapMetadataTypes(mapperConfig);
         }
@@ -366,10 +370,26 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.Status.Id = viewModel.StatusId);
         }
 
-        // NOTE: Temporarily commented out to prevent CA warning.
-        ////private static void MapContactTypes(IMapperConfigurationExpression mapperConfig)
-        ////{
-        ////}
+        private static void MapConfigTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<Setting, SettingBriefViewModel>()
+                .ForMember(
+                    dest => dest.Values,
+                    opts => opts.MapFrom(
+                        src => ConfigFactory.CreateFromJson(src.Values, src.ModelType)))
+                .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey))
+                .ForMember(dest => dest.Description, opts => opts.MapFrom(src => src.DescriptionKey));
+            mapperConfig.CreateMap<Setting, RelationsConfig>()
+                .ConvertUsing(MapConfigType<RelationsConfig>);
+            mapperConfig.CreateMap<Setting, DateRangeConfig>()
+                .ConvertUsing(MapConfigType<DateRangeConfig>);
+            mapperConfig.CreateMap<Setting, NumberDisplayConfig>()
+                .ConvertUsing(MapConfigType<NumberDisplayConfig>);
+            mapperConfig.CreateMap<Setting, ListFormViewConfig>()
+                .ConvertUsing(MapConfigType<ListFormViewConfig>);
+            mapperConfig.CreateMap<Setting, EntityRowAccessConfig>()
+                .ConvertUsing(MapConfigType<EntityRowAccessConfig>);
+        }
 
         private static void MapMetadataTypes(IMapperConfigurationExpression mapperConfig)
         {
@@ -385,6 +405,12 @@ namespace SPPC.Tadbir.Mapper
                 ? (TValue)dictionary[key]
                 : default(TValue);
             return value;
+        }
+
+        private static TConfig MapConfigType<TConfig>(Setting setting)
+        {
+            Verify.ArgumentNotNull(setting, "setting");
+            return JsonHelper.To<TConfig>(setting.Values);
         }
 
         private static ICryptoService _crypto;

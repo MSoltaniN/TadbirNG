@@ -2,7 +2,9 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Common;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -18,8 +20,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             IRelationRepository repository, IConfigRepository configRepository, IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
+            Verify.ArgumentNotNull(configRepository, "configRepository");
             _repository = repository;
-            _configRepository = configRepository;
+            _config = configRepository.GetRelationsConfigAsync().Result;
         }
 
         protected override string EntityNameKey
@@ -32,9 +35,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.FiscalPeriodBranchAccountsUrl)]
         public async Task<IActionResult> GetConnectableAccountsAsync(int fpId, int branchId)
         {
-            var config = _configRepository.GetRelationsConfig();
             var accounts = await _repository.GetConnectableAccountsAsync(
-                fpId, branchId, config.UseLeafAccounts, GridOptions);
+                fpId, branchId, _config.UseLeafAccounts, GridOptions);
             return Json(accounts);
         }
 
@@ -43,9 +45,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.FiscalPeriodBranchDetailAccountsUrl)]
         public async Task<IActionResult> GetConnectableDetailAccountsAsync(int fpId, int branchId)
         {
-            var config = _configRepository.GetRelationsConfig();
             var detailAccounts = await _repository.GetConnectableDetailAccountsAsync(
-                fpId, branchId, config.UseLeafDetails, GridOptions);
+                fpId, branchId, _config.UseLeafDetails, GridOptions);
             return Json(detailAccounts);
         }
 
@@ -54,9 +55,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.FiscalPeriodBranchCostCentersUrl)]
         public async Task<IActionResult> GetConnectableCostCentersAsync(int fpId, int branchId)
         {
-            var config = _configRepository.GetRelationsConfig();
             var costCenters = await _repository.GetConnectableCostCentersAsync(
-                fpId, branchId, config.UseLeafCostCenters, GridOptions);
+                fpId, branchId, _config.UseLeafCostCenters, GridOptions);
             return Json(costCenters);
         }
 
@@ -65,9 +65,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.FiscalPeriodBranchProjectsUrl)]
         public async Task<IActionResult> GetConnectableProjectsAsync(int fpId, int branchId)
         {
-            var config = _configRepository.GetRelationsConfig();
             var projects = await _repository.GetConnectableProjectsAsync(
-                fpId, branchId, config.UseLeafProjects, GridOptions);
+                fpId, branchId, _config.UseLeafProjects, GridOptions);
             return Json(projects);
         }
 
@@ -228,6 +227,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         private IRelationRepository _repository;
-        private IConfigRepository _configRepository;
+        private RelationsConfig _config;
     }
 }
