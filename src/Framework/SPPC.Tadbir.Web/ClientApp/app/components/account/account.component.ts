@@ -85,6 +85,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
+    addToContainer: boolean = false;
     
 
     ngOnInit() {
@@ -128,14 +129,15 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.selectedRows = [];
                 this.reloadGrid();
-                this.groupDelete = false;
+                //this.groupDelete = false;
+                return;
             }, (error => {
                 this.sppcLoading.hide();
                 this.showMessage(error, MessageType.Warning);
             }));
         }
 
-        this.groupDelete = false;
+        //this.groupDelete = false;
         this.deleteModelsConfirm = false;
     }
 
@@ -274,13 +276,16 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public addNew(parentModelId?: number) {
+    public addNew(parentModelId?: number,addToThis? : boolean) {
         this.isNew = true;
         this.editDataItem = new AccountInfo();
 
         //آی دی مربوط به حساب سطح بالاتر برای درج در زیر حساب ها در متغیر parentId مقدار دهی میشود
         if (parentModelId)
             this.parentId = parentModelId;
+
+        if (addToThis)
+            this.addToContainer = addToThis;
 
         this.errorMessage = '';
     }
@@ -327,9 +332,10 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                             return;
                         }                        
                     }
-
-                    this.reloadGrid(insertedModel);
-                    
+                    if (model.parentId == undefined || this.addToContainer) {
+                        this.addToContainer = false;
+                        this.reloadGrid(insertedModel);
+                    }
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;

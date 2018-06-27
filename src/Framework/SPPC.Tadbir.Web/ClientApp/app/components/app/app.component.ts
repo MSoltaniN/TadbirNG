@@ -195,16 +195,37 @@ export class AppComponent {
 
         console.log(event);
 
-        for (var it in this.hotKeyMap) {            
-            if (it.indexOf(ctrl) >= 0 && it.indexOf(alt) >= 0 && it.indexOf(alt) >= 0 && it.indexOf(key) >= 0)
+        for (var it in this.hotKeyMap) {
+
+            var shortcutFound: boolean = true;
+            if (it.indexOf('ctrl') >= 0) {
+                if (ctrl == '' || it.indexOf(ctrl) == -1) {
+                    shortcutFound = false;
+                }
+            }
+
+            if (it.indexOf('alt') >= 0) {
+                if (alt == '' || it.indexOf(alt) == -1) {
+                    shortcutFound = false;
+                }
+            }
+
+            if (it.indexOf('shift') >= 0) {
+                if (shift == '' || it.indexOf(shift) == -1) {
+                    shortcutFound = false;
+                }
+            }
+
+            if (it.indexOf('+' + key) == -1)
+                shortcutFound = false;
+
+            if (shortcutFound) {
                 url = this.hotKeyMap[it];
+                this.router.navigate([url]);
+                return;
+            }
+                
         }
-
-        if (url != '') {
-            this.router.navigate([url]);
-        }
-
-        
         
     }
     
