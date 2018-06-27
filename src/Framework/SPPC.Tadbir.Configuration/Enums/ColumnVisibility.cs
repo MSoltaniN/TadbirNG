@@ -6,12 +6,12 @@ namespace SPPC.Tadbir.Configuration
     /// <summary>
     /// گزینه های موجود برای وضعیت نمایشی یک ستون در نمای لیستی را تعریف می کند
     /// </summary>
-    public class ColumnVisibility
+    public sealed class ColumnVisibility
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        public ColumnVisibility()
+        private ColumnVisibility()
         {
         }
 

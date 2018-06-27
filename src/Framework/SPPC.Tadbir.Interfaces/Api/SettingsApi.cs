@@ -13,12 +13,22 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
-        /// API server route URL for workflow settings
+        /// API client URL for all application settings
+        /// </summary>
+        public const string AllSettings = "settings";
+
+        /// <summary>
+        /// API server route URL for all application settings
+        /// </summary>
+        public const string AllSettingsUrl = "settings";
+
+        /// <summary>
+        /// API client URL for workflow settings
         /// </summary>
         public const string WorkflowSettings = "settings/workflows";
 
         /// <summary>
-        /// API client URL for workflow settings
+        /// API server route URL for workflow settings
         /// </summary>
         public const string WorkflowSettingsUrl = "settings/workflows";
     }
