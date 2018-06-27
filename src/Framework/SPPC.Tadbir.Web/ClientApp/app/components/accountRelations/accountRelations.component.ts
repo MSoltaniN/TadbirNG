@@ -48,6 +48,7 @@ interface Item {
 
 export class AccountRelationsComponent extends DefaultComponent implements OnInit {
 
+    public isActive: boolean = false;
     public searchValue: string;
     public noResultMessage: boolean = false;
     public relatedSearchValue: string;
@@ -180,6 +181,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         if (this.mainComponentCheckedKeys.find(f => f == itemId) == itemId) {
             this.mainComponentCheckedKeys = [];
             this.relatedComponentCheckedKeys = [];
+            this.relatedComponentCategories = undefined;
         }
         else {
             this.mainComponentCheckedKeys = [];
@@ -345,7 +347,68 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.sppcLoading.hide();
     }
 
-    onSave() {
+    //onSave() {
+    //    this.errorMessage = String.Empty;
+    //    this.sppcLoading.show();
+    //    var model = new AccountItemRelationsInfo();
+    //    model.id = this.mainComponentSelectedItem;
+    //    model.relatedItemIds = this.relatedComponentCheckedKeys;
+    //    var apiUrl = String.Empty;
+    //    if (this.relatedComponentDropdownSelected > 0) {
+    //        switch (this.relatedComponentDropdownSelected) {
+    //            case 1: {
+    //                if (this.mainComponentDropdownSelected > 0) {
+    //                    switch (this.mainComponentDropdownSelected) {
+    //                        case 2: {
+    //                            apiUrl = String.Format(AccountRelationApi.AccountsRelatedToDetailAccount, model.id);
+    //                            break;
+    //                        }
+    //                        case 3: {
+    //                            apiUrl = String.Format(AccountRelationApi.AccountsRelatedToCostCenter, model.id);
+    //                            break;
+    //                        }
+    //                        case 4: {
+    //                            apiUrl = String.Format(AccountRelationApi.AccountsRelatedToProject, model.id);
+    //                            break;
+    //                        }
+    //                        default: {
+    //                            break;
+    //                        }
+    //                    }
+    //                }
+    //                break;
+    //            }
+    //            case 2: {
+    //                apiUrl = String.Format(AccountRelationApi.DetailAccountsRelatedToAccount, model.id);
+    //                break;
+    //            }
+    //            case 3: {
+    //                apiUrl = String.Format(AccountRelationApi.CostCentersRelatedToAccount, model.id);
+    //                break;
+    //            }
+    //            case 4: {
+    //                apiUrl = String.Format(AccountRelationApi.ProjectsRelatedToAccount, model.id);
+    //                break;
+    //            }
+    //            default: {
+    //                break;
+    //            }
+    //        }
+    //    }
+    //    this.accountRelationsService.edit<AccountItemRelationsInfo>(apiUrl, model).subscribe(response => {
+    //        this.sppcLoading.hide();
+    //        this.showMessage(this.updateMsg, MessageType.Succes);
+    //    }, (error => {
+    //        this.errorMessage = error;
+    //        this.sppcLoading.hide();
+    //    }));
+    //}
+
+    onCreateRelation() {
+        this.isActive = true;
+    }
+
+    DeleteRelation() {
         this.errorMessage = String.Empty;
         this.sppcLoading.show();
         var model = new AccountItemRelationsInfo();
@@ -400,6 +463,12 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
             this.errorMessage = error;
             this.sppcLoading.hide();
         }));
+
+        this.loadRelatedComponent();
+    }
+
+    cancelHandler() {
+        this.isActive = false;
     }
 
     onCancel() {
@@ -421,6 +490,8 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
         this.searchValue = String.Empty;
         this.relatedSearchValue = String.Empty;
+        this.noResultMessage = false;
+        this.noRelatedResultMessage = false;
     }
 
     onMainComponentSearch() {
@@ -437,7 +508,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
             else
                 this.noResultMessage = false;
 
-           
+
 
             this.sppcLoading.hide();
         });
@@ -468,7 +539,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
             else
                 this.noRelatedResultMessage = false;
 
-            
+
 
             this.sppcLoading.hide();
         })

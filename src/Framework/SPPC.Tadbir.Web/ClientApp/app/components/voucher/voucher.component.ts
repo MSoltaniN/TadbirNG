@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
+﻿import { Component, OnInit, Input, Renderer2, ChangeDetectorRef } from '@angular/core';
 import { VoucherService, VoucherInfo, FiscalPeriodService } from '../../service/index';
 import { Voucher } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
@@ -66,9 +66,10 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.View);
         this.reloadGrid();
+        this.cdref.detectChanges();
     }
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
         private voucherService: VoucherService, public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, Entities.Voucher, Metadatas.Voucher);
     }
