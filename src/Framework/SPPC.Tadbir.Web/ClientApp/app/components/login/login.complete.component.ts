@@ -159,7 +159,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
         //#region load menu
         var menuList: Array < Command > = new Array<Command>();
-
+        
         var commands: any;
 
         this.userService.getCurrentUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
