@@ -215,7 +215,11 @@
     "Project": "پروژه",
     "Select": "-- انتخاب کنید --",
     "NotFound": "نتیجه ای یافت نشد",
-    "NoRelateion": "رابطه ای ایجاد نشده است"
+    "NoRelateion": "رابطه ای ایجاد نشده است",
+    "CreateRelation": "ایجاد ارتباط",
+    "CreateRelationBtn": "ایجاد ارتباط",
+    "DeleteRelationBtn": "حذف ارتباط",
+    "SearchBtn": "جستجو"
   },
   "FiscalPeriod": {
     "New": "دوره مالی جدید",

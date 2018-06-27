@@ -49,6 +49,7 @@ import { BranchRolesFormComponent } from './components/branch/branch-roles-form.
 import { CompanyComponent } from './components/company/company.component';
 import { CompanyFormComponent } from './components/company/company-form.component';
 import { AccountRelationsComponent } from './components/accountRelations/accountRelations.component';
+import { AccountRelationsFormComponent } from './components/accountRelations/accountRelations-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -163,6 +164,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         SppcDatePipe,     
         SppcCheckAccess,
         AccountRelationsComponent,
+        AccountRelationsFormComponent,
         SppcGridDateFilter,
         TestDr,
         SppcGridDatepicker,
