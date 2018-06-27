@@ -209,6 +209,7 @@ CREATE TABLE [Config].[UserSetting] (
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Config_UserSetting_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Config_UserSetting] PRIMARY KEY CLUSTERED ([UserSettingID] ASC)
     , CONSTRAINT [FK_Config_UserSetting_Config_Setting] FOREIGN KEY ([SettingID]) REFERENCES [Config].[Setting]([SettingID])
+    , CONSTRAINT [FK_Config_UserSetting_Metadata_EntityView] FOREIGN KEY ([EntityViewID]) REFERENCES [Metadata].[Entity]([EntityID])
     , CONSTRAINT [FK_Config_UserSetting_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User]([UserID])
     , CONSTRAINT [FK_Config_UserSetting_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role]([RoleID])
 )
@@ -1249,6 +1250,27 @@ INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) V
 INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (31, 2, 'FirstName_Field', N'نام')
 INSERT INTO [Metadata].[LocalText] (LocalTextID, LocaleID, ResourceId, [Text]) VALUES (32, 2, 'LastName_Field', N'نام خانوادگی')
 SET IDENTITY_INSERT [Metadata].[LocalText] OFF
+
+
+-- Create configuration records...
+SET IDENTITY_INSERT [Config].[Setting] ON
+INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DescriptionKey)
+    VALUES (1, 'AccountRelationsSettings', 2, 1, 'RelationsConfig', N'{"useLeafAccounts": true, "useLeafDetails": true, "useLeafCostCenters": true,"useLeafProjects": true}', 'AccountRelationsSettingsDescription')
+INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DescriptionKey)
+    VALUES (2, 'DateRangeFilterSettings', 2, 0, 'DateRangeConfig', N'{"defaultDateRange": "FiscalStartToFiscalEnd"}', 'DateRangeFilterSettingsDescription')
+INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DescriptionKey)
+    VALUES (3, 'NumberCurrencySettings', 2, 0, 'NumberDisplayConfig', N'{"useSeparator": true, "separatorMode": "UseCustom", "separatorSymbol": ",", "decimalPrecision": 0, "maxPrecision": 8}', 'NumberCurrencySettingsDescription')
+INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DescriptionKey)
+    VALUES (4, 'ListFormViewSettings', 3, 2, 'ListFormViewConfig', N'{"pageSize": 10, "defaultColumnView": {"width": null, "index": null, "visibility": "Default"}, "columnViews": []}', 'ListFormViewSettingsDescription')
+INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DescriptionKey)
+    VALUES (5, 'EntityRowAccessSettings', 2, 2, 'EntityRowAccessConfig', N'{"accessMode": "Default", "value": null, "textValue": null, "items": []}', 'EntityRowAccessSettingsDescription')
+SET IDENTITY_INSERT [Config].[Setting] OFF
+
+-- Sample user settings for UserID = 1 and Account List form (Admin user)...
+SET IDENTITY_INSERT [Config].[UserSetting] ON
+INSERT INTO [Config].[UserSetting] (UserSettingID, SettingID, EntityViewID, UserID, RoleID, ModelType, [Values])
+    VALUES (1, 4, 1, 1, NULL, 'ListFormViewConfig', N'{"pageSize": 20, "defaultColumnView": {"width": null, "index": null, "visibility": "Default"}, "columnViews": [{"width": 0, "index": -1, "visibility": "AlwaysHidden"},{"width": 50, "index": 0, "visibility": "Visible"},{"width": 100, "index": 1, "visibility": "Visible"},{"width": 180, "index": 2, "visibility": "AlwaysVisible"},{"width": 0, "index": -1, "visibility": "Hidden"},{"width": 180, "index": 3, "visibility": "Visible"}]}')
+SET IDENTITY_INSERT [Config].[UserSetting] OFF
 
 
 -- Create system records for security (NOTE: These records will be migrated to SYS database in a later stage)
