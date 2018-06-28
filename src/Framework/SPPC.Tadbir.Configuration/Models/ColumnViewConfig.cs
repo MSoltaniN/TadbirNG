@@ -13,8 +13,23 @@ namespace SPPC.Tadbir.Configuration.Models
         /// </summary>
         public ColumnViewConfig()
         {
-            Visibility = ColumnVisibility.Default;
+            Visibility = ColumnVisibility.Visible;
         }
+
+        /// <summary>
+        /// نمونه جدیدی از این کلاس با نام مشخص شده می سازد.
+        /// </summary>
+        /// <param name="name">نام مورد نظر برای ستون</param>
+        public ColumnViewConfig(string name)
+            : this()
+        {
+            Name = name;
+        }
+
+        /// <summary>
+        /// نام ستون که در سرستون لیست اطلاعاتی نمایش داده می شود
+        /// </summary>
+        public string Name { get; set; }
 
         /// <summary>
         /// پهنای ستون بر مبنای واحد مورد استفاده در زیرساخت واسط کاربری برنامه.

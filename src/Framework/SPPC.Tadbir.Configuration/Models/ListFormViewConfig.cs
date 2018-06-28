@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPPC.Framework.Values;
 
 namespace SPPC.Tadbir.Configuration.Models
 {
@@ -13,19 +14,19 @@ namespace SPPC.Tadbir.Configuration.Models
         /// </summary>
         public ListFormViewConfig()
         {
-            DefaultColumnView = new ColumnViewConfig();
+            PageSize = Constants.GridPageSize;
             ColumnViews = new List<ColumnViewConfig>();
         }
+
+        /// <summary>
+        /// شناسه دیتابیسی مدل نمایشی مورد استفاده در فرم لیستی
+        /// </summary>
+        public int ViewId { get; set; }
 
         /// <summary>
         /// تعداد سطرهای اطلاعاتی نمایش داده شده در هر صفحه از نمای لیستی
         /// </summary>
         public int PageSize { get; set; }
-
-        /// <summary>
-        /// تنظیمات نمایشی پیش فرض برای تمام ستون های نمای لیستی
-        /// </summary>
-        public ColumnViewConfig DefaultColumnView { get; set; }
 
         /// <summary>
         /// تنظیمات نمایشی ستون های نمای لیستی

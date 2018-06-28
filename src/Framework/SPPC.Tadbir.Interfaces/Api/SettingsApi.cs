@@ -33,6 +33,16 @@ namespace SPPC.Tadbir.Api
         public const string ListSettingsByUserUrl = "settings/list/users/{userId:min(1)}";
 
         /// <summary>
+        /// API client URL for a single view settings for a user specified by unique identifier
+        /// </summary>
+        public const string ListSettingsByUserAndView = "settings/list/users/{0}/views/{1}";
+
+        /// <summary>
+        /// API server route URL for a single view settings for a user specified by unique identifier
+        /// </summary>
+        public const string ListSettingsByUserAndViewUrl = "settings/list/users/{userId:min(1)}/views/{viewId:min(1)}";
+
+        /// <summary>
         /// API client URL for workflow settings
         /// </summary>
         public const string WorkflowSettings = "settings/workflows";

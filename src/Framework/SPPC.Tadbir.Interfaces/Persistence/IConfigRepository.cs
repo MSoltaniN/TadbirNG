@@ -29,6 +29,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
         /// <returns>تنظیمات کاربری موجود برای فرم های لیستی</returns>
-        Task<IList<UserSettingViewModel>> GetListViewConfigByUserAsync(int userId);
+        Task<IList<ListFormViewConfig>> GetListViewConfigByUserAsync(int userId);
+
+        /// <summary>
+        /// تنظیمات کاربری موجود برای یکی از فرم های لیستی را برای کاربر مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
+        /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
+        /// <returns>تنظیمات کاربری موجود برای یکی از فرم های لیستی</returns>
+        Task<ListFormViewConfig> GetListViewConfigByUserAsync(int userId, int viewId);
     }
 }

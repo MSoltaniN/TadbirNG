@@ -389,6 +389,12 @@ namespace SPPC.Tadbir.Mapper
                 .ConvertUsing(MapConfigType<ListFormViewConfig>);
             mapperConfig.CreateMap<Setting, EntityRowAccessConfig>()
                 .ConvertUsing(MapConfigType<EntityRowAccessConfig>);
+            mapperConfig.CreateMap<Property, ColumnViewConfig>()
+                .ConvertUsing(prop => !String.IsNullOrEmpty(prop.Settings)
+                    ? JsonHelper.To<ColumnViewConfig>(prop.Settings)
+                    : new ColumnViewConfig(prop.Name));
+            mapperConfig.CreateMap<UserSetting, ListFormViewConfig>()
+                .ConvertUsing(cfg => JsonHelper.To<ListFormViewConfig>(cfg.Values));
         }
 
         private static void MapMetadataTypes(IMapperConfigurationExpression mapperConfig)

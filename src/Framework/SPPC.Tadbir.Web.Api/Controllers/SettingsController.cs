@@ -41,6 +41,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(listSettings);
         }
 
+        // GET: api/settings/list/users/{userId:min(1)}/views/{viewId:min(1)}
+        [Route(SettingsApi.ListSettingsByUserAndViewUrl)]
+        public async Task<IActionResult> GetListSettingsByUserAndView(int userId, int viewId)
+        {
+            var listSettings = await _repository.GetListViewConfigByUserAsync(userId, viewId);
+            return Json(listSettings);
+        }
+
         private readonly IConfigRepository _repository;
         private readonly IStringLocalizer<AppStrings> _strings;
     }
