@@ -456,4 +456,34 @@
   <data name="Organization" xml:space="preserve">
     <value>سازمان</value>
   </data>
+  <data name="AccountRelationsSettings" xml:space="preserve">
+    <value>ارتباطات بردار حساب</value>
+  </data>
+  <data name="AccountRelationsSettingsDescription" xml:space="preserve">
+    <value>گزینه های موجود برای کنترل نحوه ایجاد ارتباطات بین مولفه های بردار حساب</value>
+  </data>
+  <data name="DateRangeFilterSettings" xml:space="preserve">
+    <value>محدوده های تاریخی</value>
+  </data>
+  <data name="DateRangeFilterSettingsDescription" xml:space="preserve">
+    <value>گزینه های موجود برای فیلتر نماهای لیستی با استفاده از محدوده تاریخی</value>
+  </data>
+  <data name="EntityRowAccessSettings" xml:space="preserve">
+    <value>سطرهای اطلاعاتی قابل دسترسی</value>
+  </data>
+  <data name="EntityRowAccessSettingsDescription" xml:space="preserve">
+    <value>گزینه های موجود برای محدود کردن دسترسی به سطرهای اطلاعاتی هر موجودیت</value>
+  </data>
+  <data name="ListFormViewSettings" xml:space="preserve">
+    <value>فرم های لیستی</value>
+  </data>
+  <data name="ListFormViewSettingsDescription" xml:space="preserve">
+    <value>گزینه های موجود برای نمایش اطلاعات در فرم های لیستی و گزارش ها</value>
+  </data>
+  <data name="NumberCurrencySettings" xml:space="preserve">
+    <value>اعداد و مبالغ</value>
+  </data>
+  <data name="NumberCurrencySettingsDescription" xml:space="preserve">
+    <value>گزینه های موجود برای نمایش اعداد و مبالغ پولی و ارزی</value>
+  </data>
 </root>

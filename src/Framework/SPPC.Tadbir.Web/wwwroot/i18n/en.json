@@ -215,7 +215,11 @@
     "Project": "Project",
     "Select": "-- Select --",
     "NotFound": "No results found",
-    "NoRelateion": "No relation has been created"
+    "NoRelateion": "No relation has been created",
+    "CreateRelation": "Create Relation",
+    "CreateRelationBtn": "Create Relation",
+    "DeleteRelationBtn": "Delete Relation",
+    "SearchBtn": "Search"
   },
   "FiscalPeriod": {
     "New": "New Fiscal Period",

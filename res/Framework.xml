@@ -897,12 +897,6 @@
           <ColumnView name="Is Nullable" visible="True" width="120" />
           <ValidationRule name="IsNullable_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="NameResourceId" type="String" isValidated="True" description="شناسه یکتای متن محلی شده برای نام ویژگی - به زبان انگلیسی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtNameResourceId" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="NameResourceId" type="varchar(128)" nullable="False" />
-          <ColumnView name="Name Resource Id" visible="True" width="120" />
-          <ValidationRule name="NameResourceId_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
-        </Property>
         <Property name="AllowSorting" type="Boolean" isValidated="True" description="مشخص می کند که آیا عمل مرتب سازی بر حسب مقادیر این ویژگی فعال هست یا نه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="chkAllowSorting" format="" type="CheckBox" bindingMember="Checked" />
           <PropertyStorage name="AllowSorting" type="bit" nullable="False" />
@@ -914,6 +908,12 @@
           <PropertyStorage name="AllowFiltering" type="bit" nullable="False" />
           <ColumnView name="Allow Filtering" visible="True" width="120" />
           <ValidationRule name="AllowFiltering_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="Settings" type="String" isValidated="True" description="تنظیمات پیش فرض برای نمایش ویژگی به صورت یک ستون از نمای لیستی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtSettings" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Settings" type="nvarchar(1024)" nullable="True" />
+          <ColumnView name="Settings" visible="True" width="120" />
+          <ValidationRule name="Settings_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
@@ -1227,6 +1227,7 @@
         <Relation multiplicity="ManyToOne" endpointName="Setting" entityName="Setting" hasKey="True" joinTable="" description="اطلاعات عمومی تنظیمات برای این تنظیمات کاربری" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="User" entityName="User" hasKey="True" joinTable="" description="اطلاعات کاربری برای تنظیماتی که به تفکیک کاربران قابل تعریف هستند" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Role" entityName="Role" hasKey="True" joinTable="" description="اطلاعات نقش برای تنظیماتی که به تفکیک نقش ها قابل تعریف هستند" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="EntityView" entityName="Entity" hasKey="True" joinTable="" description="اطلاعات متادیتای نمای موجودیت مرتبط با این تنظیمات" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="WorkItem" area="Workflow" identifier="Id" description="یک ردیف کار را در کارتابل کاربران یا نقش ها نشان می دهد" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">

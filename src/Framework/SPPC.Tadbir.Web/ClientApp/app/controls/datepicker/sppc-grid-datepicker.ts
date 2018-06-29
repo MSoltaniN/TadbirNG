@@ -98,8 +98,7 @@ export class SppcGridDatepicker implements OnInit, OnDestroy, ControlValueAccess
     ngOnDestroy() {
         moment.locale('en');
     }
-    
-    
+
     @Input() date: any;
     public dateObject : any;
     propagateChange: any = () => { };

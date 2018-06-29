@@ -177,10 +177,11 @@ export class AppComponent {
 
         //#endregion
 
-        this.initHotKeys();
+        //this.initHotKeys();
     }
 
     public hotKeyMap: { [id: string]: string; } = {}
+    menuList: Array<Command> = new Array<Command>();
 
     doSomething(event: any) {
         // read keyCode or other properties 
@@ -193,38 +194,43 @@ export class AppComponent {
         
         var url = '';
 
-        //console.log(event);
+        var menus = sessionStorage.getItem(SessionKeys.Menu);
+        if (menus) {
+            this.menuList = JSON.parse(menus);
 
-        for (var it in this.hotKeyMap) {
+            for (var m of this.menuList) {
 
-            var shortcutFound: boolean = true;
-            if (it.indexOf('ctrl') >= 0) {
-                if (ctrl == '' || it.indexOf(ctrl) == -1) {
-                    shortcutFound = false;
+                var shortcutFound: boolean = true;
+                if (m.hotKey == null) continue;
+                var it = m.hotKey.toLowerCase();
+                if (it.indexOf('ctrl') >= 0) {
+                    if (ctrl == '' || it.indexOf(ctrl) == -1) {
+                        shortcutFound = false;
+                    }
                 }
-            }
 
-            if (it.indexOf('alt') >= 0) {
-                if (alt == '' || it.indexOf(alt) == -1) {
-                    shortcutFound = false;
+                if (it.indexOf('alt') >= 0) {
+                    if (alt == '' || it.indexOf(alt) == -1) {
+                        shortcutFound = false;
+                    }
                 }
-            }
 
-            if (it.indexOf('shift') >= 0) {
-                if (shift == '' || it.indexOf(shift) == -1) {
-                    shortcutFound = false;
+                if (it.indexOf('shift') >= 0) {
+                    if (shift == '' || it.indexOf(shift) == -1) {
+                        shortcutFound = false;
+                    }
                 }
-            }
 
-            if (it.indexOf('+' + key) == -1)
-                shortcutFound = false;
+                if (it.indexOf('+' + key) == -1)
+                    shortcutFound = false;
 
-            if (shortcutFound) {
-                url = this.hotKeyMap[it];
-                this.router.navigate([url]);
-                return;
+                if (shortcutFound) {
+                    url = m.routeUrl;
+                    this.router.navigate([url]);
+                    return;
+                }
+
             }
-                
         }
         
     }

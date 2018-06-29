@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
@@ -57,10 +58,12 @@ namespace SPPC.Tadbir.Persistence
             RoleBranchMap.BuildMapping(modelBuilder.Entity<RoleBranch>());
             RoleFiscalPeriodMap.BuildMapping(modelBuilder.Entity<RoleFiscalPeriod>());
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());
+            SettingMap.BuildMapping(modelBuilder.Entity<Setting>());
             VoucherMap.BuildMapping(modelBuilder.Entity<Voucher>());
             VoucherLineMap.BuildMapping(modelBuilder.Entity<VoucherLine>());
             UserMap.BuildMapping(modelBuilder.Entity<User>());
             UserRoleMap.BuildMapping(modelBuilder.Entity<UserRole>());
+            UserSettingMap.BuildMapping(modelBuilder.Entity<UserSetting>());
             WorkItemMap.BuildMapping(modelBuilder.Entity<WorkItem>());
             WorkItemDocumentMap.BuildMapping(modelBuilder.Entity<WorkItemDocument>());
             WorkItemHistoryMap.BuildMapping(modelBuilder.Entity<WorkItemHistory>());
