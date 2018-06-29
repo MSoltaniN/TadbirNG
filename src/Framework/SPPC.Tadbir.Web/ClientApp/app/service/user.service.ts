@@ -75,12 +75,22 @@ export class UserService extends BaseService {
             .map(res => res)
             .catch(this.handleError);
     }
-
+    
     getCurrentUserCommands(ticket : string) {
 
         var url = UserApi.CurrentUserCommands;
-        if (this.headers)
-            this.headers.set('X-Tadbir-AuthTicket', ticket);
+        if (this.headers) {
+           this.headers.set('X-Tadbir-AuthTicket', ticket);         
+
+           if (this.CurrentLanguage == "fa")
+               this.headers.set('Accept-Language', 'fa-IR,fa');
+
+           if (this.CurrentLanguage == "en")
+               this.headers.set('Accept-Language', 'en-US,en');
+
+        }
+
+        
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());
 

@@ -105,7 +105,7 @@ import { LocalizationService } from "@progress/kendo-angular-l10n";
 import { EditService } from '@progress/kendo-angular-grid/dist/es2015/editing/edit.service';
 import { EnviromentComponent } from './class/enviroment.component';
 import { Permissions } from './security/permissions';
-import { SppcGridDateFilter, TestDr } from './controls/grid/spp-grid-date-filter';
+import { SppcGridDateFilter, FilterDatePickerDirective } from './controls/grid/spp-grid-date-filter';
 import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
 
 
@@ -164,9 +164,8 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         SppcCheckAccess,
         AccountRelationsComponent,
         SppcGridDateFilter,
-        TestDr,
-        SppcGridDatepicker,
-        AccountRelationsComponent
+        FilterDatePickerDirective,
+        SppcGridDatepicker        
     ],
     providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
         UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService,

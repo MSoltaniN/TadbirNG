@@ -193,7 +193,7 @@ export class AppComponent {
         
         var url = '';
 
-        console.log(event);
+        //console.log(event);
 
         for (var it in this.hotKeyMap) {
 

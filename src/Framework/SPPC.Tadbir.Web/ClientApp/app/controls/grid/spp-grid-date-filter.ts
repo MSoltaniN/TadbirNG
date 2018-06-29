@@ -57,10 +57,10 @@ export class SppcGridDateFilter extends BaseFilterCellComponent implements OnIni
 
 
 @Directive({
-    selector: '[testdr]'
+    selector: '[FilterDatePickerDirective]'
     
 })
-export class TestDr implements OnInit  {
+export class FilterDatePickerDirective implements OnInit  {
    
 
     private conn: ViewContainerRef;
@@ -70,6 +70,8 @@ export class TestDr implements OnInit  {
     private hiddenId: string;
 
     private factoryResolver: ComponentFactoryResolver;
+
+    @Input('FilterDatePickerDirective') value: string;
 
     constructor(public con: ViewContainerRef, public el: ElementRef,
         private renderer: Renderer2, private componentFactoryResolver: ComponentFactoryResolver,
@@ -88,11 +90,24 @@ export class TestDr implements OnInit  {
 
         this.elrf.nativeElement.childNodes[1].childNodes[2].style = 'visibility:hidden;width: 0px;margin:0;padding:0;';
         this.elrf.nativeElement.childNodes[1].childNodes[2].setAttribute('id', id);        
-        
+
+        this.elrf.nativeElement.childNodes[1].childNodes[5].childNodes[3].setAttribute('id', 'btnClear_' + id);        
+
+        var mainElement = document.getElementById('btnClear_' + id);
+
+        if (mainElement)
+            mainElement.addEventListener('click', this.clearFilterClick.bind(this));
+
         setTimeout(() => {
             this.appendComponent(SppcGridDatepicker, this.elrf.nativeElement.childNodes[1].childNodes[2], this.elrf.nativeElement.childNodes[1]);
         }, 1);
        
+    }
+
+    clearFilterClick(event: any) {
+        var hiddenElement = document.getElementById('date_' + this.hiddenId) as any;
+        hiddenElement.value = '';
+
     }
 
     ngAfterContentInit() {
@@ -107,6 +122,7 @@ export class TestDr implements OnInit  {
 
 
         (<SppcGridDatepicker>componentRef.instance).destinationElementId = this.hiddenId;
+        (<SppcGridDatepicker>componentRef.instance).mode = this.value;
             
 
         this.appRef.attachView(componentRef.hostView);
