@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.ViewModel.Config;
@@ -39,6 +43,30 @@ namespace SPPC.Tadbir.Persistence
             return allConfig
                 .Select(cfg => _mapper.Map<SettingBriefViewModel>(cfg))
                 .ToList();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت داده شده برای تنظیمات را ذخیره می کند
+        /// </summary>
+        /// <param name="configItems">مجموعه ای از تنظیمات اصلاح شده</param>
+        public async Task SaveConfigAsync(IList<SettingBriefViewModel> configItems)
+        {
+            Verify.ArgumentNotNull(configItems, "configItems");
+            var repository = _unitOfWork.GetAsyncRepository<Setting>();
+            var modifiedIds = configItems.Select(cfg => cfg.Id);
+            var modified = await repository
+                .GetEntityWithTrackingQuery()
+                .Where(cfg => modifiedIds.Contains(cfg.Id))
+                .ToListAsync();
+            Array.ForEach(modified.ToArray(), cfg =>
+                {
+                    var configItem = configItems
+                        .Where(item => item.Id == cfg.Id)
+                        .Single();
+                    cfg.Values = JsonHelper.From(configItem.Values, false);
+                    repository.Update(cfg);
+                });
+            await _unitOfWork.CommitAsync();
         }
 
         /// <summary>
@@ -131,6 +159,43 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return userConfig;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات کاربری برای یکی از فرم های لیستی را ذخیره می کند
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
+        /// <param name="userConfig">تنظیمات کاربری برای فرم لیستی</param>
+        public async Task SaveUserListConfigAsync(int userId, ListFormViewConfig userConfig)
+        {
+            Verify.ArgumentNotNull(userConfig, "userConfig");
+            var repository = _unitOfWork.GetAsyncRepository<UserSetting>();
+            var userRepository = _unitOfWork.GetAsyncRepository<User>();
+            var existing = await repository
+                .GetEntityWithTrackingQuery()
+                .Where(cfg => cfg.User.Id == userId
+                    && cfg.EntityViewId == userConfig.ViewId
+                    && cfg.ModelType == typeof(ListFormViewConfig).Name)
+                .SingleOrDefaultAsync();
+            if (existing == null)
+            {
+                var newUserConfig = new UserSetting()
+                {
+                    SettingId = 4,      // TODO: Remove this hard-coded value
+                    EntityViewId = userConfig.ViewId,
+                    User = await userRepository.GetByIDAsync(userId),
+                    ModelType = typeof(ListFormViewConfig).Name,
+                    Values = JsonHelper.From(userConfig, false)
+                };
+
+                repository.Insert(newUserConfig);
+            }
+            else
+            {
+                existing.Values = JsonHelper.From(userConfig, false);
+            }
+
+            await _unitOfWork.CommitAsync();
         }
 
         private readonly IUnitOfWork _unitOfWork;

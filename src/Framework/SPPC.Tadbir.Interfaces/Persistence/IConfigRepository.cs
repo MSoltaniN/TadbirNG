@@ -12,31 +12,44 @@ namespace SPPC.Tadbir.Persistence
     public interface IConfigRepository
     {
         /// <summary>
-        /// تمام تنظیمات موجود برای برنامه را خوانده و برمی گرداند
+        /// به روش آسنکرون، تمام تنظیمات موجود برای برنامه را خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ای از تمام تنظیمات موجود برای برنامه</returns>
         Task<IList<SettingBriefViewModel>> GetAllConfigAsync();
 
         /// <summary>
-        /// تنظیمات موجود برای کلاس تنظیمات مشخص شده را خوانده و برمی گرداند
+        /// به روش آسنکرون، آخرین وضعیت داده شده برای تنظیمات را ذخیره می کند
+        /// </summary>
+        /// <param name="configItems">مجموعه ای از تنظیمات اصلاح شده</param>
+        Task SaveConfigAsync(IList<SettingBriefViewModel> configItems);
+
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات موجود برای کلاس تنظیمات مشخص شده را خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TConfig">نوع تنظیمات مورد نیاز</typeparam>
         /// <returns>تنظیمات موجود برای کلاس تنظیمات مشخص شده</returns>
         Task<TConfig> GetConfigByTypeAsync<TConfig>();
 
         /// <summary>
-        /// تمام تنظیمات کاربری موجود برای فرم های لیستی را برای کاربر مشخص شده خوانده و برمی گرداند
+        /// به روش آسنکرون، تمام تنظیمات کاربری موجود برای فرم های لیستی را برای کاربر مشخص شده خوانده و برمی گرداند
         /// </summary>
         /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
         /// <returns>تنظیمات کاربری موجود برای فرم های لیستی</returns>
         Task<IList<ListFormViewConfig>> GetListViewConfigByUserAsync(int userId);
 
         /// <summary>
-        /// تنظیمات کاربری موجود برای یکی از فرم های لیستی را برای کاربر مشخص شده خوانده و برمی گرداند
+        /// به روش آسنکرون، تنظیمات کاربری موجود برای یکی از فرم های لیستی را برای کاربر مشخص شده خوانده و برمی گرداند
         /// </summary>
         /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
         /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
         /// <returns>تنظیمات کاربری موجود برای یکی از فرم های لیستی</returns>
         Task<ListFormViewConfig> GetListViewConfigByUserAsync(int userId, int viewId);
+
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات کاربری برای یکی از فرم های لیستی را ذخیره می کند
+        /// </summary>
+        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
+        /// <param name="userConfig">تنظیمات کاربری برای فرم لیستی</param>
+        Task SaveUserListConfigAsync(int userId, ListFormViewConfig userConfig);
     }
 }

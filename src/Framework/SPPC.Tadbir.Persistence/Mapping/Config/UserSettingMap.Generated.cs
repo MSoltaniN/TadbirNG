@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.Setting)
                 .WithMany()
-                .HasForeignKey("SettingID")
+                .HasForeignKey(e => e.SettingId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_UserSetting_Config_Setting");
             builder.HasOne(e => e.User)
@@ -57,7 +57,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasConstraintName("FK_Config_UserSetting_Auth_Role");
             builder.HasOne(e => e.EntityView)
                 .WithMany()
-                .HasForeignKey("EntityViewID")
+                .HasForeignKey(e => e.EntityViewId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_UserSetting_Metadata_EntityView");
         }

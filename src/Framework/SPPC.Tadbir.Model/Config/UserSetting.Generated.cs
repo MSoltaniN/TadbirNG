@@ -40,6 +40,11 @@ namespace SPPC.Tadbir.Model.Config
         public virtual int Id { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی تنظیمات پیش فرض برنامه
+        /// </summary>
+        public virtual int SettingId { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی متادیتای موجودیت قابل کنترل برای تنظیماتی که در سطح موجودیت هستند
         /// </summary>
         public virtual int? EntityViewId { get; set; }
