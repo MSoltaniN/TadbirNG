@@ -77,11 +77,14 @@ namespace SPPC.Tadbir.Persistence
         public async Task<BranchViewModel> GetBranchAsync(int branchId)
         {
             BranchViewModel item = null;
+            RandomExceptionSimulator.ThrowRepositoryException();                  // TODO: Remove this
             var repository = _unitOfWork.GetAsyncRepository<Branch>();
+            RandomExceptionSimulator.ThrowFrameworkRepositoryException();         // TODO: Remove this
             var branch = await repository.GetByIDAsync(
                 branchId, b => b.Company, b => b.Children);
             if (branch != null)
             {
+                RandomExceptionSimulator.ThrowMapperException();                  // TODO: Remove this
                 item = _mapper.Map<BranchViewModel>(branch);
             }
 

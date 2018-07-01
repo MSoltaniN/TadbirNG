@@ -45,6 +45,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Branch, (int)BranchPermissions.View)]
         public async Task<IActionResult> GetBranchAsync(int branchId)
         {
+            RandomExceptionSimulator.NextRequest();                           // TODO: Remove this
+            RandomExceptionSimulator.ThrowControllerException();              // TODO: Remove this
             var branch = await _repository.GetBranchAsync(branchId);
             return JsonReadResult(branch);
         }

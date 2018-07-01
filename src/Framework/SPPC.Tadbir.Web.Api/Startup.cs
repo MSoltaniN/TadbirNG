@@ -18,6 +18,7 @@ using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Web.Api.Middleware;
 
 namespace SPPC.Tadbir.Web.Api
 {
@@ -70,7 +71,7 @@ namespace SPPC.Tadbir.Web.Api
             }
 
             ConfigureLocalization(app);
-
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseCors(
                 options => options
                     .WithOrigins("*")
