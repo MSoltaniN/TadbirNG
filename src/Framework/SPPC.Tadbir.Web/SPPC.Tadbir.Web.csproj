@@ -95,9 +95,11 @@
     <None Remove="ClientApp\app\directive\Validator\confirm-equal-validator.ts" />
     <None Remove="ClientApp\app\enum\KeyCode.ts" />
     <None Remove="ClientApp\app\model\account.ts" />
+    <None Remove="ClientApp\app\model\columnViewConfig.ts" />
     <None Remove="ClientApp\app\model\DetailAccount.ts" />
     <None Remove="ClientApp\app\model\fullaccount.ts" />
     <None Remove="ClientApp\app\model\index.ts" />
+    <None Remove="ClientApp\app\model\listFormViewConfig.ts" />
     <None Remove="ClientApp\app\model\role.ts" />
     <None Remove="ClientApp\app\model\user.ts" />
     <None Remove="ClientApp\app\model\voucher.ts" />
@@ -111,6 +113,7 @@
     <None Remove="ClientApp\app\service\lookup.service.ts" />
     <None Remove="ClientApp\app\service\metadata\metadata.service.ts" />
     <None Remove="ClientApp\app\service\role.service.ts" />
+    <None Remove="ClientApp\app\service\settings.service.ts" />
     <None Remove="ClientApp\app\service\user.service.ts" />
     <None Remove="ClientApp\app\service\voucher.service.ts" />
     <None Remove="ClientApp\enviroment.ts" />
@@ -263,8 +266,10 @@
     <TypeScriptCompile Include="ClientApp\app\directive\Validator\confirm-equal-validator.ts" />
     <TypeScriptCompile Include="ClientApp\app\enum\KeyCode.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\columnViewConfig.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\detailAccount.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\fullaccount.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\listFormViewConfig.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\voucher.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\context.ts" />
@@ -280,6 +285,7 @@
     <TypeScriptCompile Include="ClientApp\app\service\fullAccount.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\role.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\accountRelations.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\service\settings.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\voucher-line.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\service\index.ts" />
     <TypeScriptCompile Include="ClientApp\app\enviroment.ts" />
