@@ -33,7 +33,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="modelBuilder">Builder instance used for mapping definitions</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            RandomExceptionSimulator.ThrowOrmMapperException();               // TODO: Remove this
+            ////RandomExceptionSimulator.ThrowOrmMapperException();               // TODO: Remove this
             AccountMap.BuildMapping(modelBuilder.Entity<Account>());
             AccountDetailAccountMap.BuildMapping(modelBuilder.Entity<AccountDetailAccount>());
             AccountCostCenterMap.BuildMapping(modelBuilder.Entity<AccountCostCenter>());
