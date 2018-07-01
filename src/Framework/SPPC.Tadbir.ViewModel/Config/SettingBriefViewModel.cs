@@ -24,6 +24,11 @@ namespace SPPC.Tadbir.ViewModel.Config
         public string Description { get; set; }
 
         /// <summary>
+        /// نام کلاس مدل مورد استفاده برای تنظیمات
+        /// </summary>
+        public string ModelType { get; set; }
+
+        /// <summary>
         /// مقادیر جاری برای تنظیمات
         /// </summary>
         public object Values { get; set; }
