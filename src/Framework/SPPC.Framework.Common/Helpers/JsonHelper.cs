@@ -18,8 +18,9 @@ namespace SPPC.Framework.Helpers
         /// <param name="value">Object to serialize</param>
         /// <param name="indented">Indicates if JSON output needs to be formatted in a readable, indented form.
         /// Default is true.</param>
+        /// <param name="ignoredProperties">Array of property names to ignore during serialization</param>
         /// <returns>Input object serialized as JSON</returns>
-        public static string From<T>(T value, bool indented = true)
+        public static string From<T>(T value, bool indented = true, string[] ignoredProperties = null)
         {
             return From((object)value, indented);
         }
@@ -30,14 +31,19 @@ namespace SPPC.Framework.Helpers
         /// <param name="value">Object to serialize</param>
         /// <param name="indented">Indicates if JSON output needs to be formatted in a readable, indented form.
         /// Default is true.</param>
+        /// <param name="ignoredProperties">Array of property names to ignore during serialization</param>
         /// <returns>Input object serialized as JSON</returns>
-        public static string From(object value, bool indented = true)
+        public static string From(object value, bool indented = true, string[] ignoredProperties = null)
         {
             Verify.ArgumentNotNull(value, "value");
             using (var writer = new StringWriter(new StringBuilder()))
             {
-                var serializer = new JsonSerializer();
-                serializer.Formatting = indented ? Formatting.Indented : Formatting.None;
+                var serializer = new JsonSerializer
+                {
+                    Formatting = indented ? Formatting.Indented : Formatting.None,
+                    ContractResolver = new CustomJsonContractResolver(ignoredProperties)
+                };
+
                 serializer.Serialize(writer, value);
                 return writer.ToString();
             }

@@ -30,7 +30,7 @@ namespace SPPC.Tadbir.ExceptionHandling
         /// <summary>
         /// متن خطای مورد استفاده در صورت بروز خطا هنگام اجرای عملیات دیتابیسی توسط کامپوننت مربوطه
         /// </summary>
-        public const string OrmMappingError = "A required entity mapping could not be completed.";
+        public const string OrmMappingError = "An OR/M operation could not be completed.";
 
         /// <summary>
         /// متن خطای مورد استفاده در صورت بروز خطای داخلی هنگام ارتباط مستقیم با سرور دیتابیس

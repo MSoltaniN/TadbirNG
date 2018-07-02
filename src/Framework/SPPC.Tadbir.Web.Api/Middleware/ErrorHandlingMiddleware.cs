@@ -29,13 +29,13 @@ namespace SPPC.Tadbir.Web.Api.Middleware
 
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var result = JsonHelper.From(ErrorFromException(exception), false);
+            var result = JsonHelper.From(ErrorFromException(exception), false, GetIgnoredPropertyNames());
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)StatusCodeFromException(exception);
+            context.Response.StatusCode = (int)StatusCodeFromException();
             return context.Response.WriteAsync(result);
         }
 
-        private static HttpStatusCode StatusCodeFromException(Exception exception)
+        private static HttpStatusCode StatusCodeFromException()
         {
             var code = HttpStatusCode.InternalServerError;
             return code;
@@ -45,6 +45,14 @@ namespace SPPC.Tadbir.Web.Api.Middleware
         {
             Verify.ArgumentNotNull(exception, "exception");
             return ServiceExceptionFactory.FromException(exception);
+        }
+
+        private static string[] GetIgnoredPropertyNames()
+        {
+            return new string[]
+                {
+                    "TypeMap", "TargetSite"
+                };
         }
 
         private readonly RequestDelegate _next;

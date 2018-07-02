@@ -22,6 +22,11 @@ namespace SPPC.Tadbir.ExceptionHandling
         public string TimestampUtc { get; private set; }
 
         /// <summary>
+        /// کد خطای مورد استفاده در خطای سرویسی
+        /// </summary>
+        public ErrorCode ErrorCode { get; private set; }
+
+        /// <summary>
         /// پیغام خطای اصلی که از استثناء ایجاد شده گرفته می شود
         /// </summary>
         public string OriginalMessage { get; set; }
@@ -50,8 +55,9 @@ namespace SPPC.Tadbir.ExceptionHandling
         /// یک نمونه از این کلاس با استفاده از اطلاعات موجود در آبجکت استثناء داده شده می سازد
         /// </summary>
         /// <param name="exception">آبجکت استثناء داده شده</param>
+        /// <param name="errorCode">کد خطای سرویس</param>
         /// <returns>نمونه ای از این کلاس حاوی اطلاعات آبجکت استثناء داده شده</returns>
-        public static ErrorDetail CreateFromException(Exception exception)
+        public static ErrorDetail CreateFromException(Exception exception, ErrorCode errorCode)
         {
             var targetSite = exception.TargetSite;
             var methodName = (targetSite.DeclaringType != null)
@@ -60,10 +66,11 @@ namespace SPPC.Tadbir.ExceptionHandling
             var errorDetail = new ErrorDetail()
             {
                 TimestampUtc = DateTime.UtcNow.ToString(TimestampFormat),
+                ErrorCode = errorCode,
                 OriginalMessage = exception.Message,
                 FaultingMethod = String.Format("{0}.{1}", methodName, exception.TargetSite.Name),
                 FaultType = exception.GetType().Name,
-                StackTrace = exception.StackTrace
+                ////StackTrace = exception.StackTrace
             };
 
             return errorDetail;

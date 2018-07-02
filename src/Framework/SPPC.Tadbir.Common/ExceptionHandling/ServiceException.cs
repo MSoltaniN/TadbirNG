@@ -35,8 +35,7 @@ namespace SPPC.Tadbir.ExceptionHandling
             : base(message, innerException)
         {
             Source = DefaultSource;
-            ErrorCode = ErrorCode.UnknownRuntimeError;
-            _errorDetail = new ErrorDetail();
+            ErrorDetail = new ErrorDetail();
         }
 
         /// <summary>
@@ -49,25 +48,15 @@ namespace SPPC.Tadbir.ExceptionHandling
         {
             Verify.ArgumentNotNull(context, "context");
             Source = context.Source;
-            ErrorCode = context.ErrorCode;
-            _errorDetail = context.ErrorDetail;
+            ErrorDetail = context.ErrorDetail;
         }
 
         /// <summary>
-        /// کد خطای مربوط به این خطای سرویس
+        /// اطلاعات فنی کامل برای این خطای سرویس
         /// </summary>
-        public ErrorCode ErrorCode { get; protected set; }
-
-        /// <summary>
-        /// اطلاعات فنی کامل برای این خطای سرویس به صورت سریال شده متنی
-        /// </summary>
-        public string ErrorDetail
-        {
-            get { return JsonHelper.From(_errorDetail); }
-        }
+        public ErrorDetail ErrorDetail { get; protected set; }
 
         private const string DefaultSource = "Tadbir Web API";
         private const string DefaultMessage = "Tadbir service encountered an error while processing current request.";
-        private readonly ErrorDetail _errorDetail;
     }
 }

@@ -21,7 +21,7 @@ namespace SPPC.Tadbir.ExceptionHandling
         {
             Verify.ArgumentNotNull(exception, "exception");
             var context = ContextFromException(exception);
-            context.ErrorDetail = ErrorDetail.CreateFromException(exception);
+            context.ErrorDetail = ErrorDetail.CreateFromException(exception, context.ErrorCode);
             return new ServiceException(context, exception);
         }
 
