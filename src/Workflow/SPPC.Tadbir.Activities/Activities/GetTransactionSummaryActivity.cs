@@ -30,8 +30,7 @@ namespace SPPC.Tadbir.Workflow
             InitializeDependencies(context);
             int transactionId = context.GetValue(TransactionId);
             var result = _repository.GetVoucherAsync(transactionId).Result;
-            var summary = result?.Item;
-            return summary;
+            return result;
         }
 
         private void InitializeDependencies(CodeActivityContext context)

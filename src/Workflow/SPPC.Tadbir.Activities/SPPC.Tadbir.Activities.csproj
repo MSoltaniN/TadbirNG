@@ -52,10 +52,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="SPPC.Tadbir.Metadata, Version=1.0.167.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.Metadata.dll</HintPath>
-    </Reference>
     <Reference Include="SPPC.Tadbir.ViewModel, Version=1.0.167.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Debug\netstandard2.0\netstandard2.0\SPPC.Tadbir.ViewModel.dll</HintPath>
@@ -110,8 +106,10 @@
     <Compile Include="Workflow\IDocumentWorkflow.cs" />
     <Compile Include="Workflow\IVoucherWorkflow.cs" />
     <Compile Include="Workflow\IWorkflowTracker.cs" />
+    <Compile Include="Workflow\StateAction.cs" />
     <Compile Include="Workflow\StateOperation.cs" />
     <Compile Include="Workflow\StateOperationValidator.cs" />
+    <Compile Include="Workflow\StateWorkflow.cs" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
@@ -139,6 +137,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Repository\state-workflow.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Workflow.Unity\SPPC.Workflow.Unity.csproj">

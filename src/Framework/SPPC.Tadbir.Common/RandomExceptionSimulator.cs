@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace SPPC.Tadbir
 {
     /// <summary>
-    /// Similates random occurence of different types of error
+    /// Simulates random occurence of different types of error
     /// </summary>
     /// <remarks>
     /// This is a temporary class used for testing error handling middleware.

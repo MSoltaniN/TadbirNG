@@ -99,7 +99,6 @@ namespace SPPC.Tadbir.Unity
             //_container.RegisterType<ISettingsRepository, ConfigSettingsRepository>();
             _container.RegisterType<ITrackingRepository, TrackingRepository>();
             _container.RegisterType<IWorkflowRepository, WorkflowRepository>();
-            _container.RegisterType<IMetadataDecorator, MetadataDecorator>();
             _container.RegisterType<IMetadataRepository, MetadataRepository>();
         }
 

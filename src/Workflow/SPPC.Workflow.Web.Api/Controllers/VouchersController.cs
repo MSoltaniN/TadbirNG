@@ -116,8 +116,7 @@ namespace SPPC.Workflow.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            var result = await _repository.GetVoucherAsync(voucherId);
-            var voucher = result?.Item;
+            var voucher = await _repository.GetVoucherAsync(voucherId);
             if (voucher == null)
             {
                 return BadRequest(message);

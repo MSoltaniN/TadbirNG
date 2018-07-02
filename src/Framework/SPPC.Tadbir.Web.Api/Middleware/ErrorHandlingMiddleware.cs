@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
+using SPPC.Tadbir.ExceptionHandling;
 
 namespace SPPC.Tadbir.Web.Api.Middleware
 {
@@ -45,7 +44,7 @@ namespace SPPC.Tadbir.Web.Api.Middleware
         private static object ErrorFromException(Exception exception)
         {
             Verify.ArgumentNotNull(exception, "exception");
-            return new { error = exception.Message };
+            return ServiceExceptionFactory.FromException(exception);
         }
 
         private readonly RequestDelegate _next;

@@ -30,7 +30,7 @@ namespace SPPC.Tadbir.Service
                 using (StreamReader reader = new StreamReader(stream))
                 {
                     string json = reader.ReadToEnd();
-                    var allMetadata = Json.To<List<StateWorkflow>>(json);
+                    var allMetadata = JsonHelper.To<List<StateWorkflow>>(json);
                     metadata = allMetadata
                         .Where(swf => swf.DocumentType == documentType)
                         .FirstOrDefault();
