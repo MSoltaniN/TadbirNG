@@ -7,8 +7,16 @@ using SPPC.Framework.Common;
 
 namespace SPPC.Tadbir.ExceptionHandling
 {
+    /// <summary>
+    /// خطای سرویسی را با استفاده از آبجکت های خطای مختلف می سازد
+    /// </summary>
     public static class ServiceExceptionFactory
     {
+        /// <summary>
+        /// آبجکت خطای عمومی داده شده را به یک نمونه خطای سرویسی حاوی اطلاعات فنی خطا تبدیل می کند
+        /// </summary>
+        /// <param name="exception">آبجکت خطای عمومی</param>
+        /// <returns>خطای سرویسی تبدیل شده از خطای عمومی</returns>
         public static ServiceException FromException(Exception exception)
         {
             Verify.ArgumentNotNull(exception, "exception");
@@ -42,7 +50,7 @@ namespace SPPC.Tadbir.ExceptionHandling
             }
             else
             {
-                context = GetOtherRuntimeContext(exception);
+                context = GetOtherRuntimeContext();
             }
 
             return context;
@@ -118,22 +126,10 @@ namespace SPPC.Tadbir.ExceptionHandling
             return context;
         }
 
-        private static ServiceExceptionContext GetOtherRuntimeContext(Exception exception)
+        private static ServiceExceptionContext GetOtherRuntimeContext()
         {
             return new ServiceExceptionContext(
                 ErrorCode.UnknownRuntimeError, ErrorSource.DotNetRuntime, ErrorMessage.UnknownRuntimeError);
-        }
-
-        private static ServiceExceptionContext GetWebApiContext(Exception exception)
-        {
-            var context = default(ServiceExceptionContext);
-            //if (exception is HttpResponseException)
-            //{
-            //    context = new ServiceExceptionContext(
-            //        ErrorCode.WebApiRuntimeError, ErrorSource.AspNetWebApiRuntime, ErrorMessage.WebApiRuntimeError);
-            //}
-
-            return context;
         }
     }
 }

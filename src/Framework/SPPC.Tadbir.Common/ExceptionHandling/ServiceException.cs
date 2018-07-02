@@ -4,18 +4,33 @@ using SPPC.Framework.Helpers;
 
 namespace SPPC.Tadbir.ExceptionHandling
 {
+    /// <summary>
+    /// کلاس استثناء برای پوشش خطاهای ایجاد شده در سرویس وب
+    /// </summary>
     public class ServiceException : Exception
     {
+        /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
         public ServiceException()
             : this(DefaultMessage, null)
         {
         }
 
+        /// <summary>
+        /// نمونه جدیدی از این کلاس با پیغام خطای داده شده می سازد
+        /// </summary>
+        /// <param name="message"></param>
         public ServiceException(string message)
             : this(message, null)
         {
         }
 
+        /// <summary>
+        /// نمونه جدیدی از این کلاس با پیغام خطا و خطای قبلی داده شده می سازد
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="innerException"></param>
         public ServiceException(string message, Exception innerException)
             : base(message, innerException)
         {
@@ -24,6 +39,11 @@ namespace SPPC.Tadbir.ExceptionHandling
             _errorDetail = new ErrorDetail();
         }
 
+        /// <summary>
+        /// نمونه جدیدی از این کلاس با محتوای خطای سرویسی و خطای قبلی داده شده می سازد
+        /// </summary>
+        /// <param name="context">اطلاعات تکمیلی خطای سرویسی</param>
+        /// <param name="innerException">خطای قبلی در زنجیره خطاهای ایجاد شده</param>
         public ServiceException(ServiceExceptionContext context, Exception innerException)
             : base(context?.Message, innerException)
         {

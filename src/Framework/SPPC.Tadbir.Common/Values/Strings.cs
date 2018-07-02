@@ -173,7 +173,7 @@ namespace SPPC.Tadbir.Values
         public const string WarehousingIntro = "بخش کنترل موجودی و انبار با امکانات گسترده و انعطاف پذیری در تعریف اطلاعات پایه و عملیاتی، پاسخگوی نیازهای سازمانی طیف بسیار وسیعی از کاربران خواهد بود.";
 
         /// <summary>
-        /// Localized text for Total caption 
+        /// Localized text for Total caption
         /// </summary>
         public const string Total = "جمع کل";
 
