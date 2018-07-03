@@ -232,6 +232,13 @@ namespace SPPC.Tadbir.Persistence
             await _unitOfWork.CommitAsync();
         }
 
+        public async Task InitSampleUserSettings()
+        {
+            var repository = _unitOfWork.GetAsyncRepository<UserSetting>();
+            var userSetting = GetSampleUserSettings();
+            await SaveUserListConfigAsync(1, userSetting);
+        }
+
         private void InitDefaultColumns()
         {
             _idColumn = new ColumnViewConfig("Id");
@@ -251,6 +258,52 @@ namespace SPPC.Tadbir.Persistence
             _levelColumn = new ColumnViewConfig("Level");
             var levelDeviceConfig = new ColumnViewDeviceConfig() { DesignIndex = 0, Visibility = ColumnVisibility.Hidden };
             _levelColumn.Large = levelDeviceConfig;
+        }
+
+        private ListFormViewConfig GetSampleUserSettings()
+        {
+            var listConfig = new ListFormViewConfig() { ViewId = 1, PageSize = 25 };
+            var column = new ColumnViewConfig("Id");
+            var deviceColumn = new ColumnViewDeviceConfig() { Width = 0, Index = -1, Visibility = ColumnVisibility.AlwaysHidden };
+            column.Large = column.Medium = column.Small = column.ExtraSmall = deviceColumn;
+            listConfig.ColumnViews.Add(column);
+
+            column = new ColumnViewConfig("Code");
+            deviceColumn = new ColumnViewDeviceConfig() { Width = 100, Index = 0 };
+            column.Large = column.Medium = deviceColumn;
+            deviceColumn = new ColumnViewDeviceConfig() { Visibility = ColumnVisibility.Hidden };
+            column.Small = column.ExtraSmall = deviceColumn;
+            listConfig.ColumnViews.Add(column);
+
+            column = new ColumnViewConfig("FullCode");
+            deviceColumn = new ColumnViewDeviceConfig() { Width = 150, Index = 1 };
+            column.Large = column.Medium = deviceColumn;
+            deviceColumn = new ColumnViewDeviceConfig() { Visibility = ColumnVisibility.Hidden };
+            column.Small = column.ExtraSmall = deviceColumn;
+            listConfig.ColumnViews.Add(column);
+
+            column = new ColumnViewConfig("Name");
+            deviceColumn = new ColumnViewDeviceConfig() { Width = 180, Index = 2, Visibility = ColumnVisibility.AlwaysVisible };
+            column.Large = column.Medium = deviceColumn;
+            deviceColumn = new ColumnViewDeviceConfig() { Width = 125, Index = 2, Visibility = ColumnVisibility.AlwaysVisible };
+            column.Small = column.ExtraSmall = deviceColumn;
+            listConfig.ColumnViews.Add(column);
+
+            column = new ColumnViewConfig("Level");
+            deviceColumn = new ColumnViewDeviceConfig() { Width = 50, Index = 4 };
+            column.Large = deviceColumn;
+            deviceColumn = new ColumnViewDeviceConfig() { Visibility = ColumnVisibility.Hidden };
+            column.Medium = column.Small = column.ExtraSmall = deviceColumn;
+            listConfig.ColumnViews.Add(column);
+
+            column = new ColumnViewConfig("Description");
+            deviceColumn = new ColumnViewDeviceConfig() { Width = 360, Index = 3, Visibility = ColumnVisibility.Visible };
+            column.Large = column.Medium = deviceColumn;
+            deviceColumn = new ColumnViewDeviceConfig() { Width = 180, Index = 3, Visibility = ColumnVisibility.Visible };
+            column.Small = column.ExtraSmall = deviceColumn;
+            listConfig.ColumnViews.Add(column);
+
+            return listConfig;
         }
 
         private readonly IUnitOfWork _unitOfWork;
