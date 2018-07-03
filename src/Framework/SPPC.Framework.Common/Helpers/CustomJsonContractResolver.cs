@@ -37,6 +37,10 @@ namespace SPPC.Framework.Helpers
                     .ToList();
             }
 
+            Array.ForEach(
+                properties.ToArray(),
+                prop => prop.PropertyName = String.Format(
+                    "{0}{1}", Char.ToLower(prop.PropertyName[0]), prop.PropertyName.Substring(1)));
             return properties;
         }
 

@@ -7,6 +7,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
@@ -198,7 +199,65 @@ namespace SPPC.Tadbir.Persistence
             await _unitOfWork.CommitAsync();
         }
 
+        public async Task InitDefaultColumnSettings()
+        {
+            InitDefaultColumns();
+            var names = new string[] { "Id", "Name", "Level", "No", "UserName", "Description" };
+            var repository = _unitOfWork.GetAsyncRepository<Property>();
+            var items = await repository.GetByCriteriaAsync(prop => names.Contains(prop.Name), prop => prop.Entity);
+            foreach (var item in items)
+            {
+                if (item.Name == "Name" || item.Name == "UserName" || item.Name == "No")
+                {
+                    _nameColumn.Name = item.Name;
+                    item.Settings = JsonHelper.From(_nameColumn, false);
+                }
+                else if (item.Name == "Id")
+                {
+                    item.Settings = JsonHelper.From(_idColumn, false);
+                }
+                else if (item.Name == "Level")
+                {
+                    item.Settings = JsonHelper.From(_levelColumn, false);
+                }
+                else if (item.Entity.Id == 3)
+                {
+                    _nameColumn.Name = item.Name;
+                    item.Settings = JsonHelper.From(_nameColumn, false);
+                }
+
+                repository.Update(item);
+            }
+
+            await _unitOfWork.CommitAsync();
+        }
+
+        private void InitDefaultColumns()
+        {
+            _idColumn = new ColumnViewConfig("Id");
+            var idDeviceConfig = new ColumnViewDeviceConfig() { Width = 0, Index = -1, DesignIndex = 0, Visibility = ColumnVisibility.AlwaysHidden };
+            _idColumn.Large = idDeviceConfig;
+            _idColumn.Medium = idDeviceConfig;
+            _idColumn.Small = idDeviceConfig;
+            _idColumn.ExtraSmall = idDeviceConfig;
+
+            _nameColumn = new ColumnViewConfig("Name");
+            var nameDeviceConfig = new ColumnViewDeviceConfig() { Index = 0, DesignIndex = 0, Visibility = ColumnVisibility.AlwaysVisible };
+            _nameColumn.Large = nameDeviceConfig;
+            _nameColumn.Medium = nameDeviceConfig;
+            _nameColumn.Small = nameDeviceConfig;
+            _nameColumn.ExtraSmall = nameDeviceConfig;
+
+            _levelColumn = new ColumnViewConfig("Level");
+            var levelDeviceConfig = new ColumnViewDeviceConfig() { DesignIndex = 0, Visibility = ColumnVisibility.Hidden };
+            _levelColumn.Large = levelDeviceConfig;
+        }
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;
+
+        private ColumnViewConfig _idColumn;
+        private ColumnViewConfig _nameColumn;
+        private ColumnViewConfig _levelColumn;
     }
 }

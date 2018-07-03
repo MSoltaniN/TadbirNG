@@ -28,7 +28,7 @@ namespace SPPC.Tadbir.Configuration
         /// لازم است حداقل یک ستون با این وضعیت نمایشی تنظیم شده باشد. ستون های دارای این وضعیت
         /// قابل پنهان کردن نخواهند بود
         /// </remarks>
-        public const string AlwaysVisible = "";
+        public const string AlwaysVisible = "AlwaysVisible";
 
         /// <summary>
         /// عدم نمایش دائمی ستون در نمای لیستی
@@ -37,7 +37,7 @@ namespace SPPC.Tadbir.Configuration
         /// این وضعیت برای ستون های مربوط به شناسه های دیتابیسی مناسب است.
         /// ستون های دارای این وضعیت همواره در نمای لیستی مخفی خواهند بود
         /// </remarks>
-        public const string AlwaysHidden = "";
+        public const string AlwaysHidden = "AlwaysHidden";
 
         /// <summary>
         /// نمایش ستون در نمای لیستی

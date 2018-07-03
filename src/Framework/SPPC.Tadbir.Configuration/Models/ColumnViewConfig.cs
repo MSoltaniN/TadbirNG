@@ -13,7 +13,11 @@ namespace SPPC.Tadbir.Configuration.Models
         /// </summary>
         public ColumnViewConfig()
         {
-            Visibility = ColumnVisibility.Visible;
+            Name = "Column";
+            Large = new ColumnViewDeviceConfig();
+            Medium = new ColumnViewDeviceConfig();
+            Small = new ColumnViewDeviceConfig();
+            ExtraSmall = new ColumnViewDeviceConfig();
         }
 
         /// <summary>
@@ -32,21 +36,23 @@ namespace SPPC.Tadbir.Configuration.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// پهنای ستون بر مبنای واحد مورد استفاده در زیرساخت واسط کاربری برنامه.
-        /// در صورت مقدار نداشتن، پهنای ستون به صورت خودکار تنظیم می شود
+        /// تنظیمات نمایشی ستون برای صفحه نمایش بزرگ، مانند صفحه نمایش کامپیوتر شخصی یا لپ تاپ
         /// </summary>
-        public int? Width { get; set; }
+        public ColumnViewDeviceConfig Large { get; set; }
 
         /// <summary>
-        /// ایندکس ترتیبی ستون که از صفر شروع می شود. در صورت مقدار نداشتن،
-        /// ترتیب قرار گرفتن ستون با توجه به مدل نمایشی تنظیم می شود
+        /// تنظیمات نمایشی ستون برای صفحه نمایش متوسط، مانند صفحه نمایش نت بوک و تبلت های بزرگ
         /// </summary>
-        public int? Index { get; set; }
+        public ColumnViewDeviceConfig Medium { get; set; }
 
         /// <summary>
-        /// وضعیت نمایشی ستون در نمای لیستی که می تواند یکی از مقادیر
-        /// عدم نمایش دائمی، نمایش دائمی، نمایش یا عدم نمایش را داشته باشد
+        /// تنظیمات نمایشی ستون برای صفحه نمایش کوچک، مانند صفحه نمایش تبلت
         /// </summary>
-        public string Visibility { get; set; }
+        public ColumnViewDeviceConfig Small { get; set; }
+
+        /// <summary>
+        /// تنظیمات نمایشی ستون برای صفحه نمایش خیلی کوچک، مانند صفحه نمایش تلفن همراه
+        /// </summary>
+        public ColumnViewDeviceConfig ExtraSmall { get; set; }
     }
 }
