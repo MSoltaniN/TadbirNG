@@ -12,6 +12,6 @@
 
 
 export interface PermissionBrief {
-    EntityName: string;
-    Flags: number;
+    entityName: string;
+    flags: number;
 }

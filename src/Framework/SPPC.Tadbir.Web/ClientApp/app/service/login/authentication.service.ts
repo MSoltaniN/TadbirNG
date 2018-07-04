@@ -115,14 +115,14 @@ export class AuthenticationService {
             sessionStorage.removeItem('fiscalPeriod');
     }
 
-    getCompanies(userName: string, ticket: string) : Observable<any> {
+    getCompanies(userName: string, ticket: string): Observable<any> {
         var header = new Headers({ 'Content-Type': 'application/json; charset=utf-8' })
         header.append('X-Tadbir-AuthTicket', ticket);
 
         if (ticket == '') return Observable.empty<Response>();
         var jsonContext = atob(ticket);
         var context = JSON.parse(jsonContext);
-        var userId = context.User.Id;
+        var userId = context.user.id;
         var url = String.Format(LookupApi.UserAccessibleCompanies, userId);
         return this.http.get(url, { headers: header })
             .map(response => <any>(<Response>response).json());
@@ -135,7 +135,7 @@ export class AuthenticationService {
         if (ticket == '') return Observable.empty<Response>();
         var jsonContext = atob(ticket);
         var context = JSON.parse(jsonContext);
-        var userId = context.User.Id;
+        var userId = context.user.id;
         var url = String.Format(LookupApi.UserAccessibleCompanyBranches, companyId, userId);
         return this.http.get(url, { headers: header })
             .map(response => <any>(<Response>response).json());
@@ -148,7 +148,7 @@ export class AuthenticationService {
         if (ticket == '') return Observable.empty<Response>();
         var jsonContext = atob(ticket);
         var context = JSON.parse(jsonContext);
-        var userId = context.User.Id;
+        var userId = context.user.id;
         var url = String.Format(LookupApi.UserAccessibleCompanyFiscalPeriods, companyId, userId);
         return this.http.get(url, { headers: header })
             .map(response => <any>(<Response>response).json());

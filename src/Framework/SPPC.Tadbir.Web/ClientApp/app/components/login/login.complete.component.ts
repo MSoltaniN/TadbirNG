@@ -144,7 +144,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                     currentUser.branchId = parseInt(this.branchId);
                     currentUser.companyId = parseInt(this.companyId);
                     currentUser.fpId = parseInt(this.fiscalPeriodId);
-                    currentUser.permissions = JSON.parse(atob(this.Ticket)).User.Permissions;
+                    currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
                     
                     
                     this.loadMenuAndRoute(currentUser);

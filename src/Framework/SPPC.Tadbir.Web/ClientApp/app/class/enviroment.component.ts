@@ -132,7 +132,7 @@ export class EnviromentComponent {
             var jsonContext = atob(currentContext.ticket);
             var context = JSON.parse(jsonContext);
 
-            userId = currentContext ? parseInt(context.User.Id) : 0;
+            userId = currentContext ? parseInt(context.user.id) : 0;
 
         }
         else if (sessionStorage.getItem('currentContext') != null) {
@@ -143,7 +143,7 @@ export class EnviromentComponent {
             var jsonContext = atob(currentContext.ticket);
             var context = JSON.parse(jsonContext);
 
-            userId = currentContext ? parseInt(context.User.Id) : 0;
+            userId = currentContext ? parseInt(context.user.id) : 0;
 
         }
 
@@ -243,10 +243,10 @@ export class EnviromentComponent {
         let access: boolean = false;
         let permissions: Array<PermissionBrief> = this.Permissions;
         let permission: PermissionBrief;
-        let permissionIndex = permissions.findIndex(f => f.EntityName == entityName);
+        let permissionIndex = permissions.findIndex(f => f.entityName == entityName);
         if (permissionIndex >= 0) {
             permission = permissions[permissionIndex];
-            if ((permission.Flags & action) == action)
+            if ((permission.flags & action) == action)
                 access = true;
         }
         return access;
