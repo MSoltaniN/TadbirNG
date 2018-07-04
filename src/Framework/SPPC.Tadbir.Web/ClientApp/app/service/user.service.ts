@@ -90,6 +90,7 @@ export class UserService extends BaseService {
 
         }
 
+        this.options = new RequestOptions({ headers: this.headers });
         
         return this.http.get(url, this.options)
             .map(response => <any>(<Response>response).json());

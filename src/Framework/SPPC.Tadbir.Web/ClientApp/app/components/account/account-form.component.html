@@ -9,7 +9,11 @@
             {{ errorMessage }}
         </div>
     </div>
-
+    <div *ngIf="parentTitle != ''">
+        <div class="alert alert-info fade in alert-dismissible">
+            <span class='accInfoTitle'><strong>{{ parentTitle }}</strong></span> : {{ parentValue }}
+        </div>
+    </div>
     <form novalidate [formGroup]="editForm">
         <div class="form-group">
             <label for="code" class="control-label">{{ 'Account.Code' | translate }}</label>
@@ -22,11 +26,11 @@
             </div>
         </div>
         <!--<div class="form-group">
-    <sppc-mask-textbox class="k-textbox" value="13:10" mask="00:00"></sppc-mask-textbox>
-    </div>-->
+        <sppc-mask-textbox class="k-textbox" value="13:10" mask="00:00"></sppc-mask-textbox>
+        </div>-->
         <!--<div class="form-group">
-        <sppc-numberbox class="k-textbox" value="13" ></sppc-numberbox>
-    </div>-->       
+            <sppc-numberbox class="k-textbox" value="13" ></sppc-numberbox>
+        </div>-->
         <div class="form-group">
             <label for="name" class="control-label">{{ 'Account.Name' | translate }}</label>
 
@@ -37,15 +41,15 @@
                 <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.Account.NameIsTooLong' | translate }}</span>
             </div>
         </div>
-            <div class="form-group">
-                <label for="description" class="control-label">{{ 'Account.Description' | translate }}</label>
+        <div class="form-group">
+            <label for="description" class="control-label">{{ 'Account.Description' | translate }}</label>
 
-                <textarea class="k-textarea" formControlName="description"></textarea>
+            <textarea class="k-textarea" formControlName="description"></textarea>
 
-                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
-                    {{ 'AllValidations.Account.DescriptionIsTooLong' | translate }}
-                </div>
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+                {{ 'AllValidations.Account.DescriptionIsTooLong' | translate }}
             </div>
+        </div>
     </form>
 
     <kendo-dialog-actions>

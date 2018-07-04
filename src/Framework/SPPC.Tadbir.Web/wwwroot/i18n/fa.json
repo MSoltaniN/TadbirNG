@@ -63,6 +63,7 @@
     "Branch": "شعبه",
     "Company": "شرکت",
     "AccountRelations": "ارتباطات حساب"
+    
   },
   "Account": {
     "New": "حساب جدید",
@@ -75,7 +76,11 @@
     "Level": "سطح",
     "Branch": "شعبه",
     "Description": "توضیحات",
-    "List": "لیست حساب ها"
+    "List": "لیست حساب ها",
+    "Moeen": "حساب معین",
+    "Tafzili": "حساب تفضیلی",
+    "Kol": "حساب کل",
+    "TafziliToUp": "حساب تفضیلی سطح"
   },
   "VoucherLine": {
     "Debit": "بدهکار",

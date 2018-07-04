@@ -14,7 +14,8 @@ import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-
+import { AccountApi } from '../../service/api/accountApi';
+import { String } from '../../class/source';
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
@@ -29,8 +30,10 @@ interface Item {
 @Component({
     selector: 'account-form-component',
     styles: [
-        "input[type=text],textarea { width: 100%; }"
-    ],
+        "input[type=text],textarea { width: 100%; },"
+        ,`.accInfoTitle {
+        padding-right: 0px;
+        padding-left: 0px;}`],    
     templateUrl: './account-form.component.html',
     providers: [{
         provide: RTL,
@@ -47,6 +50,9 @@ export class AccountFormComponent extends DefaultComponent {
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string = '';
 
+    @Input() public parentTitle: string = '';
+    @Input() public parentValue: string = '';
+
     @Input() public set model(account: Account) {
 
         this.editForm.reset(account);
@@ -56,6 +62,7 @@ export class AccountFormComponent extends DefaultComponent {
             this.selectedValue = account.fiscalPeriodId.toString();
             //if (this.fiscalPeriodRows == undefined) this.getFiscalPeriod();
         }
+
         
     }
 
@@ -65,9 +72,7 @@ export class AccountFormComponent extends DefaultComponent {
 
     //public fiscalPeriodRows: Array<Item>;
     public selectedValue: string = '1';
-
-   
-
+    
     //Events
     public onSave(e: any): void {
         e.preventDefault();

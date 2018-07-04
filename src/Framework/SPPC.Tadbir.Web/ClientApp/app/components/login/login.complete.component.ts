@@ -165,14 +165,14 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         this.userService.getCurrentUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
             var list: Array<Command> = res;
 
-            list.forEach((obj: Command) => {
-                obj.children.forEach((childObj: Command) => {
-                    childObj.iconName = 'glyphicon glyphicon-' + childObj.iconName;
-                    menuList.push(childObj);
-                })
-            });
+            //list.forEach((obj: Command) => {
+            //    obj.children.forEach((childObj: Command) => {
+            //        childObj.iconName = 'glyphicon glyphicon-' + childObj.iconName;
+            //        menuList.push(childObj);
+            //    })
+            //});
 
-            sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(menuList));
+            sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(res));
 
 
             if (this.authenticationService.isRememberMe())

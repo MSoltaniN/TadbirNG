@@ -75,7 +75,11 @@
     "Level": "Level",
     "Branch": "Branch",
     "Description": "Description",
-    "List": "Account list"
+    "List": "Account list",
+    "Moeen": "Moeen",
+    "Tafzili": "Tafzili",
+    "Kol": "Kol",
+    "TafziliToUp": "Tafzili"
   },
   "VoucherLine": {
     "Debit": "Debit",
@@ -86,7 +90,8 @@
     "New": "New Article",
     "Delete": "Delete Article",
     "Currency": "Currency",
-    "Account": "Account"
+    "Account": "Account"    
+
   },
   "Company": {
     "CompanyName": "Company",

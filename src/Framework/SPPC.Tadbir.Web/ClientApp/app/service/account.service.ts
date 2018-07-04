@@ -1,9 +1,11 @@
 ﻿import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Response } from '@angular/http';
 import { BaseService } from '../class/base.service';
 
 import { Account } from '../model/index';
-
+import { FiscalPeriodApi } from './api/index';
+import { String } from '../class/source';
+import { AccountApi } from './api/accountApi';
 
 export class AccountInfo implements Account
 {    
@@ -22,4 +24,13 @@ export class AccountService extends BaseService
     constructor(public http: Http) {
         super(http);
     }
+
+
+    getAccountById(id: number) {
+        var url = String.Format(AccountApi.Account, id);
+        return this.http.get(url, this.options)
+            .map(response => <any>(<Response>response).json());
+    }
+
+
 }
