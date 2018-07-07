@@ -13,3 +13,4 @@ export * from './detailAccount.service';
 export * from './costCenter.service';
 export * from './project.service';
 export * from './accountRelations.service';
+export * from './settings.service';

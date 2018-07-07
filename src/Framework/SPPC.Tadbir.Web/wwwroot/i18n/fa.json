@@ -62,8 +62,8 @@
     "FiscalPeriod": "دوره مالی",
     "Branch": "شعبه",
     "Company": "شرکت",
-    "AccountRelations": "ارتباطات حساب"
-    
+    "AccountRelations": "ارتباطات حساب",
+    "Settings": "تنظیمات"
   },
   "Account": {
     "New": "حساب جدید",
@@ -81,6 +81,30 @@
     "Tafzili": "حساب تفضیلی",
     "Kol": "حساب کل",
     "TafziliToUp": "حساب تفضیلی سطح"
+  },
+  "Settings": {
+    "AccountRelation": {
+      "LeafAccounts": "ایجاد ارتباطات در آخرین سطح حساب",
+      "LeafDetails": "ایجاد ارتباطات در آخرین سطح تفصیلی شناور",
+      "LeafCostCenters": "ایجاد ارتباطات در آخرین سطح مرکز هزینه",
+      "LeafProjects": "ایجاد ارتباطات در آخرین سطح پروژه"
+    },
+    "DateRanges": {
+      "DefaultDateRanges": "محدوده تاریخی پیش فرض",
+      "FiscalStartToCurrent": "ابتدای دوره مالی تا امروز",
+      "FiscalStartToFiscalEnd": "ابتدا تا انتهای دوره مالی",
+      "CurrentToCurrent": "امروز تا امروز"
+    },
+    "NumberDisplay": {
+      "decimalPrecision": "تعداد ارقام اعشار",
+      "maxPrecision": "حداکثر ارقام اعشار",
+      "useSeparator": "استفاده از جداکننده",
+      "separatorMode": "تنظیمات جداکننده",
+      "separatorSymbol": "علامت جداکننده",
+      "UseDefault": "تنظیمات سیستم عامل",
+      "UseCustom": "تنظیمات برنامه"
+    },
+    "Description": "توضیحات"
   },
   "VoucherLine": {
     "Debit": "بدهکار",

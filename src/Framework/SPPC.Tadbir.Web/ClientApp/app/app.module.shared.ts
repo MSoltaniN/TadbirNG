@@ -50,6 +50,8 @@ import { CompanyComponent } from './components/company/company.component';
 import { CompanyFormComponent } from './components/company/company-form.component';
 import { AccountRelationsComponent } from './components/accountRelations/accountRelations.component';
 import { AccountRelationsFormComponent } from './components/accountRelations/accountRelations-form.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { SettingsFormComponent } from './components/settings/settings-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -79,7 +81,7 @@ import { HotkeyModule } from 'angular2-hotkeys';
 
 import {
     AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
-    BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService
+    BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService, SettingService
 
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
@@ -165,12 +167,14 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         SppcCheckAccess,
         AccountRelationsComponent,
         AccountRelationsFormComponent,
+        SettingsComponent,
+        SettingsFormComponent,
         SppcGridDateFilter,
         FilterDatePickerDirective,
         SppcGridDatepicker        
     ],
     providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
-        UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService,
+        UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService, SettingService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,
@@ -222,6 +226,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
             { path: 'branches', component: BranchComponent, canActivate: [AuthGuard] },
             { path: 'companies', component: CompanyComponent, canActivate: [AuthGuard] },
             { path: 'accountrelations', component: AccountRelationsComponent, canActivate: [AuthGuard] },
+            { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])
     ],

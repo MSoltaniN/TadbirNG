@@ -62,7 +62,8 @@
     "FiscalPeriod": "Fiscal Period",
     "Branch": "Branch",
     "Company": "Company",
-    "AccountRelations": "Account Relations"
+    "AccountRelations": "Account Relations",
+    "Settings": "Settings"
   },
   "Account": {
     "NewSubAccount": "New sub account",
@@ -81,6 +82,30 @@
     "Kol": "Kol",
     "TafziliToUp": "Tafzili"
   },
+  "Settings": {
+    "AccountRelation": {
+      "LeafAccounts": "Create relations at the latest account level",
+      "LeafDetails": "Create relations at the latest detail account level",
+      "LeafCostCenters": "Create relations at the latest cost center level",
+      "LeafProjects": "Create relations at the latest project level"
+    },
+    "DateRanges": {
+      "DefaultDateRanges": "Historical Default Range",
+      "FiscalStartToCurrent": "The beginning of the fiscal period till today",
+      "FiscalStartToFiscalEnd": "Initially until the end of the fiscal period",
+      "CurrentToCurrent": "Current to current"
+    },
+    "NumberDisplay": {
+      "decimalPrecision": "Number of decimal precision",
+      "maxPrecision": "Maximum decimal precision",
+      "useSeparator": "Use the separator",
+      "separatorMode": "Separator settings",
+      "separatorSymbol": "Separator symbol",
+      "UseDefault": "Operating system settings",
+      "UseCustom": "Application settings"
+    },
+    "Description": "Description"
+  },
   "VoucherLine": {
     "Debit": "Debit",
     "Credit": "Credit",
@@ -90,8 +115,7 @@
     "New": "New Article",
     "Delete": "Delete Article",
     "Currency": "Currency",
-    "Account": "Account"    
-
+    "Account": "Account"
   },
   "Company": {
     "CompanyName": "Company",

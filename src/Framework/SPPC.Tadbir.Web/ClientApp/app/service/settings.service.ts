@@ -5,7 +5,25 @@ import { ListFormViewConfig } from "../model/listFormViewConfig";
 import { ColumnViewConfig } from "../model/columnViewConfig";
 import { SettingsApi } from "./api/settingsApi";
 import { String } from '../class/source';
+import { SettingBrief } from "../model/settingBrief";
 
+
+export class SettingBriefInfo implements SettingBrief {
+    modelType: string;
+    id: number;
+    title: string;
+    description?: string | undefined;
+    values: Object;
+
+}
+
+export class SettingTreeNodeInfo {
+    constructor(public id: number = 0,
+        public parentId: number | undefined,
+        public title: string,
+        public description: string | undefined,
+        public modelType: string | undefined) { }
+}
 
 export class ListFormViewConfigInfo implements ListFormViewConfig {
     viewId: number;
@@ -30,6 +48,18 @@ export class SettingService extends BaseService {
         super(http);
     }
 
+    public getSettingsCategories(apiUrl: string) {
+        return this.http.get(apiUrl, this.options)
+            .map(response => <any>(<Response>response));
+    }
+
+    public putSettingsCategories(apiUrl: string, list: Array<SettingBriefInfo>) {
+        var body = JSON.stringify(list);
+        return this.http.put(apiUrl, body, this.options)
+            .map(res => res)
+            .catch(this.handleError);
+    }
+
     getListSettingsByUser(userId: number) {
         var url = String.Format(SettingsApi.ListSettingsByUser, userId);
         return this.http.get(url, this.options)
@@ -42,7 +72,5 @@ export class SettingService extends BaseService {
             .map(response => <any>(<Response>response).json());
         
     }
-
-    
 
 }
