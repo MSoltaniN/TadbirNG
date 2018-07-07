@@ -65,8 +65,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.View);
-        this.reloadGrid();
-        this.cdref.detectChanges();
+        this.reloadGrid();        
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
@@ -147,6 +146,9 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                 total: 0
             }
         }
+
+        this.cdref.detectChanges();
+
     }
 
     dataStateChange(state: DataStateChangeEvent): void {
