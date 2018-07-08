@@ -43,7 +43,8 @@
     "Edit": "ویرایش",
     "Delete": "حذف",
     "GroupDelete": "حذف گروهی",
-    "Setting": "تنظیمات"
+    "Setting": "تنظیمات",
+    "Search": "جستجو"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
