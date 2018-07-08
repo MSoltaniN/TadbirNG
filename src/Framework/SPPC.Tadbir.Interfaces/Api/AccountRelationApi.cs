@@ -111,5 +111,65 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all accounts related to a project specified by unique identifier
         /// </summary>
         public const string AccountsRelatedToProjectUrl = "relations/project/{projectId:min(1)}/accounts";
+
+        /// <summary>
+        /// API client URL for all detail accounts not related to an account specified by unique identifier
+        /// </summary>
+        public const string DetailAccountsNotRelatedToAccount = "api/relations/free/accounts/{0}/faccounts";
+
+        /// <summary>
+        /// API server route URL for all detail accounts not related to an account specified by unique identifier
+        /// </summary>
+        public const string DetailAccountsNotRelatedToAccountUrl = "api/relations/free/accounts/{accountId:min(1)}/faccounts";
+
+        /// <summary>
+        /// API client URL for all cost centers not related to an account specified by unique identifier
+        /// </summary>
+        public const string CostCentersNotRelatedToAccount = "api/relations/free/accounts/{0}/ccenters";
+
+        /// <summary>
+        /// API server route URL for all cost centers not related to an account specified by unique identifier
+        /// </summary>
+        public const string CostCentersNotRelatedToAccountUrl = "api/relations/free/accounts/{accountId:min(1)}/ccenters";
+
+        /// <summary>
+        /// API client URL for all projects not related to an account specified by unique identifier
+        /// </summary>
+        public const string ProjectsNotRelatedToAccount = "api/relations/free/accounts/{0}/projects";
+
+        /// <summary>
+        /// API server route URL for all projects not related to an account specified by unique identifier
+        /// </summary>
+        public const string ProjectsNotRelatedToAccountUrl = "api/relations/free/accounts/{accountId:min(1)}/projects";
+
+        /// <summary>
+        /// API client URL for all accounts not related to a detail account specified by unique identifier
+        /// </summary>
+        public const string AccountsNotRelatedToDetailAccount = "api/relations/free/faccounts/{0}/accounts";
+
+        /// <summary>
+        /// API server route URL for all accounts not related to a detail account specified by unique identifier
+        /// </summary>
+        public const string AccountsNotRelatedToDetailAccountUrl = "api/relations/free/faccounts/{faccountId:min(1)}/accounts";
+
+        /// <summary>
+        /// API client URL for all accounts not related to a cost center specified by unique identifier
+        /// </summary>
+        public const string AccountsNotRelatedToCostCenter = "api/relations/free/ccenters/{0}/accounts";
+
+        /// <summary>
+        /// API server route URL for all accounts not related to a cost center specified by unique identifier
+        /// </summary>
+        public const string AccountsNotRelatedToCostCenterUrl = "api/relations/free/ccenters/{ccenterId:min(1)}/accounts";
+
+        /// <summary>
+        /// API client URL for all accounts not related to a project specified by unique identifier
+        /// </summary>
+        public const string AccountsNotRelatedToProject = "api/relations/free/projects/{0}/accounts";
+
+        /// <summary>
+        /// API server route URL for all accounts not related to a project specified by unique identifier
+        /// </summary>
+        public const string AccountsNotRelatedToProjectUrl = "api/relations/free/projects/{projectId:min(1)}/accounts";
     }
 }

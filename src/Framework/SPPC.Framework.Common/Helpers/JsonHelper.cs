@@ -22,7 +22,7 @@ namespace SPPC.Framework.Helpers
         /// <returns>Input object serialized as JSON</returns>
         public static string From<T>(T value, bool indented = true, string[] ignoredProperties = null)
         {
-            return From((object)value, indented);
+            return From((object)value, indented, ignoredProperties);
         }
 
         /// <summary>

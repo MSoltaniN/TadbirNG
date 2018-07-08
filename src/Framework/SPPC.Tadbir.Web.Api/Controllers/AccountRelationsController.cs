@@ -226,6 +226,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // GET: api/relations/free/accounts/{accountId:min(1)}/faccounts
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.DetailAccountsNotRelatedToAccountUrl)]
+        public async Task<IActionResult> GetConnectableAccountDetailAccountsAsync(int accountId)
+        {
+            var detailAccounts = await _repository.GetConnectableAccountDetailAccountsAsync(accountId);
+            return Json(detailAccounts);
+        }
+
         private IRelationRepository _repository;
         private RelationsConfig _config;
     }

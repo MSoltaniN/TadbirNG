@@ -101,7 +101,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور مرتبط با حساب مشخص شده را
-        /// از دیتابیس خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -131,7 +131,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از مراکز هزینه مرتبط با حساب مشخص شده را
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -161,7 +161,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از پروژه های مرتبط با حساب مشخص شده را
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -191,7 +191,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از حساب های مرتبط با تفصیلی شناور مشخص شده را
-        /// از دیتابیس خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <param name="detailId">شناسه دیتابیسی یکی از تفصیلی های شناور موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -221,7 +221,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از حساب های مرتبط با مرکز هزینه مشخص شده را
-        /// از دیتابیس خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <param name="costCenterId">شناسه دیتابیسی یکی از مراکز هزینه موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -251,7 +251,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از حساب های مرتبط با پروژه مشخص شده را
-        /// از دیتابیس خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <param name="projectId">شناسه دیتابیسی یکی از پروژه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -433,6 +433,96 @@ namespace SPPC.Tadbir.Persistence
                 repository.Update(existing);
                 await _unitOfWork.CommitAsync();
             }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور قابل ارتباط با حساب مشخص شده را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از تفصیلی های شناور قابل ارتباط با حساب مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountDetailAccountsAsync(
+            int accountId, bool useLeafItems = true, GridOptions gridOptions = null)
+        {
+            var detailAccounts = new List<AccountItemBriefViewModel>();
+            return detailAccounts;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از مراکز هزینه قابل ارتباط با حساب مشخص شده را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از مراکز هزینه قابل ارتباط با حساب مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountCostCentersAsync(
+            int accountId, bool useLeafItems = true, GridOptions gridOptions = null)
+        {
+            var costCenters = new List<AccountItemBriefViewModel>();
+            return costCenters;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از پروژه های قابل ارتباط با حساب مشخص شده را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از پروژه های قابل ارتباط با حساب مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountProjectsAsync(
+            int accountId, bool useLeafItems = true, GridOptions gridOptions = null)
+        {
+            var projects = new List<AccountItemBriefViewModel>();
+            return projects;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از حساب های قابل ارتباط با تفصیلی شناور مشخص شده را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="detailId">شناسه یکتای یکی از تفصیلی های شناور موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از حساب های قابل ارتباط با تفصیلی شناور مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountAccountsAsync(
+            int detailId, bool useLeafItems = true, GridOptions gridOptions = null)
+        {
+            var accounts = new List<AccountItemBriefViewModel>();
+            return accounts;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از حساب های قابل ارتباط با مرکز هزینه مشخص شده را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="costCenterId">شناسه یکتای یکی از مراکز هزینه موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از حساب های قابل ارتباط با مرکز هزینه مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableCostCenterAccountsAsync(
+            int costCenterId, bool useLeafItems = true, GridOptions gridOptions = null)
+        {
+            var accounts = new List<AccountItemBriefViewModel>();
+            return accounts;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از حساب های قابل ارتباط با پروژه مشخص شده را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه یکتای یکی از پروژه های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از حساب های قابل ارتباط با پروژه مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableProjectAccountsAsync(
+            int projectId, bool useLeafItems = true, GridOptions gridOptions = null)
+        {
+            var accounts = new List<AccountItemBriefViewModel>();
+            return accounts;
         }
 
         private static bool AreRelationsModified(int[] existingIds, AccountItemRelationsViewModel relations)
