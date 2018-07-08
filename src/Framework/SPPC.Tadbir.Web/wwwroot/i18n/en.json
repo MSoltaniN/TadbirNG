@@ -43,7 +43,8 @@
     "Edit": "Edit",
     "Delete": "Delete",
     "GroupDelete": "Delete Group",
-    "Setting": "Setting"
+    "Setting": "Setting",
+    "Search": "Search"
   },
   "GridSetting": {
     "Visibility": "Visibility",
