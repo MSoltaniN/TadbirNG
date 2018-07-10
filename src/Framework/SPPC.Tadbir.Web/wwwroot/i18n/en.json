@@ -249,7 +249,10 @@
     "CreateRelation": "Create Relation",
     "CreateRelationBtn": "Create Relation",
     "DeleteRelationBtn": "Delete Relation",
-    "SearchBtn": "Search"
+    "SearchBtn": "Search",
+    "FormTitle": "Relations for '{0}'",
+    "NewRelations": "New Relations",
+    "RemainingRelations": "Remaining Relations"
   },
   "FiscalPeriod": {
     "New": "New Fiscal Period",

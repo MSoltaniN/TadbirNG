@@ -114,15 +114,17 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <div class="form-group" [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}">
-                <!--<button class="k-button k-primary" SppcCheckAccess="ManageRelationships" [disabled]="!isEnableSaveBtn" (click)="onSave()" primary="true">{{ 'Buttons.Ok' | translate }}</button>-->
+            <div id="btn-section" [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}">                
                 <button class="k-button k-primary" [disabled]="mainComponentSelectedItem == 0 || relatedComponentDropdownSelected == 0" (click)="onCreateRelation()">{{ 'AccountRelations.CreateRelationBtn' | translate }}</button>
                 <button class="k-button" [disabled]="relatedComponentCheckedKeys.length == 0" (click)="DeleteRelation()">{{ 'AccountRelations.DeleteRelationBtn' | translate }}</button>
                 <button class="k-button" (click)="onCancel()">{{ 'Buttons.Cancel' | translate }}</button>
             </div>
         </div>
 
-        <accountRelations-form-component [active]="isActive" [errorMessage]="errorMessage"
+        <accountRelations-form-component [active]="isActive" [errorMessage]="errorMessage" 
+                                         [model]="mainComponentModel" 
+                                         [mainComponentSelected]="mainComponentDropdownSelected"
+                                         [relatedComponentSelected]="relatedComponentDropdownSelected"
                                          (cancel)="cancelHandler()">
         </accountRelations-form-component>
 
