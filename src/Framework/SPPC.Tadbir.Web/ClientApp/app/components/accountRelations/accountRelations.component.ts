@@ -18,7 +18,7 @@ import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { AccountRelationApi, AccountApi, DetailAccountApi, CostCenterApi, ProjectApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { AccountRelationPermissions } from '../../security/permissions';
-import { AccountRelationsService } from '../../service/index';
+import { AccountRelationsService, AccountItemBriefInfo } from '../../service/index';
 import { TreeItemLookup, TreeItem, CheckableSettings } from '@progress/kendo-angular-treeview';
 import { AccountItemRelationsInfo } from '../../service/accountRelations.service';
 import { Filter } from '../../class/filter';
@@ -66,7 +66,8 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     public isSelectedMainComponent: boolean = false;
     //public isEnableSaveBtn: boolean = false;
 
-    public mainComponentCategories: any;
+    public mainComponentCategories: any[];
+    public mainComponentModel: AccountItemBriefInfo;
     public mainComponentCheckedKeys: any[] = [];
     public mainComponentSelectedItem: number = 0;
     public mainComponentDropdownSelected: number = 0;
@@ -102,7 +103,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
 
     public handleMainComponentDropDownChange(item: any) {
-        this.mainComponentCategories = undefined;
+        this.mainComponentCategories = [];
         this.mainComponentCheckedKeys = [];
         this.mainComponentExpandedKeys = [];
         this.mainComponentDropdownSelected = 0;
@@ -151,7 +152,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
             this.selectedRelatedComponentValue = null;
             this.isDisableRelatedComponnet = true;
             this.isEnableMainComponentSearchBtn = false;
-            this.mainComponentCategories = undefined;
+            this.mainComponentCategories = [];
             this.relatedComponentCategories = undefined;
             this.relatedComponentCheckedKeys = [];
             this.relatedComponentDropdownSelected = 0;
@@ -303,7 +304,14 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     }
 
     onCreateRelation() {
-        this.isActive = true;
+        if (this.relatedComponentDropdownSelected > 0 && this.mainComponentSelectedItem > 0) {
+
+            this.mainComponentModel = this.mainComponentCategories.find(f => f.id == this.mainComponentSelectedItem);
+
+
+            this.isActive = true;
+        }        
+
     }
 
     DeleteRelation() {
@@ -370,7 +378,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     }
 
     onCancel() {
-        this.mainComponentCategories = undefined;
+        this.mainComponentCategories = [];
         this.relatedComponentCategories = undefined;
         this.mainComponentCheckedKeys = [];
         this.relatedComponentCheckedKeys = [];

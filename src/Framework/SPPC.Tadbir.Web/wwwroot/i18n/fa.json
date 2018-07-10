@@ -249,7 +249,10 @@
     "CreateRelation": "ایجاد ارتباط",
     "CreateRelationBtn": "ایجاد ارتباط",
     "DeleteRelationBtn": "حذف ارتباط",
-    "SearchBtn": "جستجو"
+    "SearchBtn": "جستجو",
+    "FormTitle": "برقراری ارتباط برای '{0}'",
+    "NewRelations": "ارتباطات جدید",
+    "RemainingRelations": "ارتباطات باقیمانده"
   },
   "FiscalPeriod": {
     "New": "دوره مالی جدید",

@@ -26,18 +26,32 @@
     overflow-y: scroll;
 }
 
-.k-button{
-    margin-top:15px;
+#btn-section .k-button {
+    margin-top: 17px;
 }
 
 .k-treeview {
     white-space: unset !important;
 }
 
-.panel-primary {
-    margin-bottom: 80px !important;
-}
-
 .btn-search {
     margin-top: 0 !important;
+}
+
+/deep/ #accountRelationForm > .k-dialog {
+    width: 800px;
+}
+
+@media screen and (max-width:800px) {
+    /deep/ #accountRelationForm > .k-dialog {
+        width: 90%;
+        min-width:250px;
+    }
+}
+
+
+
+#resualt-label {
+    margin: 5px 0;
+    display: block;
 }
