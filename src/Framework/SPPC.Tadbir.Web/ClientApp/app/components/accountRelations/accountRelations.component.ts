@@ -23,6 +23,7 @@ import { TreeItemLookup, TreeItem, CheckableSettings } from '@progress/kendo-ang
 import { AccountItemRelationsInfo } from '../../service/accountRelations.service';
 import { Filter } from '../../class/filter';
 import { KeyCode } from '../../enum/KeyCode';
+import { AccountRelationsType } from '../../enum/accountRelationType';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -94,10 +95,10 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         super(toastrService, translate, renderer, metadata, Entities.AccountRelations, '');
 
         this.mainComponent = [
-            { value: "AccountRelations.Account", key: 1 },
-            { value: "AccountRelations.DetailAccount", key: 2 },
-            { value: "AccountRelations.CostCenter", key: 3 },
-            { value: "AccountRelations.Project", key: 4 }
+            { value: "AccountRelations.Account", key: AccountRelationsType.Account },
+            { value: "AccountRelations.DetailAccount", key: AccountRelationsType.DetailAccount },
+            { value: "AccountRelations.CostCenter", key: AccountRelationsType.CostCenter },
+            { value: "AccountRelations.Project", key: AccountRelationsType.Project }
         ];
     }
 
@@ -117,27 +118,27 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
             this.isEnableMainComponentSearchBtn = true;
             this.mainComponentDropdownSelected = item;
             this.relatedComponent = [
-                { value: "AccountRelations.Account", key: 1 }
+                { value: "AccountRelations.Account", key: AccountRelationsType.Account }
             ];
             switch (item) {
-                case 1: {
+                case AccountRelationsType.Account: {
                     this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId);
                     this.relatedComponent = [
-                        { value: "AccountRelations.DetailAccount", key: 2 },
-                        { value: "AccountRelations.CostCenter", key: 3 },
-                        { value: "AccountRelations.Project", key: 4 }
+                        { value: "AccountRelations.DetailAccount", key: AccountRelationsType.DetailAccount },
+                        { value: "AccountRelations.CostCenter", key: AccountRelationsType.CostCenter },
+                        { value: "AccountRelations.Project", key: AccountRelationsType.Project }
                     ];
                     break;
                 }
-                case 2: {
+                case AccountRelationsType.DetailAccount: {
                     this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId);
                     break
                 }
-                case 3: {
+                case AccountRelationsType.CostCenter: {
                     this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId);
                     break
                 }
-                case 4: {
+                case AccountRelationsType.Project: {
                     this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId);
                     break
                 }
@@ -157,7 +158,6 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
             this.relatedComponentCheckedKeys = [];
             this.relatedComponentDropdownSelected = 0;
             this.mainComponentSelectedItem = 0;
-            //this.isEnableSaveBtn = false;
         }
     }
 
@@ -171,13 +171,12 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         else {
             this.relatedComponentDropdownSelected = 0;
             this.relatedComponentCategories = undefined;
-            //this.isEnableSaveBtn = false;
             this.isEnableRelatedComponentSearchBtn = false;
         }
     }
 
     public handleMainComponentChecking(itemLookup: TreeItemLookup): void {
-        //this.isEnableSaveBtn = false;
+
         var itemId = itemLookup.item.dataItem.id;
         if (this.mainComponentCheckedKeys.find(f => f == itemId) == itemId) {
             this.mainComponentCheckedKeys = [];
@@ -207,19 +206,19 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     public fetchMainComponentChildren = (item: any) => {
         var apiUrl = String.Empty;
         switch (this.mainComponentDropdownSelected) {
-            case 1: {
+            case AccountRelationsType.Account: {
                 apiUrl = String.Format(AccountApi.AccountChildren, item.id);
                 break;
             }
-            case 2: {
+            case AccountRelationsType.DetailAccount: {
                 apiUrl = String.Format(DetailAccountApi.DetailAccountChildren, item.id);
                 break;
             }
-            case 3: {
+            case AccountRelationsType.CostCenter: {
                 apiUrl = String.Format(CostCenterApi.CostCenterChildren, item.id);
                 break;
             }
-            case 4: {
+            case AccountRelationsType.Project: {
                 apiUrl = String.Format(ProjectApi.ProjectChildren, item.id);
                 break;
             }
@@ -247,18 +246,18 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.relatedComponentExpandedKeys = [];
         if (this.relatedComponentDropdownSelected > 0 && this.mainComponentSelectedItem > 0) {
             switch (this.relatedComponentDropdownSelected) {
-                case 1: {
+                case AccountRelationsType.Account: {
                     if (this.mainComponentDropdownSelected > 0) {
                         switch (this.mainComponentDropdownSelected) {
-                            case 2: {
+                            case AccountRelationsType.DetailAccount: {
                                 this.relatedComponentApiUrl = String.Format(AccountRelationApi.AccountsRelatedToDetailAccount, this.mainComponentSelectedItem);
                                 break;
                             }
-                            case 3: {
+                            case AccountRelationsType.CostCenter: {
                                 this.relatedComponentApiUrl = String.Format(AccountRelationApi.AccountsRelatedToCostCenter, this.mainComponentSelectedItem);
                                 break;
                             }
-                            case 4: {
+                            case AccountRelationsType.Project: {
                                 this.relatedComponentApiUrl = String.Format(AccountRelationApi.AccountsRelatedToProject, this.mainComponentSelectedItem);
                                 break;
                             }
@@ -269,15 +268,15 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                     }
                     break;
                 }
-                case 2: {
+                case AccountRelationsType.DetailAccount: {
                     this.relatedComponentApiUrl = String.Format(AccountRelationApi.DetailAccountsRelatedToAccount, this.mainComponentSelectedItem);
                     break;
                 }
-                case 3: {
+                case AccountRelationsType.CostCenter: {
                     this.relatedComponentApiUrl = String.Format(AccountRelationApi.CostCentersRelatedToAccount, this.mainComponentSelectedItem);
                     break;
                 }
-                case 4: {
+                case AccountRelationsType.Project: {
                     this.relatedComponentApiUrl = String.Format(AccountRelationApi.ProjectsRelatedToAccount, this.mainComponentSelectedItem);
                     break;
                 }
@@ -323,18 +322,18 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         var apiUrl = String.Empty;
         if (this.relatedComponentDropdownSelected > 0) {
             switch (this.relatedComponentDropdownSelected) {
-                case 1: {
+                case AccountRelationsType.Account: {
                     if (this.mainComponentDropdownSelected > 0) {
                         switch (this.mainComponentDropdownSelected) {
-                            case 2: {
+                            case AccountRelationsType.DetailAccount: {
                                 apiUrl = String.Format(AccountRelationApi.AccountsRelatedToDetailAccount, model.id);
                                 break;
                             }
-                            case 3: {
+                            case AccountRelationsType.CostCenter: {
                                 apiUrl = String.Format(AccountRelationApi.AccountsRelatedToCostCenter, model.id);
                                 break;
                             }
-                            case 4: {
+                            case AccountRelationsType.Project: {
                                 apiUrl = String.Format(AccountRelationApi.AccountsRelatedToProject, model.id);
                                 break;
                             }
@@ -345,15 +344,15 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                     }
                     break;
                 }
-                case 2: {
+                case AccountRelationsType.DetailAccount: {
                     apiUrl = String.Format(AccountRelationApi.DetailAccountsRelatedToAccount, model.id);
                     break;
                 }
-                case 3: {
+                case AccountRelationsType.CostCenter: {
                     apiUrl = String.Format(AccountRelationApi.CostCentersRelatedToAccount, model.id);
                     break;
                 }
-                case 4: {
+                case AccountRelationsType.Project: {
                     apiUrl = String.Format(AccountRelationApi.ProjectsRelatedToAccount, model.id);
                     break;
                 }
@@ -383,7 +382,6 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.mainComponentCheckedKeys = [];
         this.relatedComponentCheckedKeys = [];
         this.mainComponentSelectedItem = 0;
-        //this.isEnableSaveBtn = false;
         this.mainComponentDropdownSelected = 0;
         this.relatedComponentDropdownSelected = 0;
         this.errorMessage = String.Empty;

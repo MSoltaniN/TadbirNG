@@ -38,17 +38,17 @@
         </div>
         <div class="col-sm-6">
             <div class="section-header">
-                <span class="control-label" id="resualt-label">{{ 'AccountRelations.NewRelations' | translate }}</span>
+                <span class="control-label" id="result-label">{{ 'AccountRelations.NewRelations' | translate }}</span>
             </div>
             <div class="section-body">
                 <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
-                    <kendo-treeview [nodes]="resualtCategories"
+                    <kendo-treeview [nodes]="resultCategories"
                                     [textField]="['name']"
                                     kendoTreeViewExpandable
                                     [kendoTreeViewCheckable]="{ mode: 'multiple'}"
                                     [checkBy]="checkById"
-                                    [(checkedKeys)]="resualtCheckedKeys"
-                                    (checkedChange)="handleResualtCheckedChange($event)">
+                                    [(checkedKeys)]="resultCheckedKeys"
+                                    (checkedChange)="handleResultCheckedChange($event)">
                         <ng-template kendoTreeViewNodeTemplate let-dataItem>
                             {{dataItem.name}} - ({{dataItem.fullCode}})
                         </ng-template>

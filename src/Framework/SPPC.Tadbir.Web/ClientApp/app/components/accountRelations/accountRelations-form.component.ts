@@ -19,6 +19,7 @@ import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
 import { KeyCode } from '../../enum/KeyCode';
 import { Filter } from '../../class/filter';
+import { AccountRelationsType } from '../../enum/accountRelationType';
 
 
 
@@ -45,8 +46,8 @@ export class AccountRelationsFormComponent extends DefaultComponent {
     public relatedComponentCategories: any;
     public relatedComponentCheckedKeys: any[] = [];
 
-    public resualtCategories: any[] = [];
-    public resualtCheckedKeys: any[] = [];
+    public resultCategories: any[] = [];
+    public resultCheckedKeys: any[] = [];
 
     public searchValue: string;
     public apiUrl: string;
@@ -86,8 +87,8 @@ export class AccountRelationsFormComponent extends DefaultComponent {
 
         this.relatedComponentCategories = undefined;
         this.relatedComponentCheckedKeys = [];
-        this.resualtCategories = [];
-        this.resualtCheckedKeys = [];
+        this.resultCategories = [];
+        this.resultCheckedKeys = [];
 
 
         this.cancel.emit();
@@ -103,18 +104,18 @@ export class AccountRelationsFormComponent extends DefaultComponent {
     loadRelatedList() {
         if (this.mainComponentSelected > 0 && this.mainComponentModel.id > 0) {
             switch (this.relatedComponentSelected) {
-                case 1: {
+                case AccountRelationsType.Account: {
                     if (this.mainComponentSelected > 0) {
                         switch (this.mainComponentSelected) {
-                            case 2: {
+                            case AccountRelationsType.DetailAccount: {
                                 this.apiUrl = String.Format(AccountRelationApi.AccountsNotRelatedToDetailAccount, this.mainComponentModel.id);
                                 break;
                             }
-                            case 3: {
+                            case AccountRelationsType.CostCenter: {
                                 this.apiUrl = String.Format(AccountRelationApi.AccountsNotRelatedToCostCenter, this.mainComponentModel.id);
                                 break;
                             }
-                            case 4: {
+                            case AccountRelationsType.Project: {
                                 this.apiUrl = String.Format(AccountRelationApi.AccountsNotRelatedToProject, this.mainComponentModel.id);
                                 break;
                             }
@@ -125,15 +126,15 @@ export class AccountRelationsFormComponent extends DefaultComponent {
                     }
                     break;
                 }
-                case 2: {
+                case AccountRelationsType.DetailAccount: {
                     this.apiUrl = String.Format(AccountRelationApi.DetailAccountsNotRelatedToAccount, this.mainComponentModel.id);
                     break;
                 }
-                case 3: {
+                case AccountRelationsType.CostCenter: {
                     this.apiUrl = String.Format(AccountRelationApi.CostCentersNotRelatedToAccount, this.mainComponentModel.id);
                     break;
                 }
-                case 4: {
+                case AccountRelationsType.Project: {
                     this.apiUrl = String.Format(AccountRelationApi.ProjectsNotRelatedToAccount, this.mainComponentModel.id);
                     break;
                 }
@@ -151,18 +152,18 @@ export class AccountRelationsFormComponent extends DefaultComponent {
     public handleCheckedChange(itemLookup: TreeItemLookup): void {
         var item = itemLookup.item.dataItem;
         if (this.relatedComponentCheckedKeys.find(f => f == item.id)) {
-            var index = this.resualtCategories.findIndex(f => f.id == item.id);
+            var index = this.resultCategories.findIndex(f => f.id == item.id);
             if (index > -1) {
-                this.resualtCategories.splice(index, 1);
+                this.resultCategories.splice(index, 1);
             }
         }
         else {
-            this.resualtCategories.push(item);
-            this.resualtCheckedKeys.push(item.id);
+            this.resultCategories.push(item);
+            this.resultCheckedKeys.push(item.id);
         }      
     }
 
-    public handleResualtCheckedChange(itemLookup: TreeItemLookup): void {
+    public handleResultCheckedChange(itemLookup: TreeItemLookup): void {
         var item = itemLookup.item.dataItem;
         if (this.relatedComponentCheckedKeys.find(f => f == item.id)) {
             var index = this.relatedComponentCheckedKeys.findIndex(f => f == item.id);
@@ -171,9 +172,9 @@ export class AccountRelationsFormComponent extends DefaultComponent {
             }
         }
 
-        var index = this.resualtCategories.findIndex(f => f.id == item.id);
+        var index = this.resultCategories.findIndex(f => f.id == item.id);
         if (index > -1) {
-            this.resualtCategories.splice(index, 1);
+            this.resultCategories.splice(index, 1);
         }
     }
 
