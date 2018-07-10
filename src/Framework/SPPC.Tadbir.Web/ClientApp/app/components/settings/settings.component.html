@@ -7,7 +7,64 @@
                 {{ errorMessage }}
             </div>
         </div>
-        <div class="row" id="main-section">
+        <div>
+            <div class="row" id="main-section">
+                <div class="col-sm-6" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+                    <div class="section-header">
+                        <span class="control-label">{{ 'Settings.TitleText' | translate }}</span>
+                    </div>
+                    <div class="section-body">
+                        <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
+                            <kendo-treeview [nodes]="settingModel"
+                                            [textField]="['title']"
+                                            kendoTreeViewExpandable
+                                            [kendoTreeViewSelectable]
+                                            kendoTreeViewFlatDataBinding
+                                            idField="id"
+                                            parentIdField="parentId"
+                                            (selectionChange)="handleSelection($event)"
+                                            [expandBy]="'id'"
+                                            [(expandedKeys)]="expandedKeys">
+                            </kendo-treeview>
+
+                        </div>
+
+                        <div id="setting-description" class="form-group" *ngIf="itemSelectedModel && itemSelectedModel.description">
+                            <label class="control-label">{{ 'Settings.Description' | translate }}</label>
+                            <p>
+                                {{itemSelectedModel.description}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="section-header">
+                        <div *ngIf="itemSelectedModel;then modelSelected else noModelSelected"></div>
+                        <ng-template #modelSelected>
+                            <span class="control-label">{{itemSelectedModel.title}}</span>
+                        </ng-template>
+                        <ng-template #noModelSelected>
+                            <span class="control-label">&emsp;</span>
+                        </ng-template>
+                        
+
+                    </div>
+                    <div class="section-body">
+
+                        <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
+
+                            <settings-form-component [model]="itemSelectedModel" (updateList)="updateListHandler($event)"></settings-form-component>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div *ngIf="lastSelectedType" id="btn-section" [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}">
+                <button class="k-button k-primary" (click)="onSaveSettingsList()">{{ 'Buttons.Ok' | translate }}</button>
+            </div>
+        </div>
+        <!--<div class="row" id="main-section">
 
             <div class="col-sm-6" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
                 <div>
@@ -52,7 +109,7 @@
 
             </div>
             <div class="clearfix"></div>
-        </div>
+        </div>-->
     </div>
     <div class="clearfix"></div>
 </div>

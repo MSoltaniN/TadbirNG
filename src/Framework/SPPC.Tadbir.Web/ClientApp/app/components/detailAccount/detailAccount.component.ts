@@ -174,7 +174,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     }
 
-    dataStateChange(state: DataStateChangeEvent, e: any): void {
+    dataStateChange(state: DataStateChangeEvent): void {
         debugger;
         this.currentFilter = this.getFilters(state.filter);
         if (state.sort)

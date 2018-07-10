@@ -105,7 +105,8 @@
       "UseDefault": "تنظیمات سیستم عامل",
       "UseCustom": "تنظیمات برنامه"
     },
-    "Description": "توضیحات"
+    "Description": "توضیحات",
+    "TitleText": "لیست تنظیمات"
   },
   "VoucherLine": {
     "Debit": "بدهکار",

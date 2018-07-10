@@ -105,7 +105,8 @@
       "UseDefault": "Operating system settings",
       "UseCustom": "Application settings"
     },
-    "Description": "Description"
+    "Description": "Description",
+    "TitleText": "Settings List"
   },
   "VoucherLine": {
     "Debit": "Debit",
