@@ -175,12 +175,19 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     }
 
     dataStateChange(state: DataStateChangeEvent): void {
+        debugger;
         this.currentFilter = this.getFilters(state.filter);
         if (state.sort)
             if (state.sort.length > 0)
                 this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
         this.state = state;
         this.skip = state.skip;
+
+        if (this.currentFilter.length == 0)
+            this.reloadGrid();
+    }
+
+    filterRowData() {
         this.reloadGrid();
     }
 

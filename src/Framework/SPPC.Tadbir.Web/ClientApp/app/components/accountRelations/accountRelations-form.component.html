@@ -1,7 +1,7 @@
-﻿<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
-              (close)="closeForm()" [minWidth]="250" [width]="450">
+﻿<kendo-dialog *ngIf="active" id="accountRelationForm" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              (close)="closeForm()">
     <kendo-dialog-titlebar>
-        {{ 'AccountRelations.CreateRelation' | translate }}
+        {{ getTitleText('AccountRelations.FormTitle' | translate) }}
     </kendo-dialog-titlebar>
 
     <div *ngIf="errorMessage != ''">
@@ -10,28 +10,54 @@
         </div>
     </div>
 
-    <!--<form novalidate [formGroup]="editForm">
-        <div class="form-group">
-            <label for="name" class="control-label">{{ 'Branch.Name' | translate }}</label>
-
-            <input type="text" class="k-textbox" formControlName="name" />
-
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-                <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.Branch.NameIsRequired' | translate }}</span>
-                <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.Branch.NameIsTooLong' | translate }}</span>
+    <div class="row" id="main-section">
+        <div class="col-sm-6" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+            <div class="section-header">
+                <span class="control-label">{{ 'AccountRelations.RemainingRelations' | translate }}</span>
+                <input type="text" class="k-textbox" [(ngModel)]="searchValue" (keydown)="onKeyChange($event.keyCode)" />
+                <button class="k-button k-primary btn-search"
+                        (click)="onSearch()">
+                    <span class="k-i-filter k-icon"></span>
+                </button>
+            </div>
+            <div class="section-body">
+                <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
+                    <kendo-treeview [nodes]="relatedComponentCategories"
+                                    [textField]="['name']"
+                                    kendoTreeViewExpandable
+                                    [kendoTreeViewCheckable]="{ mode: 'multiple', checkChildren: false , checkParents: false }"
+                                    [checkBy]="checkById"
+                                    [(checkedKeys)]="relatedComponentCheckedKeys"
+                                    (checkedChange)="handleCheckedChange($event)">
+                        <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                            {{dataItem.name}} - ({{dataItem.fullCode}})
+                        </ng-template>
+                    </kendo-treeview>
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <label for="description" class="control-label">{{ 'Branch.Description' | translate }}</label>
-
-            <textarea class="k-textarea" formControlName="description"></textarea>
-
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
-                {{ 'AllValidations.Branch.DescriptionIsTooLong' | translate }}
+        <div class="col-sm-6">
+            <div class="section-header">
+                <span class="control-label" id="result-label">{{ 'AccountRelations.NewRelations' | translate }}</span>
+            </div>
+            <div class="section-body">
+                <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
+                    <kendo-treeview [nodes]="resultCategories"
+                                    [textField]="['name']"
+                                    kendoTreeViewExpandable
+                                    [kendoTreeViewCheckable]="{ mode: 'multiple'}"
+                                    [checkBy]="checkById"
+                                    [(checkedKeys)]="resultCheckedKeys"
+                                    (checkedChange)="handleResultCheckedChange($event)">
+                        <ng-template kendoTreeViewNodeTemplate let-dataItem>
+                            {{dataItem.name}} - ({{dataItem.fullCode}})
+                        </ng-template>
+                    </kendo-treeview>
+                </div>
             </div>
         </div>
-    </form>-->
+        <div class="clearfix"></div>
+    </div>
 
     <kendo-dialog-actions>
         <button class="k-button k-primary" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>

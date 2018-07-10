@@ -101,7 +101,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور مرتبط با حساب مشخص شده را
-        /// از دیتابیس خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -131,7 +131,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از مراکز هزینه مرتبط با حساب مشخص شده را
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -161,7 +161,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از پروژه های مرتبط با حساب مشخص شده را
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -191,7 +191,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از حساب های مرتبط با تفصیلی شناور مشخص شده را
-        /// از دیتابیس خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <param name="detailId">شناسه دیتابیسی یکی از تفصیلی های شناور موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -221,7 +221,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از حساب های مرتبط با مرکز هزینه مشخص شده را
-        /// از دیتابیس خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <param name="costCenterId">شناسه دیتابیسی یکی از مراکز هزینه موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -251,7 +251,7 @@ namespace SPPC.Tadbir.Persistence
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از حساب های مرتبط با پروژه مشخص شده را
-        /// از دیتابیس خوانده و برمی گرداند
+        /// خوانده و برمی گرداند
         /// </summary>
         /// <param name="projectId">شناسه دیتابیسی یکی از پروژه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -433,6 +433,258 @@ namespace SPPC.Tadbir.Persistence
                 repository.Update(existing);
                 await _unitOfWork.CommitAsync();
             }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور قابل ارتباط با حساب مشخص شده را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از تفصیلی های شناور قابل ارتباط با حساب مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountsForAccountAsync(
+            int accountId, bool useLeafItems = true, GridOptions gridOptions = null)
+        {
+            var detailAccounts = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var byCriteria = await repository.GetByCriteriaAsync(
+                acc => acc.Id == accountId,
+                acc => acc.AccountDetailAccounts, acc => acc.FiscalPeriod, acc => acc.Branch);
+            var account = byCriteria.SingleOrDefault();
+            if (account != null)
+            {
+                int fpId = account.FiscalPeriod.Id;
+                int branchId = account.Branch.Id;
+                var existingIds = account.AccountDetailAccounts.Select(ada => ada.DetailId);
+                var detailRepository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+                var connectable = detailRepository
+                    .GetEntityQuery(gridOptions)
+                    .Where(facc => facc.FiscalPeriod.Id == fpId
+                        && facc.Branch.Id == branchId
+                        && !existingIds.Contains(facc.Id));
+                if (useLeafItems)
+                {
+                    connectable = connectable.Where(facc => facc.Children.Count == 0);
+                }
+
+                detailAccounts.AddRange(
+                    await connectable
+                        .Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc))
+                        .ToListAsync());
+            }
+
+            return detailAccounts;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از مراکز هزینه قابل ارتباط با حساب مشخص شده را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از مراکز هزینه قابل ارتباط با حساب مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableCostCentersForAccountAsync(
+            int accountId, bool useLeafItems = true, GridOptions gridOptions = null)
+        {
+            var costCenters = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var byCriteria = await repository.GetByCriteriaAsync(
+                acc => acc.Id == accountId,
+                acc => acc.AccountCostCenters, acc => acc.FiscalPeriod, acc => acc.Branch);
+            var account = byCriteria.SingleOrDefault();
+            if (account != null)
+            {
+                int fpId = account.FiscalPeriod.Id;
+                int branchId = account.Branch.Id;
+                var existingIds = account.AccountCostCenters.Select(ac => ac.CostCenterId);
+                var centerRepository = _unitOfWork.GetAsyncRepository<CostCenter>();
+                var connectable = centerRepository
+                    .GetEntityQuery(gridOptions)
+                    .Where(cc => cc.FiscalPeriod.Id == fpId
+                        && cc.Branch.Id == branchId
+                        && !existingIds.Contains(cc.Id));
+                if (useLeafItems)
+                {
+                    connectable = connectable.Where(cc => cc.Children.Count == 0);
+                }
+
+                costCenters.AddRange(
+                    await connectable
+                        .Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc))
+                        .ToListAsync());
+            }
+
+            return costCenters;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از پروژه های قابل ارتباط با حساب مشخص شده را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از پروژه های قابل ارتباط با حساب مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableProjectsForAccountAsync(
+            int accountId, bool useLeafItems = true, GridOptions gridOptions = null)
+        {
+            var projects = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var byCriteria = await repository.GetByCriteriaAsync(
+                acc => acc.Id == accountId,
+                acc => acc.AccountProjects, acc => acc.FiscalPeriod, acc => acc.Branch);
+            var account = byCriteria.SingleOrDefault();
+            if (account != null)
+            {
+                int fpId = account.FiscalPeriod.Id;
+                int branchId = account.Branch.Id;
+                var existingIds = account.AccountProjects.Select(ap => ap.ProjectId);
+                var projectRepository = _unitOfWork.GetAsyncRepository<Project>();
+                var connectable = projectRepository
+                    .GetEntityQuery(gridOptions)
+                    .Where(prj => prj.FiscalPeriod.Id == fpId
+                        && prj.Branch.Id == branchId
+                        && !existingIds.Contains(prj.Id));
+                if (useLeafItems)
+                {
+                    connectable = connectable.Where(prj => prj.Children.Count == 0);
+                }
+
+                projects.AddRange(
+                    await connectable
+                        .Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj))
+                        .ToListAsync());
+            }
+
+            return projects;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از حساب های قابل ارتباط با تفصیلی شناور مشخص شده را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="detailId">شناسه یکتای یکی از تفصیلی های شناور موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از حساب های قابل ارتباط با تفصیلی شناور مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsForDetailAccountAsync(
+            int detailId, bool useLeafItems = true, GridOptions gridOptions = null)
+        {
+            var accounts = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var byCriteria = await repository.GetByCriteriaAsync(
+                facc => facc.Id == detailId,
+                facc => facc.AccountDetailAccounts, facc => facc.FiscalPeriod, facc => facc.Branch);
+            var detailAccount = byCriteria.SingleOrDefault();
+            if (detailAccount != null)
+            {
+                int fpId = detailAccount.FiscalPeriod.Id;
+                int branchId = detailAccount.Branch.Id;
+                var existingIds = detailAccount.AccountDetailAccounts.Select(ada => ada.AccountId);
+                var accountRepository = _unitOfWork.GetAsyncRepository<Account>();
+                var connectable = accountRepository
+                    .GetEntityQuery(gridOptions)
+                    .Where(acc => acc.FiscalPeriod.Id == fpId
+                        && acc.Branch.Id == branchId
+                        && !existingIds.Contains(acc.Id));
+                if (useLeafItems)
+                {
+                    connectable = connectable.Where(acc => acc.Children.Count == 0);
+                }
+
+                accounts.AddRange(
+                    await connectable
+                        .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                        .ToListAsync());
+            }
+
+            return accounts;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از حساب های قابل ارتباط با مرکز هزینه مشخص شده را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="costCenterId">شناسه یکتای یکی از مراکز هزینه موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از حساب های قابل ارتباط با مرکز هزینه مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsForCostCenterAsync(
+            int costCenterId, bool useLeafItems = true, GridOptions gridOptions = null)
+        {
+            var accounts = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var byCriteria = await repository.GetByCriteriaAsync(
+                cc => cc.Id == costCenterId,
+                cc => cc.AccountCostCenters, cc => cc.FiscalPeriod, cc => cc.Branch);
+            var costCenter = byCriteria.SingleOrDefault();
+            if (costCenter != null)
+            {
+                int fpId = costCenter.FiscalPeriod.Id;
+                int branchId = costCenter.Branch.Id;
+                var existingIds = costCenter.AccountCostCenters.Select(ac => ac.AccountId);
+                var accountRepository = _unitOfWork.GetAsyncRepository<Account>();
+                var connectable = accountRepository
+                    .GetEntityQuery(gridOptions)
+                    .Where(acc => acc.FiscalPeriod.Id == fpId
+                        && acc.Branch.Id == branchId
+                        && !existingIds.Contains(acc.Id));
+                if (useLeafItems)
+                {
+                    connectable = connectable.Where(acc => acc.Children.Count == 0);
+                }
+
+                accounts.AddRange(
+                    await connectable
+                        .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                        .ToListAsync());
+            }
+
+            return accounts;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مجموعه ای از حساب های قابل ارتباط با پروژه مشخص شده را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="projectId">شناسه یکتای یکی از پروژه های موجود</param>
+        /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از حساب های قابل ارتباط با پروژه مشخص شده</returns>
+        public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsForProjectAsync(
+            int projectId, bool useLeafItems = true, GridOptions gridOptions = null)
+        {
+            var accounts = new List<AccountItemBriefViewModel>();
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var byCriteria = await repository.GetByCriteriaAsync(
+                prj => prj.Id == projectId,
+                prj => prj.AccountProjects, prj => prj.FiscalPeriod, prj => prj.Branch);
+            var project = byCriteria.SingleOrDefault();
+            if (project != null)
+            {
+                int fpId = project.FiscalPeriod.Id;
+                int branchId = project.Branch.Id;
+                var existingIds = project.AccountProjects.Select(ap => ap.AccountId);
+                var accountRepository = _unitOfWork.GetAsyncRepository<Account>();
+                var connectable = accountRepository
+                    .GetEntityQuery(gridOptions)
+                    .Where(acc => acc.FiscalPeriod.Id == fpId
+                        && acc.Branch.Id == branchId
+                        && !existingIds.Contains(acc.Id));
+                if (useLeafItems)
+                {
+                    connectable = connectable.Where(acc => acc.Children.Count == 0);
+                }
+
+                accounts.AddRange(
+                    await connectable
+                        .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                        .ToListAsync());
+            }
+
+            return accounts;
         }
 
         private static bool AreRelationsModified(int[] existingIds, AccountItemRelationsViewModel relations)

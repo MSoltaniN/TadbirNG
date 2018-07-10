@@ -84,7 +84,9 @@ label {
     z-index:0!important;
 }
 
-
+.panel-primary {
+    margin-bottom: 100px !important;
+}
 /*#endregion public classes */
 /*#region add class for sppc font*/
 tgrid {
