@@ -229,10 +229,61 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/relations/free/accounts/{accountId:min(1)}/faccounts
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.DetailAccountsNotRelatedToAccountUrl)]
-        public async Task<IActionResult> GetConnectableAccountDetailAccountsAsync(int accountId)
+        public async Task<IActionResult> GetConnectableDetailAccountsForAccountAsync(int accountId)
         {
-            var detailAccounts = await _repository.GetConnectableAccountDetailAccountsAsync(accountId);
+            var detailAccounts = await _repository.GetConnectableDetailAccountsForAccountAsync(
+                accountId, _config.UseLeafDetails, GridOptions);
             return Json(detailAccounts);
+        }
+
+        // GET: api/relations/free/accounts/{accountId:min(1)}/ccenters
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.CostCentersNotRelatedToAccountUrl)]
+        public async Task<IActionResult> GetConnectableCostCentersForAccountAsync(int accountId)
+        {
+            var costCenters = await _repository.GetConnectableCostCentersForAccountAsync(
+                accountId, _config.UseLeafCostCenters, GridOptions);
+            return Json(costCenters);
+        }
+
+        // GET: api/relations/free/accounts/{accountId:min(1)}/projects
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.ProjectsNotRelatedToAccountUrl)]
+        public async Task<IActionResult> GetConnectableProjectsForAccountAsync(int accountId)
+        {
+            var projects = await _repository.GetConnectableProjectsForAccountAsync(
+                accountId, _config.UseLeafProjects, GridOptions);
+            return Json(projects);
+        }
+
+        // GET: api/relations/free/faccounts/{faccountId:min(1)}/accounts
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.AccountsNotRelatedToDetailAccountUrl)]
+        public async Task<IActionResult> GetConnectableAccountsForDetailAccountAsync(int faccountId)
+        {
+            var accounts = await _repository.GetConnectableAccountsForDetailAccountAsync(
+                faccountId, _config.UseLeafAccounts, GridOptions);
+            return Json(accounts);
+        }
+
+        // GET: api/relations/free/ccenters/{ccenterId:min(1)}/accounts
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.AccountsNotRelatedToCostCenterUrl)]
+        public async Task<IActionResult> GetConnectableAccountsForCostCenterAsync(int ccenterId)
+        {
+            var accounts = await _repository.GetConnectableAccountsForCostCenterAsync(
+                ccenterId, _config.UseLeafAccounts, GridOptions);
+            return Json(accounts);
+        }
+
+        // GET: api/relations/free/projects/{projectId:min(1)}/accounts
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.AccountsNotRelatedToProjectUrl)]
+        public async Task<IActionResult> GetConnectableAccountsForProjectAsync(int projectId)
+        {
+            var accounts = await _repository.GetConnectableAccountsForDetailAccountAsync(
+                projectId, _config.UseLeafAccounts, GridOptions);
+            return Json(accounts);
         }
 
         private IRelationRepository _repository;

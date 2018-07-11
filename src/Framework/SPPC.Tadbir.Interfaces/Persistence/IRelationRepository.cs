@@ -159,7 +159,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از تفصیلی های شناور قابل ارتباط با حساب مشخص شده</returns>
-        Task<IList<AccountItemBriefViewModel>> GetConnectableAccountDetailAccountsAsync(
+        Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountsForAccountAsync(
             int accountId, bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از مراکز هزینه قابل ارتباط با حساب مشخص شده</returns>
-        Task<IList<AccountItemBriefViewModel>> GetConnectableAccountCostCentersAsync(
+        Task<IList<AccountItemBriefViewModel>> GetConnectableCostCentersForAccountAsync(
             int accountId, bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از پروژه های قابل ارتباط با حساب مشخص شده</returns>
-        Task<IList<AccountItemBriefViewModel>> GetConnectableAccountProjectsAsync(
+        Task<IList<AccountItemBriefViewModel>> GetConnectableProjectsForAccountAsync(
             int accountId, bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های قابل ارتباط با تفصیلی شناور مشخص شده</returns>
-        Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountAccountsAsync(
+        Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsForDetailAccountAsync(
             int detailId, bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های قابل ارتباط با مرکز هزینه مشخص شده</returns>
-        Task<IList<AccountItemBriefViewModel>> GetConnectableCostCenterAccountsAsync(
+        Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsForCostCenterAsync(
             int costCenterId, bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های قابل ارتباط با پروژه مشخص شده</returns>
-        Task<IList<AccountItemBriefViewModel>> GetConnectableProjectAccountsAsync(
+        Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsForProjectAsync(
             int projectId, bool useLeafItems = true, GridOptions gridOptions = null);
     }
 }

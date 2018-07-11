@@ -4,7 +4,7 @@ import { BaseService } from '../class/base.service';
 import { Observable } from 'rxjs';
 
 import { map } from 'rxjs/operators/map';
-import { AccountItemRelations } from '../model/index';
+import { AccountItemRelations, AccountItemBrief } from '../model/index';
 import { Filter } from '../class/filter';
 
 
@@ -12,6 +12,14 @@ import { Filter } from '../class/filter';
 export class AccountItemRelationsInfo implements AccountItemRelations {
     id: number;
     relatedItemIds: number[];
+}
+
+export class AccountItemBriefInfo implements AccountItemBrief {
+    id: number = 0;
+    name: string;
+    fullCode: string;
+    isSelected: boolean;
+    childCount: number;
 }
 
 @Injectable()

@@ -105,7 +105,8 @@
       "UseDefault": "Operating system settings",
       "UseCustom": "Application settings"
     },
-    "Description": "Description"
+    "Description": "Description",
+    "TitleText": "Settings List"
   },
   "VoucherLine": {
     "Debit": "Debit",
@@ -249,7 +250,11 @@
     "CreateRelation": "Create Relation",
     "CreateRelationBtn": "Create Relation",
     "DeleteRelationBtn": "Delete Relation",
-    "SearchBtn": "Search"
+    "SearchBtn": "Search",
+    "FormTitle": "Relations for '{0}'",
+    "NewRelations": "New Relations",
+    "RemainingRelations": "Remaining Relations",
+    "noRemainingRelations": "All relations are selected"
   },
   "FiscalPeriod": {
     "New": "New Fiscal Period",

@@ -33,15 +33,16 @@ export function getLayoutModule(layout: Layout) {
 @Component({
     selector: 'settings',
     templateUrl: './settings.component.html',
-    styles: [`#setting-description{ margin-top: 20px;text-align: justify;color: #4a4a4a;font-size: 13px;}
-@media screen and (max-width:768px){
-        #main-section > .col-sm-6 {
-            float:unset !important;
-        }
-    }
-.k-button{
-    margin-bottom: 60px;
-`],
+    styleUrls: ['./settings.component.css'],
+//    styles: [`#setting-description{ margin-top: 20px;text-align: justify;color: #4a4a4a;font-size: 13px;}
+//@media screen and (max-width:768px){
+//        #main-section > .col-sm-6 {
+//            float:unset !important;
+//        }
+//    }
+//.k-button{
+//    margin-bottom: 60px;
+//`],
     providers: [{
         provide: RTL,
         useFactory: getLayoutModule,

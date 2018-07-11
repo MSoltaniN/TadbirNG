@@ -66,6 +66,7 @@ export function getLayoutModule(layout: Layout) {
 export class AccountComponent extends DefaultComponent implements OnInit {
 
     //#region Fields
+    
     public Childrens: Array<AccountComponent>;
 
     @Input() public parent: Account;
@@ -155,6 +156,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         this.sppcLoading.show();
         this.accountService.getById(String.Format(AccountApi.Account, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
+            this.setAccountTitle(res.parentId);
             this.sppcLoading.hide();
         })
         this.isNew = false;
@@ -222,6 +224,9 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                         this.addToContainer = false;
                         this.reloadGrid(insertedModel);
                     }
+                    else if (model.parentId != undefined){
+                        this.reloadGrid();
+                    }
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
@@ -252,8 +257,11 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     public addChildAccount(accountComponent : AccountComponent) {
 
         if (this.Childrens == undefined) this.Childrens = new Array<AccountComponent>();
-        if (this.Childrens.findIndex(p=>p.parent.id == accountComponent.parent.id) == -1)
+        if (this.Childrens.findIndex(p=>p.parent.id === accountComponent.parent.id) == -1)
+        //if (this.Childrens.some(p => p === accountComponent) == false)
             this.Childrens.push(accountComponent);
+        
+
     }
     
     showConfirm() {
@@ -301,15 +309,17 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                     var rows = (resData as Array<Account>);
                     var index = rows.findIndex(p => p.id == insertedModel.id);
                     if (index >= 0) {
-                        resData.splice(index, 1);
+                        rows.splice(index, 1);
                         rows.splice(0, 0, insertedModel);
                     }
                     else {
                         if (rows.length == this.pageSize) {
-                            resData.splice(this.pageSize - 1, 1);
+                            rows.splice(this.pageSize - 1, 1);
                         }
                         rows.splice(0, 0, insertedModel);
                     }
+
+                    resData = rows;
                 }
                 if (res.headers != null) {
                     var headers = res.headers != undefined ? res.headers : null;
@@ -319,6 +329,8 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                             totalCount = parseInt(retheader.toString());
                     }
                 }
+                               
+
                 this.rowData = {
                     data: resData,
                     total: totalCount
@@ -351,38 +363,44 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         //hide confirm dialog
         this.deleteConfirm = false;
     }
-    
-    public addNew(parentModelId?: number,addToThis? : boolean) {
-        this.isNew = true;
-        this.editDataItem = new AccountInfo();
 
-       
-
+    private setAccountTitle(parentModelId?: number) {
         if (parentModelId != undefined) {
 
+            var parentRow = null;
             var findIndex = this.rowData.data.findIndex(acc => acc.id == parentModelId);
-            var parentRow = this.rowData.data[findIndex];
-           
-            var prefix = "";
             
-            if (parentRow.level == 0)
-                prefix = this.getText("Account.Kol");
+            if (findIndex == -1) {
+                findIndex = this.parentAccount.rowData.data.findIndex(acc => acc.id == parentModelId);
+                if (findIndex >= 0)
+                    parentRow = this.parentAccount.rowData.data[findIndex];
+            }
+            else
+                parentRow = this.rowData.data[findIndex];
 
-            if (parentRow.level == 1)
-                prefix = this.getText("Account.Moeen");
+            if (parentRow != null) {
+                //var parentRow = this.rowData.data[findIndex];
 
-            if (parentRow.level == 2)
-                prefix = this.getText("Account.Tafzili");
+                var prefix = "";
 
-            if (parentRow.level > 2)
-                prefix = this.getText("Account.TafziliToUp") + " " + (parentRow.level - 2);
+                if (parentRow.level == 0)
+                    prefix = this.getText("Account.Kol");
 
-            this.parentTitle =  prefix;
-            this.parentValue =  parentRow.name;
+                if (parentRow.level == 1)
+                    prefix = this.getText("Account.Moeen");
+
+                if (parentRow.level == 2)
+                    prefix = this.getText("Account.Tafzili");
+
+                if (parentRow.level > 2)
+                    prefix = this.getText("Account.TafziliToUp") + " " + (parentRow.level - 2);
+
+                this.parentTitle = prefix;
+                this.parentValue = parentRow.name;
+            }
         }
-        else if (this.parent != undefined)
-        {  
-            
+        else if (this.parent != undefined) {
+
             var prefix = "";
 
             if (this.parent.level == 0)
@@ -397,12 +415,21 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             if (this.parent.level > 2)
                 prefix = this.getText("Account.TafziliToUp") + " " + (this.parent.level - 2);
 
-            
+
             this.parentTitle = prefix;
             this.parentValue = this.parent.name;
         }
         else
             this.parentTitle = '';
+    }
+    
+    public addNew(parentModelId?: number,addToThis? : boolean) {
+        this.isNew = true;
+        this.editDataItem = new AccountInfo();
+
+       
+        this.setAccountTitle(parentModelId);
+       
         //آی دی مربوط به حساب سطح بالاتر برای درج در زیر حساب ها در متغیر parentId مقدار دهی میشود
         if (parentModelId)
             this.parentId = parentModelId;
