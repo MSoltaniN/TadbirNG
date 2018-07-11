@@ -34,15 +34,6 @@ export function getLayoutModule(layout: Layout) {
     selector: 'settings',
     templateUrl: './settings.component.html',
     styleUrls: ['./settings.component.css'],
-//    styles: [`#setting-description{ margin-top: 20px;text-align: justify;color: #4a4a4a;font-size: 13px;}
-//@media screen and (max-width:768px){
-//        #main-section > .col-sm-6 {
-//            float:unset !important;
-//        }
-//    }
-//.k-button{
-//    margin-bottom: 60px;
-//`],
     providers: [{
         provide: RTL,
         useFactory: getLayoutModule,
@@ -132,6 +123,10 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
             this.errorMessage = error;
         }));
 
+    }
+
+    onDefaultSettings() {
+        this.settingForm.defaultSettingsHandler();
     }
 }
 

@@ -8,13 +8,13 @@ import { String } from '../class/source';
 import { SettingBrief } from "../model/settingBrief";
 
 
-export class SettingBriefInfo implements SettingBrief {
+export class SettingBriefInfo implements SettingBrief {    
     modelType: string;
     id: number;
     title: string;
     description?: string | undefined;
     values: Object;
-
+    defaultValues: Object;
 }
 
 export class SettingTreeNodeInfo {

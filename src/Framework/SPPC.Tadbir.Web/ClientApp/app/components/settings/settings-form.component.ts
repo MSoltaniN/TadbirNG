@@ -89,44 +89,9 @@ export class SettingsFormComponent extends DefaultComponent {
         this.selectedItemType = '';
         if (setting != undefined) {
             this.selectedItemType = setting.modelType;
-            switch (setting.modelType) {
-                case SettingsType.DateRangeConfig:
-                    {
-                        var objectValue = JSON.parse(JSON.stringify(setting.values));
-                        this.selectedDDLDateRangeValue = objectValue.defaultDateRange;
-
-                        this.dateRangesForm.reset(setting.values);
-                        break;
-                    }
-                case SettingsType.EntityRowAccessConfig:
-                    {
-                        break;
-                    }
-                case SettingsType.ListFormViewConfig:
-                    {
-                        break;
-                    }
-                case SettingsType.NumberDisplayConfig:
-                    {
-                        var objectValue = JSON.parse(JSON.stringify(setting.values));
-                        this.selectedDDLDecimalPrecisionValue = objectValue.decimalPrecision;
-                        this.selectedDDLMaxPrecisionValue = objectValue.maxPrecision;
-                        this.selectedDDLSeparatorModeValue = objectValue.separatorMode;
-                        this.numberDisplayForm.reset(setting.values);
-                        break;
-                    }
-                case SettingsType.RelationsConfig:
-                    {
-                        this.accountRelationsForm.reset(setting.values);
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
-            }
+            this.setFormValue(this.selectedItemModel.values);
         }
-        
+
     }
 
     @Output() updateList: EventEmitter<SettingBriefInfo> = new EventEmitter();
@@ -189,10 +154,54 @@ export class SettingsFormComponent extends DefaultComponent {
                 }
             default:
                 {
-                    
+
                     break;
                 }
         }
 
+    }
+
+    defaultSettingsHandler() {
+        this.setFormValue(this.selectedItemModel.defaultValues);
+    }
+
+    setFormValue(objectValue: object) {
+
+        switch (this.selectedItemModel.modelType) {
+            case SettingsType.DateRangeConfig:
+                {
+                    var defaultValue = JSON.parse(JSON.stringify(objectValue));
+                    this.selectedDDLDateRangeValue = defaultValue.defaultDateRange;
+
+                    this.dateRangesForm.reset(objectValue);
+                    break;
+                }
+            case SettingsType.EntityRowAccessConfig:
+                {
+                    break;
+                }
+            case SettingsType.ListFormViewConfig:
+                {
+                    break;
+                }
+            case SettingsType.NumberDisplayConfig:
+                {
+                    var defaultValue = JSON.parse(JSON.stringify(objectValue));
+                    this.selectedDDLDecimalPrecisionValue = defaultValue.decimalPrecision;
+                    this.selectedDDLMaxPrecisionValue = defaultValue.maxPrecision;
+                    this.selectedDDLSeparatorModeValue = defaultValue.separatorMode;
+                    this.numberDisplayForm.reset(objectValue);
+                    break;
+                }
+            case SettingsType.RelationsConfig:
+                {
+                    this.accountRelationsForm.reset(objectValue);
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
+        }
     }
 }
