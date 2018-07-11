@@ -199,7 +199,7 @@ namespace SPPC.Tadbir.Persistence
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task InitDefaultColumnSettings()
+        private async Task InitDefaultColumnSettingsAsync()
         {
             InitDefaultColumns();
             var names = new string[] { "Id", "Name", "Level", "No", "UserName", "Description" };
@@ -232,7 +232,7 @@ namespace SPPC.Tadbir.Persistence
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task InitSampleUserSettings()
+        private async Task InitSampleUserSettingsAsync()
         {
             var repository = _unitOfWork.GetAsyncRepository<UserSetting>();
             var userSetting = GetSampleUserSettings();

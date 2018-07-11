@@ -32,5 +32,10 @@ namespace SPPC.Tadbir.ViewModel.Config
         /// مقادیر جاری برای تنظیمات
         /// </summary>
         public object Values { get; set; }
+
+        /// <summary>
+        /// مقادیر پیش فرض برای تنظیمات
+        /// </summary>
+        public object DefaultValues { get; set; }
     }
 }

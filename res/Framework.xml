@@ -1015,6 +1015,12 @@
           <ColumnView name="Values" visible="True" width="120" />
           <ValidationRule name="Values_Validation" required="True" minimum="" maximum="2048" format="" type="Length" />
         </Property>
+        <Property name="DefaultValues" type="String" isValidated="True" description="ریز اطلاعات تنظیمات پیش فرض که با فرمت مشخصی ذخیره و بازیابی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDefaultValues" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="DefaultValues" type="nvarchar(2048)" nullable="False" />
+          <ColumnView name="Default Values" visible="True" width="120" />
+          <ValidationRule name="DefaultValues_Validation" required="True" minimum="" maximum="2048" format="" type="Length" />
+        </Property>
         <Property name="DescriptionKey" type="String" isValidated="True" description="شناسه متن چندزبانه برای شرح تنظیمات در واسط کاربری" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescriptionKey" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="DescriptionKey" type="varchar(128)" nullable="True" />

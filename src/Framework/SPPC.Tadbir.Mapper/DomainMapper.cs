@@ -377,6 +377,10 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.Values,
                     opts => opts.MapFrom(
                         src => ConfigFactory.CreateFromJson(src.Values, src.ModelType)))
+                .ForMember(
+                    dest => dest.DefaultValues,
+                    opts => opts.MapFrom(
+                        src => ConfigFactory.CreateFromJson(src.DefaultValues, src.ModelType)))
                 .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey))
                 .ForMember(dest => dest.Description, opts => opts.MapFrom(src => src.DescriptionKey));
             mapperConfig.CreateMap<Setting, RelationsConfig>()
