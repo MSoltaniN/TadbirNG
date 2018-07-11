@@ -13,7 +13,7 @@ import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { AccountItemBriefInfo, AccountRelationsService } from '../../service/index';
+import { AccountItemBriefInfo, AccountRelationsService, AccountItemRelationsInfo } from '../../service/index';
 import { AccountRelationApi } from '../../service/api/index';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
@@ -43,6 +43,8 @@ export function getLayoutModule(layout: Layout) {
 export class AccountRelationsFormComponent extends DefaultComponent {
 
     public mainComponentModel: AccountItemBriefInfo;
+    public mainComponentSelected: number = 0;
+    public relatedComponentSelected: number = 0;
     public relatedComponentCategories: any;
     public relatedComponentCheckedKeys: any[] = [];
 
@@ -51,6 +53,7 @@ export class AccountRelationsFormComponent extends DefaultComponent {
 
     public searchValue: string;
     public apiUrl: string;
+    public resultMessage: boolean;
 
     //create properties
     @Input() public active: boolean = false;
@@ -59,20 +62,35 @@ export class AccountRelationsFormComponent extends DefaultComponent {
     @Input() public set model(item: AccountItemBriefInfo) {
         if (item) {
             this.mainComponentModel = item;
-            this.loadRelatedList();
+        }
+        else {
+            this.relatedComponentCategories = undefined;
+            this.relatedComponentCheckedKeys = [];
+            this.resultCategories = [];
+            this.resultCheckedKeys = [];
         }
     }
-    @Input() public mainComponentSelected: number = 0;
-    @Input() public relatedComponentSelected: number = 0;
+    @Input() public set mainComponent(id: number) {
+            this.mainComponentSelected = id;
+    };
+
+    @Input() public set relatedComponent(id: number) {
+            this.relatedComponentSelected = id;
+    }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
-    //@Output() save: EventEmitter<Branch> = new EventEmitter();
+    @Output() save: EventEmitter<AccountItemRelationsInfo> = new EventEmitter();
     //create properties
 
     //Events
     public onSave(e: any): void {
-        //e.preventDefault();
-        //this.save.emit(this.editForm.value);
+        e.preventDefault();
+
+        var relationModel = new AccountItemRelationsInfo();
+        relationModel.id = this.mainComponentModel.id;
+        relationModel.relatedItemIds = this.relatedComponentCheckedKeys;
+
+        this.save.emit(relationModel);
         //this.active = true;
     }
 
@@ -82,14 +100,12 @@ export class AccountRelationsFormComponent extends DefaultComponent {
     }
 
     private closeForm(): void {
-        //this.isNew = false;
         this.active = false;
 
         this.relatedComponentCategories = undefined;
         this.relatedComponentCheckedKeys = [];
         this.resultCategories = [];
         this.resultCheckedKeys = [];
-
 
         this.cancel.emit();
     }
@@ -98,10 +114,9 @@ export class AccountRelationsFormComponent extends DefaultComponent {
     constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
         public accountRelationsService: AccountRelationsService, public sppcLoading: SppcLoadingService) {
         super(toastrService, translate, renderer, metadata, Entities.AccountRelations, '');
-
     }
 
-    loadRelatedList() {
+    getApiUrl() {
         if (this.mainComponentSelected > 0 && this.mainComponentModel.id > 0) {
             switch (this.relatedComponentSelected) {
                 case AccountRelationsType.Account: {
@@ -141,7 +156,7 @@ export class AccountRelationsFormComponent extends DefaultComponent {
                 default: {
                     break;
                 }
-            }            
+            }
         }
     }
 
@@ -160,7 +175,7 @@ export class AccountRelationsFormComponent extends DefaultComponent {
         else {
             this.resultCategories.push(item);
             this.resultCheckedKeys.push(item.id);
-        }      
+        }
     }
 
     public handleResultCheckedChange(itemLookup: TreeItemLookup): void {
@@ -189,15 +204,18 @@ export class AccountRelationsFormComponent extends DefaultComponent {
     }
 
     onSearch() {
+        this.resultMessage = false;
         var filters: Filter[] = [];
         if (this.searchValue) {
             filters.push(new Filter("Name", this.searchValue, ".Contains({0})", "System.String"));
         }
 
         this.sppcLoading.show();
-        this.apiUrl = "http://localhost:8801/relations/account/1/faccounts";
+        this.getApiUrl();
         this.accountRelationsService.getRelatedComponentModel(this.apiUrl, filters).subscribe(res => {
             this.relatedComponentCategories = res;
+            if(this.relatedComponentCategories.length == 0)
+                this.resultMessage = true;
             this.sppcLoading.hide();
         })
     }

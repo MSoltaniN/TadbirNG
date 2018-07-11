@@ -253,7 +253,8 @@
     "SearchBtn": "جستجو",
     "FormTitle": "برقراری ارتباط برای '{0}'",
     "NewRelations": "ارتباطات جدید",
-    "RemainingRelations": "ارتباطات باقیمانده"
+    "RemainingRelations": "ارتباطات باقیمانده",
+    "noRemainingRelations": "تمام ارتباطات انتخاب شده اند"
   },
   "FiscalPeriod": {
     "New": "دوره مالی جدید",

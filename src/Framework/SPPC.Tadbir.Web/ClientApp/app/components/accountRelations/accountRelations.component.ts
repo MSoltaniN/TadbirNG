@@ -65,10 +65,10 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
     public isDisableRelatedComponnet: boolean = true;
     public isSelectedMainComponent: boolean = false;
-    //public isEnableSaveBtn: boolean = false;
+    public deleteKey: any[] = [];
 
     public mainComponentCategories: any[];
-    public mainComponentModel: AccountItemBriefInfo;
+    public mainComponentModel: AccountItemBriefInfo | undefined;
     public mainComponentCheckedKeys: any[] = [];
     public mainComponentSelectedItem: number = 0;
     public mainComponentDropdownSelected: number = 0;
@@ -112,6 +112,8 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.relatedComponentCheckedKeys = [];
         this.relatedComponentCategories = undefined;
         this.relatedComponentDropdownSelected = 0;
+        this.noRelatedResultMessage = false;
+        this.deleteKey = [];
 
         if (item > 0) {
             this.isDisableRelatedComponnet = false;
@@ -149,20 +151,15 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
             }
         }
         else {
-            this.mainComponentDropdownSelected = 0;
             this.selectedRelatedComponentValue = null;
             this.isDisableRelatedComponnet = true;
             this.isEnableMainComponentSearchBtn = false;
-            this.mainComponentCategories = [];
-            this.relatedComponentCategories = undefined;
-            this.relatedComponentCheckedKeys = [];
-            this.relatedComponentDropdownSelected = 0;
-            this.mainComponentSelectedItem = 0;
         }
     }
 
     public handleRelatedComponentDropDownChange(item: any) {
         this.relatedComponentCheckedKeys = [];
+        this.deleteKey = [];
         if (item > 0) {
             this.relatedComponentDropdownSelected = item;
             this.isEnableRelatedComponentSearchBtn = true;
@@ -189,6 +186,20 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
             this.mainComponentCheckedKeys = [itemId];
             this.mainComponentSelectedItem = itemId;
             this.loadRelatedComponent();
+        }
+    }
+
+    public handleRelatedComponentChecking(itemLookup: TreeItemLookup): void {
+        var item = itemLookup.item.dataItem;
+
+        if (this.deleteKey.find(f => f == item.id)) {
+            var index = this.deleteKey.findIndex(f => f == item.id);
+            if (index > -1) {
+                this.deleteKey.splice(index, 1);
+            }
+        }
+        else {
+            this.deleteKey.push(item.id);
         }
     }
 
@@ -292,33 +303,48 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                         this.relatedComponentCheckedKeys.push(item.id)
                     }
                 }
+                this.deleteKey = [];
                 if (this.relatedComponentCategories.length == 0)
                     this.noRelatedResultMessage = true;
                 else
                     this.noRelatedResultMessage = false;
                 this.sppcLoading.hide();
             })
-            //this.isEnableSaveBtn = true;
         }
     }
 
     onCreateRelation() {
         if (this.relatedComponentDropdownSelected > 0 && this.mainComponentSelectedItem > 0) {
-
             this.mainComponentModel = this.mainComponentCategories.find(f => f.id == this.mainComponentSelectedItem);
-
-
             this.isActive = true;
-        }        
-
+        }
     }
 
     DeleteRelation() {
-        this.errorMessage = String.Empty;
-        this.sppcLoading.show();
         var model = new AccountItemRelationsInfo();
         model.id = this.mainComponentSelectedItem;
         model.relatedItemIds = this.relatedComponentCheckedKeys;
+        this.saveRelations(model);
+    }
+
+    cancelHandler() {
+        this.isActive = false;
+        this.mainComponentModel = undefined;
+    }
+
+    saveHandler(relationModel: AccountItemRelationsInfo) {
+
+        if (relationModel) {
+            var keyArray = this.relatedComponentCheckedKeys.concat(relationModel.relatedItemIds, this.deleteKey);
+            relationModel.relatedItemIds = keyArray;
+
+            this.saveRelations(relationModel);
+            this.isActive = false;
+        }
+    }
+
+    saveRelations(relationsModel: AccountItemRelationsInfo) {
+        this.errorMessage = String.Empty;
         var apiUrl = String.Empty;
         if (this.relatedComponentDropdownSelected > 0) {
             switch (this.relatedComponentDropdownSelected) {
@@ -326,15 +352,15 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                     if (this.mainComponentDropdownSelected > 0) {
                         switch (this.mainComponentDropdownSelected) {
                             case AccountRelationsType.DetailAccount: {
-                                apiUrl = String.Format(AccountRelationApi.AccountsRelatedToDetailAccount, model.id);
+                                apiUrl = String.Format(AccountRelationApi.AccountsRelatedToDetailAccount, relationsModel.id);
                                 break;
                             }
                             case AccountRelationsType.CostCenter: {
-                                apiUrl = String.Format(AccountRelationApi.AccountsRelatedToCostCenter, model.id);
+                                apiUrl = String.Format(AccountRelationApi.AccountsRelatedToCostCenter, relationsModel.id);
                                 break;
                             }
                             case AccountRelationsType.Project: {
-                                apiUrl = String.Format(AccountRelationApi.AccountsRelatedToProject, model.id);
+                                apiUrl = String.Format(AccountRelationApi.AccountsRelatedToProject, relationsModel.id);
                                 break;
                             }
                             default: {
@@ -345,15 +371,15 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                     break;
                 }
                 case AccountRelationsType.DetailAccount: {
-                    apiUrl = String.Format(AccountRelationApi.DetailAccountsRelatedToAccount, model.id);
+                    apiUrl = String.Format(AccountRelationApi.DetailAccountsRelatedToAccount, relationsModel.id);
                     break;
                 }
                 case AccountRelationsType.CostCenter: {
-                    apiUrl = String.Format(AccountRelationApi.CostCentersRelatedToAccount, model.id);
+                    apiUrl = String.Format(AccountRelationApi.CostCentersRelatedToAccount, relationsModel.id);
                     break;
                 }
                 case AccountRelationsType.Project: {
-                    apiUrl = String.Format(AccountRelationApi.ProjectsRelatedToAccount, model.id);
+                    apiUrl = String.Format(AccountRelationApi.ProjectsRelatedToAccount, relationsModel.id);
                     break;
                 }
                 default: {
@@ -361,19 +387,20 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                 }
             }
         }
-        this.accountRelationsService.edit<AccountItemRelationsInfo>(apiUrl, model).subscribe(response => {
+        this.sppcLoading.show();
+        this.accountRelationsService.edit<AccountItemRelationsInfo>(apiUrl, relationsModel).subscribe(response => {
             this.sppcLoading.hide();
             this.showMessage(this.updateMsg, MessageType.Succes);
+
+            this.mainComponentModel = undefined;
+            this.loadRelatedComponent();
+
         }, (error => {
             this.errorMessage = error;
             this.sppcLoading.hide();
         }));
 
-        this.loadRelatedComponent();
-    }
 
-    cancelHandler() {
-        this.isActive = false;
     }
 
     onCancel() {
@@ -396,6 +423,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.relatedSearchValue = String.Empty;
         this.noResultMessage = false;
         this.noRelatedResultMessage = false;
+        this.deleteKey = [];
     }
 
     onMainComponentSearch() {
@@ -446,7 +474,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
                 this.sppcLoading.hide();
             })
-        }        
+        }
     }
 
     onKeyRelatedComponent(e: any) {

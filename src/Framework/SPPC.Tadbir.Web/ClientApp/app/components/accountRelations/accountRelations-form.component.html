@@ -21,6 +21,11 @@
                 </button>
             </div>
             <div class="section-body">
+                <div *ngIf="resultMessage">
+                    <div class="alert alert-danger">
+                        {{ 'AccountRelations.noRemainingRelations' | translate }}
+                    </div>                   
+                </div>
                 <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
                     <kendo-treeview [nodes]="relatedComponentCategories"
                                     [textField]="['name']"
@@ -58,9 +63,9 @@
         </div>
         <div class="clearfix"></div>
     </div>
-
+    
     <kendo-dialog-actions>
-        <button class="k-button k-primary" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+        <button class="k-button k-primary" [disabled]="relatedComponentCheckedKeys.length == 0" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
         <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
     </kendo-dialog-actions>
 </kendo-dialog>

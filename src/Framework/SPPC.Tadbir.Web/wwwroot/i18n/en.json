@@ -253,7 +253,8 @@
     "SearchBtn": "Search",
     "FormTitle": "Relations for '{0}'",
     "NewRelations": "New Relations",
-    "RemainingRelations": "Remaining Relations"
+    "RemainingRelations": "Remaining Relations",
+    "noRemainingRelations": "All relations are selected"
   },
   "FiscalPeriod": {
     "New": "New Fiscal Period",

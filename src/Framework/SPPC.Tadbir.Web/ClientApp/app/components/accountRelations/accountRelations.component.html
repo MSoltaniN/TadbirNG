@@ -1,6 +1,6 @@
 ﻿<div class="panel panel-primary">
     <div class="panel-heading">{{ 'Entity.AccountRelations' | translate }}</div>
-    <div class="panel-body">
+    <div SppcCheckAccess="ViewRelationships" class="panel-body">
 
         <div *ngIf="errorMessage != ''">
             <div class="alert alert-danger">
@@ -103,6 +103,7 @@
                                             [(checkedKeys)]="relatedComponentCheckedKeys"
                                             [hasChildren]="hasChildren"
                                             [children]="fetchRelatedComponentChildren"
+                                            (checkedChange)="handleRelatedComponentChecking($event)"
                                             [(expandedKeys)]="relatedComponentExpandedKeys"
                                             (childrenLoaded)="childrenLoadedHandler($event)">
                                 <ng-template kendoTreeViewNodeTemplate let-dataItem>
@@ -115,16 +116,17 @@
                 <div class="clearfix"></div>
             </div>
             <div id="btn-section" [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}">                
-                <button class="k-button k-primary" [disabled]="mainComponentSelectedItem == 0 || relatedComponentDropdownSelected == 0" (click)="onCreateRelation()">{{ 'AccountRelations.CreateRelationBtn' | translate }}</button>
-                <button class="k-button" [disabled]="relatedComponentCheckedKeys.length == 0" (click)="DeleteRelation()">{{ 'AccountRelations.DeleteRelationBtn' | translate }}</button>
+                <button class="k-button k-primary" SppcCheckAccess="ManageRelationships" [disabled]="mainComponentSelectedItem == 0 || relatedComponentDropdownSelected == 0" (click)="onCreateRelation()">{{ 'AccountRelations.CreateRelationBtn' | translate }}</button>
+                <button class="k-button" SppcCheckAccess="ManageRelationships" [disabled]="deleteKey.length == 0" (click)="DeleteRelation()">{{ 'AccountRelations.DeleteRelationBtn' | translate }}</button>
                 <button class="k-button" (click)="onCancel()">{{ 'Buttons.Cancel' | translate }}</button>
             </div>
         </div>
 
         <accountRelations-form-component [active]="isActive" [errorMessage]="errorMessage" 
                                          [model]="mainComponentModel" 
-                                         [mainComponentSelected]="mainComponentDropdownSelected"
-                                         [relatedComponentSelected]="relatedComponentDropdownSelected"
+                                         [mainComponent]="mainComponentDropdownSelected"
+                                         [relatedComponent]="relatedComponentDropdownSelected"
+                                         (save)="saveHandler($event)"
                                          (cancel)="cancelHandler()">
         </accountRelations-form-component>
 
