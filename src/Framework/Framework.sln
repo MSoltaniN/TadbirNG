@@ -79,6 +79,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Tadbir.Configuration",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPPC.Tadbir.CrossCutting", "SPPC.Tadbir.CrossCutting\SPPC.Tadbir.CrossCutting.csproj", "{5540BD05-B583-4D1A-9EF7-68CFE40F8B38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPPC.Framework.Tests", "SPPC.Framework.Tests\SPPC.Framework.Tests.csproj", "{E7FBE25B-2249-4787-B45C-0CB0AEFE112F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -161,6 +163,10 @@ Global
 		{5540BD05-B583-4D1A-9EF7-68CFE40F8B38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5540BD05-B583-4D1A-9EF7-68CFE40F8B38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5540BD05-B583-4D1A-9EF7-68CFE40F8B38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7FBE25B-2249-4787-B45C-0CB0AEFE112F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7FBE25B-2249-4787-B45C-0CB0AEFE112F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7FBE25B-2249-4787-B45C-0CB0AEFE112F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7FBE25B-2249-4787-B45C-0CB0AEFE112F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -197,6 +203,7 @@ Global
 		{A7FE7C4F-25FA-4BCA-B00F-07EE211C14F7} = {8A741C61-8C56-48CD-A9FC-2839853947EE}
 		{5E654E3C-717A-478D-84EB-B9E089A6382A} = {E40B1FB5-351D-4D9F-B032-A5363ACA0040}
 		{5540BD05-B583-4D1A-9EF7-68CFE40F8B38} = {E40B1FB5-351D-4D9F-B032-A5363ACA0040}
+		{E7FBE25B-2249-4787-B45C-0CB0AEFE112F} = {1AAF39EC-DFF1-4287-B88E-9DF2B06EDC1E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1D717D5C-5BCF-401B-A4A8-D0B263F70830}
