@@ -96,6 +96,7 @@
     <None Remove="ClientApp\app\enum\KeyCode.ts" />
     <None Remove="ClientApp\app\model\account.ts" />
     <None Remove="ClientApp\app\model\columnViewConfig.ts" />
+    <None Remove="ClientApp\app\model\columnViewDeviceConfig.ts" />
     <None Remove="ClientApp\app\model\DetailAccount.ts" />
     <None Remove="ClientApp\app\model\fullaccount.ts" />
     <None Remove="ClientApp\app\model\index.ts" />
@@ -267,6 +268,7 @@
     <TypeScriptCompile Include="ClientApp\app\enum\KeyCode.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\account.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\columnViewConfig.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\columnViewDeviceConfig.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\detailAccount.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\fullaccount.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\listFormViewConfig.ts" />

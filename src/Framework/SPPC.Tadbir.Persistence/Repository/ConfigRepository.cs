@@ -247,6 +247,7 @@ namespace SPPC.Tadbir.Persistence
             _idColumn.Medium = idDeviceConfig;
             _idColumn.Small = idDeviceConfig;
             _idColumn.ExtraSmall = idDeviceConfig;
+            _idColumn.ExtraLarge = idDeviceConfig;
 
             _nameColumn = new ColumnViewConfig("Name");
             var nameDeviceConfig = new ColumnViewDeviceConfig() { Index = 0, DesignIndex = 0, Visibility = ColumnVisibility.AlwaysVisible };
@@ -254,6 +255,7 @@ namespace SPPC.Tadbir.Persistence
             _nameColumn.Medium = nameDeviceConfig;
             _nameColumn.Small = nameDeviceConfig;
             _nameColumn.ExtraSmall = nameDeviceConfig;
+            _nameColumn.ExtraLarge = nameDeviceConfig;
 
             _levelColumn = new ColumnViewConfig("Level");
             var levelDeviceConfig = new ColumnViewDeviceConfig() { DesignIndex = 0, Visibility = ColumnVisibility.Hidden };

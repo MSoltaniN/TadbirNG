@@ -46,6 +46,15 @@ export const Entities = {
     Settings:"Settings"
 }
 
+export const ColumnVisibility =
+{
+    Default : "Default",
+    AlwaysVisible : "AlwaysVisible",
+    AlwaysHidden : "AlwaysHidden",
+    Visible : "Visible",
+    Hidden : "Hidden"
+}
+
 
 export const SessionKeys = {
     Menu : 'menu'

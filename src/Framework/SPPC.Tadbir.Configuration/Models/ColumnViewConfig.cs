@@ -18,6 +18,7 @@ namespace SPPC.Tadbir.Configuration.Models
             Medium = new ColumnViewDeviceConfig();
             Small = new ColumnViewDeviceConfig();
             ExtraSmall = new ColumnViewDeviceConfig();
+            ExtraLarge = new ColumnViewDeviceConfig();
         }
 
         /// <summary>
@@ -54,5 +55,10 @@ namespace SPPC.Tadbir.Configuration.Models
         /// تنظیمات نمایشی ستون برای صفحه نمایش خیلی کوچک، مانند صفحه نمایش تلفن همراه
         /// </summary>
         public ColumnViewDeviceConfig ExtraSmall { get; set; }
+        
+        /// <summary>
+        /// تنظیمات نمایشی ستون برای صفحه نمایش  های خیلی بزرگ
+        /// </summary>
+        public ColumnViewDeviceConfig ExtraLarge { get; set; }
     }
 }

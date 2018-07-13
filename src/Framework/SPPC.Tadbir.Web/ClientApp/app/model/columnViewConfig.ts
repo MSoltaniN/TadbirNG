@@ -1,8 +1,12 @@
-﻿
+﻿import { ColumnViewDeviceConfig } from "./columnViewDeviceConfig";
+
+
 export interface ColumnViewConfig {
 
     name: string;
-    width?: number;
-    index?: number
-    visibilty: string;
+    large: ColumnViewDeviceConfig;
+    medium: ColumnViewDeviceConfig;
+    small: ColumnViewDeviceConfig;
+    extraSmall: ColumnViewDeviceConfig;    
+    extraLarge: ColumnViewDeviceConfig;    
 }

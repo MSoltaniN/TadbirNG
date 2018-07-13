@@ -6,6 +6,8 @@ import { ColumnViewConfig } from "../model/columnViewConfig";
 import { SettingsApi } from "./api/settingsApi";
 import { String } from '../class/source';
 import { SettingBrief } from "../model/settingBrief";
+import { ColumnViewDeviceConfig } from "../model/columnViewDeviceConfig";
+import { ColumnVisibility } from "../enviroment";
 
 
 export class SettingBriefInfo implements SettingBrief {    
@@ -25,20 +27,33 @@ export class SettingTreeNodeInfo {
         public modelType: string | undefined) { }
 }
 
+export class ColumnViewDeviceConfigInfo  implements ColumnViewDeviceConfig {
+
+    constructor(public designIndex: number = 0,
+        public width?: number | undefined,
+        public index?: number | undefined,
+        public visibilty: string = ColumnVisibility.Default,
+        ) { }
+    
+}
+
 export class ListFormViewConfigInfo implements ListFormViewConfig {
-    viewId: number;
-    pageSize: number;
-    columnViews: ColumnViewConfig[];    
+    constructor(public viewId: number = 0,
+        public pageSize = 10, public columnViews: ColumnViewConfig[] = [])
+    { }
+    
 }
 
 export class ColumnViewConfigInfo implements ColumnViewConfig {
-    name: string;
-    width?: number | undefined;
-    index?: number | undefined;
-    visibilty: string;
-    viewId: number;
-    pageSize: number;
-    columnViews: ColumnViewConfig[];
+
+    constructor(public name: string = ""        
+    ) { }
+    
+    public large: ColumnViewDeviceConfig;
+    public medium: ColumnViewDeviceConfig;
+    public small: ColumnViewDeviceConfig;
+    public extraSmall: ColumnViewDeviceConfig;    
+    public extraLarge: ColumnViewDeviceConfig; 
 }
 
 @Injectable()

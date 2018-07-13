@@ -252,4 +252,29 @@ export class EnviromentComponent {
         return access;
     }
 
+    /** مدیا جاری را براساس bootstrap 4 برمیگرداند */
+    public get media(): string {
+
+        var currentMedia: string = "md";
+
+        if (window.innerWidth < 576 ) 
+                currentMedia = "xs";
+                
+        if (window.innerWidth >= 576 && window.innerWidth < 768)
+            currentMedia = "sm";
+                
+        if (window.innerWidth >= 768 && window.innerWidth < 992)
+            currentMedia = "md";
+     
+        if (window.innerWidth >= 992 && window.innerWidth < 1200)
+            currentMedia = "l";
+
+        if (window.innerWidth >= 1200)
+            currentMedia = "el";
+
+        return currentMedia;
+
+    }
+
+
 }
