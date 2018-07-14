@@ -1,7 +1,7 @@
 <div class='container-fluid' (window:keypress)="doSomething($event)">
     <div class='row'>        
-        <div id="mainContent" class="nopad" [ngClass]="{'col-sm-9 col-xs-12 col-lg-9 col-md-9 body-content' : (showNavbar || !isLogin) ,
-             'col-sm-12 col-xs-12 col-md-12 col-lg-12 body-content' : (!showNavbar || isLogin) }">            
+        <div id="mainContent" class="nopad body-content col-xs-12" [ngClass]="{'col-sm-9 col-lg-9 col-md-9' : (showNavbar || !isLogin) ,
+             'col-sm-12 col-md-12 col-lg-12' : (!showNavbar || isLogin) }">            
             <app-sppc-loading></app-sppc-loading>
             <router-outlet></router-outlet>
             
