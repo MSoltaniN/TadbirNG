@@ -56,6 +56,18 @@ export class ColumnViewConfigInfo implements ColumnViewConfig {
     public extraLarge: ColumnViewDeviceConfig; 
 }
 
+export class SettingViewModelInfo  {
+
+    constructor(public name: string = "",
+        public designIndex: number = 0,
+        public width: number | undefined = 0,
+        public index: number | undefined = 0,
+        public visibilty: boolean = true,
+        public disabled: boolean = false) { }
+    
+}
+
+
 @Injectable()
 export class SettingService extends BaseService {
 

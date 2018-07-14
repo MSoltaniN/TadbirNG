@@ -11,7 +11,7 @@ import { ListFormViewConfig } from "../../../model/listFormViewConfig";
 import { ColumnViewDeviceConfig } from "../../../model/columnViewDeviceConfig";
 import { ColumnViewConfig } from "../../../model/columnViewConfig";
 import { ColumnViewDeviceConfigInfo, ColumnViewConfigInfo } from "../../../service/index";
-import { ListFormViewConfigInfo } from "../../../service/settings.service";
+import { ListFormViewConfigInfo, SettingViewModelInfo } from "../../../service/settings.service";
 
 
 export function getLayoutModule(layout: Layout) {
@@ -36,6 +36,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
     rtl: boolean;
 
     public rowData: ListFormViewConfig | null = null;
+    public gridRowData: Array<SettingViewModelInfo> | null = null;
     //public rowData: GridDataResult;
 
     constructor(public toastrService: ToastrService, public translate: TranslateService,
@@ -59,7 +60,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
         var currentColumnViewDevice: ColumnViewDeviceConfig = columnViewDevice.medium;
         switch (this.media) {
-            case "xs":
+            case "xs":                
                 currentColumnViewDevice = columnViewDevice.extraSmall;
                 break;
             case "sm":
@@ -76,6 +77,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
                 break;
         }
 
+        
         return currentColumnViewDevice;
     }
 
@@ -83,7 +85,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
     /** براساس سایز ، تنظیمات را مقدار دهی و به تابع برمیگرداند */
     private setCurrentColumnViewConfig(columnViewDevice: ColumnViewConfig, value: ColumnViewDeviceConfig): ColumnViewConfig {
 
-        var currentColumnViewDevice: ColumnViewDeviceConfig = columnViewDevice.medium;
+        var currentColumnViewDevice: ColumnViewConfig = columnViewDevice;
         switch (this.media) {
             case "xs":
                 columnViewDevice.extraSmall = value;
@@ -103,6 +105,29 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
         }
 
         return columnViewDevice;
+    }
+
+    private fillViewModel(rowData: ListFormViewConfig): Array<SettingViewModelInfo> {
+        var rows: Array<SettingViewModelInfo> = new Array<SettingViewModelInfo>();
+
+        rowData.columnViews.forEach((item) => {
+            var model = new SettingViewModelInfo();
+            var setting = this.getCurrentColumnViewConfig(item);
+            if (setting) {
+                
+                model.designIndex = setting.designIndex;
+                model.index = setting.index;
+                model.visibilty = this.checkVisibility(setting.visibilty);
+                model.width = setting.width;
+                model.name = item.name;
+
+                rows.push(model);
+            }
+        });
+
+
+        return rows;
+
     }
 
 
@@ -128,14 +153,18 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
         var viewId: string = this.grid.wrapper.nativeElement.id
         
         var rowDataString = localStorage.getItem(storageId);
-        if (rowDataString)
+        if (rowDataString) {
             this.rowData = JSON.parse(rowDataString);
+            
+        }
         else {
             this.rowData = new ListFormViewConfigInfo(parseInt(viewId), 10);
+            this.gridRowData = null;           
         }
 
+        //#region change column in runtime and fill ro data from desgined grid
         this.grid.leafColumns.toArray().forEach((item, index, arr) => {
-            
+
             if (item instanceof ColumnComponent) {
 
                 if (this.rowData) {
@@ -144,39 +173,50 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
                     if (arrayIndex >= 0)
                         arrayItem = this.rowData.columnViews[arrayIndex];
 
+                    var columnViewDeviceConfig: ColumnViewDeviceConfig | undefined = undefined;
+                    if (arrayItem)
+                        columnViewDeviceConfig = this.getCurrentColumnViewConfig(arrayItem);
 
-                    
-                    if (arrayItem) {
+                    if (columnViewDeviceConfig && columnViewDeviceConfig != undefined) {
                         //var row: ColumnViewDeviceConfig = { index: arrayIndex, designIndex: item.orderIndex, visibilty: ColumnVisibility.AlwaysVisible };
-                        var columnViewDeviceConfig: ColumnViewDeviceConfig = this.getCurrentColumnViewConfig(arrayItem);
+                        
 
-                        //columnViewDeviceConfig.
-                        //columnViewDeviceConfig.visibilty = columnViewDeviceConfig.visibilty;
+                        if (columnViewDeviceConfig != undefined) {
+                            item.hidden = !this.checkVisibility(columnViewDeviceConfig.visibilty);
 
-                        if (columnViewDeviceConfig.visibilty == ColumnVisibility.AlwaysHidden || columnViewDeviceConfig.visibilty == ColumnVisibility.Hidden)
-                            item.hidden = true;
-                        else
-                            item.hidden = false;
-
-                        //var hiddenColumns = this.rowData.filter(p => p.visibility == false);
-
-                        //if (row.visibility && hiddenColumns.length == this.rowData.length - 1)
-                        //    row.disabled = true;
-
-                        this.rowData.columnViews[arrayIndex] = this.setCurrentColumnViewConfig(this.rowData.columnViews[arrayIndex], columnViewDeviceConfig);
+                            this.rowData.columnViews[arrayIndex] = this.setCurrentColumnViewConfig(this.rowData.columnViews[arrayIndex], columnViewDeviceConfig);
+                        }                       
 
                     }
                     else {
-                        
-                        var row: ColumnViewDeviceConfig = { index: index, designIndex: item.orderIndex, visibilty: ColumnVisibility.AlwaysVisible };
-                        var colView: ColumnViewConfigInfo = new ColumnViewConfigInfo((<ColumnComponent>item).field);
 
-                        colView = this.setCurrentColumnViewConfig(colView, row);                       
-                        this.rowData.columnViews.push(colView);
+                        var row: ColumnViewDeviceConfig = { index: index, designIndex: item.orderIndex, visibilty: ColumnVisibility.AlwaysVisible };
+
+                        var colView: ColumnViewConfigInfo = new ColumnViewConfigInfo((<ColumnComponent>item).field);
+                        var existIndex = this.rowData.columnViews.findIndex(p => p.name == colView.name);
+                        if (existIndex > -1)
+                            colView = this.rowData.columnViews[existIndex];
+
+                        colView = this.setCurrentColumnViewConfig(colView, row);                        
+                        
+                        if (existIndex > -1)
+                            this.rowData.columnViews[existIndex] = colView;
+                        else
+                            this.rowData.columnViews.push(colView);
                     }
+
+
+
                 }
             }
         });
+        //#endregion
+
+        if (this.rowData) {
+            this.gridRowData = this.changeLastColumns(this.fillViewModel(this.rowData));
+        }
+
+        
     }
 
     /**
@@ -216,19 +256,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
                         if (arrayItem) {
 
                             arrayItem.visibilty = hidden == true ? ColumnVisibility.Hidden : ColumnVisibility.Visible;
-
-                            //var hiddenColumns = this.rowData.filter(p => p.visibility == false);
-                            //if (hiddenColumns.length == this.rowData.length - 1) {
-                            //    var lastVisibleColumn = this.rowData.findIndex(p => p.visibility == true);
-                            //    this.rowData[lastVisibleColumn].disabled = true;
-                            //}
-                            //else {
-                            //    var lastDisableColumn = this.rowData.findIndex(p => p.disabled == true);
-                            //    if (lastDisableColumn >= 0)
-                            //        this.rowData[lastDisableColumn].disabled = false;
-
-                            //}
-
+                            
                             var columnViewConfig = this.setCurrentColumnViewConfig(this.rowData.columnViews[arrayIndex], arrayItem);
                             
                             this.rowData.columnViews[arrayIndex] = columnViewConfig;
@@ -240,6 +268,27 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
         localStorage.setItem(storageId, JSON.stringify(this.rowData));
 
+        if (this.rowData) {
+            this.gridRowData = this.changeLastColumns(this.fillViewModel(this.rowData));
+        }
+    }
+
+
+    private changeLastColumns(rows: Array<SettingViewModelInfo>): Array<SettingViewModelInfo> {
+
+        var hiddenColumns = rows.filter(p => p.visibilty == false);
+        if (hiddenColumns.length == rows.length - 1) {
+            var lastVisibleColumn = rows.findIndex(p => p.visibilty == true);
+            rows[lastVisibleColumn].disabled = true;
+        }
+        else {
+            var lastDisableColumn = rows.findIndex(p => p.disabled == true);
+            if (lastDisableColumn >= 0)
+                rows[lastDisableColumn].disabled = false;
+
+        }
+
+        return rows;
     }
 
     /** نمایش فرم تنظیمات گرید */
@@ -253,3 +302,4 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
     }
 
 }
+
