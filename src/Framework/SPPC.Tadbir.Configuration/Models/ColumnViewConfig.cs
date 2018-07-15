@@ -55,7 +55,7 @@ namespace SPPC.Tadbir.Configuration.Models
         /// تنظیمات نمایشی ستون برای صفحه نمایش خیلی کوچک، مانند صفحه نمایش تلفن همراه
         /// </summary>
         public ColumnViewDeviceConfig ExtraSmall { get; set; }
-        
+
         /// <summary>
         /// تنظیمات نمایشی ستون برای صفحه نمایش  های خیلی بزرگ
         /// </summary>

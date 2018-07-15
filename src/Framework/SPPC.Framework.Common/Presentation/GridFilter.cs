@@ -13,7 +13,7 @@ namespace SPPC.Framework.Presentation
         /// </summary>
         public GridFilter()
         {
-            Operator = GridFilterOperator.IsEqualTo;
+            Operator = GridFilterOperator.True;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace SPPC.Framework.Presentation
             string op = OperatorFromFieldType();
             string toString = !String.IsNullOrEmpty(Value)
                 ? String.Format("{0}{1}", FieldName, String.Format(op, Value))
-                : String.Format("{0} {1}", FieldName, Operator);
+                : String.Format("{0}{1}", FieldName, Operator);
             return toString;
         }
 

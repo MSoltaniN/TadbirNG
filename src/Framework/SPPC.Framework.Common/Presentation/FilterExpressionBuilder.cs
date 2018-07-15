@@ -26,8 +26,7 @@ namespace SPPC.Framework.Presentation
             Expression.Children.Add(new FilterExpression()
             {
                 Filter = filter,
-                Operator = FilterExpressionOperator.And,
-                Parent = Expression
+                Operator = FilterExpressionOperator.And
             });
 
             return this;
@@ -44,8 +43,7 @@ namespace SPPC.Framework.Presentation
             Expression.Children.Add(new FilterExpression()
             {
                 Filter = filter,
-                Operator = FilterExpressionOperator.Or,
-                Parent = Expression
+                Operator = FilterExpressionOperator.Or
             });
 
             return this;

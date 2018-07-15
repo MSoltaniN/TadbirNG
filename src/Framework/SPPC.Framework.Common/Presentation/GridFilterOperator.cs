@@ -13,6 +13,11 @@ namespace SPPC.Framework.Presentation
         }
 
         /// <summary>
+        /// عملگر خنثی که عملکرد آن عدم اعمال هر گونه فیلتر است
+        /// </summary>
+        public const string True = "true";
+
+        /// <summary>
         /// فیلتر بر مبنای برابری مقدار یک فیلد با یک مقدار تعیین شده
         /// </summary>
         public const string IsEqualTo = " == {0}";
@@ -45,12 +50,12 @@ namespace SPPC.Framework.Presentation
         /// <summary>
         /// فیلتر بر مبنای مقدار نداشتن یک فیلد
         /// </summary>
-        public const string IsNull = "== null";
+        public const string IsNull = " == null";
 
         /// <summary>
         /// فیلتر بر مبنای مقدار داشتن یک فیلد
         /// </summary>
-        public const string IsNotNull = "!= null";
+        public const string IsNotNull = " != null";
 
         /// <summary>
         /// فیلتر بر مبنای شروع یک فیلد متنی با یک متن تعیین شده

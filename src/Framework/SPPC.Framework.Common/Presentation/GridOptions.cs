@@ -14,7 +14,6 @@ namespace SPPC.Framework.Presentation
         public GridOptions()
         {
             Paging = GridPaging.NoPaging;
-            Filters = new List<GridFilter>();
             SortColumns = new List<GridOrderBy>();
         }
 
@@ -24,9 +23,9 @@ namespace SPPC.Framework.Presentation
         public GridPaging Paging { get; set; }
 
         /// <summary>
-        /// مجموعه ای از فیلترهای مورد نظر برای اعمال روی اطلاعات در نمای جدولی
+        /// عبارت فیلتر ترکیبی مورد نظر برای اعمال روی اطلاعات در نمای جدولی
         /// </summary>
-        public IList<GridFilter> Filters { get; private set; }
+        public FilterExpression Filter { get; set; }
 
         /// <summary>
         /// مجموعه ای از ستون های انتخاب شده برای مرتب سازی اطلاعات در نمای جدولی
