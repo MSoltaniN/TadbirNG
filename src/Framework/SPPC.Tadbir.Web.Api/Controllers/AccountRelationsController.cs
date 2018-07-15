@@ -281,7 +281,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.AccountsNotRelatedToProjectUrl)]
         public async Task<IActionResult> GetConnectableAccountsForProjectAsync(int projectId)
         {
-            var accounts = await _repository.GetConnectableAccountsForDetailAccountAsync(
+            var accounts = await _repository.GetConnectableAccountsForProjectAsync(
                 projectId, _config.UseLeafAccounts, GridOptions);
             return Json(accounts);
         }
