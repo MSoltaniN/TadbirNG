@@ -201,9 +201,9 @@ namespace SPPC.Framework.Persistence
         {
             var options = gridOptions ?? new GridOptions();
             var query = _dataSet.AsNoTracking();
-            foreach (var filter in options.Filters)
+            if (options.Filter != null)
             {
-                query = query.Where(filter.ToString());
+                query = query.Where(options.Filter.ToString());
             }
 
             if (options.SortColumns.Count > 0)
@@ -225,9 +225,9 @@ namespace SPPC.Framework.Persistence
         {
             var options = gridOptions ?? new GridOptions();
             var query = _dataSet.AsQueryable();
-            foreach (var filter in options.Filters)
+            if (options.Filter != null)
             {
-                query = query.Where(filter.ToString());
+                query = query.Where(options.Filter.ToString());
             }
 
             if (options.SortColumns.Count > 0)
@@ -556,9 +556,9 @@ namespace SPPC.Framework.Persistence
             var query = _dataSet
                 .AsNoTracking()
                 .Where(currentCriteria);
-            foreach (var filter in options.Filters)
+            if (options.Filter != null)
             {
-                query = query.Where(filter.ToString());
+                query = query.Where(options.Filter.ToString());
             }
 
             return query;

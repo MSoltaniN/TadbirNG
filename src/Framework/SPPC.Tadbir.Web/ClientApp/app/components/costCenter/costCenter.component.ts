@@ -25,6 +25,8 @@ import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { CostCenterApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { CostCenterPermissions } from '../../security/permissions';
+import { FilterExpression } from '../../class/filterExpression';
+import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -62,7 +64,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     deleteModelConfirm: boolean;
     deleteModelId: number;
 
-    currentFilter: Filter[] = [];
+    currentFilter: FilterExpression;
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 
@@ -127,10 +129,15 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
             }
             if (this.parent) {
                 if (this.parent.childCount > 0)
-                    filter.push(new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"))
+                    filter = this.addFilterToFilterExpression(this.currentFilter,
+                        new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"),
+                        FilterExpressionOperator.And);
             }
             else
-                filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
+                filter = this.addFilterToFilterExpression(this.currentFilter,
+                    new Filter("ParentId", "null", "== {0}", "System.Int32"),
+                    FilterExpressionOperator.And);
+
             this.costCenterService.getAll(String.Format(CostCenterApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 var totalCount = 0;

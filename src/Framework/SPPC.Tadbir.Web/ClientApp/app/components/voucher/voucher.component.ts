@@ -22,6 +22,7 @@ import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { VoucherApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { VoucherPermissions } from '../../security/permissions';
+import { FilterExpression } from '../../class/filterExpression';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -52,7 +53,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     deleteConfirm: boolean;
     deleteModelId: number;
 
-    currentFilter: Filter[] = [];
+    currentFilter: FilterExpression;
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 

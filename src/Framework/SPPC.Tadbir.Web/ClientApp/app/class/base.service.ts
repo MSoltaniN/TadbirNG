@@ -5,6 +5,7 @@ import { Filter } from "./filter";
 import { GridOrderBy } from "./grid.orderby";
 import { String } from '../class/source';
 import { Observable } from "rxjs/Observable";
+import { FilterExpression } from "./filterExpression";
 
 export class BaseService extends EnviromentComponent {
 
@@ -37,7 +38,7 @@ export class BaseService extends EnviromentComponent {
      * @param orderby مرتب سازی
      * @param filters فیلتر
      */
-    public getAll(apiUrl: string, start?: number, count?: number, orderby?: string, filters?: Filter[]) {
+    public getAll(apiUrl: string, start?: number, count?: number, orderby?: string, filter?: FilterExpression) {
         var gridPaging = { pageIndex: start, pageSize: count };
         var sort = new Array<GridOrderBy>();
         if (orderby) {
@@ -46,7 +47,7 @@ export class BaseService extends EnviromentComponent {
             if (orderByParts[1] != 'undefined')
                 sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
-        var postItem = { Paging: gridPaging, filters: filters, sortColumns: sort };
+        var postItem = { Paging: gridPaging, filter: filter, sortColumns: sort };
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));

@@ -25,6 +25,7 @@ import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { CompanyApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { CompanyPermissions } from '../../security/permissions';
+import { FilterExpression } from '../../class/filterExpression';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -62,7 +63,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
     deleteModelsConfirm: boolean;
     deleteModelId: number;
 
-    currentFilter: Filter[] = [];
+    currentFilter: FilterExpression;
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 

@@ -17,6 +17,7 @@ import { Filter } from "../../class/filter";
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { VoucherApi } from '../../service/api/index';
+import { FilterExpression } from '../../class/filterExpression';
 
 
 
@@ -40,7 +41,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     deleteConfirm: boolean;
     deleteModelId: number;
 
-    currentFilter: Filter[] = [];
+    currentFilter: FilterExpression;
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 

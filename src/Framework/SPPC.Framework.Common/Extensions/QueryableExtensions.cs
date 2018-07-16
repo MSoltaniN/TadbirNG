@@ -22,9 +22,9 @@ namespace SPPC.Framework.Extensions
         {
             Verify.ArgumentNotNull(queryable, "queryable");
             var options = gridOptions ?? new GridOptions();
-            foreach (var filter in options.Filters)
+            if (options.Filter != null)
             {
-                queryable = queryable.Where(filter.ToString());
+                queryable = queryable.Where(options.Filter.ToString());
             }
 
             if (options.SortColumns.Count > 0)

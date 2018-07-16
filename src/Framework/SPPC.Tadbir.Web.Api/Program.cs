@@ -13,8 +13,14 @@ namespace SPPC.Tadbir.Web.Api
     {
         public static void Main(string[] args)
         {
-            var gridOptions = new GridOptions() { Paging = new GridPaging() { PageIndex = 1, PageSize = 2 } };
-            gridOptions.Filters.Add(new GridFilter() { FieldName = "FullCode", FieldTypeName = "System.String", Operator = GridFilterOperator.Contains, Value = "DET" });
+            var builder = new FilterExpressionBuilder();
+            var gridOptions = new GridOptions() { Paging = new GridPaging() { PageIndex = 1, PageSize = 5 } };
+            var codeLike = new GridFilter() { FieldName = "Code", FieldTypeName = "System.String", Operator = GridFilterOperator.Contains, Value = "DET1" };
+            var nameLike = new GridFilter() { FieldName = "Name", FieldTypeName = "System.String", Operator = GridFilterOperator.Contains, Value = "DET1" };
+            gridOptions.Filter = builder
+                .New(codeLike)
+                .Or(nameLike)
+                .Build();
             gridOptions.SortColumns.Add(new GridOrderBy() { FieldName = "Id", Direction = "DESC" });
             var json = JsonHelper.From(gridOptions, false);
             var urlEncoded = WebUtility.UrlEncode(json);
