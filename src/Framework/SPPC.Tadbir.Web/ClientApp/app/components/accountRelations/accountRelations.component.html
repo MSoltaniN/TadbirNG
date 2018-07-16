@@ -82,7 +82,7 @@
                         <button class="k-button k-primary btn-search"
                                 [disabled]="!isEnableRelatedComponentSearchBtn"
                                 (click)="onRelatedComponentSearch()">
-                            جستجو
+                            {{ 'AccountRelations.SearchBtn' | translate }}
                         </button>
 
                     </div>
@@ -115,15 +115,15 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <div id="btn-section" [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}">                
+            <div id="btn-section" [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}">
                 <button class="k-button k-primary" SppcCheckAccess="ManageRelationships" [disabled]="mainComponentSelectedItem == 0 || relatedComponentDropdownSelected == 0" (click)="onCreateRelation()">{{ 'AccountRelations.CreateRelationBtn' | translate }}</button>
                 <button class="k-button" SppcCheckAccess="ManageRelationships" [disabled]="deleteKey.length == 0" (click)="DeleteRelation()">{{ 'AccountRelations.DeleteRelationBtn' | translate }}</button>
                 <button class="k-button" (click)="onCancel()">{{ 'Buttons.Cancel' | translate }}</button>
             </div>
         </div>
 
-        <accountRelations-form-component [active]="isActive" [errorMessage]="errorMessage" 
-                                         [model]="mainComponentModel" 
+        <accountRelations-form-component [active]="isActive" [errorMessage]="errorMessage"
+                                         [model]="mainComponentModel"
                                          [mainComponent]="mainComponentDropdownSelected"
                                          [relatedComponent]="relatedComponentDropdownSelected"
                                          (save)="saveHandler($event)"
