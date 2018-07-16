@@ -57,7 +57,8 @@ export const ColumnVisibility =
 
 
 export const SessionKeys = {
-    Menu : 'menu'
+    Menu: 'menu',
+    Setting: 'setting'
 }
 
 

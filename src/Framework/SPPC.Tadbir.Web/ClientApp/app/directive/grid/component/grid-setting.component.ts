@@ -1,5 +1,5 @@
 ﻿import { RTL } from "@progress/kendo-angular-l10n";
-import { Layout, ColumnVisibility } from "../../../enviroment";
+import { Layout, ColumnVisibility, SessionKeys } from "../../../enviroment";
 import { Component, OnInit, ViewContainerRef, Host, ElementRef, OnDestroy } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "ng2-translate";
@@ -10,7 +10,7 @@ import { DefaultComponent } from "../../../class/default.component";
 import { ListFormViewConfig } from "../../../model/listFormViewConfig";
 import { ColumnViewDeviceConfig } from "../../../model/columnViewDeviceConfig";
 import { ColumnViewConfig } from "../../../model/columnViewConfig";
-import { ColumnViewDeviceConfigInfo, ColumnViewConfigInfo } from "../../../service/index";
+import { ColumnViewDeviceConfigInfo, ColumnViewConfigInfo, SettingService } from "../../../service/index";
 import { ListFormViewConfigInfo, SettingViewModelInfo } from "../../../service/settings.service";
 
 
@@ -39,14 +39,20 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
     public gridRowData: Array<SettingViewModelInfo> | null = null;
     //public rowData: GridDataResult;
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService,
+    constructor(public toastrService: ToastrService, public translate: TranslateService,public settingService : SettingService,
         @Host() private grid: GridComponent, private elRef: ElementRef, @Host() public defaultComponent: DefaultComponent) {
 
         super(toastrService);
     }
 
     ngOnDestroy() {
-        console.log('ondestroy called');
+        
+        //#region Save View Setting
+
+        if (this.rowData)
+            this.settingService.putUserSettings(this.UserId, this.rowData);
+
+        //#endregion
 
     }
 
@@ -113,13 +119,14 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
         rowData.columnViews.forEach((item) => {
             var model = new SettingViewModelInfo();
             var setting = this.getCurrentColumnViewConfig(item);
-            if (setting) {
+            if (setting && setting.index) {
                 
                 model.designIndex = setting.designIndex;
                 model.index = setting.index;
                 model.visibilty = this.checkVisibility(setting.visibilty);
                 model.width = setting.width;
                 model.name = item.name;
+                model.title = setting.title;
 
                 rows.push(model);
             }
@@ -147,19 +154,19 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
             this.rtl = false;
 
         //var id: string = this.grid.wrapper.nativeElement.id + "_" + this.defaultComponent.UserId + "_hidden";
-        var storageId: string = this.grid.wrapper.nativeElement.id + this.defaultComponent.UserId;
+        //var storageId: string = this.grid.wrapper.nativeElement.id + this.defaultComponent.UserId;
         if (this.grid.wrapper.nativeElement.id == "") return;
 
-        var viewId: string = this.grid.wrapper.nativeElement.id
+        var viewId: number = parseInt(this.grid.wrapper.nativeElement.id);
+
+        var currentSetting = this.getSettingByViewId(viewId);
         
-        var rowDataString = localStorage.getItem(storageId);
-        if (rowDataString) {
-            this.rowData = JSON.parse(rowDataString);
+        if (currentSetting) {
+            this.rowData = currentSetting;
             
         }
         else {
-            this.rowData = new ListFormViewConfigInfo(parseInt(viewId), 10);
-            this.gridRowData = null;           
+            this.rowData = new ListFormViewConfigInfo(viewId, 10);                       
         }
 
         //#region change column in runtime and fill ro data from desgined grid
@@ -168,7 +175,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
             if (item instanceof ColumnComponent) {
 
                 if (this.rowData) {
-                    var arrayIndex = this.rowData.columnViews.findIndex(p => p.name == (<ColumnComponent>item).field)
+                    var arrayIndex = this.rowData.columnViews.findIndex(p => p.name.toLowerCase() == (<ColumnComponent>item).field.toLowerCase())
                     var arrayItem: ColumnViewConfig | null = null;
                     if (arrayIndex >= 0)
                         arrayItem = this.rowData.columnViews[arrayIndex];
@@ -177,23 +184,25 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
                     if (arrayItem)
                         columnViewDeviceConfig = this.getCurrentColumnViewConfig(arrayItem);
 
-                    if (columnViewDeviceConfig && columnViewDeviceConfig != undefined) {
-                        //var row: ColumnViewDeviceConfig = { index: arrayIndex, designIndex: item.orderIndex, visibilty: ColumnVisibility.AlwaysVisible };
-                        
-
-                        if (columnViewDeviceConfig != undefined) {
-                            item.hidden = !this.checkVisibility(columnViewDeviceConfig.visibilty);
-
-                            this.rowData.columnViews[arrayIndex] = this.setCurrentColumnViewConfig(this.rowData.columnViews[arrayIndex], columnViewDeviceConfig);
-                        }                       
+                    if (columnViewDeviceConfig && columnViewDeviceConfig.index) {
+                        //var row: ColumnViewDeviceConfig = { index: arrayIndex, designIndex: item.orderIndex, visibilty: ColumnVisibility.AlwaysVisible };                        
+                        item.hidden = !this.checkVisibility(columnViewDeviceConfig.visibilty);
+                        this.rowData.columnViews[arrayIndex] = this.setCurrentColumnViewConfig(this.rowData.columnViews[arrayIndex], columnViewDeviceConfig);                                              
 
                     }
                     else {
 
-                        var row: ColumnViewDeviceConfig = { index: index, designIndex: item.orderIndex, visibilty: ColumnVisibility.AlwaysVisible };
+                        var visibilityValue = item.isVisible ? ColumnVisibility.AlwaysVisible : ColumnVisibility.AlwaysHidden;
+                        
+
+                        var row: ColumnViewDeviceConfig = {
+                            index: index, designIndex: item.orderIndex,
+                            visibilty: visibilityValue , title : item.displayTitle,
+                            width : item.width
+                        };
 
                         var colView: ColumnViewConfigInfo = new ColumnViewConfigInfo((<ColumnComponent>item).field);
-                        var existIndex = this.rowData.columnViews.findIndex(p => p.name == colView.name);
+                        var existIndex = this.rowData.columnViews.findIndex(p => p.name.toLowerCase() == colView.name.toLowerCase());
                         if (existIndex > -1)
                             colView = this.rowData.columnViews[existIndex];
 
@@ -231,7 +240,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
         var storageId: string = this.grid.wrapper.nativeElement.id + this.defaultComponent.UserId;
         if (this.grid.wrapper.nativeElement.id == "") return;
 
-        var viewId: string = this.grid.wrapper.nativeElement.id
+        var viewId: number = parseInt(this.grid.wrapper.nativeElement.id)
 
         var hidden: boolean;
 
@@ -245,7 +254,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
                     item.hidden = hidden;
                     if (this.rowData) {
                         this.rowData.viewId = parseInt(storageId);
-                        var arrayIndex = this.rowData.columnViews.findIndex(p => p.name == (<ColumnComponent>item).field);
+                        var arrayIndex = this.rowData.columnViews.findIndex(p => p.name.toLowerCase() == (<ColumnComponent>item).field.toLowerCase());
 
                         var arrayItem: ColumnViewDeviceConfig | null = null;
                         if (arrayIndex >= 0)
@@ -265,10 +274,10 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
                 }
             }
         });
-
-        localStorage.setItem(storageId, JSON.stringify(this.rowData));
+        
 
         if (this.rowData) {
+            this.setSettingByViewId(viewId, this.rowData);
             this.gridRowData = this.changeLastColumns(this.fillViewModel(this.rowData));
         }
     }
@@ -299,6 +308,42 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
     /** بستن فرم تنظیمات گرید */
     public closeSetting() {
         this.show = false;
+    }
+
+    getSettingByViewId(viewId: number): ListFormViewConfig | null {
+
+        var settingsJson = localStorage.getItem(SessionKeys.Setting + this.UserId);
+        if (settingsJson) {
+            var settings: Array<ListFormViewConfig> = JSON.parse(settingsJson);
+
+            var findIndex = settings.findIndex(s => s.viewId == viewId);
+            if (findIndex > -1)
+                return settings[findIndex];
+        }
+
+        return null;
+    }
+
+    setSettingByViewId(viewId: number, currentSetting: ListFormViewConfig) {
+
+        var storageId: string = this.grid.wrapper.nativeElement.id + this.defaultComponent.UserId;
+
+        var settingsJson = localStorage.getItem(SessionKeys.Setting + this.UserId);
+        if (settingsJson) {
+            var settings: Array<ListFormViewConfig> = JSON.parse(settingsJson);
+
+            if (!settings) settings = new Array<ListFormViewConfig>();
+
+            var findIndex = settings.findIndex(s => s.viewId == viewId);
+            if (findIndex > -1)
+                settings[findIndex] = currentSetting;
+            else
+                settings.push(currentSetting);
+
+            var jsonSetting = JSON.stringify(settings);
+
+            localStorage.setItem(SessionKeys.Setting + this.UserId, jsonSetting);
+        }        
     }
 
 }

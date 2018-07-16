@@ -13,7 +13,7 @@
                        [disabled]="dataItem.disabled"  (change)="changeVisibility(dataItem.name,$event)" />
             </ng-template>
         </kendo-grid-checkbox-column>
-        <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 2048px)" field="name" title="{{ 'GridSetting.FieldName' | translate }}" >            
+        <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 2048px)" field="title" title="{{ 'GridSetting.FieldName' | translate }}" >            
         </kendo-grid-column>
     </kendo-grid>
 </kendo-dialog>

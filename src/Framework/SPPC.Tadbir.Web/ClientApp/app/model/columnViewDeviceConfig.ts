@@ -4,5 +4,6 @@
     width?: number;
     index?: number
     visibilty: string;
+    title: string;
     
 }

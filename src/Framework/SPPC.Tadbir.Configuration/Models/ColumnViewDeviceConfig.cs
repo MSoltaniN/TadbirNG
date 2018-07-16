@@ -13,7 +13,7 @@ namespace SPPC.Tadbir.Configuration.Models
         /// </summary>
         public ColumnViewDeviceConfig()
         {
-            Visibility = ColumnVisibility.Visible;
+            Visibility = ColumnVisibility.Default;
         }
 
         /// <summary>
@@ -38,5 +38,11 @@ namespace SPPC.Tadbir.Configuration.Models
         /// عدم نمایش دائمی، نمایش دائمی، نمایش یا عدم نمایش را داشته باشد
         /// </summary>
         public string Visibility { get; set; }
+
+
+        /// <summary>
+        /// عنوان نمایشی ستون در نمای لیستی که بصورت فارسی یا انگلیسی می باشد و برای تمایش در فرم تنظیمات بکار میرود
+        /// </summary>
+        public string Title { get; set; }
     }
 }

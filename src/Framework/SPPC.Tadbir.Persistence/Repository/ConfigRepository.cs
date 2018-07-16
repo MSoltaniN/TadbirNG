@@ -267,7 +267,7 @@ namespace SPPC.Tadbir.Persistence
             var listConfig = new ListFormViewConfig() { ViewId = 1, PageSize = 25 };
             var column = new ColumnViewConfig("Id");
             var deviceColumn = new ColumnViewDeviceConfig() { Width = 0, Index = -1, Visibility = ColumnVisibility.AlwaysHidden };
-            column.Large = column.Medium = column.Small = column.ExtraSmall = deviceColumn;
+            column.Large = column.Medium = column.Small = column.ExtraSmall = column.ExtraLarge = deviceColumn;
             listConfig.ColumnViews.Add(column);
 
             column = new ColumnViewConfig("Code");

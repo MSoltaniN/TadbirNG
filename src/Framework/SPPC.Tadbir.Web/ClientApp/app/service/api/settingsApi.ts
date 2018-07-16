@@ -25,4 +25,7 @@ export class SettingsApi {
 
     // settings/workflows
     public static WorkflowSettings = Environment.BaseUrl + "/settings/workflows";
+
+    //api/settings/list/users/{userId:min(1)}
+    public static PutSettingsByUserAndView = Environment.BaseUrl + "/settings/list/users/{0}";
 }

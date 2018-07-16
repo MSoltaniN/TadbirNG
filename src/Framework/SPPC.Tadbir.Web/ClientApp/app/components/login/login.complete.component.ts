@@ -13,8 +13,9 @@ import { MessageType, Layout, MessagePosition, SessionKeys } from "../../envirom
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { TranslateService } from 'ng2-translate';
-import { UserService } from '../../service/index';
+import { UserService, SettingService } from '../../service/index';
 import { Command } from '../../model/command';
+import { ListFormViewConfig } from '../../model/listFormViewConfig';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -35,6 +36,9 @@ export function getLayoutModule(layout: Layout) {
 
 
 export class LoginCompleteComponent extends DefaultComponent implements OnInit {
+
+
+    //#region Fields
     model: any = {};
     loading = false;
     returnUrl: string;
@@ -56,8 +60,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     public companyId: string = '';
     public branchId: string = '';
     public fiscalPeriodId: string = '';
+    //#endregion
 
-
+    //#region Constructor
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -67,18 +72,28 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         @Host() parent: LoginContainerComponent,
         public renderer: Renderer2,
         public metadata: MetaDataService,
-        public userService: UserService) 
+        public userService: UserService,
+        public settingService : SettingService) 
     {
         super(toastrService, translate, renderer, metadata,'','');
             
     }
 
+    //#endregion
+
+    //#region Events
+
     ngOnInit() {
 
         this.getCompany();
 
+        this.loadAllSetting();
+
     }
 
+    //#endregion
+
+    //#region Methods
 
     public companyChange(value: any): void {
         this.disabledBranch = true;
@@ -154,6 +169,17 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         }
     }
 
+    
+    loadAllSetting() {
+
+        var settingList: Array<ListFormViewConfig> = new Array<ListFormViewConfig>();
+
+        this.settingService.getListSettingsByUser(this.UserId).subscribe((res: Array<ListFormViewConfig>) => {
+
+            if (res)
+                localStorage.setItem(SessionKeys.Setting + this.UserId, JSON.stringify(res));
+        });
+    }
 
     loadMenuAndRoute(currentUser : ContextInfo) {
 
@@ -164,17 +190,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
         this.userService.getCurrentUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
             var list: Array<Command> = res;
-
-            //list.forEach((obj: Command) => {
-            //    obj.children.forEach((childObj: Command) => {
-            //        childObj.iconName = 'glyphicon glyphicon-' + childObj.iconName;
-            //        menuList.push(childObj);
-            //    })
-            //});
-
+            
             sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(res));
-
-
+            
             if (this.authenticationService.isRememberMe())
                 localStorage.setItem('currentContext', JSON.stringify(currentUser));
             else
@@ -198,5 +216,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
         //#endregion
     }
+
+    //#endregion
 
 }
