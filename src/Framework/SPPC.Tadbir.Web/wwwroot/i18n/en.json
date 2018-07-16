@@ -23,7 +23,7 @@
     }
   },
   "Enviroment": {
-    "FiscalPeriod": "FiscalPeriod",
+    "FiscalPeriod": "Fiscal Period",
     "Company": "Company",
     "User": "User",
     "Branch": "Branch"
@@ -77,16 +77,16 @@
     "Level": "Level",
     "Branch": "Branch",
     "Description": "Description",
-    "List": "Account list",
-    "Moeen": "Moeen",
-    "Tafzili": "Tafzili",
-    "Kol": "Kol",
-    "TafziliToUp": "Tafzili"
+    "List": "Account List",
+    "Moeen": "Subsidiary Level",
+    "Tafzili": "Floating Account Level",
+    "Kol": "Ledger Level",
+    "TafziliToUp": "Floating Account"
   },
   "Settings": {
     "AccountRelation": {
       "LeafAccounts": "Create relations at the latest account level",
-      "LeafDetails": "Create relations at the latest detail account level",
+      "LeafDetails": "Create relations at the latest floating account level",
       "LeafCostCenters": "Create relations at the latest cost center level",
       "LeafProjects": "Create relations at the latest project level"
     },
@@ -140,7 +140,7 @@
     "RolesTitle": "List of available roles to the branch"
   },
   "Voucher": {
-    "New": "New voucher",
+    "New": "New Voucher",
     "Edit": "Edit",
     "Delete": "Delete",
     "No": "Voucher No",
@@ -167,10 +167,10 @@
     "UpdateRoles": "User roles have been successfully edited"
   },
   "ChangePassword": {
-    "Title": "Change password",
-    "OldPassword": "Old password",
-    "NewPassword": "New password",
-    "RepeatPassword": "Repeat new password"
+    "Title": "Change Password",
+    "OldPassword": "Old Password",
+    "NewPassword": "New Password",
+    "RepeatPassword": "Repeat New Password"
   },
   "Role": {
     "New": "New Role",
@@ -184,7 +184,7 @@
     "Detail": "Detail",
     "FiscalPeriod": "Fiscal Period",
     "RecordNotFound": "This role has no permission",
-    "RoleDetail": "Role detail"
+    "RoleDetail": "Role Detail"
   },
   "RoleUsers": {
     "Name": "Name",
@@ -239,10 +239,10 @@
     "Delete": "Delete Project"
   },
   "AccountRelations": {
-    "MainComponent": "Main component",
-    "RelatedComponent": "Related component",
+    "MainComponent": "Main Component",
+    "RelatedComponent": "Related Component",
     "Account": "Account",
-    "DetailAccount": "Detail Account",
+    "DetailAccount": "Floating Account",
     "CostCenter": "Cost Center",
     "Project": "Project",
     "Select": "-- Select --",
@@ -264,7 +264,7 @@
     "StartDate": "Start Date",
     "EndDate": "End Date",
     "Description": "Description",
-    "UpdateRoles": "Fiscal Period roles have been successfully edited",
+    "UpdateRoles": "Fiscal period roles have been successfully edited",
     "Roles": "Roles",
     "RolesTitle": "Fiscal Period Roles List"
   },
@@ -281,11 +281,11 @@
   "Login": {
     "Ok": "Ok",
     "Title": "Login",
-    "SelectTitle": "Select company",
+    "SelectTitle": "Select Company",
     "UserName": "User Name",
     "Password": "Password",
     "BtnLogin": "Login",
-    "RememberMe": "Remember me",
+    "RememberMe": "Remember Me",
     "UserIncorrect": "username or password is incorrect"
   },
   "Sppc-DateRange": {
