@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators/map';
 import { AccountItemRelations, AccountItemBrief } from '../model/index';
 import { Filter } from '../class/filter';
+import { FilterExpression } from '../class/filterExpression';
 
 
 
@@ -34,10 +35,10 @@ export class AccountRelationsService extends BaseService {
             .map(response => <any>(<Response>response).json());
     }
 
-    public getRelatedComponentModel(apiUrl: string, filters?: Filter[]) {
+    public getRelatedComponentModel(apiUrl: string, filter?: FilterExpression) {
         var intMaxValue = 2147483647
         var gridPaging = { pageIndex: 1, pageSize: intMaxValue };
-        var postItem = { Paging: gridPaging, filters: filters, sortColumns: null };
+        var postItem = { Paging: gridPaging, filter: filter, sortColumns: null };
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));
@@ -49,10 +50,10 @@ export class AccountRelationsService extends BaseService {
             .map(response => <any>(<Response>response).json());
     }
 
-    public getMainComponentModel(apiUrl: string, filters?: Filter[]) {
+    public getMainComponentModel(apiUrl: string, filter?: FilterExpression) {
         var intMaxValue = 2147483647
         var gridPaging = { pageIndex: 1, pageSize: intMaxValue };
-        var postItem = { Paging: gridPaging, filters: filters, sortColumns: null };
+        var postItem = { Paging: gridPaging, filter: filter, sortColumns: null };
         var searchHeaders = this.headers;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));

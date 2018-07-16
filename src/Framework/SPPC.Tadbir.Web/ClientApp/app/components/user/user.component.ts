@@ -22,6 +22,7 @@ import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { UserApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { UserPermissions } from '../../security/permissions';
+import { FilterExpression } from '../../class/filterExpression';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -51,7 +52,7 @@ export class UserComponent extends DefaultComponent implements OnInit {
     //for add in delete messageText
     deleteModelId: number;
 
-    currentFilter: Filter[] = [];
+    currentFilter: FilterExpression;
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 

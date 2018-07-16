@@ -20,6 +20,8 @@ import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
 import { KeyCode } from '../../enum/KeyCode';
 import { Filter } from '../../class/filter';
 import { AccountRelationsType } from '../../enum/accountRelationType';
+import { FilterExpression } from '../../class/filterExpression';
+import { FilterExpressionBuilder } from '../../class/filterExpressionBuilder';
 
 
 
@@ -205,14 +207,19 @@ export class AccountRelationsFormComponent extends DefaultComponent {
 
     onSearch() {
         this.resultMessage = false;
-        var filters: Filter[] = [];
+
+        let filterExp: FilterExpression | undefined;
+
         if (this.searchValue) {
-            filters.push(new Filter("Name", this.searchValue, ".Contains({0})", "System.String"));
+            var filterExpBuilder = new FilterExpressionBuilder();
+            filterExp = filterExpBuilder.New(new Filter("Name", this.searchValue, ".Contains({0})", "System.String"))
+                .Or(new Filter("Code", this.searchValue, ".Contains({0})", "System.String"))
+                .Build();
         }
 
         this.sppcLoading.show();
         this.getApiUrl();
-        this.accountRelationsService.getRelatedComponentModel(this.apiUrl, filters).subscribe(res => {
+        this.accountRelationsService.getRelatedComponentModel(this.apiUrl, filterExp).subscribe(res => {
             this.relatedComponentCategories = res;
             if(this.relatedComponentCategories.length == 0)
                 this.resultMessage = true;

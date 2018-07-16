@@ -38,6 +38,8 @@ import { AccountApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { AccountPermissions } from '../../security/permissions';
 import { DefaultComponent } from '../../class/default.component';
+import { FilterExpression } from '../../class/filterExpression';
+import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
 
 //#endregion
 
@@ -58,7 +60,7 @@ export function getLayoutModule(layout: Layout) {
     providers: [{
         provide: RTL,
         useFactory: getLayoutModule,
-        deps: [Layout]        
+        deps: [Layout]
     }]
 })
 
@@ -66,18 +68,18 @@ export function getLayoutModule(layout: Layout) {
 export class AccountComponent extends DefaultComponent implements OnInit {
 
     //#region Fields
-    
+
     public Childrens: Array<AccountComponent>;
 
     @Input() public parent: Account;
     @Input() public isChild: boolean = false;
-    
+
     public parentId?: number = undefined;
     public rowData: GridDataResult;
     public selectedRows: string[] = [];
     public accountArticleRows: any[];
     public totalRecords: number;
-    
+
     //permission flag
     viewAccess: boolean;
 
@@ -86,7 +88,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     deleteModelsConfirm: boolean;
     deleteModelId: number;
 
-    currentFilter: Filter[] = [];
+    currentFilter: FilterExpression;
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 
@@ -106,7 +108,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Account, AccountPermissions.View);
         this.reloadGrid();
-        if(this.parentAccount)
+        if (this.parentAccount)
             this.parentAccount.addChildAccount(this);
     }
 
@@ -190,7 +192,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         else {
             //set parentid for childs accounts
             if (this.parentId) {
-                model.parentId = this.parentId; 
+                model.parentId = this.parentId;
 
                 var findIndex = this.rowData.data.findIndex(acc => acc.id == this.parentId);
                 var parentRow = this.rowData.data[findIndex];
@@ -199,7 +201,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                 this.parentId = undefined;
             }
             else if (this.parent) {
-                model.parentId = this.parent.id;                
+                model.parentId = this.parent.id;
                 model.level = this.parent.level + 1;
             }
 
@@ -224,7 +226,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                         this.addToContainer = false;
                         this.reloadGrid(insertedModel);
                     }
-                    else if (model.parentId != undefined){
+                    else if (model.parentId != undefined) {
                         this.reloadGrid();
                     }
                 }, (error => {
@@ -243,7 +245,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         private accountService: AccountService, private voucherLineService: VoucherLineService,
         private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService,
         @SkipSelf() @Host() @Optional() private parentAccount: AccountComponent) {
-        super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account); 
+        super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
     }
 
     //#endregion
@@ -254,16 +256,16 @@ export class AccountComponent extends DefaultComponent implements OnInit {
      * کامپوننت های فرزند را در متغیری اضافه میکند
      * @param accountComponent کامپوننت حساب
      */
-    public addChildAccount(accountComponent : AccountComponent) {
+    public addChildAccount(accountComponent: AccountComponent) {
 
         if (this.Childrens == undefined) this.Childrens = new Array<AccountComponent>();
-        if (this.Childrens.findIndex(p=>p.parent.id === accountComponent.parent.id) == -1)
-        //if (this.Childrens.some(p => p === accountComponent) == false)
+        if (this.Childrens.findIndex(p => p.parent.id === accountComponent.parent.id) == -1)
+            //if (this.Childrens.some(p => p === accountComponent) == false)
             this.Childrens.push(accountComponent);
-        
+
 
     }
-    
+
     showConfirm() {
         this.deleteModelsConfirm = true;
     }
@@ -286,7 +288,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         //this.groupDelete = false;
         this.deleteModelsConfirm = false;
     }
-    
+
     public reloadGrid(insertedModel?: Account) {
         if (this.viewAccess) {
             this.sppcLoading.show();
@@ -297,10 +299,15 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             }
             if (this.parent) {
                 if (this.parent.childCount > 0)
-                    filter.push(new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"))
+                    filter = this.addFilterToFilterExpression(this.currentFilter,
+                        new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"),
+                        FilterExpressionOperator.And);
             }
             else
-                filter.push(new Filter("ParentId", "null", "== {0}", "System.Int32"))
+                filter = this.addFilterToFilterExpression(this.currentFilter,
+                    new Filter("ParentId", "null", "== {0}", "System.Int32"),
+                    FilterExpressionOperator.And);
+
             this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 //this.properties = resData.properties;
@@ -329,7 +336,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                             totalCount = parseInt(retheader.toString());
                     }
                 }
-                               
+
 
                 this.rowData = {
                     data: resData,
@@ -347,7 +354,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             }
         }
     }
-    
+
     deleteModel(confirm: boolean) {
         if (confirm) {
             this.sppcLoading.show();
@@ -369,7 +376,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
             var parentRow = null;
             var findIndex = this.rowData.data.findIndex(acc => acc.id == parentModelId);
-            
+
             if (findIndex == -1) {
                 findIndex = this.parentAccount.rowData.data.findIndex(acc => acc.id == parentModelId);
                 if (findIndex >= 0)
@@ -422,14 +429,14 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         else
             this.parentTitle = '';
     }
-    
-    public addNew(parentModelId?: number,addToThis? : boolean) {
+
+    public addNew(parentModelId?: number, addToThis?: boolean) {
         this.isNew = true;
         this.editDataItem = new AccountInfo();
 
-       
+
         this.setAccountTitle(parentModelId);
-       
+
         //آی دی مربوط به حساب سطح بالاتر برای درج در زیر حساب ها در متغیر parentId مقدار دهی میشود
         if (parentModelId)
             this.parentId = parentModelId;
@@ -439,7 +446,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
         this.errorMessage = '';
     }
-    
+
     public showOnlyParent(dataItem: Account, index: number): boolean {
         return dataItem.childCount > 0;
     }

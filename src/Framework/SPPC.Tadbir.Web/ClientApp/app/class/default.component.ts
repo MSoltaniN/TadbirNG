@@ -16,6 +16,8 @@ import { AppModule } from '../app.module.server';
 import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
 
 import * as moment from 'jalali-moment';
+import { FilterExpression } from './filterExpression';
+import { FilterExpressionBuilder } from './filterExpressionBuilder';
 
 @Injectable()
 export class DefaultComponent extends BaseComponent {
@@ -44,7 +46,7 @@ export class DefaultComponent extends BaseComponent {
         if (this.form == undefined) {
 
             this.form = new FormGroup({ id: new FormControl() });
-            
+
 
             if (this.properties[this.metaDataName] == undefined) {
 
@@ -66,16 +68,16 @@ export class DefaultComponent extends BaseComponent {
 
         }
         else {
-            this.fillFormValidators();        
-        }       
-            
+            this.fillFormValidators();
+        }
+
         return this.form;
 
     }
 
-  
 
-    
+
+
 
     constructor(public toastrService: ToastrService, public translate: TranslateService
         , public renderer: Renderer2, private metadataService: MetaDataService,
@@ -83,13 +85,13 @@ export class DefaultComponent extends BaseComponent {
 
 
         super(toastrService);
-        
+
         this.setLanguageSetting();
 
         this.localizeMsg();
 
         //if (createForm)
-            //this.initializeFrom();
+        //this.initializeFrom();
     }
 
 
@@ -108,11 +110,11 @@ export class DefaultComponent extends BaseComponent {
             if (entry.length > 0) validators.push(Validators.maxLength(entry.length));
 
             if (entry.minLength > 0) validators.push(Validators.minLength(entry.minLength));
-        
+
             if (!entry.isNullable) validators.push(Validators.required);
-            
-            if (!this.form.contains(name)) {                 
-                this.form.addControl(name, new FormControl("",validators));
+
+            if (!this.form.contains(name)) {
+                this.form.addControl(name, new FormControl("", validators));
             }
         }
 
@@ -138,7 +140,7 @@ export class DefaultComponent extends BaseComponent {
         else {
             this.fillFormValidators();
         }
-        
+
     }
 
 
@@ -184,14 +186,14 @@ export class DefaultComponent extends BaseComponent {
 
         this.translateService = this.translate;
     }
-    
+
 
 
     /**
     * این تابع متادیتا مربوط به یک انتیتی را در قالب انتیتی به نام Property برمیگرداند.
     * @param name is a name of column like 'id' , 'name' , 'fiscalperiod' , ... .    
-    */    
-    public getMeta(name: string): Property | undefined  {      
+    */
+    public getMeta(name: string): Property | undefined {
 
         if (this.metaDataName) {
 
@@ -233,22 +235,22 @@ export class DefaultComponent extends BaseComponent {
 
         }
     }
-    
+
     /** return the current language */
     public currentlang: string = "";
-    
+
 
     /** the default value of grid paging size  */
     pageSize: number = 10;
 
-    
+
     public skip: number = 0;
 
     /** set number value for grid current page
     * @param value is page number.
     */
     public set pageIndex(value: number) {
-        this.skip = value;        
+        this.skip = value;
     }
 
     /** set number value for grid current page */
@@ -256,8 +258,8 @@ export class DefaultComponent extends BaseComponent {
         if (this.skip == 0)
             return 1;
         else
-            return (this.skip / this.pageSize) + 1;        
-    }    
+            return (this.skip / this.pageSize) + 1;
+    }
 
     /** the current state of filtering and paging */
     public state: State = {
@@ -270,7 +272,7 @@ export class DefaultComponent extends BaseComponent {
         }
     };
 
-    getFilters(filter: any): Filter[] {
+    getFilters(filter: any): FilterExpression {
         let filters: Filter[] = [];
 
         if (filter.filters.length) {
@@ -312,23 +314,6 @@ export class DefaultComponent extends BaseComponent {
                             operator = " == {0}";
                     }
 
-                    
-                    //var dataType = "";
-                    /*
-                    switch (filter.filters[i].field) {
-                        case "fiscalPeriodId":
-                        case "level":
-                            dataType = "System.Int16";
-                            break;
-                        case "code":
-                        case "description":
-                        case "name":
-                            dataType = "System.String";
-                            break;
-                        default:
-                            dataType = "System.String";
-                    }*/
-
                     var metadata = this.getMeta(filter.filters[i].field);
                     var dataType = '';
                     if (metadata != undefined)
@@ -343,7 +328,27 @@ export class DefaultComponent extends BaseComponent {
 
         }
 
-        return filters;
+        var filterExpBuilder = new FilterExpressionBuilder();
+        var filterExp = filterExpBuilder.And(filters)
+            .Build();
+
+        return filterExp;
+    }
+
+    addFilterToFilterExpression(filterExp: FilterExpression, filter: Filter, operator: string): FilterExpression {
+        var newFilter = new FilterExpression();
+        newFilter.filter = filter;
+        newFilter.operator = operator;
+
+        if (filterExp != null) {
+            filterExp.children.push(newFilter);
+            return filterExp;
+        }
+        else {
+            var filterExpBuilder = new FilterExpressionBuilder();
+            return filterExpBuilder.New(filter).Build();
+        }
+            
     }
 
     /**
@@ -372,28 +377,26 @@ export class DefaultComponent extends BaseComponent {
             this.deleteConfirmMsg = String.Format(msg, entityType);
         });
 
-       
+
     }
 
     /**
      * return message or translate key from resource file (from fa.json or en.json)
      * @param key is key of message like 'Buttons.Ok'
      */
-    public getText(key: string) : string
-    {
+    public getText(key: string): string {
         var msgText = '';
         this.translateService.get(key).subscribe((msg: string) => {
             msgText = msg;
         });
         return msgText;
-    }    
+    }
 
     /**
      * prepare confim message for delete operation
      * @param text is a part of message that use for delete confirm message
     */
-    public prepareDeleteConfirm(text : string)
-    {
+    public prepareDeleteConfirm(text: string) {
         this.translateService.get("Messages.DeleteConfirm").subscribe((msg: string) => {
             this.deleteConfirmMsg = String.Format(msg, text);
         });
@@ -407,8 +410,8 @@ export class DefaultComponent extends BaseComponent {
         this.translateService.use(value);
 
         this.currentlang = value;
-        localStorage.setItem('lang',value);
-        
+        localStorage.setItem('lang', value);
+
         this.localizeMsg();
 
         //switch (value) {
@@ -428,5 +431,5 @@ export class DefaultComponent extends BaseComponent {
 
 
     }
-    
+
 }

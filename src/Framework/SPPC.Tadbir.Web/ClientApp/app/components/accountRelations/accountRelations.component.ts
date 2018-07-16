@@ -24,6 +24,8 @@ import { AccountItemRelationsInfo } from '../../service/accountRelations.service
 import { Filter } from '../../class/filter';
 import { KeyCode } from '../../enum/KeyCode';
 import { AccountRelationsType } from '../../enum/accountRelationType';
+import { FilterExpressionBuilder } from '../../class/filterExpressionBuilder';
+import { FilterExpression } from '../../class/filterExpression';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -427,20 +429,22 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     }
 
     onMainComponentSearch() {
-        var filters: Filter[] = [];
+        let filterExp: FilterExpression | undefined;
+
         if (this.searchValue) {
-            filters.push(new Filter("Name", this.searchValue, ".Contains({0})", "System.String"));
+            var filterExpBuilder = new FilterExpressionBuilder();
+            filterExp = filterExpBuilder.New(new Filter("Name", this.searchValue, ".Contains({0})", "System.String"))
+                .Or(new Filter("Code", this.searchValue, ".Contains({0})", "System.String"))
+                .Build();
         }
 
         this.sppcLoading.show();
-        this.accountRelationsService.getMainComponentModel(this.mainComponentApiUrl, filters).subscribe(res => {
+        this.accountRelationsService.getMainComponentModel(this.mainComponentApiUrl, filterExp).subscribe(res => {
             this.mainComponentCategories = res.json();
             if (this.mainComponentCategories.length == 0)
                 this.noResultMessage = true;
             else
                 this.noResultMessage = false;
-
-
 
             this.sppcLoading.hide();
         });
@@ -454,13 +458,18 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
     onRelatedComponentSearch() {
         if (this.relatedComponentDropdownSelected > 0 && this.mainComponentSelectedItem > 0) {
-            this.sppcLoading.show();
-            var filters: Filter[] = [];
+
+            let filterExp: FilterExpression | undefined;
+
             if (this.relatedSearchValue) {
-                filters.push(new Filter("Name", this.relatedSearchValue, ".Contains({0})", "System.String"));
+                var filterExpBuilder = new FilterExpressionBuilder();
+                filterExp = filterExpBuilder.New(new Filter("Name", this.searchValue, ".Contains({0})", "System.String"))
+                    .Or(new Filter("Code", this.searchValue, ".Contains({0})", "System.String"))
+                    .Build();
             }
 
-            this.accountRelationsService.getRelatedComponentModel(this.relatedComponentApiUrl, filters).subscribe(res => {
+            this.sppcLoading.show();
+            this.accountRelationsService.getRelatedComponentModel(this.relatedComponentApiUrl, filterExp).subscribe(res => {
                 this.relatedComponentCategories = res;
                 for (let item of res) {
                     if (item.isSelected) {

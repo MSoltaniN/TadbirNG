@@ -21,6 +21,7 @@ import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { RoleApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { RolePermissions } from '../../security/permissions';
+import { FilterExpression } from '../../class/filterExpression';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -54,7 +55,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     deleteConfirm: boolean;
     deleteModelId: number;
 
-    currentFilter: Filter[] = [];
+    currentFilter: FilterExpression;
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 

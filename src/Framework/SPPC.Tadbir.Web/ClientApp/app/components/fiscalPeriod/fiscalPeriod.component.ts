@@ -23,6 +23,7 @@ import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { FiscalPeriodPermissions } from '../../security/permissions';
 import { FiscalPeriodApi } from '../../service/api/index';
+import { FilterExpression } from '../../class/filterExpression';
 
 
 
@@ -54,7 +55,7 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
     deleteConfirm: boolean;
     deleteModelId: number;
 
-    currentFilter: Filter[] = [];
+    currentFilter: FilterExpression;
     currentOrder: string = "";
     public sort: SortDescriptor[] = [];
 
