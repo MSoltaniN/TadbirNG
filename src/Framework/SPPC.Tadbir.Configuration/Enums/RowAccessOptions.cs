@@ -52,9 +52,14 @@ namespace SPPC.Tadbir.Configuration
         public const string MaxQuantityValue = "MaxQuantityValue";
 
         /// <summary>
-        /// محدودسازی بر مبنای استفاده از یک مقدار متنی در فیلدهای رفرنس
+        /// دسترسی به تمام سطرهای اطلاعاتی دارای یک متن در فیلد رفرنس
         /// </summary>
         public const string SpecificReference = "SpecificReference";
+
+        /// <summary>
+        /// دسترسی به تمام سطرهای اطلاعاتی بجز سطرهای دارای یک متن در فیلد رفرنس
+        /// </summary>
+        public const string AllExceptSpecificReference = "AllExceptSpecificReference";
 
         /// <summary>
         /// عدم دسترسی کامل به سطرهای اطلاعاتی یک موجودیت
