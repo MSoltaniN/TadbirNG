@@ -10,6 +10,7 @@ using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -210,6 +211,43 @@ namespace SPPC.Tadbir.Persistence
             return branches
                 .OrderBy(br => br.Name)
                 .Select(br => _mapper.Map<KeyValue>(br));
+        }
+
+        #endregion
+
+        #region Security Subsystem lookup
+
+        /// <summary>
+        /// به روش آسنکرون، نقش های امنیتی تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه نقش های امنیتی تعریف شده</returns>
+        public async Task<IList<KeyValue>> GetRolesAsync()
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var roles = await repository
+                .GetAllAsync();
+            return roles
+                .OrderBy(role => role.Name)
+                .Select(role => _mapper.Map<KeyValue>(role))
+                .ToList();
+        }
+
+        #endregion
+
+        #region Metadata Subsystem lookup
+
+        /// <summary>
+        /// به روش آسنکرون، موجودیت های تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه موجودیت های تعریف شده</returns>
+        public async Task<IList<KeyValue>> GetEntityViewsAsync()
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Entity>();
+            var views = await repository
+                .GetAllAsync();
+            return views
+                .Select(view => _mapper.Map<KeyValue>(view))
+                .ToList();
         }
 
         #endregion

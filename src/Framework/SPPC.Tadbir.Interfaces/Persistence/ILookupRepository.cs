@@ -82,5 +82,25 @@ namespace SPPC.Tadbir.Persistence
         Task<IEnumerable<KeyValue>> GetUserAccessibleBranchesAsync(int companyId, int userId);
 
         #endregion
+
+        #region Security Subsystem lookup
+
+        /// <summary>
+        /// به روش آسنکرون، نقش های امنیتی تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه نقش های امنیتی تعریف شده</returns>
+        Task<IList<KeyValue>> GetRolesAsync();
+
+        #endregion
+
+        #region Metadata Subsystem lookup
+
+        /// <summary>
+        /// به روش آسنکرون، موجودیت های تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه موجودیت های تعریف شده</returns>
+        Task<IList<KeyValue>> GetEntityViewsAsync();
+
+        #endregion
     }
 }

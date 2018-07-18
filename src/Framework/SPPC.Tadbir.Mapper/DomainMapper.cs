@@ -114,6 +114,9 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Role, RelatedItemsViewModel>()
                 .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
             mapperConfig.CreateMap<Role, RelatedItemViewModel>();
+            mapperConfig.CreateMap<Role, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
 
             mapperConfig.CreateMap<Permission, PermissionViewModel>()
                 .ForMember(dest => dest.IsEnabled, opts => opts.UseValue(true));
@@ -415,6 +418,9 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Property, PropertyViewModel>();
             mapperConfig.CreateMap<Command, CommandViewModel>()
                 .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));
+            mapperConfig.CreateMap<Entity, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)
