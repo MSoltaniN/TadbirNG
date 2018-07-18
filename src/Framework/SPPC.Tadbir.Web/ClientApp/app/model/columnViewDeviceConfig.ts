@@ -3,7 +3,7 @@
     designIndex : number;
     width?: number;
     index?: number
-    visibilty: string;
+    visibility: string;
     title: string;
     
 }

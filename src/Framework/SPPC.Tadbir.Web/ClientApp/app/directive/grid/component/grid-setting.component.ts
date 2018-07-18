@@ -50,7 +50,11 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
         //#region Save View Setting
 
         if (this.rowData)
-            this.settingService.putUserSettings(this.UserId, this.rowData);
+            this.settingService.putUserSettings(this.UserId, this.rowData).subscribe(response => {
+                
+        }, (error => {
+           
+        }));
 
         //#endregion
 
@@ -123,7 +127,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
                 
                 model.designIndex = setting.designIndex;
                 model.index = setting.index;
-                model.visibilty = this.checkVisibility(setting.visibilty);
+                model.visibility = this.checkVisibility(setting.visibility);
                 model.width = setting.width;
                 model.name = item.name;
                 model.title = setting.title;
@@ -186,7 +190,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
                     if (columnViewDeviceConfig && columnViewDeviceConfig.index) {
                         //var row: ColumnViewDeviceConfig = { index: arrayIndex, designIndex: item.orderIndex, visibilty: ColumnVisibility.AlwaysVisible };                        
-                        item.hidden = !this.checkVisibility(columnViewDeviceConfig.visibilty);
+                        item.hidden = !this.checkVisibility(columnViewDeviceConfig.visibility);
                         this.rowData.columnViews[arrayIndex] = this.setCurrentColumnViewConfig(this.rowData.columnViews[arrayIndex], columnViewDeviceConfig);                                              
 
                     }
@@ -197,7 +201,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
                         var row: ColumnViewDeviceConfig = {
                             index: index, designIndex: item.orderIndex,
-                            visibilty: visibilityValue , title : item.displayTitle,
+                            visibility: visibilityValue , title : item.displayTitle,
                             width : item.width
                         };
 
@@ -250,10 +254,10 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
         
         this.grid.columns.toArray().forEach((item, index, arr) => {
             if (item instanceof ColumnComponent) {
-                if ((<ColumnComponent>item).field == name) {
+                if ((<ColumnComponent>item).field && (<ColumnComponent>item).field.toLowerCase() == name.toLowerCase()) {
                     item.hidden = hidden;
                     if (this.rowData) {
-                        this.rowData.viewId = parseInt(storageId);
+                        this.rowData.viewId = viewId;
                         var arrayIndex = this.rowData.columnViews.findIndex(p => p.name.toLowerCase() == (<ColumnComponent>item).field.toLowerCase());
 
                         var arrayItem: ColumnViewDeviceConfig | null = null;
@@ -264,7 +268,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
                         if (arrayItem) {
 
-                            arrayItem.visibilty = hidden == true ? ColumnVisibility.Hidden : ColumnVisibility.Visible;
+                            arrayItem.visibility = hidden == true ? ColumnVisibility.Hidden : ColumnVisibility.Visible;
                             
                             var columnViewConfig = this.setCurrentColumnViewConfig(this.rowData.columnViews[arrayIndex], arrayItem);
                             
@@ -280,14 +284,17 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
             this.setSettingByViewId(viewId, this.rowData);
             this.gridRowData = this.changeLastColumns(this.fillViewModel(this.rowData));
         }
+
+        
+
     }
 
 
     private changeLastColumns(rows: Array<SettingViewModelInfo>): Array<SettingViewModelInfo> {
 
-        var hiddenColumns = rows.filter(p => p.visibilty == false);
+        var hiddenColumns = rows.filter(p => p.visibility == false);
         if (hiddenColumns.length == rows.length - 1) {
-            var lastVisibleColumn = rows.findIndex(p => p.visibilty == true);
+            var lastVisibleColumn = rows.findIndex(p => p.visibility == true);
             rows[lastVisibleColumn].disabled = true;
         }
         else {

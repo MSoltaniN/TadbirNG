@@ -33,7 +33,7 @@ export class ColumnViewDeviceConfigInfo  implements ColumnViewDeviceConfig {
     constructor(public designIndex: number = 0,
         public width?: number | undefined,
         public index?: number | undefined,
-        public visibilty: string = ColumnVisibility.Default, public title: string = ""
+        public visibility: string = ColumnVisibility.Default, public title: string = ""
         ) { }
     
 }
@@ -63,7 +63,7 @@ export class SettingViewModelInfo  {
         public designIndex: number = 0,
         public width: number | undefined = 0,
         public index: number | undefined = 0,
-        public visibilty: boolean = true,
+        public visibility: boolean = true,
         public disabled: boolean = false,
         public title: string = "") { }
     
@@ -103,8 +103,9 @@ export class SettingService extends BaseService {
     }
 
     putUserSettings(userId: number, setting: ListFormViewConfig) {
-        var url = String.Format(SettingsApi.PutSettingsByUserAndView, userId);
+        var url = String.Format(SettingsApi.ListSettingsByUser, userId);
         var body = JSON.stringify(setting);
+        var headers = this.headers;
         return this.http.put(url, body, this.options)
             .map(res => res)
             .catch(this.handleError);

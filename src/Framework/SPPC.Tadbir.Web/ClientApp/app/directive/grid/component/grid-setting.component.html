@@ -9,7 +9,7 @@
         <kendo-grid-checkbox-column width="80" media="(min-width: 450px) and (max-width: 2048px)" title="{{ 'GridSetting.Visibility' | translate }}">
             <ng-template kendoGridCellTemplate let-dataItem>
                 <input type="checkbox"
-                       [checked]="dataItem.visibilty"
+                       [checked]="dataItem.visibility"
                        [disabled]="dataItem.disabled"  (change)="changeVisibility(dataItem.name,$event)" />
             </ng-template>
         </kendo-grid-checkbox-column>
