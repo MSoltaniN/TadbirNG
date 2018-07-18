@@ -11,6 +11,7 @@
 // ------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
 
@@ -28,7 +29,7 @@ namespace SPPC.Tadbir.ViewModel.Auth
         {
             AccessMode = String.Empty;
             TextValue = String.Empty;
-            Items = String.Empty;
+            Items = new List<int>();
         }
 
         /// <summary>
@@ -46,12 +47,12 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// <summary>
         /// یک مقدار عددی صحیح یا اعشاری که برای محدود کردن بر اساس تعداد یا مبلغ قابل استفاده است
         /// </summary>
-        public decimal Value { get; set; }
+        public double Value { get; set; }
 
         /// <summary>
         /// مقدار عددی صحیح یا اعشاری اضافی برای تعیین سقف عددی
         /// </summary>
-        public decimal Value2 { get; set; }
+        public double Value2 { get; set; }
 
         /// <summary>
         /// یک متن آزاد که برای محدود کردن بر اساس رفرنس های مورد استفاده در سطرهای عملیاتی قابل استفاده است
@@ -60,9 +61,9 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public string TextValue { get; set; }
 
         /// <summary>
-        /// شناسه های دیتابیسی برای تعریف دقیق سطرهای قابل دسترسی، که با یک جداکننده از هم جدا شده اند
+        /// مجموعه ای از شناسه های دیتابیسی برای تعریف دقیق سطرهای قابل دسترسی
         /// </summary>
         [StringLength(2048, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string Items { get; set; }
+        public IList<int> Items { get; protected set; }
     }
 }

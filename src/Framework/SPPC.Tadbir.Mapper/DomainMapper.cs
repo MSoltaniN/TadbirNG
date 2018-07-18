@@ -122,6 +122,14 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Permission, PermissionBriefViewModel>()
                 .ForMember(dest => dest.EntityName, opts => opts.MapFrom(src => src.Group.EntityName))
                 .ForMember(dest => dest.Flags, opts => opts.MapFrom(src => src.Flag));
+
+            mapperConfig.CreateMap<ViewRowPermission, ViewRowPermissionViewModel>()
+                .ForMember(
+                    dest => dest.Items,
+                    opts => opts.MapFrom(src => src.Items
+                        .Split(',')
+                        .Select(item => Int32.Parse(item.Trim()))
+                        .ToList()));
         }
 
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)

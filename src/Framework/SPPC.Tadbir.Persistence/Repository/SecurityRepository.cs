@@ -801,6 +801,21 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// مجموعه ای از تنظیمات دسترسی به سطرهای اطلاعاتی را برای نقش مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی یکی از نقش های امنیتی موجود</param>
+        /// <returns>مجموعه ای از تنظیمات دسترسی به سطرهای اطلاعاتی</returns>
+        public async Task<IList<ViewRowPermissionViewModel>> GetRowAccessSettingsAsync(int roleId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<ViewRowPermission>();
+            var settings = await repository
+                .GetByCriteriaAsync(perm => perm.Role.Id == roleId, perm => perm.View);
+            return settings
+                .Select(perm => _mapper.Map<ViewRowPermissionViewModel>(perm))
+                .ToList();
+        }
+
         #endregion
 
         private static void RemoveDisabledPermissions(Role existing, RoleFullViewModel role)

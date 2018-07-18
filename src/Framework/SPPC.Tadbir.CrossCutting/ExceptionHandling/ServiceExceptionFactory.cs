@@ -38,7 +38,7 @@ namespace SPPC.Tadbir.ExceptionHandling
             }
             else if (exception is InvalidOperationException)
             {
-                context = GetIocContainerContext(exception);
+                context = GetInvalidOperationContext(exception);
             }
             else if (exception is DbUpdateException)
             {
@@ -109,18 +109,27 @@ namespace SPPC.Tadbir.ExceptionHandling
             return context;
         }
 
-        private static ServiceExceptionContext GetIocContainerContext(Exception exception)
+        private static ServiceExceptionContext GetInvalidOperationContext(Exception exception)
         {
             var context = default(ServiceExceptionContext);
-            if (exception is InvalidOperationException && exception.Source.Contains("DependencyInjection"))
+            if (exception is InvalidOperationException invalidOpException)
             {
-                context = new ServiceExceptionContext(
-                    ErrorCode.TypeResolutionError, ErrorSource.IocContainer, ErrorMessage.TypeResolutionError);
-            }
-            else
-            {
-                context = new ServiceExceptionContext(
-                    ErrorCode.UnknownRuntimeError, ErrorSource.DotNetRuntime, ErrorMessage.UnknownRuntimeError);
+                string source = invalidOpException.Source;
+                if (source.Contains("DependencyInjection"))
+                {
+                    context = new ServiceExceptionContext(
+                        ErrorCode.TypeResolutionError, ErrorSource.IocContainer, ErrorMessage.TypeResolutionError);
+                }
+                else if (source.Contains("EntityFramework"))
+                {
+                    context = new ServiceExceptionContext(
+                        ErrorCode.OrmMappingError, ErrorSource.EntityFramework, ErrorMessage.OrmMappingError);
+                }
+                else
+                {
+                    return new ServiceExceptionContext(
+                        ErrorCode.UnknownRuntimeError, ErrorSource.DotNetRuntime, ErrorMessage.UnknownRuntimeError);
+                }
             }
 
             return context;
