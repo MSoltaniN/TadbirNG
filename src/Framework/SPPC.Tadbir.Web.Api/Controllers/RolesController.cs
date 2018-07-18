@@ -224,10 +224,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/roles/{roleId:min(1)}/rowaccess
         [Route(RoleApi.RowAccessSettingsUrl)]
         [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
-        public async Task<IActionResult> GetRowAccessSettingsForRole(int roleId)
+        public async Task<IActionResult> GetRowAccessSettingsForRoleAsync(int roleId)
         {
             var settings = await _repository.GetRowAccessSettingsAsync(roleId);
             return Json(settings);
+        }
+
+        // PUT: api/roles/{roleId:min(1)}/rowaccess
+        [HttpPut]
+        [Route(RoleApi.RowAccessSettingsUrl)]
+        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Edit)]
+        public async Task<IActionResult> PutModifiedRowAccessSettingsForRoleAsync(
+            int roleId, [FromBody] RowPermissionsForRoleViewModel permissions)
+        {
+            var result = BasicValidationResult(permissions, roleId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SaveRowAccessSettingsAsync(permissions);
+            return Ok();
         }
 
         protected override IActionResult BasicValidationResult(RoleFullViewModel role, int roleId = 0)

@@ -129,10 +129,20 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<ViewRowPermission, ViewRowPermissionViewModel>()
                 .ForMember(
                     dest => dest.Items,
-                    opts => opts.MapFrom(src => src.Items
-                        .Split(',')
-                        .Select(item => Int32.Parse(item.Trim()))
-                        .ToList()));
+                    opts => opts.MapFrom(src => !String.IsNullOrEmpty(src.Items)
+                        ? src.Items
+                            .Split(',')
+                            .Select(item => Int32.Parse(item.Trim()))
+                            .ToList()
+                        : new List<int>()));
+            mapperConfig.CreateMap<ViewRowPermissionViewModel, ViewRowPermission>()
+                .ForMember(
+                    dest => dest.Items,
+                    opts => opts.MapFrom(src => src.Items.Count > 0
+                        ? String.Join(",", src.Items)
+                        : null))
+                .AfterMap((viewModel, model) => model.Role.Id = viewModel.RoleId)
+                .AfterMap((viewModel, model) => model.View.Id = viewModel.ViewId);
         }
 
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)

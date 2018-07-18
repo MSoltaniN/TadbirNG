@@ -26,9 +26,6 @@ namespace SPPC.Tadbir.Model.Auth
         /// </summary>
         public ViewRowPermission()
         {
-            AccessMode = String.Empty;
-            TextValue = String.Empty;
-            Items = String.Empty;
             ModifiedDate = DateTime.Now;
             InitReferences();
         }

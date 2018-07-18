@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
+using SPPC.Tadbir.Configuration;
 
 namespace SPPC.Tadbir.ViewModel.Auth
 {
@@ -27,8 +28,7 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// </summary>
         public ViewRowPermissionViewModel()
         {
-            AccessMode = String.Empty;
-            TextValue = String.Empty;
+            AccessMode = RowAccessOptions.Default;
             Items = new List<int>();
         }
 
@@ -63,7 +63,6 @@ namespace SPPC.Tadbir.ViewModel.Auth
         /// <summary>
         /// مجموعه ای از شناسه های دیتابیسی برای تعریف دقیق سطرهای قابل دسترسی
         /// </summary>
-        [StringLength(2048, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public IList<int> Items { get; protected set; }
     }
 }
