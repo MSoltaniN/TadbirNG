@@ -180,6 +180,23 @@ CREATE TABLE [Auth].[RolePermission] (
 )
 GO
 
+CREATE TABLE [Auth].[ViewRowPermission] (
+    [RowPermissionID]   INT              IDENTITY (1, 1) NOT NULL,
+    [RoleID]            INT              NOT NULL,
+    [ViewID]            INT              NOT NULL,
+    [AccessMode]        NVARCHAR(64)     NOT NULL,
+    [Value]             FLOAT            NULL,
+    [Value2]            FLOAT            NULL,
+    [TextValue]         NVARCHAR(64)     NULL,
+    [Items]             VARCHAR(2048)    NULL,
+    [rowguid]           UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_ViewRowPermission_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]      DATETIME         CONSTRAINT [DF_Auth_ViewRowPermission_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Auth_ViewRowPermission] PRIMARY KEY CLUSTERED ([RowPermissionID] ASC)
+    , CONSTRAINT [FK_Auth_ViewRowPermission_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role]([RoleID])
+    , CONSTRAINT [FK_Auth_ViewRowPermission_Metadata_View] FOREIGN KEY ([ViewID]) REFERENCES [Metadata].[Entity]([EntityID])
+)
+GO
+
 CREATE TABLE [Config].[Setting] (
     [SettingID]      INT              IDENTITY (1, 1) NOT NULL,
     [ParentID]       INT              NULL,
@@ -1208,7 +1225,7 @@ INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelTyp
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey)
     VALUES (4, 'ListFormViewSettings', 3, 2, 'ListFormViewConfig', N'{"pageSize": 10, "columnViews": []}', N'{"pageSize": 10, "columnViews": []}', 'ListFormViewSettingsDescription')
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey)
-    VALUES (5, 'EntityRowAccessSettings', 2, 2, 'EntityRowAccessConfig', N'{"accessMode": "Default", "value": null, "textValue": null, "items": []}', N'{"accessMode": "Default", "value": null, "textValue": null, "items": []}', 'EntityRowAccessSettingsDescription')
+    VALUES (5, 'EntityRowAccessSettings', 2, 2, 'EntityRowAccessConfig', N'{"accessMode": "Default", "value": null, "value2": null, "textValue": null, "items": []}', N'{"accessMode": "Default", "value": null, "value2": null, "textValue": null, "items": []}', 'EntityRowAccessSettingsDescription')
 SET IDENTITY_INSERT [Config].[Setting] OFF
 
 

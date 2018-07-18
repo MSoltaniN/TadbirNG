@@ -49,7 +49,7 @@
         <div class="panel-body">
             <div *ngIf="false">
                 <kendo-grid [data]="gridPermissionsData"
-                            [selectable]="true"
+                            [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
                             [selectedKeys]="selectedRows"
                             [kendoGridSelectBy]="selectionKey">
                     <ng-template kendoGridNoRecordsTemplate>

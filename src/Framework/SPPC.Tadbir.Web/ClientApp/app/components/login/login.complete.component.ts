@@ -99,6 +99,12 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         this.disabledBranch = true;
         this.disabledFiscalPeriod = true;
 
+        this.branches = [];
+        this.branchId = '';
+
+        this.fiscalPeriods = [];
+        this.fiscalPeriodId = '';
+
         this.getBranch(value);
         this.getFiscalPeriod(value);
     }

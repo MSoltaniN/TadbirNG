@@ -31,6 +31,11 @@ namespace SPPC.Tadbir.Configuration.Models
         public decimal? Value { get; set; }
 
         /// <summary>
+        /// مقدار عددی صحیح یا اعشاری اضافی برای تعیین سقف عددی
+        /// </summary>
+        public decimal? Value2 { get; set; }
+
+        /// <summary>
         /// یک متن آزاد که برای محدود کردن بر اساس رفرنس های مورد استفاده در سطرهای عملیاتی قابل استفاده است
         /// </summary>
         public string TextValue { get; set; }

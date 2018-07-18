@@ -14,7 +14,7 @@
         <div class="panel-body">
 
             <kendo-grid id="gridRoleUserFormData" [data]="gridData"
-                        [selectable]="true"
+                        [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
                         [selectedKeys]="selectedRows"
                         [kendoGridSelectBy]="selectionKey">
                 <ng-template kendoGridNoRecordsTemplate>

@@ -16,7 +16,7 @@ li.link-active a:focus {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1;
+    z-index: 1;   
 }
 
 @media (min-width: 768px) {
@@ -24,6 +24,8 @@ li.link-active a:focus {
     .main-nav {
         height: 100%;
         width: calc(25% - 20px);
+        overflow-y: scroll;
+        background-color: #222;
     }
     .navbar {
         border-radius: 0px;
@@ -56,4 +58,23 @@ li.link-active a:focus {
         overflow: hidden;
         text-overflow: ellipsis;
     }
+}
+
+
+
+
+
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4c4646;
+    border-radius: 10px;
 }
