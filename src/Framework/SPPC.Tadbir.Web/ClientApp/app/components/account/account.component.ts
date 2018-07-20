@@ -342,6 +342,18 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                     data: resData,
                     total: totalCount
                 }
+
+                //زمانی که تعداد رکورد ها صفر باشد باید کامپوننت پدر رفرش شود
+                if (totalCount == 0) {
+                    if (this.parentAccount && this.parentAccount.Childrens) {
+                        var thisIndex = this.parentAccount.Childrens.findIndex(p => p == this);
+                        if (thisIndex >= 0)
+                            this.parentAccount.Childrens.splice(thisIndex);
+                    }
+
+                    this.parentAccount.reloadGrid();
+                }
+
                 this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
                 this.sppcLoading.hide();
