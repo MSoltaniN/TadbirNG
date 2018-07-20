@@ -5,13 +5,14 @@ import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "ng2-translate";
 import { SppcLoadingService } from "../../../controls/sppcLoading/index";
 import { BaseComponent } from "../../../class/base.component";
-import { GridDataResult, GridComponent, ColumnComponent } from "@progress/kendo-angular-grid";
+import { GridDataResult, GridComponent, ColumnComponent, CheckboxColumnComponent } from "@progress/kendo-angular-grid";
 import { DefaultComponent } from "../../../class/default.component";
 import { ListFormViewConfig } from "../../../model/listFormViewConfig";
 import { ColumnViewDeviceConfig } from "../../../model/columnViewDeviceConfig";
 import { ColumnViewConfig } from "../../../model/columnViewConfig";
 import { ColumnViewDeviceConfigInfo, ColumnViewConfigInfo, SettingService } from "../../../service/index";
 import { ListFormViewConfigInfo, SettingViewModelInfo } from "../../../service/settings.service";
+import { CommandColumnComponent } from "@progress/kendo-angular-grid/dist/es2015/columns/command-column.component";
 
 
 export function getLayoutModule(layout: Layout) {
@@ -48,9 +49,11 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
     ngOnDestroy() {
         
         //#region Save View Setting
+        var viewId: number = parseInt(this.grid.wrapper.nativeElement.id);
+        var currentSetting = this.settingService.getSettingByViewId(viewId)
 
-        if (this.rowData)
-            this.settingService.putUserSettings(this.UserId, this.rowData).subscribe(response => {
+        if (currentSetting)
+            this.settingService.putUserSettings(this.UserId, currentSetting).subscribe(response => {
                 
         }, (error => {
            
@@ -65,64 +68,14 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
         this.loadSetting();        
     }
 
-    /** براساس سایز تنظیمات را از انتیتی ارسالی به تابع برمیگرداند */
-    private getCurrentColumnViewConfig(columnViewDevice: ColumnViewConfig): ColumnViewDeviceConfig {
-
-        var currentColumnViewDevice: ColumnViewDeviceConfig = columnViewDevice.medium;
-        switch (this.media) {
-            case "xs":                
-                currentColumnViewDevice = columnViewDevice.extraSmall;
-                break;
-            case "sm":
-                currentColumnViewDevice = columnViewDevice.small;
-                break;
-            case "md":
-                currentColumnViewDevice = columnViewDevice.medium;
-                break;
-            case "l":
-                currentColumnViewDevice = columnViewDevice.large;
-                break;
-            case "el":
-                currentColumnViewDevice = columnViewDevice.extraLarge;
-                break;
-        }
-
-        
-        return currentColumnViewDevice;
-    }
-
-
-    /** براساس سایز ، تنظیمات را مقدار دهی و به تابع برمیگرداند */
-    private setCurrentColumnViewConfig(columnViewDevice: ColumnViewConfig, value: ColumnViewDeviceConfig): ColumnViewConfig {
-
-        var currentColumnViewDevice: ColumnViewConfig = columnViewDevice;
-        switch (this.media) {
-            case "xs":
-                columnViewDevice.extraSmall = value;
-                break;
-            case "sm":
-                columnViewDevice.small = value;
-                break;
-            case "md":
-                columnViewDevice.medium = value;
-                break;
-            case "l":
-                columnViewDevice.large = value;
-                break;
-            case "el":
-                columnViewDevice.extraLarge = value;
-                break;
-        }
-
-        return columnViewDevice;
-    }
+   
 
     private fillViewModel(rowData: ListFormViewConfig): Array<SettingViewModelInfo> {
         var rows: Array<SettingViewModelInfo> = new Array<SettingViewModelInfo>();
 
         rowData.columnViews.forEach((item) => {
             var model = new SettingViewModelInfo();
-            var setting = this.getCurrentColumnViewConfig(item);
+            var setting = this.settingService.getCurrentColumnViewConfig(item);
             if (setting && setting.index) {
                 
                 model.designIndex = setting.designIndex;
@@ -163,7 +116,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
         var viewId: number = parseInt(this.grid.wrapper.nativeElement.id);
 
-        var currentSetting = this.getSettingByViewId(viewId);
+        var currentSetting = this.settingService.getSettingByViewId(viewId);
         
         if (currentSetting) {
             this.rowData = currentSetting;
@@ -176,6 +129,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
         //#region change column in runtime and fill ro data from desgined grid
         this.grid.leafColumns.toArray().forEach((item, index, arr) => {
 
+           
             if (item instanceof ColumnComponent) {
 
                 if (this.rowData) {
@@ -186,12 +140,12 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
                     var columnViewDeviceConfig: ColumnViewDeviceConfig | undefined = undefined;
                     if (arrayItem)
-                        columnViewDeviceConfig = this.getCurrentColumnViewConfig(arrayItem);
+                        columnViewDeviceConfig = this.settingService.getCurrentColumnViewConfig(arrayItem);
 
                     if (columnViewDeviceConfig && columnViewDeviceConfig.index) {
                         //var row: ColumnViewDeviceConfig = { index: arrayIndex, designIndex: item.orderIndex, visibilty: ColumnVisibility.AlwaysVisible };                        
                         item.hidden = !this.checkVisibility(columnViewDeviceConfig.visibility);
-                        this.rowData.columnViews[arrayIndex] = this.setCurrentColumnViewConfig(this.rowData.columnViews[arrayIndex], columnViewDeviceConfig);                                              
+                        this.rowData.columnViews[arrayIndex] = this.settingService.setCurrentColumnViewConfig(this.rowData.columnViews[arrayIndex], columnViewDeviceConfig);                                              
 
                     }
                     else {
@@ -210,7 +164,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
                         if (existIndex > -1)
                             colView = this.rowData.columnViews[existIndex];
 
-                        colView = this.setCurrentColumnViewConfig(colView, row);                        
+                        colView = this.settingService.setCurrentColumnViewConfig(colView, row);                        
                         
                         if (existIndex > -1)
                             this.rowData.columnViews[existIndex] = colView;
@@ -262,7 +216,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
                         var arrayItem: ColumnViewDeviceConfig | null = null;
                         if (arrayIndex >= 0)
-                            arrayItem = this.getCurrentColumnViewConfig(this.rowData.columnViews[arrayIndex]);
+                            arrayItem = this.settingService.getCurrentColumnViewConfig(this.rowData.columnViews[arrayIndex]);
 
                         
 
@@ -270,7 +224,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
                             arrayItem.visibility = hidden == true ? ColumnVisibility.Hidden : ColumnVisibility.Visible;
                             
-                            var columnViewConfig = this.setCurrentColumnViewConfig(this.rowData.columnViews[arrayIndex], arrayItem);
+                            var columnViewConfig = this.settingService.setCurrentColumnViewConfig(this.rowData.columnViews[arrayIndex], arrayItem);
                             
                             this.rowData.columnViews[arrayIndex] = columnViewConfig;
                         }
@@ -281,7 +235,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
         
 
         if (this.rowData) {
-            this.setSettingByViewId(viewId, this.rowData);
+            this.settingService.setSettingByViewId(viewId, this.rowData);
             this.gridRowData = this.changeLastColumns(this.fillViewModel(this.rowData));
         }
 
@@ -317,41 +271,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
         this.show = false;
     }
 
-    getSettingByViewId(viewId: number): ListFormViewConfig | null {
-
-        var settingsJson = localStorage.getItem(SessionKeys.Setting + this.UserId);
-        if (settingsJson) {
-            var settings: Array<ListFormViewConfig> = JSON.parse(settingsJson);
-
-            var findIndex = settings.findIndex(s => s.viewId == viewId);
-            if (findIndex > -1)
-                return settings[findIndex];
-        }
-
-        return null;
-    }
-
-    setSettingByViewId(viewId: number, currentSetting: ListFormViewConfig) {
-
-        var storageId: string = this.grid.wrapper.nativeElement.id + this.defaultComponent.UserId;
-
-        var settingsJson = localStorage.getItem(SessionKeys.Setting + this.UserId);
-        if (settingsJson) {
-            var settings: Array<ListFormViewConfig> = JSON.parse(settingsJson);
-
-            if (!settings) settings = new Array<ListFormViewConfig>();
-
-            var findIndex = settings.findIndex(s => s.viewId == viewId);
-            if (findIndex > -1)
-                settings[findIndex] = currentSetting;
-            else
-                settings.push(currentSetting);
-
-            var jsonSetting = JSON.stringify(settings);
-
-            localStorage.setItem(SessionKeys.Setting + this.UserId, jsonSetting);
-        }        
-    }
+    
 
 }
 

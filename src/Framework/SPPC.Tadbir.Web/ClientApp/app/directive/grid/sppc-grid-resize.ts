@@ -3,6 +3,10 @@ import { Directive, Host, Input, HostListener, ElementRef } from "@angular/core"
 import { GridComponent, ColumnComponent, CheckboxColumnComponent, ColumnBase } from "@progress/kendo-angular-grid";
 import { TranslateService } from "ng2-translate";
 import { DefaultComponent } from "../../class/default.component";
+import { SettingService } from "../../service/settings.service";
+import { ListFormViewConfigInfo } from "../../service/index";
+import { ColumnViewDeviceConfig } from "../../model/columnViewDeviceConfig";
+import { ColumnViewConfig } from "../../model/columnViewConfig";
 
 
 
@@ -12,7 +16,8 @@ import { DefaultComponent } from "../../class/default.component";
 })
 
 export class SppcGridResize {
-    constructor(@Host() private grid: GridComponent, private elRef: ElementRef, private translate: TranslateService, @Host() public defaultComponent: DefaultComponent) {
+    constructor( @Host() private grid: GridComponent, private elRef: ElementRef, public settingService: SettingService,
+        private translate: TranslateService, @Host() public defaultComponent: DefaultComponent) {
         
     }
 
@@ -35,26 +40,36 @@ export class SppcGridResize {
 
     /** تغییر اندازه ستون ها در زمان لود گرید */
     private resizeOnLoad() {
-        var id: string = this.elRef.nativeElement.id + "_size";
-        var resizeIndexList: { [id: number]: number; } = {}
+        
+        var viewId: number = parseInt(this.elRef.nativeElement.id) //+ this.defaultComponent.UserId + "_size";
+        var currentSetting = this.settingService.getSettingByViewId(viewId);
+        
+        this.grid.leafColumns.toArray().forEach((item, index, arr) => {
 
-        var resizeJson: string | null = localStorage.getItem(id);;
-        if (resizeJson) {
-            resizeIndexList = JSON.parse(resizeJson != null ? resizeJson.toString() : "")
+            if (currentSetting) {
 
-            var all = this.grid.columnList.toArray();
-            if (resizeIndexList) {
-                this.grid.leafColumns.toArray().forEach((item, index, arr) => {
+                if (item instanceof ColumnComponent) {
 
-                    var indexId = all.findIndex(o => o == item);
 
-                    if (resizeIndexList[indexId])
-                        item.width = resizeIndexList[indexId];
+                    var arrayIndex = currentSetting.columnViews.findIndex(p => p.name.toLowerCase() == (<ColumnComponent>item).field.toLowerCase())
+                    var arrayItem: ColumnViewConfig | null = null;
+                    if (arrayIndex >= 0)
+                        arrayItem = currentSetting.columnViews[arrayIndex];
 
-                });
+                    var columnViewDeviceConfig: ColumnViewDeviceConfig | undefined = undefined;
+                    if (arrayItem)
+                        columnViewDeviceConfig = this.settingService.getCurrentColumnViewConfig(arrayItem);
 
+                    if (columnViewDeviceConfig)
+                        if (columnViewDeviceConfig.width)
+                            item.width = columnViewDeviceConfig.width;
+                }
+                    
             }
-        }
+        });
+
+            
+        
     }
 
     /**
@@ -62,29 +77,49 @@ export class SppcGridResize {
      * @param event
      */
     private resizeEvent(event: any) {
-        var columnSizeList: { [id: number]: number; } = {}
-
+        
 
         var items = this.grid.leafColumns.toArray();
 
 
         var resizeValues: Array<number> = [];
-        var id: string = this.elRef.nativeElement.id + this.defaultComponent.UserId + "_size";
+        var viewId: number = parseInt(this.elRef.nativeElement.id) //+ this.defaultComponent.UserId + "_size";
 
         var newWidth = event.newWidth;
 
         var resizeColumnIndex = this.grid.columnList.toArray().findIndex(o => o == event[0].column);
 
-        var resizes = localStorage.getItem(id);
-        if (resizes)
-            columnSizeList = JSON.parse(resizes);
+        //var resizes = localStorage.getItem(id);
+        //if (resizes)
+            //columnSizeList = JSON.parse(resizes);
 
+        var currentSetting = this.settingService.getSettingByViewId(viewId);
 
-        columnSizeList[resizeColumnIndex] = event[0].newWidth;
+        if (currentSetting) {
+            
+            
+           
+            var arrayIndex = currentSetting.columnViews.findIndex(p => p.name.toLowerCase() == event[0].column.field.toLowerCase())
+            var arrayItem: ColumnViewConfig | null = null;
+            if (arrayIndex >= 0)
+                arrayItem = currentSetting.columnViews[arrayIndex];
 
+            var columnViewDeviceConfig: ColumnViewDeviceConfig | undefined = undefined;
+            if (arrayItem)
+                columnViewDeviceConfig = this.settingService.getCurrentColumnViewConfig(arrayItem);
 
+            if (columnViewDeviceConfig && columnViewDeviceConfig.index) {
+                
+                columnViewDeviceConfig.width = event[0].newWidth;
+                currentSetting.columnViews[arrayIndex] = this.settingService.setCurrentColumnViewConfig(currentSetting.columnViews[arrayIndex], columnViewDeviceConfig);
 
-        localStorage.setItem(id, JSON.stringify(columnSizeList));
+            }
+
+            this.settingService.setSettingByViewId(viewId, currentSetting);
+            
+        }
+
+        
     }
 
     

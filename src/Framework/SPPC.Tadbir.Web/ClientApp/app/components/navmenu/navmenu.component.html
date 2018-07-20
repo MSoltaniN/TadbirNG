@@ -12,7 +12,7 @@
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse'>
             <ul class='nav navbar-nav'>
-                <li *ngFor="let cmd of menuList;" (click)="onMenuClick()">
+                <li *ngFor="let cmd of menuList;" class="parent" (click)="onMenuClick($event)">
                     <a aria-expanded="false" data-toggle="collapse" href="#div{{cmd.id}}" id="#a{{cmd.id}}">
                         <i class="fa" [ngClass]="{'fa-caret-left':this.currentlang === 'fa' , 'fa-caret-right': this.currentlang === 'en'}" aria-hidden="true"></i>
                         <span class="glyphicons glyphicons-record"></span><span class="menuitem nav-link">{{ cmd.title }}</span>
@@ -21,8 +21,8 @@
                         <ul class="nav navbar-nav">
                             <li [routerLinkActive]="['link-active']" *ngFor="let innerCmd of cmd.children;">
                                 <a *ngIf="innerCmd.routeUrl != null" routerLink="/{{innerCmd.routeUrl}}">
-                                    <span class="glyphicon glyphicon-{{innerCmd.iconName}}"></span><span class="menuitem nav-link"
-                                                                                                         data-toggle="collapse" data-target=".navbar-collapse.show">{{ innerCmd.title }}</span>
+                                    <span class="glyphicon glyphicon-{{innerCmd.iconName}}"></span>
+                                    <span class="menuitem nav-link child"  data-toggle="collapse" data-target=".navbar-collapse.show">{{ innerCmd.title }}</span>
                                 </a>
                             </li>
 
