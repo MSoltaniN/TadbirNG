@@ -7,10 +7,12 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Corporate;
@@ -801,6 +803,61 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات دسترسی به سطرهای اطلاعاتی را برای نقش مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی یکی از نقش های امنیتی موجود</param>
+        /// <returns>تنظیمات دسترسی به سطرهای اطلاعاتی</returns>
+        public async Task<RowPermissionsForRoleViewModel> GetRowAccessSettingsAsync(int roleId)
+        {
+            var rowSettings = new RowPermissionsForRoleViewModel() { Id = roleId };
+            var repository = _unitOfWork.GetAsyncRepository<ViewRowPermission>();
+            var settings = await repository
+                .GetByCriteriaAsync(perm => perm.Role.Id == roleId, perm => perm.Role, perm => perm.View);
+            Array.ForEach(
+                settings
+                    .Select(perm => _mapper.Map<ViewRowPermissionViewModel>(perm))
+                    .ToArray(),
+                perm => rowSettings.RowPermissions.Add(perm));
+
+            var viewRepository = _unitOfWork.GetAsyncRepository<Entity>();
+            var viewIds = await viewRepository
+                .GetEntityQuery()
+                .Select(view => view.Id)
+                .ToArrayAsync();
+            Array.ForEach(
+                viewIds
+                    .Except(settings.Select(perm => perm.View.Id))
+                    .ToArray(),
+                id =>
+                {
+                    var permission = new ViewRowPermissionViewModel() { RoleId = roleId, ViewId = id };
+                    rowSettings.RowPermissions.Add(permission);
+                });
+
+            return rowSettings;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت تنظیمات دسترسی به سطرهای اطلاعاتی برای یک نقش را ذخیره می کند
+        /// </summary>
+        /// <param name="permissions">تنظیمات دسترسی به سطرهای اطلاعاتی برای یک نقش</param>
+        public async Task SaveRowAccessSettingsAsync(RowPermissionsForRoleViewModel permissions)
+        {
+            Verify.ArgumentNotNull(permissions, "permissions");
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var role = await repository.GetByIDAsync(permissions.Id);
+            if (role != null)
+            {
+                foreach (var permission in permissions.RowPermissions)
+                {
+                    await SaveViewRolePermissionAsync(permission);
+                }
+
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
         #endregion
 
         private static void RemoveDisabledPermissions(Role existing, RoleFullViewModel role)
@@ -959,6 +1016,17 @@ namespace SPPC.Tadbir.Persistence
         {
             return left.Count() == right.Count()
                 && left.All(value => right.Contains(value));
+        }
+
+        private static void UpdateExistingRowPermission(ViewRowPermission existing, ViewRowPermissionViewModel permission)
+        {
+            existing.AccessMode = permission.AccessMode;
+            existing.Value = permission.Value;
+            existing.Value2 = permission.Value2;
+            existing.TextValue = permission.TextValue;
+            existing.Items = permission.Items.Count > 0
+                ? String.Join(",", permission.Items)
+                : null;
         }
 
         private void UpdateExistingUser(User existing, UserViewModel user)
@@ -1123,6 +1191,35 @@ namespace SPPC.Tadbir.Persistence
                     .ThenInclude(ur => ur.Role)
                         .ThenInclude(r => r.RolePermissions);
             return query;
+        }
+
+        private async Task SaveViewRolePermissionAsync(ViewRowPermissionViewModel rowPermission)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<ViewRowPermission>();
+            if (rowPermission.Id == 0)
+            {
+                if (rowPermission.AccessMode != RowAccessOptions.Default)
+                {
+                    var newRowPermission = _mapper.Map<ViewRowPermission>(rowPermission);
+                    repository.Insert(newRowPermission);
+                }
+            }
+            else
+            {
+                var existing = await repository.GetByIDAsync(rowPermission.Id);
+                if (existing != null)
+                {
+                    if (rowPermission.AccessMode == RowAccessOptions.Default)
+                    {
+                        repository.Delete(existing);
+                    }
+                    else
+                    {
+                        UpdateExistingRowPermission(existing, rowPermission);
+                        repository.Update(existing);
+                    }
+                }
+            }
         }
 
         private IUnitOfWork _unitOfWork;

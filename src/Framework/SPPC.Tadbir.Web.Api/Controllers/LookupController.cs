@@ -1,19 +1,23 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.Web.Api.Filters;
+using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
     public partial class LookupController : Controller
     {
-        public LookupController(ILookupRepository repository)
+        public LookupController(ILookupRepository repository, IStringLocalizer<AppStrings> strings)
         {
             _repository = repository;
+            _strings = strings;
         }
 
         #region Finance Subsystem API
@@ -89,6 +93,36 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        private ILookupRepository _repository;
+        #region Security Subsystem API
+
+        // GET: api/lookup/roles
+        [Route(LookupApi.RolesUrl)]
+        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
+        public async Task<IActionResult> GetRolesLookupAsync()
+        {
+            var rolesLookup = await _repository.GetRolesAsync();
+            return Json(rolesLookup);
+        }
+
+        #endregion
+
+        #region Metadata Subsystem API
+
+        // GET: api/lookup/views
+        [Route(LookupApi.EntityViewsUrl)]
+        public async Task<IActionResult> GetEntityViewsLookupAsync()
+        {
+            var viewsLookup = await _repository.GetEntityViewsAsync();
+            Array.ForEach(viewsLookup.ToArray(), kv => kv.Value = _strings[kv.Value]);
+            viewsLookup = viewsLookup
+                .OrderBy(kv => kv.Value)
+                .ToList();
+            return Json(viewsLookup);
+        }
+
+        #endregion
+
+        private readonly ILookupRepository _repository;
+        private readonly IStringLocalizer<AppStrings> _strings;
     }
 }

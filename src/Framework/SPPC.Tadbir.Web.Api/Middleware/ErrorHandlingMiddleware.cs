@@ -51,7 +51,7 @@ namespace SPPC.Tadbir.Web.Api.Middleware
         {
             return new string[]
                 {
-                    "TypeMap", "TargetSite"
+                    "TypeMap", "TargetSite", "ChangeTracker", "ModelBuilder"
                 };
         }
 

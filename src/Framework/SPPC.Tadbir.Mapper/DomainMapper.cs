@@ -114,6 +114,9 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Role, RelatedItemsViewModel>()
                 .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
             mapperConfig.CreateMap<Role, RelatedItemViewModel>();
+            mapperConfig.CreateMap<Role, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
 
             mapperConfig.CreateMap<Permission, PermissionViewModel>()
                 .ForMember(dest => dest.IsEnabled, opts => opts.UseValue(true));
@@ -122,6 +125,24 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Permission, PermissionBriefViewModel>()
                 .ForMember(dest => dest.EntityName, opts => opts.MapFrom(src => src.Group.EntityName))
                 .ForMember(dest => dest.Flags, opts => opts.MapFrom(src => src.Flag));
+
+            mapperConfig.CreateMap<ViewRowPermission, ViewRowPermissionViewModel>()
+                .ForMember(
+                    dest => dest.Items,
+                    opts => opts.MapFrom(src => !String.IsNullOrEmpty(src.Items)
+                        ? src.Items
+                            .Split(',')
+                            .Select(item => Int32.Parse(item.Trim()))
+                            .ToList()
+                        : new List<int>()));
+            mapperConfig.CreateMap<ViewRowPermissionViewModel, ViewRowPermission>()
+                .ForMember(
+                    dest => dest.Items,
+                    opts => opts.MapFrom(src => src.Items.Count > 0
+                        ? String.Join(",", src.Items)
+                        : null))
+                .AfterMap((viewModel, model) => model.Role.Id = viewModel.RoleId)
+                .AfterMap((viewModel, model) => model.View.Id = viewModel.ViewId);
         }
 
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)
@@ -407,6 +428,9 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Property, PropertyViewModel>();
             mapperConfig.CreateMap<Command, CommandViewModel>()
                 .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));
+            mapperConfig.CreateMap<Entity, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -217,6 +218,32 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             await _repository.SaveRoleFiscalPeriodsAsync(roleFiscalPeriods);
+            return Ok();
+        }
+
+        // GET: api/roles/{roleId:min(1)}/rowaccess
+        [Route(RoleApi.RowAccessSettingsUrl)]
+        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.View)]
+        public async Task<IActionResult> GetRowAccessSettingsForRoleAsync(int roleId)
+        {
+            var settings = await _repository.GetRowAccessSettingsAsync(roleId);
+            return Json(settings);
+        }
+
+        // PUT: api/roles/{roleId:min(1)}/rowaccess
+        [HttpPut]
+        [Route(RoleApi.RowAccessSettingsUrl)]
+        [AuthorizeRequest(SecureEntity.Role, (int)RolePermissions.Edit)]
+        public async Task<IActionResult> PutModifiedRowAccessSettingsForRoleAsync(
+            int roleId, [FromBody] RowPermissionsForRoleViewModel permissions)
+        {
+            var result = BasicValidationResult(permissions, roleId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.SaveRowAccessSettingsAsync(permissions);
             return Ok();
         }
 

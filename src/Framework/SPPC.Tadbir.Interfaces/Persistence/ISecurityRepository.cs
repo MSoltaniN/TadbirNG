@@ -227,6 +227,19 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userRoles">اطلاعات نمایشی نقش ها</param>
         Task SaveUserRolesAsync(RelatedItemsViewModel userRoles);
 
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات دسترسی به سطرهای اطلاعاتی را برای نقش مشخص شده خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی یکی از نقش های امنیتی موجود</param>
+        /// <returns>تنظیمات دسترسی به سطرهای اطلاعاتی</returns>
+        Task<RowPermissionsForRoleViewModel> GetRowAccessSettingsAsync(int roleId);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین وضعیت تنظیمات دسترسی به سطرهای اطلاعاتی برای یک نقش را ذخیره می کند
+        /// </summary>
+        /// <param name="permissions">تنظیمات دسترسی به سطرهای اطلاعاتی برای یک نقش</param>
+        Task SaveRowAccessSettingsAsync(RowPermissionsForRoleViewModel permissions);
+
         #endregion
     }
 }

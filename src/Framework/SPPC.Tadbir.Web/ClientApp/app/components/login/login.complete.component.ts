@@ -136,7 +136,10 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         var isValidate: boolean = true;
 
         if (this.companyId == '') {
+            this.showMessage(this.getText("AllValidations.Login.BranchIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
+            this.showMessage(this.getText("AllValidations.Login.FiscalPeriodIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
             this.showMessage(this.getText("AllValidations.Login.CompanyIsRequired"), MessageType.Info, '', MessagePosition.TopCenter);
+                       
             isValidate = false;
             return isValidate;
         }

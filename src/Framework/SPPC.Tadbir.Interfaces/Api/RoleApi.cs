@@ -91,5 +91,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for role metadata
         /// </summary>
         public const string RoleMetadataUrl = "roles/metadata";
+
+        /// <summary>
+        /// API client URL for row access settings configured for a role specified by unique identifier
+        /// </summary>
+        public const string RowAccessSettings = "roles/{0}/rowaccess";
+
+        /// <summary>
+        /// API server route URL for row access settings configured for a role specified by unique identifier
+        /// </summary>
+        public const string RowAccessSettingsUrl = "roles/{roleId:min(1)}/rowaccess";
     }
 }

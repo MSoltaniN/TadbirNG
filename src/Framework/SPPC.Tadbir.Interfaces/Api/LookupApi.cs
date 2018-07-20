@@ -31,5 +31,25 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for lookup collection of all business units
         /// </summary>
         public const string UnitsUrl = "lookup/units";
+
+        /// <summary>
+        /// API client URL for lookup collection of all security roles
+        /// </summary>
+        public const string Roles = "lookup/roles";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all security roles
+        /// </summary>
+        public const string RolesUrl = "lookup/roles";
+
+        /// <summary>
+        /// API client URL for lookup collection of all entity views
+        /// </summary>
+        public const string EntityViews = "lookup/views";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all entity views
+        /// </summary>
+        public const string EntityViewsUrl = "lookup/views";
     }
 }
