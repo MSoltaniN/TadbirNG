@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SPPC.Tadbir.Model.Corporate
 {
@@ -16,6 +15,10 @@ namespace SPPC.Tadbir.Model.Corporate
         /// </summary>
         public int? ParentId { get; set; }
 
+        /// <summary>
+        /// یک رشته متنی برای این آبجکت برمی گرداند
+        /// </summary>
+        /// <returns>رشته متنی برای این آبجکت</returns>
         public override string ToString()
         {
             return Name;

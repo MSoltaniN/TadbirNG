@@ -909,6 +909,12 @@
           <ColumnView name="Allow Filtering" visible="True" width="120" />
           <ValidationRule name="AllowFiltering_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
+        <Property name="Expression" type="String" isValidated="True" description="عبارت مورد نیاز برای دسترسی به ویژگی در عبارات فیلتر" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtExpression" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Expression" type="varchar(64)" nullable="True" />
+          <ColumnView name="Expression" visible="True" width="120" />
+          <ValidationRule name="Expression_Validation" required="False" minimum="" maximum="64" format="" type="Length" />
+        </Property>
         <Property name="Settings" type="String" isValidated="True" description="تنظیمات پیش فرض برای نمایش ویژگی به صورت یک ستون از نمای لیستی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtSettings" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Settings" type="nvarchar(1024)" nullable="True" />
