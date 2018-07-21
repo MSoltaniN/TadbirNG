@@ -15,5 +15,10 @@ namespace SPPC.Tadbir.Model.Corporate
         /// شناسه دیتابیسی شرکت والد در ساختار درختی
         /// </summary>
         public int? ParentId { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

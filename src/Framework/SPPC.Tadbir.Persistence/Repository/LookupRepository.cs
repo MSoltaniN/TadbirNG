@@ -129,7 +129,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var query = GetUserQuery(userId);
             var user = await query.SingleOrDefaultAsync();
-            var companies = new List<KeyValue>();
+            var companies = new List<Company>();
             if (user != null)
             {
                 Array.ForEach(
@@ -139,12 +139,13 @@ namespace SPPC.Tadbir.Persistence
                     role => companies.AddRange(
                         role.RoleBranches
                             .Select(rb => rb.Branch)
-                            .Select(br => br.Company)
-                            .Distinct(new EntityEqualityComparer())
-                            .Select(c => _mapper.Map<KeyValue>(c))));
+                            .Select(br => br.Company)));
             }
 
-            return companies;
+            return companies
+                .Distinct(new EntityEqualityComparer())
+                .Select(e => _mapper.Map<KeyValue>(e))
+                .ToList();
         }
 
         /// <summary>
