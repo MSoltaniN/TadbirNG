@@ -12,4 +12,5 @@ export interface Property {
      scriptType: string;
      storageType: string;
      minLength: number;
+     expression: string;
 }
