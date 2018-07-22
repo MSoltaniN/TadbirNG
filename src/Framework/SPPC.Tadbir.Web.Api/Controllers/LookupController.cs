@@ -58,6 +58,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(lookup);
         }
 
+        // GET: api/lookup/vouchers/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [Route(LookupApi.FiscalPeriodBranchVouchersUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)ProjectPermissions.View)]
+        public async Task<IActionResult> GetVouchersLookupAsync(int fpId, int branchId)
+        {
+            var lookup = await _repository.GetVouchersAsync(fpId, branchId);
+            return Json(lookup);
+        }
+
+        // GET: api/lookup/vouchers/lines/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [Route(LookupApi.FiscalPeriodBranchVoucherLinesUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)ProjectPermissions.View)]
+        public async Task<IActionResult> GetVoucherLinesLookupAsync(int fpId, int branchId)
+        {
+            var lookup = await _repository.GetVoucherLinesAsync(fpId, branchId);
+            return Json(lookup);
+        }
+
         // GET: api/lookup/currencies
         [Route(LookupApi.CurrenciesUrl)]
         [AuthorizeRequest(SecureEntity.Currency, (int)CurrencyPermissions.View)]

@@ -19,12 +19,6 @@ namespace SPPC.Tadbir.Api
             "lookup/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
 
         /// <summary>
-        /// API server route URL for lookup collection of all accounts in a fiscal period and a corporate branch
-        /// </summary>
-        public const string FiscalPeriodBranchAccountsSyncUrl =
-            "lookup/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync";
-
-        /// <summary>
         /// API client URL for lookup collection of all detail accounts in a fiscal period and a corporate branch
         /// </summary>
         public const string FiscalPeriodBranchDetailAccounts = "lookup/faccounts/fp/{0}/branch/{1}";
@@ -36,27 +30,15 @@ namespace SPPC.Tadbir.Api
             "lookup/faccounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
 
         /// <summary>
-        /// API server route URL for lookup collection of all detail accounts in a fiscal period and a corporate branch
-        /// </summary>
-        public const string FiscalPeriodBranchDetailAccountsSyncUrl =
-            "lookup/faccounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync";
-
-        /// <summary>
         /// API client URL for lookup collection of all cost centers in a fiscal period and a corporate branch
         /// </summary>
-        public const string FiscalPeriodBranchCostCenters = "lookup/costcenters/fp/{0}/branch/{1}";
+        public const string FiscalPeriodBranchCostCenters = "lookup/ccenters/fp/{0}/branch/{1}";
 
         /// <summary>
         /// API server route URL for lookup collection of all cost centers in a fiscal period and a corporate branch
         /// </summary>
         public const string FiscalPeriodBranchCostCentersUrl =
-            "lookup/costcenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
-
-        /// <summary>
-        /// API server route URL for lookup collection of all cost centers in a fiscal period and a corporate branch
-        /// </summary>
-        public const string FiscalPeriodBranchCostCentersSyncUrl =
-            "lookup/costcenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync";
+            "lookup/ccenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
 
         /// <summary>
         /// API client URL for lookup collection of all projects in a fiscal period and a corporate branch
@@ -70,10 +52,26 @@ namespace SPPC.Tadbir.Api
             "lookup/projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
 
         /// <summary>
-        /// API server route URL for lookup collection of all projects in a fiscal period and a corporate branch
+        /// API client URL for lookup collection of all vouchers in a fiscal period and a corporate branch
         /// </summary>
-        public const string FiscalPeriodBranchProjectsSyncUrl =
-            "lookup/projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync";
+        public const string FiscalPeriodBranchVouchers = "lookup/vouchers/fp/{0}/branch/{1}";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all vouchers in a fiscal period and a corporate branch
+        /// </summary>
+        public const string FiscalPeriodBranchVouchersUrl =
+            "lookup/vouchers/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+
+        /// <summary>
+        /// API client URL for lookup collection of all voucher lines in a fiscal period and a corporate branch
+        /// </summary>
+        public const string FiscalPeriodBranchVoucherLines = "lookup/vouchers/lines/fp/{0}/branch/{1}";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all voucher lines in a fiscal period and a corporate branch
+        /// </summary>
+        public const string FiscalPeriodBranchVoucherLinesUrl =
+            "lookup/vouchers/lines/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
 
         /// <summary>
         /// API client URL for all companies accessible to a user specified by identifier.
@@ -97,11 +95,6 @@ namespace SPPC.Tadbir.Api
             "lookup/fps/company/{companyId:min(1)}/user/{userId:min(1)}";
 
         /// <summary>
-        /// API server route URL for lookup collection of all fiscal periods of a company
-        /// </summary>
-        public const string CompanyFiscalPeriodsSyncUrl = "lookup/fps/company/{companyId:min(1)}/sync";
-
-        /// <summary>
         /// API client URL for lookup collection of all branches of a company
         /// </summary>
         public const string UserAccessibleCompanyBranches = "lookup/branches/company/{0}/user/{1}";
@@ -121,11 +114,6 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for lookup collection of all currencies
         /// </summary>
         public const string CurrenciesUrl = "lookup/currencies";
-
-        /// <summary>
-        /// API server route URL for lookup collection of all currencies
-        /// </summary>
-        public const string CurrenciesSyncUrl = "lookup/currencies/sync";
 
         #endregion
     }

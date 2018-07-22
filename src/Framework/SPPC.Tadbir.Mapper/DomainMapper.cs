@@ -225,6 +225,14 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.ProjectId = viewModel.FullAccount.ProjectId)
                 .AfterMap((viewModel, model) => model.CurrencyId = viewModel.CurrencyId ?? 0);
 
+            mapperConfig.CreateMap<Voucher, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Description));
+
+            mapperConfig.CreateMap<VoucherLine, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Description));
+
             mapperConfig.CreateMap<Currency, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
@@ -356,8 +364,7 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<DocumentAction, DocumentActionViewModel>()
                 .ForMember(
                     dest => dest.LineId,
-                    opts => opts.MapFrom(
-                        src => (src.LineId.HasValue) ? src.LineId.Value : 0));
+                    opts => opts.MapFrom(src => src.LineId ?? 0));
             mapperConfig.CreateMap<DocumentActionViewModel, Model.Core.DocumentAction>()
                 .ForMember(
                     dest => dest.LineId,

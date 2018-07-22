@@ -106,6 +106,42 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه اسناد مالی تعریف شده در دوره و شعبه مشخص شده</returns>
+        public async Task<IEnumerable<KeyValue>> GetVouchersAsync(int fpId, int branchId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Voucher>();
+            var vouchers = await repository
+                .GetByCriteriaAsync(voucher => voucher.FiscalPeriod.Id == fpId
+                    && voucher.Branch.Id == branchId);
+            return vouchers
+                .OrderBy(voucher => voucher.Date)
+                .Select(voucher => _mapper.Map<KeyValue>(voucher));
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آرتیکل های مالی تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <returns>مجموعه آرتیکل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
+        public async Task<IEnumerable<KeyValue>> GetVoucherLinesAsync(int fpId, int branchId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
+            var lines = await repository
+                .GetByCriteriaAsync(line => line.FiscalPeriod.Id == fpId
+                    && line.Branch.Id == branchId);
+            return lines
+                .OrderBy(line => line.Description)
+                .Select(line => _mapper.Map<KeyValue>(line));
+        }
+
+        /// <summary>
         /// به روش آسنکرون، ارزهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه ارز های تعریف شده</returns>
