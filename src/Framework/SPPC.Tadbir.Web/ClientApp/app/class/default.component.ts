@@ -316,12 +316,17 @@ export class DefaultComponent extends BaseComponent {
 
                     var metadata = this.getMeta(filter.filters[i].field);
                     var dataType = '';
-                    if (metadata != undefined)
+                    var field = filter.filters[i].field;
+
+                    if (metadata != undefined) {
                         dataType = metadata.dotNetType;
+                        if (metadata.expression)
+                            field = metadata.expression;
+                    }
 
                     var filterValue = filter.filters[i].value;
-
-                    filters.push(new Filter(filter.filters[i].field, filterValue, operator, dataType));
+                    
+                    filters.push(new Filter(field, filterValue, operator, dataType));
 
                 }
             }

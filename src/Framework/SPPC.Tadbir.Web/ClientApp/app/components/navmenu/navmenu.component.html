@@ -17,7 +17,7 @@
                         <i class="fa" [ngClass]="{'fa-caret-left':this.currentlang === 'fa' , 'fa-caret-right': this.currentlang === 'en'}" aria-hidden="true"></i>
                         <span class="glyphicons glyphicons-record"></span><span class="menuitem nav-link">{{ cmd.title }}</span>
                     </a>
-                    <div id="div{{cmd.id}}" class="collapse">
+                    <div id="div{{cmd.id}}" class="collapse" [ngClass]="{'in':this.expandedSubMenuId === cmd.id}">
                         <ul class="nav navbar-nav">
                             <li [routerLinkActive]="['link-active']" *ngFor="let innerCmd of cmd.children;">
                                 <a *ngIf="innerCmd.routeUrl != null" routerLink="/{{innerCmd.routeUrl}}">

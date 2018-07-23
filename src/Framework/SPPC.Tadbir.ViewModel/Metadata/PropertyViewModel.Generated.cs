@@ -33,6 +33,8 @@ namespace SPPC.Tadbir.ViewModel.Metadata
             Settings = String.Empty;
             AllowSorting = true;
             AllowFiltering = true;
+            Expression = String.Empty;
+
         }
 
         /// <summary>
