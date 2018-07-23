@@ -73,6 +73,7 @@ CREATE TABLE [Metadata].[Entity] (
     [Name]                   VARCHAR(64)      NOT NULL,
     [IsHierarchy]            BIT              CONSTRAINT [DF_Metadata_Entity_IsHierarchy] DEFAULT (0) NOT NULL,
     [IsCartableIntegrated]   BIT              CONSTRAINT [DF_Metadata_Entity_IsCartableIntegrated] DEFAULT (1) NOT NULL,
+    [FetchUrl]               NVARCHAR(512)    NULL,
     [rowguid]                UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Entity_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]           DATETIME         CONSTRAINT [DF_Metadata_Entity_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Metadata_Entity] PRIMARY KEY CLUSTERED ([EntityID] ASC)
@@ -83,6 +84,7 @@ CREATE TABLE [Metadata].[Property] (
     [PropertyID]       INT              IDENTITY (1, 1) NOT NULL,
     [EntityID]         INT              NOT NULL,
     [Name]             VARCHAR(64)      NOT NULL,
+    [Type]             VARCHAR(32)      NULL,
     [DotNetType]       VARCHAR(64)      NOT NULL,
     [StorageType]      VARCHAR(32)      NOT NULL,
     [ScriptType]       VARCHAR(32)      NOT NULL,
@@ -1133,8 +1135,8 @@ INSERT [Metadata].[Property] ([PropertyID], [EntityID], [Name], [DotNetType], [S
 INSERT [Metadata].[Property] ([PropertyID], [EntityID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (10, 2, N'Description', N'System.String', N'nvarchar', N'string', 512, 0, 0, 1, 1, 1, NULL)
 INSERT [Metadata].[Property] ([PropertyID], [EntityID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (11, 3, N'Id', N'System.Int32', N'int', N'number', 0, 0, 0, 0, 1, 1, N'{"name":"Id","large":{"width":0,"index":-1,"designIndex":0,"visibility":"AlwaysHidden"},"medium":{"width":0,"index":-1,"designIndex":0,"visibility":"AlwaysHidden"},"small":{"width":0,"index":-1,"designIndex":0,"visibility":"AlwaysHidden"},"extraSmall":{"width":0,"index":-1,"designIndex":0,"visibility":"AlwaysHidden"}}')
 INSERT [Metadata].[Property] ([PropertyID], [EntityID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (12, 3, N'Description', N'System.String', N'nvarchar', N'string', 512, 0, 0, 1, 1, 1, N'{"name":"Description","large":{"width":null,"index":0,"designIndex":0,"visibility":"AlwaysVisible"},"medium":{"width":null,"index":0,"designIndex":0,"visibility":"AlwaysVisible"},"small":{"width":null,"index":0,"designIndex":0,"visibility":"AlwaysVisible"},"extraSmall":{"width":null,"index":0,"designIndex":0,"visibility":"AlwaysVisible"}}')
-INSERT [Metadata].[Property] ([PropertyID], [EntityID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (13, 3, N'Debit', N'System.Decimal', N'money', N'number', 0, 0, 0, 0, 1, 1, NULL)
-INSERT [Metadata].[Property] ([PropertyID], [EntityID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (14, 3, N'Credit', N'System.Decimal', N'money', N'number', 0, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Property] ([PropertyID], [EntityID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (13, 3, N'Debit', N'Money', N'System.Decimal', N'money', N'number', 0, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Property] ([PropertyID], [EntityID], [Name], [Type], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (14, 3, N'Credit', N'Money', N'System.Decimal', N'money', N'number', 0, 0, 0, 0, 1, 1, NULL)
 INSERT [Metadata].[Property] ([PropertyID], [EntityID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (15, 3, N'CurrencyId', N'System.Int32', N'int', N'number', 0, 0, 0, 0, 1, 1, NULL)
 INSERT [Metadata].[Property] ([PropertyID], [EntityID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (16, 3, N'FullAccount', N'System.Object', N'(n/a)', N'object', 0, 0, 0, 0, 1, 1, NULL)
 INSERT [Metadata].[Property] ([PropertyID], [EntityID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (17, 3, N'FullAccount.AccountId', N'System.Int32', N'int', N'number', 0, 0, 0, 0, 1, 1, NULL)

@@ -10,18 +10,19 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات سرفصل های حسابداری را تعریف می کند.
     /// </summary>
-    public interface IAccountRepository
+    public interface IAccountRepository : ISecureRepository
     {
         /// <summary>
         /// به روش آسنکرون، کلیه حساب هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش امنیتی برای اعمال محدودیت سطرهای اطلاعاتی</param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         Task<IList<AccountViewModel>> GetAccountsAsync(
-            int fpId, int branchId, GridOptions gridOptions = null);
+            int roleId, int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، حساب با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
@@ -69,7 +70,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null);
+        Task<int> GetCountAsync(int roleId, int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک حساب را در محل ذخیره ایجاد یا اصلاح می کند

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using SPPC.Framework.Domain;
@@ -107,6 +108,12 @@ namespace SPPC.Framework.Persistence
             GridOptions gridOptions,
             params Expression<Func<TEntity, object>>[] relatedProperties);
 
+        Task<IList<TEntity>> GetByCriteriaAsync(
+            IQueryable<TEntity> queryable,
+            Expression<Func<TEntity, bool>> criteria,
+            GridOptions gridOptions,
+            params Expression<Func<TEntity, object>>[] relatedProperties);
+
         /// <summary>
         /// Asynchronously retrieves record count for a subset of existing entities, as defined by
         /// the specified criteria.
@@ -116,6 +123,20 @@ namespace SPPC.Framework.Persistence
         /// </param>
         /// <returns></returns>
         Task<int> GetCountByCriteriaAsync(Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions);
+
+        /// <summary>
+        /// Asynchronously retrieves record count for a subset of existing entities, as defined by
+        /// any configured row access filters and the specified criteria.
+        /// </summary>
+        /// <param name="queryable">Entity collection to apply other criteria to</param>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <returns></returns>
+        Task<int> GetCountByCriteriaAsync(
+            IQueryable<TEntity> queryable,
+            Expression<Func<TEntity, bool>> criteria,
+            GridOptions gridOptions);
 
         /// <summary>
         /// Asynchronously retrieves a single entity instance with the specified row identifier

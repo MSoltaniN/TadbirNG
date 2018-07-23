@@ -46,6 +46,11 @@ namespace SPPC.Tadbir.Model.Metadata
         public virtual string Name { get; set; }
 
         /// <summary>
+        /// نوع کاربردی ویژگی در برنامه مانند مقدار، مبلغ یا رفرنس
+        /// </summary>
+        public virtual string Type { get; set; }
+
+        /// <summary>
         /// نوع داده ای مورد استفاده در دات نت
         /// </summary>
         public virtual string DotNetType { get; set; }

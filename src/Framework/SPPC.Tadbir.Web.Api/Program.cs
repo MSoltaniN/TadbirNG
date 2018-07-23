@@ -15,9 +15,9 @@ namespace SPPC.Tadbir.Web.Api
         {
             var builder = new FilterExpressionBuilder();
             var gridOptions = new GridOptions() { Paging = new GridPaging() { PageIndex = 1, PageSize = 5 } };
-            var nameLike = new GridFilter() { FieldName = "Person.FirstName", FieldTypeName = "System.String", Operator = GridFilterOperator.Contains, Value = "تست" };
+            var codeLike = new GridFilter() { FieldName = "FullCode", FieldTypeName = "System.String", Operator = GridFilterOperator.Contains, Value = "10" };
             gridOptions.Filter = builder
-                .New(nameLike)
+                .New(codeLike)
                 .Build();
             gridOptions.SortColumns.Add(new GridOrderBy() { FieldName = "Id", Direction = "DESC" });
             var json = JsonHelper.From(gridOptions, false);

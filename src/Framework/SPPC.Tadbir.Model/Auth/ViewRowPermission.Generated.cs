@@ -12,6 +12,7 @@
 
 using System;
 using SPPC.Framework.Domain;
+using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Model.Metadata;
 
 namespace SPPC.Tadbir.Model.Auth
@@ -26,6 +27,7 @@ namespace SPPC.Tadbir.Model.Auth
         /// </summary>
         public ViewRowPermission()
         {
+            AccessMode = RowAccessOptions.Default;
             ModifiedDate = DateTime.Now;
             InitReferences();
         }

@@ -861,6 +861,12 @@
           <ColumnView name="Name" visible="True" width="120" />
           <ValidationRule name="Name_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
         </Property>
+        <Property name="Type" type="String" isValidated="True" description="نوع کاربردی ویژگی در برنامه مانند مقدار، مبلغ یا رفرنس" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtType" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Type" type="varchar(32)" nullable="True" />
+          <ColumnView name="Type" visible="True" width="120" />
+          <ValidationRule name="Type_Validation" required="False" minimum="" maximum="32" format="" type="Length" />
+        </Property>
         <Property name="DotNetType" type="String" isValidated="True" description="نوع داده ای مورد استفاده در دات نت" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDotNetType" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="DotNetType" type="varchar(64)" nullable="False" />
