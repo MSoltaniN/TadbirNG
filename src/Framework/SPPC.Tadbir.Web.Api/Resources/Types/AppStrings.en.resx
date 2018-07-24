@@ -334,7 +334,7 @@
     <value>business units</value>
   </data>
   <data name="Branches" xml:space="preserve">
-    <value>branches</value>
+    <value>Branches</value>
   </data>
   <data name="CreateEntity" xml:space="preserve">
     <value>Create {0}</value>
@@ -379,7 +379,7 @@
     <value>business unit</value>
   </data>
   <data name="Branch" xml:space="preserve">
-    <value>branch</value>
+    <value>Branch</value>
   </data>
   <data name="ConfirmEntity" xml:space="preserve">
     <value>Confirm {0}</value>
@@ -394,7 +394,7 @@
     <value>Export {0} to sales invoice</value>
   </data>
   <data name="FiscalPeriod" xml:space="preserve">
-    <value>fiscal period</value>
+    <value>Fiscal period</value>
   </data>
   <data name="Inventory" xml:space="preserve">
     <value>product inventory</value>
@@ -430,7 +430,7 @@
     <value>valued issue voucher</value>
   </data>
   <data name="FiscalPeriods" xml:space="preserve">
-    <value>fiscal periods</value>
+    <value>Fiscal periods</value>
   </data>
   <data name="ReqVoucher" xml:space="preserve">
     <value>requisition voucher</value>
@@ -485,5 +485,11 @@
   </data>
   <data name="NumberCurrencySettingsDescription" xml:space="preserve">
     <value>Available options for displaying numeric and currency values</value>
+  </data>
+  <data name="RowAccessSettings" xml:space="preserve">
+    <value>Row access</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
   </data>
 </root>
