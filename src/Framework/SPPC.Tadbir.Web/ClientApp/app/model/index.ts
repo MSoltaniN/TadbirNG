@@ -23,4 +23,6 @@ export * from './accountItemBrief';
 export * from './accountItemRelations';
 export * from './relatedItems';
 export * from './relatedItem';
+export * from './rowPermissionsForRole';
+export * from './viewRowPermission';
 

@@ -7,7 +7,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Presentation;
 
 namespace SPPC.Framework.Persistence
@@ -158,6 +160,37 @@ namespace SPPC.Framework.Persistence
         }
 
         /// <summary>
+        /// Asynchronously retrieves complete information for a subset of existing entities, as defined by
+        /// the specified criteria, including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="queryable">A queryable to use as the main source for output records</param>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        public async Task<IList<TEntity>> GetByCriteriaAsync(
+            IQueryable<TEntity> queryable,
+            Expression<Func<TEntity, bool>> criteria,
+            GridOptions gridOptions,
+            params Expression<Func<TEntity, object>>[] relatedProperties)
+        {
+            queryable = queryable.Where(criteria);
+            foreach (var property in relatedProperties)
+            {
+                queryable.Include(property);
+            }
+
+            queryable = queryable.Apply(gridOptions);
+            return await queryable.ToListAsync();
+        }
+
+        /// <summary>
         /// Asynchronously retrieves record count for a subset of existing entities, as defined by
         /// the specified criteria.
         /// </summary>
@@ -169,6 +202,26 @@ namespace SPPC.Framework.Persistence
         {
             var query = GetCountByCriteriaQuery(criteria, gridOptions);
             return await query.CountAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously retrieves record count for a subset of existing entities, as defined by
+        /// any configured row access filters and the specified criteria.
+        /// </summary>
+        /// <param name="queryable">Entity collection to apply other criteria to</param>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <returns></returns>
+        public async Task<int> GetCountByCriteriaAsync(
+            IQueryable<TEntity> queryable,
+            Expression<Func<TEntity, bool>> criteria,
+            GridOptions gridOptions)
+        {
+            Verify.ArgumentNotNull(queryable, "queryable");
+            queryable = queryable.Where(criteria);
+            queryable = queryable.Apply(gridOptions);
+            return await queryable.CountAsync();
         }
 
         /// <summary>

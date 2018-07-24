@@ -69,7 +69,8 @@
     "Branch": "Branch",
     "Company": "Company",
     "AccountRelations": "Account Relations",
-    "Settings": "Settings"
+    "Settings": "Settings",
+    "ViewRowPermission": "Row Permission"
   },
   "Account": {
     "NewSubAccount": "New sub account",
@@ -113,6 +114,37 @@
     "Description": "Description",
     "TitleText": "Settings List",
     "DefaultBtn": "Default Settings"
+  },
+  "ViewRowPermission": {
+    "DdlPermissionItems": {
+      "Default": "Default",
+      "AllRecordsCreatedByUser": "All Records Created By User",
+      "SpecificRecords": "Specific Records",
+      "AllExceptSpecificRecords": "All Except Specific Records",
+      "SpecificReference": "Specific Reference",
+      "AllExceptSpecificReference": "All Except Specific Reference",
+      "MaxMoneyValue": "Max Money Value",
+      "MaxQuantityValue": "Max Quantity Value"
+    },
+    "Role": "Role",
+    "Entity": "Entity",
+    "Select": "Select",
+    "PremissionType": "Premission Type",
+    "SpecificRecords": "Records With Access",
+    "AllExceptSpecificRecords": "Records Without Access",
+    "SpecificReference": "Reference With Access",
+    "AllExceptSpecificReference": "Reference Without Access",
+    "MaxQuantityValue": "Max Quantity Value",
+    "MaxMoneyValue": "Max Money Value",
+    "MaxCurencyValue": "Max Curency Value",
+    "NoExistRecord": "Not Exist Record",
+    "SelectedRecords": "Selected Records",
+    "SelectAll": "Select All",
+    "DeleteAll": "Delete All",
+    "FormTitle": "Select Records '{0}'",
+    "ListTitle": "Records '{0}'",
+    "SelectEntity": "Select Entity",
+    "Entities": "Entities"
   },
   "VoucherLine": {
     "Debit": "Debit",

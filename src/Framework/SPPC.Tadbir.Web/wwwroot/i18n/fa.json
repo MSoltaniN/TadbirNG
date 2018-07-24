@@ -70,7 +70,8 @@
     "Branch": "شعبه",
     "Company": "شرکت",
     "AccountRelations": "ارتباطات حساب",
-    "Settings": "تنظیمات"
+    "Settings": "تنظیمات",
+    "ViewRowPermission": "دسترسی به سطرهای اطلاعاتی"
   },
   "Account": {
     "New": "حساب جدید",
@@ -114,6 +115,37 @@
     "Description": "توضیحات",
     "TitleText": "لیست تنظیمات",
     "DefaultBtn": "تنظیمات پیش فرض"
+  },
+  "ViewRowPermission": {
+    "DdlPermissionItems": {
+      "Default": "دسترسی یا عدم دسترسی با توجه به تنظیمات امنیتی (گزینه پیش فرض)",
+      "AllRecordsCreatedByUser": "دسترسی به تمام سطرهای ایجاد شده توسط کاربر",
+      "SpecificRecords": "دسترسی به سطرهای مشخص شده",
+      "AllExceptSpecificRecords": "دسترسی به تمام سطرها بجز سطرهای مشخص شده",
+      "SpecificReference": "دسترسی به سطرهای یک رفرنس",
+      "AllExceptSpecificReference": "دسترسی به تمام سطرها بجز سطرهای یک رفرنس",
+      "MaxMoneyValue": "دسترسی به سطرها تا سقف پولی یا ارزی تعیین شده",
+      "MaxQuantityValue": "دسترسی به سطرها تا سقف مقداری تعیین شده"
+    },
+    "Role": "نقش",
+    "Entity": "موجودیت",
+    "Select": "انتخاب",
+    "PremissionType": "نوع دسترسی",
+    "SpecificRecords": "سطرهای دارای دسترسی",
+    "AllExceptSpecificRecords": "سطرهای بدون دسترسی",
+    "SpecificReference": "رفرنس دارای دسترسی",
+    "AllExceptSpecificReference": "رفرنس های بدون دسترسی",
+    "MaxQuantityValue": "سقف مقداری",
+    "MaxMoneyValue": "سقف پولی",
+    "MaxCurencyValue": "سقف ارزی",
+    "NoExistRecord": "سطری وجود ندارد",
+    "SelectedRecords": "رکوردهای انتخاب شده",
+    "SelectAll": "انتخاب همه",
+    "DeleteAll": "حذف همه",
+    "FormTitle": "انتخاب رکوردهای '{0}'",
+    "ListTitle": "رکوردهای '{0}'",
+    "SelectEntity": "انتخاب موجودیت",
+    "Entities": "موجودیت ها"
   },
   "VoucherLine": {
     "Debit": "بدهکار",

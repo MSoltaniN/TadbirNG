@@ -53,6 +53,21 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای موجودیت با نام مشخص شده را از محل ذخیره خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="entityId">شناسه عددی موجودیت مورد نظر</param>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
+        public async Task<EntityViewModel> GetEntityMetadataByIdAsync(int entityId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Entity>();
+            var entityMetadata = await repository
+                .GetByCriteriaAsync(ent => ent.Id == entityId, ent => ent.Properties);
+            return entityMetadata
+                .Select(ent => _mapper.Map<EntityViewModel>(ent))
+                .FirstOrDefault();
+        }
+
+        /// <summary>
         /// اطلاعات نمایشی تمام دستوراتی که در بالاترین سطح ساختار درختی قرار دارند را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>

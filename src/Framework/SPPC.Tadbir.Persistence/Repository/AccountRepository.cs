@@ -17,18 +17,17 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات سرفصل های حسابداری را تعریف می کند.
     /// </summary>
-    public class AccountRepository : IAccountRepository
+    public class AccountRepository : SecureRepository, IAccountRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
+        /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         public AccountRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _metadataRepository = metadataRepository;
         }
 
@@ -36,22 +35,25 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کلیه حساب هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش امنیتی برای اعمال محدودیت سطرهای اطلاعاتی</param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<IList<AccountViewModel>> GetAccountsAsync(
-            int fpId, int branchId, GridOptions gridOptions = null)
+            int roleId, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            var query = repository.GetEntityQuery(null);
+            query = await ApplyRowFilterAsync(query, roleId);
             var accounts = await repository
-                .GetByCriteriaAsync(
+                .GetByCriteriaAsync(query,
                     acc => acc.FiscalPeriod.Id == fpId
                         && acc.Branch.Id == branchId,
                     gridOptions,
                     acc => acc.FiscalPeriod, acc => acc.Branch, acc => acc.Parent, acc => acc.Children);
             return accounts
-                .Select(item => _mapper.Map<AccountViewModel>(item))
+                .Select(item => Mapper.Map<AccountViewModel>(item))
                 .ToList();
         }
 
@@ -63,13 +65,13 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountViewModel> GetAccountAsync(int accountId)
         {
             AccountViewModel item = null;
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetByIDAsync(
                 accountId,
                 acc => acc.FiscalPeriod, acc => acc.Branch, acc => acc.Parent, acc => acc.Children);
             if (account != null)
             {
-                item = _mapper.Map<AccountViewModel>(account);
+                item = Mapper.Map<AccountViewModel>(account);
             }
 
             return item;
@@ -84,12 +86,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task<AccountFullViewModel> GetAccountDetailAsync(int accountId)
         {
             AccountFullViewModel item = null;
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var query = GetAccountDetailsQuery(repository, accountId);
             var account = await query.SingleOrDefaultAsync();
             if (account != null)
             {
-                item = _mapper.Map<AccountFullViewModel>(account);
+                item = Mapper.Map<AccountFullViewModel>(account);
             }
 
             return item;
@@ -103,11 +105,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetAccountChildrenAsync(int accountId)
         {
             var children = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
             if (account != null)
             {
-                children.AddRange(account.Children.Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc)));
+                children.AddRange(account.Children.Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc)));
             }
 
             return children;
@@ -132,11 +134,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<VoucherLineViewModel>> GetAccountArticlesAsync(
             int accountId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var query = GetArticleDetailsQuery(
                 repository, line => line.Account.Id == accountId, gridOptions);
             var list = await query
-                .Select(line => _mapper.Map<VoucherLineViewModel>(line))
+                .Select(line => Mapper.Map<VoucherLineViewModel>(line))
                 .ToListAsync();
             return list;
         }
@@ -145,15 +147,18 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش امنیتی برای اعمال محدودیت سطرهای اطلاعاتی</param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<int> GetCountAsync(int roleId, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            var query = repository.GetEntityQuery(null);
+            query = await ApplyRowFilterAsync(query, roleId);
             var count = await repository
-                .GetCountByCriteriaAsync(
+                .GetCountByCriteriaAsync(query,
                     acc => acc.FiscalPeriod.Id == fpId && acc.Branch.Id == branchId,
                     gridOptions);
             return count;
@@ -168,10 +173,10 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(account, "account");
             Account accountModel = default(Account);
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             if (account.Id == 0)
             {
-                accountModel = _mapper.Map<Account>(account);
+                accountModel = Mapper.Map<Account>(account);
                 repository.Insert(accountModel);
             }
             else
@@ -184,8 +189,8 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await _unitOfWork.CommitAsync();
-            return _mapper.Map<AccountViewModel>(accountModel);
+            await UnitOfWork.CommitAsync();
+            return Mapper.Map<AccountViewModel>(accountModel);
         }
 
         /// <summary>
@@ -194,7 +199,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="accountId">شناسه عددی حساب مورد نظر برای حذف</param>
         public async Task DeleteAccountAsync(int accountId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetByIDAsync(accountId);
             if (account != null)
             {
@@ -202,7 +207,7 @@ namespace SPPC.Tadbir.Persistence
                 account.Branch = null;
                 account.Parent = null;
                 repository.Delete(account);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -216,7 +221,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> IsDuplicateAccountAsync(AccountViewModel accountViewModel)
         {
             Verify.ArgumentNotNull(accountViewModel, "accountViewModel");
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var accounts = await repository
                 .GetByCriteriaAsync(
                     acc => acc.Id != accountViewModel.Id
@@ -234,7 +239,7 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار "نادرست" را برمی گرداند</returns>
         public async Task<bool> IsUsedAccountAsync(int accountId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var articles = await repository
                 .GetByCriteriaAsync(art => art.Account.Id == accountId);
             return (articles.Count != 0);
@@ -249,7 +254,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool?> HasChildrenAsync(int accountId)
         {
             bool? hasChildren = null;
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
             var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
             if (account != null)
             {
@@ -257,6 +262,13 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return hasChildren;
+        }
+
+        /// <inheritdoc/>
+        protected override int ViewId
+        {
+            // TODO: Remove this hard-coded value later
+            get { return 1; }
         }
 
         private static void UpdateExistingAccount(AccountViewModel accountViewModel, Account account)
@@ -303,8 +315,6 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private IUnitOfWork _unitOfWork;
-        private IDomainMapper _mapper;
         private IMetadataRepository _metadataRepository;
     }
 }

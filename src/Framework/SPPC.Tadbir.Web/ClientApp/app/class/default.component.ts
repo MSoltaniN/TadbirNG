@@ -206,7 +206,7 @@ export class DefaultComponent extends BaseComponent {
                     return result;
 
                 }).subscribe(res1 => {
-
+                    
                     this.properties[this.metaDataName] = res1.properties;
 
                     localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))

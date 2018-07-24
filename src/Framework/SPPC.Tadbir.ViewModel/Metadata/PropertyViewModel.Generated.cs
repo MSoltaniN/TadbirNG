@@ -50,6 +50,12 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         public string Name { get; set; }
 
         /// <summary>
+        /// نوع کاربردی ویژگی در برنامه مانند مقدار، مبلغ یا رفرنس
+        /// </summary>
+        [StringLength(32, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public virtual string Type { get; set; }
+
+        /// <summary>
         /// نوع داده ای مورد استفاده در دات نت
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]

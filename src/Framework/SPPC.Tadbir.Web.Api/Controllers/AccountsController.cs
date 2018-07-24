@@ -35,9 +35,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAccountsAsync(int fpId, int branchId)
         {
-            int itemCount = await _repository.GetCountAsync(fpId, branchId, GridOptions);
+            int roleId = SecurityContext.User.Roles.FirstOrDefault();
+            int itemCount = await _repository.GetCountAsync(roleId, fpId, branchId, GridOptions);
             SetItemCount(itemCount);
-            var accounts = await _repository.GetAccountsAsync(fpId, branchId, GridOptions);
+            var accounts = await _repository.GetAccountsAsync(roleId, fpId, branchId, GridOptions);
             return Json(accounts);
         }
 
@@ -84,15 +85,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var articles = await _repository.GetAccountArticlesAsync(accountId, GridOptions);
             return JsonReadResult(articles);
-        }
-
-        // GET: api/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}/count
-        [Route(AccountApi.FiscalPeriodBranchItemCountUrl)]
-        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetItemCountAsync(int fpId, int branchId)
-        {
-            int count = await _repository.GetCountAsync(fpId, branchId, GridOptions);
-            return Json(count);
         }
 
         // POST: api/accounts
