@@ -28,6 +28,12 @@
     "User": "کاربر جاری",
     "Branch": "شعبه"
   },
+  "Exception":
+  {
+    "ErrorCode": "کد خطا",
+    "ErrorMsg": "جزئیات خطا",
+    "ErrorTitle" :  "خطا"
+  },
   "Messages": {
     "Inserted": "{0} با موفقیت ثبت شد",
     "Updated": "{0} با موفقیت ویرایش شد",

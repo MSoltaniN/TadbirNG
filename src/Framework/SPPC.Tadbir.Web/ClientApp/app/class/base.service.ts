@@ -6,13 +6,72 @@ import { GridOrderBy } from "./grid.orderby";
 import { String } from '../class/source';
 import { Observable } from "rxjs/Observable";
 import { FilterExpression } from "./filterExpression";
+import { ToastrService } from "ngx-toastr";
+import { TranslateService } from "ng2-translate";
+import { SppcLoadingService } from "../controls/sppcLoading/index";
+import { ReflectiveInjector, Injector, Injectable, ErrorHandler } from '@angular/core';
+import { HttpErrorResponse } from "@angular/common/http";
+
+
+@Injectable()
+export class ErrorsHandler implements ErrorHandler {
+    constructor(
+        // Because the ErrorHandler is created before the providers, we’ll have to use the Injector to get them.
+        private injector: Injector,
+    ) { }
+    handleError(error: Error | any) {
+
+        const notificationService = this.injector.get(ToastrService);
+        const translateService = this.injector.get(TranslateService);
+        const sppcLoadingService = this.injector.get(SppcLoadingService);
+
+        if (error._body) {
+            var errorException = JSON.parse(error._body);
+            var errCode = errorException.errorDetail.errorCode;
+            var errMessage = errorException.message;
+
+            var errCodeLabel = '';
+            var errMsgLabel = '';
+            var errTitle = '';
+
+            translateService.get('Exception.ErrorCode').subscribe((msg: string) => {
+                errCodeLabel = msg;
+            });
+
+            translateService.get('Exception.ErrorMessage').subscribe((msg: string) => {
+                errMsgLabel = msg;
+            });
+
+            translateService.get('Exception.Error').subscribe((msg: string) => {
+                errTitle = msg;
+            });
+
+
+            var message = '<strong>' + errCodeLabel + ':<strong>' + '</br>' + errCode + '</br>';
+            message = message + '<strong>' + errMsgLabel + ':<strong>' + '</br>' + errMessage + '</br>';
+
+            var posCss = 'toast-top-center'
+
+            sppcLoadingService.hide();
+            notificationService.error(message, errTitle,{ positionClass: posCss });
+
+            return;
+        }
+        // Log the error anyway
+        console.error('It happens: ', error);
+    }
+
+}
 
 export class BaseService extends EnviromentComponent {
 
     public headers: Headers | undefined | null;
     public options: RequestOptions | undefined;
 
-    constructor(public http: Http) {
+
+
+    
+     constructor(public http: Http) {
         super();
 
         this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
@@ -27,7 +86,8 @@ export class BaseService extends EnviromentComponent {
 
         this.options = new RequestOptions({ headers: this.headers });
 
-
+        
+        
     }
 
     /**
@@ -155,7 +215,39 @@ export class BaseService extends EnviromentComponent {
      * 
      * @param error
      */
-    public handleError(error: Response) {
+    public handleError(error: any) {
+
+        //var err = <any>error;
+
+        //var errorException = JSON.parse(error._body);
+        //var errCode = errorException.errorDetail.errorCode;
+        //var errMessage = errorException.message;
+
+        //var errCodeLabel = '';
+        //var errMsgLabel = '';
+        //var errTitle = '';
+
+        //this.translate.get('Exception.ErrorCode').subscribe((msg: string) => {
+        //    errCodeLabel = msg;
+        //});
+
+        //this.translate.get('Exception.ErrorMessage').subscribe((msg: string) => {
+        //    errMsgLabel = msg;
+        //});
+
+        //this.translate.get('Exception.Error').subscribe((msg: string) => {
+        //    errTitle = msg;
+        //});
+        
+
+        //var message = '<strong>' + errCodeLabel + ':<strong>' + '</br>' + errCode + '</br>';
+        //message = message + '<strong>' + errMsgLabel + ':<strong>' + '</br>' + errMessage + '</br>';
+
+        //var posCss = 'toast-top-center'
+
+        //this.sppcLoading.hide();
+        //this.toastrService.error(message, errTitle,{ positionClass: posCss });
+        
         return Observable.throw(error.json());
     }
 }

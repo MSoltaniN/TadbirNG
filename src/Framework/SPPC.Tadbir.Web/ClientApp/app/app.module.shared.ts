@@ -1,4 +1,4 @@
-import { NgModule, NO_ERRORS_SCHEMA, forwardRef } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA, forwardRef, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
@@ -99,7 +99,7 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
 
 import { SppcDatePipe } from "./pipes/index"
 import { MetaDataService } from './service/metadata/metadata.service';
-import { BaseService } from './class/base.service';
+import { BaseService, ErrorsHandler } from './class/base.service';
 import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading/index';
 import { SppcGridResize } from './directive/grid/sppc-grid-resize';
 import { GridSettingComponent } from './directive/grid/component/grid-setting.component';
@@ -118,7 +118,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         SppcLoadingComponent,
         NavMenuComponent,
         AccountComponent,
-        AccountFormComponent,        
+        AccountFormComponent,
         LoginComponent,
         LoginCompleteComponent,
         LoginContainerComponent,
@@ -132,7 +132,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         SppcGridColumn,
         SppcGridReorder,
         SppcGridResize,
-        SppcGridFilter,        
+        SppcGridFilter,
         VoucherComponent,
         VoucherFormComponent,
         VoucherLineComponent,
@@ -163,7 +163,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         BranchRolesFormComponent,
         CompanyComponent,
         CompanyFormComponent,
-        SppcDatePipe,     
+        SppcDatePipe,
         SppcCheckAccess,
         AccountRelationsComponent,
         AccountRelationsFormComponent,
@@ -171,11 +171,13 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         SettingsFormComponent,
         SppcGridDateFilter,
         FilterDatePickerDirective,
-        SppcGridDatepicker        
+        SppcGridDatepicker
     ],
     providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
         UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService, SettingService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
+        {
+            provide: ErrorHandler,useClass: ErrorsHandler},
         //{
         //    provide: RTL,
         //    useFactory: function () {
