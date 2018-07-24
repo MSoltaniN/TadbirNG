@@ -43,7 +43,8 @@ export const Entities = {
     Branch: 'Branch',
     Company: 'Company',
     AccountRelations: "AccountRelations",
-    Settings:"Settings"
+    Settings: "Settings",
+    ViewRowPermission:"ViewRowPermission"
 }
 
 export const ColumnVisibility =

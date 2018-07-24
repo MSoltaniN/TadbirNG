@@ -52,6 +52,9 @@ import { AccountRelationsComponent } from './components/accountRelations/account
 import { AccountRelationsFormComponent } from './components/accountRelations/accountRelations-form.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SettingsFormComponent } from './components/settings/settings-form.component';
+import { ViewRowPermissionComponent } from './components/viewRowPermission/viewRowPermission.component';
+import { ViewRowPermissionSingleFormComponent } from './components/viewRowPermission/viewRowPermission-single-form.component';
+import { ViewRowPermissionMultipleFormComponent } from './components/viewRowPermission/viewRowPermission-multiple-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -81,7 +84,7 @@ import { HotkeyModule } from 'angular2-hotkeys';
 
 import {
     AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
-    BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService, SettingService
+    BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService,
 
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
@@ -118,7 +121,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         SppcLoadingComponent,
         NavMenuComponent,
         AccountComponent,
-        AccountFormComponent,        
+        AccountFormComponent,
         LoginComponent,
         LoginCompleteComponent,
         LoginContainerComponent,
@@ -132,7 +135,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         SppcGridColumn,
         SppcGridReorder,
         SppcGridResize,
-        SppcGridFilter,        
+        SppcGridFilter,
         VoucherComponent,
         VoucherFormComponent,
         VoucherLineComponent,
@@ -163,18 +166,21 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         BranchRolesFormComponent,
         CompanyComponent,
         CompanyFormComponent,
-        SppcDatePipe,     
+        SppcDatePipe,
         SppcCheckAccess,
         AccountRelationsComponent,
         AccountRelationsFormComponent,
         SettingsComponent,
         SettingsFormComponent,
+        ViewRowPermissionComponent,
+        ViewRowPermissionSingleFormComponent,
+        ViewRowPermissionMultipleFormComponent,
         SppcGridDateFilter,
         FilterDatePickerDirective,
-        SppcGridDatepicker        
+        SppcGridDatepicker
     ],
     providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
-        UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService, SettingService,
+        UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         //{
         //    provide: RTL,
@@ -195,7 +201,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         EnviromentComponent,
         Permissions
     ],
-    imports: [       
+    imports: [
         ButtonsModule,
         CommonModule,
         HttpModule,
@@ -227,6 +233,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
             { path: 'companies', component: CompanyComponent, canActivate: [AuthGuard] },
             { path: 'accountrelations', component: AccountRelationsComponent, canActivate: [AuthGuard] },
             { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+            { path: 'viewRowPermission', component: ViewRowPermissionComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])
     ],
