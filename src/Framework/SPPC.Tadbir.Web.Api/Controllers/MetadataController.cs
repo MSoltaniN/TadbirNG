@@ -22,6 +22,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(metadata);
         }
 
+        // GET: api/metadata/entity/{entityId:min(1)}
+        [Route(MetadataApi.EntityMetadataByIdUrl)]
+        public async Task<IActionResult> GetEntityMetadataById(int entityId)
+        {
+            var metadata = await _repository.GetEntityMetadataByIdAsync(entityId);
+            return JsonReadResult(metadata);
+        }
+
         private IActionResult JsonReadResult<TData>(TData metadata)
         {
             var result = (metadata != null)
