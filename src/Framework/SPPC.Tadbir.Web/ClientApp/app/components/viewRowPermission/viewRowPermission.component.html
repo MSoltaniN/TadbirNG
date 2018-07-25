@@ -45,7 +45,7 @@
                                     [(ngModel)]="ddlPermissionTypeSelected"
                                     [value]="ddlPermissionTypeSelected"
                                     (valueChange)="handlePermissionTypeChange($event)"
-                                    [defaultItem]="{ value:''  , key: null}">
+                                    [defaultItem]="{ value:'ViewRowPermission.DdlPermissionItems.Default' | translate  , key: 1}">
                     <ng-template kendoDropDownListValueTemplate let-dataItem>
                         {{ dataItem.value | translate }}
                     </ng-template>
@@ -80,19 +80,19 @@
 
                     <div class="panel-type" *ngIf="ddlPermissionTypeSelected == 8">
                         <label class="control-label">{{ 'ViewRowPermission.MaxQuantityValue' | translate }}</label>
-                        <kendo-numerictextbox [(ngModel)]="numberValue" [spinners]="false" [format]="'n2'" class="input-frm">
+                        <kendo-numerictextbox [(ngModel)]="numberValue" [spinners]="false" [format]="''" class="input-frm">
                         </kendo-numerictextbox>
                     </div>
 
                     <div class="panel-type-multiple" *ngIf="ddlPermissionTypeSelected == 7">
                         <div class="col-xs-12 col-sm-6" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
                             <label class="control-label">{{ 'ViewRowPermission.MaxMoneyValue' | translate }}</label>
-                            <kendo-numerictextbox [(ngModel)]="numberValue1" [spinners]="false" [format]="'n2'" class="input-frm">
+                            <kendo-numerictextbox [(ngModel)]="numberValue1" [spinners]="false" [format]="''" class="input-frm">
                             </kendo-numerictextbox>
                         </div>
                         <div class="col-xs-12 col-sm-6">
                             <label class="control-label">{{ 'ViewRowPermission.MaxCurencyValue' | translate }}</label>
-                            <kendo-numerictextbox [(ngModel)]="numberValue2" [spinners]="false" [format]="'n2'" class="input-frm">
+                            <kendo-numerictextbox [(ngModel)]="numberValue2" [spinners]="false" [format]="''" class="input-frm">
                             </kendo-numerictextbox>
                         </div>
                     </div>

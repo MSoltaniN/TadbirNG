@@ -136,8 +136,8 @@
     "SelectedRecords": "Selected Records",
     "SelectAll": "Select All",
     "DeleteAll": "Delete All",
-    "FormTitle": "Select Records '{0}'",
-    "ListTitle": "Records '{0}'",
+    "FormTitle": "Select Records {0}",
+    "ListTitle": "Records {0}",
     "SelectEntity": "Select Entity",
     "Entities": "Entities"
   },
