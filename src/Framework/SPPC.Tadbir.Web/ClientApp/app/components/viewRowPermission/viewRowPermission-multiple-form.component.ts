@@ -38,6 +38,7 @@ export function getLayoutModule(layout: Layout) {
 .section-header { border: solid 1px #337ab7; padding: 7px 10px;}
 .section-body { padding: 10px; border-right: solid 1px #337ab7; border-left: solid 1px #337ab7; height: 450px; overflow-y: scroll; }
 .header-label { margin: 6px 0 5px; display: block; } #frm-btn{ margin-top:15px; }
+.k-treeview { white-space: unset !important;}
 `],
     providers: [{
         provide: RTL,
@@ -115,12 +116,10 @@ export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
     getFetchUrl() {
         this.metadata.getMetaDataById(this.rowPermission.viewId).subscribe(res => {
             var fetchUrl = res.fetchUrl;
-            if (fetchUrl) {
+            if (fetchUrl)
                 this.loadRowList(fetchUrl);
-            }
-            else {
+            else 
                 this.noData = true;
-            }
         })
     }
 
