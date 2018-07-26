@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
@@ -44,7 +45,7 @@ namespace SPPC.Tadbir.Persistence
             int roleId, int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var query = repository.GetEntityQuery(null,
+            var query = repository.GetEntityQuery(
                 acc => acc.FiscalPeriod, acc => acc.Branch, acc => acc.Parent, acc => acc.Children);
             query = await ApplyRowFilterAsync(query, roleId);
             var accounts = await repository
@@ -155,7 +156,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync(int roleId, int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var query = repository.GetEntityQuery(null);
+            var query = repository.GetEntityQuery();
             query = await ApplyRowFilterAsync(query, roleId);
             var count = await repository
                 .GetCountByCriteriaAsync(query,
@@ -306,12 +307,8 @@ namespace SPPC.Tadbir.Persistence
                 .Include(art => art.Currency)
                 .Include(art => art.Branch)
                     .ThenInclude(br => br.Company)
-                .Where(criteria);
-            query = (gridOptions != null)
-                ? query
-                    .Skip((gridOptions.Paging.PageIndex - 1) * gridOptions.Paging.PageSize)
-                    .Take(gridOptions.Paging.PageSize)
-                : query;
+                .Where(criteria)
+                .Apply(gridOptions);
             return query;
         }
 

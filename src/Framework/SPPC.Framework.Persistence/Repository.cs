@@ -47,8 +47,8 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         public async Task<IList<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityWithNavigationQuery(null, relatedProperties);
-            return await query.ToListAsync();
+            return await GetEntityQuery(relatedProperties)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -67,8 +67,9 @@ namespace SPPC.Framework.Persistence
         public async Task<IList<TEntity>> GetAllAsync(
             GridOptions gridOptions, params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityWithNavigationQuery(gridOptions, relatedProperties);
-            return await query.ToListAsync();
+            return await GetEntityQuery(relatedProperties)
+                .Apply(gridOptions)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -85,8 +86,9 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         public async Task<TEntity> GetByIDAsync(int id, params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityWithNavigationQuery(id, relatedProperties);
-            return await query.SingleOrDefaultAsync();
+            return await GetEntityQuery(relatedProperties)
+                .Where(e => e.Id == id)
+                .SingleOrDefaultAsync();
         }
 
         /// <summary>
@@ -105,15 +107,9 @@ namespace SPPC.Framework.Persistence
         public async Task<TEntity> GetByIDWithTrackingAsync(
             int id, params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = _dataSet
-                .AsQueryable()
-                .Where(e => e.Id == id);
-            foreach (var property in relatedProperties)
-            {
-                query = query.Include(property);
-            }
-
-            return await query.SingleOrDefaultAsync();
+            return await GetEntityWithTrackingQuery(relatedProperties)
+                .Where(e => e.Id == id)
+                .SingleOrDefaultAsync();
         }
 
         /// <summary>
@@ -132,8 +128,9 @@ namespace SPPC.Framework.Persistence
             Expression<Func<TEntity, bool>> criteria,
             params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityWithNavigationQuery(criteria, null, relatedProperties);
-            return await query.ToListAsync();
+            return await GetEntityQuery(relatedProperties)
+                .Where(criteria)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -155,39 +152,31 @@ namespace SPPC.Framework.Persistence
             GridOptions gridOptions,
             params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityWithNavigationQuery(criteria, gridOptions, relatedProperties);
-            return await query.ToListAsync();
+            return await GetEntityQuery(relatedProperties)
+                .Where(criteria)
+                .Apply(gridOptions)
+                .ToListAsync();
         }
 
         /// <summary>
         /// Asynchronously retrieves complete information for a subset of existing entities, as defined by
-        /// the specified criteria, including specified navigation properties, if any.
+        /// the specified criteria.
         /// </summary>
         /// <param name="queryable">A queryable to use as the main source for output records</param>
         /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
         /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
         /// </param>
-        /// <param name="relatedProperties">Variable array of expressions that specify navigation
-        /// properties that must be loaded in the main entity</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// Use this method when you need to retrieve the entity's navigation properties in a single level
-        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
-        /// </remarks>
+        /// <returns>Filtered list of entities</returns>
         public async Task<IList<TEntity>> GetByCriteriaAsync(
             IQueryable<TEntity> queryable,
             Expression<Func<TEntity, bool>> criteria,
-            GridOptions gridOptions,
-            params Expression<Func<TEntity, object>>[] relatedProperties)
+            GridOptions gridOptions)
         {
-            queryable = queryable.Where(criteria);
-            foreach (var property in relatedProperties)
-            {
-                queryable.Include(property);
-            }
-
-            queryable = queryable.Apply(gridOptions);
-            return await queryable.ToListAsync();
+            Verify.ArgumentNotNull(queryable, "queryable");
+            return await queryable
+                .Where(criteria)
+                .Apply(gridOptions)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -219,9 +208,10 @@ namespace SPPC.Framework.Persistence
             GridOptions gridOptions)
         {
             Verify.ArgumentNotNull(queryable, "queryable");
-            queryable = queryable.Where(criteria);
-            queryable = queryable.Apply(gridOptions);
-            return await queryable.CountAsync();
+            return await queryable
+                .Where(criteria)
+                .Apply(gridOptions)
+                .CountAsync();
         }
 
         /// <summary>
@@ -248,83 +238,31 @@ namespace SPPC.Framework.Persistence
         /// and perform other standard LINQ functions. This method is suitable for read-only operations, as it
         /// disables EF Core tracking mechanism.
         /// </summary>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
-        /// <returns>Queryable object for entity</returns>
-        public IQueryable<TEntity> GetEntityQuery(GridOptions gridOptions = null)
-        {
-            var options = gridOptions ?? new GridOptions();
-            var query = _dataSet.AsNoTracking();
-            if (options.Filter != null)
-            {
-                query = query.Where(options.Filter.ToString());
-            }
-
-            if (options.SortColumns.Count > 0)
-            {
-                string ordering = String.Join(", ", options.SortColumns.Select(col => col.ToString()));
-                query = query.OrderBy(ordering);
-            }
-
-            return query;
-        }
-
-        /// <summary>
-        /// Returns a queryable object for entity that can be further manipulated to include related properties
-        /// and perform other standard LINQ functions. This method is suitable for read-only operations, as it
-        /// disables EF Core tracking mechanism.
-        /// </summary>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
         /// <param name="relatedProperties">Variable array of expressions that specify navigation
         /// properties that must be loaded in the main entity</param>
         /// <returns>Queryable object for entity</returns>
         public IQueryable<TEntity> GetEntityQuery(
-            GridOptions gridOptions = null,
             params Expression<Func<TEntity, object>>[] relatedProperties)
         {
             var query = _dataSet.AsNoTracking();
             Array.ForEach(relatedProperties, prop => query = query.Include(prop));
-            return query.Apply(gridOptions);
-        }
-
-        /// <summary>
-        /// Returns a queryable object for entity that can be further manipulated to include related properties
-        /// and perform other standard LINQ functions.
-        /// </summary>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
-        /// <returns>Queryable object for entity</returns>
-        public IQueryable<TEntity> GetEntityWithTrackingQuery(GridOptions gridOptions = null)
-        {
-            var options = gridOptions ?? new GridOptions();
-            var query = _dataSet.AsQueryable();
-            if (options.Filter != null)
-            {
-                query = query.Where(options.Filter.ToString());
-            }
-
-            if (options.SortColumns.Count > 0)
-            {
-                string ordering = String.Join(", ", options.SortColumns.Select(col => col.ToString()));
-                query = query.OrderBy(ordering);
-            }
-
             return query;
         }
 
         /// <summary>
-        /// Retrieves complete information for all existing entities in data store, including specified
-        /// navigation properties, if any.
+        /// Returns a queryable object for entity that can be further manipulated to include related properties
+        /// and perform other standard LINQ functions. This method is suitable for read/write operations, as it
+        /// enables default EF Core tracking mechanism.
         /// </summary>
         /// <param name="relatedProperties">Variable array of expressions that specify navigation
         /// properties that must be loaded in the main entity</param>
-        /// <returns>Collection of all existing entities</returns>
-        /// <remarks>
-        /// Use this method when you need to retrieve the entity's navigation properties in a single level
-        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
-        /// </remarks>
-        public IList<TEntity> GetAll(params Expression<Func<TEntity, object>>[] relatedProperties)
+        /// <returns>Queryable object for entity</returns>
+        public IQueryable<TEntity> GetEntityWithTrackingQuery(
+            params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityWithNavigationQuery(null, relatedProperties);
-            return query.ToList();
+            var query = _dataSet.AsQueryable();
+            Array.ForEach(relatedProperties, prop => query = query.Include(prop));
+            return query;
         }
 
         /// <summary>
@@ -341,10 +279,11 @@ namespace SPPC.Framework.Persistence
         /// (i.e. no navigation properties inside the main entity's navigation properties are required)
         /// </remarks>
         public IList<TEntity> GetAll(
-            GridOptions gridOptions, params Expression<Func<TEntity, object>>[] relatedProperties)
+            GridOptions gridOptions = null, params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityWithNavigationQuery(gridOptions, relatedProperties);
-            return query.ToList();
+            return GetEntityQuery(relatedProperties)
+                .Apply(gridOptions)
+                .ToList();
         }
 
         /// <summary>
@@ -361,8 +300,9 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         public TEntity GetByID(int id, params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityWithNavigationQuery(id, relatedProperties);
-            return query.SingleOrDefault();
+            return GetEntityQuery(relatedProperties)
+                .Where(e => e.Id == id)
+                .SingleOrDefault();
         }
 
         /// <summary>
@@ -380,35 +320,9 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         public TEntity GetByIDWithTracking(int id, params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = _dataSet
-                .AsQueryable()
-                .Where(e => e.Id == id);
-            foreach (var property in relatedProperties)
-            {
-                query = query.Include(property);
-            }
-
-            return query.SingleOrDefault();
-        }
-
-        /// <summary>
-        /// Retrieves complete information for a subset of existing entities, as defined by the specified criteria,
-        /// including specified navigation properties, if any.
-        /// </summary>
-        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <param name="relatedProperties">Variable array of expressions that specify navigation
-        /// properties that must be loaded in the main entity</param>
-        /// <returns></returns>
-        /// <remarks>
-        /// Use this method when you need to retrieve the entity's navigation properties in a single level
-        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
-        /// </remarks>
-        public IList<TEntity> GetByCriteria(
-            Expression<Func<TEntity, bool>> criteria,
-            params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            var query = GetEntityWithNavigationQuery(criteria, null, relatedProperties);
-            return query.ToList();
+            return GetEntityWithTrackingQuery(relatedProperties)
+                .Where(e => e.Id == id)
+                .SingleOrDefault();
         }
 
         /// <summary>
@@ -427,11 +341,13 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         public IList<TEntity> GetByCriteria(
             Expression<Func<TEntity, bool>> criteria,
-            GridOptions gridOptions,
+            GridOptions gridOptions = null,
             params Expression<Func<TEntity, object>>[] relatedProperties)
         {
-            var query = GetEntityWithNavigationQuery(criteria, gridOptions, relatedProperties);
-            return query.ToList();
+            return GetEntityQuery(relatedProperties)
+                .Where(criteria)
+                .Apply(gridOptions)
+                .ToList();
         }
 
         /// <summary>
@@ -551,49 +467,6 @@ namespace SPPC.Framework.Persistence
 
         #endregion
 
-        private static IQueryable<TEntity> GetEntityWithNavigationQuery(
-            IQueryable<TEntity> query,
-            GridOptions gridOptions,
-            params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            foreach (var property in relatedProperties)
-            {
-                query = query.Include(property);
-            }
-
-            var resultQuery = (gridOptions != null)
-                ? query
-                    .Skip((gridOptions.Paging.PageIndex - 1) * gridOptions.Paging.PageSize)
-                    .Take(gridOptions.Paging.PageSize)
-                : query;
-            return resultQuery;
-        }
-
-        private IQueryable<TEntity> GetEntityWithNavigationQuery(GridOptions gridOptions,
-            params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            var query = GetEntityQuery(gridOptions);
-            return GetEntityWithNavigationQuery(query, gridOptions, relatedProperties);
-        }
-
-        private IQueryable<TEntity> GetEntityWithNavigationQuery(
-            int id, params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            var query = GetEntityQuery()
-                .Where(e => e.Id == id);
-            return GetEntityWithNavigationQuery(query, null, relatedProperties);
-        }
-
-        private IQueryable<TEntity> GetEntityWithNavigationQuery(
-            Expression<Func<TEntity, bool>> criteria,
-            GridOptions gridOptions,
-            params Expression<Func<TEntity, object>>[] relatedProperties)
-        {
-            var query = GetEntityQuery(gridOptions)
-                .Where(criteria);
-            return GetEntityWithNavigationQuery(query, gridOptions, relatedProperties);
-        }
-
         private void SetTrackingStatus(EntityEntryGraphNode entity)
         {
             bool mustSave = Object.ReferenceEquals(entity.Entry.Entity, _trackingStatus.Entity);
@@ -622,17 +495,9 @@ namespace SPPC.Framework.Persistence
         private IQueryable<TEntity> GetCountByCriteriaQuery(
             Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions)
         {
-            var options = gridOptions ?? new GridOptions();
-            var currentCriteria = criteria ?? (entity => true);
-            var query = _dataSet
-                .AsNoTracking()
-                .Where(currentCriteria);
-            if (options.Filter != null)
-            {
-                query = query.Where(options.Filter.ToString());
-            }
-
-            return query;
+            return GetEntityQuery()
+                .Where(criteria ?? (entity => true))
+                .Apply(gridOptions);
         }
 
         private DbContext _dataContext;
