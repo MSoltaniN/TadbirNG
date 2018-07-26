@@ -28,6 +28,12 @@
     "User": "کاربر جاری",
     "Branch": "شعبه"
   },
+  "Exception":
+  {
+    "ErrorCode": "کد خطا",
+    "ErrorMsg": "جزئیات خطا",
+    "ErrorTitle" :  "خطا"
+  },
   "Messages": {
     "Inserted": "{0} با موفقیت ثبت شد",
     "Updated": "{0} با موفقیت ویرایش شد",
@@ -112,7 +118,7 @@
   },
   "ViewRowPermission": {
     "DdlPermissionItems": {
-      "Default": "دسترسی یا عدم دسترسی با توجه به تنظیمات امنیتی (گزینه پیش فرض)",
+      "Default": "دسترسی یا عدم دسترسی با توجه به تنظیمات امنیتی",
       "AllRecordsCreatedByUser": "دسترسی به تمام سطرهای ایجاد شده توسط کاربر",
       "SpecificRecords": "دسترسی به سطرهای مشخص شده",
       "AllExceptSpecificRecords": "دسترسی به تمام سطرها بجز سطرهای مشخص شده",
@@ -133,11 +139,11 @@
     "MaxMoneyValue": "سقف پولی",
     "MaxCurencyValue": "سقف ارزی",
     "NoExistRecord": "سطری وجود ندارد",
-    "SelectedRecords": "رکوردهای انتخاب شده",
+    "SelectedRecords": "سطرهای انتخاب شده",
     "SelectAll": "انتخاب همه",
     "DeleteAll": "حذف همه",
-    "FormTitle": "انتخاب رکوردهای '{0}'",
-    "ListTitle": "رکوردهای '{0}'",
+    "FormTitle": "انتخاب سطرهای {0}",
+    "ListTitle": "سطرهای {0}",
     "SelectEntity": "انتخاب موجودیت",
     "Entities": "موجودیت ها"
   },

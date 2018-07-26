@@ -117,7 +117,6 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
 
 
     handlePermissionTypeChange(item: any) {
-
     }
 
     getRoles() {
@@ -152,6 +151,20 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
         var rowPermission = this.dataItem.rowPermissions.find(f => f.viewId == this.viewId);
         if (rowPermission) {
 
+            if (rowPermission.items.length > 0 && rowPermission.accessMode =="SpecificRecords") {
+                this.permissionValue3 = "سطرهای انتخاب شده";
+            }
+            else {
+                this.permissionValue3 = "سطری انتخاب نشده";
+            }
+
+            if (rowPermission.items.length > 0 && rowPermission.accessMode == "AllExceptSpecificRecords") {
+                this.permissionValue4 = "سطرهای انتخاب شده";
+            }
+            else {
+                this.permissionValue4 = "سطری انتخاب نشده";
+            }
+
             switch (rowPermission.accessMode) {
                 case "Default": {
                     this.ddlPermissionTypeSelected = PermissionType.Default;
@@ -177,7 +190,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
                         this.permissionValue4 = "سطرهای انتخاب شده";
                     }
                     else {
-                        this.permissionValue4 = "سطرهای انتخاب نشده";
+                        this.permissionValue4 = "سطری انتخاب نشده";
                     }
                     break;
                 }

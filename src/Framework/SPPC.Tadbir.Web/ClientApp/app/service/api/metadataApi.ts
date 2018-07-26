@@ -15,7 +15,7 @@ import { Environment } from "../../enviroment";
 export class MetadataApi {
 
     // metadata/entity/{entityName}
-    public static EntityMetadata = Environment.BaseUrl + "/metadata/entity/{0}";
+    public static EntityMetadata = Environment.BaseUrl + "/{0}/metadata";
 
     // metadata/entity/{entityId:min(1)}
     public static EntityMetadataById = Environment.BaseUrl + "/metadata/entity/{0}";
