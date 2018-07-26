@@ -44,14 +44,14 @@ namespace SPPC.Tadbir.Persistence
             int roleId, int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var query = repository.GetEntityQuery(null);
+            var query = repository.GetEntityQuery(null,
+                acc => acc.FiscalPeriod, acc => acc.Branch, acc => acc.Parent, acc => acc.Children);
             query = await ApplyRowFilterAsync(query, roleId);
             var accounts = await repository
                 .GetByCriteriaAsync(query,
                     acc => acc.FiscalPeriod.Id == fpId
                         && acc.Branch.Id == branchId,
-                    gridOptions,
-                    acc => acc.FiscalPeriod, acc => acc.Branch, acc => acc.Parent, acc => acc.Children);
+                    gridOptions);
             return accounts
                 .Select(item => Mapper.Map<AccountViewModel>(item))
                 .ToList();

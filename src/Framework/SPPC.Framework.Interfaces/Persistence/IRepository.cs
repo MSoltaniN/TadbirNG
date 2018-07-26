@@ -25,6 +25,19 @@ namespace SPPC.Framework.Persistence
 
         /// <summary>
         /// Returns a queryable object for entity that can be further manipulated to include related properties
+        /// and perform other standard LINQ functions. This method is suitable for read-only operations, as it
+        /// disables EF Core tracking mechanism.
+        /// </summary>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns>Queryable object for entity</returns>
+        IQueryable<TEntity> GetEntityQuery(
+            GridOptions gridOptions = null,
+            params Expression<Func<TEntity, object>>[] relatedProperties);
+
+        /// <summary>
+        /// Returns a queryable object for entity that can be further manipulated to include related properties
         /// and perform other standard LINQ functions.
         /// </summary>
         /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records</param>
