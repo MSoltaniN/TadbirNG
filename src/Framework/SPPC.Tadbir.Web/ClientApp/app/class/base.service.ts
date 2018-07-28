@@ -11,57 +11,10 @@ import { TranslateService } from "ng2-translate";
 import { SppcLoadingService } from "../controls/sppcLoading/index";
 import { ReflectiveInjector, Injector, Injectable, ErrorHandler } from '@angular/core';
 import { HttpErrorResponse } from "@angular/common/http";
+import { ActivatedRoute, Router } from "@angular/router";
 
 
-@Injectable()
-export class ErrorsHandler implements ErrorHandler {
-    constructor(
-        // Because the ErrorHandler is created before the providers, we’ll have to use the Injector to get them.
-        private injector: Injector 
-    ) { }
-    handleError(error: Error | any) {
 
-        const notificationService = this.injector.get(ToastrService);
-        const translateService = this.injector.get(TranslateService);
-        const sppcLoadingService = this.injector.get(SppcLoadingService);
-
-        if (error._body) {
-            var errorException = JSON.parse(error._body);
-            var errCode = errorException.errorDetail.errorCode;
-            var errMessage = errorException.message;
-
-            var errCodeLabel = '';
-            var errMsgLabel = '';
-            var errTitle = '';
-
-            translateService.get('Exception.ErrorCode').subscribe((msg: string) => {
-                errCodeLabel = msg;
-            });
-
-            translateService.get('Exception.ErrorMessage').subscribe((msg: string) => {
-                errMsgLabel = msg;
-            });
-
-            translateService.get('Exception.Error').subscribe((msg: string) => {
-                errTitle = msg;
-            });
-
-
-            var message = '<strong>' + errCodeLabel + ':<strong>' + '</br>' + errCode + '</br>';
-            message = message + '<strong>' + errMsgLabel + ':<strong>' + '</br>' + errMessage + '</br>';
-
-            var posCss = 'toast-top-center'
-
-            sppcLoadingService.hide();
-            notificationService.error(message, errTitle,{ positionClass: posCss });
-
-            return;
-        }
-        // Log the error anyway
-        console.error('It happens: ', error);
-    }
-
-}
 
 export class BaseService extends EnviromentComponent {
 

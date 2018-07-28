@@ -1,6 +1,6 @@
 ﻿import { RTL } from "@progress/kendo-angular-l10n";
 import { Layout, ColumnVisibility, SessionKeys } from "../../../enviroment";
-import { Component, OnInit, ViewContainerRef, Host, ElementRef, OnDestroy } from "@angular/core";
+import { Component, OnInit, ViewContainerRef, Host, ElementRef, OnDestroy, Input } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "ng2-translate";
 import { SppcLoadingService } from "../../../controls/sppcLoading/index";
@@ -36,6 +36,8 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
     rtl: boolean;
 
+    @Input() public entityTypeName: string;
+
     public rowData: ListFormViewConfig | null = null;
     public gridRowData: Array<SettingViewModelInfo> | null = null;
     //public rowData: GridDataResult;
@@ -64,10 +66,10 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
     }
 
     ngOnInit() {
-
-        this.loadSetting();        
+        this.loadSetting();           
     }
 
+    
    
 
     private fillViewModel(rowData: ListFormViewConfig): Array<SettingViewModelInfo> {
@@ -76,16 +78,25 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
         rowData.columnViews.forEach((item) => {
             var model = new SettingViewModelInfo();
             var setting = this.settingService.getCurrentColumnViewConfig(item);
-            if (setting && setting.index) {
+            if (setting && setting.index && setting.visibility != ColumnVisibility.AlwaysHidden) {
                 
                 model.designIndex = setting.designIndex;
                 model.index = setting.index;
                 model.visibility = this.checkVisibility(setting.visibility);
                 model.width = setting.width;
                 model.name = item.name;
-                model.title = setting.title;
 
-                rows.push(model);
+                var title = "";
+                var key = this.entityTypeName + "." + item.name.charAt(0).toUpperCase() + item.name.slice(1);
+                this.translate.get(key).subscribe((msg: string) => {
+                    title = msg;
+
+                    model.title = title;
+
+                    rows.push(model);
+                });
+                
+                
             }
         });
 
@@ -126,11 +137,15 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
             this.rowData = new ListFormViewConfigInfo(viewId, 10);                       
         }
 
+        var fields : Array<string> = new Array<string>();
+
         //#region change column in runtime and fill ro data from desgined grid
         this.grid.leafColumns.toArray().forEach((item, index, arr) => {
 
            
             if (item instanceof ColumnComponent) {
+
+                fields.push(item.field);
 
                 if (this.rowData) {
                     var arrayIndex = this.rowData.columnViews.findIndex(p => p.name.toLowerCase() == (<ColumnComponent>item).field.toLowerCase())
@@ -144,9 +159,10 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
                     if (columnViewDeviceConfig && columnViewDeviceConfig.index) {
                         //var row: ColumnViewDeviceConfig = { index: arrayIndex, designIndex: item.orderIndex, visibilty: ColumnVisibility.AlwaysVisible };                        
+                        columnViewDeviceConfig.title = item.displayTitle;
                         item.hidden = !this.checkVisibility(columnViewDeviceConfig.visibility);
                         this.rowData.columnViews[arrayIndex] = this.settingService.setCurrentColumnViewConfig(this.rowData.columnViews[arrayIndex], columnViewDeviceConfig);                                              
-
+                        
                     }
                     else {
 
@@ -175,9 +191,22 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
 
                 }
+
+                
             }
         });
         //#endregion
+
+        if (this.rowData) {
+
+            this.rowData.columnViews.forEach((item) => {
+                if (!fields.find(p => p.toLowerCase() == item.name.toLowerCase()) && this.rowData) {
+                    var deletedIndex = this.rowData.columnViews.findIndex(p => p.name.toLowerCase() == item.name.toLowerCase());
+                    this.rowData.columnViews.splice(deletedIndex,1);
+                }
+
+            });
+        }
 
         if (this.rowData) {
             this.gridRowData = this.changeLastColumns(this.fillViewModel(this.rowData));

@@ -31,7 +31,7 @@
                 <ng-template kendoGridToolbarTemplate>
                     <button kendoGridAddCommand (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'VoucherLine.New' | translate }}</button>
                     <button *ngIf="groupDelete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
-                    <grid-setting></grid-setting>
+                    <grid-setting entityTypeName="VoucherLine"></grid-setting>
                 </ng-template>
 
                 <!-- template for mobile -->

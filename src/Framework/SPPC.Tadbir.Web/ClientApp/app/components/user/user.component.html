@@ -29,7 +29,7 @@
             </ng-template>
             <ng-template kendoGridToolbarTemplate>
                 <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'User.New' | translate }}</button>
-                <grid-setting></grid-setting>
+                <grid-setting entityTypeName="User"></grid-setting>
             </ng-template>
             <!-- template for mobile -->
             <kendo-grid-column media="(max-width: 449px)" title="">

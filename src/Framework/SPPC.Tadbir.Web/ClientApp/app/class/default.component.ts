@@ -81,7 +81,7 @@ export class DefaultComponent extends BaseComponent {
 
     constructor(public toastrService: ToastrService, public translate: TranslateService
         , public renderer: Renderer2, private metadataService: MetaDataService,
-        @Optional() @Inject('empty') private entityType: string, @Optional() @Inject('empty') private metaDataName: string) {
+        @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public metaDataName: string) {
 
 
         super(toastrService);

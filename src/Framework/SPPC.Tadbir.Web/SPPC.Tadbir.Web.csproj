@@ -57,6 +57,7 @@
     <None Remove="ClientApp\app\components\company\company-form.component.ts" />
     <None Remove="ClientApp\app\components\costCenter\costCenter-form.component.ts" />
     <None Remove="ClientApp\app\components\detailAccount\detailAccount-form.component.ts" />
+    <None Remove="ClientApp\app\components\error\error.component.ts" />
     <None Remove="ClientApp\app\components\fiscalPeriod\fiscalPeriod-form.component.ts" />
     <None Remove="ClientApp\app\components\fiscalPeriod\fiscalPeriod-roles-form.component.ts" />
     <None Remove="ClientApp\app\components\fiscalPeriod\fiscalPeriod.component.ts" />
@@ -232,6 +233,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\company\company-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\costCenter\costCenter-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\detailAccount\detailAccount-form.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\error\error.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\fiscalPeriod\fiscalPeriod-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\fiscalPeriod\fiscalPeriod.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\fiscalPeriod\fiscalPeriod-roles-form.component.ts" />

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Injector } from '@angular/core';
 import { Context } from "../../model/context";
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -8,6 +8,9 @@ import { UserService } from '../../service/user.service';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { SessionKeys } from '../../enviroment';
 import { Command } from '../../model/command';
+import { ToastrService } from 'ngx-toastr';
+import { SppcLoadingService } from '../../controls/sppcLoading/sppc-loading.service';
+import { TranslateService } from 'ng2-translate';
 
 
 @Component({
@@ -16,6 +19,7 @@ import { Command } from '../../model/command';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+    
 
     currentContext?: Context = undefined;
 
@@ -37,11 +41,9 @@ export class AppComponent {
     public branches: any = {};
 
     public fiscalPeriods: any = {};
-
     
-
     constructor(location: Location, public router: Router, public authenticationService: AuthenticationService,public userService:UserService,
-        @Inject(DOCUMENT) private document: Document, private hotkeysService: HotkeysService) {
+        @Inject(DOCUMENT) private document: Document) {
 
         //#region init Lang
 
@@ -180,8 +182,18 @@ export class AppComponent {
         //this.initHotKeys();
     }
 
+
+    
     public hotKeyMap: { [id: string]: string; } = {}
     menuList: Array<Command> = new Array<Command>();
+
+    public errMessage: string;
+    public errCode: number;
+    public showErrorDialog: boolean = false;
+
+    private closeForm(): void {
+        this.showErrorDialog = false;
+    }
 
     doSomething(event: any) {
         // read keyCode or other properties 

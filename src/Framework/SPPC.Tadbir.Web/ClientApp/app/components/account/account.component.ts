@@ -349,9 +349,11 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                         var thisIndex = this.parentAccount.Childrens.findIndex(p => p == this);
                         if (thisIndex >= 0)
                             this.parentAccount.Childrens.splice(thisIndex);
-                    }
 
-                    this.parentAccount.reloadGrid();
+
+                        this.parentAccount.reloadGrid();                        
+                    }                    
+                    
                 }
 
                 this.showloadingMessage = !(resData.length == 0);

@@ -102,7 +102,7 @@ import { AuthenticationService, AuthGuard } from "./service/login/index";
 
 import { SppcDatePipe } from "./pipes/index"
 import { MetaDataService } from './service/metadata/metadata.service';
-import { BaseService, ErrorsHandler } from './class/base.service';
+import { BaseService } from './class/base.service';
 import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading/index';
 import { SppcGridResize } from './directive/grid/sppc-grid-resize';
 import { GridSettingComponent } from './directive/grid/component/grid-setting.component';
@@ -113,6 +113,7 @@ import { EnviromentComponent } from './class/enviroment.component';
 import { Permissions } from './security/permissions';
 import { SppcGridDateFilter, FilterDatePickerDirective } from './controls/grid/spp-grid-date-filter';
 import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
+import { GeneralErrorHandler } from './components/error/error.component';
 
 
 @NgModule({
@@ -164,7 +165,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         BranchComponent,
         BranchFormComponent,
         BranchRolesFormComponent,
-        CompanyComponent,
+        CompanyComponent,        
         CompanyFormComponent,
         SppcDatePipe,
         SppcCheckAccess,
@@ -182,8 +183,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
     providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
         UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-        {
-            provide: ErrorHandler,useClass: ErrorsHandler},
+        { provide: ErrorHandler , useClass : GeneralErrorHandler},
         //{
         //    provide: RTL,
         //    useFactory: function () {
@@ -201,7 +201,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         DatePipe,
         Layout,
         EnviromentComponent,
-        Permissions
+        Permissions        
     ],
     imports: [
         ButtonsModule,
@@ -210,7 +210,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        ToastrModule.forRoot(),
+        ToastrModule.forRoot({ preventDuplicates: true}),
         HotkeyModule.forRoot(),
         DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule,
         BrowserModule,
@@ -219,7 +219,7 @@ import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
         TreeViewModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
-            { path: '', redirectTo: 'login', pathMatch: 'full' },
+            { path: '', redirectTo: 'login', pathMatch: 'full' },            
             { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
             { path: 'login', component: LoginContainerComponent },
             { path: 'logout', component: LogoutComponent },

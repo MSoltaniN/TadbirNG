@@ -48,7 +48,7 @@
 
                 <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'Voucher.New' | translate }}</button>
                 <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
-                <grid-setting></grid-setting>
+                <grid-setting entityTypeName="Voucher"></grid-setting>
 
             </ng-template>
             <!-- template for mobile -->
