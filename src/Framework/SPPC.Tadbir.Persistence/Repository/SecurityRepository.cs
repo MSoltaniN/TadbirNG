@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
@@ -307,20 +308,14 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetAsyncRepository<Role>();
             var query = repository
-                .GetEntityQuery(gridOptions)
+                .GetEntityQuery()
                 .Include(r => r.RolePermissions)
-                    .ThenInclude(rp => rp.Permission)
-                .ToAsyncEnumerable();
-            if (gridOptions != null)
-            {
-                query = query
-                    .Skip((gridOptions.Paging.PageIndex - 1) * gridOptions.Paging.PageSize)
-                    .Take(gridOptions.Paging.PageSize);
-            }
+                    .ThenInclude(rp => rp.Permission);
 
             return await query
+                .Apply(gridOptions)
                 .Select(r => _mapper.Map<RoleViewModel>(r))
-                .ToList();
+                .ToListAsync();
         }
 
         /// <summary>

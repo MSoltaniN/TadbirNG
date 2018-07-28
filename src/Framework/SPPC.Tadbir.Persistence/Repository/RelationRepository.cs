@@ -459,7 +459,7 @@ namespace SPPC.Tadbir.Persistence
                 var existingIds = account.AccountDetailAccounts.Select(ada => ada.DetailId);
                 var detailRepository = _unitOfWork.GetAsyncRepository<DetailAccount>();
                 var connectable = detailRepository
-                    .GetEntityQuery(gridOptions)
+                    .GetEntityQuery()
                     .Where(facc => facc.FiscalPeriod.Id == fpId
                         && facc.Branch.Id == branchId
                         && !existingIds.Contains(facc.Id));
@@ -470,6 +470,7 @@ namespace SPPC.Tadbir.Persistence
 
                 detailAccounts.AddRange(
                     await connectable
+                        .Apply(gridOptions)
                         .Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc))
                         .ToListAsync());
             }
@@ -501,7 +502,7 @@ namespace SPPC.Tadbir.Persistence
                 var existingIds = account.AccountCostCenters.Select(ac => ac.CostCenterId);
                 var centerRepository = _unitOfWork.GetAsyncRepository<CostCenter>();
                 var connectable = centerRepository
-                    .GetEntityQuery(gridOptions)
+                    .GetEntityQuery()
                     .Where(cc => cc.FiscalPeriod.Id == fpId
                         && cc.Branch.Id == branchId
                         && !existingIds.Contains(cc.Id));
@@ -512,6 +513,7 @@ namespace SPPC.Tadbir.Persistence
 
                 costCenters.AddRange(
                     await connectable
+                        .Apply(gridOptions)
                         .Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc))
                         .ToListAsync());
             }
@@ -543,7 +545,7 @@ namespace SPPC.Tadbir.Persistence
                 var existingIds = account.AccountProjects.Select(ap => ap.ProjectId);
                 var projectRepository = _unitOfWork.GetAsyncRepository<Project>();
                 var connectable = projectRepository
-                    .GetEntityQuery(gridOptions)
+                    .GetEntityQuery()
                     .Where(prj => prj.FiscalPeriod.Id == fpId
                         && prj.Branch.Id == branchId
                         && !existingIds.Contains(prj.Id));
@@ -554,6 +556,7 @@ namespace SPPC.Tadbir.Persistence
 
                 projects.AddRange(
                     await connectable
+                        .Apply(gridOptions)
                         .Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj))
                         .ToListAsync());
             }
@@ -585,7 +588,7 @@ namespace SPPC.Tadbir.Persistence
                 var existingIds = detailAccount.AccountDetailAccounts.Select(ada => ada.AccountId);
                 var accountRepository = _unitOfWork.GetAsyncRepository<Account>();
                 var connectable = accountRepository
-                    .GetEntityQuery(gridOptions)
+                    .GetEntityQuery()
                     .Where(acc => acc.FiscalPeriod.Id == fpId
                         && acc.Branch.Id == branchId
                         && !existingIds.Contains(acc.Id));
@@ -596,6 +599,7 @@ namespace SPPC.Tadbir.Persistence
 
                 accounts.AddRange(
                     await connectable
+                        .Apply(gridOptions)
                         .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
                         .ToListAsync());
             }
@@ -627,7 +631,7 @@ namespace SPPC.Tadbir.Persistence
                 var existingIds = costCenter.AccountCostCenters.Select(ac => ac.AccountId);
                 var accountRepository = _unitOfWork.GetAsyncRepository<Account>();
                 var connectable = accountRepository
-                    .GetEntityQuery(gridOptions)
+                    .GetEntityQuery()
                     .Where(acc => acc.FiscalPeriod.Id == fpId
                         && acc.Branch.Id == branchId
                         && !existingIds.Contains(acc.Id));
@@ -638,6 +642,7 @@ namespace SPPC.Tadbir.Persistence
 
                 accounts.AddRange(
                     await connectable
+                        .Apply(gridOptions)
                         .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
                         .ToListAsync());
             }
@@ -669,7 +674,7 @@ namespace SPPC.Tadbir.Persistence
                 var existingIds = project.AccountProjects.Select(ap => ap.AccountId);
                 var accountRepository = _unitOfWork.GetAsyncRepository<Account>();
                 var connectable = accountRepository
-                    .GetEntityQuery(gridOptions)
+                    .GetEntityQuery()
                     .Where(acc => acc.FiscalPeriod.Id == fpId
                         && acc.Branch.Id == branchId
                         && !existingIds.Contains(acc.Id));
@@ -680,6 +685,7 @@ namespace SPPC.Tadbir.Persistence
 
                 accounts.AddRange(
                     await connectable
+                        .Apply(gridOptions)
                         .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
                         .ToListAsync());
             }

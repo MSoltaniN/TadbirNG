@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
@@ -451,7 +452,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<Voucher>();
             var vouchersQuery = repository
-                .GetEntityQuery(gridOptions)
+                .GetEntityQuery()
                 .Include(txn => txn.Lines)
                 .Include(txn => txn.FiscalPeriod)
                 .Include(txn => txn.Branch)
@@ -471,12 +472,8 @@ namespace SPPC.Tadbir.Persistence
                 .Include(txn => txn.Document)
                     .ThenInclude(doc => doc.Actions)
                         .ThenInclude(act => act.ApprovedBy)
-                .Where(criteria);
-            vouchersQuery = (gridOptions != null)
-                ? vouchersQuery
-                    .Skip((gridOptions.Paging.PageIndex - 1) * gridOptions.Paging.PageSize)
-                    .Take(gridOptions.Paging.PageSize)
-                : vouchersQuery;
+                .Where(criteria)
+                .Apply(gridOptions);
             return vouchersQuery;
         }
 
@@ -484,21 +481,11 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetRepository<VoucherLine>();
             var linesQuery = repository
-                .GetEntityQuery(gridOptions)
-                .Include(line => line.Voucher)
-                .Include(line => line.Account)
-                .Include(line => line.DetailAccount)
-                .Include(line => line.CostCenter)
-                .Include(line => line.Project)
-                .Include(line => line.Currency)
-                .Include(line => line.FiscalPeriod)
-                .Include(line => line.Branch)
-                .Where(line => line.Voucher.Id == voucherId);
-            linesQuery = (gridOptions != null)
-                ? linesQuery
-                    .Skip((gridOptions.Paging.PageIndex - 1) * gridOptions.Paging.PageSize)
-                    .Take(gridOptions.Paging.PageSize)
-                : linesQuery;
+                .GetEntityQuery(
+                    line => line.Voucher, line => line.Account, line => line.DetailAccount, line => line.CostCenter,
+                    line => line.Project, line => line.Currency, line => line.FiscalPeriod, line => line.Branch)
+                .Where(line => line.Voucher.Id == voucherId)
+                .Apply(gridOptions);
             return linesQuery;
         }
 
@@ -507,7 +494,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetRepository<WorkItemDocument>();
             var document = repository
                 .GetByCriteria(wid => wid.Document.Id == voucher.Document.Id
-                    && wid.DocumentType == DocumentTypeName.Voucher,
+                    && wid.DocumentType == DocumentTypeName.Voucher, null,
                     wid => wid.Document, wid => wid.WorkItem)
                 .FirstOrDefault();
             if (document != null)
