@@ -76,6 +76,12 @@ export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
     }
 
     @Input() public set dataItem(item: ViewRowPermissionInfo) {
+
+        this.rowList = [];
+        this.rowCheckedKeys = [];
+        this.selectedRowList = [];
+        this.selectedRowKeys = [];
+
         if (item) {
             this.rowPermission = item;
             this.getFetchUrl();
@@ -89,6 +95,11 @@ export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
     //Events
     public onSave(e: any): void {
         e.preventDefault();
+        //this.rowList = [];
+        //this.rowCheckedKeys = [];
+        //this.selectedRowList = [];
+        //this.selectedRowKeys = [];
+        this.noData = false;
         this.save.emit(this.selectedRowKeys);
     }
 
@@ -99,10 +110,11 @@ export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
 
     private closeForm(): void {
         this.active = false;
-        this.rowList = [];
-        this.rowCheckedKeys = [];
-        this.selectedRowList = [];
-        this.selectedRowKeys = [];
+        this.noData = false;
+        //this.rowList = [];
+        //this.rowCheckedKeys = [];
+        //this.selectedRowList = [];
+        //this.selectedRowKeys = [];
         this.cancel.emit();
     }
     //Events
@@ -157,21 +169,27 @@ export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
     }
 
     loadRowList(fetchUrl: string) {
+        this.sppcLoading.show();
+
+
+
         this.viewRowPermissionService.getRowList(Environment.BaseUrl + String.Format(fetchUrl, this.FiscalPeriodId, this.BranchId)).subscribe(res => {
             this.rowList = res;
 
             this.rowCheckedKeys = [];
             this.selectedRowList = [];
             this.selectedRowKeys = [];
-
+           
+            //debugger;
             for (let item of this.rowList) {
-                if (this.rowPermission.items.find(f => f == item.key)) {
+                if (this.rowPermission.items && this.rowPermission.items.find(f => f == item.key)) {
                     this.rowCheckedKeys.push(item.key);
                     this.selectedRowList.push(item);
                     this.selectedRowKeys.push(item.key);
                 }
 
             }
+            this.sppcLoading.hide();
         })
     }
 

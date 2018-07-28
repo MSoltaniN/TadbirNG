@@ -46,6 +46,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
 
     public isActiveSingleForm: boolean = false;
     public isActiveMultipleForm: boolean = false;
+    public isChangeMultipleForm: boolean = false;
     public errorMessage = String.Empty;
 
     public dataItem: RowPermissionsForRoleInfo;
@@ -63,7 +64,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
 
     public entity: ItemInfo | undefined;
     public singleFormSelectedValue: string;
-    public singleFormSelectedModel: ItemInfo;
+    public singleFormSelectedModel: ItemInfo | undefined;
     public multipleFormItemsSelected: number[];
 
     permissionValue3: string;
@@ -101,6 +102,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
             this.dataItem = res;
 
             this.singleFormSelectedValue = '';
+            this.singleFormSelectedModel = undefined;
             this.ddlPermissionTypeSelected = 0;
 
             this.permissionValue3 = String.Empty;
@@ -120,10 +122,12 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
     }
 
     getRoles() {
+        this.sppcLoading.show();
         this.viewRowPermissionService.getAll(LookupApi.Roles).subscribe(res => {
             var data = res.json();
             this.rolesArray = data;
             this.ddlRolesData = data;
+            this.sppcLoading.hide();
         })
     }
 
@@ -133,9 +137,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
 
     openSingleForm() {
         this.errorMessage = '';
-
         this.updateDataItem();
-
         this.isActiveSingleForm = true;
     }
 
@@ -151,7 +153,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
         var rowPermission = this.dataItem.rowPermissions.find(f => f.viewId == this.viewId);
         if (rowPermission) {
 
-            if (rowPermission.items.length > 0 && rowPermission.accessMode =="SpecificRecords") {
+            if (rowPermission.items.length > 0 && rowPermission.accessMode == "SpecificRecords") {
                 this.permissionValue3 = "سطرهای انتخاب شده";
             }
             else {
@@ -222,7 +224,9 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
     }
 
     openMultipleForm() {
+        // debugger;
         this.errorMessage = '';
+
         this.entity = this.singleFormSelectedModel;
         var row = this.dataItem.rowPermissions.find(f => f.viewId == this.viewId);
         if (row)
@@ -235,14 +239,21 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
         this.errorMessage = '';
         this.entity = undefined;
         this.dataRowPermission = undefined;
+        this.multipleFormItemsSelected = [];
         this.isActiveMultipleForm = false;
+        this.isChangeMultipleForm = false;
     }
 
     saveMultipleFormHandler(items: number[]) {
-        debugger;
+        //debugger;
 
         this.multipleFormItemsSelected = items;
+        this.isChangeMultipleForm = true;
+        this.updateDataItem();
+
         this.isActiveMultipleForm = false;
+
+        console.log(this.dataItem);
     }
 
     saveRowPermission() {
@@ -286,19 +297,23 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
                         break;
                     }
                     case PermissionType.SpecificRecords: {
-                        rowPermissionsArray[index].accessMode = "SpecificRecords";
-                        rowPermissionsArray[index].value = 0;
-                        rowPermissionsArray[index].value2 = 0;
-                        rowPermissionsArray[index].textValue = '';
-                        rowPermissionsArray[index].items = this.multipleFormItemsSelected;
+                        if (this.isChangeMultipleForm) {
+                            rowPermissionsArray[index].accessMode = "SpecificRecords";
+                            rowPermissionsArray[index].value = 0;
+                            rowPermissionsArray[index].value2 = 0;
+                            rowPermissionsArray[index].textValue = '';
+                            rowPermissionsArray[index].items = this.multipleFormItemsSelected;
+                        }
                         break;
                     }
                     case PermissionType.AllExceptSpecificRecords: {
-                        rowPermissionsArray[index].accessMode = "AllExceptSpecificRecords";
-                        rowPermissionsArray[index].value = 0;
-                        rowPermissionsArray[index].value2 = 0;
-                        rowPermissionsArray[index].textValue = '';
-                        rowPermissionsArray[index].items = this.multipleFormItemsSelected;
+                        if (this.isChangeMultipleForm) {
+                            rowPermissionsArray[index].accessMode = "AllExceptSpecificRecords";
+                            rowPermissionsArray[index].value = 0;
+                            rowPermissionsArray[index].value2 = 0;
+                            rowPermissionsArray[index].textValue = '';
+                            rowPermissionsArray[index].items = this.multipleFormItemsSelected;
+                        }
                         break;
                     }
                     case PermissionType.SpecificReference: {

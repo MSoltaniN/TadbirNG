@@ -13,7 +13,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { ViewRowPermissionService, ItemInfo } from '../../service/index';
 import { LookupApi } from '../../service/api/index';
-import { TreeItemLookup } from '@progress/kendo-angular-treeview';
+import { TreeItemLookup, TreeItem } from '@progress/kendo-angular-treeview';
 
 
 
@@ -42,24 +42,24 @@ export class ViewRowPermissionSingleFormComponent extends DefaultComponent {
     public singleFormCategories: any[] = [];
     public singleFormData: any[] = [];
 
-    public singleFormCheckedKey: number = 0;
+    public singleFormCheckedKey: number[] = [];
     public searchValue: string;
+
+    selectedKey: number = 0;
 
     //create properties
     @Input() public active: boolean = false;
     @Input() public errorMessage: string = '';
 
-    //@Input() public set model(item: AccountItemBriefInfo) {
-    //    if (item) {
-    //        this.mainComponentModel = item;
-    //    }
-    //    else {
-    //        this.relatedComponentCategories = undefined;
-    //        this.relatedComponentCheckedKeys = [];
-    //        this.resultCategories = [];
-    //        this.resultCheckedKeys = [];
-    //    }
-    //}
+    @Input() public set model(item: ItemInfo) {
+        debugger;
+        this.singleFormCheckedKey = [];
+        this.selectedKey = 0;
+        if (item) {
+            this.singleFormCheckedKey.push(item.key);
+            this.selectedKey = item.key;
+        }
+    }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
     @Output() save: EventEmitter<ItemInfo> = new EventEmitter();
@@ -68,9 +68,9 @@ export class ViewRowPermissionSingleFormComponent extends DefaultComponent {
     //Events
     public onSave(e: any): void {
         e.preventDefault();
+        this.searchValue = String.Empty;
+        this.onSearch();
         this.save.emit(this.singleFormCategories.find(f => f.key == this.singleFormCheckedKey));
-        this.singleFormCheckedKey = 0;
-        //this.active = true;
     }
 
     public onCancel(e: any): void {
@@ -80,7 +80,10 @@ export class ViewRowPermissionSingleFormComponent extends DefaultComponent {
 
     private closeForm(): void {
         this.active = false;
-
+        this.singleFormCheckedKey = [];
+        if (this.selectedKey>0) {
+            this.singleFormCheckedKey.push(this.selectedKey);
+        }
         this.cancel.emit();
     }
     //Events
@@ -103,12 +106,8 @@ export class ViewRowPermissionSingleFormComponent extends DefaultComponent {
         this.onSearch();
     }
 
-    public handleSingleFormChecking(itemLookup: TreeItemLookup): void {
-        var itemId = itemLookup.item.dataItem.key;
-        if (this.singleFormCheckedKey == itemId)
-            this.singleFormCheckedKey = 0;
-        else
-            this.singleFormCheckedKey = itemId
+    public checkByKey(item: TreeItem) {
+        return item.dataItem.key;
     }
 
     getCategories() {

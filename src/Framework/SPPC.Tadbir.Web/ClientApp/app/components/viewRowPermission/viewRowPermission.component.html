@@ -45,7 +45,7 @@
                                     [(ngModel)]="ddlPermissionTypeSelected"
                                     [value]="ddlPermissionTypeSelected"
                                     (valueChange)="handlePermissionTypeChange($event)"
-                                    [defaultItem]="{ value:'ViewRowPermission.DdlPermissionItems.Default' | translate  , key: 1}">
+                                    [defaultItem]="{ value:'' | translate  , key: null}">
                     <ng-template kendoDropDownListValueTemplate let-dataItem>
                         {{ dataItem.value | translate }}
                     </ng-template>
@@ -110,6 +110,7 @@
         <div class="clearfix"></div>
 
         <viewRowPermission-single-form-component [active]="isActiveSingleForm" [errorMessage]="errorMessage"
+                                                 [model]="singleFormSelectedModel"
                                                  (save)="saveSingleFormHandler($event)"
                                                  (cancel)="cancelSingleFormHandler()">
         </viewRowPermission-single-form-component>
