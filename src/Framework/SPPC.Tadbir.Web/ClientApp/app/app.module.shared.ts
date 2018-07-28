@@ -113,7 +113,8 @@ import { EnviromentComponent } from './class/enviroment.component';
 import { Permissions } from './security/permissions';
 import { SppcGridDateFilter, FilterDatePickerDirective } from './controls/grid/spp-grid-date-filter';
 import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
-import { GeneralErrorHandler } from './components/error/error.component';
+import { GeneralErrorHandler } from './class/error.handler';
+
 
 
 @NgModule({

@@ -233,7 +233,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\company\company-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\costCenter\costCenter-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\detailAccount\detailAccount-form.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\error\error.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\class\error.handler.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\fiscalPeriod\fiscalPeriod-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\fiscalPeriod\fiscalPeriod.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\fiscalPeriod\fiscalPeriod-roles-form.component.ts" />
@@ -316,6 +316,10 @@
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.0" />
     <PackageReference Include="StyleCop.MSBuild" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\app\components\error\" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

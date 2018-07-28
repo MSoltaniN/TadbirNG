@@ -1,21 +1,14 @@
 ﻿import { Component, OnInit, Input, Injector, ErrorHandler, Injectable, Host, ViewContainerRef } from "@angular/core";
 import { RTL } from "@progress/kendo-angular-l10n";
-import { Layout } from "../../enviroment";
-import { DefaultComponent } from "../../class/default.component";
+
+
 import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "ng2-translate";
-import { SppcLoadingService } from "../../controls/sppcLoading/sppc-loading.service";
-import { Router } from "@angular/router";
-import { AppComponent } from "../app/app.component";
 
-@Component({
-    selector: 'GeneralErrorHandler',    
-    providers: [{
-        provide: RTL,
-        useFactory: getLayoutModule,
-        deps: [Layout]
-    },AppComponent]
-})
+import { Router } from "@angular/router";
+import { SppcLoadingService } from "../controls/sppcLoading";
+
+
     
 @Injectable()
 export class GeneralErrorHandler implements ErrorHandler, OnInit {
@@ -88,8 +81,4 @@ export class GeneralErrorHandler implements ErrorHandler, OnInit {
     }
     
     
-}
-
-export function getLayoutModule(layout: Layout) {
-    return layout.getLayout();
 }
