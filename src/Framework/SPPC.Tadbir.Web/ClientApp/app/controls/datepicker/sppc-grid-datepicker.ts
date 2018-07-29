@@ -10,7 +10,7 @@ import { KeyCode } from '../../enum/KeyCode';
 
 @Component({
     selector: 'sppc-grid-datepicker',
-    template: `<dp-date-picker
+    template: `<dp-date-picker mode="{{mode}}"
     class="k-textbox" 
     [(ngModel)]="dateObject"
     (onChange)="DateChange($event)" 
@@ -21,24 +21,9 @@ import { KeyCode } from '../../enum/KeyCode';
     /deep/ dp-date-picker.dp-material .dp-picker-input { width:100% !important; } 
     dp-date-picker{width:100%; direction:ltr;} 
     /deep/ dp-day-calendar{position: fixed;}
-    /deep/ sppc-datepicker input{
-    border-color: rgba(0, 0, 0, 0.15);
-    height: calc(1.42857em + (4px * 2) + (1px * 2)) !important;
-    /* border-style: solid; */
-    border-radius: 2px;
-    padding: 4px 8px;
-    width: 12.4em;
-    box-sizing: border-box;
-    border-width: 1px;
-    border-style: solid;
-    outline: 0;
-    font: inherit;
-    font-size: 14px;
-    line-height: 1.42857em;
-    display: inline-flex;
-    vertical-align: middle;
-    position: relative;
-    -webkit-appearance: none;}
+/deep/ dp-time-select{ display:none;}
+/deep/ dp-day-time-calendar { position: fixed; } /deep/ dp-day-time-calendar > dp-day-calendar{position:initial}
+/deep/ dp-day-time-calendar >  dp-time-select { display:block;}
        `],
     providers: [
         {
@@ -63,13 +48,12 @@ export class SppcGridDatepicker implements OnInit, OnDestroy, ControlValueAccess
     public isDate : boolean = false;
     public isDateTime: boolean = false;
 
-    public mode: string = 'day';
+    public mode: string = 'daytime';
 
     constructor(private datepipe: DatePipe, private render: Renderer2) {
     }
 
     ngOnInit() {
-
         var dateFormat = "YYYY/MM/DD"
         var lang = localStorage.getItem('lang');
         if (lang) {
