@@ -492,4 +492,10 @@
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="VoucherDisplay" xml:space="preserve">
+    <value>Voucher no. {0} ({1})</value>
+  </data>
+  <data name="VoucherLineDisplay" xml:space="preserve">
+    <value>Debit: {0}, Credit : {1}, Description : {2}</value>
+  </data>
 </root>

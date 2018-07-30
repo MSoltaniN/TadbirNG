@@ -227,11 +227,18 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<Voucher, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Description));
+                .ForMember(
+                    dest => dest.Value,
+                    opts => opts.MapFrom(
+                        src => String.Join(",", new[] { "VoucherDisplay", src.No, src.Date.ToShortDateString() })));
 
             mapperConfig.CreateMap<VoucherLine, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Description));
+                .ForMember(
+                    dest => dest.Value,
+                    opts => opts.MapFrom(
+                        src => String.Join("|",
+                            new[] { "VoucherLineDisplay", src.Debit.ToString("C0"), src.Credit.ToString("C0"), src.Description })));
 
             mapperConfig.CreateMap<Currency, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))

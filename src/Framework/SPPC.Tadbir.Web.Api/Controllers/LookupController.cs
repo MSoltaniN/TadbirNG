@@ -3,9 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Common;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
@@ -63,7 +65,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetVouchersLookupAsync(int fpId, int branchId)
         {
-            var lookup = await _repository.GetVouchersAsync(fpId, branchId);
+            var lang = Request.Headers["Accept-Language"].ToString();
+            lang = lang ?? "fa";
+            var items = await _repository.GetVouchersAsync(fpId, branchId);
+            var lookup = items.ToList();
+            foreach (var kv in lookup)
+            {
+                var valueItems = kv.Value.Split(',');
+                var date = DateTime.Parse(valueItems[2]);
+                var dateDisplay = lang.StartsWith("fa")
+                    ? JalaliDateTime.FromDateTime(date).ToShortDateString()
+                    : date.ToShortDateString();
+                kv.Value = String.Format(_strings[valueItems[0]], valueItems[1], dateDisplay);
+            }
+
             return Json(lookup);
         }
 
@@ -72,7 +87,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetVoucherLinesLookupAsync(int fpId, int branchId)
         {
-            var lookup = await _repository.GetVoucherLinesAsync(fpId, branchId);
+            var items = await _repository.GetVoucherLinesAsync(fpId, branchId);
+            var lookup = items.ToList();
+            foreach (var kv in lookup)
+            {
+                var valueItems = kv.Value.Split('|');
+                kv.Value = String.Format(_strings[valueItems[0]], valueItems[1], valueItems[2], valueItems[3]);
+            }
+
             return Json(lookup);
         }
 

@@ -119,7 +119,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetByCriteriaAsync(voucher => voucher.FiscalPeriod.Id == fpId
                     && voucher.Branch.Id == branchId);
             return vouchers
-                .OrderBy(voucher => voucher.Date)
+                .OrderBy(voucher => voucher.No)
                 .Select(voucher => _mapper.Map<KeyValue>(voucher));
         }
 
@@ -137,7 +137,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetByCriteriaAsync(line => line.FiscalPeriod.Id == fpId
                     && line.Branch.Id == branchId);
             return lines
-                .OrderBy(line => line.Description)
+                .OrderBy(line => line.Id)
                 .Select(line => _mapper.Map<KeyValue>(line));
         }
 
