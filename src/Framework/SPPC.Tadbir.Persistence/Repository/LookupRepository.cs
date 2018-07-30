@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
@@ -39,16 +41,17 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه سرفصل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetAccountsAsync(int fpId, int branchId)
+        public async Task<IEnumerable<KeyValue>> GetAccountsAsync(int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var accounts = await repository
                 .GetByCriteriaAsync(acc => acc.FiscalPeriod.Id == fpId
                     && acc.Branch.Id == branchId);
             return accounts
-                .OrderBy(acc => acc.FullCode)
-                .Select(acc => _mapper.Map<KeyValue>(acc));
+                .Select(acc => _mapper.Map<KeyValue>(acc))
+                .Apply(gridOptions);
         }
 
         /// <summary>
@@ -57,16 +60,17 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه تفصیلی های شناور تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetDetailAccountsAsync(int fpId, int branchId)
+        public async Task<IEnumerable<KeyValue>> GetDetailAccountsAsync(int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
             var detailAccounts = await repository
                 .GetByCriteriaAsync(det => det.FiscalPeriod.Id == fpId
                     && det.Branch.Id == branchId);
             return detailAccounts
-                .OrderBy(det => det.FullCode)
-                .Select(det => _mapper.Map<KeyValue>(det));
+                .Select(det => _mapper.Map<KeyValue>(det))
+                .Apply(gridOptions);
         }
 
         /// <summary>
@@ -75,16 +79,17 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه مراکز هزینه تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetCostCentersAsync(int fpId, int branchId)
+        public async Task<IEnumerable<KeyValue>> GetCostCentersAsync(int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
             var costCenters = await repository
                 .GetByCriteriaAsync(cc => cc.FiscalPeriod.Id == fpId
                     && cc.Branch.Id == branchId);
             return costCenters
-                .OrderBy(cc => cc.FullCode)
-                .Select(cc => _mapper.Map<KeyValue>(cc));
+                .Select(cc => _mapper.Map<KeyValue>(cc))
+                .Apply(gridOptions);
         }
 
         /// <summary>
@@ -93,16 +98,17 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه پروژه های تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetProjectsAsync(int fpId, int branchId)
+        public async Task<IEnumerable<KeyValue>> GetProjectsAsync(int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<Project>();
             var projects = await repository
                 .GetByCriteriaAsync(prj => prj.FiscalPeriod.Id == fpId
                     && prj.Branch.Id == branchId);
             return projects
-                .OrderBy(prj => prj.FullCode)
-                .Select(prj => _mapper.Map<KeyValue>(prj));
+                .Select(prj => _mapper.Map<KeyValue>(prj))
+                .Apply(gridOptions);
         }
 
         /// <summary>
@@ -111,16 +117,17 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه اسناد مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetVouchersAsync(int fpId, int branchId)
+        public async Task<IEnumerable<KeyValue>> GetVouchersAsync(int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<Voucher>();
             var vouchers = await repository
                 .GetByCriteriaAsync(voucher => voucher.FiscalPeriod.Id == fpId
                     && voucher.Branch.Id == branchId);
             return vouchers
-                .OrderBy(voucher => voucher.No)
-                .Select(voucher => _mapper.Map<KeyValue>(voucher));
+                .Select(voucher => _mapper.Map<KeyValue>(voucher))
+                .Apply(gridOptions);
         }
 
         /// <summary>
@@ -129,16 +136,17 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه آرتیکل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        public async Task<IEnumerable<KeyValue>> GetVoucherLinesAsync(int fpId, int branchId)
+        public async Task<IEnumerable<KeyValue>> GetVoucherLinesAsync(int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
             var lines = await repository
                 .GetByCriteriaAsync(line => line.FiscalPeriod.Id == fpId
                     && line.Branch.Id == branchId);
             return lines
-                .OrderBy(line => line.Id)
-                .Select(line => _mapper.Map<KeyValue>(line));
+                .Select(line => _mapper.Map<KeyValue>(line))
+                .Apply(gridOptions);
         }
 
         /// <summary>

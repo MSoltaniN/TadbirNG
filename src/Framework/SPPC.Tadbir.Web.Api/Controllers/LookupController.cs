@@ -7,14 +7,13 @@ using SPPC.Framework.Common;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public partial class LookupController : Controller
+    public partial class LookupController : ApiControllerBase
     {
         public LookupController(ILookupRepository repository, IStringLocalizer<AppStrings> strings)
         {
@@ -29,7 +28,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAccountsLookupAsync(int fpId, int branchId)
         {
-            var accountLookup = await _repository.GetAccountsAsync(fpId, branchId);
+            var accountLookup = await _repository.GetAccountsAsync(fpId, branchId, GridOptions);
             return Json(accountLookup);
         }
 
@@ -38,7 +37,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetDetailAccountsLookupAsync(int fpId, int branchId)
         {
-            var lookup = await _repository.GetDetailAccountsAsync(fpId, branchId);
+            var lookup = await _repository.GetDetailAccountsAsync(fpId, branchId, GridOptions);
             return Json(lookup);
         }
 
@@ -47,7 +46,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetCostCentersLookupAsync(int fpId, int branchId)
         {
-            var lookup = await _repository.GetCostCentersAsync(fpId, branchId);
+            var lookup = await _repository.GetCostCentersAsync(fpId, branchId, GridOptions);
             return Json(lookup);
         }
 
@@ -56,7 +55,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetProjectsLookupAsync(int fpId, int branchId)
         {
-            var lookup = await _repository.GetProjectsAsync(fpId, branchId);
+            var lookup = await _repository.GetProjectsAsync(fpId, branchId, GridOptions);
             return Json(lookup);
         }
 
@@ -67,7 +66,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var lang = Request.Headers["Accept-Language"].ToString();
             lang = lang ?? "fa";
-            var items = await _repository.GetVouchersAsync(fpId, branchId);
+            var items = await _repository.GetVouchersAsync(fpId, branchId, GridOptions);
             var lookup = items.ToList();
             foreach (var kv in lookup)
             {
@@ -87,7 +86,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetVoucherLinesLookupAsync(int fpId, int branchId)
         {
-            var items = await _repository.GetVoucherLinesAsync(fpId, branchId);
+            var items = await _repository.GetVoucherLinesAsync(fpId, branchId, GridOptions);
             var lookup = items.ToList();
             foreach (var kv in lookup)
             {
@@ -163,6 +162,5 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         #endregion
 
         private readonly ILookupRepository _repository;
-        private readonly IStringLocalizer<AppStrings> _strings;
     }
 }
