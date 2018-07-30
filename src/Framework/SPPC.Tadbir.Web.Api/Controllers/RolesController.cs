@@ -18,7 +18,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class RolesController : ApiControllerBase<RoleFullViewModel>
+    public class RolesController : ValidatingController<RoleFullViewModel>
     {
         public RolesController(ISecurityRepository repository, IStringLocalizer<AppStrings> strings)
             : base(strings)

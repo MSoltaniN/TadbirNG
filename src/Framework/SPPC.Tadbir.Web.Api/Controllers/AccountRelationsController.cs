@@ -14,7 +14,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class AccountRelationsController : ApiControllerBase<AccountItemRelationsViewModel>
+    public class AccountRelationsController : ValidatingController<AccountItemRelationsViewModel>
     {
         public AccountRelationsController(
             IRelationRepository repository, IConfigRepository configRepository, IStringLocalizer<AppStrings> strings)

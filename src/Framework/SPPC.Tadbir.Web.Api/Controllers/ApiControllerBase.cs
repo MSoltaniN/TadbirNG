@@ -8,22 +8,15 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
-    public abstract class ApiControllerBase<TViewModel> : Controller
-        where TViewModel : class, new()
+    public abstract class ApiControllerBase : Controller
     {
         protected ApiControllerBase(IStringLocalizer<AppStrings> strings = null)
         {
             _strings = strings;
-        }
-
-        protected abstract string EntityNameKey
-        {
-            get;
         }
 
         protected SecurityContext SecurityContext
@@ -48,37 +41,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 : NotFound() as IActionResult;
 
             return result;
-        }
-
-        protected virtual IActionResult BasicValidationResult(TViewModel item, int itemId = 0)
-        {
-            return GetBasicValidationResult(item, itemId);
-        }
-
-        protected virtual IActionResult BasicValidationResult<TOtherModel>(TOtherModel item, int itemId = 0)
-        {
-            return GetBasicValidationResult(item, itemId);
-        }
-
-        private IActionResult GetBasicValidationResult(object item, int itemId)
-        {
-            if (item == null)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, EntityNameKey));
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            int id = Int32.Parse(Reflector.GetProperty(item, "Id").ToString());
-            if (itemId != id)
-            {
-                return BadRequest(_strings.Format(AppStrings.RequestFailedConflict, EntityNameKey));
-            }
-
-            return Ok();
         }
 
         private SecurityContext GetSecurityContext()

@@ -17,7 +17,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class AccountsController : ApiControllerBase<AccountViewModel>
+    public class AccountsController : ValidatingController<AccountViewModel>
     {
         public AccountsController(IAccountRepository repository, IStringLocalizer<AppStrings> strings = null)
             : base(strings)

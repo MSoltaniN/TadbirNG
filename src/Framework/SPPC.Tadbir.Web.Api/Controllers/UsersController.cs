@@ -21,7 +21,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class UsersController : ApiControllerBase<UserViewModel>
+    public class UsersController : ValidatingController<UserViewModel>
     {
         public UsersController(
             ISecurityRepository repository,

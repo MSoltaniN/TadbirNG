@@ -14,7 +14,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class CompaniesController : ApiControllerBase<CompanyViewModel>
+    public class CompaniesController : ValidatingController<CompanyViewModel>
     {
         public CompaniesController(
             ICompanyRepository repository, IStringLocalizer<AppStrings> strings = null)
