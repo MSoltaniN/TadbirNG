@@ -210,7 +210,7 @@ namespace SPPC.Framework.Persistence
             Verify.ArgumentNotNull(queryable, "queryable");
             return await queryable
                 .Where(criteria)
-                .Apply(gridOptions)
+                .Apply(gridOptions, false)
                 .CountAsync();
         }
 
@@ -497,7 +497,7 @@ namespace SPPC.Framework.Persistence
         {
             return GetEntityQuery()
                 .Where(criteria ?? (entity => true))
-                .Apply(gridOptions);
+                .Apply(gridOptions, false);
         }
 
         private DbContext _dataContext;

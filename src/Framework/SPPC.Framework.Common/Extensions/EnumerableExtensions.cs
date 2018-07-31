@@ -17,13 +17,14 @@ namespace SPPC.Framework.Extensions
         /// <typeparam name="T">Type of items in enumerable instance</typeparam>
         /// <param name="enumerable">Self reference (this) of enumerable instance</param>
         /// <param name="gridOptions">Options for filtering, sorting and paging items</param>
+        /// <param name="withPaging">Indicates if paging needs to be applied; default is true.</param>
         /// <returns>This object</returns>
-        public static IEnumerable<T> Apply<T>(this IEnumerable<T> enumerable, GridOptions gridOptions)
+        public static IEnumerable<T> Apply<T>(this IEnumerable<T> enumerable, GridOptions gridOptions, bool withPaging = true)
         {
             Verify.ArgumentNotNull(enumerable, "enumerable");
             return enumerable
                 .AsQueryable()
-                .Apply(gridOptions);
+                .Apply(gridOptions, withPaging);
         }
     }
 }

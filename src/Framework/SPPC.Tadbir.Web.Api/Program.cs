@@ -14,8 +14,8 @@ namespace SPPC.Tadbir.Web.Api
         public static void Main(string[] args)
         {
             var builder = new FilterExpressionBuilder();
-            var gridOptions = new GridOptions() /* { Paging = new GridPaging() { PageIndex = 1, PageSize = 5 } }*/;
-            var codeLike = new GridFilter() { FieldName = "Value", FieldTypeName = "System.String", Operator = GridFilterOperator.Contains, Value = "00" };
+            var gridOptions = new GridOptions() { Paging = new GridPaging() { PageIndex = 1, PageSize = 4 } };
+            var codeLike = new GridFilter() { FieldName = "FullCode", FieldTypeName = "System.String", Operator = GridFilterOperator.Contains, Value = "00" };
             gridOptions.Filter = builder
                 .New(codeLike)
                 .Build();
