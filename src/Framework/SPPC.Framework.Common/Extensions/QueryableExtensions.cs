@@ -17,8 +17,9 @@ namespace SPPC.Framework.Extensions
         /// <typeparam name="T">Type of items in queryable instance</typeparam>
         /// <param name="queryable">Self reference (this) of queryable instance</param>
         /// <param name="gridOptions">Options for filtering, sorting and paging items</param>
+        /// <param name="withPaging">Indicates if paging needs to be applied; default is true.</param>
         /// <returns>This object</returns>
-        public static IQueryable<T> Apply<T>(this IQueryable<T> queryable, GridOptions gridOptions)
+        public static IQueryable<T> Apply<T>(this IQueryable<T> queryable, GridOptions gridOptions, bool withPaging = true)
         {
             Verify.ArgumentNotNull(queryable, "queryable");
             var options = gridOptions ?? new GridOptions();
@@ -36,7 +37,7 @@ namespace SPPC.Framework.Extensions
             options.Paging = options.Paging ?? new GridPaging();
             options.Paging.PageIndex = Math.Max(1, options.Paging.PageIndex);   // Prevent zero or negative page index
             options.Paging.PageSize = Math.Max(1, options.Paging.PageSize);     // Prevent zero or negative page size
-            queryable = (GridPaging.IsPagingEnabled(options.Paging))
+            queryable = (withPaging)
                 ? queryable
                     .Skip((options.Paging.PageIndex - 1) * options.Paging.PageSize)
                     .Take(options.Paging.PageSize)
