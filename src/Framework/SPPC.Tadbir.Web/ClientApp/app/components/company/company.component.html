@@ -28,8 +28,8 @@
             <ng-template kendoGridNoRecordsTemplate>
                 {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
             </ng-template>
-            <ng-template kendoGridToolbarTemplate>
-                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'Company.New' | translate }}</button>
+            <ng-template kendoGridToolbarTemplate let-company>
+                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(company != undefined ? company.id : undefined , true)" [icon]="'plus-outline'" type="button">{{ 'Company.New' | translate }}</button>
                 <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
                 <grid-setting  entityTypeName="Company"></grid-setting>
             </ng-template>
