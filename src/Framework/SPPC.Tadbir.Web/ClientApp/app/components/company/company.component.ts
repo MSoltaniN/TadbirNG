@@ -97,6 +97,8 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Company, CompanyPermissions.View);
         this.reloadGrid();
+        if (this.parentCompany)
+            this.parentCompany.addChildCompany(this);
     }
 
     /**
@@ -150,6 +152,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                     url = String.Format(CompanyApi.CompanyChildren, this.parent.id);
             }
             this.companyService.getAll(url, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+                /*
                 var resData = res.json();
                 var totalCount = 0;
                 if (insertedModel) {
@@ -179,20 +182,54 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                     data: resData,
                     total: totalCount
                 }
+                */
 
+                var resData = res.json();
+                
+                var totalCount = 0;
+                if (insertedModel) {
+                    var rows = (resData as Array<Company>);
+                    var index = rows.findIndex(p => p.id == insertedModel.id);
+                    if (index >= 0) {
+                        rows.splice(index, 1);
+                        rows.splice(0, 0, insertedModel);
+                    }
+                    else {
+                        if (rows.length == this.pageSize) {
+                            rows.splice(this.pageSize - 1, 1);
+                        }
+                        rows.splice(0, 0, insertedModel);
+                    }
 
+                    resData = rows;
+                }
+                if (res.headers != null) {
+                    var headers = res.headers != undefined ? res.headers : null;
+                    if (headers != null) {
+                        var retheader = headers.get('X-Total-Count');
+                        if (retheader != null)
+                            totalCount = parseInt(retheader.toString());
+                    }
+                }
+
+                this.rowData = {
+                    data: resData,
+                    total: totalCount
+                }
+                
                 //زمانی که تعداد رکورد ها صفر باشد باید کامپوننت پدر رفرش شود
                 if (totalCount == 0) {
                     if (this.parentCompany && this.parentCompany.Childrens) {
                         var thisIndex = this.parentCompany.Childrens.findIndex(p => p == this);
                         if (thisIndex >= 0)
                             this.parentCompany.Childrens.splice(thisIndex);
-
-
+                        
                         this.parentCompany.reloadGrid();
-                    }
 
+                    }
+                    
                 }
+                
 
                 this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
@@ -270,11 +307,9 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
     public addNew(parentModelId?: number, addToThis?: boolean) {
         this.isNew = true;
         this.editDataItem = new CompanyInfo();
-        if (parentModelId == undefined)
-            this.parentId = this.CompanyId;
-        else
-            if (parentModelId)
-                this.parentId = parentModelId;
+        
+        if (parentModelId)
+            this.parentId = parentModelId;
 
         if (addToThis)
             this.addToContainer = addToThis;
@@ -333,8 +368,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                     else if (model.parentId != undefined) {
                         this.reloadGrid();
                     }
-
-                    this.reloadGrid(insertedModel);
+                    
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;

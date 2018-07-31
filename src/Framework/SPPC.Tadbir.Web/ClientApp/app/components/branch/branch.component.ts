@@ -102,6 +102,8 @@ export class BranchComponent extends DefaultComponent implements OnInit {
         this.viewAccess = this.isAccess(SecureEntity.Branch, BranchPermissions.View);
 
         this.reloadGrid();
+        if (this.parentBranch)
+            this.parentBranch.addChildBranch(this);
     }
 
     /**
