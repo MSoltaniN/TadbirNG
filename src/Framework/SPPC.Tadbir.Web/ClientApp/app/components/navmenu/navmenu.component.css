@@ -19,6 +19,55 @@ li.link-active a:focus {
     z-index: 1;   
 }
 
+/* Circle Avatar Styles */
+
+.circle {
+    line-height: 0; /* remove line-height */
+    display: inline-block; /* circle wraps image */
+    margin: 5px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 50%; /* relative value */
+    /*box-shadow: 0px 0px 5px rgba(0,0,0,0.4);*/
+    transition: linear 0.25s;
+    height: 48px;
+    width: 48px;
+    padding:0;
+}
+
+    .circle img {
+        border-radius: 50%; /* relative value for
+				   adjustable image size */
+        background-color: #4189c7;
+    }
+
+    .nopad
+    {
+        padding:0px!important;
+    }
+
+    .fl
+    {
+        float:left;
+    }
+
+    .fr
+    {
+        float:right;
+    }
+
+    .circle:hover {
+        transition: ease-out 0.2s;
+        border: 2px solid rgba(255,255,255,0.8);
+        -webkit-transition: ease-out 0.2s;
+    }
+
+a.circle {
+    color: transparent;
+    width: 48px!important;
+    padding:0!important;
+}
+/* IE fix: removes blue border */	
+
 @media (min-width: 768px) {
     /* On small screens, convert the nav menu to a vertical sidebar */
     .main-nav {
@@ -58,6 +107,11 @@ li.link-active a:focus {
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+
+    .fr {
+        float: left !important;
+    }
 }
 
 
@@ -77,4 +131,31 @@ li.link-active a:focus {
 ::-webkit-scrollbar-thumb {
     background: #4c4646;
     border-radius: 10px;
+}
+
+
+.navbar-brand-right{
+    float:right!important;
+}
+
+.navbar-brand-left {
+    float: left !important;
+}
+
+.fr {
+    float: right !important;
+}
+
+.fl {
+    float: left !important;
+}
+
+.rightButton {
+    margin-top: 13px;
+}
+
+.navbar-brand
+{
+    margin-top:10px;
+    font-size:14px;
 }
