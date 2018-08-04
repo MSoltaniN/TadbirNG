@@ -50,10 +50,17 @@ export class NavMenuComponent extends DefaultComponent implements OnInit {
 
     }
 
-    onMenuClick(event: any) {
+    onMenuClick(event: any,id:number) {
         if(event)
             if (event.srcElement.className == "menuitem nav-link child")
                 this.renderer2.removeClass(this.el.nativeElement.querySelector('.navbar-collapse'), 'in');
+
+        for (let mnu of this.menuList) {
+            if (id != mnu.id)
+                this.renderer2.removeClass(this.el.nativeElement.querySelector('.navbar-collapse').querySelector('#div' + mnu.id.toString()), 'in');
+        }
+
+        event.srcElement.scrollIntoView();
     }
 
     isCollapsed: boolean = true;
