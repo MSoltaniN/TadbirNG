@@ -14,7 +14,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class FiscalPeriodsController : ApiControllerBase<FiscalPeriodViewModel>
+    public class FiscalPeriodsController : ValidatingController<FiscalPeriodViewModel>
     {
         public FiscalPeriodsController(
             IFiscalPeriodRepository repository, IStringLocalizer<AppStrings> strings = null)

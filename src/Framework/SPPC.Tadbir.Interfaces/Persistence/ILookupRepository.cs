@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Helpers;
+using SPPC.Framework.Presentation;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -19,8 +20,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه سرفصل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        Task<IEnumerable<KeyValue>> GetAccountsAsync(int fpId, int branchId);
+        Task<IEnumerable<KeyValue>> GetAccountsAsync(int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده را
@@ -28,8 +30,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه تفصیلی های شناور تعریف شده در دوره و شعبه مشخص شده</returns>
-        Task<IEnumerable<KeyValue>> GetDetailAccountsAsync(int fpId, int branchId);
+        Task<IEnumerable<KeyValue>> GetDetailAccountsAsync(int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده را
@@ -37,8 +40,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه مراکز هزینه تعریف شده در دوره و شعبه مشخص شده</returns>
-        Task<IEnumerable<KeyValue>> GetCostCentersAsync(int fpId, int branchId);
+        Task<IEnumerable<KeyValue>> GetCostCentersAsync(int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، پروژه های تعریف شده در دوره مالی و شعبه مشخص شده را
@@ -46,8 +50,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه پروژه های تعریف شده در دوره و شعبه مشخص شده</returns>
-        Task<IEnumerable<KeyValue>> GetProjectsAsync(int fpId, int branchId);
+        Task<IEnumerable<KeyValue>> GetProjectsAsync(int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را
@@ -55,8 +60,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه اسناد مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        Task<IEnumerable<KeyValue>> GetVouchersAsync(int fpId, int branchId);
+        Task<IEnumerable<KeyValue>> GetVouchersAsync(int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، آرتیکل های مالی تعریف شده در دوره مالی و شعبه مشخص شده را
@@ -64,8 +70,9 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه آرتیکل های مالی تعریف شده در دوره و شعبه مشخص شده</returns>
-        Task<IEnumerable<KeyValue>> GetVoucherLinesAsync(int fpId, int branchId);
+        Task<IEnumerable<KeyValue>> GetVoucherLinesAsync(int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، ارزهای تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند

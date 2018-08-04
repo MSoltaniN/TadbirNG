@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
+﻿import { Component, OnInit, Input, Renderer2, Optional, Host, SkipSelf } from '@angular/core';
 import { CompanyService, CompanyInfo } from '../../service/index';
 import { Company } from '../../model/index';
 import { ToastrService } from 'ngx-toastr'; /** add this component for message in client side */
@@ -46,6 +46,10 @@ export function getLayoutModule(layout: Layout) {
 
 export class CompanyComponent extends DefaultComponent implements OnInit {
 
+
+    //#region Fields
+    public Childrens: Array<CompanyComponent>;
+
     @Input() public parent: Company;
     @Input() public isChild: boolean = false;
 
@@ -73,15 +77,40 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
+    addToContainer: boolean = false;
+
+    //#endregion
+
+    //#region Constructor
+
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+        private companyService: CompanyService, public renderer: Renderer2, public metadata: MetaDataService,
+        @SkipSelf() @Host() @Optional() private parentCompany: CompanyComponent) 
+    {
+        super(toastrService, translate, renderer, metadata, Entities.Company, Metadatas.Company);
+    }  
+
+    //#endregion
+
+    //#region Methods
 
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Company, CompanyPermissions.View);
         this.reloadGrid();
+        if (this.parentCompany)
+            this.parentCompany.addChildCompany(this);
     }
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private companyService: CompanyService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.Company, Metadatas.Company);
+    /**
+     * کامپوننت های فرزند را در متغیری اضافه میکند
+     * @param companyComponent کامپوننت شرکت
+     */
+    public addChildCompany(companyComponent: CompanyComponent) {
+
+        if (this.Childrens == undefined) this.Childrens = new Array<CompanyComponent>();
+        if (this.Childrens.findIndex(p => p.parent.id === companyComponent.parent.id) == -1)            
+            this.Childrens.push(companyComponent);
+        
     }
 
     selectionKey(context: RowArgs): string {
@@ -95,16 +124,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
 
     deleteModels(confirm: boolean) {
         if (confirm) {
-            this.sppcLoading.show();
-            //this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
-            //    this.showMessage(this.deleteMsg, MessageType.Info);
-            //    this.selectedRows = [];
-            //    this.reloadGrid();
-            //    this.groupDelete = false;
-            //}, (error => {
-            //    this.sppcLoading.hide();
-            //    this.showMessage(error, MessageType.Warning);
-            //}));
+            this.sppcLoading.show();           
         }
 
         this.groupDelete = false;
@@ -132,6 +152,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                     url = String.Format(CompanyApi.CompanyChildren, this.parent.id);
             }
             this.companyService.getAll(url, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+                /*
                 var resData = res.json();
                 var totalCount = 0;
                 if (insertedModel) {
@@ -161,6 +182,55 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                     data: resData,
                     total: totalCount
                 }
+                */
+
+                var resData = res.json();
+                
+                var totalCount = 0;
+                if (insertedModel) {
+                    var rows = (resData as Array<Company>);
+                    var index = rows.findIndex(p => p.id == insertedModel.id);
+                    if (index >= 0) {
+                        rows.splice(index, 1);
+                        rows.splice(0, 0, insertedModel);
+                    }
+                    else {
+                        if (rows.length == this.pageSize) {
+                            rows.splice(this.pageSize - 1, 1);
+                        }
+                        rows.splice(0, 0, insertedModel);
+                    }
+
+                    resData = rows;
+                }
+                if (res.headers != null) {
+                    var headers = res.headers != undefined ? res.headers : null;
+                    if (headers != null) {
+                        var retheader = headers.get('X-Total-Count');
+                        if (retheader != null)
+                            totalCount = parseInt(retheader.toString());
+                    }
+                }
+
+                this.rowData = {
+                    data: resData,
+                    total: totalCount
+                }
+                
+                //زمانی که تعداد رکورد ها صفر باشد باید کامپوننت پدر رفرش شود
+                if (totalCount == 0) {
+                    if (this.parentCompany && this.parentCompany.Childrens) {
+                        var thisIndex = this.parentCompany.Childrens.findIndex(p => p == this);
+                        if (thisIndex >= 0)
+                            this.parentCompany.Childrens.splice(thisIndex);
+                        
+                        this.parentCompany.reloadGrid();
+
+                    }
+                    
+                }
+                
+
                 this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
                 this.sppcLoading.hide();
@@ -234,14 +304,16 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public addNew(parentModelId?: number) {
+    public addNew(parentModelId?: number, addToThis?: boolean) {
         this.isNew = true;
         this.editDataItem = new CompanyInfo();
-        if (parentModelId == undefined)
-            this.parentId = this.CompanyId;
-        else
-            if (parentModelId)
-                this.parentId = parentModelId;
+        
+        if (parentModelId)
+            this.parentId = parentModelId;
+
+        if (addToThis)
+            this.addToContainer = addToThis;
+
         this.errorMessage = '';
     }
 
@@ -260,14 +332,20 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
-            //set parentid for childs accounts
+            //set parentid for childs branch
             if (this.parentId) {
                 model.parentId = this.parentId;
+
+                var findIndex = this.rowData.data.findIndex(acc => acc.id == this.parentId);
+                var parentRow = this.rowData.data[findIndex];
+                
                 this.parentId = undefined;
             }
-            else if (this.parent)
-                model.parentId = this.parent.id;
-            //set parentid for childs accounts
+            else if (this.parent) {
+                model.parentId = this.parent.id;                
+            }
+
+            //set parentid for childs branch
 
             this.companyService.insert<Company>(CompanyApi.Companies, model)
                 .subscribe((response: any) => {
@@ -275,7 +353,22 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     var insertedModel = JSON.parse(response._body);
-                    this.reloadGrid(insertedModel);
+
+                    if (this.Childrens) {
+                        var childFiltered = this.Childrens.filter(f => f.parent.id == model.parentId);
+                        if (childFiltered.length > 0) {
+                            childFiltered[0].reloadGrid(insertedModel);
+                            return;
+                        }
+                    }
+                    if (model.parentId == undefined || this.addToContainer) {
+                        this.addToContainer = false;
+                        this.reloadGrid(insertedModel);
+                    }
+                    else if (model.parentId != undefined) {
+                        this.reloadGrid();
+                    }
+                    
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
@@ -292,6 +385,8 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
         return dataItem != undefined && dataItem.childCount != undefined && dataItem.childCount > 0;
     }
 
+
+    //#endregion
 }
 
 

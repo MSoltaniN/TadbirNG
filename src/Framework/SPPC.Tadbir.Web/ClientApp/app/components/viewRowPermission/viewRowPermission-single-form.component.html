@@ -26,8 +26,8 @@
                                     [textField]="['value']"
                                     kendoTreeViewExpandable
                                     [kendoTreeViewCheckable]="{ mode: 'single'}"
-                                    [checkBy]="checkById"
-                                    (checkedChange)="handleSingleFormChecking($event)">
+                                    [checkBy]="checkByKey"
+                                    [(checkedKeys)]="singleFormCheckedKey">
                     </kendo-treeview>
                 </div>
             </div>

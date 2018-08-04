@@ -15,7 +15,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class BranchesController : ApiControllerBase<BranchViewModel>
+    public class BranchesController : ValidatingController<BranchViewModel>
     {
         public BranchesController(
             IBranchRepository repository, IStringLocalizer<AppStrings> strings = null)

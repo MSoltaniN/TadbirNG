@@ -187,7 +187,8 @@ namespace SPPC.Framework.Persistence
         /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
         /// </param>
         /// <returns></returns>
-        public async Task<int> GetCountByCriteriaAsync(Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions)
+        public async Task<int> GetCountByCriteriaAsync(
+            Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions = null)
         {
             var query = GetCountByCriteriaQuery(criteria, gridOptions);
             return await query.CountAsync();
@@ -210,7 +211,7 @@ namespace SPPC.Framework.Persistence
             Verify.ArgumentNotNull(queryable, "queryable");
             return await queryable
                 .Where(criteria)
-                .Apply(gridOptions)
+                .Apply(gridOptions, false)
                 .CountAsync();
         }
 
@@ -497,7 +498,7 @@ namespace SPPC.Framework.Persistence
         {
             return GetEntityQuery()
                 .Where(criteria ?? (entity => true))
-                .Apply(gridOptions);
+                .Apply(gridOptions, false);
         }
 
         private DbContext _dataContext;

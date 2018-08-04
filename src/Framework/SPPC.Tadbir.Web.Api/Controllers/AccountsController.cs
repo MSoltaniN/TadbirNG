@@ -17,7 +17,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class AccountsController : ApiControllerBase<AccountViewModel>
+    public class AccountsController : ValidatingController<AccountViewModel>
     {
         public AccountsController(IAccountRepository repository, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
@@ -208,11 +208,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 message = String.Format(
                     _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.Account], accountInfo);
             }
-
-            if (await _repository.IsUsedAccountAsync(item))
+            else if (await _repository.IsUsedAccountAsync(item))
             {
                 message = String.Format(
                     _strings[AppStrings.CannotDeleteUsedItem], _strings[AppStrings.Account], accountInfo);
+            }
+            else if (await _repository.IsRelatedAccountAsync(item))
+            {
+                message = String.Format(
+                    _strings[AppStrings.CannotDeleteRelatedItem], _strings[AppStrings.Account], accountInfo);
             }
 
             return message;

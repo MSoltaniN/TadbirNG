@@ -35,15 +35,31 @@ export class NavMenuComponent extends DefaultComponent implements OnInit {
         
     }
 
-    public expandedSubMenuId : number = -1;
+    public expandedSubMenuId: number = -1;
+    public rightAlign: boolean = true;
+    public profileItems: Array<Command>;
 
     ngOnInit() {
-        
+
+
+        if (this.CurrentLanguage == 'fa')
+            this.rightAlign = false;
+
         var subMenuId = -1;
         for (let parent of this.menuList) {
             if (parent.children.findIndex(p => p.routeUrl.toLowerCase() == this.location.path().toLowerCase()) > -1) {
                 this.expandedSubMenuId = parent.id;
                 break;
+            }
+        }
+
+        for (let parent of this.menuList) {
+            if (parent.id == 15)
+            {
+                this.profileItems = new Array<Command>();
+                for (let item of parent.children) {
+                    this.profileItems.push(item);
+                }
             }
         }
         

@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
+﻿import { Component, OnInit, Input, Renderer2, Optional, Host, SkipSelf } from '@angular/core';
 import { BranchService, BranchInfo, RelatedItemsInfo } from '../../service/index';
 import { Branch, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr'; /** add this component for message in client side */
@@ -47,6 +47,10 @@ export function getLayoutModule(layout: Layout) {
 
 export class BranchComponent extends DefaultComponent implements OnInit {
 
+    //#region Fields
+
+    public Childrens: Array<BranchComponent>;
+
     @Input() public parent: Branch;
     @Input() public isChild: boolean = false;
 
@@ -77,15 +81,41 @@ export class BranchComponent extends DefaultComponent implements OnInit {
     errorMessage: string;
     groupDelete: boolean = false;
 
+    addToContainer: boolean = false;
+
+    //#endregion
+      
+
+    //#region Constructor
+
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+        private branchService: BranchService, public renderer: Renderer2, public metadata: MetaDataService,
+        @SkipSelf() @Host() @Optional() private parentBranch: BranchComponent) {
+        super(toastrService, translate, renderer, metadata, Entities.Branch, Metadatas.Branch);
+    }
+
+    //#endregion
+    
+    //#region Methods
+
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Branch, BranchPermissions.View);
 
         this.reloadGrid();
+        if (this.parentBranch)
+            this.parentBranch.addChildBranch(this);
     }
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private branchService: BranchService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.Branch, Metadatas.Branch);
+    /**
+     * کامپوننت های فرزند را در متغیری اضافه میکند
+     * @param branchComponent کامپوننت شعبه
+     */
+    public addChildBranch(branchComponent: BranchComponent) {
+
+        if (this.Childrens == undefined) this.Childrens = new Array<BranchComponent>();
+        if (this.Childrens.findIndex(p => p.parent.id === branchComponent.parent.id) == -1)        
+            this.Childrens.push(branchComponent);
+        
     }
 
     selectionKey(context: RowArgs): string {
@@ -99,16 +129,7 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
     deleteModels(confirm: boolean) {
         if (confirm) {
-            this.sppcLoading.show();
-            //this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
-            //    this.showMessage(this.deleteMsg, MessageType.Info);
-            //    this.selectedRows = [];
-            //    this.reloadGrid();
-            //    this.groupDelete = false;
-            //}, (error => {
-            //    this.sppcLoading.hide();
-            //    this.showMessage(error, MessageType.Warning);
-            //}));
+            this.sppcLoading.show();          
         }
 
         this.groupDelete = false;
@@ -171,6 +192,20 @@ export class BranchComponent extends DefaultComponent implements OnInit {
                     data: resData,
                     total: totalCount
                 }
+
+                //زمانی که تعداد رکورد ها صفر باشد باید کامپوننت پدر رفرش شود
+                if (totalCount == 0) {
+                    if (this.parentBranch && this.parentBranch.Childrens) {
+                        var thisIndex = this.parentBranch.Childrens.findIndex(p => p == this);
+                        if (thisIndex >= 0)
+                            this.parentBranch.Childrens.splice(thisIndex);
+
+
+                        this.parentBranch.reloadGrid();
+                    }
+
+                }
+
                 this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
                 this.sppcLoading.hide();
@@ -244,11 +279,15 @@ export class BranchComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public addNew(parentModelId?: number) {
+    public addNew(parentModelId?: number,addToThis?: boolean) {
         this.isNew = true;
         this.editDataItem = new BranchInfo();
         if (parentModelId)
             this.parentId = parentModelId;
+
+        if (addToThis)
+            this.addToContainer = addToThis;
+
         this.errorMessage = '';
     }
 
@@ -297,14 +336,22 @@ export class BranchComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
-            //set parentid for childs accounts
+            //set parentid for childs branch
             if (this.parentId) {
                 model.parentId = this.parentId;
+
+                var findIndex = this.rowData.data.findIndex(acc => acc.id == this.parentId);
+                var parentRow = this.rowData.data[findIndex];
+                model.level = parentRow.level + 1;
+
                 this.parentId = undefined;
             }
-            else if (this.parent)
+            else if (this.parent) {
                 model.parentId = this.parent.id;
-            //set parentid for childs accounts
+                model.level = this.parent.level + 1;
+            }
+
+            //set parentid for childs branch
 
             this.branchService.insert<Branch>(BranchApi.Branches, model)
                 .subscribe((response: any) => {
@@ -312,7 +359,22 @@ export class BranchComponent extends DefaultComponent implements OnInit {
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     var insertedModel = JSON.parse(response._body);
-                    this.reloadGrid(insertedModel);
+
+                    if (this.Childrens) {
+                        var childFiltered = this.Childrens.filter(f => f.parent.id == model.parentId);
+                        if (childFiltered.length > 0) {
+                            childFiltered[0].reloadGrid(insertedModel);
+                            return;
+                        }
+                    }
+                    if (model.parentId == undefined || this.addToContainer) {
+                        this.addToContainer = false;
+                        this.reloadGrid(insertedModel);
+                    }
+                    else if (model.parentId != undefined) {
+                        this.reloadGrid();
+                    }
+                    
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
@@ -328,6 +390,8 @@ export class BranchComponent extends DefaultComponent implements OnInit {
     public checkShow(dataItem: Branch) {
         return dataItem != undefined && dataItem.childCount != undefined && dataItem.childCount > 0;
     }
+
+    //#endregion
 
 }
 

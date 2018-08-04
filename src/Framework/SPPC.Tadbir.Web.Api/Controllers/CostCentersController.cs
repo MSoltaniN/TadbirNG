@@ -14,7 +14,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class CostCentersController : ApiControllerBase<CostCenterViewModel>
+    public class CostCentersController : ValidatingController<CostCenterViewModel>
     {
         public CostCentersController(
             ICostCenterRepository repository, IStringLocalizer<AppStrings> strings = null)

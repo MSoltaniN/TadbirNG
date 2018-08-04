@@ -14,7 +14,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class ProjectsController : ApiControllerBase<ProjectViewModel>
+    public class ProjectsController : ValidatingController<ProjectViewModel>
     {
         public ProjectsController(
             IProjectRepository repository, IStringLocalizer<AppStrings> strings = null)

@@ -20,7 +20,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class VouchersController : ApiControllerBase<VoucherViewModel>
+    public class VouchersController : ValidatingController<VoucherViewModel>
     {
         public VouchersController(
             IVoucherRepository repository,
