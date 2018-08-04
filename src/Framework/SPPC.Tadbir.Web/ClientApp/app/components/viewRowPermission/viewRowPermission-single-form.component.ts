@@ -52,7 +52,7 @@ export class ViewRowPermissionSingleFormComponent extends DefaultComponent {
     @Input() public errorMessage: string = '';
 
     @Input() public set model(item: ItemInfo) {
-        debugger;
+
         this.singleFormCheckedKey = [];
         this.selectedKey = 0;
         if (item) {

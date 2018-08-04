@@ -54,6 +54,7 @@ export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
 
     noData: boolean = false;
     searchValue: string;
+    fetchUrl: string;
     rowPermission: ViewRowPermissionInfo;
 
     entityName: string = '';
@@ -95,10 +96,6 @@ export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
     //Events
     public onSave(e: any): void {
         e.preventDefault();
-        //this.rowList = [];
-        //this.rowCheckedKeys = [];
-        //this.selectedRowList = [];
-        //this.selectedRowKeys = [];
         this.noData = false;
         this.save.emit(this.selectedRowKeys);
     }
@@ -111,10 +108,6 @@ export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
     private closeForm(): void {
         this.active = false;
         this.noData = false;
-        //this.rowList = [];
-        //this.rowCheckedKeys = [];
-        //this.selectedRowList = [];
-        //this.selectedRowKeys = [];
         this.cancel.emit();
     }
     //Events
@@ -122,16 +115,11 @@ export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
     constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
         public viewRowPermissionService: ViewRowPermissionService, public sppcLoading: SppcLoadingService) {
         super(toastrService, translate, renderer, metadata, Entities.ViewRowPermission, '');
-        //this.getFetchUrl();
     }
 
     getFetchUrl() {
         this.metadata.getMetaDataById(this.rowPermission.viewId).subscribe(res => {
-            var fetchUrl = res.fetchUrl;
-            if (fetchUrl)
-                this.loadRowList(fetchUrl);
-            else 
-                this.noData = true;
+            this.fetchUrl = res.fetchUrl;
         })
     }
 
@@ -168,29 +156,35 @@ export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
         }
     }
 
-    loadRowList(fetchUrl: string) {
-        this.sppcLoading.show();
+    onSearch() {
+        if (this.fetchUrl) {
 
+            let filterExp: FilterExpression | undefined;
 
-
-        this.viewRowPermissionService.getRowList(Environment.BaseUrl + String.Format(fetchUrl, this.FiscalPeriodId, this.BranchId)).subscribe(res => {
-            this.rowList = res;
-
-            this.rowCheckedKeys = [];
-            this.selectedRowList = [];
-            this.selectedRowKeys = [];
-           
-            //debugger;
-            for (let item of this.rowList) {
-                if (this.rowPermission.items && this.rowPermission.items.find(f => f == item.key)) {
-                    this.rowCheckedKeys.push(item.key);
-                    this.selectedRowList.push(item);
-                    this.selectedRowKeys.push(item.key);
-                }
-
+            if (this.searchValue) {
+                var filterExpBuilder = new FilterExpressionBuilder();
+                filterExp = filterExpBuilder.New(new Filter("Value", this.searchValue, ".Contains({0})", "System.String"))
+                    .Build();
             }
-            this.sppcLoading.hide();
-        })
+
+            this.sppcLoading.show();
+
+            this.viewRowPermissionService.getRowList(Environment.BaseUrl + String.Format(this.fetchUrl, this.FiscalPeriodId, this.BranchId), filterExp).subscribe(res => {
+                this.rowList = res;
+                for (let item of this.rowList) {
+                    if (this.rowPermission.items && this.rowPermission.items.find(f => f == item.key) && !this.rowCheckedKeys.find(f => f == item.key)) {
+                        this.rowCheckedKeys.push(item.key);
+                        this.selectedRowList.push(item);
+                        this.selectedRowKeys.push(item.key);
+                    }
+
+                }
+                this.sppcLoading.hide();
+            })
+
+        }
+        else
+            this.noData = true;
     }
 
     removeAllSelected() {

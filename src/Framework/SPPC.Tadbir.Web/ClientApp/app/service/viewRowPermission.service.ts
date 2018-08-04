@@ -37,8 +37,23 @@ export class ViewRowPermissionService extends BaseService {
         super(http);
     }
 
-    public getRowList(apiUrl: string) {
-        return this.http.get(apiUrl, this.options)
+    //public getRowList(apiUrl: string) {
+    //    return this.http.get(apiUrl, this.options)
+    //        .map(response => <any>(<Response>response).json());
+    //}
+
+    public getRowList(apiUrl: string, filter?: FilterExpression) {
+        var intMaxValue = 2147483647
+        var gridPaging = { pageIndex: 1, pageSize: intMaxValue };
+        var postItem = { Paging: gridPaging, filter: filter, sortColumns: null };
+        var searchHeaders = this.headers;
+        var postBody = JSON.stringify(postItem);
+        var base64Body = btoa(encodeURIComponent(postBody));
+        if (searchHeaders)
+            searchHeaders.set('X-Tadbir-GridOptions', base64Body);
+        var options = new RequestOptions({ headers: searchHeaders });
+
+        return this.http.get(apiUrl, options)
             .map(response => <any>(<Response>response).json());
     }
 }

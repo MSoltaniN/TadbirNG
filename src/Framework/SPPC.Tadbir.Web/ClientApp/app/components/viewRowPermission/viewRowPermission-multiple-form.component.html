@@ -13,12 +13,12 @@
     <div class="row" id="main-section">
         <div class="col-sm-6" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
             <div class="section-header">
-                <span class="control-label header-label">{{ getTitleText('ViewRowPermission.ListTitle' | translate) }}  </span>
-                <!--<input type="text" class="k-textbox" [(ngModel)]="searchValue" (keydown.enter)="onSearch()" />
+                <span class="control-label">{{ getTitleText('ViewRowPermission.ListTitle' | translate) }}  </span>
+                <input type="text" class="k-textbox" [(ngModel)]="searchValue" (keydown.enter)="onSearch()" />
                 <button class="k-button k-primary btn-search"
                         (click)="onSearch()">
                     <span class="k-i-filter k-icon"></span>
-                </button>-->
+                </button>
             </div>
             <div class="section-body">
 
