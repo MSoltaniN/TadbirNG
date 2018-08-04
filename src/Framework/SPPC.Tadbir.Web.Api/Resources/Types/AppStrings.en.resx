@@ -498,4 +498,7 @@
   <data name="VoucherLineDisplay" xml:space="preserve">
     <value>Debit: {0}, Credit : {1}, Description : {2}</value>
   </data>
+  <data name="CannotDeleteRelatedItem" xml:space="preserve">
+    <value>The {0} {1} is used in account relationships and cannot be deleted.</value>
+  </data>
 </root>

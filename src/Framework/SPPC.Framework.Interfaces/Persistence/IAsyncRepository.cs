@@ -130,7 +130,7 @@ namespace SPPC.Framework.Persistence
         /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
         /// </param>
         /// <returns></returns>
-        Task<int> GetCountByCriteriaAsync(Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions);
+        Task<int> GetCountByCriteriaAsync(Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions = null);
 
         /// <summary>
         /// Asynchronously retrieves record count for a subset of existing entities, as defined by

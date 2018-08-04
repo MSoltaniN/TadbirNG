@@ -145,7 +145,7 @@
     <value>نقش {0} به یک یا چند کاربر  تخصیص داده شده و قابل حذف نیست.</value>
   </data>
   <data name="CannotDeleteNonLeafItem" xml:space="preserve">
-    <value>{0} {1} دارای زیرمجموعه بوده و نمی توان آن را حذف کرد.</value>
+    <value>{0} {1} دارای زیرمجموعه بوده و قابل حذف نیست.</value>
   </data>
   <data name="CannotDeleteUsedItem" xml:space="preserve">
     <value>{0} {1} در یک یا چند سند مالی استفاده شده و قابل حذف نیست.</value>
@@ -497,5 +497,8 @@
   </data>
   <data name="VoucherLineDisplay" xml:space="preserve">
     <value>بدهکار : {0}، بستانکار : {1}، شرح : {2}</value>
+  </data>
+  <data name="CannotDeleteRelatedItem" xml:space="preserve">
+    <value>{0} {1} در تعریف ارتباطات حساب استفاده شده و قابل حذف نیست.</value>
   </data>
 </root>

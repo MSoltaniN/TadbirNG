@@ -105,6 +105,15 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsUsedAccountAsync(int accountId);
 
         /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده توسط ارتباطات موجود برای بردار حساب
+        /// در حال استفاده است یا نه
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <returns>در حالتی که حساب مشخص شده در حال استفاده باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool> IsRelatedAccountAsync(int accountId);
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده دارای حساب زیرمجموعه هست یا نه
         /// </summary>
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>

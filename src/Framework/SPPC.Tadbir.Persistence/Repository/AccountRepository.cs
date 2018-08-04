@@ -241,9 +241,31 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> IsUsedAccountAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
-            var articles = await repository
-                .GetByCriteriaAsync(art => art.Account.Id == accountId);
-            return (articles.Count != 0);
+            var articleCount = await repository
+                .GetCountByCriteriaAsync(art => art.Account.Id == accountId);
+            return (articleCount > 0);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا حساب انتخاب شده توسط ارتباطات موجود برای بردار حساب
+        /// در حال استفاده است یا نه
+        /// </summary>
+        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
+        /// <returns>در حالتی که حساب مشخص شده در حال استفاده باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsRelatedAccountAsync(int accountId)
+        {
+            var accDetailrepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
+            int relatedDetails = await accDetailrepository.GetCountByCriteriaAsync(
+                ada => ada.AccountId == accountId, null);
+            var accCenterRepository = UnitOfWork.GetAsyncRepository<AccountCostCenter>();
+            int relatedCenters = await accCenterRepository.GetCountByCriteriaAsync(
+                ac => ac.AccountId == accountId, null);
+            var accProjectRepository = UnitOfWork.GetAsyncRepository<AccountProject>();
+            int relatedProjects = await accProjectRepository.GetCountByCriteriaAsync(
+                ap => ap.AccountId == accountId, null);
+
+            return (relatedDetails > 0 || relatedCenters > 0 || relatedProjects > 0);
         }
 
         /// <summary>
