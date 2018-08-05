@@ -47,17 +47,19 @@ export class AccountFormComponent extends DefaultComponent {
     
     //create properties
     active: boolean = false;
+
+    @Input() public disableSaveBtn: boolean = false;
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string = '';
-
+   
     @Input() public parentTitle: string = '';
     @Input() public parentValue: string = '';
 
     @Input() public set model(account: Account) {
-
         this.editForm.reset(account);
 
         this.active = account !== undefined || this.isNew;
+        this.disableSaveBtn = false;
         if (account != undefined) {
             this.selectedValue = account.fiscalPeriodId.toString();
             //if (this.fiscalPeriodRows == undefined) this.getFiscalPeriod();
@@ -76,6 +78,7 @@ export class AccountFormComponent extends DefaultComponent {
     //Events
     public onSave(e: any): void {
         e.preventDefault();
+        this.disableSaveBtn = true;
         this.save.emit(this.editForm.value);
         this.active = true;
     }

@@ -96,6 +96,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
     editDataItem?: Account = undefined;
     isNew: boolean;
+    disableSaveBtn: boolean | undefined;
     errorMessage: string;
     groupDelete: boolean = false;
     addToContainer: boolean = false;
@@ -171,6 +172,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     }
 
     public saveHandler(model: Account) {
+        // debugger;
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
         //TODO: این کد بعدا باید تغییر پیدا کند البته با اقای اسلامیه هماهنگ شده است
@@ -178,6 +180,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
+            this.disableSaveBtn = undefined;
             this.accountService.edit<Account>(String.Format(AccountApi.Account, model.id), model)
                 .subscribe(response => {
                     this.editDataItem = undefined;
@@ -186,7 +189,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                 }, (error => {
                     this.editDataItem = model;
                     this.errorMessage = error;
-
+                    this.disableSaveBtn = false;
                 }));
         }
         else {
@@ -204,10 +207,10 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                 model.parentId = this.parent.id;
                 model.level = this.parent.level + 1;
             }
-
             //model.level = this.parent.level + 1;
 
             //set parentid for childs accounts
+            this.disableSaveBtn = undefined;
             this.accountService.insert<Account>(AccountApi.Accounts, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
@@ -231,8 +234,10 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                     }
                 }, (error => {
                     this.isNew = true;
+                    this.disableSaveBtn = false;
                     this.errorMessage = error;
                 }));
+
         }
         this.sppcLoading.hide();
     }
@@ -351,9 +356,9 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                             this.parentAccount.Childrens.splice(thisIndex);
 
 
-                        this.parentAccount.reloadGrid();                        
-                    }                    
-                    
+                        this.parentAccount.reloadGrid();
+                    }
+
                 }
 
                 this.showloadingMessage = !(resData.length == 0);
@@ -378,7 +383,8 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                 this.reloadGrid();
             }, (error => {
                 this.sppcLoading.hide();
-                this.showMessage(error, MessageType.Warning);
+                var message = error.message ? error.message : error;
+                this.showMessage(message, MessageType.Warning);
             }));
         }
         //hide confirm dialog
