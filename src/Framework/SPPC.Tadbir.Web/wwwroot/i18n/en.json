@@ -49,7 +49,9 @@
     "Delete": "Delete",
     "GroupDelete": "Delete Group",
     "Setting": "Setting",
-    "Search": "Search"
+    "Search": "Search",
+    "Filter": "filter",
+    "DeleteFilter": "Delete Filter"
   },
   "GridSetting": {
     "Visibility": "Visibility",

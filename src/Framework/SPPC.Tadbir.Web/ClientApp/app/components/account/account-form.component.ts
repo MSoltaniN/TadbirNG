@@ -31,9 +31,9 @@ interface Item {
     selector: 'account-form-component',
     styles: [
         "input[type=text],textarea { width: 100%; },"
-        ,`.accInfoTitle {
+        , `.accInfoTitle {
         padding-right: 0px;
-        padding-left: 0px;}`],    
+        padding-left: 0px;}`],
     templateUrl: './account-form.component.html',
     providers: [{
         provide: RTL,
@@ -44,14 +44,14 @@ interface Item {
 })
 
 export class AccountFormComponent extends DefaultComponent {
-    
+
     //create properties
     active: boolean = false;
 
     @Input() public disableSaveBtn: boolean = false;
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string = '';
-   
+
     @Input() public parentTitle: string = '';
     @Input() public parentValue: string = '';
 
@@ -65,7 +65,7 @@ export class AccountFormComponent extends DefaultComponent {
             //if (this.fiscalPeriodRows == undefined) this.getFiscalPeriod();
         }
 
-        
+
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -74,13 +74,15 @@ export class AccountFormComponent extends DefaultComponent {
 
     //public fiscalPeriodRows: Array<Item>;
     public selectedValue: string = '1';
-    
+
     //Events
     public onSave(e: any): void {
         e.preventDefault();
-        this.disableSaveBtn = true;
-        this.save.emit(this.editForm.value);
-        this.active = true;
+        if (this.editForm.valid) {
+            this.disableSaveBtn = true;
+            this.save.emit(this.editForm.value);
+            this.active = true;
+        }
     }
 
     public onCancel(e: any): void {
@@ -102,8 +104,8 @@ export class AccountFormComponent extends DefaultComponent {
 
         //this.getFiscalPeriod();
 
-        
+
     }
 
-   
+
 }

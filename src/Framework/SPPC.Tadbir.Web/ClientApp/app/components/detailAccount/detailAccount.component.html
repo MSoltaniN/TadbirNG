@@ -31,11 +31,15 @@
             <ng-template kendoGridToolbarTemplate>
                 <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'DetailAccount.New' | translate }}</button>
                 <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
-                <button class="k-button" (click)="filterRowData()" type="button">
+                <button *ngIf="showFilterBtn" class="k-button" (click)="filterRowData()" type="button">
                     <span class="k-i-filter k-icon"></span>
-                    {{ 'Buttons.Search' | translate }}
+                    {{ 'Buttons.Filter' | translate }}
                 </button>
-                <grid-setting  entityTypeName="DetailAccount"></grid-setting>
+                <button *ngIf="showFilterBtn" class="k-button" (click)="clearFilterRowData()" type="button">
+                    <span class="k-i-filter-clear k-icon"></span>
+                    {{ 'Buttons.DeleteFilter' | translate }}
+                </button>
+                <grid-setting entityTypeName="DetailAccount"></grid-setting>
             </ng-template>
 
             <!-- template for mobile -->

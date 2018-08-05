@@ -261,3 +261,6 @@ table thead tr th span.ui-column-title {
 /*#endregion loading sppiner in page load*/
 
 
+.k-dialog-buttongroup .k-primary:focus, .k-dialog-buttongroup .k-primary.k-state-focused {
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.13) !important;
+}
