@@ -9,5 +9,7 @@ export enum KeyCode {
     Up_Arrow = 38,
     Right_Arrow = 39,
     Down_Arrow = 40,
+    Plus = 107,
+    Minus = 109
 }
 
