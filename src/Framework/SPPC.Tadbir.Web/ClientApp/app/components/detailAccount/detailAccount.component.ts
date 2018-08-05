@@ -74,6 +74,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
+    showFilterBtn: boolean = false;
 
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.DetailAccount, DetailAccountPermissions.View);
@@ -183,17 +184,29 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     dataStateChange(state: DataStateChangeEvent): void {
         this.currentFilter = this.getFilters(state.filter);
+
         if (state.sort)
             if (state.sort.length > 0)
                 this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
         this.state = state;
         this.skip = state.skip;
 
-        if (this.currentFilter == undefined)
+        if (this.currentFilter)
+            this.showFilterBtn = true;
+        else {
+            this.showFilterBtn = false;
             this.reloadGrid();
+        }
     }
 
     filterRowData() {
+        this.reloadGrid();
+    }
+
+    clearFilterRowData() {
+        this.state.filter = undefined;
+        this.currentFilter = new FilterExpression();
+        this.showFilterBtn = false;
         this.reloadGrid();
     }
 

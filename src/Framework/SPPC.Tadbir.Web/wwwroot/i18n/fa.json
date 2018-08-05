@@ -50,7 +50,9 @@
     "Delete": "حذف",
     "GroupDelete": "حذف گروهی",
     "Setting": "تنظیمات",
-    "Search": "جستجو"
+    "Search": "جستجو",
+    "Filter": "اعمال فیلتر",
+    "DeleteFilter": "حذف فیلتر"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
