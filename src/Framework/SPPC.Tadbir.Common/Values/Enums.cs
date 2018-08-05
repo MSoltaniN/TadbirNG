@@ -119,4 +119,25 @@ namespace SPPC.Tadbir.Values
         /// </summary>
         Priced = 7
     }
+
+    /// <summary>
+    /// مقادیر تعریف شده برای محدوده دسترسی به موجودیت ها در سطح شعبه های سازمانی را تعریف می کند
+    /// </summary>
+    public enum BranchScope
+    {
+        /// <summary>
+        /// دسترسی در سطح کلیه شعب
+        /// </summary>
+        AllBranches = 0,
+
+        /// <summary>
+        /// دسترسی در سطح شعبه جاری و تمام شعب زیرمجموعه
+        /// </summary>
+        CurrentBranchAndChildren = 1,
+
+        /// <summary>
+        /// دسترسی در سطح شعبه جاری
+        /// </summary>
+        CurrentBranch = 2
+    }
 }

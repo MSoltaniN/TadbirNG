@@ -388,6 +388,7 @@ CREATE TABLE [Finance].[Account] (
 	[ParentID]       INT              NULL,
 	[FiscalPeriodID] INT              NOT NULL,
 	[BranchID]       INT              NOT NULL,
+	[BranchScope]    SMALLINT         NOT NULL,
     [Code]           NVARCHAR(16)     NOT NULL,
     [FullCode]       NVARCHAR(256)    NOT NULL,
     [Name]           NVARCHAR(512)    NOT NULL,

@@ -8,8 +8,11 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration;
+using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -27,6 +30,31 @@ namespace SPPC.Tadbir.Persistence
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }
+
+        /// <summary>
+        /// محدودیت دسترسی به سطرهای اطلاعاتی را در سطح شعب سازمانی اعمال می کند
+        /// </summary>
+        /// <typeparam name="TEntity">نوع موجودیتی که فیلتر روی سطرهای آن باید اعمال شود</typeparam>
+        /// <param name="records">مجموعه سطرهای اطلاعاتی</param>
+        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <returns>مجموعه سطرهای اطلاعاتی فیلتر شده</returns>
+        public IQueryable<TEntity> ApplyBranchFilter<TEntity>(IQueryable<TEntity> records, int fpId, int branchId)
+            where TEntity : class, IBaseEntity
+        {
+            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
+            var queryable = records
+                .Where(entity => entity.FiscalPeriodId == fpId &&
+                    (entity.BranchScope == (short)BranchScope.AllBranches ||
+                    (entity.BranchScope == (short)BranchScope.CurrentBranch && entity.BranchId == branchId) ||
+                    (entity.BranchScope == (short)BranchScope.CurrentBranchAndChildren &&
+                        (entity.BranchId == branchId ||
+                            (entity as FiscalEntity).Branch
+                                .Children
+                                .Select(br => br.Id)
+                                .Contains(branchId)))));
+            return queryable;
         }
 
         /// <summary>

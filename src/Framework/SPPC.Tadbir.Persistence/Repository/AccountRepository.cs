@@ -47,15 +47,12 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             var query = repository.GetEntityQuery(
                 acc => acc.FiscalPeriod, acc => acc.Branch, acc => acc.Parent, acc => acc.Children);
+            query = ApplyBranchFilter(query, fpId, branchId);
             query = await ApplyRowFilterAsync(query, roleId);
-            var accounts = await repository
-                .GetByCriteriaAsync(query,
-                    acc => acc.FiscalPeriod.Id == fpId
-                        && acc.Branch.Id == branchId,
-                    gridOptions);
-            return accounts
+            return await query
+                .Apply(gridOptions)
                 .Select(item => Mapper.Map<AccountViewModel>(item))
-                .ToList();
+                .ToListAsync();
         }
 
         /// <summary>
@@ -157,12 +154,11 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             var query = repository.GetEntityQuery();
+            query = ApplyBranchFilter(query, fpId, branchId);
             query = await ApplyRowFilterAsync(query, roleId);
-            var count = await repository
-                .GetCountByCriteriaAsync(query,
-                    acc => acc.FiscalPeriod.Id == fpId && acc.Branch.Id == branchId,
-                    gridOptions);
-            return count;
+            return await query
+                .Apply(gridOptions)
+                .CountAsync();
         }
 
         /// <summary>
