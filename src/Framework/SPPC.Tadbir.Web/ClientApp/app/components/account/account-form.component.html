@@ -14,7 +14,7 @@
             <span class='accInfoTitle'><strong>{{ parentTitle }}</strong></span> : {{ parentValue }}
         </div>
     </div>
-    <form novalidate [formGroup]="editForm">
+    <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
         <div class="form-group">
             <label for="code" class="control-label">{{ 'Account.Code' | translate }}</label>
 
