@@ -1,5 +1,5 @@
-﻿import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator } from '@angular/forms'
+﻿import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild, SimpleChanges, Optional, Host, SkipSelf } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator, ControlContainer, AbstractControl } from '@angular/forms'
 import { DatePipe } from '@angular/common'
 
 import * as moment from 'jalali-moment';
@@ -56,7 +56,6 @@ import { AuthenticationService } from '../../service/login/index';
     ]
 })
 export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, Validator {
-
     public dateConfig: any;
     public dateLocale: string = 'fa';
     private parseError: boolean = false;
@@ -78,10 +77,21 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
     propagateChange: any = () => { };
 
-    constructor(private datepipe: DatePipe) {
-    }
+    @Input() formControlName: string;
+    private control: AbstractControl | null;
+    constructor(private datepipe: DatePipe, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
 
     ngOnInit() {
+        if (this.controlContainer) {
+            if (this.formControlName && this.controlContainer.control != null) {
+                this.control = this.controlContainer.control.get(this.formControlName);                
+            }
+        }
+
+        if (this.control != null) {
+            this.control.clearValidators();
+        }
+
         var startDate;
         var endDate;
         var nowDate = new Date();
@@ -133,8 +143,19 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
         if (this.displayDate) {
             this.displayDate = this.datepipe.transform(this.displayDate, this.inputDateFormat);
-            this.dateObject = moment(this.displayDate);
+            this.dateObject = moment(this.displayDate);            
         }
+
+        //if (!this.isDisplayDate) {
+        //    if (this.editDateValue) {
+        //        this.dateObject = this.editDateValue;
+        //    }
+        //    else {
+        //        this.dateObject = null;
+        //    }
+
+        //    this.onDateFocusOut();
+        //}
 
         this.dateConfig = {
             mode: "day",
@@ -146,6 +167,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
             showMultipleYearsNavigation: true
         };
 
+        
     }
 
     ngOnDestroy() {
@@ -206,6 +228,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     }
 
     onDateChange() {
+        //debugger;
         this.i++;
         if (!this.isDisplayDate && this.i <= 2) {
             this.dateObject = null;
@@ -217,6 +240,9 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
         this.parseError = typeof this.dateObject === "object" && this.dateObject != null ? false : true;
         if (this.dateObject == undefined) {
             this.propagateChange("");
+        }
+        else {
+            this.onDateFocusOut();
         }
     }
 
@@ -386,16 +412,18 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
             if (this.isDisplayDate) {
                 this.dateObject = moment(this.date);
             }
-        }
+        }       
     }
 
     registerOnChange(fn: any): void {
         this.propagateChange = fn;
     }
 
-    registerOnTouched(fn: any): void { }
+    registerOnTouched(fn: any): void {
+        //this.propagateChange = fn;
+    }
 
-    public validate(c: FormControl) {
+    public validate(control: FormControl) {
         return (!this.parseError) ? null : {
             jsonParseError: {
                 valid: false,
