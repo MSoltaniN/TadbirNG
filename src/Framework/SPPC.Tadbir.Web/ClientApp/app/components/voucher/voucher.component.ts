@@ -220,7 +220,6 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     }
 
     public saveHandler(model: Voucher) {
-        debugger;
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
         this.sppcLoading.show();

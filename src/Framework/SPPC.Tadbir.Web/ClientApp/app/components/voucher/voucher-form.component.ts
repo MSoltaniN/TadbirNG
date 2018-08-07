@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, ChangeDetectionStrategy } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { VoucherService, VoucherInfo, VoucherLineService, FiscalPeriodService } from '../../service/index';
 
@@ -26,6 +26,7 @@ interface Item {
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'voucher-form-component',
     styles: [
         "input[type=text],textarea { width: 100%; } /deep/ .new-dialog > .k-dialog {width: 450px !important; min-width: 250px !important;}",

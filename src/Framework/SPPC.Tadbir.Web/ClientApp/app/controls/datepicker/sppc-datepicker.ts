@@ -63,6 +63,9 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
     public dateFormat: string = "YYYY/MM/DD";
     public spliterChar: string = "/";
 
+    startDate: Date | null;
+    endDate: Date | null;
+
     @Input() date: any;
     @Input() isDisplayDate: boolean = true;
     @Input() displayDate: any;
@@ -79,12 +82,12 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
     @Input() formControlName: string;
     private control: AbstractControl | null;
-    constructor(private datepipe: DatePipe, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) {}
+    constructor(private datepipe: DatePipe, @Optional() @Host() @SkipSelf() private controlContainer: ControlContainer) { }
 
     ngOnInit() {
         if (this.controlContainer) {
             if (this.formControlName && this.controlContainer.control != null) {
-                this.control = this.controlContainer.control.get(this.formControlName);                
+                this.control = this.controlContainer.control.get(this.formControlName);
             }
         }
 
@@ -92,8 +95,8 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
             this.control.clearValidators();
         }
 
-        var startDate;
-        var endDate;
+        //var startDate;
+        //var endDate;
         var nowDate = new Date();
         var endDiff;
         var startDiff;
@@ -102,33 +105,33 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
         if (this.minDate) {
             this.minDate = this.datepipe.transform(this.minDate, this.inputDateFormat);
-            startDate = new Date(this.minDate.split(' ')[0]);
+            this.startDate = new Date(this.minDate.split(' ')[0]);
         }
 
         if (this.maxDate) {
             this.maxDate = this.datepipe.transform(this.maxDate, this.inputDateFormat);
-            endDate = new Date(this.maxDate.split(' ')[0]);
+            this.endDate = new Date(this.maxDate.split(' ')[0]);
         }
 
         this.dateObject = moment();
 
-        if (endDate != null) {
-            endDiff = nowDate.getTime() - endDate.getTime();
+        if (this.endDate != null) {
+            endDiff = nowDate.getTime() - this.endDate.getTime();
             endDiffDays = endDiff / (1000 * 3600 * 24);
             if (endDiffDays > 1) {
-                this.dateObject = moment(endDate);
+                this.dateObject = moment(this.endDate);
             }
         }
 
-        if (startDate != null) {
-            startDiff = startDate.getTime() - nowDate.getTime();
+        if (this.startDate != null) {
+            startDiff = this.startDate.getTime() - nowDate.getTime();
             startDiffDays = startDiff / (1000 * 3600 * 24);
             if (startDiffDays > 1) {
-                this.dateObject = moment(startDate);
+                this.dateObject = moment(this.startDate);
             }
         }
 
-        if (startDate != null && endDate != null) {
+        if (this.startDate != null && this.endDate != null) {
             if (endDiffDays < 1 && startDiffDays < 1) {
                 this.dateObject = moment();
             }
@@ -143,7 +146,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
         if (this.displayDate) {
             this.displayDate = this.datepipe.transform(this.displayDate, this.inputDateFormat);
-            this.dateObject = moment(this.displayDate);            
+            this.dateObject = moment(this.displayDate);
         }
 
         //if (!this.isDisplayDate) {
@@ -167,11 +170,70 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
             showMultipleYearsNavigation: true
         };
 
-        
+
     }
 
     ngOnDestroy() {
         moment.locale('en');
+    }
+
+    LimitationDate(toDate: any, operationIncrese?: boolean) {
+
+        var endDiff;
+        var startDiff;
+        var endDiffDays = 0;
+        var startDiffDays = 0;
+
+        this.dateObject = moment(toDate);
+        var strDate = this.datepipe.transform(toDate, this.inputDateFormat);
+        if (strDate != null) {
+
+            var date = new Date(strDate);
+
+            if (operationIncrese) {
+                if (this.endDate != null) {
+                    endDiff = date.getTime() - this.endDate.getTime();
+                    endDiffDays = endDiff / (1000 * 3600 * 24);
+                    if (endDiffDays > 1) {
+                        this.dateObject = moment(this.endDate);
+                    }
+                }
+            }
+            else
+                if (!operationIncrese) {
+                    if (this.startDate != null) {
+                        startDiff = this.startDate.getTime() - date.getTime();
+                        startDiffDays = startDiff / (1000 * 3600 * 24);
+                        if (startDiffDays > 1) {
+                            this.dateObject = moment(this.startDate);
+                        }
+                    }
+                }
+
+            if (operationIncrese == null) {
+                if (this.endDate != null) {
+                    endDiff = date.getTime() - this.endDate.getTime();
+                    endDiffDays = endDiff / (1000 * 3600 * 24);
+                    if (endDiffDays > 1) {
+                        this.dateObject = moment(this.endDate);
+                    }
+                }
+
+                if (this.startDate != null) {
+                    startDiff = this.startDate.getTime() - date.getTime();
+                    startDiffDays = startDiff / (1000 * 3600 * 24);
+                    if (startDiffDays > 1) {
+                        this.dateObject = moment(this.startDate);
+                    }
+                }
+
+                if (this.startDate != null && this.endDate != null) {
+                    if (endDiffDays < 1 && startDiffDays < 1) {
+                        this.dateObject = moment();
+                    }
+                }
+            }
+        }
     }
 
     onChangeDateKey(event: any) {
@@ -179,37 +241,39 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
         switch (event) {
             case KeyCode.Space: {
+                debugger;
                 this.dateObject = moment();
+                this.LimitationDate(new Date());
                 break;
             }
             case KeyCode.Page_Up: {
                 var newDate = this.dateObject != null ? this.dateObject.add(1, 'years') : moment();
-                this.dateObject = moment(newDate);
+                this.LimitationDate(newDate, true);
                 break;
             }
             case KeyCode.Page_Down: {
                 var newDate = this.dateObject != null ? this.dateObject.add(-1, 'years') : moment();
-                this.dateObject = moment(newDate);
+                this.LimitationDate(newDate, false);
                 break;
             }
             case KeyCode.Down_Arrow: {
                 var newDate = this.dateObject != null ? this.dateObject.add(-1, 'months') : moment();
-                this.dateObject = moment(newDate);
+                this.LimitationDate(newDate, false);
                 break;
             }
             case KeyCode.Up_Arrow: {
                 var newDate = this.dateObject != null ? this.dateObject.add(1, 'months') : moment();
-                this.dateObject = moment(newDate);
+                this.LimitationDate(newDate, true);
                 break;
             }
             case KeyCode.Left_Arrow: {
                 var newDate = this.dateObject != null ? this.dateObject.add(-1, 'days') : moment();
-                this.dateObject = moment(newDate);
+                this.LimitationDate(newDate, false);
                 break;
             }
             case KeyCode.Right_Arrow: {
                 var newDate = this.dateObject != null ? this.dateObject.add(1, 'days') : moment();
-                this.dateObject = moment(newDate);
+                this.LimitationDate(newDate, true);
                 break;
             }
             default: {
@@ -223,12 +287,13 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
             }
         }
 
+        this.onDateFocusOut();
+
         return allowKey;
 
     }
 
     onDateChange() {
-        //debugger;
         this.i++;
         if (!this.isDisplayDate && this.i <= 2) {
             this.dateObject = null;
@@ -412,7 +477,7 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
             if (this.isDisplayDate) {
                 this.dateObject = moment(this.date);
             }
-        }       
+        }
     }
 
     registerOnChange(fn: any): void {
