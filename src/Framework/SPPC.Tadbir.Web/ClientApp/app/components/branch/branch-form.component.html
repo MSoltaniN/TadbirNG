@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <form novalidate [formGroup]="editForm">
+    <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
         <div class="form-group">
             <label for="name" class="control-label">{{ 'Branch.Name' | translate }}</label>
 

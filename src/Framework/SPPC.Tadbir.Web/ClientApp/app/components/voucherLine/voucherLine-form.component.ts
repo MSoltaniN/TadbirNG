@@ -77,8 +77,10 @@ export class VoucherLineFormComponent extends DefaultComponent {
     //Events
     public onSave(e: any): void {
         e.preventDefault();
-        this.save.emit(this.editForm1.value);
-        this.active = true;
+        if (this.editForm1.valid) {
+            this.save.emit(this.editForm1.value);
+            this.active = true;
+        }
     }
 
     public onCancel(e: any): void {

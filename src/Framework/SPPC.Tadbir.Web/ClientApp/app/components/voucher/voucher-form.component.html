@@ -8,7 +8,7 @@
             {{ errorMessage }}
         </div>
     </div>
-    <form novalidate [formGroup]="editForm">
+    <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
         <div class="clearfix edit-form-body">
             <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.currentlang === 'fa' && !isNew}">
                 <label for="date" class="control-label">{{ 'Voucher.Date' | translate }}</label>
