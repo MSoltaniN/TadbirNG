@@ -32,8 +32,8 @@ export class ChangePasswordComponent extends DefaultComponent {
     public editForm1 = new FormGroup({
         userName: new FormControl(""),
         oldPassword: new FormControl("", [Validators.required]),
-        newPassword: new FormControl("", [Validators.required, Validators.minLength(4), Validators.maxLength(32)]),
-        repeatPassword: new FormControl("", [Validators.required, Validators.minLength(4), Validators.maxLength(32)]),
+        newPassword: new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(32)]),
+        repeatPassword: new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(32)]),
     });
 
     public model: UserProfile;

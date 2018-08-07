@@ -307,9 +307,11 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
     public addNew(parentModelId?: number, addToThis?: boolean) {
         this.isNew = true;
         this.editDataItem = new CompanyInfo();
-        
+
         if (parentModelId)
             this.parentId = parentModelId;
+        else
+            this.parentId = this.CompanyId;
 
         if (addToThis)
             this.addToContainer = addToThis;
