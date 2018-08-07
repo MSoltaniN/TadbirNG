@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Service;
 using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -22,6 +24,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         protected SecurityContext SecurityContext
         {
             get { return GetSecurityContext(); }
+        }
+
+        protected UserAccessViewModel UserAccess
+        {
+            get { return GetUserAccess(); }
         }
 
         protected GridOptions GridOptions
@@ -53,6 +60,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             var json = Encoding.UTF8.GetString(Transform.FromBase64String(context));
             return JsonHelper.To<SecurityContext>(json);
+        }
+
+        private UserAccessViewModel GetUserAccess()
+        {
+            var context = GetSecurityContext();
+            var userAccess = new UserAccessViewModel() { Id = context.User.Id };
+            Array.ForEach(context.User.Roles.ToArray(), role => userAccess.Roles.Add(role));
+            Array.ForEach(context.User.Branches.ToArray(), br => userAccess.Branches.Add(br));
+            return userAccess;
         }
 
         private GridOptions GetGridOptions()

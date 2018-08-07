@@ -10,6 +10,7 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -36,23 +37,22 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کلیه حساب هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="roleId">شناسه دیتابیسی نقش امنیتی برای اعمال محدودیت سطرهای اطلاعاتی</param>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<IList<AccountViewModel>> GetAccountsAsync(
-            int roleId, int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var query = repository.GetEntityQuery(
-                acc => acc.FiscalPeriod, acc => acc.Branch, acc => acc.Parent, acc => acc.Children);
-            query = ApplyBranchFilter(query, fpId, branchId);
-            query = await ApplyRowFilterAsync(query, roleId);
-            return await query
-                .Apply(gridOptions)
+            var accounts = await GetAllAsync<Account>(
+                userAccess, fpId, branchId, gridOptions, acc => acc.FiscalPeriod, acc => acc.Branch,
+                acc => acc.Parent, acc => acc.Children);
+            return accounts
                 .Select(item => Mapper.Map<AccountViewModel>(item))
-                .ToListAsync();
+                .ToList();
         }
 
         /// <summary>
@@ -145,20 +145,17 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="roleId">شناسه دیتابیسی نقش امنیتی برای اعمال محدودیت سطرهای اطلاعاتی</param>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<int> GetCountAsync(int roleId, int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<int> GetCountAsync(
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var query = repository.GetEntityQuery();
-            query = ApplyBranchFilter(query, fpId, branchId);
-            query = await ApplyRowFilterAsync(query, roleId);
-            return await query
-                .Apply(gridOptions)
-                .CountAsync();
+            return await GetCountAsync<Account>(userAccess, fpId, branchId, gridOptions);
         }
 
         /// <summary>

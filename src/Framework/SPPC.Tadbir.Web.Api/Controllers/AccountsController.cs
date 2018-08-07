@@ -35,10 +35,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAccountsAsync(int fpId, int branchId)
         {
-            int roleId = SecurityContext.User.Roles.FirstOrDefault();
-            int itemCount = await _repository.GetCountAsync(roleId, fpId, branchId, GridOptions);
+            int itemCount = await _repository.GetCountAsync(UserAccess, fpId, branchId, GridOptions);
             SetItemCount(itemCount);
-            var accounts = await _repository.GetAccountsAsync(roleId, fpId, branchId, GridOptions);
+            var accounts = await _repository.GetAccountsAsync(UserAccess, fpId, branchId, GridOptions);
             return Json(accounts);
         }
 
