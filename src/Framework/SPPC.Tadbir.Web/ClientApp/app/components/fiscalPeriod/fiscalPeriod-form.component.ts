@@ -65,8 +65,10 @@ export class FiscalPeriodFormComponent extends DefaultComponent {
     //Events
     public onSave(e: any): void {
         e.preventDefault();
-        this.save.emit(this.editForm.value);
-        this.active = true;
+        if (this.editForm.valid) {
+            this.save.emit(this.editForm.value);
+            this.active = true;
+        }
     }
 
     public onCancel(e: any): void {
