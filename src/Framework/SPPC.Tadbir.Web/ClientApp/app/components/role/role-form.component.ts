@@ -159,52 +159,52 @@ export class RoleFormComponent extends DefaultComponent {
     ////Events
     public onSave(e: any): void {
         e.preventDefault();
+        if (this.editForm.valid) {
+            var permissionData: Array<Permission> = new Array<Permission>();
+            var allChildChecked: Array<string> = new Array<string>();
 
-        var permissionData: Array<Permission> = new Array<Permission>();
-        var allChildChecked: Array<string> = new Array<string>();
-        
-        for (let key in this.permissonDictionary) {
-            //permissionItem.isEnabled = false;
-            this.permissonDictionary[key].isEnabled = false;
-        }
-
-        for (let checked of this.checkedKeys) {
-            if (checked.split('_').length == 3) {
-                this.permissonDictionary[checked].isEnabled = true;               
+            for (let key in this.permissonDictionary) {
+                //permissionItem.isEnabled = false;
+                this.permissonDictionary[key].isEnabled = false;
             }
 
-            if (checked.split('_').length == 2) {
-                allChildChecked.push(checked);
-            }
-        }
+            for (let checked of this.checkedKeys) {
+                if (checked.split('_').length == 3) {
+                    this.permissonDictionary[checked].isEnabled = true;
+                }
 
-        
-        for (let key in this.permissonDictionary) {
-            //permissionItem.isEnabled = false;    
-            var parentKey: string = '';
-            if (key.split('_').length == 3) parentKey = key.split('_')[0] + '_' + key.split('_')[1];
-
-            if (allChildChecked.filter(k => k == parentKey).length > 0)
-            {
-                this.permissonDictionary[key].isEnabled = true;
+                if (checked.split('_').length == 2) {
+                    allChildChecked.push(checked);
+                }
             }
 
-            if (permissionData.filter(p => p.id == this.permissonDictionary[key].id).length == 0)
-                permissionData.push(this.permissonDictionary[key]);
 
+            for (let key in this.permissonDictionary) {
+                //permissionItem.isEnabled = false;    
+                var parentKey: string = '';
+                if (key.split('_').length == 3) parentKey = key.split('_')[0] + '_' + key.split('_')[1];
+
+                if (allChildChecked.filter(k => k == parentKey).length > 0) {
+                    this.permissonDictionary[key].isEnabled = true;
+                }
+
+                if (permissionData.filter(p => p.id == this.permissonDictionary[key].id).length == 0)
+                    permissionData.push(this.permissonDictionary[key]);
+
+            }
+
+
+            var viewModel: RoleFullViewModel;
+            viewModel = {
+                id: this.editForm.value.id,
+                role: this.editForm.value,
+                permissions: permissionData
+            }
+
+            this.save.emit(viewModel);
+            this.active = true;
+            this.selectedRows = [];
         }
-
-
-        var viewModel: RoleFullViewModel;
-        viewModel = {
-            id: this.editForm.value.id,
-            role: this.editForm.value,
-            permissions: permissionData
-        }
-
-        this.save.emit(viewModel);
-        this.active = true;
-        this.selectedRows = [];
     }
 
     public onCancel(e: any): void {

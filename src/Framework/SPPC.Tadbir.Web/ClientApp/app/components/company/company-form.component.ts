@@ -36,7 +36,7 @@ export function getLayoutModule(layout: Layout) {
 })
 
 export class CompanyFormComponent extends DefaultComponent {
-    
+
     //create properties
     active: boolean = false;
     @Input() public isNew: boolean = false;
@@ -55,8 +55,10 @@ export class CompanyFormComponent extends DefaultComponent {
     //Events
     public onSave(e: any): void {
         e.preventDefault();
-        this.save.emit(this.editForm.value);
-        this.active = true;
+        if (this.editForm.valid) {
+            this.save.emit(this.editForm.value);
+            this.active = true;
+        }
     }
 
     public onCancel(e: any): void {
@@ -76,5 +78,5 @@ export class CompanyFormComponent extends DefaultComponent {
         super(toastrService, translate, renderer, metadata, Entities.Company, Metadatas.Company);
     }
 
-   
+
 }
