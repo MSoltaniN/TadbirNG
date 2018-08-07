@@ -20,7 +20,6 @@ li.link-active a:focus {
 }
 
 /* Circle Avatar Styles */
-
 .circle {
     line-height: 0; /* remove line-height */
     display: inline-block; /* circle wraps image */
@@ -31,7 +30,7 @@ li.link-active a:focus {
     transition: linear 0.25s;
     height: 48px;
     width: 48px;
-    padding:0;
+    padding: 0;
 }
 
     .circle img {
@@ -47,11 +46,13 @@ li.link-active a:focus {
 
     .fl
     {
+        padding-right:0;
         float:left;
     }
 
     .fr
     {
+        padding-left:0;
         float:right;
     }
 
@@ -68,12 +69,28 @@ a.circle {
 }
 /* IE fix: removes blue border */	
 
+@media (max-width:567px)
+{
+    .navbar-scroll {
+        overflow-y: scroll !important;
+        height: 300px !important;
+    }
+}
+
+@media (min-width:568px) {
+
+    .navbar-scroll {
+        overflow-y: scroll !important;
+        height: 80% !important;
+    }
+}
+
 @media (min-width: 768px) {
     /* On small screens, convert the nav menu to a vertical sidebar */
     .main-nav {
         height: 100%;
         width: calc(25% - 20px);
-        overflow-y: scroll;
+        /*overflow-y: scroll;*/
         background-color: #222;
     }
     .navbar {
@@ -132,6 +149,7 @@ a.circle {
     background: #4c4646;
     border-radius: 10px;
 }
+
 
 
 .navbar-brand-right{
