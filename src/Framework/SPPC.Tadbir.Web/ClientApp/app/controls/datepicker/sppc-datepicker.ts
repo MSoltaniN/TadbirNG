@@ -190,47 +190,37 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
             var date = new Date(strDate);
 
-            if (operationIncrese) {
-                if (this.endDate != null) {
-                    endDiff = date.getTime() - this.endDate.getTime();
-                    endDiffDays = endDiff / (1000 * 3600 * 24);
-                    if (endDiffDays > 1) {
-                        this.dateObject = moment(this.endDate);
-                    }
-                }
+            if (this.endDate != null) {
+                endDiff = date.getTime() - this.endDate.getTime();
+                endDiffDays = endDiff / (1000 * 3600 * 24);
+            }
+
+            if (this.startDate != null) {
+                startDiff = this.startDate.getTime() - date.getTime();
+                startDiffDays = startDiff / (1000 * 3600 * 24);
+            }
+
+            if (operationIncrese && this.endDate != null && endDiffDays > 1) {
+
+                this.dateObject = moment(this.endDate);
             }
             else
-                if (!operationIncrese) {
-                    if (this.startDate != null) {
-                        startDiff = this.startDate.getTime() - date.getTime();
-                        startDiffDays = startDiff / (1000 * 3600 * 24);
-                        if (startDiffDays > 1) {
-                            this.dateObject = moment(this.startDate);
-                        }
-                    }
+                if (!operationIncrese && this.startDate != null && startDiffDays > 1) {
+                    this.dateObject = moment(this.startDate);
                 }
 
             if (operationIncrese == null) {
-                if (this.endDate != null) {
-                    endDiff = date.getTime() - this.endDate.getTime();
-                    endDiffDays = endDiff / (1000 * 3600 * 24);
-                    if (endDiffDays > 1) {
-                        this.dateObject = moment(this.endDate);
-                    }
+
+                if (this.endDate != null && endDiffDays > 1) {
+                    this.dateObject = moment(this.endDate);
                 }
 
-                if (this.startDate != null) {
-                    startDiff = this.startDate.getTime() - date.getTime();
-                    startDiffDays = startDiff / (1000 * 3600 * 24);
-                    if (startDiffDays > 1) {
-                        this.dateObject = moment(this.startDate);
-                    }
+                if (this.startDate != null && startDiffDays > 1) {
+                    this.dateObject = moment(this.startDate);
                 }
 
-                if (this.startDate != null && this.endDate != null) {
-                    if (endDiffDays < 1 && startDiffDays < 1) {
-                        this.dateObject = moment();
-                    }
+                if (this.startDate != null && this.endDate != null && endDiffDays < 1 && startDiffDays < 1) {
+                    this.dateObject = moment();
                 }
             }
         }

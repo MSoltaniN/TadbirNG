@@ -138,7 +138,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                 }
                 this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
-                //this.sppcLoading.hide();
+                this.sppcLoading.hide();
             })
         }
         else {
@@ -181,6 +181,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                 this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
+                this.sppcLoading.hide();
             }, (error => {
                 this.sppcLoading.hide();
                 this.showMessage(error, MessageType.Warning);
@@ -230,9 +231,10 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
+                    this.sppcLoading.hide();
                 }, (error => {
                     this.errorMessage = error;
-
+                    this.sppcLoading.hide();
                 }));
         }
         else {
@@ -243,12 +245,14 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     var insertedModel = JSON.parse(response._body);
                     this.reloadGrid(insertedModel);
+                    this.sppcLoading.hide();
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
+                    this.sppcLoading.hide();
                 }));
         }
-        this.sppcLoading.hide();
+        
     }
 
 }
