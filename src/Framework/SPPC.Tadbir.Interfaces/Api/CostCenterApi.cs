@@ -23,6 +23,17 @@ namespace SPPC.Tadbir.Api
         public const string FiscalPeriodBranchCostCentersUrl = "ccenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
 
         /// <summary>
+        /// API client URL for cost center lookups defined in a fiscal period and a corporate branch
+        /// </summary>
+        public const string FiscalPeriodBranchCostCentersLookup = "ccenters/lookup/fp/{0}/branch/{1}";
+
+        /// <summary>
+        /// API server route URL for cost center lookups defined in a fiscal period and a corporate branch
+        /// </summary>
+        public const string FiscalPeriodBranchCostCentersLookupUrl =
+            "ccenters/lookup/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+
+        /// <summary>
         /// API client URL for all cost center items
         /// </summary>
         public const string CostCenters = "ccenters";

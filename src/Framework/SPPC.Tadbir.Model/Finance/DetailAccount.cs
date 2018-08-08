@@ -15,10 +15,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// شناسه دیتابیسی تفصیلی شناور والد در ساختار درختی
         /// </summary>
         public int? ParentId { get; set; }
-
-        /// <summary>
-        /// مجموعه ای از سرفصل های حسابداری مرتبط با این تفصیلی شناور
-        /// </summary>
-        public IList<AccountDetailAccount> AccountDetailAccounts { get; protected set; }
     }
 }

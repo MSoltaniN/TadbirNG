@@ -15,10 +15,5 @@ namespace SPPC.Tadbir.Model.Finance
         /// شناسه دیتابیسی پروژه والد در ساختار درختی
         /// </summary>
         public int? ParentId { get; set; }
-
-        /// <summary>
-        /// مجموعه ای از سرفصل های حسابداری مرتبط با این پروژه
-        /// </summary>
-        public IList<AccountProject> AccountProjects { get; protected set; }
     }
 }

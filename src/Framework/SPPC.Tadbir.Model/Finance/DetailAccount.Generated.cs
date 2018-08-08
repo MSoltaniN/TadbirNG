@@ -12,7 +12,7 @@
 
 using System;
 using System.Collections.Generic;
-using SPPC.Framework.Domain;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Model.Finance
@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Model.Finance
     /// <summary>
     /// اطلاعات یک تفصیلی شناور مورد استفاده برای ثبت پیشامدهای مالی سازمان را نگهداری می کند
     /// </summary>
-    public partial class DetailAccount : IEntity
+    public partial class DetailAccount : FiscalEntity, IBaseEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس ایجاد می کند.
@@ -36,9 +36,10 @@ namespace SPPC.Tadbir.Model.Finance
         }
 
         /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
+        /// محدوده دسترسی به تفصیلی شناور را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل
+        /// "کلیه شعبه ها" (مقدار 0)، "شعبه جاری و زیرمجموعه ها" (مقدار 1) و "شعبه جاری" (مقدار 2) می شود.
         /// </summary>
-        public virtual int Id { get; set; }
+        public virtual short BranchScope { get; set; }
 
         /// <summary>
         /// کد شناسایی برای سطح جاری تفصیلی شناور در ساختار درختی
@@ -66,16 +67,6 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual string Description { get; set; }
 
         /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
-
-        /// <summary>
         /// حساب والد (پدر) برای این تفصیلی شناور که در سطح بالایی آن در ساختار درختی تعریف شده
         /// </summary>
         public virtual DetailAccount Parent { get; set; }
@@ -86,9 +77,9 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual FiscalPeriod FiscalPeriod { get; set; }
 
         /// <summary>
-        /// شعبه سازمانی که این تفصیلی شناور در آن تعریف شده است
+        /// مجموعه ای از سرفصل های حسابداری مرتبط با این تفصیلی شناور
         /// </summary>
-        public virtual Branch Branch { get; set; }
+        public IList<AccountDetailAccount> AccountDetailAccounts { get; protected set; }
 
         private void InitReferences()
         {

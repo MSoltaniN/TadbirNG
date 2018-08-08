@@ -23,6 +23,17 @@ namespace SPPC.Tadbir.Api
         public const string FiscalPeriodBranchProjectsUrl = "projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
 
         /// <summary>
+        /// API client URL for project lookups defined in a fiscal period and a corporate branch
+        /// </summary>
+        public const string FiscalPeriodBranchProjectsLookup = "projects/lookup/fp/{0}/branch/{1}";
+
+        /// <summary>
+        /// API server route URL for project lookups defined in a fiscal period and a corporate branch
+        /// </summary>
+        public const string FiscalPeriodBranchProjectsLookupUrl =
+            "projects/lookup/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+
+        /// <summary>
         /// API client URL for all project items
         /// </summary>
         public const string Projects = "projects";

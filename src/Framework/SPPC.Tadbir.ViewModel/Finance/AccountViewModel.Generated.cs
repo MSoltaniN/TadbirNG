@@ -39,9 +39,9 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int Id { get; set; }
 
         /// <summary>
-        /// محدوده دسترسی به حساب را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل "کلیه شعبه ها" (مقدار 0)، "شعبه جاری و زیرمجموعه ها" (مقدار 1) و "شعبه جاری" (مقدار 2) می شود.
+        /// محدوده دسترسی به حساب را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل
+        /// "کلیه شعبه ها" (مقدار 0)، "شعبه جاری و زیرمجموعه ها" (مقدار 1) و "شعبه جاری" (مقدار 2) می شود.
         /// </summary>
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public short BranchScope { get; set; }
 
         /// <summary>

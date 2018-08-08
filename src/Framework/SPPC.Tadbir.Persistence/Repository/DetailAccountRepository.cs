@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Framework.Common;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -15,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات تفصیلی های شناور را پیاده سازی می کند.
     /// </summary>
-    public class DetailAccountRepository : IDetailAccountRepository
+    public class DetailAccountRepository : SecureRepository, IDetailAccountRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -24,9 +26,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         public DetailAccountRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _metadataRepository = metadataRepository;
         }
 
@@ -34,41 +35,56 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کلیه تفصیلی های شناوری را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<IList<DetailAccountViewModel>> GetDetailAccountsAsync(
-            int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
-            var detailAccounts = await repository
-                .GetByCriteriaAsync(
-                    facc => facc.FiscalPeriod.Id == fpId
-                        && facc.Branch.Id == branchId,
-                    gridOptions,
-                    facc => facc.FiscalPeriod, facc => facc.Branch, facc => facc.Parent, facc => facc.Children);
+            var detailAccounts = await GetAllAsync<DetailAccount>(
+                userAccess, fpId, branchId, gridOptions, facc => facc.FiscalPeriod, facc => facc.Branch,
+                facc => facc.Parent, facc => facc.Children);
             return detailAccounts
-                .Select(item => _mapper.Map<DetailAccountViewModel>(item))
+                .Select(item => Mapper.Map<DetailAccountViewModel>(item))
                 .ToList();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه تفصیلی های شناوری را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
+        /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
+        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده</returns>
+        public async Task<IList<KeyValue>> GetDetailAccountsLookupAsync(
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+        {
+            return await GetAllLookupAsync<DetailAccount>(userAccess, fpId, branchId, gridOptions);
         }
 
         /// <summary>
         /// به روش آسنکرون، تعداد تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<int> GetCountAsync(
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
-            var count = await repository
-                .GetCountByCriteriaAsync(
-                    facc => facc.FiscalPeriod.Id == fpId && facc.Branch.Id == branchId,
-                    gridOptions);
-            return count;
+            return await GetCountAsync<DetailAccount>(userAccess, fpId, branchId, gridOptions);
         }
 
         /// <summary>
@@ -79,12 +95,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task<DetailAccountViewModel> GetDetailAccountAsync(int faccountId)
         {
             DetailAccountViewModel item = null;
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var detailAccount = await repository.GetByIDAsync(
                 faccountId, facc => facc.FiscalPeriod, facc => facc.Branch, facc => facc.Parent, facc => facc.Children);
             if (detailAccount != null)
             {
-                item = _mapper.Map<DetailAccountViewModel>(detailAccount);
+                item = Mapper.Map<DetailAccountViewModel>(detailAccount);
             }
 
             return item;
@@ -98,11 +114,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetDetailAccountChildrenAsync(int detailId)
         {
             var children = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var detail = await repository.GetByIDAsync(detailId, facc => facc.Children);
             if (detail != null)
             {
-                children.AddRange(detail.Children.Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc)));
+                children.AddRange(detail.Children.Select(facc => Mapper.Map<AccountItemBriefViewModel>(facc)));
             }
 
             return children;
@@ -126,10 +142,10 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(detailAccount, "detailAccount");
             DetailAccount detailModel = default(DetailAccount);
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             if (detailAccount.Id == 0)
             {
-                detailModel = _mapper.Map<DetailAccount>(detailAccount);
+                detailModel = Mapper.Map<DetailAccount>(detailAccount);
                 repository.Insert(detailModel);
             }
             else
@@ -143,8 +159,8 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await _unitOfWork.CommitAsync();
-            return _mapper.Map<DetailAccountViewModel>(detailModel);
+            await UnitOfWork.CommitAsync();
+            return Mapper.Map<DetailAccountViewModel>(detailModel);
         }
 
         /// <summary>
@@ -153,7 +169,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="faccountId">شناسه عددی تفصیلی شناور مورد نظر برای حذف</param>
         public async Task DeleteDetailAccountAsync(int faccountId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var detailAccount = await repository.GetByIDAsync(faccountId);
             if (detailAccount != null)
             {
@@ -161,7 +177,7 @@ namespace SPPC.Tadbir.Persistence
                 detailAccount.Branch = null;
                 detailAccount.Parent = null;
                 repository.Delete(detailAccount);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -173,7 +189,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> IsDuplicateDetailAccountAsync(DetailAccountViewModel detailAccount)
         {
             Verify.ArgumentNotNull(detailAccount, "detailAccount");
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var detailAccounts = await repository
                 .GetByCriteriaAsync(
                     facc => facc.Id != detailAccount.Id
@@ -191,10 +207,19 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار "نادرست" را برمی گرداند</returns>
         public async Task<bool> IsUsedDetailAccountAsync(int faccountId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var articles = await repository
                 .GetByCriteriaAsync(art => art.DetailAccount.Id == faccountId);
             return (articles.Count != 0);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsRelatedDetailAccountAsync(int faccountId)
+        {
+            var accDetailrepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
+            int relatedAccounts = await accDetailrepository.GetCountByCriteriaAsync(
+                ada => ada.DetailId == faccountId, null);
+            return (relatedAccounts > 0);
         }
 
         /// <summary>
@@ -206,7 +231,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool?> HasChildrenAsync(int faccountId)
         {
             bool? hasChildren = null;
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
             var detailAccount = await repository.GetByIDAsync(faccountId, facc => facc.Children);
             if (detailAccount != null)
             {
@@ -214,6 +239,13 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return hasChildren;
+        }
+
+        /// <inheritdoc/>
+        protected override int ViewId
+        {
+            // TODO: Remove this hard-coded value later
+            get { return 6; }
         }
 
         private static void UpdateExistingDetailAccount(DetailAccountViewModel detailViewModel, DetailAccount detail)
@@ -225,8 +257,6 @@ namespace SPPC.Tadbir.Persistence
             detail.Description = detailViewModel.Description;
         }
 
-        private IUnitOfWork _unitOfWork;
-        private IDomainMapper _mapper;
         private IMetadataRepository _metadataRepository;
     }
 }

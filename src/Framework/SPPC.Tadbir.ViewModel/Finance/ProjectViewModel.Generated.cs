@@ -39,6 +39,12 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int Id { get; set; }
 
         /// <summary>
+        /// محدوده دسترسی به پروژه را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل
+        /// "کلیه شعبه ها" (مقدار 0)، "شعبه جاری و زیرمجموعه ها" (مقدار 1) و "شعبه جاری" (مقدار 2) می شود.
+        /// </summary>
+        public short BranchScope { get; set; }
+
+        /// <summary>
         /// کد شناسایی برای سطح جاری پروژه در ساختار درختی
         /// </summary>
         [Display(Name = FieldNames.CodeField)]

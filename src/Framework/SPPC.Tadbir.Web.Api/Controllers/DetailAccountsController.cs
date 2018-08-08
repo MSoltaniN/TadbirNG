@@ -33,10 +33,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetDetailAccountsAsync(int fpId, int branchId)
         {
-            int itemCount = await _repository.GetCountAsync(fpId, branchId, GridOptions);
+            int itemCount = await _repository.GetCountAsync(UserAccess, fpId, branchId, GridOptions);
             SetItemCount(itemCount);
-            var detailAccounts = await _repository.GetDetailAccountsAsync(fpId, branchId, GridOptions);
+            var detailAccounts = await _repository.GetDetailAccountsAsync(UserAccess, fpId, branchId, GridOptions);
             return Json(detailAccounts);
+        }
+
+        // GET: api/faccounts/lookup/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [Route(DetailAccountApi.FiscalPeriodBranchDetailAccountsLookupUrl)]
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
+        public async Task<IActionResult> GetDetailAccountsLookupAsync(int fpId, int branchId)
+        {
+            var lookup = await _repository.GetDetailAccountsLookupAsync(UserAccess, fpId, branchId, GridOptions);
+            return Json(lookup);
         }
 
         // GET: api/faccounts/{faccountId:min(1)}
@@ -151,11 +160,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 message = String.Format(
                     _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.DetailAccount], detailInfo);
             }
-
-            if (await _repository.IsUsedDetailAccountAsync(item))
+            else if (await _repository.IsUsedDetailAccountAsync(item))
             {
                 message = String.Format(
                     _strings[AppStrings.CannotDeleteUsedItem], _strings[AppStrings.DetailAccount], detailInfo);
+            }
+            else if (await _repository.IsRelatedDetailAccountAsync(item))
+            {
+                message = String.Format(
+                    _strings[AppStrings.CannotDeleteRelatedItem], _strings[AppStrings.DetailAccount], detailInfo);
             }
 
             return message;

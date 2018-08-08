@@ -33,10 +33,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetProjectsAsync(int fpId, int branchId)
         {
-            int itemCount = await _repository.GetCountAsync(fpId, branchId, GridOptions);
+            int itemCount = await _repository.GetCountAsync(UserAccess, fpId, branchId, GridOptions);
             SetItemCount(itemCount);
-            var projects = await _repository.GetProjectsAsync(fpId, branchId, GridOptions);
+            var projects = await _repository.GetProjectsAsync(UserAccess, fpId, branchId, GridOptions);
             return Json(projects);
+        }
+
+        // GET: api/projects/lookup/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [Route(ProjectApi.FiscalPeriodBranchProjectsLookupUrl)]
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
+        public async Task<IActionResult> GetProjectsLookupAsync(int fpId, int branchId)
+        {
+            var lookup = await _repository.GetProjectsLookupAsync(UserAccess, fpId, branchId, GridOptions);
+            return Json(lookup);
         }
 
         // GET: api/projects/{projectId:min(1)}
@@ -151,11 +160,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 message = String.Format(
                     _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.Project], projectInfo);
             }
-
-            if (await _repository.IsUsedProjectAsync(item))
+            else if (await _repository.IsUsedProjectAsync(item))
             {
                 message = String.Format(
                     _strings[AppStrings.CannotDeleteUsedItem], _strings[AppStrings.Project], projectInfo);
+            }
+            else if (await _repository.IsRelatedProjectAsync(item))
+            {
+                message = String.Format(
+                    _strings[AppStrings.CannotDeleteRelatedItem], _strings[AppStrings.Project], projectInfo);
             }
 
             return message;

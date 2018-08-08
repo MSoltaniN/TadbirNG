@@ -35,21 +35,6 @@ namespace SPPC.Tadbir.Model.Finance
             InitReferences();
         }
 
-        ///// <summary>
-        ///// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        ///// </summary>
-        //public virtual int Id { get; set; }
-
-        ///// <summary>
-        ///// شناسه یکتای دوره مالی که این موجودیت در آن تعریف می شود
-        ///// </summary>
-        //public int FiscalPeriodId { get; set; }
-
-        ///// <summary>
-        ///// شناسه یکتای شعبه سازمانی که این موجودیت در آن تعریف می شود
-        ///// </summary>
-        //public int BranchId { get; set; }
-
         /// <summary>
         /// محدوده دسترسی به حساب را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل
         /// "کلیه شعبه ها" (مقدار 0)، "شعبه جاری و زیرمجموعه ها" (مقدار 1) و "شعبه جاری" (مقدار 2) می شود.
@@ -81,16 +66,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public virtual string Description { get; set; }
 
-        ///// <summary>
-        ///// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        ///// </summary>
-        //public virtual Guid RowGuid { get; set; }
-
-        ///// <summary>
-        ///// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        ///// </summary>
-        //public virtual DateTime ModifiedDate { get; set; }
-
         /// <summary>
         /// حساب والد (پدر) برای این سرفصل حسابداری که در سطح بالایی آن در ساختار درختی تعریف شده
         /// </summary>
@@ -100,11 +75,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// دوره مالی که این سرفصل حسابداری در آن تعریف شده است
         /// </summary>
         public virtual FiscalPeriod FiscalPeriod { get; set; }
-
-        ///// <summary>
-        ///// شعبه سازمانی که این سرفصل حسابداری در آن تعریف شده است
-        ///// </summary>
-        //public virtual Branch Branch { get; set; }
 
         /// <summary>
         /// مجموعه ای از تفصیلی های شناور مرتبط با این حساب

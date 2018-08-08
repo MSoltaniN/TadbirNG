@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Framework.Common;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -15,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات پروژه ها را پیاده سازی می کند.
     /// </summary>
-    public class ProjectRepository : IProjectRepository
+    public class ProjectRepository : SecureRepository, IProjectRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -24,9 +26,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         public ProjectRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _metadataRepository = metadataRepository;
         }
 
@@ -34,41 +35,56 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<IList<ProjectViewModel>> GetProjectsAsync(
-            int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
-            var projects = await repository
-                .GetByCriteriaAsync(
-                    prj => prj.FiscalPeriod.Id == fpId
-                        && prj.Branch.Id == branchId,
-                    gridOptions,
-                    prj => prj.FiscalPeriod, prj => prj.Branch, prj => prj.Parent, prj => prj.Children);
+            var projects = await GetAllAsync<Project>(
+                userAccess, fpId, branchId, gridOptions, prj => prj.FiscalPeriod, prj => prj.Branch,
+                prj => prj.Parent, prj => prj.Children);
             return projects
-                .Select(item => _mapper.Map<ProjectViewModel>(item))
+                .Select(item => Mapper.Map<ProjectViewModel>(item))
                 .ToList();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
+        /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
+        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
+        public async Task<IList<KeyValue>> GetProjectsLookupAsync(
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+        {
+            return await GetAllLookupAsync<Project>(userAccess, fpId, branchId, gridOptions);
         }
 
         /// <summary>
         /// به روش آسنکرون، تعداد پروژه های تعریف شده در دوره مالی و شعبه مشخص شده را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد پروژه های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<int> GetCountAsync(
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
-            var count = await repository
-                .GetCountByCriteriaAsync(
-                    prj => prj.FiscalPeriod.Id == fpId && prj.Branch.Id == branchId,
-                    gridOptions);
-            return count;
+            return await GetCountAsync<Project>(userAccess, fpId, branchId, gridOptions);
         }
 
         /// <summary>
@@ -79,12 +95,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ProjectViewModel> GetProjectAsync(int projectId)
         {
             ProjectViewModel item = null;
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             var project = await repository.GetByIDAsync(
                 projectId, prj => prj.FiscalPeriod, prj => prj.Branch, prj => prj.Parent, prj => prj.Children);
             if (project != null)
             {
-                item = _mapper.Map<ProjectViewModel>(project);
+                item = Mapper.Map<ProjectViewModel>(project);
             }
 
             return item;
@@ -98,11 +114,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetProjectChildrenAsync(int projectId)
         {
             var children = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
             if (project != null)
             {
-                children.AddRange(project.Children.Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj)));
+                children.AddRange(project.Children.Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj)));
             }
 
             return children;
@@ -126,10 +142,10 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(project, "project");
             Project projectModel = default(Project);
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             if (project.Id == 0)
             {
-                projectModel = _mapper.Map<Project>(project);
+                projectModel = Mapper.Map<Project>(project);
                 repository.Insert(projectModel);
             }
             else
@@ -143,8 +159,8 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await _unitOfWork.CommitAsync();
-            return _mapper.Map<ProjectViewModel>(projectModel);
+            await UnitOfWork.CommitAsync();
+            return Mapper.Map<ProjectViewModel>(projectModel);
         }
 
         /// <summary>
@@ -153,7 +169,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="projectId">شناسه عددی پروژه مورد نظر برای حذف</param>
         public async Task DeleteProjectAsync(int projectId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             var project = await repository.GetByIDAsync(projectId);
             if (project != null)
             {
@@ -161,7 +177,7 @@ namespace SPPC.Tadbir.Persistence
                 project.Branch = null;
                 project.Parent = null;
                 repository.Delete(project);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -173,7 +189,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> IsDuplicateProjectAsync(ProjectViewModel project)
         {
             Verify.ArgumentNotNull(project, "project");
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             var projects = await repository
                 .GetByCriteriaAsync(
                     prj => prj.Id != project.Id
@@ -191,10 +207,19 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار "نادرست" را برمی گرداند</returns>
         public async Task<bool> IsUsedProjectAsync(int projectId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var articles = await repository
                 .GetByCriteriaAsync(art => art.Project.Id == projectId);
             return (articles.Count != 0);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsRelatedProjectAsync(int projectId)
+        {
+            var accProjectRepository = UnitOfWork.GetAsyncRepository<AccountProject>();
+            int relatedAccounts = await accProjectRepository.GetCountByCriteriaAsync(
+                ap => ap.ProjectId == projectId, null);
+            return (relatedAccounts > 0);
         }
 
         /// <summary>
@@ -206,7 +231,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool?> HasChildrenAsync(int projectId)
         {
             bool? hasChildren = null;
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
             var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
             if (project != null)
             {
@@ -214,6 +239,13 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return hasChildren;
+        }
+
+        /// <inheritdoc/>
+        protected override int ViewId
+        {
+            // TODO: Remove this hard-coded value later
+            get { return 8; }
         }
 
         private static void UpdateExistingProject(ProjectViewModel projectViewModel, Project project)
@@ -225,8 +257,6 @@ namespace SPPC.Tadbir.Persistence
             project.Description = projectViewModel.Description;
         }
 
-        private IUnitOfWork _unitOfWork;
-        private IDomainMapper _mapper;
         private IMetadataRepository _metadataRepository;
     }
 }

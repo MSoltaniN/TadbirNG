@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -11,27 +13,49 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات مراکز هزینه را تعریف می کند.
     /// </summary>
-    public interface ICostCenterRepository
+    public interface ICostCenterRepository : ISecureRepository
     {
         /// <summary>
         /// به روش آسنکرون، کلیه مراکز هزینه ای را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<IList<CostCenterViewModel>> GetCostCentersAsync(int fpId, int branchId, GridOptions gridOptions = null);
+        Task<IList<CostCenterViewModel>> GetCostCentersAsync(
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه مراکز هزینه ای را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
+        /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
+        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده</returns>
+        Task<IList<KeyValue>> GetCostCentersLookupAsync(
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده را
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null);
+        Task<int> GetCountAsync(
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون،مرکز هزینه با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
@@ -81,6 +105,15 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در حالتی که مرکز هزینه مشخص شده در حال استفاده باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool> IsUsedCostCenterAsync(int costCenterId);
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا مرکز هزینه انتخاب شده توسط ارتباطات موجود برای بردار حساب
+        /// در حال استفاده است یا نه
+        /// </summary>
+        /// <param name="costCenterId">شناسه یکتای یکی از مرکز هزینه های موجود</param>
+        /// <returns>در حالتی که مرکز هزینه مشخص شده در حال استفاده باشد مقدار "درست" و در غیر این صورت
+        /// مقدار "نادرست" را برمی گرداند</returns>
+        Task<bool> IsRelatedCostCenterAsync(int costCenterId);
 
         /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا مرکز هزینه انتخاب شده دارای زیرمجموعه هست یا نه

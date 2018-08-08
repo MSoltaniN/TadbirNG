@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Framework.Common;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -15,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات مراکز هزینه را پیاده سازی می کند.
     /// </summary>
-    public class CostCenterRepository : ICostCenterRepository
+    public class CostCenterRepository : SecureRepository, ICostCenterRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -24,9 +26,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         public CostCenterRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
+            : base(unitOfWork, mapper)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _metadataRepository = metadataRepository;
         }
 
@@ -34,41 +35,56 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کلیه مراکز هزینه ای را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<IList<CostCenterViewModel>> GetCostCentersAsync(
-            int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenters = await repository
-                .GetByCriteriaAsync(
-                    cc => cc.FiscalPeriod.Id == fpId
-                        && cc.Branch.Id == branchId,
-                    gridOptions,
-                    cc => cc.FiscalPeriod, cc => cc.Branch, cc => cc.Parent, cc => cc.Children);
+            var costCenters = await GetAllAsync<CostCenter>(
+                userAccess, fpId, branchId, gridOptions, cc => cc.FiscalPeriod, cc => cc.Branch,
+                cc => cc.Parent, cc => cc.Children);
             return costCenters
-                .Select(item => _mapper.Map<CostCenterViewModel>(item))
+                .Select(item => Mapper.Map<CostCenterViewModel>(item))
                 .ToList();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، کلیه مراکز هزینه ای را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
+        /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
+        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
+        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده</returns>
+        public async Task<IList<KeyValue>> GetCostCentersLookupAsync(
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+        {
+            return await GetAllLookupAsync<CostCenter>(userAccess, fpId, branchId, gridOptions);
         }
 
         /// <summary>
         /// به روش آسنکرون، تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<int> GetCountAsync(int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<int> GetCountAsync(
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
-            var count = await repository
-                .GetCountByCriteriaAsync(
-                    cc => cc.FiscalPeriod.Id == fpId && cc.Branch.Id == branchId,
-                    gridOptions);
-            return count;
+            return await GetCountAsync<CostCenter>(userAccess, fpId, branchId, gridOptions);
         }
 
         /// <summary>
@@ -79,12 +95,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task<CostCenterViewModel> GetCostCenterAsync(int costCenterId)
         {
             CostCenterViewModel item = null;
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var costCenter = await repository.GetByIDAsync(
                 costCenterId, cc => cc.FiscalPeriod, cc => cc.Branch, cc => cc.Parent, cc => cc.Children);
             if (costCenter != null)
             {
-                item = _mapper.Map<CostCenterViewModel>(costCenter);
+                item = Mapper.Map<CostCenterViewModel>(costCenter);
             }
 
             return item;
@@ -98,11 +114,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetCostCenterChildrenAsync(int costCenterId)
         {
             var children = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Children);
             if (costCenter != null)
             {
-                children.AddRange(costCenter.Children.Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc)));
+                children.AddRange(costCenter.Children.Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc)));
             }
 
             return children;
@@ -126,10 +142,10 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(costCenter, "costCenter");
             CostCenter costCenterModel = default(CostCenter);
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             if (costCenter.Id == 0)
             {
-                costCenterModel = _mapper.Map<CostCenter>(costCenter);
+                costCenterModel = Mapper.Map<CostCenter>(costCenter);
                 repository.Insert(costCenterModel);
             }
             else
@@ -143,8 +159,8 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await _unitOfWork.CommitAsync();
-            return _mapper.Map<CostCenterViewModel>(costCenterModel);
+            await UnitOfWork.CommitAsync();
+            return Mapper.Map<CostCenterViewModel>(costCenterModel);
         }
 
         /// <summary>
@@ -153,7 +169,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="costCenterId">شناسه عددی مرکز هزینه مورد نظر برای حذف</param>
         public async Task DeleteCostCenterAsync(int costCenterId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var costCenter = await repository.GetByIDAsync(costCenterId);
             if (costCenter != null)
             {
@@ -161,7 +177,7 @@ namespace SPPC.Tadbir.Persistence
                 costCenter.Branch = null;
                 costCenter.Parent = null;
                 repository.Delete(costCenter);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -173,7 +189,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> IsDuplicateCostCenterAsync(CostCenterViewModel costCenter)
         {
             Verify.ArgumentNotNull(costCenter, "costCenter");
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var costCenters = await repository
                 .GetByCriteriaAsync(
                     cc => cc.Id != costCenter.Id
@@ -191,10 +207,19 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار "نادرست" را برمی گرداند</returns>
         public async Task<bool> IsUsedCostCenterAsync(int costCenterId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<VoucherLine>();
+            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var articles = await repository
                 .GetByCriteriaAsync(art => art.CostCenter.Id == costCenterId);
             return (articles.Count != 0);
+        }
+
+        /// <inheritdoc/>
+        public async Task<bool> IsRelatedCostCenterAsync(int costCenterId)
+        {
+            var accCenterRepository = UnitOfWork.GetAsyncRepository<AccountCostCenter>();
+            int relatedAccounts = await accCenterRepository.GetCountByCriteriaAsync(
+                ac => ac.CostCenterId == costCenterId, null);
+            return (relatedAccounts > 0);
         }
 
         /// <summary>
@@ -206,7 +231,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool?> HasChildrenAsync(int costCenterId)
         {
             bool? hasChildren = null;
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
             var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Children);
             if (costCenter != null)
             {
@@ -214,6 +239,13 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return hasChildren;
+        }
+
+        /// <inheritdoc/>
+        protected override int ViewId
+        {
+            // TODO: Remove this hard-coded value later
+            get { return 7; }
         }
 
         private static void UpdateExistingCostCenter(CostCenterViewModel costCenterViewModel, CostCenter costCenter)
@@ -225,8 +257,6 @@ namespace SPPC.Tadbir.Persistence
             costCenter.Description = costCenterViewModel.Description;
         }
 
-        private IUnitOfWork _unitOfWork;
-        private IDomainMapper _mapper;
         private IMetadataRepository _metadataRepository;
     }
 }

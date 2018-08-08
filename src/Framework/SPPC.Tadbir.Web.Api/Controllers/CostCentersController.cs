@@ -33,10 +33,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetCostCentersAsync(int fpId, int branchId)
         {
-            int itemCount = await _repository.GetCountAsync(fpId, branchId, GridOptions);
+            int itemCount = await _repository.GetCountAsync(UserAccess, fpId, branchId, GridOptions);
             SetItemCount(itemCount);
-            var costCenters = await _repository.GetCostCentersAsync(fpId, branchId, GridOptions);
+            var costCenters = await _repository.GetCostCentersAsync(UserAccess, fpId, branchId, GridOptions);
             return Json(costCenters);
+        }
+
+        // GET: api/ccenters/lookup/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [Route(CostCenterApi.FiscalPeriodBranchCostCentersLookupUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
+        public async Task<IActionResult> GetCostCentersLookupAsync(int fpId, int branchId)
+        {
+            var lookup = await _repository.GetCostCentersLookupAsync(UserAccess, fpId, branchId, GridOptions);
+            return Json(lookup);
         }
 
         // GET: api/ccenters/{ccenterId:min(1)}
@@ -151,11 +160,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 message = String.Format(
                     _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.CostCenter], costCenterInfo);
             }
-
-            if (await _repository.IsUsedCostCenterAsync(item))
+            else if (await _repository.IsUsedCostCenterAsync(item))
             {
                 message = String.Format(
                     _strings[AppStrings.CannotDeleteUsedItem], _strings[AppStrings.CostCenter], costCenterInfo);
+            }
+            else if (await _repository.IsRelatedCostCenterAsync(item))
+            {
+                message = String.Format(
+                    _strings[AppStrings.CannotDeleteRelatedItem], _strings[AppStrings.CostCenter], costCenterInfo);
             }
 
             return message;
