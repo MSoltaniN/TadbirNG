@@ -26,7 +26,7 @@
             </ul>
         </div>
         <div class='clearfix'></div>
-        <div class='navbar-collapse collapse'>
+        <div class='navbar-collapse collapse navbar-scroll'>
             <ul class='nav navbar-nav'>
                 <li *ngFor="let cmd of menuList;" class="parent" (click)="onMenuClick($event,cmd.id)">
                     <a aria-expanded="false" data-toggle="collapse" href="#div{{cmd.id}}" id="#a{{cmd.id}}">
