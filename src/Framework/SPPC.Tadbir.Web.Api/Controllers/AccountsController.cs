@@ -41,6 +41,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(accounts);
         }
 
+        // GET: api/accounts/lookup/fp/{fpId:min(1)}/branch/{branchId:min(1)}
+        [Route(AccountApi.FiscalPeriodBranchAccountsLookupUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        public async Task<IActionResult> GetAccountsLookupAsync(int fpId, int branchId)
+        {
+            var lookup = await _repository.GetAccountsLookupAsync(UserAccess, fpId, branchId, GridOptions);
+            return Json(lookup);
+        }
+
         // GET: api/accounts/{accountId:min(1)}
         [Route(AccountApi.AccountUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
