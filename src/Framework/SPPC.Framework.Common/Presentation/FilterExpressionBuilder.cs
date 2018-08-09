@@ -21,7 +21,7 @@ namespace SPPC.Framework.Presentation
         public FilterExpression Expression { get; private set; }
 
         /// <summary>
-        /// متد موزد استفاده برای شروع ساخت عبارت فیلتر
+        /// متد مورد استفاده برای شروع ساخت عبارت فیلتر
         /// </summary>
         /// <param name="filter">عبارت شرطی مورد استفاده</param>
         /// <returns>
