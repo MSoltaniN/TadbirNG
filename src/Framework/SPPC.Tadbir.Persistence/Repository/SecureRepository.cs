@@ -172,6 +172,44 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         protected abstract int ViewId { get; }
 
+        /// <summary>
+        /// تنظیمات موجود برای فیلتر سطرهای اطلاعاتی را روی مجموعه ای از اطلاعات اعمال می کند
+        /// </summary>
+        /// <typeparam name="TEntity">نوع موجودیتی که سطرهای آن باید فیلتر شود</typeparam>
+        /// <param name="records">مجوعه سطرهای اطلاعاتی اولیه</param>
+        /// <param name="userAccess">
+        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
+        /// </param>
+        /// <returns>مجوعه سطرهای اطلاعاتی فیلتر شده</returns>
+        protected IQueryable<TEntity> ApplyRowFilter<TEntity>(
+            ref IQueryable<TEntity> records, UserAccessViewModel userAccess)
+            where TEntity : class, IEntity
+        {
+            var repository = UnitOfWork.GetAsyncRepository<ViewRowPermission>();
+            var filters = new List<FilterExpression>();
+            foreach (int roleId in userAccess.Roles)
+            {
+                var permission = repository
+                    .GetEntityQuery()
+                    .Where(perm => perm.Role.Id == roleId
+                        && perm.View.Id == ViewId)
+                    .Include(perm => perm.View)
+                        .ThenInclude(view => view.Properties)
+                    .SingleOrDefault();
+                var filter = GetRowFilter(ref records, permission, userAccess.Id);
+                if (filter != null)
+                {
+                    filters.Add(filter);
+                }
+            }
+
+            string compoundFilter = String.Join(FilterExpressionOperator.Or, filters.Select(f => f.ToString()));
+            var filteredQuery = !String.IsNullOrEmpty(compoundFilter)
+                ? records.Where(compoundFilter)
+                : records;
+            return filteredQuery;
+        }
+
         private IQueryable<TEntity> GetFilteredQuery<TEntity>(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null,
             params Expression<Func<TEntity, object>>[] relatedProperties)
@@ -238,35 +276,6 @@ namespace SPPC.Tadbir.Persistence
                 .Where(entity => entity.FiscalPeriodId == fpId &&
                     (entity.BranchId == branchId || childTree.Contains(entity.BranchId)));
             return queryable;
-        }
-
-        private IQueryable<TEntity> ApplyRowFilter<TEntity>(
-            ref IQueryable<TEntity> records, UserAccessViewModel userAccess)
-            where TEntity : class, IEntity
-        {
-            var repository = UnitOfWork.GetAsyncRepository<ViewRowPermission>();
-            var filters = new List<FilterExpression>();
-            foreach (int roleId in userAccess.Roles)
-            {
-                var permission = repository
-                    .GetEntityQuery()
-                    .Where(perm => perm.Role.Id == roleId
-                        && perm.View.Id == ViewId)
-                    .Include(perm => perm.View)
-                        .ThenInclude(view => view.Properties)
-                    .SingleOrDefault();
-                var filter = GetRowFilter(ref records, permission, userAccess.Id);
-                if (filter != null)
-                {
-                    filters.Add(filter);
-                }
-            }
-
-            string compoundFilter = String.Join(FilterExpressionOperator.Or, filters.Select(f => f.ToString()));
-            var filteredQuery = !String.IsNullOrEmpty(compoundFilter)
-                ? records.Where(compoundFilter)
-                : records;
-            return filteredQuery;
         }
 
         private FilterExpression GetRowFilter<TEntity>(
