@@ -12,7 +12,7 @@
             <ul class="navbar-left " [ngClass]="{ 'fr' : rightAlign , 'fl' : !rightAlign}">
                 <li class="dropdown circle">
                     <a href="#" class="nopad dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img width="48" height="48" src="../../../../wwwroot/resources/images/avatar32.png" />
+                        <img width="48" height="48" class="circleImg" src="../../../../wwwroot/resources/images/avatar32.png" />
                     </a>
                     <ul class="dropdown-menu" [ngClass]="{'dropdown-menu-right' : rightAlign , 'dropdown-menu-left'  : !rightAlign}" aria-labelledby="dropdownMenu1">                        
                         <li [routerLinkActive]="['link-active']" *ngFor="let pitem of profileItems;">
