@@ -56,7 +56,7 @@ namespace SPPC.Tadbir.Persistence
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IBaseEntity
         {
-            var query = GetFilteredQuery(userAccess, fpId, branchId, gridOptions, relatedProperties);
+            var query = GetFilteredQuery(userAccess, fpId, branchId, relatedProperties);
             return await query
                 .Apply(gridOptions)
                 .ToListAsync();
@@ -80,7 +80,7 @@ namespace SPPC.Tadbir.Persistence
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IFiscalEntity
         {
-            var query = GetFilteredOperationQuery(userAccess, fpId, branchId, gridOptions, relatedProperties);
+            var query = GetFilteredOperationQuery(userAccess, fpId, branchId, relatedProperties);
             return await query
                 .Apply(gridOptions)
                 .ToListAsync();
@@ -129,7 +129,7 @@ namespace SPPC.Tadbir.Persistence
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
             where TEntity : class, IBaseEntity
         {
-            var query = GetFilteredQuery<TEntity>(userAccess, fpId, branchId, gridOptions);
+            var query = GetFilteredQuery<TEntity>(userAccess, fpId, branchId);
             return await query
                 .Apply(gridOptions, false)
                 .CountAsync();
@@ -151,7 +151,7 @@ namespace SPPC.Tadbir.Persistence
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
             where TEntity : class, IFiscalEntity
         {
-            var query = GetFilteredOperationQuery<TEntity>(userAccess, fpId, branchId, gridOptions);
+            var query = GetFilteredOperationQuery<TEntity>(userAccess, fpId, branchId);
             return await query
                 .Apply(gridOptions, false)
                 .CountAsync();
@@ -211,7 +211,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private IQueryable<TEntity> GetFilteredQuery<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null,
+            UserAccessViewModel userAccess, int fpId, int branchId,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IBaseEntity
         {
@@ -224,7 +224,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private IQueryable<TEntity> GetFilteredOperationQuery<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null,
+            UserAccessViewModel userAccess, int fpId, int branchId,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IFiscalEntity
         {

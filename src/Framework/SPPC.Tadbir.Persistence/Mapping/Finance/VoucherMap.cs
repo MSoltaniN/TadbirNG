@@ -13,16 +13,18 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("VoucherID");
+            builder.Property(e => e.No)
+                .IsRequired()
+                .HasMaxLength(64);
             builder.Property(e => e.Date)
                 .HasColumnType("datetime");
+            builder.Property(e => e.Reference)
+                .HasMaxLength(64);
             builder.Property(e => e.Description)
                 .HasMaxLength(512);
             builder.Property(e => e.ModifiedDate)
                 .HasColumnType("datetime")
                 .HasDefaultValueSql("(getdate())");
-            builder.Property(e => e.No)
-                .IsRequired()
-                .HasMaxLength(64);
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
@@ -32,11 +34,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey("BranchID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_Voucher_Corporate_Branch");
-            builder.HasOne(d => d.Document)
-                .WithMany()
-                .HasForeignKey("DocumentID")
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Finance_Voucher_Core_Document");
             builder.HasOne(d => d.FiscalPeriod)
                 .WithMany()
                 .HasForeignKey("FiscalPeriodID")

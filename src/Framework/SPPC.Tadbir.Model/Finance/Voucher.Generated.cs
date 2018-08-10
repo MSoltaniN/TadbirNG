@@ -44,17 +44,11 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public virtual IList<VoucherLine> Lines { get; protected set; }
 
-        /// <summary>
-        /// مستند اداری مرتبط با این سند مالی
-        /// </summary>
-        public virtual Document Document { get; set; }
-
         private void InitReferences()
         {
             Lines = new List<VoucherLine>();
             FiscalPeriod = new FiscalPeriod();
             Branch = new Branch();
-            Document = new Document();
         }
     }
 }

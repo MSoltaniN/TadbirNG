@@ -125,7 +125,7 @@ namespace SPPC.Tadbir.Persistence
             if (voucher.Id == 0)
             {
                 voucherModel = Mapper.Map<Voucher>(voucher);
-                repository.Insert(voucherModel, txn => txn.Document, txn => txn.Document.Actions);
+                repository.Insert(voucherModel);
             }
             else
             {
@@ -396,7 +396,7 @@ namespace SPPC.Tadbir.Persistence
             existing.Description = article.Description;
         }
 
-        private void UpdateExistingVoucher(Voucher existing, VoucherViewModel voucher)
+        private static void UpdateExistingVoucher(Voucher existing, VoucherViewModel voucher)
         {
             existing.No = voucher.No;
             existing.Date = voucher.Date;
