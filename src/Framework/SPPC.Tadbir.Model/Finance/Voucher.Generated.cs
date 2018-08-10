@@ -12,7 +12,6 @@
 
 using System;
 using System.Collections.Generic;
-using SPPC.Framework.Domain;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 
@@ -21,34 +20,19 @@ namespace SPPC.Tadbir.Model.Finance
     /// <summary>
     /// سند مالی که اطلاعات پولی مرتبط با یک پیشامد مالی را در سازمان نگهداری می کند
     /// </summary>
-    public partial class Voucher : IEntity
+    public partial class Voucher : OperationalEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس ایجاد می کند.
         /// </summary>
         public Voucher()
         {
-            this.No = String.Empty;
-            this.Date = DateTime.Now;
-            this.Description = String.Empty;
-            this.ModifiedDate = DateTime.Now;
+            No = String.Empty;
+            Date = DateTime.Now;
+            Description = String.Empty;
+            ModifiedDate = DateTime.Now;
             InitReferences();
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public virtual int Id { get; set; }
-
-        /// <summary>
-        /// شماره سند مالی که می تواند شامل اعداد و حروف باشد
-        /// </summary>
-        public virtual string No { get; set; }
-
-        /// <summary>
-        /// تاریخ وقوع پیشامد مالی در عملیات روزمره کسب و کار
-        /// </summary>
-        public virtual DateTime Date { get; set; }
 
         /// <summary>
         /// شرح سند مالی که جزئیات بیشتری را در مورد پیشامد مالی ارائه می دهد
@@ -56,41 +40,15 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual string Description { get; set; }
 
         /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
-
-        /// <summary>
         /// مجموعه ای از آرتیکل های موجود در سند مالی
         /// </summary>
         public virtual IList<VoucherLine> Lines { get; protected set; }
 
-        /// <summary>
-        /// دوره مالی که پیشامد مالی در آن ثبت شده است
-        /// </summary>
-        public virtual FiscalPeriod FiscalPeriod { get; set; }
-
-        /// <summary>
-        /// شعبه سازمانی که سند مالی برای آن ایجاد شده است
-        /// </summary>
-        public virtual Branch Branch { get; set; }
-
-        /// <summary>
-        /// مستند اداری مرتبط با این سند مالی
-        /// </summary>
-        public virtual Document Document { get; set; }
-
         private void InitReferences()
         {
-            this.Lines = new List<VoucherLine>();
+            Lines = new List<VoucherLine>();
             FiscalPeriod = new FiscalPeriod();
             Branch = new Branch();
-            Document = new Document();
         }
     }
 }

@@ -31,7 +31,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
             No = String.Empty;
             Date = DateTime.Now;
             Description = String.Empty;
-            Document = new DocumentViewModel();
         }
 
         /// <summary>

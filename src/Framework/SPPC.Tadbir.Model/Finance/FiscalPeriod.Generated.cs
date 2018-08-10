@@ -13,7 +13,6 @@
 using System;
 using System.Collections.Generic;
 using SPPC.Tadbir.Model.Corporate;
-using SPPC.Framework.Domain;
 using SPPC.Tadbir.Model.Auth;
 
 namespace SPPC.Tadbir.Model.Finance
@@ -21,7 +20,7 @@ namespace SPPC.Tadbir.Model.Finance
     /// <summary>
     /// Represents a date period used for partitioning financial events of a business unit
     /// </summary>
-    public partial class FiscalPeriod : IEntity
+    public partial class FiscalPeriod : CoreEntity
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FiscalPeriod"/> class.
@@ -33,11 +32,6 @@ namespace SPPC.Tadbir.Model.Finance
             this.ModifiedDate = DateTime.Now;
             InitReferences();
         }
-
-        /// <summary>
-        /// Gets or sets the unique identifier for this entity. This property is auto-generated.
-        /// </summary>
-        public virtual int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the name of this fiscal period
@@ -58,16 +52,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// Gets or sets the detail information related to this fiscal period
         /// </summary>
         public virtual string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the business unit that defines this fiscal period

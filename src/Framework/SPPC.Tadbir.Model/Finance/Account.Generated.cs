@@ -12,7 +12,6 @@
 
 using System;
 using System.Collections.Generic;
-using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Model.Finance
@@ -20,7 +19,7 @@ namespace SPPC.Tadbir.Model.Finance
     /// <summary>
     /// اطلاعات یک سرفصل حسابداری مورد استفاده برای ثبت پیشامدهای مالی سازمان را نگهداری می کند
     /// </summary>
-    public partial class Account : FiscalEntity, IBaseEntity
+    public partial class Account : BaseEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -34,12 +33,6 @@ namespace SPPC.Tadbir.Model.Finance
             ModifiedDate = DateTime.Now;
             InitReferences();
         }
-
-        /// <summary>
-        /// محدوده دسترسی به حساب را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل
-        /// "کلیه شعبه ها" (مقدار 0)، "شعبه جاری و زیرمجموعه ها" (مقدار 1) و "شعبه جاری" (مقدار 2) می شود.
-        /// </summary>
-        public virtual short BranchScope { get; set; }
 
         /// <summary>
         /// کد شناسایی برای سطح جاری سرفصل حسابداری در ساختار درختی
@@ -70,11 +63,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// حساب والد (پدر) برای این سرفصل حسابداری که در سطح بالایی آن در ساختار درختی تعریف شده
         /// </summary>
         public virtual Account Parent { get; set; }
-
-        /// <summary>
-        /// دوره مالی که این سرفصل حسابداری در آن تعریف شده است
-        /// </summary>
-        public virtual FiscalPeriod FiscalPeriod { get; set; }
 
         /// <summary>
         /// مجموعه ای از تفصیلی های شناور مرتبط با این حساب

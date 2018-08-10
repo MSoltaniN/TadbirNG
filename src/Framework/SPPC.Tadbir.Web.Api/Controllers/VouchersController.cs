@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +7,6 @@ using SPPC.Framework.Common;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.Service;
-using SPPC.Tadbir.Values;
-using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -24,13 +19,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     {
         public VouchersController(
             IVoucherRepository repository,
-            ISecurityContextManager contextManager,
             IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
-            Verify.ArgumentNotNull(contextManager, "contextManager");
             _repository = repository;
-            _contextManager = contextManager;
         }
 
         protected override string EntityNameKey
@@ -45,9 +37,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetVouchersAsync(int fpId, int branchId)
         {
-            int itemCount = await _repository.GetCountAsync(fpId, branchId, GridOptions);
+            int itemCount = await _repository.GetCountAsync(UserAccess, fpId, branchId, GridOptions);
             SetItemCount(itemCount);
-            var vouchers = await _repository.GetVouchersAsync(fpId, branchId, GridOptions);
+            var vouchers = await _repository.GetVouchersAsync(UserAccess, fpId, branchId, GridOptions);
             return Json(vouchers);
         }
 
@@ -81,7 +73,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            SetDocument(voucher);
             var outputVoucher = await _repository.SaveVoucherAsync(voucher);
             return StatusCode(StatusCodes.Status201Created, outputVoucher);
         }
@@ -99,7 +90,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            SetDocument(voucher);
             var outputVoucher = await _repository.SaveVoucherAsync(voucher);
             result = (outputVoucher != null)
                 ? Ok(outputVoucher)
@@ -126,9 +116,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetArticlesAsync(int voucherId)
         {
-            int itemCount = await _repository.GetArticleCountAsync(voucherId, GridOptions);
+            int itemCount = await _repository.GetArticleCountAsync(UserAccess, voucherId, GridOptions);
             SetItemCount(itemCount);
-            var articles = await _repository.GetArticlesAsync(voucherId, GridOptions);
+            var articles = await _repository.GetArticlesAsync(UserAccess, voucherId, GridOptions);
             return Json(articles);
         }
 
@@ -303,32 +293,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private void SetDocument(VoucherViewModel voucher)
-        {
-            if (voucher.Document.Id == 0)
-            {
-                var document = new DocumentViewModel()
-                {
-                    OperationalStatus = DocumentStatusName.Created,
-                    StatusId = (int)DocumentStatusId.Draft,
-                    TypeId = (int)DocumentTypeId.Voucher,
-                    EntityNo = voucher.No
-                };
-                document.Actions.Add(new DocumentActionViewModel()
-                {
-                    CreatedById = _contextManager.CurrentContext.User.Id,
-                    ModifiedById = _contextManager.CurrentContext.User.Id
-                });
-                voucher.Document = document;
-            }
-            else
-            {
-                var mainAction = voucher.Document.Actions.First();
-                mainAction.ModifiedById = _contextManager.CurrentContext.User.Id;
-            }
-        }
-
-        private IVoucherRepository _repository;
-        private ISecurityContextManager _contextManager;
+        private readonly IVoucherRepository _repository;
     }
 }

@@ -19,7 +19,7 @@ namespace SPPC.Tadbir.Model.Finance
     /// <summary>
     /// Represents a local or international currency used for registering monetary transactions
     /// </summary>
-    public partial class Currency : IEntity
+    public partial class Currency : CoreEntity
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Currency"/> class.
@@ -32,24 +32,9 @@ namespace SPPC.Tadbir.Model.Finance
         }
 
         /// <summary>
-        /// Gets or sets the unique identifier for this entity. This property is auto-generated.
-        /// </summary>
-        public virtual int Id { get; set; }
-
-        /// <summary>
         /// Gets or sets the name of this currency
         /// </summary>
         public virtual string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the unique identifier for the database row for this entity. This property is auto-generated.
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the date when database row for this entity was last modified. This property is auto-generated.
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
 
         private void InitReferences()
         {

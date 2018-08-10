@@ -208,8 +208,7 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<VoucherViewModel, Voucher>()
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
-                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
-                .AfterMap((viewModel, model) => model.Document.Id = viewModel.Document.Id);
+                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
             mapperConfig.CreateMap<VoucherLine, VoucherLineViewModel>()
                 .AfterMap((model, viewModel) => viewModel.FullAccount.AccountId = model.AccountId)
                 .AfterMap((model, viewModel) => viewModel.FullAccount.DetailId = model.DetailId)

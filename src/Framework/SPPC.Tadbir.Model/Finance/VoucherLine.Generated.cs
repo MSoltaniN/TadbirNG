@@ -11,8 +11,6 @@
 // ------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using SPPC.Framework.Domain;
 using SPPC.Tadbir.Model.Corporate;
 
 namespace SPPC.Tadbir.Model.Finance
@@ -20,7 +18,7 @@ namespace SPPC.Tadbir.Model.Finance
     /// <summary>
     /// آرتیکل سند مالی که اطلاعات مربوط به بخشی از یک پیشامد مالی را نگهداری می کند
     /// </summary>
-    public partial class VoucherLine : IEntity
+    public partial class VoucherLine : FiscalEntity
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس ایجاد می کند.
@@ -31,11 +29,6 @@ namespace SPPC.Tadbir.Model.Finance
             this.ModifiedDate = DateTime.Now;
             InitReferences();
         }
-
-        /// <summary>
-        /// شناسه دیتابیسی این موجودیت که به صورت خودکار توسط دیتابیس تولید می شود
-        /// </summary>
-        public virtual int Id { get; set; }
 
         /// <summary>
         /// شرح آرتیکل سند مالی برای قرار دادن اطلاعات تکمیلی مرتبط با این بخش
@@ -53,16 +46,6 @@ namespace SPPC.Tadbir.Model.Finance
         public virtual decimal Credit { get; set; }
 
         /// <summary>
-        /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
-        /// </summary>
-        public virtual Guid RowGuid { get; set; }
-
-        /// <summary>
-        /// تاریخ آخرین تغییر رکورد دیتابیس که به صورت خودکار توسط ابزار دسترسی به داده مقداردهی می شود
-        /// </summary>
-        public virtual DateTime ModifiedDate { get; set; }
-
-        /// <summary>
         /// سند مالی که این آرتیکل برای آن ایجاد شده است
         /// </summary>
         public virtual Voucher Voucher { get; set; }
@@ -71,16 +54,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// پول یا ارز مورد استفاده برای مبلغ بدهکار یا بستانکار این آرتیکل
         /// </summary>
         public virtual Currency Currency { get; set; }
-
-        /// <summary>
-        /// شعبه سازمانی که اطلاعات مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد
-        /// </summary>
-        public virtual Branch Branch { get; set; }
-
-        /// <summary>
-        /// دوره مالی که وضعیت مالی آن توسط این آرتیکل تحت تاثیر قرار می گیرد
-        /// </summary>
-        public virtual FiscalPeriod FiscalPeriod { get; set; }
 
         /// <summary>
         /// مولفه سرفصل حسابداری از بردار حساب مورد استفاده در این آرتیکل مالی
