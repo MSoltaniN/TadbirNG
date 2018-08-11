@@ -43,4 +43,10 @@
     font-size: 13px;
 }
 
+/deep/.k-treeview .k-item{
+    cursor:pointer;
+}
 
+    /deep/.k-treeview .k-item .k-in:hover {
+        color: #337ab7;
+    }
