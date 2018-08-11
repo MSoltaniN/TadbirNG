@@ -50,3 +50,7 @@
     /deep/.k-treeview .k-item .k-in:hover {
         color: #337ab7;
     }
+
+        /deep/.k-treeview .k-item .k-state-selected {
+            color:#fff !important;
+        }
