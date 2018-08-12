@@ -61,6 +61,16 @@ namespace SPPC.Framework.Persistence
             await _dataContext.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Provides a simple mechanism for derived classes to switch current database schema and connection
+        /// </summary>
+        /// <param name="dataContext">New connection</param>
+        protected void SwitchContext(DbContext dataContext)
+        {
+            _dataContext.Dispose();
+            _dataContext = dataContext;
+        }
+
         #region IDisposable Support
 
         /// <summary>

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,14 +8,13 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Middleware;
 
 namespace SPPC.Tadbir.Web.Api
@@ -36,6 +33,9 @@ namespace SPPC.Tadbir.Web.Api
         {
             services.AddDbContext<TadbirContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("TadbirApi")));
+            //services.AddDbContext<TadbirContext>();
+            services.AddDbContext<SystemContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("TadbirSysApi")));
             services.AddLocalization();
             services.AddMvc();
             services.AddCors();
@@ -55,8 +55,16 @@ namespace SPPC.Tadbir.Web.Api
             services.AddTransient<IMetadataRepository, MetadataRepository>();
             services.AddTransient<IConfigRepository, ConfigRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IAppUnitOfWork, AppUnitOfWork>();
             services.AddTransient<IDomainMapper, DomainMapper>();
             services.AddTransient<DbContext, TadbirContext>();
+            //services.AddTransient<TadbirContext>(provider =>
+            //{
+            //    var httpContext = provider.GetService<IHttpContextAccessor>().HttpContext;
+            //    var securityContext = httpContext.Request.CurrentSecurityContext();
+            //    return new TadbirContext(securityContext.User.Connection);
+            //});
+            services.AddTransient<SystemContext>();
             services.AddTransient<ICryptoService, CryptoService>();
             services.AddTransient<ISecurityContextManager, ServiceContextManager>();
             services.AddTransient<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();

@@ -27,6 +27,15 @@ namespace SPPC.Tadbir.Persistence
         {
         }
 
+        ///// <summary>
+        ///// Initializes a new instance of the <see cref="TadbirContext"/> class using the specified connection string.
+        ///// </summary>
+        ///// <param name="connectionString">Database connection to use for this context</param>
+        //public TadbirContext(string connectionString)
+        //{
+        //    _connectionString = connectionString;
+        //}
+
         /// <summary>
         /// Performs entity mappings required for converting data between object and relational forms
         /// </summary>
@@ -70,6 +79,16 @@ namespace SPPC.Tadbir.Persistence
             WorkItemHistoryMap.BuildMapping(modelBuilder.Entity<WorkItemHistory>());
         }
 
+        /// <summary>
+        /// Configures this data context
+        /// </summary>
+        /// <param name="optionsBuilder">Builder used for configuring data context</param>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            //optionsBuilder.UseSqlServer(_connectionString);
+            //base.OnConfiguring(optionsBuilder);
+        }
+
         #region IDisposable Support
 
         /// <summary>
@@ -103,6 +122,7 @@ namespace SPPC.Tadbir.Persistence
 
         #endregion
 
+        private string _connectionString;
         private bool _disposed = false;
     }
 }
