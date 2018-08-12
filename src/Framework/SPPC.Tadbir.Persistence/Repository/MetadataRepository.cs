@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        public MetadataRepository(IUnitOfWork unitOfWork, IDomainMapper mapper)
+        public MetadataRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -82,7 +82,7 @@ namespace SPPC.Tadbir.Persistence
                 .ToList();
         }
 
-        private IUnitOfWork _unitOfWork;
-        private IDomainMapper _mapper;
+        private readonly IAppUnitOfWork _unitOfWork;
+        private readonly IDomainMapper _mapper;
     }
 }

@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="itemRepository">پیاده سازی اینترفیس مربوط به عملیات بردار حساب</param>
-        public RelationRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IAccountItemRepository itemRepository)
+        public RelationRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IAccountItemRepository itemRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -971,7 +971,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private IUnitOfWork _unitOfWork;
+        private IAppUnitOfWork _unitOfWork;
         private IDomainMapper _mapper;
         private IAccountItemRepository _itemRepository;
     }

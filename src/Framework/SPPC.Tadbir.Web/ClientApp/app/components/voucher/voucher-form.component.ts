@@ -26,7 +26,7 @@ interface Item {
 
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    //changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'voucher-form-component',
     styles: [
         "input[type=text],textarea { width: 100%; } /deep/ .new-dialog > .k-dialog {width: 450px !important; min-width: 250px !important;}",

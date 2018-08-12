@@ -17,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
         /// Initializes a new instance of the <see cref="SystemContext"/> class using the specified options.
         /// </summary>
         /// <param name="options">The options for this context</param>
-        public SystemContext(DbContextOptions<TadbirContext> options)
+        public SystemContext(DbContextOptions<SystemContext> options)
             : base(options)
         {
         }

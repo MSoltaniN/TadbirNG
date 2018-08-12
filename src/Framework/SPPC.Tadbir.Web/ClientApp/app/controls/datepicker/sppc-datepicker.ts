@@ -293,8 +293,10 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
             }
         }
         this.parseError = typeof this.dateObject === "object" && this.dateObject != null ? false : true;
-        if (this.dateObject == undefined) {
-            this.propagateChange("");
+        if (this.dateObject == undefined) {           
+            setTimeout(() => {
+                this.propagateChange("");
+            }, 1);          
         }
         else {
             this.onDateFocusOut();
@@ -307,7 +309,9 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
         if (this.dateObject != null) {
             if (typeof this.dateObject === "object") {
                 this.parseError = false;
-                this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
+                setTimeout(() => {
+                    this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
+                }, 1);                
             }
             else {
                 //this.parseError = false;
@@ -442,11 +446,16 @@ export class SppcDatepicker implements OnInit, OnDestroy, ControlValueAccessor, 
 
 
                 if (this.parseError) {
-                    this.propagateChange("");
+                    setTimeout(() => {
+                        this.propagateChange("");
+                    }, 1);                    
                 }
                 else {
                     this.dateObject = this.dateLocale == 'fa' ? moment(dateArray.join(this.spliterChar), 'jYYYY/jM/jD') : moment(dateArray.join(this.spliterChar).toString()).locale('en');
-                    this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
+
+                    setTimeout(() => {
+                        this.propagateChange(this.datepipe.transform(this.dateObject, this.inputDateFormat));
+                    }, 1);                   
                 }
 
             }

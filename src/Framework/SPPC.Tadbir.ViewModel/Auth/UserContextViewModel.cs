@@ -34,6 +34,12 @@ namespace SPPC.Tadbir.ViewModel.Auth
         public string PersonLastName { get; set; }
 
         /// <summary>
+        /// Gets or sets the connection string for currently selected company database
+        /// </summary>
+        /// <remarks>NOTE: This connection string MUST be encrypted in later stages.</remarks>
+        public string Connection { get; set; }
+
+        /// <summary>
         /// Gets a collection of identifiers for all branches accessible to this user.
         /// </summary>
         public IList<int> Branches { get; private set; }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,14 +8,12 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Mapper;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Middleware;
 
 namespace SPPC.Tadbir.Web.Api
@@ -34,12 +30,22 @@ namespace SPPC.Tadbir.Web.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TadbirContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("TadbirApi")));
+            services.AddDbContext<TadbirContext>();
+            services.AddDbContext<SystemContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("TadbirSysApi")));
             services.AddLocalization();
             services.AddMvc();
             services.AddCors();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<SystemContext>();
+            services.AddTransient(provider =>
+            {
+                var httpContext = provider.GetService<IHttpContextAccessor>().HttpContext;
+                var securityContext = httpContext.Request.CurrentSecurityContext();         // TODO: Set connection string in Company selection form
+                string connectionString = securityContext.User.Connection ?? Configuration.GetConnectionString("TadbirApi");
+                return new TadbirContext(connectionString);
+            });
+            services.AddTransient<IDbContextAccessor, DbContextAccessor>();
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IDetailAccountRepository, DetailAccountRepository>();
             services.AddTransient<ICostCenterRepository, CostCenterRepository>();
@@ -54,9 +60,8 @@ namespace SPPC.Tadbir.Web.Api
             services.AddTransient<IRelationRepository, RelationRepository>();
             services.AddTransient<IMetadataRepository, MetadataRepository>();
             services.AddTransient<IConfigRepository, ConfigRepository>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IAppUnitOfWork, AppUnitOfWork>();
             services.AddTransient<IDomainMapper, DomainMapper>();
-            services.AddTransient<DbContext, TadbirContext>();
             services.AddTransient<ICryptoService, CryptoService>();
             services.AddTransient<ISecurityContextManager, ServiceContextManager>();
             services.AddTransient<ITextEncoder<SecurityContext>, Base64Encoder<SecurityContext>>();
