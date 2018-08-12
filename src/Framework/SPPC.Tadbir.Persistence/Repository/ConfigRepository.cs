@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        public ConfigRepository(IUnitOfWork unitOfWork, IDomainMapper mapper)
+        public ConfigRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -308,7 +308,7 @@ namespace SPPC.Tadbir.Persistence
             return listConfig;
         }
 
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;
 
         private ColumnViewConfig _idColumn;

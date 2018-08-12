@@ -32,7 +32,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        protected SecureRepository(IUnitOfWork unitOfWork, IDomainMapper mapper)
+        protected SecureRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper)
         {
             UnitOfWork = unitOfWork;
             Mapper = mapper;
@@ -160,7 +160,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی
         /// </summary>
-        protected IUnitOfWork UnitOfWork { get; }
+        protected IAppUnitOfWork UnitOfWork { get; }
 
         /// <summary>
         /// نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی

@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public FiscalPeriodRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
+        public FiscalPeriodRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -305,7 +305,7 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private IUnitOfWork _unitOfWork;
+        private IAppUnitOfWork _unitOfWork;
         private IDomainMapper _mapper;
         private IMetadataRepository _metadataRepository;
     }

@@ -11,7 +11,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// دیتابیس شرکت جاری در برنامه
         /// </summary>
-        TadbirContext UserContext { get; }
+        TadbirContext CompanyContext { get; }
 
         /// <summary>
         /// دیتابیس سیستمی برنامه

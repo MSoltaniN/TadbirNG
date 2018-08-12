@@ -14,7 +14,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="contextAccessor"></param>
         public AppUnitOfWork(IDbContextAccessor contextAccessor)
-            : base(contextAccessor.SystemContext)
+            : base(contextAccessor.CompanyContext)
         {
             _contextAccessor = contextAccessor;
         }
@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         public void UseCompanyContext()
         {
-            SwitchContext(_contextAccessor.UserContext);
+            SwitchContext(_contextAccessor.CompanyContext);
         }
 
         /// <summary>

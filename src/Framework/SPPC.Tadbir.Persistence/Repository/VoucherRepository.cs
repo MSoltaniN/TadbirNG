@@ -27,7 +27,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public VoucherRepository(IUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
+        public VoucherRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
             : base(unitOfWork, mapper)
         {
             _metadataRepository = metadataRepository;

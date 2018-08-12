@@ -19,22 +19,13 @@ namespace SPPC.Tadbir.Persistence
     public partial class TadbirContext : DbContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TadbirContext"/> class using the specified options.
+        /// Initializes a new instance of the <see cref="TadbirContext"/> class using the specified connection string.
         /// </summary>
-        /// <param name="options">The options for this context</param>
-        public TadbirContext(DbContextOptions<TadbirContext> options)
-            : base(options)
+        /// <param name="connectionString">Database connection to use for this context</param>
+        public TadbirContext(string connectionString)
         {
+            _connectionString = connectionString;
         }
-
-        ///// <summary>
-        ///// Initializes a new instance of the <see cref="TadbirContext"/> class using the specified connection string.
-        ///// </summary>
-        ///// <param name="connectionString">Database connection to use for this context</param>
-        //public TadbirContext(string connectionString)
-        //{
-        //    _connectionString = connectionString;
-        //}
 
         /// <summary>
         /// Performs entity mappings required for converting data between object and relational forms
@@ -85,8 +76,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="optionsBuilder">Builder used for configuring data context</param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer(_connectionString);
-            //base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseSqlServer(_connectionString);
+            base.OnConfiguring(optionsBuilder);
         }
 
         #region IDisposable Support
