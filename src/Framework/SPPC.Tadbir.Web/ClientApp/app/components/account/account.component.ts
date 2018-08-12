@@ -112,8 +112,10 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Account, AccountPermissions.View);
         this.reloadGrid();
-        if (this.parentAccount)
+        if (this.parentAccount) {
             this.parentAccount.addChildAccount(this);
+            this.parentId = this.parent.id;
+        }
     }
 
     selectionKey(context: RowArgs): string {
@@ -200,9 +202,14 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             if (this.parentId) {
                 model.parentId = this.parentId;
 
-                //var findIndex = this.rowData.data.findIndex(acc => acc.id == this.parentId);
-                //var parentRow = this.rowData.data[findIndex];
-                var currentLevel = this.parent ? this.parent.level : 0;
+                //var currentLevel = this.parent ? this.parent.level : 0;
+                var parentAc = this.parentAccount;
+                var currentLevel = 0;
+
+                while (parentAc) { 
+                    currentLevel++;
+                    parentAc = parentAc.parentAccount
+                }                
 
                 model.level = currentLevel + 1;
 
@@ -369,14 +376,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                     }
                 }
 
-                //expand new row if has childs
-                if (insertedModel) {
-                    var rows = (this.rowData.data as Array<Account>);
-                    var index = rows.findIndex(p => p.id == insertedModel.parentId);
-                    if (index >= 0) {
-                        this.grid.expandRow(index);                        
-                    }                    
-                }
+                
 
                 this.rowData = {
                     data: resData,
@@ -384,6 +384,23 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                 }
 
                 this.grid.data = this.rowData;
+
+
+                //expand new row if has childs
+                if (insertedModel) {
+                    var rows = (this.rowData.data as Array<Account>);
+                    var index = rows.findIndex(p => p.id == insertedModel.parentId);
+                    if (index == -1 && this.parentAccount != null) {
+                        var rows = (this.parentAccount.rowData.data as Array<Account>);
+                        var index = rows.findIndex(p => p.id == insertedModel.parentId);
+                        if (index >= 0)
+                            this.parentAccount.grid.expandRow(index);
+                    }
+                    else if (index >= 0) {
+                        this.grid.expandRow(index);
+                    }
+                }
+
                 //زمانی که تعداد رکورد ها صفر باشد باید کامپوننت پدر رفرش شود
                 if (totalCount == 0) {
                     if (this.parentAccount && this.parentAccount.Childrens) {

@@ -30,7 +30,7 @@
                 {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
             </ng-template>
             <ng-template kendoGridToolbarTemplate let-account>
-                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(account != undefined ? account.id : undefined , true)" [icon]="'plus-outline'">{{ 'Account.New' | translate }}</button>
+                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(parentId , true)" [icon]="'plus-outline'">{{ 'Account.New' | translate }}</button>
                 <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="showConfirm()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
                 <grid-setting ng-if="account.level == 0" entityTypeName="Account"></grid-setting>
             </ng-template>
