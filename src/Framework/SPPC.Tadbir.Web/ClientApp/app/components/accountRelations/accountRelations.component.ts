@@ -175,8 +175,8 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     }
 
     public handleMainComponentChecking(itemLookup: TreeItemLookup): void {
-
         var itemId = itemLookup.item.dataItem.id;
+        this.mainComponentModel = itemLookup.item.dataItem;
         if (this.mainComponentCheckedKeys.find(f => f == itemId) == itemId) {
             this.mainComponentCheckedKeys = [];
             this.relatedComponentCheckedKeys = [];
@@ -317,7 +317,6 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
     onCreateRelation() {
         if (this.relatedComponentDropdownSelected > 0 && this.mainComponentSelectedItem > 0) {
-            this.mainComponentModel = this.mainComponentCategories.find(f => f.id == this.mainComponentSelectedItem);
             this.isActive = true;
         }
     }
