@@ -42,7 +42,7 @@ namespace SPPC.Tadbir.Web.Api
             {
                 var httpContext = provider.GetService<IHttpContextAccessor>().HttpContext;
                 var securityContext = httpContext.Request.CurrentSecurityContext();         // TODO: Set connection string in Company selection form
-                string connectionString = securityContext.User.Connection ?? Configuration.GetConnectionString("TadbirApi");
+                string connectionString = securityContext?.User.Connection ?? Configuration.GetConnectionString("TadbirApi");
                 return new TadbirContext(connectionString);
             });
             services.AddTransient<IDbContextAccessor, DbContextAccessor>();
