@@ -393,11 +393,12 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                     if (index == -1 && this.parentAccount != null) {
                         var rows = (this.parentAccount.rowData.data as Array<Account>);
                         var index = rows.findIndex(p => p.id == insertedModel.parentId);
-                        if (index >= 0)
-                            this.parentAccount.grid.expandRow(index);
+                        if (index >= 0) {                            
+                            this.parentAccount.grid.expandRow(this.parentAccount.skip + index);
+                        }
                     }
-                    else if (index >= 0) {
-                        this.grid.expandRow(index);
+                    else if (index >= 0) {                        
+                        this.grid.expandRow(this.skip + index);
                     }
                 }
 
@@ -427,6 +428,8 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         }
     }
 
+  
+
     deleteModel(confirm: boolean) {
         if (confirm) {
             this.grid.loading =true;
@@ -443,6 +446,8 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         //hide confirm dialog
         this.deleteConfirm = false;
     }
+
+    
 
     private setAccountTitle(parentModelId?: number) {
         if (parentModelId != undefined) {

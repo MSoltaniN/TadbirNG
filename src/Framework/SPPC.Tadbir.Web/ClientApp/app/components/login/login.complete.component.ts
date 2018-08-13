@@ -107,12 +107,23 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
         this.getBranch(value);
         this.getFiscalPeriod(value);
+
+        var lastBranchId = sessionStorage.getItem(SessionKeys.LastUserBranch + this.UserId + this.companyId);
+        var lastFpId = sessionStorage.getItem(SessionKeys.LastUserFpId + this.UserId + this.companyId);
+
+        if (lastBranchId)
+            this.branchId = lastBranchId;
+
+        if (lastFpId)
+            this.fiscalPeriodId = lastFpId;
+
     }
 
     getCompany() {
 
         this.authenticationService.getCompanies(this.UserName, this.Ticket).subscribe(res => {
             this.compenies = res;
+            
         });;
     }
 
@@ -169,7 +180,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                     currentUser.companyId = parseInt(this.companyId);
                     currentUser.fpId = parseInt(this.fiscalPeriodId);
                     currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
-                    
+
+                    sessionStorage.setItem(SessionKeys.LastUserBranch + this.UserId + this.companyId, this.branchId);
+                    sessionStorage.setItem(SessionKeys.LastUserFpId + this.UserId + this.companyId, this.fiscalPeriodId);
                     
                     this.loadMenuAndRoute(currentUser);
 
