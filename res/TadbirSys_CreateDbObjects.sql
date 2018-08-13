@@ -7,6 +7,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+CREATE SCHEMA [Core]
+GO
+
 CREATE SCHEMA [Metadata]
 GO
 
@@ -14,6 +17,9 @@ CREATE SCHEMA [Auth]
 GO
 
 CREATE SCHEMA [Config]
+GO
+
+CREATE SCHEMA [Contact]
 GO
 
 CREATE SCHEMA [WFTracking]
@@ -64,6 +70,18 @@ CREATE TABLE [Auth].[User] (
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Auth_User_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Auth_User_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Auth_User] PRIMARY KEY CLUSTERED ([UserID] ASC)
+)
+GO
+
+CREATE TABLE [Contact].[Person] (
+    [PersonID]       INT              IDENTITY (1, 1) NOT NULL,
+	[UserID]         INT              NOT NULL,
+    [FirstName]      NVARCHAR(64)     NOT NULL,
+    [LastName]       NVARCHAR(64)     NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Contact_Person_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Contact_Person_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Contact_Person] PRIMARY KEY CLUSTERED ([PersonID] ASC)
+    , CONSTRAINT [FK_Contact_Person_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User] ([UserID])
 )
 GO
 
@@ -204,6 +222,27 @@ CREATE TABLE [Config].[CompanyDb] (
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Corporate_Company_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Corporate_Company_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Corporate_Company] PRIMARY KEY CLUSTERED ([CompanyID] ASC)
+)
+GO
+
+CREATE TABLE [Core].[OperationLog] (
+    [OperationLogID]   INT              IDENTITY (1, 1) NOT NULL,
+    [UserID]           INT              NOT NULL,
+    [CompanyID]        INT              NOT NULL,
+    [Date]             DATETIME         NOT NULL,
+    [Time]             TIME(7)          NOT NULL,
+    [View]             NVARCHAR(64)     NOT NULL,
+    [Action]           NVARCHAR(64)     NOT NULL,
+    [Succeeded]        BIT              NOT NULL,
+    [BeforeState]      NVARCHAR(1024)   NULL,
+    [AfterState]       NVARCHAR(1024)   NULL,
+    [FiscalPeriodId]   INT              NOT NULL,
+    [BranchId]         INT              NOT NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Core_OperationLog_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Core_OperationLog_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Core_OperationLog] PRIMARY KEY CLUSTERED ([OperationLogID] ASC)
+    , CONSTRAINT [FK_Core_OperationLog_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Core_OperationLog_Config_CompanyDb] FOREIGN KEY ([CompanyID]) REFERENCES [Config].[CompanyDb]([CompanyID])
 )
 GO
 

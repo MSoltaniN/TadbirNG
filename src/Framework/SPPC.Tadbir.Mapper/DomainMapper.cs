@@ -367,6 +367,11 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapCoreTypes(IMapperConfigurationExpression mapperConfig)
         {
+            mapperConfig.CreateMap<OperationLog, OperationLogViewModel>()
+                .ForMember(
+                    dest => dest.UserFullName,
+                    opts => opts.MapFrom(src => String.Format("{0} {1}", src.User.Person.FirstName, src.User.Person.LastName)));
+            mapperConfig.CreateMap<OperationLogViewModel, OperationLog>();
             mapperConfig.CreateMap<DocumentAction, DocumentActionViewModel>()
                 .ForMember(
                     dest => dest.LineId,

@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
+using SPPC.Tadbir.Model.Contact;
+using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Persistence.Mapping;
 
@@ -31,8 +33,10 @@ namespace SPPC.Tadbir.Persistence
             CommandMap.BuildMapping(modelBuilder.Entity<Command>());
             CompanyDbMap.BuildMapping(modelBuilder.Entity<CompanyDb>());
             EntityMap.BuildMapping(modelBuilder.Entity<Entity>());
+            OperationLogMap.BuildMapping(modelBuilder.Entity<OperationLog>());
             PermissionMap.BuildMapping(modelBuilder.Entity<Permission>());
             PermissionGroupMap.BuildMapping(modelBuilder.Entity<PermissionGroup>());
+            PersonMap.BuildMapping(modelBuilder.Entity<Person>());
             PropertyMap.BuildMapping(modelBuilder.Entity<Property>());
             RoleMap.BuildMapping(modelBuilder.Entity<Role>());
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());

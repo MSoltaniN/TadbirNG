@@ -46,6 +46,7 @@ namespace SPPC.Tadbir.Web.Api
                 return new TadbirContext(connectionString);
             });
             services.AddTransient<IDbContextAccessor, DbContextAccessor>();
+            services.AddTransient<IAppUnitOfWork, AppUnitOfWork>();
             services.AddTransient<IAccountRepository, AccountRepository>();
             services.AddTransient<IDetailAccountRepository, DetailAccountRepository>();
             services.AddTransient<ICostCenterRepository, CostCenterRepository>();
@@ -60,7 +61,7 @@ namespace SPPC.Tadbir.Web.Api
             services.AddTransient<IRelationRepository, RelationRepository>();
             services.AddTransient<IMetadataRepository, MetadataRepository>();
             services.AddTransient<IConfigRepository, ConfigRepository>();
-            services.AddTransient<IAppUnitOfWork, AppUnitOfWork>();
+            services.AddTransient<IOperationLogRepository, OperationLogRepository>();
             services.AddTransient<IDomainMapper, DomainMapper>();
             services.AddTransient<ICryptoService, CryptoService>();
             services.AddTransient<ISecurityContextManager, ServiceContextManager>();
