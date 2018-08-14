@@ -3,7 +3,7 @@ import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from "ng2-translate";
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { UserService } from '../../service/user.service';
+import { UserService, CommandInfo } from '../../service/user.service';
 import { Command } from '../../model/command';
 import { SessionKeys } from '../../enviroment';
 import { Router } from '@angular/router';
@@ -63,7 +63,6 @@ export class NavMenuComponent extends DefaultComponent implements OnInit {
             }
         }
         
-
     }
 
     onMenuClick(event: any,id:number) {
@@ -77,7 +76,10 @@ export class NavMenuComponent extends DefaultComponent implements OnInit {
         }
 
         event.srcElement.scrollIntoView();
+        
     }
+
+   
 
     isCollapsed: boolean = true;
 

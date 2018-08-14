@@ -61,7 +61,9 @@ export const SessionKeys = {
     Menu: 'menu',
     Setting: 'setting',
     LastUserBranch: 'lastUserBranch',
-    LastUserFpId: 'lastUserFpId'
+    LastUserFpId: 'lastUserFpId',
+    CurrentRoute: 'currentRoute'
+
 }
 
 

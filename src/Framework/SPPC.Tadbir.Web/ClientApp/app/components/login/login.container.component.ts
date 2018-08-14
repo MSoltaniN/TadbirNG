@@ -35,7 +35,7 @@ export class LoginContainerComponent extends DefaultComponent implements OnInit 
     }
 
     ngOnInit() {
-        if (this.authenticationService.isRememberMe()) {
+        if (this.authenticationService.isRememberMe() || this.UserId != 0) {
             if (this.route.snapshot.queryParams['returnUrl'] == undefined) {
                 this.step1 = false;
                 this.step2 = true;

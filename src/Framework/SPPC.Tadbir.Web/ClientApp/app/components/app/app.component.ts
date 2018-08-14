@@ -74,6 +74,8 @@ export class AppComponent {
         //#region Event in Each Route 
 
         router.events.subscribe((val) => {
+
+
             if (location.path().toLowerCase() == '/login' || location.path().toString().indexOf('/login?returnUrl=') >= 0) {
                 this.showNavbar = false;
 
@@ -110,6 +112,11 @@ export class AppComponent {
                 var companyId: number = 0;
                 var fpId: number = 0;
                 var ticket: string = "";
+
+                //set current route to session
+                var currentUrl = location.path().toLowerCase();
+                if (currentUrl != '/logout' && currentUrl !='/login')
+                    sessionStorage.setItem(SessionKeys.CurrentRoute,currentUrl);
 
 
                 var contextIsEmpty: boolean = true;
