@@ -234,6 +234,7 @@ CREATE TABLE [Core].[OperationLog] (
     [View]             NVARCHAR(64)     NOT NULL,
     [Action]           NVARCHAR(64)     NOT NULL,
     [Succeeded]        BIT              NOT NULL,
+    [FailReason]       NVARCHAR(1024)   NULL,
     [BeforeState]      NVARCHAR(1024)   NULL,
     [AfterState]       NVARCHAR(1024)   NULL,
     [FiscalPeriodId]   INT              NOT NULL,

@@ -28,8 +28,6 @@ namespace SPPC.Tadbir.ViewModel.Core
         {
             View = String.Empty;
             Action = String.Empty;
-            BeforeState = String.Empty;
-            AfterState = String.Empty;
         }
 
         /// <summary>
@@ -68,6 +66,12 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public bool Succeeded { get; set; }
+
+        /// <summary>
+        /// متن خطای ایجاد شده حین عملیات
+        /// </summary>
+        [StringLength(1024, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
+        public string FailReason { get; set; }
 
         /// <summary>
         /// وضعیت اطلاعات پیش از انجام عملیات

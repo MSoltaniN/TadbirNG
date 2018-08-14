@@ -20,6 +20,8 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public int BranchId { get; set; }
 
+        public int CompanyId { get; set; }
+
         /// <summary>
         /// تعداد حساب های زیرمجموعه این حساب در ساختار درختی
         /// </summary>

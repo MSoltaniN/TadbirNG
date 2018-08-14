@@ -153,6 +153,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<AccountViewModel, Account>()
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
+                .AfterMap((viewModel, model) => model.Branch.Company.Id = viewModel.CompanyId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
             mapperConfig.CreateMap<DetailAccount, DetailAccountViewModel>()
@@ -371,7 +372,9 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.UserFullName,
                     opts => opts.MapFrom(src => String.Format("{0} {1}", src.User.Person.FirstName, src.User.Person.LastName)));
-            mapperConfig.CreateMap<OperationLogViewModel, OperationLog>();
+            mapperConfig.CreateMap<OperationLogViewModel, OperationLog>()
+                .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId)
+                .AfterMap((viewModel, model) => model.User.Id = viewModel.UserId);
             mapperConfig.CreateMap<DocumentAction, DocumentActionViewModel>()
                 .ForMember(
                     dest => dest.LineId,

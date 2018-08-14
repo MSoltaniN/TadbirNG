@@ -12,6 +12,7 @@ using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -28,10 +29,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public AccountRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
+        public AccountRepository(
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository,
+            IOperationLogRepository logRepository)
             : base(unitOfWork, mapper)
         {
             _metadataRepository = metadataRepository;
+            _logRepository = logRepository;
         }
 
         /// <summary>
@@ -185,23 +189,33 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(account, "account");
             Account accountModel = default(Account);
+            string action = String.Empty;
+            var log = default(OperationLogViewModel);
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             if (account.Id == 0)
             {
+                action = "Create";
                 accountModel = Mapper.Map<Account>(account);
                 repository.Insert(accountModel);
+                log = GetOperationLog(action, accountModel);
+                log.AfterState = GetAccountState(accountModel);
             }
             else
             {
-                accountModel = await repository.GetByIDAsync(account.Id, acc => acc.FiscalPeriod, acc => acc.Branch);
+                action = "Edit";
+                accountModel = await GetAccountQuery(repository, account.Id)
+                    .SingleOrDefaultAsync();
                 if (accountModel != null)
                 {
+                    log = GetOperationLog(action, accountModel);
+                    log.BeforeState = GetAccountState(accountModel);
                     UpdateExistingAccount(account, accountModel);
+                    log.AfterState = GetAccountState(accountModel);
                     repository.Update(accountModel);
                 }
             }
 
-            await UnitOfWork.CommitAsync();
+            await FinalizeAction(action, accountModel, log);
             return Mapper.Map<AccountViewModel>(accountModel);
         }
 
@@ -212,14 +226,17 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteAccountAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId);
+            var account = await GetAccountQuery(repository, accountId)
+                .SingleOrDefaultAsync();
             if (account != null)
             {
+                var log = GetOperationLog("Delete", account);
+                log.BeforeState = GetAccountState(account);
                 account.FiscalPeriod = null;
                 account.Branch = null;
                 account.Parent = null;
                 repository.Delete(account);
-                await UnitOfWork.CommitAsync();
+                await FinalizeAction("Delete", account, log);
             }
         }
 
@@ -345,6 +362,56 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
+        private static string GetAccountState(Account account)
+        {
+            return String.Format(
+                "Name : {1}{0}Code : {2}{0}FullCode : {3}{0}Description : {4}",
+                Environment.NewLine, account.Name, account.Code, account.FullCode, account.Description);
+        }
+
+        private static OperationLogViewModel GetOperationLog(string action, Account account)
+        {
+            var log = new OperationLogViewModel()
+            {
+                Action = action,
+                FiscalPeriodId = account.FiscalPeriodId,
+                BranchId = account.BranchId,
+                CompanyId = account.Branch.Company.Id,
+                Date = DateTime.Now.Date,
+                Time = DateTime.Now.TimeOfDay,
+                Succeeded = true,
+                View = "Account",
+                UserId = 1
+            };
+            return log;
+        }
+
+        private IQueryable<Account> GetAccountQuery(IRepository<Account> repository, int accountId)
+        {
+            return repository
+                .GetEntityQuery()
+                .Include(acc => acc.Branch)
+                    .ThenInclude(br => br.Company)
+                .Where(acc => acc.Id == accountId);
+        }
+
+        private async Task FinalizeAction(string action, Account account, OperationLogViewModel log)
+        {
+            try
+            {
+                await UnitOfWork.CommitAsync();
+                await _logRepository.SaveLogAsync(log);
+            }
+            catch (Exception ex)
+            {
+                log.Succeeded = false;
+                log.FailReason = ex.Message;
+                await _logRepository.SaveLogAsync(log);
+                throw;
+            }
+        }
+
         private IMetadataRepository _metadataRepository;
+        private IOperationLogRepository _logRepository;
     }
 }

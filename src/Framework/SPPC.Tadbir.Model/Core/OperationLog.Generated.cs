@@ -60,6 +60,11 @@ namespace SPPC.Tadbir.Model.Core
         public virtual bool Succeeded { get; set; }
 
         /// <summary>
+        /// متن خطای ایجاد شده حین عملیات
+        /// </summary>
+        public virtual string FailReason { get; set; }
+
+        /// <summary>
         /// وضعیت اطلاعات پیش از انجام عملیات
         /// </summary>
         public virtual string BeforeState { get; set; }
