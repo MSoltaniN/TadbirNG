@@ -12,7 +12,6 @@ using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
-using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -21,7 +20,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات سرفصل های حسابداری را تعریف می کند.
     /// </summary>
-    public class AccountRepository : SecureRepository, IAccountRepository
+    public class AccountRepository : LoggingRepository<Account, AccountViewModel>, IAccountRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -32,10 +31,9 @@ namespace SPPC.Tadbir.Persistence
         public AccountRepository(
             IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository,
             IOperationLogRepository logRepository)
-            : base(unitOfWork, mapper)
+            : base(unitOfWork, mapper, logRepository)
         {
             _metadataRepository = metadataRepository;
-            _logRepository = logRepository;
         }
 
         /// <summary>
@@ -183,40 +181,29 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک حساب را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="account">حساب مورد نظر برای ایجاد یا اصلاح</param>
+        /// <param name="accountView">حساب مورد نظر برای ایجاد یا اصلاح</param>
         /// <returns>اطلاعات نمایشی حساب ایجاد یا اصلاح شده</returns>
-        public async Task<AccountViewModel> SaveAccountAsync(AccountViewModel account)
+        public async Task<AccountViewModel> SaveAccountAsync(AccountViewModel accountView)
         {
-            Verify.ArgumentNotNull(account, "account");
-            Account accountModel = default(Account);
-            string action = String.Empty;
-            var log = default(OperationLogViewModel);
+            Verify.ArgumentNotNull(accountView, "accountView");
+            Account account = default(Account);
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            if (account.Id == 0)
+            if (accountView.Id == 0)
             {
-                action = "Create";
-                accountModel = Mapper.Map<Account>(account);
-                repository.Insert(accountModel);
-                log = GetOperationLog(action, accountModel);
-                log.AfterState = GetAccountState(accountModel);
+                account = Mapper.Map<Account>(accountView);
+                await InsertAsync(repository, account);
             }
             else
             {
-                action = "Edit";
-                accountModel = await GetAccountQuery(repository, account.Id)
+                account = await GetAccountQuery(repository, accountView.Id)
                     .SingleOrDefaultAsync();
-                if (accountModel != null)
+                if (account != null)
                 {
-                    log = GetOperationLog(action, accountModel);
-                    log.BeforeState = GetAccountState(accountModel);
-                    UpdateExistingAccount(account, accountModel);
-                    log.AfterState = GetAccountState(accountModel);
-                    repository.Update(accountModel);
+                    await UpdateAsync(repository, account, accountView);
                 }
             }
 
-            await FinalizeAction(action, accountModel, log);
-            return Mapper.Map<AccountViewModel>(accountModel);
+            return Mapper.Map<AccountViewModel>(account);
         }
 
         /// <summary>
@@ -230,13 +217,7 @@ namespace SPPC.Tadbir.Persistence
                 .SingleOrDefaultAsync();
             if (account != null)
             {
-                var log = GetOperationLog("Delete", account);
-                log.BeforeState = GetAccountState(account);
-                account.FiscalPeriod = null;
-                account.Branch = null;
-                account.Parent = null;
-                repository.Delete(account);
-                await FinalizeAction("Delete", account, log);
+                await DeleteAsync(repository, account);
             }
         }
 
@@ -322,13 +303,22 @@ namespace SPPC.Tadbir.Persistence
             get { return 1; }
         }
 
-        private static void UpdateExistingAccount(AccountViewModel accountViewModel, Account account)
+        protected override void UpdateExisting(AccountViewModel accountViewModel, Account account)
         {
             account.Code = accountViewModel.Code;
             account.FullCode = accountViewModel.FullCode;
             account.Name = accountViewModel.Name;
             account.Level = accountViewModel.Level;
             account.Description = accountViewModel.Description;
+        }
+
+        protected override string GetState(Account entity)
+        {
+            return (entity != null)
+                ? String.Format(
+                    "Name : {1}{0}Code : {2}{0}FullCode : {3}{0}Description : {4}",
+                    Environment.NewLine, entity.Name, entity.Code, entity.FullCode, entity.Description)
+                : null;
         }
 
         private static IQueryable<Account> GetAccountDetailsQuery(IRepository<Account> repository, int accountId)
@@ -362,30 +352,6 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private static string GetAccountState(Account account)
-        {
-            return String.Format(
-                "Name : {1}{0}Code : {2}{0}FullCode : {3}{0}Description : {4}",
-                Environment.NewLine, account.Name, account.Code, account.FullCode, account.Description);
-        }
-
-        private static OperationLogViewModel GetOperationLog(string action, Account account)
-        {
-            var log = new OperationLogViewModel()
-            {
-                Action = action,
-                FiscalPeriodId = account.FiscalPeriodId,
-                BranchId = account.BranchId,
-                CompanyId = account.Branch.Company.Id,
-                Date = DateTime.Now.Date,
-                Time = DateTime.Now.TimeOfDay,
-                Succeeded = true,
-                View = "Account",
-                UserId = 1
-            };
-            return log;
-        }
-
         private IQueryable<Account> GetAccountQuery(IRepository<Account> repository, int accountId)
         {
             return repository
@@ -395,23 +361,6 @@ namespace SPPC.Tadbir.Persistence
                 .Where(acc => acc.Id == accountId);
         }
 
-        private async Task FinalizeAction(string action, Account account, OperationLogViewModel log)
-        {
-            try
-            {
-                await UnitOfWork.CommitAsync();
-                await _logRepository.SaveLogAsync(log);
-            }
-            catch (Exception ex)
-            {
-                log.Succeeded = false;
-                log.FailReason = ex.Message;
-                await _logRepository.SaveLogAsync(log);
-                throw;
-            }
-        }
-
         private IMetadataRepository _metadataRepository;
-        private IOperationLogRepository _logRepository;
     }
 }
