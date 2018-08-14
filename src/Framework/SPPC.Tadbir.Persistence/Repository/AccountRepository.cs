@@ -28,6 +28,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="logRepository">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         public AccountRepository(
             IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository,
             IOperationLogRepository logRepository)
@@ -303,6 +304,11 @@ namespace SPPC.Tadbir.Persistence
             get { return 1; }
         }
 
+        /// <summary>
+        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
+        /// </summary>
+        /// <param name="accountViewModel">مدل نمایشی شامل آخرین تغییرات</param>
+        /// <param name="account">سطر اطلاعاتی موجود</param>
         protected override void UpdateExisting(AccountViewModel accountViewModel, Account account)
         {
             account.Code = accountViewModel.Code;
@@ -312,6 +318,11 @@ namespace SPPC.Tadbir.Persistence
             account.Description = accountViewModel.Description;
         }
 
+        /// <summary>
+        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
+        /// </summary>
+        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
+        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
         protected override string GetState(Account entity)
         {
             return (entity != null)

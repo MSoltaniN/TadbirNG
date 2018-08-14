@@ -6,8 +6,23 @@ using System.Threading.Tasks;
 
 namespace SPPC.Tadbir.CrossCutting.Aspects
 {
+    /// <summary>
+    /// امکان ایجاد لاگ های سیستمی را پیش و پس از انجام عملیات یک کلاس فراهم می کند
+    /// </summary>
+    /// <typeparam name="T">نوع کلاسی که برای عملیات عمومی آن لاگ های سیستمی ایجاد می شود</typeparam>
     public class LoggingAspect<T> : DispatchProxy
     {
+        /// <summary>
+        /// یک نمونه از کلاس تزیین شده با لاگ سیستمی را ایجاد می کند
+        /// </summary>
+        /// <param name="decorated">نمونه ای که باید با امکان ایجاد لاگ سیستمی تزیین شود</param>
+        /// <param name="logInfo">تابعی که برای ایجاد لاگ سیستمی از نوع اطلاعاتی باید استفاده شود</param>
+        /// <param name="logError">تابعی که برای ایجاد لاگ سیستمی از نوع خطا باید استفاده شود</param>
+        /// <param name="serializeFunction">
+        /// تابعی که امکان ایجاد یک رشته متنی از اطلاعاتی نمونه تزیین شده را فراهم می کند
+        /// </param>
+        /// <param name="loggingScheduler">سرویس مورد استفاده برای زمان بندی وظایف در حالت اجرای آسنکرون</param>
+        /// <returns>نمونه تزیین شده</returns>
         public static T Create(T decorated, Action<string> logInfo, Action<string> logError,
             Func<object, string> serializeFunction, TaskScheduler loggingScheduler = null)
         {
@@ -17,6 +32,12 @@ namespace SPPC.Tadbir.CrossCutting.Aspects
             return (T)proxy;
         }
 
+        /// <summary>
+        /// امکان فراخوانی غیرمستقیم عملیات عمومی در نمونه تزیین شده را فراهم می کند
+        /// </summary>
+        /// <param name="targetMethod">تابعی که یکی از عملیات عمومی نمونه تزیین شده را پیاده سازی می کند</param>
+        /// <param name="args">آرگومان های مورد نیاز تابع فراخانی شده</param>
+        /// <returns>مقدار خروجی تابع فراخوانی شده</returns>
         protected override object Invoke(MethodInfo targetMethod, object[] args)
         {
             if (targetMethod != null)
@@ -34,9 +55,7 @@ namespace SPPC.Tadbir.CrossCutting.Aspects
                     }
 
                     var result = targetMethod.Invoke(_decorated, args);
-                    var resultTask = result as Task;
-
-                    if (resultTask != null)
+                    if (result is Task resultTask)
                     {
                         resultTask.ContinueWith(task =>
                         {

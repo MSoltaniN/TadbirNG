@@ -447,6 +447,10 @@ SET IDENTITY_INSERT [Auth].[User] ON
 INSERT INTO [Auth].[User] (UserID, UserName, PasswordHash, IsEnabled) VALUES (1, N'admin', '5ab4a25e31220c3b103aef3e32596211b90238a0d5933288efbd36c5154b82ff', 1)
 SET IDENTITY_INSERT [Auth].[User] OFF
 
+SET IDENTITY_INSERT [Contact].[Person] ON
+INSERT INTO [Contact].[Person] (PersonID, UserID, FirstName, LastName) VALUES (1, 1, N'راهبر', N'سیستم')
+SET IDENTITY_INSERT [Contact].[Person] OFF
+
 -- Sample user settings for UserID = 1 and Account List form (Admin user)...
 SET IDENTITY_INSERT [Config].[UserSetting] ON
 INSERT [Config].[UserSetting] ([UserSettingID], [SettingID], [ViewID], [UserID], [RoleID], [ModelType], [Values])

@@ -20,6 +20,9 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         public int BranchId { get; set; }
 
+        /// <summary>
+        /// شناسه دیتابیسی شرکتی که اطلاعات حساب در آن تعریف شده است
+        /// </summary>
         public int CompanyId { get; set; }
 
         /// <summary>
