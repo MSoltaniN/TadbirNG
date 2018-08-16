@@ -7,7 +7,7 @@
                     <div class="toast-container"></div>
                     <div class="form-group" >
                         <label class="col-md-12">{{ 'Company.CompanyName' | translate }}</label>
-                        <kendo-dropdownlist class="col-md-12" [data]="compenies" (valueChange)="companyChange($event)" [valuePrimitive]="true"
+                        <kendo-dropdownlist class="col-md-12" [data]="compenies" (valueChange)="companyChange($event)" [disabled]="disabledCompany" [valuePrimitive]="true"
                                                 [textField]="'value'" [(ngModel)]="companyId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
                         </kendo-dropdownlist>                        
                     </div>

@@ -47,8 +47,8 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
 
     public disabledBranch: boolean = true;
-
-    public disabledFiscalPeriod: boolean = true;
+    public disabledFiscalPeriod: boolean = true
+    public disabledCompany: boolean = true;    
 
     public compenies: any = {};
 
@@ -83,12 +83,12 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
     //#region Events
 
-    ngOnInit() {
+    ngOnInit() {        
 
+        this.disabledCompany = true;
         this.getCompany();
-
+        //load setting
         this.loadAllSetting();
-
     }
 
     //#endregion
@@ -108,8 +108,8 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         this.getBranch(value);
         this.getFiscalPeriod(value);
 
-        var lastBranchId = sessionStorage.getItem(SessionKeys.LastUserBranch + this.UserId + this.companyId);
-        var lastFpId = sessionStorage.getItem(SessionKeys.LastUserFpId + this.UserId + this.companyId);
+        var lastBranchId = localStorage.getItem(SessionKeys.LastUserBranch + this.UserId + this.companyId);
+        var lastFpId = localStorage.getItem(SessionKeys.LastUserFpId + this.UserId + this.companyId);
 
         if (lastBranchId)
             this.branchId = lastBranchId;
@@ -123,7 +123,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
 
         this.authenticationService.getCompanies(this.UserName, this.Ticket).subscribe(res => {
             this.compenies = res;
-            
+            this.disabledCompany = false;
         });;
     }
 
@@ -181,8 +181,8 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                     currentUser.fpId = parseInt(this.fiscalPeriodId);
                     currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
 
-                    sessionStorage.setItem(SessionKeys.LastUserBranch + this.UserId + this.companyId, this.branchId);
-                    sessionStorage.setItem(SessionKeys.LastUserFpId + this.UserId + this.companyId, this.fiscalPeriodId);
+                    localStorage.setItem(SessionKeys.LastUserBranch + this.UserId + this.companyId, this.branchId);
+                    localStorage.setItem(SessionKeys.LastUserFpId + this.UserId + this.companyId, this.fiscalPeriodId);
                     
                     this.loadMenuAndRoute(currentUser);
 
@@ -231,8 +231,16 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                 var url = this.route.snapshot.queryParams['returnUrl'];
                 this.router.navigate([url]);
             }
-            else
-                this.router.navigate(['/account']);
+            else {
+
+                var currentRoute = sessionStorage.getItem(SessionKeys.CurrentRoute);
+                if (currentRoute) {
+                    this.router.navigate([currentRoute]);
+                }
+                else {
+                    this.router.navigate(['/account']);
+                }
+            }
 
         });
 

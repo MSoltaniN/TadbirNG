@@ -501,4 +501,7 @@
   <data name="CannotDeleteRelatedItem" xml:space="preserve">
     <value>The {0} {1} is used in account relationships and cannot be deleted.</value>
   </data>
+  <data name="ChangeCompany" xml:space="preserve">
+    <value>Change Company</value>
+  </data>
 </root>

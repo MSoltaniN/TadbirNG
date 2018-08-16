@@ -36,13 +36,11 @@ export class UserProfileInfo implements UserProfile {
 }
 
 export class CommandInfo implements Command {
-    permissionId?: number | undefined;
-    children: Command[];
-    id: number;
-    title: string;
-    routeUrl: string;
-    iconName: string;
-    hotKey: string;
+    
+    constructor(public id: number, public title: string = "", public routeUrl: string,
+        public iconName: string = "", public hotKey: string,
+        public children: Command[] ,permissionId?: number | undefined) { }
+    
 }
 
 @Injectable()

@@ -15,7 +15,7 @@
                         <img width="48" height="48" class="circleImg" src="../../../../wwwroot/resources/images/avatar32.png" />
                     </a>
                     <ul class="dropdown-menu" [ngClass]="{'dropdown-menu-right' : rightAlign , 'dropdown-menu-left'  : !rightAlign}" aria-labelledby="dropdownMenu1">                        
-                        <li [routerLinkActive]="['link-active']" *ngFor="let pitem of profileItems;">
+                        <li [routerLinkActive]="['link-active']"  *ngFor="let pitem of profileItems;">
                             <a *ngIf="pitem.routeUrl != null" routerLink="/{{pitem.routeUrl}}">
                                 <span class="glyphicon glyphicon-{{pitem.iconName}}"></span>
                                 <span>{{ pitem.title }}</span>
