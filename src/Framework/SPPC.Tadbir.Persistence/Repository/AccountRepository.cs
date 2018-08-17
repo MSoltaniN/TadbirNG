@@ -363,7 +363,7 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
-        private IQueryable<Account> GetAccountQuery(IRepository<Account> repository, int accountId)
+        private static IQueryable<Account> GetAccountQuery(IRepository<Account> repository, int accountId)
         {
             return repository
                 .GetEntityQuery()
