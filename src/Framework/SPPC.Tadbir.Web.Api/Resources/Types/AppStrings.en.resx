@@ -504,4 +504,7 @@
   <data name="ChangeCompany" xml:space="preserve">
     <value>Change Company</value>
   </data>
+  <data name="CannotDeleteRoleHavingRelation" xml:space="preserve">
+    <value>The role {0} is currently related to at least one {1} and cannot be deleted.</value>
+  </data>
 </root>

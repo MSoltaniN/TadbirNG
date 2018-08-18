@@ -57,6 +57,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetRoleAsync(int roleId)
         {
             var role = await _repository.GetRoleAsync(roleId);
+            if (role == null)
+            {
+                return NotFound();
+            }
+
             LocalizeRole(role);
             return JsonReadResult(role);
         }
@@ -136,7 +141,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsAssignedRoleAsync(roleId))
             {
-                return BadRequest(String.Format(_strings.Format(AppStrings.CannotDeleteAssignedRole), role.Name));
+                return BadRequest(String.Format(
+                    _strings.Format(AppStrings.CannotDeleteAssignedRole), role.Name));
+            }
+
+            if (await _repository.IsRoleRelatedToBranchAsync(roleId))
+            {
+                return BadRequest(String.Format(
+                    _strings[AppStrings.CannotDeleteRoleHavingRelation], role.Name, _strings[AppStrings.Branch]));
+            }
+
+            if (await _repository.IsRoleRelatedToFiscalPeriodAsync(roleId))
+            {
+                return BadRequest(String.Format(
+                    _strings[AppStrings.CannotDeleteRoleHavingRelation], role.Name, _strings[AppStrings.FiscalPeriod]));
             }
 
             await _repository.DeleteRoleAsync(roleId);

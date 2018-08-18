@@ -504,4 +504,7 @@
   <data name="ChangeCompany" xml:space="preserve">
     <value>تغییر شرکت</value>
   </data>
+  <data name="CannotDeleteRoleHavingRelation" xml:space="preserve">
+    <value>نقش {0} با یک یا چند {1} مرتبط شده و قابل حذف نیست.</value>
+  </data>
 </root>

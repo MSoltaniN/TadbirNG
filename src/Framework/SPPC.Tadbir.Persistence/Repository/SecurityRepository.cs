@@ -527,23 +527,66 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// Asynchronously determines if an existing role specified by unique identifier is assigned to users.
+        /// به روش آسنکرون، مشخص می کند که آیا نقش مورد نظر به کاربری تخصیص داده شده یا نه
         /// </summary>
-        /// <param name="roleId">Unique identifier of the role to search for</param>
-        /// <returns>true if specified role is assigned; otherwise false. If no role with specified identifier
-        /// could be found, returns false.</returns>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <returns>اگر نقش مورد نظر به کاربری تخصیص داده شده مقدار "درست" و
+        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
         public async Task<bool> IsAssignedRoleAsync(int roleId)
         {
             bool isAssigned = false;
             var repository = _unitOfWork.GetAsyncRepository<Role>();
             var role = await repository
-                .GetEntityQuery()
-                .Include(r => r.UserRoles)
+                .GetEntityQuery(r => r.UserRoles)
                 .Where(r => r.Id == roleId)
                 .SingleOrDefaultAsync();
             if (role != null)
             {
                 isAssigned = (role.UserRoles.Count > 0);
+            }
+
+            return isAssigned;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا نقش مورد نظر با یک یا چند شعبه مرتبط شده یا نه
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <returns>اگر نقش مورد نظر با یک یا چند شعبه مرتبط شده مقدار "درست" و
+        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsRoleRelatedToBranchAsync(int roleId)
+        {
+            bool isAssigned = false;
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var role = await repository
+                .GetEntityQuery(r => r.RoleBranches)
+                .Where(r => r.Id == roleId)
+                .SingleOrDefaultAsync();
+            if (role != null)
+            {
+                isAssigned = (role.RoleBranches.Count > 0);
+            }
+
+            return isAssigned;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا نقش مورد نظر با یک یا چند دوره مالی مرتبط شده یا نه
+        /// </summary>
+        /// <param name="roleId">شناسه دیتابیسی نقش مورد نظر</param>
+        /// <returns>اگر نقش مورد نظر با یک یا چند دوره مالی مرتبط شده مقدار "درست" و
+        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> IsRoleRelatedToFiscalPeriodAsync(int roleId)
+        {
+            bool isAssigned = false;
+            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var role = await repository
+                .GetEntityQuery(r => r.RoleFiscalPeriods)
+                .Where(r => r.Id == roleId)
+                .SingleOrDefaultAsync();
+            if (role != null)
+            {
+                isAssigned = (role.RoleFiscalPeriods.Count > 0);
             }
 
             return isAssigned;
