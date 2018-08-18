@@ -48,7 +48,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasConstraintName("FK_Finance_VoucherLine_Finance_Project");
             builder.HasOne(d => d.Branch)
                 .WithMany()
-                .HasForeignKey("BranchID")
+                .HasForeignKey(e => e.BranchId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_VoucherLine_Corporate_Branch");
             builder.HasOne(d => d.Currency)
@@ -58,7 +58,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasConstraintName("FK_Finance_VoucherLine_Finance_Currency");
             builder.HasOne(d => d.FiscalPeriod)
                 .WithMany()
-                .HasForeignKey("FiscalPeriodID")
+                .HasForeignKey(e => e.FiscalPeriodId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_VoucherLine_Finance_FiscalPeriod");
             builder.HasOne(d => d.Voucher)
