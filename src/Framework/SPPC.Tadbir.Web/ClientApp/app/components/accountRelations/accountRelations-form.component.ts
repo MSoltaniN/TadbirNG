@@ -92,6 +92,11 @@ export class AccountRelationsFormComponent extends DefaultComponent {
         relationModel.id = this.mainComponentModel.id;
         relationModel.relatedItemIds = this.relatedComponentCheckedKeys;
 
+        this.relatedComponentCategories = undefined;
+        this.relatedComponentCheckedKeys = [];
+        this.resultCategories = [];
+        this.resultCheckedKeys = [];
+
         this.save.emit(relationModel);
         //this.active = true;
     }

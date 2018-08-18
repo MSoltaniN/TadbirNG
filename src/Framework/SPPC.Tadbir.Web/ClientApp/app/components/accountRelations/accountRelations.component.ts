@@ -104,7 +104,10 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         ];
     }
 
-
+    /**
+     * هنگامیکه کمبوباکس مولفه اصلی تغییر میکند اجرا میشود
+     * @param item
+     */
     public handleMainComponentDropDownChange(item: any) {
         this.mainComponentCategories = [];
         this.mainComponentCheckedKeys = [];
@@ -159,6 +162,10 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         }
     }
 
+    /**
+     * هنگامیکه کمبوباکس مولفه مرتبط تغییر میکند اجرا میشود
+     * @param item
+     */
     public handleRelatedComponentDropDownChange(item: any) {
         this.relatedComponentCheckedKeys = [];
         this.deleteKey = [];
@@ -174,6 +181,10 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         }
     }
 
+    /**
+     * هنگامیکه یک آیتم از مولفه اصلی انتخاب میشود اجرا میشود
+     * @param itemLookup
+     */
     public handleMainComponentChecking(itemLookup: TreeItemLookup): void {
         var itemId = itemLookup.item.dataItem.id;
         this.mainComponentModel = itemLookup.item.dataItem;
@@ -191,6 +202,11 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         }
     }
 
+    /**
+     * هنگامیکه یک آیتم از مولفه مرتبط برای حذف ارتباط انتخاب میشود اجرا میشود
+     * آیدی آیتم هایی که باید حذف شوند در یک آرایه قرار میگیرند
+     * @param itemLookup
+     */
     public handleRelatedComponentChecking(itemLookup: TreeItemLookup): void {
         var item = itemLookup.item.dataItem;
 
@@ -205,10 +221,15 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         }
     }
 
+    /**
+     * آیدی هر آیتم را برای انتخاب مشخص میکنم
+     * @param item
+     */
     public checkById(item: TreeItem) {
         return item.dataItem.id;
     }
 
+    //مشخص میکند که آیتم ها، فرزند دارند یا خیر
     public hasChildren = (item: any) => {
         if (item.childCount > 0) {
             return true;
@@ -216,6 +237,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         return false;
     };
 
+    // اگر یک آیتم از مولفه اصلی فرزند داشته باشد هنگامیکه زیرمجموعه آن آیتم باز میشود فرزندانش از دیتابیس واکشی میشوند
     public fetchMainComponentChildren = (item: any) => {
         var apiUrl = String.Empty;
         switch (this.mainComponentDropdownSelected) {
@@ -243,6 +265,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         return this.accountRelationsService.getChildrens(apiUrl);
     }
 
+    //بعد از واکشی فرزندان یک آیتم، آیدی هر کدام از فرزندان که در حالت انتخاب هستند در آرایه مربوطه قرار میگیرد
     public childrenLoadedHandler = (dataItem: any) => {
         this.fechedRelatedComponentChildren.subscribe(res => {
             for (let item of res) {
@@ -253,6 +276,9 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         })
     }
 
+    /**
+     * بر طبق مولفه اصلی و مولفه مرتبط انتخاب شده، ارتباطات موجود را واکشی میکند
+     */
     loadRelatedComponent() {
         this.isDisableRelatedComponnet = false;
         this.relatedComponentCheckedKeys = [];
@@ -315,12 +341,18 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         }
     }
 
+    /**
+     * هنگامیه روی دکمه ایجاد ارتباط کلیک شود اجرا میشود و فرم ایجاد ارتباط را باز میکند
+     */
     onCreateRelation() {
         if (this.relatedComponentDropdownSelected > 0 && this.mainComponentSelectedItem > 0) {
             this.isActive = true;
         }
     }
 
+    /**
+     * هنگامیکه روی دکمه حذف ارتباط کلیک شود اجرا میشود 
+     */
     DeleteRelation() {
         var model = new AccountItemRelationsInfo();
         model.id = this.mainComponentSelectedItem;
@@ -328,13 +360,19 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.saveRelations(model);
     }
 
+    /**
+     * هنگامیکه فرم ایجاد ارتباط بسته میشود اجرا میشود
+     */
     cancelHandler() {
         this.isActive = false;
         this.mainComponentModel = undefined;
     }
 
+    /**
+     * هنگامیکه دکمه تایید در فرم ایجاد ارتباط زده میشود اجرا میشود
+     * @param relationModel
+     */
     saveHandler(relationModel: AccountItemRelationsInfo) {
-
         if (relationModel) {
             var keyArray = this.relatedComponentCheckedKeys.concat(relationModel.relatedItemIds, this.deleteKey);
             relationModel.relatedItemIds = keyArray;
@@ -344,6 +382,10 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         }
     }
 
+    /**
+     * وقتی که ارتباط جدیدی اضافه میشود یا ارتباطی حذف میشود برای ذخیره در دیتابیس اجرا میود 
+     * @param relationsModel
+     */
     saveRelations(relationsModel: AccountItemRelationsInfo) {
         this.errorMessage = String.Empty;
         var apiUrl = String.Empty;
@@ -404,6 +446,9 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
     }
 
+    /**
+     * وقتی دکمه انصراف در فرم اصلی کلیک میود اجرا میشود
+     */
     onCancel() {
         this.mainComponentCategories = [];
         this.relatedComponentCategories = undefined;
@@ -427,6 +472,9 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         this.deleteKey = [];
     }
 
+    /**
+     * برای جستجو در مولفه اصلی و لود مولفه اصلی میباشد
+     */
     onMainComponentSearch() {
         let filterExp: FilterExpression | undefined;
 
@@ -449,12 +497,9 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         });
     }
 
-    onKeyMainComponent(e: any) {
-        if (KeyCode.Enter == e && this.mainComponentApiUrl) {
-            this.onMainComponentSearch();
-        }
-    }
-
+    /**
+     * برای جستجو در مولفه مرتبط میباشد
+     */
     onRelatedComponentSearch() {
         if (this.relatedComponentDropdownSelected > 0 && this.mainComponentSelectedItem > 0) {
 
@@ -462,8 +507,8 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
             if (this.relatedSearchValue) {
                 var filterExpBuilder = new FilterExpressionBuilder();
-                filterExp = filterExpBuilder.New(new Filter("Name", this.searchValue, ".Contains({0})", "System.String"))
-                    .Or(new Filter("Code", this.searchValue, ".Contains({0})", "System.String"))
+                filterExp = filterExpBuilder.New(new Filter("Name", this.relatedSearchValue, ".Contains({0})", "System.String"))
+                    .Or(new Filter("Code", this.relatedSearchValue, ".Contains({0})", "System.String"))
                     .Build();
             }
 
@@ -482,12 +527,6 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
                 this.sppcLoading.hide();
             })
-        }
-    }
-
-    onKeyRelatedComponent(e: any) {
-        if (KeyCode.Enter == e && this.relatedComponentApiUrl) {
-            this.onRelatedComponentSearch();
         }
     }
 }
