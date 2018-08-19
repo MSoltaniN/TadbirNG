@@ -64,7 +64,7 @@ import { Layout } from './enviroment';
 
 //custom controls
 import { SppcMaskTextBox } from './controls/textbox/sppc-mask-textbox';
-import { SppcNumberBox } from './controls/textbox/sppc-numberbox';
+import { SppcNumericTextBox } from './controls/textbox/sppc-numerictextbox';
 import { SppcDropDownList } from './controls/dropdownlist/sppc-dropdownlist';
 import { SppcDatepicker } from './controls/datepicker/sppc-datepicker';
 import { SppcDateRangeSelector } from './controls/dateRangeSelector/sppc-dateRangeSelector';
@@ -129,7 +129,7 @@ import { GeneralErrorHandler } from './class/error.handler';
         LoginContainerComponent,
         LogoutComponent,
         SppcMaskTextBox,
-        SppcNumberBox,
+        SppcNumericTextBox,
         SppcDropDownList,
         SppcDatepicker,
         SppcDateRangeSelector,

@@ -273,7 +273,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\account\account-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\account\account.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\project\project.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-numberbox.ts" />
+    <TypeScriptCompile Include="ClientApp\app\controls\textbox\sppc-numerictextbox.ts" />
     <TypeScriptCompile Include="ClientApp\app\directive\grid\component\grid-setting.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\directive\grid\sppc-grid-reorder.ts" />
     <TypeScriptCompile Include="ClientApp\app\directive\grid\sppc-grid-resize.ts" />

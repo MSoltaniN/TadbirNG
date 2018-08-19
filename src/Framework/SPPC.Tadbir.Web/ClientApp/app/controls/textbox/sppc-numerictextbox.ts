@@ -7,30 +7,30 @@ import { KeyCode } from '../../enum/KeyCode';
 
 
 @Component({
-    selector: 'sppc-numberbox',
+    selector: 'sppc-numerictextbox',
     template: `<kendo-numerictextbox
           [spinners]="spinners"
           [format]="format"
           [step]="step"
           [(ngModel)]="value"    
-        
+          (ngModelChange)="onChangeModel()"
           (keydown)="keyPress($event.keyCode)">
           </kendo-numerictextbox>`,
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => SppcNumberBox),
+            useExisting: forwardRef(() => SppcNumericTextBox),
             multi: true
         },
         {
             provide: NG_VALIDATORS,
-            useExisting: forwardRef(() => SppcNumberBox),
+            useExisting: forwardRef(() => SppcNumericTextBox),
             multi: true,
         }
     ]
 })
 
-export class SppcNumberBox implements OnInit, ControlValueAccessor, Validator {
+export class SppcNumericTextBox implements OnInit, ControlValueAccessor, Validator {
 
     parseError: boolean = false;
 
@@ -49,7 +49,6 @@ export class SppcNumberBox implements OnInit, ControlValueAccessor, Validator {
     }
 
     keyPress(keyCode: any) {
-
         switch (keyCode) {
             case KeyCode.Plus: {
                 this.value = this.value * 100;
@@ -62,17 +61,21 @@ export class SppcNumberBox implements OnInit, ControlValueAccessor, Validator {
             default:
                 break;
         }
+    }
 
-        if (this.value)
+    onChangeModel() {
+        if (this.value != undefined) {
             this.parseError = false;
-        else
+            this.propagateChange(this.value);
+        }
+        else {
             this.parseError = true;
-
-        this.propagateChange(this.value);
+            this.propagateChange();
+        }
     }
 
     writeValue(value: any): void {
-        if (value) {
+        if (value != undefined) {
             this.value = value;
         }
     }
