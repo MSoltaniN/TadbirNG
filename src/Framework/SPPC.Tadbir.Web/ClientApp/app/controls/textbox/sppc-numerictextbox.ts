@@ -61,6 +61,7 @@ export class SppcNumericTextBox implements OnInit, ControlValueAccessor, Validat
             default:
                 break;
         }
+        this.propagateChange(this.value);
     }
 
     onChangeModel() {
