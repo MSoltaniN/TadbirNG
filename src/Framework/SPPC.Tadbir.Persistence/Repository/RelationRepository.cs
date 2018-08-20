@@ -119,9 +119,10 @@ namespace SPPC.Tadbir.Persistence
             if (account != null)
             {
                 detailAccounts = account.AccountDetailAccounts
-                    .Select(ada => _mapper.Map<AccountItemBriefViewModel>(ada.DetailAccount))
-                    .AsQueryable()
+                    .Select(ada => ada.DetailAccount)
                     .Apply(gridOptions)
+                    .Select(ada => _mapper.Map<AccountItemBriefViewModel>(ada))
+                    .AsQueryable()
                     .ToList();
                 Array.ForEach(detailAccounts.ToArray(), facc => facc.IsSelected = true);
             }
@@ -149,9 +150,10 @@ namespace SPPC.Tadbir.Persistence
             if (account != null)
             {
                 costCenters = account.AccountCostCenters
-                    .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc.CostCenter))
-                    .AsQueryable()
+                    .Select(acc => acc.CostCenter)
                     .Apply(gridOptions)
+                    .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                    .AsQueryable()
                     .ToList();
                 Array.ForEach(costCenters.ToArray(), cc => cc.IsSelected = true);
             }
@@ -179,9 +181,10 @@ namespace SPPC.Tadbir.Persistence
             if (account != null)
             {
                 projects = account.AccountProjects
-                    .Select(ap => _mapper.Map<AccountItemBriefViewModel>(ap.Project))
-                    .AsQueryable()
+                    .Select(ap => ap.Project)
                     .Apply(gridOptions)
+                    .Select(ap => _mapper.Map<AccountItemBriefViewModel>(ap))
+                    .AsQueryable()
                     .ToList();
                 Array.ForEach(projects.ToArray(), prj => prj.IsSelected = true);
             }
@@ -209,9 +212,10 @@ namespace SPPC.Tadbir.Persistence
             if (detail != null)
             {
                 accounts = detail.AccountDetailAccounts
-                    .Select(ada => _mapper.Map<AccountItemBriefViewModel>(ada.Account))
-                    .AsQueryable()
+                    .Select(ada => ada.Account)
                     .Apply(gridOptions)
+                    .Select(ada => _mapper.Map<AccountItemBriefViewModel>(ada))
+                    .AsQueryable()
                     .ToList();
                 Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             }
@@ -239,9 +243,10 @@ namespace SPPC.Tadbir.Persistence
             if (costCenter != null)
             {
                 accounts = costCenter.AccountCostCenters
-                    .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc.Account))
-                    .AsQueryable()
+                    .Select(acc => acc.Account)
                     .Apply(gridOptions)
+                    .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                    .AsQueryable()
                     .ToList();
                 Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             }
@@ -269,9 +274,10 @@ namespace SPPC.Tadbir.Persistence
             if (project != null)
             {
                 accounts = project.AccountProjects
-                    .Select(ap => _mapper.Map<AccountItemBriefViewModel>(ap.Account))
-                    .AsQueryable()
+                    .Select(ap => ap.Account)
                     .Apply(gridOptions)
+                    .Select(ap => _mapper.Map<AccountItemBriefViewModel>(ap))
+                    .AsQueryable()
                     .ToList();
                 Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             }
