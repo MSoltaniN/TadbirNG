@@ -158,6 +158,16 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
+    goToLastPage() {
+        var pageCount: number = 0;
+        pageCount = Math.floor(this.totalRecords / this.pageSize);
+
+        if (this.totalRecords % this.pageSize == 0) {
+            this.skip = (pageCount * this.pageSize) - this.pageSize;
+            return;
+        }
+        this.skip = (pageCount * this.pageSize)
+    }
 
     //account form events
     public editHandler(arg: any) {
@@ -336,6 +346,9 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
+            if (insertedModel)
+                this.goToLastPage();
+
             if (this.parent) {
                 if (this.parent.childCount > 0)
                     filter = this.addFilterToFilterExpression(this.currentFilter,
@@ -347,26 +360,28 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                     new Filter("ParentId", "null", "== {0}", "System.Int32"),
                     FilterExpressionOperator.And);
 
+            
+
             this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 //this.properties = resData.properties;
                 var totalCount = 0;
-                if (insertedModel && this.addToContainer) {
-                    var rows = (resData as Array<Account>);
-                    var index = rows.findIndex(p => p.id == insertedModel.id);
-                    if (index >= 0) {
-                        rows.splice(index, 1);
-                        rows.splice(0, 0, insertedModel);
-                    }
-                    else {
-                        if (rows.length == this.pageSize) {
-                            rows.splice(this.pageSize - 1, 1);
-                        }
-                        rows.splice(0, 0, insertedModel);
-                    }
+                //if (insertedModel && this.addToContainer) {
+                //    var rows = (resData as Array<Account>);
+                //    var index = rows.findIndex(p => p.id == insertedModel.id);
+                //    if (index >= 0) {
+                //        rows.splice(index, 1);
+                //        rows.splice(0, 0, insertedModel);
+                //    }
+                //    else {
+                //        if (rows.length == this.pageSize) {
+                //            rows.splice(this.pageSize - 1, 1);
+                //        }
+                //        rows.splice(0, 0, insertedModel);
+                //    }
 
-                    resData = rows;
-                }
+                //    resData = rows;
+                //}
                 if (res.headers != null) {
                     var headers = res.headers != undefined ? res.headers : null;
                     if (headers != null) {
@@ -398,7 +413,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                         }
                     }
                     else if (index >= 0) {                        
-                        this.grid.expandRow(this.skip + index);
+                        this.grid.expandRow(this.skip + index);                        
                     }
                 }
 
