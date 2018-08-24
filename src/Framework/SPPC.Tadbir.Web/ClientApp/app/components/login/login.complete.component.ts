@@ -89,6 +89,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         this.getCompany();
         //load setting
         this.loadAllSetting();
+        
     }
 
     //#endregion
@@ -128,6 +129,13 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         this.authenticationService.getCompanies(this.UserName, this.Ticket).subscribe(res => {
             this.compenies = res;
             this.disabledCompany = false;
+
+            //#region load current setting
+            if (this.CompanyId) {
+                this.companyId = this.CompanyId.toString();
+                this.companyChange(this.companyId);
+            }
+            //#endregion
         });;
     }
 
