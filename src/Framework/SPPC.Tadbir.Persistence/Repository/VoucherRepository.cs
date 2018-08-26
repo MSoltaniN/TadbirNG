@@ -67,7 +67,7 @@ namespace SPPC.Tadbir.Persistence
         {
             VoucherViewModel voucherViewModel = null;
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var voucher = await repository.GetByIDAsync(voucherId);
+            var voucher = await repository.GetByIDAsync(voucherId, v => v.Lines);
             if (voucher != null)
             {
                 voucherViewModel = Mapper.Map<VoucherViewModel>(voucher);
