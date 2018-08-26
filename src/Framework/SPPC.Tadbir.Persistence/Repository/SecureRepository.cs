@@ -10,7 +10,6 @@ using SPPC.Framework.Domain;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Domain;
@@ -25,17 +24,19 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را پیاده سازی می کند
     /// </summary>
-    public abstract class SecureRepository : ISecureRepository
+    public class SecureRepository : RepositoryBase, ISecureRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        protected SecureRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper)
+        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        protected SecureRepository(
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
+            : base(unitOfWork, mapper, metadata)
         {
-            UnitOfWork = unitOfWork;
-            Mapper = mapper;
+            _metadataRepository = metadata;
         }
 
         /// <summary>
@@ -52,11 +53,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
         /// <returns>لیست فیلتر شده از سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         public async Task<IList<TEntity>> GetAllAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null,
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IBaseEntity
         {
-            var query = GetFilteredQuery(userAccess, fpId, branchId, relatedProperties);
+            var query = GetFilteredQuery(userAccess, fpId, branchId, viewId, relatedProperties);
             return await query
                 .Apply(gridOptions)
                 .ToListAsync();
@@ -76,11 +77,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
         /// <returns>لیست فیلتر شده از سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         public async Task<IList<TEntity>> GetAllOperationAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null,
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IFiscalEntity
         {
-            var query = GetFilteredOperationQuery(userAccess, fpId, branchId, relatedProperties);
+            var query = GetFilteredOperationQuery(userAccess, fpId, branchId, viewId, relatedProperties);
             return await query
                 .Apply(gridOptions)
                 .ToListAsync();
@@ -99,14 +100,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns></returns>
         public async Task<IList<KeyValue>> GetAllLookupAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null)
             where TEntity : class, IBaseEntity
         {
             Verify.ArgumentNotNull(userAccess, "userAccess");
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
             var query = repository.GetEntityQuery();
             query = ApplyBranchFilterForLookup(query, fpId, branchId);
-            query = ApplyRowFilter(ref query, userAccess);
+            query = ApplyRowFilter(ref query, userAccess, viewId);
             return await query
                 .Apply(gridOptions)
                 .Select(entity => Mapper.Map<KeyValue>(entity))
@@ -126,10 +127,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         public async Task<int> GetCountAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null)
             where TEntity : class, IBaseEntity
         {
-            var query = GetFilteredQuery<TEntity>(userAccess, fpId, branchId);
+            var query = GetFilteredQuery<TEntity>(userAccess, fpId, branchId, viewId);
             return await query
                 .Apply(gridOptions, false)
                 .CountAsync();
@@ -148,29 +149,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         public async Task<int> GetOperationCountAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null)
             where TEntity : class, IFiscalEntity
         {
-            var query = GetFilteredOperationQuery<TEntity>(userAccess, fpId, branchId);
+            var query = GetFilteredOperationQuery<TEntity>(userAccess, fpId, branchId, viewId);
             return await query
                 .Apply(gridOptions, false)
                 .CountAsync();
         }
-
-        /// <summary>
-        /// پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی
-        /// </summary>
-        protected IAppUnitOfWork UnitOfWork { get; }
-
-        /// <summary>
-        /// نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی
-        /// </summary>
-        protected IDomainMapper Mapper { get; }
-
-        /// <summary>
-        /// شناسه دیتابیسی نمای اصلی در ساختار اطلاعاتی متادیتا
-        /// </summary>
-        protected abstract int ViewId { get; }
 
         /// <summary>
         /// تنظیمات موجود برای فیلتر سطرهای اطلاعاتی را روی مجموعه ای از اطلاعات اعمال می کند
@@ -181,8 +167,8 @@ namespace SPPC.Tadbir.Persistence
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <returns>مجوعه سطرهای اطلاعاتی فیلتر شده</returns>
-        protected IQueryable<TEntity> ApplyRowFilter<TEntity>(
-            ref IQueryable<TEntity> records, UserAccessViewModel userAccess)
+        public IQueryable<TEntity> ApplyRowFilter<TEntity>(
+            ref IQueryable<TEntity> records, UserAccessViewModel userAccess, int viewId)
             where TEntity : class, IEntity
         {
             var repository = UnitOfWork.GetAsyncRepository<ViewRowPermission>();
@@ -192,7 +178,7 @@ namespace SPPC.Tadbir.Persistence
                 var permission = repository
                     .GetEntityQuery()
                     .Where(perm => perm.Role.Id == roleId
-                        && perm.View.Id == ViewId)
+                        && perm.View.Id == viewId)
                     .Include(perm => perm.View)
                         .ThenInclude(view => view.Properties)
                     .SingleOrDefault();
@@ -211,7 +197,7 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private IQueryable<TEntity> GetFilteredQuery<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId,
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IBaseEntity
         {
@@ -219,12 +205,12 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
             var query = repository.GetEntityQuery(relatedProperties);
             query = ApplyBranchFilter(query, fpId, branchId);
-            query = ApplyRowFilter(ref query, userAccess);
+            query = ApplyRowFilter(ref query, userAccess, viewId);
             return query;
         }
 
         private IQueryable<TEntity> GetFilteredOperationQuery<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId,
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IFiscalEntity
         {
@@ -232,7 +218,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
             var query = repository.GetEntityQuery(relatedProperties);
             query = ApplyOperationBranchFilter(query, fpId, branchId);
-            query = ApplyRowFilter(ref query, userAccess);
+            query = ApplyRowFilter(ref query, userAccess, viewId);
             return query;
         }
 
@@ -445,5 +431,7 @@ namespace SPPC.Tadbir.Persistence
                 AddChildren(item, children);
             }
         }
+
+        private readonly IMetadataRepository _metadataRepository;
     }
 }

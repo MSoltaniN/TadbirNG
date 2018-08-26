@@ -13,7 +13,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات مراکز هزینه را تعریف می کند.
     /// </summary>
-    public interface ICostCenterRepository : ISecureRepository
+    public interface ICostCenterRepository
     {
         /// <summary>
         /// به روش آسنکرون، کلیه مراکز هزینه ای را که در دوره مالی و شعبه مشخص شده تعریف شده اند،

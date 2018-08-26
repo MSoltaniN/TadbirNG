@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using SPPC.Framework.Domain;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
@@ -28,7 +30,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
         /// <returns>لیست فیلتر شده از سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         Task<IList<TEntity>> GetAllAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null,
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IBaseEntity;
 
@@ -46,7 +48,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
         /// <returns>لیست فیلتر شده از سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         Task<IList<TEntity>> GetAllOperationAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null,
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IFiscalEntity;
 
@@ -63,7 +65,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns></returns>
         Task<IList<KeyValue>> GetAllLookupAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null)
             where TEntity : class, IBaseEntity;
 
         /// <summary>
@@ -79,7 +81,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         Task<int> GetCountAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null)
             where TEntity : class, IBaseEntity;
 
         /// <summary>
@@ -95,7 +97,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         Task<int> GetOperationCountAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null)
             where TEntity : class, IFiscalEntity;
+
+        IQueryable<TEntity> ApplyRowFilter<TEntity>(
+                    ref IQueryable<TEntity> records, UserAccessViewModel userAccess, int viewId)
+            where TEntity : class, IEntity;
     }
 }

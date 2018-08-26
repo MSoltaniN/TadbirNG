@@ -7,6 +7,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -17,7 +18,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات پروژه ها را پیاده سازی می کند.
     /// </summary>
-    public class ProjectRepository : SecureRepository, IProjectRepository
+    public class ProjectRepository : RepositoryBase, IProjectRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -25,10 +26,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public ProjectRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
-            : base(unitOfWork, mapper)
+        public ProjectRepository(
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, ISecureRepository repository)
+            : base(unitOfWork, mapper, metadata)
         {
-            _metadataRepository = metadataRepository;
+            _repository = repository;
         }
 
         /// <summary>
@@ -45,8 +47,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<ProjectViewModel>> GetProjectsAsync(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var projects = await GetAllAsync<Project>(
-                userAccess, fpId, branchId, gridOptions, prj => prj.FiscalPeriod, prj => prj.Branch,
+            var projects = await _repository.GetAllAsync<Project>(
+                userAccess, fpId, branchId, ViewName.Project, gridOptions, prj => prj.FiscalPeriod, prj => prj.Branch,
                 prj => prj.Parent, prj => prj.Children);
             return projects
                 .Select(item => Mapper.Map<ProjectViewModel>(item))
@@ -67,7 +69,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<KeyValue>> GetProjectsLookupAsync(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            return await GetAllLookupAsync<Project>(userAccess, fpId, branchId, gridOptions);
+            return await _repository.GetAllLookupAsync<Project>(
+                userAccess, fpId, branchId, ViewName.Project, gridOptions);
         }
 
         /// <summary>
@@ -84,7 +87,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            return await GetCountAsync<Project>(userAccess, fpId, branchId, gridOptions);
+            return await _repository.GetCountAsync<Project>(
+                userAccess, fpId, branchId, ViewName.Project, gridOptions);
         }
 
         /// <summary>
@@ -130,7 +134,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای پروژه</returns>
         public async Task<EntityViewModel> GetProjectMetadataAsync()
         {
-            return await _metadataRepository.GetEntityMetadataAsync<Project>();
+            return await Metadata.GetEntityMetadataAsync<Project>();
         }
 
         /// <summary>
@@ -241,12 +245,12 @@ namespace SPPC.Tadbir.Persistence
             return hasChildren;
         }
 
-        /// <inheritdoc/>
-        protected override int ViewId
-        {
-            // TODO: Remove this hard-coded value later
-            get { return 8; }
-        }
+        ///// <inheritdoc/>
+        //protected override int ViewId
+        //{
+        //    // TODO: Remove this hard-coded value later
+        //    get { return 8; }
+        //}
 
         private static void UpdateExistingProject(ProjectViewModel projectViewModel, Project project)
         {
@@ -257,6 +261,6 @@ namespace SPPC.Tadbir.Persistence
             project.Description = projectViewModel.Description;
         }
 
-        private IMetadataRepository _metadataRepository;
+        private readonly ISecureRepository _repository;
     }
 }

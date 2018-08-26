@@ -15,8 +15,7 @@ namespace SPPC.Tadbir.Persistence
     /// </summary>
     /// <typeparam name="TEntity">نوع مدل اطلاعاتی که عملیات روی آن انجام می شود</typeparam>
     /// <typeparam name="TEntityView">نوع مدل نمایشی که برای اصلاح اطلاعات استفاده می شود</typeparam>
-    public abstract class LoggingRepository<TEntity, TEntityView> :
-        SecureRepository, ILoggingRepository<TEntity, TEntityView>
+    public abstract class LoggingRepository<TEntity, TEntityView> : RepositoryBase, ILoggingRepository<TEntity, TEntityView>
         where TEntity : FiscalEntity
         where TEntityView : class, new()
     {
@@ -25,9 +24,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
+        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="logRepository">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        public LoggingRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IOperationLogRepository logRepository)
-            : base(unitOfWork, mapper)
+        public LoggingRepository(
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository logRepository)
+            : base(unitOfWork, mapper, metadata)
         {
             _logRepository = logRepository;
         }
