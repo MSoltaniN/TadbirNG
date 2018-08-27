@@ -9,6 +9,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -19,18 +20,20 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات اسناد مالی و آرتیکل های آنها را پیاده سازی می کند.
     /// </summary>
-    public class VoucherRepository : SecureRepository, IVoucherRepository
+    public class VoucherRepository : RepositoryBase, IVoucherRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public VoucherRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
-            : base(unitOfWork, mapper)
+        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
+        public VoucherRepository(
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, ISecureRepository repository)
+            : base(unitOfWork, mapper, metadata)
         {
-            _metadataRepository = metadataRepository;
+            _repository = repository;
         }
 
         #region Voucher Operations
@@ -48,8 +51,9 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<VoucherViewModel>> GetVouchersAsync(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var vouchers = await GetAllOperationAsync<Voucher>(
-                userAccess, fpId, branchId, gridOptions, v => v.Lines, v => v.FiscalPeriod, v => v.Branch);
+            var vouchers = await _repository.GetAllOperationAsync<Voucher>(
+                userAccess, fpId, branchId, ViewName.Voucher, gridOptions,
+                v => v.Lines, v => v.FiscalPeriod, v => v.Branch);
             return vouchers
                 .Select(item => Mapper.Map<VoucherViewModel>(item))
                 .ToList();
@@ -64,7 +68,7 @@ namespace SPPC.Tadbir.Persistence
         {
             VoucherViewModel voucherViewModel = null;
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var voucher = await repository.GetByIDAsync(voucherId);
+            var voucher = await repository.GetByIDAsync(voucherId, v => v.Lines);
             if (voucher != null)
             {
                 voucherViewModel = Mapper.Map<VoucherViewModel>(voucher);
@@ -79,7 +83,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای سند مالی</returns>
         public async Task<EntityViewModel> GetVoucherMetadataAsync()
         {
-            return await _metadataRepository.GetEntityMetadataAsync<Voucher>();
+            return await Metadata.GetEntityMetadataAsync<Voucher>();
         }
 
         /// <summary>
@@ -96,7 +100,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            return await GetOperationCountAsync<Voucher>(userAccess, fpId, branchId, gridOptions);
+            return await _repository.GetOperationCountAsync<Voucher>(
+                userAccess, fpId, branchId, ViewName.Voucher, gridOptions);
         }
 
         /// <summary>
@@ -174,13 +179,6 @@ namespace SPPC.Tadbir.Persistence
             return (duplicates.Count > 0);
         }
 
-        /// <inheritdoc/>
-        protected override int ViewId
-        {
-            // TODO: Remove this hard-coded value later
-            get { return 2; }
-        }
-
         #endregion
 
         #region Voucher Line Operations
@@ -198,7 +196,7 @@ namespace SPPC.Tadbir.Persistence
             UserAccessViewModel userAccess, int voucherId, GridOptions gridOptions = null)
         {
             var query = GetVoucherLinesQuery(voucherId);
-            query = ApplyRowFilter(ref query, userAccess);
+            query = _repository.ApplyRowFilter(ref query, userAccess, ViewName.VoucherLine);
             var lines = await query
                 .Apply(gridOptions)
                 .Select(line => Mapper.Map<VoucherLineViewModel>(line))
@@ -230,7 +228,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی</returns>
         public async Task<EntityViewModel> GetVoucherLineMetadataAsync()
         {
-            return await _metadataRepository.GetEntityMetadataAsync<VoucherLine>();
+            return await Metadata.GetEntityMetadataAsync<VoucherLine>();
         }
 
         /// <summary>
@@ -249,7 +247,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var query = repository.GetEntityQuery()
                 .Where(line => line.Voucher.Id == voucherId);
-            query = ApplyRowFilter(ref query, userAccess);
+            query = _repository.ApplyRowFilter(ref query, userAccess, ViewName.VoucherLine);
             return await query
                 .Apply(gridOptions)
                 .CountAsync();
@@ -415,6 +413,6 @@ namespace SPPC.Tadbir.Persistence
             return linesQuery;
         }
 
-        private IMetadataRepository _metadataRepository;
+        private readonly ISecureRepository _repository;
     }
 }

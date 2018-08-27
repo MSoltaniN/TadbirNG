@@ -13,7 +13,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات تفصیلی های شناور را تعریف می کند.
     /// </summary>
-    public interface IDetailAccountRepository : ISecureRepository
+    public interface IDetailAccountRepository
     {
         /// <summary>
         /// به روش آسنکرون، کلیه تفصیلی های شناوری را که در دوره مالی و شعبه مشخص شده تعریف شده اند،

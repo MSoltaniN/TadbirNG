@@ -12,7 +12,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات پروژه ها را تعریف می کند.
     /// </summary>
-    public interface IProjectRepository : ISecureRepository
+    public interface IProjectRepository
     {
         /// <summary>
         /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،

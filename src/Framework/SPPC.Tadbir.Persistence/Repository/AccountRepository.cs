@@ -10,6 +10,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -27,14 +28,17 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        /// <param name="logRepository">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
+        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
+        /// <param name="repository">
+        /// عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند
+        /// </param>
         public AccountRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository,
-            IOperationLogRepository logRepository)
-            : base(unitOfWork, mapper, logRepository)
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
+            ISecureRepository repository)
+            : base(unitOfWork, mapper, metadata, log)
         {
-            _metadataRepository = metadataRepository;
+            _repository = repository;
         }
 
         /// <summary>
@@ -51,8 +55,9 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountViewModel>> GetAccountsAsync(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var accounts = await GetAllAsync<Account>(
-                userAccess, fpId, branchId, gridOptions, acc => acc.FiscalPeriod, acc => acc.Branch,
+            var accounts = await _repository.GetAllAsync<Account>(
+                userAccess, fpId, branchId, ViewName.Account, gridOptions,
+                acc => acc.FiscalPeriod, acc => acc.Branch,
                 acc => acc.Parent, acc => acc.Children);
             return accounts
                 .Select(item => Mapper.Map<AccountViewModel>(item))
@@ -73,7 +78,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<KeyValue>> GetAccountsLookupAsync(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            return await GetAllLookupAsync<Account>(userAccess, fpId, branchId, gridOptions);
+            return await _repository.GetAllLookupAsync<Account>(
+                userAccess, fpId, branchId, ViewName.Account, gridOptions);
         }
 
         /// <summary>
@@ -140,7 +146,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای حساب</returns>
         public async Task<EntityViewModel> GetAccountMetadataAsync()
         {
-            return await _metadataRepository.GetEntityMetadataAsync<Account>();
+            return await Metadata.GetEntityMetadataAsync<Account>();
         }
 
         /// <summary>
@@ -176,7 +182,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            return await GetCountAsync<Account>(userAccess, fpId, branchId, gridOptions);
+            return await _repository.GetCountAsync<Account>(
+                userAccess, fpId, branchId, ViewName.Account, gridOptions);
         }
 
         /// <summary>
@@ -297,12 +304,29 @@ namespace SPPC.Tadbir.Persistence
             return hasChildren;
         }
 
-        /// <inheritdoc/>
-        protected override int ViewId
+        /// <summary>
+        /// به روش آسنکرون، مقدار فیلد FullCode والد هر حساب را برمیگرداند
+        /// </summary>
+        /// <param name="parentId">شناسه والد هر حساب</param>
+        /// <returns>اگر حساب والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
+        public async Task<string> GetAccountFullCodeAsync(int parentId)
         {
-            // TODO: Remove this hard-coded value later
-            get { return 1; }
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetByIDAsync(parentId);
+            if (account == null)
+            {
+                return string.Empty;
+            }
+
+            return account.FullCode;
         }
+
+        ///// <inheritdoc/>
+        //protected override int ViewId
+        //{
+        //    // TODO: Remove this hard-coded value later
+        //    get { return 1; }
+        //}
 
         /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
@@ -372,6 +396,6 @@ namespace SPPC.Tadbir.Persistence
                 .Where(acc => acc.Id == accountId);
         }
 
-        private IMetadataRepository _metadataRepository;
+        private readonly ISecureRepository _repository;
     }
 }

@@ -91,5 +91,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for voucher articles that reference an account specified by identifier
         /// </summary>
         public const string AccountArticlesUrl = "accounts/{accountId:min(1)}/articles";
+
+        /// <summary>
+        /// API client URL for account full code
+        /// </summary>
+        public const string AccountFullCode = "accounts/fullcode/{parentId}";
+
+        /// <summary>
+        /// API server route URL for account full code
+        /// </summary>
+        public const string AccountFullCodeUrl = "accounts/fullcode/{parentId}";
     }
 }

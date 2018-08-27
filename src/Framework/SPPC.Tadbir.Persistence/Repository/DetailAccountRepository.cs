@@ -7,6 +7,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -17,18 +18,20 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات تفصیلی های شناور را پیاده سازی می کند.
     /// </summary>
-    public class DetailAccountRepository : SecureRepository, IDetailAccountRepository
+    public class DetailAccountRepository : RepositoryBase, IDetailAccountRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public DetailAccountRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
-            : base(unitOfWork, mapper)
+        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
+        public DetailAccountRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+            ISecureRepository repository)
+            : base(unitOfWork, mapper, metadata)
         {
-            _metadataRepository = metadataRepository;
+            _repository = repository;
         }
 
         /// <summary>
@@ -45,8 +48,9 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<DetailAccountViewModel>> GetDetailAccountsAsync(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var detailAccounts = await GetAllAsync<DetailAccount>(
-                userAccess, fpId, branchId, gridOptions, facc => facc.FiscalPeriod, facc => facc.Branch,
+            var detailAccounts = await _repository.GetAllAsync<DetailAccount>(
+                userAccess, fpId, branchId, ViewName.DetailAccount, gridOptions,
+                facc => facc.FiscalPeriod, facc => facc.Branch,
                 facc => facc.Parent, facc => facc.Children);
             return detailAccounts
                 .Select(item => Mapper.Map<DetailAccountViewModel>(item))
@@ -67,7 +71,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<KeyValue>> GetDetailAccountsLookupAsync(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            return await GetAllLookupAsync<DetailAccount>(userAccess, fpId, branchId, gridOptions);
+            return await _repository.GetAllLookupAsync<DetailAccount>(
+                userAccess, fpId, branchId, ViewName.DetailAccount, gridOptions);
         }
 
         /// <summary>
@@ -84,7 +89,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            return await GetCountAsync<DetailAccount>(userAccess, fpId, branchId, gridOptions);
+            return await _repository.GetCountAsync<DetailAccount>(
+                userAccess, fpId, branchId, ViewName.DetailAccount, gridOptions);
         }
 
         /// <summary>
@@ -130,7 +136,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای تفصیلی شناور</returns>
         public async Task<EntityViewModel> GetDetailAccountMetadataAsync()
         {
-            return await _metadataRepository.GetEntityMetadataAsync<DetailAccount>();
+            return await Metadata.GetEntityMetadataAsync<DetailAccount>();
         }
 
         /// <summary>
@@ -241,13 +247,6 @@ namespace SPPC.Tadbir.Persistence
             return hasChildren;
         }
 
-        /// <inheritdoc/>
-        protected override int ViewId
-        {
-            // TODO: Remove this hard-coded value later
-            get { return 6; }
-        }
-
         private static void UpdateExistingDetailAccount(DetailAccountViewModel detailViewModel, DetailAccount detail)
         {
             detail.Code = detailViewModel.Code;
@@ -257,6 +256,6 @@ namespace SPPC.Tadbir.Persistence
             detail.Description = detailViewModel.Description;
         }
 
-        private IMetadataRepository _metadataRepository;
+        private readonly ISecureRepository _repository;
     }
 }

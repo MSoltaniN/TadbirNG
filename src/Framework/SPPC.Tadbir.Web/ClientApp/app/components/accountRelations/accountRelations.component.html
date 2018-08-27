@@ -32,7 +32,13 @@
                         <button class="k-button k-primary btn-search"
                                 [disabled]="!isEnableMainComponentSearchBtn"
                                 (click)="onMainComponentSearch()">
-                            {{ 'AccountRelations.SearchBtn' | translate }}
+                            <span class="k-i-filter k-icon"></span>
+                        </button>
+                        
+                        <button class="k-button btn-search"
+                                [hidden]="!searchValue"
+                                (click)="removeMainComponentFilter()">
+                            <span class="k-icon k-i-filter-clear"></span>
                         </button>
 
                     </div>
@@ -82,7 +88,13 @@
                         <button class="k-button k-primary btn-search"
                                 [disabled]="!isEnableRelatedComponentSearchBtn"
                                 (click)="onRelatedComponentSearch()">
-                            {{ 'AccountRelations.SearchBtn' | translate }}
+                            <span class="k-i-filter k-icon"></span>
+                        </button>
+
+                        <button class="k-button btn-search" 
+                                [hidden]="!relatedSearchValue"
+                                (click)="removeRelatedComponentFilter()">
+                            <span class="k-icon k-i-filter-clear"></span>
                         </button>
 
                     </div>

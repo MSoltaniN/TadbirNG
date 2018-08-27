@@ -41,4 +41,10 @@ export class AccountService extends BaseService
     }
     
 
+    getAccountFullCode(parentId: number) {
+        var url = String.Format(AccountApi.AccountFullCode, parentId);
+        return this.http.get(url, this.options)
+            .map(response => <any>(<Response>response).json());
+    }
+
 }

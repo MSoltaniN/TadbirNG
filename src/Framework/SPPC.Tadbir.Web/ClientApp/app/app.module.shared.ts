@@ -58,6 +58,7 @@ import { ViewRowPermissionMultipleFormComponent } from './components/viewRowPerm
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
+import { FullCodeDirective } from './directive/fullCode/fullCode.directive';
 
 
 import { Layout } from './enviroment';
@@ -161,6 +162,7 @@ import { HttpClientModule } from '@angular/common/http';
         ProjectFormComponent,
         CostCenterFormComponent,
         ConfirmEqualValidator,
+        FullCodeDirective,
         FiscalPeriodComponent,
         FiscalPeriodFormComponent,
         FiscalPeriodRolesFormComponent,
