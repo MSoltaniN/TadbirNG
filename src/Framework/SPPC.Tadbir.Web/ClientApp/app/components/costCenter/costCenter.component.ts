@@ -139,7 +139,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
                     FilterExpressionOperator.And);
 
             this.costCenterService.getAll(String.Format(CostCenterApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.json();
+                var resData = res.body;
                 var totalCount = 0;
                 if (insertedModel) {
                     var rows = (resData as Array<CostCenter>);

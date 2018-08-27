@@ -184,7 +184,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                 }
                 */
 
-                var resData = res.json();
+                var resData = res.body;
                 
                 var totalCount = 0;
                 if (insertedModel) {

@@ -1,4 +1,4 @@
-﻿<div [ngClass]="{'panel panel-primary' : !isChild }">
+﻿<div ng-http-loader [ngClass]="{'panel panel-primary' : !isChild }">
     <div *ngIf="!isChild" class="panel-heading">{{ 'Entity.Account' | translate }}</div>
     <div SppcCheckAccess="View" [ngClass]="{'panel-body' : !isChild }">
         <kendo-grid id="1" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"

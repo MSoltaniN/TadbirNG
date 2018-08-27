@@ -163,7 +163,7 @@ export class BranchComponent extends DefaultComponent implements OnInit {
                     FilterExpressionOperator.And);
 
             this.branchService.getAll(String.Format(BranchApi.CompanyBranches, this.CompanyId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.json();
+                var resData = res.body;
                 var totalCount = 0;
                 if (insertedModel) {
                     var rows = (resData as Array<Branch>);

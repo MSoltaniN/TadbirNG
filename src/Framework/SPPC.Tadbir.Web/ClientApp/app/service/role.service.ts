@@ -8,7 +8,7 @@ import { String } from '../class/source';
 import { expect } from 'chai';
 import { Filter } from "../class/filter";
 import { GridOrderBy } from "../class/grid.orderby";
-import { HttpParams } from "@angular/common/http";
+import { HttpParams, HttpClient } from "@angular/common/http";
 import { Environment, MessageType } from "../enviroment";
 import { Context } from "../model/context";
 
@@ -56,53 +56,54 @@ export class RoleDetailsInfo implements RoleDetails {
 @Injectable()
 export class RoleService extends BaseService {
 
-    constructor(public http: Http) {
+    constructor(public http: HttpClient) {
         super(http);
     }
 
     getNewRoleFull() {
         var url = RoleApi.NewRole;
-
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
     }
 
     getRoleFull(roleId: number) {
         var url = String.Format(RoleApi.Role, roleId);
-
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
     }
 
 
     getRoleUsers(roleId: number) {
         var url = String.Format(RoleApi.RoleUsers, roleId);
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
     }
 
     modifiedRoleUsers(roleUsers: RelatedItems) {
         var body = JSON.stringify(roleUsers);
-        var headers = this.headers;
-
+        
+        var options = { headers: this.httpHeaders };
 
         var url = String.Format(RoleApi.RoleUsers, roleUsers.id);
 
-        return this.http.put(url, body, this.options)
+        return this.http.put(url, body, options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     getRoleBranches(roleId: number) {
         var url = String.Format(RoleApi.RoleBranches, roleId);
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
     }
 
     modifiedRoleBranches(roleBranches: RelatedItems) {
         var body = JSON.stringify(roleBranches);
-        var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
+        var options = { headers: this.httpHeaders };
         var url = String.Format(RoleApi.RoleBranches, roleBranches.id);
         return this.http.put(url, body, options)
             .map(res => res)
@@ -111,14 +112,14 @@ export class RoleService extends BaseService {
 
     getRoleFiscalPeriods(roleId: number) {
         var url = String.Format(RoleApi.RoleFiscalPeriods, roleId);
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
     }
 
     modifiedRoleFiscalPeriods(roleFPeriods: RelatedItems) {
         var body = JSON.stringify(roleFPeriods);
-        var headers = this.headers;
-        var options = new RequestOptions({ headers: headers });
+        var options = { headers: this.httpHeaders };
         var url = String.Format(RoleApi.RoleFiscalPeriods, roleFPeriods.id);
         return this.http.put(url, body, options)
             .map(res => res)
@@ -127,9 +128,9 @@ export class RoleService extends BaseService {
 
     getRoleDetail(roleId: number) {
         var url = String.Format(RoleApi.RoleDetails, roleId);
-
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
     }
 
 }

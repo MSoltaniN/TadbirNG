@@ -60,7 +60,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
         this.sppcLoading.show();
         this.settingsService.getSettingsCategories(SettingsApi.AllSettings).subscribe(res => {
 
-            this.settingsCategories = res.json();
+            this.settingsCategories = res.body;
             var treeData = new Array<SettingTreeNodeInfo>();
             if (this.settingsCategories != undefined) {
 

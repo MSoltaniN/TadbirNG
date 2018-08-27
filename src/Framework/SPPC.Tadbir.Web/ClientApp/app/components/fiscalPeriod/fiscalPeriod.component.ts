@@ -112,7 +112,7 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
                 this.skip = this.skip - this.pageSize;
             }
             this.fiscalPeriodService.getAll(String.Format(FiscalPeriodApi.CompanyFiscalPeriods, this.CompanyId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.json();
+                var resData = res.body;
                 var totalCount = 0;
                 if (insertedModel) {
                     var rows = (resData as Array<FiscalPeriod>);

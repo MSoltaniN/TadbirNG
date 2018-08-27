@@ -238,7 +238,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedModel = JSON.parse(response._body);
+                    var insertedModel = response;
 
                     if (this.Childrens) {
                         var childFiltered = this.Childrens.filter(f => f.parent.id == model.parentId);
@@ -363,7 +363,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             
 
             this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.json();
+                var resData = res.body;
                 //this.properties = resData.properties;
                 var totalCount = 0;
                 //if (insertedModel && this.addToContainer) {

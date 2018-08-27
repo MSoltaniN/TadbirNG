@@ -7,7 +7,7 @@ import { String } from '../class/source';
 import { expect } from 'chai';
 import { Filter } from "../class/filter";
 import { GridOrderBy } from "../class/grid.orderby";
-import { HttpParams } from "@angular/common/http";
+import { HttpParams, HttpClient } from "@angular/common/http";
 import { Environment, MessageType } from "../enviroment";
 import { Context } from "../model/context";
 
@@ -27,43 +27,43 @@ export class FullAccountInfo implements FullAccount {
 @Injectable()
 export class FullAccountService extends BaseService {
 
-    constructor(public http: Http) {
+    constructor(public http: HttpClient) {
         super(http);
     }
 
     GetAccountsLookup() {
 
         var url = String.Format(LookupApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId);
-
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
 
     }
 
     GetDetailAccountsLookup() {
 
         var url = String.Format(LookupApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId);
-
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
 
     }
 
     GetCostCentersLookup() {
 
         var url = String.Format(LookupApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId);
-
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
 
     }
 
     GetProjectsLookup() {
 
         var url = String.Format(LookupApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId);
-
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
 
     }
 }

@@ -3,6 +3,7 @@ import { Http} from '@angular/http';
 import { BaseService } from '../class/base.service';
 
 import { Voucher, DocumentAction } from '../model/index';
+import { HttpClient } from '@angular/common/http';
 
 
 export class VoucherInfo implements Voucher {
@@ -31,7 +32,7 @@ export class VoucherInfo implements Voucher {
 
 @Injectable()
 export class VoucherService extends BaseService {
-    constructor(public http: Http) {
+    constructor(public http: HttpClient) {
         super(http);
     }
 }

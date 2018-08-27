@@ -140,7 +140,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
                     FilterExpressionOperator.And);
 
             this.detailAccountService.getAll(String.Format(DetailAccountApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.json();
+                var resData = res.body;
                 var totalCount = 0;
                 if (insertedModel) {
                     var rows = (resData as Array<DetailAccount>);

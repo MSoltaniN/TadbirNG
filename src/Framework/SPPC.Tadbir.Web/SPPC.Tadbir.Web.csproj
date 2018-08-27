@@ -23,25 +23,15 @@
 
   <ItemGroup>
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
-    <Compile Remove="ClientApp\app\components\complexAccount\**" />
-    <Compile Remove="ClientApp\app\components\counter\**" />
-    <Compile Remove="ClientApp\app\components\fetchdata\**" />
     <Compile Remove="wwwroot\resources\js\**" />
     <Content Remove="ClientApp\**" />
     <Content Remove="wwwroot\resources\js\**" />
-    <EmbeddedResource Remove="ClientApp\app\components\complexAccount\**" />
-    <EmbeddedResource Remove="ClientApp\app\components\counter\**" />
-    <EmbeddedResource Remove="ClientApp\app\components\fetchdata\**" />
     <EmbeddedResource Remove="wwwroot\resources\js\**" />
-    <None Remove="ClientApp\app\components\complexAccount\**" />
-    <None Remove="ClientApp\app\components\counter\**" />
-    <None Remove="ClientApp\app\components\fetchdata\**" />
     <None Remove="wwwroot\resources\js\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="ClientApp\app\class\base.service.ts" />
-    <None Remove="ClientApp\app\class\default.component.ts" />
     <None Remove="ClientApp\app\class\dictionary.ts" />
     <None Remove="ClientApp\app\class\enviroment.component.ts" />
     <None Remove="ClientApp\app\class\filter.ts" />
@@ -50,41 +40,6 @@
     <None Remove="ClientApp\app\class\filterExpressionOperator.ts" />
     <None Remove="ClientApp\app\class\grid.orderby.ts" />
     <None Remove="ClientApp\app\class\metadata\property.ts" />
-    <None Remove="ClientApp\app\components\accountRelations\accountRelations-form.component.ts" />
-    <None Remove="ClientApp\app\components\accountRelations\accountRelations.component.ts" />
-    <None Remove="ClientApp\app\components\branch\branch-form.component.ts" />
-    <None Remove="ClientApp\app\components\branch\branch-roles-form.component.ts" />
-    <None Remove="ClientApp\app\components\company\company-form.component.ts" />
-    <None Remove="ClientApp\app\components\costCenter\costCenter-form.component.ts" />
-    <None Remove="ClientApp\app\components\detailAccount\detailAccount-form.component.ts" />
-    <None Remove="ClientApp\app\components\error\error.component.ts" />
-    <None Remove="ClientApp\app\components\fiscalPeriod\fiscalPeriod-form.component.ts" />
-    <None Remove="ClientApp\app\components\fiscalPeriod\fiscalPeriod-roles-form.component.ts" />
-    <None Remove="ClientApp\app\components\fiscalPeriod\fiscalPeriod.component.ts" />
-    <None Remove="ClientApp\app\components\login\index.ts" />
-    <None Remove="ClientApp\app\components\login\login.complete.component.ts" />
-    <None Remove="ClientApp\app\components\login\login.component.ts" />
-    <None Remove="ClientApp\app\components\login\login.container.component.ts" />
-    <None Remove="ClientApp\app\components\login\logout.component.ts" />
-    <None Remove="ClientApp\app\components\project\complexAccount.component.ts" />
-    <None Remove="ClientApp\app\components\project\project-form.component.ts" />
-    <None Remove="ClientApp\app\components\role\role-branch-form.component.ts" />
-    <None Remove="ClientApp\app\components\role\role-detail-form.component.ts" />
-    <None Remove="ClientApp\app\components\role\role-fiscalPeriod-form.component.ts" />
-    <None Remove="ClientApp\app\components\role\role-form.component.ts" />
-    <None Remove="ClientApp\app\components\role\role-user-form.component.ts" />
-    <None Remove="ClientApp\app\components\role\role.component.ts" />
-    <None Remove="ClientApp\app\components\user\changePassword.component.ts" />
-    <None Remove="ClientApp\app\components\user\user-form.component.ts" />
-    <None Remove="ClientApp\app\components\user\user-roles-form.component.ts" />
-    <None Remove="ClientApp\app\components\user\user.component.ts" />
-    <None Remove="ClientApp\app\components\viewRowPermission\viewRowPermission-multiple-form.component.ts" />
-    <None Remove="ClientApp\app\components\viewRowPermission\viewRowPermission-single-form.component.ts" />
-    <None Remove="ClientApp\app\components\viewRowPermission\viewRowPermission.component.ts" />
-    <None Remove="ClientApp\app\components\voucherLine\voucherLine-form.component.ts" />
-    <None Remove="ClientApp\app\components\voucherLine\voucherLine.component.ts" />
-    <None Remove="ClientApp\app\components\voucher\voucher-form.component.ts" />
-    <None Remove="ClientApp\app\components\voucher\voucher.component.ts" />
     <None Remove="ClientApp\app\controls\datepicker\sppc-grid-datepicker.ts" />
     <None Remove="ClientApp\app\controls\dateRangeSelector\sppc-dateRangeSelector.ts" />
     <None Remove="ClientApp\app\controls\fullAccount\sppc-fullAccount.ts" />
@@ -113,17 +68,6 @@
     <None Remove="ClientApp\app\model\voucher.ts" />
     <None Remove="ClientApp\app\pipes\index.ts" />
     <None Remove="ClientApp\app\pipes\sppc.date.pipe.ts" />
-    <None Remove="ClientApp\app\service\accountRelations.service.ts" />
-    <None Remove="ClientApp\app\service\api\index.ts" />
-    <None Remove="ClientApp\app\service\fiscal-period.service.ts" />
-    <None Remove="ClientApp\app\service\fullAccount.service.ts" />
-    <None Remove="ClientApp\app\service\index.ts" />
-    <None Remove="ClientApp\app\service\lookup.service.ts" />
-    <None Remove="ClientApp\app\service\metadata\metadata.service.ts" />
-    <None Remove="ClientApp\app\service\role.service.ts" />
-    <None Remove="ClientApp\app\service\settings.service.ts" />
-    <None Remove="ClientApp\app\service\user.service.ts" />
-    <None Remove="ClientApp\app\service\voucher.service.ts" />
     <None Remove="ClientApp\enviroment.ts" />
     <None Remove="Properties\PublishProfiles\FolderProfile1.pubxml" />
   </ItemGroup>
@@ -217,7 +161,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\class\base.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\base.service.ts" />
-    <TypeScriptCompile Include="ClientApp\app\class\default.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\dictionary.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\enviroment.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\filterExpressionOperator.ts" />

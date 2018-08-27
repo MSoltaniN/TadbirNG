@@ -139,7 +139,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
                     FilterExpressionOperator.And);
 
             this.projectService.getAll(String.Format(ProjectApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.json();
+                var resData = res;
                 var totalCount = 0;
                 if (insertedModel) {
                     var rows = (resData as Array<Project>);

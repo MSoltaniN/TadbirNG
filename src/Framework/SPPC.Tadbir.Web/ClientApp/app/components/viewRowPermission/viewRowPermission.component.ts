@@ -124,7 +124,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
     getRoles() {
         this.sppcLoading.show();
         this.viewRowPermissionService.getAll(LookupApi.Roles).subscribe(res => {
-            var data = res.json();
+            var data = res.body;
             this.rolesArray = data;
             this.ddlRolesData = data;
             this.sppcLoading.hide();

@@ -10,6 +10,7 @@ import { PermissionBrief } from '../../model/index';
 
 import { String } from '../../class/source';
 import { LookupApi, FiscalPeriodApi } from '../api/index';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 export class ContextInfo implements Context {
     userName: string = "";
@@ -27,14 +28,15 @@ export class ContextInfo implements Context {
 export class AuthenticationService {
 
 
-    constructor(private http: Http) {
+    constructor(private http: HttpClient) {
 
     }
 
     login(username: string, password: string, remember: boolean) {
-        return this.http.put(Environment.BaseUrl + '/users/login', { username: username, password: password }/*, this.options*/)
-            .map((response: Response) => {
-                // login successful if there's a jwt token in the response           
+        return this.http.put(Environment.BaseUrl + '/users/login', { username: username, password: password }/*, this.options*/, { observe: "response"})
+            .map((response) => {
+                // login successful if there's a jwt token in the response   
+                
                 if (response.headers != null) {
                     let ticket = response.headers.get('X-Tadbir-AuthTicket');
                     if (response.status == 200 && ticket != null) {
@@ -116,7 +118,8 @@ export class AuthenticationService {
     }
 
     getCompanies(userName: string, ticket: string): Observable<any> {
-        var header = new Headers({ 'Content-Type': 'application/json; charset=utf-8' })
+        var header = new HttpHeaders();
+        header.append('Content-Type', 'application/json; charset=utf-8' );
         header.append('X-Tadbir-AuthTicket', ticket);
 
         if (ticket == '') return Observable.empty<Response>();
@@ -124,12 +127,14 @@ export class AuthenticationService {
         var context = JSON.parse(jsonContext);
         var userId = context.user.id;
         var url = String.Format(LookupApi.UserAccessibleCompanies, userId);
+         var options = { headers: header };
         return this.http.get(url, { headers: header })
-            .map(response => <any>(<Response>response).json());
+            .map(response => <any>(<Response>response));
     }
 
     getBranches(companyId: number, ticket: string): Observable<any> {
-        var header = new Headers({ 'Content-Type': 'application/json; charset=utf-8' })
+        var header = new HttpHeaders();
+        header.append('Content-Type', 'application/json; charset=utf-8');
         header.append('X-Tadbir-AuthTicket', ticket);
 
         if (ticket == '') return Observable.empty<Response>();
@@ -138,11 +143,12 @@ export class AuthenticationService {
         var userId = context.user.id;
         var url = String.Format(LookupApi.UserAccessibleCompanyBranches, companyId, userId);
         return this.http.get(url, { headers: header })
-            .map(response => <any>(<Response>response).json());
+            .map(response => <any>(<Response>response));
     }
 
     getFiscalPeriod(companyId: number, ticket: string): Observable<any> {
-        var header = new Headers({ 'Content-Type': 'application/json; charset=utf-8' })
+        var header = new HttpHeaders();
+        header.append('Content-Type', 'application/json; charset=utf-8');
         header.append('X-Tadbir-AuthTicket', ticket);
 
         if (ticket == '') return Observable.empty<Response>();
@@ -151,14 +157,15 @@ export class AuthenticationService {
         var userId = context.user.id;
         var url = String.Format(LookupApi.UserAccessibleCompanyFiscalPeriods, companyId, userId);
         return this.http.get(url, { headers: header })
-            .map(response => <any>(<Response>response).json());
+            .map(response => <any>(<Response>response));
     }
 
     getFiscalPeriodById(fpId: number, ticket: string) {
-        var header = new Headers({ 'Content-Type': 'application/json; charset=utf-8' })
+        var header = new HttpHeaders();
+        header.append('Content-Type', 'application/json; charset=utf-8');
         header.append('X-Tadbir-AuthTicket', ticket);
 
         return this.http.get(String.Format(FiscalPeriodApi.FiscalPeriod, fpId), { headers: header })
-            .map(response => <any>(<Response>response).json());
+            .map(response => <any>(<Response>response));
     }
 }
