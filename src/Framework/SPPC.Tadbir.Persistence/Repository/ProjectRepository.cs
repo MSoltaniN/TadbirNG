@@ -25,7 +25,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
         public ProjectRepository(
             IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, ISecureRepository repository)
             : base(unitOfWork, mapper, metadata)
@@ -244,13 +245,6 @@ namespace SPPC.Tadbir.Persistence
 
             return hasChildren;
         }
-
-        ///// <inheritdoc/>
-        //protected override int ViewId
-        //{
-        //    // TODO: Remove this hard-coded value later
-        //    get { return 8; }
-        //}
 
         private static void UpdateExistingProject(ProjectViewModel projectViewModel, Project project)
         {

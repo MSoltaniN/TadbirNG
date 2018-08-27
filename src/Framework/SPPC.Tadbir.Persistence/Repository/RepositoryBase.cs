@@ -4,6 +4,9 @@ using SPPC.Framework.Mapper;
 
 namespace SPPC.Tadbir.Persistence
 {
+    /// <summary>
+    /// کلاس پایه که امکانات اولیه عملیات دیتابیسی را در اختیار کلاس های مشتق شده قرار می دهد
+    /// </summary>
     public abstract class RepositoryBase
     {
         /// <summary>

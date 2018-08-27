@@ -26,9 +26,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        /// <param name="repository">
-        /// عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند
-        /// </param>
+        /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
         public DetailAccountRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
             ISecureRepository repository)
             : base(unitOfWork, mapper, metadata)

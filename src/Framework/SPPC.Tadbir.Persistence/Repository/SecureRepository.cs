@@ -36,7 +36,6 @@ namespace SPPC.Tadbir.Persistence
             IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
             : base(unitOfWork, mapper, metadata)
         {
-            _metadataRepository = metadata;
         }
 
         /// <summary>
@@ -49,6 +48,7 @@ namespace SPPC.Tadbir.Persistence
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
         /// <returns>لیست فیلتر شده از سطرهای اطلاعاتی موجودیت مورد نظر</returns>
@@ -73,6 +73,7 @@ namespace SPPC.Tadbir.Persistence
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
         /// <returns>لیست فیلتر شده از سطرهای اطلاعاتی موجودیت مورد نظر</returns>
@@ -97,6 +98,7 @@ namespace SPPC.Tadbir.Persistence
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns></returns>
         public async Task<IList<KeyValue>> GetAllLookupAsync<TEntity>(
@@ -124,6 +126,7 @@ namespace SPPC.Tadbir.Persistence
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         public async Task<int> GetCountAsync<TEntity>(
@@ -146,6 +149,7 @@ namespace SPPC.Tadbir.Persistence
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
+        /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         public async Task<int> GetOperationCountAsync<TEntity>(
@@ -166,6 +170,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userAccess">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
+        /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
         /// <returns>مجوعه سطرهای اطلاعاتی فیلتر شده</returns>
         public IQueryable<TEntity> ApplyRowFilter<TEntity>(
             ref IQueryable<TEntity> records, UserAccessViewModel userAccess, int viewId)
@@ -431,7 +436,5 @@ namespace SPPC.Tadbir.Persistence
                 AddChildren(item, children);
             }
         }
-
-        private readonly IMetadataRepository _metadataRepository;
     }
 }

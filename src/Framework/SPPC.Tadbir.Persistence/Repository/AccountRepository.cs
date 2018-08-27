@@ -304,13 +304,6 @@ namespace SPPC.Tadbir.Persistence
             return hasChildren;
         }
 
-        ///// <inheritdoc/>
-        //protected override int ViewId
-        //{
-        //    // TODO: Remove this hard-coded value later
-        //    get { return 1; }
-        //}
-
         /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
