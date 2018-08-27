@@ -110,6 +110,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         if (this.parentAccount) {
             this.parentAccount.addChildAccount(this);
             this.parentId = this.parent.id;
+            this.componentParentId = this.parentId;
         }
     }
 
