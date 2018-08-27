@@ -187,6 +187,14 @@ export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
             this.noData = true;
     }
 
+    /**
+     * حذف فیلتر
+     */
+    removeFilter() {
+        this.searchValue = '';
+        this.onSearch();
+    }
+
     removeAllSelected() {
         this.rowCheckedKeys = [];
         this.selectedRowKeys = [];

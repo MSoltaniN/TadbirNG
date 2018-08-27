@@ -102,6 +102,14 @@ export class ViewRowPermissionSingleFormComponent extends DefaultComponent {
             this.singleFormData = this.singleFormCategories;
     }
 
+    /**
+     * حذف فیلتر
+     */
+    removeFilter() {
+        this.searchValue = '';
+        this.onSearch();
+    }
+
     onKeyChange() {
         this.onSearch();
     }

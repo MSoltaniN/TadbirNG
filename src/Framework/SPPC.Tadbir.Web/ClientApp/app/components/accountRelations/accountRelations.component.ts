@@ -498,6 +498,14 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     }
 
     /**
+     *حذف فیلتر مولفه اصلی  
+     */
+    removeMainComponentFilter() {
+        this.searchValue = '';
+        this.onMainComponentSearch();
+    }
+
+    /**
      * برای جستجو در مولفه مرتبط میباشد
      */
     onRelatedComponentSearch() {
@@ -528,6 +536,14 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                 this.sppcLoading.hide();
             })
         }
+    }
+
+    /**
+     * حذف فیلتر مولفه مرتبط
+     */
+    removeRelatedComponentFilter() {
+        this.relatedSearchValue = '';
+        this.onRelatedComponentSearch();
     }
 }
 

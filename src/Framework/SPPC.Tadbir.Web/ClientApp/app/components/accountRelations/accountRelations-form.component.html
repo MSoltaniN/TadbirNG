@@ -19,6 +19,13 @@
                         (click)="onSearch()">
                     <span class="k-i-filter k-icon"></span>
                 </button>
+
+                <button class="k-button btn-search"
+                        [hidden]="!searchValue"
+                        (click)="removeFilter()">
+                    <span class="k-icon k-i-filter-clear"></span>
+                </button>
+
             </div>
             <div class="section-body">
                 <div *ngIf="resultMessage">
