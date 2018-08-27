@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -117,6 +116,10 @@ namespace SPPC.Tadbir.Persistence
             int fpId, int branchId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var grouped = repository
+                .GetEntityQuery(acc => acc.Children)
+                .Where(acc => acc.FiscalPeriod.Id == fpId
+                    && acc.Branch.Id == branchId);
             var rootAccounts = await repository
                 .GetByCriteriaAsync(
                     acc => acc.FiscalPeriod.Id == fpId

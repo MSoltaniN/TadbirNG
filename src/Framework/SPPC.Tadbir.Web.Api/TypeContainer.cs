@@ -73,6 +73,7 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IMetadataRepository, MetadataRepository>();
             _services.AddTransient<IConfigRepository, ConfigRepository>();
             _services.AddTransient<IOperationLogRepository, OperationLogRepository>();
+            _services.AddTransient<ISecureRepository, SecureRepository>();
         }
 
         private void AddServiceTypes()

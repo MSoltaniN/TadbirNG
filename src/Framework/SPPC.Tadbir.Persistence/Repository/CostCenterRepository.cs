@@ -7,6 +7,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -17,18 +18,19 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات مراکز هزینه را پیاده سازی می کند.
     /// </summary>
-    public class CostCenterRepository : SecureRepository, ICostCenterRepository
+    public class CostCenterRepository : RepositoryBase, ICostCenterRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public CostCenterRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
-            : base(unitOfWork, mapper)
+        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        public CostCenterRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+            ISecureRepository repository)
+            : base(unitOfWork, mapper, metadata)
         {
-            _metadataRepository = metadataRepository;
+            _repository = repository;
         }
 
         /// <summary>
@@ -45,8 +47,9 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<CostCenterViewModel>> GetCostCentersAsync(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var costCenters = await GetAllAsync<CostCenter>(
-                userAccess, fpId, branchId, gridOptions, cc => cc.FiscalPeriod, cc => cc.Branch,
+            var costCenters = await _repository.GetAllAsync<CostCenter>(
+                userAccess, fpId, branchId, ViewName.CostCenter, gridOptions,
+                cc => cc.FiscalPeriod, cc => cc.Branch,
                 cc => cc.Parent, cc => cc.Children);
             return costCenters
                 .Select(item => Mapper.Map<CostCenterViewModel>(item))
@@ -67,7 +70,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<KeyValue>> GetCostCentersLookupAsync(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            return await GetAllLookupAsync<CostCenter>(userAccess, fpId, branchId, gridOptions);
+            return await _repository.GetAllLookupAsync<CostCenter>(
+                userAccess, fpId, branchId, ViewName.CostCenter, gridOptions);
         }
 
         /// <summary>
@@ -84,7 +88,8 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync(
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            return await GetCountAsync<CostCenter>(userAccess, fpId, branchId, gridOptions);
+            return await _repository.GetCountAsync<CostCenter>(
+                userAccess, fpId, branchId, ViewName.CostCenter, gridOptions);
         }
 
         /// <summary>
@@ -130,7 +135,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای مرکز هزینه</returns>
         public async Task<EntityViewModel> GetCostCenterMetadataAsync()
         {
-            return await _metadataRepository.GetEntityMetadataAsync<CostCenter>();
+            return await Metadata.GetEntityMetadataAsync<CostCenter>();
         }
 
         /// <summary>
@@ -241,12 +246,12 @@ namespace SPPC.Tadbir.Persistence
             return hasChildren;
         }
 
-        /// <inheritdoc/>
-        protected override int ViewId
-        {
-            // TODO: Remove this hard-coded value later
-            get { return 7; }
-        }
+        ///// <inheritdoc/>
+        //protected override int ViewId
+        //{
+        //    // TODO: Remove this hard-coded value later
+        //    get { return 7; }
+        //}
 
         private static void UpdateExistingCostCenter(CostCenterViewModel costCenterViewModel, CostCenter costCenter)
         {
@@ -257,6 +262,6 @@ namespace SPPC.Tadbir.Persistence
             costCenter.Description = costCenterViewModel.Description;
         }
 
-        private IMetadataRepository _metadataRepository;
+        private readonly ISecureRepository _repository;
     }
 }

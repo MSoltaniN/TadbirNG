@@ -8,15 +8,7 @@ import { Account } from '../../model/index';
 
 import { ToastrService } from 'ngx-toastr'; /** add this component for message in client side */
 
-import {
-    GridDataResult,
-    DataStateChangeEvent,
-    PageChangeEvent,
-    RowArgs,
-    SelectAllCheckboxState,
-
-    GridComponent
-} from '@progress/kendo-angular-grid';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 
 
 
@@ -84,7 +76,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     public accountArticleRows: any[];
     public totalRecords: number;
 
-
     //permission flag
     viewAccess: boolean;
 
@@ -108,7 +99,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
     parentTitle: string = '';
     parentValue: string = '';
-    parentCode: string = '';
 
     componentParentId: number;
     //#endregion
@@ -120,7 +110,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         if (this.parentAccount) {
             this.parentAccount.addChildAccount(this);
             this.parentId = this.parent.id;
-            this.componentParentId = this.parent.id;
         }
     }
 
@@ -164,6 +153,16 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
+    goToLastPage() {
+        var pageCount: number = 0;
+        pageCount = Math.floor(this.totalRecords / this.pageSize);
+
+        if (this.totalRecords % this.pageSize == 0) {
+            this.skip = (pageCount * this.pageSize) - this.pageSize;
+            return;
+        }
+        this.skip = (pageCount * this.pageSize)
+    }
 
     //account form events
     public editHandler(arg: any) {
@@ -188,7 +187,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     }
 
     public saveHandler(model: Account) {
-
+        // debugger;
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
         //TODO: این کد بعدا باید تغییر پیدا کند البته با اقای اسلامیه هماهنگ شده است
@@ -246,7 +245,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                         if (childFiltered.length > 0) {
                             childFiltered[0].reloadGrid(insertedModel);
                             //childFiltered[0].skip = Math.round(childFiltered[0].rowData.total / childFiltered[0].pageSize);
-                            //this.grid.selectable = true;    
+                            //this.grid.selectable = true;
                             //var selIds: Array<string> = [(childFiltered[0].rowData.total - 1).toString()]
                             //childFiltered[0].selectedRows = selIds;
                             return;
@@ -266,7 +265,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                         }
                     }
                     */
-                    //if (model.parentId == undefined || this.addToContainer) {                        
+                    //if (model.parentId == undefined || this.addToContainer) {
                     //    this.reloadGrid(insertedModel);
                     //    this.addToContainer = false;
                     //}
@@ -347,6 +346,9 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
+            if (insertedModel)
+                this.goToLastPage();
+
             if (this.parent) {
                 if (this.parent.childCount > 0)
                     filter = this.addFilterToFilterExpression(this.currentFilter,
@@ -358,26 +360,28 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                     new Filter("ParentId", "null", "== {0}", "System.Int32"),
                     FilterExpressionOperator.And);
 
+
+
             this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
                 //this.properties = resData.properties;
                 var totalCount = 0;
-                if (insertedModel && this.addToContainer) {
-                    var rows = (resData as Array<Account>);
-                    var index = rows.findIndex(p => p.id == insertedModel.id);
-                    if (index >= 0) {
-                        rows.splice(index, 1);
-                        rows.splice(0, 0, insertedModel);
-                    }
-                    else {
-                        if (rows.length == this.pageSize) {
-                            rows.splice(this.pageSize - 1, 1);
-                        }
-                        rows.splice(0, 0, insertedModel);
-                    }
+                //if (insertedModel && this.addToContainer) {
+                //    var rows = (resData as Array<Account>);
+                //    var index = rows.findIndex(p => p.id == insertedModel.id);
+                //    if (index >= 0) {
+                //        rows.splice(index, 1);
+                //        rows.splice(0, 0, insertedModel);
+                //    }
+                //    else {
+                //        if (rows.length == this.pageSize) {
+                //            rows.splice(this.pageSize - 1, 1);
+                //        }
+                //        rows.splice(0, 0, insertedModel);
+                //    }
 
-                    resData = rows;
-                }
+                //    resData = rows;
+                //}
                 if (res.headers != null) {
                     var headers = res.headers != undefined ? res.headers : null;
                     if (headers != null) {
@@ -488,7 +492,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                 if (parentRow.level == 2)
                     prefix = this.getText("Account.Tafzili");
 
-                if (parentRow.level > 3)
+                if (parentRow.level > 2)
                     prefix = this.getText("Account.TafziliToUp") + " " + (parentRow.level - 2);
 
                 this.parentTitle = prefix;
@@ -508,7 +512,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             if (this.parent.level == 2)
                 prefix = this.getText("Account.Tafzili");
 
-            if (this.parent.level > 3)
+            if (this.parent.level > 2)
                 prefix = this.getText("Account.TafziliToUp") + " " + (this.parent.level - 2);
 
 
@@ -521,14 +525,12 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
     public addNew(parentModelId?: number, addToThis?: boolean) {
 
-         //debugger;
-
         //if (parentModelId) {
         //    var rows = (this.rowData.data as Array<Account>);
         //    var index = rows.findIndex(p => p.id == parentModelId);
         //    if (index >= 0) {
-        //        this.grid.expandRow(index);                
-        //    }            
+        //        this.grid.expandRow(index);
+        //    }
         //}
 
 
@@ -539,15 +541,13 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         this.editDataItem = new AccountInfo();
         this.setAccountTitle(parentModelId);
         //آی دی مربوط به حساب سطح بالاتر برای درج در زیر حساب ها در متغیر parentId مقدار دهی میشود
-        //if (parentModelId)
+        if (parentModelId)
             this.parentId = parentModelId;
 
         if (addToThis)
             this.addToContainer = addToThis;
 
         this.errorMessage = '';
-
-        //this.getFullCode(this.parentId ? this.parentId:0);
     }
 
     public showOnlyParent(dataItem: Account, index: number): boolean {
@@ -561,5 +561,3 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     //#endregion
 
 }
-
-

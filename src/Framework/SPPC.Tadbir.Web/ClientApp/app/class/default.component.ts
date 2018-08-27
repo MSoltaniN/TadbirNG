@@ -245,6 +245,7 @@ export class DefaultComponent extends BaseComponent {
 
 
     public skip: number = 0;
+    
 
     /** set number value for grid current page
     * @param value is page number.

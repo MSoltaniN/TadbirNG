@@ -12,7 +12,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات سرفصل های حسابداری را تعریف می کند.
     /// </summary>
-    public interface IAccountRepository : ISecureRepository
+    public interface IAccountRepository
     {
         /// <summary>
         /// به روش آسنکرون، کلیه حساب هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
