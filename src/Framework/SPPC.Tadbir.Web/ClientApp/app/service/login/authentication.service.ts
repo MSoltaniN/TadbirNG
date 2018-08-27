@@ -119,8 +119,11 @@ export class AuthenticationService {
 
     getCompanies(userName: string, ticket: string): Observable<any> {
         var header = new HttpHeaders();
-        header.append('Content-Type', 'application/json; charset=utf-8' );
-        header.append('X-Tadbir-AuthTicket', ticket);
+        header = header.delete('X-Tadbir-AuthTicket');
+        header = header.delete('Content-Type');
+
+        header = header.append('Content-Type', 'application/json; charset=utf-8');
+        header = header.append('X-Tadbir-AuthTicket', ticket);
 
         if (ticket == '') return Observable.empty<Response>();
         var jsonContext = atob(ticket);
@@ -134,8 +137,11 @@ export class AuthenticationService {
 
     getBranches(companyId: number, ticket: string): Observable<any> {
         var header = new HttpHeaders();
-        header.append('Content-Type', 'application/json; charset=utf-8');
-        header.append('X-Tadbir-AuthTicket', ticket);
+        header = header.delete('X-Tadbir-AuthTicket');
+        header = header.delete('Content-Type');
+
+        header = header.append('Content-Type', 'application/json; charset=utf-8');
+        header = header.append('X-Tadbir-AuthTicket', ticket);
 
         if (ticket == '') return Observable.empty<Response>();
         var jsonContext = atob(ticket);
@@ -148,8 +154,11 @@ export class AuthenticationService {
 
     getFiscalPeriod(companyId: number, ticket: string): Observable<any> {
         var header = new HttpHeaders();
-        header.append('Content-Type', 'application/json; charset=utf-8');
-        header.append('X-Tadbir-AuthTicket', ticket);
+        header = header.delete('X-Tadbir-AuthTicket');
+        header = header.delete('Content-Type');
+
+        header = header.append('Content-Type', 'application/json; charset=utf-8');
+        header = header.append('X-Tadbir-AuthTicket', ticket);
 
         if (ticket == '') return Observable.empty<Response>();
         var jsonContext = atob(ticket);
@@ -162,8 +171,11 @@ export class AuthenticationService {
 
     getFiscalPeriodById(fpId: number, ticket: string) {
         var header = new HttpHeaders();
-        header.append('Content-Type', 'application/json; charset=utf-8');
-        header.append('X-Tadbir-AuthTicket', ticket);
+        header = header.delete('X-Tadbir-AuthTicket');
+        header = header.delete('Content-Type');
+
+        header = header.append('Content-Type', 'application/json; charset=utf-8');
+        header = header.append('X-Tadbir-AuthTicket', ticket);
 
         return this.http.get(String.Format(FiscalPeriodApi.FiscalPeriod, fpId), { headers: header })
             .map(response => <any>(<Response>response));

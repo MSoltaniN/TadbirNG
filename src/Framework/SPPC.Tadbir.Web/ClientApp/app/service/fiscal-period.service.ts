@@ -35,6 +35,7 @@ export class FiscalPeriodService extends BaseService{
         var body = JSON.stringify(fPeriodIdRoles);
         
         var options = { headers: this.httpHeaders };
+
         var url = String.Format(FiscalPeriodApi.FiscalPeriodRoles, fPeriodIdRoles.id);
         return this.http.put(url, body, options)
             .map(res => res)

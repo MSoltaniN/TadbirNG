@@ -32,11 +32,14 @@ export class MetaDataService extends BaseService {
 
         
 
-        //headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
-
+        var header = this.httpHeaders;
+        header = header.delete('Content-Type');
+        header = header.delete('X-Tadbir-AuthTicket');
+        header = header.append('Content-Type','application/json; charset=utf-8');
+        header = header.append('X-Tadbir-AuthTicket', this.Ticket);
         //headers.append('X-Tadbir-AuthTicket', this.Ticket);
 
-        var options = { headers: this.httpHeaders };
+        var options = { headers: header };
 
         var url = String.Format(MetadataApi.EntityMetadata, entityName);
         return this.http.get(url, options)
@@ -45,9 +48,15 @@ export class MetaDataService extends BaseService {
 
 
     getMetaDataById(entityId: number) {
-        var options = { headers: this.httpHeaders };
-        
-        var options = { headers: this.httpHeaders };
+        var header = this.httpHeaders;
+        header = header.delete('Content-Type');
+        header = header.delete('X-Tadbir-AuthTicket');
+        header = header.append('Content-Type', 'application/json; charset=utf-8');
+        header = header.append('X-Tadbir-AuthTicket', this.Ticket);
+        //headers.append('X-Tadbir-AuthTicket', this.Ticket);
+
+        var options = { headers: header };
+
         var url = String.Format(MetadataApi.EntityMetadataById, entityId);
         return this.http.get(url, options)
             .map(response => (<Response>response));
