@@ -37,4 +37,7 @@ export class AccountApi {
 
     // accounts/{accountId:min(1)}/articles
     public static AccountArticles = Environment.BaseUrl + "/accounts/{0}/articles";
+
+    // accounts/fullcode/{parentID}
+    public static AccountFullCode = Environment.BaseUrl + "/accounts/fullcode/{0}";
 }

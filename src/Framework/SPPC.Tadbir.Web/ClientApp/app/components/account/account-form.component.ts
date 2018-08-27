@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { AccountService, AccountInfo, VoucherLineService, FiscalPeriodService } from '../../service/index';
 
@@ -43,10 +43,13 @@ interface Item {
 
 })
 
-export class AccountFormComponent extends DefaultComponent {
+export class AccountFormComponent extends DefaultComponent implements OnInit {
 
     //create properties
     active: boolean = false;
+    //parentFullCode: string = '';
+
+    accParentId: number = 0;
 
     @Input() public disableSaveBtn: boolean = false;
     @Input() public isNew: boolean = false;
@@ -55,17 +58,24 @@ export class AccountFormComponent extends DefaultComponent {
     @Input() public parentTitle: string = '';
     @Input() public parentValue: string = '';
 
+    @Input() public set parentId(id: number) {
+        this.accParentId = 0;
+        if (id)
+            this.accParentId = id;
+    }
+
     @Input() public set model(account: Account) {
-        this.editForm.reset(account);
 
-        this.active = account !== undefined || this.isNew;
-        this.disableSaveBtn = false;
-        if (account != undefined) {
-            this.selectedValue = account.fiscalPeriodId.toString();
-            //if (this.fiscalPeriodRows == undefined) this.getFiscalPeriod();
-        }
+        this.accountService.getAccountFullCode(this.accParentId).subscribe(res => {
+            this.editForm.reset(account);
+            var fullCode = res;
+            if (account)
+                fullCode = res + account.code;
+            this.editForm.patchValue({ fullCode: fullCode });
 
-
+            this.active = account !== undefined || this.isNew;
+            this.disableSaveBtn = false;
+        })
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -77,6 +87,7 @@ export class AccountFormComponent extends DefaultComponent {
 
     //Events
     public onSave(e: any): void {
+        debugger;
         e.preventDefault();
         if (this.editForm.valid) {
             this.disableSaveBtn = true;
@@ -97,6 +108,11 @@ export class AccountFormComponent extends DefaultComponent {
     }
     //Events
 
+    ngOnInit(): void {
+
+//        this.onChanges();
+    }
+
     constructor(private accountService: AccountService, private voucherLineService: VoucherLineService, private fiscalPeriodService: FiscalPeriodService,
         public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
 
@@ -104,8 +120,51 @@ export class AccountFormComponent extends DefaultComponent {
 
         //this.getFiscalPeriod();
 
-
     }
 
+    onChanges(): void {
+        //    this.myForm.valueChanges.subscribe(val => {
+        //        this.formattedMessage =
+        //            `Hello,
+
+        //My name is ${val.name} and my email is ${val.email}.
+
+        //I would like to tell you that ${val.message}.`;
+        //    });
+
+
+
+        //if (this.editForm) {
+        //    this.editForm.get('code').valueChanges.subscribe(val => {
+
+        //    });
+        //}
+
+
+        //this.editForm.get('code').valueChanges.subscribe(val => {
+
+        //});
+
+        //this.editForm.valueChanges.subscribe(res => {
+
+        //    debugger;
+        //    for (const field in res) {
+
+        //        const formControl = this.editForm.get(field);
+
+        //        //if (formControl) {
+        //        //    formControl.setValue(res[field]);
+        //        //}
+        //        if (field == "fullCode") {
+        //            this.editForm.patchValue({ fullCode: 'res.code' });
+        //        }
+        //    }
+        //    ////debugger;
+        //    //console.log(res);
+        //    ////var f = this.editForm.controls['fullCode'].value;
+        //    //this.editForm.patchValue({ fullCode: 'res.code' });
+        //})
+
+    }
 
 }
