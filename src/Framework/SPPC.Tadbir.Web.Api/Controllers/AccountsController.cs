@@ -171,6 +171,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        // GET: api/accounts/fullcode/{parentId}
+        [HttpGet]
+        [Route(AccountApi.AccountFullCodeUrl)]
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.All)]
+        public async Task<IActionResult> GetFullCodeAsync(int parentId)
+        {
+            if (parentId <= 0)
+            {
+                return Ok(string.Empty);
+            }
+
+            string fullCode = await _repository.GetAccountFullCodeAsync(parentId);
+
+            return Ok(fullCode);
+        }
+
         private async Task<IActionResult> ValidationResultAsync(AccountViewModel account, int accountId = 0)
         {
             var result = BasicValidationResult(account, accountId);

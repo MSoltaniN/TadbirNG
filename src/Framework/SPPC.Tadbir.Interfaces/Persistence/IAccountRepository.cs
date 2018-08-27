@@ -140,5 +140,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در حالتی که حساب مشخص شده دارای حساب زیرمجموعه باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool?> HasChildrenAsync(int accountId);
+
+        /// <summary>
+        /// به روش آسنکرون، مقدار فیلد FullCode والد هر حساب را برمیگرداند
+        /// </summary>
+        /// <param name="parentId">شناسه والد هر حساب</param>
+        /// <returns>اگر حساب والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
+        Task<string> GetAccountFullCodeAsync(int parentId);
     }
 }

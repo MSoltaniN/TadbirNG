@@ -231,4 +231,12 @@ export class AccountRelationsFormComponent extends DefaultComponent {
             this.sppcLoading.hide();
         })
     }
+
+    /**
+     * حذف فیلتر
+     */
+    removeFilter() {
+        this.searchValue = '';
+        this.onSearch();
+    }
 }

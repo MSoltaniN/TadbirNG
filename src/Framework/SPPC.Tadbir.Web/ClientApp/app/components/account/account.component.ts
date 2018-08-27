@@ -8,14 +8,7 @@ import { Account } from '../../model/index';
 
 import { ToastrService } from 'ngx-toastr'; /** add this component for message in client side */
 
-import {
-    GridDataResult,
-    DataStateChangeEvent,
-    PageChangeEvent,
-    RowArgs,
-    SelectAllCheckboxState,
-    GridComponent
-} from '@progress/kendo-angular-grid';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 
 
 
@@ -71,7 +64,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     //#region Fields
 
     public Childrens: Array<AccountComponent>;
-    
+
     @ViewChild(GridComponent) grid: GridComponent;
 
     @Input() public parent: Account;
@@ -106,6 +99,8 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
     parentTitle: string = '';
     parentValue: string = '';
+
+    componentParentId: number;
     //#endregion
 
     //#region Events
@@ -115,6 +110,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         if (this.parentAccount) {
             this.parentAccount.addChildAccount(this);
             this.parentId = this.parent.id;
+            this.componentParentId = this.parentId;
         }
     }
 
@@ -171,10 +167,13 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
     //account form events
     public editHandler(arg: any) {
-        this.grid.loading =true;
+        this.grid.loading = true;
         this.accountService.getById(String.Format(AccountApi.Account, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
             this.setAccountTitle(res.parentId);
+
+            this.parentId = res.parentId;
+
             this.grid.loading = false;
         })
         this.isNew = false;
@@ -184,6 +183,8 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     public cancelHandler() {
         this.editDataItem = undefined;
         this.errorMessage = '';
+
+        this.parentId = this.componentParentId;
     }
 
     public saveHandler(model: Account) {
@@ -191,8 +192,8 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
         //TODO: این کد بعدا باید تغییر پیدا کند البته با اقای اسلامیه هماهنگ شده است
-        model.fullCode = model.code;
-        this.grid.loading =true;
+        //model.fullCode = model.code;
+        this.grid.loading = true;
         if (!this.isNew) {
             this.isNew = false;
             this.disableSaveBtn = undefined;
@@ -216,10 +217,10 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                 var parentAc = this.parentAccount;
                 var currentLevel = 0;
 
-                while (parentAc) { 
+                while (parentAc) {
                     currentLevel++;
                     parentAc = parentAc.parentAccount
-                }                
+                }
 
                 model.level = currentLevel + 1;
 
@@ -245,7 +246,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                         if (childFiltered.length > 0) {
                             childFiltered[0].reloadGrid(insertedModel);
                             //childFiltered[0].skip = Math.round(childFiltered[0].rowData.total / childFiltered[0].pageSize);
-                            //this.grid.selectable = true;    
+                            //this.grid.selectable = true;
                             //var selIds: Array<string> = [(childFiltered[0].rowData.total - 1).toString()]
                             //childFiltered[0].selectedRows = selIds;
                             return;
@@ -265,7 +266,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                         }
                     }
                     */
-                    //if (model.parentId == undefined || this.addToContainer) {                        
+                    //if (model.parentId == undefined || this.addToContainer) {
                     //    this.reloadGrid(insertedModel);
                     //    this.addToContainer = false;
                     //}
@@ -283,7 +284,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
         }
         this.grid.loading = false;
-        
+
     }
 
     //#endregion
@@ -321,7 +322,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
     deleteModels(confirm: boolean) {
         if (confirm) {
-            this.grid.loading =true;
+            this.grid.loading = true;
             this.accountService.groupDelete(AccountApi.Accounts, this.selectedRows).subscribe(res => {
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.selectedRows = [];
@@ -340,7 +341,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
     public reloadGrid(insertedModel?: Account) {
         if (this.viewAccess) {
-            this.grid.loading =true;
+            this.grid.loading = true;
             var filter = this.currentFilter;
             var order = this.currentOrder;
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
@@ -360,7 +361,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                     new Filter("ParentId", "null", "== {0}", "System.Int32"),
                     FilterExpressionOperator.And);
 
-            
+
 
             this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.json();
@@ -391,7 +392,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                     }
                 }
 
-                
+
 
                 this.rowData = {
                     data: resData,
@@ -408,12 +409,12 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                     if (index == -1 && this.parentAccount != null) {
                         var rows = (this.parentAccount.rowData.data as Array<Account>);
                         var index = rows.findIndex(p => p.id == insertedModel.parentId);
-                        if (index >= 0) {                            
+                        if (index >= 0) {
                             this.parentAccount.grid.expandRow(this.parentAccount.skip + index);
                         }
                     }
-                    else if (index >= 0) {                        
-                        this.grid.expandRow(this.skip + index);                        
+                    else if (index >= 0) {
+                        this.grid.expandRow(this.skip + index);
                     }
                 }
 
@@ -443,11 +444,11 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         }
     }
 
-  
+
 
     deleteModel(confirm: boolean) {
         if (confirm) {
-            this.grid.loading =true;
+            this.grid.loading = true;
             this.accountService.delete(String.Format(AccountApi.Account, this.deleteModelId)).subscribe(response => {
                 this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
@@ -462,7 +463,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         this.deleteConfirm = false;
     }
 
-    
+
 
     private setAccountTitle(parentModelId?: number) {
         if (parentModelId != undefined) {
@@ -529,11 +530,11 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         //    var rows = (this.rowData.data as Array<Account>);
         //    var index = rows.findIndex(p => p.id == parentModelId);
         //    if (index >= 0) {
-        //        this.grid.expandRow(index);                
-        //    }            
+        //        this.grid.expandRow(index);
+        //    }
         //}
 
-       
+
 
 
 
@@ -561,5 +562,3 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     //#endregion
 
 }
-
-
