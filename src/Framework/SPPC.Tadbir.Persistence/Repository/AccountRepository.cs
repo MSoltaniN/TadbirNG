@@ -304,6 +304,23 @@ namespace SPPC.Tadbir.Persistence
             return hasChildren;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مقدار فیلد FullCode والد هر حساب را برمیگرداند
+        /// </summary>
+        /// <param name="parentId">شناسه والد هر حساب</param>
+        /// <returns>اگر حساب والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
+        public async Task<string> GetAccountFullCodeAsync(int parentId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            var account = await repository.GetByIDAsync(parentId);
+            if (account == null)
+            {
+                return string.Empty;
+            }
+
+            return account.FullCode;
+        }
+
         ///// <inheritdoc/>
         //protected override int ViewId
         //{
