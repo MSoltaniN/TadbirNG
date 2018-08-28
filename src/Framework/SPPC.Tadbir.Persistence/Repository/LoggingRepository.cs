@@ -104,7 +104,7 @@ namespace SPPC.Tadbir.Persistence
                 Action = action,
                 FiscalPeriodId = entity.FiscalPeriodId,
                 BranchId = entity.BranchId,
-                CompanyId = entity.Branch.Company.Id,
+                CompanyId = entity.Branch.CompanyId,
                 Date = DateTime.Now.Date,
                 Time = DateTime.Now.TimeOfDay,
                 Succeeded = true,

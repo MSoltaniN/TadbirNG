@@ -45,8 +45,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriods = await repository
                 .GetByCriteriaAsync(
-                    fp => fp.Company.Id == companyId,
-                    gridOptions, fp => fp.Company);
+                    fp => fp.CompanyId == companyId,
+                    gridOptions);
             return fiscalPeriods
                 .Select(item => _mapper.Map<FiscalPeriodViewModel>(item))
                 .ToList();
@@ -64,7 +64,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
             var count = await repository
                 .GetCountByCriteriaAsync(
-                    fp => fp.Company.Id == companyId,
+                    fp => fp.CompanyId == companyId,
                     gridOptions);
             return count;
         }
@@ -79,8 +79,7 @@ namespace SPPC.Tadbir.Persistence
             FiscalPeriodViewModel item = null;
             var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriod = await repository.GetByIDAsync(
-                fperiodId,
-                fp => fp.Company);
+                fperiodId);
             if (fiscalPeriod != null)
             {
                 item = _mapper.Map<FiscalPeriodViewModel>(fiscalPeriod);
@@ -178,7 +177,7 @@ namespace SPPC.Tadbir.Persistence
             else
             {
                 fiscalPeriodModel = await repository.GetByIDAsync(
-                    fiscalPeriod.Id, fp => fp.Company);
+                    fiscalPeriod.Id);
                 if (fiscalPeriodModel != null)
                 {
                     UpdateExistingFiscalPeriod(fiscalPeriod, fiscalPeriodModel);
@@ -200,7 +199,6 @@ namespace SPPC.Tadbir.Persistence
             var fiscalPeriod = await repository.GetByIDAsync(fperiodId);
             if (fiscalPeriod != null)
             {
-                fiscalPeriod.Company = null;
                 repository.Delete(fiscalPeriod);
                 await _unitOfWork.CommitAsync();
             }
@@ -232,7 +230,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriods = await repository
                 .GetByCriteriaAsync(
-                fp => fp.Company.Id == fiscalPeriod.CompanyId && fp.Id != fiscalPeriod.Id
+                fp => fp.CompanyId == fiscalPeriod.CompanyId && fp.Id != fiscalPeriod.Id
                 && ((fp.StartDate > fiscalPeriod.StartDate && fp.StartDate < fiscalPeriod.EndDate)
                 || (fp.StartDate < fiscalPeriod.StartDate && fp.EndDate > fiscalPeriod.EndDate)
                 || (fp.EndDate > fiscalPeriod.StartDate && fp.EndDate < fiscalPeriod.EndDate)));
@@ -246,7 +244,7 @@ namespace SPPC.Tadbir.Persistence
             fiscalPeriod.StartDate = fiscalPeriodModel.StartDate;
             fiscalPeriod.EndDate = fiscalPeriodModel.EndDate;
             fiscalPeriod.Description = fiscalPeriodModel.Description;
-            fiscalPeriod.Company.Id = fiscalPeriodModel.CompanyId;
+            fiscalPeriod.CompanyId = fiscalPeriodModel.CompanyId;
         }
 
         private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
-using SPPC.Tadbir.ViewModel.Corporate;
+using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
@@ -14,7 +14,7 @@ using SPPC.Tadbir.Web.Api.Resources.Types;
 namespace SPPC.Tadbir.Web.Api.Controllers
 {
     [Produces("application/json")]
-    public class CompaniesController : ValidatingController<CompanyViewModel>
+    public class CompaniesController : ValidatingController<CompanyDbViewModel>
     {
         public CompaniesController(
             ICompanyRepository repository, IStringLocalizer<AppStrings> strings = null)
@@ -28,14 +28,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             get { return AppStrings.Company; }
         }
 
-        // GET: api/companies/company/{companyId:min(1)}
-        [Route(CompanyApi.CompanyChildrenUrl)]
+        // GET: api/companies
+        [Route(CompanyApi.CompaniesUrl)]
         [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.View)]
-        public async Task<IActionResult> GetCompaniesAsync(int companyId)
+        public async Task<IActionResult> GetCompaniesAsync()
         {
-            int itemCount = await _repository.GetCountAsync(companyId, GridOptions);
+            int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
-            var companies = await _repository.GetCompaniesAsync(companyId, GridOptions);
+            var companies = await _repository.GetCompaniesAsync(GridOptions);
             return Json(companies);
         }
 
@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpPost]
         [Route(CompanyApi.CompaniesUrl)]
         [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.Create)]
-        public async Task<IActionResult> PostNewCompanyAsync([FromBody] CompanyViewModel company)
+        public async Task<IActionResult> PostNewCompanyAsync([FromBody] CompanyDbViewModel company)
         {
             var result = BasicValidationResult(company);
             if (result is BadRequestObjectResult)
@@ -78,7 +78,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(CompanyApi.CompanyUrl)]
         [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.Edit)]
         public async Task<IActionResult> PutModifiedCompanyAsync(
-            int companyId, [FromBody] CompanyViewModel company)
+            int companyId, [FromBody] CompanyDbViewModel company)
         {
             var result = BasicValidationResult(company, companyId);
             if (result is BadRequestObjectResult)
@@ -97,7 +97,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [HttpDelete]
         [Route(CompanyApi.CompanyUrl)]
         [AuthorizeRequest(SecureEntity.Company, (int)CompanyPermissions.Delete)]
-        public async Task<IActionResult> DeleteExistingBranchAsync(int companyId)
+        public async Task<IActionResult> DeleteExistingCompanyAsync(int companyId)
         {
             string result = await ValidateDeleteAsync(companyId);
             if (!String.IsNullOrEmpty(result))
@@ -117,13 +117,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 message = String.Format(
                     _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Company), item);
-            }
-
-            var hasChildren = await _repository.HasChildrenAsync(item);
-            if (hasChildren == true)
-            {
-                message = String.Format(
-                   _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.Company], String.Format("'{0}'", company.Name));
             }
 
             return message;

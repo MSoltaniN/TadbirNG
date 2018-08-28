@@ -5,7 +5,9 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Corporate;
+using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -14,54 +16,43 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت شرکت را پیاده سازی میکند.
     /// </summary>
-    public class CompanyRepository : ICompanyRepository
+    public class CompanyRepository : RepositoryBase, ICompanyRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public CompanyRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
+        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        public CompanyRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
+            : base(unitOfWork, mapper, metadata)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _metadataRepository = metadataRepository;
+            UnitOfWork.UseSystemContext();
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه شرکت هایی را که در شرکت مشخص شده تعریف شده اند،
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، کلیه شرکت هایی را که در برنامه تعریف شده اند خوانده و برمی گرداند
         /// </summary>
-        /// <param name="companyId"> شناسه عددی یکی از شرکت های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از شرکت های تعریف شده در شرکت مشخص شده</returns>
-        public async Task<IList<CompanyViewModel>> GetCompaniesAsync(int companyId, GridOptions gridOptions = null)
+        /// <returns>مجموعه ای از شرکت های تعریف شده در برنامه</returns>
+        public async Task<IList<CompanyDbViewModel>> GetCompaniesAsync(GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Company>();
-            var branches = await repository
-                .GetByCriteriaAsync(
-                    b => b.ParentId == companyId,
-                    gridOptions, b => b.Parent, b => b.Children);
-            return branches
-                .Select(item => _mapper.Map<CompanyViewModel>(item))
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var companies = await repository.GetAllAsync(gridOptions);
+            return companies
+                .Select(c => Mapper.Map<CompanyDbViewModel>(c))
                 .ToList();
         }
 
         /// <summary>
-        /// به روش آسنکرون، تعداد شرکت های تعریف شده در شرکت مشخص شده را
-        /// از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، تعداد شرکت های تعریف شده در برنامه را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="companyId"> شناسه عددی یکی از شرکت های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد شرکت های تعریف شده در شرکت مشخص شده</returns>
-        public async Task<int> GetCountAsync(int companyId, GridOptions gridOptions = null)
+        public async Task<int> GetCountAsync(GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Company>();
-            var count = await repository
-                .GetCountByCriteriaAsync(
-                    c => c.ParentId == companyId,
-                    gridOptions);
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var count = await repository.GetCountByCriteriaAsync(c => true, gridOptions);
             return count;
         }
 
@@ -70,15 +61,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="companyId">شناسه عددی یکی از شرکت های موجود</param>
         /// <returns>شرکت مشخص شده با شناسه عددی</returns>
-        public async Task<CompanyViewModel> GetCompanyAsync(int companyId)
+        public async Task<CompanyDbViewModel> GetCompanyAsync(int companyId)
         {
-            CompanyViewModel item = null;
-            var repository = _unitOfWork.GetAsyncRepository<Company>();
-            var company = await repository.GetByIDAsync(
-                companyId, b => b.Children);
+            CompanyDbViewModel item = null;
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var company = await repository.GetByIDAsync(companyId);
             if (company != null)
             {
-                item = _mapper.Map<CompanyViewModel>(company);
+                item = Mapper.Map<CompanyDbViewModel>(company);
             }
 
             return item;
@@ -90,7 +80,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فرا داده ای تعریف شده برای شرکت</returns>
         public async Task<EntityViewModel> GetCompanyMetadataAsync()
         {
-            return await _metadataRepository.GetEntityMetadataAsync<Company>();
+            return await Metadata.GetEntityMetadataAsync<CompanyDb>();
         }
 
         /// <summary>
@@ -98,14 +88,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="company">شرکت مورد نظر برای ایجاد یا اصلاح</param>
         /// <returns>اطلاعات نمایشی شرکت ایجاد یا اصلاح شده</returns>
-        public async Task<CompanyViewModel> SaveCompanyAsync(CompanyViewModel company)
+        public async Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel company)
         {
             Verify.ArgumentNotNull(company, "company");
-            Company companyModel = default(Company);
-            var repository = _unitOfWork.GetAsyncRepository<Company>();
+            var companyModel = default(CompanyDb);
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             if (company.Id == 0)
             {
-                companyModel = _mapper.Map<Company>(company);
+                companyModel = Mapper.Map<CompanyDb>(company);
                 repository.Insert(companyModel);
             }
             else
@@ -119,8 +109,8 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await _unitOfWork.CommitAsync();
-            return _mapper.Map<CompanyViewModel>(companyModel);
+            await UnitOfWork.CommitAsync();
+            return Mapper.Map<CompanyDbViewModel>(companyModel);
         }
 
         /// <summary>
@@ -129,43 +119,19 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="companyId">شناسه عددی شرکت مورد نظر برای حذف</param>
         public async Task DeleteCompanyAsync(int companyId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Company>();
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
             var company = await repository.GetByIDAsync(companyId);
             if (company != null)
             {
-                company.Parent = null;
                 repository.Delete(company);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، مشخص می کند که آیا شرکت انتخاب شده دارای زیرمجموعه هست یا نه
-        /// </summary>
-        /// <param name="companyId">شناسه یکتای یکی از شرکت های موجود</param>
-        /// <returns>در حالتی که شرکت مشخص شده دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
-        /// مقدار "نادرست" را برمی گرداند</returns>
-        public async Task<bool?> HasChildrenAsync(int companyId)
-        {
-            bool? hasChildren = null;
-            var repository = _unitOfWork.GetAsyncRepository<Company>();
-            var company = await repository.GetByIDAsync(companyId, b => b.Children);
-            if (company != null)
-            {
-                hasChildren = company.Children.Count > 0;
-            }
-
-            return hasChildren;
-        }
-
-        private static void UpdateExistingCompany(CompanyViewModel companyViewModel, Company company)
+        private static void UpdateExistingCompany(CompanyDbViewModel companyViewModel, CompanyDb company)
         {
             company.Name = companyViewModel.Name;
             company.Description = companyViewModel.Description;
         }
-
-        private IAppUnitOfWork _unitOfWork;
-        private IDomainMapper _mapper;
-        private IMetadataRepository _metadataRepository;
     }
 }

@@ -64,10 +64,10 @@ namespace SPPC.Tadbir.Model.Corporate
         /// </summary>
         public virtual DateTime ModifiedDate { get; set; }
 
-        /// <summary>
-        /// Gets or sets the main company that controls the activities of this branch
-        /// </summary>
-        public virtual Company Company { get; set; }
+        ///// <summary>
+        ///// Gets or sets the main company that controls the activities of this branch
+        ///// </summary>
+        //public virtual Company Company { get; set; }
 
         // Temporarily disabled, due to EF Core's lack of support for direct many-to-many relationships.
         ///// <summary>
@@ -84,7 +84,7 @@ namespace SPPC.Tadbir.Model.Corporate
         {
             RoleBranches = new List<RoleBranch>();
             Children = new List<Branch>();
-            Company = new Company();
+            //Company = new Company();
         }
     }
 }

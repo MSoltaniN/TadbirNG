@@ -507,4 +507,10 @@
   <data name="CannotDeleteRoleHavingRelation" xml:space="preserve">
     <value>The role {0} is currently related to at least one {1} and cannot be deleted.</value>
   </data>
+  <data name="DbName" xml:space="preserve">
+    <value>Database name</value>
+  </data>
+  <data name="DbPath" xml:space="preserve">
+    <value>Database path</value>
+  </data>
 </root>

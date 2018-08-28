@@ -321,13 +321,6 @@ namespace SPPC.Tadbir.Persistence
             return account.FullCode;
         }
 
-        ///// <inheritdoc/>
-        //protected override int ViewId
-        //{
-        //    // TODO: Remove this hard-coded value later
-        //    get { return 1; }
-        //}
-
         /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
@@ -362,7 +355,6 @@ namespace SPPC.Tadbir.Persistence
                 .GetEntityQuery()
                 .Where(acc => acc.Id == accountId)
                 .Include(acc => acc.Branch)
-                    .ThenInclude(br => br.Company)
                 .Include(acc => acc.FiscalPeriod);
             return query;
         }
@@ -381,7 +373,6 @@ namespace SPPC.Tadbir.Persistence
                 .Include(art => art.FiscalPeriod)
                 .Include(art => art.Currency)
                 .Include(art => art.Branch)
-                    .ThenInclude(br => br.Company)
                 .Where(criteria)
                 .Apply(gridOptions);
             return query;
@@ -392,7 +383,6 @@ namespace SPPC.Tadbir.Persistence
             return repository
                 .GetEntityQuery()
                 .Include(acc => acc.Branch)
-                    .ThenInclude(br => br.Company)
                 .Where(acc => acc.Id == accountId);
         }
 
