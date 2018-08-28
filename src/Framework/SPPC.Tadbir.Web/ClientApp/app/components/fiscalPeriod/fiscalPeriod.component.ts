@@ -168,10 +168,11 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
     }
 
     goToLastPage() {
+        debugger;
         var pageCount: number = 0;
         pageCount = Math.floor(this.totalRecords / this.pageSize);
 
-        if (this.totalRecords % this.pageSize == 0) {
+        if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
             this.skip = (pageCount * this.pageSize) - this.pageSize;
             return;
         }
