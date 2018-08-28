@@ -57,6 +57,6 @@
     display: block;
 }
 
-/deep/.k-dropdown {
+/deep/#main-section .k-dropdown { 
     width: 150px;
 }

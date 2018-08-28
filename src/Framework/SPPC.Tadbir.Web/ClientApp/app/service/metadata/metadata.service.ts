@@ -7,7 +7,7 @@ import { String } from '../../class/source';
 import { expect } from 'chai';
 import { Filter } from "../../class/filter";
 import { GridOrderBy } from "../../class/grid.orderby";
-import { HttpParams } from "@angular/common/http";
+import { HttpParams, HttpClient } from "@angular/common/http";
 import { Environment } from "../../enviroment";
 import { Context } from "../../model/context";
 import { BaseService } from '../../class/base.service';
@@ -20,7 +20,7 @@ export class MetaDataService extends BaseService {
     headers: Headers;
     options: RequestOptions;
 
-    constructor(public http: Http) {
+    constructor(public http: HttpClient) {
         super(http);
     }
 
@@ -30,28 +30,36 @@ export class MetaDataService extends BaseService {
      */
     getMetaData(entityName: string) {
 
-        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+        
 
-        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
+        var header = this.httpHeaders;
+        header = header.delete('Content-Type');
+        header = header.delete('X-Tadbir-AuthTicket');
+        header = header.append('Content-Type','application/json; charset=utf-8');
+        header = header.append('X-Tadbir-AuthTicket', this.Ticket);
+        //headers.append('X-Tadbir-AuthTicket', this.Ticket);
 
-        this.options = new RequestOptions({ headers: this.headers });
+        var options = { headers: header };
 
         var url = String.Format(MetadataApi.EntityMetadata, entityName);
-        return this.http.get(url, { headers: this.headers })
-            .map(response => (<Response>response).json());
+        return this.http.get(url, options)
+            .map(response => (<Response>response));
     }
 
 
     getMetaDataById(entityId: number) {
-        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+        var header = this.httpHeaders;
+        header = header.delete('Content-Type');
+        header = header.delete('X-Tadbir-AuthTicket');
+        header = header.append('Content-Type', 'application/json; charset=utf-8');
+        header = header.append('X-Tadbir-AuthTicket', this.Ticket);
+        //headers.append('X-Tadbir-AuthTicket', this.Ticket);
 
-        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
-
-        this.options = new RequestOptions({ headers: this.headers });
+        var options = { headers: header };
 
         var url = String.Format(MetadataApi.EntityMetadataById, entityId);
-        return this.http.get(url, { headers: this.headers })
-            .map(response => (<Response>response).json());
+        return this.http.get(url, options)
+            .map(response => (<Response>response));
     }
 
 

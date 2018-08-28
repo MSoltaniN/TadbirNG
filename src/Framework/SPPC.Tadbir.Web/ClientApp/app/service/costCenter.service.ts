@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { BaseService } from '../class/base.service';
 
 import { CostCenter } from '../model/index';
+import { HttpClient } from '@angular/common/http';
 
 
 export class CostCenterInfo implements CostCenter {
@@ -21,7 +22,7 @@ export class CostCenterInfo implements CostCenter {
 @Injectable()
 export class CostCenterService extends BaseService {
 
-    constructor(public http: Http) {
+    constructor(public http: HttpClient) {
         super(http);
     }
 

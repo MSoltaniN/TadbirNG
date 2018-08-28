@@ -85,10 +85,9 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
         private companyService: CompanyService, public renderer: Renderer2, public metadata: MetaDataService,
-        @SkipSelf() @Host() @Optional() private parentCompany: CompanyComponent) 
-    {
+        @SkipSelf() @Host() @Optional() private parentCompany: CompanyComponent) {
         super(toastrService, translate, renderer, metadata, Entities.Company, Metadatas.Company);
-    }  
+    }
 
     //#endregion
 
@@ -108,9 +107,9 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
     public addChildCompany(companyComponent: CompanyComponent) {
 
         if (this.Childrens == undefined) this.Childrens = new Array<CompanyComponent>();
-        if (this.Childrens.findIndex(p => p.parent.id === companyComponent.parent.id) == -1)            
+        if (this.Childrens.findIndex(p => p.parent.id === companyComponent.parent.id) == -1)
             this.Childrens.push(companyComponent);
-        
+
     }
 
     selectionKey(context: RowArgs): string {
@@ -124,7 +123,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
 
     deleteModels(confirm: boolean) {
         if (confirm) {
-            this.sppcLoading.show();           
+            this.sppcLoading.show();
         }
 
         this.groupDelete = false;
@@ -146,63 +145,21 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
+
+            if (insertedModel)
+                this.goToLastPage();
+
             var url = String.Format(CompanyApi.CompanyChildren, this.CompanyId);
             if (this.parent) {
                 if (this.parent.childCount > 0)
                     url = String.Format(CompanyApi.CompanyChildren, this.parent.id);
             }
             this.companyService.getAll(url, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                /*
-                var resData = res.json();
+
+                var resData = res.body;
+
                 var totalCount = 0;
-                if (insertedModel) {
-                    var rows = (resData as Array<Company>);
-                    var index = rows.findIndex(p => p.id == insertedModel.id);
-                    if (index >= 0) {
-                        resData.splice(index, 1);
-                        rows.splice(0, 0, insertedModel);
-                    }
-                    else {
-                        if (rows.length == this.pageSize) {
-                            resData.splice(this.pageSize - 1, 1);
-                        }
 
-                        rows.splice(0, 0, insertedModel);
-                    }
-                }
-                if (res.headers != null) {
-                    var headers = res.headers != undefined ? res.headers : null;
-                    if (headers != null) {
-                        var retheader = headers.get('X-Total-Count');
-                        if (retheader != null)
-                            totalCount = parseInt(retheader.toString());
-                    }
-                }
-                this.rowData = {
-                    data: resData,
-                    total: totalCount
-                }
-                */
-
-                var resData = res.json();
-                
-                var totalCount = 0;
-                if (insertedModel) {
-                    var rows = (resData as Array<Company>);
-                    var index = rows.findIndex(p => p.id == insertedModel.id);
-                    if (index >= 0) {
-                        rows.splice(index, 1);
-                        rows.splice(0, 0, insertedModel);
-                    }
-                    else {
-                        if (rows.length == this.pageSize) {
-                            rows.splice(this.pageSize - 1, 1);
-                        }
-                        rows.splice(0, 0, insertedModel);
-                    }
-
-                    resData = rows;
-                }
                 if (res.headers != null) {
                     var headers = res.headers != undefined ? res.headers : null;
                     if (headers != null) {
@@ -216,20 +173,19 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                     data: resData,
                     total: totalCount
                 }
-                
+
                 //زمانی که تعداد رکورد ها صفر باشد باید کامپوننت پدر رفرش شود
                 if (totalCount == 0) {
                     if (this.parentCompany && this.parentCompany.Childrens) {
                         var thisIndex = this.parentCompany.Childrens.findIndex(p => p == this);
                         if (thisIndex >= 0)
                             this.parentCompany.Childrens.splice(thisIndex);
-                        
+
                         this.parentCompany.reloadGrid();
 
                     }
-                    
+
                 }
-                
 
                 this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
@@ -263,6 +219,17 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
     pageChange(event: PageChangeEvent): void {
         this.skip = event.skip;
         this.reloadGrid();
+    }
+
+    goToLastPage() {
+        var pageCount: number = 0;
+        pageCount = Math.floor(this.totalRecords / this.pageSize);
+
+        if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
+            this.skip = (pageCount * this.pageSize) - this.pageSize;
+            return;
+        }
+        this.skip = (pageCount * this.pageSize)
     }
 
     deleteModel(confirm: boolean) {
@@ -340,11 +307,11 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
 
                 var findIndex = this.rowData.data.findIndex(acc => acc.id == this.parentId);
                 var parentRow = this.rowData.data[findIndex];
-                
+
                 this.parentId = undefined;
             }
             else if (this.parent) {
-                model.parentId = this.parent.id;                
+                model.parentId = this.parent.id;
             }
 
             //set parentid for childs branch
@@ -354,7 +321,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedModel = JSON.parse(response._body);
+                    var insertedModel = response;
 
                     if (this.Childrens) {
                         var childFiltered = this.Childrens.filter(f => f.parent.id == model.parentId);
@@ -370,7 +337,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                     else if (model.parentId != undefined) {
                         this.reloadGrid();
                     }
-                    
+
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;

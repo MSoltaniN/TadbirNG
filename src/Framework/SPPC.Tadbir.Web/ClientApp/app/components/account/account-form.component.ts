@@ -87,7 +87,6 @@ export class AccountFormComponent extends DefaultComponent implements OnInit {
 
     //Events
     public onSave(e: any): void {
-        debugger;
         e.preventDefault();
         if (this.editForm.valid) {
             this.disableSaveBtn = true;

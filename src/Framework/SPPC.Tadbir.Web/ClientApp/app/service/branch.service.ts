@@ -4,6 +4,7 @@ import { BaseService } from '../class/base.service';
 import { Branch, RelatedItems } from '../model/index';
 import { String } from '../class/source';
 import { BranchApi } from './api/index';
+import { HttpClient } from '@angular/common/http';
 
 
 export class BranchInfo implements Branch {
@@ -21,21 +22,22 @@ export class BranchInfo implements Branch {
 export class BranchService extends BaseService {
 
 
-    constructor(public http: Http) {
+    constructor(public http: HttpClient) {
         super(http);
     }
 
     getBranchRoles(branchId: number) {
         var url = String.Format(BranchApi.BranchRoles, branchId);
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
     }
 
     modifiedBranchRoles(branchRoles: RelatedItems) {
-        var body = JSON.stringify(branchRoles);
-        var headers = this.headers;
+        var body = JSON.stringify(branchRoles);        
+        var options = { headers: this.httpHeaders };
         var url = String.Format(BranchApi.BranchRoles, branchRoles.id);
-        return this.http.put(url, body, this.options)
+        return this.http.put(url, body, options)
             .map(res => res)
             .catch(this.handleError);
     }

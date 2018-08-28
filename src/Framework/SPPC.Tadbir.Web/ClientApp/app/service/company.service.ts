@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { BaseService } from '../class/base.service';
 
 import { Company } from '../model/index';
+import { HttpClient } from '@angular/common/http';
 
 
 
@@ -20,7 +21,7 @@ export class CompanyInfo implements Company {
 @Injectable()
 export class CompanyService extends BaseService {
 
-    constructor(public http: Http) {
+    constructor(public http: HttpClient) {
         super(http);
     }
 

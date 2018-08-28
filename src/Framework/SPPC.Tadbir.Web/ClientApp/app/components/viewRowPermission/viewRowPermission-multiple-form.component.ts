@@ -118,7 +118,7 @@ export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
     }
 
     getFetchUrl() {
-        this.metadata.getMetaDataById(this.rowPermission.viewId).subscribe(res => {
+        this.metadata.getMetaDataById(this.rowPermission.viewId).subscribe((res:any) => {
             this.fetchUrl = res.fetchUrl;
         })
     }

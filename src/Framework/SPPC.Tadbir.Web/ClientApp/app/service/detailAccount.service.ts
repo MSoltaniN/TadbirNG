@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { BaseService } from '../class/base.service';
 
 import { DetailAccount } from '../model/index';
+import { HttpClient } from '@angular/common/http';
 
 
 export class DetailAccountInfo implements DetailAccount {
@@ -21,7 +22,7 @@ export class DetailAccountInfo implements DetailAccount {
 @Injectable()
 export class DetailAccountService extends BaseService {
 
-    constructor(public http: Http) {
+    constructor(public http: HttpClient) {
         super(http);
     }
 

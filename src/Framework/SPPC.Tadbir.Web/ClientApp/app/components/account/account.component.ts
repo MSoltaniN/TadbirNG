@@ -158,7 +158,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         var pageCount: number = 0;
         pageCount = Math.floor(this.totalRecords / this.pageSize);
 
-        if (this.totalRecords % this.pageSize == 0) {
+        if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
             this.skip = (pageCount * this.pageSize) - this.pageSize;
             return;
         }
@@ -188,7 +188,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     }
 
     public saveHandler(model: Account) {
-        // debugger;
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
         //TODO: این کد بعدا باید تغییر پیدا کند البته با اقای اسلامیه هماهنگ شده است
@@ -239,7 +238,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedModel = JSON.parse(response._body);
+                    var insertedModel = response;
 
                     if (this.Childrens) {
                         var childFiltered = this.Childrens.filter(f => f.parent.id == model.parentId);
@@ -364,7 +363,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
 
             this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.json();
+                var resData = res.body;
                 //this.properties = resData.properties;
                 var totalCount = 0;
                 //if (insertedModel && this.addToContainer) {

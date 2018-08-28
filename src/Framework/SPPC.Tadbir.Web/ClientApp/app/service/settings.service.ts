@@ -8,6 +8,7 @@ import { String } from '../class/source';
 import { SettingBrief } from "../model/settingBrief";
 import { ColumnViewDeviceConfig } from "../model/columnViewDeviceConfig";
 import { ColumnVisibility, SessionKeys } from "../enviroment";
+import { HttpClient } from "@angular/common/http";
 
 
 export class SettingBriefInfo implements SettingBrief {    
@@ -73,40 +74,44 @@ export class SettingViewModelInfo  {
 @Injectable()
 export class SettingService extends BaseService {
 
-    constructor(public http: Http) {
+    constructor(public http: HttpClient) {
         super(http);
     }
 
     public getSettingsCategories(apiUrl: string) {
-        return this.http.get(apiUrl, this.options)
+        var options = { headers: this.httpHeaders };
+        return this.http.get(apiUrl, options)
             .map(response => <any>(<Response>response));
     }
 
     public putSettingsCategories(apiUrl: string, list: Array<SettingBriefInfo>) {
         var body = JSON.stringify(list);
-        return this.http.put(apiUrl, body, this.options)
+        var options = { headers: this.httpHeaders };
+        return this.http.put(apiUrl, body, options)
             .map(res => res)
             .catch(this.handleError);
     }
 
     getListSettingsByUser(userId: number) {
         var url = String.Format(SettingsApi.ListSettingsByUser, userId);
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
     }
 
     getListSettingsByUserAndView(userId: number, viewId: number) {
-        var url = String.Format(SettingsApi.ListSettingsByUserAndView, userId,viewId);
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var url = String.Format(SettingsApi.ListSettingsByUserAndView, userId, viewId);
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
         
     }
 
     putUserSettings(userId: number, setting: ListFormViewConfig) {
         var url = String.Format(SettingsApi.ListSettingsByUser, userId);
         var body = JSON.stringify(setting);
-        var headers = this.headers;
-        return this.http.put(url, body, this.options)
+        var options = { headers: this.httpHeaders };
+        return this.http.put(url, body, options)
             .map(res => res)
             .catch(this.handleError);
 

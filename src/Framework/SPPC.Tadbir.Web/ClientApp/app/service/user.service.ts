@@ -8,7 +8,7 @@ import { String } from '../class/source';
 import { expect } from 'chai';
 import { Filter } from "../class/filter";
 import { GridOrderBy } from "../class/grid.orderby";
-import { HttpParams } from "@angular/common/http";
+import { HttpParams, HttpClient } from "@angular/common/http";
 import { Environment, MessageType } from "../enviroment";
 import { Context } from "../model/context";
 
@@ -46,14 +46,15 @@ export class CommandInfo implements Command {
 @Injectable()
 export class UserService extends BaseService {
 
-    constructor(public http: Http) {
+    constructor(public http: HttpClient) {
         super(http);
     }
 
     changePassword(userProfile: UserProfile): Observable<string> {
         var body = JSON.stringify(userProfile);
         var url = String.Format(UserApi.UserPassword, userProfile.userName);
-        return this.http.put(url, body, this.options)
+        var options = { headers: this.httpHeaders };
+        return this.http.put(url, body, options)
             .map(res => res)
             .catch(this.handleError);
     }
@@ -61,15 +62,16 @@ export class UserService extends BaseService {
 
     getUserRoles(userId: number) {
         var url = String.Format(UserApi.UserRoles, userId);
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
     }
 
     modifiedUserRoles(userRoles: RelatedItems) {
         var body = JSON.stringify(userRoles);
-        var headers = this.headers;
+        var options = { headers: this.httpHeaders };
         var url = String.Format(UserApi.UserRoles, userRoles.id);
-        return this.http.put(url, body, this.options)
+        return this.http.put(url, body, options)
             .map(res => res)
             .catch(this.handleError);
     }
@@ -77,21 +79,26 @@ export class UserService extends BaseService {
     getCurrentUserCommands(ticket : string) {
 
         var url = UserApi.CurrentUserCommands;
-        if (this.headers) {
-           this.headers.set('X-Tadbir-AuthTicket', ticket);         
+
+        var header = this.httpHeaders;
+        if (header) {
+            header = header.delete('X-Tadbir-AuthTicket');
+            header = header.delete('Accept-Language');
+
+            header = header.append('X-Tadbir-AuthTicket', ticket);         
 
            if (this.CurrentLanguage == "fa")
-               this.headers.set('Accept-Language', 'fa-IR,fa');
+               header = header.append('Accept-Language', 'fa-IR,fa');
 
-           if (this.CurrentLanguage == "en")
-               this.headers.set('Accept-Language', 'en-US,en');
+           if (this.CurrentLanguage == "en")                
+               header = header.append('Accept-Language', 'en-US,en');
 
         }
 
-        this.options = new RequestOptions({ headers: this.headers });
+        var options = { headers: header };
         
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
 
     }
 

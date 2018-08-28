@@ -115,6 +115,7 @@ import { Permissions } from './security/permissions';
 import { SppcGridDateFilter, FilterDatePickerDirective } from './controls/grid/spp-grid-date-filter';
 import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
 import { GeneralErrorHandler } from './class/error.handler';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -220,6 +221,7 @@ import { GeneralErrorHandler } from './class/error.handler';
         DpDatePickerModule,
         TextMaskModule,
         TreeViewModule,
+        HttpClientModule, 
         TranslateModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'login', pathMatch: 'full' },            

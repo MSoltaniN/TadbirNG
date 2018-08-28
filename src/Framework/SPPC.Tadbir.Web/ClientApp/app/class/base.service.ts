@@ -10,7 +10,7 @@ import { ToastrService } from "ngx-toastr";
 import { TranslateService } from "ng2-translate";
 import { SppcLoadingService } from "../controls/sppcLoading/index";
 import { ReflectiveInjector, Injector, Injectable, ErrorHandler } from '@angular/core';
-import { HttpErrorResponse } from "@angular/common/http";
+import { HttpErrorResponse, HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 
 
@@ -18,29 +18,23 @@ import { ActivatedRoute, Router } from "@angular/router";
 
 export class BaseService extends EnviromentComponent {
 
-    public headers: Headers | undefined | null;
-    public options: RequestOptions | undefined;
+    option: any;
+    httpHeaders = new HttpHeaders();
 
-
-
-    
-     constructor(public http: Http) {
+    constructor(public http: HttpClient) {
         super();
 
-        this.headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' });
+        this.httpHeaders = this.httpHeaders.append('Content-Type', 'application/json; charset=utf-8');
 
-        this.headers.append('X-Tadbir-AuthTicket', this.Ticket);
+        this.httpHeaders = this.httpHeaders.append('X-Tadbir-AuthTicket', this.Ticket);
 
         if (this.CurrentLanguage == "fa")
-            this.headers.append('Accept-Language', 'fa-IR,fa');
+            this.httpHeaders = this.httpHeaders.append('Accept-Language', 'fa-IR,fa');
 
         if (this.CurrentLanguage == "en")
-            this.headers.append('Accept-Language', 'en-US,en');
+            this.httpHeaders = this.httpHeaders.append('Accept-Language', 'en-US,en');
 
-        this.options = new RequestOptions({ headers: this.headers });
-
-        
-        
+        this.option = { headers: this.httpHeaders };
     }
 
     /**
@@ -61,14 +55,16 @@ export class BaseService extends EnviromentComponent {
                 sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
         }
         var postItem = { Paging: gridPaging, filter: filter, sortColumns: sort };
-        var searchHeaders = this.headers;
+        var searchHeaders = this.httpHeaders;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));
         if (searchHeaders)
-            searchHeaders.set('X-Tadbir-GridOptions', base64Body);
-        var options = new RequestOptions({ headers: searchHeaders });
-        return this.http.get(apiUrl, options)
-            .map(response => <any>(<Response>response));
+            searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
+
+
+        //var options = { headers: searchHeaders, observe: "response"};
+        return this.http.get(apiUrl, { headers: searchHeaders, observe: "response" })
+            .map(response => <any>(<HttpResponse<any>>response));
     }
 
     /**
@@ -77,9 +73,9 @@ export class BaseService extends EnviromentComponent {
      * @param modelId شماره id رکورد
      */
     public getById(apiUrl: string) {
-        var options = new RequestOptions({ headers: this.headers });
+        var options = { headers: this.httpHeaders };
         return this.http.get(apiUrl, options)
-            .map(response => <any>(<Response>response).json());
+            .map(response => <any>(<Response>response));
     }
 
     /**
@@ -89,7 +85,7 @@ export class BaseService extends EnviromentComponent {
      */
     public insert<T>(apiUrl: string, model: T): Observable<string> {
         var body = JSON.stringify(model);
-        return this.http.post(apiUrl, body, this.options)
+        return this.http.post(apiUrl, body, this.option)
             .map(res => res)
             .catch(this.handleError);
     }
@@ -102,7 +98,7 @@ export class BaseService extends EnviromentComponent {
      */
     public edit<T>(apiUrl: string, model: T): Observable<string> {
         var body = JSON.stringify(model);
-        return this.http.put(apiUrl, body, this.options)
+        return this.http.put(apiUrl, body, this.option)
             .map(res => res)
             .catch(this.handleError);
     }
@@ -113,7 +109,7 @@ export class BaseService extends EnviromentComponent {
      * @param modelId شماره id رکورد
      */
     public delete(apiUrl: string): Observable<string> {
-        return this.http.delete(apiUrl, this.options)
+        return this.http.delete(apiUrl, this.option)
             .map(response => response)
             .catch(this.handleError);
     }
@@ -123,7 +119,7 @@ export class BaseService extends EnviromentComponent {
      * @param apiUrl آدرس api
      * @param models رکوردها
      */
-    public groupDelete(apiUrl: string,models: string[]): Observable<string> {
+    public groupDelete(apiUrl: string, models: string[]): Observable<string> {
         var modelId: string = '';
         let modelArray: Array<number> = Array();
         for (var i = 0; i < models.length; i++) {
@@ -131,7 +127,7 @@ export class BaseService extends EnviromentComponent {
             modelArray.push(parseInt(modelId));
         }
         let body = JSON.stringify({ paraph: '', items: modelArray });
-        return this.http.put(apiUrl, body, this.options)
+        return this.http.put(apiUrl, body, this.option)
             .map(response => response)
             .catch(this.handleError);
     }
@@ -142,16 +138,16 @@ export class BaseService extends EnviromentComponent {
      * @param filters فیلترها
      */
     public getCount(apiUrl: string, orderby?: string, filters?: any[]) {
-        var headers = this.headers;
+        var headers = this.httpHeaders;
         var postItem = { filters: filters };
-        var searchHeaders = this.headers;
+        var searchHeaders = this.httpHeaders;
         var postBody = JSON.stringify(postItem);
         var base64Body = btoa(encodeURIComponent(postBody));
         if (searchHeaders)
-            searchHeaders.set('X-Tadbir-GridOptions', base64Body);
-        var options = new RequestOptions({ headers: searchHeaders });
+            searchHeaders = searchHeaders.append('X-Tadbir-GridOptions', base64Body);
+        var options = { headers: searchHeaders };
         return this.http.get(apiUrl, options)
-            .map(response => <any>(<Response>response).json());
+            .map(response => <any>(<Response>response));
     }
 
     /**
@@ -160,8 +156,9 @@ export class BaseService extends EnviromentComponent {
      */
     public getTotalCount(apiUrl: string) {
         var url = String.Format(apiUrl, this.FiscalPeriodId, this.BranchId);
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());;
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
     }
 
     /**
@@ -169,38 +166,6 @@ export class BaseService extends EnviromentComponent {
      * @param error
      */
     public handleError(error: any) {
-
-        //var err = <any>error;
-
-        //var errorException = JSON.parse(error._body);
-        //var errCode = errorException.errorDetail.errorCode;
-        //var errMessage = errorException.message;
-
-        //var errCodeLabel = '';
-        //var errMsgLabel = '';
-        //var errTitle = '';
-
-        //this.translate.get('Exception.ErrorCode').subscribe((msg: string) => {
-        //    errCodeLabel = msg;
-        //});
-
-        //this.translate.get('Exception.ErrorMessage').subscribe((msg: string) => {
-        //    errMsgLabel = msg;
-        //});
-
-        //this.translate.get('Exception.Error').subscribe((msg: string) => {
-        //    errTitle = msg;
-        //});
-        
-
-        //var message = '<strong>' + errCodeLabel + ':<strong>' + '</br>' + errCode + '</br>';
-        //message = message + '<strong>' + errMsgLabel + ':<strong>' + '</br>' + errMessage + '</br>';
-
-        //var posCss = 'toast-top-center'
-
-        //this.sppcLoading.hide();
-        //this.toastrService.error(message, errTitle,{ positionClass: posCss });
-        
-        return Observable.throw(error.json());
+        return Observable.throw(error.error);
     }
 }

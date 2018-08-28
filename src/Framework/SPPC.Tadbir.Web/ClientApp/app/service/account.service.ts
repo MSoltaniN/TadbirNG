@@ -6,6 +6,12 @@ import { Account } from '../model/index';
 import { FiscalPeriodApi } from './api/index';
 import { String } from '../class/source';
 import { AccountApi } from './api/accountApi';
+import { Environment } from '../enviroment';
+import { HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http';
+import { EnviromentComponent } from '../class/enviroment.component';
+import { FilterExpression } from '../class/filterExpression';
+import { GridOrderBy } from '../class/grid.orderby';
+import { Observable } from 'rxjs/Observable';
 
 export class AccountInfo implements Account
 {    
@@ -20,23 +26,26 @@ export class AccountInfo implements Account
 
 @Injectable()
 export class AccountService extends BaseService
-{   
-    constructor(public http: Http) {
+{      
+
+    constructor(public http: HttpClient) {
         super(http);
     }
 
 
     getAccountById(id: number) {
         var url = String.Format(AccountApi.Account, id);
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
     }
-
+    
 
     getAccountFullCode(parentId: number) {
         var url = String.Format(AccountApi.AccountFullCode, parentId);
-        return this.http.get(url, this.options)
-            .map(response => <any>(<Response>response).json());
+        var options = { headers: this.httpHeaders };
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
     }
 
 }

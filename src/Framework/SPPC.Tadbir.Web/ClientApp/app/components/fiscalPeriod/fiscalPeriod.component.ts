@@ -111,23 +111,15 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
+
+
+            if (insertedModel)
+                this.goToLastPage();
+
             this.fiscalPeriodService.getAll(String.Format(FiscalPeriodApi.CompanyFiscalPeriods, this.CompanyId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.json();
+                var resData = res.body;
                 var totalCount = 0;
-                if (insertedModel) {
-                    var rows = (resData as Array<FiscalPeriod>);
-                    var index = rows.findIndex(p => p.id == insertedModel.id);
-                    if (index >= 0) {
-                        resData.splice(index, 1);
-                        rows.splice(0, 0, insertedModel);
-                    }
-                    else {
-                        if (rows.length == this.pageSize) {
-                            resData.splice(this.pageSize - 1, 1);
-                        }
-                        rows.splice(0, 0, insertedModel);
-                    }
-                }
+                
                 if (res.headers != null) {
                     var headers = res.headers != undefined ? res.headers : null;
                     if (headers != null) {
@@ -173,6 +165,18 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
     pageChange(event: PageChangeEvent): void {
         this.skip = event.skip;
         this.reloadGrid();
+    }
+
+    goToLastPage() {
+        debugger;
+        var pageCount: number = 0;
+        pageCount = Math.floor(this.totalRecords / this.pageSize);
+
+        if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
+            this.skip = (pageCount * this.pageSize) - this.pageSize;
+            return;
+        }
+        this.skip = (pageCount * this.pageSize)
     }
 
     deleteModel(confirm: boolean) {
@@ -271,7 +275,7 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
                     this.isNew = false;
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedModel = JSON.parse(response._body);
+                    var insertedModel = response;
                     this.reloadGrid(insertedModel);
                 }, (error => {
                     this.isNew = true;

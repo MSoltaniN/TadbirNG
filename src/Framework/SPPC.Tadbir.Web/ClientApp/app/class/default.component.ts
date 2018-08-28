@@ -18,6 +18,7 @@ import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms'
 import * as moment from 'jalali-moment';
 import { FilterExpression } from './filterExpression';
 import { FilterExpressionBuilder } from './filterExpressionBuilder';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable()
 export class DefaultComponent extends BaseComponent {
@@ -55,7 +56,7 @@ export class DefaultComponent extends BaseComponent {
 
                     return this.form;
 
-                }).subscribe(res1 => {
+                }).subscribe((res1: any) => {
 
                     this.properties[this.metaDataName] = res1.properties;
 
@@ -127,7 +128,7 @@ export class DefaultComponent extends BaseComponent {
             this.metadataService.getMetaData(this.metaDataName).finally(() => {
                 this.fillFormValidators();
 
-            }).subscribe(res1 => {
+            }).subscribe((res1: any) => {
 
                 this.properties[this.metaDataName] = res1.properties;
 
@@ -205,7 +206,7 @@ export class DefaultComponent extends BaseComponent {
 
                     return result;
 
-                }).subscribe(res1 => {
+                }).subscribe((res1:any) => {
                     
                     this.properties[this.metaDataName] = res1.properties;
 

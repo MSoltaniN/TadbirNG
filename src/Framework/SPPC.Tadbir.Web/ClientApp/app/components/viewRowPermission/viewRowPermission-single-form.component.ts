@@ -120,7 +120,7 @@ export class ViewRowPermissionSingleFormComponent extends DefaultComponent {
 
     getCategories() {
         this.viewRowPermissionService.getAll(LookupApi.EntityViews).subscribe(res => {
-            var data = res.json();
+            var data = res.body;
             this.singleFormCategories = data;
             this.singleFormData = data;
         })
