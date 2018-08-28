@@ -12,7 +12,6 @@ export class FullCodeDirective implements AfterViewInit {
 
 
     ngAfterViewInit(): void {
-        debugger;
         this.fullCodeElement = document.getElementById(this.sppsFullCode) as any;
         var fullCodeValue = this.fullCodeElement.value;
         var codeValue = this.el.nativeElement.value;

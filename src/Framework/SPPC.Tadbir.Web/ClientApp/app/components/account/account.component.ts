@@ -188,7 +188,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     }
 
     public saveHandler(model: Account) {
-        // debugger;
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
         //TODO: این کد بعدا باید تغییر پیدا کند البته با اقای اسلامیه هماهنگ شده است

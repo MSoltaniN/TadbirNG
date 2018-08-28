@@ -166,6 +166,6 @@ export class BaseService extends EnviromentComponent {
      * @param error
      */
     public handleError(error: any) {
-        return Observable.throw(error.json());
+        return Observable.throw(error.error);
     }
 }
