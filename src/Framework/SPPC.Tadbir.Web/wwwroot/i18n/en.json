@@ -166,6 +166,8 @@
     "NewSubCompany": "New Sub Company",
     "Delete": "Delete Company",
     "Name": "Name",
+    "DbName": "Database Name",
+    "DbPath": "Database Path",
     "Description": "Description"
   },
   "Branch": {
@@ -461,6 +463,16 @@
     "Company": {
       "NameIsRequired": "Name is required.",
       "NameIsTooLong": "Name can have a maximum of 128 characters.",
+      "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
+      "NoError": ""
+    },
+    "CompanyDb": {
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "Name can have a maximum of 128 characters.",
+      "DbNameIsRequired": "Database name is required.",
+      "DbNameIsTooLong": "Database name can have a maximum of 128 characters.",
+      "DbPathIsRequired": "Database path is required.",
+      "DbPathIsTooLong": "Database path can have a maximum of 512 characters.",
       "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
       "NoError": ""
     }

@@ -167,6 +167,8 @@
     "NewSubCompany": "درج زیر شرکت جدید",
     "Delete": "حذف شرکت",
     "Name": "نام",
+    "DbName": "نام دیتابیس",
+    "DbPath": "مسیر دیتابیس",
     "Description": "شرح"
   },
   "Branch": {
@@ -462,6 +464,16 @@
     "Company": {
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "CompanyDb": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
+      "DbNameIsRequired": "وارد کردن نام دیتابیس اجباری است.",
+      "DbNameIsTooLong": "نام دیتابیس می تواند حداکثر 128 حرف داشته باشد.",
+      "DbPathIsRequired": "وارد کردن مسیر دیتابیس اجباری است.",
+      "DbPathIsTooLong": "مسیر دیتابیس می تواند حداکثر 512 حرف داشته باشد.",
       "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
       "NoError": ""
     }

@@ -17,8 +17,30 @@
             <input type="text" class="k-textbox" formControlName="name" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
-                <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.Company.NameIsRequired' | translate }}</span>
-                <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.Company.NameIsTooLong' | translate }}</span>
+                <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.CompanyDb.NameIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.CompanyDb.NameIsTooLong' | translate }}</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="dbName" class="control-label">{{ 'Company.DbName' | translate }}</label>
+
+            <input type="text" class="k-textbox" formControlName="dbName" />
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.dbName.valid || editForm.controls.dbName.pristine">
+                <span *ngIf="editForm.controls.dbName.errors?.required">{{ 'AllValidations.CompanyDb.DbNameIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.dbName.errors?.maxlength">{{ 'AllValidations.CompanyDb.DbNameIsTooLong' | translate }}</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="dbPath" class="control-label">{{ 'Company.DbPath' | translate }}</label>
+
+            <input type="text" class="k-textbox" formControlName="dbPath" />
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.dbPath.valid || editForm.controls.dbPath.pristine">
+                <span *ngIf="editForm.controls.dbPath.errors?.required">{{ 'AllValidations.CompanyDb.DbPathIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.dbPath.errors?.maxlength">{{ 'AllValidations.CompanyDb.DbPathIsTooLong' | translate }}</span>
             </div>
         </div>
 
@@ -28,7 +50,7 @@
             <textarea class="k-textarea" formControlName="description"></textarea>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
-                {{ 'AllValidations.Company.DescriptionIsTooLong' | translate }}
+                {{ 'AllValidations.CompanyDb.DescriptionIsTooLong' | translate }}
             </div>
         </div>
     </form>
