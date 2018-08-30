@@ -487,7 +487,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
         //this.sppcLoading.show();
         this.accountRelationsService.getMainComponentModel(this.mainComponentApiUrl, filterExp).subscribe(res => {
-            this.mainComponentCategories = res.json();
+            this.mainComponentCategories = res;
             if (this.mainComponentCategories.length == 0)
                 this.noResultMessage = true;
             else

@@ -45,8 +45,8 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetAsyncRepository<Branch>();
             var branches = await repository
                 .GetByCriteriaAsync(
-                    b => b.Company.Id == companyId,
-                    gridOptions, b => b.Company, b => b.Parent, b => b.Children);
+                    br => br.CompanyId == companyId,
+                    gridOptions, br => br.Parent, br => br.Children);
             return branches
                 .Select(item => _mapper.Map<BranchViewModel>(item))
                 .ToList();
@@ -64,7 +64,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetAsyncRepository<Branch>();
             var count = await repository
                 .GetCountByCriteriaAsync(
-                    fp => fp.Company.Id == companyId,
+                    br => br.CompanyId == companyId,
                     gridOptions);
             return count;
         }
@@ -79,7 +79,7 @@ namespace SPPC.Tadbir.Persistence
             BranchViewModel item = null;
             var repository = _unitOfWork.GetAsyncRepository<Branch>();
             var branch = await repository.GetByIDAsync(
-                branchId, b => b.Company, b => b.Children);
+                branchId, b => b.Children);
             if (branch != null)
             {
                 item = _mapper.Map<BranchViewModel>(branch);
@@ -177,7 +177,7 @@ namespace SPPC.Tadbir.Persistence
             else
             {
                 branchModel = await repository.GetByIDAsync(
-                    branch.Id, b => b.Company);
+                    branch.Id);
                 if (branchModel != null)
                 {
                     UpdateExistingBranch(branch, branchModel);
@@ -199,7 +199,6 @@ namespace SPPC.Tadbir.Persistence
             var branch = await repository.GetByIDAsync(branchId);
             if (branch != null)
             {
-                branch.Company = null;
                 branch.Parent = null;
                 repository.Delete(branch);
                 await _unitOfWork.CommitAsync();

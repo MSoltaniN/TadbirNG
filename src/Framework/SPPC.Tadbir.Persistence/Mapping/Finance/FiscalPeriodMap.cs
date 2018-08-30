@@ -28,12 +28,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(newid())");
             builder.Property(e => e.StartDate)
                 .HasColumnType("datetime");
-
-            builder.HasOne(d => d.Company)
-                .WithMany(p => p.FiscalPeriods)
-                .HasForeignKey("CompanyID")
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Finance_FiscalPeriod_Corporate_Company");
         }
     }
 }

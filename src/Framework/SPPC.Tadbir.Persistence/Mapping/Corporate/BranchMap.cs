@@ -25,11 +25,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
-            builder.HasOne(d => d.Company)
-                .WithMany(p => p.Branches)
-                .HasForeignKey("CompanyID")
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Corporate_Branch_Corporate_Company");
         }
     }
 }

@@ -20,22 +20,22 @@ namespace SPPC.Tadbir.Api
         public const string CompanyChildrenUrl = "companies/company/{companyId:min(1)}";
 
         /// <summary>
-        /// API client URL for all branche items
+        /// API client URL for all companies
         /// </summary>
-        public const string Companies = "Companies";
+        public const string Companies = "companies";
 
         /// <summary>
-        /// API server route URL for all branche items
+        /// API server route URL for all companies
         /// </summary>
-        public const string CompaniesUrl = "Companies";
+        public const string CompaniesUrl = "companies";
 
         /// <summary>
-        /// API client URL for a branche item specified by unique identifier
+        /// API client URL for a company specified by unique identifier
         /// </summary>
         public const string Company = "companies/{0}";
 
         /// <summary>
-        /// API server route URL for a branche item specified by unique identifier
+        /// API server route URL for a company specified by unique identifier
         /// </summary>
         public const string CompanyUrl = "companies/{companyId:min(1)}";
 

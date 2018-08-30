@@ -25,4 +25,5 @@ export * from './relatedItems';
 export * from './relatedItem';
 export * from './rowPermissionsForRole';
 export * from './viewRowPermission';
+export * from './companyDb';
 

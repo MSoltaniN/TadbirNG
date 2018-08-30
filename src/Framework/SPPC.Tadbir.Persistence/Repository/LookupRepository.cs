@@ -10,6 +10,7 @@ using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
@@ -173,7 +174,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var query = GetUserQuery(userId);
             var user = await query.SingleOrDefaultAsync();
-            var companies = new List<Company>();
+            var companies = new List<int>();
             if (user != null)
             {
                 Array.ForEach(
@@ -183,13 +184,20 @@ namespace SPPC.Tadbir.Persistence
                     role => companies.AddRange(
                         role.RoleBranches
                             .Select(rb => rb.Branch)
-                            .Select(br => br.Company)));
+                            .Select(br => br.CompanyId)));
             }
 
-            return companies
-                .Distinct(new EntityEqualityComparer())
-                .Select(e => _mapper.Map<KeyValue>(e))
-                .ToList();
+            _unitOfWork.UseSystemContext();
+            var repository = _unitOfWork.GetAsyncRepository<CompanyDb>();
+            var userCompanies = await repository
+                .GetEntityQuery()
+                .Where(c => companies
+                    .Distinct()
+                    .Contains(c.Id))
+                .Select(c => _mapper.Map<KeyValue>(c))
+                .ToListAsync();
+            _unitOfWork.UseCompanyContext();
+            return userCompanies;
         }
 
         /// <summary>
@@ -213,7 +221,7 @@ namespace SPPC.Tadbir.Persistence
                     role => fiscalPeriods.AddRange(
                         role.RoleFiscalPeriods
                             .Select(rfp => rfp.FiscalPeriod)
-                            .Where(fp => fp.Company.Id == companyId)));
+                            .Where(fp => fp.CompanyId == companyId)));
                 fiscalPeriods = fiscalPeriods
                     .Distinct(new EntityEqualityComparer())
                     .Cast<FiscalPeriod>()
@@ -246,7 +254,7 @@ namespace SPPC.Tadbir.Persistence
                     role => branches.AddRange(
                         role.RoleBranches
                             .Select(rb => rb.Branch)
-                            .Where(br => br.Company.Id == companyId)));
+                            .Where(br => br.CompanyId == companyId)));
                 branches = branches
                     .Distinct(new EntityEqualityComparer())
                     .Cast<Branch>()
@@ -307,12 +315,10 @@ namespace SPPC.Tadbir.Persistence
                     .ThenInclude(ur => ur.Role)
                         .ThenInclude(r => r.RoleBranches)
                             .ThenInclude(rb => rb.Branch)
-                                .ThenInclude(br => br.Company)
                 .Include(usr => usr.UserRoles)
                     .ThenInclude(ur => ur.Role)
                         .ThenInclude(r => r.RoleFiscalPeriods)
-                            .ThenInclude(rfp => rfp.FiscalPeriod)
-                                .ThenInclude(fp => fp.Company);
+                            .ThenInclude(rfp => rfp.FiscalPeriod);
             return query;
         }
 

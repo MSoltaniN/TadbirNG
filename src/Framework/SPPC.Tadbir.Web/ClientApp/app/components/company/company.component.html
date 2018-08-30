@@ -29,9 +29,9 @@
                 {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
             </ng-template>
             <ng-template kendoGridToolbarTemplate let-company>
-                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(company != undefined ? company.id : undefined , true)" [icon]="'plus-outline'" type="button">{{ 'Company.New' | translate }}</button>
+                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'Company.New' | translate }}</button>
                 <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
-                <grid-setting  entityTypeName="Company"></grid-setting>
+                <grid-setting entityTypeName="Company"></grid-setting>
             </ng-template>
 
             <!-- template for mobile -->
@@ -42,10 +42,13 @@
                         <dt>{{ 'Company.Name' | translate }}</dt>
                         <dd>{{ company.name }}</dd>
 
+                        <dt>{{ 'Company.DbName' | translate }}</dt>
+                        <dd>{{ company.dbName }}</dd>
+
                         <dt>{{ 'Company.Description' | translate  }}</dt>
                         <dd>{{ company.description }}</dd>
                     </dl>
-                    <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(company.id)" type="button">{{ 'Buttons.New' | translate }}</button>
+                    <!--<button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(company.id)" type="button">{{ 'Buttons.New' | translate }}</button>-->
                     <button kendoGridEditCommand SppcCheckAccess="Edit" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
                     <button kendoGridRemoveCommand SppcCheckAccess="Delete">{{ 'Buttons.Delete' | translate }}</button>
                 </ng-template>
@@ -54,16 +57,15 @@
             <!-- additional columns on large devices -->
             <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px)"></kendo-grid-checkbox-column>
 
-            <ng-template kendoGridDetailTemplate let-dataItem
-                         [kendoGridDetailTemplateShowIf]="showOnlyParent">
-                <div ng-if="dataItem.childCount > 0">
-                    <company [isChild]="true" [parent]="dataItem"></company>
-                </div>
-            </ng-template>
-
             <kendo-grid-column media="(min-width: 450px)" width="150" sppc-grid-column="Company.name">
                 <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                     <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column media="(min-width: 450px)" width="150" sppc-grid-column="Company.dbName">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <sppc-grid-filter [metaData]="getMeta('dbName')" [column]="column" [filter]="filter"></sppc-grid-filter>
                 </ng-template>
             </kendo-grid-column>
 
@@ -74,13 +76,13 @@
             </kendo-grid-column>
 
             <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px)">
-                <ng-template kendoGridCellTemplate let-dataItem>
-                    <button [icon]="'plus'" (click)="addNew(dataItem.id)" kendoGridAddCommand SppcCheckAccess="Create" title="{{ 'Company.NewSubCompany' | translate }}"></button>
+                <ng-template kendoGridCellTemplate let-dataItem>                    
                     <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
                     <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
                 </ng-template>
             </kendo-grid-command-column>
-            <!-- additional columns on large devices -->
+            /k
+              <!-- additional columns on large devices -->
 
         </kendo-grid>
         <company-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"

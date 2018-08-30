@@ -53,15 +53,15 @@ namespace SPPC.Tadbir.Model.Finance
         /// </summary>
         public virtual string Description { get; set; }
 
-        /// <summary>
-        /// Gets or sets the business unit that defines this fiscal period
-        /// </summary>
-        public virtual Company Company { get; set; }
+        ///// <summary>
+        ///// Gets or sets the business unit that defines this fiscal period
+        ///// </summary>
+        //public virtual Company Company { get; set; }
 
         private void InitReferences()
         {
             RoleFiscalPeriods = new List<RoleFiscalPeriod>();
-            Company = new Company();
+            //Company = new Company();
         }
     }
 }

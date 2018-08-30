@@ -402,7 +402,6 @@ namespace SPPC.Tadbir.Persistence
                         .ThenInclude(p => p.Group)
                 .Include(r => r.RoleBranches)
                     .ThenInclude(rb => rb.Branch)
-                        .ThenInclude(br => br.Company)
                 .Include(r => r.UserRoles)
                     .ThenInclude(ur => ur.User)
                         .ThenInclude(usr => usr.Person)

@@ -153,7 +153,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<AccountViewModel, Account>()
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
-                .AfterMap((viewModel, model) => model.Branch.Company.Id = viewModel.CompanyId)
+                .AfterMap((viewModel, model) => model.Branch.CompanyId = viewModel.CompanyId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
             mapperConfig.CreateMap<DetailAccount, DetailAccountViewModel>()
@@ -247,7 +247,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
             mapperConfig.CreateMap<FiscalPeriodViewModel, FiscalPeriod>()
-               .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId);
+               .AfterMap((viewModel, model) => model.CompanyId = viewModel.CompanyId);
             mapperConfig.CreateMap<FiscalPeriod, RelatedItemsViewModel>()
                 .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
             mapperConfig.CreateMap<FiscalPeriod, RelatedItemViewModel>();
@@ -255,9 +255,6 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapCorporateTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<Company, KeyValue>()
-                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
             mapperConfig.CreateMap<Branch, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
@@ -265,15 +262,11 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.IsAccessible, opts => opts.UseValue(true))
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<BranchViewModel, Branch>()
-                .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId)
+                .AfterMap((viewModel, model) => model.CompanyId = viewModel.CompanyId)
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId);
             mapperConfig.CreateMap<Branch, RelatedItemsViewModel>()
                 .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
             mapperConfig.CreateMap<Branch, RelatedItemViewModel>();
-            mapperConfig.CreateMap<Company, CompanyViewModel>()
-                .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
-            mapperConfig.CreateMap<CompanyViewModel, Company>()
-                .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId);
         }
 
         private static void MapWorkflowTypes(IMapperConfigurationExpression mapperConfig)
@@ -439,6 +432,12 @@ namespace SPPC.Tadbir.Mapper
                     : new ColumnViewConfig(prop.Name));
             mapperConfig.CreateMap<UserSetting, ListFormViewConfig>()
                 .ConvertUsing(cfg => JsonHelper.To<ListFormViewConfig>(cfg.Values));
+
+            mapperConfig.CreateMap<CompanyDb, CompanyDbViewModel>();
+            mapperConfig.CreateMap<CompanyDbViewModel, CompanyDb>();
+            mapperConfig.CreateMap<CompanyDb, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
         }
 
         private static void MapMetadataTypes(IMapperConfigurationExpression mapperConfig)
