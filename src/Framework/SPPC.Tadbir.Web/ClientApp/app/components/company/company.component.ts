@@ -123,7 +123,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
 
     deleteModels(confirm: boolean) {
         if (confirm) {
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
         }
 
         this.groupDelete = false;
@@ -139,7 +139,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
 
     reloadGrid(insertedModel?: Company) {
         if (this.viewAccess) {
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
             var filter = this.currentFilter;
             var order = this.currentOrder;
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
@@ -189,7 +189,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
 
                 this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
-                this.sppcLoading.hide();
+                ////this.sppcLoading.hide();
             }, (error => { console.log(error) }))
         }
         else {
@@ -234,13 +234,13 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
 
     deleteModel(confirm: boolean) {
         if (confirm) {
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
             this.companyService.delete(String.Format(CompanyApi.Company, this.deleteModelId)).subscribe(response => {
                 this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
-                this.sppcLoading.hide();
+                ////this.sppcLoading.hide();
                 this.showMessage(error, MessageType.Warning);
             }));
         }
@@ -257,10 +257,10 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
 
     //detail account form events
     public editHandler(arg: any) {
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.companyService.getById(String.Format(CompanyApi.Company, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
-            this.sppcLoading.hide();
+            ////this.sppcLoading.hide();
         })
         this.isNew = false;
         this.errorMessage = '';
@@ -287,7 +287,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
     }
 
     public saveHandler(model: Company) {
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
             this.companyService.edit<Company>(String.Format(CompanyApi.Company, model.id), model)
@@ -343,7 +343,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                     this.errorMessage = error;
                 }));
         }
-        this.sppcLoading.hide();
+        ////this.sppcLoading.hide();
     }
 
     public showOnlyParent(dataItem: Company, index: number): boolean {

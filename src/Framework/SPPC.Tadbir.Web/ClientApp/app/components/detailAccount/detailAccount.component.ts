@@ -97,14 +97,14 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     deleteModels(confirm: boolean) {
         if (confirm) {
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
             //this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
             //    this.showMessage(this.deleteMsg, MessageType.Info);
             //    this.selectedRows = [];
             //    this.reloadGrid();
             //    this.groupDelete = false;
             //}, (error => {
-            //    this.sppcLoading.hide();
+            //    //this.sppcLoading.hide();
             //    this.showMessage(error, MessageType.Warning);
             //}));
         }
@@ -122,7 +122,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     reloadGrid(insertedModel?: DetailAccount) {
         if (this.viewAccess) {
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
             var filter = this.currentFilter;
             var order = this.currentOrder;
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
@@ -161,7 +161,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
                 }
                 this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
-                this.sppcLoading.hide();
+                //this.sppcLoading.hide();
             })
         }
         else {
@@ -226,13 +226,13 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     deleteModel(confirm: boolean) {
         if (confirm) {
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
             this.detailAccountService.delete(String.Format(DetailAccountApi.DetailAccount, this.deleteModelId)).subscribe(response => {
                 this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
-                this.sppcLoading.hide();
+                //this.sppcLoading.hide();
                 this.showMessage(error, MessageType.Warning);
             }));
         }
@@ -249,10 +249,10 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     //detail account form events
     public editHandler(arg: any) {
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.detailAccountService.getById(String.Format(DetailAccountApi.DetailAccount, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
-            this.sppcLoading.hide();
+            //this.sppcLoading.hide();
         })
         this.isNew = false;
         this.errorMessage = '';
@@ -274,7 +274,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     public saveHandler(model: DetailAccount) {
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
             this.detailAccountService.edit<DetailAccount>(String.Format(DetailAccountApi.DetailAccount, model.id), model)
@@ -309,7 +309,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
                     this.errorMessage = error;
                 }));
         }
-        this.sppcLoading.hide();
+        //this.sppcLoading.hide();
     }
 
     public showOnlyParent(dataItem: DetailAccount, index: number): boolean {

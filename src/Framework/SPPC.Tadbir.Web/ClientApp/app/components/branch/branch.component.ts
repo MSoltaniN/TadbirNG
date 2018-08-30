@@ -129,7 +129,7 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
     deleteModels(confirm: boolean) {
         if (confirm) {
-            this.sppcLoading.show();          
+            //this.sppcLoading.show();          
         }
 
         this.groupDelete = false;
@@ -145,7 +145,7 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
     reloadGrid(insertedModel?: Branch) {
         if (this.viewAccess) {
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
             var filter = this.currentFilter;
             var order = this.currentOrder;
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
@@ -198,7 +198,7 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
                 this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
-                this.sppcLoading.hide();
+                ////this.sppcLoading.hide();
             })
         }
         else {
@@ -243,13 +243,13 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
     deleteModel(confirm: boolean) {
         if (confirm) {
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
             this.branchService.delete(String.Format(BranchApi.Branch, this.deleteModelId)).subscribe(response => {
                 this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
-                this.sppcLoading.hide();
+                ////this.sppcLoading.hide();
                 this.showMessage(error, MessageType.Warning);
             }));
         }
@@ -266,10 +266,10 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
     //detail account form events
     public editHandler(arg: any) {
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.branchService.getById(String.Format(BranchApi.Branch, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
-            this.sppcLoading.hide();
+            ////this.sppcLoading.hide();
         })
         this.isNew = false;
         this.errorMessage = '';
@@ -294,10 +294,10 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
     public rolesHandler(branchId: number) {
         this.rolesList = true;
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.branchService.getBranchRoles(branchId).subscribe(res => {
             this.branchRolesData = res;
-            this.sppcLoading.hide();
+            ////this.sppcLoading.hide();
         });
 
         this.errorMessage = '';
@@ -309,21 +309,21 @@ export class BranchComponent extends DefaultComponent implements OnInit {
     }
 
     public saveBranchRolesHandler(userRoles: RelatedItems) {
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.branchService.modifiedBranchRoles(userRoles)
             .subscribe(response => {
                 this.rolesList = false;
                 this.showMessage(this.getText("Branch.UpdateRoles"), MessageType.Succes);
-                this.sppcLoading.hide();
+                ////this.sppcLoading.hide();
             }, (error => {
-                this.sppcLoading.hide();
+                ////this.sppcLoading.hide();
                 this.errorMessage = error;
             }));
     }
 
     public saveHandler(model: Branch) {
         model.companyId = this.CompanyId;
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
             this.branchService.edit<Branch>(String.Format(BranchApi.Branch, model.id), model)
@@ -381,7 +381,7 @@ export class BranchComponent extends DefaultComponent implements OnInit {
                     this.errorMessage = error;
                 }));
         }
-        this.sppcLoading.hide();
+        ////this.sppcLoading.hide();
     }
 
     public showOnlyParent(dataItem: Branch, index: number): boolean {

@@ -264,3 +264,8 @@ table thead tr th span.ui-column-title {
 .k-dialog-buttongroup .k-primary:focus, .k-dialog-buttongroup .k-primary.k-state-focused {
     box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.13) !important;
 }
+
+.ng-bar-placeholder {
+    height: 5px !important;
+    background-color: #4189C7 !important;
+}

@@ -57,7 +57,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
 
     ngOnInit(): void {
 
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.settingsService.getSettingsCategories(SettingsApi.AllSettings).subscribe(res => {
             this.settingsCategories = res;
             var treeData = new Array<SettingTreeNodeInfo>();
@@ -74,7 +74,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
             }
             this.settingModel = JSON.parse(JSON.stringify(treeData));
            
-            this.sppcLoading.hide();
+            //this.sppcLoading.hide();
         });
 
     }
@@ -107,7 +107,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
     }
 
     onSaveSettingsList() {
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
 
         if (this.lastSelectedType) {
             this.settingForm.updateListHandler();
@@ -115,10 +115,10 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
         }
 
         this.settingsService.putSettingsCategories(SettingsApi.AllSettings, this.settingsCategories).subscribe(res => {
-            this.sppcLoading.hide();
+            //this.sppcLoading.hide();
             this.showMessage(this.updateMsg, MessageType.Succes);
         }, (error => {
-            this.sppcLoading.hide();
+            //this.sppcLoading.hide();
             this.errorMessage = error;
         }));
 

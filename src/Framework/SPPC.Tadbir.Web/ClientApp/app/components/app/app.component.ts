@@ -19,7 +19,21 @@ import { TranslateService } from 'ng2-translate';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    
+
+    options = {
+        min: 8,
+        max: 100,
+        ease: 'linear',
+        speed: 200,
+        trickleSpeed: 300,
+        meteor: true,
+        spinner: true,
+        spinnerPosition: 'right',
+        direction: 'ltr+',
+        color: 'white',
+        thick: false
+    };
+
 
     currentContext?: Context = undefined;
 

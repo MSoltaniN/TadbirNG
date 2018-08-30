@@ -323,7 +323,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                     break;
                 }
             }
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
             this.accountRelationsService.getRelatedComponentModel(this.relatedComponentApiUrl).subscribe(res => {
                 this.relatedComponentCategories = res;
                 for (let item of res) {
@@ -336,7 +336,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                     this.noRelatedResultMessage = true;
                 else
                     this.noRelatedResultMessage = false;
-                this.sppcLoading.hide();
+                ////this.sppcLoading.hide();
             })
         }
     }
@@ -430,9 +430,9 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                 }
             }
         }
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.accountRelationsService.edit<AccountItemRelationsInfo>(apiUrl, relationsModel).subscribe(response => {
-            this.sppcLoading.hide();
+            ////this.sppcLoading.hide();
             this.showMessage(this.updateMsg, MessageType.Succes);
 
             this.mainComponentModel = undefined;
@@ -440,7 +440,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
 
         }, (error => {
             this.errorMessage = error;
-            this.sppcLoading.hide();
+            ////this.sppcLoading.hide();
         }));
 
 
@@ -485,7 +485,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                 .Build();
         }
 
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.accountRelationsService.getMainComponentModel(this.mainComponentApiUrl, filterExp).subscribe(res => {
             this.mainComponentCategories = res.json();
             if (this.mainComponentCategories.length == 0)
@@ -493,7 +493,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
             else
                 this.noResultMessage = false;
 
-            this.sppcLoading.hide();
+            ////this.sppcLoading.hide();
         });
     }
 
@@ -520,7 +520,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                     .Build();
             }
 
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
             this.accountRelationsService.getRelatedComponentModel(this.relatedComponentApiUrl, filterExp).subscribe(res => {
                 this.relatedComponentCategories = res;
                 for (let item of res) {
@@ -533,7 +533,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                 else
                     this.noRelatedResultMessage = false;
 
-                this.sppcLoading.hide();
+                ////this.sppcLoading.hide();
             })
         }
     }

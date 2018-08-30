@@ -80,13 +80,13 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     }
 
     deleteModels() {
-        //this.sppcLoading.show();
+        ////this.sppcLoading.show();
         //this.voucherService.groupDelete(VoucherApi.Vouchers, this.selectedRows).subscribe(res => {
         //    this.showMessage(this.deleteMsg, MessageType.Info);
         //    this.selectedRows = [];
         //    this.reloadGrid();
         //}, (error => {
-        //    this.sppcLoading.hide();
+        //    //this.sppcLoading.hide();
         //    this.showMessage(error, MessageType.Warning);
         //}));
     }
@@ -100,7 +100,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     reloadGrid(insertedModel?: Voucher) {
         if (this.viewAccess) {
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
             var filter = this.currentFilter;
             var order = this.currentOrder;
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
@@ -129,7 +129,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                 }
                 this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
-                this.sppcLoading.hide();
+                //this.sppcLoading.hide();
             })
         }
         else {
@@ -178,14 +178,14 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     deleteModel(confirm: boolean) {
         if (confirm) {
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
             this.voucherService.delete(String.Format(VoucherApi.Voucher, this.deleteModelId)).subscribe(response => {
                 this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
-                this.sppcLoading.hide();
+                //this.sppcLoading.hide();
             }, (error => {
-                this.sppcLoading.hide();
+                //this.sppcLoading.hide();
                 this.showMessage(error, MessageType.Warning);
             }));
         }
@@ -201,10 +201,10 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     }
 
     public editHandler(arg: any) {
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.voucherService.getById(String.Format(VoucherApi.Voucher, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
-            this.sppcLoading.hide();
+            //this.sppcLoading.hide();
         })
         this.isNew = false;
         this.errorMessage = '';
@@ -225,7 +225,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     public saveHandler(model: Voucher) {
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         if (!this.isNew) {
             this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model)
                 .subscribe(response => {
@@ -233,10 +233,10 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
-                    this.sppcLoading.hide();
+                    //this.sppcLoading.hide();
                 }, (error => {
                     this.errorMessage = error;
-                    this.sppcLoading.hide();
+                    //this.sppcLoading.hide();
                 }));
         }
         else {
@@ -247,11 +247,11 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     var insertedModel = response;
                     this.reloadGrid(insertedModel);
-                    this.sppcLoading.hide();
+                    //this.sppcLoading.hide();
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
-                    this.sppcLoading.hide();
+                    //this.sppcLoading.hide();
                 }));
         }
         

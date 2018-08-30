@@ -97,7 +97,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
     }
 
     handleRoleChange(item: any) {
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.viewRowPermissionService.getById(String.Format(RoleApi.RowAccessSettings, item)).subscribe(res => {
             this.dataItem = res;
 
@@ -113,7 +113,7 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
             this.numberValue1 = 0;
             this.numberValue2 = 0;
 
-            this.sppcLoading.hide();
+            //this.sppcLoading.hide();
         })
     }
 
@@ -122,12 +122,12 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
     }
 
     getRoles() {
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.viewRowPermissionService.getAll(LookupApi.Roles).subscribe(res => {
             var data = res.body;
             this.rolesArray = data;
             this.ddlRolesData = data;
-            this.sppcLoading.hide();
+            //this.sppcLoading.hide();
         })
     }
 

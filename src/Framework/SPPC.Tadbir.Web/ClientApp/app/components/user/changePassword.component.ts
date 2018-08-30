@@ -43,7 +43,7 @@ export class ChangePasswordComponent extends DefaultComponent {
     //Events
     public onSave(e: any): void {
         e.preventDefault();
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
 
         this.model = this.editForm1.value;
         this.model.userName = this.user_Name;
@@ -56,7 +56,7 @@ export class ChangePasswordComponent extends DefaultComponent {
             this.errorMessage = error;
         }));
 
-        this.sppcLoading.hide();
+        //this.sppcLoading.hide();
 
     }
 

@@ -88,7 +88,7 @@ export class UserComponent extends DefaultComponent implements OnInit {
 
     reloadGrid(insertedModel?: User) {
         if (this.viewAccess) {
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
             var filter = this.currentFilter;
             var order = this.currentOrder;
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
@@ -116,7 +116,7 @@ export class UserComponent extends DefaultComponent implements OnInit {
                 }
                 this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
-                this.sppcLoading.hide();
+                //this.sppcLoading.hide();
             })
         }
         else {
@@ -162,10 +162,10 @@ export class UserComponent extends DefaultComponent implements OnInit {
     }
 
     public editHandler(arg: any) {
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.userService.getById(String.Format(UserApi.User,arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
-            this.sppcLoading.hide();
+            //this.sppcLoading.hide();
         })
         this.isNew = false;
         this.errorMessage = '';
@@ -185,10 +185,10 @@ export class UserComponent extends DefaultComponent implements OnInit {
 
     public rolesHandler(userId: number) {
         this.rolesList = true;
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.userService.getUserRoles(userId).subscribe(res => {
             this.userRolesData = res;
-            this.sppcLoading.hide();
+            //this.sppcLoading.hide();
         });
 
         this.errorMessage = '';
@@ -201,20 +201,20 @@ export class UserComponent extends DefaultComponent implements OnInit {
 
     public saveUserRolesHandler(userRoles: RelatedItems) {
         debugger;
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.userService.modifiedUserRoles(userRoles)
             .subscribe(response => {
                 this.rolesList = false;
                 this.showMessage(this.getText("User.UpdateRoles"), MessageType.Succes);
-                this.sppcLoading.hide();
+                //this.sppcLoading.hide();
             }, (error => {
-                this.sppcLoading.hide();
+                //this.sppcLoading.hide();
                 this.errorMessage = error;
             }));
     }
 
     public saveHandler(model: User) {
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         if (!this.isNew) {
             this.userService.edit<User>(String.Format(UserApi.User, model.id), model)
                 .subscribe(response => {
@@ -239,7 +239,7 @@ export class UserComponent extends DefaultComponent implements OnInit {
                     this.errorMessage = error;
                 }));
         }
-        this.sppcLoading.hide();
+        //this.sppcLoading.hide();
     }
 
 }

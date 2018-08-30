@@ -222,13 +222,13 @@ export class AccountRelationsFormComponent extends DefaultComponent {
                 .Build();
         }
 
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.getApiUrl();
         this.accountRelationsService.getRelatedComponentModel(this.apiUrl, filterExp).subscribe(res => {
             this.relatedComponentCategories = res;
             if(this.relatedComponentCategories.length == 0)
                 this.resultMessage = true;
-            this.sppcLoading.hide();
+            ////this.sppcLoading.hide();
         })
     }
 

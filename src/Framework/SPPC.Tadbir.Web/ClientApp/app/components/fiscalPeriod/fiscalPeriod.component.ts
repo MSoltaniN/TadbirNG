@@ -85,13 +85,13 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
     }
 
     deleteModels() {
-        //this.sppcLoading.show();
+        ////this.sppcLoading.show();
         //this.voucherService.groupDelete(VoucherApi.Vouchers, this.selectedRows).subscribe(res => {
         //    this.showMessage(this.deleteMsg, MessageType.Info);
         //    this.selectedRows = [];
         //    this.reloadGrid();
         //}, (error => {
-        //    this.sppcLoading.hide();
+        //    ////this.sppcLoading.hide();
         //    this.showMessage(error, MessageType.Warning);
         //}));
     }
@@ -105,7 +105,7 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
 
     reloadGrid(insertedModel?: FiscalPeriod) {
         if (this.viewAccess) {
-            this.sppcLoading.show();
+            ////this.sppcLoading.show();
             var filter = this.currentFilter;
             var order = this.currentOrder;
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
@@ -134,7 +134,7 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
                 }
                 this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
-                this.sppcLoading.hide();
+                //////this.sppcLoading.hide();
             })
         }
         else {
@@ -181,13 +181,13 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
 
     deleteModel(confirm: boolean) {
         if (confirm) {
-            this.sppcLoading.show();
+            ////this.sppcLoading.show();
             this.fiscalPeriodService.delete(String.Format(FiscalPeriodApi.FiscalPeriod, this.deleteModelId)).subscribe(response => {
                 this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
-                this.sppcLoading.hide();
+                //////this.sppcLoading.hide();
                 this.showMessage(error, MessageType.Warning);
             }));
         }
@@ -203,10 +203,10 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
     }
 
     public editHandler(arg: any) {
-        this.sppcLoading.show();
+        ////this.sppcLoading.show();
         this.fiscalPeriodService.getById(String.Format(FiscalPeriodApi.FiscalPeriod, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
-            this.sppcLoading.hide();
+            //////this.sppcLoading.hide();
         })
         this.isNew = false;
         this.errorMessage = '';
@@ -226,10 +226,10 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
 
     public rolesHandler(fPeriodId: number) {
         this.rolesList = true;
-        this.sppcLoading.show();
+        ////this.sppcLoading.show();
         this.fiscalPeriodService.getFiscalPeriodRoles(fPeriodId).subscribe(res => {
             this.fiscalPeriodRolesData = res;
-            this.sppcLoading.hide();
+            //////this.sppcLoading.hide();
         });
 
         this.errorMessage = '';
@@ -242,21 +242,21 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
 
     public saveFiscalPeriodRolesHandler(fPeriodRoles: RelatedItems) {
         debugger;
-        this.sppcLoading.show();
+        ////this.sppcLoading.show();
         this.fiscalPeriodService.modifiedFiscalPeriodRoles(fPeriodRoles)
             .subscribe(response => {
                 this.rolesList = false;
                 this.showMessage(this.getText("FiscalPeriod.UpdateRoles"), MessageType.Succes);
-                this.sppcLoading.hide();
+                //////this.sppcLoading.hide();
             }, (error => {
-                this.sppcLoading.hide();
+                //////this.sppcLoading.hide();
                 this.errorMessage = error;
             }));
     }
 
     public saveHandler(model: FiscalPeriod) {
         model.companyId = this.CompanyId;    
-        this.sppcLoading.show();
+        ////this.sppcLoading.show();
         if (!this.isNew) {
             this.fiscalPeriodService.edit<FiscalPeriod>(String.Format(FiscalPeriodApi.FiscalPeriod, model.id), model)
                 .subscribe(response => {
@@ -282,7 +282,7 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
                     this.errorMessage = error;
                 }));
         }
-        this.sppcLoading.hide();
+        //////this.sppcLoading.hide();
     }
 
 }

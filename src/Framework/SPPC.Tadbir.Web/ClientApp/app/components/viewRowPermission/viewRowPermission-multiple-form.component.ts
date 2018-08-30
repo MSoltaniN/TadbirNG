@@ -167,7 +167,7 @@ export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
                     .Build();
             }
 
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
 
             this.viewRowPermissionService.getRowList(Environment.BaseUrl + String.Format(this.fetchUrl, this.FiscalPeriodId, this.BranchId), filterExp).subscribe(res => {
                 this.rowList = res;
@@ -179,7 +179,7 @@ export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
                     }
 
                 }
-                this.sppcLoading.hide();
+                //this.sppcLoading.hide();
             })
 
         }

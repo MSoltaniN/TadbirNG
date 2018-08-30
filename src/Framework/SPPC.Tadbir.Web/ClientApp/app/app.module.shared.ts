@@ -118,6 +118,9 @@ import { GeneralErrorHandler } from './class/error.handler';
 import { HttpClientModule } from '@angular/common/http';
 
 
+import { NgProgressModule } from '@ngx-progressbar/core';
+import { NgProgressHttpModule } from '@ngx-progressbar/http';
+import { NgProgressRouterModule } from '@ngx-progressbar/router';
 
 @NgModule({
     declarations: [
@@ -205,7 +208,7 @@ import { HttpClientModule } from '@angular/common/http';
         DatePipe,
         Layout,
         EnviromentComponent,
-        Permissions        
+        Permissions     
     ],
     imports: [
         ButtonsModule,
@@ -221,7 +224,16 @@ import { HttpClientModule } from '@angular/common/http';
         DpDatePickerModule,
         TextMaskModule,
         TreeViewModule,
-        HttpClientModule, 
+        HttpClientModule,          
+        NgProgressModule.forRoot({
+            direction: 'ltr+',
+            spinnerPosition: 'left',
+            color: 'white',            
+            thick: true,
+            meteor: false
+        }),        
+        NgProgressRouterModule,
+        NgProgressHttpModule,
         TranslateModule.forRoot(),
         RouterModule.forRoot([
             { path: '', redirectTo: 'login', pathMatch: 'full' },            
@@ -249,6 +261,8 @@ import { HttpClientModule } from '@angular/common/http';
         SppcGridDatepicker
     ]
 })
+
+
 export class AppModuleShared {
 }
 

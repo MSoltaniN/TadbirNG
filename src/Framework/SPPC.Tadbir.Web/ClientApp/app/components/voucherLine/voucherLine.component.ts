@@ -88,7 +88,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     }
 
     reloadGrid(insertedModel?: VoucherLine) {
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         var filter = this.currentFilter;
         var order = this.currentOrder;
         if (this.totalRecords == this.skip && this.totalRecords != 0) {
@@ -124,7 +124,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
             this.debitSum = res.debitSum;
             this.creditSum = res.creditSum;
 
-            this.sppcLoading.hide();
+            //this.sppcLoading.hide();
         })
     }
 
@@ -162,13 +162,13 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
     deleteModel(confirm: boolean) {
         if (confirm) {
-            this.sppcLoading.show();
+            //this.sppcLoading.show();
             this.voucherLineService.delete(String.Format(VoucherApi.VoucherArticle,this.deleteModelId)).subscribe(response => {
                 this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
                 this.reloadGrid();
             }, (error => {
-                this.sppcLoading.hide();
+                //this.sppcLoading.hide();
                 this.showMessage(error, MessageType.Warning);
             }));
         }
@@ -185,10 +185,10 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
     //voucher form events
     public editHandler(arg: any) {
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         this.voucherLineService.getById(String.Format(VoucherApi.VoucherArticle,arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
-            this.sppcLoading.hide();
+            //this.sppcLoading.hide();
         })
         this.isNew = false;
         this.errorMessage = '';
@@ -209,7 +209,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     public saveHandler(model: VoucherLine) {
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
-        this.sppcLoading.show();
+        //this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
             this.voucherLineService.edit<VoucherLine>(String.Format(VoucherApi.VoucherArticle, model.id), model)
@@ -236,7 +236,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
                     this.errorMessage = error;
                 }));
         }
-        this.sppcLoading.hide();
+        //this.sppcLoading.hide();
     }
 
 }
