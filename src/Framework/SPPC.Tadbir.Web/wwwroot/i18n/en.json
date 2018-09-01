@@ -323,6 +323,8 @@
   "Login": {
     "Ok": "Ok",
     "Title": "Login",
+    "Cancel": "Cancle",
+    "Exit": "Exit",
     "SelectTitle": "Select Company",
     "UserName": "User Name",
     "Password": "Password",

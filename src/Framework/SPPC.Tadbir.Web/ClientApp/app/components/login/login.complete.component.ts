@@ -180,7 +180,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         return isValidate;
     }
 
-    selectParams() {
+    selectParams() {        
         if (this.isValidate()) {
 
             if (this.authenticationService.islogin()) {
@@ -199,6 +199,19 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                     this.loadMenuAndRoute(currentUser);
 
                 }
+            }
+        }
+    }
+
+    onCancleClick() {
+        if (this.authenticationService.islogin()) {
+            var currentUser = this.authenticationService.getCurrentUser();
+            if (currentUser != null) {
+                this.companyId = currentUser.companyId.toString();
+                this.branchId = currentUser.branchId.toString();
+                this.fiscalPeriodId = currentUser.fpId.toString();
+
+                this.loadMenuAndRoute(currentUser);
             }
         }
     }

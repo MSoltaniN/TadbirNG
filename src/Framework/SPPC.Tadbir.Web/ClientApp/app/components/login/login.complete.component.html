@@ -25,7 +25,10 @@
                     </div>
                     <div class="form-group voffset2">
                         <div class="col-md-12">
-                            <button  class="btn btn-primary voffset3">{{ 'Login.Ok' | translate }}</button>                            
+                            <button class="btn btn-primary voffset3">{{ 'Login.Ok' | translate }}</button>
+
+                            <button type="button" *ngIf="this.CompanyId > 0" (click)="onCancleClick()" class="btn btn-primary voffset3">{{ 'Login.Cancel' | translate }}</button>
+                            <a class="btn btn-primary voffset3" routerLink="/logout">{{ 'Login.Exit' | translate }}</a>
                         </div>
                     </div>
                 </form>
