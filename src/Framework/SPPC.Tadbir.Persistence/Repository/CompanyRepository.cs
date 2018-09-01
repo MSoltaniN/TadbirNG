@@ -132,6 +132,8 @@ namespace SPPC.Tadbir.Persistence
         {
             company.Name = companyViewModel.Name;
             company.Description = companyViewModel.Description;
+            company.DbName = companyViewModel.DbName;
+            company.DbPath = companyViewModel.DbPath;
         }
     }
 }
