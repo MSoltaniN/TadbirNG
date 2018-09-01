@@ -258,7 +258,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public saveHandler(model: Company) {
+    public saveHandler(model: CompanyDb) {
         //this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;
@@ -279,7 +279,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
                     this.editDataItem = undefined;
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     var insertedModel = response;
-                    this.reloadGrid();
+                    this.reloadGrid(insertedModel);
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
