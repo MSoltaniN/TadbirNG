@@ -13,7 +13,8 @@ import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-
+import { CostCenterApi } from '../../service/api/index';
+import { String } from '../../class/source';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -44,8 +45,14 @@ export class CostCenterFormComponent extends DefaultComponent {
     
     //create properties
     active: boolean = false;
+    fullCodeApiUrl: string;
+
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string = '';
+
+    @Input() public set parentId(id: number) {
+        this.fullCodeApiUrl = String.Format(CostCenterApi.CostCenterFullCode, id ? id : 0);
+    }
 
     @Input() public set model(costCenter: CostCenter) {
         this.editForm.reset(costCenter);

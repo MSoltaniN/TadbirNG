@@ -25,7 +25,7 @@
         <div class="form-group">
             <label for="code" class="control-label">{{ 'CostCenter.Code' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="code" />
+            <input type="text" class="k-textbox" formControlName="code" [sppsFullCode]="'fullCode'" [apiUrl]="fullCodeApiUrl"/>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
                 <span *ngIf="editForm.controls.code.errors?.required">{{ 'AllValidations.CostCenter.CodeIsRequired' | translate }}</span>
@@ -36,12 +36,12 @@
         <div class="form-group">
             <label for="fullCode" class="control-label">{{ 'CostCenter.FullCode' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="fullCode" />
+            <input type="text" class="k-textbox" formControlName="fullCode" readonly id="fullCode" style="direction:ltr" />
 
-            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fullCode.valid || editForm.controls.fullCode.pristine">
+            <!--<div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fullCode.valid || editForm.controls.fullCode.pristine">
                 <span *ngIf="editForm.controls.fullCode.errors?.required">{{ 'AllValidations.CostCenter.FullCodeIsRequired' | translate }}</span>
                 <span *ngIf="editForm.controls.fullCode.errors?.maxlength">{{ 'AllValidations.CostCenter.FullCodeIsTooLong' | translate }}</span>
-            </div>
+            </div>-->
         </div>
 
         <div class="form-group">

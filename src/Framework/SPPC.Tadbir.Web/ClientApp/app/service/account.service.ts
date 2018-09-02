@@ -17,7 +17,7 @@ export class AccountInfo implements Account
 {    
     constructor(public id: number = 0, public code: string = "", public name: string = "",
         public fiscalPeriodId: number = 0, public description: string = "",
-        public branchId: number = 0, public level: number = 0, public fullCode: string = "0",
+        public branchId: number = 0, public level: number = 0, public fullCode: string = "",
         public childCount: number = 0, public parentId: number = 0)
     { }
     
@@ -40,12 +40,4 @@ export class AccountService extends BaseService
             .map(response => <any>(<Response>response));
     }
     
-
-    getAccountFullCode(parentId: number) {
-        var url = String.Format(AccountApi.AccountFullCode, parentId);
-        var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
-            .map(response => <any>(<Response>response));
-    }
-
 }

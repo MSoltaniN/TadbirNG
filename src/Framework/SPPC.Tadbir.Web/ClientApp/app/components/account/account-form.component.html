@@ -19,7 +19,7 @@
         <div class="form-group">
             <label for="code" class="control-label">{{ 'Account.Code' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="code" [sppsFullCode]="'fullCode'" #Code/>
+            <input type="text" class="k-textbox" formControlName="code" [sppsFullCode]="'fullCode'" [apiUrl]="fullCodeApiUrl"/>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
                 <span *ngIf="editForm.controls.code.errors?.required">{{ 'AllValidations.Account.CodeIsRequired' | translate }}</span>
@@ -60,7 +60,8 @@
             </div>
         </div>
     </form>
-
+    <div>
+    </div>
     <kendo-dialog-actions>
         <button class="k-button k-primary" [disabled]="!editForm.valid || disableSaveBtn" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
         <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
