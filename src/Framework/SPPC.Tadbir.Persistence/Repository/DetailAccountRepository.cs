@@ -247,6 +247,23 @@ namespace SPPC.Tadbir.Persistence
             return hasChildren;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مقدار فیلد FullCode والد هر تفصیلی شناور را برمیگرداند
+        /// </summary>
+        /// <param name="parentId">شناسه والد هر تفصیلی شناور</param>
+        /// <returns>اگر تفصیلی شناور والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
+        public async Task<string> GetDetailAccountFullCodeAsync(int parentId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
+            var detailAccount = await repository.GetByIDAsync(parentId);
+            if (detailAccount == null)
+            {
+                return string.Empty;
+            }
+
+            return detailAccount.FullCode;
+        }
+
         private static void UpdateExistingDetailAccount(DetailAccountViewModel detailViewModel, DetailAccount detail)
         {
             detail.Code = detailViewModel.Code;

@@ -121,5 +121,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در حالتی که پروژه مشخص شده دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool?> HasChildrenAsync(int projectId);
+
+        /// <summary>
+        /// به روش آسنکرون، مقدار فیلد FullCode والد هر پروژه را برمیگرداند
+        /// </summary>
+        /// <param name="parentId">شناسه والد هر پروژه</param>
+        /// <returns>اگر پروژه والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
+        Task<string> GetProjectFullCodeAsync(int parentId);
     }
 }

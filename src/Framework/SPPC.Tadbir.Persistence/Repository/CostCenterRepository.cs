@@ -247,6 +247,23 @@ namespace SPPC.Tadbir.Persistence
             return hasChildren;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مقدار فیلد FullCode والد هر مرکز هزینه را برمیگرداند
+        /// </summary>
+        /// <param name="parentId">شناسه والد هر مرکز هزینه</param>
+        /// <returns>اگر مرکز هزینه والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
+        public async Task<string> GetCostCenterFullCodeAsync(int parentId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
+            var costCenter = await repository.GetByIDAsync(parentId);
+            if (costCenter == null)
+            {
+                return string.Empty;
+            }
+
+            return costCenter.FullCode;
+        }
+
         private static void UpdateExistingCostCenter(CostCenterViewModel costCenterViewModel, CostCenter costCenter)
         {
             costCenter.Code = costCenterViewModel.Code;

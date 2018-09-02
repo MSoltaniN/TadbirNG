@@ -72,5 +72,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for cost center metadata
         /// </summary>
         public const string CostCenterMetadataUrl = "ccenters/metadata";
+
+        /// <summary>
+        /// API client URL for cost center full code
+        /// </summary>
+        public const string CostCenterFullCode = "ccenters/fullcode/{0}";
+
+        /// <summary>
+        /// API server route URL for cost center full code
+        /// </summary>
+        public const string CostCenterFullCodeUrl = "ccenters/fullcode/{0}";
     }
 }

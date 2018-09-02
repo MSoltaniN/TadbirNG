@@ -122,5 +122,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در حالتی که مرکز هزینه مشخص شده دارای زیرمجموعه باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool?> HasChildrenAsync(int costCenterId);
+
+        /// <summary>
+        /// به روش آسنکرون، مقدار فیلد FullCode والد هر مرکز هزینه را برمیگرداند
+        /// </summary>
+        /// <param name="parentId">شناسه والد هر مرکز هزینه</param>
+        /// <returns>اگر مرکز هزینه والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
+        Task<string> GetCostCenterFullCodeAsync(int parentId);
     }
 }
