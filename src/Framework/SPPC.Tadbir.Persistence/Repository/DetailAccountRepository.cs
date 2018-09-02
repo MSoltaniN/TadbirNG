@@ -200,7 +200,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetByCriteriaAsync(
                     facc => facc.Id != detailAccount.Id
                         && facc.FiscalPeriod.Id == detailAccount.FiscalPeriodId
-                        && facc.Code == detailAccount.Code);
+                        && facc.FullCode == detailAccount.FullCode);
             return (detailAccounts.Count > 0);
         }
 

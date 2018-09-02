@@ -199,7 +199,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetByCriteriaAsync(
                     prj => prj.Id != project.Id
                         && prj.FiscalPeriod.Id == project.FiscalPeriodId
-                        && prj.Code == project.Code);
+                        && prj.FullCode == project.FullCode);
             return (projects.Count > 0);
         }
 

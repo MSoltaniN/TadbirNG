@@ -200,7 +200,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetByCriteriaAsync(
                     cc => cc.Id != costCenter.Id
                         && cc.FiscalPeriod.Id == costCenter.FiscalPeriodId
-                        && cc.Code == costCenter.Code);
+                        && cc.FullCode == costCenter.FullCode);
             return (costCenters.Count > 0);
         }
 

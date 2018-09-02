@@ -137,7 +137,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateCostCenterAsync(costCenter))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.CostCenter));
+                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.CostCenter, costCenter.FullCode));
             }
 
             return Ok();
