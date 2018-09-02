@@ -100,12 +100,19 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     parentTitle: string = '';
     parentValue: string = '';
 
+    isChildExpanding: boolean;
     componentParentId: number;
+    goLastPage: boolean;
     //#endregion
 
     //#region Events
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Account, AccountPermissions.View);
+        if (this.parentAccount && this.parentAccount.isChildExpanding) {
+            this.goLastPage = true;
+            this.parentAccount.isChildExpanding = false;
+        }
+
         this.reloadGrid();
         if (this.parentAccount) {
             this.parentAccount.addChildAccount(this);
@@ -158,7 +165,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         var pageCount: number = 0;
         pageCount = Math.floor(this.totalRecords / this.pageSize);
 
-        if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
+        if (this.totalRecords % this.pageSize == 0) {
             this.skip = (pageCount * this.pageSize) - this.pageSize;
             return;
         }
@@ -346,8 +353,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
-            if (insertedModel)
-                this.goToLastPage();
 
             if (this.parent) {
                 if (this.parent.childCount > 0)
@@ -362,26 +367,53 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
 
 
-            this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.body;
-                //this.properties = resData.properties;
-                var totalCount = 0;
-                //if (insertedModel && this.addToContainer) {
-                //    var rows = (resData as Array<Account>);
-                //    var index = rows.findIndex(p => p.id == insertedModel.id);
-                //    if (index >= 0) {
-                //        rows.splice(index, 1);
-                //        rows.splice(0, 0, insertedModel);
-                //    }
-                //    else {
-                //        if (rows.length == this.pageSize) {
-                //            rows.splice(this.pageSize - 1, 1);
-                //        }
-                //        rows.splice(0, 0, insertedModel);
-                //    }
+            //#region load inner grid
+            if (this.parentAccount != null && (this.goLastPage || (insertedModel && !this.addToContainer))) {
+                //Todo: for all tree component
+                //call top 1 account for get totalcount
+                this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId),
+                    0, 1, order, filter).subscribe((res) => {
 
-                //    resData = rows;
-                //}
+                        if (res.headers != null) {
+                            var headers = res.headers != undefined ? res.headers : null;
+                            if (headers != null) {
+                                var retheader = headers.get('X-Total-Count');
+                                if (retheader != null)
+                                    this.totalRecords = parseInt(retheader.toString());
+                            }
+                        }
+
+                        this.goToLastPage();
+                        this.goLastPage = false;
+                        
+                        this.loadGridData(insertedModel, order, filter);
+                    });
+            }
+            //#endregion
+            else {
+                if (insertedModel && this.addToContainer)
+                    this.goToLastPage();                
+
+                this.loadGridData(insertedModel,order,filter);
+            }
+           
+        }
+        else {
+            this.rowData = {
+                data: [],
+                total: 0
+            }
+        }
+    }
+
+    loadGridData(insertedModel?: Account,order?:string,filter?:FilterExpression) {
+
+        this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId),
+            this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+                var resData = res.body;
+
+                var totalCount = 0;
+
                 if (res.headers != null) {
                     var headers = res.headers != undefined ? res.headers : null;
                     if (headers != null) {
@@ -409,10 +441,12 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                         var rows = (this.parentAccount.rowData.data as Array<Account>);
                         var index = rows.findIndex(p => p.id == insertedModel.parentId);
                         if (index >= 0) {
-                            this.parentAccount.grid.expandRow(this.parentAccount.skip + index);
+                            this.parentAccount.isChildExpanding = true;
+                            this.parentAccount.grid.expandRow(this.parentAccount.skip + index);                            
                         }
                     }
                     else if (index >= 0) {
+                        this.isChildExpanding = true;
                         this.grid.expandRow(this.skip + index);
                     }
                 }
@@ -434,16 +468,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                 this.totalRecords = totalCount;
                 this.grid.loading = false;
             })
-        }
-        else {
-            this.rowData = {
-                data: [],
-                total: 0
-            }
-        }
     }
-
-
 
     deleteModel(confirm: boolean) {
         if (confirm) {
@@ -546,6 +571,8 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
         if (addToThis)
             this.addToContainer = addToThis;
+        else
+            this.addToContainer = false;
 
         this.errorMessage = '';
     }
