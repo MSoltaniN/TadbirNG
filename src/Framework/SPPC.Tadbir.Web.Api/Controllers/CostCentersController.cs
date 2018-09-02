@@ -75,6 +75,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(metadata);
         }
 
+        // GET: api/ccenters/fullcode/{parentId}
+        [HttpGet]
+        [Route(CostCenterApi.CostCenterFullCodeUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)AccountPermissions.All)]
+        public async Task<IActionResult> GetFullCodeAsync(int parentId)
+        {
+            if (parentId <= 0)
+            {
+                return Ok(string.Empty);
+            }
+
+            string fullCode = await _repository.GetCostCenterFullCodeAsync(parentId);
+
+            return Ok(fullCode);
+        }
+
         // POST: api/ccenters
         [HttpPost]
         [Route(CostCenterApi.CostCentersUrl)]

@@ -75,6 +75,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(metadata);
         }
 
+        // GET: api/faccounts/fullcode/{parentId}
+        [HttpGet]
+        [Route(DetailAccountApi.DetailAccountFullCodeUrl)]
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)AccountPermissions.All)]
+        public async Task<IActionResult> GetFullCodeAsync(int parentId)
+        {
+            if (parentId <= 0)
+            {
+                return Ok(string.Empty);
+            }
+
+            string fullCode = await _repository.GetDetailAccountFullCodeAsync(parentId);
+
+            return Ok(fullCode);
+        }
+
         // POST: api/faccounts
         [HttpPost]
         [Route(DetailAccountApi.DetailAccountsUrl)]

@@ -13,6 +13,8 @@ import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
+import { ProjectApi } from '../../service/api/index';
+import { String } from '../../class/source';
 
 
 
@@ -44,8 +46,14 @@ export class ProjectFormComponent extends DefaultComponent {
 
     //create properties
     active: boolean = false;
+    fullCodeApiUrl: string;
+
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string = '';
+
+    @Input() public set parentId(id: number) {
+        this.fullCodeApiUrl = String.Format(ProjectApi.ProjectFullCode, id ? id : 0);
+    }
 
     @Input() public set model(project: Project) {
         this.editForm.reset(project);

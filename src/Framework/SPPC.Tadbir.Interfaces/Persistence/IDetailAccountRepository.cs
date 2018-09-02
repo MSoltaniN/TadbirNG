@@ -121,5 +121,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>در حالتی که تفصیلی شناور مشخص شده دارای شناور زیرمجموعه باشد مقدار "درست" و در غیر این صورت
         /// مقدار "نادرست" را برمی گرداند</returns>
         Task<bool?> HasChildrenAsync(int faccountId);
+
+        /// <summary>
+        /// به روش آسنکرون، مقدار فیلد FullCode والد هر تفصیلی شناور را برمیگرداند
+        /// </summary>
+        /// <param name="parentId">شناسه والد هر تفصیلی شناور</param>
+        /// <returns>اگر تفصیلی شناور والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
+        Task<string> GetDetailAccountFullCodeAsync(int parentId);
     }
 }
