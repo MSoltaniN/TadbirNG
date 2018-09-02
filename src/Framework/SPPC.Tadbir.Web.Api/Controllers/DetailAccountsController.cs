@@ -78,7 +78,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/faccounts/fullcode/{parentId}
         [HttpGet]
         [Route(DetailAccountApi.DetailAccountFullCodeUrl)]
-        [AuthorizeRequest(SecureEntity.DetailAccount, (int)AccountPermissions.All)]
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.Create | (int)DetailAccountPermissions.Edit)]
         public async Task<IActionResult> GetFullCodeAsync(int parentId)
         {
             if (parentId <= 0)

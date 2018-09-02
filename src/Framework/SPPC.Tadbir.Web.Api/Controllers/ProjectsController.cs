@@ -78,7 +78,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/projects/fullcode/{parentId}
         [HttpGet]
         [Route(ProjectApi.ProjectFullCodeUrl)]
-        [AuthorizeRequest(SecureEntity.Project, (int)AccountPermissions.All)]
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Create | (int)ProjectPermissions.Edit)]
         public async Task<IActionResult> GetFullCodeAsync(int parentId)
         {
             if (parentId <= 0)

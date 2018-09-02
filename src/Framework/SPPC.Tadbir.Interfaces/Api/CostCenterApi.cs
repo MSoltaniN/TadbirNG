@@ -81,6 +81,6 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API server route URL for cost center full code
         /// </summary>
-        public const string CostCenterFullCodeUrl = "ccenters/fullcode/{0}";
+        public const string CostCenterFullCodeUrl = "ccenters/fullcode/{parentId}";
     }
 }

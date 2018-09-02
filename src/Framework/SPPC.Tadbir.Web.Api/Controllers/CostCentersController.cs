@@ -78,7 +78,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // GET: api/ccenters/fullcode/{parentId}
         [HttpGet]
         [Route(CostCenterApi.CostCenterFullCodeUrl)]
-        [AuthorizeRequest(SecureEntity.CostCenter, (int)AccountPermissions.All)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Create | (int)CostCenterPermissions.Edit)]
         public async Task<IActionResult> GetFullCodeAsync(int parentId)
         {
             if (parentId <= 0)
