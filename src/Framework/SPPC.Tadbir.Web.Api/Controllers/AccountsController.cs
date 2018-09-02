@@ -197,7 +197,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateAccountAsync(account))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateFieldValue, AppStrings.AccountCode));
+                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Account, account.FullCode));
             }
 
             return Ok();

@@ -196,7 +196,7 @@
     <value>تفصیلی های شناور</value>
   </data>
   <data name="DuplicateCodeValue" xml:space="preserve">
-    <value>کد {0} تکراری است.</value>
+    <value>کد {0} '{1}' تکراری است.</value>
   </data>
   <data name="DuplicateFieldValue" xml:space="preserve">
     <value>{0} تکراری است.</value>

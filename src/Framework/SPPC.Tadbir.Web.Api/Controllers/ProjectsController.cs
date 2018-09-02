@@ -153,7 +153,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateProjectAsync(project))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Project));
+                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Project, project.FullCode));
             }
 
             return Ok();
