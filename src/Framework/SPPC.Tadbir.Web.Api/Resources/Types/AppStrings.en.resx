@@ -196,7 +196,7 @@
     <value>Detail accounts</value>
   </data>
   <data name="DuplicateCodeValue" xml:space="preserve">
-    <value>{0} code is duplicate.</value>
+    <value>{0} code '{1}' is duplicate.</value>
   </data>
   <data name="DuplicateFieldValue" xml:space="preserve">
     <value>{0} is duplicate.</value>

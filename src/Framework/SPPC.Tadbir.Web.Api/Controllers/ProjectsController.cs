@@ -75,6 +75,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(metadata);
         }
 
+        // GET: api/projects/fullcode/{parentId}
+        [HttpGet]
+        [Route(ProjectApi.ProjectFullCodeUrl)]
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Create | (int)ProjectPermissions.Edit)]
+        public async Task<IActionResult> GetFullCodeAsync(int parentId)
+        {
+            if (parentId <= 0)
+            {
+                return Ok(string.Empty);
+            }
+
+            string fullCode = await _repository.GetProjectFullCodeAsync(parentId);
+
+            return Ok(fullCode);
+        }
+
         // POST: api/projects
         [HttpPost]
         [Route(ProjectApi.ProjectsUrl)]
@@ -137,7 +153,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateProjectAsync(project))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Project));
+                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Project, project.FullCode));
             }
 
             return Ok();

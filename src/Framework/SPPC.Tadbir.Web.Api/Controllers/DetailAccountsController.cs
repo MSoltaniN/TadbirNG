@@ -75,6 +75,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(metadata);
         }
 
+        // GET: api/faccounts/fullcode/{parentId}
+        [HttpGet]
+        [Route(DetailAccountApi.DetailAccountFullCodeUrl)]
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.Create | (int)DetailAccountPermissions.Edit)]
+        public async Task<IActionResult> GetFullCodeAsync(int parentId)
+        {
+            if (parentId <= 0)
+            {
+                return Ok(string.Empty);
+            }
+
+            string fullCode = await _repository.GetDetailAccountFullCodeAsync(parentId);
+
+            return Ok(fullCode);
+        }
+
         // POST: api/faccounts
         [HttpPost]
         [Route(DetailAccountApi.DetailAccountsUrl)]
@@ -137,7 +153,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateDetailAccountAsync(detailAccount))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.DetailAccount));
+                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.DetailAccount, detailAccount.FullCode));
             }
 
             return Ok();

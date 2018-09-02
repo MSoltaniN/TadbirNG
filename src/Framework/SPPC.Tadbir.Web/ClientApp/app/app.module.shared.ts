@@ -85,7 +85,7 @@ import { HotkeyModule } from 'angular2-hotkeys';
 
 import {
     AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
-    BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService,
+    BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService, FullCodeService
 
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
@@ -189,6 +189,7 @@ import { NgProgressRouterModule } from '@ngx-progressbar/router';
     ],
     providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
         UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService,
+        FullCodeService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: ErrorHandler , useClass : GeneralErrorHandler},
         //{

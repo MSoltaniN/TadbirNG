@@ -199,7 +199,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetByCriteriaAsync(
                     prj => prj.Id != project.Id
                         && prj.FiscalPeriod.Id == project.FiscalPeriodId
-                        && prj.Code == project.Code);
+                        && prj.FullCode == project.FullCode);
             return (projects.Count > 0);
         }
 
@@ -244,6 +244,23 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return hasChildren;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مقدار فیلد FullCode والد هر پروژه را برمیگرداند
+        /// </summary>
+        /// <param name="parentId">شناسه والد هر پروژه</param>
+        /// <returns>اگر پروژه والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
+        public async Task<string> GetProjectFullCodeAsync(int parentId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
+            var project = await repository.GetByIDAsync(parentId);
+            if (project == null)
+            {
+                return string.Empty;
+            }
+
+            return project.FullCode;
         }
 
         private static void UpdateExistingProject(ProjectViewModel projectViewModel, Project project)

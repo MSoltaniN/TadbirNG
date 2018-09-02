@@ -128,7 +128,7 @@
             <!-- additional columns on large devices -->
 
         </kendo-grid>
-        <project-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
+        <project-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage" [parentId]="parentId"
                                       (save)="saveHandler($event)"
                                       (cancel)="cancelHandler()">
         </project-form-component>

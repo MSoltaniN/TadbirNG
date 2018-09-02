@@ -127,7 +127,7 @@
             <!-- additional columns on large devices -->
 
         </kendo-grid>
-        <costCenter-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
+        <costCenter-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage" [parentId]="parentId"
                                       (save)="saveHandler($event)"
                                       (cancel)="cancelHandler()">
         </costCenter-form-component>

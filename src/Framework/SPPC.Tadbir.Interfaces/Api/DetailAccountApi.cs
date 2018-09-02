@@ -73,5 +73,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for detail account metadata
         /// </summary>
         public const string DetailAccountMetadataUrl = "faccounts/metadata";
+
+        /// <summary>
+        /// API client URL for detail account full code
+        /// </summary>
+        public const string DetailAccountFullCode = "faccounts/fullcode/{0}";
+
+        /// <summary>
+        /// API server route URL for detail account full code
+        /// </summary>
+        public const string DetailAccountFullCodeUrl = "faccounts/fullcode/{parentId}";
     }
 }

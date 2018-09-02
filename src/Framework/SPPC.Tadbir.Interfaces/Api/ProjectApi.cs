@@ -72,5 +72,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for project metadata
         /// </summary>
         public const string ProjectMetadataUrl = "projects/metadata";
+
+        /// <summary>
+        /// API client URL for project full code
+        /// </summary>
+        public const string ProjectFullCode = "projects/fullcode/{0}";
+
+        /// <summary>
+        /// API server route URL for project full code
+        /// </summary>
+        public const string ProjectFullCodeUrl = "projects/fullcode/{parentId}";
     }
 }

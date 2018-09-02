@@ -244,7 +244,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetByCriteriaAsync(
                     acc => acc.Id != accountViewModel.Id
                         && acc.FiscalPeriod.Id == accountViewModel.FiscalPeriodId
-                        && acc.Code == accountViewModel.Code);
+                        && acc.FullCode == accountViewModel.FullCode);
             return (accounts.Count > 0);
         }
 

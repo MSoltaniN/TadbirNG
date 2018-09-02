@@ -75,6 +75,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(metadata);
         }
 
+        // GET: api/ccenters/fullcode/{parentId}
+        [HttpGet]
+        [Route(CostCenterApi.CostCenterFullCodeUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Create | (int)CostCenterPermissions.Edit)]
+        public async Task<IActionResult> GetFullCodeAsync(int parentId)
+        {
+            if (parentId <= 0)
+            {
+                return Ok(string.Empty);
+            }
+
+            string fullCode = await _repository.GetCostCenterFullCodeAsync(parentId);
+
+            return Ok(fullCode);
+        }
+
         // POST: api/ccenters
         [HttpPost]
         [Route(CostCenterApi.CostCentersUrl)]
@@ -137,7 +153,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             if (await _repository.IsDuplicateCostCenterAsync(costCenter))
             {
-                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.CostCenter));
+                return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.CostCenter, costCenter.FullCode));
             }
 
             return Ok();
