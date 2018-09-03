@@ -442,11 +442,13 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                         var index = rows.findIndex(p => p.id == insertedModel.parentId);
                         if (index >= 0) {
                             this.parentAccount.isChildExpanding = true;
+                            this.parentAccount.grid.collapseRow(this.parentAccount.skip + index);                            
                             this.parentAccount.grid.expandRow(this.parentAccount.skip + index);                            
                         }
                     }
                     else if (index >= 0) {
                         this.isChildExpanding = true;
+                        this.grid.collapseRow(this.skip + index);                            
                         this.grid.expandRow(this.skip + index);
                     }
                 }
@@ -476,6 +478,9 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             this.accountService.delete(String.Format(AccountApi.Account, this.deleteModelId)).subscribe(response => {
                 this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
+                if (this.rowData.data.length == 1 && this.pageIndex > 1)
+                    this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
                 this.reloadGrid();
             }, (error => {
                 this.grid.loading = false;
