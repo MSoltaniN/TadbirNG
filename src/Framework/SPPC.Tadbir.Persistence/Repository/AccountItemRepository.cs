@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -19,10 +22,14 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        public AccountItemRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper)
+        /// <param name="repository">
+        /// عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند
+        /// </param>
+        public AccountItemRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, ISecureRepository repository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _repository = repository;
         }
 
         /// <summary>
@@ -33,16 +40,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه سرفصل های حسابداری در آخرین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetLeafAccountsAsync(
-            int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var leafAccounts = await repository
-                .GetByCriteriaAsync(acc => acc.FiscalPeriod.Id == fpId
-                    && acc.Branch.Id == branchId
-                    && acc.Children.Count == 0, gridOptions);
-            return leafAccounts
+            var accounts = await _repository.GetAllAsync<Account>(
+                userAccess, fpId, branchId, ViewName.Account, null, acc => acc.Children);
+            var leafAccounts = accounts
+                .Where(acc => acc.Children.Count == 0)
                 .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                .Apply(gridOptions)
                 .ToList();
+            return leafAccounts;
         }
 
         /// <summary>
@@ -53,16 +60,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه تفصیلی های شناور در آخرین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetLeafDetailAccountsAsync(
-            int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
-            var leafDetails = await repository
-                .GetByCriteriaAsync(facc => facc.FiscalPeriod.Id == fpId
-                    && facc.Branch.Id == branchId
-                    && facc.Children.Count == 0, gridOptions);
-            return leafDetails
+            var detailAccounts = await _repository.GetAllAsync<DetailAccount>(
+                userAccess, fpId, branchId, ViewName.DetailAccount, null, facc => facc.Children);
+            var leafDetails = detailAccounts
+                .Where(facc => facc.Children.Count == 0)
                 .Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc))
+                .Apply(gridOptions)
                 .ToList();
+            return leafDetails;
         }
 
         /// <summary>
@@ -73,16 +80,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه مراکز هزینه در آخرین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetLeafCostCentersAsync(
-            int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
-            var leafCenters = await repository
-                .GetByCriteriaAsync(cc => cc.FiscalPeriod.Id == fpId
-                    && cc.Branch.Id == branchId
-                    && cc.Children.Count == 0, gridOptions);
-            return leafCenters
+            var costCenters = await _repository.GetAllAsync<CostCenter>(
+                userAccess, fpId, branchId, ViewName.CostCenter, null, cc => cc.Children);
+            var leafCenters = costCenters
+                .Where(cc => cc.Children.Count == 0)
                 .Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc))
+                .Apply(gridOptions)
                 .ToList();
+            return leafCenters;
         }
 
         /// <summary>
@@ -93,16 +100,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه پروژه ها در آخرین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetLeafProjectsAsync(
-            int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
-            var leafProjects = await repository
-                .GetByCriteriaAsync(prj => prj.FiscalPeriod.Id == fpId
-                    && prj.Branch.Id == branchId
-                    && prj.Children.Count == 0, gridOptions);
-            return leafProjects
+            var projects = await _repository.GetAllAsync<Project>(
+                userAccess, fpId, branchId, ViewName.Project, null, prj => prj.Children);
+            var leafProjects = projects
+                .Where(prj => prj.Children.Count == 0)
                 .Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj))
+                .Apply(gridOptions)
                 .ToList();
+            return leafProjects;
         }
 
         /// <summary>
@@ -113,23 +120,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه سرفصل های حسابداری در بالاترین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetRootAccountsAsync(
-            int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var grouped = repository
-                .GetEntityQuery(acc => acc.Children)
-                .Where(acc => acc.FiscalPeriod.Id == fpId
-                    && acc.Branch.Id == branchId);
-            var rootAccounts = await repository
-                .GetByCriteriaAsync(
-                    acc => acc.FiscalPeriod.Id == fpId
-                        && acc.Branch.Id == branchId
-                        && acc.Parent == null,
-                    gridOptions,
-                    acc => acc.Children);
-            return rootAccounts
+            var accounts = await _repository.GetAllAsync<Account>(
+                userAccess, fpId, branchId, ViewName.Account, null, acc => acc.Children);
+            var rootAccounts = accounts
+                .Where(acc => acc.ParentId == null)
                 .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                .Apply(gridOptions)
                 .ToList();
+            return rootAccounts;
         }
 
         /// <summary>
@@ -140,19 +140,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه تفصیلی های شناور در بالاترین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetRootDetailAccountsAsync(
-            int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
-            var rootDetails = await repository
-                .GetByCriteriaAsync(
-                    facc => facc.FiscalPeriod.Id == fpId
-                        && facc.Branch.Id == branchId
-                        && facc.Parent == null,
-                    gridOptions,
-                    facc => facc.Children);
-            return rootDetails
+            var details = await _repository.GetAllAsync<DetailAccount>(
+                userAccess, fpId, branchId, ViewName.DetailAccount, null, acc => acc.Children);
+            var rootDetails = details
+                .Where(facc => facc.ParentId == null)
                 .Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc))
+                .Apply(gridOptions)
                 .ToList();
+            return rootDetails;
         }
 
         /// <summary>
@@ -163,19 +160,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه مراکز هزینه در بالاترین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetRootCostCentersAsync(
-            int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
-            var rootCenters = await repository
-                .GetByCriteriaAsync(
-                    cc => cc.FiscalPeriod.Id == fpId
-                        && cc.Branch.Id == branchId
-                        && cc.Parent == null,
-                    gridOptions,
-                    cc => cc.Children);
-            return rootCenters
+            var centers = await _repository.GetAllAsync<CostCenter>(
+                userAccess, fpId, branchId, ViewName.CostCenter, null, cc => cc.Children);
+            var rootCenters = centers
+                .Where(cc => cc.ParentId == null)
                 .Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc))
+                .Apply(gridOptions)
                 .ToList();
+            return rootCenters;
         }
 
         /// <summary>
@@ -186,22 +180,20 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه پروژه ها در بالاترین سطح</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetRootProjectsAsync(
-            int fpId, int branchId, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
-            var rootProjects = await repository
-                .GetByCriteriaAsync(
-                    prj => prj.FiscalPeriod.Id == fpId
-                        && prj.Branch.Id == branchId
-                        && prj.Parent == null,
-                    gridOptions,
-                    prj => prj.Children);
-            return rootProjects
+            var projects = await _repository.GetAllAsync<Project>(
+                userAccess, fpId, branchId, ViewName.Project, null, prj => prj.Children);
+            var rootProjects = projects
+                .Where(prj => prj.ParentId == null)
                 .Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj))
+                .Apply(gridOptions)
                 .ToList();
+            return rootProjects;
         }
 
-        private IAppUnitOfWork _unitOfWork;
-        private IDomainMapper _mapper;
+        private readonly IAppUnitOfWork _unitOfWork;
+        private readonly IDomainMapper _mapper;
+        private readonly ISecureRepository _repository;
     }
 }

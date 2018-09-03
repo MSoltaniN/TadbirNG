@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetConnectableAccountsAsync(int fpId, int branchId)
         {
             var accounts = await _repository.GetConnectableAccountsAsync(
-                fpId, branchId, _config.UseLeafAccounts, GridOptions);
+                UserAccess, fpId, branchId, _config.UseLeafAccounts, GridOptions);
             return Json(accounts);
         }
 
@@ -46,7 +46,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetConnectableDetailAccountsAsync(int fpId, int branchId)
         {
             var detailAccounts = await _repository.GetConnectableDetailAccountsAsync(
-                fpId, branchId, _config.UseLeafDetails, GridOptions);
+                UserAccess, fpId, branchId, _config.UseLeafDetails, GridOptions);
             return Json(detailAccounts);
         }
 
@@ -56,7 +56,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetConnectableCostCentersAsync(int fpId, int branchId)
         {
             var costCenters = await _repository.GetConnectableCostCentersAsync(
-                fpId, branchId, _config.UseLeafCostCenters, GridOptions);
+                UserAccess, fpId, branchId, _config.UseLeafCostCenters, GridOptions);
             return Json(costCenters);
         }
 
@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetConnectableProjectsAsync(int fpId, int branchId)
         {
             var projects = await _repository.GetConnectableProjectsAsync(
-                fpId, branchId, _config.UseLeafProjects, GridOptions);
+                UserAccess, fpId, branchId, _config.UseLeafProjects, GridOptions);
             return Json(projects);
         }
 

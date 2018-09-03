@@ -9,6 +9,7 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -40,11 +41,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsAsync(
-            int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null)
         {
             var accounts = useLeafItems
-                ? await _itemRepository.GetLeafAccountsAsync(fpId, branchId, gridOptions)
-                : await _itemRepository.GetRootAccountsAsync(fpId, branchId, gridOptions);
+                ? await _itemRepository.GetLeafAccountsAsync(userAccess, fpId, branchId, gridOptions)
+                : await _itemRepository.GetRootAccountsAsync(userAccess, fpId, branchId, gridOptions);
             return accounts;
         }
 
@@ -57,11 +58,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountsAsync(
-            int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null)
         {
             var detailAccounts = useLeafItems
-                ? await _itemRepository.GetLeafDetailAccountsAsync(fpId, branchId, gridOptions)
-                : await _itemRepository.GetRootDetailAccountsAsync(fpId, branchId, gridOptions);
+                ? await _itemRepository.GetLeafDetailAccountsAsync(userAccess, fpId, branchId, gridOptions)
+                : await _itemRepository.GetRootDetailAccountsAsync(userAccess, fpId, branchId, gridOptions);
             return detailAccounts;
         }
 
@@ -74,11 +75,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableCostCentersAsync(
-            int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null)
         {
             var costCenters = useLeafItems
-                ? await _itemRepository.GetLeafCostCentersAsync(fpId, branchId, gridOptions)
-                : await _itemRepository.GetRootCostCentersAsync(fpId, branchId, gridOptions);
+                ? await _itemRepository.GetLeafCostCentersAsync(userAccess, fpId, branchId, gridOptions)
+                : await _itemRepository.GetRootCostCentersAsync(userAccess, fpId, branchId, gridOptions);
             return costCenters;
         }
 
@@ -91,11 +92,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>پروژه های قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableProjectsAsync(
-            int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null)
+            UserAccessViewModel userAccess, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null)
         {
             var projects = useLeafItems
-                ? await _itemRepository.GetLeafProjectsAsync(fpId, branchId, gridOptions)
-                : await _itemRepository.GetRootProjectsAsync(fpId, branchId, gridOptions);
+                ? await _itemRepository.GetLeafProjectsAsync(userAccess, fpId, branchId, gridOptions)
+                : await _itemRepository.GetRootProjectsAsync(userAccess, fpId, branchId, gridOptions);
             return projects;
         }
 
@@ -119,10 +120,8 @@ namespace SPPC.Tadbir.Persistence
             if (account != null)
             {
                 detailAccounts = account.AccountDetailAccounts
-                    .Select(ada => ada.DetailAccount)
+                    .Select(ada => _mapper.Map<AccountItemBriefViewModel>(ada.DetailAccount))
                     .Apply(gridOptions)
-                    .Select(ada => _mapper.Map<AccountItemBriefViewModel>(ada))
-                    .AsQueryable()
                     .ToList();
                 Array.ForEach(detailAccounts.ToArray(), facc => facc.IsSelected = true);
             }
@@ -150,10 +149,8 @@ namespace SPPC.Tadbir.Persistence
             if (account != null)
             {
                 costCenters = account.AccountCostCenters
-                    .Select(acc => acc.CostCenter)
+                    .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc.CostCenter))
                     .Apply(gridOptions)
-                    .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
-                    .AsQueryable()
                     .ToList();
                 Array.ForEach(costCenters.ToArray(), cc => cc.IsSelected = true);
             }
@@ -181,10 +178,8 @@ namespace SPPC.Tadbir.Persistence
             if (account != null)
             {
                 projects = account.AccountProjects
-                    .Select(ap => ap.Project)
+                    .Select(ap => _mapper.Map<AccountItemBriefViewModel>(ap.Project))
                     .Apply(gridOptions)
-                    .Select(ap => _mapper.Map<AccountItemBriefViewModel>(ap))
-                    .AsQueryable()
                     .ToList();
                 Array.ForEach(projects.ToArray(), prj => prj.IsSelected = true);
             }
@@ -212,10 +207,8 @@ namespace SPPC.Tadbir.Persistence
             if (detail != null)
             {
                 accounts = detail.AccountDetailAccounts
-                    .Select(ada => ada.Account)
+                    .Select(ada => _mapper.Map<AccountItemBriefViewModel>(ada.Account))
                     .Apply(gridOptions)
-                    .Select(ada => _mapper.Map<AccountItemBriefViewModel>(ada))
-                    .AsQueryable()
                     .ToList();
                 Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             }
@@ -243,10 +236,8 @@ namespace SPPC.Tadbir.Persistence
             if (costCenter != null)
             {
                 accounts = costCenter.AccountCostCenters
-                    .Select(acc => acc.Account)
+                    .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc.Account))
                     .Apply(gridOptions)
-                    .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
-                    .AsQueryable()
                     .ToList();
                 Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             }
@@ -274,10 +265,8 @@ namespace SPPC.Tadbir.Persistence
             if (project != null)
             {
                 accounts = project.AccountProjects
-                    .Select(ap => ap.Account)
+                    .Select(ap => _mapper.Map<AccountItemBriefViewModel>(ap.Account))
                     .Apply(gridOptions)
-                    .Select(ap => _mapper.Map<AccountItemBriefViewModel>(ap))
-                    .AsQueryable()
                     .ToList();
                 Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             }
