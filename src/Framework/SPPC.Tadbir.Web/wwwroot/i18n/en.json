@@ -51,7 +51,8 @@
     "Setting": "Setting",
     "Search": "Search",
     "Filter": "filter",
-    "DeleteFilter": "Delete Filter"
+    "DeleteFilter": "Delete Filter",
+    "OkAndNew": "Ok And New"
   },
   "GridSetting": {
     "Visibility": "Visibility",

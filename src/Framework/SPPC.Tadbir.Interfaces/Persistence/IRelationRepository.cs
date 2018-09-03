@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 
 namespace SPPC.Tadbir.Persistence
@@ -20,7 +21,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
         Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsAsync(
-            int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null);
+            UserAccessViewModel userAccess, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
@@ -31,7 +32,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
         Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountsAsync(
-            int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null);
+            UserAccessViewModel userAccess, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
@@ -42,7 +43,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
         Task<IList<AccountItemBriefViewModel>> GetConnectableCostCentersAsync(
-            int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null);
+            UserAccessViewModel userAccess, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، پروژه های قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
@@ -53,7 +54,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>پروژه های قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
         Task<IList<AccountItemBriefViewModel>> GetConnectableProjectsAsync(
-            int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null);
+            UserAccessViewModel userAccess, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور مرتبط با حساب مشخص شده را
