@@ -69,7 +69,7 @@ import { SppcNumericTextBox } from './controls/textbox/sppc-numerictextbox';
 import { SppcDropDownList } from './controls/dropdownlist/sppc-dropdownlist';
 import { SppcDatepicker } from './controls/datepicker/sppc-datepicker';
 import { SppcDateRangeSelector } from './controls/dateRangeSelector/sppc-dateRangeSelector';
-import { SppcFullAccount } from './controls/fullAccount/sppc-fullAccount'
+import { SppcFullAccountComponent } from './controls/fullAccount/sppc-fullAccount';
 
 import { BrowserModule } from "@angular/platform-browser";
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
@@ -138,7 +138,7 @@ import { NgProgressRouterModule } from '@ngx-progressbar/router';
         SppcDropDownList,
         SppcDatepicker,
         SppcDateRangeSelector,
-        SppcFullAccount,
+        SppcFullAccountComponent,
         SppcGridColumn,
         SppcGridReorder,
         SppcGridResize,

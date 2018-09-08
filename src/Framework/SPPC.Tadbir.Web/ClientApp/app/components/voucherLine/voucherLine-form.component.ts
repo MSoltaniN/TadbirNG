@@ -45,7 +45,12 @@ export class VoucherLineFormComponent extends DefaultComponent {
         debit: new FormControl("", Validators.required),
         credit: new FormControl("", Validators.required),
         description: new FormControl("", Validators.maxLength(512)),
-        fullAccount: new FormControl()
+        fullAccount: new FormGroup({
+            accountId: new FormControl("", Validators.required),
+            detailId: new FormControl(),
+            costCenterId: new FormControl(),
+            projectId: new FormControl(),
+        })
     });
 
 
@@ -71,14 +76,15 @@ export class VoucherLineFormComponent extends DefaultComponent {
 
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();
-    @Output() save: EventEmitter<VoucherLine> = new EventEmitter();
+    @Output() save: EventEmitter<{ model: VoucherLine, isOpen: boolean}> = new EventEmitter();
     //create properties
 
     //Events
-    public onSave(e: any): void {
+    public onSave(e: any, isOpen: boolean): void {
         e.preventDefault();
         if (this.editForm1.valid) {
-            this.save.emit(this.editForm1.value);
+            var model = this.editForm1.value;
+            this.save.emit({ model, isOpen });
             this.active = true;
         }
     }

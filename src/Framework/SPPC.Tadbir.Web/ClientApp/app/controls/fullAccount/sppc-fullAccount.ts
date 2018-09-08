@@ -1,6 +1,6 @@
-﻿import { Component, OnInit, Input, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LookupService, FullAccountService, FullAccountInfo } from '../../service/index';
+﻿import { Component, OnInit } from '@angular/core'
+import { FormBuilder, ControlContainer, Validators } from '@angular/forms'
+import { LookupService, FullAccountInfo } from '../../service/index';
 
 interface Item {
     key: string,
@@ -9,26 +9,42 @@ interface Item {
 
 @Component({
     selector: 'sppc-fullAccount',
-    templateUrl: './spps-fullAccount.html',
+    template: `
+    <ng-container [formGroup]="controlContainer.control">
+     
+<div>
+    
+    <kendo-dropdownlist [data]="accountsRows" [valuePrimitive]="true" formControlName="accountId" class="ddl-fAcc"
+                        [textField]="'value'" [value]="selectedAccountValue" [(ngModel)]="selectedAccountValue" valueField="key" [defaultItem]="{ value: '', key: null}">
+    </kendo-dropdownlist>
+
+    <kendo-dropdownlist [data]="detailAccountsRows" [valuePrimitive]="true" formControlName="detailId" class="ddl-fAcc"
+                        [textField]="'value'" [value]="selectedDetailAccountValue" [(ngModel)]="selectedDetailAccountValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
+    </kendo-dropdownlist>
+
+    <kendo-dropdownlist [data]="costCentersRows" [valuePrimitive]="true" formControlName="costCenterId" class="ddl-fAcc"
+                        [textField]="'value'" [value]="selectedCostCenterValue" [(ngModel)]="selectedCostCenterValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
+    </kendo-dropdownlist>
+
+    <kendo-dropdownlist [data]="projectsRows" [valuePrimitive]="true" formControlName="projectId" class="ddl-fAcc"
+                        [textField]="'value'" [value]="selectedprojectValue" [(ngModel)]="selectedprojectValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
+    </kendo-dropdownlist>
+
+
+    <div class="k-tooltip k-tooltip-validation" [hidden]="controlContainer.control.valid || controlContainer.control.pristine">
+        {{ 'AllValidations.FullAccount.AccountIdIsRequired' | translate }}
+    </div>
+
+</div>
+
+
+
+    </ng-container>
+  `,
     styles: ['.ddl-fAcc {width:49%}'],
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => SppcFullAccount),
-            multi: true
-        },
-        {
-            provide: NG_VALIDATORS,
-            useExisting: forwardRef(() => SppcFullAccount),
-            multi: true,
-        }
-    ]
 })
-export class SppcFullAccount implements OnInit, ControlValueAccessor, Validator {
+export class SppcFullAccountComponent implements OnInit {
 
-    private parseError: boolean = false;
-
-    accountForm: FormGroup;
 
     public accountsRows: Array<Item>;
     public detailAccountsRows: Array<Item>;
@@ -40,71 +56,29 @@ export class SppcFullAccount implements OnInit, ControlValueAccessor, Validator 
     public selectedCostCenterValue: string;
     public selectedprojectValue: string;
 
+    fullAccount: FullAccountInfo;
 
-    constructor(private lookupService: LookupService, private fullAccountService: FullAccountService, private formBuilder: FormBuilder) {
+    constructor(public controlContainer: ControlContainer, private lookupService: LookupService) {
         this.GetAccounts();
         this.GetDetailAccounts();
         this.GetCostCenters();
         this.GetProjects();
     }
 
-    ngOnInit() {
-        this.accountForm = this.formBuilder.group({
-            accountId: ['', Validators.required],
-            detailId: '',
-            costCenterId: '',
-            projectId: ''
-        });
+    ngOnInit(): void {
+
+        this.fullAccount = this.controlContainer.value;
+
+        if (this.fullAccount.accountId)
+            this.selectedAccountValue = this.fullAccount.accountId.toString();
+        if (this.fullAccount.detailId)
+            this.selectedDetailAccountValue = this.fullAccount.detailId.toString();
+        if (this.fullAccount.costCenterId)
+            this.selectedCostCenterValue = this.fullAccount.costCenterId.toString();
+        if (this.fullAccount.projectId)
+            this.selectedprojectValue = this.fullAccount.projectId.toString();
     }
 
-
-    @Input() fullAccount: FullAccountInfo;
-
-    propagateChange: any = () => { };
-
-
-    writeValue(value: any): void {
-
-        if (value) {
-            this.accountForm.setValue(value);
-            
-            this.fullAccount = value;
-
-            if (this.fullAccount.accountId != null)    
-                this.selectedAccountValue = this.fullAccount.accountId.toString();
-            if (this.fullAccount.detailId != null)
-                this.selectedDetailAccountValue = this.fullAccount.detailId.toString();
-            if (this.fullAccount.costCenterId != null)
-                this.selectedCostCenterValue = this.fullAccount.costCenterId.toString();
-            if (this.fullAccount.projectId != null)
-                this.selectedprojectValue = this.fullAccount.projectId.toString();
-        }
-
-    }
-
-    registerOnChange(fn: any): void {
-        this.propagateChange = fn;
-    }
-
-    registerOnTouched(fn: any): void { }
-
-    ddlChange(value: any) {
-        this.propagateChange(this.accountForm.value);
-    }
-
-    public validate(c: FormControl) {
-
-        if (this.accountForm.valid)
-            this.parseError = false;
-        else
-            this.parseError = true;
-
-        return (!this.parseError) ? null : {
-            jsonParseError: {
-                valid: false,
-            },
-        };
-    }
 
     GetAccounts() {
         this.lookupService.GetAccountsLookup().subscribe(res => {

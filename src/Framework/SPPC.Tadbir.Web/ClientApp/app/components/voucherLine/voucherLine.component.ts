@@ -206,7 +206,9 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
         this.editDataItem = new VoucherLineInfo();
     }
 
-    public saveHandler(model: VoucherLine) {
+    public saveHandler(viewModel: any) {
+        var model = viewModel.model;
+        var isOpen = viewModel.isOpen;
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
         //this.sppcLoading.show();
@@ -217,6 +219,10 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
+
+                    if (isOpen) {
+                        this.addNew();
+                    }
                 }, (error => {
                     //this.editDataItem = voucherLine;
                     this.errorMessage = error;
@@ -231,6 +237,10 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     var insertedModel = response;
                     this.reloadGrid(insertedModel);
+
+                    if (isOpen) {
+                        this.addNew();
+                    }
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
