@@ -165,7 +165,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         var pageCount: number = 0;
         pageCount = Math.floor(this.totalRecords / this.pageSize);
 
-        if (this.totalRecords % this.pageSize == 0) {
+        if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
             this.skip = (pageCount * this.pageSize) - this.pageSize;
             return;
         }
@@ -331,9 +331,13 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             this.grid.loading = true;
             this.accountService.groupDelete(AccountApi.Accounts, this.selectedRows).subscribe(res => {
                 this.showMessage(this.deleteMsg, MessageType.Info);
+
+                if (this.rowData.data.length == this.selectedRows.length && this.pageIndex > 1)
+                    this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
                 this.selectedRows = [];
+                this.groupDelete = false;
                 this.reloadGrid();
-                //this.groupDelete = false;
                 return;
             }, (error => {
                 this.grid.loading = false;
@@ -341,7 +345,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             }));
         }
 
-        //this.groupDelete = false;
         this.deleteModelsConfirm = false;
     }
 
