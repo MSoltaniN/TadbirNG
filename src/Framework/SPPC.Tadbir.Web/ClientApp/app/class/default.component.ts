@@ -274,6 +274,21 @@ export class DefaultComponent extends BaseComponent {
         }
     };
 
+    /**
+     * بعد از افزودن یک رکورد، رکورد جدید به صفحه آخر اضافه میشود و صفحه آخر صفحه بندی فعال میشود 
+     * @param totalRecords تعداد کل رکوردها
+     */
+    goToLastPage(totalRecords: number) {
+        var pageCount: number = 0;
+        pageCount = Math.floor(totalRecords / this.pageSize);
+
+        if (totalRecords % this.pageSize == 0 && totalRecords != pageCount * this.pageSize) {
+            this.skip = (pageCount * this.pageSize) - this.pageSize;
+            return;
+        }
+        this.skip = (pageCount * this.pageSize)
+    }
+
     getFilters(filter: any): FilterExpression {
         let filters: Filter[] = [];
 

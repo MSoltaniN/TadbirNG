@@ -1,9 +1,9 @@
-﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
+﻿import { Component, OnInit, Input, Renderer2, ViewChild, SkipSelf, Host, Optional } from '@angular/core';
 import { DetailAccountService, DetailAccountInfo } from '../../service/index';
 import { DetailAccount } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -47,6 +47,11 @@ export function getLayoutModule(layout: Layout) {
 
 export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
+    //#region Fields
+    public Childrens: Array<DetailAccountComponent>;
+
+    @ViewChild(GridComponent) grid: GridComponent;
+
     @Input() public parent: DetailAccount;
     @Input() public isChild: boolean = false;
 
@@ -75,20 +80,181 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     errorMessage: string;
     groupDelete: boolean = false;
     showFilterBtn: boolean = false;
+    addToContainer: boolean = false;
 
+    parentTitle: string = '';
+    parentValue: string = '';
+
+    isChildExpanding: boolean;
+    componentParentId: number;
+    goLastPage: boolean;
+    //#endregion
+
+    //#region Events
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.DetailAccount, DetailAccountPermissions.View);
-        this.reloadGrid();
-    }
+        if (this.parentComponent && this.parentComponent.isChildExpanding) {
+            this.goLastPage = true;
+            this.parentComponent.isChildExpanding = false;
+        }
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private detailAccountService: DetailAccountService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.DetailAccount, Metadatas.DetailAccount);
+        this.reloadGrid();
+        if (this.parentComponent) {
+            this.parentComponent.addChildComponent(this);
+            this.parentId = this.parent.id;
+            this.componentParentId = this.parentId;
+        }
     }
 
     selectionKey(context: RowArgs): string {
         if (context.dataItem == undefined) return "";
         return context.dataItem.id + " " + context.index;
+    }
+
+    onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
+        if (this.selectedRows.length > 1)
+            this.groupDelete = true;
+        else
+            this.groupDelete = false;
+    }
+
+    dataStateChange(state: DataStateChangeEvent): void {
+        this.currentFilter = this.getFilters(state.filter);
+
+        if (state.sort)
+            if (state.sort.length > 0)
+                this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
+        this.state = state;
+        this.skip = state.skip;
+
+        if (this.currentFilter)
+            this.showFilterBtn = true;
+        else {
+            this.showFilterBtn = false;
+            this.reloadGrid();
+        }
+    }
+
+    public sortChange(sort: SortDescriptor[]): void {
+        if (sort)
+            this.currentOrder = sort[0].field + " " + sort[0].dir;
+
+        this.reloadGrid();
+    }
+
+    removeHandler(arg: any) {
+        this.prepareDeleteConfirm(arg.dataItem.name);
+        this.deleteModelId = arg.dataItem.id;
+        this.deleteConfirm = true;
+    }
+
+    pageChange(event: PageChangeEvent): void {
+        this.skip = event.skip;
+        this.reloadGrid();
+    }
+
+    //detail account form events
+    public editHandler(arg: any) {
+        //this.sppcLoading.show();
+        this.detailAccountService.getById(String.Format(DetailAccountApi.DetailAccount, arg.dataItem.id)).subscribe(res => {
+            this.editDataItem = res;
+            //this.sppcLoading.hide();
+        })
+        this.isNew = false;
+        this.errorMessage = '';
+    }
+
+    public cancelHandler() {
+        this.editDataItem = undefined;
+        this.errorMessage = '';
+
+        this.parentId = this.componentParentId;
+    }
+
+    public saveHandler(model: DetailAccount) {
+        model.branchId = this.BranchId;
+        model.fiscalPeriodId = this.FiscalPeriodId;
+        //this.sppcLoading.show();
+        if (!this.isNew) {
+            this.isNew = false;
+            this.detailAccountService.edit<DetailAccount>(String.Format(DetailAccountApi.DetailAccount, model.id), model)
+                .subscribe(response => {
+                    this.editDataItem = undefined;
+                    this.showMessage(this.updateMsg, MessageType.Succes);
+                    this.reloadGrid();
+                }, (error => {
+                    this.editDataItem = model;
+                    this.errorMessage = error;
+                }));
+        }
+        else {
+            //set parentid for childs accounts
+            if (this.parentId) {
+                model.parentId = this.parentId;
+
+                //var currentLevel = this.parent ? this.parent.level : 0;
+                var parentCom = this.parentComponent;
+                var currentLevel = 0;
+
+                while (parentCom) {
+                    currentLevel++;
+                    parentCom = parentCom.parentComponent
+                }
+
+                model.level = currentLevel + 1;
+
+                this.parentId = undefined;
+            }
+            else if (this.parent) {
+                model.parentId = this.parent.id;
+                model.level = this.parent.level + 1;
+            }
+
+            this.detailAccountService.insert<DetailAccount>(DetailAccountApi.DetailAccounts, model)
+                .subscribe((response: any) => {
+                    this.isNew = false;
+                    this.editDataItem = undefined;
+                    this.showMessage(this.insertMsg, MessageType.Succes);
+                    var insertedModel = response;
+
+                    if (this.Childrens) {
+                        var childFiltered = this.Childrens.filter(f => f.parent.id == model.parentId);
+                        if (childFiltered.length > 0) {
+                            childFiltered[0].reloadGrid(insertedModel);
+                            return;
+                        }
+                    }
+                    this.reloadGrid(insertedModel);
+                }, (error => {
+                    this.isNew = true;
+                    this.errorMessage = error;
+                }));
+        }
+        //this.sppcLoading.hide();
+    }
+
+    //#endregion
+
+    //#region Constructor
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+        private detailAccountService: DetailAccountService, public renderer: Renderer2, public metadata: MetaDataService,
+        @SkipSelf() @Host() @Optional() private parentComponent: DetailAccountComponent) {
+        super(toastrService, translate, renderer, metadata, Entities.DetailAccount, Metadatas.DetailAccount);
+    }
+    //#endregion
+
+
+    //#region Methods
+
+    /**
+    * کامپوننت های فرزند را در متغیری اضافه میکند
+    * @param detailAccountComponent کامپوننت تفصیلی شناور
+    */
+    public addChildComponent(detailAccountComponent: DetailAccountComponent) {
+
+        if (this.Childrens == undefined) this.Childrens = new Array<DetailAccountComponent>();
+        if (this.Childrens.findIndex(p => p.parent.id === detailAccountComponent.parent.id) == -1)
+            this.Childrens.push(detailAccountComponent);
     }
 
     showConfirm() {
@@ -113,24 +279,14 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
         this.deleteModelsConfirm = false;
     }
 
-    onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
-        if (this.selectedRows.length > 1)
-            this.groupDelete = true;
-        else
-            this.groupDelete = false;
-    }
-
-    reloadGrid(insertedModel?: DetailAccount) {
+    public reloadGrid(insertedModel?: DetailAccount) {
         if (this.viewAccess) {
-            //this.sppcLoading.show();
+            this.grid.loading = true;
             var filter = this.currentFilter;
             var order = this.currentOrder;
             if (this.totalRecords == this.skip && this.totalRecords != 0) {
                 this.skip = this.skip - this.pageSize;
             }
-
-            if (insertedModel)
-                this.goToLastPage();
 
             if (this.parent) {
                 if (this.parent.childCount > 0)
@@ -143,8 +299,49 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
                     new Filter("ParentId", "null", "== {0}", "System.Int32"),
                     FilterExpressionOperator.And);
 
-            this.detailAccountService.getAll(String.Format(DetailAccountApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            //#region load inner grid
+            if (this.parentComponent != null && (this.goLastPage || (insertedModel && !this.addToContainer))) {
+
+                //call top 1 account for get totalcount
+                this.detailAccountService.getAll(String.Format(DetailAccountApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId),
+                    0, 1, order, filter).subscribe((res) => {
+                        if (res.headers != null) {
+                            var headers = res.headers != undefined ? res.headers : null;
+                            if (headers != null) {
+                                var retheader = headers.get('X-Total-Count');
+                                if (retheader != null)
+                                    this.totalRecords = parseInt(retheader.toString());
+                            }
+                        }
+
+                        this.goToLastPage(this.totalRecords);
+                        this.goLastPage = false;
+
+                        this.loadGridData(insertedModel, order, filter);
+                    });
+            }
+            //#endregion
+            else {
+                if (insertedModel && this.addToContainer)
+                    this.goToLastPage(this.totalRecords);
+
+                this.loadGridData(insertedModel, order, filter);
+            }
+        }
+        else {
+            this.rowData = {
+                data: [],
+                total: 0
+            }
+        }
+    }
+
+    loadGridData(insertedModel?: DetailAccount, order?: string, filter?: FilterExpression) {
+
+        this.detailAccountService.getAll(String.Format(DetailAccountApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId),
+            this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.body;
+
                 var totalCount = 0;
 
                 if (res.headers != null) {
@@ -155,73 +352,52 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
                             totalCount = parseInt(retheader.toString());
                     }
                 }
+
                 this.rowData = {
                     data: resData,
                     total: totalCount
                 }
+
+                this.grid.data = this.rowData;
+
+
+                //expand new row if has childs
+                if (insertedModel) {
+                    var rows = (this.rowData.data as Array<DetailAccount>);
+                    var index = rows.findIndex(p => p.id == insertedModel.parentId);
+                    if (index == -1 && this.parentComponent != null) {
+                        var rows = (this.parentComponent.rowData.data as Array<DetailAccount>);
+                        var index = rows.findIndex(p => p.id == insertedModel.parentId);
+                        if (index >= 0) {
+                            this.parentComponent.isChildExpanding = true;
+                            this.parentComponent.grid.collapseRow(this.parentComponent.skip + index);
+                            this.parentComponent.grid.expandRow(this.parentComponent.skip + index);
+                        }
+                    }
+                    else if (index >= 0) {
+                        this.isChildExpanding = true;
+                        this.grid.collapseRow(this.skip + index);
+                        this.grid.expandRow(this.skip + index);
+                    }
+                }
+
+                //زمانی که تعداد رکورد ها صفر باشد باید کامپوننت پدر رفرش شود
+                if (totalCount == 0) {
+                    if (this.parentComponent && this.parentComponent.Childrens) {
+                        var thisIndex = this.parentComponent.Childrens.findIndex(p => p == this);
+                        if (thisIndex >= 0)
+                            this.parentComponent.Childrens.splice(thisIndex);
+
+
+                        this.parentComponent.reloadGrid();
+                    }
+
+                }
+
                 this.showloadingMessage = !(resData.length == 0);
                 this.totalRecords = totalCount;
-                //this.sppcLoading.hide();
+                this.grid.loading = false;
             })
-        }
-        else {
-            this.rowData = {
-                data: [],
-                total: 0
-            }
-        }
-
-    }
-
-    dataStateChange(state: DataStateChangeEvent): void {
-        this.currentFilter = this.getFilters(state.filter);
-
-        if (state.sort)
-            if (state.sort.length > 0)
-                this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
-        this.state = state;
-        this.skip = state.skip;
-
-        if (this.currentFilter)
-            this.showFilterBtn = true;
-        else {
-            this.showFilterBtn = false;
-            this.reloadGrid();
-        }
-    }
-
-    filterRowData() {
-        this.reloadGrid();
-    }
-
-    clearFilterRowData() {
-        this.state.filter = undefined;
-        this.currentFilter = new FilterExpression();
-        this.showFilterBtn = false;
-        this.reloadGrid();
-    }
-
-    public sortChange(sort: SortDescriptor[]): void {
-        if (sort)
-            this.currentOrder = sort[0].field + " " + sort[0].dir;
-
-        this.reloadGrid();
-    }
-
-    pageChange(event: PageChangeEvent): void {
-        this.skip = event.skip;
-        this.reloadGrid();
-    }
-
-    goToLastPage() {
-        var pageCount: number = 0;
-        pageCount = Math.floor(this.totalRecords / this.pageSize);
-
-        if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
-            this.skip = (pageCount * this.pageSize) - this.pageSize;
-            return;
-        }
-        this.skip = (pageCount * this.pageSize)
     }
 
     deleteModel(confirm: boolean) {
@@ -241,75 +417,63 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
         this.deleteConfirm = false;
     }
 
-    removeHandler(arg: any) {
-        this.prepareDeleteConfirm(arg.dataItem.name);
-        this.deleteModelId = arg.dataItem.id;
-        this.deleteConfirm = true;
-    }
+    private setTitle(parentModelId?: number) {
+        if (parentModelId != undefined) {
 
-    //detail account form events
-    public editHandler(arg: any) {
-        //this.sppcLoading.show();
-        this.detailAccountService.getById(String.Format(DetailAccountApi.DetailAccount, arg.dataItem.id)).subscribe(res => {
-            this.editDataItem = res;
-            //this.sppcLoading.hide();
-        })
-        this.isNew = false;
-        this.errorMessage = '';
-    }
+            var parentRow = null;
+            var findIndex = this.rowData.data.findIndex(acc => acc.id == parentModelId);
 
-    public cancelHandler() {
-        this.editDataItem = undefined;
-        this.errorMessage = '';
-    }
+            if (findIndex == -1) {
+                findIndex = this.parentComponent.rowData.data.findIndex(acc => acc.id == parentModelId);
+                if (findIndex >= 0)
+                    parentRow = this.parentComponent.rowData.data[findIndex];
+            }
+            else
+                parentRow = this.rowData.data[findIndex];
 
-    public addNew(parentModelId?: number) {
-        this.isNew = true;
-        this.editDataItem = new DetailAccountInfo();
-        if (parentModelId)
-            this.parentId = parentModelId;
-        this.errorMessage = '';
-    }
-
-    public saveHandler(model: DetailAccount) {
-        model.branchId = this.BranchId;
-        model.fiscalPeriodId = this.FiscalPeriodId;
-        //this.sppcLoading.show();
-        if (!this.isNew) {
-            this.isNew = false;
-            this.detailAccountService.edit<DetailAccount>(String.Format(DetailAccountApi.DetailAccount, model.id), model)
-                .subscribe(response => {
-                    this.editDataItem = undefined;
-                    this.showMessage(this.updateMsg, MessageType.Succes);
-                    this.reloadGrid();
-                }, (error => {
-                    this.editDataItem = model;
-                    this.errorMessage = error;
-                }));
+            if (parentRow != null) {
+                var level = +parentRow.level;
+                this.parentTitle = this.getText("App.Level") + " " + (level + 2).toString();
+                this.parentValue = parentRow.name;
+            }
+        }
+        else if (this.parent != undefined) {
+            this.parentTitle = this.getText("App.Level") + " " + (this.parent.level + 2).toString();
+            this.parentValue = this.parent.name;
         }
         else {
-            //set parentid for childs accounts
-            if (this.parentId) {
-                model.parentId = this.parentId;
-                this.parentId = undefined;
-            }
-            else if (this.parent)
-                model.parentId = this.parent.id;
-            //set parentid for childs accounts
-
-            this.detailAccountService.insert<DetailAccount>(DetailAccountApi.DetailAccounts, model)
-                .subscribe((response: any) => {
-                    this.isNew = false;
-                    this.editDataItem = undefined;
-                    this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedModel = response;
-                    this.reloadGrid(insertedModel);
-                }, (error => {
-                    this.isNew = true;
-                    this.errorMessage = error;
-                }));
+            this.parentTitle = '';
+            this.parentValue = '';
         }
-        //this.sppcLoading.hide();
+
+    }
+
+    public addNew(parentModelId?: number, addToThis?: boolean) {
+
+        this.isNew = true;
+        this.editDataItem = new DetailAccountInfo();
+        this.setTitle(parentModelId);
+
+        if (parentModelId)
+            this.parentId = parentModelId;
+
+        if (addToThis)
+            this.addToContainer = addToThis;
+        else
+            this.addToContainer = false;
+
+        this.errorMessage = '';
+    }
+
+    filterRowData() {
+        this.reloadGrid();
+    }
+
+    clearFilterRowData() {
+        this.state.filter = undefined;
+        this.currentFilter = new FilterExpression();
+        this.showFilterBtn = false;
+        this.reloadGrid();
     }
 
     public showOnlyParent(dataItem: DetailAccount, index: number): boolean {
@@ -320,6 +484,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
         return dataItem != undefined && dataItem.childCount != undefined && dataItem.childCount > 0;
     }
 
+    //#endregion
 }
 
 

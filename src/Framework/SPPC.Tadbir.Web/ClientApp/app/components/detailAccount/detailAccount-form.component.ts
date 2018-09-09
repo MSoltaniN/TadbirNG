@@ -51,6 +51,9 @@ export class DetailAccountFormComponent extends DefaultComponent {
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string = '';
 
+    @Input() public parentTitle: string = '';
+    @Input() public parentValue: string = '';
+
     @Input() public set parentId(id: number) {
         this.fullCodeApiUrl = String.Format(DetailAccountApi.DetailAccountFullCode, id ? id : 0);
     }

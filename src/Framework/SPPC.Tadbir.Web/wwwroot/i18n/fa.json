@@ -6,6 +6,7 @@
     "RecordNotFound": "هیچ رکوردی یافت نشد!",
     "Name": "سیستم جامع تدبیر",
     "NotViewAccess": "شما دسترسی دیدن اطلاعات را ندارید",
+    "Level": "سطح",
     "Menu": {
       "Account": "حساب",
       "Voucher": "اسناد",

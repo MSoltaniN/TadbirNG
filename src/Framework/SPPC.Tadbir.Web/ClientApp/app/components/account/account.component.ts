@@ -161,16 +161,16 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    goToLastPage() {
-        var pageCount: number = 0;
-        pageCount = Math.floor(this.totalRecords / this.pageSize);
+    //goToLastPage() {
+    //    var pageCount: number = 0;
+    //    pageCount = Math.floor(this.totalRecords / this.pageSize);
 
-        if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
-            this.skip = (pageCount * this.pageSize) - this.pageSize;
-            return;
-        }
-        this.skip = (pageCount * this.pageSize)
-    }
+    //    if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
+    //        this.skip = (pageCount * this.pageSize) - this.pageSize;
+    //        return;
+    //    }
+    //    this.skip = (pageCount * this.pageSize)
+    //}
 
     //account form events
     public editHandler(arg: any) {
@@ -386,7 +386,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                             }
                         }
 
-                        this.goToLastPage();
+                        this.goToLastPage(this.totalRecords);
                         this.goLastPage = false;
                         
                         this.loadGridData(insertedModel, order, filter);
@@ -395,7 +395,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             //#endregion
             else {
                 if (insertedModel && this.addToContainer)
-                    this.goToLastPage();                
+                    this.goToLastPage(this.totalRecords);                
 
                 this.loadGridData(insertedModel,order,filter);
             }
@@ -494,7 +494,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         //hide confirm dialog
         this.deleteConfirm = false;
     }
-
 
 
     private setAccountTitle(parentModelId?: number) {

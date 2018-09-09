@@ -6,6 +6,7 @@
     "RecordNotFound": "Record not found!",
     "Name": "Tadbir Accounting System",
     "NotViewAccess": "You do not have access to view information",
+    "Level": "Level",
     "Menu": {
       "Account": "Account",
       "Voucher": "Voucher",
