@@ -121,6 +121,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressHttpModule } from '@ngx-progressbar/http';
 import { NgProgressRouterModule } from '@ngx-progressbar/router';
+import { GridFilterComponent } from './directive/grid/component/grid-filter.component';
 
 @NgModule({
     declarations: [
@@ -153,6 +154,7 @@ import { NgProgressRouterModule } from '@ngx-progressbar/router';
         RoleComponent,
         RoleFormComponent,
         GridSettingComponent,
+        GridFilterComponent,
         RoleUserFormComponent,
         RoleBranchFormComponent,
         RoleFiscalPeriodFormComponent,

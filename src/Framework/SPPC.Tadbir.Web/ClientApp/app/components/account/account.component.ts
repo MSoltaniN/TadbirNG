@@ -556,19 +556,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     }
 
     public addNew(parentModelId?: number, addToThis?: boolean) {
-
-        //if (parentModelId) {
-        //    var rows = (this.rowData.data as Array<Account>);
-        //    var index = rows.findIndex(p => p.id == parentModelId);
-        //    if (index >= 0) {
-        //        this.grid.expandRow(index);
-        //    }
-        //}
-
-
-
-
-
+        
         this.isNew = true;
         this.editDataItem = new AccountInfo();
         this.setAccountTitle(parentModelId);
