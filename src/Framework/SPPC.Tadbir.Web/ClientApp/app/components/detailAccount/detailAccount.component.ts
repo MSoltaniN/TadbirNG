@@ -153,12 +153,16 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    //detail account form events
+
     public editHandler(arg: any) {
-        //this.sppcLoading.show();
+        this.grid.loading = true;
         this.detailAccountService.getById(String.Format(DetailAccountApi.DetailAccount, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
-            //this.sppcLoading.hide();
+            this.setTitle(res.parentId);
+
+            this.parentId = res.parentId;
+
+            this.grid.loading = false;
         })
         this.isNew = false;
         this.errorMessage = '';
@@ -402,14 +406,18 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     deleteModel(confirm: boolean) {
         if (confirm) {
-            //this.sppcLoading.show();
+            this.grid.loading = true;
             this.detailAccountService.delete(String.Format(DetailAccountApi.DetailAccount, this.deleteModelId)).subscribe(response => {
                 this.deleteModelId = 0;
                 this.showMessage(this.deleteMsg, MessageType.Info);
+                if (this.rowData.data.length == 1 && this.pageIndex > 1)
+                    this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
                 this.reloadGrid();
             }, (error => {
-                //this.sppcLoading.hide();
-                this.showMessage(error, MessageType.Warning);
+                    this.grid.loading = false;
+                    var message = error.message ? error.message : error;
+                    this.showMessage(message, MessageType.Warning);
             }));
         }
 

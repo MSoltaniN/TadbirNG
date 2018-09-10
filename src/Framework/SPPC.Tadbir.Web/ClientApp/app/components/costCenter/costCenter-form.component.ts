@@ -50,6 +50,9 @@ export class CostCenterFormComponent extends DefaultComponent {
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string = '';
 
+    @Input() public parentTitle: string = '';
+    @Input() public parentValue: string = '';
+
     @Input() public set parentId(id: number) {
         this.fullCodeApiUrl = String.Format(CostCenterApi.CostCenterFullCode, id ? id : 0);
     }

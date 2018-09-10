@@ -4,6 +4,12 @@
         {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
     </kendo-dialog-titlebar>
 
+    <div *ngIf="parentValue != ''">
+        <div class="alert alert-info fade in alert-dismissible">
+            <span class='accInfoTitle'><strong>{{ parentTitle }} </strong></span> : {{ parentValue }}
+        </div>
+    </div>
+
     <div *ngIf="errorMessage != ''">
         <div class="alert alert-danger">
             {{ errorMessage }}
@@ -25,7 +31,7 @@
         <div class="form-group">
             <label for="code" class="control-label">{{ 'CostCenter.Code' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="code" [sppsFullCode]="'fullCode'" [apiUrl]="fullCodeApiUrl"/>
+            <input type="text" class="k-textbox" formControlName="code" [sppsFullCode]="'fullCode'" [apiUrl]="fullCodeApiUrl" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
                 <span *ngIf="editForm.controls.code.errors?.required">{{ 'AllValidations.CostCenter.CodeIsRequired' | translate }}</span>
