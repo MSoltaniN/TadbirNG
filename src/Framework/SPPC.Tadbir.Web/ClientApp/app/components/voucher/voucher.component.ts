@@ -1,8 +1,8 @@
-﻿import { Component, OnInit, Input, Renderer2, ChangeDetectorRef } from '@angular/core';
+﻿import { Component, OnInit, Input, Renderer2, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { VoucherService, VoucherInfo, FiscalPeriodService } from '../../service/index';
 import { Voucher } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -42,6 +42,9 @@ export function getLayoutModule(layout: Layout) {
 
 export class VoucherComponent extends DefaultComponent implements OnInit {
 
+    //#region Fields
+    @ViewChild(GridComponent) grid: GridComponent;
+
     public rowData: GridDataResult;
     public selectedRows: string[] = [];
     public totalRecords: number;
@@ -63,15 +66,12 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
+    //#endregion
 
+    //#region Events
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.View);
-        this.reloadGrid();        
-    }
-
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
-        private voucherService: VoucherService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.Voucher, Metadatas.Voucher);
+        this.reloadGrid();
     }
 
     selectionKey(context: RowArgs): string {
@@ -79,68 +79,11 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
         return context.dataItem.id + " " + context.index;
     }
 
-    deleteModels() {
-        ////this.sppcLoading.show();
-        //this.voucherService.groupDelete(VoucherApi.Vouchers, this.selectedRows).subscribe(res => {
-        //    this.showMessage(this.deleteMsg, MessageType.Info);
-        //    this.selectedRows = [];
-        //    this.reloadGrid();
-        //}, (error => {
-        //    //this.sppcLoading.hide();
-        //    this.showMessage(error, MessageType.Warning);
-        //}));
-    }
-
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
         if (this.selectedRows.length > 1)
             this.groupDelete = true;
         else
             this.groupDelete = false;
-    }
-
-    reloadGrid(insertedModel?: Voucher) {
-        if (this.viewAccess) {
-            //this.sppcLoading.show();
-            var filter = this.currentFilter;
-            var order = this.currentOrder;
-            if (this.totalRecords == this.skip && this.totalRecords != 0) {
-                this.skip = this.skip - this.pageSize;
-            }
-
-            if (insertedModel)
-                this.goToLastPage();
-
-            this.voucherService.getAll(String.Format(VoucherApi.FiscalPeriodBranchVouchers, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.body;
-                this.properties = resData.properties;
-                var totalCount = 0;
-                
-                if (res.headers != null) {
-                    var headers = res.headers != undefined ? res.headers : null;
-                    if (headers != null) {
-                        var retheader = headers.get('X-Total-Count');
-                        if (retheader != null)
-                            totalCount = parseInt(retheader.toString());
-                    }
-                }
-                this.rowData = {
-                    data: resData,
-                    total: totalCount
-                }
-                this.showloadingMessage = !(resData.length == 0);
-                this.totalRecords = totalCount;
-                //this.sppcLoading.hide();
-            })
-        }
-        else {
-            this.rowData = {
-                data: [],
-                total: 0
-            }
-        }
-
-        this.cdref.detectChanges();
-
     }
 
     dataStateChange(state: DataStateChangeEvent): void {
@@ -160,51 +103,22 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    pageChange(event: PageChangeEvent): void {
-        this.skip = event.skip;
-        this.reloadGrid();
-    }
-
-    goToLastPage() {
-        var pageCount: number = 0;
-        pageCount = Math.floor(this.totalRecords / this.pageSize);
-
-        if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
-            this.skip = (pageCount * this.pageSize) - this.pageSize;
-            return;
-        }
-        this.skip = (pageCount * this.pageSize)
-    }
-
-    deleteModel(confirm: boolean) {
-        if (confirm) {
-            //this.sppcLoading.show();
-            this.voucherService.delete(String.Format(VoucherApi.Voucher, this.deleteModelId)).subscribe(response => {
-                this.deleteModelId = 0;
-                this.showMessage(this.deleteMsg, MessageType.Info);
-                this.reloadGrid();
-                //this.sppcLoading.hide();
-            }, (error => {
-                //this.sppcLoading.hide();
-                this.showMessage(error, MessageType.Warning);
-            }));
-        }
-
-        //hide confirm dialog
-        this.deleteConfirm = false;
-    }
-
     removeHandler(arg: any) {
         this.prepareDeleteConfirm(arg.dataItem.name);
         this.deleteModelId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
+    pageChange(event: PageChangeEvent): void {
+        this.skip = event.skip;
+        this.reloadGrid();
+    }
+
     public editHandler(arg: any) {
-        //this.sppcLoading.show();
+        this.grid.loading = true;
         this.voucherService.getById(String.Format(VoucherApi.Voucher, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
-            //this.sppcLoading.hide();
+            this.grid.loading = false;
         })
         this.isNew = false;
         this.errorMessage = '';
@@ -216,16 +130,10 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public addNew() {
-        this.isNew = true;
-        this.editDataItem = new VoucherInfo();
-        this.errorMessage = '';
-    }
-
     public saveHandler(model: Voucher) {
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
-        //this.sppcLoading.show();
+        this.grid.loading = true;
         if (!this.isNew) {
             this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model)
                 .subscribe(response => {
@@ -233,10 +141,9 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                     this.editDataItem = undefined;
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
-                    //this.sppcLoading.hide();
                 }, (error => {
                     this.errorMessage = error;
-                    //this.sppcLoading.hide();
+                    this.grid.loading = false;
                 }));
         }
         else {
@@ -247,16 +154,111 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                     this.showMessage(this.insertMsg, MessageType.Succes);
                     var insertedModel = response;
                     this.reloadGrid(insertedModel);
-                    //this.sppcLoading.hide();
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
-                    //this.sppcLoading.hide();
+                    this.grid.loading = false;
                 }));
         }
-        
+
     }
 
+    //#endregion
+
+    //#region Constructor
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
+        private voucherService: VoucherService, public renderer: Renderer2, public metadata: MetaDataService) {
+        super(toastrService, translate, renderer, metadata, Entities.Voucher, Metadatas.Voucher);
+    }
+    //#endregion
+
+    //#region Methods
+    deleteModels() {
+        ////this.sppcLoading.show();
+        //this.voucherService.groupDelete(VoucherApi.Vouchers, this.selectedRows).subscribe(res => {
+        //    this.showMessage(this.deleteMsg, MessageType.Info);
+        //    this.selectedRows = [];
+        //    this.reloadGrid();
+        //}, (error => {
+        //    //this.sppcLoading.hide();
+        //    this.showMessage(error, MessageType.Warning);
+        //}));
+    }
+
+    reloadGrid(insertedModel?: Voucher) {
+        if (this.viewAccess) {
+            this.grid.loading = true;
+            var filter = this.currentFilter;
+            var order = this.currentOrder;
+            if (this.totalRecords == this.skip && this.totalRecords != 0) {
+                this.skip = this.skip - this.pageSize;
+            }
+
+            if (insertedModel)
+                this.goToLastPage(this.totalRecords);
+
+            this.voucherService.getAll(String.Format(VoucherApi.FiscalPeriodBranchVouchers, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+                var resData = res.body;
+                this.properties = resData.properties;
+                var totalCount = 0;
+
+                if (res.headers != null) {
+                    var headers = res.headers != undefined ? res.headers : null;
+                    if (headers != null) {
+                        var retheader = headers.get('X-Total-Count');
+                        if (retheader != null)
+                            totalCount = parseInt(retheader.toString());
+                    }
+                }
+                this.rowData = {
+                    data: resData,
+                    total: totalCount
+                }
+                this.showloadingMessage = !(resData.length == 0);
+                this.totalRecords = totalCount;
+                this.grid.loading = false;
+            })
+        }
+        else {
+            this.rowData = {
+                data: [],
+                total: 0
+            }
+        }
+
+        this.cdref.detectChanges();
+
+    }
+
+    deleteModel(confirm: boolean) {
+        if (confirm) {
+            this.grid.loading = true;
+            this.voucherService.delete(String.Format(VoucherApi.Voucher, this.deleteModelId)).subscribe(response => {
+                this.deleteModelId = 0;
+                this.showMessage(this.deleteMsg, MessageType.Info);
+
+                if (this.rowData.data.length == 1 && this.pageIndex > 1)
+                    this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
+                this.reloadGrid();
+            }, (error => {
+                this.grid.loading = false;
+                var message = error.message ? error.message : error;
+                this.showMessage(message, MessageType.Warning);
+            }));
+        }
+
+        //hide confirm dialog
+        this.deleteConfirm = false;
+    }
+
+    public addNew() {
+        this.isNew = true;
+        this.editDataItem = new VoucherInfo();
+        this.errorMessage = '';
+    }
+
+    //#endregion
 }
 
 

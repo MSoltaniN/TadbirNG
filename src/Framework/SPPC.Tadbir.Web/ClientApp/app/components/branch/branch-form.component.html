@@ -4,6 +4,12 @@
         {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
     </kendo-dialog-titlebar>
 
+    <div *ngIf="parentValue != ''">
+        <div class="alert alert-info fade in alert-dismissible">
+            <span class='accInfoTitle'><strong>{{ parentTitle }} </strong></span> : {{ parentValue }}
+        </div>
+    </div>
+
     <div *ngIf="errorMessage != ''">
         <div class="alert alert-danger">
             {{ errorMessage }}

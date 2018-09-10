@@ -29,7 +29,7 @@
                 {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
             </ng-template>
             <ng-template kendoGridToolbarTemplate>
-                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'CostCenter.New' | translate }}</button>
+                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(parentId , true)" [icon]="'plus-outline'" type="button">{{ 'CostCenter.New' | translate }}</button>
                 <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
                 <grid-setting  entityTypeName="CostCenter"></grid-setting>
             </ng-template>
@@ -127,7 +127,7 @@
             <!-- additional columns on large devices -->
 
         </kendo-grid>
-        <costCenter-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage" [parentId]="parentId"
+        <costCenter-form-component [model]="editDataItem" [parentId]="parentId" [parentTitle]="parentTitle" [parentValue]="parentValue" [isNew]="isNew" [errorMessage]="errorMessage"
                                       (save)="saveHandler($event)"
                                       (cancel)="cancelHandler()">
         </costCenter-form-component>

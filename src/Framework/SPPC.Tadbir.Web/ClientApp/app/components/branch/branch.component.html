@@ -29,9 +29,9 @@
                 {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
             </ng-template>
             <ng-template kendoGridToolbarTemplate let-branch>
-                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(branch != undefined ? branch.id : undefined , true)"  [icon]="'plus-outline'" type="button">{{ 'Branch.New' | translate }}</button>
+                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(parentId , true)" [icon]="'plus-outline'" type="button">{{ 'Branch.New' | translate }}</button>
                 <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
-                <grid-setting  entityTypeName="Branch"></grid-setting>
+                <grid-setting entityTypeName="Branch"></grid-setting>
             </ng-template>
 
             <!-- template for mobile -->
@@ -85,14 +85,14 @@
             <!-- additional columns on large devices -->
 
         </kendo-grid>
-        <branch-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
+        <branch-form-component [model]="editDataItem" [parentId]="parentId" [parentTitle]="parentTitle" [parentValue]="parentValue" [isNew]="isNew" [errorMessage]="errorMessage"
                                (save)="saveHandler($event)"
                                (cancel)="cancelHandler()">
         </branch-form-component>
 
         <branch-roles-form-component [rolesList]="rolesList" [branchRoles]="branchRolesData" [errorMessage]="errorMessage"
-                                   (saveBranchRoles)="saveBranchRolesHandler($event)"
-                                   (cancelBranchRoles)="cancelBranchRolesHandler()">
+                                     (saveBranchRoles)="saveBranchRolesHandler($event)"
+                                     (cancelBranchRoles)="cancelBranchRolesHandler()">
         </branch-roles-form-component>
     </div>
     <kendo-dialog title="{{'Branch.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">

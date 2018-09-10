@@ -1,8 +1,8 @@
-﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
+﻿import { Component, OnInit, Input, Renderer2, ViewChild } from '@angular/core';
 import { RoleService, RoleInfo, RoleFullInfo, PermissionInfo, RoleDetailsInfo, RelatedItemsInfo } from '../../service/index';
 import { Role, RoleFull, Permission, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -44,6 +44,9 @@ export function getLayoutModule(layout: Layout) {
 
 export class RoleComponent extends DefaultComponent implements OnInit {
 
+    //#region Fields
+    @ViewChild(GridComponent) grid: GridComponent;
+
     public rowData: GridDataResult;
     public selectedRows: string[] = [];
     public totalRecords: number;
@@ -78,15 +81,12 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     errorMessage: string;
     roleName: string;
     groupDelete: boolean = false;
+    //#endregion
 
+    //#region Events
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Role, RolePermissions.View);
         this.reloadGrid();
-    }
-
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        public roleService: RoleService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.Role, Metadatas.Role);
     }
 
     selectionKey(context: RowArgs): string {
@@ -99,155 +99,6 @@ export class RoleComponent extends DefaultComponent implements OnInit {
             this.groupDelete = true;
         else
             this.groupDelete = false;
-    }
-
-    reloadGrid(insertedModel?: Role) {
-        if (this.viewAccess) {
-            //this.sppcLoading.show();
-            var filter = this.currentFilter;
-            var order = this.currentOrder;
-            if (this.totalRecords == this.skip && this.totalRecords != 0) {
-                this.skip = this.skip - this.pageSize;
-            }
-
-            if (insertedModel)
-                this.goToLastPage();
-
-            this.roleService.getAll(String.Format(RoleApi.Roles, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.body;
-                var totalCount = 0;
-                
-                if (res.headers != null) {
-                    var headers = res.headers != undefined ? res.headers : null;
-                    if (headers != null) {
-                        var retheader = headers.get('X-Total-Count');
-                        if (retheader != null)
-                            totalCount = parseInt(retheader.toString());
-                    }
-                }
-                this.rowData = {
-                    data: resData,
-                    total: totalCount
-                }
-                this.showloadingMessage = !(resData.length == 0);
-                this.totalRecords = totalCount;
-                //this.sppcLoading.hide();
-            })
-        }
-        else {
-            this.rowData = {
-                data: [],
-                total: 0
-            }
-        }
-
-    }
-
-    detailHandler(roleId: number) {
-        this.roleDetail = true;
-        //this.sppcLoading.show();
-        this.roleService.getRoleDetail(roleId).subscribe(res => {
-            this.roleDetailData = res;
-            //this.sppcLoading.hide();
-        });
-        this.errorMessage = '';
-    }
-
-    cancelRoleDetailHandler() {
-        //this.roleUsersData = undefined;
-        this.roleDetail = false;
-        this.errorMessage = '';
-    }
-
-    userHandler(roleId: number, roleName: string) {
-        this.usersList = true;
-        //this.sppcLoading.show();
-        this.roleService.getRoleUsers(roleId).subscribe(res => {
-            this.roleUsersData = res;
-            this.roleName = roleName;
-            //this.sppcLoading.hide();
-        });
-
-        this.errorMessage = '';
-    }
-
-    cancelRoleUsersHandler() {
-        this.usersList = false;
-        this.errorMessage = '';
-        this.roleName = '';
-    }
-
-    saveRoleUsersHandler(roleUsers: RelatedItems) {
-        //this.sppcLoading.show();
-        this.roleService.modifiedRoleUsers(roleUsers)
-            .subscribe(response => {
-                this.usersList = false;
-                this.showMessage(this.updateMsg, MessageType.Succes);
-                //this.sppcLoading.hide();
-            }, (error => {
-                //this.sppcLoading.hide();
-                this.errorMessage = error;
-            }));
-    }
-
-    branchHandler(roleId: number, roleName: string) {
-        this.roleBranches = true;
-        //this.sppcLoading.show();
-        this.roleService.getRoleBranches(roleId).subscribe(res => {
-            this.roleBranchesData = res;
-            this.roleName = roleName;
-            //this.sppcLoading.hide();
-        })
-        this.errorMessage = '';
-    }
-
-    cancelRoleBranchesHandler() {
-        this.roleBranches = false;
-        this.errorMessage = '';
-        this.roleName = '';
-    }
-
-    saveRoleBranchesHandler(roleBranches: RelatedItems) {
-        //this.sppcLoading.show();
-        this.roleService.modifiedRoleBranches(roleBranches)
-            .subscribe(response => {
-                this.roleBranches = false;
-                this.showMessage(this.updateMsg, MessageType.Succes);
-                //this.sppcLoading.hide();
-            }, (error => {
-                this.errorMessage = error;
-                //this.sppcLoading.hide();
-            }));
-    }
-
-    fiscalPeriodHandler(roleId: number, roleName: string) {
-        this.roleFiscalPeriod = true;
-        //this.sppcLoading.show();
-        this.roleService.getRoleFiscalPeriods(roleId).subscribe(res => {
-            this.roleFiscalPeriodsData = res;
-            this.roleName = roleName;
-            //this.sppcLoading.hide();
-        })
-        this.errorMessage = '';
-    }
-
-    cancelRoleFiscalPeriodHandler() {
-        this.roleFiscalPeriod = false;
-        this.errorMessage = '';
-        this.roleName = '';
-    }
-
-    saveRoleFiscalPeriodHandler(roleBranches: RelatedItems) {
-        //this.sppcLoading.show();
-        this.roleService.modifiedRoleFiscalPeriods(roleBranches)
-            .subscribe(response => {
-                this.roleFiscalPeriod = false;
-                this.showMessage(this.updateMsg, MessageType.Succes);
-                //this.sppcLoading.hide();
-            }, (error => {
-                this.errorMessage = error;
-                //this.sppcLoading.hide();
-            }));
     }
 
     dataStateChange(state: DataStateChangeEvent): void {
@@ -266,50 +117,23 @@ export class RoleComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    pageChange(event: PageChangeEvent): void {
-        this.skip = event.skip;
-        this.reloadGrid();
-    }
-
-    goToLastPage() {
-        var pageCount: number = 0;
-        pageCount = Math.floor(this.totalRecords / this.pageSize);
-
-        if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
-            this.skip = (pageCount * this.pageSize) - this.pageSize;
-            return;
-        }
-        this.skip = (pageCount * this.pageSize)
-    }
-
-    deleteRole(confirm: boolean) {
-        if (confirm) {
-            //this.sppcLoading.show();
-            this.roleService.delete(String.Format(RoleApi.Role, this.deleteModelId)).subscribe(response => {
-                this.deleteModelId = 0;
-                this.showMessage(this.deleteMsg, MessageType.Info);
-                this.reloadGrid();
-            }, (error => {
-                //this.sppcLoading.hide();
-                this.showMessage(error, MessageType.Warning);
-            }));
-        }
-        //hide confirm dialog
-        this.deleteConfirm = false;
-    }
-
     removeHandler(arg: any) {
         this.prepareDeleteConfirm(arg.dataItem.name);
         this.deleteModelId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
+    pageChange(event: PageChangeEvent): void {
+        this.skip = event.skip;
+        this.reloadGrid();
+    }
+
     public editHandler(arg: any) {
-        //this.sppcLoading.show();
+        this.grid.loading = true;
         this.roleService.getRoleFull(arg.dataItem.id).subscribe(res => {
             this.editDataItem = res.role;
             this.permissionsData = res.permissions;
-            //this.sppcLoading.hide();
+            this.grid.loading = false;
         });
         this.isNew = false;
         this.errorMessage = '';
@@ -321,19 +145,8 @@ export class RoleComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public addNew() {
-        //this.sppcLoading.show();
-        this.isNew = true;
-        this.editDataItem = new RoleInfo();
-        this.roleService.getNewRoleFull().subscribe(res => {
-            this.permissionsData = res.permissions;
-        });
-        this.errorMessage = '';
-        //this.sppcLoading.hide();
-    }
-
     public saveHandler(model: RoleFull) {
-        //this.sppcLoading.show();
+        this.grid.loading = true;
         if (!this.isNew) {
             this.roleService.edit<RoleFull>(String.Format(RoleApi.Role, model.id), model)
                 .subscribe(response => {
@@ -343,6 +156,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
                     this.reloadGrid();
                 }, (error => {
                     this.errorMessage = error;
+                    this.grid.loading = false;
                 }));
         }
         else {
@@ -356,11 +170,205 @@ export class RoleComponent extends DefaultComponent implements OnInit {
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
+                    this.grid.loading = false;
                 }));
         }
-        //this.sppcLoading.hide();
     }
 
+    cancelRoleFiscalPeriodHandler() {
+        this.roleFiscalPeriod = false;
+        this.errorMessage = '';
+        this.roleName = '';
+    }
+
+    cancelRoleBranchesHandler() {
+        this.roleBranches = false;
+        this.errorMessage = '';
+        this.roleName = '';
+    }
+
+    cancelRoleDetailHandler() {
+        //this.roleUsersData = undefined;
+        this.roleDetail = false;
+        this.errorMessage = '';
+    }
+
+    cancelRoleUsersHandler() {
+        this.usersList = false;
+        this.errorMessage = '';
+        this.roleName = '';
+    }
+    //#endregion
+
+    //#region Constructor
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+        public roleService: RoleService, public renderer: Renderer2, public metadata: MetaDataService) {
+        super(toastrService, translate, renderer, metadata, Entities.Role, Metadatas.Role);
+    }
+    //#endregion
+
+    //#region Methods
+
+    reloadGrid(insertedModel?: Role) {
+        if (this.viewAccess) {
+            this.grid.loading = true;
+            var filter = this.currentFilter;
+            var order = this.currentOrder;
+            if (this.totalRecords == this.skip && this.totalRecords != 0) {
+                this.skip = this.skip - this.pageSize;
+            }
+
+            if (insertedModel)
+                this.goToLastPage(this.totalRecords);
+
+            this.roleService.getAll(String.Format(RoleApi.Roles, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+                var resData = res.body;
+                var totalCount = 0;
+
+                if (res.headers != null) {
+                    var headers = res.headers != undefined ? res.headers : null;
+                    if (headers != null) {
+                        var retheader = headers.get('X-Total-Count');
+                        if (retheader != null)
+                            totalCount = parseInt(retheader.toString());
+                    }
+                }
+                this.rowData = {
+                    data: resData,
+                    total: totalCount
+                }
+                this.showloadingMessage = !(resData.length == 0);
+                this.totalRecords = totalCount;
+                this.grid.loading = false;
+            })
+        }
+        else {
+            this.rowData = {
+                data: [],
+                total: 0
+            }
+        }
+
+    }
+
+    detailHandler(roleId: number) {
+        this.roleDetail = true;
+        this.grid.loading = true;
+        this.roleService.getRoleDetail(roleId).subscribe(res => {
+            this.roleDetailData = res;
+            this.grid.loading = false;
+        });
+        this.errorMessage = '';
+    }
+
+    userHandler(roleId: number, roleName: string) {
+        this.usersList = true;
+        this.grid.loading = true;
+        this.roleService.getRoleUsers(roleId).subscribe(res => {
+            this.roleUsersData = res;
+            this.roleName = roleName;
+            this.grid.loading = false;
+        });
+
+        this.errorMessage = '';
+    }
+
+    saveRoleUsersHandler(roleUsers: RelatedItems) {
+        this.grid.loading = true;
+        this.roleService.modifiedRoleUsers(roleUsers)
+            .subscribe(response => {
+                this.usersList = false;
+                this.showMessage(this.updateMsg, MessageType.Succes);
+                this.grid.loading = false;
+            }, (error => {
+                this.grid.loading = false;
+                this.errorMessage = error;
+            }));
+    }
+
+    branchHandler(roleId: number, roleName: string) {
+        this.roleBranches = true;
+        this.grid.loading = true;
+        this.roleService.getRoleBranches(roleId).subscribe(res => {
+            this.roleBranchesData = res;
+            this.roleName = roleName;
+            this.grid.loading = false;
+        })
+        this.errorMessage = '';
+    }
+
+    saveRoleBranchesHandler(roleBranches: RelatedItems) {
+        this.grid.loading = true;
+        this.roleService.modifiedRoleBranches(roleBranches)
+            .subscribe(response => {
+                this.roleBranches = false;
+                this.showMessage(this.updateMsg, MessageType.Succes);
+                this.grid.loading = false;
+            }, (error => {
+                this.errorMessage = error;
+                this.grid.loading = false;
+            }));
+    }
+
+    fiscalPeriodHandler(roleId: number, roleName: string) {
+        this.roleFiscalPeriod = true;
+        this.grid.loading = true;
+        this.roleService.getRoleFiscalPeriods(roleId).subscribe(res => {
+            this.roleFiscalPeriodsData = res;
+            this.roleName = roleName;
+            this.grid.loading = false;
+        })
+        this.errorMessage = '';
+    }
+
+    saveRoleFiscalPeriodHandler(roleBranches: RelatedItems) {
+        this.grid.loading = true;
+        this.roleService.modifiedRoleFiscalPeriods(roleBranches)
+            .subscribe(response => {
+                this.roleFiscalPeriod = false;
+                this.showMessage(this.updateMsg, MessageType.Succes);
+                this.grid.loading = false;
+            }, (error => {
+                this.errorMessage = error;
+                this.grid.loading = false;
+            }));
+    }
+
+    deleteRole(confirm: boolean) {
+        if (confirm) {
+            this.grid.loading = true;
+            this.roleService.delete(String.Format(RoleApi.Role, this.deleteModelId)).subscribe(response => {
+                this.deleteModelId = 0;
+                this.showMessage(this.deleteMsg, MessageType.Info);
+                if (this.rowData.data.length == 1 && this.pageIndex > 1)
+                    this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
+                this.reloadGrid();
+            }, (error => {
+                    this.grid.loading = false;
+                    var message = error.message ? error.message : error;
+                    this.showMessage(message, MessageType.Warning);
+            }));
+        }
+        //hide confirm dialog
+        this.deleteConfirm = false;
+    }
+
+    public addNew() {
+        this.grid.loading = true;
+        this.isNew = true;
+        this.editDataItem = new RoleInfo();
+        this.roleService.getNewRoleFull().subscribe(res => {
+            this.permissionsData = res.permissions;
+
+            this.grid.loading = false;
+        });
+        this.errorMessage = '';
+        this.grid.loading = false;
+    }
+
+    
+    //#endregion
 }
 
 
