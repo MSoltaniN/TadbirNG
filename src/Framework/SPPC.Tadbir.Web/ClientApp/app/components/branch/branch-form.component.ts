@@ -42,6 +42,9 @@ export class BranchFormComponent extends DefaultComponent {
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string = '';
 
+    @Input() public parentTitle: string = '';
+    @Input() public parentValue: string = '';
+
     @Input() public set model(branch: Branch) {
         this.editForm.reset(branch);
 

@@ -1,9 +1,9 @@
-﻿import { Component, OnInit, Input, Renderer2, Optional, Host, SkipSelf } from '@angular/core';
+﻿import { Component, OnInit, Input, Renderer2, Optional, Host, SkipSelf, ViewChild } from '@angular/core';
 import { BranchService, BranchInfo, RelatedItemsInfo } from '../../service/index';
 import { Branch, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr'; /** add this component for message in client side */
 
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -48,8 +48,8 @@ export function getLayoutModule(layout: Layout) {
 export class BranchComponent extends DefaultComponent implements OnInit {
 
     //#region Fields
-
     public Childrens: Array<BranchComponent>;
+    @ViewChild(GridComponent) grid: GridComponent;
 
     @Input() public parent: Branch;
     @Input() public isChild: boolean = false;
@@ -83,39 +83,30 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
     addToContainer: boolean = false;
 
+
+    parentTitle: string = '';
+    parentValue: string = '';
+
+    isChildExpanding: boolean;
+    componentParentId: number;
+    goLastPage: boolean;
     //#endregion
-      
 
-    //#region Constructor
-
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private branchService: BranchService, public renderer: Renderer2, public metadata: MetaDataService,
-        @SkipSelf() @Host() @Optional() private parentBranch: BranchComponent) {
-        super(toastrService, translate, renderer, metadata, Entities.Branch, Metadatas.Branch);
-    }
-
-    //#endregion
-    
-    //#region Methods
-
+    //#region Events
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.Branch, BranchPermissions.View);
 
+        if (this.parentComponent && this.parentComponent.isChildExpanding) {
+            this.goLastPage = true;
+            this.parentComponent.isChildExpanding = false;
+        }
+
         this.reloadGrid();
-        if (this.parentBranch)
-            this.parentBranch.addChildBranch(this);
-    }
-
-    /**
-     * کامپوننت های فرزند را در متغیری اضافه میکند
-     * @param branchComponent کامپوننت شعبه
-     */
-    public addChildBranch(branchComponent: BranchComponent) {
-
-        if (this.Childrens == undefined) this.Childrens = new Array<BranchComponent>();
-        if (this.Childrens.findIndex(p => p.parent.id === branchComponent.parent.id) == -1)        
-            this.Childrens.push(branchComponent);
-        
+        if (this.parentComponent) {
+            this.parentComponent.addChildComponent(this);
+            this.parentId = this.parent.id;
+            this.componentParentId = this.parentId;
+        }
     }
 
     selectionKey(context: RowArgs): string {
@@ -123,90 +114,11 @@ export class BranchComponent extends DefaultComponent implements OnInit {
         return context.dataItem.id + " " + context.index;
     }
 
-    showConfirm() {
-        this.deleteModelsConfirm = true;
-    }
-
-    deleteModels(confirm: boolean) {
-        if (confirm) {
-            //this.sppcLoading.show();          
-        }
-
-        this.groupDelete = false;
-        this.deleteModelsConfirm = false;
-    }
-
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
         if (this.selectedRows.length > 1)
             this.groupDelete = true;
         else
             this.groupDelete = false;
-    }
-
-    reloadGrid(insertedModel?: Branch) {
-        if (this.viewAccess) {
-            //this.sppcLoading.show();
-            var filter = this.currentFilter;
-            var order = this.currentOrder;
-            if (this.totalRecords == this.skip && this.totalRecords != 0) {
-                this.skip = this.skip - this.pageSize;
-            }
-
-            if (insertedModel)
-                this.goToLastPage();
-
-            if (this.parent) {
-                if (this.parent.childCount > 0)
-                    filter = this.addFilterToFilterExpression(this.currentFilter,
-                        new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"),
-                        FilterExpressionOperator.And);
-            }
-            else
-                filter = this.addFilterToFilterExpression(this.currentFilter,
-                    new Filter("ParentId", "null", "== {0}", "System.Int32"),
-                    FilterExpressionOperator.And);
-
-            this.branchService.getAll(String.Format(BranchApi.CompanyBranches, this.CompanyId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.body;
-                var totalCount = 0;
-
-                if (res.headers != null) {
-                    var headers = res.headers != undefined ? res.headers : null;
-                    if (headers != null) {
-                        var retheader = headers.get('X-Total-Count');
-                        if (retheader != null)
-                            totalCount = parseInt(retheader.toString());
-                    }
-                }
-                this.rowData = {
-                    data: resData,
-                    total: totalCount
-                }
-
-                //زمانی که تعداد رکورد ها صفر باشد باید کامپوننت پدر رفرش شود
-                if (totalCount == 0) {
-                    if (this.parentBranch && this.parentBranch.Childrens) {
-                        var thisIndex = this.parentBranch.Childrens.findIndex(p => p == this);
-                        if (thisIndex >= 0)
-                            this.parentBranch.Childrens.splice(thisIndex);
-
-
-                        this.parentBranch.reloadGrid();
-                    }
-
-                }
-
-                this.showloadingMessage = !(resData.length == 0);
-                this.totalRecords = totalCount;
-                ////this.sppcLoading.hide();
-            })
-        }
-        else {
-            this.rowData = {
-                data: [],
-                total: 0
-            }
-        }
     }
 
     dataStateChange(state: DataStateChangeEvent): void {
@@ -225,51 +137,26 @@ export class BranchComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    pageChange(event: PageChangeEvent): void {
-        this.skip = event.skip;
-        this.reloadGrid();
-    }
-
-    goToLastPage() {
-        var pageCount: number = 0;
-        pageCount = Math.floor(this.totalRecords / this.pageSize);
-
-        if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
-            this.skip = (pageCount * this.pageSize) - this.pageSize;
-            return;
-        }
-        this.skip = (pageCount * this.pageSize)
-    }
-
-    deleteModel(confirm: boolean) {
-        if (confirm) {
-            //this.sppcLoading.show();
-            this.branchService.delete(String.Format(BranchApi.Branch, this.deleteModelId)).subscribe(response => {
-                this.deleteModelId = 0;
-                this.showMessage(this.deleteMsg, MessageType.Info);
-                this.reloadGrid();
-            }, (error => {
-                ////this.sppcLoading.hide();
-                this.showMessage(error, MessageType.Warning);
-            }));
-        }
-
-        //hide confirm dialog
-        this.deleteConfirm = false;
-    }
-
     removeHandler(arg: any) {
         this.prepareDeleteConfirm(arg.dataItem.name);
         this.deleteModelId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
-    //detail account form events
+    pageChange(event: PageChangeEvent): void {
+        this.skip = event.skip;
+        this.reloadGrid();
+    }
+
     public editHandler(arg: any) {
-        //this.sppcLoading.show();
+        this.grid.loading = true;
         this.branchService.getById(String.Format(BranchApi.Branch, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
-            ////this.sppcLoading.hide();
+            this.setTitle(res.parentId);
+
+            this.parentId = res.parentId;
+
+            this.grid.loading = false;
         })
         this.isNew = false;
         this.errorMessage = '';
@@ -278,52 +165,13 @@ export class BranchComponent extends DefaultComponent implements OnInit {
     public cancelHandler() {
         this.editDataItem = undefined;
         this.errorMessage = '';
-    }
 
-    public addNew(parentModelId?: number,addToThis?: boolean) {
-        this.isNew = true;
-        this.editDataItem = new BranchInfo();
-        if (parentModelId)
-            this.parentId = parentModelId;
-
-        if (addToThis)
-            this.addToContainer = addToThis;
-
-        this.errorMessage = '';
-    }
-
-    public rolesHandler(branchId: number) {
-        this.rolesList = true;
-        //this.sppcLoading.show();
-        this.branchService.getBranchRoles(branchId).subscribe(res => {
-            this.branchRolesData = res;
-            ////this.sppcLoading.hide();
-        });
-
-        this.errorMessage = '';
-    }
-
-    public cancelBranchRolesHandler() {
-        this.rolesList = false;
-        this.errorMessage = '';
-    }
-
-    public saveBranchRolesHandler(userRoles: RelatedItems) {
-        //this.sppcLoading.show();
-        this.branchService.modifiedBranchRoles(userRoles)
-            .subscribe(response => {
-                this.rolesList = false;
-                this.showMessage(this.getText("Branch.UpdateRoles"), MessageType.Succes);
-                ////this.sppcLoading.hide();
-            }, (error => {
-                ////this.sppcLoading.hide();
-                this.errorMessage = error;
-            }));
+        this.parentId = this.componentParentId;
     }
 
     public saveHandler(model: Branch) {
         model.companyId = this.CompanyId;
-        //this.sppcLoading.show();
+
         if (!this.isNew) {
             this.isNew = false;
             this.branchService.edit<Branch>(String.Format(BranchApi.Branch, model.id), model)
@@ -337,13 +185,20 @@ export class BranchComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
-            //set parentid for childs branch
+            //set parentid for childs accounts
             if (this.parentId) {
                 model.parentId = this.parentId;
 
-                var findIndex = this.rowData.data.findIndex(acc => acc.id == this.parentId);
-                var parentRow = this.rowData.data[findIndex];
-                model.level = parentRow.level + 1;
+                //var currentLevel = this.parent ? this.parent.level : 0;
+                var parentCom = this.parentComponent;
+                var currentLevel = 0;
+
+                while (parentCom) {
+                    currentLevel++;
+                    parentCom = parentCom.parentComponent
+                }
+
+                model.level = currentLevel + 1;
 
                 this.parentId = undefined;
             }
@@ -351,9 +206,6 @@ export class BranchComponent extends DefaultComponent implements OnInit {
                 model.parentId = this.parent.id;
                 model.level = this.parent.level + 1;
             }
-
-            //set parentid for childs branch
-
             this.branchService.insert<Branch>(BranchApi.Branches, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
@@ -368,20 +220,264 @@ export class BranchComponent extends DefaultComponent implements OnInit {
                             return;
                         }
                     }
-                    if (model.parentId == undefined || this.addToContainer) {
-                        this.addToContainer = false;
-                        this.reloadGrid(insertedModel);
-                    }
-                    else if (model.parentId != undefined) {
-                        this.reloadGrid();
-                    }
-                    
+                    this.reloadGrid(insertedModel);
+
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
                 }));
         }
-        ////this.sppcLoading.hide();
+    }
+
+    public rolesHandler(branchId: number) {
+        this.rolesList = true;
+        this.branchService.getBranchRoles(branchId).subscribe(res => {
+            this.branchRolesData = res;
+        });
+
+        this.errorMessage = '';
+    }
+
+    public cancelBranchRolesHandler() {
+        this.rolesList = false;
+        this.errorMessage = '';
+    }
+
+    public saveBranchRolesHandler(userRoles: RelatedItems) {
+        this.branchService.modifiedBranchRoles(userRoles)
+            .subscribe(response => {
+                this.rolesList = false;
+                this.showMessage(this.getText("Branch.UpdateRoles"), MessageType.Succes);
+            }, (error => {
+                this.errorMessage = error;
+            }));
+    }
+    //#endregion
+
+    //#region Constructor
+
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+        private branchService: BranchService, public renderer: Renderer2, public metadata: MetaDataService,
+        @SkipSelf() @Host() @Optional() private parentComponent: BranchComponent) {
+        super(toastrService, translate, renderer, metadata, Entities.Branch, Metadatas.Branch);
+    }
+
+    //#endregion
+
+    //#region Methods
+
+    /**
+     * کامپوننت های فرزند را در متغیری اضافه میکند
+     * @param branchComponent کامپوننت شعبه
+     */
+    public addChildComponent(branchComponent: BranchComponent) {
+
+        if (this.Childrens == undefined) this.Childrens = new Array<BranchComponent>();
+        if (this.Childrens.findIndex(p => p.parent.id === branchComponent.parent.id) == -1)
+            this.Childrens.push(branchComponent);
+
+    }
+
+    showConfirm() {
+        this.deleteModelsConfirm = true;
+    }
+
+    deleteModels(confirm: boolean) {
+        if (confirm) {
+            //this.sppcLoading.show();          
+        }
+
+        this.groupDelete = false;
+        this.deleteModelsConfirm = false;
+    }
+
+    public reloadGrid(insertedModel?: Branch) {
+        if (this.viewAccess) {
+            this.grid.loading = true;
+            var filter = this.currentFilter;
+            var order = this.currentOrder;
+            if (this.totalRecords == this.skip && this.totalRecords != 0) {
+                this.skip = this.skip - this.pageSize;
+            }
+
+            if (this.parent) {
+                if (this.parent.childCount > 0)
+                    filter = this.addFilterToFilterExpression(this.currentFilter,
+                        new Filter("ParentId", this.parent.id.toString(), "== {0}", "System.Int32"),
+                        FilterExpressionOperator.And);
+            }
+            else
+                filter = this.addFilterToFilterExpression(this.currentFilter,
+                    new Filter("ParentId", "null", "== {0}", "System.Int32"),
+                    FilterExpressionOperator.And);
+
+            //#region load inner grid
+            if (this.parentComponent != null && (this.goLastPage || (insertedModel && !this.addToContainer))) {
+
+                //call top 1 for get totalcount
+                this.branchService.getAll(String.Format(BranchApi.CompanyBranches, this.CompanyId),
+                    0, 1, order, filter).subscribe((res) => {
+                        if (res.headers != null) {
+                            var headers = res.headers != undefined ? res.headers : null;
+                            if (headers != null) {
+                                var retheader = headers.get('X-Total-Count');
+                                if (retheader != null)
+                                    this.totalRecords = parseInt(retheader.toString());
+                            }
+                        }
+
+                        this.goToLastPage(this.totalRecords);
+                        this.goLastPage = false;
+
+                        this.loadGridData(insertedModel, order, filter);
+                    });
+            }
+            //#endregion
+            else {
+                if (insertedModel && this.addToContainer)
+                    this.goToLastPage(this.totalRecords);
+
+                this.loadGridData(insertedModel, order, filter);
+            }
+        }
+        else {
+            this.rowData = {
+                data: [],
+                total: 0
+            }
+        }
+    }
+
+    loadGridData(insertedModel?: Branch, order?: string, filter?: FilterExpression) {
+
+        this.branchService.getAll(String.Format(BranchApi.CompanyBranches, this.CompanyId),
+            this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+                var resData = res.body;
+
+                var totalCount = 0;
+
+                if (res.headers != null) {
+                    var headers = res.headers != undefined ? res.headers : null;
+                    if (headers != null) {
+                        var retheader = headers.get('X-Total-Count');
+                        if (retheader != null)
+                            totalCount = parseInt(retheader.toString());
+                    }
+                }
+
+                this.rowData = {
+                    data: resData,
+                    total: totalCount
+                }
+
+                this.grid.data = this.rowData;
+
+
+                //expand new row if has childs
+                if (insertedModel) {
+                    var rows = (this.rowData.data as Array<Branch>);
+                    var index = rows.findIndex(p => p.id == insertedModel.parentId);
+                    if (index == -1 && this.parentComponent != null) {
+                        var rows = (this.parentComponent.rowData.data as Array<Branch>);
+                        var index = rows.findIndex(p => p.id == insertedModel.parentId);
+                        if (index >= 0) {
+                            this.parentComponent.isChildExpanding = true;
+                            this.parentComponent.grid.collapseRow(this.parentComponent.skip + index);
+                            this.parentComponent.grid.expandRow(this.parentComponent.skip + index);
+                        }
+                    }
+                    else if (index >= 0) {
+                        this.isChildExpanding = true;
+                        this.grid.collapseRow(this.skip + index);
+                        this.grid.expandRow(this.skip + index);
+                    }
+                }
+
+                //زمانی که تعداد رکورد ها صفر باشد باید کامپوننت پدر رفرش شود
+                if (totalCount == 0) {
+                    if (this.parentComponent && this.parentComponent.Childrens) {
+                        var thisIndex = this.parentComponent.Childrens.findIndex(p => p == this);
+                        if (thisIndex >= 0)
+                            this.parentComponent.Childrens.splice(thisIndex);
+
+
+                        this.parentComponent.reloadGrid();
+                    }
+
+                }
+
+                this.showloadingMessage = !(resData.length == 0);
+                this.totalRecords = totalCount;
+                this.grid.loading = false;
+            })
+    }
+
+    deleteModel(confirm: boolean) {
+        if (confirm) {
+            this.grid.loading = true;
+            this.branchService.delete(String.Format(BranchApi.Branch, this.deleteModelId)).subscribe(response => {
+                this.deleteModelId = 0;
+                this.showMessage(this.deleteMsg, MessageType.Info);
+                if (this.rowData.data.length == 1 && this.pageIndex > 1)
+                    this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
+                this.reloadGrid();
+            }, (error => {
+                this.grid.loading = false;
+                var message = error.message ? error.message : error;
+                this.showMessage(message, MessageType.Warning);
+            }));
+        }
+
+        //hide confirm dialog
+        this.deleteConfirm = false;
+    }
+
+    private setTitle(parentModelId?: number) {
+        if (parentModelId != undefined) {
+
+            var parentRow = null;
+            var findIndex = this.rowData.data.findIndex(acc => acc.id == parentModelId);
+
+            if (findIndex == -1) {
+                findIndex = this.parentComponent.rowData.data.findIndex(acc => acc.id == parentModelId);
+                if (findIndex >= 0)
+                    parentRow = this.parentComponent.rowData.data[findIndex];
+            }
+            else
+                parentRow = this.rowData.data[findIndex];
+
+            if (parentRow != null) {
+                var level = +parentRow.level;
+                this.parentTitle = this.getText("App.Level") + " " + (level + 2).toString();
+                this.parentValue = parentRow.name;
+            }
+        }
+        else if (this.parent != undefined) {
+            this.parentTitle = this.getText("App.Level") + " " + (this.parent.level + 2).toString();
+            this.parentValue = this.parent.name;
+        }
+        else {
+            this.parentTitle = '';
+            this.parentValue = '';
+        }
+
+    }
+
+    public addNew(parentModelId?: number, addToThis?: boolean) {
+        this.isNew = true;
+        this.editDataItem = new BranchInfo();
+        this.setTitle(parentModelId);
+
+        if (parentModelId)
+            this.parentId = parentModelId;
+
+        if (addToThis)
+            this.addToContainer = addToThis;
+        else
+            this.addToContainer = false;
+
+        this.errorMessage = '';
     }
 
     public showOnlyParent(dataItem: Branch, index: number): boolean {

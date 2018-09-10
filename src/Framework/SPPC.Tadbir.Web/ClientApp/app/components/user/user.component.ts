@@ -1,8 +1,8 @@
-﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
+﻿import { Component, OnInit, Input, Renderer2, ViewChild } from '@angular/core';
 import { UserService, UserInfo, RelatedItemsInfo } from '../../service/index';
 import { User, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -42,6 +42,10 @@ export function getLayoutModule(layout: Layout) {
 
 export class UserComponent extends DefaultComponent implements OnInit {
 
+    //#region Fields
+
+    @ViewChild(GridComponent) grid: GridComponent;
+
     public rowData: GridDataResult;
     public selectedRows: string[] = [];
     public totalRecords: number;
@@ -63,15 +67,12 @@ export class UserComponent extends DefaultComponent implements OnInit {
     userRolesData: RelatedItemsInfo;
     isNew: boolean;
     errorMessage: string;
+    //#endregion
 
+    //#region Events
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.User, UserPermissions.View);
         this.reloadGrid();
-    }
-
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private userService: UserService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.User, Metadatas.User);
     }
 
     selectionKey(context: RowArgs): string {
@@ -84,48 +85,6 @@ export class UserComponent extends DefaultComponent implements OnInit {
         //    this.groupDelete = true;
         //else
         //    this.groupDelete = false;
-    }
-
-    reloadGrid(insertedModel?: User) {
-        if (this.viewAccess) {
-            //this.sppcLoading.show();
-            var filter = this.currentFilter;
-            var order = this.currentOrder;
-            if (this.totalRecords == this.skip && this.totalRecords != 0) {
-                this.skip = this.skip - this.pageSize;
-            }
-
-            if (insertedModel)
-                this.goToLastPage();
-
-            this.userService.getAll(String.Format(UserApi.Users, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.body;
-                var totalCount = 0;
-                
-                if (res.headers != null) {
-                    var headers = res.headers != undefined ? res.headers : null;
-                    if (headers != null) {
-                        var retheader = headers.get('X-Total-Count');
-                        if (retheader != null)
-                            totalCount = parseInt(retheader.toString());
-                    }
-                }
-                this.rowData = {
-                    data: resData,
-                    total: totalCount
-                }
-                this.showloadingMessage = !(resData.length == 0);
-                this.totalRecords = totalCount;
-                //this.sppcLoading.hide();
-            })
-        }
-        else {
-            this.rowData = {
-                data: [],
-                total: 0
-            }
-        }
-        
     }
 
     dataStateChange(state: DataStateChangeEvent): void {
@@ -150,22 +109,11 @@ export class UserComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    goToLastPage() {
-        var pageCount: number = 0;
-        pageCount = Math.floor(this.totalRecords / this.pageSize);
-
-        if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
-            this.skip = (pageCount * this.pageSize) - this.pageSize;
-            return;
-        }
-        this.skip = (pageCount * this.pageSize)
-    }
-
     public editHandler(arg: any) {
-        //this.sppcLoading.show();
-        this.userService.getById(String.Format(UserApi.User,arg.dataItem.id)).subscribe(res => {
+        this.grid.loading = true;
+        this.userService.getById(String.Format(UserApi.User, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
-            //this.sppcLoading.hide();
+            this.grid.loading = false;
         })
         this.isNew = false;
         this.errorMessage = '';
@@ -177,44 +125,8 @@ export class UserComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public addNew() {
-        this.isNew = true;
-        this.editDataItem = new UserInfo();
-        this.errorMessage = '';
-    }
-
-    public rolesHandler(userId: number) {
-        this.rolesList = true;
-        //this.sppcLoading.show();
-        this.userService.getUserRoles(userId).subscribe(res => {
-            this.userRolesData = res;
-            //this.sppcLoading.hide();
-        });
-
-        this.errorMessage = '';
-    }
-
-    public cancelUserRolesHandler() {
-        this.rolesList = false;
-        this.errorMessage = '';
-    }
-
-    public saveUserRolesHandler(userRoles: RelatedItems) {
-        debugger;
-        //this.sppcLoading.show();
-        this.userService.modifiedUserRoles(userRoles)
-            .subscribe(response => {
-                this.rolesList = false;
-                this.showMessage(this.getText("User.UpdateRoles"), MessageType.Succes);
-                //this.sppcLoading.hide();
-            }, (error => {
-                //this.sppcLoading.hide();
-                this.errorMessage = error;
-            }));
-    }
-
     public saveHandler(model: User) {
-        //this.sppcLoading.show();
+        this.grid.loading = true;
         if (!this.isNew) {
             this.userService.edit<User>(String.Format(UserApi.User, model.id), model)
                 .subscribe(response => {
@@ -224,6 +136,7 @@ export class UserComponent extends DefaultComponent implements OnInit {
                     this.reloadGrid();
                 }, (error => {
                     this.errorMessage = error;
+                    this.grid.loading = false;
                 }));
         }
         else {
@@ -237,11 +150,99 @@ export class UserComponent extends DefaultComponent implements OnInit {
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
+                    this.grid.loading = false;
                 }));
         }
-        //this.sppcLoading.hide();
     }
 
+    public rolesHandler(userId: number) {
+        this.rolesList = true;
+        this.grid.loading = true;
+        this.userService.getUserRoles(userId).subscribe(res => {
+            this.userRolesData = res;
+            this.grid.loading = false;
+        });
+
+        this.errorMessage = '';
+    }
+
+    public cancelUserRolesHandler() {
+        this.rolesList = false;
+        this.errorMessage = '';
+    }
+
+    public saveUserRolesHandler(userRoles: RelatedItems) {
+        this.grid.loading = true;
+        this.userService.modifiedUserRoles(userRoles)
+            .subscribe(response => {
+                this.rolesList = false;
+                this.showMessage(this.getText("User.UpdateRoles"), MessageType.Succes);
+                this.grid.loading = false;
+            }, (error => {
+                this.grid.loading = false;
+                this.errorMessage = error;
+            }));
+    }
+  
+    //#endregion
+
+    //#region Constructor
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+        private userService: UserService, public renderer: Renderer2, public metadata: MetaDataService) {
+        super(toastrService, translate, renderer, metadata, Entities.User, Metadatas.User);
+    }
+    //#endregion
+
+    //#region Methods
+
+    reloadGrid(insertedModel?: User) {
+        if (this.viewAccess) {
+            this.grid.loading = true;
+            var filter = this.currentFilter;
+            var order = this.currentOrder;
+            if (this.totalRecords == this.skip && this.totalRecords != 0) {
+                this.skip = this.skip - this.pageSize;
+            }
+
+            if (insertedModel)
+                this.goToLastPage(this.totalRecords);
+
+            this.userService.getAll(String.Format(UserApi.Users, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+                var resData = res.body;
+                var totalCount = 0;
+                
+                if (res.headers != null) {
+                    var headers = res.headers != undefined ? res.headers : null;
+                    if (headers != null) {
+                        var retheader = headers.get('X-Total-Count');
+                        if (retheader != null)
+                            totalCount = parseInt(retheader.toString());
+                    }
+                }
+                this.rowData = {
+                    data: resData,
+                    total: totalCount
+                }
+                this.showloadingMessage = !(resData.length == 0);
+                this.totalRecords = totalCount;
+                this.grid.loading = false;
+            })
+        }
+        else {
+            this.rowData = {
+                data: [],
+                total: 0
+            }
+        }
+        
+    }
+
+    public addNew() {
+        this.isNew = true;
+        this.editDataItem = new UserInfo();
+        this.errorMessage = '';
+    }
+     //#endregion
 }
 
 

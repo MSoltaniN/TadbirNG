@@ -1,8 +1,8 @@
-﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
+﻿import { Component, OnInit, Input, Renderer2, ViewChild } from '@angular/core';
 import { FiscalPeriodService, FiscalPeriodInfo, RelatedItemsInfo } from '../../service/index';
 import { FiscalPeriod, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
+import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -44,6 +44,9 @@ export function getLayoutModule(layout: Layout) {
 
 export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
 
+    //#region Fields
+    @ViewChild(GridComponent) grid: GridComponent;
+
     public rowData: GridDataResult;
     public selectedRows: string[] = [];
     public totalRecords: number;
@@ -68,15 +71,12 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
+    //#endregion
 
+    //#region Events
     ngOnInit() {
         this.viewAccess = this.isAccess(SecureEntity.FiscalPeriod, FiscalPeriodPermissions.View);
         this.reloadGrid();
-    }
-
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.FiscalPeriod, Metadatas.FiscalPeriod);
     }
 
     selectionKey(context: RowArgs): string {
@@ -84,65 +84,11 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
         return context.dataItem.id + " " + context.index;
     }
 
-    deleteModels() {
-        ////this.sppcLoading.show();
-        //this.voucherService.groupDelete(VoucherApi.Vouchers, this.selectedRows).subscribe(res => {
-        //    this.showMessage(this.deleteMsg, MessageType.Info);
-        //    this.selectedRows = [];
-        //    this.reloadGrid();
-        //}, (error => {
-        //    ////this.sppcLoading.hide();
-        //    this.showMessage(error, MessageType.Warning);
-        //}));
-    }
-
     onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
         if (this.selectedRows.length > 1)
             this.groupDelete = true;
         else
             this.groupDelete = false;
-    }
-
-    reloadGrid(insertedModel?: FiscalPeriod) {
-        if (this.viewAccess) {
-            ////this.sppcLoading.show();
-            var filter = this.currentFilter;
-            var order = this.currentOrder;
-            if (this.totalRecords == this.skip && this.totalRecords != 0) {
-                this.skip = this.skip - this.pageSize;
-            }
-
-
-            if (insertedModel)
-                this.goToLastPage();
-
-            this.fiscalPeriodService.getAll(String.Format(FiscalPeriodApi.CompanyFiscalPeriods, this.CompanyId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.body;
-                var totalCount = 0;
-                
-                if (res.headers != null) {
-                    var headers = res.headers != undefined ? res.headers : null;
-                    if (headers != null) {
-                        var retheader = headers.get('X-Total-Count');
-                        if (retheader != null)
-                            totalCount = parseInt(retheader.toString());
-                    }
-                }
-                this.rowData = {
-                    data: resData,
-                    total: totalCount
-                }
-                this.showloadingMessage = !(resData.length == 0);
-                this.totalRecords = totalCount;
-                //////this.sppcLoading.hide();
-            })
-        }
-        else {
-            this.rowData = {
-                data: [],
-                total: 0
-            }
-        }
     }
 
     dataStateChange(state: DataStateChangeEvent): void {
@@ -162,51 +108,22 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    pageChange(event: PageChangeEvent): void {
-        this.skip = event.skip;
-        this.reloadGrid();
-    }
-
-    goToLastPage() {
-        debugger;
-        var pageCount: number = 0;
-        pageCount = Math.floor(this.totalRecords / this.pageSize);
-
-        if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
-            this.skip = (pageCount * this.pageSize) - this.pageSize;
-            return;
-        }
-        this.skip = (pageCount * this.pageSize)
-    }
-
-    deleteModel(confirm: boolean) {
-        if (confirm) {
-            ////this.sppcLoading.show();
-            this.fiscalPeriodService.delete(String.Format(FiscalPeriodApi.FiscalPeriod, this.deleteModelId)).subscribe(response => {
-                this.deleteModelId = 0;
-                this.showMessage(this.deleteMsg, MessageType.Info);
-                this.reloadGrid();
-            }, (error => {
-                //////this.sppcLoading.hide();
-                this.showMessage(error, MessageType.Warning);
-            }));
-        }
-
-        //hide confirm dialog
-        this.deleteConfirm = false;
-    }
-
     removeHandler(arg: any) {
         this.prepareDeleteConfirm(arg.dataItem.name);
         this.deleteModelId = arg.dataItem.id;
         this.deleteConfirm = true;
     }
 
+    pageChange(event: PageChangeEvent): void {
+        this.skip = event.skip;
+        this.reloadGrid();
+    }
+
     public editHandler(arg: any) {
-        ////this.sppcLoading.show();
+        this.grid.loading = true;
         this.fiscalPeriodService.getById(String.Format(FiscalPeriodApi.FiscalPeriod, arg.dataItem.id)).subscribe(res => {
             this.editDataItem = res;
-            //////this.sppcLoading.hide();
+            this.grid.loading = false;
         })
         this.isNew = false;
         this.errorMessage = '';
@@ -218,45 +135,23 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    public addNew() {
-        this.isNew = true;
-        this.editDataItem = new FiscalPeriodInfo();
-        this.errorMessage = '';
-    }
-
-    public rolesHandler(fPeriodId: number) {
-        this.rolesList = true;
-        ////this.sppcLoading.show();
-        this.fiscalPeriodService.getFiscalPeriodRoles(fPeriodId).subscribe(res => {
-            this.fiscalPeriodRolesData = res;
-            //////this.sppcLoading.hide();
-        });
-
-        this.errorMessage = '';
-    }
-
-    public cancelFiscalPeriodRolesHandler() {
-        this.rolesList = false;
-        this.errorMessage = '';
-    }
-
     public saveFiscalPeriodRolesHandler(fPeriodRoles: RelatedItems) {
         debugger;
-        ////this.sppcLoading.show();
+        this.grid.loading = true;
         this.fiscalPeriodService.modifiedFiscalPeriodRoles(fPeriodRoles)
             .subscribe(response => {
                 this.rolesList = false;
                 this.showMessage(this.getText("FiscalPeriod.UpdateRoles"), MessageType.Succes);
-                //////this.sppcLoading.hide();
+                this.grid.loading = false;
             }, (error => {
-                //////this.sppcLoading.hide();
+                this.grid.loading = false;
                 this.errorMessage = error;
             }));
     }
 
     public saveHandler(model: FiscalPeriod) {
-        model.companyId = this.CompanyId;    
-        ////this.sppcLoading.show();
+        model.companyId = this.CompanyId;
+        this.grid.loading = true;
         if (!this.isNew) {
             this.fiscalPeriodService.edit<FiscalPeriod>(String.Format(FiscalPeriodApi.FiscalPeriod, model.id), model)
                 .subscribe(response => {
@@ -265,8 +160,8 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
                     this.showMessage(this.updateMsg, MessageType.Succes);
                     this.reloadGrid();
                 }, (error => {
+                    this.grid.loading = false;
                     this.errorMessage = error;
-
                 }));
         }
         else {
@@ -280,11 +175,119 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
                 }, (error => {
                     this.isNew = true;
                     this.errorMessage = error;
+                    this.grid.loading = false;
                 }));
         }
-        //////this.sppcLoading.hide();
     }
 
+    public rolesHandler(fPeriodId: number) {
+        this.rolesList = true;
+        this.grid.loading = true;
+        this.fiscalPeriodService.getFiscalPeriodRoles(fPeriodId).subscribe(res => {
+            this.fiscalPeriodRolesData = res;
+            this.grid.loading = false;
+        });
+
+        this.errorMessage = '';
+    }
+
+    public cancelFiscalPeriodRolesHandler() {
+        this.rolesList = false;
+        this.errorMessage = '';
+    }
+
+    //#endregion
+
+    //#region Constructor
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService) {
+        super(toastrService, translate, renderer, metadata, Entities.FiscalPeriod, Metadatas.FiscalPeriod);
+    }
+    //#endregion
+
+    //#region Methods
+    deleteModels() {
+        ////this.sppcLoading.show();
+        //this.voucherService.groupDelete(VoucherApi.Vouchers, this.selectedRows).subscribe(res => {
+        //    this.showMessage(this.deleteMsg, MessageType.Info);
+        //    this.selectedRows = [];
+        //    this.reloadGrid();
+        //}, (error => {
+        //    ////this.sppcLoading.hide();
+        //    this.showMessage(error, MessageType.Warning);
+        //}));
+    }
+
+    reloadGrid(insertedModel?: FiscalPeriod) {
+        if (this.viewAccess) {
+            this.grid.loading = true;
+            var filter = this.currentFilter;
+            var order = this.currentOrder;
+            if (this.totalRecords == this.skip && this.totalRecords != 0) {
+                this.skip = this.skip - this.pageSize;
+            }
+
+
+            if (insertedModel)
+                this.goToLastPage(this.totalRecords);
+
+            this.fiscalPeriodService.getAll(String.Format(FiscalPeriodApi.CompanyFiscalPeriods, this.CompanyId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+                var resData = res.body;
+                var totalCount = 0;
+
+                if (res.headers != null) {
+                    var headers = res.headers != undefined ? res.headers : null;
+                    if (headers != null) {
+                        var retheader = headers.get('X-Total-Count');
+                        if (retheader != null)
+                            totalCount = parseInt(retheader.toString());
+                    }
+                }
+                this.rowData = {
+                    data: resData,
+                    total: totalCount
+                }
+                this.showloadingMessage = !(resData.length == 0);
+                this.totalRecords = totalCount;
+
+                this.grid.loading = false;
+            })
+        }
+        else {
+            this.rowData = {
+                data: [],
+                total: 0
+            }
+        }
+    }
+
+    deleteModel(confirm: boolean) {
+        if (confirm) {
+            this.grid.loading = true;
+            this.fiscalPeriodService.delete(String.Format(FiscalPeriodApi.FiscalPeriod, this.deleteModelId)).subscribe(response => {
+                this.deleteModelId = 0;
+                this.showMessage(this.deleteMsg, MessageType.Info);
+                if (this.rowData.data.length == 1 && this.pageIndex > 1)
+                    this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
+                this.reloadGrid();
+            }, (error => {
+                this.grid.loading = false;
+                var message = error.message ? error.message : error;
+                this.showMessage(message, MessageType.Warning);
+            }));
+        }
+
+        //hide confirm dialog
+        this.deleteConfirm = false;
+    }
+
+    public addNew() {
+        this.isNew = true;
+        this.editDataItem = new FiscalPeriodInfo();
+        this.errorMessage = '';
+    }
+
+    //#endregion
+
 }
-
-
