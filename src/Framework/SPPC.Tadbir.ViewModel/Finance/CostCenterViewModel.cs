@@ -21,6 +21,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int? ParentId { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی شرکتی که اطلاعات مرکز هزینه در آن تعریف شده است
+        /// </summary>
+        public int CompanyId { get; set; }
+
+        /// <summary>
         /// تعداد مراکز هزینه زیرمجموعه این مرکز هزینه در ساختار درختی
         /// </summary>
         public int ChildCount { get; set; }

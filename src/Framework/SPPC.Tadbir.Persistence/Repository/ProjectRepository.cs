@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات پروژه ها را پیاده سازی می کند.
     /// </summary>
-    public class ProjectRepository : RepositoryBase, IProjectRepository
+    public class ProjectRepository : LoggingRepository<Project, ProjectViewModel>, IProjectRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -27,9 +27,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
+        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         public ProjectRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, ISecureRepository repository)
-            : base(unitOfWork, mapper, metadata)
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, ISecureRepository repository, IOperationLogRepository log)
+            : base(unitOfWork, mapper, metadata, log)
         {
             _repository = repository;
         }
@@ -151,7 +152,7 @@ namespace SPPC.Tadbir.Persistence
             if (project.Id == 0)
             {
                 projectModel = Mapper.Map<Project>(project);
-                repository.Insert(projectModel);
+                await InsertAsync(repository, projectModel);
             }
             else
             {
@@ -159,8 +160,7 @@ namespace SPPC.Tadbir.Persistence
                     project.Id, prj => prj.FiscalPeriod, prj => prj.Branch);
                 if (projectModel != null)
                 {
-                    UpdateExistingProject(project, projectModel);
-                    repository.Update(projectModel);
+                    await UpdateAsync(repository, projectModel, project);
                 }
             }
 
@@ -175,14 +175,10 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteProjectAsync(int projectId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var project = await repository.GetByIDAsync(projectId);
+            var project = await repository.GetByIDAsync(projectId, prj => prj.Branch);
             if (project != null)
             {
-                project.FiscalPeriod = null;
-                project.Branch = null;
-                project.Parent = null;
-                repository.Delete(project);
-                await UnitOfWork.CommitAsync();
+                await DeleteAsync(repository, project);
             }
         }
 
@@ -263,13 +259,33 @@ namespace SPPC.Tadbir.Persistence
             return project.FullCode;
         }
 
-        private static void UpdateExistingProject(ProjectViewModel projectViewModel, Project project)
+        /// <summary>
+        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
+        /// </summary>
+        /// <param name="projectViewModel">مدل نمایشی شامل آخرین تغییرات</param>
+        /// <param name="project">سطر اطلاعاتی موجود</param>
+        protected override void UpdateExisting(ProjectViewModel projectViewModel, Project project)
         {
             project.Code = projectViewModel.Code;
             project.FullCode = projectViewModel.FullCode;
             project.Name = projectViewModel.Name;
             project.Level = projectViewModel.Level;
             project.Description = projectViewModel.Description;
+        }
+
+        /// <summary>
+        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
+        /// </summary>
+        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
+        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        protected override string GetState(Project entity)
+        {
+
+            return (entity != null)
+               ? String.Format(
+                   "Name : {1}{0}Code : {2}{0}FullCode : {3}{0}Description : {4}",
+                   Environment.NewLine, entity.Name, entity.Code, entity.FullCode, entity.Description)
+               : null;
         }
 
         private readonly ISecureRepository _repository;
