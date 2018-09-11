@@ -14,6 +14,7 @@
 export interface Project {
     fiscalPeriodId: number;
     branchId: number;
+    companyId: number;
     parentId?: number;
     childCount: number;
     id: number;
