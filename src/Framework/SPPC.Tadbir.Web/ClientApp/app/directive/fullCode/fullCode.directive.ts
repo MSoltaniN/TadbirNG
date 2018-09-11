@@ -7,19 +7,19 @@ import { FullCodeService } from "../../service/index";
 
 
 @Directive({
-    selector: '[sppsFullCode]',
+    selector: '[sppcFullCode]',
 })
 
 export class FullCodeDirective implements AfterViewInit {
 
-    @Input() sppsFullCode: string;
+    @Input() sppcFullCode: string;
     @Input() apiUrl: string;
 
     fullCodeElement: any;
     parentFullCode: string;
 
     ngAfterViewInit(): void {
-        this.fullCodeElement = document.getElementById(this.sppsFullCode) as any;
+        this.fullCodeElement = document.getElementById(this.sppcFullCode) as any;
         if (this.apiUrl) {
             this.fullCodeService.getAll(this.apiUrl).subscribe(res => {
                 var codeValue = this.el.nativeElement.value;
