@@ -13,6 +13,16 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
+        /// API client URL for all operation logs
+        /// </summary>
+        public const string AllOperationLogs = "system/oplog";
+
+        /// <summary>
+        /// API server route URL for all operation logs
+        /// </summary>
+        public const string AllOperationLogsUrl = "system/oplog";
+
+        /// <summary>
         /// API client URL for all operation logs created for a company specified by database identifier
         /// </summary>
         public const string CompanyOperationLogs = "system/oplog/company/{0}";

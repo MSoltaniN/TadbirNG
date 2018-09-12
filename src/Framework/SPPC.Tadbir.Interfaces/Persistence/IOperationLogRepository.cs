@@ -18,8 +18,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="companyId">شناسه دیتابیسی اختیاری برای فیلتر لاگ های عملیاتی برای یکی از شرکت ها</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های عملیاتی موجود</returns>
-        Task<IList<OperationLogViewModel>> GetOperationLogsAsync(
+        Task<IList<OperationLogViewModel>> GetLogsAsync(
             int? userId, int? companyId, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد سطرهای لاگ های عملیاتی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد سطرهای لاگ های عملیاتی</returns>
+        Task<int> GetLogCountAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات داده شده برای یک لاگ عملیاتی جدید را ذخیره می کند

@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="companyId">شناسه دیتابیسی اختیاری برای فیلتر لاگ های عملیاتی برای یکی از شرکت ها</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه لاگ های عملیاتی موجود</returns>
-        public async Task<IList<OperationLogViewModel>> GetOperationLogsAsync(
+        public async Task<IList<OperationLogViewModel>> GetLogsAsync(
             int? userId, int? companyId, GridOptions gridOptions = null)
         {
             var repository = _unitOfWork.GetAsyncRepository<OperationLog>();
@@ -55,6 +55,18 @@ namespace SPPC.Tadbir.Persistence
                 .Select(log => _mapper.Map<OperationLogViewModel>(log))
                 .Apply(gridOptions)
                 .ToListAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد سطرهای لاگ های عملیاتی را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد سطرهای لاگ های عملیاتی</returns>
+        public async Task<int> GetLogCountAsync(GridOptions gridOptions = null)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<OperationLog>();
+            var count = await repository.GetCountByCriteriaAsync(null, gridOptions);
+            return count;
         }
 
         /// <summary>
