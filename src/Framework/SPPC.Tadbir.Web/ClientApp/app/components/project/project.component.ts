@@ -168,6 +168,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     public saveHandler(model: Project) {
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
+        model.companyId = this.CompanyId;
 
         if (!this.isNew) {
             this.isNew = false;

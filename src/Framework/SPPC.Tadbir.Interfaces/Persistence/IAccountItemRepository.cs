@@ -15,6 +15,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// مجموعه ای از سرفصل های حسابداری در دوره مالی و شعبه مشخص شده که در آخرین سطح ساختار درختی قرار دارند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -25,6 +26,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// مجموعه ای از تفصیلی های شناور در دوره مالی و شعبه مشخص شده که در آخرین سطح ساختار درختی قرار دارند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -35,6 +37,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// مجموعه ای از مراکز هزینه در دوره مالی و شعبه مشخص شده که در آخرین سطح ساختار درختی قرار دارند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -45,6 +48,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// مجموعه ای از پروژه ها در دوره مالی و شعبه مشخص شده که در آخرین سطح ساختار درختی قرار دارند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -55,6 +59,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// مجموعه ای از سرفصل های حسابداری در دوره مالی و شعبه مشخص شده که در بالاترین سطح ساختار درختی قرار دارند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -65,6 +70,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// مجموعه ای از تفصیلی های شناور در دوره مالی و شعبه مشخص شده که در بالاترین سطح ساختار درختی قرار دارند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -75,6 +81,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// مجموعه ای از مراکز هزینه در دوره مالی و شعبه مشخص شده که در بالاترین سطح ساختار درختی قرار دارند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -85,6 +92,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// مجموعه ای از پروژه ها در دوره مالی و شعبه مشخص شده که در بالاترین سطح ساختار درختی قرار دارند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">کد یکتای یکی از دوره های مالی موجود</param>
         /// <param name="branchId">کد یکتای یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>

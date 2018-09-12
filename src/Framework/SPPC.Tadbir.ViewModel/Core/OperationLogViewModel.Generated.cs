@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// </summary>
         public OperationLogViewModel()
         {
-            View = String.Empty;
+            Entity = String.Empty;
             Action = String.Empty;
         }
 
@@ -52,7 +52,7 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string View { get; set; }
+        public string Entity { get; set; }
 
         /// <summary>
         /// نوع عملیات انجام شده
@@ -65,13 +65,13 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// مشخص می کند که عملیات انجام شده موفقیت آمیز بوده یا نه
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public bool Succeeded { get; set; }
+        public string Result { get; set; }
 
         /// <summary>
         /// متن خطای ایجاد شده حین عملیات
         /// </summary>
         [StringLength(1024, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string FailReason { get; set; }
+        public string ErrorMessage { get; set; }
 
         /// <summary>
         /// وضعیت اطلاعات پیش از انجام عملیات

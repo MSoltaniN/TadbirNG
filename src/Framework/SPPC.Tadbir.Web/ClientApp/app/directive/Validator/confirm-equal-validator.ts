@@ -4,7 +4,7 @@ import { Validator, AbstractControl, NG_VALIDATORS } from "@angular/forms";
 
 
 @Directive({
-    selector: '[sppsConfirmEqualValidator]',
+    selector: '[sppcConfirmEqualValidator]',
     providers: [{
         provide: NG_VALIDATORS,
         useExisting: ConfirmEqualValidator,

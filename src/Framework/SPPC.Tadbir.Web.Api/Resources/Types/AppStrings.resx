@@ -513,4 +513,46 @@
   <data name="DbPath" xml:space="preserve">
     <value>مسیر دیتابیس</value>
   </data>
+  <data name="Action" xml:space="preserve">
+    <value>عملیات</value>
+  </data>
+  <data name="AfterState" xml:space="preserve">
+    <value>وضعیت جدید</value>
+  </data>
+  <data name="BeforeState" xml:space="preserve">
+    <value>وضعیت قدیم</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>نام شرکت</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>ایجاد</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>اصلاح</value>
+  </data>
+  <data name="Entity" xml:space="preserve">
+    <value>موجودیت</value>
+  </data>
+  <data name="ErrorMessage" xml:space="preserve">
+    <value>پیغام خطا</value>
+  </data>
+  <data name="Failed" xml:space="preserve">
+    <value>ناموفق</value>
+  </data>
+  <data name="OperationLog" xml:space="preserve">
+    <value>لاگ عملیاتی</value>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>نتیجه</value>
+  </data>
+  <data name="Succeeded" xml:space="preserve">
+    <value>موفق</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>زمان</value>
+  </data>
 </root>

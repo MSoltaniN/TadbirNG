@@ -19,7 +19,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات مراکز هزینه را پیاده سازی می کند.
     /// </summary>
-    public class CostCenterRepository : RepositoryBase, ICostCenterRepository
+    public class CostCenterRepository : LoggingRepository<CostCenter, CostCenterViewModel>, ICostCenterRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -27,10 +27,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
-        public CostCenterRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+        public CostCenterRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
             ISecureRepository repository)
-            : base(unitOfWork, mapper, metadata)
+            : base(unitOfWork, mapper, metadata, log)
         {
             _repository = repository;
         }
@@ -154,7 +155,7 @@ namespace SPPC.Tadbir.Persistence
             if (costCenter.Id == 0)
             {
                 costCenterModel = Mapper.Map<CostCenter>(costCenter);
-                repository.Insert(costCenterModel);
+                await InsertAsync(repository, costCenterModel);
             }
             else
             {
@@ -162,8 +163,7 @@ namespace SPPC.Tadbir.Persistence
                     costCenter.Id, cc => cc.FiscalPeriod, cc => cc.Branch);
                 if (costCenterModel != null)
                 {
-                    UpdateExistingCostCenter(costCenter, costCenterModel);
-                    repository.Update(costCenterModel);
+                    await UpdateAsync(repository, costCenterModel, costCenter);
                 }
             }
 
@@ -178,14 +178,10 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteCostCenterAsync(int costCenterId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDAsync(costCenterId);
+            var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Branch);
             if (costCenter != null)
             {
-                costCenter.FiscalPeriod = null;
-                costCenter.Branch = null;
-                costCenter.Parent = null;
-                repository.Delete(costCenter);
-                await UnitOfWork.CommitAsync();
+                await DeleteAsync(repository, costCenter);
             }
         }
 
@@ -266,13 +262,32 @@ namespace SPPC.Tadbir.Persistence
             return costCenter.FullCode;
         }
 
-        private static void UpdateExistingCostCenter(CostCenterViewModel costCenterViewModel, CostCenter costCenter)
+        /// <summary>
+        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
+        /// </summary>
+        /// <param name="costCenterViewModel">مدل نمایشی شامل آخرین تغییرات</param>
+        /// <param name="costCenter">سطر اطلاعاتی موجود</param>
+        protected override void UpdateExisting(CostCenterViewModel costCenterViewModel, CostCenter costCenter)
         {
             costCenter.Code = costCenterViewModel.Code;
             costCenter.FullCode = costCenterViewModel.FullCode;
             costCenter.Name = costCenterViewModel.Name;
             costCenter.Level = costCenterViewModel.Level;
             costCenter.Description = costCenterViewModel.Description;
+        }
+
+        /// <summary>
+        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
+        /// </summary>
+        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
+        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        protected override string GetState(CostCenter entity)
+        {
+            return (entity != null)
+               ? String.Format(
+                   "Name : {1}{0}Code : {2}{0}FullCode : {3}{0}Description : {4}",
+                   Environment.NewLine, entity.Name, entity.Code, entity.FullCode, entity.Description)
+               : null;
         }
 
         private readonly ISecureRepository _repository;

@@ -19,7 +19,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات تفصیلی های شناور را پیاده سازی می کند.
     /// </summary>
-    public class DetailAccountRepository : RepositoryBase, IDetailAccountRepository
+    public class DetailAccountRepository : LoggingRepository<DetailAccount, DetailAccountViewModel>, IDetailAccountRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -27,10 +27,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
-        public DetailAccountRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+        public DetailAccountRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
             ISecureRepository repository)
-            : base(unitOfWork, mapper, metadata)
+            : base(unitOfWork, mapper, metadata, log)
         {
             _repository = repository;
         }
@@ -154,7 +155,7 @@ namespace SPPC.Tadbir.Persistence
             if (detailAccount.Id == 0)
             {
                 detailModel = Mapper.Map<DetailAccount>(detailAccount);
-                repository.Insert(detailModel);
+                await InsertAsync(repository, detailModel);
             }
             else
             {
@@ -162,8 +163,7 @@ namespace SPPC.Tadbir.Persistence
                     detailAccount.Id, facc => facc.FiscalPeriod, facc => facc.Branch);
                 if (detailModel != null)
                 {
-                    UpdateExistingDetailAccount(detailAccount, detailModel);
-                    repository.Update(detailModel);
+                    await UpdateAsync(repository, detailModel, detailAccount);
                 }
             }
 
@@ -178,14 +178,10 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteDetailAccountAsync(int faccountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
-            var detailAccount = await repository.GetByIDAsync(faccountId);
+            var detailAccount = await repository.GetByIDAsync(faccountId, facc => facc.Branch);
             if (detailAccount != null)
             {
-                detailAccount.FiscalPeriod = null;
-                detailAccount.Branch = null;
-                detailAccount.Parent = null;
-                repository.Delete(detailAccount);
-                await UnitOfWork.CommitAsync();
+                await DeleteAsync(repository, detailAccount);
             }
         }
 
@@ -266,13 +262,32 @@ namespace SPPC.Tadbir.Persistence
             return detailAccount.FullCode;
         }
 
-        private static void UpdateExistingDetailAccount(DetailAccountViewModel detailViewModel, DetailAccount detail)
+        /// <summary>
+        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
+        /// </summary>
+        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
+        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        protected override string GetState(DetailAccount entity)
         {
-            detail.Code = detailViewModel.Code;
-            detail.FullCode = detailViewModel.FullCode;
-            detail.Name = detailViewModel.Name;
-            detail.Level = detailViewModel.Level;
-            detail.Description = detailViewModel.Description;
+            return (entity != null)
+                ? String.Format(
+                    "Name : {1}{0}Code : {2}{0}FullCode : {3}{0}Description : {4}",
+                    Environment.NewLine, entity.Name, entity.Code, entity.FullCode, entity.Description)
+                : null;
+        }
+
+        /// <summary>
+        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
+        /// </summary>
+        /// <param name="detailAccountViewModel">مدل نمایشی شامل آخرین تغییرات</param>
+        /// <param name="detailAccount">سطر اطلاعاتی موجود</param>
+        protected override void UpdateExisting(DetailAccountViewModel detailAccountViewModel, DetailAccount detailAccount)
+        {
+            detailAccount.Code = detailAccountViewModel.Code;
+            detailAccount.FullCode = detailAccountViewModel.FullCode;
+            detailAccount.Name = detailAccountViewModel.Name;
+            detailAccount.Level = detailAccountViewModel.Level;
+            detailAccount.Description = detailAccountViewModel.Description;
         }
 
         private readonly ISecureRepository _repository;

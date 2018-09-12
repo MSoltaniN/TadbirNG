@@ -15,6 +15,7 @@ export interface Account {
     parentId?: number;
     fiscalPeriodId: number;
     branchId: number;
+    companyId: number;
     childCount: number;
     id: number;
     code: string;

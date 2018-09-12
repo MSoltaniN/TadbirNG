@@ -6,7 +6,7 @@ import { DetailAccount } from '../model/index';
 import { HttpClient } from '@angular/common/http';
 
 
-export class DetailAccountInfo implements DetailAccount {
+export class DetailAccountInfo implements DetailAccount {    
     id: number = 0;
     code: string;
     fullCode: string;
@@ -17,6 +17,7 @@ export class DetailAccountInfo implements DetailAccount {
     childCount: number = 0;
     fiscalPeriodId: number = 0;
     branchId: number = 0;
+    companyId: number;
 }
 
 @Injectable()
