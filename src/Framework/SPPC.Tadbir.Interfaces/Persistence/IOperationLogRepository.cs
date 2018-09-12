@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Core;
+using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -27,6 +28,12 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای لاگ های عملیاتی</returns>
         Task<int> GetLogCountAsync(GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای لاگ عملیاتی را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای لاگ عملیاتی</returns>
+        Task<EntityViewModel> GetLogMetadataAsync();
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات داده شده برای یک لاگ عملیاتی جدید را ذخیره می کند

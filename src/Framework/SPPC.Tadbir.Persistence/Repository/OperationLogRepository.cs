@@ -9,24 +9,24 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.ViewModel.Core;
+using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت لاگ های عملیاتی برنامه را پیاده سازی می کند
     /// </summary>
-    public class OperationLogRepository : IOperationLogRepository
+    public class OperationLogRepository : RepositoryBase, IOperationLogRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی</param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        public OperationLogRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper)
+        public OperationLogRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
+            : base(unitOfWork, mapper, metadata)
         {
-            _unitOfWork = unitOfWork;
-            _unitOfWork.UseSystemContext();
-            _mapper = mapper;
+            UnitOfWork.UseSystemContext();
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<OperationLogViewModel>> GetLogsAsync(
             int? userId, int? companyId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<OperationLog>();
+            var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
             var query = repository.GetEntityQuery(log => log.User, log => log.Company);
             if (companyId.HasValue)
             {
@@ -52,7 +52,7 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return await query
-                .Select(log => _mapper.Map<OperationLogViewModel>(log))
+                .Select(log => Mapper.Map<OperationLogViewModel>(log))
                 .Apply(gridOptions)
                 .ToListAsync();
         }
@@ -64,9 +64,18 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>تعداد سطرهای لاگ های عملیاتی</returns>
         public async Task<int> GetLogCountAsync(GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<OperationLog>();
+            var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
             var count = await repository.GetCountByCriteriaAsync(null, gridOptions);
             return count;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای لاگ عملیاتی را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای لاگ عملیاتی</returns>
+        public async Task<EntityViewModel> GetLogMetadataAsync()
+        {
+            return await Metadata.GetEntityMetadataAsync<OperationLog>();
         }
 
         /// <summary>
@@ -76,13 +85,10 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveLogAsync(OperationLogViewModel operationLog)
         {
             Verify.ArgumentNotNull(operationLog, "operationLog");
-            var repository = _unitOfWork.GetAsyncRepository<OperationLog>();
-            var newLog = _mapper.Map<OperationLog>(operationLog);
+            var repository = UnitOfWork.GetAsyncRepository<OperationLog>();
+            var newLog = Mapper.Map<OperationLog>(operationLog);
             repository.Insert(newLog);
-            await _unitOfWork.CommitAsync();
+            await UnitOfWork.CommitAsync();
         }
-
-        private readonly IAppUnitOfWork _unitOfWork;
-        private readonly IDomainMapper _mapper;
     }
 }

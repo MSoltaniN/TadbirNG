@@ -364,16 +364,34 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<OperationLog, OperationLogViewModel>()
                 .ForMember(
-                    dest => dest.UserFullName,
-                    opts => opts.MapFrom(src => String.Format("{0} {1}", src.User.Person.FirstName, src.User.Person.LastName)));
+                    dest => dest.Entity,
+                    opts => opts.MapFrom(src => src.View))
+                .ForMember(
+                    dest => dest.Result,
+                    opts => opts.MapFrom(src => src.Succeeded ? "Succeeded" : "Failed"))
+                .ForMember(
+                    dest => dest.ErrorMessage,
+                    opts => opts.MapFrom(src => src.FailReason))
+                .ForMember(
+                    dest => dest.UserName,
+                    opts => opts.MapFrom(src => src.User.UserName));
             mapperConfig.CreateMap<OperationLogViewModel, OperationLog>()
+                .ForMember(
+                    dest => dest.View,
+                    opts => opts.MapFrom(src => src.Entity))
+                .ForMember(
+                    dest => dest.Succeeded,
+                    opts => opts.MapFrom(src => src.Result == "Succeeded"))
+                .ForMember(
+                    dest => dest.FailReason,
+                    opts => opts.MapFrom(src => src.ErrorMessage))
                 .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId)
                 .AfterMap((viewModel, model) => model.User.Id = viewModel.UserId);
             mapperConfig.CreateMap<DocumentAction, DocumentActionViewModel>()
                 .ForMember(
                     dest => dest.LineId,
                     opts => opts.MapFrom(src => src.LineId ?? 0));
-            mapperConfig.CreateMap<DocumentActionViewModel, Model.Core.DocumentAction>()
+            mapperConfig.CreateMap<DocumentActionViewModel, DocumentAction>()
                 .ForMember(
                     dest => dest.LineId,
                     opts => opts.MapFrom(
