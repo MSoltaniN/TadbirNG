@@ -402,15 +402,14 @@ namespace SPPC.Tadbir.Persistence
             existing.Description = voucher.Description;
         }
 
-        private IQueryable<VoucherLine> GetVoucherLinesQuery(int voucherId, GridOptions gridOptions = null)
+        private IQueryable<VoucherLine> GetVoucherLinesQuery(int voucherId)
         {
             var repository = UnitOfWork.GetRepository<VoucherLine>();
             var linesQuery = repository
                 .GetEntityQuery(
                     line => line.Voucher, line => line.Account, line => line.DetailAccount, line => line.CostCenter,
                     line => line.Project, line => line.Currency, line => line.FiscalPeriod, line => line.Branch)
-                .Where(line => line.Voucher.Id == voucherId)
-                .Apply(gridOptions);
+                .Where(line => line.Voucher.Id == voucherId);
             return linesQuery;
         }
 

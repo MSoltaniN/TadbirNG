@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     public class UsersController : ValidatingController<UserViewModel>
     {
         public UsersController(
-            ISecurityRepository repository,
+            IUserRepository repository,
             ICryptoService crypto,
             ITextEncoder<SecurityContext> encoder,
             IStringLocalizer<AppStrings> strings)
@@ -328,7 +328,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return ticket;
         }
 
-        private ISecurityRepository _repository;
+        private IUserRepository _repository;
         private ICryptoService _crypto;
         private ITextEncoder<SecurityContext> _contextEncoder;
     }
