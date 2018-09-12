@@ -35,6 +35,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
@@ -52,6 +53,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
@@ -69,6 +71,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
@@ -86,6 +89,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، پروژه های قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>

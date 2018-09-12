@@ -35,6 +35,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری در آخرین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -55,6 +56,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور در آخرین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -75,6 +77,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از مراکز هزینه در آخرین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -95,6 +98,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از پروژه ها در آخرین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -115,6 +119,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری در اولین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -135,6 +140,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور در اولین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -155,6 +161,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از مراکز هزینه در اولین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -175,6 +182,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از پروژه ها در اولین سطح ساختار درختی را خوانده و برمی گرداند
         /// </summary>
+        /// <param name="userAccess">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
