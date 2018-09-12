@@ -56,11 +56,12 @@ namespace SPPC.Tadbir.Persistence
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
             var accounts = await _repository.GetAllAsync<Account>(
-                userAccess, fpId, branchId, ViewName.Account, gridOptions,
+                userAccess, fpId, branchId, ViewName.Account,
                 acc => acc.FiscalPeriod, acc => acc.Branch,
                 acc => acc.Parent, acc => acc.Children);
             return accounts
                 .Select(item => Mapper.Map<AccountViewModel>(item))
+                .Apply(gridOptions)
                 .ToList();
         }
 

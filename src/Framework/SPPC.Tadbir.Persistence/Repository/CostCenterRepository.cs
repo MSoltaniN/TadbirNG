@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
@@ -49,11 +50,12 @@ namespace SPPC.Tadbir.Persistence
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
             var costCenters = await _repository.GetAllAsync<CostCenter>(
-                userAccess, fpId, branchId, ViewName.CostCenter, gridOptions,
+                userAccess, fpId, branchId, ViewName.CostCenter,
                 cc => cc.FiscalPeriod, cc => cc.Branch,
                 cc => cc.Parent, cc => cc.Children);
             return costCenters
                 .Select(item => Mapper.Map<CostCenterViewModel>(item))
+                .Apply(gridOptions)
                 .ToList();
         }
 

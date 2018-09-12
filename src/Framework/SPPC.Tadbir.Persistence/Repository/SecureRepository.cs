@@ -49,17 +49,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
         /// <returns>لیست فیلتر شده از سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         public async Task<IList<TEntity>> GetAllAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null,
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IBaseEntity
         {
             var query = GetFilteredQuery(userAccess, fpId, branchId, viewId, relatedProperties);
             return await query
-                .Apply(gridOptions)
                 .ToListAsync();
         }
 
@@ -74,17 +72,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
         /// <returns>لیست فیلتر شده از سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         public async Task<IList<TEntity>> GetAllOperationAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null,
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IFiscalEntity
         {
             var query = GetFilteredOperationQuery(userAccess, fpId, branchId, viewId, relatedProperties);
             return await query
-                .Apply(gridOptions)
                 .ToListAsync();
         }
 
@@ -111,8 +107,8 @@ namespace SPPC.Tadbir.Persistence
             query = ApplyBranchFilterForLookup(query, fpId, branchId);
             query = ApplyRowFilter(ref query, userAccess, viewId);
             return await query
-                .Apply(gridOptions)
                 .Select(entity => Mapper.Map<KeyValue>(entity))
+                .Apply(gridOptions)
                 .ToListAsync();
         }
 

@@ -52,10 +52,11 @@ namespace SPPC.Tadbir.Persistence
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
             var vouchers = await _repository.GetAllOperationAsync<Voucher>(
-                userAccess, fpId, branchId, ViewName.Voucher, gridOptions,
+                userAccess, fpId, branchId, ViewName.Voucher,
                 v => v.Lines, v => v.FiscalPeriod, v => v.Branch);
             return vouchers
                 .Select(item => Mapper.Map<VoucherViewModel>(item))
+                .Apply(gridOptions)
                 .ToList();
         }
 
@@ -198,8 +199,8 @@ namespace SPPC.Tadbir.Persistence
             var query = GetVoucherLinesQuery(voucherId);
             query = _repository.ApplyRowFilter(ref query, userAccess, ViewName.VoucherLine);
             var lines = await query
-                .Apply(gridOptions)
                 .Select(line => Mapper.Map<VoucherLineViewModel>(line))
+                .Apply(gridOptions)
                 .ToListAsync();
             return lines;
         }

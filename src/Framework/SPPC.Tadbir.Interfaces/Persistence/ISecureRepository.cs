@@ -27,11 +27,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
         /// <returns>لیست فیلتر شده از سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         Task<IList<TEntity>> GetAllAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null,
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IBaseEntity;
 
@@ -46,11 +45,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
         /// <returns>لیست فیلتر شده از سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         Task<IList<TEntity>> GetAllOperationAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null,
+            UserAccessViewModel userAccess, int fpId, int branchId, int viewId,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IFiscalEntity;
 
