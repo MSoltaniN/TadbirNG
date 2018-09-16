@@ -31,7 +31,7 @@
         <div class="form-group">
             <label for="code" class="control-label">{{ 'Project.Code' | translate }}</label>
 
-            <input type="text" class="k-textbox" formControlName="code" [sppsFullCode]="'fullCode'" [apiUrl]="fullCodeApiUrl" />
+            <input type="text" class="k-textbox" formControlName="code" [sppcFullCode]="'fullCode'" [apiUrl]="fullCodeApiUrl" />
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
                 <span *ngIf="editForm.controls.code.errors?.required">{{ 'AllValidations.Project.CodeIsRequired' | translate }}</span>

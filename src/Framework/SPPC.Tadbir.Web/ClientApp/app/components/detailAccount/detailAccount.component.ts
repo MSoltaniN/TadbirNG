@@ -181,6 +181,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     public saveHandler(model: DetailAccount) {
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
+        model.companyId = this.CompanyId;
         //this.sppcLoading.show();
         if (!this.isNew) {
             this.isNew = false;

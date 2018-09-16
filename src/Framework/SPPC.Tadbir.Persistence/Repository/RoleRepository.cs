@@ -6,11 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Model.Auth;
-using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
@@ -22,282 +20,20 @@ using SPPC.Tadbir.ViewModel.Metadata;
 namespace SPPC.Tadbir.Persistence
 {
     /// <summary>
-    /// Provides repository operations related to security administration.
+    /// عملیات مورد نیاز برای مدیریت اطلاعات نقش ها را پیاده سازی می کند
     /// </summary>
-    public class SecurityRepository : ISecurityRepository
+    public class RoleRepository : RepositoryBase, IRoleRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public SecurityRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
+        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        public RoleRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
+            : base(unitOfWork, mapper, metadata)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _metadataRepository = metadataRepository;
         }
-
-        #region User Management operations
-
-        /// <summary>
-        /// به روش آسنکرون، لیست کاربران برنامه را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>لیست کاربران برنامه</returns>
-        public async Task<IList<UserViewModel>> GetUsersAsync(GridOptions gridOptions = null)
-        {
-            var repository = _unitOfWork.GetAsyncRepository<User>();
-            var users = await repository
-                .GetAllAsync(gridOptions, u => u.Person);
-            return users
-                .Select(user => _mapper.Map<UserViewModel>(user))
-                .ToList();
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves a single user specified by user name from repository.
-        /// </summary>
-        /// <param name="userName">User name to search for</param>
-        /// <returns>A <see cref="UserViewModel"/> instance that corresponds to the specified user name, if there is
-        /// such a user defined; otherwise, returns null.</returns>
-        public async Task<UserViewModel> GetUserAsync(string userName)
-        {
-            UserViewModel userViewModel = null;
-            var repository = _unitOfWork.GetAsyncRepository<User>();
-            var users = await repository
-                .GetByCriteriaAsync(usr => usr.UserName == userName, usr => usr.Person);
-            var user = users.SingleOrDefault();
-            if (user != null)
-            {
-                userViewModel = _mapper.Map<UserViewModel>(user);
-            }
-
-            return userViewModel;
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves a single user specified by unique identifier from repository.
-        /// </summary>
-        /// <param name="userId">Unique identifier of the user to search for</param>
-        /// <returns>A <see cref="UserViewModel"/> instance that corresponds to the specified identifier, if there is
-        /// such a user defined; otherwise, returns null.</returns>
-        public async Task<UserViewModel> GetUserAsync(int userId)
-        {
-            UserViewModel userViewModel = null;
-            var repository = _unitOfWork.GetAsyncRepository<User>();
-            var user = await repository.GetByIDAsync(userId, usr => usr.Person);
-            if (user != null)
-            {
-                userViewModel = _mapper.Map<UserViewModel>(user);
-            }
-
-            return userViewModel;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای کاربر را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای کاربر</returns>
-        public async Task<EntityViewModel> GetUserMetadataAsync()
-        {
-            return await _metadataRepository.GetEntityMetadataAsync<User>();
-        }
-
-        /// <summary>
-        /// Asynchronously retrieves context information for a user specified by unique identifier from repository.
-        /// </summary>
-        /// <param name="userId">Unique identifier of the user to search for</param>
-        /// <returns>A <see cref="UserContextViewModel"/> instance containing context information, if there is
-        /// such a user defined; otherwise, returns null.</returns>
-        public async Task<UserContextViewModel> GetUserContextAsync(int userId)
-        {
-            UserContextViewModel userContext = null;
-            var repository = _unitOfWork.GetAsyncRepository<User>();
-            var user = await repository.GetByIDAsync(userId, usr => usr.Person, usr => usr.UserRoles);
-            if (user != null)
-            {
-                var permissions = new List<PermissionBriefViewModel>();
-                var branches = new List<int>();
-                var roleRepository = _unitOfWork.GetAsyncRepository<Role>();
-                foreach (var roleId in user.UserRoles.Select(ur => ur.RoleId))
-                {
-                    var role = await roleRepository.GetByIDAsync(roleId, r => r.RoleBranches, r => r.RolePermissions);
-                    userContext = _mapper.Map<UserContextViewModel>(user);
-                    userContext.Roles.Add(roleId);
-                    branches.AddRange(role.RoleBranches.Select(rb => rb.BranchId));
-                    Array.ForEach(
-                        role.RolePermissions.ToArray(),
-                        rp => permissions.Add(_mapper.Map<PermissionBriefViewModel>(
-                            _unitOfWork.GetRepository<Permission>().GetByID(rp.PermissionId, perm => perm.Group))));
-                }
-
-                Array.ForEach(branches.Distinct().ToArray(), br => userContext.Branches.Add(br));
-                var groups = permissions
-                    .Distinct(new PermissionEqualityComparer())
-                    .GroupBy(perm => perm.EntityName);
-                foreach (var group in groups)
-                {
-                    var permission = new PermissionBriefViewModel()
-                    {
-                        EntityName = group.Key,
-                        Flags = group.Sum(perm => perm.Flags)
-                    };
-                    userContext.Permissions.Add(permission);
-                }
-            }
-
-            return userContext;
-        }
-
-        /// <summary>
-        /// دسترسی های امنیتی داده شده به یک کاربر را به صورت مجموعه ای از شناسه های دیتابیسی
-        /// از دیتابیس خوانده و بر می گرداند
-        /// </summary>
-        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
-        /// <returns>مجموعه شناسه های دسترسی های داده شده به کاربر</returns>
-        public async Task<IList<int>> GetUserPermissionIdsAsync(int userId)
-        {
-            var permissionIds = new List<int>();
-            var query = GetUserPermissionsQuery(userId);
-            var user = await query.SingleOrDefaultAsync();
-            if (user != null)
-            {
-                Array.ForEach(user.UserRoles.Select(ur => ur.Role).ToArray(),
-                    role => permissionIds.AddRange(role.RolePermissions.Select(rp => rp.PermissionId)));
-            }
-
-            return permissionIds
-                .Distinct()
-                .ToList();
-        }
-
-        /// <summary>
-        /// اطلاعات نمایشی تمام دستورات قابل دسترسی توسط کاربر مشخص شده را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
-        /// <returns>مجموعه ای از دستورات قابل دسترسی توسط کاربر</returns>
-        public async Task<IList<CommandViewModel>> GetUserCommandsAsync(int userId)
-        {
-            var topCommands = await _metadataRepository.GetTopLevelCommandsAsync();
-            var userCommands = new List<CommandViewModel>(topCommands.Count);
-            var userPermissions = await GetUserPermissionIdsAsync(userId);
-            foreach (var command in topCommands)
-            {
-                var topCommand = new CommandViewModel() { Id = command.Id, Title = command.Title };
-                foreach (var child in command.Children)
-                {
-                    if (child.PermissionId == null || userPermissions.Contains(child.PermissionId.Value))
-                    {
-                        topCommand.Children.Add(child);
-                    }
-                }
-
-                if (topCommand.Children.Count > 0)
-                {
-                    userCommands.Add(topCommand);
-                }
-            }
-
-            return userCommands;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد کاربران تعریف شده را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد کاربران تعریف شده</returns>
-        public async Task<int> GetUserCountAsync(GridOptions gridOptions = null)
-        {
-            var repository = _unitOfWork.GetAsyncRepository<User>();
-            var count = await repository.GetCountByCriteriaAsync(null, gridOptions);
-            return count;
-        }
-
-        /// <summary>
-        /// Asynchronously inserts or updates a single user in repository.
-        /// </summary>
-        /// <param name="user">Item to insert or update</param>
-        public async Task<UserViewModel> SaveUserAsync(UserViewModel user)
-        {
-            Verify.ArgumentNotNull(user, "user");
-            User userModel = default(User);
-            var repository = _unitOfWork.GetAsyncRepository<User>();
-            if (user.Id == 0)
-            {
-                userModel = GetNewUser(user);
-                repository.Insert(userModel, usr => usr.Person);
-            }
-            else
-            {
-                userModel = await repository.GetByIDAsync(user.Id, u => u.Person);
-                if (userModel != null)
-                {
-                    UpdateExistingUser(userModel, user);
-                    repository.Update(userModel, usr => usr.Person);
-                }
-            }
-
-            await _unitOfWork.CommitAsync();
-            return _mapper.Map<UserViewModel>(userModel);
-        }
-
-        /// <summary>
-        /// Asynchronously sets LastLoginDate field of the specified user to current system date/time.
-        /// </summary>
-        /// <param name="userId">Unique identifier of an existing user</param>
-        public async Task UpdateUserLastLoginAsync(int userId)
-        {
-            var repository = _unitOfWork.GetAsyncRepository<User>();
-            var user = await repository.GetByIDAsync(userId);
-            if (user != null)
-            {
-                user.LastLoginDate = DateTime.Now;
-                repository.Update(user);
-                await _unitOfWork.CommitAsync();
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously updates a user profile in repository.
-        /// </summary>
-        /// <param name="profile">User profile to update</param>
-        public async Task UpdateUserPasswordAsync(UserProfileViewModel profile)
-        {
-            Verify.ArgumentNotNull(profile, "profile");
-            var repository = _unitOfWork.GetAsyncRepository<User>();
-            var users = await repository
-                .GetByCriteriaAsync(usr => usr.UserName == profile.UserName);
-            var user = users.SingleOrDefault();
-            if (user != null)
-            {
-                user.PasswordHash = profile.NewPassword;
-                repository.Update(user);
-                await _unitOfWork.CommitAsync();
-            }
-        }
-
-        /// <summary>
-        /// Asynchronously determines if the specified <see cref="UserViewModel"/> instance has a user name that is already used
-        /// by a different user.
-        /// </summary>
-        /// <param name="user">User item to check for duplicate user name</param>
-        /// <returns>True if the user name is already used; otherwise returns false.</returns>
-        public async Task<bool> IsDuplicateUserAsync(UserViewModel user)
-        {
-            Verify.ArgumentNotNull(user, "user");
-            var repository = _unitOfWork.GetAsyncRepository<User>();
-            var items = await repository
-                .GetByCriteriaAsync(usr => usr.Id != user.Id
-                    && usr.UserName == user.UserName);
-            var existing = items.SingleOrDefault();
-            return (existing != null);
-        }
-
-        #endregion
-
-        #region Role Management operations
 
         /// <summary>
         /// به روش آسنکرون، لیست نقش های تعریف شده را از محل ذخیره خوانده و برمی گرداند
@@ -306,7 +42,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>لیست نقش های تعریف شده</returns>
         public async Task<IList<RoleViewModel>> GetRolesAsync(GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var query = repository
                 .GetEntityQuery()
                 .Include(r => r.RolePermissions)
@@ -314,7 +50,7 @@ namespace SPPC.Tadbir.Persistence
 
             return await query
                 .Apply(gridOptions)
-                .Select(r => _mapper.Map<RoleViewModel>(r))
+                .Select(r => Mapper.Map<RoleViewModel>(r))
                 .ToListAsync();
         }
 
@@ -325,11 +61,11 @@ namespace SPPC.Tadbir.Persistence
         /// </returns>
         public async Task<RoleFullViewModel> GetNewRoleAsync()
         {
-            var repository = _unitOfWork.GetAsyncRepository<Permission>();
+            var repository = UnitOfWork.GetAsyncRepository<Permission>();
             var all = await repository
                 .GetAllAsync(perm => perm.Group);
             var allView = all
-                .Select(perm => _mapper.Map<PermissionViewModel>(perm))
+                .Select(perm => Mapper.Map<PermissionViewModel>(perm))
                 .ToArray();
             var role = new RoleFullViewModel();
             Array.ForEach(allView, perm =>
@@ -349,7 +85,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<RoleFullViewModel> GetRoleAsync(int roleId)
         {
             RoleFullViewModel role = null;
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var existing = await repository
                 .GetEntityQuery()
                 .Include(r => r.RolePermissions)
@@ -361,12 +97,12 @@ namespace SPPC.Tadbir.Persistence
             {
                 var enabledPermissions = existing.RolePermissions
                     .Select(rp => rp.Permission)
-                    .Select(perm => _mapper.Map<PermissionViewModel>(perm));
-                var permissionRepository = _unitOfWork.GetAsyncRepository<Permission>();
+                    .Select(perm => Mapper.Map<PermissionViewModel>(perm));
+                var permissionRepository = UnitOfWork.GetAsyncRepository<Permission>();
                 var disabledPermissions = await permissionRepository
                     .GetAllAsync(perm => perm.Group);
                 var disabledView = disabledPermissions
-                    .Select(perm => _mapper.Map<PermissionViewModel>(perm))
+                    .Select(perm => Mapper.Map<PermissionViewModel>(perm))
                     .Except(enabledPermissions, new EntityEqualityComparer<PermissionViewModel>())
                     .ToArray();
                 Array.ForEach(disabledView, perm => perm.IsEnabled = false);
@@ -374,7 +110,7 @@ namespace SPPC.Tadbir.Persistence
                 role = new RoleFullViewModel()
                 {
                     Id = roleId,
-                    Role = _mapper.Map<RoleViewModel>(existing)
+                    Role = Mapper.Map<RoleViewModel>(existing)
                 };
                 Array.ForEach(enabledPermissions
                     .Concat(disabledView)
@@ -394,7 +130,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<RoleDetailsViewModel> GetRoleDetailsAsync(int roleId)
         {
             RoleDetailsViewModel role = null;
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var existing = await repository
                 .GetEntityQuery()
                 .Include(r => r.RolePermissions)
@@ -411,17 +147,17 @@ namespace SPPC.Tadbir.Persistence
             {
                 role = new RoleDetailsViewModel()
                 {
-                    Role = _mapper.Map<RoleViewModel>(existing)
+                    Role = Mapper.Map<RoleViewModel>(existing)
                 };
                 Array.ForEach(
                     existing.RolePermissions.Select(rp => rp.Permission).ToArray(),
-                    perm => role.Permissions.Add(_mapper.Map<PermissionViewModel>(perm)));
+                    perm => role.Permissions.Add(Mapper.Map<PermissionViewModel>(perm)));
                 Array.ForEach(
                     existing.RoleBranches.Select(rb => rb.Branch).ToArray(),
-                    br => role.Branches.Add(_mapper.Map<BranchViewModel>(br)));
+                    br => role.Branches.Add(Mapper.Map<BranchViewModel>(br)));
                 Array.ForEach(
                     existing.UserRoles.Select(ur => ur.User).ToArray(),
-                    usr => role.Users.Add(_mapper.Map<UserBriefViewModel>(usr)));
+                    usr => role.Users.Add(Mapper.Map<UserBriefViewModel>(usr)));
             }
 
             return role;
@@ -436,11 +172,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<RoleViewModel> GetRoleBriefAsync(int roleId)
         {
             RoleViewModel roleBrief = null;
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var role = await repository.GetByIDAsync(roleId);
             if (role != null)
             {
-                roleBrief = _mapper.Map<RoleViewModel>(role);
+                roleBrief = Mapper.Map<RoleViewModel>(role);
             }
 
             return roleBrief;
@@ -452,7 +188,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای نقش</returns>
         public async Task<EntityViewModel> GetRoleMetadataAsync()
         {
-            return await _metadataRepository.GetEntityMetadataAsync<Role>();
+            return await Metadata.GetEntityMetadataAsync<Role>();
         }
 
         /// <summary>
@@ -462,7 +198,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>تعداد نقش های تعریف شده</returns>
         public async Task<int> GetRoleCountAsync(GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var count = await repository.GetCountByCriteriaAsync(null, gridOptions);
             return count;
         }
@@ -476,10 +212,10 @@ namespace SPPC.Tadbir.Persistence
             Verify.ArgumentNotNull(role, "role");
             Verify.ArgumentNotNull(role.Role, "role.Role");
             Role outputRole = null;
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             if (role.Role.Id == 0)
             {
-                outputRole = _mapper.Map<Role>(role.Role);
+                outputRole = Mapper.Map<Role>(role.Role);
                 AddRolePermissions(outputRole, role);
                 repository.Insert(outputRole, r => r.RolePermissions);
             }
@@ -503,8 +239,8 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await _unitOfWork.CommitAsync();
-            return _mapper.Map<RoleViewModel>(outputRole);
+            await UnitOfWork.CommitAsync();
+            return Mapper.Map<RoleViewModel>(outputRole);
         }
 
         /// <summary>
@@ -514,14 +250,14 @@ namespace SPPC.Tadbir.Persistence
         /// <remarks>If no role with specified identifier could be found, no exception would be thrown.</remarks>
         public async Task DeleteRoleAsync(int roleId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var role = await repository.GetByIDWithTrackingAsync(roleId, r => r.RolePermissions, r => r.RoleBranches);
             if (role != null)
             {
                 role.RolePermissions.Clear();
                 role.RoleBranches.Clear();
                 repository.Delete(role);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -534,7 +270,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> IsAssignedRoleAsync(int roleId)
         {
             bool isAssigned = false;
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var role = await repository
                 .GetEntityQuery(r => r.UserRoles)
                 .Where(r => r.Id == roleId)
@@ -556,7 +292,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> IsRoleRelatedToBranchAsync(int roleId)
         {
             bool isAssigned = false;
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var role = await repository
                 .GetEntityQuery(r => r.RoleBranches)
                 .Where(r => r.Id == roleId)
@@ -578,7 +314,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> IsRoleRelatedToFiscalPeriodAsync(int roleId)
         {
             bool isAssigned = false;
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var role = await repository
                 .GetEntityQuery(r => r.RoleFiscalPeriods)
                 .Where(r => r.Id == roleId)
@@ -599,7 +335,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<RelatedItemsViewModel> GetRoleBranchesAsync(int roleId)
         {
             RelatedItemsViewModel roleBranches = null;
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var existing = await repository
                 .GetEntityQuery()
                 .Include(r => r.RoleBranches)
@@ -610,18 +346,18 @@ namespace SPPC.Tadbir.Persistence
             {
                 var enabledBranches = existing.RoleBranches
                     .Select(rb => rb.Branch)
-                    .Select(br => _mapper.Map<RelatedItemViewModel>(br))
+                    .Select(br => Mapper.Map<RelatedItemViewModel>(br))
                     .ToArray();
-                var branchRepository = _unitOfWork.GetAsyncRepository<Branch>();
+                var branchRepository = UnitOfWork.GetAsyncRepository<Branch>();
                 var allBranches = await branchRepository
                     .GetAllAsync();
                 var disabledBranches = allBranches
-                    .Select(br => _mapper.Map<RelatedItemViewModel>(br))
+                    .Select(br => Mapper.Map<RelatedItemViewModel>(br))
                     .Except(enabledBranches, new EntityEqualityComparer<RelatedItemViewModel>())
                     .ToArray();
                 Array.ForEach(enabledBranches, item => item.IsSelected = true);
 
-                roleBranches = _mapper.Map<RelatedItemsViewModel>(existing);
+                roleBranches = Mapper.Map<RelatedItemsViewModel>(existing);
                 Array.ForEach(enabledBranches
                     .Concat(disabledBranches)
                     .OrderBy(item => item.Id)
@@ -638,7 +374,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveRoleBranchesAsync(RelatedItemsViewModel roleBranches)
         {
             Verify.ArgumentNotNull(roleBranches, "role");
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var existing = await repository.GetByIDWithTrackingAsync(roleBranches.Id, r => r.RoleBranches);
             if (existing != null && AreBranchesModified(existing, roleBranches))
             {
@@ -649,7 +385,7 @@ namespace SPPC.Tadbir.Persistence
 
                 AddNewBranches(existing, roleBranches);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -661,7 +397,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<RelatedItemsViewModel> GetRoleUsersAsync(int roleId)
         {
             RelatedItemsViewModel roleUsers = null;
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var existing = await repository
                 .GetEntityQuery()
                 .Include(r => r.UserRoles)
@@ -673,18 +409,18 @@ namespace SPPC.Tadbir.Persistence
             {
                 var enabledUsers = existing.UserRoles
                     .Select(ur => ur.User)
-                    .Select(usr => _mapper.Map<RelatedItemViewModel>(usr))
+                    .Select(usr => Mapper.Map<RelatedItemViewModel>(usr))
                     .ToArray();
-                var userRepository = _unitOfWork.GetAsyncRepository<User>();
+                var userRepository = UnitOfWork.GetAsyncRepository<User>();
                 var allUsers = await userRepository
                     .GetAllAsync(usr => usr.Person);
                 var disabledUsers = allUsers
-                    .Select(usr => _mapper.Map<RelatedItemViewModel>(usr))
+                    .Select(usr => Mapper.Map<RelatedItemViewModel>(usr))
                     .Except(enabledUsers, new EntityEqualityComparer<RelatedItemViewModel>())
                     .ToArray();
                 Array.ForEach(enabledUsers, item => item.IsSelected = true);
 
-                roleUsers = _mapper.Map<RelatedItemsViewModel>(existing);
+                roleUsers = Mapper.Map<RelatedItemsViewModel>(existing);
                 Array.ForEach(enabledUsers
                     .Concat(disabledUsers)
                     .OrderBy(item => item.Id)
@@ -701,7 +437,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveRoleUsersAsync(RelatedItemsViewModel roleUsers)
         {
             Verify.ArgumentNotNull(roleUsers, "roleUsers");
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var existing = await repository.GetByIDWithTrackingAsync(roleUsers.Id, r => r.UserRoles);
             if (existing != null && AreUsersModified(existing, roleUsers))
             {
@@ -712,7 +448,7 @@ namespace SPPC.Tadbir.Persistence
 
                 AddNewUsers(existing, roleUsers);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -724,7 +460,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<RelatedItemsViewModel> GetRoleFiscalPeriodsAsync(int roleId)
         {
             RelatedItemsViewModel rolePeriods = null;
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var existing = await repository
                 .GetEntityQuery()
                 .Include(r => r.RoleFiscalPeriods)
@@ -735,18 +471,18 @@ namespace SPPC.Tadbir.Persistence
             {
                 var enabledPeriods = existing.RoleFiscalPeriods
                     .Select(rfp => rfp.FiscalPeriod)
-                    .Select(fp => _mapper.Map<RelatedItemViewModel>(fp))
+                    .Select(fp => Mapper.Map<RelatedItemViewModel>(fp))
                     .ToArray();
-                var periodRepository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
+                var periodRepository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
                 var allPeriods = await periodRepository
                     .GetAllAsync();
                 var disabledPeriods = allPeriods
-                    .Select(fp => _mapper.Map<RelatedItemViewModel>(fp))
+                    .Select(fp => Mapper.Map<RelatedItemViewModel>(fp))
                     .Except(enabledPeriods, new EntityEqualityComparer<RelatedItemViewModel>())
                     .ToArray();
                 Array.ForEach(enabledPeriods, item => item.IsSelected = true);
 
-                rolePeriods = _mapper.Map<RelatedItemsViewModel>(existing);
+                rolePeriods = Mapper.Map<RelatedItemsViewModel>(existing);
                 Array.ForEach(enabledPeriods
                     .Concat(disabledPeriods)
                     .OrderBy(item => item.Id)
@@ -763,7 +499,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveRoleFiscalPeriodsAsync(RelatedItemsViewModel rolePeriods)
         {
             Verify.ArgumentNotNull(rolePeriods, "rolePeriods");
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var existing = await repository.GetByIDWithTrackingAsync(rolePeriods.Id, r => r.RoleFiscalPeriods);
             if (existing != null && AreFiscalPeriodsModified(existing, rolePeriods))
             {
@@ -774,7 +510,7 @@ namespace SPPC.Tadbir.Persistence
 
                 AddNewFiscalPeriods(existing, rolePeriods);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -786,7 +522,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<RelatedItemsViewModel> GetUserRolesAsync(int userId)
         {
             RelatedItemsViewModel userRoles = null;
-            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var repository = UnitOfWork.GetAsyncRepository<User>();
             var existing = await repository
                 .GetEntityQuery()
                 .Include(u => u.UserRoles)
@@ -797,18 +533,18 @@ namespace SPPC.Tadbir.Persistence
             {
                 var enabledRoles = existing.UserRoles
                     .Select(ur => ur.Role)
-                    .Select(r => _mapper.Map<RelatedItemViewModel>(r))
+                    .Select(r => Mapper.Map<RelatedItemViewModel>(r))
                     .ToArray();
-                var roleRepository = _unitOfWork.GetAsyncRepository<Role>();
+                var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
                 var allRoles = await roleRepository
                     .GetAllAsync();
                 var disabledRoles = allRoles
-                    .Select(r => _mapper.Map<RelatedItemViewModel>(r))
+                    .Select(r => Mapper.Map<RelatedItemViewModel>(r))
                     .Except(enabledRoles, new EntityEqualityComparer<RelatedItemViewModel>())
                     .ToArray();
                 Array.ForEach(enabledRoles, item => item.IsSelected = true);
 
-                userRoles = _mapper.Map<RelatedItemsViewModel>(existing);
+                userRoles = Mapper.Map<RelatedItemsViewModel>(existing);
                 Array.ForEach(enabledRoles
                     .Concat(disabledRoles)
                     .OrderBy(item => item.Id)
@@ -825,7 +561,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveUserRolesAsync(RelatedItemsViewModel userRoles)
         {
             Verify.ArgumentNotNull(userRoles, "userRoles");
-            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var repository = UnitOfWork.GetAsyncRepository<User>();
             var existing = await repository.GetByIDWithTrackingAsync(userRoles.Id, r => r.UserRoles);
             if (existing != null && AreRolesModified(existing, userRoles))
             {
@@ -836,7 +572,7 @@ namespace SPPC.Tadbir.Persistence
 
                 AddNewRoles(existing, userRoles);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
@@ -848,16 +584,16 @@ namespace SPPC.Tadbir.Persistence
         public async Task<RowPermissionsForRoleViewModel> GetRowAccessSettingsAsync(int roleId)
         {
             var rowSettings = new RowPermissionsForRoleViewModel() { Id = roleId };
-            var repository = _unitOfWork.GetAsyncRepository<ViewRowPermission>();
+            var repository = UnitOfWork.GetAsyncRepository<ViewRowPermission>();
             var settings = await repository
                 .GetByCriteriaAsync(perm => perm.Role.Id == roleId, perm => perm.Role, perm => perm.View);
             Array.ForEach(
                 settings
-                    .Select(perm => _mapper.Map<ViewRowPermissionViewModel>(perm))
+                    .Select(perm => Mapper.Map<ViewRowPermissionViewModel>(perm))
                     .ToArray(),
                 perm => rowSettings.RowPermissions.Add(perm));
 
-            var viewRepository = _unitOfWork.GetAsyncRepository<Entity>();
+            var viewRepository = UnitOfWork.GetAsyncRepository<Entity>();
             var viewIds = await viewRepository
                 .GetEntityQuery()
                 .Select(view => view.Id)
@@ -882,7 +618,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveRowAccessSettingsAsync(RowPermissionsForRoleViewModel permissions)
         {
             Verify.ArgumentNotNull(permissions, "permissions");
-            var repository = _unitOfWork.GetAsyncRepository<Role>();
+            var repository = UnitOfWork.GetAsyncRepository<Role>();
             var role = await repository.GetByIDAsync(permissions.Id);
             if (role != null)
             {
@@ -891,11 +627,9 @@ namespace SPPC.Tadbir.Persistence
                     await SaveViewRolePermissionAsync(permission);
                 }
 
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
-
-        #endregion
 
         private static void RemoveDisabledPermissions(Role existing, RoleFullViewModel role)
         {
@@ -1066,36 +800,9 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
-        private void UpdateExistingUser(User existing, UserViewModel user)
-        {
-            var modifiedUser = _mapper.Map<User>(user);
-            existing.UserName = user.UserName;
-            existing.IsEnabled = user.IsEnabled;
-            existing.Person.FirstName = user.PersonFirstName;
-            existing.Person.LastName = user.PersonLastName;
-            if (!String.IsNullOrEmpty(modifiedUser.PasswordHash))
-            {
-                existing.PasswordHash = modifiedUser.PasswordHash;
-            }
-        }
-
-        private User GetNewUser(UserViewModel userViewModel)
-        {
-            var user = _mapper.Map<User>(userViewModel);
-            var person = new Person()
-            {
-                FirstName = userViewModel.PersonFirstName,
-                LastName = userViewModel.PersonLastName
-            };
-
-            user.Person = person;
-            person.User = user;
-            return user;
-        }
-
         private void AddNewPermissions(Role existing, RoleFullViewModel role)
         {
-            var repository = _unitOfWork.GetRepository<Permission>();
+            var repository = UnitOfWork.GetRepository<Permission>();
             var currentItems = existing.RolePermissions.Select(rp => rp.PermissionId);
             var newItems = role.Permissions
                 .Where(perm => perm.IsEnabled
@@ -1116,7 +823,7 @@ namespace SPPC.Tadbir.Persistence
 
         private void AddNewBranches(Role existing, RelatedItemsViewModel roleItems)
         {
-            var repository = _unitOfWork.GetRepository<Branch>();
+            var repository = UnitOfWork.GetRepository<Branch>();
             var currentItems = existing.RoleBranches.Select(rb => rb.BranchId);
             var newItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected
@@ -1137,7 +844,7 @@ namespace SPPC.Tadbir.Persistence
 
         private void AddNewUsers(Role existing, RelatedItemsViewModel roleItems)
         {
-            var repository = _unitOfWork.GetRepository<User>();
+            var repository = UnitOfWork.GetRepository<User>();
             var currentItems = existing.UserRoles.Select(ur => ur.UserId);
             var newItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected
@@ -1158,7 +865,7 @@ namespace SPPC.Tadbir.Persistence
 
         private void AddNewFiscalPeriods(Role existing, RelatedItemsViewModel roleItems)
         {
-            var repository = _unitOfWork.GetRepository<FiscalPeriod>();
+            var repository = UnitOfWork.GetRepository<FiscalPeriod>();
             var currentItems = existing.RoleFiscalPeriods.Select(rfp => rfp.FiscalPeriodId);
             var newItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected
@@ -1179,7 +886,7 @@ namespace SPPC.Tadbir.Persistence
 
         private void AddNewRoles(User existing, RelatedItemsViewModel roleItems)
         {
-            var repository = _unitOfWork.GetRepository<Role>();
+            var repository = UnitOfWork.GetRepository<Role>();
             var currentItems = existing.UserRoles.Select(ur => ur.RoleId);
             var newItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected
@@ -1209,7 +916,7 @@ namespace SPPC.Tadbir.Persistence
 
         private RolePermission GetNewRolePermission(PermissionViewModel perm, Role role)
         {
-            var permission = _mapper.Map<Permission>(perm);
+            var permission = Mapper.Map<Permission>(perm);
             return new RolePermission()
             {
                 Role = role,
@@ -1219,25 +926,14 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private IQueryable<User> GetUserPermissionsQuery(int userId)
-        {
-            var repository = _unitOfWork.GetRepository<User>();
-            var query = repository.GetEntityQuery()
-                .Where(usr => usr.Id == userId)
-                .Include(usr => usr.UserRoles)
-                    .ThenInclude(ur => ur.Role)
-                        .ThenInclude(r => r.RolePermissions);
-            return query;
-        }
-
         private async Task SaveViewRolePermissionAsync(ViewRowPermissionViewModel rowPermission)
         {
-            var repository = _unitOfWork.GetAsyncRepository<ViewRowPermission>();
+            var repository = UnitOfWork.GetAsyncRepository<ViewRowPermission>();
             if (rowPermission.Id == 0)
             {
                 if (rowPermission.AccessMode != RowAccessOptions.Default)
                 {
-                    var newRowPermission = _mapper.Map<ViewRowPermission>(rowPermission);
+                    var newRowPermission = Mapper.Map<ViewRowPermission>(rowPermission);
                     repository.Insert(newRowPermission);
                 }
             }
@@ -1258,9 +954,5 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
         }
-
-        private IAppUnitOfWork _unitOfWork;
-        private IDomainMapper _mapper;
-        private IMetadataRepository _metadataRepository;
     }
 }

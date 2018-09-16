@@ -17,6 +17,7 @@ export class CostCenterInfo implements CostCenter {
     childCount: number = 0;
     fiscalPeriodId: number = 0;
     branchId: number = 0;
+    companyId: number;
 }
 
 @Injectable()

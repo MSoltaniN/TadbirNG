@@ -13,7 +13,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         protected ValidatingController(IStringLocalizer<AppStrings> strings = null)
             : base(strings)
         {
-            _strings = strings;
         }
 
         protected abstract string EntityNameKey

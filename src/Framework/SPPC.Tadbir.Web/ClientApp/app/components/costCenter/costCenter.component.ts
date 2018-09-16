@@ -171,6 +171,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     public saveHandler(model: CostCenter) {
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
+        model.companyId = this.CompanyId;
 
         if (!this.isNew) {
             this.isNew = false;

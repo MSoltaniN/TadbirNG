@@ -16,6 +16,7 @@ import { IEntity } from "./IEntity";
 export interface Project extends IEntity{
     fiscalPeriodId: number;
     branchId: number;
+    companyId: number;
     parentId?: number;
     childCount: number;
     id: number;

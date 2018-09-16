@@ -16,6 +16,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int BranchId { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی شرکتی که اطلاعات پروژه در آن تعریف شده است
+        /// </summary>
+        public int CompanyId { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی پروژه والد در ساختار درختی
         /// </summary>
         public int? ParentId { get; set; }

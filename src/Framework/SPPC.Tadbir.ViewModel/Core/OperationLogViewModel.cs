@@ -23,6 +23,6 @@ namespace SPPC.Tadbir.ViewModel.Core
         /// <summary>
         /// نام و نام خانوادگی کاربری که عملیات برنامه توسط او انجام شده
         /// </summary>
-        public string UserFullName { get; set; }
+        public string UserName { get; set; }
     }
 }

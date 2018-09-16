@@ -176,17 +176,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         this.reloadGrid();
     }
 
-    //goToLastPage() {
-    //    var pageCount: number = 0;
-    //    pageCount = Math.floor(this.totalRecords / this.pageSize);
-
-    //    if (this.totalRecords % this.pageSize == 0 && this.totalRecords != pageCount * this.pageSize) {
-    //        this.skip = (pageCount * this.pageSize) - this.pageSize;
-    //        return;
-    //    }
-    //    this.skip = (pageCount * this.pageSize)
-    //}
-
     //account form events
     public editHandler(arg: any) {
         this.grid.loading = true;
@@ -212,8 +201,8 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     public saveHandler(model: Account) {
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;
-        //TODO: این کد بعدا باید تغییر پیدا کند البته با اقای اسلامیه هماهنگ شده است
-        //model.fullCode = model.code;
+        model.companyId = this.CompanyId;
+
         this.grid.loading = true;
         if (!this.isNew) {
             this.isNew = false;

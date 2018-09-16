@@ -13,20 +13,17 @@ import { FilterExpression } from '../class/filterExpression';
 import { GridOrderBy } from '../class/grid.orderby';
 import { Observable } from 'rxjs/Observable';
 
-export class AccountInfo implements Account
-{    
+export class AccountInfo implements Account {
     constructor(public id: number = 0, public code: string = "", public name: string = "",
         public fiscalPeriodId: number = 0, public description: string = "",
         public branchId: number = 0, public level: number = 0, public fullCode: string = "",
-        public childCount: number = 0, public parentId: number = 0)
-    { }
-    
+        public childCount: number = 0, public parentId: number = 0, public companyId: number = 0) { }
+
 }
 
 
 @Injectable()
-export class AccountService extends BaseService
-{      
+export class AccountService extends BaseService {
 
     constructor(public http: HttpClient) {
         super(http);
@@ -39,5 +36,5 @@ export class AccountService extends BaseService
         return this.http.get(url, options)
             .map(response => <any>(<Response>response));
     }
-    
+
 }

@@ -107,8 +107,8 @@ namespace SPPC.Tadbir.Persistence
                 CompanyId = entity.Branch.CompanyId,
                 Date = DateTime.Now.Date,
                 Time = DateTime.Now.TimeOfDay,
-                Succeeded = true,
-                View = typeof(TEntity).Name,
+                Result = "Succeeded",
+                Entity = typeof(TEntity).Name,
                 UserId = 1
             };
             return log;
@@ -141,8 +141,8 @@ namespace SPPC.Tadbir.Persistence
             }
             catch (Exception ex)
             {
-                Log.Succeeded = false;
-                Log.FailReason = ex.Message;
+                Log.Result = "Failed";
+                Log.ErrorMessage = ex.Message;
                 await TrySaveLogAsync();
                 throw;
             }

@@ -19,6 +19,7 @@ export interface Account extends IEntity {
     parentId?: number;
     fiscalPeriodId: number;
     branchId: number;
+    companyId: number;
     childCount: number;
     id: number;
     code: string;

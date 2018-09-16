@@ -52,10 +52,11 @@ namespace SPPC.Tadbir.Persistence
             UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
         {
             var vouchers = await _repository.GetAllOperationAsync<Voucher>(
-                userAccess, fpId, branchId, ViewName.Voucher, gridOptions,
+                userAccess, fpId, branchId, ViewName.Voucher,
                 v => v.Lines, v => v.FiscalPeriod, v => v.Branch);
             return vouchers
                 .Select(item => Mapper.Map<VoucherViewModel>(item))
+                .Apply(gridOptions)
                 .ToList();
         }
 
@@ -198,8 +199,8 @@ namespace SPPC.Tadbir.Persistence
             var query = GetVoucherLinesQuery(voucherId);
             query = _repository.ApplyRowFilter(ref query, userAccess, ViewName.VoucherLine);
             var lines = await query
-                .Apply(gridOptions)
                 .Select(line => Mapper.Map<VoucherLineViewModel>(line))
+                .Apply(gridOptions)
                 .ToListAsync();
             return lines;
         }
@@ -401,15 +402,14 @@ namespace SPPC.Tadbir.Persistence
             existing.Description = voucher.Description;
         }
 
-        private IQueryable<VoucherLine> GetVoucherLinesQuery(int voucherId, GridOptions gridOptions = null)
+        private IQueryable<VoucherLine> GetVoucherLinesQuery(int voucherId)
         {
             var repository = UnitOfWork.GetRepository<VoucherLine>();
             var linesQuery = repository
                 .GetEntityQuery(
                     line => line.Voucher, line => line.Account, line => line.DetailAccount, line => line.CostCenter,
                     line => line.Project, line => line.Currency, line => line.FiscalPeriod, line => line.Branch)
-                .Where(line => line.Voucher.Id == voucherId)
-                .Apply(gridOptions);
+                .Where(line => line.Voucher.Id == voucherId);
             return linesQuery;
         }
 

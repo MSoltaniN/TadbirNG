@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -20,7 +19,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     [Produces("application/json")]
     public class RolesController : ValidatingController<RoleFullViewModel>
     {
-        public RolesController(ISecurityRepository repository, IStringLocalizer<AppStrings> strings)
+        public RolesController(IRoleRepository repository, IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
             _repository = repository;
@@ -321,6 +320,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return name;
         }
 
-        private ISecurityRepository _repository;
+        private IRoleRepository _repository;
     }
 }

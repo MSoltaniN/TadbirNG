@@ -64,7 +64,8 @@ namespace SPPC.Tadbir.Web.Api
             _services.AddTransient<IProjectRepository, ProjectRepository>();
             _services.AddTransient<IAccountItemRepository, AccountItemRepository>();
             _services.AddTransient<ILookupRepository, LookupRepository>();
-            _services.AddTransient<ISecurityRepository, SecurityRepository>();
+            _services.AddTransient<IUserRepository, UserRepository>();
+            _services.AddTransient<IRoleRepository, RoleRepository>();
             _services.AddTransient<IVoucherRepository, VoucherRepository>();
             _services.AddTransient<IFiscalPeriodRepository, FiscalPeriodRepository>();
             _services.AddTransient<IBranchRepository, BranchRepository>();

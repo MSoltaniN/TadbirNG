@@ -162,6 +162,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<DetailAccountViewModel, DetailAccount>()
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
+                .AfterMap((viewModel, model) => model.Branch.CompanyId = viewModel.CompanyId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
             mapperConfig.CreateMap<CostCenter, CostCenterViewModel>()
@@ -170,6 +171,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<CostCenterViewModel, CostCenter>()
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
+                .AfterMap((viewModel, model) => model.Branch.CompanyId = viewModel.CompanyId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
             mapperConfig.CreateMap<Project, ProjectViewModel>()
@@ -178,6 +180,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<ProjectViewModel, Project>()
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId)
+                .AfterMap((viewModel, model) => model.Branch.CompanyId = viewModel.CompanyId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId);
             mapperConfig.CreateMap<Account, AccountFullViewModel>();
@@ -308,9 +311,9 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) =>
                     model.Role = (viewModel.TargetId > 0)
                         ? new Role()
-                            {
-                                Id = viewModel.TargetId
-                            }
+                        {
+                            Id = viewModel.TargetId
+                        }
                         : null);
             mapperConfig.CreateMap<WorkItemHistory, HistoryItemViewModel>()
                 .ForMember(
@@ -361,16 +364,34 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<OperationLog, OperationLogViewModel>()
                 .ForMember(
-                    dest => dest.UserFullName,
-                    opts => opts.MapFrom(src => String.Format("{0} {1}", src.User.Person.FirstName, src.User.Person.LastName)));
+                    dest => dest.Entity,
+                    opts => opts.MapFrom(src => src.View))
+                .ForMember(
+                    dest => dest.Result,
+                    opts => opts.MapFrom(src => src.Succeeded ? "Succeeded" : "Failed"))
+                .ForMember(
+                    dest => dest.ErrorMessage,
+                    opts => opts.MapFrom(src => src.FailReason))
+                .ForMember(
+                    dest => dest.UserName,
+                    opts => opts.MapFrom(src => src.User.UserName));
             mapperConfig.CreateMap<OperationLogViewModel, OperationLog>()
+                .ForMember(
+                    dest => dest.View,
+                    opts => opts.MapFrom(src => src.Entity))
+                .ForMember(
+                    dest => dest.Succeeded,
+                    opts => opts.MapFrom(src => src.Result == "Succeeded"))
+                .ForMember(
+                    dest => dest.FailReason,
+                    opts => opts.MapFrom(src => src.ErrorMessage))
                 .AfterMap((viewModel, model) => model.Company.Id = viewModel.CompanyId)
                 .AfterMap((viewModel, model) => model.User.Id = viewModel.UserId);
             mapperConfig.CreateMap<DocumentAction, DocumentActionViewModel>()
                 .ForMember(
                     dest => dest.LineId,
                     opts => opts.MapFrom(src => src.LineId ?? 0));
-            mapperConfig.CreateMap<DocumentActionViewModel, Model.Core.DocumentAction>()
+            mapperConfig.CreateMap<DocumentActionViewModel, DocumentAction>()
                 .ForMember(
                     dest => dest.LineId,
                     opts => opts.MapFrom(
@@ -380,16 +401,16 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) =>
                     model.ConfirmedBy = (viewModel.ConfirmedById > 0)
                         ? new User()
-                            {
-                                Id = viewModel.ConfirmedById
-                            }
+                        {
+                            Id = viewModel.ConfirmedById
+                        }
                         : null)
                 .AfterMap((viewModel, model) =>
                     model.ApprovedBy = (viewModel.ApprovedById > 0)
                         ? new User()
-                            {
-                                Id = viewModel.ApprovedById
-                            }
+                        {
+                            Id = viewModel.ApprovedById
+                        }
                         : null);
             mapperConfig.CreateMap<Document, DocumentViewModel>();
             mapperConfig.CreateMap<DocumentViewModel, Document>()
