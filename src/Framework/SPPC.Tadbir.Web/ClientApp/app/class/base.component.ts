@@ -9,12 +9,23 @@ import { EnviromentComponent } from "./enviroment.component"
 
 export class BaseComponent extends EnviromentComponent {
 
-    
+    /** this message show after update command */
+    public updateMsg: string;
+
+    /** this message show after insert command */
+    public insertMsg: string;
+
+    /** this message show after delete command */
+    public deleteMsg: string;
+
+    /** this message show in confirm messagebox */
+    public deleteConfirmMsg: string;
 
     constructor(public toastrService: ToastrService)
     {
         super();
 
+        
     }
 
     /**

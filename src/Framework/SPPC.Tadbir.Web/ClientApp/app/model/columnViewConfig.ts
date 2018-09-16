@@ -1,7 +1,8 @@
 ﻿import { ColumnViewDeviceConfig } from "./columnViewDeviceConfig";
+import { IEntity } from "./IEntity";
 
 
-export interface ColumnViewConfig {
+export interface ColumnViewConfig extends IEntity{
 
     name: string;
     large: ColumnViewDeviceConfig;

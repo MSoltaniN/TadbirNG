@@ -17,6 +17,7 @@ import { Layout } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeNodeInfo } from '../../model/role';
 import { Permission } from '../../model/permission';
+import { DetailComponent } from '../../class/detail.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -40,7 +41,7 @@ export function getLayoutModule(layout: Layout) {
 
 })
 
-export class RoleDetailFormComponent extends DefaultComponent {
+export class RoleDetailFormComponent extends DetailComponent {
 
 
     ////create properties

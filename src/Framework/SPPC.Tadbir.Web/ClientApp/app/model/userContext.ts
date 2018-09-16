@@ -11,8 +11,9 @@
 // ------------------------------------------------------------------------------
 
 import { PermissionBrief } from "./permissionBrief";
+import { IEntity } from "./IEntity";
 
-export interface UserContext {
+export interface UserContext extends IEntity{
     id: number;
     personFirstName: string;
     personLastName: string;

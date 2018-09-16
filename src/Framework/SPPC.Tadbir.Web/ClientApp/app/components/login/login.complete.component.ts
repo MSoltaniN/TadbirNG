@@ -16,6 +16,7 @@ import { TranslateService } from 'ng2-translate';
 import { UserService, SettingService } from '../../service/index';
 import { Command } from '../../model/command';
 import { ListFormViewConfig } from '../../model/listFormViewConfig';
+import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -36,8 +37,9 @@ export function getLayoutModule(layout: Layout) {
 
 
 export class LoginCompleteComponent extends DefaultComponent implements OnInit {
+    
 
-
+    
     //#region Fields
     model: any = {};
     loading = false;
@@ -273,5 +275,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     }
 
     //#endregion
+
+
+   
+
 
 }

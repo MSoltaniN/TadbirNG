@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 //import { requiredValidatorLogic } from './required.directive';
 //import { VoucherLineService, VoucherLineInfo, AccountService, LookupService } from '../../service/index';
@@ -17,6 +17,7 @@ import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import { Metadatas, Entities } from '../../enviroment';
 import { FullAccountService } from '../../service/fullAccount.service';
 import { VoucherLineService, AccountService, LookupService } from '../../service/index';
+import { DetailComponent } from '../../class/detail.component';
 
 
 
@@ -32,10 +33,10 @@ interface Item {
     styles: [
         "input[type=text],textarea { width: 100%; } .ddl-fAcc {width:49%} /deep/ kendo-numerictextbox{ width:100% !important; }"
     ],
-    templateUrl: './voucherLine-form.component.html'
+    templateUrl: './voucherLine-form.component.html'    
 })
 
-export class VoucherLineFormComponent extends DefaultComponent {
+export class VoucherLineFormComponent extends DetailComponent {
 
     //TODO: create form with metadata
     public editForm1 = new FormGroup({
@@ -102,7 +103,8 @@ export class VoucherLineFormComponent extends DefaultComponent {
     //Events
 
     constructor(private voucherLineService: VoucherLineService, private accountService: AccountService,
-        public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService, private fullAccountService: FullAccountService,
+        public toastrService: ToastrService, public translate: TranslateService,
+        public lookupService: LookupService, private fullAccountService: FullAccountService,
         public renderer: Renderer2, public metadata: MetaDataService) {
 
         super(toastrService, translate, renderer, metadata, Entities.VoucherLine, Metadatas.VoucherArticles);

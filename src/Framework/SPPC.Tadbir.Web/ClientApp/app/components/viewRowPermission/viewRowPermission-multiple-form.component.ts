@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
 
 import { TranslateService } from "ng2-translate";
 import { ToastrService } from 'ngx-toastr';
@@ -16,6 +16,7 @@ import { TreeItem, TreeItemLookup } from '@progress/kendo-angular-treeview';
 import { FilterExpression } from '../../class/filterExpression';
 import { FilterExpressionBuilder } from '../../class/filterExpressionBuilder';
 import { Filter } from '../../class/filter';
+import { DetailComponent } from '../../class/detail.component';
 
 
 
@@ -48,7 +49,7 @@ export function getLayoutModule(layout: Layout) {
 
 })
 
-export class ViewRowPermissionMultipleFormComponent extends DefaultComponent {
+export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
 
     roleItem: ItemInfo;
 

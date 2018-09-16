@@ -122,9 +122,11 @@ import { NgProgressModule } from '@ngx-progressbar/core';
 import { NgProgressHttpModule } from '@ngx-progressbar/http';
 import { NgProgressRouterModule } from '@ngx-progressbar/router';
 import { GridFilterComponent } from './directive/grid/component/grid-filter.component';
+import { DefaultComponent } from './class/default.component';
+
 
 @NgModule({
-    declarations: [
+    declarations: [       
         AppComponent,
         SppcLoadingComponent,
         NavMenuComponent,
@@ -211,7 +213,8 @@ import { GridFilterComponent } from './directive/grid/component/grid-filter.comp
         DatePipe,
         Layout,
         EnviromentComponent,
-        Permissions     
+        Permissions,
+        DefaultComponent
     ],
     imports: [
         ButtonsModule,

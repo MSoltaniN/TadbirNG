@@ -11,8 +11,9 @@
 // ------------------------------------------------------------------------------
 
 import { Document } from "./document";
+import { IEntity } from "./IEntity";
 
-export interface Voucher {
+export interface Voucher extends IEntity{
     fiscalPeriodId: number;
     branchId: number;
     workItemId: number;

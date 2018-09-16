@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 
 import { Property } from "../../class/metadata/property"
@@ -22,6 +22,7 @@ import { Filter } from '../../class/filter';
 import { AccountRelationsType } from '../../enum/accountRelationType';
 import { FilterExpression } from '../../class/filterExpression';
 import { FilterExpressionBuilder } from '../../class/filterExpressionBuilder';
+import { DetailComponent } from '../../class/detail.component';
 
 
 
@@ -42,7 +43,7 @@ export function getLayoutModule(layout: Layout) {
 
 })
 
-export class AccountRelationsFormComponent extends DefaultComponent {
+export class AccountRelationsFormComponent extends DetailComponent {
 
     public mainComponentModel: AccountItemBriefInfo;
     public mainComponentSelected: number = 0;
@@ -119,7 +120,7 @@ export class AccountRelationsFormComponent extends DefaultComponent {
     //Events
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
-        public accountRelationsService: AccountRelationsService, public sppcLoading: SppcLoadingService) {
+        public accountRelationsService: AccountRelationsService, @Host() defaultComponent: DefaultComponent) {
         super(toastrService, translate, renderer, metadata, Entities.AccountRelations, '');
     }
 

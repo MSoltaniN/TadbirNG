@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2, OnInit } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, OnInit, Host, Inject } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { AccountService, AccountInfo, VoucherLineService, FiscalPeriodService } from '../../service/index';
 
@@ -16,6 +16,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { AccountApi } from '../../service/api/accountApi';
 import { String } from '../../class/source';
+import { DetailComponent } from '../../class/detail.component';
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
@@ -39,13 +40,12 @@ interface Item {
         provide: RTL,
         useFactory: getLayoutModule,
         deps: [Layout]
-    }]
-
+    },DefaultComponent]
 })
 
-export class AccountFormComponent extends DefaultComponent implements OnInit {
+export class AccountFormComponent extends DetailComponent implements OnInit {
 
-    //create properties
+        //create properties
     active: boolean = false;
 
     fullCodeApiUrl: string;
@@ -85,6 +85,7 @@ export class AccountFormComponent extends DefaultComponent implements OnInit {
             this.active = true;
         }
     }
+    
 
     public onCancel(e: any): void {
         e.preventDefault();
@@ -104,7 +105,8 @@ export class AccountFormComponent extends DefaultComponent implements OnInit {
     }
 
     constructor(private accountService: AccountService, private voucherLineService: VoucherLineService, private fiscalPeriodService: FiscalPeriodService,
-        public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
+        public toastrService: ToastrService, public translate: TranslateService,
+        public renderer: Renderer2, public metadata: MetaDataService) {
 
         super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
 

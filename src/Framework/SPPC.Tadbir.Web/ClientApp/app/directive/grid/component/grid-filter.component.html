@@ -1,4 +1,4 @@
-﻿<button class="hidden-xs" (click)="filterGrid()" kendoButton [icon]="'filter'" [ngClass]="{'pull-left' : rtl ,'pull-right' : !rtl}"
-        type="button" title="{{ 'Buttons.Setting' | translate }}"></button>
-<button class="hidden-xs" (click)="removeFilterGrid()" kendoButton [icon]="'filter-clear'" [ngClass]="{'pull-left' : rtl ,'pull-right' : !rtl}"
-        type="button" title="{{ 'Buttons.Setting' | translate }}"></button>
+﻿<button class="hidden-xs filterMargin" (click)="filterGrid()" kendoButton [icon]="'filter'" [ngClass]="{'pull-left' : rtl ,'pull-right' : !rtl}"
+        type="button" title="{{ 'Buttons.Filter' | translate }}"></button>
+<button *ngIf="showClearFilter > 0" class="hidden-xs" (click)="removeFilterGrid()" kendoButton [icon]="'filter-clear'" [ngClass]="{'pull-left' : rtl ,'pull-right' : !rtl}"
+        type="button" title="{{ 'Buttons.DeleteFilter' | translate }}"></button>

@@ -1,5 +1,5 @@
 ﻿import { BaseComponent } from "../../../class/base.component";
-import { OnInit, OnDestroy, Component, Host, ElementRef } from "@angular/core";
+import { OnInit, OnDestroy, Component, Host, ElementRef, Input } from "@angular/core";
 import { Layout } from "../../../enviroment";
 import { RTL } from "@progress/kendo-angular-l10n";
 import { ToastrService } from "ngx-toastr";
@@ -7,6 +7,7 @@ import { GridComponent } from "@progress/kendo-angular-grid";
 import { TranslateService } from "ng2-translate";
 import { SettingService } from "../../../service/settings.service";
 import { DefaultComponent } from "../../../class/default.component";
+import { AccountComponent } from "../../../components/account/account.component";
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
@@ -15,6 +16,7 @@ export function getLayoutModule(layout: Layout) {
 @Component({
     selector: 'grid-filter',
     templateUrl: './grid-filter.component.html',
+    styleUrls: ['./grid-filter.component.css'],
     providers: [{
         provide: RTL,
         useFactory: getLayoutModule,
@@ -24,17 +26,44 @@ export function getLayoutModule(layout: Layout) {
 
 export class GridFilterComponent extends BaseComponent implements OnInit, OnDestroy {
 
+    rtl: boolean;
+    @Input() public showClearFilter: number = 0;
+    @Input() public parentComponent: any;
+    
     constructor(public toastrService: ToastrService, public translate: TranslateService, public settingService: SettingService,
-        @Host() private grid: GridComponent, private elRef: ElementRef, @Host() public defaultComponent: DefaultComponent) {
+        @Host() private grid: GridComponent, private elRef: ElementRef) {
 
         super(toastrService);
+        
+        this.grid.filter.filters = [];
     }
 
     ngOnDestroy(): void {
-        throw new Error("Method not implemented.");
+       
     }
     ngOnInit(): void {
-        throw new Error("Method not implemented.");
+        if (this.CurrentLanguage == 'fa')
+            this.rtl = true;
+        else
+            this.rtl = false;
+
+        //;
+    }
+
+    filterGrid(): void {        
+
+        this.showClearFilter = this.grid.filter.filters.length;
+
+        this.parentComponent.reloadGrid();
+    }
+
+    removeFilterGrid(): void {
+        this.grid.filter.filters = [];
+        this.showClearFilter = this.grid.filter.filters.length;
+
+        this.parentComponent.filterChange(this.grid.filter);
+        this.parentComponent.reloadGrid();
+
     }
 
 }

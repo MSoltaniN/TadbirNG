@@ -14,8 +14,9 @@ import { Role } from "./role";
 import { Permission } from "./permission";
 import { Branch } from "./branch";
 import { UserBrief } from "./userBrief";
+import { IEntity } from "./IEntity";
 
-export interface RoleDetails {
+export interface RoleDetails extends IEntity{
     role: Role;
     permissions: Array<Permission>;
     branches: Array<Branch>;

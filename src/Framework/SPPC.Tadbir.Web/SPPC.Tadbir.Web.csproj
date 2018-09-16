@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\class\base.service.ts" />
+    <None Remove="ClientApp\app\class\detail.component.ts" />
     <None Remove="ClientApp\app\class\dictionary.ts" />
     <None Remove="ClientApp\app\class\enviroment.component.ts" />
     <None Remove="ClientApp\app\class\filter.ts" />
@@ -63,6 +64,7 @@
     <None Remove="ClientApp\app\model\columnViewDeviceConfig.ts" />
     <None Remove="ClientApp\app\model\DetailAccount.ts" />
     <None Remove="ClientApp\app\model\fullaccount.ts" />
+    <None Remove="ClientApp\app\model\IEntity.ts" />
     <None Remove="ClientApp\app\model\index.ts" />
     <None Remove="ClientApp\app\model\listFormViewConfig.ts" />
     <None Remove="ClientApp\app\model\role.ts" />
@@ -163,6 +165,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\class\base.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\base.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\class\detail.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\dictionary.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\enviroment.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\class\filterExpressionOperator.ts" />
@@ -232,6 +235,7 @@
     <TypeScriptCompile Include="ClientApp\app\model\columnViewDeviceConfig.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\detailAccount.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\fullaccount.ts" />
+    <TypeScriptCompile Include="ClientApp\app\model\IEntity.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\listFormViewConfig.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\voucher.ts" />
     <TypeScriptCompile Include="ClientApp\app\model\index.ts" />

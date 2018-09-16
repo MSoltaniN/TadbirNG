@@ -43,6 +43,12 @@ export function getLayoutModule(layout: Layout) {
 })
 
 export class ViewRowPermissionComponent extends DefaultComponent implements OnInit {
+    public filterChange(filter: CompositeFilterDescriptor): void {
+        throw new Error("Method not implemented.");
+    }
+    public reloadGrid(insertedModel?: any): void {
+        throw new Error("Method not implemented.");
+    }
 
     public isActiveSingleForm: boolean = false;
     public isActiveMultipleForm: boolean = false;

@@ -11,8 +11,9 @@
 // ------------------------------------------------------------------------------
 
 import { DocumentAction } from "./documentAction";
+import { IEntity } from "./IEntity";
 
-export interface Document {
+export interface Document extends IEntity {
     typeId: number;
     statusId: number;
     statusName: string;

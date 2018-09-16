@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 
 import { User } from '../../model/index';
@@ -12,6 +12,7 @@ import { DefaultComponent } from "../../class/default.component";
 import { MetaDataService } from '../../service/metadata/metadata.service';
 
 import { Metadatas, Entities } from '../../enviroment';
+import { DetailComponent } from '../../class/detail.component';
 
 
 
@@ -26,10 +27,10 @@ import { Metadatas, Entities } from '../../enviroment';
          
 `
     ],
-    templateUrl: './user-form.component.html'
+    templateUrl: './user-form.component.html'   
 })
 
-export class UserFormComponent extends DefaultComponent {
+export class UserFormComponent extends DetailComponent {
 
     public checked: boolean = false;
     //create a form controls

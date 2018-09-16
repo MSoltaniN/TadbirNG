@@ -35,6 +35,7 @@ import { DefaultComponent } from '../../class/default.component';
 import { FilterExpression } from '../../class/filterExpression';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
 
+
 //#endregion
 
 export function getLayoutModule(layout: Layout) {
@@ -61,11 +62,12 @@ export function getLayoutModule(layout: Layout) {
 
 export class AccountComponent extends DefaultComponent implements OnInit {
 
+
     //#region Fields
 
     public Childrens: Array<AccountComponent>;
 
-    @ViewChild(GridComponent) grid: GridComponent;
+    @ViewChild(GridComponent) grid: GridComponent;    
 
     @Input() public parent: Account;
     @Input() public isChild: boolean = false;
@@ -133,15 +135,28 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    dataStateChange(state: DataStateChangeEvent): void {
-        this.currentFilter = this.getFilters(state.filter);
-        if (state.sort)
-            if (state.sort.length > 0)
-                this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
-        this.state = state;
-        this.skip = state.skip;
-        this.reloadGrid();
+    filterChange(filter: CompositeFilterDescriptor): void {
+        var isReload: boolean = false;
+        if (this.currentFilter && this.currentFilter.children.length > filter.filters.length)
+            isReload = true;
+
+        this.currentFilter = this.getFilters(filter);        
+        if (isReload) {            
+            this.reloadGrid();
+        }
+        //console.log(filter);
+        
     }
+
+    //dataStateChange(state: DataStateChangeEvent): void {
+    //    //this.currentFilter = this.getFilters(state.filter);
+    //    if (state.sort)
+    //        if (state.sort.length > 0)
+    //            this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
+    //    this.state = state;
+    //    this.skip = state.skip;
+    //    this.reloadGrid();
+    //}
 
 
     public sortChange(sort: SortDescriptor[]): void {
@@ -348,7 +363,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         this.deleteModelsConfirm = false;
     }
 
-    public reloadGrid(insertedModel?: Account) {
+    reloadGrid(insertedModel?: Account | undefined): void {        
         if (this.viewAccess) {
             this.grid.loading = true;
             var filter = this.currentFilter;
@@ -388,18 +403,18 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
                         this.goToLastPage(this.totalRecords);
                         this.goLastPage = false;
-                        
+
                         this.loadGridData(insertedModel, order, filter);
                     });
             }
             //#endregion
             else {
                 if (insertedModel && this.addToContainer)
-                    this.goToLastPage(this.totalRecords);                
+                    this.goToLastPage(this.totalRecords);
 
-                this.loadGridData(insertedModel,order,filter);
+                this.loadGridData(insertedModel, order, filter);
             }
-           
+
         }
         else {
             this.rowData = {
@@ -408,6 +423,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             }
         }
     }
+
 
     loadGridData(insertedModel?: Account,order?:string,filter?:FilterExpression) {
 

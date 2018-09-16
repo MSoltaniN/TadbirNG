@@ -12,7 +12,7 @@ import { ColumnViewDeviceConfig } from "../../model/columnViewDeviceConfig";
 
 @Directive({
     selector: '[sppc-grid-reorder]',
-    providers: [DefaultComponent, String]
+    providers: [ String,DefaultComponent]
 })
 
 export class SppcGridReorder {

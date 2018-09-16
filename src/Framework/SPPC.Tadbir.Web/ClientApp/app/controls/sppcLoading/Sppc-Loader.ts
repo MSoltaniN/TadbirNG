@@ -14,7 +14,7 @@ import { LoaderService } from "./loader.service";
 
 @Directive({
     selector: '[sppc-loader]',
-    providers: [EnviromentComponent, DefaultComponent,LoaderService]
+    providers: [EnviromentComponent,LoaderService]
 })
 
 export class SppcLoader implements OnInit 

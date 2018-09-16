@@ -15,6 +15,7 @@ import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { RelatedItems } from '../../model/index';
+import { DetailComponent } from '../../class/detail.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -34,7 +35,7 @@ export function getLayoutModule(layout: Layout) {
 
 })
 
-export class RoleFiscalPeriodFormComponent extends DefaultComponent {
+export class RoleFiscalPeriodFormComponent extends DetailComponent {
 
 
     ////create properties

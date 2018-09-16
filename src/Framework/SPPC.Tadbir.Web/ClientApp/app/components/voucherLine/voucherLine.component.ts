@@ -29,6 +29,9 @@ import { FilterExpression } from '../../class/filterExpression';
 
 
 export class VoucherLineComponent extends DefaultComponent implements OnInit {
+    public filterChange(filter: CompositeFilterDescriptor): void {
+        throw new Error("Method not implemented.");
+    }
 
     //#region Fields
     @ViewChild(GridComponent) grid: GridComponent;

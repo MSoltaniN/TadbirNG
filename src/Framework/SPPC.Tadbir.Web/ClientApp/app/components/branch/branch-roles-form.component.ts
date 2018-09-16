@@ -12,6 +12,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { RelatedItems } from '../../model/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { BranchPermissions } from '../../security/permissions';
+import { DetailComponent } from '../../class/detail.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -30,7 +31,7 @@ export function getLayoutModule(layout: Layout) {
 
 })
 
-export class BranchRolesFormComponent extends DefaultComponent implements OnInit {
+export class BranchRolesFormComponent extends DetailComponent implements OnInit {
 
     //permission flag   
     AssignRolesAccess: boolean;
