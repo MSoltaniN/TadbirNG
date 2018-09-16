@@ -28,6 +28,7 @@ namespace SPPC.Tadbir.Persistence
         public UserRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
             : base(unitOfWork, mapper, metadata)
         {
+            UnitOfWork.UseSystemContext();
         }
 
         /// <summary>
@@ -107,22 +108,19 @@ namespace SPPC.Tadbir.Persistence
             var user = await repository.GetByIDAsync(userId, usr => usr.Person, usr => usr.UserRoles);
             if (user != null)
             {
+                userContext = Mapper.Map<UserContextViewModel>(user);
                 var permissions = new List<PermissionBriefViewModel>();
-                var branches = new List<int>();
                 var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
                 foreach (var roleId in user.UserRoles.Select(ur => ur.RoleId))
                 {
-                    var role = await roleRepository.GetByIDAsync(roleId, r => r.RoleBranches, r => r.RolePermissions);
-                    userContext = Mapper.Map<UserContextViewModel>(user);
+                    var role = await roleRepository.GetByIDAsync(roleId, r => r.RolePermissions);
                     userContext.Roles.Add(roleId);
-                    branches.AddRange(role.RoleBranches.Select(rb => rb.BranchId));
                     Array.ForEach(
                         role.RolePermissions.ToArray(),
                         rp => permissions.Add(Mapper.Map<PermissionBriefViewModel>(
                             UnitOfWork.GetRepository<Permission>().GetByID(rp.PermissionId, perm => perm.Group))));
                 }
 
-                Array.ForEach(branches.Distinct().ToArray(), br => userContext.Branches.Add(br));
                 var groups = permissions
                     .Distinct(new PermissionEqualityComparer())
                     .GroupBy(perm => perm.EntityName);
