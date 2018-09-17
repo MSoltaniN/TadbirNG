@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import {  FiscalPeriodService } from '../../service/index';
 
@@ -13,6 +13,7 @@ import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
+import { DetailComponent } from '../../class/detail.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -38,7 +39,7 @@ interface Item {
     }]
 })
 
-export class FiscalPeriodFormComponent extends DefaultComponent {
+export class FiscalPeriodFormComponent extends DetailComponent {
 
     //create properties
     public fiscalPeriod_Id: number;
@@ -88,7 +89,8 @@ export class FiscalPeriodFormComponent extends DefaultComponent {
     //Events
 
     constructor(private fiscalPeriodService: FiscalPeriodService,
-        public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
+        public toastrService: ToastrService, public translate: TranslateService,
+        public renderer: Renderer2, public metadata: MetaDataService) {
 
         super(toastrService, translate, renderer, metadata, Entities.FiscalPeriod, Metadatas.FiscalPeriod);
 

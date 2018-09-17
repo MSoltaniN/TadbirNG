@@ -11,8 +11,9 @@
 // ------------------------------------------------------------------------------
 
 import { RelatedItem } from "./relatedItem";
+import { IEntity } from "./IEntity";
 
-export interface RelatedItems {
+export interface RelatedItems extends IEntity{
     id: number;
     relatedItems: Array<RelatedItem>;
 }

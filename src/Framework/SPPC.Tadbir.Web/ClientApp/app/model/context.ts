@@ -1,7 +1,8 @@
 ﻿
 import { PermissionBrief } from "./permissionBrief";
+import { IEntity } from "./IEntity";
 
-export interface Context {
+export interface Context extends IEntity{
     userName: string;
     password: string;
     firstName: string;

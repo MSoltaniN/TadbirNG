@@ -11,7 +11,7 @@ import { String } from '../../class/source';
 
 @Directive({
     selector: '[sppc-grid-column]',
-    providers: [DefaultComponent,String]
+    providers: [String,DefaultComponent]
 })
 
 export class SppcGridColumn {

@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from "ng2-translate";
 
 import { String } from './source';
-import { State } from "@progress/kendo-data-query";
+import { State, CompositeFilterDescriptor } from "@progress/kendo-data-query";
 import { BaseComponent } from "./base.component"
 import { Property } from "./metadata/property"
 
@@ -19,27 +19,21 @@ import * as moment from 'jalali-moment';
 import { FilterExpression } from './filterExpression';
 import { FilterExpressionBuilder } from './filterExpressionBuilder';
 import { HttpResponse } from '@angular/common/http';
+import { Account } from '../model/index';
+import { IEntity } from '../model/IEntity';
 
 @Injectable()
-export class DefaultComponent extends BaseComponent {
+export class DefaultComponent extends BaseComponent  {
 
+    
     public translateService: TranslateService
 
-    /** this message show after update command */
-    public updateMsg: string;
-
-    /** this message show after insert command */
-    public insertMsg: string;
-
-    /** this message show after delete command */
-    public deleteMsg: string;
-
-    /** this message show in confirm messagebox */
-    public deleteConfirmMsg: string;
+    
 
     /** array of property.this variable is a container for metadata */
     public properties: { [id: string]: Array<Property>; } = {}
 
+    /*
     private form: FormGroup;
 
     public get editForm(): FormGroup {
@@ -76,7 +70,7 @@ export class DefaultComponent extends BaseComponent {
 
     }
 
-
+    */
 
 
 
@@ -95,7 +89,11 @@ export class DefaultComponent extends BaseComponent {
         //this.initializeFrom();
     }
 
+    //abstract filterChange(filter: CompositeFilterDescriptor): void 
+    
+    //abstract reloadGrid(insertedModel?: IEntity | undefined): void 
 
+    /*
     private fillFormValidators() {
 
         var p: Property | undefined = undefined;
@@ -143,7 +141,7 @@ export class DefaultComponent extends BaseComponent {
         }
 
     }
-
+    */
 
     /**
      * تنظیمات مربوط به زبان سیستم را انجام میدهد

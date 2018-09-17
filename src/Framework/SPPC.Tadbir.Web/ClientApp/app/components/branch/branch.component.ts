@@ -47,6 +47,10 @@ export function getLayoutModule(layout: Layout) {
 
 export class BranchComponent extends DefaultComponent implements OnInit {
 
+    public filterChange(filter: CompositeFilterDescriptor): void {
+        throw new Error("Method not implemented.");
+    }
+
     //#region Fields
     public Childrens: Array<BranchComponent>;
     @ViewChild(GridComponent) grid: GridComponent;

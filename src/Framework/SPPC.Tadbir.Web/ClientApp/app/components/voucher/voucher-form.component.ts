@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2, ChangeDetectionStrategy } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, ChangeDetectionStrategy, Host } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { VoucherService, VoucherInfo, VoucherLineService, FiscalPeriodService } from '../../service/index';
 
@@ -13,6 +13,7 @@ import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
+import { DetailComponent } from '../../class/detail.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -42,7 +43,7 @@ interface Item {
     }]
 })
 
-export class VoucherFormComponent extends DefaultComponent {
+export class VoucherFormComponent extends DetailComponent {
 
     ////create a form controls
     //private editForm = new FormGroup({
@@ -100,7 +101,8 @@ export class VoucherFormComponent extends DefaultComponent {
     //Events
 
     constructor(private voucherLineService: VoucherLineService, private fiscalPeriodService: FiscalPeriodService,
-        public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
+        public toastrService: ToastrService, public translate: TranslateService,
+        public renderer: Renderer2, public metadata: MetaDataService) {
 
         super(toastrService, translate, renderer, metadata, Entities.Voucher, Metadatas.Voucher);
     }

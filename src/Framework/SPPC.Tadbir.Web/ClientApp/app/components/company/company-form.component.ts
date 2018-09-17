@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { Company } from '../../model/index';
 
@@ -13,6 +13,7 @@ import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
+import { DetailComponent } from '../../class/detail.component';
 
 
 
@@ -35,7 +36,7 @@ export function getLayoutModule(layout: Layout) {
 
 })
 
-export class CompanyFormComponent extends DefaultComponent {
+export class CompanyFormComponent extends DetailComponent {
 
     //create properties
     active: boolean = false;
@@ -73,7 +74,8 @@ export class CompanyFormComponent extends DefaultComponent {
     }
     //Events
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
+    constructor(public toastrService: ToastrService, public translate: TranslateService,
+        public renderer: Renderer2, public metadata: MetaDataService) {
 
         super(toastrService, translate, renderer, metadata, Entities.Company, Metadatas.Company);
     }

@@ -41,6 +41,9 @@ export function getLayoutModule(layout: Layout) {
 
 
 export class VoucherComponent extends DefaultComponent implements OnInit {
+    public filterChange(filter: CompositeFilterDescriptor): void {
+        throw new Error("Method not implemented.");
+    }
 
     //#region Fields
     @ViewChild(GridComponent) grid: GridComponent;

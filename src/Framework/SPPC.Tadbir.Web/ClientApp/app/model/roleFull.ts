@@ -12,8 +12,9 @@
 
 import { Role } from "./role";
 import { Permission } from "./permission";
+import { IEntity } from "./IEntity";
 
-export interface RoleFull {
+export interface RoleFull extends IEntity{
     id: number;
     role: Role;
     permissions: Array<Permission>;

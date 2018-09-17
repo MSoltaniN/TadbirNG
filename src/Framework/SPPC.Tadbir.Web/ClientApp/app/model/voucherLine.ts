@@ -11,8 +11,9 @@
 // ------------------------------------------------------------------------------
 
 import { FullAccount } from "./fullAccount";
+import { IEntity } from "./IEntity";
 
-export interface VoucherLine {
+export interface VoucherLine extends IEntity{
     voucherId: number;
     branchId: number;
     fiscalPeriodId: number;

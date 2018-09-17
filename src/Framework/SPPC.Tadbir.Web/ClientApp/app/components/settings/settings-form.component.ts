@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
@@ -16,6 +16,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SettingsType } from '../../enum/settingsType';
 import { SettingBriefInfo } from '../../service/index';
+import { DetailComponent } from '../../class/detail.component';
 
 
 
@@ -49,7 +50,7 @@ interface Item2 {
 
 })
 
-export class SettingsFormComponent extends DefaultComponent {
+export class SettingsFormComponent extends DetailComponent {
 
     public selectedItemModel: SettingBriefInfo;
     public selectedItemType: string = '';
@@ -96,7 +97,8 @@ export class SettingsFormComponent extends DefaultComponent {
 
     @Output() updateList: EventEmitter<SettingBriefInfo> = new EventEmitter();
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
+    constructor(public toastrService: ToastrService, public translate: TranslateService,
+        public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, Entities.Settings, '');
 
         this.ddlDateRanges = [

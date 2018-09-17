@@ -8,6 +8,7 @@ import { Command } from '../../model/command';
 import { SessionKeys } from '../../enviroment';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 
 @Component({
     selector: 'nav-menu',
@@ -15,6 +16,13 @@ import { Location } from '@angular/common';
     styleUrls: ['./navmenu.component.css']
 })
 export class NavMenuComponent extends DefaultComponent implements OnInit {
+    public filterChange(filter: CompositeFilterDescriptor): void {
+        throw new Error("Method not implemented.");
+    }
+    public reloadGrid(insertedModel?: any): void {
+        throw new Error("Method not implemented.");
+    }
+   
 
     menuList: Array<Command> = new Array<Command>();
     public icons: { [id: string]: string; } = {};

@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DefaultComponent } from "../../class/default.component";
 import { TranslateService } from "ng2-translate";
 import { MetaDataService } from '../../service/metadata/metadata.service';
+import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 
 
 @Component({
@@ -17,6 +18,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 
 
 export class LoginContainerComponent extends DefaultComponent implements OnInit {
+    
     
     public step1: boolean = false;
     public step2: boolean = false;

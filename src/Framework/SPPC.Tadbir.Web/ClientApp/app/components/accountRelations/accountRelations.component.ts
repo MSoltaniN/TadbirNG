@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, Renderer2 } from '@angular/core';
+﻿import { Component, OnInit, Input, Renderer2, Host } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs/Observable';
@@ -26,6 +26,7 @@ import { KeyCode } from '../../enum/KeyCode';
 import { AccountRelationsType } from '../../enum/accountRelationType';
 import { FilterExpressionBuilder } from '../../class/filterExpressionBuilder';
 import { FilterExpression } from '../../class/filterExpression';
+import { DetailComponent } from '../../class/detail.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -49,7 +50,8 @@ interface Item {
 })
 
 
-export class AccountRelationsComponent extends DefaultComponent implements OnInit {
+export class AccountRelationsComponent extends DetailComponent implements OnInit {
+    
 
     public isActive: boolean = false;
     public searchValue: string;
@@ -93,7 +95,8 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService) {
+        private accountRelationsService: AccountRelationsService, public renderer: Renderer2,
+        public metadata: MetaDataService, @Host() private defComponent: DefaultComponent) {
         super(toastrService, translate, renderer, metadata, Entities.AccountRelations, '');
 
         this.mainComponent = [
@@ -433,7 +436,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         //this.sppcLoading.show();
         this.accountRelationsService.edit<AccountItemRelationsInfo>(apiUrl, relationsModel).subscribe(response => {
             ////this.sppcLoading.hide();
-            this.showMessage(this.updateMsg, MessageType.Succes);
+            this.showMessage(this.defComponent.updateMsg, MessageType.Succes);
 
             this.mainComponentModel = undefined;
             this.loadRelatedComponent();

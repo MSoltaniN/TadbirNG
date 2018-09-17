@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { DetailAccount } from '../../model/index';
 
@@ -15,6 +15,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { DetailAccountApi } from '../../service/api/index';
 import { String } from '../../class/source';
+import { DetailComponent } from '../../class/detail.component';
 
 
 
@@ -42,7 +43,7 @@ interface Item {
 
 })
 
-export class DetailAccountFormComponent extends DefaultComponent {
+export class DetailAccountFormComponent extends DetailComponent {
     
     //create properties
     active: boolean = false;
@@ -89,7 +90,8 @@ export class DetailAccountFormComponent extends DefaultComponent {
     }
     //Events
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
+    constructor(public toastrService: ToastrService, public translate: TranslateService,
+        public renderer: Renderer2, public metadata: MetaDataService) {
 
         super(toastrService, translate, renderer, metadata, Entities.DetailAccount, Metadatas.DetailAccount);
     }

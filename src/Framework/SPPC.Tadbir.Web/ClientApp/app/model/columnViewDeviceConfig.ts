@@ -1,4 +1,6 @@
-﻿export interface ColumnViewDeviceConfig {
+﻿import { IEntity } from "./IEntity";
+
+export interface ColumnViewDeviceConfig extends IEntity{
 
     designIndex : number;
     width?: number;

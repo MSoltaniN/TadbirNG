@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
 import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { RoleService, RoleInfo, RoleFullInfo } from '../../service/index';
 
@@ -17,6 +17,7 @@ import { Layout, Entities, Metadatas } from "../../enviroment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { TreeNode, TreeNodeInfo } from '../../model/role';
+import { DetailComponent } from '../../class/detail.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -41,7 +42,7 @@ export function getLayoutModule(layout: Layout) {
 
 })
 
-export class RoleFormComponent extends DefaultComponent {
+export class RoleFormComponent extends DetailComponent {
 
    
 
@@ -227,7 +228,8 @@ export class RoleFormComponent extends DefaultComponent {
     }
 
     constructor(private roleService: RoleService, private formBuilder: FormBuilder,
-        public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService) {
+        public toastrService: ToastrService, public translate: TranslateService,
+        public renderer: Renderer2, public metadata: MetaDataService) {
 
         super(toastrService, translate, renderer, metadata, Entities.Role, Metadatas.Role);
     }

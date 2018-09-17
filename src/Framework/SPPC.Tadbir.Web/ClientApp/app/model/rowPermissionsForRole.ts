@@ -11,8 +11,9 @@
 // ------------------------------------------------------------------------------
 
 import { ViewRowPermission } from "./viewRowPermission";
+import { IEntity } from "./IEntity";
 
-export interface RowPermissionsForRole {
+export interface RowPermissionsForRole extends IEntity{
     id: number;
     rowPermissions: Array<ViewRowPermission>;
 }

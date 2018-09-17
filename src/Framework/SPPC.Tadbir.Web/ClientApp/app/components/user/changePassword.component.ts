@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
+﻿import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
 import { Validators, FormGroup, FormControl, AbstractControl } from '@angular/forms';
 
 import { UserProfile } from '../../model/index';
@@ -14,6 +14,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { Metadatas, Entities, MessageType } from '../../enviroment';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { UserService, UserProfileInfo } from '../../service/index';
+import { DetailComponent } from '../../class/detail.component';
 
 
 
@@ -22,10 +23,11 @@ import { UserService, UserProfileInfo } from '../../service/index';
     styles: [
         `input[type=text],input[type=password] { width: 100%; }`
     ],
-    templateUrl: './changePassword.component.html'
+    templateUrl: './changePassword.component.html'    
+
 })
 
-export class ChangePasswordComponent extends DefaultComponent {
+export class ChangePasswordComponent extends DetailComponent {
 
 
     ////create a form controls

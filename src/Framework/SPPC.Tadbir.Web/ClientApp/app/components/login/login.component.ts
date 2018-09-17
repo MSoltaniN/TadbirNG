@@ -10,6 +10,7 @@ import { TranslateService } from "ng2-translate";
 import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
 import { MetaDataService } from '../../service/metadata/metadata.service';
+import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 
 
 
@@ -22,6 +23,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 
 
 export class LoginComponent extends DefaultComponent implements OnInit {
+   
     model: any = {};
     loading = false;
     returnUrl: string;
@@ -90,4 +92,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
                 this.loading = false;
             });
     }
+
+  
+
 }
