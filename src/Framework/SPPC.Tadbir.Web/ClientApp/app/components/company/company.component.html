@@ -1,6 +1,6 @@
-﻿<div [ngClass]="{'panel panel-primary' : !isChild }">
-    <div *ngIf="!isChild" class="panel-heading">{{ 'Entity.Company' | translate }}</div>
-    <div SppcCheckAccess="View" [ngClass]="{'panel-body' : !isChild }">
+﻿<div class="panel panel-primary">
+    <div class="panel-heading">{{ 'Entity.Company' | translate }}</div>
+    <div SppcCheckAccess="View" class='panel-body'>
         <kendo-grid id="10" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
                     [sortable]="true"
                     [pageSize]="pageSize"
@@ -8,7 +8,7 @@
                     [filter]="state.filter"
                     [pageable]="true"
                     [resizable]="true"
-                    [filterable]="!isChild"
+                    [filterable]="true"
                     [scrollable]="'none'"
                     (pageChange)="pageChange($event)"
                     (sortChange)="sortChange($event)"

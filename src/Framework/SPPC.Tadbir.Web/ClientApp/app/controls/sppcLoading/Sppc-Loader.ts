@@ -1,4 +1,4 @@
-﻿
+﻿/*
 
 
 import { AddCommandDirective } from "@progress/kendo-angular-grid/dist/es2015/editing/add-command.directive";
@@ -40,3 +40,4 @@ export class SppcLoader implements OnInit
 
 
 }
+*/
