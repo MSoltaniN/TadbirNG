@@ -109,13 +109,11 @@ namespace SPPC.Tadbir.Persistence
             var existing = await repository
                 .GetEntityQuery()
                 .Include(br => br.RoleBranches)
-                    .ThenInclude(rb => rb.Role)
                 .Where(br => br.Id == branchId)
                 .SingleOrDefaultAsync();
             if (existing != null)
             {
                 var enabledRoles = existing.RoleBranches
-                    .Select(rb => rb.Role)
                     .Select(r => _mapper.Map<RelatedItemViewModel>(r))
                     .ToArray();
                 var roleRepository = _unitOfWork.GetAsyncRepository<Role>();
@@ -280,7 +278,6 @@ namespace SPPC.Tadbir.Persistence
                 {
                     Branch = existing,
                     BranchId = existing.Id,
-                    Role = role,
                     RoleId = role.Id
                 };
                 existing.RoleBranches.Add(roleBranch);

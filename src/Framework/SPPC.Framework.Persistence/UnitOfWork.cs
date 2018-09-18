@@ -67,7 +67,6 @@ namespace SPPC.Framework.Persistence
         /// <param name="dataContext">New connection</param>
         protected void SwitchContext(DbContext dataContext)
         {
-            _dataContext.Dispose();
             _dataContext = dataContext;
         }
 
