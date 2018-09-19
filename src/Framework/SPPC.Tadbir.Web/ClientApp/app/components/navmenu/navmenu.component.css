@@ -86,11 +86,20 @@ a.circle {
     }
 }
 
+.navbar-left.fl ul
+{
+    text-align:right;
+}
+
+.navbar-left.fr ul {
+    text-align: left;
+}
+
 @media (min-width: 768px) {
     /* On small screens, convert the nav menu to a vertical sidebar */
     .main-nav {
         height: 100%;
-        width: calc(25% - 20px);
+        width: calc(25% - 7px);
         /*overflow-y: scroll;*/
         background-color: #222;
     }
