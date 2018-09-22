@@ -90,9 +90,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای کاربر را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای کاربر</returns>
-        public async Task<EntityViewModel> GetUserMetadataAsync()
+        public async Task<ViewViewModel> GetUserMetadataAsync()
         {
-            return await Metadata.GetEntityMetadataAsync<User>();
+            return await Metadata.GetViewMetadataAsync<User>();
         }
 
         /// <summary>

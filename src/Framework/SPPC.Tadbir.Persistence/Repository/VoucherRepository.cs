@@ -82,9 +82,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای سند مالی</returns>
-        public async Task<EntityViewModel> GetVoucherMetadataAsync()
+        public async Task<ViewViewModel> GetVoucherMetadataAsync()
         {
-            return await Metadata.GetEntityMetadataAsync<Voucher>();
+            return await Metadata.GetViewMetadataAsync<Voucher>();
         }
 
         /// <summary>
@@ -227,9 +227,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی</returns>
-        public async Task<EntityViewModel> GetVoucherLineMetadataAsync()
+        public async Task<ViewViewModel> GetVoucherLineMetadataAsync()
         {
-            return await Metadata.GetEntityMetadataAsync<VoucherLine>();
+            return await Metadata.GetViewMetadataAsync<VoucherLine>();
         }
 
         /// <summary>

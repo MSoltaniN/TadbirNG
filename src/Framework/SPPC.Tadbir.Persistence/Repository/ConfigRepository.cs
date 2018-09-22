@@ -99,18 +99,18 @@ namespace SPPC.Tadbir.Persistence
         {
             IList<ListFormViewConfig> configList = new List<ListFormViewConfig>();
             var repository = _unitOfWork.GetAsyncRepository<UserSetting>();
-            var viewRepository = _unitOfWork.GetAsyncRepository<Entity>();
+            var viewRepository = _unitOfWork.GetAsyncRepository<View>();
             var configItems = await repository
                 .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(ListFormViewConfig).Name
                     && cfg.User.Id == userId);
             var userViewIds = configItems.Select(cfg => cfg.EntityViewId.Value);
             var entityViews = await viewRepository.GetByCriteriaAsync(
                 ev => !userViewIds.Contains(ev.Id),
-                ev => ev.Properties);
+                ev => ev.Columns);
             foreach (var view in entityViews)
             {
                 var userConfig = new ListFormViewConfig() { ViewId = view.Id };
-                foreach (var column in view.Properties)
+                foreach (var column in view.Columns)
                 {
                     userConfig.ColumnViews.Add(_mapper.Map<ColumnViewConfig>(column));
                 }
@@ -143,12 +143,12 @@ namespace SPPC.Tadbir.Persistence
             var config = items.SingleOrDefault();
             if (config == null)
             {
-                var viewRepository = _unitOfWork.GetAsyncRepository<Entity>();
-                var entityView = await viewRepository.GetByIDAsync(viewId, ev => ev.Properties);
+                var viewRepository = _unitOfWork.GetAsyncRepository<View>();
+                var entityView = await viewRepository.GetByIDAsync(viewId, ev => ev.Columns);
                 if (entityView != null)
                 {
                     userConfig = new ListFormViewConfig() { ViewId = entityView.Id };
-                    foreach (var column in entityView.Properties)
+                    foreach (var column in entityView.Columns)
                     {
                         userConfig.ColumnViews.Add(_mapper.Map<ColumnViewConfig>(column));
                     }

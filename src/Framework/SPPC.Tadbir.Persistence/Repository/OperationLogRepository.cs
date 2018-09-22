@@ -74,9 +74,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای لاگ عملیاتی را خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای لاگ عملیاتی</returns>
-        public async Task<EntityViewModel> GetLogMetadataAsync()
+        public async Task<ViewViewModel> GetLogMetadataAsync()
         {
-            return await Metadata.GetEntityMetadataAsync<OperationLog>();
+            return await Metadata.GetViewMetadataAsync<OperationLog>();
         }
 
         /// <summary>

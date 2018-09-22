@@ -313,7 +313,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه موجودیت های تعریف شده</returns>
         public async Task<IList<KeyValue>> GetEntityViewsAsync()
         {
-            var repository = _unitOfWork.GetAsyncRepository<Entity>();
+            var repository = _unitOfWork.GetAsyncRepository<View>();
             var views = await repository
                 .GetAllAsync();
             return views

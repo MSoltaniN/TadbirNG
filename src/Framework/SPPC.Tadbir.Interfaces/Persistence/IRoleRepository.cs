@@ -55,7 +55,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای نقش را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای نقش</returns>
-        Task<EntityViewModel> GetRoleMetadataAsync();
+        Task<ViewViewModel> GetRoleMetadataAsync();
 
         /// <summary>
         /// به روش آسنکرون، تعداد نقش های تعریف شده را از محل ذخیره خوانده و برمی گرداند

@@ -92,9 +92,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای دوره مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای دوره مالی</returns>
-        public async Task<EntityViewModel> GetFiscalPeriodMetadataAsync()
+        public async Task<ViewViewModel> GetFiscalPeriodMetadataAsync()
         {
-            return await _metadataRepository.GetEntityMetadataAsync<FiscalPeriod>();
+            return await _metadataRepository.GetViewMetadataAsync<FiscalPeriod>();
         }
 
         /// <summary>

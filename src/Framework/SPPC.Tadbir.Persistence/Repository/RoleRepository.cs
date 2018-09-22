@@ -182,9 +182,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای نقش را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای نقش</returns>
-        public async Task<EntityViewModel> GetRoleMetadataAsync()
+        public async Task<ViewViewModel> GetRoleMetadataAsync()
         {
-            return await Metadata.GetEntityMetadataAsync<Role>();
+            return await Metadata.GetViewMetadataAsync<Role>();
         }
 
         /// <summary>
@@ -571,7 +571,7 @@ namespace SPPC.Tadbir.Persistence
                     .ToArray(),
                 perm => rowSettings.RowPermissions.Add(perm));
 
-            var viewRepository = UnitOfWork.GetAsyncRepository<Entity>();
+            var viewRepository = UnitOfWork.GetAsyncRepository<View>();
             var viewIds = await viewRepository
                 .GetEntityQuery()
                 .Select(view => view.Id)

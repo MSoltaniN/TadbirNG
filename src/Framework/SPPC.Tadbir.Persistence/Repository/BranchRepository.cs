@@ -92,9 +92,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای شعبه سازمانی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای شعبه سازمانی</returns>
-        public async Task<EntityViewModel> GetBranchMetadataAsync()
+        public async Task<ViewViewModel> GetBranchMetadataAsync()
         {
-            return await _metadataRepository.GetEntityMetadataAsync<Branch>();
+            return await _metadataRepository.GetViewMetadataAsync<Branch>();
         }
 
         /// <summary>

@@ -32,12 +32,12 @@ namespace SPPC.Tadbir.Persistence
         {
             CommandMap.BuildMapping(modelBuilder.Entity<Command>());
             CompanyDbMap.BuildMapping(modelBuilder.Entity<CompanyDb>());
-            EntityMap.BuildMapping(modelBuilder.Entity<Entity>());
+            ViewMap.BuildMapping(modelBuilder.Entity<View>());
             OperationLogMap.BuildMapping(modelBuilder.Entity<OperationLog>());
             PermissionMap.BuildMapping(modelBuilder.Entity<Permission>());
             PermissionGroupMap.BuildMapping(modelBuilder.Entity<PermissionGroup>());
             PersonMap.BuildMapping(modelBuilder.Entity<Person>());
-            PropertyMap.BuildMapping(modelBuilder.Entity<Property>());
+            ColumnMap.BuildMapping(modelBuilder.Entity<Column>());
             RoleMap.BuildMapping(modelBuilder.Entity<Role>());
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());
             SettingMap.BuildMapping(modelBuilder.Entity<Setting>());
