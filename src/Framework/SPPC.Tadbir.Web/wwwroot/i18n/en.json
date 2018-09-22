@@ -74,7 +74,10 @@
     "Company": "Company",
     "AccountRelations": "Account Relations",
     "Settings": "Settings",
-    "ViewRowPermission": "Row Permission"
+    "ViewRowPermission": "Row Permission",
+    "OperationLog": "Operation Logs",
+    "Unsuccessful": "Unsuccessful",
+    "Successful": "Successful"
   },
   "Account": {
     "NewSubAccount": "New sub account",
@@ -337,6 +340,21 @@
   "Sppc-DateRange": {
     "FromDate": "From Date",
     "ToDate": "To Date"
+  },
+  "OperationLog": {
+    "UserName": "Full Name",
+    "CompanyName": "Company",
+    "Date": "Date",
+    "Time": "Time",
+    "Entity": "Entity",
+    "Action": "Action",
+    "Result": "Succeeded",
+    "Unsuccessfull": "Unsuccessfull",
+    "Successfull": "Successfull",
+    "DialogTitle": "Operation Log Detail",
+    "BeforeState": "Before State",
+    "AfterState": "After State",
+    "ErrorMessage": "Fail Reason"
   },
   "AllValidations": {
     "Account": {

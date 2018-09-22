@@ -115,7 +115,6 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
     /** چپ چین کردن دکمه تنظیمات و لود کردن ستون ها در گرید */
     private loadSetting() {
-
         if (this.CurrentLanguage == 'fa')
             this.rtl = true;
         else
