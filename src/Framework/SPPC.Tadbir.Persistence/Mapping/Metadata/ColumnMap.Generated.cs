@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.ToTable("Column", "Metadata");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
-                .HasColumnName("PropertyID");
+                .HasColumnName("ColumnID");
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(64);

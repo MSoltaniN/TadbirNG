@@ -11,6 +11,7 @@
 // ------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
 
@@ -28,6 +29,7 @@ namespace SPPC.Tadbir.ViewModel.Metadata
         {
             Name = String.Empty;
             FetchUrl = String.Empty;
+            Columns = new List<ColumnViewModel>();
         }
 
         /// <summary>

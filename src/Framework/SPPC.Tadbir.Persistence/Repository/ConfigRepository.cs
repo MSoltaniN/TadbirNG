@@ -30,6 +30,7 @@ namespace SPPC.Tadbir.Persistence
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _unitOfWork.UseSystemContext();
         }
 
         /// <summary>
@@ -103,7 +104,7 @@ namespace SPPC.Tadbir.Persistence
             var configItems = await repository
                 .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(ListFormViewConfig).Name
                     && cfg.User.Id == userId);
-            var userViewIds = configItems.Select(cfg => cfg.EntityViewId.Value);
+            var userViewIds = configItems.Select(cfg => cfg.ViewId.Value);
             var entityViews = await viewRepository.GetByCriteriaAsync(
                 ev => !userViewIds.Contains(ev.Id),
                 ev => ev.Columns);
@@ -139,7 +140,7 @@ namespace SPPC.Tadbir.Persistence
             var items = await repository
                 .GetByCriteriaAsync(cfg => cfg.ModelType == typeof(ListFormViewConfig).Name
                     && cfg.User.Id == userId
-                    && cfg.EntityView.Id == viewId);
+                    && cfg.View.Id == viewId);
             var config = items.SingleOrDefault();
             if (config == null)
             {
@@ -175,7 +176,7 @@ namespace SPPC.Tadbir.Persistence
             var existing = await repository
                 .GetEntityWithTrackingQuery()
                 .Where(cfg => cfg.User.Id == userId
-                    && cfg.EntityViewId == userConfig.ViewId
+                    && cfg.ViewId == userConfig.ViewId
                     && cfg.ModelType == typeof(ListFormViewConfig).Name)
                 .SingleOrDefaultAsync();
             if (existing == null)
@@ -183,7 +184,7 @@ namespace SPPC.Tadbir.Persistence
                 var newUserConfig = new UserSetting()
                 {
                     SettingId = 4,      // TODO: Remove this hard-coded value
-                    EntityViewId = userConfig.ViewId,
+                    ViewId = userConfig.ViewId,
                     User = await userRepository.GetByIDAsync(userId),
                     ModelType = typeof(ListFormViewConfig).Name,
                     Values = JsonHelper.From(userConfig, false)
@@ -203,8 +204,8 @@ namespace SPPC.Tadbir.Persistence
         {
             InitDefaultColumns();
             var names = new string[] { "Id", "Name", "Level", "No", "UserName", "Description" };
-            var repository = _unitOfWork.GetAsyncRepository<Property>();
-            var items = await repository.GetByCriteriaAsync(prop => names.Contains(prop.Name), prop => prop.Entity);
+            var repository = _unitOfWork.GetAsyncRepository<Column>();
+            var items = await repository.GetByCriteriaAsync(prop => names.Contains(prop.Name), prop => prop.View);
             foreach (var item in items)
             {
                 if (item.Name == "Name" || item.Name == "UserName" || item.Name == "No")
@@ -220,7 +221,7 @@ namespace SPPC.Tadbir.Persistence
                 {
                     item.Settings = JsonHelper.From(_levelColumn, false);
                 }
-                else if (item.Entity.Id == 3)
+                else if (item.View.Id == 3)
                 {
                     _nameColumn.Name = item.Name;
                     item.Settings = JsonHelper.From(_nameColumn, false);
