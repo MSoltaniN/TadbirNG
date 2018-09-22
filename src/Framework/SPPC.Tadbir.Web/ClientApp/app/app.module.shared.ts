@@ -55,6 +55,8 @@ import { SettingsFormComponent } from './components/settings/settings-form.compo
 import { ViewRowPermissionComponent } from './components/viewRowPermission/viewRowPermission.component';
 import { ViewRowPermissionSingleFormComponent } from './components/viewRowPermission/viewRowPermission-single-form.component';
 import { ViewRowPermissionMultipleFormComponent } from './components/viewRowPermission/viewRowPermission-multiple-form.component';
+import { OperationLogsComponent } from './components/operationLogs/operationLogs.component';
+import { OperationLogsDetailComponent } from './components/operationLogs/operationLogs-detail.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -85,8 +87,8 @@ import { HotkeyModule } from 'angular2-hotkeys';
 
 import {
     AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
-    BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService, FullCodeService
-
+    BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService, FullCodeService,
+    OperationLogService
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
 import { SppcGridReorder } from "./directive/grid/sppc-grid-reorder";
@@ -102,6 +104,7 @@ import { LogoutComponent } from "./components/login/logout.component";
 import { AuthenticationService, AuthGuard } from "./service/login/index";
 
 import { SppcDatePipe } from "./pipes/index"
+import { ReplaceLineBreaksPipe } from './pipes/sppc.replaceLineBreaks.pipe';
 import { MetaDataService } from './service/metadata/metadata.service';
 import { BaseService } from './class/base.service';
 import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading/index';
@@ -179,6 +182,7 @@ import { DefaultComponent } from './class/default.component';
         CompanyComponent,        
         CompanyFormComponent,
         SppcDatePipe,
+        ReplaceLineBreaksPipe,
         SppcCheckAccess,
         AccountRelationsComponent,
         AccountRelationsFormComponent,
@@ -187,13 +191,15 @@ import { DefaultComponent } from './class/default.component';
         ViewRowPermissionComponent,
         ViewRowPermissionSingleFormComponent,
         ViewRowPermissionMultipleFormComponent,
+        OperationLogsComponent,
+        OperationLogsDetailComponent,
         SppcGridDateFilter,
         FilterDatePickerDirective,
         SppcGridDatepicker
     ],
     providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
         UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService,
-        FullCodeService,
+        FullCodeService, OperationLogService,
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         { provide: ErrorHandler , useClass : GeneralErrorHandler},
         //{
@@ -259,6 +265,7 @@ import { DefaultComponent } from './class/default.component';
             { path: 'accountrelations', component: AccountRelationsComponent, canActivate: [AuthGuard] },
             { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
             { path: 'viewRowPermission', component: ViewRowPermissionComponent, canActivate: [AuthGuard] },
+            { path: 'operation-log', component: OperationLogsComponent, canActivate: [AuthGuard] },
             { path: '**', redirectTo: 'account' }
         ])
     ],

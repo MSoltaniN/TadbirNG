@@ -29,11 +29,10 @@
     "User": "کاربر جاری",
     "Branch": "شعبه"
   },
-  "Exception":
-  {
+  "Exception": {
     "ErrorCode": "کد خطا",
     "ErrorMsg": "جزئیات خطا",
-    "ErrorTitle" :  "خطا"
+    "ErrorTitle": "خطا"
   },
   "Messages": {
     "Inserted": "{0} با موفقیت ثبت شد",
@@ -75,7 +74,8 @@
     "Company": "شرکت",
     "AccountRelations": "ارتباطات حساب",
     "Settings": "تنظیمات",
-    "ViewRowPermission": "دسترسی به سطرهای اطلاعاتی"
+    "ViewRowPermission": "دسترسی به سطرهای اطلاعاتی",
+    "OperationLog": "لاگ های عملیاتی"
   },
   "Account": {
     "New": "حساب جدید",
@@ -338,6 +338,21 @@
   "Sppc-DateRange": {
     "FromDate": "از تاریخ",
     "ToDate": "تا تاریخ"
+  },
+  "OperationLog": {
+    "UserName": "نام کاربر",
+    "CompanyName": "شرکت",
+    "Date": "تاریخ",
+    "Time": "زمان",
+    "Entity": "موجودیت",
+    "Action": "عملیات",
+    "Result": "نتیجه عملیات",
+    "Unsuccessfull": "ناموفق",
+    "Successfull": "موفق",
+    "DialogTitle": "جزئیات لاگ عملیاتی",
+    "BeforeState": "وضعیت قدیم",
+    "AfterState": "وضعیت جدید",
+    "ErrorMessage": "پیغام خطا"
   },
   "AllValidations": {
     "Account": {
