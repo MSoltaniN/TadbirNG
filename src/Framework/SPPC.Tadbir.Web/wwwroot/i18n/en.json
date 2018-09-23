@@ -342,19 +342,17 @@
     "ToDate": "To Date"
   },
   "OperationLog": {
-    "UserName": "Full Name",
+    "UserName": "User Name",
     "CompanyName": "Company",
     "Date": "Date",
     "Time": "Time",
     "Entity": "Entity",
     "Action": "Action",
     "Result": "Succeeded",
-    "Unsuccessfull": "Unsuccessfull",
-    "Successfull": "Successfull",
     "DialogTitle": "Operation Log Detail",
     "BeforeState": "Before State",
     "AfterState": "After State",
-    "ErrorMessage": "Fail Reason"
+    "ErrorMessage": "Error Message"
   },
   "AllValidations": {
     "Account": {

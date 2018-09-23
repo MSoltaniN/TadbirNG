@@ -119,8 +119,13 @@ export class AccountRelationsFormComponent extends DetailComponent {
     }
     //Events
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
-        public accountRelationsService: AccountRelationsService, @Host() defaultComponent: DefaultComponent) {
+    //constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
+    //    public accountRelationsService: AccountRelationsService, @Host() defaultComponent: DefaultComponent) {
+    //    super(toastrService, translate, renderer, metadata, Entities.AccountRelations, '');
+    //}
+
+    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+        private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService) {
         super(toastrService, translate, renderer, metadata, Entities.AccountRelations, '');
     }
 

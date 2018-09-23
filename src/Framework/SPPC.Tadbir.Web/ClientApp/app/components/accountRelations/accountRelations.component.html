@@ -1,6 +1,6 @@
 ﻿<div class="panel panel-primary">
     <div class="panel-heading">{{ 'Entity.AccountRelations' | translate }}</div>
-    <div SppcCheckAccess="ViewRelationships" class="panel-body">
+    <div class="panel-body">
 
         <div *ngIf="errorMessage != ''">
             <div class="alert alert-danger">
@@ -12,7 +12,7 @@
         </div>
         <div *ngIf="viewAccess">
             <div class="row relation-form" id="main-section">
-                <div class="col-sm-6" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+                <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
                     <div class="section-header">
                         <span class="control-label">{{ 'AccountRelations.MainComponent' | translate }}</span>
 
@@ -34,7 +34,7 @@
                                 (click)="onMainComponentSearch()">
                             <span class="k-i-filter k-icon"></span>
                         </button>
-                        
+
                         <button class="k-button btn-search"
                                 [hidden]="!searchValue"
                                 (click)="removeMainComponentFilter()">
@@ -91,7 +91,7 @@
                             <span class="k-i-filter k-icon"></span>
                         </button>
 
-                        <button class="k-button btn-search" 
+                        <button class="k-button btn-search"
                                 [hidden]="!relatedSearchValue"
                                 (click)="removeRelatedComponentFilter()">
                             <span class="k-icon k-i-filter-clear"></span>
