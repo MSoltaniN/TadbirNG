@@ -1,10 +1,6 @@
 ﻿USE [TadbirDemo]
 GO
 
-SET IDENTITY_INSERT [Corporate].[Company] ON
-INSERT INTO [Corporate].[Company] (CompanyID, Name) VALUES (1, N'پردازش موازی سامان')
-SET IDENTITY_INSERT [Corporate].[Company] OFF
-
 SET IDENTITY_INSERT [Corporate].[Branch] ON
 INSERT INTO [Corporate].[Branch] (BranchID, CompanyID, Name) VALUES (1, 1, N'ساختمان مرکزی (تهران)')
 INSERT INTO [Corporate].[Branch] (BranchID, CompanyID, Name) VALUES (2, 1, N'نمایندگی کرج')
@@ -64,25 +60,6 @@ INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (6, N'NotPriced')
 INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (7, N'Priced')
 SET IDENTITY_INSERT [Core].[DocumentStatus] OFF
 
-SET IDENTITY_INSERT [Corporate].[BusinessUnit] ON
-INSERT INTO [Corporate].[BusinessUnit] (UnitID, Name, [Description]) VALUES (1, N'واحد مالی', N'شرح واحد مالی')
-INSERT INTO [Corporate].[BusinessUnit] (UnitID, Name, [Description]) VALUES (2, N'واحد اداری', N'شرح واحد اداری')
-INSERT INTO [Corporate].[BusinessUnit] (UnitID, Name, [Description]) VALUES (3, N'واحد فروش', N'شرح واحد فروش')
-INSERT INTO [Corporate].[BusinessUnit] (UnitID, Name, [Description]) VALUES (4, N'واحد مدیریت', N'شرح واحد مدیریت')
-INSERT INTO [Corporate].[BusinessUnit] (UnitID, Name, [Description]) VALUES (5, N'واحد انبار', N'شرح واحد انبار')
-SET IDENTITY_INSERT [Corporate].[BusinessUnit] OFF
-
-SET IDENTITY_INSERT [Contact].[BusinessPartner] ON
-INSERT INTO [Contact].[BusinessPartner] (PartnerID, Name) VALUES (1, N'آقای الف')
-INSERT INTO [Contact].[BusinessPartner] (PartnerID, Name) VALUES (2, N'خانم ب')
-INSERT INTO [Contact].[BusinessPartner] (PartnerID, Name) VALUES (3, N'خانم ش')
-INSERT INTO [Contact].[BusinessPartner] (PartnerID, Name) VALUES (4, N'آقای س')
-INSERT INTO [Contact].[BusinessPartner] (PartnerID, Name) VALUES (5, N'آقای ف')
-INSERT INTO [Contact].[BusinessPartner] (PartnerID, Name) VALUES (6, N'خانم ل')
-INSERT INTO [Contact].[BusinessPartner] (PartnerID, Name) VALUES (7, N'خانم ن')
-INSERT INTO [Contact].[BusinessPartner] (PartnerID, Name) VALUES (8, N'آقای ک')
-SET IDENTITY_INSERT [Contact].[BusinessPartner] OFF
-
 SET IDENTITY_INSERT [Finance].[DetailAccount] ON
 INSERT INTO [Finance].[DetailAccount] (DetailID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (1, 1, 1, N'DET100', N'DET100', N'شناور 1', 0)
 INSERT INTO [Finance].[DetailAccount] (DetailID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (2, 1, 1, N'DET200', N'DET200', N'شناور 2', 0)
@@ -103,64 +80,6 @@ INSERT INTO [Finance].[Project] (ProjectID, FiscalPeriodID, BranchID, Code, Full
 INSERT INTO [Finance].[Project] (ProjectID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (3, 1, 1, N'PRJ300', N'PRJ300', N'پروژه 3', 0)
 INSERT INTO [Finance].[Project] (ProjectID, FiscalPeriodID, BranchID, Code, FullCode, Name, [Level]) VALUES (4, 1, 1, N'PRJ400', N'PRJ400', N'پروژه 4', 0)
 SET IDENTITY_INSERT [Finance].[Project] OFF
-
-SET IDENTITY_INSERT [Finance].[FullAccount] ON
-INSERT INTO [Finance].[FullAccount] (FullAccountID, AccountID) VALUES (1, 1)
-INSERT INTO [Finance].[FullAccount] (FullAccountID, AccountID) VALUES (2, 3)
-INSERT INTO [Finance].[FullAccount] (FullAccountID, AccountID) VALUES (3, 4)
-INSERT INTO [Finance].[FullAccount] (FullAccountID, AccountID) VALUES (4, 5)
-INSERT INTO [Finance].[FullAccount] (FullAccountID, AccountID) VALUES (5, 7)
-SET IDENTITY_INSERT [Finance].[FullAccount] OFF
-
-SET IDENTITY_INSERT [Inventory].[UOM] ON
-INSERT INTO [Inventory].[UOM] (UomID, Name) VALUES (1, N'کیلوگرم')
-INSERT INTO [Inventory].[UOM] (UomID, Name) VALUES (2, N'متر')
-INSERT INTO [Inventory].[UOM] (UomID, Name) VALUES (3, N'بسته')
-INSERT INTO [Inventory].[UOM] (UomID, Name) VALUES (4, N'کارتن')
-SET IDENTITY_INSERT [Inventory].[UOM] OFF
-
-SET IDENTITY_INSERT [Inventory].[ProductCategory] ON
-INSERT INTO [Inventory].[ProductCategory] (CategoryID, Code, FullCode, Name, [Level]) VALUES (1, N'100', N'100', N'گروه 1', 0)
-INSERT INTO [Inventory].[ProductCategory] (CategoryID, Code, FullCode, Name, [Level]) VALUES (2, N'200', N'200', N'گروه 2', 0)
-INSERT INTO [Inventory].[ProductCategory] (CategoryID, Code, FullCode, Name, [Level]) VALUES (3, N'300', N'300', N'گروه 3', 0)
-INSERT INTO [Inventory].[ProductCategory] (CategoryID, Code, FullCode, Name, [Level]) VALUES (4, N'400', N'400', N'گروه 4', 0)
-SET IDENTITY_INSERT [Inventory].[ProductCategory] OFF
-
-SET IDENTITY_INSERT [Inventory].[Product] ON
-INSERT INTO [Inventory].[Product] (ProductID, CategoryID, Code, Name) VALUES (1, 1, N'ABC2002', N'کالای 1 در گروه 1')
-INSERT INTO [Inventory].[Product] (ProductID, CategoryID, Code, Name) VALUES (2, 4, N'XYZ5005', N'کالای 1 در گروه 4')
-INSERT INTO [Inventory].[Product] (ProductID, CategoryID, Code, Name) VALUES (3, 2, N'CTG4004', N'کالای 1 در گروه 2')
-INSERT INTO [Inventory].[Product] (ProductID, CategoryID, Code, Name) VALUES (4, 4, N'XYZ7007', N'کالای 2 در گروه 4')
-INSERT INTO [Inventory].[Product] (ProductID, CategoryID, Code, Name) VALUES (5, 1, N'ABC8008', N'کالای 2 در گروه 1')
-INSERT INTO [Inventory].[Product] (ProductID, CategoryID, Code, Name) VALUES (6, 2, N'CTG3003', N'کالای 2 در گروه 2')
-INSERT INTO [Inventory].[Product] (ProductID, CategoryID, Code, Name) VALUES (7, 2, N'CTG1001', N'کالای 3 در گروه 2')
-SET IDENTITY_INSERT [Inventory].[Product] OFF
-
-SET IDENTITY_INSERT [Inventory].[Warehouse] ON
-INSERT INTO [Inventory].[Warehouse] (WarehouseID, Code, Name) VALUES (1, N'WRHS1234', N'انبار 1')
-INSERT INTO [Inventory].[Warehouse] (WarehouseID, Code, Name) VALUES (2, N'WRHS4567', N'انبار 2')
-INSERT INTO [Inventory].[Warehouse] (WarehouseID, Code, Name) VALUES (3, N'WRHS7890', N'انبار 3')
-SET IDENTITY_INSERT [Inventory].[Warehouse] OFF
-
-SET IDENTITY_INSERT [Inventory].[ProductInventory] ON
-INSERT INTO [Inventory].[ProductInventory] (ProductInventoryID, ProductID, UomID, WarehouseID, FiscalPeriodID, BranchID, Quantity)
-    VALUES (1, 4, 2, 2, 1, 1, 10)
-INSERT INTO [Inventory].[ProductInventory] (ProductInventoryID, ProductID, UomID, WarehouseID, FiscalPeriodID, BranchID, Quantity)
-    VALUES (2, 1, 1, 2, 1, 1, 10)
-INSERT INTO [Inventory].[ProductInventory] (ProductInventoryID, ProductID, UomID, WarehouseID, FiscalPeriodID, BranchID, Quantity)
-    VALUES (3, 7, 2, 3, 1, 1, 10)
-INSERT INTO [Inventory].[ProductInventory] (ProductInventoryID, ProductID, UomID, WarehouseID, FiscalPeriodID, BranchID, Quantity)
-    VALUES (4, 5, 4, 1, 1, 1, 10)
-INSERT INTO [Inventory].[ProductInventory] (ProductInventoryID, ProductID, UomID, WarehouseID, FiscalPeriodID, BranchID, Quantity)
-    VALUES (5, 4, 4, 1, 1, 1, 10)
-SET IDENTITY_INSERT [Inventory].[ProductInventory] OFF
-
-SET IDENTITY_INSERT [Procurement].[RequisitionVoucherType] ON
-INSERT INTO [Procurement].[RequisitionVoucherType] (VoucherTypeID, Name) VALUES (1, N'درخواست کالای نوع اول')
-INSERT INTO [Procurement].[RequisitionVoucherType] (VoucherTypeID, Name) VALUES (2, N'درخواست کالای نوع دوم')
-INSERT INTO [Procurement].[RequisitionVoucherType] (VoucherTypeID, Name) VALUES (3, N'درخواست کالای نوع سوم')
-INSERT INTO [Procurement].[RequisitionVoucherType] (VoucherTypeID, Name) VALUES (4, N'درخواست کالای نوع چهارم')
-SET IDENTITY_INSERT [Procurement].[RequisitionVoucherType] OFF
 
 SET IDENTITY_INSERT [Core].[Document] ON
 INSERT INTO [Core].[Document] (DocumentID, TypeID, StatusID, EntityNo, [No], OperationalStatus) VALUES (1, 2, 1, N'1', N'1', N'Created')
@@ -200,10 +119,10 @@ INSERT INTO [Core].[DocumentAction] (ActionID, DocumentID, CreatedByID, Modified
 SET IDENTITY_INSERT [Core].[DocumentAction] OFF
 
 SET IDENTITY_INSERT [Finance].[Voucher] ON
-INSERT INTO [Finance].[Voucher] (VoucherID, FiscalPeriodID, BranchID, DocumentID, [No], [Date], [Description])
-  VALUES (1, 1, 1, 6, N'1', N'2017-02-14', N'سند اولیه تاسیس')
-INSERT INTO [Finance].[Voucher] (VoucherID, FiscalPeriodID, BranchID, DocumentID, [No], [Date], [Description])
-  VALUES (2, 1, 1, 7, N'2', N'2017-02-17', N'خرید نقدی لوازم اداری')
+INSERT INTO [Finance].[Voucher] (VoucherID, FiscalPeriodID, BranchID, [No], [Date], [Description])
+  VALUES (1, 1, 1, N'1', N'2017-02-14', N'سند اولیه تاسیس')
+INSERT INTO [Finance].[Voucher] (VoucherID, FiscalPeriodID, BranchID, [No], [Date], [Description])
+  VALUES (2, 1, 1, N'2', N'2017-02-17', N'خرید نقدی لوازم اداری')
 SET IDENTITY_INSERT [Finance].[Voucher] OFF
 
 SET IDENTITY_INSERT [Finance].[VoucherLine] ON
@@ -218,39 +137,3 @@ INSERT INTO [Finance].[VoucherLine] (LineID, VoucherID, FiscalPeriodID, BranchID
 INSERT INTO [Finance].[VoucherLine] (LineID, VoucherID, FiscalPeriodID, BranchID, AccountID, CurrencyID, [Description], Debit, Credit)
   VALUES (5, 2, 1, 1, 4, 1, N'خرید نقدی لوازم اداری مصرفی', 0, 850000)
 SET IDENTITY_INSERT [Finance].[VoucherLine] OFF
-
-SET IDENTITY_INSERT [Procurement].[RequisitionVoucher] ON
-INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], OrderedDate, [Description])
-    VALUES (1, 2, 1, 1, 1, 7, 1, 5, 2, 1, 1, N'1', getdate(), N'شرح یک')
-INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], OrderedDate, [Description])
-    VALUES (2, 3, 1, 1, 5, 7, 2, 4, 1, 1, 2, N'2', getdate(), N'شرح دو')
-INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], OrderedDate, [Description])
-    VALUES (3, 2, 1, 1, 4, 7, 3, 3, 3, 1, 3, N'3', getdate(), N'شرح سه')
-INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], OrderedDate, [Description])
-    VALUES (4, 4, 1, 1, 2, 7, 4, 2, 1, 1, 4, N'4', getdate(), N'شرح چهار')
-INSERT INTO [Procurement].[RequisitionVoucher]
-    (VoucherID, VoucherTypeID, FiscalPeriodID, BranchID, RequesterID, ReceiverID, RequesterUnitID, ReceiverUnitID, WarehouseID, FullAccountID, DocumentID, [No], OrderedDate, [Description])
-    VALUES (5, 1, 1, 1, 8, 7, 5, 1, 2, 1, 5, N'5', getdate(), N'شرح پنج')
-SET IDENTITY_INSERT [Procurement].[RequisitionVoucher] OFF
-
-SET IDENTITY_INSERT [Procurement].[RequisitionVoucherLine] ON
-INSERT INTO [Procurement].[RequisitionVoucherLine]
-    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, ActionID, [No], OrderedQuantity, RequiredDate)
-    VALUES (1, 4, 2, 5, 2, 1, 1, 1, 5, 1, 6.5, N'2017-08-12')
-INSERT INTO [Procurement].[RequisitionVoucherLine]
-    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, ActionID, [No], OrderedQuantity, RequiredDate)
-    VALUES (2, 4, 1, 2, 1, 1, 1, 1, 6, 2, 1, N'2017-08-11')
-INSERT INTO [Procurement].[RequisitionVoucherLine]
-    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, ActionID, [No], OrderedQuantity, RequiredDate)
-    VALUES (3, 4, 3, 3, 1, 1, 1, 1, 7, 3, 4, N'2017-08-12')
-INSERT INTO [Procurement].[RequisitionVoucherLine]
-    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, ActionID, [No], OrderedQuantity, RequiredDate)
-    VALUES (4, 4, 3, 6, 3, 1, 1, 1, 8, 4, 2, N'2017-08-12')
-INSERT INTO [Procurement].[RequisitionVoucherLine]
-    (LineID, VoucherID, WarehouseID, ProductID, UomID, BranchID, FiscalPeriodID, FullAccountID, ActionID, [No], OrderedQuantity, RequiredDate)
-    VALUES (5, 4, 1, 1, 1, 1, 1, 1, 9, 5, 1, N'2017-08-13')
-SET IDENTITY_INSERT [Procurement].[RequisitionVoucherLine] OFF

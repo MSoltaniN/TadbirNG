@@ -1,5 +1,5 @@
-﻿USE [TadbirSysDemo]
-GO
+﻿--USE [TadbirSysDemo]
+--GO
 
 SET ANSI_NULLS ON
 GO
@@ -157,7 +157,7 @@ CREATE TABLE [Auth].[ViewRowPermission] (
     [ModifiedDate]      DATETIME         CONSTRAINT [DF_Auth_ViewRowPermission_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Auth_ViewRowPermission] PRIMARY KEY CLUSTERED ([RowPermissionID] ASC)
     , CONSTRAINT [FK_Auth_ViewRowPermission_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role]([RoleID])
-    , CONSTRAINT [FK_Auth_ViewRowPermission_Metadata_EntityView] FOREIGN KEY ([ViewID]) REFERENCES [Metadata].[EntityView]([ViewID])
+    , CONSTRAINT [FK_Auth_ViewRowPermission_Metadata_View] FOREIGN KEY ([ViewID]) REFERENCES [Metadata].[View]([ViewID])
 )
 GO
 
@@ -191,7 +191,7 @@ CREATE TABLE [Config].[UserSetting] (
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Config_UserSetting_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Config_UserSetting] PRIMARY KEY CLUSTERED ([UserSettingID] ASC)
     , CONSTRAINT [FK_Config_UserSetting_Config_Setting] FOREIGN KEY ([SettingID]) REFERENCES [Config].[Setting]([SettingID])
-    , CONSTRAINT [FK_Config_UserSetting_Metadata_EntityView] FOREIGN KEY ([ViewID]) REFERENCES [Metadata].[EntityView]([ViewID])
+    , CONSTRAINT [FK_Config_UserSetting_Metadata_View] FOREIGN KEY ([ViewID]) REFERENCES [Metadata].[View]([ViewID])
     , CONSTRAINT [FK_Config_UserSetting_Auth_User] FOREIGN KEY ([UserID]) REFERENCES [Auth].[User]([UserID])
     , CONSTRAINT [FK_Config_UserSetting_Auth_Role] FOREIGN KEY ([RoleID]) REFERENCES [Auth].[Role]([RoleID])
 )

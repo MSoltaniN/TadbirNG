@@ -172,6 +172,7 @@ namespace SPPC.Tadbir.Persistence
             ref IQueryable<TEntity> records, UserAccessViewModel userAccess, int viewId)
             where TEntity : class, IEntity
         {
+            UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<ViewRowPermission>();
             var filters = new List<FilterExpression>();
             foreach (int roleId in userAccess.Roles)
@@ -190,6 +191,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
+            UnitOfWork.UseCompanyContext();
             string compoundFilter = String.Join(FilterExpressionOperator.Or, filters.Select(f => f.ToString()));
             var filteredQuery = !String.IsNullOrEmpty(compoundFilter)
                 ? records.Where(compoundFilter)
