@@ -418,6 +418,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
         this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId),
             this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+
                 var resData = res.body;
 
                 var totalCount = 0;

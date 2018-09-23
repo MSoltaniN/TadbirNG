@@ -196,17 +196,18 @@ export class DefaultComponent extends BaseComponent  {
 
         if (this.metaDataName) {
 
-            if (localStorage.getItem(this.metaDataName) == undefined || localStorage.getItem(this.metaDataName) == null) {
+            if (localStorage.getItem(this.metaDataName) == "undefined" || localStorage.getItem(this.metaDataName) == null) {
                 this.metadataService.getMetaData(this.metaDataName).finally(() => {
+
                     if (this.properties[this.metaDataName] == undefined || this.properties[this.metaDataName].length == 0) return undefined;
 
                     var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());
 
                     return result;
 
-                }).subscribe((res1:any) => {
-                    
-                    this.properties[this.metaDataName] = res1.properties;
+                }).subscribe((res1: any) => {
+
+                    this.properties[this.metaDataName] = res1.columns;
 
                     localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))
                     var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());

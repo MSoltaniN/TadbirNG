@@ -39,7 +39,7 @@ export class DetailComponent extends BaseComponent {
 
                 }).subscribe((res1: any) => {
 
-                    this.properties[this.metaDataName] = res1.properties;
+                    this.properties[this.metaDataName] = res1.columns;
 
                     localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))
 

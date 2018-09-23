@@ -100,7 +100,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     //Events
 
     ngOnInit(): void {
-
 //        this.onChanges();
     }
 
