@@ -34,21 +34,38 @@ export class GridFilterComponent extends BaseComponent implements OnInit, OnDest
         @Host() private grid: GridComponent, private elRef: ElementRef) {
 
         super(toastrService);
-        
-        this.grid.filter.filters = [];
+        if(this.grid.filter)
+            this.grid.filter.filters = [];
     }
 
     ngOnDestroy(): void {
        
     }
+
     ngOnInit(): void {
         if (this.CurrentLanguage == 'fa')
             this.rtl = true;
         else
             this.rtl = false;
 
-        //;
+        var self = this;
+
+        //document.addEventListener('keydown', function (ev: KeyboardEvent) {
+        //    if (ev.srcElement.hasAttribute('kendofilterinput') && ev.key == 'Enter') {
+        //        self.parentComponent.reloadGrid();
+        //    }
+        //});
+
+        
+        
+        document.addEventListener('keydown', function (ev: KeyboardEvent) {
+            if (ev.srcElement.hasAttribute('kendofilterinput') && ev.key == 'Enter') {
+                self.parentComponent.reloadGrid();
+            }
+        });       
+
     }
+    
 
     filterGrid(): void {        
 
