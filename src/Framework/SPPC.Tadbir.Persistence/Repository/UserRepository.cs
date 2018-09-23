@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
@@ -345,8 +346,7 @@ namespace SPPC.Tadbir.Persistence
             var company = await repository.GetByIDAsync((int)companyLogin.CompanyId);
             if (company != null)
             {
-                // TODO: Remove this hardcoded value...
-                userContext.Connection = "Server=Server;Database=Database;User ID=sa;Password=P@ssword;Trusted_Connection=False;MultipleActiveResultSets=true";
+                userContext.Connection = BuildConnectionString(company);
             }
         }
 
@@ -459,6 +459,23 @@ namespace SPPC.Tadbir.Persistence
                     .ThenInclude(ur => ur.Role)
                         .ThenInclude(r => r.RolePermissions);
             return query;
+        }
+
+        private string BuildConnectionString(CompanyDb company)
+        {
+            var builder = new StringBuilder();
+            builder.AppendFormat("Server={0};Database={1};", company.Server, company.DbName);
+            if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
+            {
+                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
+                    company.UserName, company.Password);
+            }
+            else
+            {
+                builder.Append("Trusted_Connection=True;MultipleActiveResultSets=True");
+            }
+
+            return builder.ToString();
         }
     }
 }

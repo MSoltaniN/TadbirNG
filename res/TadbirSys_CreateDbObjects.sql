@@ -218,6 +218,9 @@ CREATE TABLE [Config].[CompanyDb] (
     [Name]           NVARCHAR(128)    NOT NULL,
     [DbName]         NVARCHAR(128)    NOT NULL,
     [DbPath]         NVARCHAR(512)    NOT NULL,
+    [Server]         NVARCHAR(64)     NOT NULL,
+    [UserName]       NVARCHAR(32)     NULL,
+    [Password]       NVARCHAR(32)     NULL,
     [Description]    NVARCHAR(512)    NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Corporate_Company_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Corporate_Company_ModifiedDate] DEFAULT (getdate()) NOT NULL
@@ -428,6 +431,9 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [Storage
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (58, 11, N'DbName', N'System.String', N'nvarchar', N'string', 128, 0, 0, 0, 1, 1, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (59, 11, N'DbPath', N'System.String', N'nvarchar', N'string', 512, 0, 0, 0, 1, 1, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (60, 11, N'Description', N'System.String', N'nvarchar', N'string', 512, 0, 0, 1, 1, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (61, 11, N'Server', N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (62, 11, N'UserName', N'System.String', N'nvarchar', N'string', 32, 0, 0, 1, 1, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (63, 11, N'PasswordName', N'System.String', N'nvarchar', N'string', 32, 0, 0, 1, 1, 1, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 
