@@ -67,7 +67,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var context = GetSecurityContext();
             var userAccess = new UserAccessViewModel() { Id = context.User.Id };
             Array.ForEach(context.User.Roles.ToArray(), role => userAccess.Roles.Add(role));
-            Array.ForEach(context.User.Branches.ToArray(), br => userAccess.Branches.Add(br));
             return userAccess;
         }
 

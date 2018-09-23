@@ -85,12 +85,22 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for login status of all users.
         /// </summary>
-        public const string UsersLoginStatus = "users/login";
+        public const string UserLoginStatus = "users/login";
 
         /// <summary>
         /// API server route URL for login status of all users.
         /// </summary>
-        public const string UsersLoginStatusUrl = "users/login";
+        public const string UserLoginStatusUrl = "users/login";
+
+        /// <summary>
+        /// API client URL for status of login to a company for all users.
+        /// </summary>
+        public const string UserCompanyLoginStatus = "users/login/company";
+
+        /// <summary>
+        /// API server route URL for status of login to a company for all users.
+        /// </summary>
+        public const string UserCompanyLoginStatusUrl = "users/login/company";
 
         /// <summary>
         /// API client URL for user metadata.

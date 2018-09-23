@@ -555,4 +555,7 @@
   <data name="Time" xml:space="preserve">
     <value>Time</value>
   </data>
+  <data name="CompanyLogin" xml:space="preserve">
+    <value>Company login</value>
+  </data>
 </root>

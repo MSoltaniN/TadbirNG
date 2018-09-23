@@ -172,11 +172,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از شرکت های قابل دسترسی</returns>
         public async Task<IList<KeyValue>> GetUserAccessibleCompaniesAsync(int userId)
         {
+            _unitOfWork.UseSystemContext();
             var query = GetUserQuery(userId);
             var user = await query.SingleOrDefaultAsync();
             var companies = new List<int>();
             if (user != null)
             {
+                _unitOfWork.UseCompanyContext();
                 var relatedRepository = _unitOfWork.GetAsyncRepository<RoleBranch>();
                 Array.ForEach(
                     user.UserRoles
@@ -188,8 +190,7 @@ namespace SPPC.Tadbir.Persistence
                             rb => rb.RoleId == role.Id, null, rb => rb.Branch);
                         companies.AddRange(
                             roleBranchesModel
-                                .Select(rb => rb.Branch)
-                                .Select(br => br.CompanyId));
+                                .Select(rb => rb.Branch.CompanyId));
                     });
             }
 
@@ -216,10 +217,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IEnumerable<KeyValue>> GetUserAccessibleFiscalPeriodsAsync(int companyId, int userId)
         {
             var fiscalPeriods = new List<FiscalPeriod>();
+            _unitOfWork.UseSystemContext();
             var query = GetUserQuery(userId);
             var user = await query.SingleOrDefaultAsync();
             if (user != null)
             {
+                _unitOfWork.UseCompanyContext();
                 var relatedRepository = _unitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
                 Array.ForEach(
                     user.UserRoles
@@ -255,10 +258,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IEnumerable<KeyValue>> GetUserAccessibleBranchesAsync(int companyId, int userId)
         {
             var branches = new List<Branch>();
+            _unitOfWork.UseSystemContext();
             var query = GetUserQuery(userId);
             var user = await query.SingleOrDefaultAsync();
             if (user != null)
             {
+                _unitOfWork.UseCompanyContext();
                 var relatedRepository = _unitOfWork.GetAsyncRepository<RoleBranch>();
                 Array.ForEach(
                     user.UserRoles
@@ -329,8 +334,6 @@ namespace SPPC.Tadbir.Persistence
             var query = repository
                 .GetEntityQuery()
                 .Where(usr => usr.Id == userId)
-                .Include(usr => usr.UserRoles)
-                    .ThenInclude(ur => ur.Role)
                 .Include(usr => usr.UserRoles)
                     .ThenInclude(ur => ur.Role);
             return query;

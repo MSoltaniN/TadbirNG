@@ -104,6 +104,13 @@ namespace SPPC.Tadbir.Persistence
         Task UpdateUserPasswordAsync(UserProfileViewModel profile);
 
         /// <summary>
+        /// به روش آسنکرون، وضعیت ورود یک کاربر را به یک شرکت و دوره مالی و شعبه بروزرسانی می کند
+        /// </summary>
+        /// <param name="companyLogin">اطلاعات ورود کاربر به شرکت</param>
+        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر</param>
+        Task UpdateUserCompanyLoginAsync(CompanyLoginViewModel companyLogin, UserContextViewModel userContext);
+
+        /// <summary>
         /// Asynchronously determines if the specified <see cref="UserViewModel"/> instance has a user name that is already used
         /// by a different user.
         /// </summary>

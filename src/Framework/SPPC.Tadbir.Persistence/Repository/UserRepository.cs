@@ -7,6 +7,7 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -324,6 +325,28 @@ namespace SPPC.Tadbir.Persistence
                 user.PasswordHash = profile.NewPassword;
                 repository.Update(user);
                 await UnitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، وضعیت ورود یک کاربر را به یک شرکت و دوره مالی و شعبه بروزرسانی می کند
+        /// </summary>
+        /// <param name="companyLogin">اطلاعات ورود کاربر به شرکت</param>
+        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر</param>
+        public async Task UpdateUserCompanyLoginAsync(
+            CompanyLoginViewModel companyLogin, UserContextViewModel userContext)
+        {
+            Verify.ArgumentNotNull(companyLogin, "companyLogin");
+            Verify.ArgumentNotNull(userContext, "userContext");
+            userContext.CompanyId = (int)companyLogin.CompanyId;
+            userContext.BranchId = (int)companyLogin.BranchId;
+            userContext.FiscalPeriodId = (int)companyLogin.FiscalPeriodId;
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var company = await repository.GetByIDAsync((int)companyLogin.CompanyId);
+            if (company != null)
+            {
+                // TODO: Remove this hardcoded value...
+                userContext.Connection = "Server=Server;Database=Database;User ID=sa;Password=P@ssword;Trusted_Connection=False;MultipleActiveResultSets=true";
             }
         }
 

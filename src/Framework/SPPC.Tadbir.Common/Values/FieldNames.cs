@@ -388,6 +388,21 @@ namespace SPPC.Tadbir.Values
         public const string IsActiveField = "فعال";
 
         /// <summary>
+        /// Localized name of Company field
+        /// </summary>
+        public const string Company = "شرکت";
+
+        /// <summary>
+        /// Localized name of Branch field
+        /// </summary>
+        public const string Branch = "شعبه";
+
+        /// <summary>
+        /// Localized name of FiscalPeriod field
+        /// </summary>
+        public const string FiscalPeriod = "دوره مالی";
+
+        /// <summary>
         /// Localized name of Security Code field (used in forms that require Captcha validation)
         /// </summary>
         public static readonly string SecurityCode = "کد امنیتی";

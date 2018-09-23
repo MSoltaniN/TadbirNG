@@ -33,16 +33,6 @@ namespace SPPC.Tadbir.Service
         public UserContextViewModel User { get; set; }
 
         /// <summary>
-        /// Returns a value that indicates if current user can access data for a branch specified by identifier.
-        /// </summary>
-        /// <param name="branchId">Unique identifier of an existing corporate branch</param>
-        /// <returns>True if current user has access to specified branch; otherwise, returns false.</returns>
-        public bool CanAccessBranch(int branchId)
-        {
-            return (User.Branches.Contains(branchId));
-        }
-
-        /// <summary>
         /// Returns a value that indicates if the role specified by identifier is assigned to this user.
         /// </summary>
         /// <param name="roleId">Unique identifier of an existing organization role</param>
