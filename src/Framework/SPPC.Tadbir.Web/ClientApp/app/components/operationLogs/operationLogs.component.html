@@ -24,7 +24,127 @@
             </ng-template>
             <ng-template kendoGridToolbarTemplate>
                 <!--<grid-setting entityTypeName="OperationLog"></grid-setting>-->
-               
+                <div class="row">
+                    <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+                        <label class="control-label">کاربر:</label>
+                        <input type="text" class="k-textbox"/>
+
+                        <button class="k-button btn-search"
+                                (click)="onMainComponentSearch()">
+                            <span class="k-i-filter k-icon"></span>
+                        </button>
+
+                        <button class="k-button btn-search"
+                                (click)="removeMainComponentFilter()">
+                            <span class="k-icon k-i-filter-clear"></span>
+                        </button>
+                    </div>
+
+                    <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+                        <label class="control-label">شعبه:</label>
+                        <input type="text" class="k-textbox" />
+
+                        <button class="k-button btn-search"
+                                (click)="onMainComponentSearch()">
+                            <span class="k-i-filter k-icon"></span>
+                        </button>
+
+                        <button class="k-button btn-search"
+                                (click)="removeMainComponentFilter()">
+                            <span class="k-icon k-i-filter-clear"></span>
+                        </button>
+                    </div>
+
+                    <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+                        <label class="control-label">موجودیت:</label>
+                        <input type="text" class="k-textbox" />
+
+                        <button class="k-button btn-search"
+                                (click)="onMainComponentSearch()">
+                            <span class="k-i-filter k-icon"></span>
+                        </button>
+
+                        <button class="k-button btn-search"
+                                (click)="removeMainComponentFilter()">
+                            <span class="k-icon k-i-filter-clear"></span>
+                        </button>
+                    </div>
+
+                    <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+                        <label class="control-label">شرکت:</label>
+                        <input type="text" class="k-textbox" />
+
+                        <button class="k-button btn-search"
+                                (click)="onMainComponentSearch()">
+                            <span class="k-i-filter k-icon"></span>
+                        </button>
+
+                        <button class="k-button btn-search"
+                                (click)="removeMainComponentFilter()">
+                            <span class="k-icon k-i-filter-clear"></span>
+                        </button>
+                    </div>
+
+                    <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+                        <label class="control-label">دوره مالی:</label>
+                        <input type="text" class="k-textbox" />
+
+                        <button class="k-button btn-search"
+                                (click)="onMainComponentSearch()">
+                            <span class="k-i-filter k-icon"></span>
+                        </button>
+
+                        <button class="k-button btn-search"
+                                (click)="removeMainComponentFilter()">
+                            <span class="k-icon k-i-filter-clear"></span>
+                        </button>
+                    </div>
+
+                    <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+                        <label class="control-label">عملیات:</label>
+                        <input type="text" class="k-textbox" />
+
+                        <button class="k-button btn-search"
+                                (click)="onMainComponentSearch()">
+                            <span class="k-i-filter k-icon"></span>
+                        </button>
+
+                        <button class="k-button btn-search"
+                                (click)="removeMainComponentFilter()">
+                            <span class="k-icon k-i-filter-clear"></span>
+                        </button>
+                    </div>
+
+                    <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+                        <label class="control-label">از تاریخ:</label>
+                        <input type="text" class="k-textbox" />
+
+                        <button class="k-button btn-search"
+                                (click)="onMainComponentSearch()">
+                            <span class="k-i-filter k-icon"></span>
+                        </button>
+
+                        <button class="k-button btn-search"
+                                (click)="removeMainComponentFilter()">
+                            <span class="k-icon k-i-filter-clear"></span>
+                        </button>
+                    </div>
+
+                    <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+                        <label class="control-label">تا تاریخ:</label>
+                        <input type="text" class="k-textbox" />
+
+                        <button class="k-button btn-search"
+                                (click)="onMainComponentSearch()">
+                            <span class="k-i-filter k-icon"></span>
+                        </button>
+
+                        <button class="k-button btn-search"
+                                (click)="removeMainComponentFilter()">
+                            <span class="k-icon k-i-filter-clear"></span>
+                        </button>
+                    </div>
+                </div>
             </ng-template>
             <!-- template for mobile -->
             <kendo-grid-column media="(max-width: 449px)" title="">

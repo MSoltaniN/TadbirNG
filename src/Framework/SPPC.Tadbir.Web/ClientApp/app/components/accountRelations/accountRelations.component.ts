@@ -94,9 +94,13 @@ export class AccountRelationsComponent extends DetailComponent implements OnInit
         this.viewAccess = this.isAccess(SecureEntity.AccountRelations, AccountRelationPermissions.ViewRelationships);
     }
 
+    //constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+    //    private accountRelationsService: AccountRelationsService, public renderer: Renderer2,
+    //    public metadata: MetaDataService, @Host() private defComponent: DefaultComponent) {
+    //    super(toastrService, translate, renderer, metadata, Entities.AccountRelations, '');
+
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private accountRelationsService: AccountRelationsService, public renderer: Renderer2,
-        public metadata: MetaDataService, @Host() private defComponent: DefaultComponent) {
+        private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService ) {
         super(toastrService, translate, renderer, metadata, Entities.AccountRelations, '');
 
         this.mainComponent = [
@@ -436,7 +440,7 @@ export class AccountRelationsComponent extends DetailComponent implements OnInit
         //this.sppcLoading.show();
         this.accountRelationsService.edit<AccountItemRelationsInfo>(apiUrl, relationsModel).subscribe(response => {
             ////this.sppcLoading.hide();
-            this.showMessage(this.defComponent.updateMsg, MessageType.Succes);
+            this.showMessage(this.updateMsg, MessageType.Succes);
 
             this.mainComponentModel = undefined;
             this.loadRelatedComponent();

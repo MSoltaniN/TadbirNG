@@ -46,9 +46,9 @@ export function getLayoutModule(layout: Layout) {
 
 
 export class DetailAccountComponent extends DefaultComponent implements OnInit {
-    public filterChange(filter: CompositeFilterDescriptor): void {
-        throw new Error("Method not implemented.");
-    }
+    //public filterChange(filter: CompositeFilterDescriptor): void {
+    //    throw new Error("Method not implemented.");
+    //}
 
     //#region Fields
     public Childrens: Array<DetailAccountComponent>;
