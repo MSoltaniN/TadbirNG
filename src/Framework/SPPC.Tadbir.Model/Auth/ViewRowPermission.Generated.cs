@@ -80,12 +80,12 @@ namespace SPPC.Tadbir.Model.Auth
         /// <summary>
         /// موجودیتی که محدودیت دسترسی به سطرهای اطلاعاتی برای آن تعریف می شود
         /// </summary>
-        public virtual Entity View { get; set; }
+        public virtual View View { get; set; }
 
         private void InitReferences()
         {
             Role = new Role();
-            View = new Entity();
+            View = new View();
         }
     }
 }

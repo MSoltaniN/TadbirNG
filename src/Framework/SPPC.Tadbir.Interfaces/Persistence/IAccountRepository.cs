@@ -68,7 +68,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای حساب را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای حساب</returns>
-        Task<EntityViewModel> GetAccountMetadataAsync();
+        Task<ViewViewModel> GetAccountMetadataAsync();
 
         /// <summary>
         /// به روش آسنکرون، کلیه آرتیکل های مالی را که از حساب مشخص شده استفاده می کندد را

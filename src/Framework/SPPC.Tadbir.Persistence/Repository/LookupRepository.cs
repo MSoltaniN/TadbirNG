@@ -172,19 +172,26 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از شرکت های قابل دسترسی</returns>
         public async Task<IList<KeyValue>> GetUserAccessibleCompaniesAsync(int userId)
         {
+            _unitOfWork.UseSystemContext();
             var query = GetUserQuery(userId);
             var user = await query.SingleOrDefaultAsync();
             var companies = new List<int>();
             if (user != null)
             {
+                _unitOfWork.UseCompanyContext();
+                var relatedRepository = _unitOfWork.GetAsyncRepository<RoleBranch>();
                 Array.ForEach(
                     user.UserRoles
                         .Select(ur => ur.Role)
                         .ToArray(),
-                    role => companies.AddRange(
-                        role.RoleBranches
-                            .Select(rb => rb.Branch)
-                            .Select(br => br.CompanyId)));
+                    role =>
+                    {
+                        var roleBranchesModel = relatedRepository.GetByCriteria(
+                            rb => rb.RoleId == role.Id, null, rb => rb.Branch);
+                        companies.AddRange(
+                            roleBranchesModel
+                                .Select(rb => rb.Branch.CompanyId));
+                    });
             }
 
             _unitOfWork.UseSystemContext();
@@ -210,18 +217,26 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IEnumerable<KeyValue>> GetUserAccessibleFiscalPeriodsAsync(int companyId, int userId)
         {
             var fiscalPeriods = new List<FiscalPeriod>();
+            _unitOfWork.UseSystemContext();
             var query = GetUserQuery(userId);
             var user = await query.SingleOrDefaultAsync();
             if (user != null)
             {
+                _unitOfWork.UseCompanyContext();
+                var relatedRepository = _unitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
                 Array.ForEach(
                     user.UserRoles
                         .Select(ur => ur.Role)
                         .ToArray(),
-                    role => fiscalPeriods.AddRange(
-                        role.RoleFiscalPeriods
-                            .Select(rfp => rfp.FiscalPeriod)
-                            .Where(fp => fp.CompanyId == companyId)));
+                    role =>
+                    {
+                        var rolePeriodsModel = relatedRepository.GetByCriteria(
+                            rfp => rfp.RoleId == role.Id, null, rfp => rfp.FiscalPeriod);
+                        fiscalPeriods.AddRange(
+                            rolePeriodsModel
+                                .Select(rfp => rfp.FiscalPeriod)
+                                .Where(fp => fp.CompanyId == companyId));
+                    });
                 fiscalPeriods = fiscalPeriods
                     .Distinct(new EntityEqualityComparer())
                     .Cast<FiscalPeriod>()
@@ -243,18 +258,26 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IEnumerable<KeyValue>> GetUserAccessibleBranchesAsync(int companyId, int userId)
         {
             var branches = new List<Branch>();
+            _unitOfWork.UseSystemContext();
             var query = GetUserQuery(userId);
             var user = await query.SingleOrDefaultAsync();
             if (user != null)
             {
+                _unitOfWork.UseCompanyContext();
+                var relatedRepository = _unitOfWork.GetAsyncRepository<RoleBranch>();
                 Array.ForEach(
                     user.UserRoles
                         .Select(ur => ur.Role)
                         .ToArray(),
-                    role => branches.AddRange(
-                        role.RoleBranches
-                            .Select(rb => rb.Branch)
-                            .Where(br => br.CompanyId == companyId)));
+                    role =>
+                    {
+                        var roleBranchesModel = relatedRepository.GetByCriteria(
+                            rb => rb.RoleId == role.Id, null, rb => rb.Branch);
+                        branches.AddRange(
+                            roleBranchesModel
+                                .Select(rb => rb.Branch)
+                                .Where(br => br.CompanyId == companyId));
+                    });
                 branches = branches
                     .Distinct(new EntityEqualityComparer())
                     .Cast<Branch>()
@@ -295,7 +318,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه موجودیت های تعریف شده</returns>
         public async Task<IList<KeyValue>> GetEntityViewsAsync()
         {
-            var repository = _unitOfWork.GetAsyncRepository<Entity>();
+            var repository = _unitOfWork.GetAsyncRepository<View>();
             var views = await repository
                 .GetAllAsync();
             return views
@@ -312,13 +335,7 @@ namespace SPPC.Tadbir.Persistence
                 .GetEntityQuery()
                 .Where(usr => usr.Id == userId)
                 .Include(usr => usr.UserRoles)
-                    .ThenInclude(ur => ur.Role)
-                        .ThenInclude(r => r.RoleBranches)
-                            .ThenInclude(rb => rb.Branch)
-                .Include(usr => usr.UserRoles)
-                    .ThenInclude(ur => ur.Role)
-                        .ThenInclude(r => r.RoleFiscalPeriods)
-                            .ThenInclude(rfp => rfp.FiscalPeriod);
+                    .ThenInclude(ur => ur.Role);
             return query;
         }
 

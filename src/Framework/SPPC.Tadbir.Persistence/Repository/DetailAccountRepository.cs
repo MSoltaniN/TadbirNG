@@ -137,9 +137,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای تفصیلی شناور را از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای تفصیلی شناور</returns>
-        public async Task<EntityViewModel> GetDetailAccountMetadataAsync()
+        public async Task<ViewViewModel> GetDetailAccountMetadataAsync()
         {
-            return await Metadata.GetEntityMetadataAsync<DetailAccount>();
+            return await Metadata.GetViewMetadataAsync<DetailAccount>();
         }
 
         /// <summary>

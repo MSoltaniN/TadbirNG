@@ -211,8 +211,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/users/login
         [HttpPut]
-        [Route(UserApi.UsersLoginStatusUrl)]
-        public async Task<IActionResult> PutUsersLoginStatusAsync([FromBody] LoginViewModel login)
+        [Route(UserApi.UserLoginStatusUrl)]
+        public async Task<IActionResult> PutUserLoginStatusAsync([FromBody] LoginViewModel login)
         {
             if (login == null)
             {
@@ -243,6 +243,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             await _repository.UpdateUserLastLoginAsync(user.Id);
             string userTicket = await GetUserTicketAsync(user.Id);
             Response.Headers.Add(AppConstants.ContextHeaderName, userTicket);
+            return Ok();
+        }
+
+        // PUT: api/users/login/company
+        [HttpPut]
+        [Route(UserApi.UserCompanyLoginStatusUrl)]
+        public async Task<IActionResult> PutUserCompanyLoginStatus([FromBody] CompanyLoginViewModel companyLogin)
+        {
+            if (companyLogin == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.CompanyLogin));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var userContext = SecurityContext.User;
+            await _repository.UpdateUserCompanyLoginAsync(companyLogin, userContext);
+            Response.Headers[AppConstants.ContextHeaderName] = GetEncodedTicket(userContext);
             return Ok();
         }
 
@@ -321,11 +342,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var userContext = await _repository.GetUserContextAsync(userId);
             if (userContext != null)
             {
-                var securityContext = new SecurityContext(userContext);
-                ticket = _contextEncoder.Encode(securityContext);
+                ticket = GetEncodedTicket(userContext);
             }
 
             return ticket;
+        }
+
+        private string GetEncodedTicket(UserContextViewModel userContext)
+        {
+            var securityContext = new SecurityContext(userContext);
+            return _contextEncoder.Encode(securityContext);
         }
 
         private IUserRepository _repository;

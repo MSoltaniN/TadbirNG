@@ -137,9 +137,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای مرکز هزینه را از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای مرکز هزینه</returns>
-        public async Task<EntityViewModel> GetCostCenterMetadataAsync()
+        public async Task<ViewViewModel> GetCostCenterMetadataAsync()
         {
-            return await Metadata.GetEntityMetadataAsync<CostCenter>();
+            return await Metadata.GetViewMetadataAsync<CostCenter>();
         }
 
         /// <summary>

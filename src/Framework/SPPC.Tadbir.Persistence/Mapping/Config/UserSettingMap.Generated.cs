@@ -25,7 +25,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("UserSettingID");
-            builder.Property(e => e.EntityViewId);
+            builder.Property(e => e.ViewId);
             builder.Property(e => e.ModelType)
                 .IsRequired()
                 .HasMaxLength(128);
@@ -55,9 +55,9 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey("RoleID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_UserSetting_Auth_Role");
-            builder.HasOne(e => e.EntityView)
+            builder.HasOne(e => e.View)
                 .WithMany()
-                .HasForeignKey(e => e.EntityViewId)
+                .HasForeignKey(e => e.ViewId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Config_UserSetting_Metadata_EntityView");
         }

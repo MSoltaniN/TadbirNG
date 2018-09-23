@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using SPPC.Framework.Domain;
 using SPPC.Tadbir.Model.Corporate;
 
@@ -39,11 +37,6 @@ namespace SPPC.Tadbir.Model.Auth
         public virtual int BranchId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Role instance
-        /// </summary>
-        public virtual Role Role { get; set; }
-
-        /// <summary>
         /// Gets or sets the Branch instance
         /// </summary>
         public virtual Branch Branch { get; set; }
@@ -60,7 +53,6 @@ namespace SPPC.Tadbir.Model.Auth
 
         private void InitReferences()
         {
-            Role = new Role();
             Branch = new Branch();
         }
     }

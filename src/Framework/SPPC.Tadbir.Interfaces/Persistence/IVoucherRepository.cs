@@ -39,7 +39,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای سند مالی</returns>
-        Task<EntityViewModel> GetVoucherMetadataAsync();
+        Task<ViewViewModel> GetVoucherMetadataAsync();
 
         /// <summary>
         /// به روش آسنکرون، مدل نمایشی دوره مالی مورد استفاده در یک سند مالی را از محل ذخیره خوانده و برمی گرداند
@@ -108,7 +108,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی</returns>
-        Task<EntityViewModel> GetVoucherLineMetadataAsync();
+        Task<ViewViewModel> GetVoucherLineMetadataAsync();
 
         /// <summary>
         /// به روش آسنکرون، تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)

@@ -47,7 +47,7 @@ namespace SPPC.Tadbir.Model.Config
         /// <summary>
         /// شناسه دیتابیسی متادیتای موجودیت قابل کنترل برای تنظیماتی که در سطح موجودیت هستند
         /// </summary>
-        public virtual int? EntityViewId { get; set; }
+        public virtual int? ViewId { get; set; }
 
         /// <summary>
         /// نوع کلاس مدل مورد استفاده برای نگهداری مقادیر تنظیمات
@@ -87,7 +87,7 @@ namespace SPPC.Tadbir.Model.Config
         /// <summary>
         /// اطلاعات متادیتای نمای موجودیت مرتبط با این تنظیمات
         /// </summary>
-        public virtual Entity EntityView { get; set; }
+        public virtual View View { get; set; }
 
         private void InitReferences()
         {

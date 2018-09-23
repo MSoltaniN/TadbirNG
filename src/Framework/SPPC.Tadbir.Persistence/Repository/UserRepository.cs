@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Auth;
+using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Auth;
@@ -90,9 +92,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای کاربر را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای کاربر</returns>
-        public async Task<EntityViewModel> GetUserMetadataAsync()
+        public async Task<ViewViewModel> GetUserMetadataAsync()
         {
-            return await Metadata.GetEntityMetadataAsync<User>();
+            return await Metadata.GetViewMetadataAsync<User>();
         }
 
         /// <summary>
@@ -328,6 +330,27 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، وضعیت ورود یک کاربر را به یک شرکت و دوره مالی و شعبه بروزرسانی می کند
+        /// </summary>
+        /// <param name="companyLogin">اطلاعات ورود کاربر به شرکت</param>
+        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر</param>
+        public async Task UpdateUserCompanyLoginAsync(
+            CompanyLoginViewModel companyLogin, UserContextViewModel userContext)
+        {
+            Verify.ArgumentNotNull(companyLogin, "companyLogin");
+            Verify.ArgumentNotNull(userContext, "userContext");
+            userContext.CompanyId = (int)companyLogin.CompanyId;
+            userContext.BranchId = (int)companyLogin.BranchId;
+            userContext.FiscalPeriodId = (int)companyLogin.FiscalPeriodId;
+            var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
+            var company = await repository.GetByIDAsync((int)companyLogin.CompanyId);
+            if (company != null)
+            {
+                userContext.Connection = BuildConnectionString(company);
+            }
+        }
+
+        /// <summary>
         /// Asynchronously determines if the specified <see cref="UserViewModel"/> instance has a user name that is already used
         /// by a different user.
         /// </summary>
@@ -436,6 +459,23 @@ namespace SPPC.Tadbir.Persistence
                     .ThenInclude(ur => ur.Role)
                         .ThenInclude(r => r.RolePermissions);
             return query;
+        }
+
+        private string BuildConnectionString(CompanyDb company)
+        {
+            var builder = new StringBuilder();
+            builder.AppendFormat("Server={0};Database={1};", company.Server, company.DbName);
+            if (!String.IsNullOrEmpty(company.UserName) && !String.IsNullOrEmpty(company.Password))
+            {
+                builder.AppendFormat("User ID={0};Password={1};Trusted_Connection=False;MultipleActiveResultSets=True",
+                    company.UserName, company.Password);
+            }
+            else
+            {
+                builder.Append("Trusted_Connection=True;MultipleActiveResultSets=True");
+            }
+
+            return builder.ToString();
         }
     }
 }

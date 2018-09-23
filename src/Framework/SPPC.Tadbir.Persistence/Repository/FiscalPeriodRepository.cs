@@ -92,9 +92,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای دوره مالی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای دوره مالی</returns>
-        public async Task<EntityViewModel> GetFiscalPeriodMetadataAsync()
+        public async Task<ViewViewModel> GetFiscalPeriodMetadataAsync()
         {
-            return await _metadataRepository.GetEntityMetadataAsync<FiscalPeriod>();
+            return await _metadataRepository.GetViewMetadataAsync<FiscalPeriod>();
         }
 
         /// <summary>
@@ -109,13 +109,11 @@ namespace SPPC.Tadbir.Persistence
             var existing = await repository
                 .GetEntityQuery()
                 .Include(fp => fp.RoleFiscalPeriods)
-                    .ThenInclude(rfp => rfp.Role)
                 .Where(fp => fp.Id == fpId)
                 .SingleOrDefaultAsync();
             if (existing != null)
             {
                 var enabledRoles = existing.RoleFiscalPeriods
-                    .Select(rfp => rfp.Role)
                     .Select(r => _mapper.Map<RelatedItemViewModel>(r))
                     .ToArray();
                 var roleRepository = _unitOfWork.GetAsyncRepository<Role>();
@@ -296,7 +294,6 @@ namespace SPPC.Tadbir.Persistence
                 {
                     FiscalPeriod = existing,
                     FiscalPeriodId = existing.Id,
-                    Role = role,
                     RoleId = role.Id
                 };
                 existing.RoleFiscalPeriods.Add(roleFiscalPeriod);

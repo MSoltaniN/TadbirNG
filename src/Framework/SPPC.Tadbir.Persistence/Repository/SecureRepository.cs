@@ -172,6 +172,7 @@ namespace SPPC.Tadbir.Persistence
             ref IQueryable<TEntity> records, UserAccessViewModel userAccess, int viewId)
             where TEntity : class, IEntity
         {
+            UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<ViewRowPermission>();
             var filters = new List<FilterExpression>();
             foreach (int roleId in userAccess.Roles)
@@ -181,7 +182,7 @@ namespace SPPC.Tadbir.Persistence
                     .Where(perm => perm.Role.Id == roleId
                         && perm.View.Id == viewId)
                     .Include(perm => perm.View)
-                        .ThenInclude(view => view.Properties)
+                        .ThenInclude(view => view.Columns)
                     .SingleOrDefault();
                 var filter = GetRowFilter(ref records, permission, userAccess.Id);
                 if (filter != null)
@@ -190,6 +191,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
+            UnitOfWork.UseCompanyContext();
             string compoundFilter = String.Join(FilterExpressionOperator.Or, filters.Select(f => f.ToString()));
             var filteredQuery = !String.IsNullOrEmpty(compoundFilter)
                 ? records.Where(compoundFilter)
@@ -310,7 +312,7 @@ namespace SPPC.Tadbir.Persistence
         private FilterExpression GetSpecificReferenceFilter(ViewRowPermission permission, bool isExcept = false)
         {
             var builder = new FilterExpressionBuilder();
-            var references = permission.View.Properties
+            var references = permission.View.Columns
                 .Where(prop => prop.Type == "Reference")
                 .ToList();
             if (references.Count > 0)
@@ -330,7 +332,7 @@ namespace SPPC.Tadbir.Persistence
         private FilterExpression GetMaxNumericValueFilter(ViewRowPermission permission, string type)
         {
             var builder = new FilterExpressionBuilder();
-            var properties = permission.View.Properties
+            var properties = permission.View.Columns
                 .Where(prop => prop.Type == type)
                 .ToList();
             if (properties.Count > 0)
@@ -376,7 +378,7 @@ namespace SPPC.Tadbir.Persistence
             return queryable;
         }
 
-        private GridFilter GetReferenceFilter(Property reference, string value, bool isExcept)
+        private GridFilter GetReferenceFilter(Column reference, string value, bool isExcept)
         {
             return new GridFilter()
             {
@@ -387,7 +389,7 @@ namespace SPPC.Tadbir.Persistence
             };
         }
 
-        private GridFilter GetNumericValueFilter(Property property, double value)
+        private GridFilter GetNumericValueFilter(Column property, double value)
         {
             return new GridFilter()
             {

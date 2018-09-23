@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -24,6 +23,7 @@ namespace SPPC.Tadbir.Persistence
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _unitOfWork.UseSystemContext();
         }
 
         /// <summary>
@@ -31,39 +31,39 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <typeparam name="TEntity">نوع موجودیتی که فراداده آن مورد نیاز است</typeparam>
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
-        public async Task<EntityViewModel> GetEntityMetadataAsync<TEntity>()
+        public async Task<ViewViewModel> GetViewMetadataAsync<TEntity>()
             where TEntity : IEntity
         {
-            return await GetEntityMetadataAsync(typeof(TEntity).Name);
+            return await GetViewMetadataAsync(typeof(TEntity).Name);
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای موجودیت با نام مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="entityName">نام (شناسه متنی) موجودیت مورد نظر</param>
+        /// <param name="viewName">نام (شناسه متنی) موجودیت مورد نظر</param>
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
-        public async Task<EntityViewModel> GetEntityMetadataAsync(string entityName)
+        public async Task<ViewViewModel> GetViewMetadataAsync(string viewName)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Entity>();
-            var entityMetadata = await repository
-                .GetByCriteriaAsync(ent => ent.Name == entityName, ent => ent.Properties);
-            return entityMetadata
-                .Select(ent => _mapper.Map<EntityViewModel>(ent))
+            var repository = _unitOfWork.GetAsyncRepository<View>();
+            var viewMetadata = await repository
+                .GetByCriteriaAsync(vu => vu.Name == viewName, vu => vu.Columns);
+            return viewMetadata
+                .Select(ent => _mapper.Map<ViewViewModel>(ent))
                 .FirstOrDefault();
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای موجودیت با نام مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="entityId">شناسه عددی موجودیت مورد نظر</param>
+        /// <param name="viewId">شناسه عددی موجودیت مورد نظر</param>
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
-        public async Task<EntityViewModel> GetEntityMetadataByIdAsync(int entityId)
+        public async Task<ViewViewModel> GetViewMetadataByIdAsync(int viewId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Entity>();
-            var entityMetadata = await repository
-                .GetByCriteriaAsync(ent => ent.Id == entityId, ent => ent.Properties);
-            return entityMetadata
-                .Select(ent => _mapper.Map<EntityViewModel>(ent))
+            var repository = _unitOfWork.GetAsyncRepository<View>();
+            var viewMetadata = await repository
+                .GetByCriteriaAsync(vu => vu.Id == viewId, vu => vu.Columns);
+            return viewMetadata
+                .Select(vu => _mapper.Map<ViewViewModel>(vu))
                 .FirstOrDefault();
         }
 

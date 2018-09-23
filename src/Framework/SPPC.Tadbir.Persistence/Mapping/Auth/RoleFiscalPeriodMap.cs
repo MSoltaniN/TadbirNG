@@ -21,9 +21,6 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasColumnName("rowguid")
                 .HasDefaultValueSql("(newid())");
 
-            builder.HasOne(d => d.Role)
-                .WithMany(p => p.RoleFiscalPeriods)
-                .HasForeignKey(d => d.RoleId);
             builder.HasOne(d => d.FiscalPeriod)
                 .WithMany(p => p.RoleFiscalPeriods)
                 .HasForeignKey(d => d.FiscalPeriodId);

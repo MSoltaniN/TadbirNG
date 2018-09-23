@@ -447,7 +447,7 @@ namespace SPPC.Tadbir.Mapper
                 .ConvertUsing(MapConfigType<ListFormViewConfig>);
             mapperConfig.CreateMap<Setting, EntityRowAccessConfig>()
                 .ConvertUsing(MapConfigType<EntityRowAccessConfig>);
-            mapperConfig.CreateMap<Property, ColumnViewConfig>()
+            mapperConfig.CreateMap<Column, ColumnViewConfig>()
                 .ConvertUsing(prop => !String.IsNullOrEmpty(prop.Settings)
                     ? JsonHelper.To<ColumnViewConfig>(prop.Settings)
                     : new ColumnViewConfig(prop.Name));
@@ -463,11 +463,11 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapMetadataTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<Entity, EntityViewModel>();
-            mapperConfig.CreateMap<Property, PropertyViewModel>();
+            mapperConfig.CreateMap<View, ViewViewModel>();
+            mapperConfig.CreateMap<Column, ColumnViewModel>();
             mapperConfig.CreateMap<Command, CommandViewModel>()
                 .ForMember(dest => dest.Title, opts => opts.MapFrom(src => src.TitleKey));
-            mapperConfig.CreateMap<Entity, KeyValue>()
+            mapperConfig.CreateMap<View, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
         }

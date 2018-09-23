@@ -16,22 +16,22 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <typeparam name="TEntity">نوع موجودیتی که فراداده آن مورد نیاز است</typeparam>
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
-        Task<EntityViewModel> GetEntityMetadataAsync<TEntity>()
+        Task<ViewViewModel> GetViewMetadataAsync<TEntity>()
             where TEntity : IEntity;
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای موجودیت با نام مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="entityName">نام (شناسه متنی) موجودیت مورد نظر</param>
+        /// <param name="viewName">نام (شناسه متنی) موجودیت مورد نظر</param>
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
-        Task<EntityViewModel> GetEntityMetadataAsync(string entityName);
+        Task<ViewViewModel> GetViewMetadataAsync(string viewName);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای موجودیت با نام مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="entityId">شناسه عددی موجودیت مورد نظر</param>
+        /// <param name="viewId">شناسه عددی موجودیت مورد نظر</param>
         /// <returns>اطلاعات فراداده ای تعریف شده برای موجودیت</returns>
-        Task<EntityViewModel> GetEntityMetadataByIdAsync(int entityId);
+        Task<ViewViewModel> GetViewMetadataByIdAsync(int viewId);
 
         /// <summary>
         /// اطلاعات نمایشی تمام دستوراتی که در بالاترین سطح ساختار درختی قرار دارند را

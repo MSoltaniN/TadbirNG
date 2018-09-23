@@ -136,9 +136,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای پروژه را از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای پروژه</returns>
-        public async Task<EntityViewModel> GetProjectMetadataAsync()
+        public async Task<ViewViewModel> GetProjectMetadataAsync()
         {
-            return await Metadata.GetEntityMetadataAsync<Project>();
+            return await Metadata.GetViewMetadataAsync<Project>();
         }
 
         /// <summary>

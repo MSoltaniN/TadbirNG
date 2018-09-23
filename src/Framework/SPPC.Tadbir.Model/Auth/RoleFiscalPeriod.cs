@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using SPPC.Framework.Domain;
 using SPPC.Tadbir.Model.Finance;
 
@@ -38,11 +37,6 @@ namespace SPPC.Tadbir.Model.Auth
         public virtual int FiscalPeriodId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Role instance
-        /// </summary>
-        public virtual Role Role { get; set; }
-
-        /// <summary>
         /// Gets or sets the FiscalPeriod instance
         /// </summary>
         public virtual FiscalPeriod FiscalPeriod { get; set; }
@@ -59,7 +53,6 @@ namespace SPPC.Tadbir.Model.Auth
 
         private void InitReferences()
         {
-            Role = new Role();
             FiscalPeriod = new FiscalPeriod();
         }
     }

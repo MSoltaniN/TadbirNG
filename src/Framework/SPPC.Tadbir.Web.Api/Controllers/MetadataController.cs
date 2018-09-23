@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(MetadataApi.EntityMetadataUrl)]
         public async Task<IActionResult> GetEntityMetadata(string entityName)
         {
-            var metadata = await _repository.GetEntityMetadataAsync(entityName);
+            var metadata = await _repository.GetViewMetadataAsync(entityName);
             return JsonReadResult(metadata);
         }
 
@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(MetadataApi.EntityMetadataByIdUrl)]
         public async Task<IActionResult> GetEntityMetadataById(int entityId)
         {
-            var metadata = await _repository.GetEntityMetadataByIdAsync(entityId);
+            var metadata = await _repository.GetViewMetadataByIdAsync(entityId);
             return JsonReadResult(metadata);
         }
 

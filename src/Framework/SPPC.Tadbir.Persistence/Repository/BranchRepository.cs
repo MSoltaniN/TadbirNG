@@ -92,9 +92,9 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای شعبه سازمانی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای شعبه سازمانی</returns>
-        public async Task<EntityViewModel> GetBranchMetadataAsync()
+        public async Task<ViewViewModel> GetBranchMetadataAsync()
         {
-            return await _metadataRepository.GetEntityMetadataAsync<Branch>();
+            return await _metadataRepository.GetViewMetadataAsync<Branch>();
         }
 
         /// <summary>
@@ -109,13 +109,11 @@ namespace SPPC.Tadbir.Persistence
             var existing = await repository
                 .GetEntityQuery()
                 .Include(br => br.RoleBranches)
-                    .ThenInclude(rb => rb.Role)
                 .Where(br => br.Id == branchId)
                 .SingleOrDefaultAsync();
             if (existing != null)
             {
                 var enabledRoles = existing.RoleBranches
-                    .Select(rb => rb.Role)
                     .Select(r => _mapper.Map<RelatedItemViewModel>(r))
                     .ToArray();
                 var roleRepository = _unitOfWork.GetAsyncRepository<Role>();
@@ -280,7 +278,6 @@ namespace SPPC.Tadbir.Persistence
                 {
                     Branch = existing,
                     BranchId = existing.Id,
-                    Role = role,
                     RoleId = role.Id
                 };
                 existing.RoleBranches.Add(roleBranch);

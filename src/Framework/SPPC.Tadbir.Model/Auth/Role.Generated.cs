@@ -78,9 +78,7 @@ namespace SPPC.Tadbir.Model.Auth
         private void InitReferences()
         {
             UserRoles = new List<UserRole>();
-            RoleBranches = new List<RoleBranch>();
             RolePermissions = new List<RolePermission>();
-            RoleFiscalPeriods = new List<RoleFiscalPeriod>();
         }
     }
 }
