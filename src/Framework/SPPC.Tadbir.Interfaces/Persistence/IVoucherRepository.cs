@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، کلیه اسناد مالی را که در دوره مالی و شعبه مشخص شده تعریف شده اند، از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -26,7 +26,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         Task<IList<VoucherViewModel>> GetVouchersAsync(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null);
+            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، سند مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
@@ -52,14 +52,14 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
         /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<int> GetCountAsync(UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null);
+        Task<int> GetCountAsync(UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک سند مالی را در محل ذخیره ایجاد یا اصلاح می کند
@@ -88,14 +88,14 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
         Task<IList<VoucherLineViewModel>> GetArticlesAsync(
-            UserAccessViewModel userAccess, int voucherId, GridOptions gridOptions = null);
+            UserContextViewModel userContext, int voucherId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
@@ -114,13 +114,13 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد آرتیکل های سند مالی بعد از اعمال فیلتر</returns>
-        Task<int> GetArticleCountAsync(UserAccessViewModel userAccess, int voucherId, GridOptions gridOptions = null);
+        Task<int> GetArticleCountAsync(UserContextViewModel userContext, int voucherId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، مدل نمایشی سرفصل حسابداری مشخص شده

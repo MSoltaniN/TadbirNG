@@ -43,7 +43,7 @@ namespace SPPC.Tadbir.Persistence
         /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TEntity">نوع موجودیتی که سطرهای آن باید خوانده شود</typeparam>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -52,11 +52,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
         /// <returns>لیست فیلتر شده از سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         public async Task<IList<TEntity>> GetAllAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, int viewId,
+            UserContextViewModel userContext, int fpId, int branchId, int viewId,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IBaseEntity
         {
-            var query = GetFilteredQuery(userAccess, fpId, branchId, viewId, relatedProperties);
+            var query = GetFilteredQuery(userContext, fpId, branchId, viewId, relatedProperties);
             return await query
                 .ToListAsync();
         }
@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.Persistence
         /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TEntity">نوع موجودیتی که سطرهای آن باید خوانده شود</typeparam>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -75,11 +75,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
         /// <returns>لیست فیلتر شده از سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         public async Task<IList<TEntity>> GetAllOperationAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, int viewId,
+            UserContextViewModel userContext, int fpId, int branchId, int viewId,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IFiscalEntity
         {
-            var query = GetFilteredOperationQuery(userAccess, fpId, branchId, viewId, relatedProperties);
+            var query = GetFilteredOperationQuery(userContext, fpId, branchId, viewId, relatedProperties);
             return await query
                 .ToListAsync();
         }
@@ -89,7 +89,7 @@ namespace SPPC.Tadbir.Persistence
         /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها به صورت کد و نام خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TEntity">نوع موجودیتی که سطرهای آن باید خوانده شود</typeparam>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -98,14 +98,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns></returns>
         public async Task<IList<KeyValue>> GetAllLookupAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null)
+            UserContextViewModel userContext, int fpId, int branchId, int viewId, GridOptions gridOptions = null)
             where TEntity : class, IBaseEntity
         {
-            Verify.ArgumentNotNull(userAccess, "userAccess");
+            Verify.ArgumentNotNull(userContext, "userContext");
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
             var query = repository.GetEntityQuery();
             query = ApplyBranchFilterForLookup(query, fpId, branchId);
-            query = ApplyRowFilter(ref query, userAccess, viewId);
+            query = ApplyRowFilter(ref query, userContext, viewId);
             return await query
                 .Select(entity => Mapper.Map<KeyValue>(entity))
                 .Apply(gridOptions)
@@ -117,7 +117,7 @@ namespace SPPC.Tadbir.Persistence
         /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها از دیتابیس خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TEntity">نوع موجودیتی که تعداد سطرهای آن باید خوانده شود</typeparam>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -126,10 +126,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         public async Task<int> GetCountAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null)
+            UserContextViewModel userContext, int fpId, int branchId, int viewId, GridOptions gridOptions = null)
             where TEntity : class, IBaseEntity
         {
-            var query = GetFilteredQuery<TEntity>(userAccess, fpId, branchId, viewId);
+            var query = GetFilteredQuery<TEntity>(userContext, fpId, branchId, viewId);
             return await query
                 .Apply(gridOptions, false)
                 .CountAsync();
@@ -140,7 +140,7 @@ namespace SPPC.Tadbir.Persistence
         /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TEntity">نوع موجودیتی که تعداد سطرهای آن باید خوانده شود</typeparam>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -149,10 +149,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         public async Task<int> GetOperationCountAsync<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, int viewId, GridOptions gridOptions = null)
+            UserContextViewModel userContext, int fpId, int branchId, int viewId, GridOptions gridOptions = null)
             where TEntity : class, IFiscalEntity
         {
-            var query = GetFilteredOperationQuery<TEntity>(userAccess, fpId, branchId, viewId);
+            var query = GetFilteredOperationQuery<TEntity>(userContext, fpId, branchId, viewId);
             return await query
                 .Apply(gridOptions, false)
                 .CountAsync();
@@ -163,19 +163,19 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <typeparam name="TEntity">نوع موجودیتی که سطرهای آن باید فیلتر شود</typeparam>
         /// <param name="records">مجوعه سطرهای اطلاعاتی اولیه</param>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
         /// <returns>مجوعه سطرهای اطلاعاتی فیلتر شده</returns>
         public IQueryable<TEntity> ApplyRowFilter<TEntity>(
-            ref IQueryable<TEntity> records, UserAccessViewModel userAccess, int viewId)
+            ref IQueryable<TEntity> records, UserContextViewModel userContext, int viewId)
             where TEntity : class, IEntity
         {
             UnitOfWork.UseSystemContext();
             var repository = UnitOfWork.GetAsyncRepository<ViewRowPermission>();
             var filters = new List<FilterExpression>();
-            foreach (int roleId in userAccess.Roles)
+            foreach (int roleId in userContext.Roles)
             {
                 var permission = repository
                     .GetEntityQuery()
@@ -184,7 +184,7 @@ namespace SPPC.Tadbir.Persistence
                     .Include(perm => perm.View)
                         .ThenInclude(view => view.Columns)
                     .SingleOrDefault();
-                var filter = GetRowFilter(ref records, permission, userAccess.Id);
+                var filter = GetRowFilter(ref records, permission, userContext.Id);
                 if (filter != null)
                 {
                     filters.Add(filter);
@@ -200,28 +200,28 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private IQueryable<TEntity> GetFilteredQuery<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, int viewId,
+            UserContextViewModel userContext, int fpId, int branchId, int viewId,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IBaseEntity
         {
-            Verify.ArgumentNotNull(userAccess, "userAccess");
+            Verify.ArgumentNotNull(userContext, "userContext");
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
             var query = repository.GetEntityQuery(relatedProperties);
             query = ApplyBranchFilter(query, fpId, branchId);
-            query = ApplyRowFilter(ref query, userAccess, viewId);
+            query = ApplyRowFilter(ref query, userContext, viewId);
             return query;
         }
 
         private IQueryable<TEntity> GetFilteredOperationQuery<TEntity>(
-            UserAccessViewModel userAccess, int fpId, int branchId, int viewId,
+            UserContextViewModel userContext, int fpId, int branchId, int viewId,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IFiscalEntity
         {
-            Verify.ArgumentNotNull(userAccess, "userAccess");
+            Verify.ArgumentNotNull(userContext, "userContext");
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
             var query = repository.GetEntityQuery(relatedProperties);
             query = ApplyOperationBranchFilter(query, fpId, branchId);
-            query = ApplyRowFilter(ref query, userAccess, viewId);
+            query = ApplyRowFilter(ref query, userContext, viewId);
             return query;
         }
 

@@ -33,9 +33,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetCostCentersAsync(int fpId, int branchId)
         {
-            int itemCount = await _repository.GetCountAsync(UserAccess, fpId, branchId, GridOptions);
+            int itemCount = await _repository.GetCountAsync(SecurityContext.User, fpId, branchId, GridOptions);
             SetItemCount(itemCount);
-            var costCenters = await _repository.GetCostCentersAsync(UserAccess, fpId, branchId, GridOptions);
+            var costCenters = await _repository.GetCostCentersAsync(SecurityContext.User, fpId, branchId, GridOptions);
             return Json(costCenters);
         }
 
@@ -44,7 +44,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetCostCentersLookupAsync(int fpId, int branchId)
         {
-            var lookup = await _repository.GetCostCentersLookupAsync(UserAccess, fpId, branchId, GridOptions);
+            var lookup = await _repository.GetCostCentersLookupAsync(SecurityContext.User, fpId, branchId, GridOptions);
             return Json(lookup);
         }
 

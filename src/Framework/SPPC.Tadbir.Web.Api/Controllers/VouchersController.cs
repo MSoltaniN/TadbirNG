@@ -37,9 +37,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetVouchersAsync(int fpId, int branchId)
         {
-            int itemCount = await _repository.GetCountAsync(UserAccess, fpId, branchId, GridOptions);
+            int itemCount = await _repository.GetCountAsync(SecurityContext.User, fpId, branchId, GridOptions);
             SetItemCount(itemCount);
-            var vouchers = await _repository.GetVouchersAsync(UserAccess, fpId, branchId, GridOptions);
+            var vouchers = await _repository.GetVouchersAsync(SecurityContext.User, fpId, branchId, GridOptions);
             return Json(vouchers);
         }
 
@@ -116,9 +116,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetArticlesAsync(int voucherId)
         {
-            int itemCount = await _repository.GetArticleCountAsync(UserAccess, voucherId, GridOptions);
+            int itemCount = await _repository.GetArticleCountAsync(SecurityContext.User, voucherId, GridOptions);
             SetItemCount(itemCount);
-            var articles = await _repository.GetArticlesAsync(UserAccess, voucherId, GridOptions);
+            var articles = await _repository.GetArticlesAsync(SecurityContext.User, voucherId, GridOptions);
             return Json(articles);
         }
 

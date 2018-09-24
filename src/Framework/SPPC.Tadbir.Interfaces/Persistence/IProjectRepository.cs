@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -26,13 +26,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         Task<IList<ProjectViewModel>> GetProjectsAsync(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null);
+            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -40,13 +40,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         Task<IList<KeyValue>> GetProjectsLookupAsync(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null);
+            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، تعداد پروژه های تعریف شده در دوره مالی و شعبه مشخص شده را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -54,7 +54,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد پروژه های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         Task<int> GetCountAsync(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null);
+            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، پروژه با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند

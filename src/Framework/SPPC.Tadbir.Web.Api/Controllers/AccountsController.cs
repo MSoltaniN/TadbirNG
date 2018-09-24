@@ -35,9 +35,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAccountsAsync(int fpId, int branchId)
         {
-            int itemCount = await _repository.GetCountAsync(UserAccess, fpId, branchId, GridOptions);
+            int itemCount = await _repository.GetCountAsync(SecurityContext.User, fpId, branchId, GridOptions);
             SetItemCount(itemCount);
-            var accounts = await _repository.GetAccountsAsync(UserAccess, fpId, branchId, GridOptions);
+            var accounts = await _repository.GetAccountsAsync(SecurityContext.User, fpId, branchId, GridOptions);
             return Json(accounts);
         }
 
@@ -46,7 +46,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAccountsLookupAsync(int fpId, int branchId)
         {
-            var lookup = await _repository.GetAccountsLookupAsync(UserAccess, fpId, branchId, GridOptions);
+            var lookup = await _repository.GetAccountsLookupAsync(SecurityContext.User, fpId, branchId, GridOptions);
             return Json(lookup);
         }
 

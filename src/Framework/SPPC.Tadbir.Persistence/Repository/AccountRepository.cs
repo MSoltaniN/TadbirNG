@@ -45,7 +45,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کلیه حساب هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -53,10 +53,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<IList<AccountViewModel>> GetAccountsAsync(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
         {
             var accounts = await _repository.GetAllAsync<Account>(
-                userAccess, fpId, branchId, ViewName.Account,
+                userContext, fpId, branchId, ViewName.Account,
                 acc => acc.FiscalPeriod, acc => acc.Branch,
                 acc => acc.Parent, acc => acc.Children);
             return accounts
@@ -69,7 +69,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کلیه حساب هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -77,10 +77,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<IList<KeyValue>> GetAccountsLookupAsync(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
         {
             return await _repository.GetAllLookupAsync<Account>(
-                userAccess, fpId, branchId, ViewName.Account, gridOptions);
+                userContext, fpId, branchId, ViewName.Account, gridOptions);
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -181,10 +181,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<int> GetCountAsync(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
         {
             return await _repository.GetCountAsync<Account>(
-                userAccess, fpId, branchId, ViewName.Account, gridOptions);
+                userContext, fpId, branchId, ViewName.Account, gridOptions);
         }
 
         /// <summary>

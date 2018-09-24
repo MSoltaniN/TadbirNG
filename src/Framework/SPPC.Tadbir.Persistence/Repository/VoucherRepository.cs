@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
@@ -41,7 +39,7 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، کلیه اسناد مالی را که در دوره مالی و شعبه مشخص شده تعریف شده اند، از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
@@ -49,10 +47,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<IList<VoucherViewModel>> GetVouchersAsync(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
         {
             var vouchers = await _repository.GetAllOperationAsync<Voucher>(
-                userAccess, fpId, branchId, ViewName.Voucher,
+                userContext, fpId, branchId, ViewName.Voucher,
                 v => v.Lines, v => v.FiscalPeriod, v => v.Branch);
             return vouchers
                 .Select(item => Mapper.Map<VoucherViewModel>(item))
@@ -91,7 +89,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -99,10 +97,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<int> GetCountAsync(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
         {
             return await _repository.GetOperationCountAsync<Voucher>(
-                userAccess, fpId, branchId, ViewName.Voucher, gridOptions);
+                userContext, fpId, branchId, ViewName.Voucher, gridOptions);
         }
 
         /// <summary>
@@ -187,17 +185,17 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
         public async Task<IList<VoucherLineViewModel>> GetArticlesAsync(
-            UserAccessViewModel userAccess, int voucherId, GridOptions gridOptions = null)
+            UserContextViewModel userContext, int voucherId, GridOptions gridOptions = null)
         {
             var query = GetVoucherLinesQuery(voucherId);
-            query = _repository.ApplyRowFilter(ref query, userAccess, ViewName.VoucherLine);
+            query = _repository.ApplyRowFilter(ref query, userContext, ViewName.VoucherLine);
             var lines = await query
                 .Select(line => Mapper.Map<VoucherLineViewModel>(line))
                 .Apply(gridOptions)
@@ -236,19 +234,19 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد آرتیکل های سند مالی بعد از اعمال فیلتر</returns>
         public async Task<int> GetArticleCountAsync(
-            UserAccessViewModel userAccess, int voucherId, GridOptions gridOptions = null)
+            UserContextViewModel userContext, int voucherId, GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var query = repository.GetEntityQuery()
                 .Where(line => line.Voucher.Id == voucherId);
-            query = _repository.ApplyRowFilter(ref query, userAccess, ViewName.VoucherLine);
+            query = _repository.ApplyRowFilter(ref query, userContext, ViewName.VoucherLine);
             return await query
                 .Apply(gridOptions)
                 .CountAsync();

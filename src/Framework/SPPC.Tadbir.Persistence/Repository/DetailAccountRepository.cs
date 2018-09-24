@@ -6,7 +6,6 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
@@ -40,7 +39,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کلیه تفصیلی های شناوری را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -48,10 +47,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<IList<DetailAccountViewModel>> GetDetailAccountsAsync(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
         {
             var detailAccounts = await _repository.GetAllAsync<DetailAccount>(
-                userAccess, fpId, branchId, ViewName.DetailAccount,
+                userContext, fpId, branchId, ViewName.DetailAccount,
                 facc => facc.FiscalPeriod, facc => facc.Branch,
                 facc => facc.Parent, facc => facc.Children);
             return detailAccounts
@@ -64,7 +63,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کلیه تفصیلی های شناوری را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -72,17 +71,17 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<IList<KeyValue>> GetDetailAccountsLookupAsync(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
         {
             return await _repository.GetAllLookupAsync<DetailAccount>(
-                userAccess, fpId, branchId, ViewName.DetailAccount, gridOptions);
+                userContext, fpId, branchId, ViewName.DetailAccount, gridOptions);
         }
 
         /// <summary>
         /// به روش آسنکرون، تعداد تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userAccess">
+        /// <param name="userContext">
         /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
         /// </param>
         /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
@@ -90,10 +89,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<int> GetCountAsync(
-            UserAccessViewModel userAccess, int fpId, int branchId, GridOptions gridOptions = null)
+            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
         {
             return await _repository.GetCountAsync<DetailAccount>(
-                userAccess, fpId, branchId, ViewName.DetailAccount, gridOptions);
+                userContext, fpId, branchId, ViewName.DetailAccount, gridOptions);
         }
 
         /// <summary>
