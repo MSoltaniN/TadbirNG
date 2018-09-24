@@ -352,6 +352,10 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         this.deleteModelsConfirm = false;
     }
 
+    reloadGridEvent() {
+        this.reloadGrid();
+    }
+
     reloadGrid(insertedModel?: Account | undefined): void {        
         if (this.viewAccess) {
             this.grid.loading = true;

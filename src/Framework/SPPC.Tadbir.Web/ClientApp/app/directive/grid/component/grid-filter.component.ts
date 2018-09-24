@@ -1,5 +1,5 @@
 ﻿import { BaseComponent } from "../../../class/base.component";
-import { OnInit, OnDestroy, Component, Host, ElementRef, Input } from "@angular/core";
+import { OnInit, OnDestroy, Component, Host, ElementRef, Input, EventEmitter, Output } from "@angular/core";
 import { Layout } from "../../../enviroment";
 import { RTL } from "@progress/kendo-angular-l10n";
 import { ToastrService } from "ngx-toastr";
@@ -65,7 +65,13 @@ export class GridFilterComponent extends BaseComponent implements OnInit, OnDest
         });       
 
     }
-    
+
+    @Output() reloadEvent = new EventEmitter();
+
+    filterGridEmit(): void {
+
+        this.reloadEvent.emit();
+    }
 
     filterGrid(): void {        
 

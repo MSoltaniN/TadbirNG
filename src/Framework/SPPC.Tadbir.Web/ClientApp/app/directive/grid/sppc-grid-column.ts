@@ -60,8 +60,8 @@ export class SppcGridColumn {
 
     ngAfterViewInit() {
 
-        var self = this.gridSetting;
-
+        var self = this.hostColumn;
+        
         var items = document.getElementsByTagName('kendo-dropdownlist');
         //console.log(items);
 
@@ -74,7 +74,8 @@ export class SppcGridColumn {
                         mutations.forEach(function (mutation) {
                             //console.log(mutation.type);
                             if (mutation.type == 'attributes' && mutation.attributeName == "ng-reflect-value") {
-                                self.filterGrid();
+                                var temp = <any>self.filterCellTemplate.templateRef;
+                                temp._parentView.component.reloadGrid();
                                 //self..dataStateChange.emit(self)
                                 //observer.disconnect();
                                 
