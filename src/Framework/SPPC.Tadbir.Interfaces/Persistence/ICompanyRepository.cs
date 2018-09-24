@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Metadata;
@@ -51,5 +52,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="companyId">شناسه عددی شرکت مورد نظر برای حذف</param>
         Task DeleteCompanyAsync(int companyId);
+
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

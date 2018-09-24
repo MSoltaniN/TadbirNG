@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -83,5 +84,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="fiscalPeriod">مدل نمایشی دوره مالی مورد نظر</param>
         /// <returns>اگر دوره مالی هم پوشان با مدل نمایشی مورد نظر وجود داشته باشد مقدار "درست" در غیر این صورت مقدار "نادرست" برمیگرداند</returns>
         Task<bool> IsOverlapFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriod);
+
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

@@ -69,6 +69,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveCompanyAsync(company);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -86,6 +87,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveCompanyAsync(company);
             result = (outputItem != null)
                 ? Ok(outputItem)
@@ -105,6 +107,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteCompanyAsync(companyId);
             return StatusCode(StatusCodes.Status204NoContent);
         }

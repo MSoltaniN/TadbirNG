@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using SPPC.Framework.Domain;
 using SPPC.Framework.Persistence;
-using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -11,7 +11,7 @@ namespace SPPC.Tadbir.Persistence
     /// <typeparam name="TEntity">نوع مدل اطلاعاتی که عملیات روی آن انجام می شود</typeparam>
     /// <typeparam name="TEntityView">نوع مدل نمایشی که برای اصلاح اطلاعات استفاده می شود</typeparam>
     public interface ILoggingRepository<TEntity, TEntityView>
-        where TEntity : class, IFiscalEntity
+        where TEntity : class, IEntity
         where TEntityView : class, new()
     {
         /// <summary>

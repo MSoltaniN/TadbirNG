@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Config;
-using SPPC.Tadbir.Model.Corporate;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Config;
-using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
@@ -16,7 +15,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت شرکت را پیاده سازی میکند.
     /// </summary>
-    public class CompanyRepository : RepositoryBase, ICompanyRepository
+    public class CompanyRepository : LoggingRepository<CompanyDb, CompanyDbViewModel>, ICompanyRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -24,8 +23,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public CompanyRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
-            : base(unitOfWork, mapper, metadata)
+        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
+        public CompanyRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+            IOperationLogRepository log)
+            : base(unitOfWork, mapper, metadata, log)
         {
             UnitOfWork.UseSystemContext();
         }
@@ -86,31 +87,30 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک شرکت را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="company">شرکت مورد نظر برای ایجاد یا اصلاح</param>
+        /// <param name="companyView">شرکت مورد نظر برای ایجاد یا اصلاح</param>
         /// <returns>اطلاعات نمایشی شرکت ایجاد یا اصلاح شده</returns>
-        public async Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel company)
+        public async Task<CompanyDbViewModel> SaveCompanyAsync(CompanyDbViewModel companyView)
         {
-            Verify.ArgumentNotNull(company, "company");
-            var companyModel = default(CompanyDb);
+            Verify.ArgumentNotNull(companyView, "companyView");
+            var company = default(CompanyDb);
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            if (company.Id == 0)
+            if (companyView.Id == 0)
             {
-                companyModel = Mapper.Map<CompanyDb>(company);
-                repository.Insert(companyModel);
+                company = Mapper.Map<CompanyDb>(companyView);
+                await InsertAsync(repository, company);
             }
             else
             {
-                companyModel = await repository.GetByIDAsync(
-                    company.Id);
-                if (companyModel != null)
+                company = await repository.GetByIDAsync(
+                    companyView.Id);
+                if (company != null)
                 {
-                    UpdateExistingCompany(company, companyModel);
-                    repository.Update(companyModel);
+                    await UpdateAsync(repository, company, companyView);
                 }
             }
 
             await UnitOfWork.CommitAsync();
-            return Mapper.Map<CompanyDbViewModel>(companyModel);
+            return Mapper.Map<CompanyDbViewModel>(company);
         }
 
         /// <summary>
@@ -123,17 +123,45 @@ namespace SPPC.Tadbir.Persistence
             var company = await repository.GetByIDAsync(companyId);
             if (company != null)
             {
-                repository.Delete(company);
-                await UnitOfWork.CommitAsync();
+                await DeleteAsync(repository, company);
             }
         }
 
-        private static void UpdateExistingCompany(CompanyDbViewModel companyViewModel, CompanyDb company)
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        public void SetCurrentContext(UserContextViewModel userContext)
+        {
+            SetLoggingContext(userContext);
+        }
+
+        /// <summary>
+        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
+        /// </summary>
+        /// <param name="companyViewModel">مدل نمایشی شامل آخرین تغییرات</param>
+        /// <param name="company">سطر اطلاعاتی موجود</param>
+        protected override void UpdateExisting(CompanyDbViewModel companyViewModel, CompanyDb company)
         {
             company.Name = companyViewModel.Name;
+            company.Server = companyViewModel.Server;
+            company.UserName = companyViewModel.UserName;
+            company.Password = companyViewModel.Password;
             company.Description = companyViewModel.Description;
-            company.DbName = companyViewModel.DbName;
-            company.DbPath = companyViewModel.DbPath;
+        }
+
+        /// <summary>
+        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
+        /// </summary>
+        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
+        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        protected override string GetState(CompanyDb entity)
+        {
+            return (entity != null)
+                ? String.Format(
+                    "Name : {1}{0}Server : {2}{0}UserName : {3}{0}Password : {4}{0}Description : {5}",
+                    Environment.NewLine, entity.Name, entity.Server, entity.UserName, entity.Password, entity.Description)
+                : null;
         }
     }
 }

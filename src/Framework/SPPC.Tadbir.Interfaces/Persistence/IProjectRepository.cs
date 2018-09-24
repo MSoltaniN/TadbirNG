@@ -128,5 +128,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="parentId">شناسه والد هر پروژه</param>
         /// <returns>اگر پروژه والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
         Task<string> GetProjectFullCodeAsync(int parentId);
+
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

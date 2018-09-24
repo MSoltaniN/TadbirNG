@@ -3,9 +3,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Framework.Common;
+using SPPC.Framework.Domain;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
-using SPPC.Tadbir.Model;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Core;
 
 namespace SPPC.Tadbir.Persistence
@@ -16,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
     /// <typeparam name="TEntity">نوع مدل اطلاعاتی که عملیات روی آن انجام می شود</typeparam>
     /// <typeparam name="TEntityView">نوع مدل نمایشی که برای اصلاح اطلاعات استفاده می شود</typeparam>
     public abstract class LoggingRepository<TEntity, TEntityView> : RepositoryBase, ILoggingRepository<TEntity, TEntityView>
-        where TEntity : FiscalEntity
+        where TEntity : class, IEntity
         where TEntityView : class, new()
     {
         /// <summary>
@@ -27,7 +28,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="logRepository">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         public LoggingRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository logRepository)
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+            IOperationLogRepository logRepository)
             : base(unitOfWork, mapper, metadata)
         {
             _logRepository = logRepository;
@@ -79,6 +81,16 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        protected void SetLoggingContext(UserContextViewModel userContext)
+        {
+            Verify.ArgumentNotNull(userContext, "userContext");
+            _currentContext = userContext;
+        }
+
+        /// <summary>
         /// مدل نمایشی لاگ عملیاتی برای عملیات جاری
         /// </summary>
         protected OperationLogViewModel Log { get; private set; }
@@ -97,23 +109,6 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="entity">سطر اطلاعاتی موجود</param>
         protected abstract void UpdateExisting(TEntityView entityView, TEntity entity);
 
-        private static OperationLogViewModel GetOperationLog(string action, TEntity entity)
-        {
-            var log = new OperationLogViewModel()
-            {
-                Action = action,
-                FiscalPeriodId = entity.FiscalPeriodId,
-                BranchId = entity.BranchId,
-                CompanyId = entity.Branch.CompanyId,
-                Date = DateTime.Now.Date,
-                Time = DateTime.Now.TimeOfDay,
-                Result = "Succeeded",
-                Entity = typeof(TEntity).Name,
-                UserId = 1
-            };
-            return log;
-        }
-
         private static void DisconnectEntity(TEntity entity)
         {
             var relations = Reflector
@@ -122,6 +117,23 @@ namespace SPPC.Tadbir.Persistence
                     .Namespace.StartsWith(ModelNamespace))
                 .ToArray();
             Array.ForEach(relations, prop => Reflector.SetProperty(entity, prop, null));
+        }
+
+        private OperationLogViewModel GetOperationLog(string action, TEntity entity)
+        {
+            var log = new OperationLogViewModel()
+            {
+                Action = action,
+                FiscalPeriodId = _currentContext.FiscalPeriodId,
+                BranchId = _currentContext.BranchId,
+                CompanyId = _currentContext.CompanyId,
+                Date = DateTime.Now.Date,
+                Time = DateTime.Now.TimeOfDay,
+                Result = "Succeeded",
+                Entity = typeof(TEntity).Name,
+                UserId = _currentContext.Id
+            };
+            return log;
         }
 
         private void OnAction(string action, TEntity before, TEntity after)
@@ -166,5 +178,6 @@ namespace SPPC.Tadbir.Persistence
 
         private const string ModelNamespace = "SPPC.Tadbir.Model";
         private readonly IOperationLogRepository _logRepository;
+        private UserContextViewModel _currentContext;
     }
 }

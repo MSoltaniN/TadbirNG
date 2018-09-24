@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.ViewModel;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -18,19 +18,20 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت شعب را پیاده سازی میکند.
     /// </summary>
-    public class BranchRepository : IBranchRepository
+    public class BranchRepository : LoggingRepository<Branch, BranchViewModel>, IBranchRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public BranchRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
+        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
+        public BranchRepository(
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+            IOperationLogRepository log)
+            : base(unitOfWork, mapper, metadata, log)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _metadataRepository = metadataRepository;
         }
 
         /// <summary>
@@ -42,13 +43,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از شعب سازمانی تعریف شده در شرکت مشخص شده</returns>
         public async Task<IList<BranchViewModel>> GetBranchesAsync(int companyId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Branch>();
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
             var branches = await repository
                 .GetByCriteriaAsync(
                     br => br.CompanyId == companyId,
                     gridOptions, br => br.Parent, br => br.Children);
             return branches
-                .Select(item => _mapper.Map<BranchViewModel>(item))
+                .Select(item => Mapper.Map<BranchViewModel>(item))
                 .ToList();
         }
 
@@ -61,7 +62,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>تعداد شعب  سازمانی تعریف شده در شرکت مشخص شده</returns>
         public async Task<int> GetCountAsync(int companyId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Branch>();
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
             var count = await repository
                 .GetCountByCriteriaAsync(
                     br => br.CompanyId == companyId,
@@ -77,12 +78,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task<BranchViewModel> GetBranchAsync(int branchId)
         {
             BranchViewModel item = null;
-            var repository = _unitOfWork.GetAsyncRepository<Branch>();
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
             var branch = await repository.GetByIDAsync(
                 branchId, b => b.Children);
             if (branch != null)
             {
-                item = _mapper.Map<BranchViewModel>(branch);
+                item = Mapper.Map<BranchViewModel>(branch);
             }
 
             return item;
@@ -94,7 +95,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای شعبه سازمانی</returns>
         public async Task<ViewViewModel> GetBranchMetadataAsync()
         {
-            return await _metadataRepository.GetViewMetadataAsync<Branch>();
+            return await Metadata.GetViewMetadataAsync<Branch>();
         }
 
         /// <summary>
@@ -105,7 +106,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<RelatedItemsViewModel> GetBranchRolesAsync(int branchId)
         {
             RelatedItemsViewModel branchRoles = null;
-            var repository = _unitOfWork.GetAsyncRepository<Branch>();
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
             var existing = await repository
                 .GetEntityQuery()
                 .Include(br => br.RoleBranches)
@@ -114,18 +115,18 @@ namespace SPPC.Tadbir.Persistence
             if (existing != null)
             {
                 var enabledRoles = existing.RoleBranches
-                    .Select(r => _mapper.Map<RelatedItemViewModel>(r))
+                    .Select(r => Mapper.Map<RelatedItemViewModel>(r))
                     .ToArray();
-                var roleRepository = _unitOfWork.GetAsyncRepository<Role>();
+                var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
                 var allRoles = await roleRepository
                     .GetAllAsync();
                 var disabledRoles = allRoles
-                    .Select(r => _mapper.Map<RelatedItemViewModel>(r))
+                    .Select(r => Mapper.Map<RelatedItemViewModel>(r))
                     .Except(enabledRoles, new EntityEqualityComparer<RelatedItemViewModel>())
                     .ToArray();
                 Array.ForEach(enabledRoles, item => item.IsSelected = true);
 
-                branchRoles = _mapper.Map<RelatedItemsViewModel>(existing);
+                branchRoles = Mapper.Map<RelatedItemsViewModel>(existing);
                 Array.ForEach(enabledRoles
                     .Concat(disabledRoles)
                     .OrderBy(item => item.Id)
@@ -142,7 +143,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveBranchRolesAsync(RelatedItemsViewModel branchRoles)
         {
             Verify.ArgumentNotNull(branchRoles, "branchRoles");
-            var repository = _unitOfWork.GetAsyncRepository<Branch>();
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
             var existing = await repository.GetByIDWithTrackingAsync(branchRoles.Id, br => br.RoleBranches);
             if (existing != null && AreRolesModified(existing, branchRoles))
             {
@@ -153,38 +154,35 @@ namespace SPPC.Tadbir.Persistence
 
                 AddNewRoles(existing, branchRoles);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک شعبه سازمانی را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="branch">شعبه سازمانی مورد نظر برای ایجاد یا اصلاح</param>
+        /// <param name="branchView">شعبه سازمانی مورد نظر برای ایجاد یا اصلاح</param>
         /// <returns>اطلاعات نمایشی شعبه سازمانی ایجاد یا اصلاح شده</returns>
-        public async Task<BranchViewModel> SaveBranchAsync(BranchViewModel branch)
+        public async Task<BranchViewModel> SaveBranchAsync(BranchViewModel branchView)
         {
-            Verify.ArgumentNotNull(branch, "branch");
-            Branch branchModel = default(Branch);
-            var repository = _unitOfWork.GetAsyncRepository<Branch>();
-            if (branch.Id == 0)
+            Verify.ArgumentNotNull(branchView, "branchView");
+            Branch branch = default(Branch);
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
+            if (branchView.Id == 0)
             {
-                branchModel = _mapper.Map<Branch>(branch);
-                repository.Insert(branchModel);
+                branch = Mapper.Map<Branch>(branchView);
+                await InsertAsync(repository, branch);
             }
             else
             {
-                branchModel = await repository.GetByIDAsync(
-                    branch.Id);
-                if (branchModel != null)
+                branch = await repository.GetByIDAsync(branchView.Id);
+                if (branch != null)
                 {
-                    UpdateExistingBranch(branch, branchModel);
-                    repository.Update(branchModel);
+                    await UpdateAsync(repository, branch, branchView);
                 }
             }
 
-            await _unitOfWork.CommitAsync();
-            return _mapper.Map<BranchViewModel>(branchModel);
+            return Mapper.Map<BranchViewModel>(branch);
         }
 
         /// <summary>
@@ -193,13 +191,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="branchId">شناسه عددی شعبه سازمانی مورد نظر برای حذف</param>
         public async Task DeleteBranchAsync(int branchId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<Branch>();
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
             var branch = await repository.GetByIDAsync(branchId);
             if (branch != null)
             {
-                branch.Parent = null;
-                repository.Delete(branch);
-                await _unitOfWork.CommitAsync();
+                await DeleteAsync(repository, branch);
             }
         }
 
@@ -212,7 +208,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool?> HasChildrenAsync(int branchId)
         {
             bool? hasChildren = null;
-            var repository = _unitOfWork.GetAsyncRepository<Branch>();
+            var repository = UnitOfWork.GetAsyncRepository<Branch>();
             var branch = await repository.GetByIDAsync(branchId, b => b.Children);
             if (branch != null)
             {
@@ -222,11 +218,39 @@ namespace SPPC.Tadbir.Persistence
             return hasChildren;
         }
 
-        private static void UpdateExistingBranch(BranchViewModel branchViewModel, Branch branch)
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        public void SetCurrentContext(UserContextViewModel userContext)
+        {
+            SetLoggingContext(userContext);
+        }
+
+        /// <summary>
+        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
+        /// </summary>
+        /// <param name="branchViewModel">مدل نمایشی شامل آخرین تغییرات</param>
+        /// <param name="branch">سطر اطلاعاتی موجود</param>
+        protected override void UpdateExisting(BranchViewModel branchViewModel, Branch branch)
         {
             branch.Name = branchViewModel.Name;
             branch.Level = branchViewModel.Level;
             branch.Description = branchViewModel.Description;
+        }
+
+        /// <summary>
+        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
+        /// </summary>
+        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
+        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        protected override string GetState(Branch entity)
+        {
+            return (entity != null)
+                ? String.Format(
+                    "Name : {1}{0}Description : {2}",
+                    Environment.NewLine, entity.Name, entity.Description)
+                : null;
         }
 
         private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
@@ -266,7 +290,7 @@ namespace SPPC.Tadbir.Persistence
 
         private void AddNewRoles(Branch existing, RelatedItemsViewModel roleItems)
         {
-            var repository = _unitOfWork.GetRepository<Role>();
+            var repository = UnitOfWork.GetRepository<Role>();
             var currentItems = existing.RoleBranches.Select(rb => rb.RoleId);
             var newItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected
@@ -283,9 +307,5 @@ namespace SPPC.Tadbir.Persistence
                 existing.RoleBranches.Add(roleBranch);
             }
         }
-
-        private IAppUnitOfWork _unitOfWork;
-        private IDomainMapper _mapper;
-        private IMetadataRepository _metadataRepository;
     }
 }

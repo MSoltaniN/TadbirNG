@@ -128,5 +128,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="parentId">شناسه والد هر مرکز هزینه</param>
         /// <returns>اگر مرکز هزینه والد نداشته باشد مقدار خالی و اگر والد داشته باشد مقدار FullCode والد را برمیگرداند</returns>
         Task<string> GetCostCenterFullCodeAsync(int parentId);
+
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

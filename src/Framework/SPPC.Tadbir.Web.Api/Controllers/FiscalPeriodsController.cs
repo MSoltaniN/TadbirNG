@@ -69,6 +69,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveFiscalPeriodAsync(fiscalPeriod);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -86,6 +87,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveFiscalPeriodAsync(fiscalPeriod);
             result = (outputItem != null)
                 ? Ok(outputItem)
@@ -105,6 +107,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.FiscalPeriod));
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteFiscalPeriodAsync(fpId);
             return StatusCode(StatusCodes.Status204NoContent);
         }

@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -18,19 +18,19 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     ///  عملیات مورد نیاز برای مدیریت اطلاعات دوره مالی را پیاده سازی می کند.
     /// </summary>
-    public class FiscalPeriodRepository : IFiscalPeriodRepository
+    public class FiscalPeriodRepository : LoggingRepository<FiscalPeriod, FiscalPeriodViewModel>, IFiscalPeriodRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
-        /// <param name="metadataRepository">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public FiscalPeriodRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadataRepository)
+        /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
+        public FiscalPeriodRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+            IOperationLogRepository log)
+            : base(unitOfWork, mapper, metadata, log)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _metadataRepository = metadataRepository;
         }
 
         /// <summary>
@@ -42,13 +42,13 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از دوره های مالی تعریف شده در شرکت مشخص شده</returns>
         public async Task<IList<FiscalPeriodViewModel>> GetFiscalPeriodsAsync(int companyId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriods = await repository
                 .GetByCriteriaAsync(
                     fp => fp.CompanyId == companyId,
                     gridOptions);
             return fiscalPeriods
-                .Select(item => _mapper.Map<FiscalPeriodViewModel>(item))
+                .Select(item => Mapper.Map<FiscalPeriodViewModel>(item))
                 .ToList();
         }
 
@@ -61,7 +61,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>تعداد دوره های مالی تعریف شده در شرکت مشخص شده</returns>
         public async Task<int> GetCountAsync(int companyId, GridOptions gridOptions = null)
         {
-            var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var count = await repository
                 .GetCountByCriteriaAsync(
                     fp => fp.CompanyId == companyId,
@@ -77,12 +77,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task<FiscalPeriodViewModel> GetFiscalPeriodAsync(int fperiodId)
         {
             FiscalPeriodViewModel item = null;
-            var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriod = await repository.GetByIDAsync(
                 fperiodId);
             if (fiscalPeriod != null)
             {
-                item = _mapper.Map<FiscalPeriodViewModel>(fiscalPeriod);
+                item = Mapper.Map<FiscalPeriodViewModel>(fiscalPeriod);
             }
 
             return item;
@@ -94,7 +94,7 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات فراداده ای تعریف شده برای دوره مالی</returns>
         public async Task<ViewViewModel> GetFiscalPeriodMetadataAsync()
         {
-            return await _metadataRepository.GetViewMetadataAsync<FiscalPeriod>();
+            return await Metadata.GetViewMetadataAsync<FiscalPeriod>();
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<RelatedItemsViewModel> GetFiscalPeriodRolesAsync(int fpId)
         {
             RelatedItemsViewModel periodRoles = null;
-            var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var existing = await repository
                 .GetEntityQuery()
                 .Include(fp => fp.RoleFiscalPeriods)
@@ -114,18 +114,18 @@ namespace SPPC.Tadbir.Persistence
             if (existing != null)
             {
                 var enabledRoles = existing.RoleFiscalPeriods
-                    .Select(r => _mapper.Map<RelatedItemViewModel>(r))
+                    .Select(r => Mapper.Map<RelatedItemViewModel>(r))
                     .ToArray();
-                var roleRepository = _unitOfWork.GetAsyncRepository<Role>();
+                var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
                 var allRoles = await roleRepository
                     .GetAllAsync();
                 var disabledRoles = allRoles
-                    .Select(r => _mapper.Map<RelatedItemViewModel>(r))
+                    .Select(r => Mapper.Map<RelatedItemViewModel>(r))
                     .Except(enabledRoles, new EntityEqualityComparer<RelatedItemViewModel>())
                     .ToArray();
                 Array.ForEach(enabledRoles, item => item.IsSelected = true);
 
-                periodRoles = _mapper.Map<RelatedItemsViewModel>(existing);
+                periodRoles = Mapper.Map<RelatedItemsViewModel>(existing);
                 Array.ForEach(enabledRoles
                     .Concat(disabledRoles)
                     .OrderBy(item => item.Id)
@@ -142,7 +142,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task SaveFiscalPeriodRolesAsync(RelatedItemsViewModel periodRoles)
         {
             Verify.ArgumentNotNull(periodRoles, "periodRoles");
-            var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var existing = await repository.GetByIDWithTrackingAsync(periodRoles.Id, r => r.RoleFiscalPeriods);
             if (existing != null && AreRolesModified(existing, periodRoles))
             {
@@ -153,38 +153,35 @@ namespace SPPC.Tadbir.Persistence
 
                 AddNewRoles(existing, periodRoles);
                 repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await UnitOfWork.CommitAsync();
             }
         }
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک دوره مالی را در محل ذخیره ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="fiscalPeriod">دوره مالی مورد نظر برای ایجاد یا اصلاح</param>
+        /// <param name="fiscalPeriodView">دوره مالی مورد نظر برای ایجاد یا اصلاح</param>
         /// <returns>اطلاعات نمایشی دوره مالی ایجاد یا اصلاح شده</returns>
-        public async Task<FiscalPeriodViewModel> SaveFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriod)
+        public async Task<FiscalPeriodViewModel> SaveFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriodView)
         {
-            Verify.ArgumentNotNull(fiscalPeriod, "fiscalPeriod");
-            FiscalPeriod fiscalPeriodModel = default(FiscalPeriod);
-            var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
-            if (fiscalPeriod.Id == 0)
+            Verify.ArgumentNotNull(fiscalPeriodView, "fiscalPeriodView");
+            FiscalPeriod fiscalPeriod = default(FiscalPeriod);
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
+            if (fiscalPeriodView.Id == 0)
             {
-                fiscalPeriodModel = _mapper.Map<FiscalPeriod>(fiscalPeriod);
-                repository.Insert(fiscalPeriodModel);
+                fiscalPeriod = Mapper.Map<FiscalPeriod>(fiscalPeriodView);
+                await InsertAsync(repository, fiscalPeriod);
             }
             else
             {
-                fiscalPeriodModel = await repository.GetByIDAsync(
-                    fiscalPeriod.Id);
-                if (fiscalPeriodModel != null)
+                fiscalPeriod = await repository.GetByIDAsync(fiscalPeriodView.Id);
+                if (fiscalPeriod != null)
                 {
-                    UpdateExistingFiscalPeriod(fiscalPeriod, fiscalPeriodModel);
-                    repository.Update(fiscalPeriodModel);
+                    await UpdateAsync(repository, fiscalPeriod, fiscalPeriodView);
                 }
             }
 
-            await _unitOfWork.CommitAsync();
-            return _mapper.Map<FiscalPeriodViewModel>(fiscalPeriodModel);
+            return Mapper.Map<FiscalPeriodViewModel>(fiscalPeriod);
         }
 
         /// <summary>
@@ -193,12 +190,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="fperiodId">شناسه عددی دوره مالی مورد نظر برای حذف</param>
         public async Task DeleteFiscalPeriodAsync(int fperiodId)
         {
-            var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriod = await repository.GetByIDAsync(fperiodId);
             if (fiscalPeriod != null)
             {
-                repository.Delete(fiscalPeriod);
-                await _unitOfWork.CommitAsync();
+                await DeleteAsync(repository, fiscalPeriod);
             }
         }
 
@@ -225,7 +221,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<bool> IsOverlapFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriod)
         {
             Verify.ArgumentNotNull(fiscalPeriod, "fiscalPeriod");
-            var repository = _unitOfWork.GetAsyncRepository<FiscalPeriod>();
+            var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriods = await repository
                 .GetByCriteriaAsync(
                 fp => fp.CompanyId == fiscalPeriod.CompanyId && fp.Id != fiscalPeriod.Id
@@ -236,13 +232,41 @@ namespace SPPC.Tadbir.Persistence
             return (fiscalPeriods.Count > 0);
         }
 
-        private static void UpdateExistingFiscalPeriod(FiscalPeriodViewModel fiscalPeriodModel, FiscalPeriod fiscalPeriod)
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        public void SetCurrentContext(UserContextViewModel userContext)
         {
-            fiscalPeriod.Name = fiscalPeriodModel.Name;
-            fiscalPeriod.StartDate = fiscalPeriodModel.StartDate;
-            fiscalPeriod.EndDate = fiscalPeriodModel.EndDate;
-            fiscalPeriod.Description = fiscalPeriodModel.Description;
-            fiscalPeriod.CompanyId = fiscalPeriodModel.CompanyId;
+            SetLoggingContext(userContext);
+        }
+
+        /// <summary>
+        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
+        /// </summary>
+        /// <param name="fiscalPeriodView">مدل نمایشی شامل آخرین تغییرات</param>
+        /// <param name="fiscalPeriod">سطر اطلاعاتی موجود</param>
+        protected override void UpdateExisting(FiscalPeriodViewModel fiscalPeriodView, FiscalPeriod fiscalPeriod)
+        {
+            fiscalPeriod.Name = fiscalPeriodView.Name;
+            fiscalPeriod.StartDate = fiscalPeriodView.StartDate;
+            fiscalPeriod.EndDate = fiscalPeriodView.EndDate;
+            fiscalPeriod.Description = fiscalPeriodView.Description;
+            fiscalPeriod.CompanyId = fiscalPeriodView.CompanyId;
+        }
+
+        /// <summary>
+        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
+        /// </summary>
+        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
+        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        protected override string GetState(FiscalPeriod entity)
+        {
+            return (entity != null)
+                ? String.Format(
+                    "Name : {1}{0}Start Date : {2}{0}End Date : {3}{0}Description : {4}",
+                    Environment.NewLine, entity.Name, entity.StartDate, entity.EndDate, entity.Description)
+                : null;
         }
 
         private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
@@ -282,7 +306,7 @@ namespace SPPC.Tadbir.Persistence
 
         private void AddNewRoles(FiscalPeriod existing, RelatedItemsViewModel roleItems)
         {
-            var repository = _unitOfWork.GetRepository<Role>();
+            var repository = UnitOfWork.GetRepository<Role>();
             var currentItems = existing.RoleFiscalPeriods.Select(rfp => rfp.RoleId);
             var newItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected
@@ -299,9 +323,5 @@ namespace SPPC.Tadbir.Persistence
                 existing.RoleFiscalPeriods.Add(roleFiscalPeriod);
             }
         }
-
-        private IAppUnitOfWork _unitOfWork;
-        private IDomainMapper _mapper;
-        private IMetadataRepository _metadataRepository;
     }
 }

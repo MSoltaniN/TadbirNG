@@ -103,6 +103,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveDetailAccountAsync(detailAccount);
             return StatusCode(StatusCodes.Status201Created, outputItem);
         }
@@ -120,6 +121,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveDetailAccountAsync(detailAccount);
             result = (outputItem != null)
                 ? Ok(outputItem)
@@ -139,6 +141,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(result);
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteDetailAccountAsync(faccountId);
             return StatusCode(StatusCodes.Status204NoContent);
         }
