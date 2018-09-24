@@ -35,5 +35,25 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         [Display(Name = FieldNames.ProjectField)]
         public int? ProjectId { get; set; }
+
+        /// <summary>
+        /// نام مولفه سرفصل حسابداری
+        /// </summary>
+        public string Account { get; set; }
+
+        /// <summary>
+        /// نام مولفه تفصیلی شناور
+        /// </summary>
+        public string DetailAccount { get; set; }
+
+        /// <summary>
+        /// نام مولفه مرکز هزینه
+        /// </summary>
+        public string CostCenter { get; set; }
+
+        /// <summary>
+        /// نام مولفه پروژه
+        /// </summary>
+        public string Project { get; set; }
     }
 }

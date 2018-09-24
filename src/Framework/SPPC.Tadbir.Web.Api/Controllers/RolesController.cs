@@ -96,6 +96,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             var outputRole = await _repository.SaveRoleAsync(role);
             return StatusCode(StatusCodes.Status201Created, outputRole);
         }
@@ -117,6 +118,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             var outputRole = await _repository.SaveRoleAsync(role);
             return Ok(outputRole);
         }
@@ -156,6 +158,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                     _strings[AppStrings.CannotDeleteRoleHavingRelation], role.Name, _strings[AppStrings.FiscalPeriod]));
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteRoleAsync(roleId);
             return StatusCode(StatusCodes.Status204NoContent);
         }

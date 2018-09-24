@@ -117,5 +117,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="user">User item to check for duplicate user name</param>
         /// <returns>True if the user name is already used; otherwise returns false.</returns>
         Task<bool> IsDuplicateUserAsync(UserViewModel user);
+
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

@@ -34,5 +34,10 @@ namespace SPPC.Tadbir.ViewModel.Finance
         [Display(Name = FieldNames.CurrencyTypeField)]
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         public int? CurrencyId { get; set; }
+
+        /// <summary>
+        /// نام ارز به کار رفته در آرتیکل سند
+        /// </summary>
+        public string CurrencyName { get; set; }
     }
 }

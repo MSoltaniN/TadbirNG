@@ -19,7 +19,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات کاربران را پیاده سازی می کند
     /// </summary>
-    public class UserRepository : RepositoryBase, IUserRepository
+    public class UserRepository : LoggingRepository<User, UserViewModel>, IUserRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -27,8 +27,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public UserRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
-            : base(unitOfWork, mapper, metadata)
+        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
+        public UserRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+            IOperationLogRepository log)
+            : base(unitOfWork, mapper, metadata, log)
         {
             UnitOfWork.UseSystemContext();
         }
@@ -269,29 +271,34 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// Asynchronously inserts or updates a single user in repository.
         /// </summary>
-        /// <param name="user">Item to insert or update</param>
-        public async Task<UserViewModel> SaveUserAsync(UserViewModel user)
+        /// <param name="userView">Item to insert or update</param>
+        public async Task<UserViewModel> SaveUserAsync(UserViewModel userView)
         {
-            Verify.ArgumentNotNull(user, "user");
-            User userModel = default(User);
+            Verify.ArgumentNotNull(userView, "userView");
+            User user = default(User);
             var repository = UnitOfWork.GetAsyncRepository<User>();
-            if (user.Id == 0)
+            if (userView.Id == 0)
             {
-                userModel = GetNewUser(user);
-                repository.Insert(userModel, usr => usr.Person);
+                user = GetNewUser(userView);
+                OnAction("Create", null, user);
+                repository.Insert(user, usr => usr.Person);
+                await FinalizeActionAsync();
             }
             else
             {
-                userModel = await repository.GetByIDAsync(user.Id, u => u.Person);
-                if (userModel != null)
+                user = await repository.GetByIDAsync(userView.Id, u => u.Person);
+                if (user != null)
                 {
-                    UpdateExistingUser(userModel, user);
-                    repository.Update(userModel, usr => usr.Person);
+                    var clone = Mapper.Map<User>(user);
+                    OnAction("Edit", clone, null);
+                    UpdateExisting(userView, user);
+                    Log.AfterState = GetState(user);
+                    repository.Update(user, usr => usr.Person);
+                    await FinalizeActionAsync();
                 }
             }
 
-            await UnitOfWork.CommitAsync();
-            return Mapper.Map<UserViewModel>(userModel);
+            return Mapper.Map<UserViewModel>(user);
         }
 
         /// <summary>
@@ -367,6 +374,48 @@ namespace SPPC.Tadbir.Persistence
             return (existing != null);
         }
 
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        public void SetCurrentContext(UserContextViewModel userContext)
+        {
+            SetLoggingContext(userContext);
+        }
+
+        /// <summary>
+        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
+        /// </summary>
+        /// <param name="userView">مدل نمایشی شامل آخرین تغییرات</param>
+        /// <param name="user">سطر اطلاعاتی موجود</param>
+        protected override void UpdateExisting(UserViewModel userView, User user)
+        {
+            var modifiedUser = Mapper.Map<User>(userView);
+            user.UserName = userView.UserName;
+            user.IsEnabled = userView.IsEnabled;
+            user.Person.FirstName = userView.PersonFirstName;
+            user.Person.LastName = userView.PersonLastName;
+            if (!String.IsNullOrEmpty(modifiedUser.PasswordHash))
+            {
+                user.PasswordHash = modifiedUser.PasswordHash;
+            }
+        }
+
+        /// <summary>
+        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
+        /// </summary>
+        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
+        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        protected override string GetState(User entity)
+        {
+            return (entity != null)
+                ? String.Format(
+                    "UserName : {1}{0}IsEnabled : {2}{0}FirstName : {3}{0}LastName : {4}{0}",
+                    Environment.NewLine, entity.UserName, entity.IsEnabled,
+                    entity.Person.FirstName, entity.Person.LastName)
+                : null;
+        }
+
         private static bool AreRolesModified(User existing, RelatedItemsViewModel roleItems)
         {
             var existingItems = existing.UserRoles
@@ -437,19 +486,6 @@ namespace SPPC.Tadbir.Persistence
                     RoleId = role.Id
                 };
                 existing.UserRoles.Add(userRole);
-            }
-        }
-
-        private void UpdateExistingUser(User existing, UserViewModel user)
-        {
-            var modifiedUser = Mapper.Map<User>(user);
-            existing.UserName = user.UserName;
-            existing.IsEnabled = user.IsEnabled;
-            existing.Person.FirstName = user.PersonFirstName;
-            existing.Person.LastName = user.PersonLastName;
-            if (!String.IsNullOrEmpty(modifiedUser.PasswordHash))
-            {
-                existing.PasswordHash = modifiedUser.PasswordHash;
             }
         }
 

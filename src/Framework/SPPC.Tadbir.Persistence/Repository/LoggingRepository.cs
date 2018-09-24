@@ -96,6 +96,38 @@ namespace SPPC.Tadbir.Persistence
         protected OperationLogViewModel Log { get; private set; }
 
         /// <summary>
+        /// تغییرات انجام شده را اعمال کرده و در صورت امکان لاگ عملیاتی را ایجاد می کند
+        /// </summary>
+        protected async Task FinalizeActionAsync()
+        {
+            try
+            {
+                await UnitOfWork.CommitAsync();
+                await TrySaveLogAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Result = "Failed";
+                Log.ErrorMessage = ex.Message;
+                await TrySaveLogAsync();
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// رکورد لاگ عملیاتی را با توجه به وضعیت قدیم و جدید سطر اطلاعاتی آماده می کند
+        /// </summary>
+        /// <param name="action">نوع عملیات مورد استفاده در لاگ عملیاتی</param>
+        /// <param name="before">وضعیت قدیم سطر اطلاعاتی</param>
+        /// <param name="after">وضعیت جدید سطر اطلاعاتی</param>
+        protected void OnAction(string action, TEntity before, TEntity after)
+        {
+            Log = GetOperationLog(action);
+            Log.BeforeState = GetState(before);
+            Log.AfterState = GetState(after);
+        }
+
+        /// <summary>
         /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
         /// </summary>
         /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
@@ -119,7 +151,7 @@ namespace SPPC.Tadbir.Persistence
             Array.ForEach(relations, prop => Reflector.SetProperty(entity, prop, null));
         }
 
-        private OperationLogViewModel GetOperationLog(string action, TEntity entity)
+        private OperationLogViewModel GetOperationLog(string action)
         {
             var log = new OperationLogViewModel()
             {
@@ -134,30 +166,6 @@ namespace SPPC.Tadbir.Persistence
                 UserId = _currentContext.Id
             };
             return log;
-        }
-
-        private void OnAction(string action, TEntity before, TEntity after)
-        {
-            var entity = before ?? after;
-            Log = GetOperationLog(action, entity);
-            Log.BeforeState = GetState(before);
-            Log.AfterState = GetState(after);
-        }
-
-        private async Task FinalizeActionAsync()
-        {
-            try
-            {
-                await UnitOfWork.CommitAsync();
-                await TrySaveLogAsync();
-            }
-            catch (Exception ex)
-            {
-                Log.Result = "Failed";
-                Log.ErrorMessage = ex.Message;
-                await TrySaveLogAsync();
-                throw;
-            }
         }
 
         private async Task TrySaveLogAsync()

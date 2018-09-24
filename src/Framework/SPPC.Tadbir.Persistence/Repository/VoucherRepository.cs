@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
@@ -18,7 +17,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات اسناد مالی و آرتیکل های آنها را پیاده سازی می کند.
     /// </summary>
-    public class VoucherRepository : RepositoryBase, IVoucherRepository
+    public class VoucherRepository : LoggingRepository<Voucher, VoucherViewModel>, IVoucherRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -26,15 +25,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
+        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
         public VoucherRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, ISecureRepository repository)
-            : base(unitOfWork, mapper, metadata)
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+            IOperationLogRepository log, ISecureRepository repository)
+            : base(unitOfWork, mapper, metadata, log)
         {
             _repository = repository;
         }
-
-        #region Voucher Operations
 
         /// <summary>
         /// به روش آسنکرون، کلیه اسناد مالی را که در دوره مالی و شعبه مشخص شده تعریف شده اند، از دیتابیس خوانده و برمی گرداند
@@ -119,30 +118,29 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک سند مالی را در دیتابیس ایجاد یا اصلاح می کند
         /// </summary>
-        /// <param name="voucher">سند مالی برای ایجاد یا اصلاح</param>
+        /// <param name="voucherView">سند مالی برای ایجاد یا اصلاح</param>
         /// <returns>مدل نمایشی سند ایجاد یا اصلاح شده</returns>
-        public async Task<VoucherViewModel> SaveVoucherAsync(VoucherViewModel voucher)
+        public async Task<VoucherViewModel> SaveVoucherAsync(VoucherViewModel voucherView)
         {
-            Verify.ArgumentNotNull(voucher, "voucher");
-            Voucher voucherModel = default(Voucher);
+            Verify.ArgumentNotNull(voucherView, "voucherView");
+            Voucher voucher = default(Voucher);
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            if (voucher.Id == 0)
+            if (voucherView.Id == 0)
             {
-                voucherModel = Mapper.Map<Voucher>(voucher);
-                repository.Insert(voucherModel);
+                voucher = Mapper.Map<Voucher>(voucherView);
+                await InsertAsync(repository, voucher);
             }
             else
             {
-                voucherModel = await repository.GetByIDAsync(voucher.Id, v => v.FiscalPeriod, v => v.Branch);
-                if (voucherModel != null)
+                voucher = await repository.GetByIDAsync(voucherView.Id, v => v.FiscalPeriod, v => v.Branch);
+                if (voucher != null)
                 {
-                    UpdateExistingVoucher(voucherModel, voucher);
-                    repository.Update(voucherModel);
+                    await UpdateAsync(repository, voucher, voucherView);
                 }
             }
 
             await UnitOfWork.CommitAsync();
-            return Mapper.Map<VoucherViewModel>(voucherModel);
+            return Mapper.Map<VoucherViewModel>(voucher);
         }
 
         /// <summary>
@@ -156,8 +154,7 @@ namespace SPPC.Tadbir.Persistence
             if (voucher != null)
             {
                 voucher.Lines.Clear();
-                repository.Delete(voucher);
-                await UnitOfWork.CommitAsync();
+                await DeleteAsync(repository, voucher);
             }
         }
 
@@ -178,237 +175,39 @@ namespace SPPC.Tadbir.Persistence
             return (duplicates.Count > 0);
         }
 
-        #endregion
-
-        #region Voucher Line Operations
-
         /// <summary>
-        /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
+        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        public async Task<IList<VoucherLineViewModel>> GetArticlesAsync(
-            UserContextViewModel userContext, int voucherId, GridOptions gridOptions = null)
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        public void SetCurrentContext(UserContextViewModel userContext)
         {
-            var query = GetVoucherLinesQuery(voucherId);
-            query = _repository.ApplyRowFilter(ref query, userContext, ViewName.VoucherLine);
-            var lines = await query
-                .Select(line => Mapper.Map<VoucherLineViewModel>(line))
-                .Apply(gridOptions)
-                .ToListAsync();
-            return lines;
+            SetLoggingContext(userContext);
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از دیتابیس خوانده و برمی گرداند
+        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
-        /// <param name="articleId">شناسه دیتابیسی آرتیکل موجود</param>
-        /// <returns>اطلاعات آرتیکل مشخص شده با شناسه دیتابیسی</returns>
-        public async Task<VoucherLineViewModel> GetArticleAsync(int articleId)
+        /// <param name="voucherView">مدل نمایشی شامل آخرین تغییرات</param>
+        /// <param name="voucher">سطر اطلاعاتی موجود</param>
+        protected override void UpdateExisting(VoucherViewModel voucherView, Voucher voucher)
         {
-            VoucherLineViewModel articleViewModel = null;
-            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
-            var article = await repository.GetByIDAsync(articleId);
-            if (article != null)
-            {
-                articleViewModel = Mapper.Map<VoucherLineViewModel>(article);
-            }
-
-            return articleViewModel;
+            voucher.No = voucherView.No;
+            voucher.Date = voucherView.Date;
+            voucher.Description = voucherView.Description;
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی را از محل ذخیره خوانده و برمی گرداند
+        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
         /// </summary>
-        /// <returns>اطلاعات فراداده ای تعریف شده برای آرتیکل سند مالی</returns>
-        public async Task<ViewViewModel> GetVoucherLineMetadataAsync()
+        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
+        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        protected override string GetState(Voucher entity)
         {
-            return await Metadata.GetViewMetadataAsync<VoucherLine>();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
-        /// از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد آرتیکل های سند مالی بعد از اعمال فیلتر</returns>
-        public async Task<int> GetArticleCountAsync(
-            UserContextViewModel userContext, int voucherId, GridOptions gridOptions = null)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
-            var query = repository.GetEntityQuery()
-                .Where(line => line.Voucher.Id == voucherId);
-            query = _repository.ApplyRowFilter(ref query, userContext, ViewName.VoucherLine);
-            return await query
-                .Apply(gridOptions)
-                .CountAsync();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مدل نمایشی سرفصل حسابداری مشخص شده
-        /// را از دیتابیس خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
-        /// <returns>مدل نمایشی سرفصل حسابداری مورد استفاده در آرتیکل</returns>
-        public async Task<AccountViewModel> GetArticleAccountAsync(int accountId)
-        {
-            var articleAccount = default(AccountViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
-            if (account != null)
-            {
-                articleAccount = Mapper.Map<AccountViewModel>(account);
-            }
-
-            return articleAccount;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مدل نمایشی تفصیلی شناور مشخص شده
-        /// را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="faccountId">شناسه دیتابیسی یکی از تفصیلی های شناور موجود</param>
-        /// <returns>مدل نمایشی تفصیلی شناور مورد استفاده در آرتیکل</returns>
-        public async Task<DetailAccountViewModel> GetArticleDetailAccountAsync(int faccountId)
-        {
-            var articleDetailAccount = default(DetailAccountViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
-            var detailAccount = await repository.GetByIDAsync(faccountId, acc => acc.Children);
-            if (detailAccount != null)
-            {
-                articleDetailAccount = Mapper.Map<DetailAccountViewModel>(detailAccount);
-            }
-
-            return articleDetailAccount;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مدل نمایشی مرکز هزینه مشخص شده
-        /// را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="costCenterId">شناسه دیتابیسی یکی از مراکز هزینه موجود</param>
-        /// <returns>مدل نمایشی مرکز هزینه مورد استفاده در آرتیکل</returns>
-        public async Task<CostCenterViewModel> GetArticleCostCenterAsync(int costCenterId)
-        {
-            var articleCostCenter = default(CostCenterViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDAsync(costCenterId, acc => acc.Children);
-            if (costCenter != null)
-            {
-                articleCostCenter = Mapper.Map<CostCenterViewModel>(costCenter);
-            }
-
-            return articleCostCenter;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، مدل نمایشی پروژه مشخص شده
-        /// را از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="projectId">شناسه دیتابیسی یکی از پروژه های موجود</param>
-        /// <returns>مدل نمایشی پروژه مورد استفاده در آرتیکل</returns>
-        public async Task<ProjectViewModel> GetArticleProjectAsync(int projectId)
-        {
-            var articleProject = default(ProjectViewModel);
-            var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var project = await repository.GetByIDAsync(projectId, acc => acc.Children);
-            if (project != null)
-            {
-                articleProject = Mapper.Map<ProjectViewModel>(project);
-            }
-
-            return articleProject;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، اطلاعات یک سطر سند مالی (آرتیکل) را در دیتابیس ایجاد یا اصلاح می کند
-        /// </summary>
-        /// <param name="article">آرتیکل برای ایجاد یا اصلاح</param>
-        public async Task<VoucherLineViewModel> SaveArticleAsync(VoucherLineViewModel article)
-        {
-            Verify.ArgumentNotNull(article, "article");
-            VoucherLine lineModel = default(VoucherLine);
-            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
-            if (article.Id == 0)
-            {
-                lineModel = Mapper.Map<VoucherLine>(article);
-                repository.Insert(lineModel);
-            }
-            else
-            {
-                lineModel = await repository.GetByIDAsync(article.Id);
-                if (lineModel != null)
-                {
-                    UpdateExistingArticle(lineModel, article);
-                    repository.Update(lineModel);
-                }
-            }
-
-            await UnitOfWork.CommitAsync();
-            return Mapper.Map<VoucherLineViewModel>(lineModel);
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، سطر سند مالی (آرتیکل) مشخص شده با شناسه دیتابیسی را از محل ذخیره حذف می کند
-        /// </summary>
-        /// <param name="articleId">شناسه دیتابیسی آرتیکل برای حذف</param>
-        public async Task DeleteArticleAsync(int articleId)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
-            var article = await repository.GetByIDAsync(articleId);
-            if (article != null)
-            {
-                article.Account = null;
-                article.DetailAccount = null;
-                article.CostCenter = null;
-                article.Project = null;
-                article.Branch = null;
-                article.Currency = null;
-                article.FiscalPeriod = null;
-                article.Voucher = null;
-                repository.Delete(article);
-                await UnitOfWork.CommitAsync();
-            }
-        }
-
-        #endregion
-
-        private static void UpdateExistingArticle(VoucherLine existing, VoucherLineViewModel article)
-        {
-            existing.AccountId = article.FullAccount.AccountId ?? 0;
-            existing.DetailId = article.FullAccount.DetailId;
-            existing.CostCenterId = article.FullAccount.CostCenterId;
-            existing.ProjectId = article.FullAccount.ProjectId;
-            existing.CurrencyId = article.CurrencyId ?? 0;
-            existing.Debit = article.Debit;
-            existing.Credit = article.Credit;
-            existing.Description = article.Description;
-        }
-
-        private static void UpdateExistingVoucher(Voucher existing, VoucherViewModel voucher)
-        {
-            existing.No = voucher.No;
-            existing.Date = voucher.Date;
-            existing.Description = voucher.Description;
-        }
-
-        private IQueryable<VoucherLine> GetVoucherLinesQuery(int voucherId)
-        {
-            var repository = UnitOfWork.GetRepository<VoucherLine>();
-            var linesQuery = repository
-                .GetEntityQuery(
-                    line => line.Voucher, line => line.Account, line => line.DetailAccount, line => line.CostCenter,
-                    line => line.Project, line => line.Currency, line => line.FiscalPeriod, line => line.Branch)
-                .Where(line => line.Voucher.Id == voucherId);
-            return linesQuery;
+            return (entity != null)
+                ? String.Format(
+                    "Name : {1}{0}Date : {2}{0}Description : {3}",
+                    Environment.NewLine, entity.No, entity.Date, entity.Description)
+                : null;
         }
 
         private readonly ISecureRepository _repository;

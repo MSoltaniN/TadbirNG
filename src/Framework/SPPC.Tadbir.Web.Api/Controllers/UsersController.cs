@@ -109,6 +109,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             var outputUser = await _repository.SaveUserAsync(user);
             return StatusCode(StatusCodes.Status201Created, outputUser);
         }
@@ -135,6 +136,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 user.Password = String.Empty;
             }
 
+            _repository.SetCurrentContext(SecurityContext.User);
             var outputUser = await _repository.SaveUserAsync(user);
             result = (outputUser != null)
                 ? Ok(outputUser)

@@ -22,7 +22,7 @@ namespace SPPC.Tadbir.Persistence
     /// <summary>
     /// عملیات مورد نیاز برای مدیریت اطلاعات نقش ها را پیاده سازی می کند
     /// </summary>
-    public class RoleRepository : RepositoryBase, IRoleRepository
+    public class RoleRepository : LoggingRepository<Role, RoleFullViewModel>, IRoleRepository
     {
         /// <summary>
         /// نمونه جدیدی از این کلاس می سازد
@@ -30,8 +30,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
-        public RoleRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
-            : base(unitOfWork, mapper, metadata)
+        /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
+        public RoleRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata,
+            IOperationLogRepository log)
+            : base(unitOfWork, mapper, metadata, log)
         {
             UnitOfWork.UseSystemContext();
         }
@@ -202,41 +204,46 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// Asynchronously inserts or updates a single security role, including all permissions in it, in repository
         /// </summary>
-        /// <param name="role">Role to insert or update</param>
-        public async Task<RoleViewModel> SaveRoleAsync(RoleFullViewModel role)
+        /// <param name="roleView">Role to insert or update</param>
+        public async Task<RoleViewModel> SaveRoleAsync(RoleFullViewModel roleView)
         {
-            Verify.ArgumentNotNull(role, "role");
-            Verify.ArgumentNotNull(role.Role, "role.Role");
-            Role outputRole = null;
+            Verify.ArgumentNotNull(roleView, "roleView");
+            Verify.ArgumentNotNull(roleView.Role, "roleView.Role");
+            Role role = null;
             var repository = UnitOfWork.GetAsyncRepository<Role>();
-            if (role.Role.Id == 0)
+            if (roleView.Role.Id == 0)
             {
-                outputRole = Mapper.Map<Role>(role.Role);
-                AddRolePermissions(outputRole, role);
-                repository.Insert(outputRole, r => r.RolePermissions);
+                role = Mapper.Map<Role>(roleView.Role);
+                AddRolePermissions(role, roleView);
+                OnAction("Create", null, role);
+                repository.Insert(role, r => r.RolePermissions);
+                await FinalizeActionAsync();
             }
             else
             {
-                outputRole = await repository.GetByIDWithTrackingAsync(role.Role.Id, r => r.RolePermissions);
-                if (outputRole != null)
+                role = await repository.GetByIDWithTrackingAsync(roleView.Role.Id, r => r.RolePermissions);
+                if (role != null)
                 {
-                    if (ArePermissionsModified(outputRole, role))
+                    if (ArePermissionsModified(role, roleView))
                     {
-                        if (outputRole.RolePermissions.Count > 0)
+                        if (role.RolePermissions.Count > 0)
                         {
-                            RemoveDisabledPermissions(outputRole, role);
+                            RemoveDisabledPermissions(role, roleView);
                         }
 
-                        AddNewPermissions(outputRole, role);
+                        AddNewPermissions(role, roleView);
                     }
 
-                    UpdateExistingRole(outputRole, role);
-                    repository.UpdateWithTracking(outputRole);
+                    var clone = Mapper.Map<Role>(role);
+                    OnAction("Edit", clone, null);
+                    UpdateExisting(roleView, role);
+                    Log.AfterState = GetState(role);
+                    repository.UpdateWithTracking(role);
+                    await FinalizeActionAsync();
                 }
             }
 
-            await UnitOfWork.CommitAsync();
-            return Mapper.Map<RoleViewModel>(outputRole);
+            return Mapper.Map<RoleViewModel>(role);
         }
 
         /// <summary>
@@ -250,9 +257,11 @@ namespace SPPC.Tadbir.Persistence
             var role = await repository.GetByIDWithTrackingAsync(roleId, r => r.RolePermissions);
             if (role != null)
             {
+                var clone = Mapper.Map<Role>(role);
+                OnAction("Delete", clone, null);
                 role.RolePermissions.Clear();
                 repository.Delete(role);
-                await UnitOfWork.CommitAsync();
+                await FinalizeActionAsync();
             }
         }
 
@@ -609,6 +618,40 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        public void SetCurrentContext(UserContextViewModel userContext)
+        {
+            SetLoggingContext(userContext);
+        }
+
+        /// <summary>
+        /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
+        /// </summary>
+        /// <param name="roleView">مدل نمایشی شامل آخرین تغییرات</param>
+        /// <param name="role">سطر اطلاعاتی موجود</param>
+        protected override void UpdateExisting(RoleFullViewModel roleView, Role role)
+        {
+            role.Name = roleView.Role.Name;
+            role.Description = roleView.Role.Description;
+        }
+
+        /// <summary>
+        /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
+        /// </summary>
+        /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
+        /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
+        protected override string GetState(Role entity)
+        {
+            return (entity != null)
+                ? String.Format(
+                    "Name : {1}{0}Description : {2}",
+                    Environment.NewLine, entity.Name, entity.Description)
+                : null;
+        }
+
         private static void RemoveDisabledPermissions(Role existing, RoleFullViewModel role)
         {
             var currentItems = role.Permissions
@@ -625,12 +668,6 @@ namespace SPPC.Tadbir.Persistence
                     .Where(rp => rp.PermissionId == id)
                     .Single());
             }
-        }
-
-        private static void UpdateExistingRole(Role existing, RoleFullViewModel role)
-        {
-            existing.Name = role.Role.Name;
-            existing.Description = role.Role.Description;
         }
 
         private static bool ArePermissionsModified(Role existing, RoleFullViewModel role)
