@@ -257,7 +257,7 @@ namespace SPPC.Tadbir.Persistence
         {
             return (entity != null)
                 ? String.Format(
-                    @"Account : {1}{0}Detail Account : {2}{0}Cost Center : {3}{0}Project : {4}{0}
+                    @"Account : {1}{0}Detail Account : {2}{0}Cost Center : {3}{0}Project : {4}
 Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
                     Environment.NewLine, entity.AccountId, entity.DetailId, entity.CostCenterId, entity.ProjectId,
                     entity.CurrencyId, entity.Debit, entity.Credit, entity.Description)

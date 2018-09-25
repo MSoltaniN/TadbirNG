@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class CostCenterViewModel
+    public partial class CostCenterViewModel : IFiscalEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که این مرکز هزینه در آن تعریف شده است

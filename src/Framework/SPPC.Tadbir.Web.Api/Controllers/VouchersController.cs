@@ -75,6 +75,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            result = BranchValidationResult(voucher);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             _repository.SetCurrentContext(SecurityContext.User);
             var outputVoucher = await _repository.SaveVoucherAsync(voucher);
             return StatusCode(StatusCodes.Status201Created, outputVoucher);
@@ -88,6 +94,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int voucherId, [FromBody] VoucherViewModel voucher)
         {
             var result = await VoucherValidationResultAsync(voucher, voucherId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = BranchValidationResult(voucher);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -107,6 +119,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingVoucherAsync(int voucherId)
         {
+            string result = await ValidateDeleteAsync(voucherId);
+            if (!String.IsNullOrEmpty(result))
+            {
+                return BadRequest(result);
+            }
+
             _repository.SetCurrentContext(SecurityContext.User);
             await _repository.DeleteVoucherAsync(voucherId);
             return StatusCode(StatusCodes.Status204NoContent);
@@ -158,6 +176,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            result = BranchValidationResult(article);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             _lineRepository.SetCurrentContext(SecurityContext.User);
             var outputLine = await _lineRepository.SaveArticleAsync(article);
             return StatusCode(StatusCodes.Status201Created, outputLine);
@@ -171,6 +195,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int articleId, [FromBody] VoucherLineViewModel article)
         {
             var result = await VoucherLineValidationResultAsync(article, articleId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = BranchValidationResult(article);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -190,10 +220,10 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingArticleAsync(int articleId)
         {
-            var article = await _lineRepository.GetArticleAsync(articleId);
-            if (article == null)
+            string result = await ValidateLineDeleteAsync(articleId);
+            if (!String.IsNullOrEmpty(result))
             {
-                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.VoucherLine));
+                return BadRequest(result);
             }
 
             _lineRepository.SetCurrentContext(SecurityContext.User);
@@ -299,6 +329,44 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
+        }
+
+        private async Task<string> ValidateDeleteAsync(int voucherId)
+        {
+            string message = String.Empty;
+            var voucher = await _repository.GetVoucherAsync(voucherId);
+            if (voucher == null)
+            {
+                message = String.Format(
+                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Voucher), voucherId);
+            }
+
+            var result = BranchValidationResult(voucher);
+            if (result is BadRequestObjectResult errorResult)
+            {
+                message = errorResult.Value.ToString();
+            }
+
+            return message;
+        }
+
+        private async Task<string> ValidateLineDeleteAsync(int articleId)
+        {
+            string message = String.Empty;
+            var voucherLine = await _lineRepository.GetArticleAsync(articleId);
+            if (voucherLine == null)
+            {
+                message = String.Format(
+                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.VoucherLine), articleId);
+            }
+
+            var result = BranchValidationResult(voucherLine);
+            if (result is BadRequestObjectResult errorResult)
+            {
+                message = errorResult.Value.ToString();
+            }
+
+            return message;
         }
 
         private readonly IVoucherRepository _repository;

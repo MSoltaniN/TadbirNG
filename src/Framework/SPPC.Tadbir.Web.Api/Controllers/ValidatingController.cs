@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
@@ -28,6 +29,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         protected virtual IActionResult BasicValidationResult<TOtherModel>(TOtherModel item, int itemId = 0)
         {
             return GetBasicValidationResult(item, itemId);
+        }
+
+        protected IActionResult BranchValidationResult<TFiscalView>(TFiscalView item)
+            where TFiscalView : class, IFiscalEntityView
+        {
+            var currentContext = SecurityContext.User;
+            if (item.BranchId != currentContext.BranchId)
+            {
+                return BadRequest(_strings.Format(AppStrings.OtherBranchEditNotAllowed));
+            }
+
+            return Ok();
         }
 
         private IActionResult GetBasicValidationResult(object item, int itemId)

@@ -15,10 +15,11 @@
                     (sortChange)="sortChange($event)"
                     (edit)="editHandler($event)"
                     [sort]="state.sort"
+                    [loading]="true"
                     [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
                     [selectedKeys]="selectedRows"
                     [kendoGridSelectBy]="selectionKey"
-                    (dataStateChange)="dataStateChange($event)"
+                    (filterChange)="filterChange($event)"
                     (selectedKeysChange)="onSelectedKeysChange($event)">
             <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
                                  pagerOf="{{ 'Paging.Of' | translate }}"
@@ -30,6 +31,7 @@
             <ng-template kendoGridToolbarTemplate>
                 <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'User.New' | translate }}</button>
                 <grid-setting entityTypeName="User"></grid-setting>
+                <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
             </ng-template>
             <!-- template for mobile -->
             <kendo-grid-column media="(max-width: 449px)" title="">
