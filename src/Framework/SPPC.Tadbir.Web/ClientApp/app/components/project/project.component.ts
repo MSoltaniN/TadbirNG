@@ -46,9 +46,6 @@ export function getLayoutModule(layout: Layout) {
 
 
 export class ProjectComponent extends DefaultComponent implements OnInit {
-    public filterChange(filter: CompositeFilterDescriptor): void {
-        throw new Error("Method not implemented.");
-    }
 
     //#region Fields
     public Childrens: Array<ProjectComponent>;
@@ -120,14 +117,15 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    dataStateChange(state: DataStateChangeEvent): void {
-        this.currentFilter = this.getFilters(state.filter);
-        if (state.sort)
-            if (state.sort.length > 0)
-                this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
-        this.state = state;
-        this.skip = state.skip;
-        this.reloadGrid();
+    filterChange(filter: CompositeFilterDescriptor): void {
+        var isReload: boolean = false;
+        if (this.currentFilter && this.currentFilter.children.length > filter.filters.length)
+            isReload = true;
+
+        this.currentFilter = this.getFilters(filter);
+        if (isReload) {
+            this.reloadGrid();
+        }
     }
 
     public sortChange(sort: SortDescriptor[]): void {
