@@ -9,6 +9,7 @@ import { SessionKeys } from '../../enviroment';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
+import { AuthenticationService } from '../../service/login/index';
 
 @Component({
     selector: 'nav-menu',
@@ -29,14 +30,20 @@ export class NavMenuComponent extends DefaultComponent implements OnInit {
 
 
 
-    constructor(public toastrService: ToastrService,
+    constructor(public toastrService: ToastrService, private authenticationService: AuthenticationService,
         public translate: TranslateService, public renderer2: Renderer2,
         public metadata: MetaDataService, public el: ElementRef,
         public location: Location) {
 
         super(toastrService, translate, renderer2, metadata, '', '');
 
-        var menus = sessionStorage.getItem(SessionKeys.Menu);
+        let menus: any;
+        if (this.authenticationService.isRememberMe())
+            menus = localStorage.getItem(SessionKeys.Menu);
+        else
+            menus = sessionStorage.getItem(SessionKeys.Menu);
+
+        
         if(menus)
             this.menuList = JSON.parse(menus);
         

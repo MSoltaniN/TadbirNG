@@ -6,11 +6,11 @@ import 'rxjs/add/operator/map'
 import { Environment } from "../../enviroment";
 
 import { Context } from "../../model/context";
-import { PermissionBrief } from '../../model/index';
+import { PermissionBrief, CompanyLogin } from '../../model/index';
 
 import { String } from '../../class/source';
-import { LookupApi, FiscalPeriodApi } from '../api/index';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { LookupApi, FiscalPeriodApi, UserApi } from '../api/index';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 export class ContextInfo implements Context {
     userName: string = "";
@@ -23,6 +23,13 @@ export class ContextInfo implements Context {
     companyId: number = 0;
     permissions: PermissionBrief[];
 }
+
+export class CompanyLoginInfo implements CompanyLogin {
+    companyId?: number;
+    branchId?: number;
+    fiscalPeriodId?: number;
+}
+
 
 @Injectable()
 export class AuthenticationService {
@@ -179,5 +186,21 @@ export class AuthenticationService {
 
         return this.http.get(String.Format(FiscalPeriodApi.FiscalPeriod, fpId), { headers: header })
             .map(response => <any>(<Response>response));
+    }
+
+    getCompanyTicket(model: CompanyLogin, ticket: string): Observable<any> {
+        var header = new HttpHeaders();
+        //header = header.delete('X-Tadbir-AuthTicket');
+        //header = header.delete('Content-Type');
+
+        header = header.append('Content-Type', 'application/json; charset=utf-8');
+        header = header.append('X-Tadbir-AuthTicket', ticket);
+
+        var body = JSON.stringify(model);
+
+        var url = UserApi.UserCompanyLoginStatus;
+        //var options = { headers: header, observe: "response" };
+        return this.http.put(url, body, { headers: header, observe: "response" })
+            .map(response => <any>(<HttpResponse<any>>response));
     }
 }

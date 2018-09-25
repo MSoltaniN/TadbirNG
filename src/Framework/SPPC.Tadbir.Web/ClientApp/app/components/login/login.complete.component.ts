@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { AuthenticationService } from '../../service/login/index';
+import { AuthenticationService, CompanyLoginInfo } from '../../service/login/index';
 import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
 
@@ -127,7 +127,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     }
 
     getCompany() {
-
         this.authenticationService.getCompanies(this.UserName, this.Ticket).subscribe(res => {
             this.compenies = res;
             this.disabledCompany = false;
@@ -182,25 +181,14 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         return isValidate;
     }
 
-    selectParams() {        
+    selectParams() {
+        
         if (this.isValidate()) {
 
             if (this.authenticationService.islogin()) {
-
-                var currentUser = this.authenticationService.getCurrentUser();
-                if (currentUser != null) {
-
-                    currentUser.branchId = parseInt(this.branchId);
-                    currentUser.companyId = parseInt(this.companyId);
-                    currentUser.fpId = parseInt(this.fiscalPeriodId);
-                    currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
-
-                    localStorage.setItem(SessionKeys.LastUserBranch + this.UserId + this.companyId, this.branchId);
-                    localStorage.setItem(SessionKeys.LastUserFpId + this.UserId + this.companyId, this.fiscalPeriodId);
-                    
-                    this.loadMenuAndRoute(currentUser);
-
-                }
+                
+                this.getCompanyTicket();
+                
             }
         }
     }
@@ -230,8 +218,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         });
     }
 
-    loadMenuAndRoute(currentUser : ContextInfo) {
-
+    loadMenuAndRoute(currentUser: ContextInfo) {
         //#region load menu
         var menuList: Array < Command > = new Array<Command>();
         
@@ -240,12 +227,14 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         this.userService.getCurrentUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
             var list: Array<Command> = res;
             
-            sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(res));
-            
-            if (this.authenticationService.isRememberMe())
+            if (this.authenticationService.isRememberMe()) {
+                localStorage.setItem(SessionKeys.Menu, JSON.stringify(res));
                 localStorage.setItem('currentContext', JSON.stringify(currentUser));
-            else
+            }
+            else {
+                sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(res));
                 sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
+            }                
 
             this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
                 if (this.authenticationService.isRememberMe())
@@ -272,6 +261,47 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         });
 
         //#endregion
+    }
+
+    /**
+     * تیکت امنیتی را مطابق شرکت و شعبه و دوره مالی از سرویس میگیرد و جایگزین تیکت قبلی میکند
+     */
+    getCompanyTicket() {
+
+        var companyLoginModel = new CompanyLoginInfo();
+        companyLoginModel.companyId = parseInt(this.companyId);
+        companyLoginModel.branchId = parseInt(this.branchId);
+        companyLoginModel.fiscalPeriodId = parseInt(this.fiscalPeriodId);
+
+        this.authenticationService.getCompanyTicket(companyLoginModel, this.Ticket).subscribe(res => {
+
+            if (res.headers != null) {
+                let newTicket = res.headers.get('X-Tadbir-AuthTicket');
+
+                var currentUser = this.authenticationService.getCurrentUser();
+                if (currentUser != null) {
+
+                    currentUser.branchId = parseInt(this.branchId);
+                    currentUser.companyId = parseInt(this.companyId);
+                    currentUser.fpId = parseInt(this.fiscalPeriodId);
+                    currentUser.permissions = JSON.parse(atob(this.Ticket)).user.permissions;
+
+                    currentUser.ticket = newTicket;
+
+                    if (this.authenticationService.isRememberMe())
+                        localStorage.setItem('currentContext', JSON.stringify(currentUser));
+                    else
+                        sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
+
+                    localStorage.setItem(SessionKeys.LastUserBranch + this.UserId + this.companyId, this.branchId);
+                    localStorage.setItem(SessionKeys.LastUserFpId + this.UserId + this.companyId, this.fiscalPeriodId);
+
+                    this.loadMenuAndRoute(currentUser);
+                }
+
+            }
+
+        })
     }
 
     //#endregion
