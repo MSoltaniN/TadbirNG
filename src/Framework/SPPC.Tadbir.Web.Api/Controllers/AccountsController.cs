@@ -123,6 +123,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            result = BranchValidationResult(account);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             _repository.SetCurrentContext(SecurityContext.User);
             var outputAccount = await _repository.SaveAccountAsync(account);
             return StatusCode(StatusCodes.Status201Created, outputAccount);
@@ -135,6 +141,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedAccountAsync(int accountId, [FromBody] AccountViewModel account)
         {
             var result = await ValidationResultAsync(account, accountId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = BranchValidationResult(account);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -222,14 +234,20 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private async Task<string> ValidateDeleteAsync(int item)
         {
             string message = String.Empty;
-            var accountItem = await _repository.GetAccountAsync(item);
-            if (accountItem == null)
+            var account = await _repository.GetAccountAsync(item);
+            if (account == null)
             {
                 message = String.Format(
                     _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Account), item);
             }
 
-            string accountInfo = String.Format("'{0} ({1})'", accountItem.Name, accountItem.Code);
+            var result = BranchValidationResult(account);
+            if (result is BadRequestObjectResult errorResult)
+            {
+                return errorResult.Value.ToString();
+            }
+
+            string accountInfo = String.Format("'{0} ({1})'", account.Name, account.Code);
             var hasChildren = await _repository.HasChildrenAsync(item);
             if (hasChildren == true)
             {

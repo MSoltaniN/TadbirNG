@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class DetailAccountViewModel
+    public partial class DetailAccountViewModel : IFiscalEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی تفصیلی شناور والد در ساختار درختی
