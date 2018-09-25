@@ -102,7 +102,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(line => line.Voucher.Id == voucherId);
             query = _repository.ApplyRowFilter(ref query, userContext, ViewName.VoucherLine);
             return await query
-                .Apply(gridOptions)
+                .Apply(gridOptions, false)
                 .CountAsync();
         }
 
