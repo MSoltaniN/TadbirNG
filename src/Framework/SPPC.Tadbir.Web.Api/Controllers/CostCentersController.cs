@@ -103,6 +103,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            result = BranchValidationResult(costCenter);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveCostCenterAsync(costCenter);
             return StatusCode(StatusCodes.Status201Created, outputItem);
@@ -116,6 +122,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int ccenterId, [FromBody] CostCenterViewModel costCenter)
         {
             var result = await ValidationResultAsync(costCenter, ccenterId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = BranchValidationResult(costCenter);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -170,6 +182,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 message = String.Format(
                     _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.CostCenter), item);
+            }
+
+            var result = BranchValidationResult(costCenter);
+            if (result is BadRequestObjectResult errorResult)
+            {
+                return errorResult.Value.ToString();
             }
 
             var costCenterInfo = String.Format("'{0} ({1})'", costCenter.Name, costCenter.Code);

@@ -558,4 +558,7 @@
   <data name="CompanyLogin" xml:space="preserve">
     <value>Company login</value>
   </data>
+  <data name="OtherBranchEditNotAllowed" xml:space="preserve">
+    <value>Changes are not allowed outside current branch.</value>
+  </data>
 </root>

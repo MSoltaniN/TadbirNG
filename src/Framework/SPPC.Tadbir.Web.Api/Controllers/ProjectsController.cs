@@ -103,6 +103,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            result = BranchValidationResult(project);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveProjectAsync(project);
             return StatusCode(StatusCodes.Status201Created, outputItem);
@@ -116,6 +122,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int projectId, [FromBody] ProjectViewModel project)
         {
             var result = await ValidationResultAsync(project, projectId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = BranchValidationResult(project);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -170,6 +182,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             {
                 message = String.Format(
                     _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Project), item);
+            }
+
+            var result = BranchValidationResult(project);
+            if (result is BadRequestObjectResult errorResult)
+            {
+                return errorResult.Value.ToString();
             }
 
             var projectInfo = String.Format("'{0} ({1})'", project.Name, project.Code);

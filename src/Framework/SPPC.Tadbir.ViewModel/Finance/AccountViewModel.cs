@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class AccountViewModel
+    public partial class AccountViewModel : IFiscalEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی حساب والد این حساب در ساختار درختی
