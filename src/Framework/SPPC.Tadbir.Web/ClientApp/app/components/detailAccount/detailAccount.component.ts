@@ -46,9 +46,6 @@ export function getLayoutModule(layout: Layout) {
 
 
 export class DetailAccountComponent extends DefaultComponent implements OnInit {
-    //public filterChange(filter: CompositeFilterDescriptor): void {
-    //    throw new Error("Method not implemented.");
-    //}
 
     //#region Fields
     public Childrens: Array<DetailAccountComponent>;
@@ -82,7 +79,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
-    showFilterBtn: boolean = false;
+    //showFilterBtn: boolean = false;
     addToContainer: boolean = false;
 
     parentTitle: string = '';
@@ -121,22 +118,33 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
             this.groupDelete = false;
     }
 
-    dataStateChange(state: DataStateChangeEvent): void {
-        this.currentFilter = this.getFilters(state.filter);
+    filterChange(filter: CompositeFilterDescriptor): void {
+        var isReload: boolean = false;
+        if (this.currentFilter && this.currentFilter.children.length > filter.filters.length)
+            isReload = true;
 
-        if (state.sort)
-            if (state.sort.length > 0)
-                this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
-        this.state = state;
-        this.skip = state.skip;
-
-        if (this.currentFilter)
-            this.showFilterBtn = true;
-        else {
-            this.showFilterBtn = false;
+        this.currentFilter = this.getFilters(filter);
+        if (isReload) {
             this.reloadGrid();
         }
     }
+
+    //dataStateChange(state: DataStateChangeEvent): void {
+    //    this.currentFilter = this.getFilters(state.filter);
+
+    //    if (state.sort)
+    //        if (state.sort.length > 0)
+    //            this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
+    //    this.state = state;
+    //    this.skip = state.skip;
+
+    //    if (this.currentFilter)
+    //        this.showFilterBtn = true;
+    //    else {
+    //        this.showFilterBtn = false;
+    //        this.reloadGrid();
+    //    }
+    //}
 
     public sortChange(sort: SortDescriptor[]): void {
         if (sort)
@@ -477,16 +485,16 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
         this.errorMessage = '';
     }
 
-    filterRowData() {
-        this.reloadGrid();
-    }
+    //filterRowData() {
+    //    this.reloadGrid();
+    //}
 
-    clearFilterRowData() {
-        this.state.filter = undefined;
-        this.currentFilter = new FilterExpression();
-        this.showFilterBtn = false;
-        this.reloadGrid();
-    }
+    //clearFilterRowData() {
+    //    this.state.filter = undefined;
+    //    this.currentFilter = new FilterExpression();
+    //    //this.showFilterBtn = false;
+    //    this.reloadGrid();
+    //}
 
     public showOnlyParent(dataItem: DetailAccount, index: number): boolean {
         return dataItem.childCount > 0;

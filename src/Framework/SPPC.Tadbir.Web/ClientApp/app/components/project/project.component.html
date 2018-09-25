@@ -15,10 +15,11 @@
                     (edit)="editHandler($event)"
                     (remove)="removeHandler($event)"
                     [sort]="state.sort"
+                    [loading]="true"
                     [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
                     [selectedKeys]="selectedRows"
                     [kendoGridSelectBy]="selectionKey"
-                    (dataStateChange)="dataStateChange($event)"
+                    (filterChange)="filterChange($event)"
                     (selectedKeysChange)="onSelectedKeysChange($event)"
                     sppc-grid-reorder sppc-grid-resize>
             <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
@@ -32,6 +33,7 @@
                 <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(parentId , true)" [icon]="'plus-outline'" type="button">{{ 'Project.New' | translate }}</button>
                 <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
                 <grid-setting entityTypeName="Project"></grid-setting>
+                <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
             </ng-template>
 
             <!-- template for mobile -->
