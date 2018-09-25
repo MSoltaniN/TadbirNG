@@ -41,7 +41,7 @@ export function getLayoutModule(layout: Layout) {
 
 })
 
-export class RoleDetailFormComponent extends DetailComponent {
+export class RoleDetailFormComponent extends DefaultComponent {
 
 
     ////create properties
@@ -119,7 +119,8 @@ export class RoleDetailFormComponent extends DetailComponent {
             this.roleDescription = roleDetails.role.description != null ? roleDetails.role.description : "";
 
             this.showloadingPermissionMessage = !(this.treeData.length == 0);
-            this.showloadingBranchesMessage = !(this.gridBranchesData.length == 0);
+            if (this.gridBranchesData)
+                this.showloadingBranchesMessage = !(this.gridBranchesData.length == 0);
             this.showloadingUsersMessage = !(this.gridUsersData.length == 0);
 
 
