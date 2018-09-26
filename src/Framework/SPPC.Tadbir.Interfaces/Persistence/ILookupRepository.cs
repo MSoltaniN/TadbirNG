@@ -114,7 +114,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، نقش های امنیتی تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه نقش های امنیتی تعریف شده</returns>
-        Task<IList<KeyValue>> GetRolesAsync();
+        Task<IList<KeyValue>> GetRolesAsync(GridOptions gridOptions = null);
 
         #endregion
 
@@ -124,7 +124,7 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، موجودیت های تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه موجودیت های تعریف شده</returns>
-        Task<IList<KeyValue>> GetEntityViewsAsync();
+        Task<IList<KeyValue>> GetEntityViewsAsync(GridOptions gridOptions = null);
 
         #endregion
     }

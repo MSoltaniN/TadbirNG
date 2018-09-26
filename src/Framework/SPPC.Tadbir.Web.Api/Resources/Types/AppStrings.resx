@@ -561,4 +561,7 @@
   <data name="OtherBranchEditNotAllowed" xml:space="preserve">
     <value>تغییر اطلاعات در شعبه غیر جاری امکان پذیر نیست.</value>
   </data>
+  <data name="CompanyDb" xml:space="preserve">
+    <value>شرکت</value>
+  </data>
 </root>

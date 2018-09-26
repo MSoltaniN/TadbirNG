@@ -561,4 +561,7 @@
   <data name="OtherBranchEditNotAllowed" xml:space="preserve">
     <value>Changes are not allowed outside current branch.</value>
   </data>
+  <data name="CompanyDb" xml:space="preserve">
+    <value>Company</value>
+  </data>
 </root>
