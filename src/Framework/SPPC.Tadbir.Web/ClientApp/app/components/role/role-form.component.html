@@ -36,7 +36,7 @@
     <div class="clearfix"></div>    
     <div class="panel panel-primary">
         <div class="panel-heading">{{ 'Role.Permissions' | translate }}</div>
-        <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}" >
+        <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}" >
             <kendo-treeview [nodes]="treeData" textField="name"
                             kendoTreeViewExpandable
                             kendoTreeViewCheckable
@@ -46,43 +46,7 @@
                             [(checkedKeys)]="checkedKeys">
             </kendo-treeview>
         </div>
-        <div class="panel-body">
-            <div *ngIf="false">
-                <kendo-grid [data]="gridPermissionsData"
-                            [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-                            [selectedKeys]="selectedRows"
-                            [kendoGridSelectBy]="selectionKey">
-                    <ng-template kendoGridNoRecordsTemplate>
-                        {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
-                    </ng-template>
-                    <kendo-grid-checkbox-column showSelectAll="true" width="40"></kendo-grid-checkbox-column>
 
-                    <!-- template for mobile -->
-                    <kendo-grid-column media="(max-width: 450px)" title="">
-                        <ng-template kendoGridCellTemplate let-role>
-                            <dl>
-                                <dt>{{ 'Role.Name' | translate }}</dt>
-                                <dd>{{ role.name }}</dd>
-
-                                <dt>{{ 'Role.GroupName' | translate }}</dt>
-                                <dd>{{ role.groupName }}</dd>
-                            </dl>
-                        </ng-template>
-                    </kendo-grid-column>
-                    <!-- template for mobile -->
-                    <!-- additional columns on large devices -->
-                    <kendo-grid-column media="(min-width: 450px)" width="300" sppc-grid-column="Role.name">
-                    </kendo-grid-column>
-                    <kendo-grid-column media="(min-width: 450px)" width="300" sppc-grid-column="Role.groupName">
-                    </kendo-grid-column>
-                    <kendo-grid-column media="(min-width: 450px)" sppc-grid-column="Role.description">
-                    </kendo-grid-column>
-                    <!-- additional columns on large devices -->
-
-                </kendo-grid>
-            </div>
-
-        </div>
     </div>
     <kendo-dialog-actions>
         <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>

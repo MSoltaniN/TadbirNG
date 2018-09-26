@@ -34,7 +34,7 @@
     <div class="panel panel-primary">
         <div class="panel-heading">{{ 'Role.Permissions' | translate }}</div>
         <div class="panel-body">
-            <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
+            <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}">
                 <kendo-treeview [nodes]="treeData" textField="name"
                                 kendoTreeViewExpandable                                
                                 kendoTreeViewFlatDataBinding
