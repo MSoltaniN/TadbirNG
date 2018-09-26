@@ -292,6 +292,10 @@ export class BranchComponent extends DefaultComponent implements OnInit {
         this.deleteModelsConfirm = false;
     }
 
+    reloadGridEvent() {
+        this.reloadGrid();
+    }
+
     public reloadGrid(insertedModel?: Branch) {
         if (this.viewAccess) {
             this.grid.loading = true;

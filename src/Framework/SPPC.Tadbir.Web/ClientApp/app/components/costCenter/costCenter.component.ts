@@ -282,6 +282,11 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         this.deleteModelConfirm = false;
     }
 
+
+    reloadGridEvent() {
+        this.reloadGrid();
+    }
+
     public reloadGrid(insertedModel?: CostCenter) {
         if (this.viewAccess) {
             this.grid.loading = true;

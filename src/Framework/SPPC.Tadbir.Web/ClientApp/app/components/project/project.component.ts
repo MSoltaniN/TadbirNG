@@ -271,6 +271,10 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
         this.deleteModelsConfirm = false;
     }
 
+    reloadGridEvent() {
+        this.reloadGrid();
+    }
+
     public reloadGrid(insertedModel?: Project) {
         if (this.viewAccess) {
             this.grid.loading = true;

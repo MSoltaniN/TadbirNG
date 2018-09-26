@@ -295,6 +295,10 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
         this.deleteModelsConfirm = false;
     }
 
+    reloadGridEvent() {
+        this.reloadGrid();
+    }
+
     public reloadGrid(insertedModel?: DetailAccount) {
         if (this.viewAccess) {
             this.grid.loading = true;

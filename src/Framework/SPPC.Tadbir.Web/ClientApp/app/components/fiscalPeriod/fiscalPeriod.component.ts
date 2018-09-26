@@ -229,6 +229,11 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
         //}));
     }
 
+    reloadGridEvent() {
+        this.reloadGrid();
+    }
+
+
     reloadGrid(insertedModel?: FiscalPeriod) {
         if (this.viewAccess) {
             this.grid.loading = true;

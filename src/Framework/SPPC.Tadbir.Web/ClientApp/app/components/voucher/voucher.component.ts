@@ -186,6 +186,10 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
         //}));
     }
 
+    reloadGridEvent() {
+        this.reloadGrid();
+    }
+
     reloadGrid(insertedModel?: Voucher) {
         if (this.viewAccess) {
             this.grid.loading = true;
