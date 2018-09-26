@@ -50,7 +50,7 @@ interface Item {
 })
 
 
-export class AccountRelationsComponent extends DetailComponent implements OnInit {
+export class AccountRelationsComponent extends DefaultComponent implements OnInit {
     
 
     public isActive: boolean = false;
@@ -93,11 +93,6 @@ export class AccountRelationsComponent extends DetailComponent implements OnInit
     public ngOnInit(): void {
         this.viewAccess = this.isAccess(SecureEntity.AccountRelations, AccountRelationPermissions.ViewRelationships);
     }
-
-    //constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-    //    private accountRelationsService: AccountRelationsService, public renderer: Renderer2,
-    //    public metadata: MetaDataService, @Host() private defComponent: DefaultComponent) {
-    //    super(toastrService, translate, renderer, metadata, Entities.AccountRelations, '');
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
         private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService ) {

@@ -11,7 +11,7 @@
     </div>
 
     <div class="row" id="main-section">
-        <div class="col-sm-6" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+        <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
             <div class="section-header">
                 <span class="control-label">{{ 'AccountRelations.RemainingRelations' | translate }}</span>
                 <input type="text" class="k-textbox" [(ngModel)]="searchValue" (keydown)="onKeyChange($event.keyCode)" />
@@ -33,7 +33,7 @@
                         {{ 'AccountRelations.noRemainingRelations' | translate }}
                     </div>                   
                 </div>
-                <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
+                <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}">
                     <kendo-treeview [nodes]="relatedComponentCategories"
                                     [textField]="['name']"
                                     kendoTreeViewExpandable
@@ -53,7 +53,7 @@
                 <span class="control-label" id="result-label">{{ 'AccountRelations.NewRelations' | translate }}</span>
             </div>
             <div class="section-body">
-                <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
+                <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}">
                     <kendo-treeview [nodes]="resultCategories"
                                     [textField]="['name']"
                                     kendoTreeViewExpandable
