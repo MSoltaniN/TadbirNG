@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    <div class="panel panel-primary">
+    <!--<div class="panel panel-primary">
         <div class="panel-heading">{{ 'Role.Branches' | translate }}</div>
         <div class="panel-body">            
             <kendo-grid id="gridBranchesData" [data]="gridBranchesData">
@@ -84,7 +84,7 @@
                         {{showloadingBranchesMessage  ? ('App.Loading' | translate) : ('RoleBranches.RecordNotFound' | translate)}}
                     </ng-template>
 
-                    <!-- template for mobile -->
+
                     <kendo-grid-column media="(max-width: 450px)" title="">
                         <ng-template kendoGridCellTemplate let-roleBranches>
                             <dl>
@@ -97,17 +97,15 @@
 
                         </ng-template>
                     </kendo-grid-column>
-                    <!-- template for mobile -->
-                    <!-- additional columns on large devices -->
+
                     <kendo-grid-column media="(min-width: 450px)" width="400" sppc-grid-column="RoleBranches.name">
                     </kendo-grid-column>
                     <kendo-grid-column media="(min-width: 450px)" sppc-grid-column="RoleBranches.description">
                     </kendo-grid-column>
-                    <!-- additional columns on large devices -->
 
                 </kendo-grid>            
         </div>
-    </div>
+    </div>-->
 
 
     <div class="panel panel-primary">
