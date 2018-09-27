@@ -50,8 +50,7 @@ namespace SPPC.Tadbir.Persistence
             UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
         {
             var projects = await _repository.GetAllAsync<Project>(
-                userContext, fpId, branchId, ViewName.Project, prj => prj.FiscalPeriod, prj => prj.Branch,
-                prj => prj.Parent, prj => prj.Children);
+                userContext, fpId, branchId, ViewName.Project, prj => prj.Children);
             return projects
                 .Select(item => Mapper.Map<ProjectViewModel>(item))
                 .Apply(gridOptions)
@@ -103,8 +102,7 @@ namespace SPPC.Tadbir.Persistence
         {
             ProjectViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var project = await repository.GetByIDAsync(
-                projectId, prj => prj.FiscalPeriod, prj => prj.Branch, prj => prj.Parent, prj => prj.Children);
+            var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
             if (project != null)
             {
                 item = Mapper.Map<ProjectViewModel>(project);
@@ -165,7 +163,6 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await UnitOfWork.CommitAsync();
             return Mapper.Map<ProjectViewModel>(projectModel);
         }
 

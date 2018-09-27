@@ -50,9 +50,7 @@ namespace SPPC.Tadbir.Persistence
             UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
         {
             var costCenters = await _repository.GetAllAsync<CostCenter>(
-                userContext, fpId, branchId, ViewName.CostCenter,
-                cc => cc.FiscalPeriod, cc => cc.Branch,
-                cc => cc.Parent, cc => cc.Children);
+                userContext, fpId, branchId, ViewName.CostCenter, cc => cc.Children);
             return costCenters
                 .Select(item => Mapper.Map<CostCenterViewModel>(item))
                 .Apply(gridOptions)
@@ -104,8 +102,7 @@ namespace SPPC.Tadbir.Persistence
         {
             CostCenterViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDAsync(
-                costCenterId, cc => cc.FiscalPeriod, cc => cc.Branch, cc => cc.Parent, cc => cc.Children);
+            var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Children);
             if (costCenter != null)
             {
                 item = Mapper.Map<CostCenterViewModel>(costCenter);
@@ -166,7 +163,6 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await UnitOfWork.CommitAsync();
             return Mapper.Map<CostCenterViewModel>(costCenterModel);
         }
 

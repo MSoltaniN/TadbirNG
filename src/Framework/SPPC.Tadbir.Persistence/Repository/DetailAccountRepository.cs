@@ -50,9 +50,7 @@ namespace SPPC.Tadbir.Persistence
             UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
         {
             var detailAccounts = await _repository.GetAllAsync<DetailAccount>(
-                userContext, fpId, branchId, ViewName.DetailAccount,
-                facc => facc.FiscalPeriod, facc => facc.Branch,
-                facc => facc.Parent, facc => facc.Children);
+                userContext, fpId, branchId, ViewName.DetailAccount, facc => facc.Children);
             return detailAccounts
                 .Select(item => Mapper.Map<DetailAccountViewModel>(item))
                 .Apply(gridOptions)
@@ -104,8 +102,7 @@ namespace SPPC.Tadbir.Persistence
         {
             DetailAccountViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
-            var detailAccount = await repository.GetByIDAsync(
-                faccountId, facc => facc.FiscalPeriod, facc => facc.Branch, facc => facc.Parent, facc => facc.Children);
+            var detailAccount = await repository.GetByIDAsync(faccountId, facc => facc.Children);
             if (detailAccount != null)
             {
                 item = Mapper.Map<DetailAccountViewModel>(detailAccount);
@@ -166,7 +163,6 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await UnitOfWork.CommitAsync();
             return Mapper.Map<DetailAccountViewModel>(detailModel);
         }
 
