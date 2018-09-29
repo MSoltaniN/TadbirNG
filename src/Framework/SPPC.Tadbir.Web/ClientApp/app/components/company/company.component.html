@@ -47,6 +47,15 @@
                         <dt>{{ 'Company.DbName' | translate }}</dt>
                         <dd>{{ company.dbName }}</dd>
 
+                        <dt>{{ 'Company.Server' | translate }}</dt>
+                        <dd>{{ company.server }}</dd>
+
+                        <dt>{{ 'Company.UserName' | translate }}</dt>
+                        <dd>{{ company.userName }}</dd>
+
+                        <dt>{{ 'Company.Password' | translate }}</dt>
+                        <dd>{{ company.password }}</dd>
+
                         <dt>{{ 'Company.Description' | translate  }}</dt>
                         <dd>{{ company.description }}</dd>
                     </dl>
@@ -56,6 +65,41 @@
                 </ng-template>
             </kendo-grid-column>
             <!-- template for mobile -->
+            <!-- template for mid-size devices -->
+            <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px) and (max-width: 1024px)"></kendo-grid-checkbox-column>
+
+            <kendo-grid-column media="(min-width: 450px) and (max-width: 1024px)" width="150" sppc-grid-column="Company.name">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column media="(min-width: 450px) and (max-width: 1024px)" width="150" sppc-grid-column="Company.dbName">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <sppc-grid-filter [metaData]="getMeta('dbName')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column media="(min-width: 450px) and (max-width: 1024px)" width="150" sppc-grid-column="Company.server">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <sppc-grid-filter [metaData]="getMeta('server')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column media="(min-width: 450px) and (max-width: 1024px)" width="190" sppc-grid-column="Company.description">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px) and (max-width: 1024px)">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
+                    <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
+                </ng-template>
+            </kendo-grid-command-column>
+
+            <!-- template for mid-size devices -->
             <!-- additional columns on large devices -->
             <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px)"></kendo-grid-checkbox-column>
 
@@ -71,20 +115,33 @@
                 </ng-template>
             </kendo-grid-column>
 
+            <kendo-grid-column media="(min-width: 450px)" width="150" sppc-grid-column="Company.server">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <sppc-grid-filter [metaData]="getMeta('server')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column media="(min-width: 450px)" width="150" sppc-grid-column="Company.userName">
+                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                    <sppc-grid-filter [metaData]="getMeta('userName')" [column]="column" [filter]="filter"></sppc-grid-filter>
+                </ng-template>
+            </kendo-grid-column>
+
             <kendo-grid-column media="(min-width: 450px)" width="190" sppc-grid-column="Company.description">
                 <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
                     <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
                 </ng-template>
             </kendo-grid-column>
 
+
             <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px)">
-                <ng-template kendoGridCellTemplate let-dataItem>                    
+                <ng-template kendoGridCellTemplate let-dataItem>
                     <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
                     <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
                 </ng-template>
             </kendo-grid-command-column>
-            /k
-              <!-- additional columns on large devices -->
+
+            <!-- additional columns on large devices -->
 
         </kendo-grid>
         <company-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"

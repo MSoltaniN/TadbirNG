@@ -18,12 +18,15 @@ export class CompanyInfo implements Company {
 
 }
 
-export class CompanyDbInfo implements CompanyDb {
+export class CompanyDbInfo implements CompanyDb {   
     id: number = 0;
     name: string;
     dbName: string;
     dbPath: string;
     description?: string | undefined;
+    server: string;
+    userName: string;
+    password: string;
 }
 
 @Injectable()
