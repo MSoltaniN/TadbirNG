@@ -34,6 +34,37 @@
         </div>
 
         <div class="form-group">
+            <label for="server" class="control-label">{{ 'Company.Server' | translate }}</label>
+
+            <input type="text" class="k-textbox" formControlName="server" />
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.server.valid || editForm.controls.server.pristine">
+                <span *ngIf="editForm.controls.server.errors?.required">{{ 'AllValidations.CompanyDb.ServerIsRequired' | translate }}</span>
+                <span *ngIf="editForm.controls.server.errors?.maxlength">{{ 'AllValidations.CompanyDb.ServerIsTooLong' | translate }}</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="userName" class="control-label">{{ 'Company.UserName' | translate }}</label>
+
+            <input type="text" class="k-textbox" formControlName="userName" />
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.userName.valid || editForm.controls.userName.pristine">               
+                <span *ngIf="editForm.controls.userName.errors?.maxlength">{{ 'AllValidations.CompanyDb.UserNameIsTooLong' | translate }}</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="password" class="control-label">{{ 'Company.Password' | translate }}</label>
+
+            <input type="password" class="k-textbox" formControlName="password" />
+
+            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.password.valid || editForm.controls.password.pristine">
+                <span *ngIf="editForm.controls.password.errors?.maxlength">{{ 'AllValidations.CompanyDb.PasswordIsTooLong' | translate }}</span>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label for="dbPath" class="control-label">{{ 'Company.DbPath' | translate }}</label>
 
             <input type="text" class="k-textbox" formControlName="dbPath" />
