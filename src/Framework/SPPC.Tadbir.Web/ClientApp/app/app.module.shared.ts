@@ -71,6 +71,7 @@ import { SppcDropDownList } from './controls/dropdownlist/sppc-dropdownlist';
 import { SppcDatepicker } from './controls/datepicker/sppc-datepicker';
 import { SppcDateRangeSelector } from './controls/dateRangeSelector/sppc-dateRangeSelector';
 import { SppcFullAccountComponent } from './controls/fullAccount/sppc-fullAccount';
+import { SppcBranchScope } from './controls/branchScope/sppc-branch-scope';
 
 import { BrowserModule } from "@angular/platform-browser";
 import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
@@ -148,6 +149,7 @@ import { DefaultComponent } from './class/default.component';
         SppcGridReorder,
         SppcGridResize,
         SppcGridFilter,
+        SppcBranchScope,
         VoucherComponent,
         VoucherFormComponent,
         VoucherLineComponent,

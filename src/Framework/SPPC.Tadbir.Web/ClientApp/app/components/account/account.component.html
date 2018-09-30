@@ -111,7 +111,7 @@
             <!-- additional columns on large devices -->
 
         </kendo-grid>
-        <account-form-component [model]="editDataItem" [parentId]="parentId" [parentTitle]="parentTitle" [parentValue]="parentValue" [isNew]="isNew" [errorMessage]="errorMessage" [disableSaveBtn]="disableSaveBtn"
+        <account-form-component [model]="editDataItem" [parentId]="parentId" [parentTitle]="parentTitle" [parentValue]="parentValue" [parentScopeValue]="parentScope" [isNew]="isNew" [errorMessage]="errorMessage" [disableSaveBtn]="disableSaveBtn"
                                 (save)="saveHandler($event)"
                                 (cancel)="cancelHandler()">
         </account-form-component>

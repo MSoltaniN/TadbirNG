@@ -101,6 +101,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
     parentTitle: string = '';
     parentValue: string = '';
+    parentScope: number = 0;
 
     isChildExpanding: boolean;
     componentParentId: number;
@@ -194,6 +195,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     public cancelHandler() {
         this.editDataItem = undefined;
         this.errorMessage = '';
+        this.isNew = false;
 
         this.parentId = this.componentParentId;
     }
@@ -539,6 +541,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
                 this.parentTitle = prefix;
                 this.parentValue = parentRow.name;
+                this.parentScope = parentRow.branchScope;
             }
         }
         else if (this.parent != undefined) {
@@ -560,6 +563,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
             this.parentTitle = prefix;
             this.parentValue = this.parent.name;
+            this.parentScope = this.parent.branchScope;
         }
         else
             this.parentTitle = '';

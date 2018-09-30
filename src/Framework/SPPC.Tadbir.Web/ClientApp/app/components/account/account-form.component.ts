@@ -56,13 +56,13 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
     @Input() public parentTitle: string = '';
     @Input() public parentValue: string = '';
+    @Input() public parentScopeValue: number = 0;
 
     @Input() public set parentId(id: number) {
         this.fullCodeApiUrl = String.Format(AccountApi.AccountFullCode, id ? id : 0);
     }
 
     @Input() public set model(account: Account) {
-
         this.editForm.reset(account);
 
         this.active = account !== undefined || this.isNew;
@@ -100,7 +100,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     //Events
 
     ngOnInit(): void {
-//        this.onChanges();
+        //        this.onChanges();
     }
 
     constructor(private accountService: AccountService, private voucherLineService: VoucherLineService, private fiscalPeriodService: FiscalPeriodService,

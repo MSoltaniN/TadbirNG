@@ -79,6 +79,11 @@
     "Unsuccessful": "Unsuccessful",
     "Successful": "Successful"
   },
+  "BranchScope": {
+    "AllBranches": "All Branches",
+    "CurrentBranchAndSubsets": "Current Branch And Subsets",
+    "CurrentBranch": "Current Branch"
+  },
   "Account": {
     "NewSubAccount": "New sub account",
     "New": "New Account",
@@ -95,7 +100,8 @@
     "Moeen": "Subsidiary Level",
     "Tafzili": "Floating Account Level",
     "Kol": "Ledger Level",
-    "TafziliToUp": "Floating Account"
+    "TafziliToUp": "Floating Account",
+    "BranchScope": "Branch Scope"
   },
   "Settings": {
     "AccountRelation": {

@@ -77,6 +77,11 @@
     "ViewRowPermission": "دسترسی به سطرهای اطلاعاتی",
     "OperationLog": "لاگ های عملیاتی"
   },
+  "BranchScope": {
+    "AllBranches": "کلیه شعب",
+    "CurrentBranchAndSubsets": "شعبه جاری و زیر مجموعه هایش",
+    "CurrentBranch": "شعبه جاری"
+  },
   "Account": {
     "New": "حساب جدید",
     "NewSubAccount": "درج زیر حساب جدید",
@@ -93,7 +98,8 @@
     "Moeen": "حساب معین",
     "Tafzili": "حساب تفصیلی",
     "Kol": "حساب کل",
-    "TafziliToUp": "حساب تفصیلی سطح"
+    "TafziliToUp": "حساب تفصیلی سطح",
+    "BranchScope": "دسترسی شعبه"
   },
   "Settings": {
     "AccountRelation": {
