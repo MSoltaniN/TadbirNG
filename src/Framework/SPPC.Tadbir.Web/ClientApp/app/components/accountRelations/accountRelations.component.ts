@@ -483,7 +483,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
         if (this.searchValue) {
             var filterExpBuilder = new FilterExpressionBuilder();
             filterExp = filterExpBuilder.New(new Filter("Name", this.searchValue, ".Contains({0})", "System.String"))
-                .Or(new Filter("Code", this.searchValue, ".Contains({0})", "System.String"))
+                .Or(new Filter("FullCode", this.searchValue, ".Contains({0})", "System.String"))
                 .Build();
         }
 
@@ -518,7 +518,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
             if (this.relatedSearchValue) {
                 var filterExpBuilder = new FilterExpressionBuilder();
                 filterExp = filterExpBuilder.New(new Filter("Name", this.relatedSearchValue, ".Contains({0})", "System.String"))
-                    .Or(new Filter("Code", this.relatedSearchValue, ".Contains({0})", "System.String"))
+                    .Or(new Filter("FullCode", this.relatedSearchValue, ".Contains({0})", "System.String"))
                     .Build();
             }
 

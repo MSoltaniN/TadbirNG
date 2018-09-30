@@ -52,7 +52,7 @@ export class ViewRowPermissionService extends BaseService {
         var base64Body = btoa(encodeURIComponent(postBody));
         if (searchHeaders)
             searchHeaders.append('X-Tadbir-GridOptions', base64Body);
-        var options = { headers: this.httpHeaders };
+        var options = { headers: searchHeaders };
 
         return this.http.get(apiUrl, options)
             .map(response => <any>(<Response>response));

@@ -1,4 +1,4 @@
-﻿<kendo-dialog *ngIf="active" id="multipleForm" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+﻿<kendo-dialog *ngIf="active" id="multipleForm" [ngClass]="{'tRtl':this.CurrentLanguage === 'fa' , 'tLtr': this.CurrentLanguage === 'en'}"
               (close)="closeForm()">
     <kendo-dialog-titlebar>
         {{ getTitleText('ViewRowPermission.FormTitle' | translate) }}       
@@ -11,7 +11,7 @@
     </div>
 
     <div class="row" id="main-section">
-        <div class="col-sm-6" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+        <div class="col-sm-6" [ngClass]="{'pull-right':this.CurrentLanguage === 'fa'}">
             <div class="section-header">
                 <span class="control-label">{{ getTitleText('ViewRowPermission.ListTitle' | translate) }}  </span>
                 <input type="text" class="k-textbox" [(ngModel)]="searchValue" (keydown.enter)="onSearch()" />
@@ -35,7 +35,7 @@
                     </div>
                 </div>
 
-                <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
+                <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}">
                     <kendo-treeview [nodes]="rowList"
                                     [textField]="['value']"
                                     kendoTreeViewExpandable
@@ -52,7 +52,7 @@
                 <span class="control-label header-label">{{ 'ViewRowPermission.SelectedRecords' | translate }}</span>
             </div>
             <div class="section-body">
-                <div [ngClass]="{'k-rtl':this.currentlang === 'fa'}">
+                <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}">
                     <kendo-treeview [nodes]="selectedRowList"
                                     [textField]="['value']"
                                     kendoTreeViewExpandable
@@ -67,7 +67,7 @@
         <div class="clearfix"></div>
     </div>
 
-    <div id="frm-btn" [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}">
+    <div id="frm-btn" [ngClass]="{'pull-left':this.CurrentLanguage === 'fa','pull-right':this.CurrentLanguage === 'en'}">
         <button class="k-button k-primary" [disabled]="rowList.length == rowCheckedKeys.length" (click)="selectAllRow()">{{ 'ViewRowPermission.SelectAll' | translate }}</button>
         <button class="k-button k-primary" [disabled]="selectedRowKeys.length == 0" (click)="removeAllSelected()">{{ 'ViewRowPermission.DeleteAll' | translate }}</button>
     </div>
