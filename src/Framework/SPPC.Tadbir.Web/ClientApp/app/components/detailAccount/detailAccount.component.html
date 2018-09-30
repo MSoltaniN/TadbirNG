@@ -138,7 +138,7 @@
             <!-- additional columns on large devices -->
 
         </kendo-grid>
-        <detailAccount-form-component [model]="editDataItem" [parentId]="parentId" [parentTitle]="parentTitle" [parentValue]="parentValue" [isNew]="isNew" [errorMessage]="errorMessage"
+        <detailAccount-form-component [model]="editDataItem" [parentId]="parentId" [parentTitle]="parentTitle" [parentValue]="parentValue" [parentScopeValue]="parentScope" [isNew]="isNew" [errorMessage]="errorMessage"
                                       (save)="saveHandler($event)"
                                       (cancel)="cancelHandler()">
         </detailAccount-form-component>

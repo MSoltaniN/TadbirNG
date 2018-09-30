@@ -53,6 +53,7 @@ export class CostCenterFormComponent extends DetailComponent {
 
     @Input() public parentTitle: string = '';
     @Input() public parentValue: string = '';
+    @Input() public parentScopeValue: number = 0;
 
     @Input() public set parentId(id: number) {
         this.fullCodeApiUrl = String.Format(CostCenterApi.CostCenterFullCode, id ? id : 0);

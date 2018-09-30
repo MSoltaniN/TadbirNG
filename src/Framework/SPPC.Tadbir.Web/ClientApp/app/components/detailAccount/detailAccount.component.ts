@@ -84,6 +84,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     parentTitle: string = '';
     parentValue: string = '';
+    parentScope: number = 0;
 
     isChildExpanding: boolean;
     componentParentId: number;
@@ -182,7 +183,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     public cancelHandler() {
         this.editDataItem = undefined;
         this.errorMessage = '';
-
+        this.isNew = false;
         this.parentId = this.componentParentId;
     }
 
@@ -459,11 +460,13 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
                 var level = +parentRow.level;
                 this.parentTitle = this.getText("App.Level") + " " + (level + 2).toString();
                 this.parentValue = parentRow.name;
+                this.parentScope = parentRow.branchScope;
             }
         }
         else if (this.parent != undefined) {
             this.parentTitle = this.getText("App.Level") + " " + (this.parent.level + 2).toString();
             this.parentValue = this.parent.name;
+            this.parentScope = this.parent.branchScope;
         }
         else {
             this.parentTitle = '';

@@ -17,6 +17,14 @@
     </div>
 
     <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
+
+        <div class="form-group">
+            <label for="branchScope" class="control-label">{{ 'CostCenter.BranchScope' | translate }}</label>
+
+            <sppc-branch-scope formControlName="branchScope" [parentScope]="parentScopeValue" [isNew]="isNew"></sppc-branch-scope>
+
+        </div>
+
         <div class="form-group">
             <label for="name" class="control-label">{{ 'CostCenter.Name' | translate }}</label>
 
@@ -45,9 +53,9 @@
             <input type="text" class="k-textbox" formControlName="fullCode" readonly id="fullCode" style="direction:ltr" />
 
             <!--<div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.fullCode.valid || editForm.controls.fullCode.pristine">
-                <span *ngIf="editForm.controls.fullCode.errors?.required">{{ 'AllValidations.CostCenter.FullCodeIsRequired' | translate }}</span>
-                <span *ngIf="editForm.controls.fullCode.errors?.maxlength">{{ 'AllValidations.CostCenter.FullCodeIsTooLong' | translate }}</span>
-            </div>-->
+            <span *ngIf="editForm.controls.fullCode.errors?.required">{{ 'AllValidations.CostCenter.FullCodeIsRequired' | translate }}</span>
+            <span *ngIf="editForm.controls.fullCode.errors?.maxlength">{{ 'AllValidations.CostCenter.FullCodeIsTooLong' | translate }}</span>
+        </div>-->
         </div>
 
         <div class="form-group">

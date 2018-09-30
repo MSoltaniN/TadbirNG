@@ -272,7 +272,8 @@
     "FullCode": "Full Code",
     "Level": "Level",
     "Description": "Description",
-    "Delete": "Delete Detail Account"
+    "Delete": "Delete Detail Account",
+    "BranchScope": "Branch Scope"
   },
   "CostCenter": {
     "New": "New Cost Center",
@@ -282,7 +283,8 @@
     "FullCode": "Full Code",
     "Level": "Level",
     "Description": "Description",
-    "Delete": "Delete Cost Center"
+    "Delete": "Delete Cost Center",
+    "BranchScope": "Branch Scope"
   },
   "Project": {
     "New": "New Project",
@@ -292,7 +294,8 @@
     "FullCode": "Full Code",
     "Level": "Level",
     "Description": "Description",
-    "Delete": "Delete Project"
+    "Delete": "Delete Project",
+    "BranchScope": "Branch Scope"
   },
   "AccountRelations": {
     "MainComponent": "Main Component",

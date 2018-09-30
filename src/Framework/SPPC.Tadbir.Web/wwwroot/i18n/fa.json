@@ -270,7 +270,8 @@
     "FullCode": "کد کامل",
     "Level": "سطح",
     "Description": "شرح",
-    "Delete": "حذف تفصیلی شناور"
+    "Delete": "حذف تفصیلی شناور",
+    "BranchScope": "دسترسی شعبه"
   },
   "CostCenter": {
     "New": "مرکز هزینه جدید",
@@ -280,7 +281,8 @@
     "FullCode": "کد کامل",
     "Level": "سطح",
     "Description": "شرح",
-    "Delete": "حذف مرکز هزینه"
+    "Delete": "حذف مرکز هزینه",
+    "BranchScope": "دسترسی شعبه"
   },
   "Project": {
     "New": "پروژه جدید",
@@ -290,7 +292,8 @@
     "FullCode": "کد کامل",
     "Level": "سطح",
     "Description": "شرح",
-    "Delete": "حذف پروژه"
+    "Delete": "حذف پروژه",
+    "BranchScope": "دسترسی شعبه"
   },
   "AccountRelations": {
     "MainComponent": "مولفه اصلی",

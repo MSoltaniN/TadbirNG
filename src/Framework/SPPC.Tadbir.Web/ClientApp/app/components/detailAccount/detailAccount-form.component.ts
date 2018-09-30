@@ -54,6 +54,7 @@ export class DetailAccountFormComponent extends DetailComponent {
 
     @Input() public parentTitle: string = '';
     @Input() public parentValue: string = '';
+    @Input() public parentScopeValue: number = 0;
 
     @Input() public set parentId(id: number) {
         this.fullCodeApiUrl = String.Format(DetailAccountApi.DetailAccountFullCode, id ? id : 0);
