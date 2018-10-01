@@ -1,4 +1,4 @@
-﻿<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en','new-dialog':isNew , 'edit-dialog':!isNew}"
+﻿<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.CurrentLanguage === 'fa' , 'tLtr': this.CurrentLanguage === 'en','new-dialog':isNew , 'edit-dialog':!isNew}"
               (close)="closeForm()">
     <kendo-dialog-titlebar>
         {{ isNew ?  ('Voucher.New' | translate) :  ('Buttons.Edit' | translate) }}
@@ -10,7 +10,7 @@
     </div>
     <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
         <div class="clearfix edit-form-body">
-            <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.currentlang === 'fa' && !isNew}">
+            <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.CurrentLanguage === 'fa' && !isNew}">
                 <label for="date" class="control-label">{{ 'Voucher.Date' | translate }}</label>
 
                 <sppc-datepicker formControlName="date" [minDate]="FiscalPeriodStartDate" [maxDate]="FiscalPeriodEndDate"></sppc-datepicker>
@@ -20,7 +20,7 @@
                 </div>
             </div>
 
-            <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.currentlang === 'fa' && !isNew}">
+            <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.CurrentLanguage === 'fa' && !isNew}">
                 <label for="no" class="control-label">{{ 'Voucher.No' | translate }}</label>
 
                 <input type="text" class="k-textbox" formControlName="no" />
@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.currentlang === 'fa' && !isNew}">
+            <div class="form-group" [ngClass]="{'col-xs-12 col-sm-4':!isNew,'pull-right':this.CurrentLanguage === 'fa' && !isNew}">
                 <label for="description" class="control-label">{{ 'Voucher.Description' | translate }}</label>
 
                 <textarea class="k-textarea" formControlName="description"></textarea>

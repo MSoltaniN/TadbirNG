@@ -44,13 +44,12 @@
                                     [valuePrimitive]="true"
                                     [(ngModel)]="ddlPermissionTypeSelected"
                                     [value]="ddlPermissionTypeSelected"
-                                    (valueChange)="handlePermissionTypeChange($event)"
-                                    [defaultItem]="{ value:'' | translate  , key: null}">
+                                    (valueChange)="handlePermissionTypeChange($event)">
                     <ng-template kendoDropDownListValueTemplate let-dataItem>
-                        {{ dataItem.value | translate }}
+                        {{ dataItem?.value | translate }}
                     </ng-template>
                     <ng-template kendoDropDownListItemTemplate let-dataItem>
-                        {{ dataItem.value | translate }}
+                        {{ dataItem?.value | translate }}
                     </ng-template>
                 </kendo-dropdownlist>
 

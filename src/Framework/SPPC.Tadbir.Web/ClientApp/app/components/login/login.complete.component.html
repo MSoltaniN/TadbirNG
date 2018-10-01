@@ -3,24 +3,33 @@
         <div class="panel panel-primary">
             <div class="panel-heading"><i class="fa fa-building"></i> {{ 'Login.SelectTitle' | translate }}</div>
             <div class="panel-body">
-                <form name="form"  (ngSubmit)="f.form.valid && selectParams()" #f="ngForm" novalidate>
+                <form name="form" (ngSubmit)="f.form.valid && selectParams()" #f="ngForm" novalidate>
                     <div class="toast-container"></div>
-                    <div class="form-group" >
+                    <div class="form-group">
                         <label class="col-md-12">{{ 'Company.CompanyName' | translate }}</label>
                         <kendo-dropdownlist class="col-md-12" [data]="compenies" (valueChange)="companyChange($event)" [disabled]="disabledCompany" [valuePrimitive]="true"
-                                                [textField]="'value'" [(ngModel)]="companyId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
-                        </kendo-dropdownlist>                        
+                                            [textField]="'value'" [(ngModel)]="companyId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
+                            <ng-template kendoDropDownListNoDataTemplate>
+                                <span class="ddl-noData"> {{ 'Company.NotFoundData' | translate }}</span>
+                            </ng-template>
+                        </kendo-dropdownlist>
                     </div>
                     <div class="form-group voffset2">
                         <label class="col-md-12">{{ 'Branch.BranchName' | translate }}</label>
-                        <kendo-dropdownlist [disabled]="disabledBranch" class="col-md-12" (valueChange)="branchChange($event)" [data]="branches"  [valuePrimitive]="true"
-                                           [textField]="'value'"   [(ngModel)]="branchId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
+                        <kendo-dropdownlist [disabled]="disabledBranch" class="col-md-12" (valueChange)="branchChange($event)" [data]="branches" [valuePrimitive]="true"
+                                            [textField]="'value'" [(ngModel)]="branchId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
+                            <ng-template kendoDropDownListNoDataTemplate>
+                                <span class="ddl-noData"> {{ 'Branch.NotFoundData' | translate }}</span>
+                            </ng-template>
                         </kendo-dropdownlist>
                     </div>
                     <div class="form-group voffset2">
                         <label class="col-md-12">{{ 'Fiscal.FiscalPeriod' | translate }}</label>
                         <kendo-dropdownlist [disabled]="disabledFiscalPeriod" class="col-md-12" [data]="fiscalPeriods" [valuePrimitive]="true"
-                                           [textField]="'value'"   [(ngModel)]="fiscalPeriodId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
+                                            [textField]="'value'" [(ngModel)]="fiscalPeriodId" [ngModelOptions]="{standalone: true}" [valueField]="'key'">
+                            <ng-template kendoDropDownListNoDataTemplate>
+                                <span class="ddl-noData"> {{ 'Fiscal.NotFoundData' | translate }}</span>
+                            </ng-template>
                         </kendo-dropdownlist>
                     </div>
                     <div class="form-group voffset2">

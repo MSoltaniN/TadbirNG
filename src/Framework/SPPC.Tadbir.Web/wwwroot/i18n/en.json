@@ -182,7 +182,8 @@
     "Server": "Server",
     "UserName": "UserName",
     "Password": "Password",
-    "Description": "Description"
+    "Description": "Description",
+    "NotFoundData": "Not Found Company"
   },
   "Branch": {
     "BranchName": "Branch",
@@ -193,7 +194,8 @@
     "Description": "Description",
     "Roles": "Roles",
     "UpdateRoles": "Branch roles have been successfully edited",
-    "RolesTitle": "List of available roles to the branch"
+    "RolesTitle": "List of available roles to the branch",
+    "NotFoundData": "Not Found Branch"
   },
   "Voucher": {
     "New": "New Voucher",
@@ -328,7 +330,8 @@
     "RolesTitle": "Fiscal Period Roles List"
   },
   "Fiscal": {
-    "FiscalPeriod": "Fiscal Period"
+    "FiscalPeriod": "Fiscal Period",
+    "NotFoundData": "Not Found Fiscal Period"
   },
   "Paging": {
     "Record": "Record",
