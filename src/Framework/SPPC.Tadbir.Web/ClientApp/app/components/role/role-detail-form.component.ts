@@ -45,8 +45,6 @@ export class RoleDetailFormComponent extends DetailComponent {
 
 
     ////create properties
-    public gridPermissionData: any;
-    //public gridBranchesData: any;
     public gridUsersData: any;
 
 
@@ -143,7 +141,6 @@ export class RoleDetailFormComponent extends DetailComponent {
 
     private closeForm(): void {
         this.roleDetail = false;
-        this.gridPermissionData = undefined;
         //this.gridBranchesData = undefined;
         this.gridUsersData = undefined;
         this.cancelRoleDetail.emit();

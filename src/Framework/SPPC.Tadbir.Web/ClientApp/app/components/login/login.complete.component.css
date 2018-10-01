@@ -28,3 +28,7 @@
     text-align:right;
 }
 
+.ddl-noData {
+    color: #717171;
+    font-weight: 500;
+}
