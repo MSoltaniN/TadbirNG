@@ -30,23 +30,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             get { return AppStrings.Account; }
         }
 
-        // GET: api/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(AccountApi.FiscalPeriodBranchAccountsUrl)]
+        // GET: api/accounts
+        [Route(AccountApi.EnvironmentAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetAccountsAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetEnvironmentAccountsAsync()
         {
-            int itemCount = await _repository.GetCountAsync(SecurityContext.User, fpId, branchId, GridOptions);
+            _repository.SetCurrentContext(SecurityContext.User);
+            int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
-            var accounts = await _repository.GetAccountsAsync(SecurityContext.User, fpId, branchId, GridOptions);
+            var accounts = await _repository.GetAccountsAsync(GridOptions);
             return Json(accounts);
         }
 
-        // GET: api/accounts/lookup/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(AccountApi.FiscalPeriodBranchAccountsLookupUrl)]
+        // GET: api/accounts/lookup
+        [Route(AccountApi.EnvironmentAccountsLookupUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetAccountsLookupAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetEnvironmentAccountsLookupAsync()
         {
-            var lookup = await _repository.GetAccountsLookupAsync(SecurityContext.User, fpId, branchId, GridOptions);
+            _repository.SetCurrentContext(SecurityContext.User);
+            var lookup = await _repository.GetAccountsLookupAsync(GridOptions);
             return Json(lookup);
         }
 
@@ -113,7 +115,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/accounts
         [HttpPost]
-        [Route(AccountApi.AccountsUrl)]
+        [Route(AccountApi.EnvironmentAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Create)]
         public async Task<IActionResult> PostNewAccountAsync([FromBody] AccountViewModel account)
         {
@@ -179,7 +181,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // PUT: api/accounts
         [HttpPut]
-        [Route(AccountApi.AccountsUrl)]
+        [Route(AccountApi.EnvironmentAccountsUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.Delete)]
         public async Task<IActionResult> PutExistingAccountsAsDeletedAsync([FromBody] ActionDetailViewModel actionDetail)
         {

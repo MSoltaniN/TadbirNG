@@ -45,18 +45,11 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کلیه حساب هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<IList<AccountViewModel>> GetAccountsAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<IList<AccountViewModel>> GetAccountsAsync(GridOptions gridOptions = null)
         {
-            var accounts = await _repository.GetAllAsync<Account>(
-                userContext, fpId, branchId, ViewName.Account, acc => acc.Children);
+            var accounts = await _repository.GetAllAsync<Account>(ViewName.Account, acc => acc.Children);
             return accounts
                 .Select(item => Mapper.Map<AccountViewModel>(item))
                 .Apply(gridOptions)
@@ -67,18 +60,11 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، کلیه حساب هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
         /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<IList<KeyValue>> GetAccountsLookupAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<IList<KeyValue>> GetAccountsLookupAsync(GridOptions gridOptions = null)
         {
-            return await _repository.GetAllLookupAsync<Account>(
-                userContext, fpId, branchId, ViewName.Account, gridOptions);
+            return await _repository.GetAllLookupAsync<Account>(ViewName.Account, gridOptions);
         }
 
         /// <summary>
@@ -169,18 +155,11 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<int> GetCountAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<int> GetCountAsync(GridOptions gridOptions = null)
         {
-            return await _repository.GetCountAsync<Account>(
-                userContext, fpId, branchId, ViewName.Account, gridOptions);
+            return await _repository.GetCountAsync<Account>(ViewName.Account, gridOptions);
         }
 
         /// <summary>
@@ -324,6 +303,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         public void SetCurrentContext(UserContextViewModel userContext)
         {
+            _repository.SetCurrentContext(userContext);
             SetLoggingContext(userContext);
         }
 

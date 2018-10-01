@@ -31,7 +31,7 @@ namespace SPPC.Tadbir.Service
         public IEnumerable<AccountViewModel> GetAccounts(int fpId, int branchId)
         {
             var accounts = _apiClient.Get<IEnumerable<AccountViewModel>>(
-                AccountApi.FiscalPeriodBranchAccounts, fpId, branchId);
+                AccountApi.EnvironmentAccounts, fpId, branchId);
             return accounts;
         }
 
@@ -67,7 +67,7 @@ namespace SPPC.Tadbir.Service
             ServiceResponse response = null;
             if (account.Id == 0)
             {
-                response = _apiClient.Insert(account, AccountApi.Accounts);
+                response = _apiClient.Insert(account, AccountApi.EnvironmentAccounts);
             }
             else
             {

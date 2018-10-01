@@ -13,24 +13,24 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
-        /// API client URL for accounts defined in a fiscal period and a corporate branch
+        /// API client URL for accounts defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchAccounts = "accounts/fp/{0}/branch/{1}";
+        public const string EnvironmentAccounts = "accounts";
 
         /// <summary>
-        /// API server route URL for accounts defined in a fiscal period and a corporate branch
+        /// API server route URL for accounts defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchAccountsUrl = "accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentAccountsUrl = "accounts";
 
         /// <summary>
-        /// API client URL for accounts lookup defined in a fiscal period and a corporate branch
+        /// API client URL for accounts lookup defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchAccountsLookup = "accounts/lookup/fp/{0}/branch/{1}";
+        public const string EnvironmentAccountsLookup = "accounts/lookup";
 
         /// <summary>
-        /// API server route URL for accounts lookup defined in a fiscal period and a corporate branch
+        /// API server route URL for accounts lookup defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchAccountsLookupUrl = "accounts/lookup/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentAccountsLookupUrl = "accounts/lookup";
 
         /// <summary>
         /// API client URL for a single account specified by identifier
@@ -51,16 +51,6 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all child accounts under a specific account in hierarchy
         /// </summary>
         public const string AccountChildrenUrl = "accounts/{accountId:min(1)}/children";
-
-        /// <summary>
-        /// API client URL for all accounts
-        /// </summary>
-        public const string Accounts = "accounts";
-
-        /// <summary>
-        /// API server route URL for all accounts
-        /// </summary>
-        public const string AccountsUrl = "accounts";
 
         /// <summary>
         /// API client URL for details of an account specified by identifier
