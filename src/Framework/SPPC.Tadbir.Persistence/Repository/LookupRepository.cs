@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
@@ -326,6 +325,24 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetAsyncRepository<View>();
             var views = await repository
                 .GetAllAsync();
+            var lookup = views
+                .Select(view => _mapper.Map<KeyValue>(view))
+                .Apply(gridOptions)
+                .ToList();
+            _unitOfWork.UseCompanyContext();
+            return lookup;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، موجودیت های سلسله مراتبی (درختی) را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه موجودیت های درختی</returns>
+        public async Task<IList<KeyValue>> GetTreeViewsAsync(GridOptions gridOptions = null)
+        {
+            _unitOfWork.UseSystemContext();
+            var repository = _unitOfWork.GetAsyncRepository<View>();
+            var views = await repository
+                .GetByCriteriaAsync(vu => vu.IsHierarchy);
             var lookup = views
                 .Select(view => _mapper.Map<KeyValue>(view))
                 .Apply(gridOptions)

@@ -564,4 +564,10 @@
   <data name="CompanyDb" xml:space="preserve">
     <value>شرکت</value>
   </data>
+  <data name="ViewTreeSettings" xml:space="preserve">
+    <value>موجودیت های چندسطحی</value>
+  </data>
+  <data name="ViewTreeSettingsDescription" xml:space="preserve">
+    <value>گزینه های موجود برای تعریف ساختارهای اطلاعاتی چندسطحی</value>
+  </data>
 </root>

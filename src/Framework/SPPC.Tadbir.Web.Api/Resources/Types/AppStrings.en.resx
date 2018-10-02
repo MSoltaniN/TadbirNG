@@ -564,4 +564,10 @@
   <data name="CompanyDb" xml:space="preserve">
     <value>Company</value>
   </data>
+  <data name="ViewTreeSettings" xml:space="preserve">
+    <value>Multi-level entities</value>
+  </data>
+  <data name="ViewTreeSettingsDescription" xml:space="preserve">
+    <value>Available options for defining entities with multiple levels</value>
+  </data>
 </root>
