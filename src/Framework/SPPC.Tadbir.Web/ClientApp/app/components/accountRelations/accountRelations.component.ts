@@ -131,7 +131,7 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
             ];
             switch (item) {
                 case AccountRelationsType.Account: {
-                    this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId);
+                    this.mainComponentApiUrl = AccountRelationApi.EnvironmentAccounts;
                     this.relatedComponent = [
                         { value: "AccountRelations.DetailAccount", key: AccountRelationsType.DetailAccount },
                         { value: "AccountRelations.CostCenter", key: AccountRelationsType.CostCenter },
@@ -140,15 +140,15 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
                     break;
                 }
                 case AccountRelationsType.DetailAccount: {
-                    this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId);
+                    this.mainComponentApiUrl = AccountRelationApi.EnvironmentDetailAccounts;
                     break
                 }
                 case AccountRelationsType.CostCenter: {
-                    this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId);
+                    this.mainComponentApiUrl = AccountRelationApi.EnvironmentCostCenters;
                     break
                 }
                 case AccountRelationsType.Project: {
-                    this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId);
+                    this.mainComponentApiUrl = AccountRelationApi.EnvironmentProjects;
                     break
                 }
                 default:

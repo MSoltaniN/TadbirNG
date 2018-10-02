@@ -206,7 +206,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
                 model.parentId = this.parent.id;
                 model.level = this.parent.level + 1;
             }
-            this.projectService.insert<Project>(ProjectApi.Projects, model)
+            this.projectService.insert<Project>(ProjectApi.EnvironmentProjects, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -300,8 +300,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
             if (this.parentComponent != null && (this.goLastPage || (insertedModel && !this.addToContainer))) {
 
                 //call top 1 for get totalcount
-                this.projectService.getAll(String.Format(ProjectApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId),
-                    0, 1, order, filter).subscribe((res) => {
+                this.projectService.getAll(ProjectApi.EnvironmentProjects, 0, 1, order, filter).subscribe((res) => {
                         if (res.headers != null) {
                             var headers = res.headers != undefined ? res.headers : null;
                             if (headers != null) {
@@ -335,8 +334,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
 
     loadGridData(insertedModel?: Project, order?: string, filter?: FilterExpression) {
 
-        this.projectService.getAll(String.Format(ProjectApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId),
-            this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+        this.projectService.getAll(ProjectApi.EnvironmentProjects, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.body;
 
                 var totalCount = 0;

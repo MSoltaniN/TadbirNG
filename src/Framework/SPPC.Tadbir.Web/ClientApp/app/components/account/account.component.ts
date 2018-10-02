@@ -246,7 +246,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
             //set parentid for childs accounts
             this.disableSaveBtn = undefined;
-            this.accountService.insert<Account>(AccountApi.Accounts, model)
+            this.accountService.insert<Account>(AccountApi.EnvironmentAccounts, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -335,7 +335,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     deleteModels(confirm: boolean) {
         if (confirm) {
             this.grid.loading = true;
-            this.accountService.groupDelete(AccountApi.Accounts, this.selectedRows).subscribe(res => {
+            this.accountService.groupDelete(AccountApi.EnvironmentAccounts, this.selectedRows).subscribe(res => {
                 this.showMessage(this.deleteMsg, MessageType.Info);
 
                 if (this.rowData.data.length == this.selectedRows.length && this.pageIndex > 1)
@@ -384,8 +384,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             if (this.parentAccount != null && (this.goLastPage || (insertedModel && !this.addToContainer))) {
                 //Todo: for all tree component
                 //call top 1 account for get totalcount
-                this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId),
-                    0, 1, order, filter).subscribe((res) => {
+                this.accountService.getAll(AccountApi.EnvironmentAccounts,0, 1, order, filter).subscribe((res) => {
 
                         if (res.headers != null) {
                             var headers = res.headers != undefined ? res.headers : null;
@@ -422,8 +421,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
     loadGridData(insertedModel?: Account,order?:string,filter?:FilterExpression) {
 
-        this.accountService.getAll(String.Format(AccountApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId),
-            this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+        this.accountService.getAll(AccountApi.EnvironmentAccounts,this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
 
                 var resData = res.body;
 
