@@ -49,7 +49,7 @@ namespace SPPC.Tadbir.Persistence
             UserContextViewModel userContext, int voucherId, GridOptions gridOptions = null)
         {
             var query = GetVoucherLinesQuery(voucherId);
-            query = _repository.ApplyRowFilter(ref query, userContext, ViewName.VoucherLine);
+            query = _repository.ApplyRowFilter(ref query, ViewName.VoucherLine);
             var lines = await query
                 .Select(line => Mapper.Map<VoucherLineViewModel>(line))
                 .Apply(gridOptions)
@@ -100,7 +100,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var query = repository.GetEntityQuery()
                 .Where(line => line.Voucher.Id == voucherId);
-            query = _repository.ApplyRowFilter(ref query, userContext, ViewName.VoucherLine);
+            query = _repository.ApplyRowFilter(ref query, ViewName.VoucherLine);
             return await query
                 .Apply(gridOptions, false)
                 .CountAsync();
@@ -228,6 +228,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         public void SetCurrentContext(UserContextViewModel userContext)
         {
+            _repository.SetCurrentContext(userContext);
             SetLoggingContext(userContext);
         }
 

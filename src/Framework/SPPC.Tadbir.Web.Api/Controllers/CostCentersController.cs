@@ -28,23 +28,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             get { return AppStrings.CostCenter; }
         }
 
-        // GET: api/ccenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(CostCenterApi.FiscalPeriodBranchCostCentersUrl)]
+        // GET: api/ccenters
+        [Route(CostCenterApi.EnvironmentCostCentersUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
-        public async Task<IActionResult> GetCostCentersAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetEnvironmentCostCentersAsync()
         {
-            int itemCount = await _repository.GetCountAsync(SecurityContext.User, fpId, branchId, GridOptions);
+            _repository.SetCurrentContext(SecurityContext.User);
+            int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
-            var costCenters = await _repository.GetCostCentersAsync(SecurityContext.User, fpId, branchId, GridOptions);
+            var costCenters = await _repository.GetCostCentersAsync(GridOptions);
             return Json(costCenters);
         }
 
-        // GET: api/ccenters/lookup/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(CostCenterApi.FiscalPeriodBranchCostCentersLookupUrl)]
+        // GET: api/ccenters/lookup
+        [Route(CostCenterApi.EnvironmentCostCentersLookupUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
-        public async Task<IActionResult> GetCostCentersLookupAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetEnvironmentCostCentersLookupAsync()
         {
-            var lookup = await _repository.GetCostCentersLookupAsync(SecurityContext.User, fpId, branchId, GridOptions);
+            var lookup = await _repository.GetCostCentersLookupAsync(GridOptions);
             return Json(lookup);
         }
 
@@ -93,7 +94,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/ccenters
         [HttpPost]
-        [Route(CostCenterApi.CostCentersUrl)]
+        [Route(CostCenterApi.EnvironmentCostCentersUrl)]
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Create)]
         public async Task<IActionResult> PostNewCostCenterAsync([FromBody] CostCenterViewModel costCenter)
         {

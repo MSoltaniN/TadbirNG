@@ -32,7 +32,7 @@ namespace SPPC.Tadbir.Service
         public IEnumerable<VoucherViewModel> GetVouchers(int fpId, int branchId)
         {
             var vouchers = _apiClient.Get<IEnumerable<VoucherViewModel>>(
-                VoucherApi.FiscalPeriodBranchVouchers, fpId, branchId);
+                VoucherApi.EnvironmentVouchers, fpId, branchId);
             return vouchers;
         }
 
@@ -47,7 +47,7 @@ namespace SPPC.Tadbir.Service
             ServiceResponse response = null;
             if (voucher.Id == 0)
             {
-                response = _apiClient.Insert(voucher, VoucherApi.Vouchers);
+                response = _apiClient.Insert(voucher, VoucherApi.EnvironmentVouchers);
             }
             else
             {

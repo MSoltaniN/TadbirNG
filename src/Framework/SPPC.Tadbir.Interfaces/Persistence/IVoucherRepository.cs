@@ -14,17 +14,11 @@ namespace SPPC.Tadbir.Persistence
     public interface IVoucherRepository
     {
         /// <summary>
-        /// به روش آسنکرون، کلیه اسناد مالی را که در دوره مالی و شعبه مشخص شده تعریف شده اند، از محل ذخیره خوانده و برمی گرداند
+        /// به روش آسنکرون، کلیه اسناد مالی را که در دوره مالی و شعبه جاری تعریف شده اند، از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<IList<VoucherViewModel>> GetVouchersAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null);
+        /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه جاری</returns>
+        Task<IList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، سند مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
@@ -47,17 +41,12 @@ namespace SPPC.Tadbir.Persistence
         Task<FiscalPeriodViewModel> GetVoucherFiscalPeriodAsync(VoucherViewModel voucher);
 
         /// <summary>
-        /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه جاری را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<int> GetCountAsync(UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null);
+        /// <returns>تعداد اسناد مالی تعریف شده در دوره مالی و شعبه جاری</returns>
+        Task<int> GetCountAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک سند مالی را در محل ذخیره ایجاد یا اصلاح می کند
