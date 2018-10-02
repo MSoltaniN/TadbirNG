@@ -36,21 +36,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه تفصیلی های شناوری را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
+        /// به روش آسنکرون، کلیه تفصیلی های شناوری را که در دوره مالی و شعبه جاری تعریف شده اند،
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<IList<DetailAccountViewModel>> GetDetailAccountsAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
+        /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری</returns>
+        public async Task<IList<DetailAccountViewModel>> GetDetailAccountsAsync(GridOptions gridOptions = null)
         {
-            var detailAccounts = await _repository.GetAllAsync<DetailAccount>(
-                userContext, fpId, branchId, ViewName.DetailAccount, facc => facc.Children);
+            var detailAccounts = await _repository.GetAllAsync<DetailAccount>(ViewName.DetailAccount, facc => facc.Children);
             return detailAccounts
                 .Select(item => Mapper.Map<DetailAccountViewModel>(item))
                 .Apply(gridOptions)
@@ -58,39 +51,25 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه تفصیلی های شناوری را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
+        /// به روش آسنکرون، کلیه تفصیلی های شناوری را که در دوره مالی و شعبه جاری تعریف شده اند،
         /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<IList<KeyValue>> GetDetailAccountsLookupAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
+        /// <returns>مجموعه ای از تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری</returns>
+        public async Task<IList<KeyValue>> GetDetailAccountsLookupAsync(GridOptions gridOptions = null)
         {
-            return await _repository.GetAllLookupAsync<DetailAccount>(
-                userContext, fpId, branchId, ViewName.DetailAccount, gridOptions);
+            return await _repository.GetAllLookupAsync<DetailAccount>(ViewName.DetailAccount, gridOptions);
         }
 
         /// <summary>
-        /// به روش آسنکرون، تعداد تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده را
-        /// از دیتابیس خوانده و برمی گرداند
+        /// به روش آسنکرون، تعداد تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری را
+        /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد تفصیلی های شناور تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<int> GetCountAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
+        /// <returns>تعداد تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری</returns>
+        public async Task<int> GetCountAsync(GridOptions gridOptions = null)
         {
-            return await _repository.GetCountAsync<DetailAccount>(
-                userContext, fpId, branchId, ViewName.DetailAccount, gridOptions);
+            return await _repository.GetCountAsync<DetailAccount>(ViewName.DetailAccount, gridOptions);
         }
 
         /// <summary>
@@ -263,6 +242,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         public void SetCurrentContext(UserContextViewModel userContext)
         {
+            _repository.SetCurrentContext(userContext);
             SetLoggingContext(userContext);
         }
 

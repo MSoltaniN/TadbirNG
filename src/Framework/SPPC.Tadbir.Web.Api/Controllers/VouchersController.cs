@@ -34,14 +34,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #region Voucher CRUD Operations
 
-        // GET: api/vouchers/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(VoucherApi.FiscalPeriodBranchVouchersUrl)]
+        // GET: api/vouchers
+        [Route(VoucherApi.EnvironmentVouchersUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetVouchersAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetEnvironmentVouchersAsync()
         {
-            int itemCount = await _repository.GetCountAsync(SecurityContext.User, fpId, branchId, GridOptions);
+            _repository.SetCurrentContext(SecurityContext.User);
+            int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
-            var vouchers = await _repository.GetVouchersAsync(SecurityContext.User, fpId, branchId, GridOptions);
+            var vouchers = await _repository.GetVouchersAsync(GridOptions);
             return Json(vouchers);
         }
 
@@ -65,7 +66,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/vouchers
         [HttpPost]
-        [Route(VoucherApi.VouchersUrl)]
+        [Route(VoucherApi.EnvironmentVouchersUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Create)]
         public async Task<IActionResult> PostNewVoucherAsync([FromBody] VoucherViewModel voucher)
         {
@@ -139,6 +140,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
         public async Task<IActionResult> GetArticlesAsync(int voucherId)
         {
+            _lineRepository.SetCurrentContext(SecurityContext.User);
             int itemCount = await _lineRepository.GetArticleCountAsync(SecurityContext.User, voucherId, GridOptions);
             SetItemCount(itemCount);
             var articles = await _lineRepository.GetArticlesAsync(SecurityContext.User, voucherId, GridOptions);

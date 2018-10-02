@@ -36,21 +36,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه مراکز هزینه ای را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
+        /// به روش آسنکرون، کلیه مراکز هزینه ای را که در دوره مالی و شعبه جاری تعریف شده اند،
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<IList<CostCenterViewModel>> GetCostCentersAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
+        /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
+        public async Task<IList<CostCenterViewModel>> GetCostCentersAsync( GridOptions gridOptions = null)
         {
-            var costCenters = await _repository.GetAllAsync<CostCenter>(
-                userContext, fpId, branchId, ViewName.CostCenter, cc => cc.Children);
+            var costCenters = await _repository.GetAllAsync<CostCenter>(ViewName.CostCenter, cc => cc.Children);
             return costCenters
                 .Select(item => Mapper.Map<CostCenterViewModel>(item))
                 .Apply(gridOptions)
@@ -58,39 +51,25 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه مراکز هزینه ای را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
+        /// به روش آسنکرون، کلیه مراکز هزینه ای را که در دوره مالی و شعبه جاری تعریف شده اند،
         /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<IList<KeyValue>> GetCostCentersLookupAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
+        /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
+        public async Task<IList<KeyValue>> GetCostCentersLookupAsync( GridOptions gridOptions = null)
         {
-            return await _repository.GetAllLookupAsync<CostCenter>(
-                userContext, fpId, branchId, ViewName.CostCenter, gridOptions);
+            return await _repository.GetAllLookupAsync<CostCenter>(ViewName.CostCenter, gridOptions);
         }
 
         /// <summary>
-        /// به روش آسنکرون، تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به روش آسنکرون، تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه جاری را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<int> GetCountAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
+        /// <returns>تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
+        public async Task<int> GetCountAsync(GridOptions gridOptions = null)
         {
-            return await _repository.GetCountAsync<CostCenter>(
-                userContext, fpId, branchId, ViewName.CostCenter, gridOptions);
+            return await _repository.GetCountAsync<CostCenter>(ViewName.CostCenter, gridOptions);
         }
 
         /// <summary>
@@ -263,6 +242,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         public void SetCurrentContext(UserContextViewModel userContext)
         {
+            _repository.SetCurrentContext(userContext);
             SetLoggingContext(userContext);
         }
 

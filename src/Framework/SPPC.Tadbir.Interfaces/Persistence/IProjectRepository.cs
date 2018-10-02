@@ -15,46 +15,28 @@ namespace SPPC.Tadbir.Persistence
     public interface IProjectRepository
     {
         /// <summary>
-        /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
+        /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه جاری تعریف شده اند،
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<IList<ProjectViewModel>> GetProjectsAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null);
+        /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
+        Task<IList<ProjectViewModel>> GetProjectsAsync(GridOptions gridOptions = null);
 
         /// <summary>
-        /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
+        /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه جاری تعریف شده اند،
         /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<IList<KeyValue>> GetProjectsLookupAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null);
+        /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
+        Task<IList<KeyValue>> GetProjectsLookupAsync(GridOptions gridOptions = null);
 
         /// <summary>
-        /// به روش آسنکرون، تعداد پروژه های تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به روش آسنکرون، تعداد پروژه های تعریف شده در دوره مالی و شعبه جاری را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد پروژه های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        Task<int> GetCountAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null);
+        /// <returns>تعداد پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
+        Task<int> GetCountAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، پروژه با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند

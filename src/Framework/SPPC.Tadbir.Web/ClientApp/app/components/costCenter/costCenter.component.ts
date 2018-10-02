@@ -47,7 +47,7 @@ export function getLayoutModule(layout: Layout) {
 
 export class CostCenterComponent extends DefaultComponent implements OnInit {
 
-     //#region Fields
+    //#region Fields
     public Childrens: Array<CostCenterComponent>;
     @ViewChild(GridComponent) grid: GridComponent;
 
@@ -62,7 +62,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
 
     //permission flag
     viewAccess: boolean;
-    
+
     ////for add in delete messageText
     deleteConfirm: boolean;
     deleteModelConfirm: boolean;
@@ -92,7 +92,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
 
     //#region Events
     ngOnInit() {
-        this.viewAccess = this.isAccess(SecureEntity.CostCenter, CostCenterPermissions.View);        
+        this.viewAccess = this.isAccess(SecureEntity.CostCenter, CostCenterPermissions.View);
         if (this.parentComponent && this.parentComponent.isChildExpanding) {
             this.goLastPage = true;
             this.parentComponent.isChildExpanding = false;
@@ -216,7 +216,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
                 model.parentId = this.parent.id;
                 model.level = this.parent.level + 1;
             }
-            this.costCenterService.insert<CostCenter>(CostCenterApi.CostCenters, model)
+            this.costCenterService.insert<CostCenter>(CostCenterApi.EnvironmentCostCenters, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -312,22 +312,21 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
             if (this.parentComponent != null && (this.goLastPage || (insertedModel && !this.addToContainer))) {
 
                 //call top 1 for get totalcount
-                this.costCenterService.getAll(String.Format(CostCenterApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId),
-                    0, 1, order, filter).subscribe((res) => {
-                        if (res.headers != null) {
-                            var headers = res.headers != undefined ? res.headers : null;
-                            if (headers != null) {
-                                var retheader = headers.get('X-Total-Count');
-                                if (retheader != null)
-                                    this.totalRecords = parseInt(retheader.toString());
-                            }
+                this.costCenterService.getAll(CostCenterApi.EnvironmentCostCenters, 0, 1, order, filter).subscribe((res) => {
+                    if (res.headers != null) {
+                        var headers = res.headers != undefined ? res.headers : null;
+                        if (headers != null) {
+                            var retheader = headers.get('X-Total-Count');
+                            if (retheader != null)
+                                this.totalRecords = parseInt(retheader.toString());
                         }
+                    }
 
-                        this.goToLastPage(this.totalRecords);
-                        this.goLastPage = false;
+                    this.goToLastPage(this.totalRecords);
+                    this.goLastPage = false;
 
-                        this.loadGridData(insertedModel, order, filter);
-                    });
+                    this.loadGridData(insertedModel, order, filter);
+                });
             }
             //#endregion
             else {
@@ -342,71 +341,70 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
                 data: [],
                 total: 0
             }
-        } 
+        }
     }
 
     loadGridData(insertedModel?: CostCenter, order?: string, filter?: FilterExpression) {
 
-        this.costCenterService.getAll(String.Format(CostCenterApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId),
-            this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.body;
+        this.costCenterService.getAll(CostCenterApi.EnvironmentCostCenters, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            var resData = res.body;
 
-                var totalCount = 0;
+            var totalCount = 0;
 
-                if (res.headers != null) {
-                    var headers = res.headers != undefined ? res.headers : null;
-                    if (headers != null) {
-                        var retheader = headers.get('X-Total-Count');
-                        if (retheader != null)
-                            totalCount = parseInt(retheader.toString());
-                    }
+            if (res.headers != null) {
+                var headers = res.headers != undefined ? res.headers : null;
+                if (headers != null) {
+                    var retheader = headers.get('X-Total-Count');
+                    if (retheader != null)
+                        totalCount = parseInt(retheader.toString());
                 }
+            }
 
-                this.rowData = {
-                    data: resData,
-                    total: totalCount
-                }
+            this.rowData = {
+                data: resData,
+                total: totalCount
+            }
 
-                this.grid.data = this.rowData;
+            this.grid.data = this.rowData;
 
 
-                //expand new row if has childs
-                if (insertedModel) {
-                    var rows = (this.rowData.data as Array<CostCenter>);
+            //expand new row if has childs
+            if (insertedModel) {
+                var rows = (this.rowData.data as Array<CostCenter>);
+                var index = rows.findIndex(p => p.id == insertedModel.parentId);
+                if (index == -1 && this.parentComponent != null) {
+                    var rows = (this.parentComponent.rowData.data as Array<CostCenter>);
                     var index = rows.findIndex(p => p.id == insertedModel.parentId);
-                    if (index == -1 && this.parentComponent != null) {
-                        var rows = (this.parentComponent.rowData.data as Array<CostCenter>);
-                        var index = rows.findIndex(p => p.id == insertedModel.parentId);
-                        if (index >= 0) {
-                            this.parentComponent.isChildExpanding = true;
-                            this.parentComponent.grid.collapseRow(this.parentComponent.skip + index);
-                            this.parentComponent.grid.expandRow(this.parentComponent.skip + index);
-                        }
-                    }
-                    else if (index >= 0) {
-                        this.isChildExpanding = true;
-                        this.grid.collapseRow(this.skip + index);
-                        this.grid.expandRow(this.skip + index);
+                    if (index >= 0) {
+                        this.parentComponent.isChildExpanding = true;
+                        this.parentComponent.grid.collapseRow(this.parentComponent.skip + index);
+                        this.parentComponent.grid.expandRow(this.parentComponent.skip + index);
                     }
                 }
+                else if (index >= 0) {
+                    this.isChildExpanding = true;
+                    this.grid.collapseRow(this.skip + index);
+                    this.grid.expandRow(this.skip + index);
+                }
+            }
 
-                //زمانی که تعداد رکورد ها صفر باشد باید کامپوننت پدر رفرش شود
-                if (totalCount == 0) {
-                    if (this.parentComponent && this.parentComponent.Childrens) {
-                        var thisIndex = this.parentComponent.Childrens.findIndex(p => p == this);
-                        if (thisIndex >= 0)
-                            this.parentComponent.Childrens.splice(thisIndex);
+            //زمانی که تعداد رکورد ها صفر باشد باید کامپوننت پدر رفرش شود
+            if (totalCount == 0) {
+                if (this.parentComponent && this.parentComponent.Childrens) {
+                    var thisIndex = this.parentComponent.Childrens.findIndex(p => p == this);
+                    if (thisIndex >= 0)
+                        this.parentComponent.Childrens.splice(thisIndex);
 
 
-                        this.parentComponent.reloadGrid();
-                    }
-
+                    this.parentComponent.reloadGrid();
                 }
 
-                this.showloadingMessage = !(resData.length == 0);
-                this.totalRecords = totalCount;
-                this.grid.loading = false;
-            })
+            }
+
+            this.showloadingMessage = !(resData.length == 0);
+            this.totalRecords = totalCount;
+            this.grid.loading = false;
+        })
     }
 
     deleteModel(confirm: boolean) {
@@ -420,9 +418,9 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
 
                 this.reloadGrid();
             }, (error => {
-                    this.grid.loading = false;
-                    var message = error.message ? error.message : error;
-                    this.showMessage(message, MessageType.Warning);
+                this.grid.loading = false;
+                var message = error.message ? error.message : error;
+                this.showMessage(message, MessageType.Warning);
             }));
         }
 

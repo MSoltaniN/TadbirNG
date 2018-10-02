@@ -148,7 +148,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
-            this.voucherService.insert<Voucher>(VoucherApi.Vouchers, model)
+            this.voucherService.insert<Voucher>(VoucherApi.EnvironmentVouchers, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -202,7 +202,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
             if (insertedModel)
                 this.goToLastPage(this.totalRecords);
 
-            this.voucherService.getAll(String.Format(VoucherApi.FiscalPeriodBranchVouchers, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+            this.voucherService.getAll(VoucherApi.EnvironmentVouchers,this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.body;
                 this.properties = resData.properties;
                 var totalCount = 0;

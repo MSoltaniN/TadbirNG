@@ -36,20 +36,13 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه اسناد مالی را که در دوره مالی و شعبه مشخص شده تعریف شده اند، از دیتابیس خوانده و برمی گرداند
+        /// به روش آسنکرون، کلیه اسناد مالی را که در دوره مالی و شعبه جاری تعریف شده اند، از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه دیتابیسی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه دیتابیسی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<IList<VoucherViewModel>> GetVouchersAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
+        /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه جاری</returns>
+        public async Task<IList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions = null)
         {
-            var vouchers = await _repository.GetAllOperationAsync<Voucher>(
-                userContext, fpId, branchId, ViewName.Voucher,
+            var vouchers = await _repository.GetAllOperationAsync<Voucher>(ViewName.Voucher,
                 v => v.Lines, v => v.FiscalPeriod, v => v.Branch);
             return vouchers
                 .Select(item => Mapper.Map<VoucherViewModel>(item))
@@ -85,21 +78,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه جاری را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد اسناد مالی تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<int> GetCountAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
+        public async Task<int> GetCountAsync(GridOptions gridOptions = null)
         {
-            return await _repository.GetOperationCountAsync<Voucher>(
-                userContext, fpId, branchId, ViewName.Voucher, gridOptions);
+            return await _repository.GetOperationCountAsync<Voucher>(ViewName.Voucher, gridOptions);
         }
 
         /// <summary>
@@ -181,6 +167,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         public void SetCurrentContext(UserContextViewModel userContext)
         {
+            _repository.SetCurrentContext(userContext);
             SetLoggingContext(userContext);
         }
 

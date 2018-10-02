@@ -13,44 +13,44 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
-        /// API client URL for accounts in a specific fiscal period and branch that can be related to other components
+        /// API client URL for accounts in current environment that can be related to other components
         /// </summary>
-        public const string FiscalPeriodBranchAccounts = "relations/accounts/fp/{0}/branch/{1}";
+        public const string EnvironmentAccounts = "relations/accounts";
 
         /// <summary>
-        /// API server route URL for accounts in a specific fiscal period and branch that can be related to other components
+        /// API server route URL for accounts in current environment that can be related to other components
         /// </summary>
-        public const string FiscalPeriodBranchAccountsUrl = "relations/accounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentAccountsUrl = "relations/accounts";
 
         /// <summary>
-        /// API client URL for detail accounts in a specific fiscal period and branch that can be related to other components
+        /// API client URL for detail accounts in current environment that can be related to other components
         /// </summary>
-        public const string FiscalPeriodBranchDetailAccounts = "relations/faccounts/fp/{0}/branch/{1}";
+        public const string EnvironmentDetailAccounts = "relations/faccounts";
 
         /// <summary>
-        /// API server route URL for detail accounts in a specific fiscal period and branch that can be related to other components
+        /// API server route URL for detail accounts in current environment that can be related to other components
         /// </summary>
-        public const string FiscalPeriodBranchDetailAccountsUrl = "relations/faccounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentDetailAccountsUrl = "relations/faccounts";
 
         /// <summary>
-        /// API client URL for cost centers in a specific fiscal period and branch that can be related to other components
+        /// API client URL for cost centers in current environment that can be related to other components
         /// </summary>
-        public const string FiscalPeriodBranchCostCenters = "relations/ccenters/fp/{0}/branch/{1}";
+        public const string EnvironmentCostCenters = "relations/ccenters";
 
         /// <summary>
-        /// API server route URL for cost centers in a specific fiscal period and branch that can be related to other components
+        /// API server route URL for cost centers in current environment that can be related to other components
         /// </summary>
-        public const string FiscalPeriodBranchCostCentersUrl = "relations/ccenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentCostCentersUrl = "relations/ccenters";
 
         /// <summary>
-        /// API client URL for projects in a specific fiscal period and branch that can be related to other components
+        /// API client URL for projects in current environment that can be related to other components
         /// </summary>
-        public const string FiscalPeriodBranchProjects = "relations/projects/fp/{0}/branch/{1}";
+        public const string EnvironmentProjects = "relations/projects";
 
         /// <summary>
-        /// API server route URL for projects in a specific fiscal period and branch that can be related to other components
+        /// API server route URL for projects in current environment that can be related to other components
         /// </summary>
-        public const string FiscalPeriodBranchProjectsUrl = "relations/projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentProjectsUrl = "relations/projects";
 
         /// <summary>
         /// API client URL for all detail accounts related to an account specified by unique identifier

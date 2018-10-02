@@ -227,7 +227,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
                 model.level = this.parent.level + 1;
             }
 
-            this.detailAccountService.insert<DetailAccount>(DetailAccountApi.DetailAccounts, model)
+            this.detailAccountService.insert<DetailAccount>(DetailAccountApi.EnvironmentDetailAccounts, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -324,8 +324,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
             if (this.parentComponent != null && (this.goLastPage || (insertedModel && !this.addToContainer))) {
 
                 //call top 1 account for get totalcount
-                this.detailAccountService.getAll(String.Format(DetailAccountApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId),
-                    0, 1, order, filter).subscribe((res) => {
+                this.detailAccountService.getAll(DetailAccountApi.EnvironmentDetailAccounts, 0, 1, order, filter).subscribe((res) => {
                         if (res.headers != null) {
                             var headers = res.headers != undefined ? res.headers : null;
                             if (headers != null) {
@@ -359,8 +358,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     loadGridData(insertedModel?: DetailAccount, order?: string, filter?: FilterExpression) {
 
-        this.detailAccountService.getAll(String.Format(DetailAccountApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId),
-            this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+        this.detailAccountService.getAll(DetailAccountApi.EnvironmentDetailAccounts, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.body;
 
                 var totalCount = 0;

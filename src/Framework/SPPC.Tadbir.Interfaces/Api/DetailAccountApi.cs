@@ -14,35 +14,24 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
-        /// API client URL for detail accounts defined in a fiscal period and a corporate branch
+        /// API client URL for detail accounts defined in a current environment
         /// </summary>
-        public const string FiscalPeriodBranchDetailAccounts = "faccounts/fp/{0}/branch/{1}";
+        public const string EnvironmentDetailAccounts = "faccounts";
 
         /// <summary>
-        /// API server route URL for detail accounts defined in a fiscal period and a corporate branch
+        /// API server route URL for detail accounts defined in a current environment
         /// </summary>
-        public const string FiscalPeriodBranchDetailAccountsUrl = "faccounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentDetailAccountsUrl = "faccounts";
 
         /// <summary>
-        /// API client URL for detail account lookups defined in a fiscal period and a corporate branch
+        /// API client URL for detail account lookups defined in a current environment
         /// </summary>
-        public const string FiscalPeriodBranchDetailAccountsLookup = "faccounts/lookup/fp/{0}/branch/{1}";
+        public const string EnvironmentDetailAccountsLookup = "faccounts/lookup";
 
         /// <summary>
-        /// API server route URL for detail account lookups defined in a fiscal period and a corporate branch
+        /// API server route URL for detail account lookups defined in a current environment
         /// </summary>
-        public const string FiscalPeriodBranchDetailAccountsLookupUrl =
-            "faccounts/lookup/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
-
-        /// <summary>
-        /// API client URL for all detail account items
-        /// </summary>
-        public const string DetailAccounts = "faccounts";
-
-        /// <summary>
-        /// API server route URL for all detail account items
-        /// </summary>
-        public const string DetailAccountsUrl = "faccounts";
+        public const string EnvironmentDetailAccountsLookupUrl = "faccounts/lookup";
 
         /// <summary>
         /// API client URL for a detail account item specified by unique identifier

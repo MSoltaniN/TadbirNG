@@ -13,41 +13,29 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
-        /// API client URL for all vouchers defined in a fiscal period and a corporate branch
+        /// API client URL for all vouchers defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchVouchers = "vouchers/fp/{0}/branch/{1}";
+        public const string EnvironmentVouchers = "vouchers";
 
         /// <summary>
-        /// API server route URL for all vouchers defined in a fiscal period and a corporate branch
+        /// API server route URL for all vouchers defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchVouchersUrl = "vouchers/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentVouchersUrl = "vouchers";
 
         /// <summary>
-        /// API server route URL for all vouchers defined in a fiscal period and a corporate branch
+        /// API server route URL for all vouchers defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchVouchersSyncUrl =
-            "vouchers/fp/{fpId:min(1)}/branch/{branchId:min(1)}/sync";
+        public const string EnvironmentVouchersSyncUrl = "vouchers/sync";
 
         /// <summary>
-        /// API client URL for count of all vouchers defined in a fiscal period and a corporate branch
+        /// API client URL for count of all vouchers defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchItemCount = "vouchers/fp/{0}/branch/{1}/count";
+        public const string EnvironmentItemCount = "vouchers/count";
 
         /// <summary>
-        /// API server route URL for count of all vouchers defined in a fiscal period and a corporate branch
+        /// API server route URL for count of all vouchers defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchItemCountUrl =
-            "vouchers/fp/{fpId:min(1)}/branch/{branchId:min(1)}/count";
-
-        /// <summary>
-        /// API client URL for all vouchers
-        /// </summary>
-        public const string Vouchers = "vouchers";
-
-        /// <summary>
-        /// API server route URL for all vouchers
-        /// </summary>
-        public const string VouchersUrl = "vouchers";
+        public const string EnvironmentItemCountUrl = "vouchers/count";
 
         /// <summary>
         /// API server route URL for all vouchers
