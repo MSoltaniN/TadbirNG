@@ -126,6 +126,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه موجودیت های تعریف شده</returns>
         Task<IList<KeyValue>> GetEntityViewsAsync(GridOptions gridOptions = null);
 
+        /// <summary>
+        /// به روش آسنکرون، موجودیت های سلسله مراتبی (درختی) را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه موجودیت های درختی</returns>
+        Task<IList<KeyValue>> GetTreeViewsAsync(GridOptions gridOptions = null);
+
         #endregion
     }
 }
