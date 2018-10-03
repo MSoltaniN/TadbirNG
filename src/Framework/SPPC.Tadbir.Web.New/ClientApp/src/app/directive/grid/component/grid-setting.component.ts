@@ -2,7 +2,7 @@ import { RTL } from "@progress/kendo-angular-l10n";
 import { Layout, ColumnVisibility, SessionKeys } from "../../../../environments/environment";
 import { Component, OnInit, ViewContainerRef, Host, ElementRef, OnDestroy, Input } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
-import { TranslateService } from "ng2-translate";
+import { TranslateService } from '@ngx-translate/core';
 import { SppcLoadingService } from "../../../controls/sppcLoading/index";
 import { BaseComponent } from "../../../class/base.component";
 import { GridDataResult, GridComponent, ColumnComponent, CheckboxColumnComponent } from "@progress/kendo-angular-grid";

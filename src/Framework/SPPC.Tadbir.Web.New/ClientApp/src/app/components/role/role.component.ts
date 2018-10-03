@@ -7,7 +7,7 @@ import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectA
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { String } from '../../class/source';
 
 import { SortDescriptor, orderBy, State, CompositeFilterDescriptor } from '@progress/kendo-data-query';

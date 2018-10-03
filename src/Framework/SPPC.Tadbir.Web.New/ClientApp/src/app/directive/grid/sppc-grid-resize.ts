@@ -1,7 +1,7 @@
-﻿
+
 import { Directive, Host, Input, HostListener, ElementRef } from "@angular/core";
 import { GridComponent, ColumnComponent, CheckboxColumnComponent, ColumnBase } from "@progress/kendo-angular-grid";
-import { TranslateService } from "ng2-translate";
+import { TranslateService } from '@ngx-translate/core';
 import { DefaultComponent } from "../../class/default.component";
 import { SettingService } from "../../service/settings.service";
 import { ListFormViewConfigInfo } from "../../service/index";

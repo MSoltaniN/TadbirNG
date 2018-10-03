@@ -1,5 +1,5 @@
-﻿import { MessageService } from '@progress/kendo-angular-l10n';
-import { TranslateService } from "ng2-translate";
+import { MessageService } from '@progress/kendo-angular-l10n';
+import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from "@angular/core";
 import { SppcMessageService } from "./sppc-message.service";
 

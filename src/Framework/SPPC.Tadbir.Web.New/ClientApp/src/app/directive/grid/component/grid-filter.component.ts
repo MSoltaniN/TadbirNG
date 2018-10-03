@@ -4,7 +4,7 @@ import { Layout } from "../../../../environments/environment";
 import { RTL } from "@progress/kendo-angular-l10n";
 import { ToastrService } from "ngx-toastr";
 import { GridComponent } from "@progress/kendo-angular-grid";
-import { TranslateService } from "ng2-translate";
+import { TranslateService } from '@ngx-translate/core';
 import { SettingService } from "../../../service/settings.service";
 import { DefaultComponent } from "../../../class/default.component";
 import { AccountComponent } from "../../../components/account/account.component";

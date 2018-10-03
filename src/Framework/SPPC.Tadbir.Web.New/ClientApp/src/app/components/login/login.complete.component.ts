@@ -12,7 +12,7 @@ import { MessageType, Layout, MessagePosition, SessionKeys } from "../../../envi
 
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import { UserService, SettingService } from '../../service/index';
 import { Command } from '../../model/command';
 import { ListFormViewConfig } from '../../model/listFormViewConfig';

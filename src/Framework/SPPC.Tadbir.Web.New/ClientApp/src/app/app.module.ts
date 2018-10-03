@@ -72,7 +72,10 @@ import { SppcFullAccountComponent } from './controls/fullAccount/sppc-fullAccoun
 import { SppcBranchScope } from './controls/branchScope/sppc-branch-scope';
 
 import { BrowserModule } from "@angular/platform-browser";
-import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
+//import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
+import { TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
 import { GridModule } from '@progress/kendo-angular-grid';
 import { RTL, MessageService } from '@progress/kendo-angular-l10n';
 
@@ -116,7 +119,7 @@ import { Permissions } from './security/permissions';
 import { SppcGridDateFilter, FilterDatePickerDirective } from './controls/grid/spp-grid-date-filter';
 import { SppcGridDatepicker } from './controls/datepicker/sppc-grid-datepicker';
 import { GeneralErrorHandler } from './class/error.handler';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 
 import { NgProgressModule } from '@ngx-progressbar/core';
@@ -126,6 +129,10 @@ import { GridFilterComponent } from './directive/grid/component/grid-filter.comp
 import { DefaultComponent } from './class/default.component';
 
 
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 
 @NgModule({
   declarations: [
@@ -221,7 +228,13 @@ import { DefaultComponent } from './class/default.component';
     }),
     NgProgressRouterModule,
     NgProgressHttpModule,
-    TranslateModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     RouterModule.forRoot([
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'account', component: AccountComponent, canActivate: [AuthGuard] },
