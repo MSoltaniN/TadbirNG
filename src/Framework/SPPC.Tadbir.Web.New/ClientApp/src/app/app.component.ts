@@ -10,7 +10,7 @@ import { SessionKeys } from '../environments/environment';
 import { Command } from './model/command';
 import { ToastrService } from 'ngx-toastr';
 import { SppcLoadingService } from './controls/sppcLoading/sppc-loading.service';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 
 
 

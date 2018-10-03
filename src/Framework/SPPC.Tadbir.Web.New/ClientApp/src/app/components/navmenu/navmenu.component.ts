@@ -1,7 +1,7 @@
 import { Component, Renderer2, Renderer, ElementRef, OnInit } from '@angular/core';
 import { DefaultComponent } from "../../class/default.component";
 import { ToastrService } from 'ngx-toastr';
-import { TranslateService } from "ng2-translate";
+import { TranslateService } from '@ngx-translate/core';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { UserService, CommandInfo } from '../../service/user.service';
 import { Command } from '../../model/command';

@@ -1,9 +1,9 @@
-﻿import { Component, OnInit, Input, Injector, ErrorHandler, Injectable, Host, ViewContainerRef } from "@angular/core";
+import { Component, OnInit, Input, Injector, ErrorHandler, Injectable, Host, ViewContainerRef } from "@angular/core";
 import { RTL } from "@progress/kendo-angular-l10n";
 
 
 import { ToastrService } from "ngx-toastr";
-import { TranslateService } from "ng2-translate";
+import { TranslateService } from '@ngx-translate/core';
 
 import { Router } from "@angular/router";
 import { SppcLoadingService } from "../controls/sppcLoading";

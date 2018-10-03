@@ -4,7 +4,7 @@ import { RoleService, RoleInfo, RoleFullInfo } from '../../service/index';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy, State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { Role, RoleFull, Permission, RoleFullViewModel } from '../../model/index';
-import { TranslateService } from "ng2-translate";
+import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs/Observable';
 import { ContextInfo } from "../../service/login/authentication.service";

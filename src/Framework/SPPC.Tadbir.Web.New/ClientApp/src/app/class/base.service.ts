@@ -1,4 +1,4 @@
-﻿import { EnviromentComponent } from "./enviroment.component";
+import { EnviromentComponent } from "./enviroment.component";
 import { RequestOptions, Http, Response } from "@angular/http";
 import { Headers } from '@angular/http';
 import { Filter } from "./filter";
@@ -7,7 +7,7 @@ import { String } from '../class/source';
 import { Observable } from "rxjs/Observable";
 import { FilterExpression } from "./filterExpression";
 import { ToastrService } from "ngx-toastr";
-import { TranslateService } from "ng2-translate";
+import { TranslateService } from '@ngx-translate/core';
 import { SppcLoadingService } from "../controls/sppcLoading/index";
 import { ReflectiveInjector, Injector, Injectable, ErrorHandler } from '@angular/core';
 import { HttpErrorResponse, HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";

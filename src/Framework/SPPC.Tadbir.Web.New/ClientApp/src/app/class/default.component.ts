@@ -1,7 +1,8 @@
 
 import { ToastrService } from 'ngx-toastr';
 
-import { TranslateService } from "ng2-translate";
+//import { TranslateService } from "ng2-translate";
+import { TranslateService } from '@ngx-translate/core';
 
 import { String } from './source';
 import { State, CompositeFilterDescriptor } from "@progress/kendo-data-query";

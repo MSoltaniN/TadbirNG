@@ -5,7 +5,7 @@ import { Validators, FormGroup, FormControl } from '@angular/forms';
 
 import { VoucherLine } from '../../model/index';
 
-import { TranslateService } from "ng2-translate";
+import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 
 import { Observable } from 'rxjs/Observable';

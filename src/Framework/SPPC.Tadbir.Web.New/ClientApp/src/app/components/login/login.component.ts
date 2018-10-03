@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../service/login/index';
 import { ToastrService } from 'ngx-toastr';
 import { DefaultComponent } from "../../class/default.component";
-import { TranslateService } from "ng2-translate";
+import { TranslateService } from '@ngx-translate/core';
 import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
 import { MetaDataService } from '../../service/metadata/metadata.service';

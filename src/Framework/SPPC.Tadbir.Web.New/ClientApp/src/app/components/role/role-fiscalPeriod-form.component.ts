@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, Renderer2 } from '@angular/core';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState } from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy, State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
-import { TranslateService } from "ng2-translate";
+import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { String } from '../../class/source';
 import { Observable } from 'rxjs/Observable';
