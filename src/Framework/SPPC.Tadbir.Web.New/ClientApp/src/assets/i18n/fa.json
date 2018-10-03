@@ -1,0 +1,517 @@
+﻿{
+  "App": {
+    "Title": "به سیستم جدید تدبیر خوش آمدید!",
+    "SELECT": "Changer la langue",
+    "Loading": "در حال بارگذاری ...",
+    "RecordNotFound": "هیچ رکوردی یافت نشد!",
+    "Name": "سیستم جامع تدبیر",
+    "NotViewAccess": "شما دسترسی دیدن اطلاعات را ندارید",
+    "Level": "سطح",
+    "Menu": {
+      "Account": "حساب",
+      "Voucher": "اسناد",
+      "Users": "کاربران",
+      "Roles": "نقش ها",
+      "DetailAccount": "تفصیلی شناور",
+      "CostCenter": "مرکز هزینه",
+      "Project": "پروژه",
+      "FiscalPeriod": "دوره مالی",
+      "Branch": "شعب",
+      "Company": "شرکت",
+      "AccountRelations": "ارتباطات حساب",
+      "ChangePassword": "تغییر کلمه عبور",
+      "Exit": "خروج"
+    }
+  },
+  "Enviroment": {
+    "FiscalPeriod": "دوره مالی",
+    "Company": "شرکت",
+    "User": "کاربر جاری",
+    "Branch": "شعبه"
+  },
+  "Exception": {
+    "ErrorCode": "کد خطا",
+    "ErrorMsg": "جزئیات خطا",
+    "ErrorTitle": "خطا"
+  },
+  "Messages": {
+    "Inserted": "{0} با موفقیت ثبت شد",
+    "Updated": "{0} با موفقیت ویرایش شد",
+    "Deleted": "{0} با موفقیت حذف شد",
+    "DeleteConfirm": "آیا برای حذف {0} اطمینان دارید؟"
+  },
+  "Buttons": {
+    "Ok": "تایید",
+    "Cancel": "انصراف",
+    "Yes": "بله",
+    "No": "خیر",
+    "New": "جدید",
+    "Edit": "ویرایش",
+    "Delete": "حذف",
+    "GroupDelete": "حذف گروهی",
+    "Setting": "تنظیمات",
+    "Search": "جستجو",
+    "Filter": "اعمال فیلتر",
+    "DeleteFilter": "حذف فیلتر",
+    "OkAndNew": "تایید و ایجاد"
+  },
+  "GridSetting": {
+    "Visibility": "نمایش/عدم نمایش ستون",
+    "FieldName": "نام ستون"
+  },
+  "Entity": {
+    "Account": "اطلاعات حساب",
+    "Voucher": "اطلاعات سند",
+    "VoucherLine": "آرتیکل سند",
+    "User": "کاربر",
+    "Role": "نقش",
+    "Password": "کلمه عبور",
+    "DetailAccount": "تفصیلی شناور",
+    "CostCenter": "مرکز هزینه",
+    "Project": "پروژه",
+    "FiscalPeriod": "دوره مالی",
+    "Branch": "شعبه",
+    "Company": "شرکت",
+    "AccountRelations": "ارتباطات حساب",
+    "Settings": "تنظیمات",
+    "ViewRowPermission": "دسترسی به سطرهای اطلاعاتی",
+    "OperationLog": "لاگ های عملیاتی"
+  },
+  "BranchScope": {
+    "AllBranches": "کلیه شعب",
+    "CurrentBranchAndSubsets": "شعبه جاری و زیر مجموعه هایش",
+    "CurrentBranch": "شعبه جاری"
+  },
+  "Account": {
+    "New": "حساب جدید",
+    "NewSubAccount": "درج زیر حساب جدید",
+    "Edit": "ویرایش",
+    "Delete": "حذف",
+    "Code": "کد حساب",
+    "FullCode": "کد کامل حساب",
+    "Name": "نام حساب",
+    "FiscalPeriodId": "دوره مالی",
+    "Level": "سطح",
+    "Branch": "شعبه",
+    "Description": "توضیحات",
+    "List": "لیست حساب ها",
+    "Moeen": "حساب معین",
+    "Tafzili": "حساب تفصیلی",
+    "Kol": "حساب کل",
+    "TafziliToUp": "حساب تفصیلی سطح",
+    "BranchScope": "دسترسی شعبه"
+  },
+  "Settings": {
+    "AccountRelation": {
+      "LeafAccounts": "ایجاد ارتباطات در آخرین سطح حساب",
+      "LeafDetails": "ایجاد ارتباطات در آخرین سطح تفصیلی شناور",
+      "LeafCostCenters": "ایجاد ارتباطات در آخرین سطح مرکز هزینه",
+      "LeafProjects": "ایجاد ارتباطات در آخرین سطح پروژه"
+    },
+    "DateRanges": {
+      "DefaultDateRanges": "محدوده تاریخی پیش فرض",
+      "FiscalStartToCurrent": "ابتدای دوره مالی تا امروز",
+      "FiscalStartToFiscalEnd": "ابتدا تا انتهای دوره مالی",
+      "CurrentToCurrent": "امروز تا امروز"
+    },
+    "NumberDisplay": {
+      "decimalPrecision": "تعداد ارقام اعشار",
+      "maxPrecision": "حداکثر ارقام اعشار",
+      "useSeparator": "استفاده از جداکننده",
+      "separatorMode": "تنظیمات جداکننده",
+      "separatorSymbol": "علامت جداکننده",
+      "UseDefault": "تنظیمات سیستم عامل",
+      "UseCustom": "تنظیمات برنامه"
+    },
+    "Description": "توضیحات",
+    "TitleText": "لیست تنظیمات",
+    "DefaultBtn": "تنظیمات پیش فرض"
+  },
+  "ViewRowPermission": {
+    "DdlPermissionItems": {
+      "Default": "دسترسی یا عدم دسترسی با توجه به تنظیمات امنیتی",
+      "AllRecordsCreatedByUser": "دسترسی به تمام سطرهای ایجاد شده توسط کاربر",
+      "SpecificRecords": "دسترسی به سطرهای مشخص شده",
+      "AllExceptSpecificRecords": "دسترسی به تمام سطرها بجز سطرهای مشخص شده",
+      "SpecificReference": "دسترسی به سطرهای یک رفرنس",
+      "AllExceptSpecificReference": "دسترسی به تمام سطرها بجز سطرهای یک رفرنس",
+      "MaxMoneyValue": "دسترسی به سطرها تا سقف پولی یا ارزی تعیین شده",
+      "MaxQuantityValue": "دسترسی به سطرها تا سقف مقداری تعیین شده"
+    },
+    "Role": "نقش",
+    "Entity": "موجودیت",
+    "Select": "انتخاب",
+    "PremissionType": "نوع دسترسی",
+    "SpecificRecords": "سطرهای دارای دسترسی",
+    "AllExceptSpecificRecords": "سطرهای بدون دسترسی",
+    "SpecificReference": "رفرنس دارای دسترسی",
+    "AllExceptSpecificReference": "رفرنس های بدون دسترسی",
+    "MaxQuantityValue": "سقف مقداری",
+    "MaxMoneyValue": "سقف پولی",
+    "MaxCurencyValue": "سقف ارزی",
+    "NoExistRecord": "سطری وجود ندارد",
+    "SelectedRecords": "سطرهای انتخاب شده",
+    "SelectAll": "انتخاب همه",
+    "DeleteAll": "حذف همه",
+    "FormTitle": "انتخاب سطرهای {0}",
+    "ListTitle": "سطرهای {0}",
+    "SelectEntity": "انتخاب موجودیت",
+    "Entities": "موجودیت ها"
+  },
+  "VoucherLine": {
+    "Debit": "بدهکار",
+    "Credit": "بستانکار",
+    "DebitSum": "جمع بدهکار",
+    "CreditSum": "جمع بستانکار",
+    "Description": "توضیحات",
+    "New": "آرتیکل جدید",
+    "Delete": "حذف آرتیکل",
+    "Currency": "واحد پول",
+    "Account": "بردار حساب"
+  },
+  "Company": {
+    "CompanyName": "شرکت",
+    "New": "شرکت جدید",
+    "NewSubCompany": "درج زیر شرکت جدید",
+    "Delete": "حذف شرکت",
+    "Name": "نام",
+    "DbName": "نام دیتابیس",
+    "DbPath": "مسیر دیتابیس",
+    "Server": "نام سرور",
+    "UserName": "نام کاربری دیتابیس",
+    "Password": "کلمه عبور",
+    "Description": "شرح",
+    "NotFoundData": "شرکتی وجود ندارد"
+  },
+  "Branch": {
+    "BranchName": "شعبه",
+    "New": "شعبه جدید",
+    "NewSubBrench": "درج زیر شعبه جدید",
+    "Delete": "حذف شعبه",
+    "Name": "نام",
+    "Description": "شرح",
+    "Roles": "نقش ها",
+    "UpdateRoles": "نقش های شعبه با موفقیت ویرایش شد",
+    "RolesTitle": "لیست نقش های قابل دسترس به شعبه",
+    "NotFoundData": "شعبه ای وجود ندارد"
+  },
+  "Voucher": {
+    "New": "سند جدید",
+    "Edit": "ویرایش",
+    "Delete": "حذف سند",
+    "No": "شماره سند مالی",
+    "Date": "تاریخ",
+    "Description": "توضیحات",
+    "BranchId": "شعبه",
+    "FiscalPeriodId": "دوره مالی"
+  },
+  "User": {
+    "New": "کاربر جدید",
+    "Edit": "ویرایش",
+    "Delete": "حذف",
+    "PersonFirstName": "نام",
+    "PersonLastName": "نام خانوادگی",
+    "UserName": "نام کاربری",
+    "LastLoginDate": "تاریخ آخرین ورود",
+    "IsEnabled": "وضعیت",
+    "Password": "کلمه عبور",
+    "Active": "فعال",
+    "Inactive": "غیرفعال",
+    "Roles": "نقش های کاربر",
+    "RolesTitle": "لیست نقش های کاربر",
+    "Name": "نام نقش",
+    "UpdateRoles": "نقش های کاربر با موفقیت ویرایش شد"
+  },
+  "ChangePassword": {
+    "Title": "تغییر کلمه عبور",
+    "OldPassword": "کلمه عبور فعلی",
+    "NewPassword": "کلمه عبور جدید",
+    "RepeatPassword": "تکرار کلمه عبور جدید"
+  },
+  "Role": {
+    "New": "نقش جدید",
+    "Name": "نام",
+    "Description": "شرح",
+    "Permissions": "دسترسی ها",
+    "GroupName": "گروه دسترسی",
+    "Delete": "حذف نقش",
+    "Users": "کاربران",
+    "Branches": "شعب",
+    "Detail": "جزئیات",
+    "FiscalPeriod": "دوره مالی",
+    "RecordNotFound": "این نقش هیچ دسترسی ندارد",
+    "RoleDetail": "جزئیات نقش"
+  },
+  "RoleUsers": {
+    "Name": "نام و نام خانوادگی",
+    "UserName": "نام کاربری",
+    "PersonFirstName": "نام",
+    "PersonLastName": "نام خانوادگی",
+    "IsEnabled": "وضعیت",
+    "RoleUsersTitle": "کاربران دارای نقش '{0}'",
+    "RecordNotFound": "این نقش به هیچ کاربری تخصیص داده نشده است"
+  },
+  "RoleBranches": {
+    "Name": "نام شعبه",
+    "Description": "توضیحات",
+    "RoleBranchesTitle": "شعب قابل دسترسی توسط '{0}'",
+    "RecordNotFound": "این نقش به هیچ شعبه ای دسترسی ندارد"
+  },
+  "RoleFiscalPeriod": {
+    "Name": "نام دوره مالی",
+    "RoleFiscalPeriodTitle": "دوره های مالی  قابل دسترسی توسط '{0}'"
+  },
+  "RoleDetail": {
+    "RoleDetailTitle": "جزئیات نقش '{0}'"
+  },
+  "DetailAccount": {
+    "New": "تفصیلی شناور جدید",
+    "NewSubDetailAccount": "درج زیر تفصیلی شناور جدید",
+    "Name": "نام",
+    "Code": "کد",
+    "FullCode": "کد کامل",
+    "Level": "سطح",
+    "Description": "شرح",
+    "Delete": "حذف تفصیلی شناور",
+    "BranchScope": "دسترسی شعبه"
+  },
+  "CostCenter": {
+    "New": "مرکز هزینه جدید",
+    "NewSubCostCenter": "درج زیر مرکز هزینه جدید",
+    "Name": "نام",
+    "Code": "کد",
+    "FullCode": "کد کامل",
+    "Level": "سطح",
+    "Description": "شرح",
+    "Delete": "حذف مرکز هزینه",
+    "BranchScope": "دسترسی شعبه"
+  },
+  "Project": {
+    "New": "پروژه جدید",
+    "NewSubProject": "درج زیر پروژه جدید",
+    "Name": "نام",
+    "Code": "کد",
+    "FullCode": "کد کامل",
+    "Level": "سطح",
+    "Description": "شرح",
+    "Delete": "حذف پروژه",
+    "BranchScope": "دسترسی شعبه"
+  },
+  "AccountRelations": {
+    "MainComponent": "مولفه اصلی",
+    "RelatedComponent": "مولفه مرتبط",
+    "Account": "حساب",
+    "DetailAccount": "تفصیلی شناور",
+    "CostCenter": "مرکز هزینه",
+    "Project": "پروژه",
+    "Select": "-- انتخاب کنید --",
+    "NotFound": "نتیجه ای یافت نشد",
+    "NoRelateion": "رابطه ای ایجاد نشده است",
+    "CreateRelation": "ایجاد ارتباط",
+    "CreateRelationBtn": "ایجاد ارتباط",
+    "DeleteRelationBtn": "حذف ارتباط",
+    "SearchBtn": "جستجو",
+    "FormTitle": "برقراری ارتباط برای '{0}'",
+    "NewRelations": "ارتباطات جدید",
+    "RemainingRelations": "ارتباطات باقیمانده",
+    "noRemainingRelations": "تمام ارتباطات انتخاب شده اند"
+  },
+  "FiscalPeriod": {
+    "New": "دوره مالی جدید",
+    "Delete": "حذف دوره مالی",
+    "Name": "نام",
+    "StartDate": "تاریخ شروع",
+    "EndDate": "تاریخ پایان",
+    "Description": "شرح",
+    "UpdateRoles": "نقش های دوره مالی با موفقیت ویرایش شد",
+    "Roles": "نقش ها",
+    "RolesTitle": "لیست نقش های دوره مالی"
+  },
+  "Fiscal": {
+    "FiscalPeriod": "دوره مالی",
+    "NotFoundData": "دوره مالی وجود ندارد"
+  },
+  "Paging": {
+    "Record": "رکورد",
+    "Of": "از"
+  },
+  "Grid": {
+    "noRecords": "هیچ رکوردی یافت نشد!!!!!!!!!!"
+  },
+  "Login": {
+    "Ok": "تایید",
+    "Cancel": "انصراف",
+    "Exit": "خروج",
+    "Title": "ورود به سیستم",
+    "SelectTitle": "انتخاب شرکت",
+    "UserName": "نام کاربر",
+    "Password": "کلمه عبور",
+    "BtnLogin": "ورود",
+    "RememberMe": "مرا به خاطر بسپار",
+    "UserIncorrect": "نام کاربری يا کلمه عبور اشتباه می باشد"
+  },
+  "Sppc-DateRange": {
+    "FromDate": "از تاریخ",
+    "ToDate": "تا تاریخ"
+  },
+  "OperationLog": {
+    "UserName": "نام کاربری",
+    "CompanyName": "شرکت",
+    "Date": "تاریخ",
+    "Time": "زمان",
+    "Entity": "موجودیت",
+    "Action": "عملیات",
+    "Result": "نتیجه عملیات",
+    "DialogTitle": "جزئیات لاگ عملیاتی",
+    "BeforeState": "وضعیت قدیم",
+    "AfterState": "وضعیت جدید",
+    "ErrorMessage": "پیغام خطا"
+  },
+  "AllValidations": {
+    "Account": {
+      "CodeIsRequired": "وارد کردن کد اجباری است.",
+      "CodeIsTooLong": "کد می تواند حداکثر 16 حرف داشته باشد.",
+      "FullCodeIsRequired": "وارد کردن کد کامل اجباری است.",
+      "FullCodeIsTooLong": "کد کامل می تواند حداکثر 512 حرف داشته باشد.",
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 512 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "CostCenter": {
+      "CodeIsRequired": "وارد کردن کد اجباری است.",
+      "CodeIsTooLong": "کد می تواند حداکثر 16 حرف داشته باشد.",
+      "FullCodeIsRequired": "وارد کردن کد کامل اجباری است.",
+      "FullCodeIsTooLong": "کد کامل می تواند حداکثر 256 حرف داشته باشد.",
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 256 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "Currency": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "DetailAccount": {
+      "CodeIsRequired": "وارد کردن کد اجباری است.",
+      "CodeIsTooLong": "کد می تواند حداکثر 16 حرف داشته باشد.",
+      "FullCodeIsRequired": "وارد کردن کد کامل اجباری است.",
+      "FullCodeIsTooLong": "کد کامل می تواند حداکثر 512 حرف داشته باشد.",
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 256 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "FiscalPeriod": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "StartDateIsRequired": "وارد کردن تاریخ شروع اجباری است.",
+      "EndDateIsRequired": "وارد کردن تاریخ پایان اجباری است.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "FullAccount": {
+      "AccountIdIsRequired": "وارد کردن حساب اجباری است.",
+      "NoError": ""
+    },
+    "Project": {
+      "CodeIsRequired": "وارد کردن کد اجباری است.",
+      "CodeIsTooLong": "کد می تواند حداکثر 16 حرف داشته باشد.",
+      "FullCodeIsRequired": "وارد کردن کد کامل اجباری است.",
+      "FullCodeIsTooLong": "کد کامل می تواند حداکثر 256 حرف داشته باشد.",
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 256 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "VoucherLine": {
+      "CurrencyIdIsRequired": "وارد کردن نوع ارز اجباری است.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "DebitIsRequired": "وارد کردن بدهکار اجباری است.",
+      "CreditIsRequired": "وارد کردن بستانکار اجباری است.",
+      "NoError": ""
+    },
+    "Voucher": {
+      "NoIsRequired": "وارد کردن شماره اجباری است.",
+      "NoIsTooLong": "شماره می تواند حداکثر 64 حرف داشته باشد.",
+      "DateIsRequired": "وارد کردن تاریخ اجباری است.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "Login": {
+      "UserNameIsRequired": "وارد کردن نام کاربری اجباری است.",
+      "UserNameIsTooLong": "نام کاربری می تواند حداکثر 64 حرف داشته باشد.",
+      "PasswordIsRequired": "وارد کردن رمز ورود اجباری است.",
+      "PasswordIsTooLong": "رمز ورود می تواند حداکثر 32 حرف داشته باشد.",
+      "CompanyIsRequired": "لطفا شرکت را انتخاب کنید.",
+      "BranchIsRequired": "لطفا شعبه را انتخاب کنید.",
+      "FiscalPeriodIsRequired": "لطفا دوره مالی را انتخاب کنید.",
+      "NoError": ""
+    },
+    "PermissionGroup": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "EntityNameIsTooLong": "نام موجودیت می تواند حداکثر 64 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "Permission": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "Role": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "UserProfile": {
+      "OldPasswordIsRequired": "وارد کردن رمز ورود قدیم اجباری است.",
+      "NewPasswordIsRequired": "وارد کردن رمز ورود جدید اجباری است.",
+      "NewPasswordLengthRange": "طول رمز ورود جدید باید بین 6 و 20 حرف باشد.",
+      "RepeatPasswordIsRequired": "وارد کردن تکرار رمز ورود اجباری است.",
+      "RepeatPasswordAndNewPasswordDoNotMatch": "تکرار رمز ورود و رمز ورود جدید متفاوت هستند.",
+      "NoError": ""
+    },
+    "User": {
+      "PersonFirstNameIsRequired": "وارد کردن نام اجباری است.",
+      "PersonFirstNameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "PersonLastNameIsRequired": "وارد کردن نام خانوادگی اجباری است.",
+      "PersonLastNameIsTooLong": "نام خانوادگی می تواند حداکثر 64 حرف داشته باشد.",
+      "UserNameIsRequired": "وارد کردن نام کاربری اجباری است.",
+      "UserNameIsTooLong": "نام کاربری می تواند حداکثر 64 حرف داشته باشد.",
+      "PasswordIsRequired": "وارد کردن رمز ورود اجباری است.",
+      "PasswordLengthRange": "طول رمز ورود باید بین 4 و 32 حرف باشد.",
+      "NoError": ""
+    },
+    "Branch": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""   
+    },
+    "Company": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    },
+    "CompanyDb": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
+      "DbNameIsRequired": "وارد کردن نام دیتابیس اجباری است.",
+      "DbNameIsTooLong": "نام دیتابیس می تواند حداکثر 128 حرف داشته باشد.",
+      "DbPathIsRequired": "وارد کردن مسیر دیتابیس اجباری است.",
+      "DbPathIsTooLong": "مسیر دیتابیس می تواند حداکثر 512 حرف داشته باشد.",
+      "ServerIsRequired": "وارد کردن نام یا آی پی سرور اجباری است.",
+      "ServerIsTooLong": "نام یا آی پی سرور می تواند حداکثر 64 حرف داشته باشد.",
+      "UserNameIsTooLong": "نام کاربری دیتابیس می تواند حداکثر 32 حرف داشته باشد.",
+      "PasswordIsTooLong": "کلمه عبور دیتابیس می تواند حداکثر 32 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
+      "NoError": ""
+    }
+  }
+}
