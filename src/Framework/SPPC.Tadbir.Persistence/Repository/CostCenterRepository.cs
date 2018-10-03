@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
@@ -41,7 +42,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<IList<CostCenterViewModel>> GetCostCentersAsync( GridOptions gridOptions = null)
+        public async Task<IList<CostCenterViewModel>> GetCostCentersAsync(GridOptions gridOptions = null)
         {
             var costCenters = await _repository.GetAllAsync<CostCenter>(ViewName.CostCenter, cc => cc.Children);
             return costCenters
@@ -56,7 +57,7 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مجموعه ای از مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<IList<KeyValue>> GetCostCentersLookupAsync( GridOptions gridOptions = null)
+        public async Task<IList<KeyValue>> GetCostCentersLookupAsync(GridOptions gridOptions = null)
         {
             return await _repository.GetAllLookupAsync<CostCenter>(ViewName.CostCenter, gridOptions);
         }
@@ -97,14 +98,11 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مدل نمایشی مراکز هزینه زیرمجموعه</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetCostCenterChildrenAsync(int costCenterId)
         {
-            var children = new List<AccountItemBriefViewModel>();
-            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Children);
-            if (costCenter != null)
-            {
-                children.AddRange(costCenter.Children.Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc)));
-            }
-
+            var children = await _repository
+                .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children)
+                .Where(cc => cc.ParentId == costCenterId)
+                .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
+                .ToListAsync();
             return children;
         }
 

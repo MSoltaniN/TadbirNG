@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
@@ -97,14 +98,11 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مدل نمایشی پروژه های زیرمجموعه</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetProjectChildrenAsync(int projectId)
         {
-            var children = new List<AccountItemBriefViewModel>();
-            var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
-            if (project != null)
-            {
-                children.AddRange(project.Children.Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj)));
-            }
-
+            var children = await _repository
+                .GetAllQuery<Project>(ViewName.Project, prj => prj.Children)
+                .Where(prj => prj.ParentId == projectId)
+                .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
+                .ToListAsync();
             return children;
         }
 

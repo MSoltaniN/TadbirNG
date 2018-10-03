@@ -64,6 +64,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetProjectChildrenAsync(int projectId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var children = await _repository.GetProjectChildrenAsync(projectId);
             return JsonReadResult(children);
         }

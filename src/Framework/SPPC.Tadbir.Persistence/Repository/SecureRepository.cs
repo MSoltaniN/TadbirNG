@@ -38,6 +38,11 @@ namespace SPPC.Tadbir.Persistence
         {
         }
 
+        /// <summary>
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای اعمال فیلترهای سیستمی تنظیم می کند
+        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
+        /// </summary>
+        /// <param name="currentContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
         public void SetCurrentContext(UserContextViewModel currentContext)
         {
             Verify.ArgumentNotNull(currentContext, "currentContext");
@@ -56,9 +61,28 @@ namespace SPPC.Tadbir.Persistence
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IBaseEntity
         {
-            var query = GetFilteredQuery(viewId, relatedProperties);
+            var query = GetAllQuery(viewId, relatedProperties);
             return await query
                 .ToListAsync();
+        }
+
+        /// <summary>
+        /// کوئری فیلترشده مورد نیاز برای خواندن اطلاعات دوره مالی و شعبه جاری برنامه را
+        /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها برمی گرداند
+        /// </summary>
+        /// <typeparam name="TEntity">نوع موجودیتی که سطرهای آن باید خوانده شود</typeparam>
+        /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
+        /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
+        /// <returns>کوئری فیلترشده خواندن اطلاعات دوره مالی و شعبه جاری برنامه</returns>
+        public IQueryable<TEntity> GetAllQuery<TEntity>(int viewId,
+            params Expression<Func<TEntity, object>>[] relatedProperties)
+            where TEntity : class, IBaseEntity
+        {
+            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
+            var query = repository.GetEntityQuery(relatedProperties);
+            query = ApplyBranchFilter(query);
+            query = ApplyRowFilter(ref query, viewId);
+            return query;
         }
 
         /// <summary>
@@ -110,7 +134,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync<TEntity>(int viewId, GridOptions gridOptions = null)
             where TEntity : class, IBaseEntity
         {
-            var query = GetFilteredQuery<TEntity>(viewId);
+            var query = GetAllQuery<TEntity>(viewId);
             return await query
                 .Apply(gridOptions, false)
                 .CountAsync();
@@ -171,17 +195,6 @@ namespace SPPC.Tadbir.Persistence
             return filteredQuery;
         }
 
-        private IQueryable<TEntity> GetFilteredQuery<TEntity>(int viewId,
-            params Expression<Func<TEntity, object>>[] relatedProperties)
-            where TEntity : class, IBaseEntity
-        {
-            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
-            var query = repository.GetEntityQuery(relatedProperties);
-            query = ApplyBranchFilter(query);
-            query = ApplyRowFilter(ref query, viewId);
-            return query;
-        }
-
         private IQueryable<TEntity> GetFilteredOperationQuery<TEntity>(int viewId,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IFiscalEntity
@@ -198,13 +211,13 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
             var tree = GetParentTree(_currentContext.BranchId);
-            var childTree = GetChildTree(_currentContext.BranchId);
             var queryable = records
                 .Where(entity => entity.FiscalPeriodId == _currentContext.FiscalPeriodId &&
                     (entity.BranchScope == (short)BranchScope.AllBranches ||
-                    (entity.BranchScope == (short)BranchScope.CurrentBranch && entity.BranchId == _currentContext.BranchId) ||
+                    (entity.BranchScope == (short)BranchScope.CurrentBranch &&
+                        entity.BranchId == _currentContext.BranchId) ||
                     (entity.BranchScope == (short)BranchScope.CurrentBranchAndChildren &&
-                        (tree.Contains(entity.BranchId) || childTree.Contains(entity.BranchId)))));
+                        tree.Contains(entity.BranchId))));
             return queryable;
         }
 
@@ -212,13 +225,15 @@ namespace SPPC.Tadbir.Persistence
             where TEntity : class, IBaseEntity
         {
             var repository = UnitOfWork.GetAsyncRepository<TEntity>();
+            var childTree = GetChildTree(_currentContext.BranchId);
             var tree = GetParentTree(_currentContext.BranchId);
             var queryable = records
                 .Where(entity => entity.FiscalPeriodId == _currentContext.FiscalPeriodId &&
                     (entity.BranchScope == (short)BranchScope.AllBranches ||
-                    (entity.BranchScope == (short)BranchScope.CurrentBranch && entity.BranchId == _currentContext.BranchId) ||
+                    (entity.BranchScope == (short)BranchScope.CurrentBranch &&
+                        entity.BranchId == _currentContext.BranchId) ||
                     (entity.BranchScope == (short)BranchScope.CurrentBranchAndChildren &&
-                        tree.Contains(entity.BranchId))));
+                        (tree.Contains(entity.BranchId) || childTree.Contains(entity.BranchId)))));
             return queryable;
         }
 

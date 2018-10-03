@@ -205,5 +205,11 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از حساب های قابل ارتباط با پروژه مشخص شده</returns>
         Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsForProjectAsync(
             int projectId, bool useLeafItems = true, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای برای خواندن اطلاعات وابسته به شعبه تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

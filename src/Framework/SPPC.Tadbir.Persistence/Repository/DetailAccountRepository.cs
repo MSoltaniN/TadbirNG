@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
@@ -97,14 +98,11 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مدل نمایشی تفصیلی های شناور زیرمجموعه</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetDetailAccountChildrenAsync(int detailId)
         {
-            var children = new List<AccountItemBriefViewModel>();
-            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
-            var detail = await repository.GetByIDAsync(detailId, facc => facc.Children);
-            if (detail != null)
-            {
-                children.AddRange(detail.Children.Select(facc => Mapper.Map<AccountItemBriefViewModel>(facc)));
-            }
-
+            var children = await _repository
+                .GetAllQuery<DetailAccount>(ViewName.DetailAccount, facc => facc.Children)
+                .Where(facc => facc.ParentId == detailId)
+                .Select(facc => Mapper.Map<AccountItemBriefViewModel>(facc))
+                .ToListAsync();
             return children;
         }
 

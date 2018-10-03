@@ -30,9 +30,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
-        /// <param name="repository">
-        /// عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند
-        /// </param>
+        /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
         public AccountRepository(
             IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
             ISecureRepository repository)
@@ -112,14 +110,11 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از سرفصل های حسابداری زیرمجموعه</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetAccountChildrenAsync(int accountId)
         {
-            var children = new List<AccountItemBriefViewModel>();
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
-            if (account != null)
-            {
-                children.AddRange(account.Children.Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc)));
-            }
-
+            var children = await _repository
+                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
+                .Where(acc => acc.ParentId == accountId)
+                .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
+                .ToListAsync();
             return children;
         }
 

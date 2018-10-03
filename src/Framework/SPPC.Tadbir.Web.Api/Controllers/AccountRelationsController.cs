@@ -35,6 +35,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.EnvironmentAccountsUrl)]
         public async Task<IActionResult> GetEnvironmentConnectableAccountsAsync()
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var accounts = await _repository.GetConnectableAccountsAsync(_config.UseLeafAccounts, GridOptions);
             return Json(accounts);
         }
@@ -44,6 +45,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.EnvironmentDetailAccountsUrl)]
         public async Task<IActionResult> GetEnvironmentConnectableDetailAccountsAsync()
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var detailAccounts = await _repository.GetConnectableDetailAccountsAsync(_config.UseLeafDetails, GridOptions);
             return Json(detailAccounts);
         }
@@ -53,6 +55,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.EnvironmentCostCentersUrl)]
         public async Task<IActionResult> GetEnvironmentConnectableCostCentersAsync()
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var costCenters = await _repository.GetConnectableCostCentersAsync(_config.UseLeafCostCenters, GridOptions);
             return Json(costCenters);
         }
@@ -62,6 +65,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.EnvironmentProjectsUrl)]
         public async Task<IActionResult> GetEnvironmentConnectableProjectsAsync()
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var projects = await _repository.GetConnectableProjectsAsync(_config.UseLeafProjects, GridOptions);
             return Json(projects);
         }
@@ -71,6 +75,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.DetailAccountsRelatedToAccountUrl)]
         public async Task<IActionResult> GetAccountDetailAccountsAsync(int accountId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var detailAccounts = await _repository.GetAccountDetailAccountsAsync(accountId, GridOptions);
             return Json(detailAccounts);
         }
@@ -97,6 +102,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.CostCentersRelatedToAccountUrl)]
         public async Task<IActionResult> GetAccountCostCentersAsync(int accountId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var costCenters = await _repository.GetAccountCostCentersAsync(accountId, GridOptions);
             return Json(costCenters);
         }
@@ -123,6 +129,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.ProjectsRelatedToAccountUrl)]
         public async Task<IActionResult> GetAccountProjectsAsync(int accountId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var projects = await _repository.GetAccountProjectsAsync(accountId, GridOptions);
             return Json(projects);
         }
@@ -149,6 +156,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.AccountsRelatedToDetailAccountUrl)]
         public async Task<IActionResult> GetDetailAccountAccountsAsync(int faccountId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var accounts = await _repository.GetDetailAccountAccountsAsync(faccountId, GridOptions);
             return Json(accounts);
         }
@@ -175,6 +183,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.AccountsRelatedToCostCenterUrl)]
         public async Task<IActionResult> GetCostCenterAccountsAsync(int ccenterId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var accounts = await _repository.GetCostCenterAccountsAsync(ccenterId, GridOptions);
             return Json(accounts);
         }
@@ -201,6 +210,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.AccountsRelatedToProjectUrl)]
         public async Task<IActionResult> GetProjectAccountsAsync(int projectId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var accounts = await _repository.GetProjectAccountsAsync(projectId, GridOptions);
             return Json(accounts);
         }
@@ -227,6 +237,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.DetailAccountsNotRelatedToAccountUrl)]
         public async Task<IActionResult> GetConnectableDetailAccountsForAccountAsync(int accountId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var detailAccounts = await _repository.GetConnectableDetailAccountsForAccountAsync(
                 accountId, _config.UseLeafDetails, GridOptions);
             return Json(detailAccounts);
@@ -237,6 +248,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.CostCentersNotRelatedToAccountUrl)]
         public async Task<IActionResult> GetConnectableCostCentersForAccountAsync(int accountId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var costCenters = await _repository.GetConnectableCostCentersForAccountAsync(
                 accountId, _config.UseLeafCostCenters, GridOptions);
             return Json(costCenters);
@@ -247,6 +259,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.ProjectsNotRelatedToAccountUrl)]
         public async Task<IActionResult> GetConnectableProjectsForAccountAsync(int accountId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var projects = await _repository.GetConnectableProjectsForAccountAsync(
                 accountId, _config.UseLeafProjects, GridOptions);
             return Json(projects);
@@ -257,6 +270,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.AccountsNotRelatedToDetailAccountUrl)]
         public async Task<IActionResult> GetConnectableAccountsForDetailAccountAsync(int faccountId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var accounts = await _repository.GetConnectableAccountsForDetailAccountAsync(
                 faccountId, _config.UseLeafAccounts, GridOptions);
             return Json(accounts);
@@ -267,6 +281,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.AccountsNotRelatedToCostCenterUrl)]
         public async Task<IActionResult> GetConnectableAccountsForCostCenterAsync(int ccenterId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var accounts = await _repository.GetConnectableAccountsForCostCenterAsync(
                 ccenterId, _config.UseLeafAccounts, GridOptions);
             return Json(accounts);
@@ -277,6 +292,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(AccountRelationApi.AccountsNotRelatedToProjectUrl)]
         public async Task<IActionResult> GetConnectableAccountsForProjectAsync(int projectId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var accounts = await _repository.GetConnectableAccountsForProjectAsync(
                 projectId, _config.UseLeafAccounts, GridOptions);
             return Json(accounts);

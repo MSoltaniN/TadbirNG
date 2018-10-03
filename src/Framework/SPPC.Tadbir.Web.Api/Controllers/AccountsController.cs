@@ -66,6 +66,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
         public async Task<IActionResult> GetAccountChildrenAsync(int accountId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var children = await _repository.GetAccountChildrenAsync(accountId);
             return JsonReadResult(children);
         }

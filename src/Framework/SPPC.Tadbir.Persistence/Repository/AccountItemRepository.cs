@@ -160,6 +160,15 @@ namespace SPPC.Tadbir.Persistence
             return rootProjects;
         }
 
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای برای خواندن اطلاعات وابسته به شعبه تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        public void SetCurrentContext(UserContextViewModel userContext)
+        {
+            _repository.SetCurrentContext(userContext);
+        }
+
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;
         private readonly ISecureRepository _repository;

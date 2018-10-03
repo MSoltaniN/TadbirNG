@@ -45,6 +45,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetEnvironmentCostCentersLookupAsync()
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var lookup = await _repository.GetCostCentersLookupAsync(GridOptions);
             return Json(lookup);
         }
@@ -63,6 +64,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
         public async Task<IActionResult> GetCostCenterChildrenAsync(int ccenterId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var children = await _repository.GetCostCenterChildrenAsync(ccenterId);
             return JsonReadResult(children);
         }

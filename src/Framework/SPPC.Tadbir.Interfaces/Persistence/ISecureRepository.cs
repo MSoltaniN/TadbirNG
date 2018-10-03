@@ -16,6 +16,10 @@ namespace SPPC.Tadbir.Persistence
     /// </summary>
     public interface ISecureRepository
     {
+        /// <summary>
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای اعمال فیلترهای سیستمی تنظیم می کند
+        /// </summary>
+        /// <param name="currentContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
         void SetCurrentContext(UserContextViewModel currentContext);
 
         /// <summary>
@@ -27,6 +31,18 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
         /// <returns>لیست فیلتر شده از سطرهای اطلاعاتی موجودیت مورد نظر</returns>
         Task<IList<TEntity>> GetAllAsync<TEntity>(int viewId,
+            params Expression<Func<TEntity, object>>[] relatedProperties)
+            where TEntity : class, IBaseEntity;
+
+        /// <summary>
+        /// کوئری فیلترشده مورد نیاز برای خواندن اطلاعات دوره مالی و شعبه جاری برنامه را
+        /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها برمی گرداند
+        /// </summary>
+        /// <typeparam name="TEntity">نوع موجودیتی که سطرهای آن باید خوانده شود</typeparam>
+        /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
+        /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
+        /// <returns>کوئری فیلترشده خواندن اطلاعات دوره مالی و شعبه جاری برنامه</returns>
+        IQueryable<TEntity> GetAllQuery<TEntity>(int viewId,
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IBaseEntity;
 
