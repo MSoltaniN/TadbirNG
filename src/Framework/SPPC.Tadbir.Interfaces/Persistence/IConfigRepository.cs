@@ -51,5 +51,18 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userId">شناسه دیتابیسی یکی از کاربران موجود</param>
         /// <param name="userConfig">تنظیمات کاربری برای فرم لیستی</param>
         Task SaveUserListConfigAsync(int userId, ListFormViewConfig userConfig);
+
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات موجود برای ساختار نمای درختی مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
+        /// <returns>تنظیمات موجود برای ساختار نمای درختی مشخص شده</returns>
+        Task<ViewTreeConfig> GetViewTreeConfigByViewAsync(int viewId);
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین تغییرات مجموعه ای از تنظیمات نماهای درختی را ذخیره می کند
+        /// </summary>
+        /// <param name="configItems">مجموعه ای از تنظیمات نماهای درختی</param>
+        Task SaveViewTreeConfigAsync(List<ViewTreeConfig> configItems);
     }
 }

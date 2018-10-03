@@ -570,4 +570,7 @@
   <data name="ViewTreeSettingsDescription" xml:space="preserve">
     <value>گزینه های موجود برای تعریف ساختارهای اطلاعاتی چندسطحی</value>
   </data>
+  <data name="LevelX" xml:space="preserve">
+    <value>سطح {0}</value>
+  </data>
 </root>

@@ -14,8 +14,8 @@ namespace SPPC.Tadbir.Configuration.Models
         /// </summary>
         public ViewTreeConfig()
         {
+            MaxDepth = ConfigConstants.DefaultTreeDepth;
             Levels = new List<ViewTreeLevelConfig>();
-            InitLevels();
         }
 
         /// <summary>
@@ -33,7 +33,10 @@ namespace SPPC.Tadbir.Configuration.Models
         /// </summary>
         public IList<ViewTreeLevelConfig> Levels { get; protected set; }
 
-        private void InitLevels()
+        /// <summary>
+        /// یک نمونه جدید را با تنظیمات سیستمی پیش فرض مقداردهی می کند
+        /// </summary>
+        public void InitDefaultLevels()
         {
             Array.ForEach(
                 Enumerable.Range(1, ConfigConstants.MaxTreeDepth).ToArray(),

@@ -31,6 +31,6 @@ namespace SPPC.Tadbir.Configuration
         /// <summary>
         /// نام پیش فرض که برای نمایش یک سطح از ساختار درختی پیشنهاد می شود
         /// </summary>
-        public const string DefaultLevelNameKey = "TreeLevelX";
+        public const string DefaultLevelNameKey = "LevelX";
     }
 }

@@ -437,6 +437,15 @@ namespace SPPC.Tadbir.Mapper
                     : new ColumnViewConfig(prop.Name));
             mapperConfig.CreateMap<UserSetting, ListFormViewConfig>()
                 .ConvertUsing(cfg => JsonHelper.To<ListFormViewConfig>(cfg.Values));
+            mapperConfig.CreateMap<ViewSetting, ViewTreeConfig>()
+                .ConvertUsing(cfg => JsonHelper.To<ViewTreeConfig>(cfg.Values));
+            mapperConfig.CreateMap<ViewTreeConfig, ViewSetting>()
+                .ForMember(dest => dest.ModelType, opts => opts.UseValue(typeof(ViewTreeConfig).Name))
+                .ForMember(dest => dest.SettingId, opts => opts.UseValue(5)) // TODO: Remove this hard-coded value later
+                .ForMember(
+                    dest => dest.Values,
+                    opts => opts.MapFrom(
+                        src => JsonHelper.From(src, false, null)));
 
             mapperConfig.CreateMap<CompanyDb, CompanyDbViewModel>();
             mapperConfig.CreateMap<CompanyDbViewModel, CompanyDb>();
