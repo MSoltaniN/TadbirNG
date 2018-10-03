@@ -561,4 +561,16 @@
   <data name="OtherBranchEditNotAllowed" xml:space="preserve">
     <value>Changes are not allowed outside current branch.</value>
   </data>
+  <data name="CompanyDb" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="ViewTreeSettings" xml:space="preserve">
+    <value>Multi-level entities</value>
+  </data>
+  <data name="ViewTreeSettingsDescription" xml:space="preserve">
+    <value>Available options for defining entities with multiple levels</value>
+  </data>
+  <data name="LevelX" xml:space="preserve">
+    <value>Level {0}</value>
+  </data>
 </root>

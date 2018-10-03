@@ -179,6 +179,20 @@ CREATE TABLE [Config].[Setting] (
 )
 GO
 
+CREATE TABLE [Config].[ViewSetting] (
+    [ViewSettingID]  INT              IDENTITY (1, 1) NOT NULL,
+    [SettingID]      INT              NOT NULL,
+    [ViewID]         INT              NULL,
+    [ModelType]      VARCHAR(128)     NOT NULL,
+    [Values]         NTEXT            NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Config_ViewSetting_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Config_ViewSetting_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Config_ViewSetting] PRIMARY KEY CLUSTERED ([ViewSettingID] ASC)
+    , CONSTRAINT [FK_Config_ViewSetting_Config_Setting] FOREIGN KEY ([SettingID]) REFERENCES [Config].[Setting]([SettingID])
+    , CONSTRAINT [FK_Config_ViewSetting_Metadata_View] FOREIGN KEY ([ViewID]) REFERENCES [Metadata].[View]([ViewID])
+)
+GO
+
 CREATE TABLE [Config].[UserSetting] (
     [UserSettingID]  INT              IDENTITY (1, 1) NOT NULL,
     [SettingID]      INT              NOT NULL,
@@ -434,6 +448,18 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [Storage
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (61, 11, N'Server', N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (62, 11, N'UserName', N'System.String', N'nvarchar', N'string', 32, 0, 0, 1, 1, 1, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (63, 11, N'Password', N'System.String', N'nvarchar', N'string', 32, 0, 0, 1, 1, 1, NULL)
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (64, 1, N'BranchScope', N'System.Int16', N'smallint', N'number', 0, 0, 0, 0, 0, 1, N'{"name":"BranchScope","large":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"medium":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"small":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"extraSmall":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (65, 6, N'BranchScope', N'System.Int16', N'smallint', N'number', 0, 0, 0, 0, 0, 1, N'{"name":"BranchScope","large":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"medium":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"small":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"extraSmall":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (66, 7, N'BranchScope', N'System.Int16', N'smallint', N'number', 0, 0, 0, 0, 0, 1, N'{"name":"BranchScope","large":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"medium":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"small":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"extraSmall":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"}}')
+INSERT [Metadata].[Column]
+    ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
+	VALUES (67, 8, N'BranchScope', N'System.Int16', N'smallint', N'number', 0, 0, 0, 0, 0, 1, N'{"name":"BranchScope","large":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"medium":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"small":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"extraSmall":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"}}')
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 
@@ -447,6 +473,8 @@ INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelTyp
     VALUES (3, 'NumberCurrencySettings', 2, 0, 'NumberDisplayConfig', N'{"useSeparator": true, "separatorMode": "UseCustom", "separatorSymbol": ",", "decimalPrecision": 0, "maxPrecision": 8}', N'{"useSeparator": true, "separatorMode": "UseCustom", "separatorSymbol": ",", "decimalPrecision": 0, "maxPrecision": 8}', 'NumberCurrencySettingsDescription')
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey)
     VALUES (4, 'ListFormViewSettings', 3, 2, 'ListFormViewConfig', N'{"pageSize": 10, "columnViews": []}', N'{"pageSize": 10, "columnViews": []}', 'ListFormViewSettingsDescription')
+INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey)
+    VALUES (5, 'ViewTreeSettings', 2, 2, 'ViewTreeConfig', N'{}', N'{}', 'ViewTreeSettingsDescription')
 SET IDENTITY_INSERT [Config].[Setting] OFF
 
 
@@ -574,8 +602,8 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALU
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (75, 16, N'CreateEntity,Branch', 2)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (76, 16, N'EditEntity,Branch', 4)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (77, 16, N'DeleteEntity,Branch', 8)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (78, 16, N'ViewEntities,AccountRelations', 1)
-INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (79, 16, N'ManageEntities,AccountRelations', 2)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (78, 17, N'ViewEntities,AccountRelations', 1)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (79, 17, N'ManageEntities,AccountRelations', 2)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (80, 18, N'ViewEntities,Companies', 1)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (81, 18, N'CreateEntity,Company', 2)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (82, 18, N'EditEntity,Company', 4)

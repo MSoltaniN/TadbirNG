@@ -54,6 +54,7 @@ export class ProjectFormComponent extends DetailComponent {
 
     @Input() public parentTitle: string = '';
     @Input() public parentValue: string = '';
+    @Input() public parentScopeValue: number = 0;
 
     @Input() public set parentId(id: number) {
         this.fullCodeApiUrl = String.Format(ProjectApi.ProjectFullCode, id ? id : 0);

@@ -1,0 +1,52 @@
+<div class='main-nav'>
+    <div class='navbar navbar-inverse'>
+        <div class='navbar-header'>
+            <button type='button' class='navbar-toggle rightButton' data-toggle='collapse' data-target='.navbar-collapse'>
+                <span class='sr-only'>Toggle navigation</span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+            </button>            
+            <a class='navbar-brand'  [ngClass]="{ 'navbar-brand-left' : rightAlign , 'navbar-brand-right' : !rightAlign}" style="width:auto" 
+               [routerLink]="['/account']">{{ 'App.Name' | translate }}</a>            
+            <ul class="navbar-left " [ngClass]="{ 'fr' : rightAlign , 'fl' : !rightAlign}">
+              <li class="dropdown circle">
+                <a href="#" class="nopad dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img width="48" height="48" class="circleImg" src="../../../assets/resources/images/avatar32.png" />
+                </a>
+                <ul class="dropdown-menu" [ngClass]="{'dropdown-menu-right' : rightAlign , 'dropdown-menu-left'  : !rightAlign}" aria-labelledby="dropdownMenu1">
+                  <li [routerLinkActive]="['link-active']" *ngFor="let pitem of profileItems;">
+                    <a *ngIf="pitem.routeUrl != null" routerLink="/{{pitem.routeUrl}}">
+                      <span class="glyphicon glyphicon-{{pitem.iconName}}"></span>
+                      <span>{{ pitem.title }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+        </div>
+        <div class='clearfix'></div>
+        <div class='navbar-collapse collapse navbar-scroll'>
+            <ul class='nav navbar-nav'>
+                <li *ngFor="let cmd of menuList;" class="parent" (click)="onMenuClick($event,cmd.id)">
+                    <a aria-expanded="false" data-toggle="collapse" href="#div{{cmd.id}}" id="#a{{cmd.id}}">
+                        <i class="fa" [ngClass]="{'fa-caret-left':this.currentlang === 'fa' , 'fa-caret-right': this.currentlang === 'en'}" aria-hidden="true"></i>
+                        <span class="glyphicons glyphicons-record"></span><span class="menuitem nav-link">{{ cmd.title }}</span>
+                    </a>
+                    <div id="div{{cmd.id}}" class="collapse" [ngClass]="{'in':this.expandedSubMenuId === cmd.id}">
+                        <ul class="nav navbar-nav">
+                            <li [routerLinkActive]="['link-active']" *ngFor="let innerCmd of cmd.children;">
+                                <a *ngIf="innerCmd.routeUrl != null" routerLink="/{{innerCmd.routeUrl}}">
+                                    <span class="glyphicon glyphicon-{{innerCmd.iconName}}"></span>
+                                    <span class="menuitem nav-link child"  data-toggle="collapse" data-target=".navbar-collapse.show">{{ innerCmd.title }}</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+

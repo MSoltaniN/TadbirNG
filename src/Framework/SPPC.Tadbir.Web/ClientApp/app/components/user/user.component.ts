@@ -196,6 +196,10 @@ export class UserComponent extends DefaultComponent implements OnInit {
 
     //#region Methods
 
+    reloadGridEvent() {
+        this.reloadGrid();
+    }
+
     reloadGrid(insertedModel?: User) {
         if (this.viewAccess) {
             this.grid.loading = true;

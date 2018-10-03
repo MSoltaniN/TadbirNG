@@ -77,6 +77,11 @@
     "ViewRowPermission": "دسترسی به سطرهای اطلاعاتی",
     "OperationLog": "لاگ های عملیاتی"
   },
+  "BranchScope": {
+    "AllBranches": "کلیه شعب",
+    "CurrentBranchAndSubsets": "شعبه جاری و زیر مجموعه هایش",
+    "CurrentBranch": "شعبه جاری"
+  },
   "Account": {
     "New": "حساب جدید",
     "NewSubAccount": "درج زیر حساب جدید",
@@ -93,7 +98,8 @@
     "Moeen": "حساب معین",
     "Tafzili": "حساب تفصیلی",
     "Kol": "حساب کل",
-    "TafziliToUp": "حساب تفصیلی سطح"
+    "TafziliToUp": "حساب تفصیلی سطح",
+    "BranchScope": "دسترسی شعبه"
   },
   "Settings": {
     "AccountRelation": {
@@ -171,7 +177,11 @@
     "Name": "نام",
     "DbName": "نام دیتابیس",
     "DbPath": "مسیر دیتابیس",
-    "Description": "شرح"
+    "Server": "نام سرور",
+    "UserName": "نام کاربری دیتابیس",
+    "Password": "کلمه عبور",
+    "Description": "شرح",
+    "NotFoundData": "شرکتی وجود ندارد"
   },
   "Branch": {
     "BranchName": "شعبه",
@@ -182,7 +192,8 @@
     "Description": "شرح",
     "Roles": "نقش ها",
     "UpdateRoles": "نقش های شعبه با موفقیت ویرایش شد",
-    "RolesTitle": "لیست نقش های قابل دسترس به شعبه"
+    "RolesTitle": "لیست نقش های قابل دسترس به شعبه",
+    "NotFoundData": "شعبه ای وجود ندارد"
   },
   "Voucher": {
     "New": "سند جدید",
@@ -261,7 +272,8 @@
     "FullCode": "کد کامل",
     "Level": "سطح",
     "Description": "شرح",
-    "Delete": "حذف تفصیلی شناور"
+    "Delete": "حذف تفصیلی شناور",
+    "BranchScope": "دسترسی شعبه"
   },
   "CostCenter": {
     "New": "مرکز هزینه جدید",
@@ -271,7 +283,8 @@
     "FullCode": "کد کامل",
     "Level": "سطح",
     "Description": "شرح",
-    "Delete": "حذف مرکز هزینه"
+    "Delete": "حذف مرکز هزینه",
+    "BranchScope": "دسترسی شعبه"
   },
   "Project": {
     "New": "پروژه جدید",
@@ -281,7 +294,8 @@
     "FullCode": "کد کامل",
     "Level": "سطح",
     "Description": "شرح",
-    "Delete": "حذف پروژه"
+    "Delete": "حذف پروژه",
+    "BranchScope": "دسترسی شعبه"
   },
   "AccountRelations": {
     "MainComponent": "مولفه اصلی",
@@ -314,7 +328,8 @@
     "RolesTitle": "لیست نقش های دوره مالی"
   },
   "Fiscal": {
-    "FiscalPeriod": "دوره مالی"
+    "FiscalPeriod": "دوره مالی",
+    "NotFoundData": "دوره مالی وجود ندارد"
   },
   "Paging": {
     "Record": "رکورد",
@@ -476,7 +491,7 @@
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
       "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
-      "NoError": ""
+      "NoError": ""   
     },
     "Company": {
       "NameIsRequired": "وارد کردن نام اجباری است.",
@@ -491,6 +506,10 @@
       "DbNameIsTooLong": "نام دیتابیس می تواند حداکثر 128 حرف داشته باشد.",
       "DbPathIsRequired": "وارد کردن مسیر دیتابیس اجباری است.",
       "DbPathIsTooLong": "مسیر دیتابیس می تواند حداکثر 512 حرف داشته باشد.",
+      "ServerIsRequired": "وارد کردن نام یا آی پی سرور اجباری است.",
+      "ServerIsTooLong": "نام یا آی پی سرور می تواند حداکثر 64 حرف داشته باشد.",
+      "UserNameIsTooLong": "نام کاربری دیتابیس می تواند حداکثر 32 حرف داشته باشد.",
+      "PasswordIsTooLong": "کلمه عبور دیتابیس می تواند حداکثر 32 حرف داشته باشد.",
       "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
       "NoError": ""
     }

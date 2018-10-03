@@ -13,35 +13,24 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
-        /// API client URL for cost centers defined in a fiscal period and a corporate branch
+        /// API client URL for cost centers defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchCostCenters = "ccenters/fp/{0}/branch/{1}";
+        public const string EnvironmentCostCenters = "ccenters";
 
         /// <summary>
-        /// API server route URL for cost centers defined in a fiscal period and a corporate branch
+        /// API server route URL for cost centers defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchCostCentersUrl = "ccenters/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentCostCentersUrl = "ccenters";
 
         /// <summary>
-        /// API client URL for cost center lookups defined in a fiscal period and a corporate branch
+        /// API client URL for cost center lookups defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchCostCentersLookup = "ccenters/lookup/fp/{0}/branch/{1}";
+        public const string EnvironmentCostCentersLookup = "ccenters/lookup";
 
         /// <summary>
-        /// API server route URL for cost center lookups defined in a fiscal period and a corporate branch
+        /// API server route URL for cost center lookups defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchCostCentersLookupUrl =
-            "ccenters/lookup/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
-
-        /// <summary>
-        /// API client URL for all cost center items
-        /// </summary>
-        public const string CostCenters = "ccenters";
-
-        /// <summary>
-        /// API server route URL for all cost center items
-        /// </summary>
-        public const string CostCentersUrl = "ccenters";
+        public const string EnvironmentCostCentersLookupUrl = "ccenters/lookup";
 
         /// <summary>
         /// API client URL for a cost center item specified by unique identifier

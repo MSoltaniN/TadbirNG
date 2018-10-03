@@ -13,35 +13,24 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
-        /// API client URL for projects defined in a fiscal period and a corporate branch
+        /// API client URL for projects defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchProjects = "projects/fp/{0}/branch/{1}";
+        public const string EnvironmentProjects = "projects";
 
         /// <summary>
-        /// API server route URL for projects defined in a fiscal period and a corporate branch
+        /// API server route URL for projects defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchProjectsUrl = "projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
+        public const string EnvironmentProjectsUrl = "projects";
 
         /// <summary>
-        /// API client URL for project lookups defined in a fiscal period and a corporate branch
+        /// API client URL for project lookups defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchProjectsLookup = "projects/lookup/fp/{0}/branch/{1}";
+        public const string EnvironmentProjectsLookup = "projects/lookup";
 
         /// <summary>
-        /// API server route URL for project lookups defined in a fiscal period and a corporate branch
+        /// API server route URL for project lookups defined in current environment
         /// </summary>
-        public const string FiscalPeriodBranchProjectsLookupUrl =
-            "projects/lookup/fp/{fpId:min(1)}/branch/{branchId:min(1)}";
-
-        /// <summary>
-        /// API client URL for all project items
-        /// </summary>
-        public const string Projects = "projects";
-
-        /// <summary>
-        /// API server route URL for all project items
-        /// </summary>
-        public const string ProjectsUrl = "projects";
+        public const string EnvironmentProjectsLookupUrl = "projects/lookup";
 
         /// <summary>
         /// API client URL for a project item specified by unique identifier

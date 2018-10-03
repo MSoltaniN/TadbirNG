@@ -13,52 +13,36 @@ namespace SPPC.Tadbir.Persistence
     public interface IRelationRepository
     {
         /// <summary>
-        /// به روش آسنکرون، سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// به روش آسنکرون، سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه جاری را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
-        Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsAsync(
-            UserContextViewModel userContext, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null);
+        /// <returns>سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه جاری</returns>
+        Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsAsync(bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
-        /// به روش آسنکرون، تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// به روش آسنکرون، تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه جاری را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
-        Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountsAsync(
-            UserContextViewModel userContext, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null);
+        /// <returns>تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه جاری</returns>
+        Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountsAsync(bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
-        /// به روش آسنکرون، مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// به روش آسنکرون، مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه جاری را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
-        Task<IList<AccountItemBriefViewModel>> GetConnectableCostCentersAsync(
-            UserContextViewModel userContext, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null);
+        /// <returns>مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه جاری</returns>
+        Task<IList<AccountItemBriefViewModel>> GetConnectableCostCentersAsync(bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
-        /// به روش آسنکرون، پروژه های قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// به روش آسنکرون، پروژه های قابل ارتباط در یک دوره مالی و شعبه جاری را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>پروژه های قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
-        Task<IList<AccountItemBriefViewModel>> GetConnectableProjectsAsync(
-            UserContextViewModel userContext, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null);
+        /// <returns>پروژه های قابل ارتباط در یک دوره مالی و شعبه جاری</returns>
+        Task<IList<AccountItemBriefViewModel>> GetConnectableProjectsAsync(bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور مرتبط با حساب مشخص شده را
@@ -221,5 +205,11 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از حساب های قابل ارتباط با پروژه مشخص شده</returns>
         Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsForProjectAsync(
             int projectId, bool useLeafItems = true, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای برای خواندن اطلاعات وابسته به شعبه تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        void SetCurrentContext(UserContextViewModel userContext);
     }
 }

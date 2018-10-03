@@ -28,23 +28,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             get { return AppStrings.Project; }
         }
 
-        // GET: api/projects/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(ProjectApi.FiscalPeriodBranchProjectsUrl)]
+        // GET: api/projects
+        [Route(ProjectApi.EnvironmentProjectsUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
-        public async Task<IActionResult> GetProjectsAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetEnvironmentProjectsAsync()
         {
-            int itemCount = await _repository.GetCountAsync(SecurityContext.User, fpId, branchId, GridOptions);
+            _repository.SetCurrentContext(SecurityContext.User);
+            int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
-            var projects = await _repository.GetProjectsAsync(SecurityContext.User, fpId, branchId, GridOptions);
+            var projects = await _repository.GetProjectsAsync(GridOptions);
             return Json(projects);
         }
 
-        // GET: api/projects/lookup/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(ProjectApi.FiscalPeriodBranchProjectsLookupUrl)]
+        // GET: api/projects/lookup
+        [Route(ProjectApi.EnvironmentProjectsLookupUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
-        public async Task<IActionResult> GetProjectsLookupAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetEnvironmentProjectsLookupAsync()
         {
-            var lookup = await _repository.GetProjectsLookupAsync(SecurityContext.User, fpId, branchId, GridOptions);
+            _repository.SetCurrentContext(SecurityContext.User);
+            var lookup = await _repository.GetProjectsLookupAsync(GridOptions);
             return Json(lookup);
         }
 
@@ -62,6 +64,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
         public async Task<IActionResult> GetProjectChildrenAsync(int projectId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var children = await _repository.GetProjectChildrenAsync(projectId);
             return JsonReadResult(children);
         }
@@ -93,7 +96,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/projects
         [HttpPost]
-        [Route(ProjectApi.ProjectsUrl)]
+        [Route(ProjectApi.EnvironmentProjectsUrl)]
         [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.Create)]
         public async Task<IActionResult> PostNewProjectAsync([FromBody] ProjectViewModel project)
         {

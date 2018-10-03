@@ -45,8 +45,6 @@ export class RoleDetailFormComponent extends DetailComponent {
 
 
     ////create properties
-    public gridPermissionData: any;
-    public gridBranchesData: any;
     public gridUsersData: any;
 
 
@@ -112,14 +110,14 @@ export class RoleDetailFormComponent extends DetailComponent {
 
             }   
             
-            this.gridBranchesData = roleDetails.branches;
+            //this.gridBranchesData = roleDetails.branches;
             this.gridUsersData = roleDetails.users;
 
             this.roleName = roleDetails.role.name;
             this.roleDescription = roleDetails.role.description != null ? roleDetails.role.description : "";
 
             this.showloadingPermissionMessage = !(this.treeData.length == 0);
-            this.showloadingBranchesMessage = !(this.gridBranchesData.length == 0);
+            //this.showloadingBranchesMessage = !(this.gridBranchesData.length == 0);
             this.showloadingUsersMessage = !(this.gridUsersData.length == 0);
 
 
@@ -143,8 +141,7 @@ export class RoleDetailFormComponent extends DetailComponent {
 
     private closeForm(): void {
         this.roleDetail = false;
-        this.gridPermissionData = undefined;
-        this.gridBranchesData = undefined;
+        //this.gridBranchesData = undefined;
         this.gridUsersData = undefined;
         this.cancelRoleDetail.emit();
     }

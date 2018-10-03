@@ -192,6 +192,10 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
         this.deleteModelsConfirm = false;
     }
 
+    reloadGridEvent() {
+        this.reloadGrid();
+    }
+
     reloadGrid(insertedModel?: Company) {
         if (this.viewAccess) {
             this.grid.loading = true;

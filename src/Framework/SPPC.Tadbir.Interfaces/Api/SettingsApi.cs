@@ -51,5 +51,25 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for workflow settings
         /// </summary>
         public const string WorkflowSettingsUrl = "settings/workflows";
+
+        /// <summary>
+        /// API client URL for settings of all hierarchy views
+        /// </summary>
+        public const string ViewTreeSettings = "settings/views/tree";
+
+        /// <summary>
+        /// API server route URL for settings of all hierarchy views
+        /// </summary>
+        public const string ViewTreeSettingsUrl = "settings/views/tree";
+
+        /// <summary>
+        /// API client URL for hierarcy settings of a view specified by unique identifier
+        /// </summary>
+        public const string ViewTreeSettingsByView = "settings/views/{0}/tree";
+
+        /// <summary>
+        /// API server route URL for hierarcy settings of a view specified by unique identifier
+        /// </summary>
+        public const string ViewTreeSettingsByViewUrl = "settings/views/{viewId:min(1)}/tree";
     }
 }

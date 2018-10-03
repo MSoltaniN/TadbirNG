@@ -8,6 +8,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -25,82 +26,74 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="unitOfWork">پیاده سازی اینترفیس واحد کاری برای انجام عملیات دیتابیسی </param>
         /// <param name="mapper">نگاشت مورد استفاده برای تبدیل کلاس های مدل اطلاعاتی</param>
         /// <param name="itemRepository">پیاده سازی اینترفیس مربوط به عملیات بردار حساب</param>
-        public RelationRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IAccountItemRepository itemRepository)
+        /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
+        public RelationRepository(
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IAccountItemRepository itemRepository,
+            ISecureRepository repository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _itemRepository = itemRepository;
+            _repository = repository;
         }
 
         /// <summary>
-        /// به روش آسنکرون، سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// به روش آسنکرون، سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه جاری را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
+        /// <returns>سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه جاری</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsAsync(
-            UserContextViewModel userContext, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null)
+            bool useLeafItems = true, GridOptions gridOptions = null)
         {
             var accounts = useLeafItems
-                ? await _itemRepository.GetLeafAccountsAsync(userContext, fpId, branchId, gridOptions)
-                : await _itemRepository.GetRootAccountsAsync(userContext, fpId, branchId, gridOptions);
+                ? await _itemRepository.GetLeafAccountsAsync(gridOptions)
+                : await _itemRepository.GetRootAccountsAsync(gridOptions);
             return accounts;
         }
 
         /// <summary>
-        /// به روش آسنکرون، تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// به روش آسنکرون، تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه جاری را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
+        /// <returns>تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه جاری</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountsAsync(
-            UserContextViewModel userContext, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null)
+            bool useLeafItems = true, GridOptions gridOptions = null)
         {
             var detailAccounts = useLeafItems
-                ? await _itemRepository.GetLeafDetailAccountsAsync(userContext, fpId, branchId, gridOptions)
-                : await _itemRepository.GetRootDetailAccountsAsync(userContext, fpId, branchId, gridOptions);
+                ? await _itemRepository.GetLeafDetailAccountsAsync(gridOptions)
+                : await _itemRepository.GetRootDetailAccountsAsync(gridOptions);
             return detailAccounts;
         }
 
         /// <summary>
-        /// به روش آسنکرون، مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// به روش آسنکرون، مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه جاری را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
+        /// <returns>مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه جاری</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableCostCentersAsync(
-            UserContextViewModel userContext, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null)
+            bool useLeafItems = true, GridOptions gridOptions = null)
         {
             var costCenters = useLeafItems
-                ? await _itemRepository.GetLeafCostCentersAsync(userContext, fpId, branchId, gridOptions)
-                : await _itemRepository.GetRootCostCentersAsync(userContext, fpId, branchId, gridOptions);
+                ? await _itemRepository.GetLeafCostCentersAsync(gridOptions)
+                : await _itemRepository.GetRootCostCentersAsync(gridOptions);
             return costCenters;
         }
 
         /// <summary>
-        /// به روش آسنکرون، پروژه های قابل ارتباط در یک دوره مالی و شعبه مشخص را خوانده و برمی گرداند
+        /// به روش آسنکرون، پروژه های قابل ارتباط در یک دوره مالی و شعبه جاری را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        /// <param name="fpId">شناسه یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه یکی از شعبه های موجود</param>
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>پروژه های قابل ارتباط در یک دوره مالی و شعبه مشخص</returns>
+        /// <returns>پروژه های قابل ارتباط در یک دوره مالی و شعبه جاری</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableProjectsAsync(
-            UserContextViewModel userContext, int fpId, int branchId, bool useLeafItems = true, GridOptions gridOptions = null)
+            bool useLeafItems = true, GridOptions gridOptions = null)
         {
             var projects = useLeafItems
-                ? await _itemRepository.GetLeafProjectsAsync(userContext, fpId, branchId, gridOptions)
-                : await _itemRepository.GetRootProjectsAsync(userContext, fpId, branchId, gridOptions);
+                ? await _itemRepository.GetLeafProjectsAsync(gridOptions)
+                : await _itemRepository.GetRootProjectsAsync(gridOptions);
             return projects;
         }
 
@@ -114,22 +107,19 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetAccountDetailAccountsAsync(
             int accountId, GridOptions gridOptions = null)
         {
-            IList<AccountItemBriefViewModel> detailAccounts = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var query = repository.GetEntityQuery()
-                .Where(acc => acc.Id == accountId)
-                .Include(acc => acc.AccountDetailAccounts)
-                    .ThenInclude(ada => ada.DetailAccount);
-            var account = await query.SingleOrDefaultAsync();
-            if (account != null)
-            {
-                detailAccounts = account.AccountDetailAccounts
-                    .Select(ada => _mapper.Map<AccountItemBriefViewModel>(ada.DetailAccount))
-                    .Apply(gridOptions)
-                    .ToList();
-                Array.ForEach(detailAccounts.ToArray(), facc => facc.IsSelected = true);
-            }
-
+            var relationRepository = _unitOfWork.GetAsyncRepository<AccountDetailAccount>();
+            var relatedDetailIds = await relationRepository
+                .GetEntityQuery()
+                .Where(ada => ada.AccountId == accountId)
+                .Select(ada => ada.DetailId)
+                .ToListAsync();
+            var detailAccounts = await _repository
+                .GetAllQuery<DetailAccount>(ViewName.DetailAccount)
+                .Where(facc => relatedDetailIds.Contains(facc.Id))
+                .Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc))
+                .Apply(gridOptions)
+                .ToListAsync();
+            Array.ForEach(detailAccounts.ToArray(), facc => facc.IsSelected = true);
             return detailAccounts;
         }
 
@@ -143,22 +133,19 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetAccountCostCentersAsync(
             int accountId, GridOptions gridOptions = null)
         {
-            IList<AccountItemBriefViewModel> costCenters = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var query = repository.GetEntityQuery()
-                .Where(acc => acc.Id == accountId)
-                .Include(acc => acc.AccountCostCenters)
-                    .ThenInclude(acc => acc.CostCenter);
-            var account = await query.SingleOrDefaultAsync();
-            if (account != null)
-            {
-                costCenters = account.AccountCostCenters
-                    .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc.CostCenter))
-                    .Apply(gridOptions)
-                    .ToList();
-                Array.ForEach(costCenters.ToArray(), cc => cc.IsSelected = true);
-            }
-
+            var relationRepository = _unitOfWork.GetAsyncRepository<AccountCostCenter>();
+            var relatedCenterIds = await relationRepository
+                .GetEntityQuery()
+                .Where(ac => ac.AccountId == accountId)
+                .Select(ac => ac.CostCenterId)
+                .ToListAsync();
+            var costCenters = await _repository
+                .GetAllQuery<CostCenter>(ViewName.CostCenter)
+                .Where(cc => relatedCenterIds.Contains(cc.Id))
+                .Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc))
+                .Apply(gridOptions)
+                .ToListAsync();
+            Array.ForEach(costCenters.ToArray(), cc => cc.IsSelected = true);
             return costCenters;
         }
 
@@ -172,22 +159,19 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetAccountProjectsAsync(
             int accountId, GridOptions gridOptions = null)
         {
-            IList<AccountItemBriefViewModel> projects = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var query = repository.GetEntityQuery()
-                .Where(acc => acc.Id == accountId)
-                .Include(acc => acc.AccountProjects)
-                    .ThenInclude(ap => ap.Project);
-            var account = await query.SingleOrDefaultAsync();
-            if (account != null)
-            {
-                projects = account.AccountProjects
-                    .Select(ap => _mapper.Map<AccountItemBriefViewModel>(ap.Project))
-                    .Apply(gridOptions)
-                    .ToList();
-                Array.ForEach(projects.ToArray(), prj => prj.IsSelected = true);
-            }
-
+            var relationRepository = _unitOfWork.GetAsyncRepository<AccountProject>();
+            var relatedProjectIds = await relationRepository
+                .GetEntityQuery()
+                .Where(ap => ap.AccountId == accountId)
+                .Select(ap => ap.ProjectId)
+                .ToListAsync();
+            var projects = await _repository
+                .GetAllQuery<Project>(ViewName.Project)
+                .Where(prj => relatedProjectIds.Contains(prj.Id))
+                .Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj))
+                .Apply(gridOptions)
+                .ToListAsync();
+            Array.ForEach(projects.ToArray(), prj => prj.IsSelected = true);
             return projects;
         }
 
@@ -201,22 +185,19 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetDetailAccountAccountsAsync(
             int detailId, GridOptions gridOptions = null)
         {
-            IList<AccountItemBriefViewModel> accounts = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
-            var query = repository.GetEntityQuery()
-                .Where(facc => facc.Id == detailId)
-                .Include(facc => facc.AccountDetailAccounts)
-                    .ThenInclude(ada => ada.Account);
-            var detail = await query.SingleOrDefaultAsync();
-            if (detail != null)
-            {
-                accounts = detail.AccountDetailAccounts
-                    .Select(ada => _mapper.Map<AccountItemBriefViewModel>(ada.Account))
-                    .Apply(gridOptions)
-                    .ToList();
-                Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
-            }
-
+            var relationRepository = _unitOfWork.GetAsyncRepository<AccountDetailAccount>();
+            var relatedAccountIds = await relationRepository
+                .GetEntityQuery()
+                .Where(ada => ada.DetailId == detailId)
+                .Select(ada => ada.AccountId)
+                .ToListAsync();
+            var accounts = await _repository
+                .GetAllQuery<Account>(ViewName.Account)
+                .Where(acc => relatedAccountIds.Contains(acc.Id))
+                .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                .Apply(gridOptions)
+                .ToListAsync();
+            Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             return accounts;
         }
 
@@ -230,22 +211,19 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetCostCenterAccountsAsync(
             int costCenterId, GridOptions gridOptions = null)
         {
-            IList<AccountItemBriefViewModel> accounts = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
-            var query = repository.GetEntityQuery()
-                .Where(cc => cc.Id == costCenterId)
-                .Include(cc => cc.AccountCostCenters)
-                    .ThenInclude(ac => ac.Account);
-            var costCenter = await query.SingleOrDefaultAsync();
-            if (costCenter != null)
-            {
-                accounts = costCenter.AccountCostCenters
-                    .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc.Account))
-                    .Apply(gridOptions)
-                    .ToList();
-                Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
-            }
-
+            var relationRepository = _unitOfWork.GetAsyncRepository<AccountCostCenter>();
+            var relatedAccountIds = await relationRepository
+                .GetEntityQuery()
+                .Where(ac => ac.CostCenterId == costCenterId)
+                .Select(ac => ac.AccountId)
+                .ToListAsync();
+            var accounts = await _repository
+                .GetAllQuery<Account>(ViewName.Account)
+                .Where(acc => relatedAccountIds.Contains(acc.Id))
+                .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                .Apply(gridOptions)
+                .ToListAsync();
+            Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             return accounts;
         }
 
@@ -259,22 +237,19 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetProjectAccountsAsync(
             int projectId, GridOptions gridOptions = null)
         {
-            IList<AccountItemBriefViewModel> accounts = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
-            var query = repository.GetEntityQuery()
-                .Where(prj => prj.Id == projectId)
-                .Include(prj => prj.AccountProjects)
-                    .ThenInclude(ap => ap.Account);
-            var project = await query.SingleOrDefaultAsync();
-            if (project != null)
-            {
-                accounts = project.AccountProjects
-                    .Select(ap => _mapper.Map<AccountItemBriefViewModel>(ap.Account))
-                    .Apply(gridOptions)
-                    .ToList();
-                Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
-            }
-
+            var relationRepository = _unitOfWork.GetAsyncRepository<AccountProject>();
+            var relatedAccountIds = await relationRepository
+                .GetEntityQuery()
+                .Where(ap => ap.ProjectId == projectId)
+                .Select(ap => ap.AccountId)
+                .ToListAsync();
+            var accounts = await _repository
+                .GetAllQuery<Account>(ViewName.Account)
+                .Where(acc => relatedAccountIds.Contains(acc.Id))
+                .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                .Apply(gridOptions)
+                .ToListAsync();
+            Array.ForEach(accounts.ToArray(), acc => acc.IsSelected = true);
             return accounts;
         }
 
@@ -445,36 +420,24 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountsForAccountAsync(
             int accountId, bool useLeafItems = true, GridOptions gridOptions = null)
         {
-            var detailAccounts = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var byCriteria = await repository.GetByCriteriaAsync(
-                acc => acc.Id == accountId,
-                acc => acc.AccountDetailAccounts, acc => acc.FiscalPeriod, acc => acc.Branch);
-            var account = byCriteria.SingleOrDefault();
-            if (account != null)
+            var relationRepository = _unitOfWork.GetAsyncRepository<AccountDetailAccount>();
+            var relatedDetailIds = await relationRepository
+                .GetEntityQuery()
+                .Where(ada => ada.AccountId == accountId)
+                .Select(ada => ada.DetailId)
+                .ToListAsync();
+            var query = _repository
+                .GetAllQuery<DetailAccount>(ViewName.DetailAccount, facc => facc.Children)
+                .Where(facc => !relatedDetailIds.Contains(facc.Id));
+            if (useLeafItems)
             {
-                int fpId = account.FiscalPeriod.Id;
-                int branchId = account.Branch.Id;
-                var existingIds = account.AccountDetailAccounts.Select(ada => ada.DetailId);
-                var detailRepository = _unitOfWork.GetAsyncRepository<DetailAccount>();
-                var connectable = detailRepository
-                    .GetEntityQuery()
-                    .Where(facc => facc.FiscalPeriod.Id == fpId
-                        && facc.Branch.Id == branchId
-                        && !existingIds.Contains(facc.Id));
-                if (useLeafItems)
-                {
-                    connectable = connectable.Where(facc => facc.Children.Count == 0);
-                }
-
-                detailAccounts.AddRange(
-                    await connectable
-                        .Apply(gridOptions)
-                        .Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc))
-                        .ToListAsync());
+                query = query.Where(facc => facc.Children.Count == 0);
             }
 
-            return detailAccounts;
+            return await query
+                .Select(facc => _mapper.Map<AccountItemBriefViewModel>(facc))
+                .Apply(gridOptions)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -488,36 +451,24 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableCostCentersForAccountAsync(
             int accountId, bool useLeafItems = true, GridOptions gridOptions = null)
         {
-            var costCenters = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var byCriteria = await repository.GetByCriteriaAsync(
-                acc => acc.Id == accountId,
-                acc => acc.AccountCostCenters, acc => acc.FiscalPeriod, acc => acc.Branch);
-            var account = byCriteria.SingleOrDefault();
-            if (account != null)
+            var relationRepository = _unitOfWork.GetAsyncRepository<AccountCostCenter>();
+            var relatedCenterIds = await relationRepository
+                .GetEntityQuery()
+                .Where(ac => ac.AccountId == accountId)
+                .Select(ac => ac.CostCenterId)
+                .ToListAsync();
+            var query = _repository
+                .GetAllQuery<CostCenter>(ViewName.CostCenter, cc => cc.Children)
+                .Where(cc => !relatedCenterIds.Contains(cc.Id));
+            if (useLeafItems)
             {
-                int fpId = account.FiscalPeriod.Id;
-                int branchId = account.Branch.Id;
-                var existingIds = account.AccountCostCenters.Select(ac => ac.CostCenterId);
-                var centerRepository = _unitOfWork.GetAsyncRepository<CostCenter>();
-                var connectable = centerRepository
-                    .GetEntityQuery()
-                    .Where(cc => cc.FiscalPeriod.Id == fpId
-                        && cc.Branch.Id == branchId
-                        && !existingIds.Contains(cc.Id));
-                if (useLeafItems)
-                {
-                    connectable = connectable.Where(cc => cc.Children.Count == 0);
-                }
-
-                costCenters.AddRange(
-                    await connectable
-                        .Apply(gridOptions)
-                        .Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc))
-                        .ToListAsync());
+                query = query.Where(cc => cc.Children.Count == 0);
             }
 
-            return costCenters;
+            return await query
+                .Select(cc => _mapper.Map<AccountItemBriefViewModel>(cc))
+                .Apply(gridOptions)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -531,36 +482,24 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableProjectsForAccountAsync(
             int accountId, bool useLeafItems = true, GridOptions gridOptions = null)
         {
-            var projects = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<Account>();
-            var byCriteria = await repository.GetByCriteriaAsync(
-                acc => acc.Id == accountId,
-                acc => acc.AccountProjects, acc => acc.FiscalPeriod, acc => acc.Branch);
-            var account = byCriteria.SingleOrDefault();
-            if (account != null)
+            var relationRepository = _unitOfWork.GetAsyncRepository<AccountProject>();
+            var relatedProjectIds = await relationRepository
+                .GetEntityQuery()
+                .Where(ap => ap.AccountId == accountId)
+                .Select(ap => ap.ProjectId)
+                .ToListAsync();
+            var query = _repository
+                .GetAllQuery<Project>(ViewName.Project, prj => prj.Children)
+                .Where(prj => !relatedProjectIds.Contains(prj.Id));
+            if (useLeafItems)
             {
-                int fpId = account.FiscalPeriod.Id;
-                int branchId = account.Branch.Id;
-                var existingIds = account.AccountProjects.Select(ap => ap.ProjectId);
-                var projectRepository = _unitOfWork.GetAsyncRepository<Project>();
-                var connectable = projectRepository
-                    .GetEntityQuery()
-                    .Where(prj => prj.FiscalPeriod.Id == fpId
-                        && prj.Branch.Id == branchId
-                        && !existingIds.Contains(prj.Id));
-                if (useLeafItems)
-                {
-                    connectable = connectable.Where(prj => prj.Children.Count == 0);
-                }
-
-                projects.AddRange(
-                    await connectable
-                        .Apply(gridOptions)
-                        .Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj))
-                        .ToListAsync());
+                query = query.Where(prj => prj.Children.Count == 0);
             }
 
-            return projects;
+            return await query
+                .Select(prj => _mapper.Map<AccountItemBriefViewModel>(prj))
+                .Apply(gridOptions)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -574,36 +513,24 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsForDetailAccountAsync(
             int detailId, bool useLeafItems = true, GridOptions gridOptions = null)
         {
-            var accounts = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
-            var byCriteria = await repository.GetByCriteriaAsync(
-                facc => facc.Id == detailId,
-                facc => facc.AccountDetailAccounts, facc => facc.FiscalPeriod, facc => facc.Branch);
-            var detailAccount = byCriteria.SingleOrDefault();
-            if (detailAccount != null)
+            var relationRepository = _unitOfWork.GetAsyncRepository<AccountDetailAccount>();
+            var relatedAccountIds = await relationRepository
+                .GetEntityQuery()
+                .Where(ada => ada.DetailId == detailId)
+                .Select(ada => ada.AccountId)
+                .ToListAsync();
+            var query = _repository
+                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
+                .Where(acc => !relatedAccountIds.Contains(acc.Id));
+            if (useLeafItems)
             {
-                int fpId = detailAccount.FiscalPeriod.Id;
-                int branchId = detailAccount.Branch.Id;
-                var existingIds = detailAccount.AccountDetailAccounts.Select(ada => ada.AccountId);
-                var accountRepository = _unitOfWork.GetAsyncRepository<Account>();
-                var connectable = accountRepository
-                    .GetEntityQuery()
-                    .Where(acc => acc.FiscalPeriod.Id == fpId
-                        && acc.Branch.Id == branchId
-                        && !existingIds.Contains(acc.Id));
-                if (useLeafItems)
-                {
-                    connectable = connectable.Where(acc => acc.Children.Count == 0);
-                }
-
-                accounts.AddRange(
-                    await connectable
-                        .Apply(gridOptions)
-                        .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
-                        .ToListAsync());
+                query = query.Where(acc => acc.Children.Count == 0);
             }
 
-            return accounts;
+            return await query
+                .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                .Apply(gridOptions)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -617,36 +544,24 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsForCostCenterAsync(
             int costCenterId, bool useLeafItems = true, GridOptions gridOptions = null)
         {
-            var accounts = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
-            var byCriteria = await repository.GetByCriteriaAsync(
-                cc => cc.Id == costCenterId,
-                cc => cc.AccountCostCenters, cc => cc.FiscalPeriod, cc => cc.Branch);
-            var costCenter = byCriteria.SingleOrDefault();
-            if (costCenter != null)
+            var relationRepository = _unitOfWork.GetAsyncRepository<AccountCostCenter>();
+            var relatedAccountIds = await relationRepository
+                .GetEntityQuery()
+                .Where(ac => ac.CostCenterId == costCenterId)
+                .Select(ac => ac.AccountId)
+                .ToListAsync();
+            var query = _repository
+                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
+                .Where(acc => !relatedAccountIds.Contains(acc.Id));
+            if (useLeafItems)
             {
-                int fpId = costCenter.FiscalPeriod.Id;
-                int branchId = costCenter.Branch.Id;
-                var existingIds = costCenter.AccountCostCenters.Select(ac => ac.AccountId);
-                var accountRepository = _unitOfWork.GetAsyncRepository<Account>();
-                var connectable = accountRepository
-                    .GetEntityQuery()
-                    .Where(acc => acc.FiscalPeriod.Id == fpId
-                        && acc.Branch.Id == branchId
-                        && !existingIds.Contains(acc.Id));
-                if (useLeafItems)
-                {
-                    connectable = connectable.Where(acc => acc.Children.Count == 0);
-                }
-
-                accounts.AddRange(
-                    await connectable
-                        .Apply(gridOptions)
-                        .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
-                        .ToListAsync());
+                query = query.Where(acc => acc.Children.Count == 0);
             }
 
-            return accounts;
+            return await query
+                .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                .Apply(gridOptions)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -660,36 +575,34 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsForProjectAsync(
             int projectId, bool useLeafItems = true, GridOptions gridOptions = null)
         {
-            var accounts = new List<AccountItemBriefViewModel>();
-            var repository = _unitOfWork.GetAsyncRepository<Project>();
-            var byCriteria = await repository.GetByCriteriaAsync(
-                prj => prj.Id == projectId,
-                prj => prj.AccountProjects, prj => prj.FiscalPeriod, prj => prj.Branch);
-            var project = byCriteria.SingleOrDefault();
-            if (project != null)
+            var relationRepository = _unitOfWork.GetAsyncRepository<AccountProject>();
+            var relatedAccountIds = await relationRepository
+                .GetEntityQuery()
+                .Where(ap => ap.ProjectId == projectId)
+                .Select(ap => ap.AccountId)
+                .ToListAsync();
+            var query = _repository
+                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
+                .Where(acc => !relatedAccountIds.Contains(acc.Id));
+            if (useLeafItems)
             {
-                int fpId = project.FiscalPeriod.Id;
-                int branchId = project.Branch.Id;
-                var existingIds = project.AccountProjects.Select(ap => ap.AccountId);
-                var accountRepository = _unitOfWork.GetAsyncRepository<Account>();
-                var connectable = accountRepository
-                    .GetEntityQuery()
-                    .Where(acc => acc.FiscalPeriod.Id == fpId
-                        && acc.Branch.Id == branchId
-                        && !existingIds.Contains(acc.Id));
-                if (useLeafItems)
-                {
-                    connectable = connectable.Where(acc => acc.Children.Count == 0);
-                }
-
-                accounts.AddRange(
-                    await connectable
-                        .Apply(gridOptions)
-                        .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
-                        .ToListAsync());
+                query = query.Where(acc => acc.Children.Count == 0);
             }
 
-            return accounts;
+            return await query
+                .Select(acc => _mapper.Map<AccountItemBriefViewModel>(acc))
+                .Apply(gridOptions)
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// اطلاعات محیطی کاربر جاری برنامه را برای برای خواندن اطلاعات وابسته به شعبه تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
+        public void SetCurrentContext(UserContextViewModel userContext)
+        {
+            _repository.SetCurrentContext(userContext);
+            _itemRepository.SetCurrentContext(userContext);
         }
 
         private static bool AreRelationsModified(int[] existingIds, AccountItemRelationsViewModel relations)
@@ -970,8 +883,9 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private IAppUnitOfWork _unitOfWork;
-        private IDomainMapper _mapper;
-        private IAccountItemRepository _itemRepository;
+        private readonly IAppUnitOfWork _unitOfWork;
+        private readonly IDomainMapper _mapper;
+        private readonly IAccountItemRepository _itemRepository;
+        private readonly ISecureRepository _repository;
     }
 }

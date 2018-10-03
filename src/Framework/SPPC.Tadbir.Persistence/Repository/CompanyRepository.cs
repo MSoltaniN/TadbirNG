@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Config;
@@ -39,9 +40,10 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<CompanyDbViewModel>> GetCompaniesAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<CompanyDb>();
-            var companies = await repository.GetAllAsync(gridOptions);
+            var companies = await repository.GetAllAsync();
             return companies
                 .Select(c => Mapper.Map<CompanyDbViewModel>(c))
+                .Apply(gridOptions)
                 .ToList();
         }
 
@@ -109,7 +111,6 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await UnitOfWork.CommitAsync();
             return Mapper.Map<CompanyDbViewModel>(company);
         }
 

@@ -84,6 +84,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     parentTitle: string = '';
     parentValue: string = '';
+    parentScope: number = 0;
 
     isChildExpanding: boolean;
     componentParentId: number;
@@ -182,7 +183,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     public cancelHandler() {
         this.editDataItem = undefined;
         this.errorMessage = '';
-
+        this.isNew = false;
         this.parentId = this.componentParentId;
     }
 
@@ -226,7 +227,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
                 model.level = this.parent.level + 1;
             }
 
-            this.detailAccountService.insert<DetailAccount>(DetailAccountApi.DetailAccounts, model)
+            this.detailAccountService.insert<DetailAccount>(DetailAccountApi.EnvironmentDetailAccounts, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -295,6 +296,10 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
         this.deleteModelsConfirm = false;
     }
 
+    reloadGridEvent() {
+        this.reloadGrid();
+    }
+
     public reloadGrid(insertedModel?: DetailAccount) {
         if (this.viewAccess) {
             this.grid.loading = true;
@@ -319,8 +324,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
             if (this.parentComponent != null && (this.goLastPage || (insertedModel && !this.addToContainer))) {
 
                 //call top 1 account for get totalcount
-                this.detailAccountService.getAll(String.Format(DetailAccountApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId),
-                    0, 1, order, filter).subscribe((res) => {
+                this.detailAccountService.getAll(DetailAccountApi.EnvironmentDetailAccounts, 0, 1, order, filter).subscribe((res) => {
                         if (res.headers != null) {
                             var headers = res.headers != undefined ? res.headers : null;
                             if (headers != null) {
@@ -354,8 +358,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     loadGridData(insertedModel?: DetailAccount, order?: string, filter?: FilterExpression) {
 
-        this.detailAccountService.getAll(String.Format(DetailAccountApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId),
-            this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+        this.detailAccountService.getAll(DetailAccountApi.EnvironmentDetailAccounts, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.body;
 
                 var totalCount = 0;
@@ -455,11 +458,13 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
                 var level = +parentRow.level;
                 this.parentTitle = this.getText("App.Level") + " " + (level + 2).toString();
                 this.parentValue = parentRow.name;
+                this.parentScope = parentRow.branchScope;
             }
         }
         else if (this.parent != undefined) {
             this.parentTitle = this.getText("App.Level") + " " + (this.parent.level + 2).toString();
             this.parentValue = this.parent.name;
+            this.parentScope = this.parent.branchScope;
         }
         else {
             this.parentTitle = '';

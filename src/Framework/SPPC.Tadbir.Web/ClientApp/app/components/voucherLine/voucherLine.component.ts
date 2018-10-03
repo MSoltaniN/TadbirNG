@@ -185,6 +185,10 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     //    }));
     }
 
+    reloadGridEvent() {
+        this.reloadGrid();
+    }
+
     reloadGrid(insertedModel?: VoucherLine) {
         this.grid.loading = true;
         var filter = this.currentFilter;

@@ -24,9 +24,9 @@ export function getLayoutModule(layout: Layout) {
 
 @Component({
     selector: 'company-form-component',
-    styles: [
-        "input[type=text],textarea { width: 100%; }"
-    ],
+    styles: [`
+        input[type=text],textarea ,input[type=password]{ width: 100%; }
+    `],
     templateUrl: './company-form.component.html',
     providers: [{
         provide: RTL,

@@ -224,7 +224,7 @@ export class AccountRelationsFormComponent extends DetailComponent {
         if (this.searchValue) {
             var filterExpBuilder = new FilterExpressionBuilder();
             filterExp = filterExpBuilder.New(new Filter("Name", this.searchValue, ".Contains({0})", "System.String"))
-                .Or(new Filter("Code", this.searchValue, ".Contains({0})", "System.String"))
+                .Or(new Filter("FullCode", this.searchValue, ".Contains({0})", "System.String"))
                 .Build();
         }
 

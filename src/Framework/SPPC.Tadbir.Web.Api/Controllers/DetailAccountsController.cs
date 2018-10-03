@@ -28,23 +28,25 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             get { return AppStrings.DetailAccount; }
         }
 
-        // GET: api/faccounts/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(DetailAccountApi.FiscalPeriodBranchDetailAccountsUrl)]
+        // GET: api/faccounts
+        [Route(DetailAccountApi.EnvironmentDetailAccountsUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
-        public async Task<IActionResult> GetDetailAccountsAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetEnvironmentDetailAccountsAsync()
         {
-            int itemCount = await _repository.GetCountAsync(SecurityContext.User, fpId, branchId, GridOptions);
+            _repository.SetCurrentContext(SecurityContext.User);
+            int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
-            var detailAccounts = await _repository.GetDetailAccountsAsync(SecurityContext.User, fpId, branchId, GridOptions);
+            var detailAccounts = await _repository.GetDetailAccountsAsync(GridOptions);
             return Json(detailAccounts);
         }
 
-        // GET: api/faccounts/lookup/fp/{fpId:min(1)}/branch/{branchId:min(1)}
-        [Route(DetailAccountApi.FiscalPeriodBranchDetailAccountsLookupUrl)]
+        // GET: api/faccounts/lookup
+        [Route(DetailAccountApi.EnvironmentDetailAccountsLookupUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
-        public async Task<IActionResult> GetDetailAccountsLookupAsync(int fpId, int branchId)
+        public async Task<IActionResult> GetEnvironmentDetailAccountsLookupAsync()
         {
-            var lookup = await _repository.GetDetailAccountsLookupAsync(SecurityContext.User, fpId, branchId, GridOptions);
+            _repository.SetCurrentContext(SecurityContext.User);
+            var lookup = await _repository.GetDetailAccountsLookupAsync(GridOptions);
             return Json(lookup);
         }
 
@@ -62,6 +64,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
         public async Task<IActionResult> GetDetailAccountChildrenAsync(int faccountId)
         {
+            _repository.SetCurrentContext(SecurityContext.User);
             var children = await _repository.GetDetailAccountChildrenAsync(faccountId);
             return JsonReadResult(children);
         }
@@ -93,7 +96,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // POST: api/faccounts
         [HttpPost]
-        [Route(DetailAccountApi.DetailAccountsUrl)]
+        [Route(DetailAccountApi.EnvironmentDetailAccountsUrl)]
         [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.Create)]
         public async Task<IActionResult> PostNewDetailAccountAsync([FromBody] DetailAccountViewModel detailAccount)
         {

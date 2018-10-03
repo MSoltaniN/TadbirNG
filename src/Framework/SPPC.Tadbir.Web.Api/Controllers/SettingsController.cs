@@ -80,6 +80,33 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
+        // GET: api/settings/views/{viewId:min(1)}/tree
+        [Route(SettingsApi.ViewTreeSettingsByViewUrl)]
+        public async Task<IActionResult> GetViewTreeSettingsByViewAsync(int viewId)
+        {
+            var viewSettings = await _repository.GetViewTreeConfigByViewAsync(viewId);
+            Array.ForEach(
+                viewSettings.Levels.Where(level => level != null).ToArray(),
+                level => level.Name = String.IsNullOrEmpty(level.Name)
+                    ? String.Format(_strings[AppStrings.LevelX], level.No)
+                    : level.Name);
+            return Json(viewSettings);
+        }
+
+        // PUT: api/settings/views/tree
+        [HttpPut]
+        [Route(SettingsApi.ViewTreeSettingsUrl)]
+        public async Task<IActionResult> PutModifiedViewTreeSettingsAsync([FromBody] List<ViewTreeConfig> settings)
+        {
+            if (settings == null)
+            {
+                return BadRequest();        // TODO: Add error message
+            }
+
+            await _repository.SaveViewTreeConfigAsync(settings);
+            return Ok();
+        }
+
         private readonly IConfigRepository _repository;
         private readonly IStringLocalizer<AppStrings> _strings;
     }

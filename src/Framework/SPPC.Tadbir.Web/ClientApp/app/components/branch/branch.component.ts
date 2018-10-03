@@ -166,7 +166,7 @@ export class BranchComponent extends DefaultComponent implements OnInit {
     public cancelHandler() {
         this.editDataItem = undefined;
         this.errorMessage = '';
-
+        this.isNew = false;
         this.parentId = this.componentParentId;
     }
 
@@ -290,6 +290,10 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
         this.groupDelete = false;
         this.deleteModelsConfirm = false;
+    }
+
+    reloadGridEvent() {
+        this.reloadGrid();
     }
 
     public reloadGrid(insertedModel?: Branch) {

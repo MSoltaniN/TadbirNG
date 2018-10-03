@@ -50,7 +50,7 @@ interface Item {
 })
 
 
-export class AccountRelationsComponent extends DetailComponent implements OnInit {
+export class AccountRelationsComponent extends DefaultComponent implements OnInit {
     
 
     public isActive: boolean = false;
@@ -94,11 +94,6 @@ export class AccountRelationsComponent extends DetailComponent implements OnInit
         this.viewAccess = this.isAccess(SecureEntity.AccountRelations, AccountRelationPermissions.ViewRelationships);
     }
 
-    //constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-    //    private accountRelationsService: AccountRelationsService, public renderer: Renderer2,
-    //    public metadata: MetaDataService, @Host() private defComponent: DefaultComponent) {
-    //    super(toastrService, translate, renderer, metadata, Entities.AccountRelations, '');
-
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
         private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService ) {
         super(toastrService, translate, renderer, metadata, Entities.AccountRelations, '');
@@ -136,7 +131,7 @@ export class AccountRelationsComponent extends DetailComponent implements OnInit
             ];
             switch (item) {
                 case AccountRelationsType.Account: {
-                    this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId);
+                    this.mainComponentApiUrl = AccountRelationApi.EnvironmentAccounts;
                     this.relatedComponent = [
                         { value: "AccountRelations.DetailAccount", key: AccountRelationsType.DetailAccount },
                         { value: "AccountRelations.CostCenter", key: AccountRelationsType.CostCenter },
@@ -145,15 +140,15 @@ export class AccountRelationsComponent extends DetailComponent implements OnInit
                     break;
                 }
                 case AccountRelationsType.DetailAccount: {
-                    this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId);
+                    this.mainComponentApiUrl = AccountRelationApi.EnvironmentDetailAccounts;
                     break
                 }
                 case AccountRelationsType.CostCenter: {
-                    this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId);
+                    this.mainComponentApiUrl = AccountRelationApi.EnvironmentCostCenters;
                     break
                 }
                 case AccountRelationsType.Project: {
-                    this.mainComponentApiUrl = String.Format(AccountRelationApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId);
+                    this.mainComponentApiUrl = AccountRelationApi.EnvironmentProjects;
                     break
                 }
                 default:
@@ -488,7 +483,7 @@ export class AccountRelationsComponent extends DetailComponent implements OnInit
         if (this.searchValue) {
             var filterExpBuilder = new FilterExpressionBuilder();
             filterExp = filterExpBuilder.New(new Filter("Name", this.searchValue, ".Contains({0})", "System.String"))
-                .Or(new Filter("Code", this.searchValue, ".Contains({0})", "System.String"))
+                .Or(new Filter("FullCode", this.searchValue, ".Contains({0})", "System.String"))
                 .Build();
         }
 
@@ -523,7 +518,7 @@ export class AccountRelationsComponent extends DetailComponent implements OnInit
             if (this.relatedSearchValue) {
                 var filterExpBuilder = new FilterExpressionBuilder();
                 filterExp = filterExpBuilder.New(new Filter("Name", this.relatedSearchValue, ".Contains({0})", "System.String"))
-                    .Or(new Filter("Code", this.relatedSearchValue, ".Contains({0})", "System.String"))
+                    .Or(new Filter("FullCode", this.relatedSearchValue, ".Contains({0})", "System.String"))
                     .Build();
             }
 

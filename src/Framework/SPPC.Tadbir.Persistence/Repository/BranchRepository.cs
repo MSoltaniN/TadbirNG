@@ -107,26 +107,26 @@ namespace SPPC.Tadbir.Persistence
         {
             RelatedItemsViewModel branchRoles = null;
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            var existing = await repository
-                .GetEntityQuery()
-                .Include(br => br.RoleBranches)
-                .Where(br => br.Id == branchId)
-                .SingleOrDefaultAsync();
+            var existing = await repository.GetByIDAsync(branchId, br => br.RoleBranches);
             if (existing != null)
             {
-                var enabledRoles = existing.RoleBranches
-                    .Select(r => Mapper.Map<RelatedItemViewModel>(r))
-                    .ToArray();
+                UnitOfWork.UseSystemContext();
                 var roleRepository = UnitOfWork.GetAsyncRepository<Role>();
-                var allRoles = await roleRepository
-                    .GetAllAsync();
-                var disabledRoles = allRoles
+                var enabledRoleIds = existing.RoleBranches.Select(rb => rb.RoleId);
+                var enabledRoles = await roleRepository
+                    .GetEntityQuery()
+                    .Where(r => enabledRoleIds.Contains(r.Id))
                     .Select(r => Mapper.Map<RelatedItemViewModel>(r))
-                    .Except(enabledRoles, new EntityEqualityComparer<RelatedItemViewModel>())
-                    .ToArray();
+                    .ToArrayAsync();
+                var disabledRoles = await roleRepository
+                    .GetEntityQuery()
+                    .Where(r => !enabledRoleIds.Contains(r.Id))
+                    .Select(r => Mapper.Map<RelatedItemViewModel>(r))
+                    .ToArrayAsync();
                 Array.ForEach(enabledRoles, item => item.IsSelected = true);
+                UnitOfWork.UseCompanyContext();
 
-                branchRoles = Mapper.Map<RelatedItemsViewModel>(existing);
+                branchRoles = new RelatedItemsViewModel() { Id = branchId };
                 Array.ForEach(enabledRoles
                     .Concat(disabledRoles)
                     .OrderBy(item => item.Id)
@@ -290,19 +290,17 @@ namespace SPPC.Tadbir.Persistence
 
         private void AddNewRoles(Branch existing, RelatedItemsViewModel roleItems)
         {
-            var repository = UnitOfWork.GetRepository<Role>();
             var currentItems = existing.RoleBranches.Select(rb => rb.RoleId);
             var newItems = roleItems.RelatedItems
                 .Where(item => item.IsSelected
                     && !currentItems.Contains(item.Id));
             foreach (var item in newItems)
             {
-                var role = repository.GetByIDWithTracking(item.Id);
                 var roleBranch = new RoleBranch()
                 {
                     Branch = existing,
                     BranchId = existing.Id,
-                    RoleId = role.Id
+                    RoleId = item.Id
                 };
                 existing.RoleBranches.Add(roleBranch);
             }

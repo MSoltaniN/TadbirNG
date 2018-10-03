@@ -45,6 +45,7 @@ namespace SPPC.Tadbir.Persistence
             UserRoleMap.BuildMapping(modelBuilder.Entity<UserRole>());
             UserSettingMap.BuildMapping(modelBuilder.Entity<UserSetting>());
             ViewRowPermissionMap.BuildMapping(modelBuilder.Entity<ViewRowPermission>());
+            ViewSettingMap.BuildMapping(modelBuilder.Entity<ViewSetting>());
         }
 
         #region IDisposable Support

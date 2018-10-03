@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
@@ -36,22 +37,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
+        /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه جاری تعریف شده اند،
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<IList<ProjectViewModel>> GetProjectsAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
+        /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
+        public async Task<IList<ProjectViewModel>> GetProjectsAsync(GridOptions gridOptions = null)
         {
-            var projects = await _repository.GetAllAsync<Project>(
-                userContext, fpId, branchId, ViewName.Project, prj => prj.FiscalPeriod, prj => prj.Branch,
-                prj => prj.Parent, prj => prj.Children);
+            var projects = await _repository.GetAllAsync<Project>(ViewName.Project, prj => prj.Children);
             return projects
                 .Select(item => Mapper.Map<ProjectViewModel>(item))
                 .Apply(gridOptions)
@@ -59,39 +52,25 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه مشخص شده تعریف شده اند،
+        /// به روش آسنکرون، کلیه پروژه هایی را که در دوره مالی و شعبه جاری تعریف شده اند،
         /// به صورت مجموعه ای از کد و نام خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<IList<KeyValue>> GetProjectsLookupAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
+        /// <returns>مجموعه ای از پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
+        public async Task<IList<KeyValue>> GetProjectsLookupAsync(GridOptions gridOptions = null)
         {
-            return await _repository.GetAllLookupAsync<Project>(
-                userContext, fpId, branchId, ViewName.Project, gridOptions);
+            return await _repository.GetAllLookupAsync<Project>(ViewName.Project, gridOptions);
         }
 
         /// <summary>
-        /// به روش آسنکرون، تعداد پروژه های تعریف شده در دوره مالی و شعبه مشخص شده را
+        /// به روش آسنکرون، تعداد پروژه های تعریف شده در دوره مالی و شعبه جاری را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
-        /// <param name="fpId">شناسه عددی یکی از دوره های مالی موجود</param>
-        /// <param name="branchId">شناسه عددی یکی از شعب موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>تعداد پروژه های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
-        public async Task<int> GetCountAsync(
-            UserContextViewModel userContext, int fpId, int branchId, GridOptions gridOptions = null)
+        /// <returns>تعداد پروژه های تعریف شده در دوره مالی و شعبه جاری</returns>
+        public async Task<int> GetCountAsync(GridOptions gridOptions = null)
         {
-            return await _repository.GetCountAsync<Project>(
-                userContext, fpId, branchId, ViewName.Project, gridOptions);
+            return await _repository.GetCountAsync<Project>(ViewName.Project, gridOptions);
         }
 
         /// <summary>
@@ -103,8 +82,7 @@ namespace SPPC.Tadbir.Persistence
         {
             ProjectViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var project = await repository.GetByIDAsync(
-                projectId, prj => prj.FiscalPeriod, prj => prj.Branch, prj => prj.Parent, prj => prj.Children);
+            var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
             if (project != null)
             {
                 item = Mapper.Map<ProjectViewModel>(project);
@@ -120,14 +98,11 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مدل نمایشی پروژه های زیرمجموعه</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetProjectChildrenAsync(int projectId)
         {
-            var children = new List<AccountItemBriefViewModel>();
-            var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
-            if (project != null)
-            {
-                children.AddRange(project.Children.Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj)));
-            }
-
+            var children = await _repository
+                .GetAllQuery<Project>(ViewName.Project, prj => prj.Children)
+                .Where(prj => prj.ParentId == projectId)
+                .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
+                .ToListAsync();
             return children;
         }
 
@@ -165,7 +140,6 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await UnitOfWork.CommitAsync();
             return Mapper.Map<ProjectViewModel>(projectModel);
         }
 
@@ -266,6 +240,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         public void SetCurrentContext(UserContextViewModel userContext)
         {
+            _repository.SetCurrentContext(userContext);
             SetLoggingContext(userContext);
         }
 

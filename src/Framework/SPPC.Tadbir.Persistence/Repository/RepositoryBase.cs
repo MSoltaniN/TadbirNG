@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SPPC.Framework.Mapper;
+using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Persistence
 {

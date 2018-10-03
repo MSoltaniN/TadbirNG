@@ -83,6 +83,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
 
     parentTitle: string = '';
     parentValue: string = '';
+    parentScope: number = 0;
 
     isChildExpanding: boolean;
     componentParentId: number;
@@ -162,7 +163,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     public cancelHandler() {
         this.editDataItem = undefined;
         this.errorMessage = '';
-
+        this.isNew = false;
         this.parentId = this.componentParentId;
     }
 
@@ -205,7 +206,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
                 model.parentId = this.parent.id;
                 model.level = this.parent.level + 1;
             }
-            this.projectService.insert<Project>(ProjectApi.Projects, model)
+            this.projectService.insert<Project>(ProjectApi.EnvironmentProjects, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
                     this.editDataItem = undefined;
@@ -271,6 +272,10 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
         this.deleteModelsConfirm = false;
     }
 
+    reloadGridEvent() {
+        this.reloadGrid();
+    }
+
     public reloadGrid(insertedModel?: Project) {
         if (this.viewAccess) {
             this.grid.loading = true;
@@ -295,8 +300,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
             if (this.parentComponent != null && (this.goLastPage || (insertedModel && !this.addToContainer))) {
 
                 //call top 1 for get totalcount
-                this.projectService.getAll(String.Format(ProjectApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId),
-                    0, 1, order, filter).subscribe((res) => {
+                this.projectService.getAll(ProjectApi.EnvironmentProjects, 0, 1, order, filter).subscribe((res) => {
                         if (res.headers != null) {
                             var headers = res.headers != undefined ? res.headers : null;
                             if (headers != null) {
@@ -330,8 +334,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
 
     loadGridData(insertedModel?: Project, order?: string, filter?: FilterExpression) {
 
-        this.projectService.getAll(String.Format(ProjectApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId),
-            this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+        this.projectService.getAll(ProjectApi.EnvironmentProjects, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
                 var resData = res.body;
 
                 var totalCount = 0;
@@ -431,11 +434,13 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
                 var level = +parentRow.level;
                 this.parentTitle = this.getText("App.Level") + " " + (level + 2).toString();
                 this.parentValue = parentRow.name;
+                this.parentScope = parentRow.branchScope;
             }
         }
         else if (this.parent != undefined) {
             this.parentTitle = this.getText("App.Level") + " " + (this.parent.level + 2).toString();
             this.parentValue = this.parent.name;
+            this.parentScope = this.parent.branchScope;
         }
         else {
             this.parentTitle = '';

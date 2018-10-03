@@ -210,6 +210,10 @@ export class RoleComponent extends DefaultComponent implements OnInit {
 
     //#region Methods
 
+    reloadGridEvent() {
+        this.reloadGrid();
+    }
+
     reloadGrid(insertedModel?: Role) {
         if (this.viewAccess) {
             this.grid.loading = true;

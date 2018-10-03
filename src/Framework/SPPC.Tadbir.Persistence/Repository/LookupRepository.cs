@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model;
 using SPPC.Tadbir.Model.Auth;
@@ -297,15 +296,19 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، نقش های امنیتی تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه نقش های امنیتی تعریف شده</returns>
-        public async Task<IList<KeyValue>> GetRolesAsync()
+        public async Task<IList<KeyValue>> GetRolesAsync(GridOptions gridOptions = null)
         {
+            _unitOfWork.UseSystemContext();
             var repository = _unitOfWork.GetAsyncRepository<Role>();
             var roles = await repository
                 .GetAllAsync();
-            return roles
+            var lookup = roles
                 .OrderBy(role => role.Name)
                 .Select(role => _mapper.Map<KeyValue>(role))
+                .Apply(gridOptions)
                 .ToList();
+            _unitOfWork.UseCompanyContext();
+            return lookup;
         }
 
         #endregion
@@ -316,14 +319,36 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، موجودیت های تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
         /// <returns>مجموعه موجودیت های تعریف شده</returns>
-        public async Task<IList<KeyValue>> GetEntityViewsAsync()
+        public async Task<IList<KeyValue>> GetEntityViewsAsync(GridOptions gridOptions = null)
         {
+            _unitOfWork.UseSystemContext();
             var repository = _unitOfWork.GetAsyncRepository<View>();
             var views = await repository
                 .GetAllAsync();
-            return views
+            var lookup = views
                 .Select(view => _mapper.Map<KeyValue>(view))
+                .Apply(gridOptions)
                 .ToList();
+            _unitOfWork.UseCompanyContext();
+            return lookup;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، موجودیت های سلسله مراتبی (درختی) را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه موجودیت های درختی</returns>
+        public async Task<IList<KeyValue>> GetTreeViewsAsync(GridOptions gridOptions = null)
+        {
+            _unitOfWork.UseSystemContext();
+            var repository = _unitOfWork.GetAsyncRepository<View>();
+            var views = await repository
+                .GetByCriteriaAsync(vu => vu.IsHierarchy);
+            var lookup = views
+                .Select(view => _mapper.Map<KeyValue>(view))
+                .Apply(gridOptions)
+                .ToList();
+            _unitOfWork.UseCompanyContext();
+            return lookup;
         }
 
         #endregion

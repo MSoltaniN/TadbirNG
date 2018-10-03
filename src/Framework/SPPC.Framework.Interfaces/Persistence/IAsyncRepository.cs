@@ -123,6 +123,37 @@ namespace SPPC.Framework.Persistence
             GridOptions gridOptions);
 
         /// <summary>
+        /// Asynchronously retrieves complete information for the first of existing entities, as defined by
+        /// the specified criteria, including specified navigation properties, if any.
+        /// </summary>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        Task<TEntity> GetFirstByCriteriaAsync(
+            Expression<Func<TEntity, bool>> criteria, params Expression<Func<TEntity, object>>[] relatedProperties);
+
+        /// <summary>
+        /// Asynchronously retrieves complete information for a single entity, as defined by
+        /// the specified criteria, including specified navigation properties, if any.
+        /// This method will throw exception when more than one entity meets given criteria.
+        /// </summary>
+        /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
+        /// <param name="relatedProperties">Variable array of expressions that specify navigation
+        /// properties that must be loaded in the main entity</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Use this method when you need to retrieve the entity's navigation properties in a single level
+        /// (i.e. no navigation properties inside the main entity's navigation properties are required)
+        /// </remarks>
+        Task<TEntity> GetSingleByCriteriaAsync(
+            Expression<Func<TEntity, bool>> criteria, params Expression<Func<TEntity, object>>[] relatedProperties);
+
+        /// <summary>
         /// Asynchronously retrieves record count for a subset of existing entities, as defined by
         /// the specified criteria.
         /// </summary>

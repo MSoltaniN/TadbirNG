@@ -48,11 +48,9 @@ export class RoleFormComponent extends DetailComponent {
 
     public treeData: TreeNodeInfo[] = new Array<TreeNodeInfo>();
     
-    //create properties
-    gridPermissionsData: any;
+    //create properties    
     public selectedRows: number[] = [];
     active: boolean = false;
-    showloadingMessage: boolean = true;
     
     @Input() public isNew: boolean = false;
     @Input() public errorMessage: string = '';
@@ -139,16 +137,6 @@ export class RoleFormComponent extends DetailComponent {
             }
         }
         
-        this.gridPermissionsData = permission;
-        this.showloadingMessage = !(permission != undefined);
-
-        if (permission != undefined) {
-            for (let permissionItem of this.gridPermissionsData) {
-                if (permissionItem.isEnabled) {
-                    this.selectedRows.push(permissionItem.id)
-                }
-            }
-        }
     }
 
     @Output() cancel: EventEmitter<any> = new EventEmitter();

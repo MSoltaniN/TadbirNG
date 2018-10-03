@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Model.Auth;
@@ -43,6 +42,7 @@ namespace SPPC.Tadbir.Persistence
             var allConfig = await repository
                 .GetAllAsync();
             return allConfig
+                .Where(cfg => !(cfg.Type == 3 && cfg.ScopeType == 2))
                 .Select(cfg => _mapper.Map<SettingBriefViewModel>(cfg))
                 .ToList();
         }
@@ -195,6 +195,59 @@ namespace SPPC.Tadbir.Persistence
             else
             {
                 existing.Values = JsonHelper.From(userConfig, false);
+            }
+
+            await _unitOfWork.CommitAsync();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تنظیمات موجود برای ساختار نمای درختی مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
+        /// <returns>تنظیمات موجود برای ساختار نمای درختی مشخص شده</returns>
+        public async Task<ViewTreeConfig> GetViewTreeConfigByViewAsync(int viewId)
+        {
+            var viewConfig = default(ViewTreeConfig);
+            var repository = _unitOfWork.GetAsyncRepository<ViewSetting>();
+            var items = await repository
+                .GetByCriteriaAsync(cfg => cfg.ViewId == viewId
+                    && cfg.ModelType == typeof(ViewTreeConfig).Name);
+            var config = items.SingleOrDefault();
+            if (config == null)
+            {
+                viewConfig = new ViewTreeConfig() { ViewId = viewId };
+                viewConfig.InitDefaultLevels();
+            }
+            else
+            {
+                viewConfig = _mapper.Map<ViewTreeConfig>(config);
+            }
+
+            return viewConfig;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، آخرین تغییرات مجموعه ای از تنظیمات نماهای درختی را ذخیره می کند
+        /// </summary>
+        /// <param name="configItems">مجموعه ای از تنظیمات نماهای درختی</param>
+        public async Task SaveViewTreeConfigAsync(List<ViewTreeConfig> configItems)
+        {
+            Verify.ArgumentNotNull(configItems, "configItems");
+            var repository = _unitOfWork.GetAsyncRepository<ViewSetting>();
+            foreach (var configItem in configItems)
+            {
+                var existing = await repository.GetSingleByCriteriaAsync(
+                    cfg => cfg.ViewId == configItem.ViewId && cfg.SettingId == 5);
+                if (existing == null)
+                {
+                    var newConfig = _mapper.Map<ViewSetting>(configItem);
+                    repository.Insert(newConfig);
+                }
+                else
+                {
+                    existing.Values = JsonHelper.From(configItem, false);
+                    repository.Update(existing);
+                }
             }
 
             await _unitOfWork.CommitAsync();

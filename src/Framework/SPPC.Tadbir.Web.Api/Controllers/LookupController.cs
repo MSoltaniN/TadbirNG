@@ -159,6 +159,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(viewsLookup);
         }
 
+        // GET: api/lookup/views/tree
+        [Route(LookupApi.TreeViewsUrl)]
+        public async Task<IActionResult> GetTreeViewsLookupAsync()
+        {
+            var treesLookup = await _repository.GetTreeViewsAsync();
+            Array.ForEach(treesLookup.ToArray(), kv => kv.Value = _strings[kv.Value]);
+            treesLookup = treesLookup
+                .OrderBy(kv => kv.Value)
+                .ToList();
+            return Json(treesLookup);
+        }
+
         #endregion
 
         private readonly ILookupRepository _repository;
