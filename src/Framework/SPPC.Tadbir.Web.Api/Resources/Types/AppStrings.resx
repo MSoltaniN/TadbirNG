@@ -573,4 +573,10 @@
   <data name="LevelX" xml:space="preserve">
     <value>سطح {0}</value>
   </data>
+  <data name="LevelCodeIsTooLong" xml:space="preserve">
+    <value>طول کد {0} در سطح '{1}' نمی تواند بیشتر از {2} حرف باشد.</value>
+  </data>
+  <data name="TreeLevelsAreTooDeep" xml:space="preserve">
+    <value>تعداد سطوح بیشتر از {0} برای {1} مجاز نیست.</value>
+  </data>
 </root>
