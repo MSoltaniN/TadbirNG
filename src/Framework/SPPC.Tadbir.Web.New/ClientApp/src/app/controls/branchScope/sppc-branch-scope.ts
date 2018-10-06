@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild, SimpleChanges, Optional, Host, SkipSelf } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, OnChanges, OnDestroy, ViewChild, SimpleChanges, Optional, Host, SkipSelf } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Validator, ControlContainer, AbstractControl } from '@angular/forms'
 
 
@@ -10,7 +10,7 @@ interface Item {
 @Component({
     selector: 'sppc-branch-scope',
     template: `
-               <kendo-dropdownlist [data]="scopeData" [valuePrimitive]="true" [disabled]="!isNew"
+               <kendo-dropdownlist class="ddl-branch-scope" [data]="scopeData" [valuePrimitive]="true" [disabled]="!isNew"
                                    [textField]="'value'" [(ngModel)]="scopeSelected" [value]="scopeSelected" [valueField]="'key'"
                                    (valueChange)="onPermissionChange($event)">        
                             <ng-template kendoDropDownListValueTemplate let-dataItem>
@@ -21,7 +21,7 @@ interface Item {
                             </ng-template>
                </kendo-dropdownlist>
 `,
-    styles: [`/deep/ .k-dropdown { width:100% }`],
+  styles: [`/deep/ .ddl-branch-scope { width:100% }`],
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
