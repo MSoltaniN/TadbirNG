@@ -16,99 +16,108 @@ import { String } from '../../class/source';
 import { DetailComponent } from '../../class/detail.component';
 
 export function getLayoutModule(layout: Layout) {
-    return layout.getLayout();
+  return layout.getLayout();
 }
 
 interface Item {
-    Key: string,
-    Value: string
+  Key: string,
+  Value: string
 }
 
 
 @Component({
-    selector: 'account-form-component',
-    styles: [
-        "input[type=text],textarea { width: 100%; },"
-        , `.accInfoTitle {
+  selector: 'account-form-component',
+  styles: [
+    "input[type=text],textarea { width: 100%; },"
+    , `.accInfoTitle {
         padding-right: 0px;
         padding-left: 0px;}`],
-    templateUrl: './account-form.component.html',
-    providers: [{
-        provide: RTL,
-        useFactory: getLayoutModule,
-        deps: [Layout]
-    },DefaultComponent]
+  templateUrl: './account-form.component.html',
+  providers: [{
+    provide: RTL,
+    useFactory: getLayoutModule,
+    deps: [Layout]
+  }, DefaultComponent]
 })
 
 export class AccountFormComponent extends DetailComponent implements OnInit {
 
-        //create properties
-    active: boolean = false;
+  //create properties
+  active: boolean = false;
 
-    fullCodeApiUrl: string;
+  fullCodeApiUrl: string;
+  editModel: Account;
 
-    @Input() public disableSaveBtn: boolean = false;
-    @Input() public isNew: boolean = false;
-    @Input() public errorMessage: string = '';
 
-    @Input() public parentTitle: string = '';
-    @Input() public parentValue: string = '';
-    @Input() public parentScopeValue: number = 0;
+  @Input() public disableSaveBtn: boolean = false;
+  @Input() public isNew: boolean = false;
+  @Input() public errorMessage: string = '';
 
-    @Input() public set parentId(id: number) {
-        this.fullCodeApiUrl = String.Format(AccountApi.AccountFullCode, id ? id : 0);
+  @Input() public parentTitle: string = '';
+  @Input() public parentValue: string = '';
+  @Input() public parentScopeValue: number = 0;
+
+  @Input() public set parentId(id: number) {
+    this.fullCodeApiUrl = String.Format(AccountApi.AccountFullCode, id ? id : 0);
+  }
+
+  @Input() public set model(account: Account) {
+    this.editModel = account;
+    this.editForm.reset(account);
+
+    this.active = account !== undefined || this.isNew;
+    this.disableSaveBtn = false;
+  }
+
+  @Output() cancel: EventEmitter<any> = new EventEmitter();
+  @Output() save: EventEmitter<Account> = new EventEmitter();
+  //create properties
+
+  //Events
+  public onSave(e: any): void {
+    e.preventDefault();
+    if (this.editForm.valid) {
+      this.disableSaveBtn = true;
+
+      if (this.editModel) {
+        let model: Account = this.editForm.value;
+        model.branchId = this.editModel.branchId;
+        model.fiscalPeriodId = this.editModel.fiscalPeriodId;
+        model.companyId = this.editModel.companyId;
+        this.save.emit(model);
+      }
+      else
+        this.save.emit(this.editForm.value);
+      this.active = true;
     }
+  }
 
-    @Input() public set model(account: Account) {
-        this.editForm.reset(account);
 
-        this.active = account !== undefined || this.isNew;
-        this.disableSaveBtn = false;
-    }
+  public onCancel(e: any): void {
+    e.preventDefault();
+    this.closeForm();
+  }
 
-    @Output() cancel: EventEmitter<any> = new EventEmitter();
-    @Output() save: EventEmitter<Account> = new EventEmitter();
-    //create properties
+  private closeForm(): void {
+    this.isNew = false;
+    this.active = false;
+    this.cancel.emit();
+  }
+  //Events
 
-    //public fiscalPeriodRows: Array<Item>;
-    public selectedValue: string = '1';
+  ngOnInit(): void {
+    //        this.onChanges();
+  }
 
-    //Events
-    public onSave(e: any): void {
-        e.preventDefault();
-        if (this.editForm.valid) {
-            this.disableSaveBtn = true;
-            this.save.emit(this.editForm.value);
-            this.active = true;
-        }
-    }
-    
+  constructor(private accountService: AccountService, private voucherLineService: VoucherLineService, private fiscalPeriodService: FiscalPeriodService,
+    public toastrService: ToastrService, public translate: TranslateService,
+    public renderer: Renderer2, public metadata: MetaDataService) {
 
-    public onCancel(e: any): void {
-        e.preventDefault();
-        this.closeForm();
-    }
+    super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
 
-    private closeForm(): void {
-        this.isNew = false;
-        this.active = false;
-        this.cancel.emit();
-    }
-    //Events
+    //this.getFiscalPeriod();
 
-    ngOnInit(): void {
-        //        this.onChanges();
-    }
+  }
 
-    constructor(private accountService: AccountService, private voucherLineService: VoucherLineService, private fiscalPeriodService: FiscalPeriodService,
-        public toastrService: ToastrService, public translate: TranslateService,
-        public renderer: Renderer2, public metadata: MetaDataService) {
 
-        super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
-
-        //this.getFiscalPeriod();
-
-    }
-
-    
 }

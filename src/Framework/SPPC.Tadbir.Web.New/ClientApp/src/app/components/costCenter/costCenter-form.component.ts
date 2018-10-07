@@ -16,82 +16,92 @@ import { Layout, Entities, Metadatas } from '../../../environments/environment';
 
 
 export function getLayoutModule(layout: Layout) {
-    return layout.getLayout();
+  return layout.getLayout();
 }
 
 interface Item {
-    Key: string,
-    Value: string
+  Key: string,
+  Value: string
 }
 
 
 @Component({
-    selector: 'costCenter-form-component',
-    styles: [
-        "input[type=text],textarea { width: 100%; }"
-    ],
-    templateUrl: './costCenter-form.component.html',
-    providers: [{
-        provide: RTL,
-        useFactory: getLayoutModule,
-        deps: [Layout]
-    }]
+  selector: 'costCenter-form-component',
+  styles: [
+    "input[type=text],textarea { width: 100%; }"
+  ],
+  templateUrl: './costCenter-form.component.html',
+  providers: [{
+    provide: RTL,
+    useFactory: getLayoutModule,
+    deps: [Layout]
+  }]
 
 })
 
 export class CostCenterFormComponent extends DetailComponent {
-    
-    //create properties
-    active: boolean = false;
-    fullCodeApiUrl: string;
 
-    @Input() public isNew: boolean = false;
-    @Input() public errorMessage: string = '';
+  //create properties
+  active: boolean = false;
+  fullCodeApiUrl: string;
+  editModel: CostCenter;
 
-    @Input() public parentTitle: string = '';
-    @Input() public parentValue: string = '';
-    @Input() public parentScopeValue: number = 0;
+  @Input() public isNew: boolean = false;
+  @Input() public errorMessage: string = '';
 
-    @Input() public set parentId(id: number) {
-        this.fullCodeApiUrl = String.Format(CostCenterApi.CostCenterFullCode, id ? id : 0);
+  @Input() public parentTitle: string = '';
+  @Input() public parentValue: string = '';
+  @Input() public parentScopeValue: number = 0;
+
+  @Input() public set parentId(id: number) {
+    this.fullCodeApiUrl = String.Format(CostCenterApi.CostCenterFullCode, id ? id : 0);
+  }
+
+  @Input() public set model(costCenter: CostCenter) {
+    this.editModel = costCenter;
+    this.editForm.reset(costCenter);
+
+    this.active = costCenter !== undefined || this.isNew;
+  }
+
+  @Output() cancel: EventEmitter<any> = new EventEmitter();
+  @Output() save: EventEmitter<CostCenter> = new EventEmitter();
+  //create properties
+
+  //Events
+  public onSave(e: any): void {
+    e.preventDefault();
+    if (this.editForm.valid) {
+      if (this.editModel) {
+        let model: CostCenter = this.editForm.value;
+        model.branchId = this.editModel.branchId;
+        model.fiscalPeriodId = this.editModel.fiscalPeriodId;
+        model.companyId = this.editModel.companyId;
+        this.save.emit(model);
+      }
+      else
+        this.save.emit(this.editForm.value);
+      this.active = true;
     }
+  }
 
-    @Input() public set model(costCenter: CostCenter) {
-        this.editForm.reset(costCenter);
+  public onCancel(e: any): void {
+    e.preventDefault();
+    this.closeForm();
+  }
 
-        this.active = costCenter !== undefined || this.isNew;
-    }
+  private closeForm(): void {
+    this.isNew = false;
+    this.active = false;
+    this.cancel.emit();
+  }
+  //Events
 
-    @Output() cancel: EventEmitter<any> = new EventEmitter();
-    @Output() save: EventEmitter<CostCenter> = new EventEmitter();
-    //create properties
+  constructor(public toastrService: ToastrService, public translate: TranslateService,
+    public renderer: Renderer2, public metadata: MetaDataService) {
 
-    //Events
-    public onSave(e: any): void {
-        e.preventDefault();
-        if (this.editForm.valid) {
-            this.save.emit(this.editForm.value);
-            this.active = true;
-        }
-    }
+    super(toastrService, translate, renderer, metadata, Entities.CostCenter, Metadatas.CostCenter);
+  }
 
-    public onCancel(e: any): void {
-        e.preventDefault();
-        this.closeForm();
-    }
 
-    private closeForm(): void {
-        this.isNew = false;
-        this.active = false;
-        this.cancel.emit();
-    }
-    //Events
-
-    constructor(public toastrService: ToastrService, public translate: TranslateService,
-        public renderer: Renderer2, public metadata: MetaDataService) {
-
-        super(toastrService, translate, renderer, metadata, Entities.CostCenter, Metadatas.CostCenter);
-    }
-
-   
 }

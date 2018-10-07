@@ -20,82 +20,93 @@ import { DetailComponent } from '../../class/detail.component';
 
 
 export function getLayoutModule(layout: Layout) {
-    return layout.getLayout();
+  return layout.getLayout();
 }
 
 interface Item {
-    Key: string,
-    Value: string
+  Key: string,
+  Value: string
 }
 
 
 @Component({
-    selector: 'project-form-component',
-    styles: [
-        "input[type=text],textarea { width: 100%; }"
-    ],
-    templateUrl: './project-form.component.html',
-    providers: [{
-        provide: RTL,
-        useFactory: getLayoutModule,
-        deps: [Layout]
-    }]
+  selector: 'project-form-component',
+  styles: [
+    "input[type=text],textarea { width: 100%; }"
+  ],
+  templateUrl: './project-form.component.html',
+  providers: [{
+    provide: RTL,
+    useFactory: getLayoutModule,
+    deps: [Layout]
+  }]
 
 })
 
 export class ProjectFormComponent extends DetailComponent {
 
-    //create properties
-    active: boolean = false;
-    fullCodeApiUrl: string;
+  //create properties
+  active: boolean = false;
+  fullCodeApiUrl: string;
+  editModel: Project;
 
-    @Input() public isNew: boolean = false;
-    @Input() public errorMessage: string = '';
+  @Input() public isNew: boolean = false;
+  @Input() public errorMessage: string = '';
 
-    @Input() public parentTitle: string = '';
-    @Input() public parentValue: string = '';
-    @Input() public parentScopeValue: number = 0;
+  @Input() public parentTitle: string = '';
+  @Input() public parentValue: string = '';
+  @Input() public parentScopeValue: number = 0;
 
-    @Input() public set parentId(id: number) {
-        this.fullCodeApiUrl = String.Format(ProjectApi.ProjectFullCode, id ? id : 0);
+  @Input() public set parentId(id: number) {
+    this.fullCodeApiUrl = String.Format(ProjectApi.ProjectFullCode, id ? id : 0);
+  }
+
+  @Input() public set model(project: Project) {
+    this.editModel = project;
+    this.editForm.reset(project);
+
+    this.active = project !== undefined || this.isNew;
+  }
+
+  @Output() cancel: EventEmitter<any> = new EventEmitter();
+  @Output() save: EventEmitter<Project> = new EventEmitter();
+  //create properties
+
+  //Events
+  public onSave(e: any): void {
+    e.preventDefault();
+    if (this.editForm.valid) {
+
+      if (this.editModel) {
+        let model: Project = this.editForm.value;
+        model.branchId = this.editModel.branchId;
+        model.fiscalPeriodId = this.editModel.fiscalPeriodId;
+        model.companyId = this.editModel.companyId;
+        this.save.emit(model);
+      }
+      else
+        this.save.emit(this.editForm.value);
+      this.active = true;
     }
+  }
 
-    @Input() public set model(project: Project) {
-        this.editForm.reset(project);
+  public onCancel(e: any): void {
+    e.preventDefault();
+    this.closeForm();
+  }
 
-        this.active = project !== undefined || this.isNew;
-    }
+  private closeForm(): void {
+    this.isNew = false;
+    this.active = false;
+    this.cancel.emit();
+  }
+  //Events
 
-    @Output() cancel: EventEmitter<any> = new EventEmitter();
-    @Output() save: EventEmitter<Project> = new EventEmitter();
-    //create properties
+  constructor(public toastrService: ToastrService, public translate: TranslateService,
+    public renderer: Renderer2, public metadata: MetaDataService) {
 
-    //Events
-    public onSave(e: any): void {
-        e.preventDefault();
-        if (this.editForm.valid) {
-            this.save.emit(this.editForm.value);
-            this.active = true;
-        }
-    }
-
-    public onCancel(e: any): void {
-        e.preventDefault();
-        this.closeForm();
-    }
-
-    private closeForm(): void {
-        this.isNew = false;
-        this.active = false;
-        this.cancel.emit();
-    }
-    //Events
-
-    constructor(public toastrService: ToastrService, public translate: TranslateService,
-        public renderer: Renderer2, public metadata: MetaDataService) {
-
-        super(toastrService, translate, renderer, metadata, Entities.Project, Metadatas.Project);
-    }
+    super(toastrService, translate, renderer, metadata, Entities.Project, Metadatas.Project);
+  }
 
 
 }

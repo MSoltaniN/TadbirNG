@@ -171,10 +171,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         this.parentId = this.componentParentId;
     }
 
-    public saveHandler(model: CostCenter) {
-        model.branchId = this.BranchId;
-        model.fiscalPeriodId = this.FiscalPeriodId;
-        model.companyId = this.CompanyId;
+    public saveHandler(model: CostCenter) {        
 
         if (!this.isNew) {
             this.isNew = false;
@@ -189,6 +186,10 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
+          model.branchId = this.BranchId;
+          model.fiscalPeriodId = this.FiscalPeriodId;
+          model.companyId = this.CompanyId;
+
             //set parentid for childs accounts
             if (this.parentId) {
                 model.parentId = this.parentId;
