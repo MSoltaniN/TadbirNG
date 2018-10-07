@@ -48,19 +48,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             where TTreeView : class, ITreeEntityView
         {
             Verify.ArgumentNotNull(treeConfig, "treeConfig");
-            var levelConfig = treeConfig.Levels[item.Level];
-            int maxCodeLen = levelConfig.CodeLength;
-            if (item.Code.Length > maxCodeLen)
-            {
-                string message = String.Format(_strings[AppStrings.LevelCodeIsTooLong],
-                    (string)_strings[EntityNameKey], levelConfig.Name, levelConfig.CodeLength);
-                return BadRequest(message);
-            }
-
             if (item.Level == treeConfig.MaxDepth)
             {
                 string message = String.Format(_strings[AppStrings.TreeLevelsAreTooDeep],
                     treeConfig.MaxDepth, (string)_strings[EntityNameKey]);
+                return BadRequest(message);
+            }
+
+            var levelConfig = treeConfig.Levels[item.Level];
+            int codeLen = levelConfig.CodeLength;
+            if (item.Code.Length != codeLen)
+            {
+                string message = String.Format(_strings[AppStrings.LevelCodeLengthIsIncorrect],
+                    (string)_strings[EntityNameKey], levelConfig.Name, levelConfig.CodeLength);
                 return BadRequest(message);
             }
 

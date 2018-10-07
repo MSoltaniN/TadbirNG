@@ -3,7 +3,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Common;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -17,10 +20,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     public class ProjectsController : ValidatingController<ProjectViewModel>
     {
         public ProjectsController(
-            IProjectRepository repository, IStringLocalizer<AppStrings> strings = null)
+            IProjectRepository repository, IConfigRepository config, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
         {
             _repository = repository;
+            Verify.ArgumentNotNull(config, "config");
+            _config = config;
+            _treeConfig = _config.GetViewTreeConfigByViewAsync(ViewName.Project).Result;
         }
 
         protected override string EntityNameKey
@@ -106,12 +112,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            result = BranchValidationResult(project);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
             _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveProjectAsync(project);
             return StatusCode(StatusCodes.Status201Created, outputItem);
@@ -125,12 +125,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int projectId, [FromBody] ProjectViewModel project)
         {
             var result = await ValidationResultAsync(project, projectId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = BranchValidationResult(project);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -174,6 +168,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Project, project.FullCode));
             }
 
+            result = BranchValidationResult(project);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = ConfigValidationResult(project, _treeConfig);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             return Ok();
         }
 
@@ -214,6 +220,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return message;
         }
 
-        private IProjectRepository _repository;
+        private readonly IProjectRepository _repository;
+        private readonly IConfigRepository _config;
+        private readonly ViewTreeConfig _treeConfig;
     }
 }

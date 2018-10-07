@@ -133,18 +133,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            result = BranchValidationResult(account);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = ConfigValidationResult(account, _treeConfig);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
             _repository.SetCurrentContext(SecurityContext.User);
             var outputAccount = await _repository.SaveAccountAsync(account);
             return StatusCode(StatusCodes.Status201Created, outputAccount);
@@ -157,18 +145,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedAccountAsync(int accountId, [FromBody] AccountViewModel account)
         {
             var result = await ValidationResultAsync(account, accountId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = BranchValidationResult(account);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = ConfigValidationResult(account, _treeConfig);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -236,6 +212,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (await _repository.IsDuplicateAccountAsync(account))
             {
                 return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Account, account.FullCode));
+            }
+
+            result = BranchValidationResult(account);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = ConfigValidationResult(account, _treeConfig);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
             }
 
             return Ok();

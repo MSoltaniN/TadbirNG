@@ -3,7 +3,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Common;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -17,10 +20,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     public class DetailAccountsController : ValidatingController<DetailAccountViewModel>
     {
         public DetailAccountsController(
-            IDetailAccountRepository repository, IStringLocalizer<AppStrings> strings = null)
+            IDetailAccountRepository repository, IConfigRepository config, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
         {
             _repository = repository;
+            Verify.ArgumentNotNull(config, "config");
+            _config = config;
+            _treeConfig = _config.GetViewTreeConfigByViewAsync(ViewName.DetailAccount).Result;
         }
 
         protected override string EntityNameKey
@@ -106,12 +112,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            result = BranchValidationResult(detailAccount);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
             _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveDetailAccountAsync(detailAccount);
             return StatusCode(StatusCodes.Status201Created, outputItem);
@@ -125,12 +125,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int faccountId, [FromBody] DetailAccountViewModel detailAccount)
         {
             var result = await ValidationResultAsync(detailAccount, faccountId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = BranchValidationResult(detailAccount);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -174,6 +168,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.DetailAccount, detailAccount.FullCode));
             }
 
+            result = BranchValidationResult(detailAccount);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = ConfigValidationResult(detailAccount, _treeConfig);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             return Ok();
         }
 
@@ -214,6 +220,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return message;
         }
 
-        private IDetailAccountRepository _repository;
+        private readonly IDetailAccountRepository _repository;
+        private readonly IConfigRepository _config;
+        private readonly ViewTreeConfig _treeConfig;
     }
 }

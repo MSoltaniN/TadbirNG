@@ -579,4 +579,7 @@
   <data name="TreeLevelsAreTooDeep" xml:space="preserve">
     <value>Tree levels deeper than {0} is not allowed for {1}.</value>
   </data>
+  <data name="LevelCodeLengthIsIncorrect" xml:space="preserve">
+    <value>Code length for {0} in level '{1}' must be exactly {2} characters.</value>
+  </data>
 </root>

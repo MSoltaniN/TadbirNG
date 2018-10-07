@@ -9,11 +9,6 @@ namespace SPPC.Tadbir.Domain
     public interface ITreeEntityView
     {
         /// <summary>
-        /// شناسه دیتابیسی این رکورد
-        /// </summary>
-        int Id { get; set; }
-
-        /// <summary>
         /// شناسه دیتابیسی رکورد والد (پدر) این رکورد در ساختار درختی
         /// </summary>
         int? ParentId { get; set; }
