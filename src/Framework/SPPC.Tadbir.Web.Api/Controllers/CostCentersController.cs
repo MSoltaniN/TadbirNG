@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +11,7 @@ using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -155,6 +158,33 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        // PUT: api/ccenters
+        [HttpPut]
+        [Route(CostCenterApi.EnvironmentCostCentersUrl)]
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.Delete)]
+        public async Task<IActionResult> PutExistingCostCentersAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            _repository.SetCurrentContext(SecurityContext.User);
+            foreach (int costCenterId in actionDetail.Items)
+            {
+                await _repository.DeleteCostCenterAsync(costCenterId);
+            }
+
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
         private async Task<IActionResult> ValidationResultAsync(CostCenterViewModel costCenter, int ccenterId = 0)
         {
             var result = BasicValidationResult(costCenter, ccenterId);
@@ -181,6 +211,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return Ok();
+        }
+
+        private async Task<IEnumerable<string>> ValidateGroupDeleteAsync(IEnumerable<int> items)
+        {
+            var messages = new List<string>();
+            foreach (int item in items)
+            {
+                messages.Add(await ValidateDeleteAsync(item));
+            }
+
+            return messages
+                .Where(msg => !String.IsNullOrEmpty(msg));
         }
 
         private async Task<string> ValidateDeleteAsync(int item)
