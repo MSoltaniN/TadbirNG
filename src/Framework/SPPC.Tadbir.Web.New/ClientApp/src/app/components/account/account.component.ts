@@ -186,10 +186,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         this.parentId = this.componentParentId;
     }
 
-    public saveHandler(model: Account) {
-        model.branchId = this.BranchId;
-        model.fiscalPeriodId = this.FiscalPeriodId;
-        model.companyId = this.CompanyId;
+    public saveHandler(model: Account) {        
 
         this.grid.loading = true;
         if (!this.isNew) {
@@ -207,6 +204,10 @@ export class AccountComponent extends DefaultComponent implements OnInit {
                 }));
         }
         else {
+          model.branchId = this.BranchId;
+          model.fiscalPeriodId = this.FiscalPeriodId;
+          model.companyId = this.CompanyId;
+
             //set parentid for childs accounts
             if (this.parentId) {
                 model.parentId = this.parentId;
