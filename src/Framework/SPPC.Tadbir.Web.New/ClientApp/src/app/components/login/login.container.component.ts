@@ -6,6 +6,7 @@ import { DefaultComponent } from "../../class/default.component";
 import { TranslateService } from '@ngx-translate/core';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
+import { SettingService } from '../../service/index';
 
 
 @Component({
@@ -29,9 +30,10 @@ export class LoginContainerComponent extends DefaultComponent implements OnInit 
         public toastrService: ToastrService,
         public translate: TranslateService,
         public renderer: Renderer2,
-        public metadata: MetaDataService) 
+      public metadata: MetaDataService,
+      public settingService: SettingService) 
     {
-        super(toastrService, translate, renderer, metadata,'','');
+      super(toastrService, translate, renderer, metadata, settingService, '', '');
         this.step2 = false;
     }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Renderer2, ViewChild } from '@angular/core';
-import { OperationLogService } from '../../service/index';
+import { OperationLogService, SettingService } from '../../service/index';
 import { OperationLog } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
@@ -96,8 +96,8 @@ export class OperationLogsComponent extends DefaultComponent implements OnInit {
 
     //#region Constructor
     constructor(public toastrService: ToastrService, public translate: TranslateService,
-        private operationLogService: OperationLogService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.OperationLog, Metadatas.OperationLog);
+      private operationLogService: OperationLogService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
+      super(toastrService, translate, renderer, metadata, settingService, Entities.OperationLog, Metadatas.OperationLog);
     }
     //#endregion
 

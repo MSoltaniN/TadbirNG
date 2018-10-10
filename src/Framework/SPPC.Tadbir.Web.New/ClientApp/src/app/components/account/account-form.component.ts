@@ -14,6 +14,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { AccountApi } from '../../service/api/accountApi';
 import { String } from '../../class/source';
 import { DetailComponent } from '../../class/detail.component';
+import { ViewName } from '../../security/viewName';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -27,11 +28,7 @@ interface Item {
 
 @Component({
   selector: 'account-form-component',
-  styles: [
-    "input[type=text],textarea { width: 100%; },"
-    , `.accInfoTitle {
-        padding-right: 0px;
-        padding-left: 0px;}`],
+  styles: ["input[type=text],textarea { width: 100%; },"],
   templateUrl: './account-form.component.html',
   providers: [{
     provide: RTL,
@@ -43,23 +40,28 @@ interface Item {
 export class AccountFormComponent extends DetailComponent implements OnInit {
 
   //create properties
+  viewId: number;
   active: boolean = false;
 
   fullCodeApiUrl: string;
   editModel: Account;
-
+  parentModel: Account;
+  parentScopeValue: number = 0
 
   @Input() public disableSaveBtn: boolean = false;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
-  @Input() public parentTitle: string = '';
-  @Input() public parentValue: string = '';
-  @Input() public parentScopeValue: number = 0;
+  @Input() public set parent(parent: Account) {    
+    this.parentModel = parent;
+    this.parentScopeValue = 0;
+    this.fullCodeApiUrl = String.Format(AccountApi.AccountFullCode, 0);
 
-  @Input() public set parentId(id: number) {
-    this.fullCodeApiUrl = String.Format(AccountApi.AccountFullCode, id ? id : 0);
-  }
+    if (parent) {
+      this.fullCodeApiUrl = String.Format(AccountApi.AccountFullCode, parent.id);
+      this.parentScopeValue = parent.branchScope;
+    }
+  };
 
   @Input() public set model(account: Account) {
     this.editModel = account;
@@ -106,7 +108,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   //Events
 
   ngOnInit(): void {
-    //        this.onChanges();
+    this.viewId = ViewName.Account;
   }
 
   constructor(private accountService: AccountService, private voucherLineService: VoucherLineService, private fiscalPeriodService: FiscalPeriodService,
@@ -114,9 +116,6 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     public renderer: Renderer2, public metadata: MetaDataService) {
 
     super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
-
-    //this.getFiscalPeriod();
-
   }
 
 

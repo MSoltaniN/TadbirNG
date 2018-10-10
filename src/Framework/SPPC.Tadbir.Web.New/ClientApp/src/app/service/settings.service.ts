@@ -90,7 +90,13 @@ export class SettingService extends BaseService {
         return this.http.put(apiUrl, body, options)
             .map(res => res)
             .catch(this.handleError);
-    }
+  }
+
+  getViewTreeSettings(viewId: number) {
+    var url = String.Format(SettingsApi.ViewTreeSettingsByView, viewId);
+    return this.http.get(url, this.option)
+      .map(response => (<Response>response));
+  }
 
     getListSettingsByUser(userId: number) {
         var url = String.Format(SettingsApi.ListSettingsByUser, userId);

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Renderer2, SkipSelf, Host, Optional, ViewChild } from '@angular/core';
-import { CostCenterService, CostCenterInfo } from '../../service/index';
+import { CostCenterService, CostCenterInfo, SettingService } from '../../service/index';
 import { CostCenter } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
@@ -21,6 +21,7 @@ import { SecureEntity } from '../../security/secureEntity';
 import { CostCenterPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
+import { ViewName } from '../../security/viewName';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -68,7 +69,8 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
 
     showloadingMessage: boolean = true;
 
-    editDataItem?: CostCenter = undefined;
+  editDataItem?: CostCenter = undefined;
+  parentModel: CostCenter;
     isNew: boolean;
     errorMessage: string;
     groupDelete: boolean = false;
@@ -85,7 +87,8 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     //#endregion
 
     //#region Events
-    ngOnInit() {
+  ngOnInit() {
+
         this.viewAccess = this.isAccess(SecureEntity.CostCenter, CostCenterPermissions.View);
         if (this.parentComponent && this.parentComponent.isChildExpanding) {
             this.goLastPage = true;
@@ -96,7 +99,9 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         if (this.parentComponent) {
             this.parentComponent.addChildComponent(this);
             this.parentId = this.parent.id;
-            this.componentParentId = this.parentId;
+          this.componentParentId = this.parentId;
+
+          this.parentModel = this.parent;
         }
     }
 
@@ -153,8 +158,9 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     public editHandler(arg: any) {
         this.grid.loading = true;
         this.costCenterService.getById(String.Format(CostCenterApi.CostCenter, arg.dataItem.id)).subscribe(res => {
-            this.editDataItem = res;
-            this.setTitle(res.parentId);
+          this.editDataItem = res;
+          this.setParentModel(res.parentId)
+            //this.setTitle(res.parentId);
 
             this.parentId = res.parentId;
 
@@ -190,27 +196,15 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
           model.fiscalPeriodId = this.FiscalPeriodId;
           model.companyId = this.CompanyId;
 
-            //set parentid for childs accounts
-            if (this.parentId) {
-                model.parentId = this.parentId;
+          if (this.parentModel) {
+            model.parentId = this.parentModel.id;
+            model.level = this.parentModel.level + 1;
+          }
+          else {
+            model.parentId = undefined;
+            model.level = 0;
+          }
 
-                //var currentLevel = this.parent ? this.parent.level : 0;
-                var parentCom = this.parentComponent;
-                var currentLevel = 0;
-
-                while (parentCom) {
-                    currentLevel++;
-                    parentCom = parentCom.parentComponent
-                }
-
-                model.level = currentLevel + 1;
-
-                this.parentId = undefined;
-            }
-            else if (this.parent) {
-                model.parentId = this.parent.id;
-                model.level = this.parent.level + 1;
-            }
             this.costCenterService.insert<CostCenter>(CostCenterApi.EnvironmentCostCenters, model)
                 .subscribe((response: any) => {
                     this.isNew = false;
@@ -237,9 +231,9 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
 
     //#region Constructor
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private costCenterService: CostCenterService, public renderer: Renderer2, public metadata: MetaDataService,
-        @SkipSelf() @Host() @Optional() private parentComponent: CostCenterComponent) {
-        super(toastrService, translate, renderer, metadata, Entities.CostCenter, Metadatas.CostCenter);
+      private costCenterService: CostCenterService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService,
+      @SkipSelf() @Host() @Optional() private parentComponent: CostCenterComponent) {
+      super(toastrService, translate, renderer, metadata, settingService, Entities.CostCenter, Metadatas.CostCenter);
     }
     //#endregion
 
@@ -423,45 +417,66 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         this.deleteConfirm = false;
     }
 
-    private setTitle(parentModelId?: number) {
-        if (parentModelId != undefined) {
+  private setParentModel(parentModelId?: number) {
+    if (!parentModelId)
+      this.parentModel = undefined;
+    else {
+      var parentRow = null;
+      var findIndex = this.rowData.data.findIndex(acc => acc.id == parentModelId);
 
-            var parentRow = null;
-            var findIndex = this.rowData.data.findIndex(acc => acc.id == parentModelId);
-
-            if (findIndex == -1) {
-                findIndex = this.parentComponent.rowData.data.findIndex(acc => acc.id == parentModelId);
-                if (findIndex >= 0)
-                    parentRow = this.parentComponent.rowData.data[findIndex];
-            }
-            else
-                parentRow = this.rowData.data[findIndex];
-
-            if (parentRow != null) {
-                var level = +parentRow.level;
-                this.parentTitle = this.getText("App.Level") + " " + (level + 2).toString();
-                this.parentValue = parentRow.name;
-                this.parentScope = parentRow.branchScope;
-            }
-        }
-        else if (this.parent != undefined) {
-            this.parentTitle = this.getText("App.Level") + " " + (this.parent.level + 2).toString();
-            this.parentValue = this.parent.name;
-            this.parentScope = this.parent.branchScope;
-        }
-        else {
-            this.parentTitle = '';
-            this.parentValue = '';
-        }
-
+      if (findIndex == -1) {
+        findIndex = this.parentComponent.rowData.data.findIndex(acc => acc.id == parentModelId);
+        if (findIndex >= 0)
+          parentRow = this.parentComponent.rowData.data[findIndex];
+      }
+      else
+        parentRow = this.rowData.data[findIndex];
+      if (parentRow != null) {
+        this.parentModel = parentRow;
+      }
     }
+
+  }
+
+    //private setTitle(parentModelId?: number) {
+    //    if (parentModelId != undefined) {
+
+    //        var parentRow = null;
+    //        var findIndex = this.rowData.data.findIndex(acc => acc.id == parentModelId);
+
+    //        if (findIndex == -1) {
+    //            findIndex = this.parentComponent.rowData.data.findIndex(acc => acc.id == parentModelId);
+    //            if (findIndex >= 0)
+    //                parentRow = this.parentComponent.rowData.data[findIndex];
+    //        }
+    //        else
+    //            parentRow = this.rowData.data[findIndex];
+
+    //        if (parentRow != null) {
+    //            var level = +parentRow.level;
+    //            this.parentTitle = this.getText("App.Level") + " " + (level + 2).toString();
+    //            this.parentValue = parentRow.name;
+    //            this.parentScope = parentRow.branchScope;
+    //        }
+    //    }
+    //    else if (this.parent != undefined) {
+    //        this.parentTitle = this.getText("App.Level") + " " + (this.parent.level + 2).toString();
+    //        this.parentValue = this.parent.name;
+    //        this.parentScope = this.parent.branchScope;
+    //    }
+    //    else {
+    //        this.parentTitle = '';
+    //        this.parentValue = '';
+    //    }
+
+    //}
 
     public addNew(parentModelId?: number, addToThis?: boolean) {
         this.isNew = true;
-        this.editDataItem = new CostCenterInfo();
-        this.setTitle(parentModelId);
+      this.editDataItem = new CostCenterInfo();
+      this.setParentModel(parentModelId);
 
-        if (parentModelId)
+      if (parentModelId)
             this.parentId = parentModelId;
 
         if (addToThis)

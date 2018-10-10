@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Renderer2, ViewChild, SkipSelf, Host, Optional } from '@angular/core';
-import { ProjectService, ProjectInfo } from '../../service/index';
+import { ProjectService, ProjectInfo, SettingService } from '../../service/index';
 import { Project } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
@@ -69,6 +69,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
   showloadingMessage: boolean = true;
 
   editDataItem?: Project = undefined;
+  parentModel: Project;
   isNew: boolean;
   errorMessage: string;
   groupDelete: boolean = false;
@@ -97,6 +98,8 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
       this.parentComponent.addChildComponent(this);
       this.parentId = this.parent.id;
       this.componentParentId = this.parentId;
+
+      this.parentModel = this.parent;
     }
   }
 
@@ -144,7 +147,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     this.grid.loading = true;
     this.projectService.getById(String.Format(ProjectApi.Project, arg.dataItem.id)).subscribe(res => {
       this.editDataItem = res;
-      this.setTitle(res.parentId);
+      this.setParentModel(res.parentId);
 
       this.parentId = res.parentId;
 
@@ -180,27 +183,15 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
       model.fiscalPeriodId = this.FiscalPeriodId;
       model.companyId = this.CompanyId;
 
-      //set parentid for childs accounts
-      if (this.parentId) {
-        model.parentId = this.parentId;
-
-        //var currentLevel = this.parent ? this.parent.level : 0;
-        var parentCom = this.parentComponent;
-        var currentLevel = 0;
-
-        while (parentCom) {
-          currentLevel++;
-          parentCom = parentCom.parentComponent
-        }
-
-        model.level = currentLevel + 1;
-
-        this.parentId = undefined;
+      if (this.parentModel) {
+        model.parentId = this.parentModel.id;
+        model.level = this.parentModel.level + 1;
       }
-      else if (this.parent) {
-        model.parentId = this.parent.id;
-        model.level = this.parent.level + 1;
+      else {
+        model.parentId = undefined;
+        model.level = 0;
       }
+
       this.projectService.insert<Project>(ProjectApi.EnvironmentProjects, model)
         .subscribe((response: any) => {
           this.isNew = false;
@@ -226,9 +217,9 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
 
   //#region Constructor
   constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-    private projectService: ProjectService, public renderer: Renderer2, public metadata: MetaDataService,
+    private projectService: ProjectService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService,
     @SkipSelf() @Host() @Optional() private parentComponent: ProjectComponent) {
-    super(toastrService, translate, renderer, metadata, Entities.Project, Metadatas.Project);
+    super(toastrService, translate, renderer, metadata, settingService, Entities.Project, Metadatas.Project);
   }
   //#endregion
 
@@ -411,9 +402,10 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     this.deleteConfirm = false;
   }
 
-  private setTitle(parentModelId?: number) {
-    if (parentModelId != undefined) {
-
+  private setParentModel(parentModelId?: number) {
+    if (!parentModelId)
+      this.parentModel = undefined;
+    else {
       var parentRow = null;
       var findIndex = this.rowData.data.findIndex(acc => acc.id == parentModelId);
 
@@ -424,22 +416,9 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
       }
       else
         parentRow = this.rowData.data[findIndex];
-
       if (parentRow != null) {
-        var level = +parentRow.level;
-        this.parentTitle = this.getText("App.Level") + " " + (level + 2).toString();
-        this.parentValue = parentRow.name;
-        this.parentScope = parentRow.branchScope;
+        this.parentModel = parentRow;
       }
-    }
-    else if (this.parent != undefined) {
-      this.parentTitle = this.getText("App.Level") + " " + (this.parent.level + 2).toString();
-      this.parentValue = this.parent.name;
-      this.parentScope = this.parent.branchScope;
-    }
-    else {
-      this.parentTitle = '';
-      this.parentValue = '';
     }
 
   }
@@ -447,7 +426,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
   public addNew(parentModelId?: number, addToThis?: boolean) {
     this.isNew = true;
     this.editDataItem = new ProjectInfo();
-    this.setTitle(parentModelId);
+    this.setParentModel(parentModelId);
 
     if (parentModelId)
       this.parentId = parentModelId;

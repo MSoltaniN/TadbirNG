@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, Host, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { DetailAccount } from '../../model/index';
 import { Property } from "../../class/metadata/property"
@@ -13,7 +13,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { DetailAccountApi } from '../../service/api/index';
 import { String } from '../../class/source';
 import { DetailComponent } from '../../class/detail.component';
-
+import { ViewName } from '../../security/viewName';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -40,23 +40,29 @@ interface Item {
 
 })
 
-export class DetailAccountFormComponent extends DetailComponent {
+export class DetailAccountFormComponent extends DetailComponent implements OnInit {
 
   //create properties
+  viewId: number;
   active: boolean = false;
   fullCodeApiUrl: string;
   editModel: DetailAccount;
+  parentModel: DetailAccount;
+  parentScopeValue: number = 0
 
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
-  @Input() public parentTitle: string = '';
-  @Input() public parentValue: string = '';
-  @Input() public parentScopeValue: number = 0;
+  @Input() public set parent(parent: DetailAccount) {
+    this.parentModel = parent;
+    this.parentScopeValue = 0;
+    this.fullCodeApiUrl = String.Format(DetailAccountApi.DetailAccountFullCode, 0);
 
-  @Input() public set parentId(id: number) {
-    this.fullCodeApiUrl = String.Format(DetailAccountApi.DetailAccountFullCode, id ? id : 0);
-  }
+    if (parent) {
+      this.fullCodeApiUrl = String.Format(DetailAccountApi.DetailAccountFullCode, parent.id);
+      this.parentScopeValue = parent.branchScope;
+    }
+  };
 
   @Input() public set model(detailAccount: DetailAccount) {
     this.editModel = detailAccount;
@@ -99,6 +105,10 @@ export class DetailAccountFormComponent extends DetailComponent {
     this.cancel.emit();
   }
   //Events
+
+  ngOnInit(): void {
+    this.viewId = ViewName.DetailAccount;
+  }
 
   constructor(public toastrService: ToastrService, public translate: TranslateService,
     public renderer: Renderer2, public metadata: MetaDataService) {

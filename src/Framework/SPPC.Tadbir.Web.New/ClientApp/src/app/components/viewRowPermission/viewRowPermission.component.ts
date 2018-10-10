@@ -13,7 +13,7 @@ import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { Response } from '@angular/http';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
-import { ViewRowPermissionService, ItemInfo, Item, RowPermissionsForRoleInfo, ViewRowPermissionInfo } from '../../service/index';
+import { ViewRowPermissionService, ItemInfo, Item, RowPermissionsForRoleInfo, ViewRowPermissionInfo, SettingService } from '../../service/index';
 import { LookupApi, RoleApi } from '../../service/api/index';
 import { PermissionType } from '../../enum/permissionType';
 
@@ -83,8 +83,8 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private viewRowPermissionService: ViewRowPermissionService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.ViewRowPermission, '');
+      private viewRowPermissionService: ViewRowPermissionService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
+      super(toastrService, translate, renderer, metadata, settingService, Entities.ViewRowPermission, '');
 
         this.getRoles();
 

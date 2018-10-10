@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Renderer2, ViewChild, SkipSelf, Host, Optional } from '@angular/core';
-import { DetailAccountService, DetailAccountInfo } from '../../service/index';
+import { DetailAccountService, DetailAccountInfo, SettingService } from '../../service/index';
 import { DetailAccount } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
@@ -70,6 +70,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
   showloadingMessage: boolean = true;
 
   editDataItem?: DetailAccount = undefined;
+  parentModel: DetailAccount;
   isNew: boolean;
   errorMessage: string;
   groupDelete: boolean = false;
@@ -98,6 +99,8 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
       this.parentComponent.addChildComponent(this);
       this.parentId = this.parent.id;
       this.componentParentId = this.parentId;
+
+      this.parentModel = this.parent;
     }
   }
 
@@ -164,7 +167,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     this.grid.loading = true;
     this.detailAccountService.getById(String.Format(DetailAccountApi.DetailAccount, arg.dataItem.id)).subscribe(res => {
       this.editDataItem = res;
-      this.setTitle(res.parentId);
+      this.setParentModel(res.parentId);
 
       this.parentId = res.parentId;
 
@@ -200,26 +203,13 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
       model.fiscalPeriodId = this.FiscalPeriodId;
       model.companyId = this.CompanyId;
 
-      //set parentid for childs accounts
-      if (this.parentId) {
-        model.parentId = this.parentId;
-
-        //var currentLevel = this.parent ? this.parent.level : 0;
-        var parentCom = this.parentComponent;
-        var currentLevel = 0;
-
-        while (parentCom) {
-          currentLevel++;
-          parentCom = parentCom.parentComponent
-        }
-
-        model.level = currentLevel + 1;
-
-        this.parentId = undefined;
+      if (this.parentModel) {
+        model.parentId = this.parentModel.id;
+        model.level = this.parentModel.level + 1;
       }
-      else if (this.parent) {
-        model.parentId = this.parent.id;
-        model.level = this.parent.level + 1;
+      else {
+        model.parentId = undefined;
+        model.level = 0;
       }
 
       this.detailAccountService.insert<DetailAccount>(DetailAccountApi.EnvironmentDetailAccounts, model)
@@ -249,9 +239,9 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
   //#region Constructor
   constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-    private detailAccountService: DetailAccountService, public renderer: Renderer2, public metadata: MetaDataService,
+    private detailAccountService: DetailAccountService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService,
     @SkipSelf() @Host() @Optional() private parentComponent: DetailAccountComponent) {
-    super(toastrService, translate, renderer, metadata, Entities.DetailAccount, Metadatas.DetailAccount);
+    super(toastrService, translate, renderer, metadata, settingService, Entities.DetailAccount, Metadatas.DetailAccount);
   }
   //#endregion
 
@@ -435,35 +425,23 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     this.deleteConfirm = false;
   }
 
-  private setTitle(parentModelId?: number) {
-    if (parentModelId != undefined) {
-
+  private setParentModel(parentModelId?: number) {
+    if (!parentModelId)
+      this.parentModel = undefined;
+    else {
       var parentRow = null;
-      var findIndex = this.rowData.data.findIndex(acc => acc.id == parentModelId);
+      var findIndex = this.rowData.data.findIndex(f => f.id == parentModelId);
 
       if (findIndex == -1) {
-        findIndex = this.parentComponent.rowData.data.findIndex(acc => acc.id == parentModelId);
+        findIndex = this.parentComponent.rowData.data.findIndex(f => f.id == parentModelId);
         if (findIndex >= 0)
           parentRow = this.parentComponent.rowData.data[findIndex];
       }
       else
         parentRow = this.rowData.data[findIndex];
-
       if (parentRow != null) {
-        var level = +parentRow.level;
-        this.parentTitle = this.getText("App.Level") + " " + (level + 2).toString();
-        this.parentValue = parentRow.name;
-        this.parentScope = parentRow.branchScope;
+        this.parentModel = parentRow;
       }
-    }
-    else if (this.parent != undefined) {
-      this.parentTitle = this.getText("App.Level") + " " + (this.parent.level + 2).toString();
-      this.parentValue = this.parent.name;
-      this.parentScope = this.parent.branchScope;
-    }
-    else {
-      this.parentTitle = '';
-      this.parentValue = '';
     }
 
   }
@@ -472,7 +450,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     this.isNew = true;
     this.editDataItem = new DetailAccountInfo();
-    this.setTitle(parentModelId);
+    this.setParentModel(parentModelId);
 
     if (parentModelId)
       this.parentId = parentModelId;

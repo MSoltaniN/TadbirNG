@@ -28,4 +28,6 @@ export * from './viewRowPermission';
 export * from './companyDb';
 export * from './operationLog';
 export * from './companyLogin';
+export * from './viewTreeLevelConfig';
+export * from './viewTreeConfig';
 

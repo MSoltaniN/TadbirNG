@@ -1,4 +1,4 @@
-﻿{
+{
   "App": {
     "Title": "به سیستم جدید تدبیر خوش آمدید!",
     "SELECT": "Changer la langue",
@@ -366,6 +366,9 @@
     "BeforeState": "وضعیت قدیم",
     "AfterState": "وضعیت جدید",
     "ErrorMessage": "پیغام خطا"
+  },
+  "MetaDataValidation": {
+    "CodeLength": "طول کد مجاز نمیباشد."
   },
   "AllValidations": {
     "Account": {

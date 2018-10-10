@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Renderer2, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { VoucherService, VoucherInfo, FiscalPeriodService } from '../../service/index';
+import { VoucherService, VoucherInfo, FiscalPeriodService, SettingService } from '../../service/index';
 import { Voucher } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
@@ -166,8 +166,8 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
   //#region Constructor
   constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
-    private voucherService: VoucherService, public renderer: Renderer2, public metadata: MetaDataService) {
-    super(toastrService, translate, renderer, metadata, Entities.Voucher, Metadatas.Voucher);
+    private voucherService: VoucherService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
+    super(toastrService, translate, renderer, metadata, settingService, Entities.Voucher, Metadatas.Voucher);
   }
   //#endregion
 

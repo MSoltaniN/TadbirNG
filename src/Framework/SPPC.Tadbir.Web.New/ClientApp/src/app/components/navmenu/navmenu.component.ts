@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { AuthenticationService } from '../../service/login/index';
+import { SettingService } from '../../service/index';
 
 @Component({
     selector: 'nav-menu',
@@ -32,10 +33,10 @@ export class NavMenuComponent extends DefaultComponent implements OnInit {
 
     constructor(public toastrService: ToastrService, private authenticationService: AuthenticationService,
         public translate: TranslateService, public renderer2: Renderer2,
-        public metadata: MetaDataService, public el: ElementRef,
+      public metadata: MetaDataService, public el: ElementRef, public settingService: SettingService,
         public location: Location) {
 
-        super(toastrService, translate, renderer2, metadata, '', '');
+      super(toastrService, translate, renderer2, metadata,settingService, '', '');
 
         let menus: any;
         if (this.authenticationService.isRememberMe())

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Renderer2, ViewChild } from '@angular/core';
-import { FiscalPeriodService, FiscalPeriodInfo, RelatedItemsInfo } from '../../service/index';
+import { FiscalPeriodService, FiscalPeriodInfo, RelatedItemsInfo, SettingService } from '../../service/index';
 import { FiscalPeriod, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
@@ -206,8 +206,8 @@ export class FiscalPeriodComponent extends DefaultComponent implements OnInit {
 
     //#region Constructor
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.FiscalPeriod, Metadatas.FiscalPeriod);
+      private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
+      super(toastrService, translate, renderer, metadata, settingService, Entities.FiscalPeriod, Metadatas.FiscalPeriod);
     }
     //#endregion
 

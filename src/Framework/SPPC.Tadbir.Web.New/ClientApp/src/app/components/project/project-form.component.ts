@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, Host, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { Project } from '../../model/index';
 
@@ -16,7 +16,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { ProjectApi } from '../../service/api/index';
 import { String } from '../../class/source';
 import { DetailComponent } from '../../class/detail.component';
-
+import { ViewName } from '../../security/viewName';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -43,23 +43,29 @@ interface Item {
 
 })
 
-export class ProjectFormComponent extends DetailComponent {
+export class ProjectFormComponent extends DetailComponent implements OnInit {
 
   //create properties
+  viewId: number;
   active: boolean = false;
   fullCodeApiUrl: string;
   editModel: Project;
+  parentModel: Project;
+  parentScopeValue: number = 0;
 
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
-  @Input() public parentTitle: string = '';
-  @Input() public parentValue: string = '';
-  @Input() public parentScopeValue: number = 0;
+  @Input() public set parent(parent: Project) {
+    this.parentModel = parent;
+    this.parentScopeValue = 0;
+    this.fullCodeApiUrl = String.Format(ProjectApi.ProjectFullCode, 0);
 
-  @Input() public set parentId(id: number) {
-    this.fullCodeApiUrl = String.Format(ProjectApi.ProjectFullCode, id ? id : 0);
-  }
+    if (parent) {
+      this.fullCodeApiUrl = String.Format(ProjectApi.ProjectFullCode, parent.id);
+      this.parentScopeValue = parent.branchScope;
+    }
+  };
 
   @Input() public set model(project: Project) {
     this.editModel = project;
@@ -101,6 +107,10 @@ export class ProjectFormComponent extends DetailComponent {
     this.cancel.emit();
   }
   //Events
+
+  ngOnInit(): void {
+    this.viewId = ViewName.Account;
+  }
 
   constructor(public toastrService: ToastrService, public translate: TranslateService,
     public renderer: Renderer2, public metadata: MetaDataService) {

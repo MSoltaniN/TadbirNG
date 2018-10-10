@@ -1,4 +1,4 @@
-﻿{
+{
   "App": {
     "Title": "Wellcome to Tabir New System",
     "SELECT": "Change language",
@@ -368,6 +368,9 @@
     "BeforeState": "Before State",
     "AfterState": "After State",
     "ErrorMessage": "Error Message"
+  },
+  "MetaDataValidation": {
+    "CodeLength": "Code length is not allowed"
   },
   "AllValidations": {
     "Account": {

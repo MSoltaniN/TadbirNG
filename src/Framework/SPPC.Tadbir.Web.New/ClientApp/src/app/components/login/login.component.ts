@@ -9,6 +9,7 @@ import {LoginContainerComponent} from "./login.container.component";
 import { Host, Renderer2 } from '@angular/core';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
+import { SettingService } from '../../service/index';
 
 
 
@@ -39,10 +40,10 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService, public toastrService: ToastrService,
         public translate: TranslateService, @Host() public parent: LoginContainerComponent, public renderer: Renderer2,
-        public metadata: MetaDataService
+      public metadata: MetaDataService, public settingService: SettingService
         ) 
     {
-        super(toastrService, translate, renderer, metadata,'','');
+      super(toastrService, translate, renderer, metadata, settingService, '', '');
         this.lang = this.currentlang;
        
     }

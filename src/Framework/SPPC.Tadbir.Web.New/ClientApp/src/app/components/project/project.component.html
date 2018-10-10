@@ -1,4 +1,4 @@
-﻿<div [ngClass]="{'panel panel-primary' : !isChild }">
+<div [ngClass]="{'panel panel-primary' : !isChild }">
     <div *ngIf="!isChild" class="panel-heading">{{ 'Entity.Project' | translate }}</div>
     <div SppcCheckAccess="View" [ngClass]="{'panel-body' : !isChild }">
         <kendo-grid id="8" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
@@ -130,7 +130,7 @@
             <!-- additional columns on large devices -->
 
         </kendo-grid>
-        <project-form-component [model]="editDataItem" [parentId]="parentId" [parentTitle]="parentTitle" [parentValue]="parentValue" [parentScopeValue]="parentScope" [isNew]="isNew" [errorMessage]="errorMessage"
+        <project-form-component [model]="editDataItem" [parent]="parentModel" [isNew]="isNew" [errorMessage]="errorMessage"
                                       (save)="saveHandler($event)"
                                       (cancel)="cancelHandler()">
         </project-form-component>

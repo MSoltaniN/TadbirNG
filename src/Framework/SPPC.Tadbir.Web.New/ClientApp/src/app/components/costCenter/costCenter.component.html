@@ -1,4 +1,4 @@
-﻿<div [ngClass]="{'panel panel-primary' : !isChild }">
+<div [ngClass]="{'panel panel-primary' : !isChild }">
     <div *ngIf="!isChild" class="panel-heading">{{ 'Entity.CostCenter' | translate }}</div>
     <div SppcCheckAccess="View" [ngClass]="{'panel-body' : !isChild }">
         <kendo-grid id="7" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
@@ -129,7 +129,7 @@
             <!-- additional columns on large devices -->
 
         </kendo-grid>
-        <costCenter-form-component [model]="editDataItem" [parentId]="parentId" [parentTitle]="parentTitle" [parentValue]="parentValue" [parentScopeValue]="parentScope" [isNew]="isNew" [errorMessage]="errorMessage"
+        <costCenter-form-component [model]="editDataItem" [parent]="parentModel" [isNew]="isNew" [errorMessage]="errorMessage"
                                       (save)="saveHandler($event)"
                                       (cancel)="cancelHandler()">
         </costCenter-form-component>

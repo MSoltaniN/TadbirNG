@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, Host } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, Host, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { CostCenter } from '../../model/index';
 import { Property } from "../../class/metadata/property"
@@ -13,6 +13,7 @@ import { CostCenterApi } from '../../service/api/index';
 import { String } from '../../class/source';
 import { DetailComponent } from '../../class/detail.component';
 import { Layout, Entities, Metadatas } from '../../../environments/environment';
+import { ViewName } from '../../security/viewName';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -39,23 +40,29 @@ interface Item {
 
 })
 
-export class CostCenterFormComponent extends DetailComponent {
+export class CostCenterFormComponent extends DetailComponent implements OnInit {
 
   //create properties
+  viewId: number;
   active: boolean = false;
   fullCodeApiUrl: string;
   editModel: CostCenter;
+  parentModel: CostCenter;
+  parentScopeValue: number = 0
 
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
-  @Input() public parentTitle: string = '';
-  @Input() public parentValue: string = '';
-  @Input() public parentScopeValue: number = 0;
+  @Input() public set parent(parent: CostCenter) {
+    this.parentModel = parent;
+    this.parentScopeValue = 0;
+    this.fullCodeApiUrl = String.Format(CostCenterApi.CostCenterFullCode, 0);
 
-  @Input() public set parentId(id: number) {
-    this.fullCodeApiUrl = String.Format(CostCenterApi.CostCenterFullCode, id ? id : 0);
-  }
+    if (parent) {
+      this.fullCodeApiUrl = String.Format(CostCenterApi.CostCenterFullCode, parent.id);
+      this.parentScopeValue = parent.branchScope;
+    }
+  };
 
   @Input() public set model(costCenter: CostCenter) {
     this.editModel = costCenter;
@@ -96,6 +103,10 @@ export class CostCenterFormComponent extends DetailComponent {
     this.cancel.emit();
   }
   //Events
+
+  ngOnInit(): void {
+    this.viewId = ViewName.CostCenter;
+  }
 
   constructor(public toastrService: ToastrService, public translate: TranslateService,
     public renderer: Renderer2, public metadata: MetaDataService) {
