@@ -32,18 +32,5 @@ namespace SPPC.Tadbir.Configuration.Models
         /// مجموعه ای از تنظیمات سطوح قابل تعریف در ساختار درختی
         /// </summary>
         public IList<ViewTreeLevelConfig> Levels { get; protected set; }
-
-        /// <summary>
-        /// یک نمونه جدید را با تنظیمات سیستمی پیش فرض مقداردهی می کند
-        /// </summary>
-        public void InitDefaultLevels()
-        {
-            Array.ForEach(
-                Enumerable.Range(1, ConfigConstants.MaxTreeDepth).ToArray(),
-                no => Levels.Add(null));
-            Array.ForEach(
-                Enumerable.Range(1, ConfigConstants.DefaultTreeDepth).ToArray(),
-                no => Levels[no - 1] = new ViewTreeLevelConfig() { No = no });
-        }
     }
 }

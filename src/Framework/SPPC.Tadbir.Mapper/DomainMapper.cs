@@ -437,15 +437,27 @@ namespace SPPC.Tadbir.Mapper
                     : new ColumnViewConfig(prop.Name));
             mapperConfig.CreateMap<UserSetting, ListFormViewConfig>()
                 .ConvertUsing(cfg => JsonHelper.To<ListFormViewConfig>(cfg.Values));
-            mapperConfig.CreateMap<ViewSetting, ViewTreeConfig>()
-                .ConvertUsing(cfg => JsonHelper.To<ViewTreeConfig>(cfg.Values));
-            mapperConfig.CreateMap<ViewTreeConfig, ViewSetting>()
+            mapperConfig.CreateMap<ViewSetting, ViewTreeFullConfig>()
+                .ForMember(
+                    dest => dest.Current,
+                    opts => opts.MapFrom(
+                        src => JsonHelper.To<ViewTreeConfig>(src.Values)))
+                .ForMember(
+                    dest => dest.Default,
+                    opts => opts.MapFrom(
+                        src => JsonHelper.To<ViewTreeConfig>(src.DefaultValues)));
+            mapperConfig.CreateMap<ViewTreeFullConfig, ViewSetting>()
+                .ForMember(dest => dest.ViewId, opts => opts.MapFrom(src => src.Default.ViewId))
                 .ForMember(dest => dest.ModelType, opts => opts.UseValue(typeof(ViewTreeConfig).Name))
                 .ForMember(dest => dest.SettingId, opts => opts.UseValue(5)) // TODO: Remove this hard-coded value later
                 .ForMember(
                     dest => dest.Values,
                     opts => opts.MapFrom(
-                        src => JsonHelper.From(src, false, null)));
+                        src => JsonHelper.From(src.Current, false, null)))
+                .ForMember(
+                    dest => dest.DefaultValues,
+                    opts => opts.MapFrom(
+                        src => JsonHelper.From(src.Default, false, null)));
 
             mapperConfig.CreateMap<CompanyDb, CompanyDbViewModel>();
             mapperConfig.CreateMap<CompanyDbViewModel, CompanyDb>();

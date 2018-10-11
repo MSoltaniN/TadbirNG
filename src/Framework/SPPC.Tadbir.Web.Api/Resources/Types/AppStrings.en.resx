@@ -582,4 +582,13 @@
   <data name="LevelCodeLengthIsIncorrect" xml:space="preserve">
     <value>Code length for {0} in level '{1}' must be exactly {2} characters.</value>
   </data>
+  <data name="LevelAuxiliary" xml:space="preserve">
+    <value>Auxiliary</value>
+  </data>
+  <data name="LevelDetail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="LevelGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
 </root>

@@ -185,6 +185,7 @@ CREATE TABLE [Config].[ViewSetting] (
     [ViewID]         INT              NULL,
     [ModelType]      VARCHAR(128)     NOT NULL,
     [Values]         NTEXT            NOT NULL,
+    [DefaultValues]  NTEXT            NOT NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Config_ViewSetting_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Config_ViewSetting_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Config_ViewSetting] PRIMARY KEY CLUSTERED ([ViewSettingID] ASC)
@@ -476,6 +477,17 @@ INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelTyp
 INSERT INTO [Config].[Setting] (SettingID, TitleKey, [Type], ScopeType, ModelType, [Values], DefaultValues, DescriptionKey)
     VALUES (5, 'ViewTreeSettings', 2, 2, 'ViewTreeConfig', N'{}', N'{}', 'ViewTreeSettingsDescription')
 SET IDENTITY_INSERT [Config].[Setting] OFF
+
+SET IDENTITY_INSERT [Config].[ViewSetting] ON
+INSERT INTO [Config].[ViewSetting] (ViewSettingID, SettingID, ViewID, ModelType, [Values], DefaultValues)
+    VALUES (1, 5, 1, 'ViewTreeConfig', N'{"viewId":1,"maxDepth":3,"levels":[{"no":1,"name":"LevelGeneral","codeLength":3},{"no":2,"name":"LevelAuxiliary","codeLength":3},{"no":3,"name":"LevelDetail","codeLength":4},null,null,null,null,null,null,null,null,null,null,null,null,null]}', N'{"viewId":1,"maxDepth":3,"levels":[{"no":1,"name":"LevelGeneral","codeLength":3},{"no":2,"name":"LevelAuxiliary","codeLength":3},{"no":3,"name":"LevelDetail","codeLength":4},null,null,null,null,null,null,null,null,null,null,null,null,null]}')
+INSERT INTO [Config].[ViewSetting] (ViewSettingID, SettingID, ViewID, ModelType, [Values], DefaultValues)
+    VALUES (2, 5, 6, 'ViewTreeConfig', N'{"viewId":6,"maxDepth":4,"levels":[{"no":1,"name":"LevelX","codeLength":4},{"no":2,"name":"LevelX","codeLength":4},{"no":3,"name":"LevelX","codeLength":4},{"no":4,"name":"LevelX","codeLength":4},null,null,null,null,null,null,null,null,null,null,null,null]}', N'{"viewId":6,"maxDepth":4,"levels":[{"no":1,"name":"LevelX","codeLength":4},{"no":2,"name":"LevelX","codeLength":4},{"no":3,"name":"LevelX","codeLength":4},{"no":4,"name":"LevelX","codeLength":4},null,null,null,null,null,null,null,null,null,null,null,null]}')
+INSERT INTO [Config].[ViewSetting] (ViewSettingID, SettingID, ViewID, ModelType, [Values], DefaultValues)
+    VALUES (3, 5, 7, 'ViewTreeConfig', N'{"viewId":7,"maxDepth":4,"levels":[{"no":1,"name":"LevelX","codeLength":4},{"no":2,"name":"LevelX","codeLength":4},{"no":3,"name":"LevelX","codeLength":4},{"no":4,"name":"LevelX","codeLength":4},null,null,null,null,null,null,null,null,null,null,null,null]}', N'{"viewId":7,"maxDepth":4,"levels":[{"no":1,"name":"LevelX","codeLength":4},{"no":2,"name":"LevelX","codeLength":4},{"no":3,"name":"LevelX","codeLength":4},{"no":4,"name":"LevelX","codeLength":4},null,null,null,null,null,null,null,null,null,null,null,null]}')
+INSERT INTO [Config].[ViewSetting] (ViewSettingID, SettingID, ViewID, ModelType, [Values], DefaultValues)
+    VALUES (4, 5, 8, 'ViewTreeConfig', N'{"viewId":8,"maxDepth":4,"levels":[{"no":1,"name":"LevelX","codeLength":4},{"no":2,"name":"LevelX","codeLength":4},{"no":3,"name":"LevelX","codeLength":4},{"no":4,"name":"LevelX","codeLength":4},null,null,null,null,null,null,null,null,null,null,null,null]}', N'{"viewId":8,"maxDepth":4,"levels":[{"no":1,"name":"LevelX","codeLength":4},{"no":2,"name":"LevelX","codeLength":4},{"no":3,"name":"LevelX","codeLength":4},{"no":4,"name":"LevelX","codeLength":4},null,null,null,null,null,null,null,null,null,null,null,null]}')
+SET IDENTITY_INSERT [Config].[ViewSetting] OFF
 
 
 -- Create system records for security

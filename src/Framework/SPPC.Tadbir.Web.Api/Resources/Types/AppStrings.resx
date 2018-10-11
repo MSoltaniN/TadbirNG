@@ -582,4 +582,13 @@
   <data name="LevelCodeLengthIsIncorrect" xml:space="preserve">
     <value>طول کد {0} در سطح '{1}' باید دقیقاً {2} حرف باشد.</value>
   </data>
+  <data name="LevelAuxiliary" xml:space="preserve">
+    <value>معین</value>
+  </data>
+  <data name="LevelDetail" xml:space="preserve">
+    <value>تفصیلی</value>
+  </data>
+  <data name="LevelGeneral" xml:space="preserve">
+    <value>کل</value>
+  </data>
 </root>

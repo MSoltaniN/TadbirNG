@@ -204,7 +204,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            result = ConfigValidationResult(detailAccount, _treeConfig);
+            result = ConfigValidationResult(detailAccount, _treeConfig.Current);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -264,6 +264,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private readonly IDetailAccountRepository _repository;
         private readonly IConfigRepository _config;
-        private readonly ViewTreeConfig _treeConfig;
+        private readonly ViewTreeFullConfig _treeConfig;
     }
 }

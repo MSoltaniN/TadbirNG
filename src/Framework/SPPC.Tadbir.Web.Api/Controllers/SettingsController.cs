@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.ViewModel.Config;
+using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -85,18 +86,34 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetViewTreeSettingsByViewAsync(int viewId)
         {
             var viewSettings = await _repository.GetViewTreeConfigByViewAsync(viewId);
-            Array.ForEach(
-                viewSettings.Levels.Where(level => level != null).ToArray(),
-                level => level.Name = String.IsNullOrEmpty(level.Name)
-                    ? String.Format(_strings[AppStrings.LevelX], level.No)
-                    : level.Name);
+            if (viewId == ViewName.Account)
+            {
+                Array.ForEach(
+                    viewSettings.Default.Levels.Where(level => level != null).ToArray(),
+                    level => level.Name = _strings.Format(level.Name));
+                Array.ForEach(
+                    viewSettings.Current.Levels.Where(level => level != null).ToArray(),
+                    level => level.Name = _strings.Format(level.Name));
+            }
+            else
+            {
+                Array.ForEach(
+                    viewSettings.Default.Levels.Where(level => level != null).ToArray(),
+                    level => level.Name = String.Format(_strings[AppStrings.LevelX], level.No));
+                Array.ForEach(
+                    viewSettings.Current.Levels.Where(level => level != null).ToArray(),
+                    level => level.Name = level.Name == "LevelX"
+                        ? String.Format(_strings[AppStrings.LevelX], level.No)
+                        : level.Name);
+            }
+
             return Json(viewSettings);
         }
 
         // PUT: api/settings/views/tree
         [HttpPut]
         [Route(SettingsApi.ViewTreeSettingsUrl)]
-        public async Task<IActionResult> PutModifiedViewTreeSettingsAsync([FromBody] List<ViewTreeConfig> settings)
+        public async Task<IActionResult> PutModifiedViewTreeSettingsAsync([FromBody] List<ViewTreeFullConfig> settings)
         {
             if (settings == null)
             {

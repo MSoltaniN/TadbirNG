@@ -220,7 +220,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            result = ConfigValidationResult(account, _treeConfig);
+            result = ConfigValidationResult(account, _treeConfig.Current);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -280,6 +280,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private readonly IAccountRepository _repository;
         private readonly IConfigRepository _config;
-        private readonly ViewTreeConfig _treeConfig;
+        private readonly ViewTreeFullConfig _treeConfig;
     }
 }
