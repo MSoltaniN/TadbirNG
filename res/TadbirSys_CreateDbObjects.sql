@@ -624,6 +624,8 @@ INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALU
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (85, 10, N'AssignRolesToEntity,User', 8)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (86, 16, N'AssignRolesToEntity,Branch', 16)
 INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (87, 5, N'AssignRolesToEntity,FiscalPeriod', 16)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (88, 7, N'CheckEntity,Voucher', 256)
+INSERT INTO [Auth].[Permission] ([PermissionID], [GroupID], [Name], [Flag]) VALUES (89, 7, N'UncheckEntity,Voucher', 512)
 SET IDENTITY_INSERT [Auth].[Permission] OFF
 
 SET IDENTITY_INSERT [Auth].[RolePermission] ON
@@ -714,6 +716,8 @@ INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VAL
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (85, 1, 85)
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (86, 1, 86)
 INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (87, 1, 87)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (88, 1, 88)
+INSERT INTO [Auth].[RolePermission] (RolePermissionID, RoleID, PermissionID) VALUES (89, 1, 89)
 SET IDENTITY_INSERT [Auth].[RolePermission] OFF
 
 SET IDENTITY_INSERT [Metadata].[Command] ON

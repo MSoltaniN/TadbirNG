@@ -591,4 +591,16 @@
   <data name="LevelGeneral" xml:space="preserve">
     <value>General</value>
   </data>
+  <data name="CantCheckUnbalancedDocument" xml:space="preserve">
+    <value>This {0} is unbalanced and cannot be checked.</value>
+  </data>
+  <data name="Draft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="FinalCheck" xml:space="preserve">
+    <value>Final check</value>
+  </data>
+  <data name="NormalCheck" xml:space="preserve">
+    <value>Normal check</value>
+  </data>
 </root>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
@@ -73,5 +74,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         void SetCurrentContext(UserContextViewModel userContext);
+
+        /// <summary>
+        /// وضعیت ثبتی سند مالی را به وضعیت داده شده تغییر می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
+        /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
+        Task SetVoucherStatusAsync(int voucherId, DocumentStatusValue status);
     }
 }

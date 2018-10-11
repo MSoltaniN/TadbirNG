@@ -591,4 +591,16 @@
   <data name="LevelGeneral" xml:space="preserve">
     <value>کل</value>
   </data>
+  <data name="CantCheckUnbalancedDocument" xml:space="preserve">
+    <value>{0} مورد نظر ناتراز بوده و قابل ثبت نیست.</value>
+  </data>
+  <data name="Draft" xml:space="preserve">
+    <value>پیش نویس</value>
+  </data>
+  <data name="FinalCheck" xml:space="preserve">
+    <value>ثبت قطعی</value>
+  </data>
+  <data name="NormalCheck" xml:space="preserve">
+    <value>ثبت عادی</value>
+  </data>
 </root>

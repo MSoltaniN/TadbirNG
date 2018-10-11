@@ -13,6 +13,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("VoucherID");
+            builder.Property(e => e.StatusId)
+                .HasColumnName("StatusID");
             builder.Property(e => e.No)
                 .IsRequired()
                 .HasMaxLength(64);
@@ -39,6 +41,11 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasForeignKey(e => e.FiscalPeriodId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Finance_Voucher_Finance_FiscalPeriod");
+            builder.HasOne(d => d.Status)
+                .WithMany()
+                .HasForeignKey(e => e.StatusId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Finance_Voucher_Core_DocumentStatus");
         }
     }
 }

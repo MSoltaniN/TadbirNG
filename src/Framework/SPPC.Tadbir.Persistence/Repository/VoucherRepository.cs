@@ -42,8 +42,8 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ای از اسناد مالی تعریف شده در دوره مالی و شعبه جاری</returns>
         public async Task<IList<VoucherViewModel>> GetVouchersAsync(GridOptions gridOptions = null)
         {
-            var vouchers = await _repository.GetAllOperationAsync<Voucher>(ViewName.Voucher,
-                v => v.Lines, v => v.FiscalPeriod, v => v.Branch);
+            var vouchers = await _repository.GetAllOperationAsync<Voucher>(
+                ViewName.Voucher, v => v.Lines, v => v.Status);
             return vouchers
                 .Select(item => Mapper.Map<VoucherViewModel>(item))
                 .Apply(gridOptions)
@@ -59,7 +59,7 @@ namespace SPPC.Tadbir.Persistence
         {
             VoucherViewModel voucherViewModel = null;
             var repository = UnitOfWork.GetAsyncRepository<Voucher>();
-            var voucher = await repository.GetByIDAsync(voucherId, v => v.Lines);
+            var voucher = await repository.GetByIDAsync(voucherId, v => v.Lines, v => v.Status);
             if (voucher != null)
             {
                 voucherViewModel = Mapper.Map<VoucherViewModel>(voucher);
@@ -114,6 +114,7 @@ namespace SPPC.Tadbir.Persistence
             if (voucherView.Id == 0)
             {
                 voucher = Mapper.Map<Voucher>(voucherView);
+                voucher.StatusId = (int)DocumentStatusValue.Draft;
                 await InsertAsync(repository, voucher);
             }
             else
@@ -169,6 +170,24 @@ namespace SPPC.Tadbir.Persistence
         {
             _repository.SetCurrentContext(userContext);
             SetLoggingContext(userContext);
+        }
+
+        /// <summary>
+        /// وضعیت ثبتی سند مالی را به وضعیت داده شده تغییر می دهد
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی یکی از اسناد مالی موجود</param>
+        /// <param name="status">وضعیت جدید مورد نظر برای سند مالی</param>
+        public async Task SetVoucherStatusAsync(int voucherId, DocumentStatusValue status)
+        {
+            Verify.EnumValueIsDefined(typeof(DocumentStatusValue), "status", (int)status);
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            var voucher = await repository.GetByIDAsync(voucherId);
+            if (voucher != null)
+            {
+                voucher.StatusId = (int)status;
+                repository.Update(voucher);
+                await UnitOfWork.CommitAsync();
+            }
         }
 
         /// <summary>

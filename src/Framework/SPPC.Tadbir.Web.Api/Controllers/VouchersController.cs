@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -43,6 +45,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
             var vouchers = await _repository.GetVouchersAsync(GridOptions);
+            Localize(vouchers.ToArray());
             return Json(vouchers);
         }
 
@@ -52,6 +55,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetVoucherAsync(int voucherId)
         {
             var voucher = await _repository.GetVoucherAsync(voucherId);
+            Localize(voucher);
             return JsonReadResult(voucher);
         }
 
@@ -112,6 +116,39 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 ? Ok(outputVoucher)
                 : NotFound() as IActionResult;
             return result;
+        }
+
+        // PUT: api/vouchers/{voucherId:int}/check
+        [HttpPut]
+        [Route(VoucherApi.CheckVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Check)]
+        public async Task<IActionResult> PutExistingVoucherAsChecked(int voucherId)
+        {
+            var voucher = await _repository.GetVoucherAsync(voucherId);
+            if (voucher == null)
+            {
+                var message = String.Format(
+                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Voucher), voucherId);
+                return BadRequest(message);
+            }
+
+            if (IsUnbalancedVoucher(voucher))
+            {
+                return BadRequest(_strings.Format(AppStrings.CantCheckUnbalancedDocument, AppStrings.Voucher));
+            }
+
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.NormalCheck);
+            return Ok();
+        }
+
+        // PUT: api/vouchers/{voucherId:int}/uncheck
+        [HttpPut]
+        [Route(VoucherApi.UncheckVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Uncheck)]
+        public async Task<IActionResult> PutExistingVoucherAsUnchecked(int voucherId)
+        {
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Draft);
+            return Ok();
         }
 
         // DELETE: api/vouchers/{voucherId:int}
@@ -369,6 +406,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return message;
+        }
+
+        private bool IsUnbalancedVoucher(VoucherViewModel voucher)
+        {
+            return (voucher.DebitSum == 0.0M && voucher.CreditSum == 0.0M)
+                || Math.Abs(voucher.DebitSum - voucher.CreditSum) >= 1.0M;
+        }
+
+        private void Localize(params VoucherViewModel[] vouchers)
+        {
+            Array.ForEach(vouchers, voucher =>
+            {
+                if (voucher != null)
+                {
+                    voucher.StatusName = _strings.Format(voucher.StatusName);
+                }
+            });
         }
 
         private readonly IVoucherRepository _repository;

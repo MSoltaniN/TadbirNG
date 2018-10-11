@@ -346,9 +346,19 @@ namespace SPPC.Tadbir.Security
         Approve = 0x80,
 
         /// <summary>
+        /// دسترسی ثبت سند
+        /// </summary>
+        Check = 0x100,
+
+        /// <summary>
+        /// دسترسی برگشت سند
+        /// </summary>
+        Uncheck = 0x200,
+
+        /// <summary>
         /// Indicates all permissions available for managing a voucher
         /// </summary>
-        All = 0xff
+        All = 0x3ff
     }
 
     /// <summary>

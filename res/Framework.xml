@@ -1327,6 +1327,12 @@
           <ColumnView name="Reference" visible="True" width="120" />
           <ValidationRule name="Reference_Validation" required="False" minimum="" maximum="64" format="" type="Length" />
         </Property>
+        <Property name="StatusId" type="Int32" isValidated="True" description="شناسه دیتابیسی وضعیت ثبتی این سند مالی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnStatusId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="StatusID" type="int" nullable="False" />
+          <ColumnView name="Status Id" visible="True" width="120" />
+          <ValidationRule name="StatusId_Validation" required="True" minimum="0" maximum="2147483647" format="" type="Value" />
+        </Property>
         <Property name="Description" type="String" isValidated="True" description="شرح سند مالی که جزئیات بیشتری را در مورد پیشامد مالی ارائه می دهد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
@@ -1351,6 +1357,7 @@
         <Relation multiplicity="OneToMany" endpointName="Line" entityName="VoucherLine" hasKey="False" joinTable="" description="مجموعه ای از آرتیکل های موجود در سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToOne" endpointName="Branch" entityName="Branch" hasKey="True" joinTable="" description="شعبه سازمانی که سند مالی برای آن ایجاد شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="OneToOne" endpointName="Document" entityName="Document" hasKey="True" joinTable="" description="مستند اداری مرتبط با این سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Status" entityName="DocumentStatus" hasKey="True" joinTable="" description="وضعیت ثبتی این سند مالی" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="VoucherLine" area="Finance" identifier="Id" description="آرتیکل سند مالی که اطلاعات مربوط به بخشی از یک پیشامد مالی را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
