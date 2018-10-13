@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { FormBuilder, ControlContainer, Validators } from '@angular/forms'
 import { LookupService, FullAccountInfo } from '../../service/index';
 
@@ -69,14 +69,14 @@ export class SppcFullAccountComponent implements OnInit {
 
         this.fullAccount = this.controlContainer.value;
 
-        if (this.fullAccount.accountId)
-            this.selectedAccountValue = this.fullAccount.accountId.toString();
-        if (this.fullAccount.detailId)
-            this.selectedDetailAccountValue = this.fullAccount.detailId.toString();
-        if (this.fullAccount.costCenterId)
-            this.selectedCostCenterValue = this.fullAccount.costCenterId.toString();
-        if (this.fullAccount.projectId)
-            this.selectedprojectValue = this.fullAccount.projectId.toString();
+        if (this.fullAccount.account.id)
+            this.selectedAccountValue = this.fullAccount.account.id.toString();
+        if (this.fullAccount.detailAccount.id)
+            this.selectedDetailAccountValue = this.fullAccount.detailAccount.id.toString();
+        if (this.fullAccount.costCenter.id)
+            this.selectedCostCenterValue = this.fullAccount.costCenter.id.toString();
+        if (this.fullAccount.project.id)
+            this.selectedprojectValue = this.fullAccount.project.id.toString();
     }
 
 

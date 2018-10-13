@@ -1,7 +1,8 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { VoucherLine } from '../model/index';
 import { VoucherApi } from './api/index';
+import { AccountItemBrief } from "../model/accountItemBrief";
 
 import { String } from '../class/source';
 import { BaseService } from '../class/base.service';
@@ -18,10 +19,10 @@ export class VoucherLineInfo implements VoucherLine {
     voucherId: number = 0;
     currencyId: number;
     fullAccount: {
-        accountId: number;
-        detailId: number;
-        costCenterId: number;
-        projectId: number;
+        account: AccountItemBrief;
+        detailAccount: AccountItemBrief;
+        costCenter: AccountItemBrief;
+        project: AccountItemBrief;
     };
 }
 

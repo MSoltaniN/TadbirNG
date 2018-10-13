@@ -239,10 +239,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="line">سطر اطلاعاتی موجود</param>
         protected override void UpdateExisting(VoucherLineViewModel lineView, VoucherLine line)
         {
-            line.AccountId = lineView.FullAccount.AccountId ?? 0;
-            line.DetailId = lineView.FullAccount.DetailId;
-            line.CostCenterId = lineView.FullAccount.CostCenterId;
-            line.ProjectId = lineView.FullAccount.ProjectId;
+            line.AccountId = lineView.FullAccount.Account.Id;
+            line.DetailId = lineView.FullAccount.DetailAccount.Id;
+            line.CostCenterId = lineView.FullAccount.CostCenter.Id;
+            line.ProjectId = lineView.FullAccount.Project.Id;
             line.CurrencyId = lineView.CurrencyId ?? 0;
             line.Debit = lineView.Debit;
             line.Credit = lineView.Credit;

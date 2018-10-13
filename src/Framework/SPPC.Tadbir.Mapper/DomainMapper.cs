@@ -196,18 +196,18 @@ namespace SPPC.Tadbir.Mapper
 
             mapperConfig.CreateMap<VoucherViewModel, Voucher>();
             mapperConfig.CreateMap<VoucherLine, VoucherLineViewModel>()
-                .AfterMap((model, viewModel) => viewModel.FullAccount.AccountId = model.AccountId)
-                .AfterMap((model, viewModel) => viewModel.FullAccount.DetailId = model.DetailId)
-                .AfterMap((model, viewModel) => viewModel.FullAccount.CostCenterId = model.CostCenterId)
-                .AfterMap((model, viewModel) => viewModel.FullAccount.ProjectId = model.ProjectId);
+                .ForMember(
+                    dest => dest.FullAccount,
+                    opts => opts.MapFrom(
+                        src => BuildFullAccount(src.Account, src.DetailAccount, src.CostCenter, src.Project)));
             mapperConfig.CreateMap<VoucherLineViewModel, VoucherLine>()
                 .AfterMap((viewModel, model) => model.Voucher.Id = viewModel.VoucherId)
                 .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
                 .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
-                .AfterMap((viewModel, model) => model.AccountId = viewModel.FullAccount.AccountId ?? 0)
-                .AfterMap((viewModel, model) => model.DetailId = viewModel.FullAccount.DetailId)
-                .AfterMap((viewModel, model) => model.CostCenterId = viewModel.FullAccount.CostCenterId)
-                .AfterMap((viewModel, model) => model.ProjectId = viewModel.FullAccount.ProjectId)
+                .AfterMap((viewModel, model) => model.AccountId = viewModel.FullAccount.Account.Id)
+                .AfterMap((viewModel, model) => model.DetailId = AsNullable(viewModel.FullAccount.DetailAccount.Id))
+                .AfterMap((viewModel, model) => model.CostCenterId = AsNullable(viewModel.FullAccount.CostCenter.Id))
+                .AfterMap((viewModel, model) => model.ProjectId = AsNullable(viewModel.FullAccount.Project.Id))
                 .AfterMap((viewModel, model) => model.CurrencyId = viewModel.CurrencyId ?? 0);
 
             mapperConfig.CreateMap<Voucher, KeyValue>()
@@ -403,7 +403,7 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.Ignore())
                 .AfterMap((viewModel, model) => Array.ForEach(
                     viewModel.Actions.ToArray(),
-                    act => model.Actions.Add(_autoMapper.Map<Model.Core.DocumentAction>(act))))
+                    act => model.Actions.Add(_autoMapper.Map<DocumentAction>(act))))
                 .AfterMap((viewModel, model) => model.Type.Id = viewModel.TypeId)
                 .AfterMap((viewModel, model) => model.Status.Id = viewModel.StatusId);
         }
@@ -489,6 +489,38 @@ namespace SPPC.Tadbir.Mapper
         {
             Verify.ArgumentNotNull(setting, "setting");
             return JsonHelper.To<TConfig>(setting.Values);
+        }
+
+        private static int? AsNullable(int value)
+        {
+            return value > 0 ? value : (int?)null;
+        }
+
+        private static FullAccountViewModel BuildFullAccount(
+            Account account, DetailAccount detailAccount, CostCenter costCenter, Project project)
+        {
+            var fullAccount = new FullAccountViewModel();
+            if (account != null)
+            {
+                fullAccount.Account = _autoMapper.Map<AccountItemBriefViewModel>(account);
+            }
+
+            if (detailAccount != null)
+            {
+                fullAccount.DetailAccount = _autoMapper.Map<AccountItemBriefViewModel>(detailAccount);
+            }
+
+            if (costCenter != null)
+            {
+                fullAccount.CostCenter = _autoMapper.Map<AccountItemBriefViewModel>(costCenter);
+            }
+
+            if (project != null)
+            {
+                fullAccount.Project = _autoMapper.Map<AccountItemBriefViewModel>(project);
+            }
+
+            return fullAccount;
         }
 
         private static ICryptoService _crypto;

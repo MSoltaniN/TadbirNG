@@ -272,6 +272,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
+        private static bool IsUnbalancedVoucher(VoucherViewModel voucher)
+        {
+            return (voucher.DebitSum == 0.0M && voucher.CreditSum == 0.0M)
+                || Math.Abs(voucher.DebitSum - voucher.CreditSum) >= 1.0M;
+        }
+
         private IActionResult BasicValidationResult<TModel>(TModel model, string modelType, int modelId = 0)
         {
             if (model == null)
@@ -331,7 +337,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
             }
 
-            var account = await _lineRepository.GetArticleAccountAsync(article.FullAccount.AccountId.Value);
+            var account = await _lineRepository.GetArticleAccountAsync(article.FullAccount.Account.Id);
             if (account.ChildCount > 0)
             {
                 string accountInfo = String.Format("{0} ({1})", account.Name, account.FullCode);
@@ -340,7 +346,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            var detailAccount = await _lineRepository.GetArticleDetailAccountAsync(article.FullAccount.DetailId ?? 0);
+            var detailAccount = await _lineRepository.GetArticleDetailAccountAsync(article.FullAccount.DetailAccount.Id);
             if (detailAccount != null && detailAccount.ChildCount > 0)
             {
                 string detailInfo = String.Format("{0} ({1})", detailAccount.Name, detailAccount.FullCode);
@@ -349,7 +355,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            var costCenter = await _lineRepository.GetArticleCostCenterAsync(article.FullAccount.CostCenterId ?? 0);
+            var costCenter = await _lineRepository.GetArticleCostCenterAsync(article.FullAccount.CostCenter.Id);
             if (costCenter != null && costCenter.ChildCount > 0)
             {
                 string costCenterInfo = String.Format("{0} ({1})", costCenter.Name, costCenter.FullCode);
@@ -358,7 +364,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            var project = await _lineRepository.GetArticleProjectAsync(article.FullAccount.ProjectId ?? 0);
+            var project = await _lineRepository.GetArticleProjectAsync(article.FullAccount.Project.Id);
             if (project != null && project.ChildCount > 0)
             {
                 string projectInfo = String.Format("{0} ({1})", project.Name, project.FullCode);
@@ -406,12 +412,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return message;
-        }
-
-        private bool IsUnbalancedVoucher(VoucherViewModel voucher)
-        {
-            return (voucher.DebitSum == 0.0M && voucher.CreditSum == 0.0M)
-                || Math.Abs(voucher.DebitSum - voucher.CreditSum) >= 1.0M;
         }
 
         private void Localize(params VoucherViewModel[] vouchers)

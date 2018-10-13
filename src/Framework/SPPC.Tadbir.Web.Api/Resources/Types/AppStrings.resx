@@ -592,7 +592,7 @@
     <value>کل</value>
   </data>
   <data name="CantCheckUnbalancedDocument" xml:space="preserve">
-    <value>{0} مورد نظر ناتراز بوده و قابل ثبت نیست.</value>
+    <value>{0} مورد نظر ناتراز یا فاقد آرتیکل بوده و قابل ثبت نیست.</value>
   </data>
   <data name="Draft" xml:space="preserve">
     <value>پیش نویس</value>

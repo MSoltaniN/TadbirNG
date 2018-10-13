@@ -592,7 +592,7 @@
     <value>General</value>
   </data>
   <data name="CantCheckUnbalancedDocument" xml:space="preserve">
-    <value>This {0} is unbalanced and cannot be checked.</value>
+    <value>This {0} is either unbalanced or empty and cannot be checked.</value>
   </data>
   <data name="Draft" xml:space="preserve">
     <value>Draft</value>
