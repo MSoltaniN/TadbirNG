@@ -250,10 +250,13 @@ export class DefaultComponent extends BaseComponent {
     if (treeConfig == undefined || treeConfig.length == 0) {
       treeConfig = [];
       this.settingService.getViewTreeSettings(viewId).subscribe(res => {
-        treeConfig.push({ name: viewName, viewTree: res.current });
+
+        let result: any = res;
+
+        treeConfig.push({ name: viewName, viewTree: result.current });
         sessionStorage.setItem("viewTreeConfig", JSON.stringify(treeConfig));
 
-        return JSON.parse(JSON.stringify(res.current));
+        return JSON.parse(JSON.stringify(result.current));
       })
     }
     else {
@@ -263,11 +266,14 @@ export class DefaultComponent extends BaseComponent {
       }
       else {
         this.settingService.getViewTreeSettings(viewId).subscribe(res => {
-          treeConfig.push({ name: viewName, viewTree: res.current });
+
+          let result: any = res;
+
+          treeConfig.push({ name: viewName, viewTree: result.current });
 
           sessionStorage.setItem("viewTreeConfig", JSON.stringify(treeConfig));
 
-          return JSON.parse(JSON.stringify(res.current));
+          return JSON.parse(JSON.stringify(result.current));
 
         })
       }
