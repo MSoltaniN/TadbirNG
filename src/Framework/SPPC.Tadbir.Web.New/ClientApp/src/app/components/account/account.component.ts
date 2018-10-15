@@ -182,11 +182,10 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     this.errorMessage = '';
     this.isNew = false;
 
-    this.parentId = this.componentParentId;
+    this.parentId = this.componentParentId;    
   }
 
   public saveHandler(model: Account) {
-
     this.grid.loading = true;
     if (!this.isNew) {
       this.isNew = false;
@@ -206,6 +205,40 @@ export class AccountComponent extends DefaultComponent implements OnInit {
       model.branchId = this.BranchId;
       model.fiscalPeriodId = this.FiscalPeriodId;
       model.companyId = this.CompanyId;
+
+
+      //if (this.parentId) {
+      //  this.parentId = undefined;
+      //}
+
+      this.parentId = this.componentParentId;
+
+      //set parentid for childs accounts
+      //if (this.parentId) {
+        //model.parentId = this.parentId;
+
+        ////var currentLevel = this.parent ? this.parent.level : 0;
+        //var parentAc = this.parentAccount;
+        //var currentLevel = 0;
+
+        //while (parentAc) {
+        //  currentLevel++;
+        //  parentAc = parentAc.parentAccount
+        //}
+
+        //model.level = currentLevel + 1;
+
+      //  this.parentId = undefined;
+      //}
+      //else if (this.parent) {
+      //  model.parentId = this.parent.id;
+      //  model.level = this.parent.level + 1;
+      //}
+
+
+
+
+
 
       if (this.parentModel) {
         model.parentId = this.parentModel.id;
@@ -452,6 +485,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
   }
 
   private setParentModel(parentModelId?: number) {
+    //debugger;
     if (!parentModelId)
       this.parentModel = undefined;
     else {

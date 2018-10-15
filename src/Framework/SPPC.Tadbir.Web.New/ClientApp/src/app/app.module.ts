@@ -60,6 +60,7 @@ import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
 import { FullCodeDirective } from './directive/fullCode/fullCode.directive';
 import { SppcCodeLengthDirective } from './directive/Validator/Sppc-code-length-validator';
+import { SpccOnlyNumberDirective } from './directive/onlyNumber/sppc.onlyNumber';
 
 
 import { Layout } from '../environments/environment';
@@ -184,6 +185,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ConfirmEqualValidator,
     FullCodeDirective,
     SppcCodeLengthDirective,
+    SpccOnlyNumberDirective,
     FiscalPeriodComponent,
     FiscalPeriodFormComponent,
     FiscalPeriodRolesFormComponent,

@@ -11,7 +11,7 @@ import { DefaultComponent } from "../../class/default.component";
 @Component({
   selector: 'editor-form-title',
   template: `
-    <div *ngIf="parentModel">
+    <div *ngIf="parentModel && viewTitle">
       <div class="alert alert-info fade in alert-dismissible">
         <span class='accInfoTitle'><strong>{{ viewTitle }}</strong></span> : {{ parentModel.name }}
       </div>
@@ -34,14 +34,16 @@ export class EditorFormTitleComponent {
   constructor(private defultComponent: DefaultComponent) {
   }
 
-
   ngOnInit(): void {
     if (this.parentModel && this.parentModel.level >= 0 && this.entityType) {
       var config = this.defultComponent.getViewTreeSettings(this.entityType);
 
-      var viewConfig = config.levels.find(f => f != null && f.no == this.parentModel.level + 1);
+      if (config) {
+        var viewConfig = config.levels.find(f => f != null && f.no == this.parentModel.level + 1);
 
-      this.viewTitle = viewConfig.name;
+        if (viewConfig)
+          this.viewTitle = viewConfig.name;
+      }
     }
 
   }
