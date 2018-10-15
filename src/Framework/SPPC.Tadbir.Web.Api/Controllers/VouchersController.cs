@@ -180,7 +180,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _lineRepository.SetCurrentContext(SecurityContext.User);
             int itemCount = await _lineRepository.GetArticleCountAsync(SecurityContext.User, voucherId, GridOptions);
             SetItemCount(itemCount);
-            var articles = await _lineRepository.GetArticlesAsync(SecurityContext.User, voucherId, GridOptions);
+            var articles = await _lineRepository.GetArticlesAsync(voucherId, GridOptions);
             return Json(articles);
         }
 
