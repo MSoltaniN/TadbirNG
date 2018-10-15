@@ -46,13 +46,15 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   fullCodeApiUrl: string;
   editModel: Account;
   parentModel: Account;
-  parentScopeValue: number = 0
+  parentScopeValue: number = 0;
 
   @Input() public disableSaveBtn: boolean = false;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
-  @Input() public set parent(parent: Account) {    
+  @Input() public set parent(parent: Account) {
+    //debugger;
+    //console.log(parent);
     this.parentModel = parent;
     this.parentScopeValue = 0;
     this.fullCodeApiUrl = String.Format(AccountApi.AccountFullCode, 0);
@@ -64,6 +66,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   };
 
   @Input() public set model(account: Account) {
+    //debugger;
     this.editModel = account;
     this.editForm.reset(account);
 
@@ -80,8 +83,7 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     e.preventDefault();
     if (this.editForm.valid) {
       this.disableSaveBtn = true;
-
-      if (this.editModel) {
+      if (this.editModel.id > 0) {
         let model: Account = this.editForm.value;
         model.branchId = this.editModel.branchId;
         model.fiscalPeriodId = this.editModel.fiscalPeriodId;
@@ -109,6 +111,8 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.viewId = ViewName.Account;
+    if (this.parentModel)
+      this.parentScopeValue = this.parentModel.branchScope;
   }
 
   constructor(private accountService: AccountService, private voucherLineService: VoucherLineService, private fiscalPeriodService: FiscalPeriodService,

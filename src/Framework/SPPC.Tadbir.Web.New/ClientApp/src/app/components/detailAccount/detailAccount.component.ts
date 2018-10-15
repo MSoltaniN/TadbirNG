@@ -203,6 +203,8 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
       model.fiscalPeriodId = this.FiscalPeriodId;
       model.companyId = this.CompanyId;
 
+      this.parentId = this.componentParentId;
+
       if (this.parentModel) {
         model.parentId = this.parentModel.id;
         model.level = this.parentModel.level + 1;

@@ -68,6 +68,7 @@
     <None Remove="ClientApp\src\app\components\viewRowPermission\viewRowPermission-multiple-form.component.ts" />
     <None Remove="ClientApp\src\app\components\viewRowPermission\viewRowPermission-single-form.component.ts" />
     <None Remove="ClientApp\src\app\components\viewRowPermission\viewRowPermission.component.ts" />
+    <None Remove="ClientApp\src\app\components\viewTreeConfig\viewTreeConfig.component.ts" />
     <None Remove="ClientApp\src\app\components\voucherLine\voucherLine-form.component.ts" />
     <None Remove="ClientApp\src\app\components\voucherLine\voucherLine.component.ts" />
     <None Remove="ClientApp\src\app\components\voucher\voucher-form.component.ts" />
@@ -91,6 +92,7 @@
     <None Remove="ClientApp\src\app\directive\grid\sppc-grid-reorder.ts" />
     <None Remove="ClientApp\src\app\directive\grid\sppc-grid-resize.ts" />
     <None Remove="ClientApp\src\app\directive\grid\sppc-viewTree-config.ts" />
+    <None Remove="ClientApp\src\app\directive\onlyNumber\sppc.onlyNumber.ts" />
     <None Remove="ClientApp\src\app\directive\Validator\confirm-equal-validator.ts" />
     <None Remove="ClientApp\src\app\directive\Validator\Sppc-code-length-validator.ts" />
     <None Remove="ClientApp\src\app\enum\KeyCode.ts" />
@@ -896,6 +898,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\viewRowPermission\viewRowPermission-multiple-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\viewRowPermission\viewRowPermission-single-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\viewRowPermission\viewRowPermission.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\viewTreeConfig\viewTreeConfig.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\voucherLine\voucherLine-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\voucherLine\voucherLine.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\voucher\voucher-form.component.ts" />
@@ -919,6 +922,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\directive\grid\sppc-check-access.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\grid\sppc-grid-reorder.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\grid\sppc-grid-resize.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\directive\onlyNumber\sppc.onlyNumber.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\Validator\confirm-equal-validator.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\Validator\Sppc-code-length-validator.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\enum\KeyCode.ts" />
