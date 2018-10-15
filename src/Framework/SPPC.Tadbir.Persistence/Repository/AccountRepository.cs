@@ -214,7 +214,7 @@ namespace SPPC.Tadbir.Persistence
             var accounts = await repository
                 .GetByCriteriaAsync(
                     acc => acc.Id != accountViewModel.Id
-                        && acc.FiscalPeriod.Id == accountViewModel.FiscalPeriodId
+                        && acc.FiscalPeriod.Id <= accountViewModel.FiscalPeriodId
                         && acc.FullCode == accountViewModel.FullCode);
             return (accounts.Count > 0);
         }

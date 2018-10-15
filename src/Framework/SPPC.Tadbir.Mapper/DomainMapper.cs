@@ -202,8 +202,6 @@ namespace SPPC.Tadbir.Mapper
                         src => BuildFullAccount(src.Account, src.DetailAccount, src.CostCenter, src.Project)));
             mapperConfig.CreateMap<VoucherLineViewModel, VoucherLine>()
                 .AfterMap((viewModel, model) => model.Voucher.Id = viewModel.VoucherId)
-                .AfterMap((viewModel, model) => model.FiscalPeriod.Id = viewModel.FiscalPeriodId)
-                .AfterMap((viewModel, model) => model.Branch.Id = viewModel.BranchId)
                 .AfterMap((viewModel, model) => model.AccountId = viewModel.FullAccount.Account.Id)
                 .AfterMap((viewModel, model) => model.DetailId = AsNullable(viewModel.FullAccount.DetailAccount.Id))
                 .AfterMap((viewModel, model) => model.CostCenterId = AsNullable(viewModel.FullAccount.CostCenter.Id))
