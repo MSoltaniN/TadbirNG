@@ -62,7 +62,9 @@ namespace SPPC.Tadbir.Persistence
         {
             VoucherLineViewModel articleViewModel = null;
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
-            var article = await repository.GetByIDAsync(articleId);
+            var article = await GetVoucherLineQuery(articleId)
+                .Where(line => line.Id == articleId)
+                .SingleOrDefaultAsync();
             if (article != null)
             {
                 articleViewModel = Mapper.Map<VoucherLineViewModel>(article);
@@ -270,6 +272,17 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
                     line => line.Project, line => line.Currency)
                 .Where(line => line.Voucher.Id == voucherId);
             return linesQuery;
+        }
+
+        private IQueryable<VoucherLine> GetVoucherLineQuery(int articleId)
+        {
+            var repository = UnitOfWork.GetRepository<VoucherLine>();
+            var lineQuery = repository
+                .GetEntityQuery(
+                    line => line.Voucher, line => line.Account, line => line.DetailAccount, line => line.CostCenter,
+                    line => line.Project, line => line.Currency)
+                .Where(line => line.Id == articleId);
+            return lineQuery;
         }
 
         private readonly ISecureRepository _repository;
