@@ -47,7 +47,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var accounts = await repository
-                .GetByCriteriaAsync(acc => acc.FiscalPeriod.Id == fpId
+                .GetByCriteriaAsync(acc => acc.FiscalPeriod.Id <= fpId
                     && acc.Branch.Id == branchId);
             return accounts
                 .Select(acc => _mapper.Map<KeyValue>(acc))
@@ -66,7 +66,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
             var detailAccounts = await repository
-                .GetByCriteriaAsync(det => det.FiscalPeriod.Id == fpId
+                .GetByCriteriaAsync(det => det.FiscalPeriod.Id <= fpId
                     && det.Branch.Id == branchId);
             return detailAccounts
                 .Select(det => _mapper.Map<KeyValue>(det))
@@ -85,7 +85,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
             var costCenters = await repository
-                .GetByCriteriaAsync(cc => cc.FiscalPeriod.Id == fpId
+                .GetByCriteriaAsync(cc => cc.FiscalPeriod.Id <= fpId
                     && cc.Branch.Id == branchId);
             return costCenters
                 .Select(cc => _mapper.Map<KeyValue>(cc))
@@ -104,7 +104,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetAsyncRepository<Project>();
             var projects = await repository
-                .GetByCriteriaAsync(prj => prj.FiscalPeriod.Id == fpId
+                .GetByCriteriaAsync(prj => prj.FiscalPeriod.Id <= fpId
                     && prj.Branch.Id == branchId);
             return projects
                 .Select(prj => _mapper.Map<KeyValue>(prj))

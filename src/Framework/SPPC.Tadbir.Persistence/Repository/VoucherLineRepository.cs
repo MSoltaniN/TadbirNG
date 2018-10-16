@@ -39,14 +39,10 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        public async Task<IList<VoucherLineViewModel>> GetArticlesAsync(
-            UserContextViewModel userContext, int voucherId, GridOptions gridOptions = null)
+        public async Task<IList<VoucherLineViewModel>> GetArticlesAsync(int voucherId, GridOptions gridOptions = null)
         {
             var query = GetVoucherLinesQuery(voucherId);
             query = _repository.ApplyRowFilter(ref query, ViewName.VoucherLine);
@@ -271,7 +267,7 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
             var linesQuery = repository
                 .GetEntityQuery(
                     line => line.Voucher, line => line.Account, line => line.DetailAccount, line => line.CostCenter,
-                    line => line.Project, line => line.Currency, line => line.FiscalPeriod, line => line.Branch)
+                    line => line.Project, line => line.Currency)
                 .Where(line => line.Voucher.Id == voucherId);
             return linesQuery;
         }

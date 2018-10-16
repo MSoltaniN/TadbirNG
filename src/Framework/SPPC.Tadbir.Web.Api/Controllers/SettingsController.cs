@@ -8,8 +8,10 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Config;
 using SPPC.Tadbir.Web.Api.Extensions;
+using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -25,6 +27,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/settings
         [Route(SettingsApi.AllSettingsUrl)]
+        [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.ViewSettings)]
         public async Task<IActionResult> GetAllSettingsAsync()
         {
             var allSettings = await _repository.GetAllConfigAsync();
@@ -39,6 +42,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/settings
         [HttpPut]
         [Route(SettingsApi.AllSettingsUrl)]
+        [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.ManageSettings)]
         public async Task<IActionResult> PutModifiedSettingsAsync([FromBody] List<SettingBriefViewModel> settings)
         {
             if (settings == null)
@@ -83,6 +87,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/settings/views/{viewId:min(1)}/tree
         [Route(SettingsApi.ViewTreeSettingsByViewUrl)]
+        [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.ViewSettings)]
         public async Task<IActionResult> GetViewTreeSettingsByViewAsync(int viewId)
         {
             var viewSettings = await _repository.GetViewTreeConfigByViewAsync(viewId);
@@ -113,6 +118,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/settings/views/tree
         [HttpPut]
         [Route(SettingsApi.ViewTreeSettingsUrl)]
+        [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.ManageSettings)]
         public async Task<IActionResult> PutModifiedViewTreeSettingsAsync([FromBody] List<ViewTreeFullConfig> settings)
         {
             if (settings == null)

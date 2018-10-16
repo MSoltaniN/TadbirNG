@@ -755,8 +755,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(id => !currentItems.Contains(id));
             foreach (var item in newItems)
             {
-                var detailAccount = repository.GetByIDWithTracking(
-                    item, facc => facc.Branch, facc => facc.FiscalPeriod);
+                var detailAccount = repository.GetByIDWithTracking(item);
                 var accountDetailAccount = new AccountDetailAccount()
                 {
                     Account = existing,
@@ -778,8 +777,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(id => !currentItems.Contains(id));
             foreach (var item in newItems)
             {
-                var costCenter = repository.GetByIDWithTracking(
-                    item, cc => cc.Branch, cc => cc.FiscalPeriod);
+                var costCenter = repository.GetByIDWithTracking(item);
                 var accountCostCenter = new AccountCostCenter()
                 {
                     Account = existing,
@@ -801,8 +799,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(id => !currentItems.Contains(id));
             foreach (var item in newItems)
             {
-                var project = repository.GetByIDWithTracking(
-                    item, prj => prj.Branch, prj => prj.FiscalPeriod);
+                var project = repository.GetByIDWithTracking(item);
                 var accountProject = new AccountProject()
                 {
                     Account = existing,
@@ -824,8 +821,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(id => !currentItems.Contains(id));
             foreach (var item in newItems)
             {
-                var account = repository.GetByIDWithTracking(
-                    item, acc => acc.Branch, acc => acc.FiscalPeriod);
+                var account = repository.GetByIDWithTracking(item);
                 var accountDetailAccount = new AccountDetailAccount()
                 {
                     DetailAccount = existing,
@@ -847,8 +843,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(id => !currentItems.Contains(id));
             foreach (var item in newItems)
             {
-                var account = repository.GetByIDWithTracking(
-                    item, acc => acc.Branch, acc => acc.FiscalPeriod);
+                var account = repository.GetByIDWithTracking(item);
                 var accountCostCenter = new AccountCostCenter()
                 {
                     Account = account,
@@ -870,8 +865,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(id => !currentItems.Contains(id));
             foreach (var item in newItems)
             {
-                var account = repository.GetByIDWithTracking(
-                    item, acc => acc.Branch, acc => acc.FiscalPeriod);
+                var account = repository.GetByIDWithTracking(item);
                 var accountProject = new AccountProject()
                 {
                     Account = account,

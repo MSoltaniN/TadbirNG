@@ -132,8 +132,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                detailModel = await repository.GetByIDAsync(
-                    detailAccount.Id, facc => facc.FiscalPeriod, facc => facc.Branch);
+                detailModel = await repository.GetByIDAsync(detailAccount.Id);
                 if (detailModel != null)
                 {
                     await UpdateAsync(repository, detailModel, detailAccount);
@@ -150,7 +149,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteDetailAccountAsync(int faccountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
-            var detailAccount = await repository.GetByIDAsync(faccountId, facc => facc.Branch);
+            var detailAccount = await repository.GetByIDAsync(faccountId);
             if (detailAccount != null)
             {
                 await DeleteAsync(repository, detailAccount);
@@ -169,7 +168,7 @@ namespace SPPC.Tadbir.Persistence
             var detailAccounts = await repository
                 .GetByCriteriaAsync(
                     facc => facc.Id != detailAccount.Id
-                        && facc.FiscalPeriod.Id == detailAccount.FiscalPeriodId
+                        && facc.FiscalPeriod.Id <= detailAccount.FiscalPeriodId
                         && facc.FullCode == detailAccount.FullCode);
             return (detailAccounts.Count > 0);
         }

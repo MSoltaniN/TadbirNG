@@ -119,7 +119,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                voucher = await repository.GetByIDAsync(voucherView.Id, v => v.FiscalPeriod, v => v.Branch);
+                voucher = await repository.GetByIDAsync(voucherView.Id);
                 if (voucher != null)
                 {
                     await UpdateAsync(repository, voucher, voucherView);
@@ -157,8 +157,7 @@ namespace SPPC.Tadbir.Persistence
             var duplicates = await repository
                 .GetByCriteriaAsync(vch => vch.Id != voucher.Id
                     && vch.No == voucher.No
-                    && vch.FiscalPeriod.Id == voucher.FiscalPeriodId
-                    && vch.Branch.Id == voucher.BranchId);
+                    && vch.FiscalPeriod.Id == voucher.FiscalPeriodId);
             return (duplicates.Count > 0);
         }
 
