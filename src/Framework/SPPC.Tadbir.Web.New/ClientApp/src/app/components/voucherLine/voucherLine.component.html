@@ -1,4 +1,4 @@
-﻿<div class="panel panel-primary">
+<div class="panel panel-primary">
         <div class="panel-body">
             <kendo-grid id="3" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
                         [data]="rowData"
@@ -54,21 +54,35 @@
                         <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
                     </ng-template>
                     <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
-                        <table>
-                            <tr>
-                                <td>{{ 'VoucherLine.DebitSum' | translate }}</td>
-                                <td>{{ debitSum | number }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ 'VoucherLine.CreditSum' | translate }}</td>
-                                <td>{{ creditSum | number }}</td>
-                            </tr>
-                        </table>
+                      <table>
+                        <tr>
+                          <td>{{ 'VoucherLine.DebitSum' | translate }}</td>
+                          <td>{{ debitSum | number }}</td>
+                        </tr>
+                        <tr>
+                          <td>{{ 'VoucherLine.CreditSum' | translate }}</td>
+                          <td>{{ creditSum | number }}</td>
+                        </tr>
+                        <tr>
+                          <td>{{ 'VoucherLine.Difference' | translate }}</td>
+                          <!--<td>{{ balance | number }}</td>-->
+                          <td>
+                            <span class="voucher-balance">
+                              <i class="fa" [ngClass]="{'fa-check': debitSum - creditSum == 0,'fa-times':debitSum - creditSum != 0}" aria-hidden="true"></i>
+                              <span>{{ balance | number }}</span>
+                            </span>
+                          </td>
+                        </tr>
+                      </table>
                     </ng-template>
                 </kendo-grid-column>
                 <!-- template for mobile -->
                 <!-- template for mid-size devices -->
-                <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px) and (max-width: 1024px)"></kendo-grid-checkbox-column>
+                <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px) and (max-width: 1024px)">
+                  <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
+                    {{ 'VoucherLine.Sum' | translate }}
+                  </ng-template>
+                </kendo-grid-checkbox-column>
 
                 <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" format="{0:n}" sppc-grid-column="VoucherLine.debit">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
@@ -89,14 +103,25 @@
                 </kendo-grid-column>
 
                 <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px) and (max-width: 1024px)">
-                    <ng-template kendoGridCellTemplate let-dataItem>
-                        <button [icon]="'edit'" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
-                        <button [icon]="'delete'" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
-                    </ng-template>
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <button [icon]="'edit'" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
+                    <button [icon]="'delete'" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
+                  </ng-template>
+
+                  <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
+                    <span class="voucher-balance">
+                      <i class="fa" [ngClass]="{'fa-check': debitSum - creditSum == 0,'fa-times':debitSum - creditSum != 0}" aria-hidden="true"></i>
+                      <span>{{ 'VoucherLine.Difference' | translate }}: {{ balance | number }}</span>
+                    </span>
+                  </ng-template>
                 </kendo-grid-command-column>
                 <!-- template for mid-size devices -->
                 <!-- additional columns on large devices -->
-                <kendo-grid-checkbox-column showSelectAll="true" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
+                <kendo-grid-checkbox-column showSelectAll="true" media="(min-width: 1024px)">
+                  <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
+                    {{ 'VoucherLine.Sum' | translate }}
+                  </ng-template>
+                </kendo-grid-checkbox-column>
 
                 <kendo-grid-column media="(min-width: 1024px)" width="200" format="{0:n}" sppc-grid-column="VoucherLine.debit">
                     <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
@@ -123,10 +148,18 @@
                 </kendo-grid-column>
 
                 <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
-                    <ng-template kendoGridCellTemplate let-dataItem>                        
-                        <button [icon]="'edit'" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
-                        <button [icon]="'delete'" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
-                    </ng-template>
+                  <ng-template kendoGridCellTemplate let-dataItem>
+                    <button [icon]="'edit'" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
+                    <button [icon]="'delete'" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
+                  </ng-template>
+
+                  <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
+                    <span class="voucher-balance">
+                      <i class="fa" [ngClass]="{'fa-check': debitSum - creditSum == 0,'fa-times':debitSum - creditSum != 0}" aria-hidden="true"></i>
+                      <span>{{ 'VoucherLine.Difference' | translate }}: {{ balance | number }}</span>
+                    </span>
+                  </ng-template>
+
                 </kendo-grid-command-column>                
                 <!-- additional columns on large devices -->
 
