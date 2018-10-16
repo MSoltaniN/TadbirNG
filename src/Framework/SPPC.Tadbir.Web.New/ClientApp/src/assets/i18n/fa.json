@@ -169,7 +169,25 @@
     "Currency": "واحد پول",
     "Account": "بردار حساب",
     "Sum": "مجموع",
-    "Difference": "اختلاف"
+    "Difference": "اختلاف",
+    "FullAccount": {
+      "Account": {
+        "Name": "نام حساب",
+        "FullCode": "کد کامل حساب"
+      },
+      "DetailAccount": {
+        "Name": "نام تفصیلی",
+        "FullCode": "کد کامل تفصیلی"
+      },
+      "CostCenter": {
+        "Name": "نام مرکز هزینه",
+        "FullCode": "کد کامل مرکز هزینه"
+      },
+      "Project": {
+        "Name": "نام پروژه",
+        "FullCode": "کد کامل پروژه"
+      }
+    }
   },
   "Company": {
     "CompanyName": "شرکت",

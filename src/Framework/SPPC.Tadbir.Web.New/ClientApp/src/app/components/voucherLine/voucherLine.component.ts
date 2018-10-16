@@ -26,6 +26,8 @@ import { FilterExpression } from '../../class/filterExpression';
 .voucher-balance{text-align: center; display: block; }
 .voucher-balance > .fa-times { color: red; }
 .voucher-balance > .fa-check { color: green; }
+.detail-info { margin:5px 0; } .detail-info > span { padding-left: 15px; }
+.nowrap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 500px; display: block; }
 `]
 })
 
@@ -114,7 +116,6 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
   public editHandler(arg: any) {
     this.grid.loading = true;
     this.voucherLineService.getById(String.Format(VoucherApi.VoucherArticle, arg.dataItem.id)).subscribe(res => {
-      debugger;
       this.editDataItem = res;
       this.grid.loading = false;
     })
@@ -132,12 +133,9 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     var model = viewModel.model;
     var isOpen = viewModel.isOpen;
 
-    debugger;
-
     model.branchId = this.voucherModel.branchId;
     model.fiscalPeriodId = this.voucherModel.fiscalPeriodId;
     model.voucherId = this.voucherModel.id;
-
 
     this.grid.loading = true;
     if (!this.isNew) {
@@ -212,7 +210,6 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
     if (insertedModel)
       this.goToLastPage(this.totalRecords);
-
     this.voucherLineService.getAll(String.Format(VoucherApi.VoucherArticles, this.voucherId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
       var resData = res.body;
       this.properties = resData.properties;

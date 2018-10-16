@@ -171,7 +171,25 @@
     "Currency": "Currency",
     "Account": "Account",
     "Sum": "Sum",
-    "Difference": "Difference"
+    "Difference": "Difference",
+    "FullAccount": {
+      "Account": {
+        "Name": "Account Name",
+        "FullCode": "Account Full Code"
+      },
+      "DetailAccount": {
+        "Name": "Detail Account Name",
+        "FullCode": "Detail Account Full Code"
+      },
+      "CostCenter": {
+        "Name": "Cost Center Name",
+        "FullCode": "Cost Center Full Code"
+      },
+      "Project": {
+        "Name": "Project Name",
+        "FullCode": "Project Full Code"
+      }
+    }
   },
   "Company": {
     "CompanyName": "Company",

@@ -31,7 +31,7 @@ interface Item {
 @Component({
   selector: 'voucherLine-form-component',
   styles: [
-    "input[type=text],textarea { width: 100%; } .ddl-fAcc {width:49%} /deep/ kendo-numerictextbox{ width:100% !important; }"
+    "input[type=text],textarea { width: 100%; } /deep/ kendo-numerictextbox{ width:100% !important; }"
   ],
   templateUrl: './voucherLine-form.component.html'
 })
@@ -47,10 +47,18 @@ export class VoucherLineFormComponent extends DetailComponent {
     credit: new FormControl("", Validators.required),
     description: new FormControl("", Validators.maxLength(512)),
     fullAccount: new FormGroup({
-      accountId: new FormControl("", Validators.required),
-      detailId: new FormControl(),
-      costCenterId: new FormControl(),
-      projectId: new FormControl(),
+      account: new FormGroup({
+        id: new FormControl("", Validators.required)
+      }),
+      detailAccount: new FormGroup({
+        id: new FormControl()
+      }),
+      costCenter: new FormGroup({
+        id: new FormControl()
+      }),
+      project: new FormGroup({
+        id: new FormControl()
+      })
     })
   });
 
@@ -64,7 +72,7 @@ export class VoucherLineFormComponent extends DetailComponent {
 
 
   @Input() public set model(voucherLine: VoucherLine) {
-
+;
     this.editForm1.reset(voucherLine);
 
     this.active = voucherLine !== undefined || this.isNew;
