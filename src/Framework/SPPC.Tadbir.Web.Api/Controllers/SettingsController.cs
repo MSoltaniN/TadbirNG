@@ -91,27 +91,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetViewTreeSettingsByViewAsync(int viewId)
         {
             var viewSettings = await _repository.GetViewTreeConfigByViewAsync(viewId);
-            if (viewId == ViewName.Account)
-            {
-                Array.ForEach(
-                    viewSettings.Default.Levels.Where(level => level != null).ToArray(),
-                    level => level.Name = _strings.Format(level.Name));
-                Array.ForEach(
-                    viewSettings.Current.Levels.Where(level => level != null).ToArray(),
-                    level => level.Name = _strings.Format(level.Name));
-            }
-            else
-            {
-                Array.ForEach(
-                    viewSettings.Default.Levels.Where(level => level != null).ToArray(),
-                    level => level.Name = String.Format(_strings[AppStrings.LevelX], level.No));
-                Array.ForEach(
-                    viewSettings.Current.Levels.Where(level => level != null).ToArray(),
-                    level => level.Name = level.Name == "LevelX"
-                        ? String.Format(_strings[AppStrings.LevelX], level.No)
-                        : level.Name);
-            }
-
+            Localize(viewSettings, viewId);
             return Json(viewSettings);
         }
 
@@ -128,6 +108,38 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             await _repository.SaveViewTreeConfigAsync(settings);
             return Ok();
+        }
+
+        private void Localize(ViewTreeFullConfig viewSettings, int viewId)
+        {
+            if (viewId == ViewName.Account)
+            {
+                Array.ForEach(
+                    viewSettings.Default.Levels.Where(level => level.No <= viewSettings.Default.MaxDepth).ToArray(),
+                    level => level.Name = _strings.Format(level.Name));
+                Array.ForEach(
+                    viewSettings.Default.Levels.Where(level => level.No > viewSettings.Default.MaxDepth).ToArray(),
+                    level => level.Name = String.Format(_strings[AppStrings.LevelX], level.No));
+                Array.ForEach(
+                    viewSettings.Current.Levels.Where(level => level.No <= viewSettings.Default.MaxDepth).ToArray(),
+                    level => level.Name = _strings.Format(level.Name));
+                Array.ForEach(
+                    viewSettings.Current.Levels.Where(level => level.No > viewSettings.Default.MaxDepth).ToArray(),
+                    level => level.Name = level.Name == "LevelX"
+                        ? String.Format(_strings[AppStrings.LevelX], level.No)
+                        : level.Name);
+            }
+            else
+            {
+                Array.ForEach(
+                    viewSettings.Default.Levels.ToArray(),
+                    level => level.Name = String.Format(_strings[AppStrings.LevelX], level.No));
+                Array.ForEach(
+                    viewSettings.Current.Levels.ToArray(),
+                    level => level.Name = level.Name == "LevelX"
+                        ? String.Format(_strings[AppStrings.LevelX], level.No)
+                        : level.Name);
+            }
         }
 
         private readonly IConfigRepository _repository;
