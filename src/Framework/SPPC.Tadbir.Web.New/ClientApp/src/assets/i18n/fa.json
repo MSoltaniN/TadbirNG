@@ -163,11 +163,13 @@
     "Credit": "بستانکار",
     "DebitSum": "جمع بدهکار",
     "CreditSum": "جمع بستانکار",
-    "Description": "توضیحات",
+    "Description": "شرح",
     "New": "آرتیکل جدید",
     "Delete": "حذف آرتیکل",
     "Currency": "واحد پول",
-    "Account": "بردار حساب"
+    "Account": "بردار حساب",
+    "Sum": "مجموع",
+    "Difference": "اختلاف"
   },
   "Company": {
     "CompanyName": "شرکت",
@@ -494,7 +496,7 @@
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
       "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
-      "NoError": ""   
+      "NoError": ""
     },
     "Company": {
       "NameIsRequired": "وارد کردن نام اجباری است.",

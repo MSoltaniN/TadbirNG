@@ -22,7 +22,11 @@ import { FilterExpression } from '../../class/filterExpression';
 @Component({
   selector: 'voucherLine',
   templateUrl: './voucherLine.component.html',
-  styles: ["/deep/ .panel-primary { border-color: #989898; }"]
+  styles: [`/deep/ .panel-primary { border-color: #989898; }
+.voucher-balance{text-align: center; display: block; }
+.voucher-balance > .fa-times { color: red; }
+.voucher-balance > .fa-check { color: green; }
+`]
 })
 
 
@@ -37,6 +41,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
   public debitSum: number;
   public creditSum: number;
+  public balance: number;
 
   //for add in delete messageText
   deleteConfirm: boolean;
@@ -233,6 +238,8 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
       this.debitSum = res.debitSum;
       this.creditSum = res.creditSum;
+
+      this.balance = Math.abs(this.debitSum - this.creditSum);
 
       this.grid.loading = false;
     })

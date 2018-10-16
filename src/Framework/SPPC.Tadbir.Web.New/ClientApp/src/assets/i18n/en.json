@@ -169,7 +169,9 @@
     "New": "New Article",
     "Delete": "Delete Article",
     "Currency": "Currency",
-    "Account": "Account"
+    "Account": "Account",
+    "Sum": "Sum",
+    "Difference": "Difference"
   },
   "Company": {
     "CompanyName": "Company",
