@@ -63,7 +63,6 @@ namespace SPPC.Tadbir.Persistence
             VoucherLineViewModel articleViewModel = null;
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
             var article = await GetVoucherLineQuery(articleId)
-                .Where(line => line.Id == articleId)
                 .SingleOrDefaultAsync();
             if (article != null)
             {
@@ -238,9 +237,9 @@ namespace SPPC.Tadbir.Persistence
         protected override void UpdateExisting(VoucherLineViewModel lineView, VoucherLine line)
         {
             line.AccountId = lineView.FullAccount.Account.Id;
-            line.DetailId = lineView.FullAccount.DetailAccount.Id;
-            line.CostCenterId = lineView.FullAccount.CostCenter.Id;
-            line.ProjectId = lineView.FullAccount.Project.Id;
+            line.DetailId = lineView.FullAccount.DetailAccount.Id > 0 ? lineView.FullAccount.DetailAccount.Id : (int?)null;
+            line.CostCenterId = lineView.FullAccount.CostCenter.Id > 0 ? lineView.FullAccount.CostCenter.Id : (int?)null;
+            line.ProjectId = lineView.FullAccount.Project.Id > 0 ? lineView.FullAccount.Project.Id : (int?)null;
             line.CurrencyId = lineView.CurrencyId ?? 0;
             line.Debit = lineView.Debit;
             line.Credit = lineView.Credit;
