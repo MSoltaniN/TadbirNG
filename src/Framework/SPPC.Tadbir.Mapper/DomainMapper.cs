@@ -90,9 +90,11 @@ namespace SPPC.Tadbir.Mapper
                         src => !String.IsNullOrEmpty(src.Password)
                             ? _crypto.CreateHash(src.Password).ToLower()
                             : String.Empty));
-
+            mapperConfig.CreateMap<User, UserContextViewModel>()
+                .ForMember(dest => dest.Roles, opts => opts.Ignore());
             mapperConfig.CreateMap<User, UserBriefViewModel>()
                 .ForMember(dest => dest.HasRole, opts => opts.UseValue(true));
+            mapperConfig.CreateMap<UserBriefViewModel, User>();
             mapperConfig.CreateMap<User, RelatedItemsViewModel>()
                 .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
             mapperConfig.CreateMap<User, RelatedItemViewModel>()
@@ -100,9 +102,6 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.Name,
                     opts => opts.MapFrom(
                         src => String.Format("{0} {1}", src.Person.FirstName, src.Person.LastName)));
-            mapperConfig.CreateMap<UserBriefViewModel, User>();
-            mapperConfig.CreateMap<User, UserContextViewModel>()
-                .ForMember(dest => dest.Roles, opts => opts.Ignore());
 
             mapperConfig.CreateMap<Role, RoleViewModel>()
                 .ForMember(
@@ -152,34 +151,38 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Account, AccountItemBriefViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<AccountViewModel, Account>();
+            mapperConfig.CreateMap<Account, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
+            mapperConfig.CreateMap<Account, AccountFullViewModel>();
+
             mapperConfig.CreateMap<DetailAccount, DetailAccountViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<DetailAccount, AccountItemBriefViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<DetailAccountViewModel, DetailAccount>();
+            mapperConfig.CreateMap<DetailAccount, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
+
             mapperConfig.CreateMap<CostCenter, CostCenterViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<CostCenter, AccountItemBriefViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<CostCenterViewModel, CostCenter>();
+            mapperConfig.CreateMap<CostCenter, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
+
             mapperConfig.CreateMap<Project, ProjectViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<Project, AccountItemBriefViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<ProjectViewModel, Project>();
-            mapperConfig.CreateMap<Account, AccountFullViewModel>();
-            mapperConfig.CreateMap<Account, KeyValue>()
-                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
-            mapperConfig.CreateMap<DetailAccount, KeyValue>()
-                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
-            mapperConfig.CreateMap<CostCenter, KeyValue>()
-                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
             mapperConfig.CreateMap<Project, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
+
             mapperConfig.CreateMap<Voucher, VoucherViewModel>()
                 .ForMember(
                     dest => dest.DebitSum,
@@ -193,8 +196,14 @@ namespace SPPC.Tadbir.Mapper
                         src => src.Lines
                             .Select(line => line.Credit)
                             .Sum()));
-
             mapperConfig.CreateMap<VoucherViewModel, Voucher>();
+            mapperConfig.CreateMap<Voucher, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(
+                    dest => dest.Value,
+                    opts => opts.MapFrom(
+                        src => String.Join(",", new[] { "VoucherDisplay", src.No, src.Date.ToShortDateString() })));
+
             mapperConfig.CreateMap<VoucherLine, VoucherLineViewModel>()
                 .ForMember(
                     dest => dest.FullAccount,
@@ -207,14 +216,6 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => model.CostCenterId = AsNullable(viewModel.FullAccount.CostCenter.Id))
                 .AfterMap((viewModel, model) => model.ProjectId = AsNullable(viewModel.FullAccount.Project.Id))
                 .AfterMap((viewModel, model) => model.CurrencyId = viewModel.CurrencyId ?? 0);
-
-            mapperConfig.CreateMap<Voucher, KeyValue>()
-                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(
-                    dest => dest.Value,
-                    opts => opts.MapFrom(
-                        src => String.Join(",", new[] { "VoucherDisplay", src.No, src.Date.ToShortDateString() })));
-
             mapperConfig.CreateMap<VoucherLine, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(
@@ -228,11 +229,11 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
 
             mapperConfig.CreateMap<FiscalPeriod, FiscalPeriodViewModel>();
+            mapperConfig.CreateMap<FiscalPeriodViewModel, FiscalPeriod>()
+               .AfterMap((viewModel, model) => model.CompanyId = viewModel.CompanyId);
             mapperConfig.CreateMap<FiscalPeriod, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
-            mapperConfig.CreateMap<FiscalPeriodViewModel, FiscalPeriod>()
-               .AfterMap((viewModel, model) => model.CompanyId = viewModel.CompanyId);
             mapperConfig.CreateMap<FiscalPeriod, RelatedItemsViewModel>()
                 .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
             mapperConfig.CreateMap<FiscalPeriod, RelatedItemViewModel>();
@@ -240,15 +241,15 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapCorporateTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<Branch, KeyValue>()
-                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
             mapperConfig.CreateMap<Branch, BranchViewModel>()
                 .ForMember(dest => dest.IsAccessible, opts => opts.UseValue(true))
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<BranchViewModel, Branch>()
                 .AfterMap((viewModel, model) => model.CompanyId = viewModel.CompanyId)
                 .AfterMap((viewModel, model) => model.ParentId = viewModel.ParentId);
+            mapperConfig.CreateMap<Branch, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
             mapperConfig.CreateMap<Branch, RelatedItemsViewModel>()
                 .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
             mapperConfig.CreateMap<Branch, RelatedItemViewModel>();

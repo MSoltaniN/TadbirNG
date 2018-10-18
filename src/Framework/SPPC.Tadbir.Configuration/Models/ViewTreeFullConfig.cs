@@ -9,6 +9,15 @@ namespace SPPC.Tadbir.Configuration.Models
     public class ViewTreeFullConfig
     {
         /// <summary>
+        /// نمونه جدیدی از این کلاس می سازد
+        /// </summary>
+        public ViewTreeFullConfig()
+        {
+            Current = new ViewTreeConfig();
+            Default = new ViewTreeConfig();
+        }
+
+        /// <summary>
         /// تنظیمات جاری برای این ساختار درختی
         /// </summary>
         public ViewTreeConfig Current { get; set; }
