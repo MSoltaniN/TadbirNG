@@ -1,8 +1,16 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
+using System.Text;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using SPPC.Framework.Common;
+using SPPC.Framework.Helpers;
+using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Service;
+using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.Web.Api.Filters;
 
 namespace SPPC.Tadbir.Web.Api.Controllers.Tests
@@ -10,6 +18,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
     public class ApiControllerTestBase<TController> : IDisposable
         where TController : Controller
     {
+        protected ControllerContext TestControllerContext
+        {
+            get { return GetTestControllerContext(); }
+        }
+
         public void Dispose()
         {
             Dispose(true);
@@ -85,7 +98,41 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             Assert.That(attribute, Is.Not.Null);
         }
 
+        protected ControllerContext GetTestControllerContext()
+        {
+            var httpContext = new DefaultHttpContext();
+            httpContext.Request.Headers[AppConstants.ContextHeaderName] = _testTicket.Value;
+            httpContext.Request.Headers[AppConstants.GridOptionsHeaderName] = _testGridOptions.Value;
+            return new ControllerContext() { HttpContext = httpContext };
+        }
+
         protected TController _controller;
+        private readonly Lazy<string> _testTicket = new Lazy<string>(() =>
+        {
+            var appContext = new SecurityContext(new UserContextViewModel()
+            {
+                BranchId = 1,
+                CompanyId = 1,
+                FiscalPeriodId = 1,
+                Id = 2,                     // User (Id = 1) is reserved for Admin user.
+                PersonFirstName = "Test",
+                PersonLastName = "User",
+                Connection = "Test Connection"
+            });
+            var ticket = Transform.ToBase64String(
+                Encoding.UTF8.GetBytes(
+                    JsonHelper.From(appContext, false)));
+            return ticket;
+        });
+        private readonly Lazy<string> _testGridOptions = new Lazy<string>(() =>
+        {
+            var gridOptions = new GridOptions();
+            var encodedOptions = Transform.ToBase64String(
+                Encoding.UTF8.GetBytes(
+                    WebUtility.UrlEncode(
+                        JsonHelper.From(gridOptions))));
+            return encodedOptions;
+        });
         private bool _disposed;
     }
 }
