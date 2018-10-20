@@ -1,0 +1,111 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">{{ 'Entity.ViewTreeConfig' | translate }}</div>
+  <div class="panel-body view-body">
+
+    <div *ngIf="errorMessage != ''">
+      <div class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+    </div>
+
+    <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
+
+      <div class="row">
+        <div class="form-group col-xs-6" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+          <label class="control-label">{{ 'ViewTreeConfig.EntityName' | translate }}</label>
+
+          <kendo-dropdownlist [data]="ddlEntites" class="input-frm"
+                              [filterable]="true"
+                              [textField]="'value'"
+                              [valueField]="'key'"
+                              [(ngModel)]="ddlEntitySelected"
+                              [value]="ddlEntitySelected"
+                              [valuePrimitive]="true"
+                              (valueChange)="handleEntityChange($event)"
+                              (filterChange)="handleFilter($event)">
+          </kendo-dropdownlist>
+
+        </div>
+
+        <div class="form-group  col-xs-6">
+          <label class="control-label">{{ 'ViewTreeConfig.MaxDepth' | translate }}</label>
+
+          <kendo-numerictextbox [(ngModel)]="maxDepthValue" class="input-frm"
+                                [format]="'n'"
+                                [min]="viewTreeConfig && viewTreeConfig.viewId == 1 ? 3 : 1"
+                                [max]="16"
+                                [step]="1"
+                                [autoCorrect]="true"
+                                [disabled]="disabledNumTxt"
+                                (ngModelChange)="onChangeDepth()">
+          </kendo-numerictextbox>
+
+        </div>
+        <div class="clearfix"></div>
+      </div>
+
+
+
+      <div class="row" *ngIf="viewTreeConfig">
+
+        <div class="col-xs-12">
+          <label class="control-label">{{ 'ViewTreeConfig.DefinableLevels' | translate }}</label>
+        </div>
+
+        <div class="col-xs-12 col-sm-6" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
+          <ul id="level-list">
+            <li *ngFor="let item of viewTreeConfig.levels" [ngClass]="{'enable': maxDepthValue && item.no <= maxDepthValue,'disable':maxDepthValue && item.no > maxDepthValue,'selected':item.no == levelSelected}"
+                (click)="onChangeLevel(item)">
+              {{item.name}}
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-xs-12 col-sm-6">
+
+          <form novalidate [formGroup]="levelForm">
+
+            <div class="form-group">
+              <label for="no" class="control-label">{{ 'ViewTreeConfig.LevelNo' | translate }}</label>
+
+              <input type="text" class="k-textbox input-frm" formControlName="no" readonly />
+            </div>
+
+            <div class="form-group">
+              <label for="name" class="control-label">{{ 'ViewTreeConfig.LevelName' | translate }}</label>
+
+              <input type="text" class="k-textbox input-frm" formControlName="name" [readonly]="ddlEntitySelected == 1 && levelSelected <= 3" />
+            </div>
+
+            <div class="form-group">
+              <label for="codeLength" class="control-label">{{ 'ViewTreeConfig.CodeLength' | translate }}</label>
+
+              <kendo-numerictextbox formControlName="codeLength" class="input-frm"
+                                    [format]="'n'"
+                                    [min]="1"
+                                    [max]="16"
+                                    [step]="1"
+                                    [autoCorrect]="true">
+              </kendo-numerictextbox>
+            </div>
+
+            <div [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}" style="margin-top: 35px;">
+              <button class="k-button k-primary" [disabled]="finalViewTreeConfig.length == 0 " (click)="saveAllConfig()">{{ 'ViewTreeConfig.Save' | translate }}</button>
+              <button class="k-button" [disabled]="levelSelected == 0" (click)="setDefaultConfig()">{{ 'ViewTreeConfig.DefaultSettings' | translate }}</button>
+            </div>
+          </form>
+
+        </div>
+        <div class="clearfix"></div>
+
+      </div>
+
+    </div>
+    <div class="clearfix"></div>
+
+  </div>
+</div>
+
+
+
+

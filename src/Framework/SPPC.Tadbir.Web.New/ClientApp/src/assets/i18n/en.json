@@ -77,7 +77,8 @@
     "ViewRowPermission": "Row Permission",
     "OperationLog": "Operation Logs",
     "Unsuccessful": "Unsuccessful",
-    "Successful": "Successful"
+    "Successful": "Successful",
+    "ViewTreeConfig": "View Tree Config"
   },
   "BranchScope": {
     "AllBranches": "All Branches",
@@ -159,6 +160,16 @@
     "ListTitle": "Records {0}",
     "SelectEntity": "Select Entity",
     "Entities": "Entities"
+  },
+  "ViewTreeConfig": {
+    "EntityName": "Entity Name",
+    "MaxDepth": "Max Depth",
+    "DefinableLevels": "Definable Levels",
+    "LevelNo": "Level No",
+    "LevelName": "Level Name",
+    "CodeLength": "Code Length",
+    "Save": "Save",
+    "DefaultSettings": "Default Settings"
   },
   "VoucherLine": {
     "Debit": "Debit",
