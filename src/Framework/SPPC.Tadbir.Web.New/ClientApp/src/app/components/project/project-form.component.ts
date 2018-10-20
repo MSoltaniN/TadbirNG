@@ -109,7 +109,7 @@ export class ProjectFormComponent extends DetailComponent implements OnInit {
   //Events
 
   ngOnInit(): void {
-    this.viewId = ViewName.Account;
+    this.viewId = ViewName.Project;
   }
 
   constructor(public toastrService: ToastrService, public translate: TranslateService,

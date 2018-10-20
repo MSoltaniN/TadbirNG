@@ -256,22 +256,27 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         this.deleteModelConfirm = true;
     }
 
-    deleteModels(confirm: boolean) {
-        if (confirm) {
-            //this.sppcLoading.show();
-            //this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
-            //    this.showMessage(this.deleteMsg, MessageType.Info);
-            //    this.selectedRows = [];
-            //    this.reloadGrid();
-            //    this.groupDelete = false;
-            //}, (error => {
-            //    //this.sppcLoading.hide();
-            //    this.showMessage(error, MessageType.Warning);
-            //}));
-        }
+  deleteModels(confirm: boolean) {
 
+    if (confirm) {
+      this.grid.loading = true;
+      this.costCenterService.groupDelete(CostCenterApi.EnvironmentCostCenters, this.selectedRows).subscribe(res => {
+        this.showMessage(this.deleteMsg, MessageType.Info);
+
+        if (this.rowData.data.length == this.selectedRows.length && this.pageIndex > 1)
+          this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
+        this.selectedRows = [];
         this.groupDelete = false;
-        this.deleteModelConfirm = false;
+        this.reloadGrid();
+        return;
+      }, (error => {
+        this.grid.loading = false;
+        this.showMessage(error, MessageType.Warning);
+      }));
+    }
+
+    this.deleteModelConfirm = false;
     }
 
 
