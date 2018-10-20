@@ -9,6 +9,8 @@ import { SettingBrief } from "../model/settingBrief";
 import { ColumnViewDeviceConfig } from "../model/columnViewDeviceConfig";
 import { HttpClient } from "@angular/common/http";
 import { ColumnVisibility, SessionKeys } from "../../environments/environment";
+import { ViewTreeConfig, ViewTreeLevelConfig } from "../model/index";
+import { Observable } from "rxjs/Observable";
 
 
 export class SettingBriefInfo implements SettingBrief {    
@@ -71,6 +73,13 @@ export class SettingViewModelInfo  {
 }
 
 
+export class ViewTreeConfigInfo implements ViewTreeConfig {
+  viewId: number;
+  maxDepth: number;
+  levels: ViewTreeLevelConfig[];
+}
+
+
 @Injectable()
 export class SettingService extends BaseService {
 
@@ -95,7 +104,15 @@ export class SettingService extends BaseService {
   getViewTreeSettings(viewId: number) {
     var url = String.Format(SettingsApi.ViewTreeSettingsByView, viewId);
     return this.http.get(url, this.option)
-      .map(response => (<Response>response));
+      .map(response => <any>(<Response>response));
+  }
+
+  public putViewTreeConfig(apiUrl: string, model: any): Observable<string> {   
+
+    var body = JSON.stringify(model);
+    return this.http.put(apiUrl, body, this.option)
+      .map(res => res)
+      .catch(this.handleError);
   }
 
     getListSettingsByUser(userId: number) {

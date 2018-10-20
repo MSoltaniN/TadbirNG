@@ -267,19 +267,23 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
   deleteModels(confirm: boolean) {
     if (confirm) {
-      //this.sppcLoading.show();
-      //this.accountService.deleteAccounts(this.selectedRows).subscribe(res => {
-      //    this.showMessage(this.deleteMsg, MessageType.Info);
-      //    this.selectedRows = [];
-      //    this.reloadGrid();
-      //    this.groupDelete = false;
-      //}, (error => {
-      //    //this.sppcLoading.hide();
-      //    this.showMessage(error, MessageType.Warning);
-      //}));
+      this.grid.loading = true;
+      this.detailAccountService.groupDelete(DetailAccountApi.EnvironmentDetailAccounts, this.selectedRows).subscribe(res => {
+        this.showMessage(this.deleteMsg, MessageType.Info);
+
+        if (this.rowData.data.length == this.selectedRows.length && this.pageIndex > 1)
+          this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
+        this.selectedRows = [];
+        this.groupDelete = false;
+        this.reloadGrid();
+        return;
+      }, (error => {
+        this.grid.loading = false;
+        this.showMessage(error, MessageType.Warning);
+      }));
     }
 
-    this.groupDelete = false;
     this.deleteModelsConfirm = false;
   }
 

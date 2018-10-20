@@ -55,6 +55,7 @@ import { ViewRowPermissionMultipleFormComponent } from './components/viewRowPerm
 import { OperationLogsComponent } from './components/operationLogs/operationLogs.component';
 import { OperationLogsDetailComponent } from './components/operationLogs/operationLogs-detail.component';
 import { EditorFormTitleComponent } from './directive/editorForm/editor-title.component';
+import { ViewTreeConfigComponent } from './components/viewTreeConfig/viewTreeConfig.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -208,6 +209,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     OperationLogsComponent,
     OperationLogsDetailComponent,
     EditorFormTitleComponent,
+    ViewTreeConfigComponent,
     SppcGridDateFilter,
     FilterDatePickerDirective,
     SppcGridDatepicker
@@ -262,6 +264,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
       { path: 'viewRowPermission', component: ViewRowPermissionComponent, canActivate: [AuthGuard] },
       { path: 'operation-log', component: OperationLogsComponent, canActivate: [AuthGuard] },
+      { path: 'view-tree-config', component: ViewTreeConfigComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'account' }
     ])
   ],

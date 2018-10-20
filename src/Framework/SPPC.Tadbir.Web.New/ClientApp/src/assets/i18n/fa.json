@@ -75,7 +75,8 @@
     "AccountRelations": "ارتباطات حساب",
     "Settings": "تنظیمات",
     "ViewRowPermission": "دسترسی به سطرهای اطلاعاتی",
-    "OperationLog": "لاگ های عملیاتی"
+    "OperationLog": "لاگ های عملیاتی",
+    "ViewTreeConfig": "تنظیمات ساختار درختی"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",
@@ -157,6 +158,16 @@
     "ListTitle": "سطرهای {0}",
     "SelectEntity": "انتخاب موجودیت",
     "Entities": "موجودیت ها"
+  },
+  "ViewTreeConfig": {
+    "EntityName": "نام موجودیت",
+    "MaxDepth": "حداکثر عمق",
+    "DefinableLevels": "سطوح قابل تعریف",
+    "LevelNo": "شماره سطح",
+    "LevelName": "نام سطح",
+    "CodeLength": "طول کد",
+    "Save": "ذخیره",
+    "DefaultSettings": "تنظیمات پیش فرض"
   },
   "VoucherLine": {
     "Debit": "بدهکار",
