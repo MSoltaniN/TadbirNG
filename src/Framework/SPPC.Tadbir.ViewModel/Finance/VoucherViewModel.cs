@@ -17,6 +17,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int BranchId { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی وضعیت ثبتی این سند مالی
+        /// </summary>
+        public int StatusId { get; set; }
+
+        /// <summary>
         /// نام وضعیت ثبتی این سند مالی
         /// </summary>
         public string StatusName { get; set; }
