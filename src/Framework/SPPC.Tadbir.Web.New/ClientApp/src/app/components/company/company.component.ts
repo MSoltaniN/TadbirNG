@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Renderer2, Optional, Host, SkipSelf, ViewChild } from '@angular/core';
-import { CompanyService, CompanyInfo, CompanyDbInfo } from '../../service/index';
+import { CompanyService, CompanyInfo, CompanyDbInfo, SettingService } from '../../service/index';
 import { Company, CompanyDb } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
@@ -166,8 +166,8 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
     //#region Constructor
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private companyService: CompanyService, public renderer: Renderer2, public metadata: MetaDataService, ) {
-        super(toastrService, translate, renderer, metadata, Entities.Company, Metadatas.Company);
+      private companyService: CompanyService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService ) {
+      super(toastrService, translate, renderer, metadata, settingService, Entities.Company, Metadatas.Company);
     }
 
     //#endregion

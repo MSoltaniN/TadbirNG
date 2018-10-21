@@ -1,4 +1,4 @@
-﻿<div [ngClass]="{'panel panel-primary' : !isChild }">
+<div [ngClass]="{'panel panel-primary' : !isChild }">
     <div *ngIf="!isChild" class="panel-heading">{{ 'Entity.Account' | translate }}</div>
     <div SppcCheckAccess="View" [ngClass]="{'panel-body' : !isChild }">
         <kendo-grid id="1" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
@@ -103,7 +103,7 @@
             </kendo-grid-column>
             <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                    <button [icon]="'plus'" SppcCheckAccess="Create" (click)="addNew(dataItem.id)" kendoGridAddCommand title="{{ 'Account.NewSubAccount' | translate }}"></button>
+                    <button [icon]="'plus'" SppcViewTreeConfig SppcCheckAccess="Create" (click)="addNew(dataItem.id)" kendoGridAddCommand title="{{ 'Account.NewSubAccount' | translate }}"></button>
                     <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
                     <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
                 </ng-template>
@@ -111,7 +111,7 @@
             <!-- additional columns on large devices -->
 
         </kendo-grid>
-        <account-form-component [model]="editDataItem" [parentId]="parentId" [parentTitle]="parentTitle" [parentValue]="parentValue" [parentScopeValue]="parentScope" [isNew]="isNew" [errorMessage]="errorMessage" [disableSaveBtn]="disableSaveBtn"
+        <account-form-component [model]="editDataItem" [parent]="parentModel" [isNew]="isNew" [errorMessage]="errorMessage" [disableSaveBtn]="disableSaveBtn"
                                 (save)="saveHandler($event)"
                                 (cancel)="cancelHandler()">
         </account-form-component>

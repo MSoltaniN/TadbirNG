@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using SPPC.Framework.Values;
-using SPPC.Tadbir.Values;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
@@ -12,48 +9,34 @@ namespace SPPC.Tadbir.ViewModel.Finance
     public class FullAccountViewModel
     {
         /// <summary>
-        /// شناسه دیتابیسی مولفه سرفصل حسابداری
+        /// نمونه جدیدی از این کلاس می سازد
         /// </summary>
-        [Display(Name = FieldNames.AccountField)]
-        [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
-        public int? AccountId { get; set; }
+        public FullAccountViewModel()
+        {
+            Account = new AccountItemBriefViewModel();
+            DetailAccount = new AccountItemBriefViewModel();
+            CostCenter = new AccountItemBriefViewModel();
+            Project = new AccountItemBriefViewModel();
+        }
 
         /// <summary>
-        /// شناسه دیتابیسی مولفه تفصیلی شناور
+        /// مولفه سرفصل حسابداری
         /// </summary>
-        [Display(Name = FieldNames.DetailAccountField)]
-        public int? DetailId { get; set; }
+        public AccountItemBriefViewModel Account { get; set; }
 
         /// <summary>
-        /// شناسه دیتابیسی مولفه مرکز هزینه
+        /// مولفه تفصیلی شناور
         /// </summary>
-        [Display(Name = FieldNames.CostCenterField)]
-        public int? CostCenterId { get; set; }
+        public AccountItemBriefViewModel DetailAccount { get; set; }
 
         /// <summary>
-        /// شناسه دیتابیسی مولفه پروژه
+        /// مولفه مرکز هزینه
         /// </summary>
-        [Display(Name = FieldNames.ProjectField)]
-        public int? ProjectId { get; set; }
+        public AccountItemBriefViewModel CostCenter { get; set; }
 
         /// <summary>
-        /// نام مولفه سرفصل حسابداری
+        /// مولفه پروژه
         /// </summary>
-        public string Account { get; set; }
-
-        /// <summary>
-        /// نام مولفه تفصیلی شناور
-        /// </summary>
-        public string DetailAccount { get; set; }
-
-        /// <summary>
-        /// نام مولفه مرکز هزینه
-        /// </summary>
-        public string CostCenter { get; set; }
-
-        /// <summary>
-        /// نام مولفه پروژه
-        /// </summary>
-        public string Project { get; set; }
+        public AccountItemBriefViewModel Project { get; set; }
     }
 }

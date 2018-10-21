@@ -168,6 +168,26 @@ namespace SPPC.Tadbir.Api
         public const string ApproveVoucherUrl = "vouchers/{voucherId:min(1)}/approve";
 
         /// <summary>
+        /// API client URL for checking (changing document status to Checked) a single voucher specified by identifier
+        /// </summary>
+        public const string CheckVoucher = "vouchers/{0}/check";
+
+        /// <summary>
+        /// API server route URL for checking (changing document status to Checked) a single voucher specified by identifier
+        /// </summary>
+        public const string CheckVoucherUrl = "vouchers/{voucherId:min(1)}/check";
+
+        /// <summary>
+        /// API client URL for checking (changing document status to Checked) a single voucher specified by identifier
+        /// </summary>
+        public const string UncheckVoucher = "vouchers/{0}/uncheck";
+
+        /// <summary>
+        /// API server route URL for checking (changing document status to Checked) a single voucher specified by identifier
+        /// </summary>
+        public const string UncheckVoucherUrl = "vouchers/{voucherId:min(1)}/uncheck";
+
+        /// <summary>
         /// API client URL for all articles in a single voucher specified by identifier
         /// </summary>
         public const string VoucherArticles = "vouchers/{0}/articles";

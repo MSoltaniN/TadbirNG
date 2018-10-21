@@ -53,16 +53,6 @@ namespace SPPC.Tadbir.Security
         public const string Branch = "Branch";
 
         /// <summary>
-        /// نام موجودیت واحد سازمانی
-        /// </summary>
-        public const string BusinessUnit = "BusinessUnit";
-
-        /// <summary>
-        /// نام موجودیت شریک تجاری
-        /// </summary>
-        public const string BusinessPartner = "BusinessPartner";
-
-        /// <summary>
         /// نام موجودیت سند مالی
         /// </summary>
         public const string Voucher = "Voucher";
@@ -78,18 +68,18 @@ namespace SPPC.Tadbir.Security
         public const string Role = "Role";
 
         /// <summary>
-        /// نام موجودیت موجودی کالا
-        /// </summary>
-        public const string ProductInventory = "ProductInventory";
-
-        /// <summary>
-        /// نام موجودیت درخواست کالا
-        /// </summary>
-        public const string Requisition = "RequisitionVoucher";
-
-        /// <summary>
         /// نام موجودیت شرکت
         /// </summary>
         public const string Company = "Company";
+
+        /// <summary>
+        /// نام موجودیت دسترسی به سطرها
+        /// </summary>
+        public const string RowAccess = "RowAccess";
+
+        /// <summary>
+        /// نام موجودیت تنظیمات
+        /// </summary>
+        public const string Setting = "Setting";
     }
 }

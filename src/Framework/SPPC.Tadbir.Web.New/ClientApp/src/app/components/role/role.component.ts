@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Renderer2, ViewChild } from '@angular/core';
-import { RoleService, RoleInfo, RoleFullInfo, PermissionInfo, RoleDetailsInfo, RelatedItemsInfo } from '../../service/index';
+import { RoleService, RoleInfo, RoleFullInfo, PermissionInfo, RoleDetailsInfo, RelatedItemsInfo, SettingService } from '../../service/index';
 import { Role, RoleFull, Permission, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
@@ -203,8 +203,8 @@ export class RoleComponent extends DefaultComponent implements OnInit {
 
     //#region Constructor
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        public roleService: RoleService, public renderer: Renderer2, public metadata: MetaDataService) {
-        super(toastrService, translate, renderer, metadata, Entities.Role, Metadatas.Role);
+      public roleService: RoleService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
+      super(toastrService, translate, renderer, metadata, settingService, Entities.Role, Metadatas.Role);
     }
     //#endregion
 

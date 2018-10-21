@@ -1,4 +1,4 @@
-﻿import { PermissionBrief } from "../model/index";
+import { PermissionBrief } from "../model/index";
 
 
 export class EnviromentComponent {

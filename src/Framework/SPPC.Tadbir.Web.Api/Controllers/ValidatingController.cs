@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
+using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Resources.Types;
@@ -38,6 +39,29 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if (item.BranchId != currentContext.BranchId)
             {
                 return BadRequest(_strings.Format(AppStrings.OtherBranchEditNotAllowed));
+            }
+
+            return Ok();
+        }
+
+        protected IActionResult ConfigValidationResult<TTreeView>(TTreeView item, ViewTreeConfig treeConfig)
+            where TTreeView : class, ITreeEntityView
+        {
+            Verify.ArgumentNotNull(treeConfig, "treeConfig");
+            if (item.Level == treeConfig.MaxDepth)
+            {
+                string message = String.Format(_strings[AppStrings.TreeLevelsAreTooDeep],
+                    treeConfig.MaxDepth, (string)_strings[EntityNameKey]);
+                return BadRequest(message);
+            }
+
+            var levelConfig = treeConfig.Levels[item.Level];
+            int codeLen = levelConfig.CodeLength;
+            if (item.Code.Length != codeLen)
+            {
+                string message = String.Format(_strings[AppStrings.LevelCodeLengthIsIncorrect],
+                    (string)_strings[EntityNameKey], levelConfig.Name, levelConfig.CodeLength);
+                return BadRequest(message);
             }
 
             return Ok();

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { FullAccount } from '../model/index';
+import { FullAccount, AccountItemBrief } from '../model/index';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { String } from '../class/source';
@@ -16,9 +16,10 @@ import { LookupApi } from './api/index';
 
 
 export class FullAccountInfo implements FullAccount {
-
-    constructor(public accountId: number = 0, public detailId: number = 0, public costCenterId: number = 0, public projectId: number = 0) { }
-
+  account: AccountItemBrief;
+  detailAccount: AccountItemBrief;
+  costCenter: AccountItemBrief;
+  project: AccountItemBrief;
 }
 
 

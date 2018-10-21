@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -43,6 +45,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
             var vouchers = await _repository.GetVouchersAsync(GridOptions);
+            Localize(vouchers.ToArray());
             return Json(vouchers);
         }
 
@@ -52,6 +55,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetVoucherAsync(int voucherId)
         {
             var voucher = await _repository.GetVoucherAsync(voucherId);
+            Localize(voucher);
             return JsonReadResult(voucher);
         }
 
@@ -114,6 +118,39 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
+        // PUT: api/vouchers/{voucherId:int}/check
+        [HttpPut]
+        [Route(VoucherApi.CheckVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Check)]
+        public async Task<IActionResult> PutExistingVoucherAsChecked(int voucherId)
+        {
+            var voucher = await _repository.GetVoucherAsync(voucherId);
+            if (voucher == null)
+            {
+                var message = String.Format(
+                    _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Voucher), voucherId);
+                return BadRequest(message);
+            }
+
+            if (IsUnbalancedVoucher(voucher))
+            {
+                return BadRequest(_strings.Format(AppStrings.CantCheckUnbalancedDocument, AppStrings.Voucher));
+            }
+
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.NormalCheck);
+            return Ok();
+        }
+
+        // PUT: api/vouchers/{voucherId:int}/uncheck
+        [HttpPut]
+        [Route(VoucherApi.UncheckVoucherUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.Uncheck)]
+        public async Task<IActionResult> PutExistingVoucherAsUnchecked(int voucherId)
+        {
+            await _repository.SetVoucherStatusAsync(voucherId, DocumentStatusValue.Draft);
+            return Ok();
+        }
+
         // DELETE: api/vouchers/{voucherId:int}
         [HttpDelete]
         [Route(VoucherApi.VoucherUrl)]
@@ -143,7 +180,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _lineRepository.SetCurrentContext(SecurityContext.User);
             int itemCount = await _lineRepository.GetArticleCountAsync(SecurityContext.User, voucherId, GridOptions);
             SetItemCount(itemCount);
-            var articles = await _lineRepository.GetArticlesAsync(SecurityContext.User, voucherId, GridOptions);
+            var articles = await _lineRepository.GetArticlesAsync(voucherId, GridOptions);
             return Json(articles);
         }
 
@@ -235,6 +272,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
+        private static bool IsUnbalancedVoucher(VoucherViewModel voucher)
+        {
+            return (voucher.DebitSum == 0.0M && voucher.CreditSum == 0.0M)
+                || Math.Abs(voucher.DebitSum - voucher.CreditSum) >= 1.0M;
+        }
+
         private IActionResult BasicValidationResult<TModel>(TModel model, string modelType, int modelId = 0)
         {
             if (model == null)
@@ -294,7 +337,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
             }
 
-            var account = await _lineRepository.GetArticleAccountAsync(article.FullAccount.AccountId.Value);
+            var account = await _lineRepository.GetArticleAccountAsync(article.FullAccount.Account.Id);
             if (account.ChildCount > 0)
             {
                 string accountInfo = String.Format("{0} ({1})", account.Name, account.FullCode);
@@ -303,7 +346,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            var detailAccount = await _lineRepository.GetArticleDetailAccountAsync(article.FullAccount.DetailId ?? 0);
+            var detailAccount = await _lineRepository.GetArticleDetailAccountAsync(article.FullAccount.DetailAccount.Id);
             if (detailAccount != null && detailAccount.ChildCount > 0)
             {
                 string detailInfo = String.Format("{0} ({1})", detailAccount.Name, detailAccount.FullCode);
@@ -312,7 +355,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            var costCenter = await _lineRepository.GetArticleCostCenterAsync(article.FullAccount.CostCenterId ?? 0);
+            var costCenter = await _lineRepository.GetArticleCostCenterAsync(article.FullAccount.CostCenter.Id);
             if (costCenter != null && costCenter.ChildCount > 0)
             {
                 string costCenterInfo = String.Format("{0} ({1})", costCenter.Name, costCenter.FullCode);
@@ -321,7 +364,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(message);
             }
 
-            var project = await _lineRepository.GetArticleProjectAsync(article.FullAccount.ProjectId ?? 0);
+            var project = await _lineRepository.GetArticleProjectAsync(article.FullAccount.Project.Id);
             if (project != null && project.ChildCount > 0)
             {
                 string projectInfo = String.Format("{0} ({1})", project.Name, project.FullCode);
@@ -369,6 +412,17 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return message;
+        }
+
+        private void Localize(params VoucherViewModel[] vouchers)
+        {
+            Array.ForEach(vouchers, voucher =>
+            {
+                if (voucher != null)
+                {
+                    voucher.StatusName = _strings.Format(voucher.StatusName);
+                }
+            });
         }
 
         private readonly IVoucherRepository _repository;

@@ -57,12 +57,12 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
         /// <returns>تنظیمات موجود برای ساختار نمای درختی مشخص شده</returns>
-        Task<ViewTreeConfig> GetViewTreeConfigByViewAsync(int viewId);
+        Task<ViewTreeFullConfig> GetViewTreeConfigByViewAsync(int viewId);
 
         /// <summary>
         /// به روش آسنکرون، آخرین تغییرات مجموعه ای از تنظیمات نماهای درختی را ذخیره می کند
         /// </summary>
         /// <param name="configItems">مجموعه ای از تنظیمات نماهای درختی</param>
-        Task SaveViewTreeConfigAsync(List<ViewTreeConfig> configItems);
+        Task SaveViewTreeConfigAsync(List<ViewTreeFullConfig> configItems);
     }
 }

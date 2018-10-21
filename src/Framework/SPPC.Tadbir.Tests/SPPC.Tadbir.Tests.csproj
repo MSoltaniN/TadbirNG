@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
@@ -6,7 +6,7 @@
 
   <PropertyGroup>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <CodeAnalysisRuleSet>..\..\..\misc\assets\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\..\..\misc\assets\CodeAnalysis4Test.ruleset</CodeAnalysisRuleSet>
     <Authors>Babak Eslamieh</Authors>
   </PropertyGroup>
 
@@ -19,7 +19,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Api\AccountsControllerTests.cs" />
     <Compile Remove="Api\LookupControllerTests.cs" />
     <Compile Remove="Api\TransactionsControllerTests.cs" />
     <Compile Remove="Class1.cs" />
@@ -41,10 +40,6 @@
   <ItemGroup>
     <ProjectReference Include="..\SPPC.Tadbir.Mapper\SPPC.Tadbir.Mapper.csproj" />
     <ProjectReference Include="..\SPPC.Tadbir.Web.Api\SPPC.Tadbir.Web.Api.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Api\" />
   </ItemGroup>
 
 </Project>

@@ -132,8 +132,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                projectModel = await repository.GetByIDAsync(
-                    project.Id, prj => prj.FiscalPeriod, prj => prj.Branch);
+                projectModel = await repository.GetByIDAsync(project.Id);
                 if (projectModel != null)
                 {
                     await UpdateAsync(repository, projectModel, project);
@@ -150,7 +149,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteProjectAsync(int projectId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var project = await repository.GetByIDAsync(projectId, prj => prj.Branch);
+            var project = await repository.GetByIDAsync(projectId);
             if (project != null)
             {
                 await DeleteAsync(repository, project);
@@ -169,7 +168,7 @@ namespace SPPC.Tadbir.Persistence
             var projects = await repository
                 .GetByCriteriaAsync(
                     prj => prj.Id != project.Id
-                        && prj.FiscalPeriod.Id == project.FiscalPeriodId
+                        && prj.FiscalPeriod.Id <= project.FiscalPeriodId
                         && prj.FullCode == project.FullCode);
             return (projects.Count > 0);
         }

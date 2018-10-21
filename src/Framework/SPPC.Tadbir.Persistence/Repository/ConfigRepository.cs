@@ -205,22 +205,16 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="viewId">شناسه دیتابیسی یکی از مدل های نمایشی موجود</param>
         /// <returns>تنظیمات موجود برای ساختار نمای درختی مشخص شده</returns>
-        public async Task<ViewTreeConfig> GetViewTreeConfigByViewAsync(int viewId)
+        public async Task<ViewTreeFullConfig> GetViewTreeConfigByViewAsync(int viewId)
         {
-            var viewConfig = default(ViewTreeConfig);
+            var viewConfig = default(ViewTreeFullConfig);
             var repository = _unitOfWork.GetAsyncRepository<ViewSetting>();
-            var items = await repository
-                .GetByCriteriaAsync(cfg => cfg.ViewId == viewId
+            var config = await repository
+                .GetSingleByCriteriaAsync(cfg => cfg.ViewId == viewId
                     && cfg.ModelType == typeof(ViewTreeConfig).Name);
-            var config = items.SingleOrDefault();
-            if (config == null)
+            if (config != null)
             {
-                viewConfig = new ViewTreeConfig() { ViewId = viewId };
-                viewConfig.InitDefaultLevels();
-            }
-            else
-            {
-                viewConfig = _mapper.Map<ViewTreeConfig>(config);
+                viewConfig = _mapper.Map<ViewTreeFullConfig>(config);
             }
 
             return viewConfig;
@@ -230,22 +224,17 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، آخرین تغییرات مجموعه ای از تنظیمات نماهای درختی را ذخیره می کند
         /// </summary>
         /// <param name="configItems">مجموعه ای از تنظیمات نماهای درختی</param>
-        public async Task SaveViewTreeConfigAsync(List<ViewTreeConfig> configItems)
+        public async Task SaveViewTreeConfigAsync(List<ViewTreeFullConfig> configItems)
         {
             Verify.ArgumentNotNull(configItems, "configItems");
             var repository = _unitOfWork.GetAsyncRepository<ViewSetting>();
             foreach (var configItem in configItems)
             {
                 var existing = await repository.GetSingleByCriteriaAsync(
-                    cfg => cfg.ViewId == configItem.ViewId && cfg.SettingId == 5);
-                if (existing == null)
+                    cfg => cfg.ViewId == configItem.Default.ViewId && cfg.SettingId == 5);
+                if (existing != null)
                 {
-                    var newConfig = _mapper.Map<ViewSetting>(configItem);
-                    repository.Insert(newConfig);
-                }
-                else
-                {
-                    existing.Values = JsonHelper.From(configItem, false);
+                    existing.Values = JsonHelper.From(configItem.Current, false);
                     repository.Update(existing);
                 }
             }

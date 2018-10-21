@@ -132,8 +132,7 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
-                costCenterModel = await repository.GetByIDAsync(
-                    costCenter.Id, cc => cc.FiscalPeriod, cc => cc.Branch);
+                costCenterModel = await repository.GetByIDAsync(costCenter.Id);
                 if (costCenterModel != null)
                 {
                     await UpdateAsync(repository, costCenterModel, costCenter);
@@ -150,7 +149,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteCostCenterAsync(int costCenterId)
         {
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Branch);
+            var costCenter = await repository.GetByIDAsync(costCenterId);
             if (costCenter != null)
             {
                 await DeleteAsync(repository, costCenter);
@@ -169,7 +168,7 @@ namespace SPPC.Tadbir.Persistence
             var costCenters = await repository
                 .GetByCriteriaAsync(
                     cc => cc.Id != costCenter.Id
-                        && cc.FiscalPeriod.Id == costCenter.FiscalPeriodId
+                        && cc.FiscalPeriod.Id <= costCenter.FiscalPeriodId
                         && cc.FullCode == costCenter.FullCode);
             return (costCenters.Count > 0);
         }

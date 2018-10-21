@@ -1,4 +1,4 @@
-﻿<div [ngClass]="{'panel panel-primary' : !isChild }">
+<div [ngClass]="{'panel panel-primary' : !isChild }">
     <div *ngIf="!isChild" class="panel-heading">{{ 'Entity.DetailAccount' | translate }}</div>
     <div SppcCheckAccess="View" [ngClass]="{'panel-body' : !isChild }">
         <kendo-grid id="6" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
@@ -31,7 +31,7 @@
             </ng-template>
             <ng-template kendoGridToolbarTemplate>
                 <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(parentId , true)" [icon]="'plus-outline'" type="button">{{ 'DetailAccount.New' | translate }}</button>
-                <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
+                <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="showConfirm()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
                 <grid-setting entityTypeName="DetailAccount"></grid-setting>
                 <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
                 <!--<button *ngIf="showFilterBtn" class="k-button" (click)="filterRowData()" type="button">
@@ -138,7 +138,7 @@
             <!-- additional columns on large devices -->
 
         </kendo-grid>
-        <detailAccount-form-component [model]="editDataItem" [parentId]="parentId" [parentTitle]="parentTitle" [parentValue]="parentValue" [parentScopeValue]="parentScope" [isNew]="isNew" [errorMessage]="errorMessage"
+        <detailAccount-form-component [model]="editDataItem" [parent]="parentModel" [isNew]="isNew" [errorMessage]="errorMessage"
                                       (save)="saveHandler($event)"
                                       (cancel)="cancelHandler()">
         </detailAccount-form-component>

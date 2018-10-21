@@ -1,11 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Common;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
@@ -17,10 +23,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     public class DetailAccountsController : ValidatingController<DetailAccountViewModel>
     {
         public DetailAccountsController(
-            IDetailAccountRepository repository, IStringLocalizer<AppStrings> strings = null)
+            IDetailAccountRepository repository, IConfigRepository config, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
         {
             _repository = repository;
+            Verify.ArgumentNotNull(config, "config");
+            _config = config;
+            _treeConfig = _config.GetViewTreeConfigByViewAsync(ViewName.DetailAccount).Result;
         }
 
         protected override string EntityNameKey
@@ -106,12 +115,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            result = BranchValidationResult(detailAccount);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
             _repository.SetCurrentContext(SecurityContext.User);
             var outputItem = await _repository.SaveDetailAccountAsync(detailAccount);
             return StatusCode(StatusCodes.Status201Created, outputItem);
@@ -125,12 +128,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int faccountId, [FromBody] DetailAccountViewModel detailAccount)
         {
             var result = await ValidationResultAsync(detailAccount, faccountId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = BranchValidationResult(detailAccount);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -161,6 +158,33 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        // PUT: api/faccounts
+        [HttpPut]
+        [Route(DetailAccountApi.EnvironmentDetailAccountsUrl)]
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.Delete)]
+        public async Task<IActionResult> PutExistingDetailAccountsAsDeletedAsync(
+            [FromBody] ActionDetailViewModel actionDetail)
+        {
+            if (actionDetail == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.RequestFailedNoData, AppStrings.GroupAction));
+            }
+
+            var result = await ValidateGroupDeleteAsync(actionDetail.Items);
+            if (result.Count() > 0)
+            {
+                return BadRequest(result);
+            }
+
+            _repository.SetCurrentContext(SecurityContext.User);
+            foreach (int detailId in actionDetail.Items)
+            {
+                await _repository.DeleteDetailAccountAsync(detailId);
+            }
+
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
         private async Task<IActionResult> ValidationResultAsync(DetailAccountViewModel detailAccount, int faccountId = 0)
         {
             var result = BasicValidationResult(detailAccount, faccountId);
@@ -174,7 +198,31 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.DetailAccount, detailAccount.FullCode));
             }
 
+            result = BranchValidationResult(detailAccount);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = ConfigValidationResult(detailAccount, _treeConfig.Current);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             return Ok();
+        }
+
+        private async Task<IEnumerable<string>> ValidateGroupDeleteAsync(IEnumerable<int> items)
+        {
+            var messages = new List<string>();
+            foreach (int item in items)
+            {
+                messages.Add(await ValidateDeleteAsync(item));
+            }
+
+            return messages
+                .Where(msg => !String.IsNullOrEmpty(msg));
         }
 
         private async Task<string> ValidateDeleteAsync(int item)
@@ -214,6 +262,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return message;
         }
 
-        private IDetailAccountRepository _repository;
+        private readonly IDetailAccountRepository _repository;
+        private readonly IConfigRepository _config;
+        private readonly ViewTreeFullConfig _treeConfig;
     }
 }

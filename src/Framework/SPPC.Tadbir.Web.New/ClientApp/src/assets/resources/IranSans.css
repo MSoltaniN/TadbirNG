@@ -5,33 +5,33 @@
   font-family: SPPC;
   font-style: normal;
   font-weight: bold;
-  src: url('/assets/resources/fonts/IranSans/woff/IRANSansWeb.woff') format('woff'); /* All Major Browsers */
+  src: url('fonts/IranSans/woff/IRANSansWeb.woff') format('woff'); /* All Major Browsers */
 }
 
 @font-face {
   font-family: SPPC;
   font-style: normal;
   font-weight: 500;
-  src: url('/assets/resources/fonts/IranSans/woff/IRANSansWeb_Medium.woff') format('woff'); /* All Major Browsers */
+  src: url('fonts/IranSans/woff/IRANSansWeb_Medium.woff') format('woff'); /* All Major Browsers */
 }
 
 @font-face {
   font-family: SPPC;
   font-style: normal;
   font-weight: 300;
-  src: url('/assets/resources/fonts/IranSans/woff/IRANSansWeb_Light.woff') format('woff'); /* All Major Browsers */
+  src: url('fonts/IranSans/woff/IRANSansWeb_Light.woff') format('woff'); /* All Major Browsers */
 }
 
 @font-face {
   font-family: SPPC;
   font-style: normal;
   font-weight: 200;
-  src: url('/assets/resources/fonts/IranSans/woff/IRANSansWeb_UltraLight.woff') format('woff'); /* All Major Browsers */
+  src: url('fonts/IranSans/woff/IRANSansWeb_UltraLight.woff') format('woff'); /* All Major Browsers */
 }
 
 @font-face {
-    font-family: SPPC;
-    font-style: normal;
-    font-weight: normal;
-    src: url('/assets/resources/fonts/IranSans/woff/IRANSansWeb.woff') format('woff'); /* All Major Browsers */
+  font-family: SPPC;
+  font-style: normal;
+  font-weight: normal;
+  src: url('fonts/IranSans/woff/IRANSansWeb.woff') format('woff'); /* All Major Browsers */
 }

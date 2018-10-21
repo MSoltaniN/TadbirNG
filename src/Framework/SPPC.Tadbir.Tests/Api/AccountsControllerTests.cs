@@ -1,13 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Moq;
 using NUnit.Framework;
+using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 {
@@ -19,69 +25,79 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         public void FixtureSetup()
         {
             _mockRepository = new Mock<IAccountRepository>();
+            _mockLocalizer = new Mock<IStringLocalizer<AppStrings>>();
+            _mockConfig = new Mock<IConfigRepository>();
         }
 
         [SetUp]
         public void Setup()
         {
-            _controller = new AccountsController(_mockRepository.Object);
+            _mockLocalizer.Setup(loc => loc[It.IsAny<string>()])
+                .Returns(new LocalizedString("Name", "Value"));
+            _mockConfig.Setup(cfg => cfg.GetViewTreeConfigByViewAsync(ViewName.Account))
+                .ReturnsAsync(new ViewTreeFullConfig());
+            _controller = new AccountsController(
+                _mockRepository.Object, _mockConfig.Object, _mockLocalizer.Object)
+            {
+                ControllerContext = TestControllerContext
+            };
             _existingAccount = new AccountViewModel() { Id = _existingAccountId };
         }
 
-        #region GetAccounts (GET: accounts/fp/{fpId}/branch/{branchId}) tests
+        #region GetEnvironmentAccountsAsync (GET: accounts) tests
 
         [Test]
-        public void GetAccounts_HasAuthorizeRequestAttribute()
+        public void GetEnvironmentAccounts_HasAuthorizeRequestAttribute()
         {
             // Arrange
 
             // Act & Assert
-            AssertActionIsSecured("GetAccounts", SecureEntity.Account, (int)AccountPermissions.View);
+            AssertActionIsSecured("GetEnvironmentAccountsAsync", SecureEntity.Account, (int)AccountPermissions.View);
         }
 
         [Test]
-        public void GetAccounts_SpecifiesCorrectRoute()
+        public void GetEnvironmentAccounts_SpecifiesCorrectRoute()
         {
             // Arrange
 
             // Act & Assert
-            AssertActionRouteEquals("GetAccounts", AccountApi.FiscalPeriodBranchAccountsSyncUrl);
+            AssertActionRouteEquals("GetEnvironmentAccountsAsync", AccountApi.EnvironmentAccountsUrl);
         }
 
         [Test]
-        public void GetAccounts_ReturnsNonNullResult()
+        public async Task GetEnvironmentAccounts_ReturnsNonNullResult()
         {
             // Arrange
 
             // Act
-            var result = _controller.GetAccounts(_fpId, _branchId);
+            var result = await _controller.GetEnvironmentAccountsAsync();
 
             // Assert
             Assert.That(result, Is.Not.Null);
         }
 
         [Test]
-        public void GetAccounts_CallsRepositoryWithFiscalPeriodIdAndBranchId()
+        public async Task GetEnvironmentAccounts_CallsRepository()
         {
             // Arrange
 
             // Act
-            _controller.GetAccounts(_fpId, _branchId);
+            await _controller.GetEnvironmentAccountsAsync();
 
             // Assert
-            _mockRepository.Verify(repo => repo.GetAccounts(_fpId, _branchId, null));
+            _mockRepository.Verify(repo => repo.GetAccountsAsync(It.IsAny<GridOptions>()));
         }
 
         [Test]
-        public void GetAccounts_ReturnsJsonWithCorrectContentType()
+        public async Task GetEnvironmentAccounts_ReturnsJsonWithCorrectContentType()
         {
             // Arrange
             _mockRepository
-                .Setup(repo => repo.GetAccounts(_fpId, _branchId, null))
-                .Returns(new List<AccountViewModel>());
+                .Setup(repo => repo.GetAccountsAsync(It.IsAny<GridOptions>()))
+                .ReturnsAsync(new List<AccountViewModel>());
 
             // Act
-            var result = _controller.GetAccounts(_fpId, _branchId) as JsonResult;
+            var result = await _controller.GetEnvironmentAccountsAsync() as JsonResult;
 
             // Assert
             Assert.That(result.Value, Is.InstanceOf<IList<AccountViewModel>>());
@@ -89,60 +105,60 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
         #endregion
 
-        #region GetAccount (GET: accounts/{accountId}) tests
+        #region GetAccountAsync (GET: accounts/{accountId}) tests
 
         [Test]
-        public void GetAccount_HasAuthorizeRequestAttribute()
+        public void GetAccountAsync_HasAuthorizeRequestAttribute()
         {
             // Arrange
 
             // Act & Assert
-            AssertActionIsSecured("GetAccount", SecureEntity.Account, (int)AccountPermissions.View);
+            AssertActionIsSecured("GetAccountAsync", SecureEntity.Account, (int)AccountPermissions.View);
         }
 
         [Test]
-        public void GetAccount_SpecifiesCorrectRoute()
+        public void GetAccountAsync_SpecifiesCorrectRoute()
         {
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("GetAccount", AccountApi.AccountSyncUrl);
+            AssertActionRouteEquals("GetAccountAsync", AccountApi.AccountUrl);
         }
 
         [Test]
-        public void GetAccount_ReturnsNotNullResult()
+        public async Task GetAccountAsync_ReturnsNotNullResult()
         {
             // Arrange (Done in setup methods)
 
             // Act
-            var result = _controller.GetAccount(1);
+            var result = await _controller.GetAccountAsync(1);
 
             // Assert
             Assert.That(result, Is.Not.Null);
         }
 
         [Test]
-        public void GetAccount_CallsRepositoryWithAccountId()
+        public async Task GetAccountAsync_CallsRepositoryWithAccountId()
         {
             // Arrange
             int accountId = 1;
 
             // Act
-            _controller.GetAccount(accountId);
+            await _controller.GetAccountAsync(accountId);
 
             // Assert
-            _mockRepository.Verify(repo => repo.GetAccount(accountId));
+            _mockRepository.Verify(repo => repo.GetAccountAsync(accountId));
         }
 
         [Test]
-        public void GetAccount_GivenExistingId_ReturnsJsonWithCorrectContentType()
+        public async Task GetAccountAsync_GivenExistingId_ReturnsJsonWithCorrectContentType()
         {
             // Arrange
-            _mockRepository.Setup(repo => repo.GetAccount(_existingAccountId))
-                .Returns(new AccountViewModel());
+            _mockRepository.Setup(repo => repo.GetAccountAsync(_existingAccountId))
+                .ReturnsAsync(new AccountViewModel());
 
             // Act
-            var result = _controller.GetAccount(_existingAccountId) as JsonResult;
+            var result = await _controller.GetAccountAsync(_existingAccountId) as JsonResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -150,30 +166,30 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         }
 
         [Test]
-        public void GetAccount_GivenNonExistingId_ReturnsNotFound()
+        public async Task GetAccountAsync_GivenNonExistingId_ReturnsNotFound()
         {
             // Arrange
             int nonExistingId = 2;
-            _mockRepository.Setup(repo => repo.GetAccount(nonExistingId))
-                .Returns((AccountViewModel)null);
+            _mockRepository.Setup(repo => repo.GetAccountAsync(nonExistingId))
+                .ReturnsAsync((AccountViewModel)null);
 
             // Act
-            var result = _controller.GetAccount(nonExistingId) as NotFoundResult;
+            var result = await _controller.GetAccountAsync(nonExistingId) as NotFoundResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);
         }
 
         [Test]
-        public void GetAccount_GivenInvalidId_ReturnsNotFound()
+        public async Task GetAccountAsync_GivenInvalidId_ReturnsNotFound()
         {
             // Arrange
             int invalidId = 0;
-            _mockRepository.Setup(repo => repo.GetAccount(It.Is<int>(val => val <= 0)))
-                .Returns((AccountViewModel)null);
+            _mockRepository.Setup(repo => repo.GetAccountAsync(It.Is<int>(val => val <= 0)))
+                .ReturnsAsync((AccountViewModel)null);
 
             // Act
-            var result = _controller.GetAccount(invalidId) as NotFoundResult;
+            var result = await _controller.GetAccountAsync(invalidId) as NotFoundResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -181,68 +197,68 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
         #endregion
 
-        #region PostNewAccount (POST: accounts) tests
+        #region PostNewAccountAsync (POST: accounts) tests
 
         [Test]
-        public void PostNewAccount_HasAuthorizeRequestAttribute()
+        public void PostNewAccountAsync_HasAuthorizeRequestAttribute()
         {
             // Arrange
 
             // Act & Assert
-            AssertActionIsSecured("PostNewAccount", SecureEntity.Account, (int)AccountPermissions.Create);
+            AssertActionIsSecured("PostNewAccountAsync", SecureEntity.Account, (int)AccountPermissions.Create);
         }
 
         [Test]
-        public void PostNewAccount_SpecifiesCorrectRoute()
+        public void PostNewAccountAsync_SpecifiesCorrectRoute()
         {
             // Arrange (Done in setup methods)
 
             // Act & Assert
-            AssertActionRouteEquals("PostNewAccount", AccountApi.AccountsSyncUrl);
+            AssertActionRouteEquals("PostNewAccountAsync", AccountApi.EnvironmentAccountsUrl);
         }
 
         [Test]
-        public void PostNewAccount_SpecifiesCorrectHttpVerb()
+        public void PostNewAccountAsync_SpecifiesCorrectHttpVerb()
         {
             // Arrange
 
             // Act & Assert
-            AssertActionHasVerbAttribute<HttpPostAttribute>("PostNewAccount");
+            AssertActionHasVerbAttribute<HttpPostAttribute>("PostNewAccountAsync");
         }
 
         [Test]
-        public void PostNewAccount_ReturnsNonNullResult()
+        public async Task PostNewAccountAsync_ReturnsNonNullResult()
         {
             // Arrange (Done in Setup method)
 
             // Act
-            var result = _controller.PostNewAccount(new AccountViewModel());
+            var result = await _controller.PostNewAccountAsync(new AccountViewModel());
 
             // Assert
             Assert.That(result, Is.Not.Null);
         }
 
         [Test]
-        public void PostNewAccount_GivenValidModel_CallsRepositoryWithModel()
+        public async Task PostNewAccountAsync_GivenValidModel_CallsRepositoryWithModel()
         {
             // Arrange
-            var newAccount = new AccountViewModel();
+            var newAccount = new AccountViewModel() { BranchId = 1 };
 
             // Act
-            _controller.PostNewAccount(newAccount);
+            await _controller.PostNewAccountAsync(newAccount);
 
             // Assert
-            _mockRepository.Verify(repo => repo.SaveAccount(newAccount));
+            _mockRepository.Verify(repo => repo.SaveAccountAsync(newAccount));
         }
 
         [Test]
-        public void PostNewAccount_GivenValidModel_ReturnsCreatedStatusCodeResult()
+        public async Task PostNewAccountAsync_GivenValidModel_ReturnsObjectResultWithCreatedStatusCode()
         {
             // Arrange
-            var newAccount = new AccountViewModel();
+            var newAccount = new AccountViewModel() { BranchId = 1 };
 
             // Act
-            var result = _controller.PostNewAccount(newAccount) as StatusCodeResult;
+            var result = await _controller.PostNewAccountAsync(newAccount) as ObjectResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -250,26 +266,26 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         }
 
         [Test]
-        public void PostNewAccount_GivenNoContent_ReturnsBadRequestWithMessage()
+        public async Task PostNewAccountAsync_GivenNoContent_ReturnsBadRequestWithMessage()
         {
             // Arrange (Done in setup methods)
 
             // Act
-            var result = _controller.PostNewAccount(null) as BadRequestObjectResult;
+            var result = await _controller.PostNewAccountAsync(null) as BadRequestObjectResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);
         }
 
         [Test]
-        public void PostNewAccount_GivenInvalidModel_ReturnsBadRequestObjectResultWithCorrectValue()
+        public async Task PostNewAccountAsync_GivenInvalidModel_ReturnsBadRequestObjectResultWithCorrectValue()
         {
             // Arrange
             var invalidModel = new AccountViewModel();
 
             // Act
             _controller.ModelState.AddModelError(String.Empty, "Invalid");
-            var result = _controller.PostNewAccount(invalidModel) as BadRequestObjectResult;
+            var result = await _controller.PostNewAccountAsync(invalidModel) as BadRequestObjectResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -278,15 +294,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
         }
 
         [Test]
-        public void PostNewAccount_GivenDuplicateAccount_ReturnsBadRequestWithMessage()
+        public async Task PostNewAccountAsync_GivenDuplicateAccount_ReturnsBadRequestWithMessage()
         {
             // Arrange (Done in setup methods)
-            var duplicate = new AccountViewModel();
-            _mockRepository.Setup(repo => repo.IsDuplicateAccount(duplicate))
-                .Returns(true);
+            var duplicate = new AccountViewModel() { FullCode = "1234" };
+            _mockRepository.Setup(repo => repo.IsDuplicateAccountAsync(duplicate))
+                .ReturnsAsync(true);
 
             // Act
-            var result = _controller.PostNewAccount(duplicate) as BadRequestObjectResult;
+            var result = await _controller.PostNewAccountAsync(duplicate) as BadRequestObjectResult;
 
             // Assert
             Assert.That(result, Is.Not.Null);
@@ -294,251 +310,251 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
 
         #endregion
 
-        #region PutModifiedAccount (PUT: accounts/{accountId}) tests
+        ////#region PutModifiedAccount (PUT: accounts/{accountId}) tests
 
-        [Test]
-        public void PutModifiedAccount_HasAuthorizeRequestAttribute()
-        {
-            // Arrange
+        ////[Test]
+        ////public void PutModifiedAccount_HasAuthorizeRequestAttribute()
+        ////{
+        ////    // Arrange
 
-            // Act & Assert
-            AssertActionIsSecured("PutModifiedAccount", SecureEntity.Account, (int)AccountPermissions.Edit);
-        }
+        ////    // Act & Assert
+        ////    AssertActionIsSecured("PutModifiedAccount", SecureEntity.Account, (int)AccountPermissions.Edit);
+        ////}
 
-        [Test]
-        public void PutModifiedAccount_SpecifiesCorrectRoute()
-        {
-            // Arrange (Done in setup methods)
+        ////[Test]
+        ////public void PutModifiedAccount_SpecifiesCorrectRoute()
+        ////{
+        ////    // Arrange (Done in setup methods)
 
-            // Act & Assert
-            AssertActionRouteEquals("PutModifiedAccount", AccountApi.AccountSyncUrl);
-        }
+        ////    // Act & Assert
+        ////    AssertActionRouteEquals("PutModifiedAccount", AccountApi.AccountSyncUrl);
+        ////}
 
-        [Test]
-        public void PutModifiedAccount_SpecifiesCorrectHttpVerb()
-        {
-            // Arrange
+        ////[Test]
+        ////public void PutModifiedAccount_SpecifiesCorrectHttpVerb()
+        ////{
+        ////    // Arrange
 
-            // Act & Assert
-            AssertActionHasVerbAttribute<HttpPutAttribute>("PutModifiedAccount");
-        }
+        ////    // Act & Assert
+        ////    AssertActionHasVerbAttribute<HttpPutAttribute>("PutModifiedAccount");
+        ////}
 
-        [Test]
-        public void PutModifiedAccount_ReturnsNonNullResult()
-        {
-            // Arrange (Done in setup methods)
+        ////[Test]
+        ////public void PutModifiedAccount_ReturnsNonNullResult()
+        ////{
+        ////    // Arrange (Done in setup methods)
 
-            // Act
-            var result = _controller.PutModifiedAccount(_existingAccountId, _existingAccount);
+        ////    // Act
+        ////    var result = _controller.PutModifiedAccount(_existingAccountId, _existingAccount);
 
-            // Assert
-            Assert.That(result, Is.Not.Null);
-        }
+        ////    // Assert
+        ////    Assert.That(result, Is.Not.Null);
+        ////}
 
-        [Test]
-        public void PutModifiedAccount_GivenInvalidId_ReturnsBadRequestWithMessage()
-        {
-            // Arrange (Done in setup methods)
+        ////[Test]
+        ////public void PutModifiedAccount_GivenInvalidId_ReturnsBadRequestWithMessage()
+        ////{
+        ////    // Arrange (Done in setup methods)
 
-            // Act
-            var result = _controller.PutModifiedAccount(0, _existingAccount) as BadRequestObjectResult;
+        ////    // Act
+        ////    var result = _controller.PutModifiedAccount(0, _existingAccount) as BadRequestObjectResult;
 
-            // Assert
-            Assert.That(result, Is.Not.Null);
-        }
+        ////    // Assert
+        ////    Assert.That(result, Is.Not.Null);
+        ////}
 
-        [Test]
-        public void PutModifiedAccount_GivenInvalidModelId_ReturnsBadRequestWithMessage()
-        {
-            // Arrange
-            var account = new AccountViewModel() { Id = 0 };
+        ////[Test]
+        ////public void PutModifiedAccount_GivenInvalidModelId_ReturnsBadRequestWithMessage()
+        ////{
+        ////    // Arrange
+        ////    var account = new AccountViewModel() { Id = 0 };
 
-            // Act
-            var result = _controller.PutModifiedAccount(1, account) as BadRequestObjectResult;
+        ////    // Act
+        ////    var result = _controller.PutModifiedAccount(1, account) as BadRequestObjectResult;
 
-            // Assert
-            Assert.That(result, Is.Not.Null);
-        }
+        ////    // Assert
+        ////    Assert.That(result, Is.Not.Null);
+        ////}
 
-        [Test]
-        public void PutModifiedAccount_GivenConflictingIdAndModelId_ReturnsBadRequestWithMessage()
-        {
-            // Arrange
-            int conflictingAccountId = 4;
+        ////[Test]
+        ////public void PutModifiedAccount_GivenConflictingIdAndModelId_ReturnsBadRequestWithMessage()
+        ////{
+        ////    // Arrange
+        ////    int conflictingAccountId = 4;
 
-            // Act
-            var result = _controller.PutModifiedAccount(conflictingAccountId, _existingAccount) as BadRequestObjectResult;
+        ////    // Act
+        ////    var result = _controller.PutModifiedAccount(conflictingAccountId, _existingAccount) as BadRequestObjectResult;
 
-            // Assert
-            Assert.That(result, Is.Not.Null);
-        }
+        ////    // Assert
+        ////    Assert.That(result, Is.Not.Null);
+        ////}
 
-        [Test]
-        public void PutModifiedAccount_GivenNoContent_ReturnsBadRequestWithMessage()
-        {
-            // Arrange (Done in setup methods)
-            int validId = 1;
+        ////[Test]
+        ////public void PutModifiedAccount_GivenNoContent_ReturnsBadRequestWithMessage()
+        ////{
+        ////    // Arrange (Done in setup methods)
+        ////    int validId = 1;
 
-            // Act
-            var result = _controller.PutModifiedAccount(validId, null) as BadRequestObjectResult;
+        ////    // Act
+        ////    var result = _controller.PutModifiedAccount(validId, null) as BadRequestObjectResult;
 
-            // Assert
-            Assert.That(result, Is.Not.Null);
-        }
+        ////    // Assert
+        ////    Assert.That(result, Is.Not.Null);
+        ////}
 
-        [Test]
-        public void PutModifiedAccount_GivenInvalidModel_ReturnsBadRequestObjectResultWithCorrectValue()
-        {
-            // Arrange
-            var invalidModel = new AccountViewModel() { Id = _existingAccountId };
+        ////[Test]
+        ////public void PutModifiedAccount_GivenInvalidModel_ReturnsBadRequestObjectResultWithCorrectValue()
+        ////{
+        ////    // Arrange
+        ////    var invalidModel = new AccountViewModel() { Id = _existingAccountId };
 
-            // Act
-            _controller.ModelState.AddModelError(String.Empty, "Invalid");
-            var result = _controller.PutModifiedAccount(_existingAccountId, invalidModel) as BadRequestObjectResult;
+        ////    // Act
+        ////    _controller.ModelState.AddModelError(String.Empty, "Invalid");
+        ////    var result = _controller.PutModifiedAccount(_existingAccountId, invalidModel) as BadRequestObjectResult;
 
-            // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Value, Is.InstanceOf<SerializableError>());
-            Assert.That((result.Value as SerializableError).Count, Is.EqualTo(1));
-        }
+        ////    // Assert
+        ////    Assert.That(result, Is.Not.Null);
+        ////    Assert.That(result.Value, Is.InstanceOf<SerializableError>());
+        ////    Assert.That((result.Value as SerializableError).Count, Is.EqualTo(1));
+        ////}
 
-        [Test]
-        public void PutModifiedAccount_CallsRepositoryWithModel()
-        {
-            // Arrange (Done in setup methods)
+        ////[Test]
+        ////public void PutModifiedAccount_CallsRepositoryWithModel()
+        ////{
+        ////    // Arrange (Done in setup methods)
 
-            // Act
-            _controller.PutModifiedAccount(_existingAccountId, _existingAccount);
+        ////    // Act
+        ////    _controller.PutModifiedAccount(_existingAccountId, _existingAccount);
 
-            // Assert
-            _mockRepository.Verify(repo => repo.SaveAccount(_existingAccount));
-        }
+        ////    // Assert
+        ////    _mockRepository.Verify(repo => repo.SaveAccount(_existingAccount));
+        ////}
 
-        [Test]
-        public void PutModifiedAccount_GivenValidIdAndModel_ReturnsOk()
-        {
-            // Arrange (Done in setup methods)
+        ////[Test]
+        ////public void PutModifiedAccount_GivenValidIdAndModel_ReturnsOk()
+        ////{
+        ////    // Arrange (Done in setup methods)
 
-            // Act
-            var result = _controller.PutModifiedAccount(_existingAccountId, _existingAccount) as OkResult;
+        ////    // Act
+        ////    var result = _controller.PutModifiedAccount(_existingAccountId, _existingAccount) as OkResult;
 
-            // Assert
-            Assert.That(result, Is.Not.Null);
-        }
+        ////    // Assert
+        ////    Assert.That(result, Is.Not.Null);
+        ////}
 
-        [Test]
-        public void PutModifiedAccount_GivenDuplicateAccount_ReturnsBadRequestWithMessage()
-        {
-            // Arrange (Done in setup methods)
-            var duplicate = new AccountViewModel() { Id = _existingAccountId };
-            _mockRepository.Setup(repo => repo.IsDuplicateAccount(duplicate))
-                .Returns(true);
+        ////[Test]
+        ////public void PutModifiedAccount_GivenDuplicateAccount_ReturnsBadRequestWithMessage()
+        ////{
+        ////    // Arrange (Done in setup methods)
+        ////    var duplicate = new AccountViewModel() { Id = _existingAccountId };
+        ////    _mockRepository.Setup(repo => repo.IsDuplicateAccount(duplicate))
+        ////        .Returns(true);
 
-            // Act
-            var result = _controller.PutModifiedAccount(_existingAccountId, duplicate) as BadRequestObjectResult;
+        ////    // Act
+        ////    var result = _controller.PutModifiedAccount(_existingAccountId, duplicate) as BadRequestObjectResult;
 
-            // Assert
-            Assert.That(result, Is.Not.Null);
-        }
+        ////    // Assert
+        ////    Assert.That(result, Is.Not.Null);
+        ////}
 
-        #endregion
+        ////#endregion
 
-        #region GetAccountDetail (GET: accounts/{accountId}/details) tests
+        ////#region GetAccountDetail (GET: accounts/{accountId}/details) tests
 
-        [Test]
-        public void GetAccountDetail_HasAuthorizeRequestAttribute()
-        {
-            // Arrange
+        ////[Test]
+        ////public void GetAccountDetail_HasAuthorizeRequestAttribute()
+        ////{
+        ////    // Arrange
 
-            // Act & Assert
-            AssertActionIsSecured("GetAccountDetail", SecureEntity.Account, (int)AccountPermissions.View);
-        }
+        ////    // Act & Assert
+        ////    AssertActionIsSecured("GetAccountDetail", SecureEntity.Account, (int)AccountPermissions.View);
+        ////}
 
-        [Test]
-        public void GetAccountDetail_SpecifiesCorrectRoute()
-        {
-            // Arrange (Done in setup methods)
+        ////[Test]
+        ////public void GetAccountDetail_SpecifiesCorrectRoute()
+        ////{
+        ////    // Arrange (Done in setup methods)
 
-            // Act & Assert
-            AssertActionRouteEquals("GetAccountDetail", AccountApi.AccountDetailsSyncUrl);
-        }
+        ////    // Act & Assert
+        ////    AssertActionRouteEquals("GetAccountDetail", AccountApi.AccountDetailsSyncUrl);
+        ////}
 
-        [Test]
-        public void GetAccountDetail_ReturnsNotNullResult()
-        {
-            // Arrange (Done in setup methods)
+        ////[Test]
+        ////public void GetAccountDetail_ReturnsNotNullResult()
+        ////{
+        ////    // Arrange (Done in setup methods)
 
-            // Act
-            var result = _controller.GetAccountDetail(1);
+        ////    // Act
+        ////    var result = _controller.GetAccountDetail(1);
 
-            // Assert
-            Assert.That(result, Is.Not.Null);
-        }
+        ////    // Assert
+        ////    Assert.That(result, Is.Not.Null);
+        ////}
 
-        [Test]
-        public void GetAccountDetail_CallsRepositoryWithAccountId()
-        {
-            // Arrange
-            int accountId = 1;
+        ////[Test]
+        ////public void GetAccountDetail_CallsRepositoryWithAccountId()
+        ////{
+        ////    // Arrange
+        ////    int accountId = 1;
 
-            // Act
-            _controller.GetAccountDetail(accountId);
+        ////    // Act
+        ////    _controller.GetAccountDetail(accountId);
 
-            // Assert
-            _mockRepository.Verify(repo => repo.GetAccountDetail(accountId));
-        }
+        ////    // Assert
+        ////    _mockRepository.Verify(repo => repo.GetAccountDetail(accountId));
+        ////}
 
-        [Test]
-        public void GetAccountDetail_GivenExistingId_ReturnsJsonWithCorrectContentType()
-        {
-            // Arrange
-            _mockRepository.Setup(repo => repo.GetAccountDetail(_existingAccountId))
-                .Returns(new AccountFullViewModel());
+        ////[Test]
+        ////public void GetAccountDetail_GivenExistingId_ReturnsJsonWithCorrectContentType()
+        ////{
+        ////    // Arrange
+        ////    _mockRepository.Setup(repo => repo.GetAccountDetail(_existingAccountId))
+        ////        .Returns(new AccountFullViewModel());
 
-            // Act
-            var result = _controller.GetAccountDetail(_existingAccountId) as JsonResult;
+        ////    // Act
+        ////    var result = _controller.GetAccountDetail(_existingAccountId) as JsonResult;
 
-            // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Value, Is.InstanceOf<AccountFullViewModel>());
-        }
+        ////    // Assert
+        ////    Assert.That(result, Is.Not.Null);
+        ////    Assert.That(result.Value, Is.InstanceOf<AccountFullViewModel>());
+        ////}
 
-        [Test]
-        public void GetAccountDetail_GivenNonExistingId_ReturnsNotFound()
-        {
-            // Arrange
-            int nonExistingId = 2;
-            _mockRepository.Setup(repo => repo.GetAccountDetail(nonExistingId))
-                .Returns((AccountFullViewModel)null);
+        ////[Test]
+        ////public void GetAccountDetail_GivenNonExistingId_ReturnsNotFound()
+        ////{
+        ////    // Arrange
+        ////    int nonExistingId = 2;
+        ////    _mockRepository.Setup(repo => repo.GetAccountDetail(nonExistingId))
+        ////        .Returns((AccountFullViewModel)null);
 
-            // Act
-            var result = _controller.GetAccountDetail(nonExistingId) as NotFoundResult;
+        ////    // Act
+        ////    var result = _controller.GetAccountDetail(nonExistingId) as NotFoundResult;
 
-            // Assert
-            Assert.That(result, Is.Not.Null);
-        }
+        ////    // Assert
+        ////    Assert.That(result, Is.Not.Null);
+        ////}
 
-        [Test]
-        public void GetAccountDetail_GivenInvalidId_ReturnsNotFound()
-        {
-            // Arrange
-            int invalidId = 0;
-            _mockRepository.Setup(repo => repo.GetAccountDetail(It.Is<int>(val => val <= 0)))
-                .Returns((AccountFullViewModel)null);
+        ////[Test]
+        ////public void GetAccountDetail_GivenInvalidId_ReturnsNotFound()
+        ////{
+        ////    // Arrange
+        ////    int invalidId = 0;
+        ////    _mockRepository.Setup(repo => repo.GetAccountDetail(It.Is<int>(val => val <= 0)))
+        ////        .Returns((AccountFullViewModel)null);
 
-            // Act
-            var result = _controller.GetAccountDetail(invalidId) as NotFoundResult;
+        ////    // Act
+        ////    var result = _controller.GetAccountDetail(invalidId) as NotFoundResult;
 
-            // Assert
-            Assert.That(result, Is.Not.Null);
-        }
+        ////    // Assert
+        ////    Assert.That(result, Is.Not.Null);
+        ////}
 
-        #endregion
+        ////#endregion
 
         private Mock<IAccountRepository> _mockRepository;
+        private Mock<IStringLocalizer<AppStrings>> _mockLocalizer;
+        private Mock<IConfigRepository> _mockConfig;
         private AccountViewModel _existingAccount;
         private int _existingAccountId = 1;
-        private int _fpId = 1;
-        private int _branchId = 1;
     }
 }

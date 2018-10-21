@@ -16,7 +16,7 @@ import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { AccountRelationApi, AccountApi, DetailAccountApi, CostCenterApi, ProjectApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { AccountRelationPermissions } from '../../security/permissions';
-import { AccountRelationsService, AccountItemBriefInfo } from '../../service/index';
+import { AccountRelationsService, AccountItemBriefInfo, SettingService } from '../../service/index';
 import { TreeItemLookup, TreeItem, CheckableSettings } from '@progress/kendo-angular-treeview';
 import { AccountItemRelationsInfo } from '../../service/accountRelations.service';
 import { Filter } from '../../class/filter';
@@ -93,8 +93,8 @@ export class AccountRelationsComponent extends DefaultComponent implements OnIni
     }
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService ) {
-        super(toastrService, translate, renderer, metadata, Entities.AccountRelations, '');
+      private accountRelationsService: AccountRelationsService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
+      super(toastrService, translate, renderer, metadata, settingService, Entities.AccountRelations, '');
 
         this.mainComponent = [
             { value: "AccountRelations.Account", key: AccountRelationsType.Account },

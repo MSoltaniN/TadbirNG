@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { FormBuilder, ControlContainer, Validators } from '@angular/forms'
 import { LookupService, FullAccountInfo } from '../../service/index';
 
@@ -13,36 +13,51 @@ interface Item {
     <ng-container [formGroup]="controlContainer.control">
      
 <div>
-    
-    <kendo-dropdownlist [data]="accountsRows" [valuePrimitive]="true" formControlName="accountId" class="ddl-fAcc"
+
+<div formGroupName="account" class="fAcc">
+<kendo-dropdownlist [data]="accountsRows" [valuePrimitive]="true" formControlName="id" class="ddl-fAcc"
                         [textField]="'value'" [value]="selectedAccountValue" [(ngModel)]="selectedAccountValue" valueField="key" [defaultItem]="{ value: '', key: null}">
     </kendo-dropdownlist>
+</div>
+    
 
-    <kendo-dropdownlist [data]="detailAccountsRows" [valuePrimitive]="true" formControlName="detailId" class="ddl-fAcc"
+<div formGroupName="detailAccount" class="fAcc">
+    <kendo-dropdownlist [data]="detailAccountsRows" [valuePrimitive]="true" formControlName="id" class="ddl-fAcc"
                         [textField]="'value'" [value]="selectedDetailAccountValue" [(ngModel)]="selectedDetailAccountValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
     </kendo-dropdownlist>
+</div>
 
-    <kendo-dropdownlist [data]="costCentersRows" [valuePrimitive]="true" formControlName="costCenterId" class="ddl-fAcc"
+<div formGroupName="costCenter" class="fAcc">
+    <kendo-dropdownlist [data]="costCentersRows" [valuePrimitive]="true" formControlName="id" class="ddl-fAcc"
                         [textField]="'value'" [value]="selectedCostCenterValue" [(ngModel)]="selectedCostCenterValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
     </kendo-dropdownlist>
+</div>
 
-    <kendo-dropdownlist [data]="projectsRows" [valuePrimitive]="true" formControlName="projectId" class="ddl-fAcc"
+<div formGroupName="project" class="fAcc">
+    <kendo-dropdownlist [data]="projectsRows" [valuePrimitive]="true" formControlName="id" class="ddl-fAcc"
                         [textField]="'value'" [value]="selectedprojectValue" [(ngModel)]="selectedprojectValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
     </kendo-dropdownlist>
+</div>
 
 
-    <div class="k-tooltip k-tooltip-validation" [hidden]="controlContainer.control.valid || controlContainer.control.pristine">
-        {{ 'AllValidations.FullAccount.AccountIdIsRequired' | translate }}
-    </div>
-
+<div class="k-tooltip k-tooltip-validation"[hidden] = "controlContainer.control.valid || controlContainer.control.pristine" >
+  {{ 'AllValidations.FullAccount.AccountIdIsRequired' | translate }}
+</div>
+    
 </div>
 
 
 
     </ng-container>
   `,
-    styles: ['.ddl-fAcc {width:49%}'],
+  styles: [' .fAcc{width:49%; display: inline-block;} .ddl-fAcc {width:100%}'],
 })
+
+
+
+
+
+
 export class SppcFullAccountComponent implements OnInit {
 
 
@@ -69,14 +84,14 @@ export class SppcFullAccountComponent implements OnInit {
 
         this.fullAccount = this.controlContainer.value;
 
-        if (this.fullAccount.accountId)
-            this.selectedAccountValue = this.fullAccount.accountId.toString();
-        if (this.fullAccount.detailId)
-            this.selectedDetailAccountValue = this.fullAccount.detailId.toString();
-        if (this.fullAccount.costCenterId)
-            this.selectedCostCenterValue = this.fullAccount.costCenterId.toString();
-        if (this.fullAccount.projectId)
-            this.selectedprojectValue = this.fullAccount.projectId.toString();
+        if (this.fullAccount.account.id)
+            this.selectedAccountValue = this.fullAccount.account.id.toString();
+        if (this.fullAccount.detailAccount.id)
+            this.selectedDetailAccountValue = this.fullAccount.detailAccount.id.toString();
+        if (this.fullAccount.costCenter.id)
+            this.selectedCostCenterValue = this.fullAccount.costCenter.id.toString();
+        if (this.fullAccount.project.id)
+            this.selectedprojectValue = this.fullAccount.project.id.toString();
     }
 
 

@@ -174,6 +174,50 @@ namespace SPPC.Tadbir.Security
     }
 
     /// <summary>
+    /// فلگ های تعریف شده برای مجوزهای امنیتی در مدیریت دسترسی به سطرها را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum RowAccessPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به تنظیمات دسترسی به سطرها
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده دسترسی به سطرها
+        /// </summary>
+        ViewRowAccess = 0x1,
+
+        /// <summary>
+        /// دسترسی مدیریت دسترسی به سطرها
+        /// </summary>
+        ManageRowAccess = 0x2,
+    }
+
+    /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی در مدیریت تنظیمات برنامه را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum SettingPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به تنظیمات برنامه
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده تنظیمات برنامه
+        /// </summary>
+        ViewSettings = 0x1,
+
+        /// <summary>
+        /// دسترسی مدیریت تنظیمات برنامه
+        /// </summary>
+        ManageSettings = 0x2,
+    }
+
+    /// <summary>
     /// فلگ های تعریف شده برای دسترسی های امنیتی به ارزها را تعریف می کند
     /// </summary>
     [Flags]
@@ -346,83 +390,19 @@ namespace SPPC.Tadbir.Security
         Approve = 0x80,
 
         /// <summary>
+        /// دسترسی ثبت سند
+        /// </summary>
+        Check = 0x100,
+
+        /// <summary>
+        /// دسترسی برگشت سند
+        /// </summary>
+        Uncheck = 0x200,
+
+        /// <summary>
         /// Indicates all permissions available for managing a voucher
         /// </summary>
-        All = 0xff
-    }
-
-    /// <summary>
-    /// فلگ های تعریف شده برای دسترسی های امنیتی به واحدهای سازمانی را تعریف می کند
-    /// </summary>
-    [Flags]
-    public enum BusinessUnitPermissions
-    {
-        /// <summary>
-        /// عدم دسترسی به واحدهای سازمانی
-        /// </summary>
-        None = 0x0,
-
-        /// <summary>
-        /// دسترسی مشاهده لیست واحهای سازمانی یا جزییات یک واحد سازمانی
-        /// </summary>
-        View = 0x1,
-
-        /// <summary>
-        /// دسترسی ایجاد یک واحد سازمانی جدید
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// دسترسی ویرایش یک واحد سازمانی موجود
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
-        /// دسترسی حذف یک واحد سازمانی موجود
-        /// </summary>
-        Delete = 0x8,
-
-        /// <summary>
-        /// دسترسی کامل به عملیات تعریف شده برای مدیریت واحدهای سازمانی
-        /// </summary>
-        All = 0xf
-    }
-
-    /// <summary>
-    /// فلگ های تعریف شده برای دسترسی های امنیتی به شرکای تجاری را تعریف می کند
-    /// </summary>
-    [Flags]
-    public enum BusinessPartnerPermissions
-    {
-        /// <summary>
-        /// عدم دسترسی به شرکای تجاری
-        /// </summary>
-        None = 0x0,
-
-        /// <summary>
-        /// دسترسی مشاهده لیست شرکای تجاری یا جزییات یک شریک تجاری
-        /// </summary>
-        View = 0x1,
-
-        /// <summary>
-        /// دسترسی ایجاد یک شریک تجاری جدید
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// دسترسی ویرایش یک شریک تجاری موجود
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
-        /// دسترسی حذف یک شریک تجاری موجود
-        /// </summary>
-        Delete = 0x8,
-
-        /// <summary>
-        /// دسترسی کامل به عملیات تعریف شده برای مدیریت شرکای تجاری
-        /// </summary>
-        All = 0xf
+        All = 0x3ff
     }
 
     /// <summary>
@@ -510,95 +490,6 @@ namespace SPPC.Tadbir.Security
 
         /// <summary>
         /// Indicates all permissions available for managing a role
-        /// </summary>
-        All = 0x7f
-    }
-
-    /// <summary>
-    /// Provides flag values for permissions currently defined for managing a product inventory.
-    /// </summary>
-    [Flags]
-    public enum ProductInventoryPermissions
-    {
-        /// <summary>
-        /// Indicates no permission for managing a product inventory
-        /// </summary>
-        None = 0x0,
-
-        /// <summary>
-        /// Indicates permission to view product inventory list or details of a product inventory
-        /// </summary>
-        View = 0x1,
-
-        /// <summary>
-        /// Indicates permission to create a new product inventory
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// Indicates permission to edit an existing product inventory
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
-        /// Indicates permission to delete an existing product inventory
-        /// </summary>
-        Delete = 0x8,
-
-        /// <summary>
-        /// Indicates all permissions available for managing a product inventory
-        /// </summary>
-        All = 0xf
-    }
-
-    /// <summary>
-    /// مقادیر فلگ مربوط به دسترسی های درخواست کالا را تعریف می کند
-    /// </summary>
-    [Flags]
-    public enum RequisitionPermissions
-    {
-        /// <summary>
-        /// عدم دسترسی به عملیات درخواست کالا
-        /// </summary>
-        None = 0x0,
-
-        /// <summary>
-        /// دسترسی مشاهده فهرست درخواست های کالا یا جزییات یک درخواست کالا
-        /// </summary>
-        View = 0x1,
-
-        /// <summary>
-        /// دسترسی ایجاد درخواست کالای جدید
-        /// </summary>
-        Create = 0x2,
-
-        /// <summary>
-        /// دسترسی اصلاح درخواست کالای موجود
-        /// </summary>
-        Edit = 0x4,
-
-        /// <summary>
-        /// دسترسی حذف درخواست کالای موجود
-        /// </summary>
-        Delete = 0x8,
-
-        /// <summary>
-        /// دسترسی تنظیم درخواست کالا
-        /// </summary>
-        Prepare = 0x10,
-
-        /// <summary>
-        /// دسترسی تایید درخواست کالا
-        /// </summary>
-        Confirm = 0x20,
-
-        /// <summary>
-        /// دسترسی تصویب درخواست کالا
-        /// </summary>
-        Approve = 0x40,
-
-        /// <summary>
-        /// دسترسی به تمام عملیات درخواست کالا
         /// </summary>
         All = 0x7f
     }

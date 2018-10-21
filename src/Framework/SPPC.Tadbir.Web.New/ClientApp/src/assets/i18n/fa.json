@@ -1,4 +1,4 @@
-﻿{
+{
   "App": {
     "Title": "به سیستم جدید تدبیر خوش آمدید!",
     "SELECT": "Changer la langue",
@@ -76,7 +76,8 @@
     "AccountRelations": "ارتباطات حساب",
     "Settings": "تنظیمات",
     "ViewRowPermission": "دسترسی به سطرهای اطلاعاتی",
-    "OperationLog": "لاگ های عملیاتی"
+    "OperationLog": "لاگ های عملیاتی",
+    "ViewTreeConfig": "تنظیمات ساختار درختی"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",
@@ -159,16 +160,46 @@
     "SelectEntity": "انتخاب موجودیت",
     "Entities": "موجودیت ها"
   },
+  "ViewTreeConfig": {
+    "EntityName": "نام موجودیت",
+    "MaxDepth": "حداکثر عمق",
+    "DefinableLevels": "سطوح قابل تعریف",
+    "LevelNo": "شماره سطح",
+    "LevelName": "نام سطح",
+    "CodeLength": "طول کد",
+    "Save": "ذخیره",
+    "DefaultSettings": "تنظیمات پیش فرض"
+  },
   "VoucherLine": {
     "Debit": "بدهکار",
     "Credit": "بستانکار",
     "DebitSum": "جمع بدهکار",
     "CreditSum": "جمع بستانکار",
-    "Description": "توضیحات",
+    "Description": "شرح",
     "New": "آرتیکل جدید",
     "Delete": "حذف آرتیکل",
     "Currency": "واحد پول",
-    "Account": "بردار حساب"
+    "Account": "بردار حساب",
+    "Sum": "مجموع",
+    "Difference": "اختلاف",
+    "FullAccount": {
+      "Account": {
+        "Name": "نام حساب",
+        "FullCode": "کد کامل حساب"
+      },
+      "DetailAccount": {
+        "Name": "نام تفصیلی",
+        "FullCode": "کد کامل تفصیلی"
+      },
+      "CostCenter": {
+        "Name": "نام مرکز هزینه",
+        "FullCode": "کد کامل مرکز هزینه"
+      },
+      "Project": {
+        "Name": "نام پروژه",
+        "FullCode": "کد کامل پروژه"
+      }
+    }
   },
   "Company": {
     "CompanyName": "شرکت",
@@ -204,7 +235,9 @@
     "Date": "تاریخ",
     "Description": "توضیحات",
     "BranchId": "شعبه",
-    "FiscalPeriodId": "دوره مالی"
+    "FiscalPeriodId": "دوره مالی",
+    "Commit": "ثبت سند",
+    "ReturnFromCommit": "برگشت از ثبت سند"
   },
   "User": {
     "New": "کاربر جدید",
@@ -368,6 +401,9 @@
     "AfterState": "وضعیت جدید",
     "ErrorMessage": "پیغام خطا"
   },
+  "MetaDataValidation": {
+    "CodeLength": "طول کد مجاز نمیباشد."
+  },
   "AllValidations": {
     "Account": {
       "CodeIsRequired": "وارد کردن کد اجباری است.",
@@ -492,7 +528,7 @@
       "NameIsRequired": "وارد کردن نام اجباری است.",
       "NameIsTooLong": "نام می تواند حداکثر 128 حرف داشته باشد.",
       "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
-      "NoError": ""   
+      "NoError": ""
     },
     "Company": {
       "NameIsRequired": "وارد کردن نام اجباری است.",

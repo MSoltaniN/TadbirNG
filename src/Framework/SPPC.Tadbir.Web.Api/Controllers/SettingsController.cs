@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Config;
+using SPPC.Tadbir.Web.Api.Extensions;
+using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
 namespace SPPC.Tadbir.Web.Api.Controllers
@@ -24,6 +27,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/settings
         [Route(SettingsApi.AllSettingsUrl)]
+        [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.ViewSettings)]
         public async Task<IActionResult> GetAllSettingsAsync()
         {
             var allSettings = await _repository.GetAllConfigAsync();
@@ -38,6 +42,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         // PUT: api/settings
         [HttpPut]
         [Route(SettingsApi.AllSettingsUrl)]
+        [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.ManageSettings)]
         public async Task<IActionResult> PutModifiedSettingsAsync([FromBody] List<SettingBriefViewModel> settings)
         {
             if (settings == null)
@@ -82,21 +87,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/settings/views/{viewId:min(1)}/tree
         [Route(SettingsApi.ViewTreeSettingsByViewUrl)]
+        [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.ViewSettings)]
         public async Task<IActionResult> GetViewTreeSettingsByViewAsync(int viewId)
         {
             var viewSettings = await _repository.GetViewTreeConfigByViewAsync(viewId);
-            Array.ForEach(
-                viewSettings.Levels.Where(level => level != null).ToArray(),
-                level => level.Name = String.IsNullOrEmpty(level.Name)
-                    ? String.Format(_strings[AppStrings.LevelX], level.No)
-                    : level.Name);
+            Localize(viewSettings, viewId);
             return Json(viewSettings);
         }
 
         // PUT: api/settings/views/tree
         [HttpPut]
         [Route(SettingsApi.ViewTreeSettingsUrl)]
-        public async Task<IActionResult> PutModifiedViewTreeSettingsAsync([FromBody] List<ViewTreeConfig> settings)
+        [AuthorizeRequest(SecureEntity.Setting, (int)SettingPermissions.ManageSettings)]
+        public async Task<IActionResult> PutModifiedViewTreeSettingsAsync([FromBody] List<ViewTreeFullConfig> settings)
         {
             if (settings == null)
             {
@@ -105,6 +108,38 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
             await _repository.SaveViewTreeConfigAsync(settings);
             return Ok();
+        }
+
+        private void Localize(ViewTreeFullConfig viewSettings, int viewId)
+        {
+            if (viewId == ViewName.Account)
+            {
+                Array.ForEach(
+                    viewSettings.Default.Levels.Where(level => level.No <= viewSettings.Default.MaxDepth).ToArray(),
+                    level => level.Name = _strings.Format(level.Name));
+                Array.ForEach(
+                    viewSettings.Default.Levels.Where(level => level.No > viewSettings.Default.MaxDepth).ToArray(),
+                    level => level.Name = String.Format(_strings[AppStrings.LevelX], level.No));
+                Array.ForEach(
+                    viewSettings.Current.Levels.Where(level => level.No <= viewSettings.Default.MaxDepth).ToArray(),
+                    level => level.Name = _strings.Format(level.Name));
+                Array.ForEach(
+                    viewSettings.Current.Levels.Where(level => level.No > viewSettings.Default.MaxDepth).ToArray(),
+                    level => level.Name = level.Name == "LevelX"
+                        ? String.Format(_strings[AppStrings.LevelX], level.No)
+                        : level.Name);
+            }
+            else
+            {
+                Array.ForEach(
+                    viewSettings.Default.Levels.ToArray(),
+                    level => level.Name = String.Format(_strings[AppStrings.LevelX], level.No));
+                Array.ForEach(
+                    viewSettings.Current.Levels.ToArray(),
+                    level => level.Name = level.Name == "LevelX"
+                        ? String.Format(_strings[AppStrings.LevelX], level.No)
+                        : level.Name);
+            }
         }
 
         private readonly IConfigRepository _repository;

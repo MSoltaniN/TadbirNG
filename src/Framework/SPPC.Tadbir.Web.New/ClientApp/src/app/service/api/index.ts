@@ -1,4 +1,4 @@
-﻿export * from './accountApi';
+export * from './accountApi';
 export * from './voucherApi';
 export * from './userApi';
 export * from './userApi';
@@ -12,6 +12,7 @@ export * from './branchApi';
 export * from './companyApi';
 export * from './accountRelationApi';
 export * from './metadataApi';
-export * from './SystemApi'
+export * from './SystemApi';
+export * from './settingsApi';
 
 

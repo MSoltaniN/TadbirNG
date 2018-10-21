@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Renderer2, Optional, Host, SkipSelf, ViewChild } from '@angular/core';
-import { BranchService, BranchInfo, RelatedItemsInfo } from '../../service/index';
+import { BranchService, BranchInfo, RelatedItemsInfo, SettingService } from '../../service/index';
 import { Branch, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
 import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
@@ -251,9 +251,9 @@ export class BranchComponent extends DefaultComponent implements OnInit {
     //#region Constructor
 
     constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-        private branchService: BranchService, public renderer: Renderer2, public metadata: MetaDataService,
+      private branchService: BranchService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService,
         @SkipSelf() @Host() @Optional() private parentComponent: BranchComponent) {
-        super(toastrService, translate, renderer, metadata, Entities.Branch, Metadatas.Branch);
+      super(toastrService, translate, renderer, metadata, settingService, Entities.Branch, Metadatas.Branch);
     }
 
     //#endregion

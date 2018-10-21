@@ -39,14 +39,10 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، آرتیکل های یک سند مشخص شده با شناسه عددی را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>آرتیکل های سندمشخص شده با شناسه عددی</returns>
-        public async Task<IList<VoucherLineViewModel>> GetArticlesAsync(
-            UserContextViewModel userContext, int voucherId, GridOptions gridOptions = null)
+        public async Task<IList<VoucherLineViewModel>> GetArticlesAsync(int voucherId, GridOptions gridOptions = null)
         {
             var query = GetVoucherLinesQuery(voucherId);
             query = _repository.ApplyRowFilter(ref query, ViewName.VoucherLine);
@@ -66,7 +62,8 @@ namespace SPPC.Tadbir.Persistence
         {
             VoucherLineViewModel articleViewModel = null;
             var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
-            var article = await repository.GetByIDAsync(articleId);
+            var article = await GetVoucherLineQuery(articleId)
+                .SingleOrDefaultAsync();
             if (article != null)
             {
                 articleViewModel = Mapper.Map<VoucherLineViewModel>(article);
@@ -239,10 +236,10 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="line">سطر اطلاعاتی موجود</param>
         protected override void UpdateExisting(VoucherLineViewModel lineView, VoucherLine line)
         {
-            line.AccountId = lineView.FullAccount.AccountId ?? 0;
-            line.DetailId = lineView.FullAccount.DetailId;
-            line.CostCenterId = lineView.FullAccount.CostCenterId;
-            line.ProjectId = lineView.FullAccount.ProjectId;
+            line.AccountId = lineView.FullAccount.Account.Id;
+            line.DetailId = lineView.FullAccount.DetailAccount.Id > 0 ? lineView.FullAccount.DetailAccount.Id : (int?)null;
+            line.CostCenterId = lineView.FullAccount.CostCenter.Id > 0 ? lineView.FullAccount.CostCenter.Id : (int?)null;
+            line.ProjectId = lineView.FullAccount.Project.Id > 0 ? lineView.FullAccount.Project.Id : (int?)null;
             line.CurrencyId = lineView.CurrencyId ?? 0;
             line.Debit = lineView.Debit;
             line.Credit = lineView.Credit;
@@ -271,9 +268,20 @@ Currency : {5}{0}Debit : {6}{0}Credit : {7}{0}Description : {8}",
             var linesQuery = repository
                 .GetEntityQuery(
                     line => line.Voucher, line => line.Account, line => line.DetailAccount, line => line.CostCenter,
-                    line => line.Project, line => line.Currency, line => line.FiscalPeriod, line => line.Branch)
+                    line => line.Project, line => line.Currency)
                 .Where(line => line.Voucher.Id == voucherId);
             return linesQuery;
+        }
+
+        private IQueryable<VoucherLine> GetVoucherLineQuery(int articleId)
+        {
+            var repository = UnitOfWork.GetRepository<VoucherLine>();
+            var lineQuery = repository
+                .GetEntityQuery(
+                    line => line.Voucher, line => line.Account, line => line.DetailAccount, line => line.CostCenter,
+                    line => line.Project, line => line.Currency)
+                .Where(line => line.Id == articleId);
+            return lineQuery;
         }
 
         private readonly ISecureRepository _repository;

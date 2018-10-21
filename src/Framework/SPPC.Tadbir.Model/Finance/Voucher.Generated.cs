@@ -35,6 +35,16 @@ namespace SPPC.Tadbir.Model.Finance
         }
 
         /// <summary>
+        /// شناسه دیتابیسی وضعیت ثبتی این سند مالی
+        /// </summary>
+        public virtual int StatusId { get; set; }
+
+        /// <summary>
+        /// وضعیت ثبتی این سند مالی
+        /// </summary>
+        public virtual DocumentStatus Status { get; set; }
+
+        /// <summary>
         /// شرح سند مالی که جزئیات بیشتری را در مورد پیشامد مالی ارائه می دهد
         /// </summary>
         public virtual string Description { get; set; }
@@ -49,6 +59,7 @@ namespace SPPC.Tadbir.Model.Finance
             Lines = new List<VoucherLine>();
             FiscalPeriod = new FiscalPeriod();
             Branch = new Branch();
+            Status = new DocumentStatus();
         }
     }
 }

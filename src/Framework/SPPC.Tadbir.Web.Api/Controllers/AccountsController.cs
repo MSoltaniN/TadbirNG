@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Common;
 using SPPC.Tadbir.Api;
+using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Core;
@@ -19,10 +22,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
     [Produces("application/json")]
     public class AccountsController : ValidatingController<AccountViewModel>
     {
-        public AccountsController(IAccountRepository repository, IStringLocalizer<AppStrings> strings = null)
+        public AccountsController(
+            IAccountRepository repository, IConfigRepository config, IStringLocalizer<AppStrings> strings = null)
             : base(strings)
         {
             _repository = repository;
+            Verify.ArgumentNotNull(config, "config");
+            _config = config;
+            _treeConfig = _config.GetViewTreeConfigByViewAsync(ViewName.Account).Result;
         }
 
         protected override string EntityNameKey
@@ -126,12 +133,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            result = BranchValidationResult(account);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
             _repository.SetCurrentContext(SecurityContext.User);
             var outputAccount = await _repository.SaveAccountAsync(account);
             return StatusCode(StatusCodes.Status201Created, outputAccount);
@@ -144,12 +145,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedAccountAsync(int accountId, [FromBody] AccountViewModel account)
         {
             var result = await ValidationResultAsync(account, accountId);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
-            }
-
-            result = BranchValidationResult(account);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -219,6 +214,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Account, account.FullCode));
             }
 
+            result = BranchValidationResult(account);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            result = ConfigValidationResult(account, _treeConfig.Current);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             return Ok();
         }
 
@@ -271,6 +278,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return message;
         }
 
-        private IAccountRepository _repository;
+        private readonly IAccountRepository _repository;
+        private readonly IConfigRepository _config;
+        private readonly ViewTreeFullConfig _treeConfig;
     }
 }

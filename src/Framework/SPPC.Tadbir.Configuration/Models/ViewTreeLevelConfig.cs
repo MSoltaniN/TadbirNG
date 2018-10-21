@@ -30,5 +30,10 @@ namespace SPPC.Tadbir.Configuration.Models
         /// طول کد تعریف شده برای سطح
         /// </summary>
         public short CodeLength { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که سطح مورد نظر در ساختار درختی فعال شده یا نه
+        /// </summary>
+        public bool IsEnabled { get; set; }
     }
 }

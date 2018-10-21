@@ -54,10 +54,14 @@ import { ViewRowPermissionSingleFormComponent } from './components/viewRowPermis
 import { ViewRowPermissionMultipleFormComponent } from './components/viewRowPermission/viewRowPermission-multiple-form.component';
 import { OperationLogsComponent } from './components/operationLogs/operationLogs.component';
 import { OperationLogsDetailComponent } from './components/operationLogs/operationLogs-detail.component';
+import { EditorFormTitleComponent } from './directive/editorForm/editor-title.component';
+import { ViewTreeConfigComponent } from './components/viewTreeConfig/viewTreeConfig.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
 import { FullCodeDirective } from './directive/fullCode/fullCode.directive';
+import { SppcCodeLengthDirective } from './directive/Validator/Sppc-code-length-validator';
+import { SpccOnlyNumberDirective } from './directive/onlyNumber/sppc.onlyNumber';
 
 
 import { Layout } from '../environments/environment';
@@ -112,6 +116,7 @@ import { SppcLoadingComponent, SppcLoadingService } from './controls/sppcLoading
 import { SppcGridResize } from './directive/grid/sppc-grid-resize';
 import { GridSettingComponent } from './directive/grid/component/grid-setting.component';
 import { SppcCheckAccess } from './directive/grid/sppc-check-access';
+import { SppcViewTreeConfig } from './directive/grid/sppc-viewTree-config';
 import { LocalizationService } from "@progress/kendo-angular-l10n";
 import { EditService } from '@progress/kendo-angular-grid/dist/es2015/editing/edit.service';
 import { EnviromentComponent } from './class/enviroment.component';
@@ -186,6 +191,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     CostCenterFormComponent,
     ConfirmEqualValidator,
     FullCodeDirective,
+    SppcCodeLengthDirective,
+    SpccOnlyNumberDirective,
     FiscalPeriodComponent,
     FiscalPeriodFormComponent,
     FiscalPeriodRolesFormComponent,
@@ -197,6 +204,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SppcDatePipe,
     ReplaceLineBreaksPipe,
     SppcCheckAccess,
+    SppcViewTreeConfig,
     AccountRelationsComponent,
     AccountRelationsFormComponent,
     SettingsComponent,
@@ -206,6 +214,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ViewRowPermissionMultipleFormComponent,
     OperationLogsComponent,
     OperationLogsDetailComponent,
+    EditorFormTitleComponent,
+    ViewTreeConfigComponent,
     SppcGridDateFilter,
     FilterDatePickerDirective,
     SppcGridDatepicker,
@@ -266,6 +276,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'viewRowPermission', component: ViewRowPermissionComponent, canActivate: [AuthGuard] },
       { path: 'operation-log', component: OperationLogsComponent, canActivate: [AuthGuard] },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+      { path: 'view-tree-config', component: ViewTreeConfigComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'account' }
     ])
   ],

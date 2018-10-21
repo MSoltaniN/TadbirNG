@@ -4,7 +4,7 @@ using SPPC.Tadbir.Domain;
 
 namespace SPPC.Tadbir.ViewModel.Finance
 {
-    public partial class ProjectViewModel : IFiscalEntityView
+    public partial class ProjectViewModel : IFiscalEntityView, ITreeEntityView
     {
         /// <summary>
         /// شناسه دیتابیسی دوره مالی که این پروژه در آن تعریف شده است

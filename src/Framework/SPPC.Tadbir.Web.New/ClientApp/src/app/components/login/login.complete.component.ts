@@ -78,7 +78,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         public userService: UserService,
         public settingService : SettingService,@Inject(DOCUMENT) public document) 
     {
-        super(toastrService, translate, renderer, metadata,'','');
+      super(toastrService, translate, renderer, metadata, settingService,'', '');
             
     }
 
@@ -192,7 +192,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     }
 
     selectParams() {
-        
+
+      sessionStorage.removeItem("viewTreeConfig");
+
         if (this.isValidate()) {
 
             if (this.authenticationService.islogin()) {

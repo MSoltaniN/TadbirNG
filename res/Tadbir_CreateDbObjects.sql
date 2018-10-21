@@ -155,6 +155,7 @@ CREATE TABLE [Finance].[Voucher] (
     [VoucherID]         INT              IDENTITY (1, 1) NOT NULL,
 	[FiscalPeriodID]    INT              NOT NULL,
 	[BranchID]          INT              NOT NULL,
+	[StatusID]          INT              NOT NULL,
     [No]                NVARCHAR(64)     NOT NULL,
     [Date]              DATETIME         NOT NULL,
     [Reference]         NVARCHAR(64)     NULL,
@@ -164,6 +165,7 @@ CREATE TABLE [Finance].[Voucher] (
     , CONSTRAINT [PK_Finance_Voucher] PRIMARY KEY CLUSTERED ([VoucherID] ASC)
     , CONSTRAINT [FK_Finance_Voucher_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_Voucher_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+    , CONSTRAINT [FK_Finance_Voucher_Core_DocumentStatus] FOREIGN KEY ([StatusID]) REFERENCES [Core].[DocumentStatus] ([StatusID])
 )
 GO
 
@@ -340,6 +342,12 @@ CREATE TABLE [Workflow].[WorkItemHistory] (
 )
 GO
 
+-- Insert system records...
+SET IDENTITY_INSERT [Core].[DocumentStatus] ON
+INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (1, N'Draft')
+INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (2, N'NormalCheck')
+INSERT INTO [Core].[DocumentStatus] (StatusID, Name) VALUES (3, N'FinalCheck')
+SET IDENTITY_INSERT [Core].[DocumentStatus] OFF
 
 SET ANSI_NULLS OFF
 GO

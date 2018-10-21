@@ -8,6 +8,7 @@ import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { Metadatas, Entities } from '../../../environments/environment';
+import { SettingService } from '../../service/index';
 
 
 
@@ -52,9 +53,9 @@ export class OperationLogsDetailComponent extends DefaultComponent {
 
 
     constructor(public toastrService: ToastrService, public translate: TranslateService,
-        public renderer: Renderer2, public metadata: MetaDataService) {
+      public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
 
-        super(toastrService, translate, renderer, metadata, Entities.OperationLog, Metadatas.OperationLog);
+      super(toastrService, translate, renderer, metadata, settingService, Entities.OperationLog, Metadatas.OperationLog);
     }
 
 }

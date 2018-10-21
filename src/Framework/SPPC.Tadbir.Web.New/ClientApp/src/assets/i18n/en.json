@@ -1,4 +1,4 @@
-﻿{
+{
   "App": {
     "Title": "Wellcome to Tabir New System",
     "SELECT": "Change language",
@@ -78,7 +78,8 @@
     "ViewRowPermission": "Row Permission",
     "OperationLog": "Operation Logs",
     "Unsuccessful": "Unsuccessful",
-    "Successful": "Successful"
+    "Successful": "Successful",
+    "ViewTreeConfig": "View Tree Config"
   },
   "BranchScope": {
     "AllBranches": "All Branches",
@@ -161,6 +162,16 @@
     "SelectEntity": "Select Entity",
     "Entities": "Entities"
   },
+  "ViewTreeConfig": {
+    "EntityName": "Entity Name",
+    "MaxDepth": "Max Depth",
+    "DefinableLevels": "Definable Levels",
+    "LevelNo": "Level No",
+    "LevelName": "Level Name",
+    "CodeLength": "Code Length",
+    "Save": "Save",
+    "DefaultSettings": "Default Settings"
+  },
   "VoucherLine": {
     "Debit": "Debit",
     "Credit": "Credit",
@@ -170,7 +181,27 @@
     "New": "New Article",
     "Delete": "Delete Article",
     "Currency": "Currency",
-    "Account": "Account"
+    "Account": "Account",
+    "Sum": "Sum",
+    "Difference": "Difference",
+    "FullAccount": {
+      "Account": {
+        "Name": "Account Name",
+        "FullCode": "Account Full Code"
+      },
+      "DetailAccount": {
+        "Name": "Detail Account Name",
+        "FullCode": "Detail Account Full Code"
+      },
+      "CostCenter": {
+        "Name": "Cost Center Name",
+        "FullCode": "Cost Center Full Code"
+      },
+      "Project": {
+        "Name": "Project Name",
+        "FullCode": "Project Full Code"
+      }
+    }
   },
   "Company": {
     "CompanyName": "Company",
@@ -206,7 +237,9 @@
     "Date": "Date",
     "Description": "Description",
     "BranchId": "Branch",
-    "FiscalPeriodId": "Fiscal"
+    "FiscalPeriodId": "Fiscal",
+    "Commit": "Commit Voucher",
+    "ReturnFromCommit": "Return From Commit"
   },
   "User": {
     "New": "New User",
@@ -369,6 +402,9 @@
     "BeforeState": "Before State",
     "AfterState": "After State",
     "ErrorMessage": "Error Message"
+  },
+  "MetaDataValidation": {
+    "CodeLength": "Code length is not allowed"
   },
   "AllValidations": {
     "Account": {
