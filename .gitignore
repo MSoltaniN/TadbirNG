@@ -17,3 +17,5 @@ doc/~$mplete-Workflow.docx
 
 # Ignore this to enable developer-specific connection string for API service
 src/Framework/SPPC.Tadbir.Web.Api/appsettings.Development.json
+/doc/Planning/~$نامه ریزی همایش.docx
+/doc/Analysis/~$TahlilTadbirWeb.xlsx

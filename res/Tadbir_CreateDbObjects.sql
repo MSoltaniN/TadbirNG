@@ -51,17 +51,14 @@ CREATE TABLE [Core].[DocumentStatus] (
 GO
 
 CREATE TABLE [Core].[Document] (
-    [DocumentID]          INT              IDENTITY (1, 1) NOT NULL,
-    [TypeID]              INT              NOT NULL,
-    [StatusID]            INT              NOT NULL,
-    [EntityNo]            NVARCHAR(64)     NOT NULL,
-    [No]                  NVARCHAR(64)     NOT NULL,
-    [OperationalStatus]   NVARCHAR(64)     NOT NULL,
-    [rowguid]             UNIQUEIDENTIFIER CONSTRAINT [DF_Core_Document_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
-    [ModifiedDate]        DATETIME         CONSTRAINT [DF_Core_Document_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    [DocumentID]     INT              IDENTITY (1, 1) NOT NULL,
+    [TypeID]         INT              NOT NULL,
+    [EntityID]       INT              NOT NULL,
+    [No]             NVARCHAR(64)     NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Core_Document_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Core_Document_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Core_Document] PRIMARY KEY CLUSTERED ([DocumentID] ASC)
-    , CONSTRAINT [FK_Core_Document_Core_DocumentType] FOREIGN KEY ([TypeID]) REFERENCES [Core].[DocumentType]([TypeID])
-    , CONSTRAINT [FK_Core_Document_Core_DocumentStatus] FOREIGN KEY ([StatusID]) REFERENCES [Core].[DocumentStatus]([StatusID])
+    , CONSTRAINT [FK_Core_Document_Core_Type] FOREIGN KEY ([TypeID]) REFERENCES [Core].[DocumentType]([TypeID])
 )
 GO
 
@@ -155,6 +152,7 @@ CREATE TABLE [Finance].[Voucher] (
     [VoucherID]         INT              IDENTITY (1, 1) NOT NULL,
 	[FiscalPeriodID]    INT              NOT NULL,
 	[BranchID]          INT              NOT NULL,
+    [DocumentID]        INT              NULL,
 	[StatusID]          INT              NOT NULL,
     [No]                NVARCHAR(64)     NOT NULL,
     [Date]              DATETIME         NOT NULL,
@@ -165,6 +163,7 @@ CREATE TABLE [Finance].[Voucher] (
     , CONSTRAINT [PK_Finance_Voucher] PRIMARY KEY CLUSTERED ([VoucherID] ASC)
     , CONSTRAINT [FK_Finance_Voucher_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_Voucher_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
+    , CONSTRAINT [FK_Finance_Voucher_Core_Document] FOREIGN KEY ([DocumentID]) REFERENCES [Core].[Document]([DocumentID])
     , CONSTRAINT [FK_Finance_Voucher_Core_DocumentStatus] FOREIGN KEY ([StatusID]) REFERENCES [Core].[DocumentStatus] ([StatusID])
 )
 GO
