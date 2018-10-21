@@ -182,7 +182,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     }
 
     selectParams() {
-        
+
+      sessionStorage.removeItem("viewTreeConfig");
+
         if (this.isValidate()) {
 
             if (this.authenticationService.islogin()) {
