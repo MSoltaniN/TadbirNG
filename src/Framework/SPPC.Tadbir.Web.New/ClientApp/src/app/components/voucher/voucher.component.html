@@ -1,145 +1,149 @@
-﻿<div class="panel panel-primary">
-    <div class="panel-heading">{{ 'Entity.Voucher' | translate }}</div>
-    <div>
+<div class="panel panel-primary">
+  <div class="panel-heading">{{ 'Entity.Voucher' | translate }}</div>
+  <div>
 
-    </div>
-    <div SppcCheckAccess="View" class="panel-body">
+  </div>
+  <div SppcCheckAccess="View" class="panel-body">
 
+    <kendo-grid id="2" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+                [data]="rowData"
+                [sortable]="true"
+                [pageSize]="pageSize"
+                [skip]="skip"
+                [filter]="state.filter"
+                [pageable]="true"
+                [resizable]="true"
+                [filterable]="true"
+                [scrollable]="'none'"
+                (pageChange)="pageChange($event)"
+                (sortChange)="sortChange($event)"
+                (edit)="editHandler($event)"
+                (remove)="removeHandler($event)"
+                [sort]="state.sort"
+                [loading]="true"
+                [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+                [selectedKeys]="selectedRows"
+                [kendoGridSelectBy]="selectionKey"
+                (filterChange)="filterChange($event)"
+                (selectedKeysChange)="onSelectedKeysChange($event)"
+                sppc-grid-reorder sppc-grid-resize>
+      <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                           pagerOf="{{ 'Paging.Of' | translate }}"
+                           pagerItems="{{ 'Paging.Record' | translate }}">
+      </kendo-grid-messages>
+      <ng-template kendoGridNoRecordsTemplate>
+        {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
+      </ng-template>
+      <ng-template kendoGridToolbarTemplate>
 
+        <sppc-dateRangeSelector [Field]="'date'"
+                                [minDate]="FiscalPeriodStartDate"
+                                [maxDate]="FiscalPeriodEndDate"
+                                [isDisplayFromDate]="true"
+                                [isDisplayToDate]="true"
+                                [displayFromDate]="FiscalPeriodStartDate"
+                                [displayToDate]="FiscalPeriodEndDate">
+        </sppc-dateRangeSelector>
 
-        <kendo-grid id="2" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
-                    [data]="rowData"
-                    [sortable]="true"
-                    [pageSize]="pageSize"
-                    [skip]="skip"
-                    [filter]="state.filter"
-                    [pageable]="true"
-                    [resizable]="true"
-                    [filterable]="true"
-                    [scrollable]="'none'"
-                    (pageChange)="pageChange($event)"
-                    (sortChange)="sortChange($event)"
-                    (edit)="editHandler($event)"
-                    (remove)="removeHandler($event)"
-                    [sort]="state.sort"
-                    [loading]="true"
-                    [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-                    [selectedKeys]="selectedRows"
-                    [kendoGridSelectBy]="selectionKey"
-                    (filterChange)="filterChange($event)"
-                    (selectedKeysChange)="onSelectedKeysChange($event)"
-                    sppc-grid-reorder sppc-grid-resize>
-            <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
-                                 pagerOf="{{ 'Paging.Of' | translate }}"
-                                 pagerItems="{{ 'Paging.Record' | translate }}">
-            </kendo-grid-messages>
-            <ng-template kendoGridNoRecordsTemplate>
-                {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
-            </ng-template>
-            <ng-template kendoGridToolbarTemplate>
+        <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'Voucher.New' | translate }}</button>
+        <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
+        <grid-setting entityTypeName="Voucher"></grid-setting>
+        <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+      </ng-template>
+      <!-- template for mobile -->
+      <kendo-grid-column media="(max-width: 449px)" title="">
+        <ng-template kendoGridCellTemplate let-voucher>
+          <!-- template for mobile -->
+          <dl>
+            <dt>{{ 'Voucher.No' | translate }}</dt>
+            <dd>{{ voucher.no }}</dd>
 
-                <sppc-dateRangeSelector [Field]="'date'"
-                                        [minDate]="FiscalPeriodStartDate"
-                                        [maxDate]="FiscalPeriodEndDate"
-                                        [isDisplayFromDate]="true"
-                                        [isDisplayToDate]="true"
-                                        [displayFromDate]="FiscalPeriodStartDate"
-                                        [displayToDate]="FiscalPeriodEndDate">
-                </sppc-dateRangeSelector>
+            <dt>{{ 'Voucher.Date' | translate }}</dt>
+            <dd>{{ voucher.date | SppcDate }}</dd>
 
-                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'Voucher.New' | translate }}</button>
-                <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
-                <grid-setting entityTypeName="Voucher"></grid-setting>
-                <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-            </ng-template>
-            <!-- template for mobile -->
-            <kendo-grid-column media="(max-width: 449px)" title="">
-                <ng-template kendoGridCellTemplate let-voucher>
-                    <!-- template for mobile -->
-                    <dl>
-                        <dt>{{ 'Voucher.No' | translate }}</dt>
-                        <dd>{{ voucher.no }}</dd>
+            <dt>{{ 'Voucher.Description' | translate  }}</dt>
+            <dd>{{ voucher.description }}</dd>
+          </dl>
+          <button kendoGridEditCommand SppcCheckAccess="Edit" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+          <button kendoGridRemoveCommand SppcCheckAccess="Delete">{{ 'Buttons.Delete' | translate }}</button>
+          <button class="k-button k-primary" SppcCheckAccess="Check" [hidden]="voucher.statusId != 1" (click)="checkHandler(voucher.id, voucher.statusId)">{{ 'Voucher.Commit' | translate }}</button>
+          <button class="k-button k-primary" SppcCheckAccess="Uncheck" [hidden]="voucher.statusId == 1" (click)="checkHandler(voucher.id, voucher.statusId)">{{ 'Voucher.ReturnFromCommit' | translate }}</button>
+        </ng-template>
+      </kendo-grid-column>
+      <!-- template for mobile -->
+      <!-- template for mid-size devices -->
+      <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px) and (max-width: 1024px)"></kendo-grid-checkbox-column>
+      <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Voucher.no">
+        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+          <sppc-grid-filter [metaData]="getMeta('no')" [column]="column" [filter]="filter"></sppc-grid-filter>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Voucher.date">
+        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+          <sppc-grid-filter [metaData]="getMeta('date')" [column]="column" [filter]="filter"></sppc-grid-filter>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-voucher>
+          {{ voucher.date | SppcDate }}
+        </ng-template>
+      </kendo-grid-column>
 
-                        <dt>{{ 'Voucher.Date' | translate }}</dt>
-                        <dd>{{ voucher.date | SppcDate }}</dd>
+      <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px) and (max-width: 1024px)">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
+          <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
+          <button class="k-button k-primary" SppcCheckAccess="Check" [hidden]="dataItem.statusId != 1" (click)="checkHandler(dataItem.id, dataItem.statusId)">{{ 'Voucher.Commit' | translate }}</button>
+          <button class="k-button k-primary" SppcCheckAccess="Uncheck" [hidden]="dataItem.statusId == 1" (click)="checkHandler(dataItem.id, dataItem.statusId)">{{ 'Voucher.ReturnFromCommit' | translate }}</button>
+        </ng-template>
+      </kendo-grid-command-column>
+      <!-- template for mid-size devices -->
+      <!-- additional columns on large devices -->
+      <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
+      <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="Voucher.no">
+        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+          <sppc-grid-filter [metaData]="getMeta('no')" [column]="column" [filter]="filter"></sppc-grid-filter>
+        </ng-template>
+      </kendo-grid-column>
 
-                        <dt>{{ 'Voucher.Description' | translate  }}</dt>
-                        <dd>{{ voucher.description }}</dd>
-                    </dl>
-                    <button kendoGridEditCommand SppcCheckAccess="Edit" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                    <button kendoGridRemoveCommand SppcCheckAccess="Delete">{{ 'Buttons.Delete' | translate }}</button>
-                </ng-template>
-            </kendo-grid-column>
-            <!-- template for mobile -->
-            <!-- template for mid-size devices -->
-            <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px) and (max-width: 1024px)"></kendo-grid-checkbox-column>
-            <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Voucher.no">
-                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                    <sppc-grid-filter [metaData]="getMeta('no')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                </ng-template>
-            </kendo-grid-column>
-            <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Voucher.date">
-                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                    <sppc-grid-filter [metaData]="getMeta('date')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                </ng-template>
-                <ng-template kendoGridCellTemplate let-voucher>
-                    {{ voucher.date | SppcDate }}
-                </ng-template>
-            </kendo-grid-column>
+      <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="Voucher.date">
+        <ng-template kendoGridFilterCellTemplate let-filter let-column="column" let-Voucher>
+          <sppc-grid-filter [metaData]="getMeta('date')" [column]="column" [filter]="filter"></sppc-grid-filter>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-voucher>
+          {{ voucher.date | SppcDate }}
+        </ng-template>
+      </kendo-grid-column>
 
-            <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px) and (max-width: 1024px)">
-                <ng-template kendoGridCellTemplate let-dataItem>
-                    <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
-                    <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
-                </ng-template>
-            </kendo-grid-command-column>
-            <!-- template for mid-size devices -->
-            <!-- additional columns on large devices -->
-            <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
-            <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="Voucher.no">
-                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                    <sppc-grid-filter [metaData]="getMeta('no')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                </ng-template>
-            </kendo-grid-column>
+      <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="Voucher.description">
+        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+          <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
+        </ng-template>
+      </kendo-grid-column>
 
-            <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="Voucher.date">
-                <ng-template kendoGridFilterCellTemplate let-filter let-column="column" let-Voucher>
-                    <sppc-grid-filter [metaData]="getMeta('date')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                </ng-template>
-                <ng-template kendoGridCellTemplate let-voucher>
-                    {{ voucher.date | SppcDate }}
-                </ng-template>
-            </kendo-grid-column>
+      <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
+          <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
+          <button class="k-button k-primary" SppcCheckAccess="Check" [hidden]="dataItem.statusId != 1" (click)="checkHandler(dataItem.id, dataItem.statusId)">{{ 'Voucher.Commit' | translate }}</button>
+          <button class="k-button k-primary" SppcCheckAccess="Uncheck" [hidden]="dataItem.statusId == 1" (click)="checkHandler(dataItem.id, dataItem.statusId)">{{ 'Voucher.ReturnFromCommit' | translate }}</button>
+        </ng-template>
+      </kendo-grid-command-column>
+      <!-- additional columns on large devices -->
 
-            <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="Voucher.description">
-                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                    <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                </ng-template>
-            </kendo-grid-column>
-
-            <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
-                <ng-template kendoGridCellTemplate let-dataItem>
-                    <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
-                    <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
-                </ng-template>
-            </kendo-grid-command-column>
-            <!-- additional columns on large devices -->
-
-        </kendo-grid>
-        <voucher-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
-                                (save)="saveHandler($event)"
-                                (cancel)="cancelHandler()">
-        </voucher-form-component>
-    </div>
-    <kendo-dialog title="{{'Voucher.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
-        <p>
-            {{ this.deleteConfirmMsg }}
-        </p>
-        <kendo-dialog-actions>
-            <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-            <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
-        </kendo-dialog-actions>
-    </kendo-dialog>
+    </kendo-grid>
+    <voucher-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
+                            (save)="saveHandler($event)"
+                            (cancel)="cancelHandler()">
+    </voucher-form-component>
+  </div>
+  <kendo-dialog title="{{'Voucher.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
+    <p>
+      {{ this.deleteConfirmMsg }}
+    </p>
+    <kendo-dialog-actions>
+      <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+      <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
+    </kendo-dialog-actions>
+  </kendo-dialog>
 </div>
 
 

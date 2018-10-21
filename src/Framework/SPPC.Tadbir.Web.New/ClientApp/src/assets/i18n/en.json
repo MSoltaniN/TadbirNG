@@ -236,7 +236,9 @@
     "Date": "Date",
     "Description": "Description",
     "BranchId": "Branch",
-    "FiscalPeriodId": "Fiscal"
+    "FiscalPeriodId": "Fiscal",
+    "Commit": "Commit Voucher",
+    "ReturnFromCommit": "Return From Commit"
   },
   "User": {
     "New": "New User",
