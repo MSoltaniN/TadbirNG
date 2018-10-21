@@ -42,7 +42,12 @@ export class MetaDataService extends BaseService {
         var url = String.Format(MetadataApi.EntityMetadata, entityName);
         return this.http.get(url, options)
             .map(response => (<Response>response));
-    }
+        //var result = null;
+        //this.http.get(url, options)
+        //  .map(response => result = (<Response>response).json());
+
+        //return result;
+    }    
 
 
     getMetaDataById(entityId: number) {

@@ -22,17 +22,29 @@ tbutton {
 
 .tbody {
     background-color: #2c3e50;
+    font-family: SPPC !important;
 }
 
 .tRtl {
-    direction: rtl !important;
+    direction: rtl !important;    
 }
 
-.tRtl {
-    direction: rtl !important;
+.body-content
+{
+    width: 100%!important;
 }
 
-.tLtr {
+.navbar-nav > .user-menu > .dropdown-menu > li.user-header
+{
+    height: 200px!important;
+}
+
+.userinfo
+{
+    color: white;
+}
+
+.tLtr {    
     direction:ltr!important;
 }
 
@@ -44,8 +56,51 @@ tbutton {
     padding-left: 0 !important;
 }
 
-.menuitem {
-    margin-right: 6px;    
+.btn-userInfo
+{
+    margin-right: 10px;
+}
+
+.img-user
+{
+    color: white;
+    font-size: 80px!important;
+}
+
+.main-header .logo .logo-lg
+{
+    font-family: SPPC!important;
+}
+
+.sidebar-mini.sidebar-collapse .main-header .logo > .logo-mini
+{
+    font-family: SPPC!important;
+    font-size: 15px!important;
+}
+
+body span.menuitem
+{
+    margin-right: 2px!important;
+}
+
+body.sidebar-collapse span.menuitem
+{
+    margin-right: 0px!important;
+}
+
+li .glyphicon {
+    margin-right: 18px;
+    margin-top: 6px;
+}
+
+body.sidebar-collapse  li .glyphicon {
+    margin-right: 0px;
+    margin-top: 0px;
+}
+
+body.sidebar-collapse .none
+{
+    visibility: hidden; 
 }
 
 label {

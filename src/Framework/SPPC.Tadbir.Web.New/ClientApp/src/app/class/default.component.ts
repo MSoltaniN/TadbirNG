@@ -86,6 +86,8 @@ export class DefaultComponent extends BaseComponent  {
 
         this.localizeMsg();
 
+        //if(metaDataName != null && metaDataName != "")
+        //  this.saveMetadataInCache(metaDataName);
         //if (createForm)
         //this.initializeFrom();
     }
@@ -236,6 +238,28 @@ export class DefaultComponent extends BaseComponent  {
 
         }
     }
+
+    /**
+    * 
+    * @param metadataName is name of metadata
+    */
+    public saveMetadataInCache(metadataName: string) {
+      if (metadataName) {
+
+        if (localStorage.getItem(metadataName) == "undefined" || localStorage.getItem(metadataName) == null) {
+          this.metadataService.getMetaData(metadataName).subscribe((res1: any) => {
+
+            this.properties[metadataName] = res1.columns;
+
+            localStorage.setItem(metadataName, JSON.stringify(this.properties[metadataName]))            
+            
+          });
+           
+          
+        }
+      }
+    }
+
 
     /** return the current language */
     public currentlang: string = "";
