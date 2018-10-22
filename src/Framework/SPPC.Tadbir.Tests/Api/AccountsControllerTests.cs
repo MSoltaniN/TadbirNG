@@ -39,7 +39,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             _controller = new AccountsController(
                 _mockRepository.Object, _mockConfig.Object, _mockLocalizer.Object)
             {
-                ControllerContext = TestControllerContext
+                ControllerContext = TestContext
             };
             _existingAccount = new AccountViewModel() { Id = _existingAccountId };
         }

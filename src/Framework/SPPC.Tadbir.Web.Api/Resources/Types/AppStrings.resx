@@ -615,4 +615,7 @@
   <data name="UncheckEntity" xml:space="preserve">
     <value>برگشت {0}</value>
   </data>
+  <data name="CantModifyCheckedDocument" xml:space="preserve">
+    <value>{0} مورد نظر ثبت شده و قابل ویرایش یا حذف نیست.</value>
+  </data>
 </root>

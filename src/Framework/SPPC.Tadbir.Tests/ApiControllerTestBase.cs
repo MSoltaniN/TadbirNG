@@ -18,7 +18,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
     public class ApiControllerTestBase<TController> : IDisposable
         where TController : Controller
     {
-        protected ControllerContext TestControllerContext
+        protected ControllerContext TestContext
         {
             get { return GetTestControllerContext(); }
         }

@@ -110,6 +110,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            result = CheckedValidationResult(voucher);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             _repository.SetCurrentContext(SecurityContext.User);
             var outputVoucher = await _repository.SaveVoucherAsync(voucher);
             result = (outputVoucher != null)
@@ -387,9 +393,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             var result = BranchValidationResult(voucher);
-            if (result is BadRequestObjectResult errorResult)
+            if (result is BadRequestObjectResult branchError)
             {
-                message = errorResult.Value.ToString();
+                message = branchError.Value.ToString();
+            }
+
+            result = CheckedValidationResult(voucher);
+            if (result is BadRequestObjectResult statusError)
+            {
+                message = statusError.Value.ToString();
             }
 
             return message;
@@ -412,6 +424,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             return message;
+        }
+
+        private IActionResult CheckedValidationResult(VoucherViewModel voucher)
+        {
+            if (voucher.StatusId != (int)DocumentStatusValue.Draft)
+            {
+                return BadRequest(_strings.Format(AppStrings.CantModifyCheckedDocument, AppStrings.Voucher));
+            }
+
+            return Ok();
         }
 
         private void Localize(params VoucherViewModel[] vouchers)
