@@ -1,26 +1,30 @@
 <aside class="main-sidebar">
   <section class="sidebar">    
-    <ul class="sidebar-menu tree" data-widget="tree" (window:keypress)="doSomething($event)">
+    <ul class="sidebar-menu tree" data-widget="tree">
+      <!--(window:keypress)="doSomething($event)"-->
       <li *ngFor="let cmd of menuList;" class="parent treeview" [ngClass]="{'active menu-open':this.expandedSubMenuId === cmd.id}">
-        <a id="a{{cmd.id}}" href="#/dashboard" (click)="clickMenu($event,cmd.id)" >         
-            <span class="pull-right-container none">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-              <i class="glyphicon glyphicon-{{cmd.iconName}}"></i>
-              <span class="menuitem">{{ cmd.title }}</span>
+        <a id="a{{cmd.id}}" href="#/dashboard" (click)="clickMenu($event,cmd.id)">
+          <span class="pull-right-container none">
+            <i class="fa fa-angle-left pull-right"></i>
+          </span>
+          <i class="glyphicon glyphicon-{{cmd.iconName}}"></i>
+          <span class="menuitem">{{ cmd.title }}</span>
         </a>
-        
-          <ul class="treeview-menu" id='menu{{cmd.id}}' >
-            <li [routerLinkActive]="['link-active']" *ngFor="let innerCmd of cmd.children;" > 
-              <a *ngIf="innerCmd.routeUrl != null" routerLink="/{{innerCmd.routeUrl}}">
-                <span class="glyphicon glyphicon-{{innerCmd.iconName}}"></span>
-                <span class="menuitem child">{{
-                  innerCmd.title }}</span>
-              </a>
-            </li>
 
-          </ul>
-        
+        <ul class="treeview-menu" id='menu{{cmd.id}}'>
+          <li [routerLinkActive]="['link-active']" *ngFor="let innerCmd of cmd.children;">
+            <a *ngIf="innerCmd.routeUrl != null" routerLink="/{{innerCmd.routeUrl}}">
+              <span class="glyphicon glyphicon-{{innerCmd.iconName}}"></span>
+              <span class="menuitem child">
+                {{
+                  innerCmd.title
+                }}
+              </span>
+            </a>
+          </li>
+
+        </ul>
+
       </li>
 
 
