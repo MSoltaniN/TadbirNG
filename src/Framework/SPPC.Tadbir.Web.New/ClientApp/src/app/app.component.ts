@@ -122,10 +122,12 @@ export class AppComponent implements AfterContentInit {
 
 
         var lang = localStorage.getItem('lang');
-        if(lang == 'fa')
+        if(lang == 'fa' || lang == null)
         {
             this.document.getElementById('adminlteLtr').setAttribute('disabled','true');
             this.document.getElementById('adminlteRtl').removeAttribute('disabled');
+
+            localStorage.setItem('lang','fa');
         }
         else
         {
