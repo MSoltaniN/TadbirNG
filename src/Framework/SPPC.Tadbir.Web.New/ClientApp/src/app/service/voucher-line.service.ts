@@ -11,8 +11,8 @@ import { HttpClient } from '@angular/common/http';
 
 export class VoucherLineInfo implements VoucherLine {
     id: number = 0;
-    debit: number = 0;
-    credit: number = 0;
+    debit: number;
+    credit: number;
     description?: string | undefined;
     fiscalPeriodId: number = 0;
     branchId: number = 0;

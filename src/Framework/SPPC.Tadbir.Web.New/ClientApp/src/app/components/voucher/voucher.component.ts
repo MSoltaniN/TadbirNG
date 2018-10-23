@@ -163,39 +163,39 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
   }
 
-  public checkHandler(voucherId: number, statusId: DocumentStatusValue) {
-    debugger;
-    if (statusId == DocumentStatusValue.Draft) {
-      //check
-      this.grid.loading = true;
-      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.CheckVoucher, voucherId)).subscribe(res => {
+  //public checkHandler(voucherId: number, statusId: DocumentStatusValue) {
+  //  debugger;
+  //  if (statusId == DocumentStatusValue.Draft) {
+  //    //check
+  //    this.grid.loading = true;
+  //    this.voucherService.changeVoucherStatus(String.Format(VoucherApi.CheckVoucher, voucherId)).subscribe(res => {
 
-        this.showMessage(this.updateMsg, MessageType.Succes);
-        this.reloadGrid();
+  //      this.showMessage(this.updateMsg, MessageType.Succes);
+  //      this.reloadGrid();
 
-      }, (error => {
-        this.grid.loading = false;
-        var message = error.message ? error.message : error;
-        this.showMessage(message, MessageType.Warning);
-      }));
+  //    }, (error => {
+  //      this.grid.loading = false;
+  //      var message = error.message ? error.message : error;
+  //      this.showMessage(message, MessageType.Warning);
+  //    }));
 
-    }
-    else {
-      //uncheck
-      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.UncheckVoucher, voucherId)).subscribe(res => {
+  //  }
+  //  else {
+  //    //uncheck
+  //    this.voucherService.changeVoucherStatus(String.Format(VoucherApi.UncheckVoucher, voucherId)).subscribe(res => {
 
-        this.showMessage(this.updateMsg, MessageType.Succes);
-        this.reloadGrid();
+  //      this.showMessage(this.updateMsg, MessageType.Succes);
+  //      this.reloadGrid();
 
-      }, (error => {
-        this.grid.loading = false;
-        var message = error.message ? error.message : error;
-        this.showMessage(message, MessageType.Warning);
-      }));
-    }
+  //    }, (error => {
+  //      this.grid.loading = false;
+  //      var message = error.message ? error.message : error;
+  //      this.showMessage(message, MessageType.Warning);
+  //    }));
+  //  }
 
 
-  }
+  //}
 
   //#endregion
 
