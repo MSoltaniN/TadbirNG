@@ -29,11 +29,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
+        /// <param name="config">امکان مدیریت تنظیمات برنامه را در دیتابیس فراهم می کند</param>
         public CostCenterRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
-            ISecureRepository repository)
+            ISecureRepository repository, IConfigRepository config)
             : base(unitOfWork, mapper, metadata, log)
         {
             _repository = repository;
+            _configRepository = config;
         }
 
         /// <summary>
@@ -129,6 +131,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 costCenterModel = Mapper.Map<CostCenter>(costCenter);
                 await InsertAsync(repository, costCenterModel);
+                await UpdateLevelUsageAsync(costCenterModel.Level);
             }
             else
             {
@@ -153,6 +156,7 @@ namespace SPPC.Tadbir.Persistence
             if (costCenter != null)
             {
                 await DeleteAsync(repository, costCenter);
+                await UpdateLevelUsageAsync(costCenter.Level);
             }
         }
 
@@ -271,6 +275,20 @@ namespace SPPC.Tadbir.Persistence
                : null;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، وضعیت استفاده از یکی از سطوح درختی مرکز هزینه را در دیتابیس بروزرسانی می کند
+        /// </summary>
+        /// <param name="level">شماره سطح مورد نظر</param>
+        /// <remarks>قابل توجه است که در این متد هیچگونه فیلتری روی دوره مالی، شعبه یا سطرهای قابل دسترسی صورت نمی گیرد.
+        /// این به این معنی است که اطلاعات سطح مورد نظر در هر شعبه یا دوره مالی ممکن است ایجاد شده باشد. </remarks>
+        private async Task UpdateLevelUsageAsync(int level)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
+            int count = await repository.GetCountByCriteriaAsync(cc => cc.Level == level);
+            await _configRepository.SaveTreeLevelUsageAsync(ViewName.CostCenter, level, count);
+        }
+
         private readonly ISecureRepository _repository;
+        private readonly IConfigRepository _configRepository;
     }
 }
