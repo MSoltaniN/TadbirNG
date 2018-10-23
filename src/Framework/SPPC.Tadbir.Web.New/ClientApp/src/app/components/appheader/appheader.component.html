@@ -1,7 +1,7 @@
 <header class="main-header">
 
   <!-- Logo -->
-  <a href="dashboard" class="logo">
+  <a href="/#/dashboard" class="logo">
     <!-- mini logo for sidebar mini 50x50 pixels -->
     <span class="logo-mini">{{ 'App.SummaryName' | translate }}</span>
     <!-- logo for regular state and mobile devices -->
@@ -240,12 +240,7 @@
               </div>
             </li>            
             <!-- Menu Footer-->
-            <li class="user-footer">
-                <div class="pull-left">
-                    <a  class="btn btn-default btn-flat btn-userInfo" routerLink="/login">                        
-                      <span>{{ 'Login.SelectTitle' | translate  }}</span>
-                  </a>
-                </div>
+            <li class="user-footer">                
                 <div  class="pull-left" *ngFor="let pitem of profileItems;">
                     <a *ngIf="pitem.routeUrl != null" class="btn btn-default btn-flat btn-userInfo" routerLink="/{{pitem.routeUrl}}">                        
                         <span>{{ pitem.title }}</span>
