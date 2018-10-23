@@ -7,6 +7,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -126,7 +127,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await UnitOfWork.CommitAsync();
+            await ManageDocumentAsync(voucher);
             return Mapper.Map<VoucherViewModel>(voucher);
         }
 
@@ -167,6 +168,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
         public void SetCurrentContext(UserContextViewModel userContext)
         {
+            _userContext = userContext;
             _repository.SetCurrentContext(userContext);
             SetLoggingContext(userContext);
         }
@@ -215,6 +217,48 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
+        private async Task ManageDocumentAsync(Voucher voucher)
+        {
+            if (voucher != null)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<Document>();
+                var voucherRepository = UnitOfWork.GetAsyncRepository<Voucher>();
+                var document = await repository.GetSingleByCriteriaAsync(
+                    doc => doc.EntityId == voucher.Id && doc.Type.Id == (int)DocumentTypeValue.Voucher,
+                    doc => doc.Actions);
+                if (document == null)
+                {
+                    document = new Document()
+                    {
+                        EntityId = voucher.Id,
+                        TypeId = (int)DocumentTypeValue.Voucher
+                    };
+                    var action = new DocumentAction()
+                    {
+                        CreatedById = _userContext.Id,
+                        ModifiedById = _userContext.Id,
+                        CreatedDate = DateTime.Now,
+                        ModifiedDate = DateTime.Now
+                    };
+                    action.Document = document;
+                    document.Actions.Add(action);
+                    repository.Insert(document, doc => doc.Actions);
+                    voucher.DocumentId = document.Id;
+                    voucherRepository.Update(voucher);
+                }
+                else
+                {
+                    var action = document.Actions.Single();
+                    action.ModifiedById = _userContext.Id;
+                    action.ModifiedDate = DateTime.Now;
+                    repository.Update(document, doc => doc.Actions);
+                }
+
+                await UnitOfWork.CommitAsync();
+            }
+        }
+
         private readonly ISecureRepository _repository;
+        private UserContextViewModel _userContext;
     }
 }
