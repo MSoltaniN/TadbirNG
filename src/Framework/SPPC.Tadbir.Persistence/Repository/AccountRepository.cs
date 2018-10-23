@@ -31,12 +31,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
+        /// <param name="config">امکان مدیریت تنظیمات برنامه را در دیتابیس فراهم می کند</param>
         public AccountRepository(
             IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
-            ISecureRepository repository)
+            ISecureRepository repository, IConfigRepository config)
             : base(unitOfWork, mapper, metadata, log)
         {
             _repository = repository;
+            _configRepository = config;
         }
 
         /// <summary>
@@ -171,6 +173,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 account = Mapper.Map<Account>(accountView);
                 await InsertAsync(repository, account);
+                await UpdateLevelUsageAsync(account.Level);
             }
             else
             {
@@ -197,6 +200,7 @@ namespace SPPC.Tadbir.Persistence
             if (account != null)
             {
                 await DeleteAsync(repository, account);
+                await UpdateLevelUsageAsync(account.Level);
             }
         }
 
@@ -367,6 +371,20 @@ namespace SPPC.Tadbir.Persistence
                 .Where(acc => acc.Id == accountId);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، وضعیت استفاده از یکی از سطوح درختی حساب را در دیتابیس بروزرسانی می کند
+        /// </summary>
+        /// <param name="level">شماره سطح مورد نظر</param>
+        /// <remarks>قابل توجه است که در این متد هیچگونه فیلتری روی دوره مالی، شعبه یا سطرهای قابل دسترسی صورت نمی گیرد.
+        /// این به این معنی است که اطلاعات سطح مورد نظر در هر شعبه یا دوره مالی ممکن است ایجاد شده باشد. </remarks>
+        private async Task UpdateLevelUsageAsync(int level)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            int count = await repository.GetCountByCriteriaAsync(acc => acc.Level == level);
+            await _configRepository.SaveTreeLevelUsageAsync(ViewName.Account, level, count);
+        }
+
         private readonly ISecureRepository _repository;
+        private readonly IConfigRepository _configRepository;
     }
 }

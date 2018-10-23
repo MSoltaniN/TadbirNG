@@ -64,5 +64,13 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="configItems">مجموعه ای از تنظیمات نماهای درختی</param>
         Task SaveViewTreeConfigAsync(List<ViewTreeFullConfig> configItems);
+
+        /// <summary>
+        /// به روش آسنکرون،وضعیت استفاده از یک سطح از ساختار درختی را برای یکی از موجودیت های درختی بروزرسانی می کند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی یکی از مدل های درختی موجود</param>
+        /// <param name="level">شماره سطحی که وضعیت استفاده از آن باید تغییر کند</param>
+        /// <param name="itemCount">تعداد سطرهای اطلاعاتی موجود در سطح مورد نظر</param>
+        Task SaveTreeLevelUsageAsync(int viewId, int level, int itemCount);
     }
 }

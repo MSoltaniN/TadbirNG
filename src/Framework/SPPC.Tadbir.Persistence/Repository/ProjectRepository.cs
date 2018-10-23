@@ -29,11 +29,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
+        /// <param name="config">امکان مدیریت تنظیمات برنامه را در دیتابیس فراهم می کند</param>
         public ProjectRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, ISecureRepository repository, IOperationLogRepository log)
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
+            ISecureRepository repository, IConfigRepository config)
             : base(unitOfWork, mapper, metadata, log)
         {
             _repository = repository;
+            _configRepository = config;
         }
 
         /// <summary>
@@ -129,6 +132,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 projectModel = Mapper.Map<Project>(project);
                 await InsertAsync(repository, projectModel);
+                await UpdateLevelUsageAsync(projectModel.Level);
             }
             else
             {
@@ -153,6 +157,7 @@ namespace SPPC.Tadbir.Persistence
             if (project != null)
             {
                 await DeleteAsync(repository, project);
+                await UpdateLevelUsageAsync(project.Level);
             }
         }
 
@@ -271,6 +276,20 @@ namespace SPPC.Tadbir.Persistence
                : null;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، وضعیت استفاده از یکی از سطوح درختی پروژه را در دیتابیس بروزرسانی می کند
+        /// </summary>
+        /// <param name="level">شماره سطح مورد نظر</param>
+        /// <remarks>قابل توجه است که در این متد هیچگونه فیلتری روی دوره مالی، شعبه یا سطرهای قابل دسترسی صورت نمی گیرد.
+        /// این به این معنی است که اطلاعات سطح مورد نظر در هر شعبه یا دوره مالی ممکن است ایجاد شده باشد. </remarks>
+        private async Task UpdateLevelUsageAsync(int level)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
+            int count = await repository.GetCountByCriteriaAsync(prj => prj.Level == level);
+            await _configRepository.SaveTreeLevelUsageAsync(ViewName.Project, level, count);
+        }
+
         private readonly ISecureRepository _repository;
+        private readonly IConfigRepository _configRepository;
     }
 }

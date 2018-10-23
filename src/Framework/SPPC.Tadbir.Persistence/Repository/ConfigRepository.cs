@@ -242,6 +242,20 @@ namespace SPPC.Tadbir.Persistence
             await _unitOfWork.CommitAsync();
         }
 
+        /// <summary>
+        /// به روش آسنکرون،وضعیت استفاده از یک سطح از ساختار درختی را برای یکی از موجودیت های درختی بروزرسانی می کند
+        /// </summary>
+        /// <param name="viewId">شناسه دیتابیسی یکی از مدل های درختی موجود</param>
+        /// <param name="level">شماره سطحی که وضعیت استفاده از آن باید تغییر کند</param>
+        /// <param name="itemCount">تعداد سطرهای اطلاعاتی موجود در سطح مورد نظر</param>
+        public async Task SaveTreeLevelUsageAsync(int viewId, int level, int itemCount)
+        {
+            var config = await GetViewTreeConfigByViewAsync(viewId);
+            config.Current.Levels[level].IsUsed = itemCount > 0;
+            var configItems = new List<ViewTreeFullConfig> { config };
+            await SaveViewTreeConfigAsync(configItems);
+        }
+
         private async Task InitDefaultColumnSettingsAsync()
         {
             InitDefaultColumns();

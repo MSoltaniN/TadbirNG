@@ -57,8 +57,8 @@ namespace SPPC.Tadbir.Persistence
                     var document = documentRepository
                         .GetByCriteria(doc => doc.Id == workItem.DocumentId)
                         .First();
-                    workItem.EntityNo = document.EntityNo;
-                    workItem.DocumentStatus = document.OperationalStatus;
+
+                    // NOTE: Code was deleted here.
                 }
             }
 
@@ -84,7 +84,8 @@ namespace SPPC.Tadbir.Persistence
                 var document = documentRepository
                     .GetByCriteria(doc => doc.Id == workItem.DocumentId)
                     .First();
-                workItem.EntityNo = document.EntityNo;
+
+                // NOTE: Code was deleted from here
             }
 
             return workItems;
@@ -215,8 +216,6 @@ namespace SPPC.Tadbir.Persistence
             if (document != null)
             {
                 var action = document.Actions.First();
-                document.Status = new DocumentStatus() { Id = workItem.StatusId };
-                document.OperationalStatus = workItem.OperationalStatus;
                 if (workItem.OperationalStatus == DocumentStatusName.Confirmed)
                 {
                     action.ConfirmedBy = new User() { Id = workItem.CreatedById };

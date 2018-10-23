@@ -184,6 +184,7 @@
     "Account": "Account",
     "Sum": "Sum",
     "Difference": "Difference",
+    "NewWithDifference": "New Article With Difference",
     "FullAccount": {
       "Account": {
         "Name": "Account Name",
@@ -239,7 +240,7 @@
     "BranchId": "Branch",
     "FiscalPeriodId": "Fiscal",
     "Commit": "Commit Voucher",
-    "ReturnFromCommit": "Return From Commit"
+    "ReturnFromCommit": "Return Voucher"
   },
   "User": {
     "New": "New User",

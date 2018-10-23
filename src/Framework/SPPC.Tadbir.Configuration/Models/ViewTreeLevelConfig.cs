@@ -35,5 +35,10 @@ namespace SPPC.Tadbir.Configuration.Models
         /// مشخص می کند که سطح مورد نظر در ساختار درختی فعال شده یا نه
         /// </summary>
         public bool IsEnabled { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که سطر اطلاعاتی در این سطح از ساختار درختی تعریف شده یا نه
+        /// </summary>
+        public bool IsUsed { get; set; }
     }
 }
