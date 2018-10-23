@@ -1,16 +1,13 @@
-import { Component, Inject, Injector } from '@angular/core';
+import { Component, Inject, Injector, AfterViewInit, AfterContentInit } from '@angular/core';
 import { Context } from './model/context';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { DOCUMENT } from '@angular/platform-browser';
+import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
 import { AuthenticationService } from './service/login/index';
 import { UserService } from './service/user.service';
 import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { SessionKeys } from '../environments/environment';
 import { Command } from './model/command';
-import { ToastrService } from 'ngx-toastr';
-import { SppcLoadingService } from './controls/sppcLoading/sppc-loading.service';
-import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -20,7 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements AfterContentInit {
 
   options = {
     min: 8,
@@ -59,7 +56,10 @@ export class AppComponent {
   public fiscalPeriods: any = {};
 
   constructor(location: Location, public router: Router, public authenticationService: AuthenticationService, public userService: UserService,
-    @Inject(DOCUMENT) private document: Document) {
+    @Inject(DOCUMENT) private document: Document,public sanitizer: DomSanitizer) {
+
+
+      
 
     //#region init Lang
 
@@ -119,6 +119,23 @@ export class AppComponent {
             spacePad.classList.remove('pull-right');
           }
         }
+
+
+        var lang = localStorage.getItem('lang');
+        if(lang == 'fa' || lang == null)
+        {
+            this.document.getElementById('adminlteLtr').setAttribute('disabled','true');
+            this.document.getElementById('adminlteRtl').removeAttribute('disabled');
+
+            localStorage.setItem('lang','fa');
+        }
+        else
+        {
+            this.document.getElementById('adminlteRtl').setAttribute('disabled','true');
+            this.document.getElementById('adminlteLtr').removeAttribute('disabled');
+        }
+
+        
 
         //#endregion
 
@@ -205,7 +222,12 @@ export class AppComponent {
     //this.initHotKeys();
   }
 
+  cssUrl : string;
 
+  ngAfterContentInit() {
+    
+    
+  }
 
   public hotKeyMap: { [id: string]: string; } = {}
   menuList: Array<Command> = new Array<Command>();

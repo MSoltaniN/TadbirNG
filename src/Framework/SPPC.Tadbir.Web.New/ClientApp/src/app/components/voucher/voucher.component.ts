@@ -19,6 +19,7 @@ import { VoucherApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { VoucherPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
+import { DocumentStatusValue } from '../../enum/documentStatusValue';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -162,6 +163,40 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
   }
 
+  public checkHandler(voucherId: number, statusId: DocumentStatusValue) {
+    debugger;
+    if (statusId == DocumentStatusValue.Draft) {
+      //check
+      this.grid.loading = true;
+      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.CheckVoucher, voucherId)).subscribe(res => {
+
+        this.showMessage(this.updateMsg, MessageType.Succes);
+        this.reloadGrid();
+
+      }, (error => {
+        this.grid.loading = false;
+        var message = error.message ? error.message : error;
+        this.showMessage(message, MessageType.Warning);
+      }));
+
+    }
+    else {
+      //uncheck
+      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.UncheckVoucher, voucherId)).subscribe(res => {
+
+        this.showMessage(this.updateMsg, MessageType.Succes);
+        this.reloadGrid();
+
+      }, (error => {
+        this.grid.loading = false;
+        var message = error.message ? error.message : error;
+        this.showMessage(message, MessageType.Warning);
+      }));
+    }
+
+
+  }
+
   //#endregion
 
   //#region Constructor
@@ -184,7 +219,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     //}));
   }
 
-  reloadGridEvent() {
+  reloadGridEvent() {    
     this.reloadGrid();
   }
 

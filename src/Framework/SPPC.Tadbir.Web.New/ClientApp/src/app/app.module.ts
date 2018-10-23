@@ -132,6 +132,12 @@ import { NgProgressHttpModule } from '@ngx-progressbar/http';
 import { NgProgressRouterModule } from '@ngx-progressbar/router';
 import { GridFilterComponent } from './directive/grid/component/grid-filter.component';
 import { DefaultComponent } from './class/default.component';
+import { AppmenuComponent } from './components/appmenu/appmenu.component';
+import { AppheaderComponent } from './components/appheader/appheader.component';
+import { AppfooterComponent } from './components/appfooter/appfooter.component';
+import { AppsettingComponent } from './components/appsetting/appsetting.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+
 
 
 
@@ -212,7 +218,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     ViewTreeConfigComponent,
     SppcGridDateFilter,
     FilterDatePickerDirective,
-    SppcGridDatepicker
+    SppcGridDatepicker,
+    AppmenuComponent,
+    AppheaderComponent,
+    AppfooterComponent,
+    AppsettingComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -264,6 +275,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
       { path: 'viewRowPermission', component: ViewRowPermissionComponent, canActivate: [AuthGuard] },
       { path: 'operation-log', component: OperationLogsComponent, canActivate: [AuthGuard] },
+      { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'view-tree-config', component: ViewTreeConfigComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'account' }
     ])

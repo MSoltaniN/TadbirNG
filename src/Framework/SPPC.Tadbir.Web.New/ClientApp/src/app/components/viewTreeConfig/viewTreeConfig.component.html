@@ -90,7 +90,7 @@
             </div>
 
             <div [ngClass]="{'pull-left':this.currentlang === 'fa','pull-right':this.currentlang === 'en'}" style="margin-top: 35px;">
-              <button class="k-button k-primary" [disabled]="finalViewTreeConfig.length == 0 " (click)="saveAllConfig()">{{ 'ViewTreeConfig.Save' | translate }}</button>
+              <button class="k-button k-primary" (click)="saveAllConfig()">{{ 'ViewTreeConfig.Save' | translate }}</button>
               <button class="k-button" [disabled]="levelSelected == 0" (click)="setDefaultConfig()">{{ 'ViewTreeConfig.DefaultSettings' | translate }}</button>
             </div>
           </form>

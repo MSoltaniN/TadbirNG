@@ -82,16 +82,43 @@ export class NavMenuComponent extends DefaultComponent implements OnInit {
     }
 
     onMenuClick(event: any,id:number) {
+        // if(event)
+        //     if (event.srcElement.className == "menuitem child")
+        //         this.renderer2.removeClass(this.el.nativeElement.querySelector('.navbar-collapse'), 'in');
+
+        // for (let mnu of this.menuList) {
+        //     if (id != mnu.id)
+        //         this.renderer2.removeClass(this.el.nativeElement.querySelector('.navbar-collapse').querySelector('#div' + mnu.id.toString()), 'in');
+        // }
+
+        // event.srcElement.scrollIntoView();
+        
+    }
+
+    clickMenu(event: any,id:number)
+    {
         if(event)
-            if (event.srcElement.className == "menuitem nav-link child")
-                this.renderer2.removeClass(this.el.nativeElement.querySelector('.navbar-collapse'), 'in');
+             if (this.el.nativeElement.querySelector('#a' + id).parentElement.className == "parent treeview")
+             {
+                 if(this.el.nativeElement.querySelector('.menu-open1') !=null)
+                 {                    
+                    this.renderer2.setStyle(this.el.nativeElement.querySelector('.menu-open1 > ul.treeview-menu'), 'display','none');
+                    this.renderer2.removeClass(this.el.nativeElement.querySelector('.menu-open1'), 'menu-open1');
+                 }
+                if(this.el.nativeElement.querySelector('#menu' + id).display != 'block')
+                {
+                    this.renderer2.addClass(this.el.nativeElement.querySelector('#a' + id).parentElement,"menu-open1");
+                    this.renderer2.setStyle(this.el.nativeElement.querySelector('#menu' + id), 'display','block');
+                }
+             }
+            else if  (this.el.nativeElement.querySelector('#a' + id).parentElement.className == "parent treeview menu-open1")
+            {                
 
-        for (let mnu of this.menuList) {
-            if (id != mnu.id)
-                this.renderer2.removeClass(this.el.nativeElement.querySelector('.navbar-collapse').querySelector('#div' + mnu.id.toString()), 'in');
-        }
+                this.renderer2.removeClass(this.el.nativeElement.querySelector('#a' + id).parentElement,"menu-open1");
+                this.renderer2.setStyle(this.el.nativeElement.querySelector('#menu' + id), 'display','none');
+            }
+         
 
-        event.srcElement.scrollIntoView();
         
     }
 

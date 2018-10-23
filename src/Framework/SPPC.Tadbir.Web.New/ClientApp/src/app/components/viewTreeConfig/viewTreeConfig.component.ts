@@ -78,6 +78,8 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
 
   public ngOnInit(): void {
     this.loadEntity();
+
+    this.changeFormValue();
   }
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
@@ -91,7 +93,6 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
    */
   loadEntity() {
     this.settingService.getAll(LookupApi.TreeViews).subscribe(res => {
-      debugger;
       this.ddlEntites = res.body;
       this.entityArray = this.ddlEntites;
     })
@@ -103,9 +104,6 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
    * @param item آیدی موجودیت انتخاب شده
    */
   handleEntityChange(item: any) {
-
-    //قبل از تغییر موجودیت اگر موجودیت قبلی تغییر داده شده باشد در حافظه موقت تغییرات را ذخیره میکند
-    this.saveLocalChangesLevel();
 
     this.levelForm.reset();
     this.levelSelected = 0;
@@ -147,8 +145,6 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
   onChangeLevel(level: ViewTreeLevelConfig) {
 
     if (level.no <= this.maxDepthValue) {
-
-      this.saveLocalChangesLevel();
 
       this.levelSelected = level.no;
       if (level.isEnabled) {
@@ -200,7 +196,6 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
         this.finalViewTreeConfig.push(this.viewTreeConfig);
       }
     }
-    //console.log(this.finalViewTreeConfig);
   }
 
   /**
@@ -210,27 +205,32 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
 
     this.saveLocalChangesLevel();
 
-    let myList: Array<{ current: ViewTreeConfig, default: ViewTreeConfig }> = [];
+    if (this.finalViewTreeConfig.length > 0) {
 
-    for (let item of this.finalViewTreeConfig) {
-      myList.push({ current: item, default: item });
-    }
+      let myList: Array<{ current: ViewTreeConfig, default: ViewTreeConfig }> = [];
 
-    this.settingService.putViewTreeConfig(SettingsApi.ViewTreeSettings, myList).subscribe(res => {
-      this.ddlEntitySelected = 0;
-      this.levelSelected = 0;
-      this.maxDepthValue = undefined;
+      for (let item of this.finalViewTreeConfig) {
+        myList.push({ current: item, default: item });
+      }
 
-      this.finalViewTreeConfig = [];
-      this.levelForm.reset();
+      this.settingService.putViewTreeConfig(SettingsApi.ViewTreeSettings, myList).subscribe(res => {
+        this.ddlEntitySelected = 0;
+        this.levelSelected = 0;
+        this.maxDepthValue = undefined;
 
-      sessionStorage.removeItem("viewTreeConfig");
+        this.viewTreeConfig = undefined;
+        this.finalViewTreeConfig = [];
+        this.levelForm.reset();
 
-      this.showMessage(this.updateMsg, MessageType.Succes);
+        sessionStorage.removeItem("viewTreeConfig");
 
-    }, (error => {
-      this.errorMessage = error;
-    }));
+        this.showMessage(this.updateMsg, MessageType.Succes);
+
+      }, (error => {
+        this.errorMessage = error;
+      }));
+
+    }    
   }
 
   /**
@@ -241,8 +241,6 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
     var defaultItem = this.viewTreeDefaultConfig.levels.find(f => f.no == this.levelSelected);
     defaultItem.isEnabled = true;
     this.levelForm.reset(defaultItem);
-
-    this.saveLocalChangesLevel();
   }
 
   /**
@@ -253,6 +251,9 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
     var levelsCount = this.viewTreeConfig.levels.filter(f => f.isEnabled).length;
 
     if (this.maxDepthValue < levelsCount) {
+
+      this.levelSelected = 0;
+      this.levelForm.reset();
 
       var item = this.viewTreeConfig.levels.find(f => f.no == levelsCount);
 
@@ -274,7 +275,17 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
       else {
         this.finalViewTreeConfig.push(this.viewTreeConfig);
       }
+      
     }
 
+  }
+
+  /**
+   * اگر اطلاعات داخل فرم تغییر کند این متد اجرا میشود
+   */
+  changeFormValue() {
+    this.levelForm.valueChanges.subscribe(val => {
+      this.saveLocalChangesLevel();
+    })
   }
 }

@@ -176,7 +176,7 @@ namespace SPPC.Tadbir.Persistence
             var userPermissions = await GetUserPermissionIdsAsync(userId);
             foreach (var command in topCommands)
             {
-                var topCommand = new CommandViewModel() { Id = command.Id, Title = command.Title };
+                var topCommand = new CommandViewModel() { Id = command.Id, Title = command.Title,IconName = command.IconName };
                 foreach (var child in command.Children)
                 {
                     if (child.PermissionId == null || userPermissions.Contains(child.PermissionId.Value))

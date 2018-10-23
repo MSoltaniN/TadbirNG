@@ -5,6 +5,7 @@
     "Loading": "در حال بارگذاری ...",
     "RecordNotFound": "هیچ رکوردی یافت نشد!",
     "Name": "سیستم جامع تدبیر",
+    "SummaryName": "تدبیر",
     "NotViewAccess": "شما دسترسی دیدن اطلاعات را ندارید",
     "Level": "سطح",
     "Menu": {
@@ -234,7 +235,9 @@
     "Date": "تاریخ",
     "Description": "توضیحات",
     "BranchId": "شعبه",
-    "FiscalPeriodId": "دوره مالی"
+    "FiscalPeriodId": "دوره مالی",
+    "Commit": "ثبت سند",
+    "ReturnFromCommit": "برگشت از ثبت سند"
   },
   "User": {
     "New": "کاربر جدید",

@@ -9,14 +9,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 
-  <link href="assets/resources/css/bootstrap-rtl.min.css" rel="stylesheet" />
   <link href="assets/resources/toastr.css" rel="stylesheet" />
   <link href="assets/resources/main.css" rel="stylesheet" />
   <link href="assets/resources/css/font-awesome.css" rel="stylesheet" />
 
   <link href="assets/resources/sppc-custom-kendo.css" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="assets/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="assets/bower_components/font-awesome/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="assets/bower_components/Ionicons/css/ionicons.min.css">
+  <!-- jvectormap -->
+  <link rel="stylesheet" href="assets/bower_components/jvectormap/jquery-jvectormap.css">
+  <!-- Theme style -->
+  <link id='adminlteLtr' rel="stylesheet" href="assets/dist/css/AdminLTE.css" disabled="true">
+  
+  <link id='adminlteRtl' rel="stylesheet" href="assets/dist/css/AdminLTE.Rtl.css" >
+
+  <link id='adminlteSkin' rel="stylesheet" href="assets/dist/css/skins/_all-skins.min.css"> 
+  
+  <!-- AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+  <link href="assets/resources/css/bootstrap-rtl.min.css" rel="stylesheet" />
+
 </head>
-<body class="tbody">
+<body id='mainBody' class="tbody hold-transition skin-blue sidebar-mini">
   <app asp-ng2-prerender-module="ClientApp/dist/main-server">
     <div class="sk-cube-grid">
       <div class="sk-cube sk-cube1"></div>
@@ -30,5 +48,21 @@
       <div class="sk-cube sk-cube9"></div>
     </div>
   </app>
+  <script src="assets/bower_components/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap 3.3.7 -->
+  <script src="assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- FastClick -->
+  <script src="assets/bower_components/fastclick/lib/fastclick.js"></script>
+  <!-- AdminLTE App -->
+  <script src="assets/dist/js/adminlte.min.js"></script>
+  <!-- Sparkline -->
+  <script src="assets/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+  <!-- jvectormap  -->
+  <script src="assets/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+  <script src="assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+  <!-- SlimScroll -->
+  <script src="assets/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+  <!-- ChartJS -->
+  <script src="assets/bower_components/chart.js/Chart.js"></script>  
 </body>
 </html>

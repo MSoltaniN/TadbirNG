@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../service/login/index';
 import { ToastrService } from 'ngx-toastr';
@@ -10,6 +10,8 @@ import { Host, Renderer2 } from '@angular/core';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SettingService } from '../../service/index';
+import { Metadatas } from '../../../environments/environment';
+import { DOCUMENT } from '@angular/common';
 
 
 
@@ -40,7 +42,7 @@ export class LoginComponent extends DefaultComponent implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService, public toastrService: ToastrService,
         public translate: TranslateService, @Host() public parent: LoginContainerComponent, public renderer: Renderer2,
-      public metadata: MetaDataService, public settingService: SettingService
+        public metadata: MetaDataService, public settingService: SettingService, @Inject(DOCUMENT) public document
         ) 
     {
       super(toastrService, translate, renderer, metadata, settingService, '', '');
@@ -70,6 +72,43 @@ export class LoginComponent extends DefaultComponent implements OnInit {
             this.renderer.removeClass(document.body, 'tRtl');            
         }
 
+        
+        // if(language == 'fa')
+        // {
+        //     if(this.document.getElementById('adminlte').getAttribute('href') != '../assets/dist/css/AdminLTE.Rtl.css')
+        //        this.document.getElementById('adminlte').setAttribute('href', '../assets/dist/css/AdminLTE.Rtl.css');
+        //     // this.cssUrl = '../assets/dist/css/AdminLTE.Rtl.css';
+        // }
+        // else
+        // {
+        //    if(this.document.getElementById('adminlte').getAttribute('href') != '../assets/dist/css/AdminLTE.min.css')
+        //        this.document.getElementById('adminlte').setAttribute('href', '../assets/dist/css/AdminLTE.min.css');
+        //     //this.cssUrl = '../assets/dist/css/AdminLTE.min.css';
+        // }
+    
+      
+      
+        
+        // if(this.currentlang == 'fa')
+        //     this.document.getElementById('adminlte').setAttribute('href', 'assets/dist/css/AdminLTE.Rtl.css');
+        //  else
+        //     this.document.getElementById('adminlte').setAttribute('href', 'assets/dist/css/AdminLTE.min.css');
+
+    }
+
+    disableLink(fileName : string)
+    {
+        var links = document.getElementsByTagName("link");
+        for(var i=0; i < links.length; i++) {
+            var link = links[i];
+            if(link.getAttribute("rel").indexOf("style") != -1 && link.getAttribute("href")) {
+                //link.disabled = true;
+                if(link.getAttribute("href") === fileName)
+                    link.disabled = true; 
+                    
+            }
+        }
+
     }
 
     login() {
@@ -83,7 +122,14 @@ export class LoginComponent extends DefaultComponent implements OnInit {
                 if (this.authenticationService.islogin())
                 {     
                     this.parent.step1 = false;
-                    this.parent.step2 = true;                
+                    this.parent.step2 = true;
+                
+                   
+
+                    //type Activity = typeof Metadatas;
+                    Object.values(Metadatas).map(val => {
+                      //this.saveMetadataInCache(val);
+                    });
                 }
             },
             error => {

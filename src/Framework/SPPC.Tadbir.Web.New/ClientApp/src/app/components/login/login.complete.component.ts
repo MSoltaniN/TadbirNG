@@ -17,7 +17,8 @@ import { UserService, SettingService } from '../../service/index';
 import { Command } from '../../model/command';
 import { ListFormViewConfig } from '../../model/listFormViewConfig';
 import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
-
+import { Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
 
 export function getLayoutModule(layout: Layout) {
     return layout.getLayout();
@@ -75,7 +76,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         public renderer: Renderer2,
         public metadata: MetaDataService,
         public userService: UserService,
-        public settingService : SettingService) 
+        public settingService : SettingService,@Inject(DOCUMENT) public document) 
     {
       super(toastrService, translate, renderer, metadata, settingService,'', '');
             
@@ -92,6 +93,15 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         //load setting
         this.loadAllSetting();
         
+        // var currentLang = localStorage.getItem('lang')
+        // if(currentLang == 'fa')
+        //      this.document.getElementById('adminlte').setAttribute('href', 'assets/dist/css/AdminLTE.Rtl.css');
+        // else
+        //      this.document.getElementById('adminlte').setAttribute('href', 'assets/dist/css/AdminLTE.min.css');
+        
+        // this.document.getElementById('adminlteSkin').setAttribute('href', 'assets/dist/css/skins/_all-skins.min.css');
+                  
+             
     }
 
     //#endregion
@@ -182,7 +192,9 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
     }
 
     selectParams() {
-        
+
+      sessionStorage.removeItem("viewTreeConfig");
+
         if (this.isValidate()) {
 
             if (this.authenticationService.islogin()) {
@@ -254,7 +266,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                     this.router.navigate([currentRoute]);
                 }
                 else {
-                    this.router.navigate(['/account']);
+                    this.router.navigate(['/dashboard']);
                 }
             }
 

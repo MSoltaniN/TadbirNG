@@ -5,6 +5,7 @@
     "Loading": "loading ...",
     "RecordNotFound": "Record not found!",
     "Name": "Tadbir Accounting System",
+    "SummaryName": "Tadbir",
     "NotViewAccess": "You do not have access to view information",
     "Level": "Level",
     "Menu": {
@@ -236,7 +237,9 @@
     "Date": "Date",
     "Description": "Description",
     "BranchId": "Branch",
-    "FiscalPeriodId": "Fiscal"
+    "FiscalPeriodId": "Fiscal",
+    "Commit": "Commit Voucher",
+    "ReturnFromCommit": "Return From Commit"
   },
   "User": {
     "New": "New User",

@@ -86,9 +86,11 @@ export class DefaultComponent extends BaseComponent {
 
     this.localizeMsg();
 
-    //if (createForm)
-    //this.initializeFrom();
-  }
+        //if(metaDataName != null && metaDataName != "")
+        //  this.saveMetadataInCache(metaDataName);
+        //if (createForm)
+        //this.initializeFrom();
+    }
 
   //abstract filterChange(filter: CompositeFilterDescriptor): void 
 
@@ -280,8 +282,9 @@ export class DefaultComponent extends BaseComponent {
     }
   }
 
-  /** return the current language */
-  public currentlang: string = "";
+
+    /** return the current language */
+    public currentlang: string = "";
 
 
   /** the default value of grid paging size  */
