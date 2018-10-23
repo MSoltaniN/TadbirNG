@@ -7,10 +7,13 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs/Observable';
 import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
-import { Layout, Entities, Metadatas } from "../../../environments/environment";
+import { Layout, Entities, Metadatas, MessageType } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { DetailComponent } from '../../class/detail.component';
+import { DocumentStatusValue } from '../../enum/documentStatusValue';
+import { String } from '../../class/source';
+import { VoucherApi } from '../../service/api/index';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -41,14 +44,6 @@ interface Item {
 })
 
 export class VoucherFormComponent extends DetailComponent {
-
-  ////create a form controls
-  //private editForm = new FormGroup({
-  //    id: new FormControl(),
-  //    description: new FormControl("", Validators.maxLength(512)),
-  //    no: new FormControl("", [Validators.required, Validators.maxLength(64)]),
-  //    date: new FormControl("", Validators.required)
-  //});
 
   //create properties
   public voucher_Id: number;
@@ -106,11 +101,42 @@ export class VoucherFormComponent extends DetailComponent {
   }
   //Events
 
-  constructor(private voucherLineService: VoucherLineService, private fiscalPeriodService: FiscalPeriodService,
+  constructor(private voucherService: VoucherService, private fiscalPeriodService: FiscalPeriodService,
     public toastrService: ToastrService, public translate: TranslateService,
     public renderer: Renderer2, public metadata: MetaDataService) {
 
     super(toastrService, translate, renderer, metadata, Entities.Voucher, Metadatas.Voucher);
+  }
+
+
+  public checkHandler(voucherId: number, statusId: DocumentStatusValue) {
+    if (statusId == DocumentStatusValue.Draft) {
+      //check
+      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.CheckVoucher, voucherId)).subscribe(res => {
+
+        this.editModel.statusId = DocumentStatusValue.NormalCheck;
+        this.showMessage(this.updateMsg, MessageType.Succes);
+
+      }, (error => {
+        var message = error.message ? error.message : error;
+        this.showMessage(message, MessageType.Warning);
+      }));
+
+    }
+    else {
+      //uncheck
+      this.voucherService.changeVoucherStatus(String.Format(VoucherApi.UncheckVoucher, voucherId)).subscribe(res => {
+
+        this.editModel.statusId = DocumentStatusValue.Draft;
+        this.showMessage(this.updateMsg, MessageType.Succes);
+
+      }, (error => {
+        var message = error.message ? error.message : error;
+        this.showMessage(message, MessageType.Warning);
+      }));
+    }
+
+
   }
 
 }

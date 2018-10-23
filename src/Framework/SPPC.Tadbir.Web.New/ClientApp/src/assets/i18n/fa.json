@@ -182,6 +182,7 @@
     "Account": "بردار حساب",
     "Sum": "مجموع",
     "Difference": "اختلاف",
+    "NewWithDifference": "آرتیکل جدید به میزان اختلاف",
     "FullAccount": {
       "Account": {
         "Name": "نام حساب",
@@ -237,7 +238,7 @@
     "BranchId": "شعبه",
     "FiscalPeriodId": "دوره مالی",
     "Commit": "ثبت سند",
-    "ReturnFromCommit": "برگشت از ثبت سند"
+    "ReturnFromCommit": "برگشت سند"
   },
   "User": {
     "New": "کاربر جدید",

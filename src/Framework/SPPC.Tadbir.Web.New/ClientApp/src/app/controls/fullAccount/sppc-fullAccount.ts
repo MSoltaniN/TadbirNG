@@ -16,26 +16,26 @@ interface Item {
 
 <div formGroupName="account" class="fAcc">
 <kendo-dropdownlist [data]="accountsRows" [valuePrimitive]="true" formControlName="id" class="ddl-fAcc"
-                        [textField]="'value'" [value]="selectedAccountValue" [(ngModel)]="selectedAccountValue" valueField="key" [defaultItem]="{ value: '', key: null}">
+                        [textField]="'value'" [value]="selectedAccountValue" [(ngModel)]="selectedAccountValue" valueField="key" [defaultItem]="{ value: '', key: undefined}">
     </kendo-dropdownlist>
 </div>
     
 
 <div formGroupName="detailAccount" class="fAcc">
     <kendo-dropdownlist [data]="detailAccountsRows" [valuePrimitive]="true" formControlName="id" class="ddl-fAcc"
-                        [textField]="'value'" [value]="selectedDetailAccountValue" [(ngModel)]="selectedDetailAccountValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
+                        [textField]="'value'" [value]="selectedDetailAccountValue" [(ngModel)]="selectedDetailAccountValue" [valueField]="'key'" [defaultItem]="{ value: '', key: undefined}">
     </kendo-dropdownlist>
 </div>
 
 <div formGroupName="costCenter" class="fAcc">
     <kendo-dropdownlist [data]="costCentersRows" [valuePrimitive]="true" formControlName="id" class="ddl-fAcc"
-                        [textField]="'value'" [value]="selectedCostCenterValue" [(ngModel)]="selectedCostCenterValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
+                        [textField]="'value'" [value]="selectedCostCenterValue" [(ngModel)]="selectedCostCenterValue" [valueField]="'key'" [defaultItem]="{ value: '', key: undefined}">
     </kendo-dropdownlist>
 </div>
 
 <div formGroupName="project" class="fAcc">
     <kendo-dropdownlist [data]="projectsRows" [valuePrimitive]="true" formControlName="id" class="ddl-fAcc"
-                        [textField]="'value'" [value]="selectedprojectValue" [(ngModel)]="selectedprojectValue" [valueField]="'key'" [defaultItem]="{ value: '', key: null}">
+                        [textField]="'value'" [value]="selectedprojectValue" [(ngModel)]="selectedprojectValue" [valueField]="'key'" [defaultItem]="{ value: '', key: undefined}">
     </kendo-dropdownlist>
 </div>
 
@@ -80,7 +80,7 @@ export class SppcFullAccountComponent implements OnInit {
         this.GetProjects();
     }
 
-    ngOnInit(): void {
+  ngOnInit(): void {
 
         this.fullAccount = this.controlContainer.value;
 

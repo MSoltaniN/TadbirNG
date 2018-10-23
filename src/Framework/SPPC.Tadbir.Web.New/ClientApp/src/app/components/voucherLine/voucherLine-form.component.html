@@ -1,4 +1,4 @@
-﻿<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               (close)="closeForm()" [minWidth]="250" [width]="450">
     <kendo-dialog-titlebar>
         {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
@@ -33,9 +33,7 @@
         <div class="form-group">
             <label for="debit" class="control-label">{{ 'VoucherLine.Debit' | translate }}</label>
 
-            <!--<kendo-numerictextbox formControlName="debit" [spinners]="false" format="n"></kendo-numerictextbox>-->
-
-            <sppc-numerictextbox formControlName="debit" [spinners]="false" [format]="n"></sppc-numerictextbox>
+            <sppc-numerictextbox formControlName="debit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.debit.valid || editForm1.controls.debit.pristine">
                 {{ 'AllValidations.VoucherLine.DebitIsRequired' | translate }}
@@ -45,9 +43,7 @@
         <div class="form-group">
             <label for="credit" class="control-label">{{ 'VoucherLine.Credit' | translate }}</label>
 
-            <!--<kendo-numerictextbox formControlName="credit" [spinners]="false" format="n"></kendo-numerictextbox>-->
-
-            <sppc-numerictextbox formControlName="credit" [spinners]="false" [format]="n"></sppc-numerictextbox>
+            <sppc-numerictextbox formControlName="credit" [spinners]="false" [format]="'n'"></sppc-numerictextbox>
 
             <div class="k-tooltip k-tooltip-validation" [hidden]="editForm1.controls.credit.valid || editForm1.controls.credit.pristine">
                 {{ 'AllValidations.VoucherLine.CreditIsRequired' | translate }}

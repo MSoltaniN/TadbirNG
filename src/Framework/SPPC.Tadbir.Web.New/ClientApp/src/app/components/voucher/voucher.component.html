@@ -66,8 +66,6 @@
           </dl>
           <button kendoGridEditCommand SppcCheckAccess="Edit" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
           <button kendoGridRemoveCommand SppcCheckAccess="Delete">{{ 'Buttons.Delete' | translate }}</button>
-          <button class="k-button k-primary" SppcCheckAccess="Check" [hidden]="voucher.statusId != 1" (click)="checkHandler(voucher.id, voucher.statusId)">{{ 'Voucher.Commit' | translate }}</button>
-          <button class="k-button k-primary" SppcCheckAccess="Uncheck" [hidden]="voucher.statusId == 1" (click)="checkHandler(voucher.id, voucher.statusId)">{{ 'Voucher.ReturnFromCommit' | translate }}</button>
         </ng-template>
       </kendo-grid-column>
       <!-- template for mobile -->
@@ -91,8 +89,6 @@
         <ng-template kendoGridCellTemplate let-dataItem>
           <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
           <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
-          <button class="k-button k-primary" SppcCheckAccess="Check" [hidden]="dataItem.statusId != 1" (click)="checkHandler(dataItem.id, dataItem.statusId)">{{ 'Voucher.Commit' | translate }}</button>
-          <button class="k-button k-primary" SppcCheckAccess="Uncheck" [hidden]="dataItem.statusId == 1" (click)="checkHandler(dataItem.id, dataItem.statusId)">{{ 'Voucher.ReturnFromCommit' | translate }}</button>
         </ng-template>
       </kendo-grid-command-column>
       <!-- template for mid-size devices -->
@@ -119,12 +115,11 @@
         </ng-template>
       </kendo-grid-column>
 
+
       <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
         <ng-template kendoGridCellTemplate let-dataItem>
           <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
           <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
-          <button class="k-button k-primary" SppcCheckAccess="Check" [hidden]="dataItem.statusId != 1" (click)="checkHandler(dataItem.id, dataItem.statusId)">{{ 'Voucher.Commit' | translate }}</button>
-          <button class="k-button k-primary" SppcCheckAccess="Uncheck" [hidden]="dataItem.statusId == 1" (click)="checkHandler(dataItem.id, dataItem.statusId)">{{ 'Voucher.ReturnFromCommit' | translate }}</button>
         </ng-template>
       </kendo-grid-command-column>
       <!-- additional columns on large devices -->
