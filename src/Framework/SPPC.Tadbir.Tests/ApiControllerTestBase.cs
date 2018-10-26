@@ -20,7 +20,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
     {
         protected ControllerContext TestControllerContext
         {
-            get { return GetTestControllerContext(); }
+            get { return GetTestContext(); }
         }
 
         public void Dispose()
@@ -98,7 +98,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             Assert.That(attribute, Is.Not.Null);
         }
 
-        protected ControllerContext GetTestControllerContext()
+        protected ControllerContext GetTestContext()
         {
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Headers[AppConstants.ContextHeaderName] = _testTicket.Value;

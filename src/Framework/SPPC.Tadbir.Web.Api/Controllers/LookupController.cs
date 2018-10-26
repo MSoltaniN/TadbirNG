@@ -165,9 +165,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var treesLookup = await _repository.GetTreeViewsAsync();
             Array.ForEach(treesLookup.ToArray(), kv => kv.Value = _strings[kv.Value]);
-            treesLookup = treesLookup
-                .OrderBy(kv => kv.Value)
-                .ToList();
             return Json(treesLookup);
         }
 
