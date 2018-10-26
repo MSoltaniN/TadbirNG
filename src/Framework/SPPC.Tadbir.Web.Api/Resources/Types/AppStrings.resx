@@ -615,4 +615,7 @@
   <data name="UncheckEntity" xml:space="preserve">
     <value>برگشت {0}</value>
   </data>
+  <data name="SwitchCompany" xml:space="preserve">
+    <value>تغییر شرکت</value>
+  </data>
 </root>
