@@ -121,19 +121,26 @@ export class AppComponent implements AfterContentInit {
         }
 
 
-        var lang = localStorage.getItem('lang');
-        if(lang == 'fa' || lang == null)
-        {
-            this.document.getElementById('adminlteLtr').setAttribute('disabled','true');
-            this.document.getElementById('adminlteRtl').removeAttribute('disabled');
+        // var lang = localStorage.getItem('lang');
+        // if(lang == 'fa' || lang == null)
+        // {
+        //     this.document.getElementById('adminlteLtr').setAttribute('disabled','true');
+        //     this.document.getElementById('adminlteRtl').removeAttribute('disabled');
 
-            localStorage.setItem('lang','fa');
-        }
-        else
-        {
-            this.document.getElementById('adminlteRtl').setAttribute('disabled','true');
-            this.document.getElementById('adminlteLtr').removeAttribute('disabled');
-        }
+        //     this.document.getElementById('adminlteRtl').setAttribute('href','assets/dist/css/AdminLTE.Rtl.css');
+        //     this.document.getElementById('adminlteLtr').setAttribute('href','');
+
+        //     localStorage.setItem('lang','fa');
+        // }
+        // else
+        // {
+        //     this.document.getElementById('adminlteRtl').setAttribute('disabled','true');
+        //     this.document.getElementById('adminlteLtr').removeAttribute('disabled');
+
+        //     this.document.getElementById('adminlteLtr').setAttribute('href','assets/dist/css/AdminLTE.css');
+        //     this.document.getElementById('adminlteRtl').setAttribute('href','');
+            
+        // }
 
         
 

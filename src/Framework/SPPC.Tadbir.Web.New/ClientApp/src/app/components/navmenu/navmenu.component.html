@@ -5,7 +5,7 @@
       <li *ngFor="let cmd of menuList;" class="parent treeview" [ngClass]="{'active menu-open':this.expandedSubMenuId === cmd.id}">
         <a id="a{{cmd.id}}" href="#/dashboard" (click)="clickMenu($event,cmd.id)">
           <span class="pull-right-container none">
-            <i class="fa fa-angle-left pull-right"></i>
+            <i class="fa fa-angle-left pull-right angle"></i>
           </span>
           <i class="glyphicon glyphicon-{{cmd.iconName}}"></i>
           <span class="menuitem">{{ cmd.title }}</span>
