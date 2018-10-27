@@ -167,8 +167,9 @@
     "LevelNo": "شماره سطح",
     "LevelName": "نام سطح",
     "CodeLength": "طول کد",
-    "Save": "ذخیره",
-    "DefaultSettings": "تنظیمات پیش فرض"
+    "Save": "ذخیره تنظیمات",
+    "DefaultSettings": "پیش فرض",
+    "SelectEntity": "موجودیت را انتخاب کنید"
   },
   "VoucherLine": {
     "Debit": "بدهکار",
@@ -237,6 +238,7 @@
     "Description": "توضیحات",
     "BranchId": "شعبه",
     "FiscalPeriodId": "دوره مالی",
+    "StatusName": "وضعیت",
     "Commit": "ثبت سند",
     "ReturnFromCommit": "برگشت سند"
   },

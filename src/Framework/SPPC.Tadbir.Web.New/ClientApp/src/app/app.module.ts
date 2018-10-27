@@ -276,7 +276,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'viewRowPermission', component: ViewRowPermissionComponent, canActivate: [AuthGuard] },
       { path: 'operation-log', component: OperationLogsComponent, canActivate: [AuthGuard] },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-      { path: 'view-tree-config', component: ViewTreeConfigComponent, canActivate: [AuthGuard] },
+      //{ path: 'view-tree-config', component: ViewTreeConfigComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'account' }
     ])
   ],
