@@ -63,6 +63,9 @@
 
             <dt>{{ 'Voucher.Description' | translate  }}</dt>
             <dd>{{ voucher.description }}</dd>
+
+            <dt>{{ 'Voucher.StatusName' | translate  }}</dt>
+            <dd>{{ voucher.statusName }}</dd>
           </dl>
           <button kendoGridEditCommand SppcCheckAccess="Edit" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
           <button kendoGridRemoveCommand SppcCheckAccess="Delete">{{ 'Buttons.Delete' | translate }}</button>
@@ -76,12 +79,19 @@
           <sppc-grid-filter [metaData]="getMeta('no')" [column]="column" [filter]="filter"></sppc-grid-filter>
         </ng-template>
       </kendo-grid-column>
+
       <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Voucher.date">
         <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
           <sppc-grid-filter [metaData]="getMeta('date')" [column]="column" [filter]="filter"></sppc-grid-filter>
         </ng-template>
         <ng-template kendoGridCellTemplate let-voucher>
           {{ voucher.date | SppcDate }}
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Voucher.statusName">
+        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+          <sppc-grid-filter [metaData]="getMeta('statusName')" [column]="column" [filter]="filter"></sppc-grid-filter>
         </ng-template>
       </kendo-grid-column>
 
@@ -115,6 +125,11 @@
         </ng-template>
       </kendo-grid-column>
 
+      <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="Voucher.statusName">
+        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+          <sppc-grid-filter [metaData]="getMeta('statusName')" [column]="column" [filter]="filter"></sppc-grid-filter>
+        </ng-template>
+      </kendo-grid-column>
 
       <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
         <ng-template kendoGridCellTemplate let-dataItem>

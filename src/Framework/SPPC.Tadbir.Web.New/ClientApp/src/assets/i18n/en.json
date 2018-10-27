@@ -240,6 +240,7 @@
     "Description": "Description",
     "BranchId": "Branch",
     "FiscalPeriodId": "Fiscal",
+    "StatusName": "Status",
     "Commit": "Commit Voucher",
     "ReturnFromCommit": "Return Voucher"
   },
