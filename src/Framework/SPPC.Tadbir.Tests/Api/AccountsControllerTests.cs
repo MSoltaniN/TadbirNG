@@ -6,12 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Moq;
 using NUnit.Framework;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
+using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
@@ -100,12 +103,117 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             var result = await _controller.GetEnvironmentAccountsAsync() as JsonResult;
 
             // Assert
+            Assert.That(result, Is.Not.Null);
             Assert.That(result.Value, Is.InstanceOf<IList<AccountViewModel>>());
+        }
+
+        [Test]
+        public async Task GetEnvironmentAccounts_SetsSecurityContextViaRepository()
+        {
+            // Arrange
+
+            // Act
+            await _controller.GetEnvironmentAccountsAsync();
+
+            // Assert
+            // NOTE: Ideally, we should verify context instance, but can't do that because of transient HTTP context
+            _mockRepository.Verify(repo => repo.SetCurrentContext(It.IsAny<UserContextViewModel>()));
+        }
+
+        [Test]
+        public async Task GetEnvironmentAccounts_SetsTotalCountInHttpResponseHeader()
+        {
+            // Arrange
+
+            // Act
+            await _controller.GetEnvironmentAccountsAsync();
+
+            // Assert
+            var totalCountValue = _controller.HttpContext.Response.Headers[AppConstants.TotalCountHeaderName];
+            Assert.That(String.IsNullOrEmpty(totalCountValue), Is.False);
+            int totalCount = Int32.Parse(totalCountValue);
+            Assert.That(totalCount, Is.EqualTo(0));
         }
 
         #endregion
 
-        #region GetAccountAsync (GET: accounts/{accountId}) tests
+        #region GetEnvironmentAccountsLookupAsync (GET: accounts/lookup) tests
+
+        [Test]
+        public void GetEnvironmentAccountsLookup_HasAuthorizeRequestAttribute()
+        {
+            // Arrange
+
+            // Act & Assert
+            AssertActionIsSecured(
+                "GetEnvironmentAccountsLookupAsync", SecureEntity.Account, (int)AccountPermissions.View);
+        }
+
+        [Test]
+        public void GetEnvironmentAccountsLookup_SpecifiesCorrectRoute()
+        {
+            // Arrange
+
+            // Act & Assert
+            AssertActionRouteEquals("GetEnvironmentAccountsLookupAsync", AccountApi.EnvironmentAccountsLookupUrl);
+        }
+
+        [Test]
+        public async Task GetEnvironmentAccountsLookup_ReturnsNonNullResult()
+        {
+            // Arrange
+
+            // Act
+            var result = await _controller.GetEnvironmentAccountsLookupAsync();
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task GetEnvironmentAccountsLookup_CallsRepository()
+        {
+            // Arrange
+
+            // Act
+            await _controller.GetEnvironmentAccountsLookupAsync();
+
+            // Assert
+            _mockRepository.Verify(repo => repo.GetAccountsLookupAsync(It.IsAny<GridOptions>()));
+        }
+
+        [Test]
+        public async Task GetEnvironmentAccountsLookup_ReturnsJsonWithCorrectContentType()
+        {
+            // Arrange
+            _mockRepository
+                .Setup(repo => repo.GetAccountsLookupAsync(It.IsAny<GridOptions>()))
+                .ReturnsAsync(new List<KeyValue>());
+
+            // Act
+            var result = await _controller.GetEnvironmentAccountsLookupAsync() as JsonResult;
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Value, Is.InstanceOf<IList<KeyValue>>());
+        }
+
+        [Test]
+        public async Task GetEnvironmentAccountsLookup_SetsSecurityContextViaRepository()
+        {
+            // Arrange
+
+            // Act
+            await _controller.GetEnvironmentAccountsLookupAsync();
+
+            // Assert
+            // NOTE: Ideally, we should verify context instance, but can't do that because of transient HTTP context
+            _mockRepository.Verify(repo => repo.SetCurrentContext(It.IsAny<UserContextViewModel>()));
+        }
+
+        #endregion
+
+        #region GetAccountAsync (GET: accounts/{accountId:min(1)}) tests
 
         [Test]
         public void GetAccountAsync_HasAuthorizeRequestAttribute()
@@ -180,19 +288,79 @@ namespace SPPC.Tadbir.Web.Api.Controllers.Tests
             Assert.That(result, Is.Not.Null);
         }
 
+        #endregion
+
+        #region GetAccountChildrenAsync (GET: accounts/{accountId:min(1)}/children) tests
+
         [Test]
-        public async Task GetAccountAsync_GivenInvalidId_ReturnsNotFound()
+        public void GetAccountChildrenAsync_HasAuthorizeRequestAttribute()
         {
             // Arrange
-            int invalidId = 0;
-            _mockRepository.Setup(repo => repo.GetAccountAsync(It.Is<int>(val => val <= 0)))
-                .ReturnsAsync((AccountViewModel)null);
+
+            // Act & Assert
+            AssertActionIsSecured("GetAccountChildrenAsync", SecureEntity.Account, (int)AccountPermissions.View);
+        }
+
+        [Test]
+        public void GetAccountChildrenAsync_SpecifiesCorrectRoute()
+        {
+            // Arrange
+
+            // Act & Assert
+            AssertActionRouteEquals("GetAccountChildrenAsync", AccountApi.AccountChildrenUrl);
+        }
+
+        [Test]
+        public async Task GetAccountChildrenAsync_ReturnsNonNullResult()
+        {
+            // Arrange
 
             // Act
-            var result = await _controller.GetAccountAsync(invalidId) as NotFoundResult;
+            var result = await _controller.GetAccountChildrenAsync(_existingAccountId);
 
             // Assert
             Assert.That(result, Is.Not.Null);
+        }
+
+        [Test]
+        public async Task GetAccountChildrenAsync_CallsRepository()
+        {
+            // Arrange
+
+            // Act
+            await _controller.GetAccountChildrenAsync(_existingAccountId);
+
+            // Assert
+            _mockRepository.Verify(repo => repo.GetAccountChildrenAsync(_existingAccountId));
+        }
+
+        [Test]
+        public async Task GetAccountChildrenAsync_ReturnsJsonWithCorrectContentType()
+        {
+            // Arrange
+            _mockRepository
+                .Setup(repo => repo.GetAccountChildrenAsync(_existingAccountId))
+                .ReturnsAsync(new List<AccountItemBriefViewModel>());
+
+            // Act
+            var result = await _controller.GetAccountChildrenAsync(_existingAccountId) as JsonResult;
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Value, Is.InstanceOf<IList<AccountItemBriefViewModel>>());
+        }
+
+        [Test]
+        public async Task GetAccountChildrenAsync_SetsSecurityContextViaRepository()
+        {
+            // Arrange
+
+            // Act
+            await _controller.GetAccountChildrenAsync(_existingAccountId);
+
+            // Assert
+            // NOTE: Ideally, we should verify context instance, but can't do that because of transient HTTP context
+            _mockRepository.Verify(repo => repo.SetCurrentContext(It.IsAny<UserContextViewModel>()));
         }
 
         #endregion

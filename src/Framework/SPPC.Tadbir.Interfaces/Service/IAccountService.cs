@@ -26,13 +26,6 @@ namespace SPPC.Tadbir.Service
         AccountViewModel GetAccount(int accountId);
 
         /// <summary>
-        /// Retrieves detail information of a single account item specified by unique identifier.
-        /// </summary>
-        /// <param name="accountId">Unique identifier of the account to retrieve</param>
-        /// <returns>Account item with detail information as an <see cref="AccountFullViewModel"/> instance</returns>
-        AccountFullViewModel GetDetailAccountInfo(int accountId);
-
-        /// <summary>
         /// Inserts or updates a financial account.
         /// </summary>
         /// <param name="account">Financial account to insert or update</param>

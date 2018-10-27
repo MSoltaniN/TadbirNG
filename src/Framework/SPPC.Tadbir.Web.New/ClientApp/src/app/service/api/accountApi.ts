@@ -26,14 +26,8 @@ export class AccountApi {
     // accounts/{accountId:min(1)}/children
     public static AccountChildren = environment.BaseUrl + "/accounts/{0}/children";
 
-    // accounts/{accountId:min(1)}/details
-    public static AccountDetails = environment.BaseUrl + "/accounts/{0}/details";
-
     // accounts/metadata
     public static AccountMetadata = environment.BaseUrl + "/accounts/metadata";
-
-    // accounts/{accountId:min(1)}/articles
-    public static AccountArticles = environment.BaseUrl + "/accounts/{0}/articles";
 
     // accounts/fullcode/{parentId}
     public static AccountFullCode = environment.BaseUrl + "/accounts/fullcode/{0}";

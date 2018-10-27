@@ -78,15 +78,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(children);
         }
 
-        // GET: api/accounts/{accountId:min(1)}/details
-        [Route(AccountApi.AccountDetailsUrl)]
-        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
-        public async Task<IActionResult> GetAccountDetailAsync(int accountId)
-        {
-            var account = await _repository.GetAccountDetailAsync(accountId);
-            return JsonReadResult(account);
-        }
-
         // GET: api/accounts/metadata
         [Route(AccountApi.AccountMetadataUrl)]
         [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
@@ -94,15 +85,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var metadata = await _repository.GetAccountMetadataAsync();
             return JsonReadResult(metadata);
-        }
-
-        // GET: api/accounts/{accountId:min(1)}/articles
-        [Route(AccountApi.AccountArticlesUrl)]
-        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetAccountArticlesAsync(int accountId)
-        {
-            var articles = await _repository.GetAccountArticlesAsync(accountId, GridOptions);
-            return JsonReadResult(articles);
         }
 
         // GET: api/accounts/fullcode/{parentId}
