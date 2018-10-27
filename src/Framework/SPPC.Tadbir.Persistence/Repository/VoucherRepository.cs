@@ -163,14 +163,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
+        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        public void SetCurrentContext(UserContextViewModel userContext)
+        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
+        public override void SetCurrentContext(UserContextViewModel userContext)
         {
-            _userContext = userContext;
+            base.SetCurrentContext(userContext);
             _repository.SetCurrentContext(userContext);
-            SetLoggingContext(userContext);
         }
 
         /// <summary>
@@ -235,8 +235,8 @@ namespace SPPC.Tadbir.Persistence
                     };
                     var action = new DocumentAction()
                     {
-                        CreatedById = _userContext.Id,
-                        ModifiedById = _userContext.Id,
+                        CreatedById = _currentContext.Id,
+                        ModifiedById = _currentContext.Id,
                         CreatedDate = DateTime.Now,
                         ModifiedDate = DateTime.Now
                     };
@@ -249,7 +249,7 @@ namespace SPPC.Tadbir.Persistence
                 else
                 {
                     var action = document.Actions.Single();
-                    action.ModifiedById = _userContext.Id;
+                    action.ModifiedById = _currentContext.Id;
                     action.ModifiedDate = DateTime.Now;
                     repository.Update(document, doc => doc.Actions);
                 }
@@ -259,6 +259,5 @@ namespace SPPC.Tadbir.Persistence
         }
 
         private readonly ISecureRepository _repository;
-        private UserContextViewModel _userContext;
     }
 }

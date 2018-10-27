@@ -5,7 +5,6 @@ using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using SPPC.Framework.Common;
 using SPPC.Framework.Domain;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
@@ -17,7 +16,6 @@ using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Metadata;
 using SPPC.Tadbir.Values;
-using SPPC.Tadbir.ViewModel.Auth;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -36,17 +34,6 @@ namespace SPPC.Tadbir.Persistence
             IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata)
             : base(unitOfWork, mapper, metadata)
         {
-        }
-
-        /// <summary>
-        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای اعمال فیلترهای سیستمی تنظیم می کند
-        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
-        /// </summary>
-        /// <param name="currentContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
-        public void SetCurrentContext(UserContextViewModel currentContext)
-        {
-            Verify.ArgumentNotNull(currentContext, "currentContext");
-            _currentContext = currentContext;
         }
 
         /// <summary>
@@ -416,7 +403,5 @@ namespace SPPC.Tadbir.Persistence
                 AddChildren(item, children);
             }
         }
-
-        private UserContextViewModel _currentContext;
     }
 }

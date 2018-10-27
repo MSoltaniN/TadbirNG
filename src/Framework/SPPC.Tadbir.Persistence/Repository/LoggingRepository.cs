@@ -81,16 +81,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
-        /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        protected void SetLoggingContext(UserContextViewModel userContext)
-        {
-            Verify.ArgumentNotNull(userContext, "userContext");
-            _currentContext = userContext;
-        }
-
-        /// <summary>
         /// مدل نمایشی لاگ عملیاتی برای عملیات جاری
         /// </summary>
         protected OperationLogViewModel Log { get; private set; }
@@ -186,6 +176,5 @@ namespace SPPC.Tadbir.Persistence
 
         private const string ModelNamespace = "SPPC.Tadbir.Model";
         private readonly IOperationLogRepository _logRepository;
-        private UserContextViewModel _currentContext;
     }
 }

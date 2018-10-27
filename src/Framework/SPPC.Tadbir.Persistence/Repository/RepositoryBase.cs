@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Tadbir.ViewModel.Auth;
 
@@ -37,5 +37,21 @@ namespace SPPC.Tadbir.Persistence
         /// امکان خواندن متادیتا برای یک موجودیت را فراهم می کند
         /// </summary>
         protected IMetadataRepository Metadata { get; }
+
+        /// <summary>
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
+        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
+        /// </summary>
+        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
+        public virtual void SetCurrentContext(UserContextViewModel userContext)
+        {
+            Verify.ArgumentNotNull(userContext, "userContext");
+            _currentContext = userContext;
+        }
+
+        /// <summary>
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه
+        /// </summary>
+        protected UserContextViewModel _currentContext;
     }
 }
