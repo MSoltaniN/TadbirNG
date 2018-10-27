@@ -1,4 +1,4 @@
-﻿
+
 <div *ngIf="selectedItemType == 'RelationsConfig'" class="settings-form">
     <form novalidate [formGroup]="accountRelationsForm">
         <div class="form-group">
@@ -96,12 +96,8 @@
     </form>
 </div>
 
-<div *ngIf="selectedItemType == 'ListFormViewConfig'" class="settings-form">
-    به زودی
-</div>
-
-<div *ngIf="selectedItemType == 'EntityRowAccessConfig'" class="settings-form">
-    به زودی
+<div *ngIf="selectedItemType == 'ViewTreeConfig'" class="settings-form">
+    <view-tree-config></view-tree-config>
 </div>
 
 

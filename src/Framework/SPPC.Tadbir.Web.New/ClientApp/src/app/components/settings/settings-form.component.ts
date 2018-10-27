@@ -130,11 +130,7 @@ export class SettingsFormComponent extends DetailComponent {
                     this.updateList.emit(this.selectedItemModel);
                     break;
                 }
-            case SettingsType.EntityRowAccessConfig:
-                {
-                    break;
-                }
-            case SettingsType.ListFormViewConfig:
+          case SettingsType.ViewTreeConfig:
                 {
                     break;
                 }
@@ -174,11 +170,7 @@ export class SettingsFormComponent extends DetailComponent {
                     this.dateRangesForm.reset(objectValue);
                     break;
                 }
-            case SettingsType.EntityRowAccessConfig:
-                {
-                    break;
-                }
-            case SettingsType.ListFormViewConfig:
+          case SettingsType.ViewTreeConfig:
                 {
                     break;
                 }

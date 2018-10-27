@@ -170,7 +170,8 @@
     "LevelName": "Level Name",
     "CodeLength": "Code Length",
     "Save": "Save",
-    "DefaultSettings": "Default Settings"
+    "DefaultSettings": "Default",
+    "SelectEntity": "Please Select Entity"
   },
   "VoucherLine": {
     "Debit": "Debit",

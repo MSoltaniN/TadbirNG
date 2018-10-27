@@ -41,15 +41,14 @@ export function getLayoutModule(layout: Layout) {
 
 
 export class SettingsComponent extends DefaultComponent implements OnInit {
-    public filterChange(filter: CompositeFilterDescriptor): void {
-        throw new Error("Method not implemented.");
-    }
-    public reloadGrid(insertedModel?: any): void {
-        throw new Error("Method not implemented.");
-    }
+    //public filterChange(filter: CompositeFilterDescriptor): void {
+    //    throw new Error("Method not implemented.");
+    //}
+    //public reloadGrid(insertedModel?: any): void {
+    //    throw new Error("Method not implemented.");
+    //}
 
-    @ViewChild(forwardRef(() => SettingsFormComponent))
-    private settingForm: SettingsFormComponent;
+    @ViewChild(forwardRef(() => SettingsFormComponent)) private settingForm: SettingsFormComponent;
 
     public errorMessage = String.Empty;
     public expandedKeys: any[] = [-1];
@@ -88,7 +87,7 @@ export class SettingsComponent extends DefaultComponent implements OnInit {
       super(toastrService, translate, renderer, metadata, settingsService, Entities.Settings, '');
     }
 
-    public handleSelection(item: TreeItem): void {
+  public handleSelection(item: TreeItem): void {
         this.itemSelectedModel = this.settingsCategories.find(f => f.id == item.dataItem.id);
 
         if (this.lastSelectedType) {
