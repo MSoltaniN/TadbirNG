@@ -30,6 +30,22 @@
     "User": "User",
     "Branch": "Branch"
   },
+  "Dashboard":
+  {
+      "Themes" : "Themes",
+      "Blue":"Blue",
+      "Black":"Black",
+      "Green":"Green",
+      "Red":"Red",
+      "Purple":"Purple",
+      "BlueLight":"BlueLight",
+      "BlackLight":"BlackLight",
+      "PurpleLight":"PurpleLight",
+      "GreenLight": "GreenLight",
+      "RedLight":"RedLight",
+      "YellowLight":"YellowLight",
+      "Yellow":"Yellow"
+  },
   "Exception": {
     "ErrorCode": "Error Code",
     "ErrorMsg": "Error Message",

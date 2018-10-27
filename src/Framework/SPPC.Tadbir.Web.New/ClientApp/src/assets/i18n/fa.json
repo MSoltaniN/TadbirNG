@@ -30,6 +30,23 @@
     "User": "کاربر جاری",
     "Branch": "شعبه"
   },
+  "Dashboard":
+  {
+      "Themes" : "قالب ها",
+      "Blue":"آبی",
+      "Black":"مشکی",
+      "Green":"سبز",
+      "Red":"قرمز",
+      "Purple":"بنقش",
+      "BlueLight":"آبی روشن",
+      "BlackLight":"مشکی روشن",
+      "PurpleLight":"بنفش روشن",
+      "GreenLight": "سبز روشن",
+      "RedLight":"قرمز روشن",
+      "YellowLight":"زرد روشن",
+      "Yellow":"زرد"
+  }
+  ,
   "Exception": {
     "ErrorCode": "کد خطا",
     "ErrorMsg": "جزئیات خطا",
