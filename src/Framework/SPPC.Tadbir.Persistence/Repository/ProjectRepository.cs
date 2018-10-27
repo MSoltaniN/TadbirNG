@@ -239,13 +239,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
+        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        public void SetCurrentContext(UserContextViewModel userContext)
+        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
+        public override void SetCurrentContext(UserContextViewModel userContext)
         {
+            base.SetCurrentContext(userContext);
             _repository.SetCurrentContext(userContext);
-            SetLoggingContext(userContext);
         }
 
         /// <summary>

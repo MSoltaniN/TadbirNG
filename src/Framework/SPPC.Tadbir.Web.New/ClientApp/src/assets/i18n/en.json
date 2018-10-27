@@ -186,7 +186,8 @@
     "LevelName": "Level Name",
     "CodeLength": "Code Length",
     "Save": "Save",
-    "DefaultSettings": "Default Settings"
+    "DefaultSettings": "Default",
+    "SelectEntity": "Please Select Entity"
   },
   "VoucherLine": {
     "Debit": "Debit",
@@ -255,6 +256,7 @@
     "Description": "Description",
     "BranchId": "Branch",
     "FiscalPeriodId": "Fiscal",
+    "StatusName": "Status",
     "Commit": "Commit Voucher",
     "ReturnFromCommit": "Return Voucher"
   },

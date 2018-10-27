@@ -38,14 +38,6 @@ namespace SPPC.Tadbir.Persistence
         Task<AccountViewModel> GetAccountAsync(int accountId);
 
         /// <summary>
-        /// به روش آسنکرون، حساب با شناسه عددی مشخص شده را به همراه اطلاعات کامل آن
-        /// از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>
-        /// <returns>حساب مشخص شده با شناسه عددی به همراه اطلاعات کامل آن</returns>
-        Task<AccountFullViewModel> GetAccountDetailAsync(int accountId);
-
-        /// <summary>
         /// به روش آسنکرون، مجموعه ای از سرفصل های حسابداری زیرمجموعه یک سرفصل حسابداری مشخص را خوانده و برمی گرداند
         /// </summary>
         /// <param name="accountId">شناسه یکی از سرفصل های حسابداری موجود</param>
@@ -57,16 +49,6 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <returns>اطلاعات فراداده ای تعریف شده برای حساب</returns>
         Task<ViewViewModel> GetAccountMetadataAsync();
-
-        /// <summary>
-        /// به روش آسنکرون، کلیه آرتیکل های مالی را که از حساب مشخص شده استفاده می کندد را
-        /// از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از آرتیکل های مالی که از حساب مشخص شده استفاده می کندد</returns>
-        Task<IList<VoucherLineViewModel>> GetAccountArticlesAsync(
-            int accountId, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، تعداد حساب های تعریف شده در دوره مالی و شعبه جاری برنامه را
