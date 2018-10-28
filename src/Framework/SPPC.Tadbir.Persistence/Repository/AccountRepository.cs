@@ -48,8 +48,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountViewModel>> GetAccountsAsync(GridOptions gridOptions = null)
         {
             var accounts = await _repository.GetAllAsync<Account>(ViewName.Account, acc => acc.Children);
-            return accounts
+            var filteredAccounts = accounts
                 .Select(item => Mapper.Map<AccountViewModel>(item))
+                .ToList();
+            await FilterGrandchildrenAsync(filteredAccounts);
+            return filteredAccounts
                 .Apply(gridOptions)
                 .ToList();
         }
@@ -74,7 +77,7 @@ namespace SPPC.Tadbir.Persistence
         {
             AccountViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
+            var account = await repository.GetByIDAsync(accountId);
             if (account != null)
             {
                 item = Mapper.Map<AccountViewModel>(account);
@@ -95,6 +98,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(acc => acc.ParentId == accountId)
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .ToListAsync();
+            await FilterGrandchildrenAsync(children);
             return children;
         }
 
@@ -303,6 +307,32 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Account>();
             int count = await repository.GetCountByCriteriaAsync(acc => acc.Level == level);
             await _configRepository.SaveTreeLevelUsageAsync(ViewName.Account, level, count);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد زیرشاخه ها را در مجموعه ای از اطلاعات درختی
+        /// با توجه به تنظیمات جاری دسترسی به شعب و سطرها اصلاح می کند
+        /// </summary>
+        /// <typeparam name="TTreeEntity">نوع مدل نمایشی با ساختار درختی</typeparam>
+        /// <param name="children">مجموعه ای از اطلاعات درختی که زیرشاخه های آنها باید فیلتر شود</param>
+        private async Task FilterGrandchildrenAsync<TTreeEntity>(IList<TTreeEntity> children)
+            where TTreeEntity : ITreeEntityView
+        {
+            var childIds = children.Select(item => item.Id);
+            var grandchildren = await _repository
+                .GetAllQuery<Account>(ViewName.Account)
+                .Where(acc => acc.ParentId != null && childIds.Contains(acc.ParentId.Value))
+                .GroupBy(acc => acc.ParentId.Value)
+                .ToArrayAsync();
+            foreach (var child in children)
+            {
+                var grandchild = grandchildren
+                    .Where(item => item.Key == child.Id)
+                    .SingleOrDefault();
+                child.ChildCount = (grandchild != null)
+                    ? grandchild.Count()
+                    : 0;
+            }
         }
 
         private readonly ISecureRepository _repository;

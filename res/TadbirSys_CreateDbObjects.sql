@@ -462,7 +462,7 @@ INSERT [Metadata].[Column]
     ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings])
 	VALUES (67, 8, N'BranchScope', N'System.Int16', N'smallint', N'number', 0, 0, 0, 0, 0, 1, N'{"name":"BranchScope","large":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"medium":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"small":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"},"extraSmall":{"width":null,"index":null,"designIndex":0,"visibility":"Hidden"}}')
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (68, 3, N'FullAccount.Account.FullCode', N'System.String', N'nvarchar', N'string', 256, 0, 0, 0, 1, 1, NULL)
-INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (69, 2, N'StatusName', N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (69, 2, N'StatusName', N'System.String', N'nvarchar', N'string', 64, 0, 0, 1, 1, 1, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 
