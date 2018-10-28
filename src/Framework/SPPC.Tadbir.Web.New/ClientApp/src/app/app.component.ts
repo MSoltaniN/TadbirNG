@@ -120,6 +120,16 @@ export class AppComponent implements AfterContentInit {
           }
         }
 
+        var currentSkin = localStorage.getItem(SessionKeys.CurrentSkin);
+        if(currentSkin != null)
+        {
+          if(!this.document.getElementById('mainBody').classList.contains(currentSkin))
+          {
+              this.document.getElementById('mainBody').classList.add(currentSkin);
+              this.document.getElementById('mainBody').classList.remove('skin-blue');
+          }
+        }
+        
 
         // var lang = localStorage.getItem('lang');
         // if(lang == 'fa' || lang == null)
