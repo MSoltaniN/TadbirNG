@@ -219,6 +219,19 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا شعبه مورد نظر به نقشی تخصیص داده شده یا نه
+        /// </summary>
+        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
+        /// <returns>اگر شعبه مورد نظر به یک یا چند نقش تخصیص داده شده باشد مقدار "درست" و
+        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> HasAssignedRolesAsync(int branchId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<RoleBranch>();
+            int roleCount = await repository.GetCountByCriteriaAsync(rb => rb.BranchId == branchId);
+            return roleCount > 0;
+        }
+
+        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="branchViewModel">مدل نمایشی شامل آخرین تغییرات</param>

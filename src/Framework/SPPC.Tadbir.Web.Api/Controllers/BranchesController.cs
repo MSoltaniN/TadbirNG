@@ -145,15 +145,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             var branch = await _repository.GetBranchAsync(item);
             if (branch == null)
             {
-                message = String.Format(
+                return String.Format(
                     _strings.Format(AppStrings.ItemByIdNotFound), _strings.Format(AppStrings.Branch), item);
             }
 
             var hasChildren = await _repository.HasChildrenAsync(item);
             if (hasChildren == true)
             {
-                message = String.Format(
-                   _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.Branch], String.Format("'{0}'", branch.Name));
+                return String.Format(
+                   _strings[AppStrings.CannotDeleteNonLeafItem], _strings[AppStrings.Branch],
+                   String.Format("'{0}'", branch.Name));
+            }
+
+            var hasRoles = await _repository.HasAssignedRolesAsync(item);
+            if (hasRoles == true)
+            {
+                return String.Format(
+                   _strings[AppStrings.CannotDeleteAssignedBranch], String.Format("'{0}'", branch.Name));
             }
 
             return message;

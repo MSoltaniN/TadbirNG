@@ -618,4 +618,7 @@
   <data name="SwitchCompany" xml:space="preserve">
     <value>تغییر شرکت</value>
   </data>
+  <data name="CannotDeleteAssignedBranch" xml:space="preserve">
+    <value>شعبه {0} به یک یا چند نقش تخصیص داده شده و قابل حذف نیست.</value>
+  </data>
 </root>

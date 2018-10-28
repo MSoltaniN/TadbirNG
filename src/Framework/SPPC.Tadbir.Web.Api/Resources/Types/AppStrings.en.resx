@@ -618,4 +618,7 @@
   <data name="SwitchCompany" xml:space="preserve">
     <value>Switch company</value>
   </data>
+  <data name="CannotDeleteAssignedBranch" xml:space="preserve">
+    <value>The branch {0} is assigned to one or more roles and cannot be deleted.</value>
+  </data>
 </root>
