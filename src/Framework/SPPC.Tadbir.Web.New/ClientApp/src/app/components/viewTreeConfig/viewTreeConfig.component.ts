@@ -44,7 +44,7 @@ export function getLayoutModule(layout: Layout) {
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
 }
-#level-list > li:last-child{ border-bottom: solid 1px #337ab7; } .view-body { min-height: 600px; }
+#level-list > li:last-child{ border-bottom: solid 1px #337ab7; }
 #level-list > li.enable{ cursor: pointer; } #level-list > li.enable:hover{ background-color: #8ab8e0;}
 #level-list > li.disable{ background-color: #fdfdfd; } #level-list > li.selected{ background-color: #337ab7; }
 /deep/.k-grid tr.notEnabled { color: #cac4c4; }
@@ -95,10 +95,11 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
    * @param param0
    */
   public cellClickHandler({ sender, rowIndex, column, columnIndex, dataItem, isEdited }) {
+    //debugger;
     if (!isEdited && !this.isReadOnly(column.field) && dataItem.isEnabled) {
       if ((this.viewTreeConfig.viewId == ViewName.Account && dataItem.no <= 3 && column.field == 'name') || (column.field == 'codeLength' && dataItem.isUsed))
         return
-      sender.editCell(rowIndex, columnIndex, this.createFormGroup(dataItem));
+      sender.editCell(rowIndex, columnIndex, this.createFormGroup(dataItem.no));
     }
   }
 
@@ -108,6 +109,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
    * @param args
    */
   public cellCloseHandler(args: any) {
+
     const { formGroup, dataItem } = args;
 
     if (!formGroup.valid) {
@@ -124,7 +126,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
           formValue.codeLength = 1;
 
         var index = this.viewTreeLevels.indexOf(level);
-        this.viewTreeLevels[index] = formGroup.value;
+        this.viewTreeLevels[index] = formValue;
       }
 
       this.saveLocalChengesView();
@@ -135,7 +137,8 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
    * ساخت فرم برای سطری که کلیک میشود
    * @param dataItem
    */
-  public createFormGroup(dataItem: any): FormGroup {
+  public createFormGroup(no: any): FormGroup {
+    var dataItem = this.viewTreeLevels.find(f => f.no == no)
     return this.formBuilder.group({
       'no': dataItem.no,
       'name': [dataItem.name, Validators.required],
@@ -216,16 +219,23 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
    * عملیات مربوط به تغییر حداکثر عمق
    */
   onChangeDepth() {
+
     if (this.maxDepthValue >= 1 && this.maxDepthValue <= 16) {
       var levelsCount = this.viewTreeConfig.levels.filter(f => f.isEnabled).length;
       if (this.maxDepthValue < levelsCount) {
         while (this.maxDepthValue < levelsCount) {
           var level = this.viewTreeLevels.find(f => f.no == levelsCount);
+
           if (!level.isUsed) {
             level.isEnabled = false;
             this.viewTreeLevels[levelsCount - 1] = level;
-            levelsCount--;
-          }          
+
+            this.viewTreeConfig.levels = this.viewTreeLevels;
+            this.viewTreeConfig.maxDepth = this.maxDepthValue;
+            this.saveLocalChengesView();
+          }
+
+          levelsCount--;
         }
       }
       else {
@@ -236,11 +246,12 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
           this.viewTreeLevels[levelsCount] = level;
           levelsCount++;
         }
-      }
-      this.viewTreeConfig.levels = this.viewTreeLevels;
-      this.viewTreeConfig.maxDepth = this.maxDepthValue;
 
-      this.saveLocalChengesView();
+        this.viewTreeConfig.levels = this.viewTreeLevels;
+        this.viewTreeConfig.maxDepth = this.maxDepthValue;
+        this.saveLocalChengesView();
+      }
+
     }
   }
 
