@@ -166,6 +166,27 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، حساب های مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// </summary>
+        /// <param name="accountIds">مجموعه ای از شناسه های عددی حساب های مورد نظر برای حذف</param>
+        public async Task DeleteAccountsAsync(IList<int> accountIds)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            int level = 0;
+            foreach (int accountId in accountIds)
+            {
+                var account = await repository.GetByIDAsync(accountId);
+                if (account != null)
+                {
+                    level = Math.Max(level, account.Level);
+                    await DeleteAsync(repository, account);
+                }
+            }
+
+            await UpdateLevelUsageAsync(level);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا کد حساب مورد نظر تکراری است یا نه
         /// </summary>
         /// <param name="accountViewModel">مدل نمایشی حساب مورد نظر</param>

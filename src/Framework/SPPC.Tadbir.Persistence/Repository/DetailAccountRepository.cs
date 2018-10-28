@@ -165,6 +165,27 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، تفصیلی های مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// </summary>
+        /// <param name="detailIds">مجموعه ای از شناسه های عددی تفصیلی های مورد نظر برای حذف</param>
+        public async Task DeleteDetailAccountsAsync(IList<int> detailIds)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
+            int level = 0;
+            foreach (int detailId in detailIds)
+            {
+                var detailAccount = await repository.GetByIDAsync(detailId);
+                if (detailAccount != null)
+                {
+                    level = Math.Max(level, detailAccount.Level);
+                    await DeleteAsync(repository, detailAccount);
+                }
+            }
+
+            await UpdateLevelUsageAsync(level);
+        }
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا کد تفصیلی شناور مورد نظر تکراری است یا نه
         /// </summary>
         /// <param name="detailAccount">مدل نمایشی تفصیلی شناور مورد نظر</param>

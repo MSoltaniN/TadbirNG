@@ -175,11 +175,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             _repository.SetCurrentContext(SecurityContext.User);
-            foreach (int accountId in actionDetail.Items)
-            {
-                await _repository.DeleteAccountAsync(accountId);
-            }
-
+            await _repository.DeleteAccountsAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 

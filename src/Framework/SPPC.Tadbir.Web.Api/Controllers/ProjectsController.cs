@@ -177,11 +177,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             }
 
             _repository.SetCurrentContext(SecurityContext.User);
-            foreach (int projectId in actionDetail.Items)
-            {
-                await _repository.DeleteProjectAsync(projectId);
-            }
-
+            await _repository.DeleteProjectsAsync(actionDetail.Items);
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
