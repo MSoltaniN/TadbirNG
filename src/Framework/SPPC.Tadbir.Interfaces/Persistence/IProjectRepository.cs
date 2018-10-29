@@ -72,6 +72,12 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteProjectAsync(int projectId);
 
         /// <summary>
+        /// به روش آسنکرون، پروژه های مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// </summary>
+        /// <param name="projectIds">مجموعه ای از شناسه های عددی پروژه های مورد نظر برای حذف</param>
+        Task DeleteProjectsAsync(IList<int> projectIds);
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا کد پروژه مورد نظر تکراری است یا نه
         /// </summary>
         /// <param name="project">مدل نمایشی پروژه مورد نظر</param>

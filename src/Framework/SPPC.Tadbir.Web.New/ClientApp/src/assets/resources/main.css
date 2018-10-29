@@ -80,7 +80,17 @@ tbutton {
 
 body span.menuitem
 {
-    margin-right: 2px!important;
+    margin-right: 2px!important;    
+}
+
+a:hover
+{
+    text-decoration: none!important;
+}
+
+a
+{
+    text-decoration: none!important;
 }
 
 body.sidebar-collapse span.menuitem

@@ -154,7 +154,6 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<Account, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
-            mapperConfig.CreateMap<Account, AccountFullViewModel>();
 
             mapperConfig.CreateMap<DetailAccount, DetailAccountViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
@@ -302,15 +301,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(
                     dest => dest.UserFullName,
                     opts => opts.MapFrom(
-                        src => String.Format("{0} {1}", src.User.Person.FirstName, src.User.Person.LastName)))
-                .ForMember(
-                    dest => dest.Status,
-                    opts => opts.MapFrom(
-                        src => VoucherStatus.ToLocalValue(src.Document.Status.Name)))
-                .ForMember(
-                    dest => dest.OperationalStatus,
-                    opts => opts.MapFrom(
-                        src => DocumentStatusName.ToLocalValue(src.Document.OperationalStatus)));
+                        src => String.Format("{0} {1}", src.User.Person.FirstName, src.User.Person.LastName)));
             mapperConfig.CreateMap<WorkItemHistory, OutboxItemViewModel>()
                 .ForMember(dest => dest.EntityNo, opts => opts.Ignore())
                 .ForMember(
@@ -403,8 +394,7 @@ namespace SPPC.Tadbir.Mapper
                 .AfterMap((viewModel, model) => Array.ForEach(
                     viewModel.Actions.ToArray(),
                     act => model.Actions.Add(_autoMapper.Map<DocumentAction>(act))))
-                .AfterMap((viewModel, model) => model.Type.Id = viewModel.TypeId)
-                .AfterMap((viewModel, model) => model.Status.Id = viewModel.StatusId);
+                .AfterMap((viewModel, model) => model.Type.Id = viewModel.TypeId);
         }
 
         private static void MapConfigTypes(IMapperConfigurationExpression mapperConfig)

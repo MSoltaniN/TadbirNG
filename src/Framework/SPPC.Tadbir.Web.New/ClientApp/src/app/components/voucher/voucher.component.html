@@ -63,11 +63,12 @@
 
             <dt>{{ 'Voucher.Description' | translate  }}</dt>
             <dd>{{ voucher.description }}</dd>
+
+            <dt>{{ 'Voucher.StatusName' | translate  }}</dt>
+            <dd>{{ voucher.statusName }}</dd>
           </dl>
           <button kendoGridEditCommand SppcCheckAccess="Edit" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
           <button kendoGridRemoveCommand SppcCheckAccess="Delete">{{ 'Buttons.Delete' | translate }}</button>
-          <button class="k-button k-primary" SppcCheckAccess="Check" [hidden]="voucher.statusId != 1" (click)="checkHandler(voucher.id, voucher.statusId)">{{ 'Voucher.Commit' | translate }}</button>
-          <button class="k-button k-primary" SppcCheckAccess="Uncheck" [hidden]="voucher.statusId == 1" (click)="checkHandler(voucher.id, voucher.statusId)">{{ 'Voucher.ReturnFromCommit' | translate }}</button>
         </ng-template>
       </kendo-grid-column>
       <!-- template for mobile -->
@@ -78,6 +79,7 @@
           <sppc-grid-filter [metaData]="getMeta('no')" [column]="column" [filter]="filter"></sppc-grid-filter>
         </ng-template>
       </kendo-grid-column>
+
       <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Voucher.date">
         <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
           <sppc-grid-filter [metaData]="getMeta('date')" [column]="column" [filter]="filter"></sppc-grid-filter>
@@ -87,12 +89,16 @@
         </ng-template>
       </kendo-grid-column>
 
+      <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Voucher.statusName">
+        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+          <sppc-grid-filter [metaData]="getMeta('statusName')" [column]="column" [filter]="filter"></sppc-grid-filter>
+        </ng-template>
+      </kendo-grid-column>
+
       <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px) and (max-width: 1024px)">
         <ng-template kendoGridCellTemplate let-dataItem>
           <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
           <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
-          <button class="k-button k-primary" SppcCheckAccess="Check" [hidden]="dataItem.statusId != 1" (click)="checkHandler(dataItem.id, dataItem.statusId)">{{ 'Voucher.Commit' | translate }}</button>
-          <button class="k-button k-primary" SppcCheckAccess="Uncheck" [hidden]="dataItem.statusId == 1" (click)="checkHandler(dataItem.id, dataItem.statusId)">{{ 'Voucher.ReturnFromCommit' | translate }}</button>
         </ng-template>
       </kendo-grid-command-column>
       <!-- template for mid-size devices -->
@@ -119,12 +125,16 @@
         </ng-template>
       </kendo-grid-column>
 
+      <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="Voucher.statusName">
+        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+          <sppc-grid-filter [metaData]="getMeta('statusName')" [column]="column" [filter]="filter"></sppc-grid-filter>
+        </ng-template>
+      </kendo-grid-column>
+
       <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
         <ng-template kendoGridCellTemplate let-dataItem>
           <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
           <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
-          <button class="k-button k-primary" SppcCheckAccess="Check" [hidden]="dataItem.statusId != 1" (click)="checkHandler(dataItem.id, dataItem.statusId)">{{ 'Voucher.Commit' | translate }}</button>
-          <button class="k-button k-primary" SppcCheckAccess="Uncheck" [hidden]="dataItem.statusId == 1" (click)="checkHandler(dataItem.id, dataItem.statusId)">{{ 'Voucher.ReturnFromCommit' | translate }}</button>
         </ng-template>
       </kendo-grid-command-column>
       <!-- additional columns on large devices -->

@@ -6,13 +6,13 @@
       <app-appheader *ngIf="showNavbar"></app-appheader>
       <nav-menu *ngIf="showNavbar"></nav-menu>
       <div [ngClass]="{'content-wrapper':showNavbar , '': !showNavbar}">
-      <section [ngClass]="{'content':showNavbar , '': !showNavbar}">
+      <!-- <section [ngClass]="{'content':showNavbar , '': !showNavbar}"> -->
         <router-outlet></router-outlet>      
-      </section>
+      <!-- </section> -->
       </div>
     </div>
     <app-appfooter *ngIf="showNavbar"></app-appfooter>
-    <app-appsetting *ngIf="showNavbar"></app-appsetting>
+    <app-appsetting *ngIf="showNavbar"></app-appsetting>    
     <kendo-dialog *ngIf="showErrorDialog" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
                   (close)="closeForm()" [minWidth]="250" [width]="450">
       <kendo-dialog-titlebar>

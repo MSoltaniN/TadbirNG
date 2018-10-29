@@ -29,11 +29,13 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
+        /// <param name="config">امکان مدیریت تنظیمات برنامه را در دیتابیس فراهم می کند</param>
         public CostCenterRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
-            ISecureRepository repository)
+            ISecureRepository repository, IConfigRepository config)
             : base(unitOfWork, mapper, metadata, log)
         {
             _repository = repository;
+            _configRepository = config;
         }
 
         /// <summary>
@@ -45,8 +47,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<CostCenterViewModel>> GetCostCentersAsync(GridOptions gridOptions = null)
         {
             var costCenters = await _repository.GetAllAsync<CostCenter>(ViewName.CostCenter, cc => cc.Children);
-            return costCenters
+            var filteredCenters = costCenters
                 .Select(item => Mapper.Map<CostCenterViewModel>(item))
+                .ToList();
+            await FilterGrandchildrenAsync(filteredCenters);
+            return filteredCenters
                 .Apply(gridOptions)
                 .ToList();
         }
@@ -82,7 +87,7 @@ namespace SPPC.Tadbir.Persistence
         {
             CostCenterViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
-            var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Children);
+            var costCenter = await repository.GetByIDAsync(costCenterId);
             if (costCenter != null)
             {
                 item = Mapper.Map<CostCenterViewModel>(costCenter);
@@ -103,6 +108,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(cc => cc.ParentId == costCenterId)
                 .Select(cc => Mapper.Map<AccountItemBriefViewModel>(cc))
                 .ToListAsync();
+            await FilterGrandchildrenAsync(children);
             return children;
         }
 
@@ -129,6 +135,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 costCenterModel = Mapper.Map<CostCenter>(costCenter);
                 await InsertAsync(repository, costCenterModel);
+                await UpdateLevelUsageAsync(costCenterModel.Level);
             }
             else
             {
@@ -153,7 +160,29 @@ namespace SPPC.Tadbir.Persistence
             if (costCenter != null)
             {
                 await DeleteAsync(repository, costCenter);
+                await UpdateLevelUsageAsync(costCenter.Level);
             }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مراکز مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// </summary>
+        /// <param name="centerIds">مجموعه ای از شناسه های عددی مراکز مورد نظر برای حذف</param>
+        public async Task DeleteCostCentersAsync(IList<int> centerIds)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
+            int level = 0;
+            foreach (int centerId in centerIds)
+            {
+                var costCenter = await repository.GetByIDAsync(centerId);
+                if (costCenter != null)
+                {
+                    level = Math.Max(level, costCenter.Level);
+                    await DeleteAsync(repository, costCenter);
+                }
+            }
+
+            await UpdateLevelUsageAsync(level);
         }
 
         /// <summary>
@@ -234,13 +263,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
+        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        public void SetCurrentContext(UserContextViewModel userContext)
+        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
+        public override void SetCurrentContext(UserContextViewModel userContext)
         {
+            base.SetCurrentContext(userContext);
             _repository.SetCurrentContext(userContext);
-            SetLoggingContext(userContext);
         }
 
         /// <summary>
@@ -271,6 +301,46 @@ namespace SPPC.Tadbir.Persistence
                : null;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، وضعیت استفاده از یکی از سطوح درختی مرکز هزینه را در دیتابیس بروزرسانی می کند
+        /// </summary>
+        /// <param name="level">شماره سطح مورد نظر</param>
+        /// <remarks>قابل توجه است که در این متد هیچگونه فیلتری روی دوره مالی، شعبه یا سطرهای قابل دسترسی صورت نمی گیرد.
+        /// این به این معنی است که اطلاعات سطح مورد نظر در هر شعبه یا دوره مالی ممکن است ایجاد شده باشد. </remarks>
+        private async Task UpdateLevelUsageAsync(int level)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
+            int count = await repository.GetCountByCriteriaAsync(cc => cc.Level == level);
+            await _configRepository.SaveTreeLevelUsageAsync(ViewName.CostCenter, level, count);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد زیرشاخه ها را در مجموعه ای از اطلاعات درختی
+        /// با توجه به تنظیمات جاری دسترسی به شعب و سطرها اصلاح می کند
+        /// </summary>
+        /// <typeparam name="TTreeEntity">نوع مدل نمایشی با ساختار درختی</typeparam>
+        /// <param name="children">مجموعه ای از اطلاعات درختی که زیرشاخه های آنها باید فیلتر شود</param>
+        private async Task FilterGrandchildrenAsync<TTreeEntity>(IList<TTreeEntity> children)
+            where TTreeEntity : ITreeEntityView
+        {
+            var childIds = children.Select(item => item.Id);
+            var grandchildren = await _repository
+                .GetAllQuery<CostCenter>(ViewName.CostCenter)
+                .Where(cc => cc.ParentId != null && childIds.Contains(cc.ParentId.Value))
+                .GroupBy(cc => cc.ParentId.Value)
+                .ToArrayAsync();
+            foreach (var child in children)
+            {
+                var grandchild = grandchildren
+                    .Where(item => item.Key == child.Id)
+                    .SingleOrDefault();
+                child.ChildCount = (grandchild != null)
+                    ? grandchild.Count()
+                    : 0;
+            }
+        }
+
         private readonly ISecureRepository _repository;
+        private readonly IConfigRepository _configRepository;
     }
 }

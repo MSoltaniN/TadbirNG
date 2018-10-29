@@ -72,6 +72,12 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteDetailAccountAsync(int faccountId);
 
         /// <summary>
+        /// به روش آسنکرون، تفصیلی های مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// </summary>
+        /// <param name="detailIds">مجموعه ای از شناسه های عددی تفصیلی های مورد نظر برای حذف</param>
+        Task DeleteDetailAccountsAsync(IList<int> detailIds);
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا کد تفصیلی شناور مورد نظر تکراری است یا نه
         /// </summary>
         /// <param name="detailAccount">مدل نمایشی تفصیلی شناور مورد نظر</param>

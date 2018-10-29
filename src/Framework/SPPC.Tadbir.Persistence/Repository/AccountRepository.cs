@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
-using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
@@ -31,12 +29,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="repository">عملیات مورد نیاز برای اعمال دسترسی امنیتی در سطح سطرهای اطلاعاتی را تعریف می کند</param>
+        /// <param name="config">امکان مدیریت تنظیمات برنامه را در دیتابیس فراهم می کند</param>
         public AccountRepository(
             IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
-            ISecureRepository repository)
+            ISecureRepository repository, IConfigRepository config)
             : base(unitOfWork, mapper, metadata, log)
         {
             _repository = repository;
+            _configRepository = config;
         }
 
         /// <summary>
@@ -48,8 +48,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<AccountViewModel>> GetAccountsAsync(GridOptions gridOptions = null)
         {
             var accounts = await _repository.GetAllAsync<Account>(ViewName.Account, acc => acc.Children);
-            return accounts
+            var filteredAccounts = accounts
                 .Select(item => Mapper.Map<AccountViewModel>(item))
+                .ToList();
+            await FilterGrandchildrenAsync(filteredAccounts);
+            return filteredAccounts
                 .Apply(gridOptions)
                 .ToList();
         }
@@ -74,30 +77,10 @@ namespace SPPC.Tadbir.Persistence
         {
             AccountViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await repository.GetByIDAsync(accountId, acc => acc.Children);
+            var account = await repository.GetByIDAsync(accountId);
             if (account != null)
             {
                 item = Mapper.Map<AccountViewModel>(account);
-            }
-
-            return item;
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، حساب با شناسه عددی مشخص شده را به همراه اطلاعات کامل آن
-        /// از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه عددی یکی از حساب های موجود</param>
-        /// <returns>حساب مشخص شده با شناسه عددی به همراه اطلاعات کامل آن</returns>
-        public async Task<AccountFullViewModel> GetAccountDetailAsync(int accountId)
-        {
-            AccountFullViewModel item = null;
-            var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var query = GetAccountDetailsQuery(repository, accountId);
-            var account = await query.SingleOrDefaultAsync();
-            if (account != null)
-            {
-                item = Mapper.Map<AccountFullViewModel>(account);
             }
 
             return item;
@@ -115,6 +98,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(acc => acc.ParentId == accountId)
                 .Select(acc => Mapper.Map<AccountItemBriefViewModel>(acc))
                 .ToListAsync();
+            await FilterGrandchildrenAsync(children);
             return children;
         }
 
@@ -125,25 +109,6 @@ namespace SPPC.Tadbir.Persistence
         public async Task<ViewViewModel> GetAccountMetadataAsync()
         {
             return await Metadata.GetViewMetadataAsync<Account>();
-        }
-
-        /// <summary>
-        /// به روش آسنکرون، کلیه آرتیکل های مالی را که از حساب مشخص شده استفاده می کندد را
-        /// از محل ذخیره خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
-        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
-        /// <returns>مجموعه ای از آرتیکل های مالی که از حساب مشخص شده استفاده می کندد</returns>
-        public async Task<IList<VoucherLineViewModel>> GetAccountArticlesAsync(
-            int accountId, GridOptions gridOptions = null)
-        {
-            var repository = UnitOfWork.GetAsyncRepository<VoucherLine>();
-            var query = GetArticleDetailsQuery(
-                repository, line => line.Account.Id == accountId, gridOptions);
-            var list = await query
-                .Select(line => Mapper.Map<VoucherLineViewModel>(line))
-                .ToListAsync();
-            return list;
         }
 
         /// <summary>
@@ -171,11 +136,11 @@ namespace SPPC.Tadbir.Persistence
             {
                 account = Mapper.Map<Account>(accountView);
                 await InsertAsync(repository, account);
+                await UpdateLevelUsageAsync(account.Level);
             }
             else
             {
-                account = await GetAccountQuery(repository, accountView.Id)
-                    .SingleOrDefaultAsync();
+                account = await repository.GetByIDAsync(accountView.Id);
                 if (account != null)
                 {
                     await UpdateAsync(repository, account, accountView);
@@ -192,12 +157,33 @@ namespace SPPC.Tadbir.Persistence
         public async Task DeleteAccountAsync(int accountId)
         {
             var repository = UnitOfWork.GetAsyncRepository<Account>();
-            var account = await GetAccountQuery(repository, accountId)
-                .SingleOrDefaultAsync();
+            var account = await repository.GetByIDAsync(accountId);
             if (account != null)
             {
                 await DeleteAsync(repository, account);
+                await UpdateLevelUsageAsync(account.Level);
             }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، حساب های مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// </summary>
+        /// <param name="accountIds">مجموعه ای از شناسه های عددی حساب های مورد نظر برای حذف</param>
+        public async Task DeleteAccountsAsync(IList<int> accountIds)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            int level = 0;
+            foreach (int accountId in accountIds)
+            {
+                var account = await repository.GetByIDAsync(accountId);
+                if (account != null)
+                {
+                    level = Math.Max(level, account.Level);
+                    await DeleteAsync(repository, account);
+                }
+            }
+
+            await UpdateLevelUsageAsync(level);
         }
 
         /// <summary>
@@ -293,13 +279,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
+        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        public void SetCurrentContext(UserContextViewModel userContext)
+        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
+        public override void SetCurrentContext(UserContextViewModel userContext)
         {
+            base.SetCurrentContext(userContext);
             _repository.SetCurrentContext(userContext);
-            SetLoggingContext(userContext);
         }
 
         /// <summary>
@@ -330,43 +317,46 @@ namespace SPPC.Tadbir.Persistence
                 : null;
         }
 
-        private static IQueryable<Account> GetAccountDetailsQuery(IRepository<Account> repository, int accountId)
+        /// <summary>
+        /// به روش آسنکرون، وضعیت استفاده از یکی از سطوح درختی حساب را در دیتابیس بروزرسانی می کند
+        /// </summary>
+        /// <param name="level">شماره سطح مورد نظر</param>
+        /// <remarks>قابل توجه است که در این متد هیچگونه فیلتری روی دوره مالی، شعبه یا سطرهای قابل دسترسی صورت نمی گیرد.
+        /// این به این معنی است که اطلاعات سطح مورد نظر در هر شعبه یا دوره مالی ممکن است ایجاد شده باشد. </remarks>
+        private async Task UpdateLevelUsageAsync(int level)
         {
-            var query = repository
-                .GetEntityQuery()
-                .Where(acc => acc.Id == accountId)
-                .Include(acc => acc.Branch)
-                .Include(acc => acc.FiscalPeriod);
-            return query;
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            int count = await repository.GetCountByCriteriaAsync(acc => acc.Level == level);
+            await _configRepository.SaveTreeLevelUsageAsync(ViewName.Account, level, count);
         }
 
-        private static IQueryable<VoucherLine> GetArticleDetailsQuery(
-            IRepository<VoucherLine> repository, Expression<Func<VoucherLine, bool>> criteria,
-            GridOptions gridOptions = null)
+        /// <summary>
+        /// به روش آسنکرون، تعداد زیرشاخه ها را در مجموعه ای از اطلاعات درختی
+        /// با توجه به تنظیمات جاری دسترسی به شعب و سطرها اصلاح می کند
+        /// </summary>
+        /// <typeparam name="TTreeEntity">نوع مدل نمایشی با ساختار درختی</typeparam>
+        /// <param name="children">مجموعه ای از اطلاعات درختی که زیرشاخه های آنها باید فیلتر شود</param>
+        private async Task FilterGrandchildrenAsync<TTreeEntity>(IList<TTreeEntity> children)
+            where TTreeEntity : ITreeEntityView
         {
-            var query = repository
-                .GetEntityQuery()
-                .Include(art => art.Account)
-                .Include(art => art.DetailAccount)
-                .Include(art => art.CostCenter)
-                .Include(art => art.Project)
-                .Include(art => art.Voucher)
-                .Include(art => art.FiscalPeriod)
-                .Include(art => art.Currency)
-                .Include(art => art.Branch)
-                .Where(criteria)
-                .Apply(gridOptions);
-            return query;
-        }
-
-        private static IQueryable<Account> GetAccountQuery(IRepository<Account> repository, int accountId)
-        {
-            return repository
-                .GetEntityQuery()
-                .Include(acc => acc.Branch)
-                .Where(acc => acc.Id == accountId);
+            var childIds = children.Select(item => item.Id);
+            var grandchildren = await _repository
+                .GetAllQuery<Account>(ViewName.Account)
+                .Where(acc => acc.ParentId != null && childIds.Contains(acc.ParentId.Value))
+                .GroupBy(acc => acc.ParentId.Value)
+                .ToArrayAsync();
+            foreach (var child in children)
+            {
+                var grandchild = grandchildren
+                    .Where(item => item.Key == child.Id)
+                    .SingleOrDefault();
+                child.ChildCount = (grandchild != null)
+                    ? grandchild.Count()
+                    : 0;
+            }
         }
 
         private readonly ISecureRepository _repository;
+        private readonly IConfigRepository _configRepository;
     }
 }

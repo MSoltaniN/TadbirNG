@@ -1,7 +1,7 @@
 <header class="main-header">
 
   <!-- Logo -->
-  <a href="dashboard" class="logo">
+  <a href="/#/dashboard" class="logo">
     <!-- mini logo for sidebar mini 50x50 pixels -->
     <span class="logo-mini">{{ 'App.SummaryName' | translate }}</span>
     <!-- logo for regular state and mobile devices -->
@@ -228,24 +228,23 @@
           <ul class="dropdown-menu">
             <!-- User image -->
             <li class="user-header">
-              <i  class="fa fa-user img-user"></i>
+              <i class="fa fa-user img-user"></i>
               <p>
                 {{userName}}
               </p>
               <div class="row">
-                <div class="col-md-12"><p class="userinfo"><strong class="user-info-label">{{ 'Enviroment.FiscalPeriod' | translate }}:</strong><small>{{fiscalPeriodName}}</small></p></div>                
+                <div class="col-md-12"><p class="userinfo"><strong class="user-info-label">{{ 'Enviroment.Company' | translate }}:</strong><small>{{companyName}}</small></p></div>
               </div>
               <div class="row">
-                  <div class="col-md-12"><p class="userinfo"><strong class="user-info-label">{{ 'Enviroment.Company' | translate }}:</strong><small>{{companyName}}</small></p></div>                                
+                <div class="col-md-12"><p class="userinfo"><strong class="user-info-label">{{ 'Enviroment.Branch' | translate }}:</strong><small>{{branchName}}</small></p></div>
               </div>
+              <div class="row">
+                <div class="col-md-12"><p class="userinfo"><strong class="user-info-label">{{ 'Enviroment.FiscalPeriod' | translate }}:</strong><small>{{fiscalPeriodName}}</small></p></div>
+              </div>
+
             </li>            
             <!-- Menu Footer-->
-            <li class="user-footer">
-                <div class="pull-left">
-                    <a  class="btn btn-default btn-flat btn-userInfo" routerLink="/login">                        
-                      <span>{{ 'Login.SelectTitle' | translate  }}</span>
-                  </a>
-                </div>
+            <li class="user-footer">                
                 <div  class="pull-left" *ngFor="let pitem of profileItems;">
                     <a *ngIf="pitem.routeUrl != null" class="btn btn-default btn-flat btn-userInfo" routerLink="/{{pitem.routeUrl}}">                        
                         <span>{{ pitem.title }}</span>

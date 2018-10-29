@@ -91,24 +91,6 @@ namespace SPPC.Tadbir.Mapper.Tests
             AssertMapperCanConvertFromSourceToDestination<Account, KeyValue>();
         }
 
-        [Test]
-        public void ContainsMappingFromAccountToAccountFullViewModel()
-        {
-            // Arrange (Done in FixtureSetup)
-
-            // Act & Assert
-            AssertMappingIsDefined<Account, AccountFullViewModel>();
-        }
-
-        [Test]
-        public void CanMapFromAccountToAccountFullViewModel()
-        {
-            // Arrange (Done in FixtureSetup)
-
-            // Act & Assert
-            AssertMapperCanConvertFromSourceToDestination<Account, AccountFullViewModel>();
-        }
-
         #endregion // Account Mapping Tests
 
         #region DetailAccount Mapping Tests

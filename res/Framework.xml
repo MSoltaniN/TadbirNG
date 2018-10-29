@@ -487,7 +487,7 @@
         <Relation multiplicity="ManyToMany" endpointName="Account" entityName="Account" hasKey="False" joinTable="AccountDetailAccount" description="مجموعه ای از حساب های مرتبط با این تفصیلی شناور" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
-    <Entity name="Document" area="Core" identifier="Id" description="" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Entity name="Document" area="Core" identifier="Id" description="اطلاعات یک مستند اداری ایجاد شده برای یک موجودیت عملیاتی برنامه را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -495,23 +495,23 @@
           <ColumnView name="Id" visible="True" width="120" />
           <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
         </Property>
-        <Property name="EntityNo" type="String" isValidated="True" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtEntityNo" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="EntityNo" type="nvarchar(64)" nullable="False" />
-          <ColumnView name="Entity No" visible="True" width="120" />
-          <ValidationRule name="EntityNo_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+        <Property name="EntityId" type="Int32" isValidated="True" description="شناسه دیتابیسی موجودیت عملیاتی مرتبط با این مستند اداری" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnEntityId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="EntityID" type="int" nullable="False" />
+          <ColumnView name="Entity Id" visible="True" width="120" />
+          <ValidationRule name="EntityId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="No" type="String" isValidated="True" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="TypeId" type="Int32" isValidated="True" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnTypeId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="TypeID" type="int" nullable="False" />
+          <ColumnView name="Type Id" visible="True" width="120" />
+          <ValidationRule name="TypeId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
+        <Property name="No" type="String" isValidated="True" description="شماره یکتای مشخص کننده این مستند اداری" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDocumentNo" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="No" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Document No" visible="True" width="120" />
           <ValidationRule name="DocumentNo_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
-        </Property>
-        <Property name="OperationalStatus" type="String" isValidated="True" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <PropertyView name="txtOperationalStatus" format="" type="TextBox" bindingMember="Text" />
-          <PropertyStorage name="OperationalStatus" type="nvarchar(64)" nullable="False" />
-          <ColumnView name="Operational Status" visible="True" width="120" />
-          <ValidationRule name="OperationalStatus_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
@@ -527,12 +527,11 @@
         </Property>
       </Properties>
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="Type" entityName="DocumentType" hasKey="True" joinTable="" description="TODO: Add description..." clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Status" entityName="DocumentStatus" hasKey="True" joinTable="" description="TODO: Add description..." clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="OneToMany" endpointName="Action" entityName="DocumentAction" hasKey="False" joinTable="" description="TODO: Add description..." clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Type" entityName="DocumentType" hasKey="True" joinTable="" description="نوع مستند اداری" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="OneToMany" endpointName="Action" entityName="DocumentAction" hasKey="False" joinTable="" description="مجموعه ای از اقدامات انجام شده روی مستند اداری" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
-    <Entity name="DocumentAction" area="Core" identifier="Id" description="" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Entity name="DocumentAction" area="Core" identifier="Id" description="مشخصات اقدامات انجام شده روی یک مستند را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
@@ -540,25 +539,25 @@
           <ColumnView name="Id" visible="True" width="120" />
           <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
         </Property>
-        <Property name="CreatedDate" type="DateTime" isValidated="True" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="CreatedDate" type="DateTime" isValidated="True" description="تاریخ ایجاد مستند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpCreatedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="CreatedDate" type="datetime" nullable="False" />
           <ColumnView name="Created Date" visible="True" width="120" />
           <ValidationRule name="CreatedDate_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="تاریخ آخرین تغییر روی مستند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
           <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
         </Property>
-        <Property name="ConfirmedDate" type="DateTime" isValidated="True" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="ConfirmedDate" type="DateTime" isValidated="True" description="تاریخ تایید مستند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpConfirmedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ConfirmedDate" type="datetime" nullable="True" />
           <ColumnView name="Confirmed Date" visible="True" width="120" />
           <ValidationRule name="ConfirmedDate_Validation" required="False" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="ApprovedDate" type="DateTime" isValidated="True" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="ApprovedDate" type="DateTime" isValidated="True" description="تاریخ تصویب مستند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpApprovedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ApprovedDate" type="datetime" nullable="True" />
           <ColumnView name="Approved Date" visible="True" width="120" />
@@ -570,7 +569,7 @@
           <ColumnView name="Row Guid" visible="True" width="120" />
           <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
         </Property>
-        <Property name="LineId" type="Int32" isValidated="True" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <Property name="LineId" type="Int32" isValidated="True" description="شناسه دیتابیسی ردیف (آرتیکل) سند اداری مرتبط با مستند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnLineId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="LineId" type="int" nullable="True" />
           <ColumnView name="Line Id" visible="True" width="120" />
@@ -578,11 +577,11 @@
         </Property>
       </Properties>
       <Relations>
-        <Relation multiplicity="ManyToOne" endpointName="CreatedBy" entityName="User" hasKey="True" joinTable="" description="TODO: Add description..." clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="ModifiedBy" entityName="User" hasKey="True" joinTable="" description="TODO: Add description..." clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="ConfirmedBy" entityName="User" hasKey="True" joinTable="" description="TODO: Add description..." clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="ApprovedBy" entityName="User" hasKey="True" joinTable="" description="TODO: Add description..." clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-        <Relation multiplicity="ManyToOne" endpointName="Document" entityName="Document" hasKey="True" joinTable="" description="TODO: Add description..." clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="CreatedBy" entityName="User" hasKey="True" joinTable="" description="کاربری که مستند را ایجاد کرده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="ModifiedBy" entityName="User" hasKey="True" joinTable="" description="کاربری که آخرین تغییر را روی مستند انجام داده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="ConfirmedBy" entityName="User" hasKey="True" joinTable="" description="کاربری که تایید مستند را انجام داده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="ApprovedBy" entityName="User" hasKey="True" joinTable="" description="کاربری که تصویب مستند را انجام داده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Document" entityName="Document" hasKey="True" joinTable="" description="مستند اداری که اقدامات موجود روی آن انجام شده است" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="DocumentStatus" area="Core" identifier="Id" description="" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">

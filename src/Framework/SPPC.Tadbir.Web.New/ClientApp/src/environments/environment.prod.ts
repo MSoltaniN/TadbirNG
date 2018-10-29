@@ -58,7 +58,8 @@ export const SessionKeys = {
   Setting: 'setting',
   LastUserBranch: 'lastUserBranch',
   LastUserFpId: 'lastUserFpId',
-  CurrentRoute: 'currentRoute'
+  CurrentRoute: 'currentRoute',
+  CurrentSkin:'currentSkin'
 
 }
 
@@ -89,5 +90,5 @@ export class Layout {
 
 export const environment = {
   production: true,
-  BaseUrl: 'http://http://130.185.76.7:9095',
+  BaseUrl: 'http://130.185.76.7:9095',
 };

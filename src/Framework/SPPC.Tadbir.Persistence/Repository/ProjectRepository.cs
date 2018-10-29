@@ -29,11 +29,14 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
+        /// <param name="config">امکان مدیریت تنظیمات برنامه را در دیتابیس فراهم می کند</param>
         public ProjectRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, ISecureRepository repository, IOperationLogRepository log)
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
+            ISecureRepository repository, IConfigRepository config)
             : base(unitOfWork, mapper, metadata, log)
         {
             _repository = repository;
+            _configRepository = config;
         }
 
         /// <summary>
@@ -45,8 +48,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<IList<ProjectViewModel>> GetProjectsAsync(GridOptions gridOptions = null)
         {
             var projects = await _repository.GetAllAsync<Project>(ViewName.Project, prj => prj.Children);
-            return projects
+            var filteredProjects = projects
                 .Select(item => Mapper.Map<ProjectViewModel>(item))
+                .ToList();
+            await FilterGrandchildrenAsync(filteredProjects);
+            return filteredProjects
                 .Apply(gridOptions)
                 .ToList();
         }
@@ -82,7 +88,7 @@ namespace SPPC.Tadbir.Persistence
         {
             ProjectViewModel item = null;
             var repository = UnitOfWork.GetAsyncRepository<Project>();
-            var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
+            var project = await repository.GetByIDAsync(projectId);
             if (project != null)
             {
                 item = Mapper.Map<ProjectViewModel>(project);
@@ -103,6 +109,7 @@ namespace SPPC.Tadbir.Persistence
                 .Where(prj => prj.ParentId == projectId)
                 .Select(prj => Mapper.Map<AccountItemBriefViewModel>(prj))
                 .ToListAsync();
+            await FilterGrandchildrenAsync(children);
             return children;
         }
 
@@ -129,6 +136,7 @@ namespace SPPC.Tadbir.Persistence
             {
                 projectModel = Mapper.Map<Project>(project);
                 await InsertAsync(repository, projectModel);
+                await UpdateLevelUsageAsync(projectModel.Level);
             }
             else
             {
@@ -153,7 +161,29 @@ namespace SPPC.Tadbir.Persistence
             if (project != null)
             {
                 await DeleteAsync(repository, project);
+                await UpdateLevelUsageAsync(project.Level);
             }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، پروژه های مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// </summary>
+        /// <param name="projectIds">مجموعه ای از شناسه های عددی پروژه های مورد نظر برای حذف</param>
+        public async Task DeleteProjectsAsync(IList<int> projectIds)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
+            int level = 0;
+            foreach (int projectId in projectIds)
+            {
+                var project = await repository.GetByIDAsync(projectId);
+                if (project != null)
+                {
+                    level = Math.Max(level, project.Level);
+                    await DeleteAsync(repository, project);
+                }
+            }
+
+            await UpdateLevelUsageAsync(level);
         }
 
         /// <summary>
@@ -234,13 +264,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
+        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        public void SetCurrentContext(UserContextViewModel userContext)
+        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
+        public override void SetCurrentContext(UserContextViewModel userContext)
         {
+            base.SetCurrentContext(userContext);
             _repository.SetCurrentContext(userContext);
-            SetLoggingContext(userContext);
         }
 
         /// <summary>
@@ -271,6 +302,46 @@ namespace SPPC.Tadbir.Persistence
                : null;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، وضعیت استفاده از یکی از سطوح درختی پروژه را در دیتابیس بروزرسانی می کند
+        /// </summary>
+        /// <param name="level">شماره سطح مورد نظر</param>
+        /// <remarks>قابل توجه است که در این متد هیچگونه فیلتری روی دوره مالی، شعبه یا سطرهای قابل دسترسی صورت نمی گیرد.
+        /// این به این معنی است که اطلاعات سطح مورد نظر در هر شعبه یا دوره مالی ممکن است ایجاد شده باشد. </remarks>
+        private async Task UpdateLevelUsageAsync(int level)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
+            int count = await repository.GetCountByCriteriaAsync(prj => prj.Level == level);
+            await _configRepository.SaveTreeLevelUsageAsync(ViewName.Project, level, count);
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد زیرشاخه ها را در مجموعه ای از اطلاعات درختی
+        /// با توجه به تنظیمات جاری دسترسی به شعب و سطرها اصلاح می کند
+        /// </summary>
+        /// <typeparam name="TTreeEntity">نوع مدل نمایشی با ساختار درختی</typeparam>
+        /// <param name="children">مجموعه ای از اطلاعات درختی که زیرشاخه های آنها باید فیلتر شود</param>
+        private async Task FilterGrandchildrenAsync<TTreeEntity>(IList<TTreeEntity> children)
+            where TTreeEntity : ITreeEntityView
+        {
+            var childIds = children.Select(item => item.Id);
+            var grandchildren = await _repository
+                .GetAllQuery<Project>(ViewName.Project)
+                .Where(prj => prj.ParentId != null && childIds.Contains(prj.ParentId.Value))
+                .GroupBy(prj => prj.ParentId.Value)
+                .ToArrayAsync();
+            foreach (var child in children)
+            {
+                var grandchild = grandchildren
+                    .Where(item => item.Key == child.Id)
+                    .SingleOrDefault();
+                child.ChildCount = (grandchild != null)
+                    ? grandchild.Count()
+                    : 0;
+            }
+        }
+
         private readonly ISecureRepository _repository;
+        private readonly IConfigRepository _configRepository;
     }
 }

@@ -24,10 +24,10 @@ import { FilterExpression } from '../../class/filterExpression';
   templateUrl: './voucherLine.component.html',
   styles: [`/deep/ .panel-primary { border-color: #989898; }
 .voucher-balance{text-align: center; display: block; }
-.voucher-balance > .fa-times { color: red; }
-.voucher-balance > .fa-check { color: green; }
+.voucher-balance > .color-red { color: red; } .voucher-balance > .color-green { color: green; }
+.voucher-balance > .balance-value { direction: ltr; display: inline-block; }
 .detail-info { margin:5px 0; } .detail-info > span { padding-left: 15px; }
-.nowrap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 500px; display: block; }
+.nowrap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 450px; display: block; }
 `]
 })
 
@@ -58,6 +58,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
   editDataItem?: VoucherLine = undefined;
 
   isNew: boolean;
+  isNewBalance: boolean;
   errorMessage: string;
   groupDelete: boolean = false;
 
@@ -130,12 +131,17 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
   }
 
   public saveHandler(viewModel: any) {
+    this.isNewBalance = false;
+    //this.balance = this.debitSum - this.creditSum;
     var model = viewModel.model;
     var isOpen = viewModel.isOpen;
 
     model.branchId = this.voucherModel.branchId;
     model.fiscalPeriodId = this.voucherModel.fiscalPeriodId;
     model.voucherId = this.voucherModel.id;
+
+    //debugger;
+
 
     this.grid.loading = true;
     if (!this.isNew) {
@@ -147,7 +153,9 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
           this.reloadGrid();
 
           if (isOpen) {
-            this.addNew();
+            setTimeout(() => {
+              this.addNew();
+            });
           }
         }, (error => {
           //this.editDataItem = voucherLine;
@@ -156,7 +164,6 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
         }));
     }
     else {     
-
       this.voucherLineService.insert<VoucherLine>(String.Format(VoucherApi.VoucherArticles, this.voucherId), model)
         .subscribe((response: any) => {
           this.isNew = false;
@@ -166,7 +173,9 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
           this.reloadGrid(insertedModel);
 
           if (isOpen) {
-            this.addNew();
+            setTimeout(() => { 
+              this.addNew();
+            });           
           }
         }, (error => {
           this.isNew = true;
@@ -236,7 +245,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
       this.debitSum = res.debitSum;
       this.creditSum = res.creditSum;
 
-      this.balance = Math.abs(this.debitSum - this.creditSum);
+      this.balance = this.debitSum - this.creditSum;
 
       this.grid.loading = false;
     })
@@ -275,6 +284,11 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     this.isNew = true;
     this.errorMessage = '';
     this.editDataItem = new VoucherLineInfo();
+  }
+
+  public addNewWithBalance() {
+    this.isNewBalance = true;
+    this.addNew();
   }
   //#endregion
 }

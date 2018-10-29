@@ -9,9 +9,9 @@ namespace SPPC.Tadbir.Domain
     public interface ITreeEntityView
     {
         /// <summary>
-        /// شناسه دیتابیسی رکورد والد (پدر) این رکورد در ساختار درختی
+        /// شناسه دیتابیسی نمای اطلاعاتی درختی
         /// </summary>
-        int? ParentId { get; set; }
+        int Id { get; set; }
 
         /// <summary>
         /// کد شناسایی جزئی این رکورد در ساختار درختی
@@ -27,5 +27,10 @@ namespace SPPC.Tadbir.Domain
         /// شماره سطح این رکورد در ساختار درختی
         /// </summary>
         short Level { get; set; }
+
+        /// <summary>
+        /// تعداد زیرمجموعه های این نمای اطلاعاتی در ساختار درختی
+        /// </summary>
+        int ChildCount { get; set; }
     }
 }

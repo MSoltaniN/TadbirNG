@@ -12,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { SessionKeys } from '../../../environments/environment.prod';
 import { DefaultComponent } from '../../class/default.component';
 import { MetaDataService } from '../../service/metadata/metadata.service';
+import { SettingService } from '../../service/index';
 
 
 
@@ -50,8 +51,9 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     public translate: TranslateService,    
     public renderer: Renderer2,
     public metadata: MetaDataService,
+    public settingService: SettingService,
     @Inject(DOCUMENT) public document) {
-      super(toastrService, translate, renderer, metadata,'','');
+    super(toastrService, translate, renderer, metadata, settingService,'','');
 
 
       

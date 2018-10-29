@@ -1,4 +1,4 @@
-﻿#setting-form {
+#setting-form {
     border: solid 1px #337ab7;
     border-radius: 3px;
     margin:0;
@@ -23,7 +23,7 @@
     padding: 10px;
     border-right: solid 1px #337ab7;
     border-left: solid 1px #337ab7;
-    height: 450px;
+    height: 500px;
     overflow-y: scroll;
 }
 

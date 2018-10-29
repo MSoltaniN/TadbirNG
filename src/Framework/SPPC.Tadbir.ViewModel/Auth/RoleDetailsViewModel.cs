@@ -5,7 +5,7 @@ using SPPC.Tadbir.ViewModel.Corporate;
 namespace SPPC.Tadbir.ViewModel.Auth
 {
     /// <summary>
-    /// Provides complete details for a security, including additional fields from related entities.
+    /// Provides complete details for a role, including additional fields from related entities.
     /// </summary>
     public class RoleDetailsViewModel
     {

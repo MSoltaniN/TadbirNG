@@ -30,6 +30,23 @@
     "User": "کاربر جاری",
     "Branch": "شعبه"
   },
+  "Dashboard":
+  {
+      "Themes" : "قالب ها",
+      "Blue":"آبی",
+      "Black":"مشکی",
+      "Green":"سبز",
+      "Red":"قرمز",
+      "Purple":"بنقش",
+      "BlueLight":"آبی روشن",
+      "BlackLight":"مشکی روشن",
+      "PurpleLight":"بنفش روشن",
+      "GreenLight": "سبز روشن",
+      "RedLight":"قرمز روشن",
+      "YellowLight":"زرد روشن",
+      "Yellow":"زرد"
+  }
+  ,
   "Exception": {
     "ErrorCode": "کد خطا",
     "ErrorMsg": "جزئیات خطا",
@@ -167,8 +184,9 @@
     "LevelNo": "شماره سطح",
     "LevelName": "نام سطح",
     "CodeLength": "طول کد",
-    "Save": "ذخیره",
-    "DefaultSettings": "تنظیمات پیش فرض"
+    "Save": "ذخیره تنظیمات",
+    "DefaultSettings": "پیش فرض",
+    "SelectEntity": "موجودیت را انتخاب کنید"
   },
   "VoucherLine": {
     "Debit": "بدهکار",
@@ -182,6 +200,7 @@
     "Account": "بردار حساب",
     "Sum": "مجموع",
     "Difference": "اختلاف",
+    "NewWithDifference": "آرتیکل جدید به میزان اختلاف",
     "FullAccount": {
       "Account": {
         "Name": "نام حساب",
@@ -236,8 +255,9 @@
     "Description": "توضیحات",
     "BranchId": "شعبه",
     "FiscalPeriodId": "دوره مالی",
+    "StatusName": "وضعیت",
     "Commit": "ثبت سند",
-    "ReturnFromCommit": "برگشت از ثبت سند"
+    "ReturnFromCommit": "برگشت سند"
   },
   "User": {
     "New": "کاربر جدید",

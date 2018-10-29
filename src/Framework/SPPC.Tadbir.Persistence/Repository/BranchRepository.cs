@@ -219,12 +219,16 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// به روش آسنکرون، مشخص می کند که آیا شعبه مورد نظر به نقشی تخصیص داده شده یا نه
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        public void SetCurrentContext(UserContextViewModel userContext)
+        /// <param name="branchId">شناسه دیتابیسی شعبه مورد نظر</param>
+        /// <returns>اگر شعبه مورد نظر به یک یا چند نقش تخصیص داده شده باشد مقدار "درست" و
+        /// در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
+        public async Task<bool> HasAssignedRolesAsync(int branchId)
         {
-            SetLoggingContext(userContext);
+            var repository = UnitOfWork.GetAsyncRepository<RoleBranch>();
+            int roleCount = await repository.GetCountByCriteriaAsync(rb => rb.BranchId == branchId);
+            return roleCount > 0;
         }
 
         /// <summary>

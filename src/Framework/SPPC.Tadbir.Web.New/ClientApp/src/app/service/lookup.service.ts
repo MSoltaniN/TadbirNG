@@ -10,56 +10,56 @@ import { Context } from "../model/context";
 import { BaseComponent } from "../class/base.component"
 import { ToastrService } from 'ngx-toastr';
 import { BaseService } from '../class/base.service';
-import { LookupApi } from './api/index';
+import { LookupApi, AccountApi, DetailAccountApi, CostCenterApi, ProjectApi } from './api/index';
 
 
 
 @Injectable()
 export class LookupService extends BaseService {
 
-    constructor(public http: HttpClient) {
-        super(http);
-    }
+  constructor(public http: HttpClient) {
+    super(http);
+  }
 
-    GetAccountsLookup() {
+  GetAccountsLookup() {
 
-        var url = String.Format(LookupApi.FiscalPeriodBranchAccounts, this.FiscalPeriodId, this.BranchId);
-        var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
-            .map(response => <any>(<Response>response));
+    var url = String.Format(AccountApi.EnvironmentAccountsLookup, this.FiscalPeriodId, this.BranchId);
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
 
-    }
+  }
 
-    GetDetailAccountsLookup() {
+  GetDetailAccountsLookup() {
 
-        var url = String.Format(LookupApi.FiscalPeriodBranchDetailAccounts, this.FiscalPeriodId, this.BranchId);
-        var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
-            .map(response => <any>(<Response>response));
+    var url = String.Format(DetailAccountApi.EnvironmentDetailAccountsLookup, this.FiscalPeriodId, this.BranchId);
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
 
-    }
+  }
 
-    GetCostCentersLookup() {
+  GetCostCentersLookup() {
 
-        var url = String.Format(LookupApi.FiscalPeriodBranchCostCenters, this.FiscalPeriodId, this.BranchId);
-        var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
-            .map(response => <any>(<Response>response));
+    var url = String.Format(CostCenterApi.EnvironmentCostCentersLookup, this.FiscalPeriodId, this.BranchId);
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
 
-    }
+  }
 
-    GetProjectsLookup() {
+  GetProjectsLookup() {
 
-        var url = String.Format(LookupApi.FiscalPeriodBranchProjects, this.FiscalPeriodId, this.BranchId);
-        var options = { headers: this.httpHeaders };
-        return this.http.get(url, options)
-            .map(response => <any>(<Response>response));
+    var url = String.Format(ProjectApi.EnvironmentProjectsLookup, this.FiscalPeriodId, this.BranchId);
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
 
-    }
+  }
 
-    GetCurrenciesLookup() {
-        var options = { headers: this.httpHeaders };
-        return this.http.get(LookupApi.Currencies, options)
-            .map(response => <any>(<Response>response));
-    }
+  GetCurrenciesLookup() {
+    var options = { headers: this.httpHeaders };
+    return this.http.get(LookupApi.Currencies, options)
+      .map(response => <any>(<Response>response));
+  }
 }

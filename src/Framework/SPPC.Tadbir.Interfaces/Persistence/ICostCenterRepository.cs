@@ -72,6 +72,12 @@ namespace SPPC.Tadbir.Persistence
         Task DeleteCostCenterAsync(int costCenterId);
 
         /// <summary>
+        /// به روش آسنکرون، مراکز مشخص شده با شناسه عددی را از محل ذخیره حذف می کند
+        /// </summary>
+        /// <param name="centerIds">مجموعه ای از شناسه های عددی مراکز مورد نظر برای حذف</param>
+        Task DeleteCostCentersAsync(IList<int> centerIds);
+
+        /// <summary>
         /// به روش آسنکرون، مشخص می کند که آیا کد مرکز هزینه مورد نظر تکراری است یا نه
         /// </summary>
         /// <param name="costCenter">مدل نمایشی مرکز هزینه مورد نظر</param>

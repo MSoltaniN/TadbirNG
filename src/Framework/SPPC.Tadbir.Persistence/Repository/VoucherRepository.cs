@@ -7,6 +7,7 @@ using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -126,7 +127,7 @@ namespace SPPC.Tadbir.Persistence
                 }
             }
 
-            await UnitOfWork.CommitAsync();
+            await ManageDocumentAsync(voucher);
             return Mapper.Map<VoucherViewModel>(voucher);
         }
 
@@ -162,13 +163,14 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
+        /// <para>توجه : فراخوانی این متد با اطلاعات محیطی معتبر برای موفقیت سایر عملیات این کلاس الزامی است</para>
         /// </summary>
-        /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
-        public void SetCurrentContext(UserContextViewModel userContext)
+        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
+        public override void SetCurrentContext(UserContextViewModel userContext)
         {
+            base.SetCurrentContext(userContext);
             _repository.SetCurrentContext(userContext);
-            SetLoggingContext(userContext);
         }
 
         /// <summary>
@@ -213,6 +215,47 @@ namespace SPPC.Tadbir.Persistence
                     "Name : {1}{0}Date : {2}{0}Description : {3}",
                     Environment.NewLine, entity.No, entity.Date, entity.Description)
                 : null;
+        }
+
+        private async Task ManageDocumentAsync(Voucher voucher)
+        {
+            if (voucher != null)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<Document>();
+                var voucherRepository = UnitOfWork.GetAsyncRepository<Voucher>();
+                var document = await repository.GetSingleByCriteriaAsync(
+                    doc => doc.EntityId == voucher.Id && doc.Type.Id == (int)DocumentTypeValue.Voucher,
+                    doc => doc.Actions);
+                if (document == null)
+                {
+                    document = new Document()
+                    {
+                        EntityId = voucher.Id,
+                        TypeId = (int)DocumentTypeValue.Voucher
+                    };
+                    var action = new DocumentAction()
+                    {
+                        CreatedById = _currentContext.Id,
+                        ModifiedById = _currentContext.Id,
+                        CreatedDate = DateTime.Now,
+                        ModifiedDate = DateTime.Now
+                    };
+                    action.Document = document;
+                    document.Actions.Add(action);
+                    repository.Insert(document, doc => doc.Actions);
+                    voucher.DocumentId = document.Id;
+                    voucherRepository.Update(voucher);
+                }
+                else
+                {
+                    var action = document.Actions.Single();
+                    action.ModifiedById = _currentContext.Id;
+                    action.ModifiedDate = DateTime.Now;
+                    repository.Update(document, doc => doc.Actions);
+                }
+
+                await UnitOfWork.CommitAsync();
+            }
         }
 
         private readonly ISecureRepository _repository;

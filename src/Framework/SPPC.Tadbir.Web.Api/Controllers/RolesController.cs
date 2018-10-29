@@ -315,7 +315,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             string name = nameKey;
             var items = nameKey.Split(',');
-            if (items.Length == 2)
+            if (items.Length == 1)
+            {
+                name = _strings.Format(items[0]);
+            }
+            else
             {
                 name = _strings.Format(items[0], items[1]);
             }

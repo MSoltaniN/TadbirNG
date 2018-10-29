@@ -1,4 +1,4 @@
-<div class="panel panel-primary">
+﻿<div class="panel panel-primary">
   <div class="panel-body">
     <kendo-grid id="3" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
                 [data]="rowData"
@@ -31,6 +31,7 @@
       </ng-template>
       <ng-template kendoGridToolbarTemplate>
         <button kendoGridAddCommand (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'VoucherLine.New' | translate }}</button>
+        <button kendoGridAddCommand [icon]="'plus-outline'" *ngIf="balance != 0" class="k-button" (click)="addNewWithBalance()" type="button">{{ 'VoucherLine.NewWithDifference' | translate }}</button>
         <button *ngIf="groupDelete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
         <grid-setting entityTypeName="VoucherLine"></grid-setting>
         <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
@@ -65,11 +66,10 @@
             </tr>
             <tr>
               <td>{{ 'VoucherLine.Difference' | translate }}</td>
-              <!--<td>{{ balance | number }}</td>-->
               <td>
                 <span class="voucher-balance">
-                  <i class="fa" [ngClass]="{'fa-check': debitSum - creditSum == 0,'fa-times':debitSum - creditSum != 0}" aria-hidden="true"></i>
-                  <span>{{ balance | number }}</span>
+                  <i class="fa" [ngClass]="{'fa-check color-green': balance == 0,'fa-times color-red':balance != 0}" aria-hidden="true"></i>
+                  <span class="balance-value" [ngClass]="{'color-green': balance == 0,'color-red':balance != 0}"> {{ balance | number }}</span>
                 </span>
               </td>
             </tr>
@@ -110,8 +110,9 @@
 
         <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
           <span class="voucher-balance">
-            <i class="fa" [ngClass]="{'fa-check': debitSum - creditSum == 0,'fa-times':debitSum - creditSum != 0}" aria-hidden="true"></i>
-            <span>{{ 'VoucherLine.Difference' | translate }}: {{ balance | number }}</span>
+            <i class="fa" [ngClass]="{'fa-check color-green': balance == 0,'fa-times color-red':balance != 0}" aria-hidden="true"></i>
+            {{ 'VoucherLine.Difference' | translate }}:
+            <span class="balance-value" [ngClass]="{'color-green': balance == 0,'color-red':balance != 0}"> {{ balance | number }}</span>
           </span>
         </ng-template>
       </kendo-grid-command-column>
@@ -123,7 +124,7 @@
         </ng-template>
       </kendo-grid-checkbox-column>
 
-      <!--<kendo-grid-column media="(min-width: 1024px)" width="150"  title="{{ 'VoucherLine.FullAccount.Account.FullCode' | translate }}">
+      <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="VoucherLine.FullAccount.Account.FullCode">
 
         <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
           <sppc-grid-filter [metaData]="getMeta('fullAccount.Account.Id')" [column]="column" [filter]="filter"></sppc-grid-filter>
@@ -133,9 +134,18 @@
           <strong>{{dataItem.fullAccount.account.fullCode}}</strong>
         </ng-template>
 
-      </kendo-grid-column>-->
+      </kendo-grid-column>
 
-      <kendo-grid-column media="(min-width: 1024px)" width="200" format="{0:n}" sppc-grid-column="VoucherLine.debit">
+      <kendo-grid-column media="(min-width: 1024px)" width="450" sppc-grid-column="VoucherLine.description">
+        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+          <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+          <span class="nowrap" title="{{dataItem.description}}">{{dataItem.description}}</span>
+        </ng-template>
+      </kendo-grid-column>
+
+      <kendo-grid-column media="(min-width: 1024px)" format="{0:n}" sppc-grid-column="VoucherLine.debit">
         <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
           <sppc-grid-filter [metaData]="getMeta('debit')" [column]="column" [filter]="filter"></sppc-grid-filter>
         </ng-template>
@@ -144,21 +154,12 @@
         </ng-template>
       </kendo-grid-column>
 
-      <kendo-grid-column media="(min-width: 1024px)" width="200" format="{0:n}" sppc-grid-column="VoucherLine.credit">
+      <kendo-grid-column media="(min-width: 1024px)" format="{0:n}" sppc-grid-column="VoucherLine.credit">
         <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
           <sppc-grid-filter [metaData]="getMeta('credit')" [column]="column" [filter]="filter"></sppc-grid-filter>
         </ng-template>
         <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
           {{ creditSum | number }}
-        </ng-template>
-      </kendo-grid-column>
-
-      <kendo-grid-column media="(min-width: 1024px)" width="500" sppc-grid-column="VoucherLine.description">
-        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-          <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
-        </ng-template>
-        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-          <span class="nowrap" title="{{dataItem.description}}">{{dataItem.description}}</span>
         </ng-template>
       </kendo-grid-column>
 
@@ -170,8 +171,9 @@
 
         <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
           <span class="voucher-balance">
-            <i class="fa" [ngClass]="{'fa-check': debitSum - creditSum == 0,'fa-times':debitSum - creditSum != 0}" aria-hidden="true"></i>
-            <span>{{ 'VoucherLine.Difference' | translate }}: {{ balance | number }}</span>
+            <i class="fa" [ngClass]="{'fa-check color-green': balance == 0,'fa-times color-red':balance != 0}" aria-hidden="true"></i>
+            {{ 'VoucherLine.Difference' | translate }}:
+            <span class="balance-value" [ngClass]="{'color-green': balance == 0,'color-red':balance != 0}"> {{ balance | number }}</span>
           </span>
         </ng-template>
 
@@ -230,7 +232,7 @@
 
 
     </kendo-grid>
-    <voucherLine-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
+    <voucherLine-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage" [balance]="balance" [isNewBalance]="isNewBalance"
                                 (save)="saveHandler($event)"
                                 (cancel)="cancelHandler()">
     </voucherLine-form-component>

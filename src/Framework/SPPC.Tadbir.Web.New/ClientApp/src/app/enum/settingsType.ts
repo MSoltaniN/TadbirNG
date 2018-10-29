@@ -1,9 +1,9 @@
-﻿
+
 export enum SettingsType {
-    RelationsConfig = "RelationsConfig",
-    DateRangeConfig = "DateRangeConfig",
-    NumberDisplayConfig = "NumberDisplayConfig",
-    ListFormViewConfig = "ListFormViewConfig",
-    EntityRowAccessConfig = "EntityRowAccessConfig"
+  RelationsConfig = "RelationsConfig",
+  DateRangeConfig = "DateRangeConfig",
+  NumberDisplayConfig = "NumberDisplayConfig",
+  ViewTreeConfig = "ViewTreeConfig",
+  EntityRowAccessConfig = "EntityRowAccessConfig"
 }
 
