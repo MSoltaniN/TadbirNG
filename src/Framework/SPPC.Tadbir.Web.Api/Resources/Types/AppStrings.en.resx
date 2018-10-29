@@ -621,4 +621,7 @@
   <data name="CannotDeleteAssignedBranch" xml:space="preserve">
     <value>The branch {0} is assigned to one or more roles and cannot be deleted.</value>
   </data>
+  <data name="CantModifyCheckedDocument" xml:space="preserve">
+    <value>This {0} is checked and cannot be modified or deleted.</value>
+  </data>
 </root>
