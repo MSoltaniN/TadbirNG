@@ -47,6 +47,18 @@ namespace SPPC.Tadbir.Persistence
             where TEntity : class, IBaseEntity;
 
         /// <summary>
+        /// کوئری فیلترشده مورد نیاز برای خواندن اطلاعات عملیاتی دوره مالی و شعبه جاری برنامه را
+        /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها برمی گرداند
+        /// </summary>
+        /// <typeparam name="TEntity">نوع موجودیت عملیاتی که سطرهای آن باید خوانده شود</typeparam>
+        /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت عملیاتی</param>
+        /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
+        /// <returns>کوئری فیلترشده خواندن اطلاعات عملیاتی دوره مالی و شعبه جاری برنامه</returns>
+        IQueryable<TEntity> GetAllOperationQuery<TEntity>(int viewId,
+            params Expression<Func<TEntity, object>>[] relatedProperties)
+            where TEntity : class, IFiscalEntity;
+
+        /// <summary>
         /// به روش آسنکرون، کلیه سطرهای یک موجودیت عملیاتی را که در دوره مالی و شعبه جاری تعریف شده اند،
         /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها از محل ذخیره خوانده و برمی گرداند
         /// </summary>

@@ -19,12 +19,12 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// <summary>
         /// عنوان اصلی نمودار ستونی
         /// </summary>
-        public string TitleKey { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// عنوان مورد استفاده در راهنمای نمودار ستونی
         /// </summary>
-        public string Legendkey { get; set; }
+        public string Legend { get; set; }
 
         /// <summary>
         /// مجموعه ای از نقاط قابل نمایش در نمودار ستونی

@@ -624,4 +624,16 @@
   <data name="CantModifyCheckedDocument" xml:space="preserve">
     <value>{0} مورد نظر ثبت شده و قابل ویرایش یا حذف نیست.</value>
   </data>
+  <data name="GrossSalesChartLegend" xml:space="preserve">
+    <value>فروش ناخالص</value>
+  </data>
+  <data name="GrossSalesChartTitle" xml:space="preserve">
+    <value>نمودار فروش ناخالص در سال {0}</value>
+  </data>
+  <data name="NetSalesChartLegend" xml:space="preserve">
+    <value>فروش خالص</value>
+  </data>
+  <data name="NetSalesChartTitle" xml:space="preserve">
+    <value>نمودار فروش خالص در سال {0}</value>
+  </data>
 </root>
