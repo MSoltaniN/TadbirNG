@@ -621,4 +621,19 @@
   <data name="CannotDeleteAssignedBranch" xml:space="preserve">
     <value>The branch {0} is assigned to one or more roles and cannot be deleted.</value>
   </data>
+  <data name="CantModifyCheckedDocument" xml:space="preserve">
+    <value>This {0} is checked and cannot be modified or deleted.</value>
+  </data>
+  <data name="GrossSalesChartLegend" xml:space="preserve">
+    <value>Gross Sales</value>
+  </data>
+  <data name="GrossSalesChartTitle" xml:space="preserve">
+    <value>{0} Gross Sales Chart</value>
+  </data>
+  <data name="NetSalesChartLegend" xml:space="preserve">
+    <value>Net Sales</value>
+  </data>
+  <data name="NetSalesChartTitle" xml:space="preserve">
+    <value>{0} Net Sales Chart</value>
+  </data>
 </root>

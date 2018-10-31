@@ -73,6 +73,25 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// کوئری فیلترشده مورد نیاز برای خواندن اطلاعات عملیاتی دوره مالی و شعبه جاری برنامه را
+        /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها برمی گرداند
+        /// </summary>
+        /// <typeparam name="TEntity">نوع موجودیت عملیاتی که سطرهای آن باید خوانده شود</typeparam>
+        /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت عملیاتی</param>
+        /// <param name="relatedProperties">اطلاعات مرتبط مورد نیاز در موجودیت</param>
+        /// <returns>کوئری فیلترشده خواندن اطلاعات عملیاتی دوره مالی و شعبه جاری برنامه</returns>
+        public IQueryable<TEntity> GetAllOperationQuery<TEntity>(int viewId,
+            params Expression<Func<TEntity, object>>[] relatedProperties)
+            where TEntity : class, IFiscalEntity
+        {
+            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
+            var query = repository.GetEntityQuery(relatedProperties);
+            query = ApplyOperationBranchFilter(query);
+            query = ApplyRowFilter(ref query, viewId);
+            return query;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، کلیه سطرهای یک موجودیت عملیاتی را که در دوره مالی و شعبه جاری تعریف شده اند،
         /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها از محل ذخیره خوانده و برمی گرداند
         /// </summary>
@@ -84,7 +103,7 @@ namespace SPPC.Tadbir.Persistence
             params Expression<Func<TEntity, object>>[] relatedProperties)
             where TEntity : class, IFiscalEntity
         {
-            var query = GetFilteredOperationQuery(viewId, relatedProperties);
+            var query = GetAllOperationQuery(viewId, relatedProperties);
             return await query
                 .ToListAsync();
         }
@@ -138,7 +157,7 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetOperationCountAsync<TEntity>(int viewId, GridOptions gridOptions = null)
             where TEntity : class, IFiscalEntity
         {
-            var query = GetFilteredOperationQuery<TEntity>(viewId);
+            var query = GetAllOperationQuery<TEntity>(viewId);
             return await query
                 .Apply(gridOptions, false)
                 .CountAsync();
@@ -180,17 +199,6 @@ namespace SPPC.Tadbir.Persistence
                 ? records.Where(compoundFilter)
                 : records;
             return filteredQuery;
-        }
-
-        private IQueryable<TEntity> GetFilteredOperationQuery<TEntity>(int viewId,
-            params Expression<Func<TEntity, object>>[] relatedProperties)
-            where TEntity : class, IFiscalEntity
-        {
-            var repository = UnitOfWork.GetAsyncRepository<TEntity>();
-            var query = repository.GetEntityQuery(relatedProperties);
-            query = ApplyOperationBranchFilter(query);
-            query = ApplyRowFilter(ref query, viewId);
-            return query;
         }
 
         private IQueryable<TEntity> ApplyBranchFilter<TEntity>(IQueryable<TEntity> records)
