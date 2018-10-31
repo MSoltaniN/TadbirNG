@@ -44,7 +44,15 @@
       "GreenLight": "GreenLight",
       "RedLight":"RedLight",
       "YellowLight":"YellowLight",
-      "Yellow":"Yellow"
+      "Yellow":"Yellow",
+      "BankAccountBalances":"Bank Account Balances",
+      "CashInventory" : "Cash Inventory",
+      "AmountOfDebt" : "Amount Of Debt",
+      "UnverifiedDocuments":"Unverified Documents",
+      "Sales Turnout Sales":"Sales Turnout Sales",
+      "DashboardTitle":"Dashboard",
+      "Home" : "Home",
+      "DashboardName" : "Dashboard"
   },
   "Exception": {
     "ErrorCode": "Error Code",
@@ -396,7 +404,7 @@
   "Login": {
     "Ok": "Ok",
     "Title": "Login",
-    "Cancel": "Cancle",
+    "Cancel": "Cancel",
     "Exit": "Exit",
     "SelectTitle": "Select Company",
     "UserName": "User Name",

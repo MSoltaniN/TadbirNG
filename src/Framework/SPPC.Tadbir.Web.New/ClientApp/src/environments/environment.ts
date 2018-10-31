@@ -32,7 +32,7 @@ export const Metadatas = {
   Branch: 'branches',
   Company: 'companies',
   OperationLog: 'system/oplog'
-}
+}   
 
 
 export const Entities = {

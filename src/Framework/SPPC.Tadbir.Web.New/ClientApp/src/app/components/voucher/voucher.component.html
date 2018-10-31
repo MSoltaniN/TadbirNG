@@ -1,8 +1,5 @@
-<div class="panel panel-primary">
-  <div class="panel-heading">{{ 'Entity.Voucher' | translate }}</div>
-  <div>
 
-  </div>
+  <app-bread-cumb></app-bread-cumb>
   <div SppcCheckAccess="View" class="panel-body">
 
     <kendo-grid id="2" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
@@ -154,7 +151,7 @@
       <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
     </kendo-dialog-actions>
   </kendo-dialog>
-</div>
+
 
 
 

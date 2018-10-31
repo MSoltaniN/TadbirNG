@@ -275,7 +275,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
     }
     this.grid.loading = false;
-
+    
   }
 
   //#endregion

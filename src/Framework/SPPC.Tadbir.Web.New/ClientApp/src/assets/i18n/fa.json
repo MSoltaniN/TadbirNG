@@ -44,7 +44,15 @@
       "GreenLight": "سبز روشن",
       "RedLight":"قرمز روشن",
       "YellowLight":"زرد روشن",
-      "Yellow":"زرد"
+      "Yellow":"زرد",
+      "BankAccountBalances":"مانده حساب بانک",
+      "CashInventory" : "موجودی نقد",
+      "AmountOfDebt" : "میزان بدهکاری",
+      "UnverifiedDocuments":"اسناد تایید نشده",
+      "Sales Turnout Sales":"گردش حساب فروش",
+      "DashboardTitle":"داشبورد",
+      "Home" : "خانه",
+      "DashboardName" : "داشبورد"
   }
   ,
   "Exception": {
