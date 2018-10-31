@@ -627,13 +627,13 @@
   <data name="GrossSalesChartLegend" xml:space="preserve">
     <value>فروش ناخالص</value>
   </data>
-  <data name="GrossSalesChartTitle" xml:space="preserve">
-    <value>نمودار فروش ناخالص در سال {0}</value>
+  <data name="GrossMonthlySalesChartTitle" xml:space="preserve">
+    <value>نمودار فروش ناخالص ماهانه در سال مالی جاری</value>
   </data>
   <data name="NetSalesChartLegend" xml:space="preserve">
     <value>فروش خالص</value>
   </data>
-  <data name="NetSalesChartTitle" xml:space="preserve">
-    <value>نمودار فروش خالص در سال {0}</value>
+  <data name="NetMonthlySalesChartTitle" xml:space="preserve">
+    <value>نمودار فروش خالص ماهانه در سال مالی جاری</value>
   </data>
 </root>

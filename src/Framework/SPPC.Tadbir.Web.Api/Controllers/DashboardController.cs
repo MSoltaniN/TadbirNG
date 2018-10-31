@@ -33,9 +33,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             var calendar = new PersianCalendar();
             int currentYear = calendar.GetYear(DateTime.Now);
-            summaries.GrossSales.Title = String.Format(_strings[summaries.GrossSales.Title], currentYear);
+            summaries.GrossSales.Title = _strings[summaries.GrossSales.Title];
             summaries.GrossSales.Legend = _strings[summaries.GrossSales.Legend];
-            summaries.NetSales.Title = String.Format(_strings[summaries.NetSales.Title], currentYear);
+            summaries.NetSales.Title = _strings[summaries.NetSales.Title];
             summaries.NetSales.Legend = _strings[summaries.NetSales.Legend];
         }
 

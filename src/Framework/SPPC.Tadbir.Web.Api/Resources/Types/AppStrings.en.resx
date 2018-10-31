@@ -627,13 +627,13 @@
   <data name="GrossSalesChartLegend" xml:space="preserve">
     <value>Gross Sales</value>
   </data>
-  <data name="GrossSalesChartTitle" xml:space="preserve">
-    <value>{0} Gross Sales Chart</value>
+  <data name="GrossMonthlySalesChartTitle" xml:space="preserve">
+    <value>Gross Monthly Sales Chart</value>
   </data>
   <data name="NetSalesChartLegend" xml:space="preserve">
     <value>Net Sales</value>
   </data>
-  <data name="NetSalesChartTitle" xml:space="preserve">
-    <value>{0} Net Sales Chart</value>
+  <data name="NetMonthlySalesChartTitle" xml:space="preserve">
+    <value>Net Monthly Sales Chart</value>
   </data>
 </root>
