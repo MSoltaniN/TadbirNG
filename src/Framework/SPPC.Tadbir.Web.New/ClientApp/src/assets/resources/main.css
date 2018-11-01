@@ -150,9 +150,9 @@ label {
     z-index:0!important;
 }
 
-.panel-primary {
+/* .panel-primary {
     margin-bottom: 100px !important;
-}
+} */
 /*#endregion public classes */
 /*#region add class for sppc font*/
 tgrid {
@@ -195,6 +195,7 @@ tgrid {
 .panel {
     font-family: SPPC !important;
     margin-top:10px;
+    margin-bottom: 0px;
 }
 
 

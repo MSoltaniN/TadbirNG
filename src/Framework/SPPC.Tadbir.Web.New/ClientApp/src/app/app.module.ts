@@ -137,6 +137,7 @@ import { AppheaderComponent } from './components/appheader/appheader.component';
 import { AppfooterComponent } from './components/appfooter/appfooter.component';
 import { AppsettingComponent } from './components/appsetting/appsetting.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { BreadCumbComponent } from './components/bread-cumb/bread-cumb.component';
 
 
 
@@ -223,7 +224,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppheaderComponent,
     AppfooterComponent,
     AppsettingComponent,
-    DashboardComponent
+    DashboardComponent,
+    BreadCumbComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

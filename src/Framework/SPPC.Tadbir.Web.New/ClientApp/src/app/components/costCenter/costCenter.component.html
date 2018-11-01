@@ -1,158 +1,157 @@
-<div [ngClass]="{'panel panel-primary' : !isChild }">
-    <div *ngIf="!isChild" class="panel-heading">{{ 'Entity.CostCenter' | translate }}</div>
-    <div SppcCheckAccess="View" [ngClass]="{'panel-body' : !isChild }">
-        <kendo-grid id="7" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
-                    [sortable]="true"
-                    [pageSize]="pageSize"
-                    [skip]="skip"
-                    [filter]="state.filter"
-                    [pageable]="true"
-                    [resizable]="true"
-                    [filterable]="true"
-                    [scrollable]="'none'"
-                    (pageChange)="pageChange($event)"
-                    (sortChange)="sortChange($event)"
-                    (edit)="editHandler($event)"
-                    (remove)="removeHandler($event)"
-                    [sort]="state.sort"
-                    [loading]="true"
-                    [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-                    [selectedKeys]="selectedRows"
-                    [kendoGridSelectBy]="selectionKey"                    
-                    (filterChange)="filterChange($event)"
-                    (selectedKeysChange)="onSelectedKeysChange($event)"
-                    sppc-grid-reorder sppc-grid-resize>
-            <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
-                                 pagerOf="{{ 'Paging.Of' | translate }}"
-                                 pagerItems="{{ 'Paging.Record' | translate }}">
-            </kendo-grid-messages>
-            <ng-template kendoGridNoRecordsTemplate>
-                {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
+<app-bread-cumb *ngIf="!isChild"></app-bread-cumb>
+<div SppcCheckAccess="View" [ngClass]="{'panel-body' : !isChild }">
+    <kendo-grid id="7" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
+                [sortable]="true"
+                [pageSize]="pageSize"
+                [skip]="skip"
+                [filter]="state.filter"
+                [pageable]="true"
+                [resizable]="true"
+                [filterable]="true"
+                [scrollable]="'none'"
+                (pageChange)="pageChange($event)"
+                (sortChange)="sortChange($event)"
+                (edit)="editHandler($event)"
+                (remove)="removeHandler($event)"
+                [sort]="state.sort"
+                [loading]="true"
+                [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+                [selectedKeys]="selectedRows"
+                [kendoGridSelectBy]="selectionKey"                    
+                (filterChange)="filterChange($event)"
+                (selectedKeysChange)="onSelectedKeysChange($event)"
+                sppc-grid-reorder sppc-grid-resize>
+        <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                                pagerOf="{{ 'Paging.Of' | translate }}"
+                                pagerItems="{{ 'Paging.Record' | translate }}">
+        </kendo-grid-messages>
+        <ng-template kendoGridNoRecordsTemplate>
+            {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
+        </ng-template>
+        <ng-template kendoGridToolbarTemplate>
+            <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(parentId , true)" [icon]="'plus-outline'" type="button">{{ 'CostCenter.New' | translate }}</button>
+            <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="showConfirm()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
+            <grid-setting entityTypeName="CostCenter"></grid-setting>
+            <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+        </ng-template>
+
+        <!-- template for mobile -->
+        <kendo-grid-column media="(max-width: 449px)" title="">
+            <ng-template kendoGridCellTemplate let-costCenter>
+                <!-- template for mobile -->
+                <dl>
+                    <dt>{{ 'CostCenter.Name' | translate }}</dt>
+                    <dd>{{ costCenter.name }}</dd>
+
+                    <dt>{{ 'CostCenter.Code' | translate }}</dt>
+                    <dd>{{ costCenter.code }}</dd>
+
+                    <dt>{{ 'CostCenter.FullCode' | translate }}</dt>
+                    <dd>{{ costCenter.fullCode }}</dd>
+
+                    <dt>{{ 'CostCenter.Description' | translate  }}</dt>
+                    <dd>{{ costCenter.description }}</dd>
+                </dl>
+                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(costCenter.id)" type="button">{{ 'Buttons.New' | translate }}</button>
+                <button kendoGridEditCommand SppcCheckAccess="Edit" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                <button kendoGridRemoveCommand SppcCheckAccess="Delete">{{ 'Buttons.Delete' | translate }}</button>
             </ng-template>
-            <ng-template kendoGridToolbarTemplate>
-                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(parentId , true)" [icon]="'plus-outline'" type="button">{{ 'CostCenter.New' | translate }}</button>
-                <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="showConfirm()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
-                <grid-setting entityTypeName="CostCenter"></grid-setting>
-                <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+        </kendo-grid-column>
+        <!-- template for mobile -->
+        <!-- template for mid-size devices -->
+        <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px) and (max-width: 1024px)"></kendo-grid-checkbox-column>
+        <ng-template kendoGridDetailTemplate let-dataItem
+                        [kendoGridDetailTemplateShowIf]="showOnlyParent">
+            <div ng-if="dataItem.childCount > 0">
+                <costCenter [isChild]="true" [parent]="dataItem"></costCenter>
+            </div>
+        </ng-template>
+        <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="CostCenter.name">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
             </ng-template>
+        </kendo-grid-column>
 
-            <!-- template for mobile -->
-            <kendo-grid-column media="(max-width: 449px)" title="">
-                <ng-template kendoGridCellTemplate let-costCenter>
-                    <!-- template for mobile -->
-                    <dl>
-                        <dt>{{ 'CostCenter.Name' | translate }}</dt>
-                        <dd>{{ costCenter.name }}</dd>
-
-                        <dt>{{ 'CostCenter.Code' | translate }}</dt>
-                        <dd>{{ costCenter.code }}</dd>
-
-                        <dt>{{ 'CostCenter.FullCode' | translate }}</dt>
-                        <dd>{{ costCenter.fullCode }}</dd>
-
-                        <dt>{{ 'CostCenter.Description' | translate  }}</dt>
-                        <dd>{{ costCenter.description }}</dd>
-                    </dl>
-                    <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(costCenter.id)" type="button">{{ 'Buttons.New' | translate }}</button>
-                    <button kendoGridEditCommand SppcCheckAccess="Edit" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                    <button kendoGridRemoveCommand SppcCheckAccess="Delete">{{ 'Buttons.Delete' | translate }}</button>
-                </ng-template>
-            </kendo-grid-column>
-            <!-- template for mobile -->
-            <!-- template for mid-size devices -->
-            <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px) and (max-width: 1024px)"></kendo-grid-checkbox-column>
-            <ng-template kendoGridDetailTemplate let-dataItem
-                         [kendoGridDetailTemplateShowIf]="showOnlyParent">
-                <div ng-if="dataItem.childCount > 0">
-                    <costCenter [isChild]="true" [parent]="dataItem"></costCenter>
-                </div>
+        <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="CostCenter.code">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                <sppc-grid-filter [metaData]="getMeta('code')" [column]="column" [filter]="filter"></sppc-grid-filter>
             </ng-template>
-            <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="CostCenter.name">
-                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                    <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                </ng-template>
-            </kendo-grid-column>
+        </kendo-grid-column>
 
-            <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="CostCenter.code">
-                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                    <sppc-grid-filter [metaData]="getMeta('code')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                </ng-template>
-            </kendo-grid-column>
+        <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="CostCenter.fullCode">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                <sppc-grid-filter [metaData]="getMeta('fullCode')" [column]="column" [filter]="filter"></sppc-grid-filter>
+            </ng-template>
+        </kendo-grid-column>
 
-            <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="CostCenter.fullCode">
-                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                    <sppc-grid-filter [metaData]="getMeta('fullCode')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                </ng-template>
-            </kendo-grid-column>
+        <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px) and (max-width: 1024px)">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <button [icon]="'plus'"  SppcCheckAccess="Create" (click)="addNew(dataItem.id)" kendoGridAddCommand title="{{ 'CostCenter.NewSubCostCenter' | translate }}"></button>
+                <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
+                <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
+            </ng-template>
+        </kendo-grid-command-column>            
+        <!-- template for mid-size devices -->
+        <!-- additional columns on large devices -->
+        <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
+        <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="CostCenter.name">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+            </ng-template>
+        </kendo-grid-column>
 
-            <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px) and (max-width: 1024px)">
-                <ng-template kendoGridCellTemplate let-dataItem>
-                    <button [icon]="'plus'"  SppcCheckAccess="Create" (click)="addNew(dataItem.id)" kendoGridAddCommand title="{{ 'CostCenter.NewSubCostCenter' | translate }}"></button>
-                    <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
-                    <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
-                </ng-template>
-            </kendo-grid-command-column>            
-            <!-- template for mid-size devices -->
-            <!-- additional columns on large devices -->
-            <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
-            <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="CostCenter.name">
-                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                    <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                </ng-template>
-            </kendo-grid-column>
+        <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="CostCenter.code">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                <sppc-grid-filter [metaData]="getMeta('code')" [column]="column" [filter]="filter"></sppc-grid-filter>
+            </ng-template>
+        </kendo-grid-column>
 
-            <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="CostCenter.code">
-                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                    <sppc-grid-filter [metaData]="getMeta('code')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                </ng-template>
-            </kendo-grid-column>
+        <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="CostCenter.fullCode">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                <sppc-grid-filter [metaData]="getMeta('fullCode')" [column]="column" [filter]="filter"></sppc-grid-filter>
+            </ng-template>
+        </kendo-grid-column>
 
-            <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="CostCenter.fullCode">
-                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                    <sppc-grid-filter [metaData]="getMeta('fullCode')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                </ng-template>
-            </kendo-grid-column>
+        <kendo-grid-column media="(min-width: 1024px)" width="190" sppc-grid-column="CostCenter.description">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
+            </ng-template>
+        </kendo-grid-column>
 
-            <kendo-grid-column media="(min-width: 1024px)" width="190" sppc-grid-column="CostCenter.description">
-                <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                    <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
-                </ng-template>
-            </kendo-grid-column>
+        <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <button [icon]="'plus'" SppcCheckAccess="Create" (click)="addNew(dataItem.id)" kendoGridAddCommand title="{{ 'CostCenter.NewSubCostCenter' | translate }}"></button>
+                <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
+                <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
+            </ng-template>
+        </kendo-grid-command-column>
+        <!-- additional columns on large devices -->
 
-            <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
-                <ng-template kendoGridCellTemplate let-dataItem>
-                    <button [icon]="'plus'" SppcCheckAccess="Create" (click)="addNew(dataItem.id)" kendoGridAddCommand title="{{ 'CostCenter.NewSubCostCenter' | translate }}"></button>
-                    <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
-                    <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
-                </ng-template>
-            </kendo-grid-command-column>
-            <!-- additional columns on large devices -->
-
-        </kendo-grid>
-        <costCenter-form-component [model]="editDataItem" [parent]="parentModel" [isNew]="isNew" [errorMessage]="errorMessage"
-                                      (save)="saveHandler($event)"
-                                      (cancel)="cancelHandler()">
-        </costCenter-form-component>
-    </div>
-    <kendo-dialog title="{{'CostCenter.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
-        <p>
-            {{ deleteConfirmMsg }}
-        </p>
-        <kendo-dialog-actions>
-            <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-            <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
-        </kendo-dialog-actions>
-    </kendo-dialog>
-    <kendo-dialog title="{{'CostCenter.Delete' | translate}}" *ngIf="deleteModelConfirm" (close)="deleteModels(false)" [minWidth]="250" [width]="450">
-        <p>
-            {{ this.deleteConfirmMsg }}
-        </p>
-        <kendo-dialog-actions>
-            <button class="k-button" (click)="deleteModels(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-            <button class="k-button" (click)="deleteModels(false)">{{ 'Buttons.No' | translate }}</button>
-        </kendo-dialog-actions>
-    </kendo-dialog>
+    </kendo-grid>
+    <costCenter-form-component [model]="editDataItem" [parent]="parentModel" [isNew]="isNew" [errorMessage]="errorMessage"
+                                    (save)="saveHandler($event)"
+                                    (cancel)="cancelHandler()">
+    </costCenter-form-component>
 </div>
+<kendo-dialog title="{{'CostCenter.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
+    <p>
+        {{ deleteConfirmMsg }}
+    </p>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+        <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="{{'CostCenter.Delete' | translate}}" *ngIf="deleteModelConfirm" (close)="deleteModels(false)" [minWidth]="250" [width]="450">
+    <p>
+        {{ this.deleteConfirmMsg }}
+    </p>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="deleteModels(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+        <button class="k-button" (click)="deleteModels(false)">{{ 'Buttons.No' | translate }}</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
 
 
 
