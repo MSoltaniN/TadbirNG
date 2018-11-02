@@ -3,9 +3,10 @@
     <ul class="sidebar-menu tree" data-widget="tree">
       <!--(window:keypress)="doSomething($event)"-->
       <li *ngFor="let cmd of menuList;" class="parent treeview" [ngClass]="{'active menu-open':this.expandedSubMenuId === cmd.id}">
-        <a id="a{{cmd.id}}" href="#/dashboard" (click)="clickMenu($event,cmd.id)">
+        <!-- <a id="a{{cmd.id}}" href="#/dashboard" (click)="clickMenu($event,cmd.id)"> -->
+        <a id="a{{cmd.id}}" (click)="clickMenu($event,cmd.id)">
           <span class="pull-right-container none">
-            <i class="fa fa-angle-left pull-right angle"></i>
+            <i class="fa fa-angle-left pull-left angle"></i>
           </span>
           <i class="glyphicon glyphicon-{{cmd.iconName}}"></i>
           <span class="menuitem">{{ cmd.title }}</span>
