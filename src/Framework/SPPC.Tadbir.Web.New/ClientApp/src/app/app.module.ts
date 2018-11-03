@@ -93,7 +93,8 @@ import { HotkeyModule } from 'angular2-hotkeys';
 import {
   AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
   BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService, FullCodeService,
-  OperationLogService
+  OperationLogService,
+  DashboardService
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
 import { SppcGridReorder } from "./directive/grid/sppc-grid-reorder";
@@ -137,7 +138,7 @@ import { AppheaderComponent } from './components/appheader/appheader.component';
 import { AppfooterComponent } from './components/appfooter/appfooter.component';
 import { AppsettingComponent } from './components/appsetting/appsetting.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { BreadCumbComponent } from './components/bread-cumb/bread-cumb.component';
+import { BreadCumbComponent } from './components/breadCumb/breadcrumb.component';
 
 
 
@@ -284,7 +285,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
     UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService,
-    FullCodeService, OperationLogService,
+    FullCodeService, OperationLogService,DashboardService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: ErrorHandler, useClass: GeneralErrorHandler },
     //{

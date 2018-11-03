@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { SessionKeys } from '../../../environments/environment.prod';
 import { DefaultComponent } from '../../class/default.component';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { SettingService } from '../../service/index';
+import { SettingService,DashboardService } from '../../service/index';
 
 
 
@@ -43,6 +43,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
   public branches: any = {};
 
   public fiscalPeriods: any = {};
+  
 
   constructor(public router: Router,location: Location,
     private route: ActivatedRoute,
@@ -52,7 +53,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     public renderer: Renderer2,
     public metadata: MetaDataService,
     public settingService: SettingService,
-    @Inject(DOCUMENT) public document) {
+    @Inject(DOCUMENT) public document,
+    public dashboadService: DashboardService) {
     super(toastrService, translate, renderer, metadata, settingService,'','');
 
 
@@ -78,6 +80,13 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     if (this.currentContext != undefined) {
       this.showNavbar = true;
     }
+
+    // this.dashboadService.getDashboardInfo().subscribe((res) => {
+    //     var resData = res.body;
+
+
+
+    // });
 
     //#endregion
 

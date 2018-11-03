@@ -17,3 +17,4 @@ export * from './settings.service';
 export * from './viewRowPermission.Service';
 export * from './fullCode.Service';
 export * from './operationLog.service';
+export * from './dashboard.service';

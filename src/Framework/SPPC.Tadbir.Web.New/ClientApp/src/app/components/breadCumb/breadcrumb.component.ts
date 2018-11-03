@@ -5,14 +5,12 @@ import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-bread-cumb',
-  templateUrl: './bread-cumb.component.html',
-  styleUrls: ['./bread-cumb.component.css']
+  templateUrl: './breadcrumb.component.html',
+  styleUrls: ['./breadcrumb.component.css']
 })
 export class BreadCumbComponent implements OnInit {
 
-  title : string;
-
-  
+  title : string;  
 
   constructor( public parentComponet: ViewContainerRef,public translate: TranslateService) { 
 
