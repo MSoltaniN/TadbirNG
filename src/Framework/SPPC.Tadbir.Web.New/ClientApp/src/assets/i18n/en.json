@@ -267,7 +267,8 @@
     "FiscalPeriodId": "Fiscal",
     "StatusName": "Status",
     "Commit": "Commit Voucher",
-    "ReturnFromCommit": "Return Voucher"
+    "ReturnFromCommit": "Return Voucher",
+    "Save": "ذخیره"
   },
   "User": {
     "New": "New User",

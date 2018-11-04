@@ -28,6 +28,7 @@ import { FilterExpression } from '../../class/filterExpression';
 .voucher-balance > .balance-value { direction: ltr; display: inline-block; }
 .detail-info { margin:5px 0; } .detail-info > span { padding-left: 15px; }
 .nowrap { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 450px; display: block; }
+/deep/.k-footer-template { background-color: #b3b3b3; }
 `]
 })
 
@@ -127,6 +128,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
   public cancelHandler() {
     this.editDataItem = undefined;
     this.isNew = false;
+    this.isNewBalance = false;
     this.errorMessage = '';
   }
 

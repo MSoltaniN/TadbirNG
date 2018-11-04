@@ -68,6 +68,8 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
   @Input() public set model(voucherLine: VoucherLine) {
 
+    debugger;
+
     this.editForm1.reset(voucherLine);
 
     if (this.isNewBalance)
@@ -82,9 +84,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
     if (voucherLine != undefined && voucherLine.currencyId != undefined)
       this.selectedCurrencyValue = voucherLine.currencyId.toString();
 
-
-    console.log(this.editForm1);
-  }
+   }
 
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -95,7 +95,6 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   public onSave(e: any, isOpen: boolean): void {
     e.preventDefault();
     if (this.editForm1.valid) {
-      debugger;
       var model = this.editForm1.value;
 
       if (!model.debit)
@@ -117,7 +116,7 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   private closeForm(): void {
     this.isNew = false;
     this.active = false;
-    this.isNewBalance = false;
+    //this.isNewBalance = false;
     this.cancel.emit();
   }
   //Events

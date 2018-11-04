@@ -126,6 +126,8 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     this.editDataItem = undefined;
     this.isNew = false;
     this.errorMessage = '';
+
+    this.reloadGrid();
   }
 
   public saveHandler(model: Voucher) {
