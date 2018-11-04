@@ -237,6 +237,10 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<FiscalPeriod, RelatedItemsViewModel>()
                 .ForMember(dest => dest.RelatedItems, opts => opts.Ignore());
             mapperConfig.CreateMap<FiscalPeriod, RelatedItemViewModel>();
+
+            mapperConfig.CreateMap<AccountItemBriefViewModel, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
         }
 
         private static void MapCorporateTypes(IMapperConfigurationExpression mapperConfig)

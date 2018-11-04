@@ -552,5 +552,27 @@ namespace SPPC.Tadbir.Mapper.Tests
         }
 
         #endregion // FiscalPeriod Mapping Tests
+
+        #region Other Mapping Tests
+
+        [Test]
+        public void ContainsMappingFromAccountItemBriefViewModelToKeyValue()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<AccountItemBriefViewModel, KeyValue>();
+        }
+
+        [Test]
+        public void CanMapFromAccountItemBriefViewModelToKeyValue()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<AccountItemBriefViewModel, KeyValue>();
+        }
+
+        #endregion
     }
 }
