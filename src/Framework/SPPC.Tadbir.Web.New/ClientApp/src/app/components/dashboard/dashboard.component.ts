@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2,AfterViewInit } from '@angular/core';
 import { Context } from '../../model/context';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -13,7 +13,9 @@ import { SessionKeys } from '../../../environments/environment.prod';
 import { DefaultComponent } from '../../class/default.component';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SettingService,DashboardService } from '../../service/index';
-
+import { Chart, ChartData, Point } from "chart.js";
+import { DashboardSummaries } from 'src/app/model/dashboardSummaries';
+import { tick } from '@angular/core/testing';
 
 
 @Component({
@@ -44,6 +46,14 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
 
   public fiscalPeriods: any = {};
   
+  public dashboardInfo: DashboardSummaries;
+
+  public cashierBalance:any;
+  public bankBalance:any;
+  public liquidRatio:any;
+  public unbalancedVoucherCount:any;
+  // public netSales:any;
+  // public grossSales:any;
 
   constructor(public router: Router,location: Location,
     private route: ActivatedRoute,
@@ -81,12 +91,21 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       this.showNavbar = true;
     }
 
-    // this.dashboadService.getDashboardInfo().subscribe((res) => {
-    //     var resData = res.body;
+    this.dashboadService.getDashboardInfo().subscribe((res : DashboardSummaries) => {
+        
+        this.cashierBalance = res.cashierBalance;
+        this.bankBalance = res.bankBalance;
+        this.liquidRatio = res.liquidRatio;
+        this.unbalancedVoucherCount = res.unbalancedVoucherCount;
+        // this.grossSales = res.grossSales;
+        // this.netSales = res.netSales;
+        this.dashboardInfo = res;
 
+        this.drawNetSalesChart();
 
-
-    // });
+        this.drawGrossSalesChart();
+        
+    });
 
     //#endregion
 
@@ -208,6 +227,89 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
     //#endregion
 
 
+  }
+
+  canvas: any;
+  ctx: any;
+
+  drawNetSalesChart()
+  {
+    var labels : Array<string> = [];
+    var values : Array<number> = [];
+
+     this.dashboardInfo.netSales.points.forEach(function(value){
+       labels.push(value.xValue);
+     })
+
+     this.dashboardInfo.netSales.points.forEach(function(value){
+       values.push(value.yValue);
+    })
+    
+    this.canvas = document.getElementById('netChart');
+    this.ctx = this.canvas.getContext('2d');
+    let myChart = new Chart(this.ctx, {
+      type: 'line',
+
+      data: {
+          labels: labels,          
+          datasets: [{
+              fill:false,
+              label: this.dashboardInfo.netSales.title,              
+              data: values,
+               backgroundColor: [
+                   'rgba(255, 99, 132, 1)',
+                   'rgba(54, 162, 235, 1)',
+                   'rgba(255, 206, 86, 1)'
+               ],
+              borderWidth: 3              
+          }]
+      },
+      options: {
+        responsive: true
+      }
+    });
+
+  }
+
+  drawGrossSalesChart()
+  {
+    var labels : Array<string> = [];
+    var values : Array<number> = [];
+
+     this.dashboardInfo.grossSales.points.forEach(function(value){
+       labels.push(value.xValue);
+     })
+
+     this.dashboardInfo.grossSales.points.forEach(function(value){
+       values.push(value.yValue);
+    })
+    
+    this.canvas = document.getElementById('grossChart');
+    this.ctx = this.canvas.getContext('2d');
+    let myChart = new Chart(this.ctx, {
+      type: 'bar',
+      data: {
+          labels: labels,          
+          datasets: [{              
+              label: this.dashboardInfo.grossSales.title,
+              data: values,
+              backgroundColor: [
+                'rgba(212, 113, 34, 1)',
+                'rgba(49, 113, 34, 1)',
+                'rgba(30, 206, 86, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+        responsive: true        
+      }
+    });
+  }
+
+  ngAfterViewInit() {
+    
+    
   }
 
   ngOnInit() {
