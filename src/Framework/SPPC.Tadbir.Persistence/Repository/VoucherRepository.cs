@@ -46,6 +46,7 @@ namespace SPPC.Tadbir.Persistence
             var vouchers = await _repository.GetAllOperationAsync<Voucher>(
                 ViewName.Voucher, v => v.Lines, v => v.Status);
             return vouchers
+                .OrderBy(item => item.Date)
                 .Select(item => Mapper.Map<VoucherViewModel>(item))
                 .Apply(gridOptions)
                 .ToList();
