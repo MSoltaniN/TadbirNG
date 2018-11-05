@@ -14,7 +14,7 @@ import { DefaultComponent } from '../../class/default.component';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SettingService,DashboardService } from '../../service/index';
 import { Chart, ChartData, Point } from "chart.js";
-import { DashboardSummaries } from 'src/app/model/dashboardSummaries';
+import { DashboardSummaries } from '../../model/dashboardSummaries';
 import { tick } from '@angular/core/testing';
 
 

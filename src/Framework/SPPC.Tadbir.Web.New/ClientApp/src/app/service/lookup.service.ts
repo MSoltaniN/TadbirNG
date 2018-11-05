@@ -10,7 +10,7 @@ import { Context } from "../model/context";
 import { BaseComponent } from "../class/base.component"
 import { ToastrService } from 'ngx-toastr';
 import { BaseService } from '../class/base.service';
-import { LookupApi, AccountApi, DetailAccountApi, CostCenterApi, ProjectApi } from './api/index';
+import { LookupApi, AccountApi, DetailAccountApi, CostCenterApi, ProjectApi, AccountRelationApi } from './api/index';
 
 
 
@@ -23,7 +23,7 @@ export class LookupService extends BaseService {
 
   GetAccountsLookup() {
 
-    var url = String.Format(AccountApi.EnvironmentAccountsLookup, this.FiscalPeriodId, this.BranchId);
+    var url = AccountRelationApi.EnvironmentAccountsLookup;
     var options = { headers: this.httpHeaders };
     return this.http.get(url, options)
       .map(response => <any>(<Response>response));
@@ -32,7 +32,7 @@ export class LookupService extends BaseService {
 
   GetDetailAccountsLookup() {
 
-    var url = String.Format(DetailAccountApi.EnvironmentDetailAccountsLookup, this.FiscalPeriodId, this.BranchId);
+    var url = AccountRelationApi.EnvironmentDetailAccountsLookup;
     var options = { headers: this.httpHeaders };
     return this.http.get(url, options)
       .map(response => <any>(<Response>response));
@@ -41,7 +41,7 @@ export class LookupService extends BaseService {
 
   GetCostCentersLookup() {
 
-    var url = String.Format(CostCenterApi.EnvironmentCostCentersLookup, this.FiscalPeriodId, this.BranchId);
+    var url = AccountRelationApi.EnvironmentCostCentersLookup;
     var options = { headers: this.httpHeaders };
     return this.http.get(url, options)
       .map(response => <any>(<Response>response));
@@ -50,7 +50,7 @@ export class LookupService extends BaseService {
 
   GetProjectsLookup() {
 
-    var url = String.Format(ProjectApi.EnvironmentProjectsLookup, this.FiscalPeriodId, this.BranchId);
+    var url = AccountRelationApi.EnvironmentProjectsLookup;
     var options = { headers: this.httpHeaders };
     return this.http.get(url, options)
       .map(response => <any>(<Response>response));
