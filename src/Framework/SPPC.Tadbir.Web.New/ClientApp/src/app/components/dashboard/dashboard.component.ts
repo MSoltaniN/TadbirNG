@@ -91,6 +91,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
       this.showNavbar = true;
     }
 
+    Chart.defaults.global.defaultFontFamily = "'SPPC'";
+
     this.dashboadService.getDashboardInfo().subscribe((res : DashboardSummaries) => {
         
         this.cashierBalance = res.cashierBalance;
@@ -244,6 +246,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
      this.dashboardInfo.netSales.points.forEach(function(value){
        values.push(value.yValue);
     })
+
     
     this.canvas = document.getElementById('netChart');
     this.ctx = this.canvas.getContext('2d');
@@ -268,6 +271,7 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         responsive: true
       }
     });
+        
 
   }
 
@@ -293,11 +297,6 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
           datasets: [{              
               label: this.dashboardInfo.grossSales.title,
               data: values,
-              backgroundColor: [
-                'rgba(212, 113, 34, 1)',
-                'rgba(49, 113, 34, 1)',
-                'rgba(30, 206, 86, 1)'
-              ],
               borderWidth: 1
           }]
       },
@@ -305,6 +304,8 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
         responsive: true        
       }
     });
+
+    
   }
 
   ngAfterViewInit() {

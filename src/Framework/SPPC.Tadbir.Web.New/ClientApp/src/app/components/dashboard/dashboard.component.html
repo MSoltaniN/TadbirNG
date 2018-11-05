@@ -16,7 +16,7 @@
       <!-- small box -->
       <div class="small-box bg-aqua">
         <div class="inner">
-          <h4>{{cashierBalance}}</h4>
+          <h4>{{cashierBalance | number}}</h4>
           <p>{{ 'Dashboard.InventoryFunds' | translate }}</p>
         </div>
         <div class="icon">
@@ -30,7 +30,7 @@
       <!-- small box -->
       <div class="small-box bg-green">
         <div class="inner">
-          <h4>{{bankBalance}}</h4>
+          <h4>{{bankBalance | number}}</h4>
           <p>{{ 'Dashboard.BankBalance' | translate }}</p>
         </div>
         <div class="icon">
