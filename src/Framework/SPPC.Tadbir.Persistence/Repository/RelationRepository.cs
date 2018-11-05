@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Persistence;
 using SPPC.Framework.Presentation;
@@ -95,6 +96,58 @@ namespace SPPC.Tadbir.Persistence
                 ? await _itemRepository.GetLeafProjectsAsync(gridOptions)
                 : await _itemRepository.GetRootProjectsAsync(gridOptions);
             return projects;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، سرفصل های حسابداری قابل استفاده در دوره مالی و شعبه جاری را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>سرفصل های حسابداری قابل استفاده در دوره مالی و شعبه جاری</returns>
+        public async Task<IList<KeyValue>> GetUsableAccountsLookupAsync(GridOptions gridOptions = null)
+        {
+            var items = await _itemRepository.GetLeafAccountsAsync(gridOptions);
+            return items
+                .Select(item => _mapper.Map<KeyValue>(item))
+                .ToList();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تفصیلی های شناور قابل استفاده در دوره مالی و شعبه جاری را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تفصیلی های شناور قابل استفاده در دوره مالی و شعبه جاری</returns>
+        public async Task<IList<KeyValue>> GetUsableDetailAccountsLookupAsync(GridOptions gridOptions = null)
+        {
+            var items = await _itemRepository.GetLeafDetailAccountsAsync(gridOptions);
+            return items
+                .Select(item => _mapper.Map<KeyValue>(item))
+                .ToList();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، مراکز هزینه قابل استفاده در دوره مالی و شعبه جاری را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مراکز هزینه قابل استفاده در دوره مالی و شعبه جاری</returns>
+        public async Task<IList<KeyValue>> GetUsableCostCentersLookupAsync(GridOptions gridOptions = null)
+        {
+            var items = await _itemRepository.GetLeafCostCentersAsync(gridOptions);
+            return items
+                .Select(item => _mapper.Map<KeyValue>(item))
+                .ToList();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، پروژه های قابل استفاده در دوره مالی و شعبه جاری را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>پروژه های قابل استفاده در دوره مالی و شعبه جاری</returns>
+        public async Task<IList<KeyValue>> GetUsableProjectsLookupAsync(GridOptions gridOptions = null)
+        {
+            var items = await _itemRepository.GetLeafProjectsAsync(gridOptions);
+            return items
+                .Select(item => _mapper.Map<KeyValue>(item))
+                .ToList();
         }
 
         /// <summary>

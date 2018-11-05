@@ -1,4 +1,4 @@
-﻿
+
 import { Component, OnInit, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, Validator, AbstractControl, FormControl, NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
 import { KeyCode } from '../../enum/KeyCode';
@@ -70,7 +70,7 @@ export class SppcNumericTextBox implements OnInit, ControlValueAccessor, Validat
             this.propagateChange(this.value);
         }
         else {
-            this.parseError = true;
+            //this.parseError = true;
             this.propagateChange();
         }
     }

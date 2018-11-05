@@ -63,6 +63,17 @@ namespace SPPC.Tadbir.Persistence
             _repository.SetCurrentContext(userContext);
         }
 
+        private static decimal CalculateBalance(IEnumerable<VoucherLineAmountsViewModel> amounts)
+        {
+            decimal debitSum = amounts
+                .Select(am => am.Debit)
+                .Sum();
+            decimal creditSum = amounts
+                .Select(am => am.Credit)
+                .Sum();
+            return debitSum - creditSum;
+        }
+
         private async Task<decimal> CalculateBankBalanceAsync()
         {
             var bankAccount = await _setRepository.GetBankAccountAsync();
@@ -197,17 +208,6 @@ namespace SPPC.Tadbir.Persistence
             return amounts
                 .Select(am => am.Credit)
                 .Sum();
-        }
-
-        private decimal CalculateBalance(IEnumerable<VoucherLineAmountsViewModel> amounts)
-        {
-            decimal debitSum = amounts
-                .Select(am => am.Debit)
-                .Sum();
-            decimal creditSum = amounts
-                .Select(am => am.Credit)
-                .Sum();
-            return debitSum - creditSum;
         }
 
         private readonly ISecureRepository _repository;

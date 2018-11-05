@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SPPC.Framework.Helpers;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
@@ -18,7 +19,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>سرفصل های حسابداری قابل ارتباط در یک دوره مالی و شعبه جاری</returns>
-        Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsAsync(bool useLeafItems = true, GridOptions gridOptions = null);
+        Task<IList<AccountItemBriefViewModel>> GetConnectableAccountsAsync(
+            bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه جاری را خوانده و برمی گرداند
@@ -26,7 +28,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تفصیلی های شناور قابل ارتباط در یک دوره مالی و شعبه جاری</returns>
-        Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountsAsync(bool useLeafItems = true, GridOptions gridOptions = null);
+        Task<IList<AccountItemBriefViewModel>> GetConnectableDetailAccountsAsync(
+            bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه جاری را خوانده و برمی گرداند
@@ -34,7 +37,8 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مراکز هزینه قابل ارتباط در یک دوره مالی و شعبه جاری</returns>
-        Task<IList<AccountItemBriefViewModel>> GetConnectableCostCentersAsync(bool useLeafItems = true, GridOptions gridOptions = null);
+        Task<IList<AccountItemBriefViewModel>> GetConnectableCostCentersAsync(
+            bool useLeafItems = true, GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، پروژه های قابل ارتباط در یک دوره مالی و شعبه جاری را خوانده و برمی گرداند
@@ -42,7 +46,36 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="useLeafItems">مشخص می کند که آیا ارتباطات فقط در آخرین سطح برقرار می شوند یا نه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>پروژه های قابل ارتباط در یک دوره مالی و شعبه جاری</returns>
-        Task<IList<AccountItemBriefViewModel>> GetConnectableProjectsAsync(bool useLeafItems = true, GridOptions gridOptions = null);
+        Task<IList<AccountItemBriefViewModel>> GetConnectableProjectsAsync(
+            bool useLeafItems = true, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، سرفصل های حسابداری قابل استفاده در دوره مالی و شعبه جاری را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>سرفصل های حسابداری قابل استفاده در دوره مالی و شعبه جاری</returns>
+        Task<IList<KeyValue>> GetUsableAccountsLookupAsync(GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، تفصیلی های شناور قابل استفاده در دوره مالی و شعبه جاری را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تفصیلی های شناور قابل استفاده در دوره مالی و شعبه جاری</returns>
+        Task<IList<KeyValue>> GetUsableDetailAccountsLookupAsync(GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، مراکز هزینه قابل استفاده در دوره مالی و شعبه جاری را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مراکز هزینه قابل استفاده در دوره مالی و شعبه جاری</returns>
+        Task<IList<KeyValue>> GetUsableCostCentersLookupAsync(GridOptions gridOptions = null);
+
+        /// <summary>
+        /// به روش آسنکرون، پروژه های قابل استفاده در دوره مالی و شعبه جاری را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>پروژه های قابل استفاده در دوره مالی و شعبه جاری</returns>
+        Task<IList<KeyValue>> GetUsableProjectsLookupAsync(GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور مرتبط با حساب مشخص شده را

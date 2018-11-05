@@ -70,6 +70,46 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(projects);
         }
 
+        // GET: api/relations/accounts/lookup
+        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        [Route(AccountRelationApi.EnvironmentAccountsLookupUrl)]
+        public async Task<IActionResult> GetUsableAccountsLookupAsync()
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var accounts = await _repository.GetUsableAccountsLookupAsync(GridOptions);
+            return Json(accounts);
+        }
+
+        // GET: api/relations/faccounts/lookup
+        [AuthorizeRequest(SecureEntity.DetailAccount, (int)DetailAccountPermissions.View)]
+        [Route(AccountRelationApi.EnvironmentDetailAccountsLookupUrl)]
+        public async Task<IActionResult> GetUsableDetailAccountsLookupAsync()
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var detailAccounts = await _repository.GetUsableDetailAccountsLookupAsync(GridOptions);
+            return Json(detailAccounts);
+        }
+
+        // GET: api/relations/ccenters/lookup
+        [AuthorizeRequest(SecureEntity.CostCenter, (int)CostCenterPermissions.View)]
+        [Route(AccountRelationApi.EnvironmentCostCentersLookupUrl)]
+        public async Task<IActionResult> GetUsableCostCentersLookupAsync()
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var costCenters = await _repository.GetUsableCostCentersLookupAsync(GridOptions);
+            return Json(costCenters);
+        }
+
+        // GET: api/relations/projects/lookup
+        [AuthorizeRequest(SecureEntity.Project, (int)ProjectPermissions.View)]
+        [Route(AccountRelationApi.EnvironmentProjectsLookupUrl)]
+        public async Task<IActionResult> GetUsableProjectsLookupAsync()
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var projects = await _repository.GetUsableProjectsLookupAsync(GridOptions);
+            return Json(projects);
+        }
+
         // GET: api/relations/account/{accountId:min(1)}/faccounts
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.DetailAccountsRelatedToAccountUrl)]

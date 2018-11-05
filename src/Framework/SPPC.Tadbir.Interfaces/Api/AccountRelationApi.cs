@@ -53,6 +53,46 @@ namespace SPPC.Tadbir.Api
         public const string EnvironmentProjectsUrl = "relations/projects";
 
         /// <summary>
+        /// API client URL for accounts in current environment that can be selected in financial operations
+        /// </summary>
+        public const string EnvironmentAccountsLookup = "relations/accounts/lookup";
+
+        /// <summary>
+        /// API server route URL for accounts in current environment that can be selected in financial operations
+        /// </summary>
+        public const string EnvironmentAccountsLookupUrl = "relations/accounts/lookup";
+
+        /// <summary>
+        /// API client URL for detail accounts in current environment that can be selected in financial operations
+        /// </summary>
+        public const string EnvironmentDetailAccountsLookup = "relations/faccounts/lookup";
+
+        /// <summary>
+        /// API server route URL for detail accounts in current environment that can be selected in financial operations
+        /// </summary>
+        public const string EnvironmentDetailAccountsLookupUrl = "relations/faccounts/lookup";
+
+        /// <summary>
+        /// API client URL for cost centers in current environment that can be selected in financial operations
+        /// </summary>
+        public const string EnvironmentCostCentersLookup = "relations/ccenters/lookup";
+
+        /// <summary>
+        /// API server route URL for cost centers in current environment that can be selected in financial operations
+        /// </summary>
+        public const string EnvironmentCostCentersLookupUrl = "relations/ccenters/lookup";
+
+        /// <summary>
+        /// API client URL for projects in current environment that can be selected in financial operations
+        /// </summary>
+        public const string EnvironmentProjectsLookup = "relations/projects/lookup";
+
+        /// <summary>
+        /// API server route URL for projects in current environment that can be selected in financial operations
+        /// </summary>
+        public const string EnvironmentProjectsLookupUrl = "relations/projects/lookup";
+
+        /// <summary>
         /// API client URL for all detail accounts related to an account specified by unique identifier
         /// </summary>
         public const string DetailAccountsRelatedToAccount = "relations/account/{0}/faccounts";

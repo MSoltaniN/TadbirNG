@@ -266,7 +266,8 @@
     "FiscalPeriodId": "دوره مالی",
     "StatusName": "وضعیت",
     "Commit": "ثبت سند",
-    "ReturnFromCommit": "برگشت سند"
+    "ReturnFromCommit": "برگشت سند",
+    "Save": "ذخیره"
   },
   "User": {
     "New": "کاربر جدید",
