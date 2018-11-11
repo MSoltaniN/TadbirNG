@@ -101,7 +101,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.FiscalPeriod, (int)FiscalPeriodPermissions.Delete)]
         public async Task<IActionResult> DeleteExistingFiscalPeriodAsync(int fpId)
         {
-            var fperiod = _repository.GetFiscalPeriodAsync(fpId);
+            int voucherCount = await _repository.GetVoucherCountAsync(fpId);
+            if (voucherCount > 0)
+            {
+                return BadRequest(_strings.Format(AppStrings.CantDeleteFiscalPeriodWithVouchers));
+            }
+
+            var fperiod = await _repository.GetFiscalPeriodAsync(fpId);
             if (fperiod == null)
             {
                 return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.FiscalPeriod));

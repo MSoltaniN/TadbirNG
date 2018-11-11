@@ -32,6 +32,13 @@ namespace SPPC.Tadbir.Persistence
         Task<int> GetCountAsync(int companyId, GridOptions gridOptions = null);
 
         /// <summary>
+        /// به روش آسنکرون، تعداد اسناد مالی ایجاد شده در دوره مالی مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی دوره مالی مورد نظر</param>
+        /// <returns>تعداد اسناد مالی ایجاد شده در دوره مالی</returns>
+        Task<int> GetVoucherCountAsync(int fpId);
+
+        /// <summary>
         /// به روش آسنکرون،دوره مالی با شناسه عددی مشخص شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="fperiodId">شناسه عددی یکی از دوره های مالی</param>

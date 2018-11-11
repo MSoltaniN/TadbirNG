@@ -9,7 +9,6 @@ using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel;
-using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -67,6 +66,18 @@ namespace SPPC.Tadbir.Persistence
                     fp => fp.CompanyId == companyId,
                     gridOptions);
             return count;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، تعداد اسناد مالی ایجاد شده در دوره مالی مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="fpId">شناسه دیتابیسی دوره مالی مورد نظر</param>
+        /// <returns>تعداد اسناد مالی ایجاد شده در دوره مالی</returns>
+        public async Task<int> GetVoucherCountAsync(int fpId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Voucher>();
+            int voucherCount = await repository.GetCountByCriteriaAsync(v => v.FiscalPeriodId == fpId);
+            return voucherCount;
         }
 
         /// <summary>
