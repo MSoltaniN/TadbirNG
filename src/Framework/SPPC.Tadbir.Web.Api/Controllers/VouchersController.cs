@@ -22,11 +22,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public VouchersController(
             IVoucherRepository repository,
             IVoucherLineRepository lineRepository,
+            IRelationRepository relationRepository,
             IStringLocalizer<AppStrings> strings)
             : base(strings)
         {
             _repository = repository;
             _lineRepository = lineRepository;
+            _relationRepository = relationRepository;
         }
 
         protected override string EntityNameKey
@@ -343,40 +345,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return BadRequest(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
             }
 
-            var account = await _lineRepository.GetArticleAccountAsync(article.FullAccount.Account.Id);
-            if (account.ChildCount > 0)
+            _relationRepository.SetCurrentContext(SecurityContext.User);
+            result = await FullAccountValidationResult(article.FullAccount, _relationRepository);
+            if (result is BadRequestObjectResult)
             {
-                string accountInfo = String.Format("{0} ({1})", account.Name, account.FullCode);
-                string message = String.Format(
-                    _strings.Format(AppStrings.CannotUseNonLeafItem), _strings.Format(AppStrings.Account), accountInfo);
-                return BadRequest(message);
-            }
-
-            var detailAccount = await _lineRepository.GetArticleDetailAccountAsync(article.FullAccount.DetailAccount.Id);
-            if (detailAccount != null && detailAccount.ChildCount > 0)
-            {
-                string detailInfo = String.Format("{0} ({1})", detailAccount.Name, detailAccount.FullCode);
-                string message = String.Format(
-                    _strings.Format(AppStrings.CannotUseNonLeafItem), _strings.Format(AppStrings.DetailAccount), detailInfo);
-                return BadRequest(message);
-            }
-
-            var costCenter = await _lineRepository.GetArticleCostCenterAsync(article.FullAccount.CostCenter.Id);
-            if (costCenter != null && costCenter.ChildCount > 0)
-            {
-                string costCenterInfo = String.Format("{0} ({1})", costCenter.Name, costCenter.FullCode);
-                string message = String.Format(
-                    _strings.Format(AppStrings.CannotUseNonLeafItem), _strings.Format(AppStrings.CostCenter), costCenterInfo);
-                return BadRequest(message);
-            }
-
-            var project = await _lineRepository.GetArticleProjectAsync(article.FullAccount.Project.Id);
-            if (project != null && project.ChildCount > 0)
-            {
-                string projectInfo = String.Format("{0} ({1})", project.Name, project.FullCode);
-                string message = String.Format(
-                    _strings.Format(AppStrings.CannotUseNonLeafItem), _strings.Format(AppStrings.Project), projectInfo);
-                return BadRequest(message);
+                return result;
             }
 
             return Ok();
@@ -449,5 +422,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private readonly IVoucherRepository _repository;
         private readonly IVoucherLineRepository _lineRepository;
+        private readonly IRelationRepository _relationRepository;
     }
 }

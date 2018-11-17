@@ -639,4 +639,46 @@
   <data name="CantDeleteFiscalPeriodWithVouchers" xml:space="preserve">
     <value>This fiscal period has one or more vouchers defined and cannot be deleted.</value>
   </data>
+  <data name="InvalidAccountInFullAccount" xml:space="preserve">
+    <value>Selected account is invalid or inaccessible.</value>
+  </data>
+  <data name="InvalidCostCenterInFullAccount" xml:space="preserve">
+    <value>Selected cost center is invalid or inaccessible.</value>
+  </data>
+  <data name="InvalidDetailAccountInFullAccount" xml:space="preserve">
+    <value>Selected detail account is invalid or inaccessible.</value>
+  </data>
+  <data name="InvalidProjectInFullAccount" xml:space="preserve">
+    <value>Selected project is invalid or inaccessible.</value>
+  </data>
+  <data name="MissingCostCenterInFullAccount" xml:space="preserve">
+    <value>A cost center related to selected account must be selected.</value>
+  </data>
+  <data name="MissingDetailAccountInFullAccount" xml:space="preserve">
+    <value>A detail account related to selected account must be selected.</value>
+  </data>
+  <data name="MissingProjectInFullAccount" xml:space="preserve">
+    <value>A project related to selected account must be selected.</value>
+  </data>
+  <data name="NonLeafAccountInFullAccount" xml:space="preserve">
+    <value>Using an account with one or more children is not allowed.</value>
+  </data>
+  <data name="NonLeafCostCenterInFullAccount" xml:space="preserve">
+    <value>Using a cost center with one or more children is not allowed.</value>
+  </data>
+  <data name="NonLeafDetailAccountInFullAccount" xml:space="preserve">
+    <value>Using a detail account with one or more children is not allowed.</value>
+  </data>
+  <data name="NonLeafProjectInFullAccount" xml:space="preserve">
+    <value>Using a project with one or more children is not allowed.</value>
+  </data>
+  <data name="UnrelatedCostCenterInFullAccount" xml:space="preserve">
+    <value>Selected cost center has no relation to this account.</value>
+  </data>
+  <data name="UnrelatedDetailAccountInFullAccount" xml:space="preserve">
+    <value>Selected detail account has no relation to this account.</value>
+  </data>
+  <data name="UnrelatedProjectInFullAccount" xml:space="preserve">
+    <value>Selected project has no relation to this account.</value>
+  </data>
 </root>

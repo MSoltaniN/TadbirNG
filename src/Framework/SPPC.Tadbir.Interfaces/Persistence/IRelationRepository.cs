@@ -78,6 +78,15 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<KeyValue>> GetUsableProjectsLookupAsync(GridOptions gridOptions = null);
 
         /// <summary>
+        /// به روش آسنکرون، مدل نمایشی بردار حساب داده شده را در ارتباطات موجود جستجو کرده
+        /// و در صورت پیدا نکردن بردار حساب، وضعیت اشکال موجود را به صورت شناسه متن چندزبانه خطا برمی گرداند
+        /// </summary>
+        /// <param name="fullAccount">مدل نمایشی بردار حساب مورد جستجو</param>
+        /// <returns>در صورت پیدا نکردن بردار حساب، شناسه متن چندزبانه خطا و در صورت پیدا کردن
+        /// رشته خالی را برمی گرداند</returns>
+        Task<string> LookupFullAccountAsync(FullAccountViewModel fullAccount);
+
+        /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور مرتبط با حساب مشخص شده را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>

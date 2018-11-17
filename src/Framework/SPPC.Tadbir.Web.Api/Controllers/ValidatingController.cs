@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
 using SPPC.Tadbir.Configuration.Models;
 using SPPC.Tadbir.Domain;
+using SPPC.Tadbir.Persistence;
+using SPPC.Tadbir.Values;
+using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
@@ -62,6 +66,19 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 string message = String.Format(_strings[AppStrings.LevelCodeLengthIsIncorrect],
                     (string)_strings[EntityNameKey], levelConfig.Name, levelConfig.CodeLength);
                 return BadRequest(message);
+            }
+
+            return Ok();
+        }
+
+        protected async Task<IActionResult> FullAccountValidationResult(
+            FullAccountViewModel fullAccount, IRelationRepository repository)
+        {
+            Verify.ArgumentNotNull(repository, nameof(repository));
+            var lookupResult = await repository.LookupFullAccountAsync(fullAccount);
+            if (!String.IsNullOrEmpty(lookupResult))
+            {
+                return BadRequest(_strings.Format(lookupResult));
             }
 
             return Ok();
