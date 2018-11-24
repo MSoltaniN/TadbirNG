@@ -93,6 +93,14 @@ namespace SPPC.Tadbir.Persistence
         Task<bool> IsOverlapFiscalPeriodAsync(FiscalPeriodViewModel fiscalPeriod);
 
         /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا دوره مالی مشخص شده قابل حذف است یا نه؟
+        /// </summary>
+        /// <param name="fperiodId">شناسه دیتابیسی دوره مالی مورد نظر</param>
+        /// <returns>اگر دوره مالی مورد نظر در برنامه به طور مستقیم استفاده شده باشد
+        /// مقدار "نادرست" و در غیر این صورت مقدار "درست" را برمی گرداند</returns>
+        Task<bool> CanDeleteFiscalPeriodAsync(int fperiodId);
+
+        /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای ایجاد لاگ های عملیاتی تنظیم می کند
         /// </summary>
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>

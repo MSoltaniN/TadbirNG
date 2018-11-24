@@ -636,8 +636,8 @@
   <data name="NetMonthlySalesChartTitle" xml:space="preserve">
     <value>Net Monthly Sales Chart</value>
   </data>
-  <data name="CantDeleteFiscalPeriodWithVouchers" xml:space="preserve">
-    <value>This fiscal period has one or more vouchers defined and cannot be deleted.</value>
+  <data name="CantDeleteFiscalPeriodWithData" xml:space="preserve">
+    <value>This fiscal period has one or more records defined and cannot be deleted.</value>
   </data>
   <data name="InvalidAccountInFullAccount" xml:space="preserve">
     <value>Selected account is invalid or inaccessible.</value>

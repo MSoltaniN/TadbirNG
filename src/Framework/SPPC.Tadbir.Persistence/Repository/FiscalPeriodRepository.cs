@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel;
@@ -238,6 +239,30 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا دوره مالی مشخص شده قابل حذف است یا نه؟
+        /// </summary>
+        /// <param name="fperiodId">شناسه دیتابیسی دوره مالی مورد نظر</param>
+        /// <returns>اگر دوره مالی مورد نظر در برنامه به طور مستقیم استفاده شده باشد
+        /// مقدار "نادرست" و در غیر این صورت مقدار "درست" را برمی گرداند</returns>
+        public async Task<bool> CanDeleteFiscalPeriodAsync(int fperiodId)
+        {
+            bool isUsed = await IsFiscalPeriodUsedBy<Account>(fperiodId)
+                || await IsFiscalPeriodUsedBy<DetailAccount>(fperiodId)
+                || await IsFiscalPeriodUsedBy<CostCenter>(fperiodId)
+                || await IsFiscalPeriodUsedBy<Project>(fperiodId)
+                || await IsFiscalPeriodUsedBy<Voucher>(fperiodId);
+            if (!isUsed)
+            {
+                var repository = UnitOfWork.GetAsyncRepository<RoleFiscalPeriod>();
+                int count = await repository.GetCountByCriteriaAsync(
+                    rfp => rfp.FiscalPeriodId == fperiodId);
+                isUsed = count > 0;
+            }
+
+            return !isUsed;
+        }
+
+        /// <summary>
         /// آخرین تغییرات موجودیت را از مدل نمایشی به سطر اطلاعاتی موجود کپی می کند
         /// </summary>
         /// <param name="fiscalPeriodView">مدل نمایشی شامل آخرین تغییرات</param>
@@ -316,6 +341,15 @@ namespace SPPC.Tadbir.Persistence
                 };
                 existing.RoleFiscalPeriods.Add(roleFiscalPeriod);
             }
+        }
+
+        private async Task<bool> IsFiscalPeriodUsedBy<TFiscalEntity>(int fperiodId)
+            where TFiscalEntity : class, IFiscalEntity
+        {
+            var repository = UnitOfWork.GetAsyncRepository<TFiscalEntity>();
+            int count = await repository.GetCountByCriteriaAsync(
+                entity => entity.FiscalPeriodId == fperiodId);
+            return (count > 0);
         }
     }
 }
