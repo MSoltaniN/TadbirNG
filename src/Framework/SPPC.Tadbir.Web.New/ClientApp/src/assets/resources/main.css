@@ -25,28 +25,39 @@ tbutton {
     font-family: SPPC !important;
 }
 
-.tRtl {
+/* .tRtl {
     direction: rtl !important;    
+} */
+
+ .body-content
+{
+
+    width: 100%!important;
 }
 
-.body-content
+body.tRtl .body-content
 {
-    width: 100%!important;
+    direction: rtl;
+}
+
+body.tLtr .body-content
+{
+    direction: ltr;
 }
 
 .navbar-nav > .user-menu > .dropdown-menu > li.user-header
 {
     height: 200px!important;
-}
+} 
 
 .userinfo
 {
     color: white;
 }
 
-.tLtr {    
+/* .tLtr {    
     direction:ltr!important;
-}
+} */
 
 .tRtl .nopad {
     padding-right: 0 !important;
@@ -92,6 +103,16 @@ a:hover
 {
     padding-right: 0;
     padding-left: 0;
+}
+
+.repRtl
+{
+    direction:rtl!important;
+}
+
+.repLtr
+{
+    direction:ltr!important;
 }
 
 

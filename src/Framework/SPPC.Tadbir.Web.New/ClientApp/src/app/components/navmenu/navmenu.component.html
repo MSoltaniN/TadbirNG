@@ -1,6 +1,6 @@
 <aside class="main-sidebar">
   <section class="sidebar">    
-    <ul class="sidebar-menu tree" data-widget="tree">
+    <ul class="sidebar-menu tree" id='main-menu' data-widget="tree">
       <!--(window:keypress)="doSomething($event)"-->
       <li *ngFor="let cmd of menuList;" class="parent treeview" [ngClass]="{'active menu-open':this.expandedSubMenuId === cmd.id}">
         <!-- <a id="a{{cmd.id}}" href="#/dashboard" (click)="clickMenu($event,cmd.id)"> -->

@@ -413,6 +413,7 @@
    position: absolute;
    top: 0;
    right: 0;
+   direction: rtl;
    padding-top: 50px;
    min-height: 100%;
    width: 230px;

@@ -21,8 +21,6 @@ import { DOCUMENT } from '@angular/common';
     styleUrls: ['./login.component.css']
 
 })
-
-
 export class LoginComponent extends DefaultComponent implements OnInit {
    
     model: any = {};

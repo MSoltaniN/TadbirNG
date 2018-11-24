@@ -4,7 +4,7 @@
   "newProjectRoot": "projects",
   "projects": {
     "SPPC.Tadbir.Web.New": {
-      "root": "",
+      "root": "",      
       "sourceRoot": "src",
       "projectType": "application",
       "architect": {
@@ -18,13 +18,19 @@
             "progress": true,
             "polyfills": "src/polyfills.ts",
             "assets": [
-              "src/assets"
+              "src/assets",
+              "src/reports"
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/stimulsoft/stimulsoft.viewer.office2013.whiteblue.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/stimulsoft/stimulsoft.reports.js",
+              "src/stimulsoft/stimulsoft.viewer.js"
+
+            ]
           },
           "configurations": {
             "production": {
@@ -76,7 +82,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "assets": [
-              "src/assets"
+              "src/assets"              
             ]
           }
         },
@@ -94,10 +100,10 @@
         }
       }
     },
-    "SPPC.Tadbir.Web.New-e2e": {
+    "SPPC.Tadbir.Web.New-e2e": {      
       "root": "e2e",
       "sourceRoot": "e2e",
-      "projectType": "application",
+      "projectType": "application",      
       "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
@@ -119,7 +125,7 @@
         }
       }
     }
-  },
+  },  
   "defaultProject": "SPPC.Tadbir.Web.New",
   "schematics": {
     "@schematics/angular:component": {

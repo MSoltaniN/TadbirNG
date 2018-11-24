@@ -867,6 +867,8 @@ throw new Error('AdminLTE requires jQuery')
   $(window).on('load', function () {
     Plugin.call($(Selector.button))
   })
+
+  //$(document).ready(function(){console.log('ready')});
 }(jQuery)
 
 
@@ -1121,7 +1123,15 @@ throw new Error('AdminLTE requires jQuery')
   $(window).on('load', function () {
     $(Selector.data).each(function () {
       Plugin.call($(this))
-    })
+    });
+
   })
 
+  $.fn.bindTree = function() {
+    console.log('bindtree');   
+    //$('#main-menu').tree();
+    $(Selector.data).each(function () {
+      Plugin.call($(this))
+    });
+  };
 }(jQuery)

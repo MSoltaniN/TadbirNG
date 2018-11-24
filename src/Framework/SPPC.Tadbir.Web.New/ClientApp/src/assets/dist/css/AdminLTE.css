@@ -411,10 +411,11 @@
   * Component: Sidebar
   * ------------------
   */
-   .main-sidebar {
+  body.tLtr .main-sidebar {
    position: absolute;
    top: 0;
    left: 0;
+   direction: ltr;
    padding-top: 50px;
    min-height: 100%;
    width: 230px;

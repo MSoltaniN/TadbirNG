@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer2, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, ChangeDetectorRef, ViewChild, ComponentRef } from '@angular/core';
 import { VoucherService, VoucherInfo, FiscalPeriodService, SettingService } from '../../service/index';
 import { Voucher } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
@@ -20,11 +20,15 @@ import { SecureEntity } from '../../security/secureEntity';
 import { VoucherPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
 import { DocumentStatusValue } from '../../enum/documentStatusValue';
+import { Http } from '@angular/http';
+import { ReportViewerComponent } from '../reportViewer/reportViewer.component';
 
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
+
+declare var Stimulsoft: any;
 
 @Component({
   selector: 'voucher',
@@ -36,11 +40,11 @@ export function getLayoutModule(layout: Layout) {
   }]
 })
 
-
 export class VoucherComponent extends DefaultComponent implements OnInit {
 
   //#region Fields
   @ViewChild(GridComponent) grid: GridComponent;
+  @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
 
   public rowData: GridDataResult;
   public selectedRows: string[] = [];
@@ -63,6 +67,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   isNew: boolean;
   errorMessage: string;
   groupDelete: boolean = false;
+  
   //#endregion
 
   //#region Events
@@ -128,6 +133,11 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     this.errorMessage = '';
 
     this.reloadGrid();
+  }
+
+  public showReport()
+  {
+      this.viewer.showReport('reports/test.mrt',this.rowData.data);
   }
 
   public saveHandler(model: Voucher) {
@@ -202,8 +212,10 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   //#endregion
 
   //#region Constructor
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
-    private voucherService: VoucherService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
+  constructor(public toastrService: ToastrService, public translate: TranslateService,
+     public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
+    private voucherService: VoucherService, public renderer: Renderer2,
+     public metadata: MetaDataService, public settingService: SettingService) {
     super(toastrService, translate, renderer, metadata, settingService, Entities.Voucher, Metadatas.Voucher);
   }
   //#endregion
@@ -221,9 +233,13 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     //}));
   }
 
+  
+
   reloadGridEvent() {    
     this.reloadGrid();
   }
+
+  
 
   reloadGrid(insertedModel?: Voucher) {
     if (this.viewAccess) {

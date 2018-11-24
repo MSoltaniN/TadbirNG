@@ -1,0 +1,11 @@
+<kendo-dialog *ngIf="active"  (close)="closeForm()">
+    <kendo-dialog-titlebar>
+        نمایشگر گزارش
+    </kendo-dialog-titlebar>
+<div id='viewer' 
+    [ngClass]="{'repLtr':this.currentlang === 'fa' , 'repRtl': this.currentlang === 'en'}">
+  </div>
+  <kendo-dialog-actions>      
+      <button class="k-button" (click)="closeForm($event)">{{ 'Buttons.Cancel' | translate }}</button>
+  </kendo-dialog-actions>
+</kendo-dialog>

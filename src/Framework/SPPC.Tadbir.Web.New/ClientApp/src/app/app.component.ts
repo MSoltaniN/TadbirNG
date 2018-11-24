@@ -1,4 +1,4 @@
-import { Component, Inject, Injector, AfterViewInit, AfterContentInit } from '@angular/core';
+import { Component, Inject, Injector, AfterViewInit, AfterContentInit, OnInit } from '@angular/core';
 import { Context } from './model/context';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -9,15 +9,14 @@ import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 import { SessionKeys } from '../environments/environment';
 import { Command } from './model/command';
 
-
-
+declare var $:any;
 
 @Component({
   selector: 'app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterContentInit {
+export class AppComponent implements AfterViewInit  {
 
   options = {
     min: 8,
@@ -55,13 +54,14 @@ export class AppComponent implements AfterContentInit {
 
   public fiscalPeriods: any = {};
 
-  constructor(location: Location, public router: Router, public authenticationService: AuthenticationService, public userService: UserService,
-    @Inject(DOCUMENT) private document: Document,public sanitizer: DomSanitizer) {
-
-
-      
-
-    //#region init Lang
+  constructor(location: Location,
+     public router: Router, 
+    public authenticationService: AuthenticationService,
+     public userService: UserService,
+    @Inject(DOCUMENT) private document: Document,
+    public sanitizer: DomSanitizer) {
+     
+    //#region init Lang    
 
     if (localStorage.getItem('currentContext') != null) {
       var item: string | null;
@@ -91,6 +91,7 @@ export class AppComponent implements AfterContentInit {
 
     router.events.subscribe((val) => {
 
+      //$.fn.bindTree(); 
 
       if (location.path().toLowerCase() == '/login' || location.path().toString().indexOf('/login?returnUrl=') >= 0) {
         this.showNavbar = false;
@@ -241,9 +242,8 @@ export class AppComponent implements AfterContentInit {
 
   cssUrl : string;
 
-  ngAfterContentInit() {
-    
-    
+  ngAfterViewInit() {
+    $.fn.bindTree(); 
   }
 
   public hotKeyMap: { [id: string]: string; } = {}
