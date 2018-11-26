@@ -34,10 +34,16 @@ namespace SPPC.Tadbir.Persistence
         Task<ViewViewModel> GetViewMetadataByIdAsync(int viewId);
 
         /// <summary>
-        /// اطلاعات نمایشی تمام دستوراتی که در بالاترین سطح ساختار درختی قرار دارند را
+        /// به روش آسنکرون، اطلاعات نمایشی تمام دستوراتی که در بالاترین سطح ساختار درختی قرار دارند را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <returns>مجموعه ای از دستورات در بالاترین سطح</returns>
         Task<IList<CommandViewModel>> GetTopLevelCommandsAsync();
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی دستورات پیش فرض کاربران را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه دستورات در منوی پیش فرض کاربران</returns>
+        Task<IList<CommandViewModel>> GetDefaultCommandsAsync();
     }
 }

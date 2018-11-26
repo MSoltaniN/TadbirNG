@@ -76,8 +76,22 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = _unitOfWork.GetAsyncRepository<Command>();
             var topCommands = await repository.GetByCriteriaAsync(
-                cmd => cmd.Parent == null, cmd => cmd.Children);
+                cmd => cmd.Parent == null && cmd.TitleKey != "Profile", cmd => cmd.Children);
             return topCommands
+                .Select(cmd => _mapper.Map<CommandViewModel>(cmd))
+                .ToList();
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی دستورات پیش فرض کاربران را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه دستورات در منوی پیش فرض کاربران</returns>
+        public async Task<IList<CommandViewModel>> GetDefaultCommandsAsync()
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Command>();
+            var profileCommands = await repository.GetSingleByCriteriaAsync(
+                cmd => cmd.TitleKey == "Profile", cmd => cmd.Children);
+            return profileCommands.Children
                 .Select(cmd => _mapper.Map<CommandViewModel>(cmd))
                 .ToList();
         }

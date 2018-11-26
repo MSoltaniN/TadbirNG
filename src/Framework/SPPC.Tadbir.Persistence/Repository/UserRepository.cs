@@ -195,6 +195,15 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی گزینه های منوی پیش فرض کاربران را خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>گزینه های منوی پیش فرض کاربران</returns>
+        public async Task<IList<CommandViewModel>> GetUserCommandsAsync()
+        {
+            return await Metadata.GetDefaultCommandsAsync();
+        }
+
+        /// <summary>
         /// به روش آسنکرون، تعداد کاربران تعریف شده را از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>

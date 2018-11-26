@@ -46,4 +46,7 @@ export class UserApi {
 
     // users/current/commands
     public static CurrentUserCommands = environment.BaseUrl + "/users/current/commands";
+
+    // users/default/commands
+    public static UserDefaultCommands = environment.BaseUrl + "/users/default/commands";
 }

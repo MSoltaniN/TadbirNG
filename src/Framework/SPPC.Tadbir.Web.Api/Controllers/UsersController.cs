@@ -97,6 +97,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(commands);
         }
 
+        // GET: api/users/default/commands
+        [Route(UserApi.UserDefaultCommandsUrl)]
+        public async Task<IActionResult> GetUserDefaultCommandsAsync()
+        {
+            var commands = await _repository.GetUserCommandsAsync();
+            Array.ForEach(commands.ToArray(), cmd => cmd.Title = _strings[cmd.Title]);
+            return JsonReadResult(commands);
+        }
+
         // POST: api/users
         [HttpPost]
         [Route(UserApi.UsersUrl)]
