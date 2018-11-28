@@ -364,6 +364,23 @@ SET IDENTITY_INSERT [Core].[DocumentStatus] OFF
 
 -- TODO: Insert supporting records for suggested coding (fiscal period, branch, etc.)
 
+-- Insert suggested account groups...
+SET IDENTITY_INSERT [Finance].[AccountGroup] ON
+INSERT INTO [Finance].[AccountGroup] (GroupID, Name, InventoryMode, Category, Description) VALUES (1, N'داراييهاى جارى', 0, N'دارایی', NULL)
+INSERT INTO [Finance].[AccountGroup] (GroupID, Name, InventoryMode, Category, Description) VALUES (2, N'داراييهاى غيرجارى', 0, N'دارایی', NULL)
+INSERT INTO [Finance].[AccountGroup] (GroupID, Name, InventoryMode, Category, Description) VALUES (3, N'بدهيهاى جارى', 0, N'بدهی', NULL)
+INSERT INTO [Finance].[AccountGroup] (GroupID, Name, InventoryMode, Category, Description) VALUES (4, N'بدهيهاى غيرجارى', 0, N'بدهی', NULL)
+INSERT INTO [Finance].[AccountGroup] (GroupID, Name, InventoryMode, Category, Description) VALUES (5, N'حقوق صاحبان سرمايه', 0, N'سرمایه', NULL)
+INSERT INTO [Finance].[AccountGroup] (GroupID, Name, InventoryMode, Category, Description) VALUES (6, N'فروش', 0, N'فروش', NULL)
+INSERT INTO [Finance].[AccountGroup] (GroupID, Name, InventoryMode, Category, Description) VALUES (7, N'ساير درآمدها', 0, N'درآمد', NULL)
+INSERT INTO [Finance].[AccountGroup] (GroupID, Name, InventoryMode, Category, Description) VALUES (8, N'قيمت تمام شده كالاى فروش رفته', 1, N'هزینه', NULL)
+INSERT INTO [Finance].[AccountGroup] (GroupID, Name, InventoryMode, Category, Description) VALUES (9, N'خرید', -1, N'خرید', NULL)
+INSERT INTO [Finance].[AccountGroup] (GroupID, Name, InventoryMode, Category, Description) VALUES (10, N'هزينه هاى عملياتى', 0, N'هزینه', NULL)
+INSERT INTO [Finance].[AccountGroup] (GroupID, Name, InventoryMode, Category, Description) VALUES (11, N'هزينه هاى غيرعملياتى', 0, N'هزینه', NULL)
+INSERT INTO [Finance].[AccountGroup] (GroupID, Name, InventoryMode, Category, Description) VALUES (12, N'رابط', 0, N'رابط', NULL)
+INSERT INTO [Finance].[AccountGroup] (GroupID, Name, InventoryMode, Category, Description) VALUES (13, N'حسابهاى انتظامى', 0, N'انتظامى', NULL)
+SET IDENTITY_INSERT [Finance].[AccountGroup] OFF
+
 -- Insert suggested account coding...
 SET IDENTITY_INSERT [Finance].[Account] ON
 INSERT INTO [Finance].[Account] (AccountID, ParentID, FiscalPeriodID, BranchID, BranchScope, Code, FullCode, Name, [Level])

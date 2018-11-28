@@ -24,7 +24,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.ToTable("AccountGroup", "Finance");
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
-                .HasColumnName("AccountGroupID");
+                .HasColumnName("GroupID");
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(64);

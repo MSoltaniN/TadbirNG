@@ -52,11 +52,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string NameEn { get; set; }
 
         /// <summary>
-        /// سیستم ثبت موجودی قابل استفاده برای این گروه
-        /// </summary>
-        public short InventoryMode { get; set; }
-
-        /// <summary>
         /// ماهیت گروه با توجه به مورد استفاده در گزارش های مالی 
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
