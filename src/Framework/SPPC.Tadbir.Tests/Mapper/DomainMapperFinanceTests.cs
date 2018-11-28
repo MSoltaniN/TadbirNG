@@ -17,6 +17,46 @@ namespace SPPC.Tadbir.Mapper.Tests
             SetUp();
         }
 
+        #region AccountGroup Mapping Tests
+
+        [Test]
+        public void ContainsMappingFromAccountGroupToAccountGroupViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<AccountGroup, AccountGroupViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromAccountGroupToAccountGroupViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<AccountGroup, AccountGroupViewModel>();
+        }
+
+        [Test]
+        public void ContainsMappingFromAccountGroupViewModelToAccountGroup()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<AccountGroupViewModel, AccountGroup>();
+        }
+
+        [Test]
+        public void CanMapFromAccountGroupViewModelToAccountGroup()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<AccountGroupViewModel, AccountGroup>();
+        }
+
+        #endregion
+
         #region Account Mapping Tests
 
         [Test]

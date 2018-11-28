@@ -67,6 +67,65 @@
         <Relation multiplicity="ManyToMany" endpointName="Project" entityName="Project" hasKey="False" joinTable="AccountProject" description="مجموعه ای از پروژه های مرتبط با این حساب" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
+    <Entity name="AccountGroup" area="Finance" identifier="Id" description="اطلاعات یکی از گروه های حساب را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Properties>
+        <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="AccountGroupID" type="int" nullable="False" />
+          <ColumnView name="Id" visible="True" width="120" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
+        </Property>
+        <Property name="Name" type="String" isValidated="True" description="نام یا عنوان نمایشی گروه حساب به زبان پیش فرض برنامه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Name" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="Name" visible="True" width="120" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="Name_Validation" />
+        </Property>
+        <Property name="NameEn" type="String" isValidated="True" description="نام یا عنوان نمایشی گروه حساب به زبان انگلیسی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtNameEn" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="NameEn" type="nvarchar(64)" nullable="True" />
+          <ColumnView name="Name En" visible="True" width="120" />
+          <ValidationRule required="False" minimum="" maximum="64" format="" type="Length" name="NameEn_Validation" />
+        </Property>
+        <Property name="InventoryMode" type="Int16" isValidated="True" description="سیستم ثبت موجودی قابل استفاده برای این گروه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnInventoryMode" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="InventoryMode" type="smallint" nullable="False" />
+          <ColumnView name="Inventory Mode" visible="True" width="120" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="InventoryMode_Validation" />
+        </Property>
+        <Property name="Category" type="String" isValidated="True" description="ماهیت گروه با توجه به مورد استفاده در گزارش های مالی " clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtCategory" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Category" type="nvarchar(64)" nullable="False" />
+          <ColumnView name="Category" visible="True" width="120" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="Category_Validation" />
+        </Property>
+        <Property name="Description" type="String" isValidated="True" description="شرح یا ملاحظات گروه حساب به زبان پیش فرض برنامه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="Description" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Description" visible="True" width="120" />
+          <ValidationRule required="False" minimum="" maximum="256" format="" type="Length" name="Description_Validation" />
+        </Property>
+        <Property name="DescriptionEn" type="String" isValidated="True" description="شرح یا ملاحظات گروه حساب به زبان انگلیسی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtDescriptionEn" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="DescriptionEn" type="nvarchar(256)" nullable="True" />
+          <ColumnView name="Description En" visible="True" width="120" />
+          <ValidationRule required="False" minimum="" maximum="256" format="" type="Length" name="DescriptionEn_Validation" />
+        </Property>
+        <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
+          <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
+          <ColumnView name="Row Guid" visible="True" width="120" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
+        </Property>
+        <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
+          <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
+          <ColumnView name="Modified Date" visible="True" width="120" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
+        </Property>
+      </Properties>
+      <Relations />
+    </Entity>
     <Entity name="Branch" area="Corporate" identifier="Id" description="Represents a physical division of a business unit" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Properties>
         <Property name="Id" type="Int32" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -239,25 +298,25 @@
           <PropertyView name="txtIconName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="IconName" type="varchar(64)" nullable="True" />
           <ColumnView name="Icon Name" visible="True" width="120" />
-          <ValidationRule name="IconName_Validation" required="False" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="64" format="" type="Length" name="IconName_Validation" />
         </Property>
         <Property name="HotKey" type="String" isValidated="True" description="کلید ترکیبی میان بُر برای فراخوانی دستور از طریق صفحه کلید" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtHotKey" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="HotKey" type="varchar(32)" nullable="True" />
           <ColumnView name="Hot Key" visible="True" width="120" />
-          <ValidationRule name="HotKey_Validation" required="False" minimum="" maximum="32" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="32" format="" type="Length" name="HotKey_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -271,61 +330,61 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="CompanyID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="نام شرکت به صورتی که در لیست شرکت های موجود نمایش داده می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="nvarchar(128)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="128" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="DbName" type="String" isValidated="True" description="نام بانک اطلاعاتی شرکت به صورتی که در لیست بانک های اطلاعاتی سرور نمایش داده می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDbName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="DbName" type="nvarchar(128)" nullable="False" />
           <ColumnView name="Db Name" visible="True" width="120" />
-          <ValidationRule name="DbName_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="128" format="" type="Length" name="DbName_Validation" />
         </Property>
         <Property name="DbPath" type="String" isValidated="True" description="مسیر کامل فایل اصلی بانک اطلاعاتی روی ایستگاه کاری سرور" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDbPath" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="DbPath" type="nvarchar(512)" nullable="False" />
           <ColumnView name="Db Path" visible="True" width="120" />
-          <ValidationRule name="DbPath_Validation" required="True" minimum="" maximum="512" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="512" format="" type="Length" name="DbPath_Validation" />
         </Property>
         <Property name="Server" type="String" isValidated="True" description="نام یا آدرس آی پی سرور دیتابیس" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtServer" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Server" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Server" visible="True" width="120" />
-          <ValidationRule name="Server_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="Server_Validation" />
         </Property>
         <Property name="UserName" type="String" isValidated="True" description="نام کاربری برای اتصال به سرور دیتابیس" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtUserName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="UserName" type="nvarchar(32)" nullable="True" />
           <ColumnView name="User Name" visible="True" width="120" />
-          <ValidationRule name="UserName_Validation" required="False" minimum="" maximum="32" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="32" format="" type="Length" name="UserName_Validation" />
         </Property>
         <Property name="Password" type="String" isValidated="True" description="رمز ورود برای اتصال به سرور دیتابیس" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtPassword" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Password" type="nvarchar(32)" nullable="True" />
           <ColumnView name="Password" visible="True" width="120" />
-          <ValidationRule name="Password_Validation" required="False" minimum="" maximum="32" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="32" format="" type="Length" name="Password_Validation" />
         </Property>
         <Property name="Description" type="String" isValidated="True" description="اطلاعات تکمیلی در مورد این شرکت" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
-          <ValidationRule name="Description_Validation" required="False" minimum="" maximum="512" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="512" format="" type="Length" name="Description_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations />
@@ -336,55 +395,55 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="CostCenterID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="BranchScope" type="Int16" isValidated="True" description="محدوده دسترسی به مرکز هزینه را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل &quot;کلیه شعبه ها&quot; (مقدار 0)، &quot;شعبه جاری و زیرمجموعه ها&quot; (مقدار 1) و &quot;شعبه جاری&quot; (مقدار 2) می شود." clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnBranchScope" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="BranchScope" type="smallint" nullable="False" />
           <ColumnView name="Branch Scope" visible="True" width="120" />
-          <ValidationRule name="BranchScope_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="BranchScope_Validation" />
         </Property>
         <Property name="Code" type="String" isValidated="True" description="کد شناسایی برای سطح جاری مرکز هزینه در ساختار درختی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtCode" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Code" type="nvarchar(16)" nullable="False" />
           <ColumnView name="Code" visible="True" width="120" />
-          <ValidationRule name="Code_Validation" required="True" minimum="" maximum="16" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="16" format="" type="Length" name="Code_Validation" />
         </Property>
         <Property name="FullCode" type="String" isValidated="True" description="کد شناسایی کامل مرکز هزینه متشکل از کدهای تمام سطوح قبلی در ساختار درختی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtFullCode" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="FullCode" type="nvarchar(256)" nullable="False" />
           <ColumnView name="Full Code" visible="True" width="120" />
-          <ValidationRule name="FullCode_Validation" required="True" minimum="" maximum="256" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="256" format="" type="Length" name="FullCode_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="نام مرکز هزینه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="nvarchar(256)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="256" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="256" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="Level" type="Int16" isValidated="True" description="شماره سطح که عمق این مرکز هزینه را در ساختار درختی مشخص می کند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnLevel" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="Level" type="smallint" nullable="False" />
           <ColumnView name="Level" visible="True" width="120" />
-          <ValidationRule name="Level_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="Level_Validation" />
         </Property>
         <Property name="Description" type="String" isValidated="True" description="شرحی که اطلاعات تکمیلی برای این مرکز هزینه را مشخص می کند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
-          <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
+          <ValidationRule required="False" minimum="0" maximum="512" format="" type="Length" name="Description_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -400,25 +459,25 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="CurrencyID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="Name of this currency" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="64" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations />
@@ -429,55 +488,55 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="DetailAccountID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="BranchScope" type="Int16" isValidated="True" description="محدوده دسترسی به تفصیلی شناور را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل &quot;کلیه شعبه ها&quot; (مقدار 0)، &quot;شعبه جاری و زیرمجموعه ها&quot; (مقدار 1) و &quot;شعبه جاری&quot; (مقدار 2) می شود." clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnBranchScope" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="BranchScope" type="smallint" nullable="False" />
           <ColumnView name="Branch Scope" visible="True" width="120" />
-          <ValidationRule name="BranchScope_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="BranchScope_Validation" />
         </Property>
         <Property name="Code" type="String" isValidated="True" description="کد شناسایی برای سطح جاری تفصیلی شناور در ساختار درختی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtCode" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Code" type="nvarchar(16)" nullable="False" />
           <ColumnView name="Code" visible="True" width="120" />
-          <ValidationRule name="Code_Validation" required="True" minimum="" maximum="16" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="16" format="" type="Length" name="Code_Validation" />
         </Property>
         <Property name="FullCode" type="String" isValidated="True" description="کد شناسایی کامل تفصیلی شناور متشکل از کدهای تمام سطوح قبلی در ساختار درختی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtFullCode" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="FullCode" type="nvarchar(256)" nullable="False" />
           <ColumnView name="Full Code" visible="True" width="120" />
-          <ValidationRule name="FullCode_Validation" required="True" minimum="" maximum="256" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="256" format="" type="Length" name="FullCode_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="نام تفصیلی شناور" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="nvarchar(256)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="256" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="256" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="Level" type="Int16" isValidated="True" description="شماره سطح که عمق این تفصیلی شناور را در ساختار درختی مشخص می کند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnLevel" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="Level" type="smallint" nullable="False" />
           <ColumnView name="Level" visible="True" width="120" />
-          <ValidationRule name="Level_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="Level_Validation" />
         </Property>
         <Property name="Description" type="String" isValidated="False" description="شرحی که اطلاعات تکمیلی برای این تفصیلی شناور را مشخص می کند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
-          <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
+          <ValidationRule required="False" minimum="0" maximum="512" format="" type="Length" name="Description_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -493,37 +552,37 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="DocumentID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="EntityId" type="Int32" isValidated="True" description="شناسه دیتابیسی موجودیت عملیاتی مرتبط با این مستند اداری" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnEntityId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="EntityID" type="int" nullable="False" />
           <ColumnView name="Entity Id" visible="True" width="120" />
-          <ValidationRule name="EntityId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="EntityId_Validation" />
         </Property>
         <Property name="TypeId" type="Int32" isValidated="True" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnTypeId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="TypeID" type="int" nullable="False" />
           <ColumnView name="Type Id" visible="True" width="120" />
-          <ValidationRule name="TypeId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="TypeId_Validation" />
         </Property>
         <Property name="No" type="String" isValidated="True" description="شماره یکتای مشخص کننده این مستند اداری" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDocumentNo" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="No" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Document No" visible="True" width="120" />
-          <ValidationRule name="DocumentNo_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="DocumentNo_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -537,43 +596,43 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="ActionID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="CreatedDate" type="DateTime" isValidated="True" description="تاریخ ایجاد مستند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpCreatedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="CreatedDate" type="datetime" nullable="False" />
           <ColumnView name="Created Date" visible="True" width="120" />
-          <ValidationRule name="CreatedDate_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="CreatedDate_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="تاریخ آخرین تغییر روی مستند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
         <Property name="ConfirmedDate" type="DateTime" isValidated="True" description="تاریخ تایید مستند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpConfirmedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ConfirmedDate" type="datetime" nullable="True" />
           <ColumnView name="Confirmed Date" visible="True" width="120" />
-          <ValidationRule name="ConfirmedDate_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="False" minimum="" maximum="" format="" type="Value" name="ConfirmedDate_Validation" />
         </Property>
         <Property name="ApprovedDate" type="DateTime" isValidated="True" description="تاریخ تصویب مستند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpApprovedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ApprovedDate" type="datetime" nullable="True" />
           <ColumnView name="Approved Date" visible="True" width="120" />
-          <ValidationRule name="ApprovedDate_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="False" minimum="" maximum="" format="" type="Value" name="ApprovedDate_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="LineId" type="Int32" isValidated="True" description="شناسه دیتابیسی ردیف (آرتیکل) سند اداری مرتبط با مستند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnLineId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="LineId" type="int" nullable="True" />
           <ColumnView name="Line Id" visible="True" width="120" />
-          <ValidationRule name="LineId_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="LineId_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -590,25 +649,25 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="StatusID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="64" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations />
@@ -619,25 +678,25 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="TypeID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations />
@@ -648,43 +707,43 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="EntityID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="نام موجودیت به صورت غیر محلی شده - به زبان انگلیسی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="varchar(64)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="IsHierarchy" type="Boolean" isValidated="True" description="مشخص می کند که موجودیت ساختار سلسله مراتبی یا درختی دارد یا نه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="chkIsHierarchy" format="" type="CheckBox" bindingMember="Checked" />
           <PropertyStorage name="IsHierarchy" type="bit" nullable="False" />
           <ColumnView name="Is Hierarchy" visible="True" width="120" />
-          <ValidationRule name="IsHierarchy_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="IsHierarchy_Validation" />
         </Property>
         <Property name="IsCartableIntegrated" type="Boolean" isValidated="True" description="مشخص می کند که موجودیت امکان تعامل با کارتابل را دارد یا نه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="chkIsCartableIntegrated" format="" type="CheckBox" bindingMember="Checked" />
           <PropertyStorage name="IsCartableIntegrated" type="bit" nullable="False" />
           <ColumnView name="Is Cartable Integrated" visible="True" width="120" />
-          <ValidationRule name="IsCartableIntegrated_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="IsCartableIntegrated_Validation" />
         </Property>
         <Property name="FetchUrl" type="String" isValidated="True" description="آدرس مورد نیاز برای خواندن رکوردهای موجودیت از سرویس وب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtFetchUrl" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="FetchUrl" type="nvarchar(512)" nullable="False" />
           <ColumnView name="Fetch Url" visible="True" width="120" />
-          <ValidationRule name="FetchUrl_Validation" required="True" minimum="" maximum="512" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="512" format="" type="Length" name="FetchUrl_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -697,43 +756,43 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="FiscalPeriodID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="Name of this fiscal period" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="64" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="StartDate" type="DateTime" isValidated="True" description="Date when business activities of this period starts" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpStartDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="StartDate" type="datetime" nullable="False" />
           <ColumnView name="Start Date" visible="True" width="120" />
-          <ValidationRule name="StartDate_Validation" required="True" minimum="" maximum="" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="yyyy-MM-dd" type="Value" name="StartDate_Validation" />
         </Property>
         <Property name="EndDate" type="DateTime" isValidated="True" description="Date when business activities of this period ends" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpEndDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="EndDate" type="datetime" nullable="False" />
           <ColumnView name="End Date" visible="True" width="120" />
-          <ValidationRule name="EndDate_Validation" required="True" minimum="" maximum="" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="yyyy-MM-dd" type="Value" name="EndDate_Validation" />
         </Property>
         <Property name="Description" type="String" isValidated="True" description="Detail information related to this fiscal period" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
-          <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
+          <ValidationRule required="False" minimum="0" maximum="512" format="" type="Length" name="Description_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -746,31 +805,31 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="LocaleID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="نام زبان به صورت غیر محلی شده - به زبان انگلیسی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="varchar(64)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="LocalName" type="String" isValidated="True" description="نام زبان به صورت محلی شده" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtLocalName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="LocalName" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Local Name" visible="True" width="120" />
-          <ValidationRule name="LocalName_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="LocalName_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations />
@@ -781,31 +840,31 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="LocalTextID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="ResourceId" type="String" isValidated="True" description="شناسه یکتای متن محلی شده - به زبان انگلیسی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtResourceId" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="ResourceId" type="varchar(128)" nullable="False" />
           <ColumnView name="Resource Id" visible="True" width="120" />
-          <ValidationRule name="ResourceId_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="128" format="" type="Length" name="ResourceId_Validation" />
         </Property>
         <Property name="Text" type="String" isValidated="True" description="متن محلی شده" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtText" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Text" type="nvarchar(1024)" nullable="False" />
           <ColumnView name="Text" visible="True" width="120" />
-          <ValidationRule name="Text_Validation" required="True" minimum="" maximum="1024" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="1024" format="" type="Length" name="Text_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -818,79 +877,79 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="OperationLogID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Date" type="DateTime" isValidated="True" description="تاریخ انجام عملیات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="Date" type="datetime" nullable="False" />
           <ColumnView name="Date" visible="True" width="120" />
-          <ValidationRule name="Date_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="Date_Validation" />
         </Property>
         <Property name="Time" type="TimeSpan" isValidated="True" description="زمان انجام عملیات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpTime" format="" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="Time" type="time(7)" nullable="False" />
           <ColumnView name="Time" visible="True" width="120" />
-          <ValidationRule name="Time_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="Time_Validation" />
         </Property>
         <Property name="View" type="String" isValidated="True" description="نام نمای اطلاعاتی مورد استفاده در عملیات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtView" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="View" type="nvarchar(64)" nullable="False" />
           <ColumnView name="View" visible="True" width="120" />
-          <ValidationRule name="View_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="View_Validation" />
         </Property>
         <Property name="Action" type="String" isValidated="True" description="نوع عملیات انجام شده" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtAction" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Action" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Action" visible="True" width="120" />
-          <ValidationRule name="Action_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="Action_Validation" />
         </Property>
         <Property name="Succeeded" type="Boolean" isValidated="True" description="مشخص می کند که عملیات انجام شده موفقیت آمیز بوده یا نه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="chkSucceeded" format="" type="CheckBox" bindingMember="Checked" />
           <PropertyStorage name="Succeeded" type="bit" nullable="False" />
           <ColumnView name="Succeeded" visible="True" width="120" />
-          <ValidationRule name="Succeeded_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="Succeeded_Validation" />
         </Property>
         <Property name="FailReason" type="String" isValidated="True" description="متن خطای ایجاد شده حین عملیات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtFailReason" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="FailReason" type="nvarchar(1024)" nullable="True" />
           <ColumnView name="Fail Reason" visible="True" width="120" />
-          <ValidationRule name="FailReason_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="1024" format="" type="Length" name="FailReason_Validation" />
         </Property>
         <Property name="BeforeState" type="String" isValidated="True" description="وضعیت اطلاعات پیش از انجام عملیات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtBeforeState" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="BeforeState" type="nvarchar(1024)" nullable="True" />
           <ColumnView name="Before State" visible="True" width="120" />
-          <ValidationRule name="BeforeState_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="1024" format="" type="Length" name="BeforeState_Validation" />
         </Property>
         <Property name="AfterState" type="String" isValidated="True" description="وضعیت اطلاعات پس از انجام عملیات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtAfterState" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="AfterState" type="nvarchar(1024)" nullable="True" />
           <ColumnView name="After State" visible="True" width="120" />
-          <ValidationRule name="AfterState_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="1024" format="" type="Length" name="AfterState_Validation" />
         </Property>
         <Property name="FiscalPeriodId" type="Int32" isValidated="True" description="شناسه دوره مالی فعال در برنامه هنگام انجام عملیات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnFiscalPeriodId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="FiscalPeriodId" type="int" nullable="False" />
           <ColumnView name="Fiscal Period Id" visible="True" width="120" />
-          <ValidationRule name="FiscalPeriodId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="FiscalPeriodId_Validation" />
         </Property>
         <Property name="BranchId" type="Int32" isValidated="True" description="شناسه شعبه سازمانی فعال در برنامه هنگام انجام عملیات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnBranchId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="BranchId" type="int" nullable="False" />
           <ColumnView name="Branch Id" visible="True" width="120" />
-          <ValidationRule name="BranchId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="BranchId_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -904,37 +963,37 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="PermissionID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="Name of this permission" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="nvarchar(128)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="0" maximum="128" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="128" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="Flag" type="Int32" isValidated="True" description="Numerical code that identifies a secure operation that this permission represents" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnFlag" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="Flag" type="int" nullable="False" />
           <ColumnView name="Flag" visible="True" width="120" />
-          <ValidationRule name="Flag_Validation" required="True" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="True" minimum="0" maximum="2147483647" format="" type="Value" name="Flag_Validation" />
         </Property>
         <Property name="Description" type="String" isValidated="True" description="Detail information related to this permission" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
-          <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
+          <ValidationRule required="False" minimum="0" maximum="512" format="" type="Length" name="Description_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -947,37 +1006,37 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="PermissionGroupID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="Name of this permission group" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="64" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="EntityName" type="String" isValidated="True" description="Name of an application-defined entity that permissions in this group protect" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtEntityName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="EntityName" type="nvarchar(64)" nullable="True" />
           <ColumnView name="Entity Name" visible="True" width="120" />
-          <ValidationRule name="EntityName_Validation" required="False" minimum="0" maximum="64" format="" type="Length" />
+          <ValidationRule required="False" minimum="0" maximum="64" format="" type="Length" name="EntityName_Validation" />
         </Property>
         <Property name="Description" type="String" isValidated="True" description="Detail information related to this permission group" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
-          <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
+          <ValidationRule required="False" minimum="0" maximum="512" format="" type="Length" name="Description_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -990,31 +1049,31 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="PersonID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="FirstName" type="String" isValidated="True" description="First name of this person" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtFirstName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="FirstName" type="nvarchar(64)" nullable="False" />
           <ColumnView name="First Name" visible="True" width="120" />
-          <ValidationRule name="FirstName_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="64" format="" type="Length" name="FirstName_Validation" />
         </Property>
         <Property name="LastName" type="String" isValidated="True" description="Last name of this person" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtLastName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="LastName" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Last Name" visible="True" width="120" />
-          <ValidationRule name="LastName_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="64" format="" type="Length" name="LastName_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -1027,55 +1086,55 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="ProjectID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="BranchScope" type="Int16" isValidated="True" description="محدوده دسترسی به پروژه را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل &quot;کلیه شعبه ها&quot; (مقدار 0)، &quot;شعبه جاری و زیرمجموعه ها&quot; (مقدار 1) و &quot;شعبه جاری&quot; (مقدار 2) می شود." clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnBranchScope" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="BranchScope" type="smallint" nullable="False" />
           <ColumnView name="Branch Scope" visible="True" width="120" />
-          <ValidationRule name="BranchScope_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="BranchScope_Validation" />
         </Property>
         <Property name="Code" type="String" isValidated="True" description="کد شناسایی برای سطح جاری پروژه در ساختار درختی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtCode" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Code" type="nvarchar(16)" nullable="False" />
           <ColumnView name="Code" visible="True" width="120" />
-          <ValidationRule name="Code_Validation" required="True" minimum="" maximum="16" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="16" format="" type="Length" name="Code_Validation" />
         </Property>
         <Property name="FullCode" type="String" isValidated="True" description="کد شناسایی کامل پروژه متشکل از کدهای تمام سطوح قبلی در ساختار درختی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtFullCode" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="FullCode" type="nvarchar(256)" nullable="False" />
           <ColumnView name="Full Code" visible="True" width="120" />
-          <ValidationRule name="FullCode_Validation" required="True" minimum="" maximum="256" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="256" format="" type="Length" name="FullCode_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="نام پروژه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="nvarchar(256)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="256" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="256" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="Level" type="Int16" isValidated="True" description="شماره سطح که عمق این پروژه را در ساختار درختی مشخص می کند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnLevel" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="Level" type="smallint" nullable="False" />
           <ColumnView name="Level" visible="True" width="120" />
-          <ValidationRule name="Level_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="Level_Validation" />
         </Property>
         <Property name="Description" type="String" isValidated="True" description="شرحی که اطلاعات تکمیلی برای این پروژه را مشخص می کند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
-          <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
+          <ValidationRule required="False" minimum="0" maximum="512" format="" type="Length" name="Description_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -1091,97 +1150,97 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="PropertyID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="نام ویژگی به صورت غیر محلی شده - به زبان انگلیسی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="varchar(64)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="Type" type="String" isValidated="True" description="نوع کاربردی ویژگی در برنامه مانند مقدار، مبلغ یا رفرنس" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtType" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Type" type="varchar(32)" nullable="True" />
           <ColumnView name="Type" visible="True" width="120" />
-          <ValidationRule name="Type_Validation" required="False" minimum="" maximum="32" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="32" format="" type="Length" name="Type_Validation" />
         </Property>
         <Property name="DotNetType" type="String" isValidated="True" description="نوع داده ای مورد استفاده در دات نت" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDotNetType" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="DotNetType" type="varchar(64)" nullable="False" />
           <ColumnView name="Data Type" visible="True" width="120" />
-          <ValidationRule name="DotNetType_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="DotNetType_Validation" />
         </Property>
         <Property name="StorageType" type="String" isValidated="True" description="نوع داده ای مورد استفاده در دیتابیس" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtStorageType" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="StorageType" type="varchar(32)" nullable="False" />
           <ColumnView name="Storage Type" visible="True" width="120" />
-          <ValidationRule name="StorageType_Validation" required="True" minimum="" maximum="32" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="32" format="" type="Length" name="StorageType_Validation" />
         </Property>
         <Property name="ScriptType" type="String" isValidated="True" description="نوع داده ای مورد استفاده در جاواسکریپت" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtScriptType" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="ScriptType" type="varchar(32)" nullable="False" />
           <ColumnView name="Script Type" visible="True" width="120" />
-          <ValidationRule name="ScriptType_Validation" required="True" minimum="" maximum="32" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="32" format="" type="Length" name="ScriptType_Validation" />
         </Property>
         <Property name="Length" type="Int32" isValidated="True" description="تعداد کاراکتر در ویژگی متنی - به طور پیش فرض مقدار صفر دارد و برای ویژگی های غیرمتنی کاربردی ندارد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnLength" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="Length" type="int" nullable="False" />
           <ColumnView name="Length" visible="True" width="120" />
-          <ValidationRule name="Length_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="Length_Validation" />
         </Property>
         <Property name="MinLength" type="Int32" isValidated="True" description="حداقل تعداد کاراکتر در ویژگی متنی - به طور پیش فرض مقدار صفر دارد و برای ویژگی های غیرمتنی کاربردی ندارد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnMinLength" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="MinLength" type="int" nullable="False" />
           <ColumnView name="Min Length" visible="True" width="120" />
-          <ValidationRule name="MinLength_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="MinLength_Validation" />
         </Property>
         <Property name="IsFixedLength" type="Boolean" isValidated="True" description="مشخص می کند که تعداد کاراکترها در یک ویژگی متنی ثابت است یا نه - به طور پیش فرض مقدار نادرست دارد و برای ویژگی های غیرمتنی کاربردی ندارد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="chkIsFixedLength" format="" type="CheckBox" bindingMember="Checked" />
           <PropertyStorage name="IsFixedLength" type="bit" nullable="False" />
           <ColumnView name="Is Fixed Length" visible="True" width="120" />
-          <ValidationRule name="IsFixedLength_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="IsFixedLength_Validation" />
         </Property>
         <Property name="IsNullable" type="Boolean" isValidated="True" description="مشخص می کند که وارد کردن مقدار برای ویژگی اجباری است یا نه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="chkIsNullable" format="" type="CheckBox" bindingMember="Checked" />
           <PropertyStorage name="IsNullable" type="bit" nullable="False" />
           <ColumnView name="Is Nullable" visible="True" width="120" />
-          <ValidationRule name="IsNullable_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="IsNullable_Validation" />
         </Property>
         <Property name="AllowSorting" type="Boolean" isValidated="True" description="مشخص می کند که آیا عمل مرتب سازی بر حسب مقادیر این ویژگی فعال هست یا نه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="chkAllowSorting" format="" type="CheckBox" bindingMember="Checked" />
           <PropertyStorage name="AllowSorting" type="bit" nullable="False" />
           <ColumnView name="Allow Sorting" visible="True" width="120" />
-          <ValidationRule name="AllowSorting_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="AllowSorting_Validation" />
         </Property>
         <Property name="AllowFiltering" type="Boolean" isValidated="True" description="مشخص می کند که آیا عمل فیلتر کردن بر حسب مقادیر این ویژگی فعال هست یا نه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="chkAllowFiltering" format="" type="CheckBox" bindingMember="Checked" />
           <PropertyStorage name="AllowFiltering" type="bit" nullable="False" />
           <ColumnView name="Allow Filtering" visible="True" width="120" />
-          <ValidationRule name="AllowFiltering_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="AllowFiltering_Validation" />
         </Property>
         <Property name="Expression" type="String" isValidated="True" description="عبارت مورد نیاز برای دسترسی به ویژگی در عبارات فیلتر" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtExpression" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Expression" type="varchar(64)" nullable="True" />
           <ColumnView name="Expression" visible="True" width="120" />
-          <ValidationRule name="Expression_Validation" required="False" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="64" format="" type="Length" name="Expression_Validation" />
         </Property>
         <Property name="Settings" type="String" isValidated="True" description="تنظیمات پیش فرض برای نمایش ویژگی به صورت یک ستون از نمای لیستی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtSettings" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Settings" type="nvarchar(1024)" nullable="True" />
           <ColumnView name="Settings" visible="True" width="120" />
-          <ValidationRule name="Settings_Validation" required="False" minimum="" maximum="1024" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="1024" format="" type="Length" name="Settings_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -1194,31 +1253,31 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="RoleID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="Name of this application role" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="64" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="Description" type="String" isValidated="True" description="Detail information related to this role" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
-          <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
+          <ValidationRule required="False" minimum="0" maximum="512" format="" type="Length" name="Description_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -1233,67 +1292,67 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="SettingID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Subsystem" type="String" isValidated="True" description="نام زیرسیستم مورد نیاز برای تنظیمات - مورد استفاده در تنظیمات خاص یک زیرسیستم" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtSubsystem" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Subsystem" type="varchar(32)" nullable="True" />
           <ColumnView name="Subsystem" visible="True" width="120" />
-          <ValidationRule name="Subsystem_Validation" required="False" minimum="" maximum="32" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="32" format="" type="Length" name="Subsystem_Validation" />
         </Property>
         <Property name="TitleKey" type="String" isValidated="True" description="شناسه متن چندزبانه برای عنوان تنظیمات در واسط کاربری" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtTitleKey" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="TitleKey" type="nvarchar(128)" nullable="False" />
           <ColumnView name="Title Key" visible="True" width="120" />
-          <ValidationRule name="TitleKey_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="128" format="" type="Length" name="TitleKey_Validation" />
         </Property>
         <Property name="Type" type="Int16" isValidated="True" description="نوع تنظیمات که مشخص کننده سطح دسترسی برای مدیریت و تغییر تنظیمات است" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnType" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="Type" type="smallint" nullable="False" />
           <ColumnView name="Type" visible="True" width="120" />
-          <ValidationRule name="Type_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="Type_Validation" />
         </Property>
         <Property name="ScopeType" type="Int16" isValidated="True" description="سطح اعمال تنظیمات در برنامه که می تواند سراسری، در سطح زیرسیستم و یا در سطح موجودیت تعریف شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnScopeType" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="ScopeType" type="smallint" nullable="False" />
           <ColumnView name="Scope Type" visible="True" width="120" />
-          <ValidationRule name="ScopeType_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="ScopeType_Validation" />
         </Property>
         <Property name="ModelType" type="String" isValidated="True" description="نوع کلاس مدل مورد استفاده برای نگهداری مقادیر تنظیمات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtModelType" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="ModelType" type="varchar(128)" nullable="False" />
           <ColumnView name="Model Type" visible="True" width="120" />
-          <ValidationRule name="ModelType_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="128" format="" type="Length" name="ModelType_Validation" />
         </Property>
         <Property name="Values" type="String" isValidated="True" description="ریز اطلاعات تنظیمات که با فرمت مشخصی ذخیره و بازیابی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtValues" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Values" type="nvarchar(2048)" nullable="False" />
           <ColumnView name="Values" visible="True" width="120" />
-          <ValidationRule name="Values_Validation" required="True" minimum="" maximum="2048" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="2048" format="" type="Length" name="Values_Validation" />
         </Property>
         <Property name="DefaultValues" type="String" isValidated="True" description="ریز اطلاعات تنظیمات پیش فرض که با فرمت مشخصی ذخیره و بازیابی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDefaultValues" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="DefaultValues" type="nvarchar(2048)" nullable="False" />
           <ColumnView name="Default Values" visible="True" width="120" />
-          <ValidationRule name="DefaultValues_Validation" required="True" minimum="" maximum="2048" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="2048" format="" type="Length" name="DefaultValues_Validation" />
         </Property>
         <Property name="DescriptionKey" type="String" isValidated="True" description="شناسه متن چندزبانه برای شرح تنظیمات در واسط کاربری" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescriptionKey" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="DescriptionKey" type="varchar(128)" nullable="True" />
           <ColumnView name="Description Key" visible="True" width="120" />
-          <ValidationRule name="DescriptionKey_Validation" required="False" minimum="" maximum="128" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="128" format="" type="Length" name="DescriptionKey_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -1306,49 +1365,49 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="VoucherID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="No" type="String" isValidated="True" description="شماره سند مالی که می تواند شامل اعداد و حروف باشد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtNo" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="No" type="nvarchar(64)" nullable="False" />
           <ColumnView name="No" visible="True" width="120" />
-          <ValidationRule name="No_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="64" format="" type="Length" name="No_Validation" />
         </Property>
         <Property name="Date" type="DateTime" isValidated="True" description="تاریخ وقوع پیشامد مالی در عملیات روزمره کسب و کار" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="Date" type="datetime" nullable="False" />
           <ColumnView name="Date" visible="True" width="120" />
-          <ValidationRule name="Date_Validation" required="True" minimum="" maximum="" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="yyyy-MM-dd" type="Value" name="Date_Validation" />
         </Property>
         <Property name="Reference" type="String" isValidated="True" description="رفرنس سند عملیاتی که می تواند به عنوان مرجع بین اسناد عملیاتی مرتبط مورد استفاده قرار گیرد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtReference" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Reference" type="nvarchar(64)" nullable="True" />
           <ColumnView name="Reference" visible="True" width="120" />
-          <ValidationRule name="Reference_Validation" required="False" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="64" format="" type="Length" name="Reference_Validation" />
         </Property>
         <Property name="StatusId" type="Int32" isValidated="True" description="شناسه دیتابیسی وضعیت ثبتی این سند مالی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnStatusId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="StatusID" type="int" nullable="False" />
           <ColumnView name="Status Id" visible="True" width="120" />
-          <ValidationRule name="StatusId_Validation" required="True" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="True" minimum="0" maximum="2147483647" format="" type="Value" name="StatusId_Validation" />
         </Property>
         <Property name="Description" type="String" isValidated="True" description="شرح سند مالی که جزئیات بیشتری را در مورد پیشامد مالی ارائه می دهد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
-          <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
+          <ValidationRule required="False" minimum="0" maximum="512" format="" type="Length" name="Description_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -1365,37 +1424,37 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="LineID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Description" type="String" isValidated="True" description="شرح آرتیکل سند مالی برای قرار دادن اطلاعات تکمیلی مرتبط با این بخش" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDescription" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Description" type="nvarchar(512)" nullable="True" />
           <ColumnView name="Description" visible="True" width="120" />
-          <ValidationRule name="Description_Validation" required="False" minimum="0" maximum="512" format="" type="Length" />
+          <ValidationRule required="False" minimum="0" maximum="512" format="" type="Length" name="Description_Validation" />
         </Property>
         <Property name="Debit" type="Decimal" isValidated="False" description="مبلغ بدهکار برای این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDebit" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Debit" type="money" nullable="False" />
           <ColumnView name="Debit" visible="True" width="120" />
-          <ValidationRule name="Debit_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="Debit_Validation" />
         </Property>
         <Property name="Credit" type="Decimal" isValidated="False" description="مبلغ بستانکار برای این آرتیکل مالی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtCredit" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Credit" type="money" nullable="False" />
           <ColumnView name="Credit" visible="True" width="120" />
-          <ValidationRule name="Credit_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="Credit_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -1415,43 +1474,43 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="UserID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="UserName" type="String" isValidated="True" description="Login name of this user" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtUserName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="UserName" type="nvarchar(64)" nullable="False" />
           <ColumnView name="User Name" visible="True" width="120" />
-          <ValidationRule name="UserName_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="64" format="" type="Length" name="UserName_Validation" />
         </Property>
         <Property name="PasswordHash" type="String" isValidated="True" description="Calculated hash value of this user's password as a hexadecimal string" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtPasswordHash" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="PasswordHash" type="varchar(256)" nullable="False" />
           <ColumnView name="Password Hash" visible="True" width="120" />
-          <ValidationRule name="PasswordHash_Validation" required="True" minimum="0" maximum="256" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="256" format="" type="Length" name="PasswordHash_Validation" />
         </Property>
         <Property name="LastLoginDate" type="DateTime" isValidated="False" description="Date and time when this user last logged into the application" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpLastLoginDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="LastLoginDate" type="datetime" nullable="True" />
           <ColumnView name="Last Login Date" visible="True" width="120" />
-          <ValidationRule name="LastLoginDate_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="False" minimum="" maximum="" format="" type="Value" name="LastLoginDate_Validation" />
         </Property>
         <Property name="IsEnabled" type="Boolean" isValidated="True" description="Value that indicates if this user is enabled inside the application's security system" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="chkIsEnabled" format="" type="CheckBox" bindingMember="Checked" />
           <PropertyStorage name="IsEnabled" type="bit" nullable="False" />
           <ColumnView name="Is Enabled" visible="True" width="120" />
-          <ValidationRule name="IsEnabled_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="IsEnabled_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -1465,37 +1524,37 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="UserSettingID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="EntityViewId" type="Int32" isValidated="True" description="شناسه دیتابیسی متادیتای موجودیت قابل کنترل برای تنظیماتی که در سطح موجودیت هستند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnEntityViewId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="EntityViewId" type="int" nullable="True" />
           <ColumnView name="Entity View Id" visible="True" width="120" />
-          <ValidationRule name="EntityViewId_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="False" minimum="" maximum="" format="" type="Value" name="EntityViewId_Validation" />
         </Property>
         <Property name="ModelType" type="String" isValidated="True" description="نوع کلاس مدل مورد استفاده برای نگهداری مقادیر تنظیمات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtModelType" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="ModelType" type="varchar(128)" nullable="False" />
           <ColumnView name="Model Type" visible="True" width="120" />
-          <ValidationRule name="ModelType_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="128" format="" type="Length" name="ModelType_Validation" />
         </Property>
         <Property name="Values" type="String" isValidated="True" description="ریز اطلاعات تنظیمات که با فرمت مشخصی ذخیره و بازیابی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtValues" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Values" type="ntext" nullable="False" />
           <ColumnView name="Values" visible="True" width="120" />
-          <ValidationRule name="Values_Validation" required="True" minimum="" maximum="2048" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="2048" format="" type="Length" name="Values_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -1511,43 +1570,43 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="ViewID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Name" type="String" isValidated="True" description="نام موجودیت به صورت غیر محلی شده - به زبان انگلیسی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtName" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Name" type="varchar(64)" nullable="False" />
           <ColumnView name="Name" visible="True" width="120" />
-          <ValidationRule name="Name_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="Name_Validation" />
         </Property>
         <Property name="IsHierarchy" type="Boolean" isValidated="True" description="مشخص می کند که موجودیت ساختار سلسله مراتبی یا درختی دارد یا نه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="chkIsHierarchy" format="" type="CheckBox" bindingMember="Checked" />
           <PropertyStorage name="IsHierarchy" type="bit" nullable="False" />
           <ColumnView name="Is Hierarchy" visible="True" width="120" />
-          <ValidationRule name="IsHierarchy_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="IsHierarchy_Validation" />
         </Property>
         <Property name="IsCartableIntegrated" type="Boolean" isValidated="True" description="مشخص می کند که موجودیت امکان تعامل با کارتابل را دارد یا نه" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="chkIsCartableIntegrated" format="" type="CheckBox" bindingMember="Checked" />
           <PropertyStorage name="IsCartableIntegrated" type="bit" nullable="False" />
           <ColumnView name="Is Cartable Integrated" visible="True" width="120" />
-          <ValidationRule name="IsCartableIntegrated_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="IsCartableIntegrated_Validation" />
         </Property>
         <Property name="FetchUrl" type="String" isValidated="True" description="آدرس مورد نیاز برای خواندن رکوردهای موجودیت از سرویس وب" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtFetchUrl" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="FetchUrl" type="nvarchar(512)" nullable="False" />
           <ColumnView name="Fetch Url" visible="True" width="120" />
-          <ValidationRule name="FetchUrl_Validation" required="True" minimum="" maximum="512" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="512" format="" type="Length" name="FetchUrl_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -1560,49 +1619,49 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="RowPermissionID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="AccessMode" type="String" isValidated="True" description="روش محدودسازی سطرهای اطلاعاتی قابل دسترسی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtAccessMode" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="AccessMode" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Access Mode" visible="True" width="120" />
-          <ValidationRule name="AccessMode_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="AccessMode_Validation" />
         </Property>
         <Property name="Value" type="Double" isValidated="True" description="یک مقدار عددی صحیح یا اعشاری که برای محدود کردن بر اساس تعداد یا مبلغ قابل استفاده است" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtValue" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Value" type="float" nullable="True" />
           <ColumnView name="Value" visible="True" width="120" />
-          <ValidationRule name="Value_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="False" minimum="" maximum="" format="" type="Value" name="Value_Validation" />
         </Property>
         <Property name="Value2" type="Double" isValidated="True" description="مقدار عددی صحیح یا اعشاری اضافی برای تعیین سقف عددی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtValue2" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Value2" type="float" nullable="True" />
           <ColumnView name="Value2" visible="True" width="120" />
-          <ValidationRule name="Value2_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="False" minimum="" maximum="" format="" type="Value" name="Value2_Validation" />
         </Property>
         <Property name="TextValue" type="String" isValidated="True" description="یک متن آزاد که برای محدود کردن بر اساس رفرنس های مورد استفاده در سطرهای عملیاتی قابل استفاده است" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtTextValue" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="TextValue" type="nvarchar(64)" nullable="True" />
           <ColumnView name="Text Value" visible="True" width="120" />
-          <ValidationRule name="TextValue_Validation" required="False" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="64" format="" type="Length" name="TextValue_Validation" />
         </Property>
         <Property name="Items" type="String" isValidated="True" description="شناسه های دیتابیسی برای تعریف دقیق سطرهای قابل دسترسی، که با یک جداکننده از هم جدا شده اند" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtItems" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Items" type="nvarchar(2048)" nullable="True" />
           <ColumnView name="Items" visible="True" width="120" />
-          <ValidationRule name="Items_Validation" required="False" minimum="" maximum="2048" format="" type="Length" />
+          <ValidationRule required="False" minimum="" maximum="2048" format="" type="Length" name="Items_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -1616,49 +1675,49 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="ViewSettingID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="SettingId" type="Int32" isValidated="True" description="شناسه دیتابیسی اطلاعات عمومی تنظیمات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnSettingId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="SettingID" type="int" nullable="False" />
           <ColumnView name="Setting Id" visible="True" width="120" />
-          <ValidationRule name="SettingId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="SettingId_Validation" />
         </Property>
         <Property name="ViewId" type="Int32" isValidated="True" description="شناسه دیتابیسی متادیتای نمای اطلاعاتی مرتبط با این تنظیمات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnViewId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="ViewID" type="int" nullable="False" />
           <ColumnView name="View Id" visible="True" width="120" />
-          <ValidationRule name="ViewId_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="ViewId_Validation" />
         </Property>
         <Property name="ModelType" type="String" isValidated="True" description="نوع کلاس مدل مورد استفاده برای نگهداری مقادیر تنظیمات" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtModelType" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="ModelType" type="varchar(128)" nullable="False" />
           <ColumnView name="Model Type" visible="True" width="120" />
-          <ValidationRule name="ModelType_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="128" format="" type="Length" name="ModelType_Validation" />
         </Property>
         <Property name="Values" type="String" isValidated="True" description="ریز اطلاعات تنظیمات که با فرمت مشخصی ذخیره و بازیابی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtValues" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Values" type="ntext" nullable="False" />
           <ColumnView name="Values" visible="True" width="120" />
-          <ValidationRule name="Values_Validation" required="True" minimum="" maximum="" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Length" name="Values_Validation" />
         </Property>
         <Property name="DefaultValues" type="String" isValidated="True" description="ریز اطلاعات تنظیمات پیش فرض که با فرمت مشخصی ذخیره و بازیابی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDefaultValues" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="DefaultValues" type="ntext" nullable="False" />
           <ColumnView name="Default Values" visible="True" width="120" />
-          <ValidationRule name="DefaultValues_Validation" required="True" minimum="" maximum="" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Length" name="DefaultValues_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -1672,61 +1731,61 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="WorkItemID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Number" type="String" isValidated="True" description="شماره سری کار که می تواند شامل اعداد و حروف باشد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtNumber" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Number" type="nvarchar(16)" nullable="False" />
           <ColumnView name="Number" visible="True" width="120" />
-          <ValidationRule name="Number_Validation" required="True" minimum="0" maximum="16" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="16" format="" type="Length" name="Number_Validation" />
         </Property>
         <Property name="Date" type="DateTime" isValidated="False" description="تاریخ ایجاد کار که به صورت خودکار مقداردهی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="Date" type="datetime" nullable="False" />
           <ColumnView name="Date" visible="True" width="120" />
-          <ValidationRule name="Date_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="Date_Validation" />
         </Property>
         <Property name="Time" type="TimeSpan" isValidated="False" description="زمان ایجاد کار که به صورت خودکار مقداردهی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpTime" format="" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="Time" type="time(7)" nullable="False" />
           <ColumnView name="Time" visible="True" width="120" />
-          <ValidationRule name="Time_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="Time_Validation" />
         </Property>
         <Property name="Title" type="String" isValidated="True" description="عنوان یا موضوع کار که در چارچوب یک گردش کار به صورت خودکار مقداردهی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtTitle" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Title" type="nvarchar(128)" nullable="False" />
           <ColumnView name="Title" visible="True" width="120" />
-          <ValidationRule name="Title_Validation" required="True" minimum="0" maximum="128" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="128" format="" type="Length" name="Title_Validation" />
         </Property>
         <Property name="DocumentType" type="String" isValidated="False" description="نوع موجودیت مرتبط با کار" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDocumentType" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="DocumentType" type="varchar(128)" nullable="False" />
           <ColumnView name="Document Type" visible="True" width="120" />
-          <ValidationRule name="DocumentType_Validation" required="True" minimum="0" maximum="128" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="128" format="" type="Length" name="DocumentType_Validation" />
         </Property>
         <Property name="Action" type="String" isValidated="False" description="نوع اقدامی که این کار برای انجام آن ایجاد شده است" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtAction" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Action" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Action" visible="True" width="120" />
-          <ValidationRule name="Action_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="Action_Validation" />
         </Property>
         <Property name="Remarks" type="String" isValidated="True" description="توضیحات یا پاراف متنی مرتبط با کار که می تواند خالی باشد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRemarks" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Remarks" type="nvarchar(1024)" nullable="True" />
           <ColumnView name="Remarks" visible="True" width="120" />
-          <ValidationRule name="Remarks_Validation" required="False" minimum="0" maximum="1024" format="" type="Length" />
+          <ValidationRule required="False" minimum="0" maximum="1024" format="" type="Length" name="Remarks_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -1741,31 +1800,31 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="DocumentItemID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="DocumentId" type="Int32" isValidated="False" description="شناسه دیتابیسی موجودیت مرتبط با کار" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnDocumentID" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="DocumentID" type="int" nullable="False" />
           <ColumnView name="Document I D" visible="True" width="120" />
-          <ValidationRule name="DocumentID_Validation" required="True" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="True" minimum="0" maximum="2147483647" format="" type="Value" name="DocumentID_Validation" />
         </Property>
         <Property name="DocumentType" type="String" isValidated="False" description="نوع موجودیت مرتبط با کار" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDocumentType" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="DocumentType" type="varchar(128)" nullable="False" />
           <ColumnView name="Document Type" visible="True" width="120" />
-          <ValidationRule name="DocumentType_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="128" format="" type="Length" name="DocumentType_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>
@@ -1778,79 +1837,79 @@
           <PropertyView name="spnId" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="WorkItemHistoryID" type="int" nullable="False" />
           <ColumnView name="Id" visible="True" width="120" />
-          <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="False" minimum="0" maximum="2147483647" format="" type="Value" name="Id_Validation" />
         </Property>
         <Property name="Number" type="String" isValidated="True" description="شماره سری کار که می تواند شامل اعداد و حروف باشد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtNumber" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Number" type="nvarchar(16)" nullable="False" />
           <ColumnView name="Number" visible="True" width="120" />
-          <ValidationRule name="Number_Validation" required="True" minimum="0" maximum="16" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="16" format="" type="Length" name="Number_Validation" />
         </Property>
         <Property name="Date" type="DateTime" isValidated="False" description="تاریخ ایجاد کار که به صورت خودکار مقداردهی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="Date" type="datetime" nullable="False" />
           <ColumnView name="Date" visible="True" width="120" />
-          <ValidationRule name="Date_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="Date_Validation" />
         </Property>
         <Property name="Time" type="TimeSpan" isValidated="False" description="زمان ایجاد کار که به صورت خودکار مقداردهی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpTime" format="" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="Time" type="time(7)" nullable="False" />
           <ColumnView name="Time" visible="True" width="120" />
-          <ValidationRule name="Time_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="Time_Validation" />
         </Property>
         <Property name="Title" type="String" isValidated="True" description="عنوان یا موضوع کار که در چارچوب یک گردش کار به صورت خودکار مقداردهی می شود" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtTitle" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Title" type="nvarchar(128)" nullable="False" />
           <ColumnView name="Title" visible="True" width="120" />
-          <ValidationRule name="Title_Validation" required="True" minimum="0" maximum="128" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="128" format="" type="Length" name="Title_Validation" />
         </Property>
         <Property name="DocumentType" type="String" isValidated="False" description="نوع موجودیت مرتبط با کار" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtDocumentType" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="DocumentType" type="nvarchar(128)" nullable="False" />
           <ColumnView name="Document Type" visible="True" width="120" />
-          <ValidationRule name="DocumentType_Validation" required="True" minimum="0" maximum="128" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="128" format="" type="Length" name="DocumentType_Validation" />
         </Property>
         <Property name="DocumentId" type="Int32" isValidated="False" description="شناسه دیتابیسی موجودیت مرتبط با کار" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnDocumentID" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="DocumentID" type="int" nullable="False" />
           <ColumnView name="Document I D" visible="True" width="120" />
-          <ValidationRule name="DocumentID_Validation" required="True" minimum="0" maximum="2147483647" format="" type="Value" />
+          <ValidationRule required="True" minimum="0" maximum="2147483647" format="" type="Value" name="DocumentID_Validation" />
         </Property>
         <Property name="Status" type="String" isValidated="True" description="وضعیت ثبتی موجودیت عملیاتی" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtStatus" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Status" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Status" visible="True" width="120" />
-          <ValidationRule name="Status_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="64" format="" type="Length" name="Status_Validation" />
         </Property>
         <Property name="OperationalStatus" type="String" isValidated="True" description="وضعیت موجودیت عملیاتی در گردش کار (مقادیر ممکن عبارتند از : ایجاد شده، تنظیم شده، بررسی شده، تایید شده و تصویب شده)" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtOperationalStatus" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="OperationalStatus" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Operational Status" visible="True" width="120" />
-          <ValidationRule name="OperationalStatus_Validation" required="True" minimum="0" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="0" maximum="64" format="" type="Length" name="OperationalStatus_Validation" />
         </Property>
         <Property name="Action" type="String" isValidated="True" description="نوع اقدامی که در نتیجه این سابقه عملیاتی انجام شده است" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtAction" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Action" type="nvarchar(64)" nullable="False" />
           <ColumnView name="Action" visible="True" width="120" />
-          <ValidationRule name="Action_Validation" required="True" minimum="" maximum="64" format="" type="Length" />
+          <ValidationRule required="True" minimum="" maximum="64" format="" type="Length" name="Action_Validation" />
         </Property>
         <Property name="Remarks" type="String" isValidated="True" description="توضیحات یا پاراف متنی مرتبط با کار که می تواند خالی باشد" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRemarks" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="Remarks" type="nvarchar(1024)" nullable="True" />
           <ColumnView name="Remarks" visible="True" width="120" />
-          <ValidationRule name="Remarks_Validation" required="False" minimum="0" maximum="1024" format="" type="Length" />
+          <ValidationRule required="False" minimum="0" maximum="1024" format="" type="Length" name="Remarks_Validation" />
         </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />
           <ColumnView name="Row Guid" visible="True" width="120" />
-          <ValidationRule name="RowGuid_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+          <ValidationRule required="True" minimum="" maximum="" format="" type="Value" name="RowGuid_Validation" />
         </Property>
         <Property name="ModifiedDate" type="DateTime" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="dtpModifiedDate" format="yyyy-MM-dd" type="DatePicker" bindingMember="Value" />
           <PropertyStorage name="ModifiedDate" type="datetime" nullable="False" />
           <ColumnView name="Modified Date" visible="True" width="120" />
-          <ValidationRule name="ModifiedDate_Validation" required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" />
+          <ValidationRule required="True" minimum="1900-01-01" maximum="9999-12-31" format="yyyy-MM-dd" type="Value" name="ModifiedDate_Validation" />
         </Property>
       </Properties>
       <Relations>

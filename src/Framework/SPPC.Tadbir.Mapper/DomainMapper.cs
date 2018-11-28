@@ -146,6 +146,9 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapFinanceTypes(IMapperConfigurationExpression mapperConfig)
         {
+            mapperConfig.CreateMap<AccountGroup, AccountGroupViewModel>();
+            mapperConfig.CreateMap<AccountGroupViewModel, AccountGroup>();
+
             mapperConfig.CreateMap<Account, AccountViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));
             mapperConfig.CreateMap<Account, AccountItemBriefViewModel>()
