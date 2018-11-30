@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
@@ -37,6 +39,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private void Localize(IList<VoucherSummaryViewModel> report)
         {
+            var now = DateTime.Now;
+            var languages = GetAcceptLanguages();
+            if (languages.StartsWith("fa"))
+            {
+                Array.ForEach(report.ToArray(),
+                    summary => summary.Date = JalaliDateTime
+                        .FromDateTime(now.Parse(summary.Date, false))
+                        .ToShortDateString());
+            }
+
+            Array.ForEach(report.ToArray(), summary =>
+            {
+                summary.BalanceStatus = _strings[summary.BalanceStatus];
+                summary.CheckStatus = _strings[summary.CheckStatus];
+                summary.Origin = _strings[summary.Origin];
+            });
         }
 
         private readonly IReportRepository _repository;

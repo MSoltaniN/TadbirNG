@@ -711,4 +711,13 @@
   <data name="CategorySales" xml:space="preserve">
     <value>فروش</value>
   </data>
+  <data name="Balanced" xml:space="preserve">
+    <value>تراز</value>
+  </data>
+  <data name="Unbalanced" xml:space="preserve">
+    <value>ناتراز</value>
+  </data>
+  <data name="UserVoucher" xml:space="preserve">
+    <value>سند عادی</value>
+  </data>
 </root>

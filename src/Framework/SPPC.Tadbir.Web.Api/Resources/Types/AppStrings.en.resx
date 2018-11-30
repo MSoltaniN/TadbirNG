@@ -711,4 +711,13 @@
   <data name="CategorySales" xml:space="preserve">
     <value>Sales</value>
   </data>
+  <data name="Balanced" xml:space="preserve">
+    <value>Balanced</value>
+  </data>
+  <data name="Unbalanced" xml:space="preserve">
+    <value>Unbalanced</value>
+  </data>
+  <data name="UserVoucher" xml:space="preserve">
+    <value>Manual</value>
+  </data>
 </root>

@@ -43,6 +43,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return result;
         }
 
+        protected string GetAcceptLanguages()
+        {
+            var acceptLanguages = "fa-IR,fa";
+            var header = Request.Headers["Accept-Language"];
+            if (!String.IsNullOrEmpty(header))
+            {
+                acceptLanguages = header;
+            }
+
+            return acceptLanguages;
+        }
+
         private SecurityContext GetSecurityContext()
         {
             var context = Request.Headers[AppConstants.ContextHeaderName];

@@ -33,7 +33,8 @@ namespace SPPC.Tadbir.Persistence
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
             var vouchers = await _repository
-                .GetAllOperationQuery<Voucher>(ViewName.Voucher, voucher => voucher.Lines)
+                .GetAllOperationQuery<Voucher>(
+                    ViewName.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
                 .Select(voucher => _mapper.Map<VoucherSummaryViewModel>(voucher))
                 .Apply(gridOptions)
                 .ToListAsync();
@@ -46,7 +47,7 @@ namespace SPPC.Tadbir.Persistence
             int count = await _repository
                 .GetAllOperationQuery<Voucher>(ViewName.Voucher, voucher => voucher.Lines)
                 .Select(voucher => _mapper.Map<VoucherSummaryViewModel>(voucher))
-                .Apply(gridOptions)
+                .Apply(gridOptions, false)
                 .CountAsync();
             return count;
         }
