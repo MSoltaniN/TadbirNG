@@ -66,5 +66,10 @@ namespace SPPC.Tadbir.ViewModel.Report
         /// ماخذ سند که در حال حاضر فقط مقدار سند عادی را در زبان جاری برنامه نمایش می دهد
         /// </summary>
         public string Origin { get; set; }
+
+        /// <summary>
+        /// شناسه دیتابیسی کاربر تنظیم کننده سند مالی
+        /// </summary>
+        public int PreparedById { get; set; }
     }
 }

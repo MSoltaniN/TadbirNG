@@ -211,7 +211,7 @@ namespace SPPC.Tadbir.Mapper
                     opts => opts.MapFrom(src => VoucherHelper.GetBalanceStatus(src)))
                 .ForMember(dest => dest.CheckStatus, opts => opts.MapFrom(src => src.Status.Name))
                 .ForMember(dest => dest.Origin, opts => opts.UseValue("UserVoucher"))
-                            ;
+                .ForMember(dest => dest.PreparedById, opts => opts.MapFrom(src => src.ModifiedById));
 
             mapperConfig.CreateMap<VoucherLine, VoucherLineViewModel>()
                 .ForMember(

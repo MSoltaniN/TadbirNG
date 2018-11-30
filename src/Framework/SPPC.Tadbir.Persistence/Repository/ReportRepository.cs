@@ -16,11 +16,14 @@ namespace SPPC.Tadbir.Persistence
 {
     public class ReportRepository : IReportRepository
     {
-        public ReportRepository(IAppUnitOfWork unitOfWork, IDomainMapper mapper, ISecureRepository repository)
+        public ReportRepository(
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, ISecureRepository repository,
+            ILookupRepository lookupRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _repository = repository;
+            _lookupRepository = lookupRepository;
         }
 
         public void SetCurrentContext(UserContextViewModel userContext)
@@ -32,12 +35,15 @@ namespace SPPC.Tadbir.Persistence
             GridOptions gridOptions)
         {
             Verify.ArgumentNotNull(gridOptions, nameof(gridOptions));
+            var userMap = await _lookupRepository.GetUserPersonsAsync();
             var vouchers = await _repository
                 .GetAllOperationQuery<Voucher>(
                     ViewName.Voucher, voucher => voucher.Lines, voucher => voucher.Status)
                 .Select(voucher => _mapper.Map<VoucherSummaryViewModel>(voucher))
                 .Apply(gridOptions)
                 .ToListAsync();
+            Array.ForEach(vouchers.ToArray(),
+                voucher => voucher.PreparedBy = userMap[voucher.PreparedById]);
             return vouchers;
         }
 
@@ -55,5 +61,6 @@ namespace SPPC.Tadbir.Persistence
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;
         private readonly ISecureRepository _repository;
+        private readonly ILookupRepository _lookupRepository;
     }
 }

@@ -292,6 +292,21 @@ namespace SPPC.Tadbir.Persistence
 
         #region Security Subsystem lookup
 
+        public async Task<IDictionary<int, string>> GetUserPersonsAsync()
+        {
+            var userPersons = new Dictionary<int, string>();
+            _unitOfWork.UseSystemContext();
+            var repository = _unitOfWork.GetAsyncRepository<User>();
+            var all = await repository
+                .GetEntityQuery(user => user.Person)
+                .Select(user => new KeyValuePair<int, string>(
+                    user.Id, String.Format("{0}، {1}", user.Person.LastName, user.Person.FirstName)))
+                .ToArrayAsync();
+            Array.ForEach(all, kv => userPersons.Add(kv.Key, kv.Value));
+            _unitOfWork.UseCompanyContext();
+            return userPersons;
+        }
+
         /// <summary>
         /// به روش آسنکرون، نقش های امنیتی تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>

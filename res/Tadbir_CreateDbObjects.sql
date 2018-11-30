@@ -92,6 +92,15 @@ CREATE TABLE [Finance].[AccountGroup] (
 )
 GO
 
+CREATE TABLE [Finance].[VoucherOrigin] (
+    [OriginID]       INT              IDENTITY (1, 1) NOT NULL,
+    [Name]           NVARCHAR(64)     NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Finance_VoucherOrigin_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_VoucherOrigin_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Finance_VoucherOrigin] PRIMARY KEY CLUSTERED ([OriginID] ASC)
+)
+GO
+
 CREATE TABLE [Corporate].[Branch] (
     [BranchID]       INT              IDENTITY (1, 1) NOT NULL,
 	[CompanyID]      INT              NOT NULL,
@@ -166,6 +175,8 @@ CREATE TABLE [Finance].[Voucher] (
 	[BranchID]          INT              NOT NULL,
     [DocumentID]        INT              NULL,
 	[StatusID]          INT              NOT NULL,
+    [CreatedByID]       INT              NOT NULL,
+    [ModifiedByID]      INT              NOT NULL,
     [No]                NVARCHAR(64)     NOT NULL,
     [Date]              DATETIME         NOT NULL,
     [Reference]         NVARCHAR(64)     NULL,
