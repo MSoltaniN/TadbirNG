@@ -7,7 +7,6 @@ lib/
 
 # Ignore generated files
 res/_codegen_
-doc/~$mplete-Workflow.docx
 .vs/
 /doc/Guides/روال پیاده سازی امکان جدید در سرویس وب.pptx
 /doc/Guides/meta-designer2.camrec
@@ -17,5 +16,4 @@ doc/~$mplete-Workflow.docx
 
 # Ignore this to enable developer-specific connection string for API service
 src/Framework/SPPC.Tadbir.Web.Api/appsettings.Development.json
-/doc/Planning/~$نامه ریزی همایش.docx
-/doc/Analysis/~$TahlilTadbirWeb.xlsx
+/doc/**/~$*

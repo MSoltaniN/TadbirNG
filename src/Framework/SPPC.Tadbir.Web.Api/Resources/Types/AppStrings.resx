@@ -685,30 +685,30 @@
     <value>گروه حساب</value>
   </data>
   <data name="CategoryAsset" xml:space="preserve">
-    <value />
+    <value>دارایی</value>
   </data>
   <data name="CategoryAssociation" xml:space="preserve">
-    <value />
+    <value>رابط</value>
   </data>
   <data name="CategoryCapital" xml:space="preserve">
-    <value />
+    <value>سرمایه</value>
   </data>
   <data name="CategoryCoordination" xml:space="preserve">
-    <value />
+    <value>انتظامی</value>
   </data>
   <data name="CategoryExpense" xml:space="preserve">
-    <value />
+    <value>هزینه</value>
   </data>
   <data name="CategoryIncome" xml:space="preserve">
-    <value />
+    <value>درآمد</value>
   </data>
   <data name="CategoryLiability" xml:space="preserve">
-    <value />
+    <value>بدهی</value>
   </data>
   <data name="CategoryPurchase" xml:space="preserve">
-    <value />
+    <value>خرید</value>
   </data>
   <data name="CategorySales" xml:space="preserve">
-    <value />
+    <value>فروش</value>
   </data>
 </root>

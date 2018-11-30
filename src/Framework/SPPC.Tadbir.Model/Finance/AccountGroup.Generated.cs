@@ -26,10 +26,8 @@ namespace SPPC.Tadbir.Model.Finance
         public AccountGroup()
         {
             Name = String.Empty;
-            NameEn = String.Empty;
             Category = String.Empty;
             Description = String.Empty;
-            DescriptionEn = String.Empty;
             ModifiedDate = DateTime.Now;
             InitReferences();
         }
@@ -38,11 +36,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// نام یا عنوان نمایشی گروه حساب به زبان پیش فرض برنامه
         /// </summary>
         public virtual string Name { get; set; }
-
-        /// <summary>
-        /// نام یا عنوان نمایشی گروه حساب به زبان انگلیسی
-        /// </summary>
-        public virtual string NameEn { get; set; }
 
         /// <summary>
         /// سیستم ثبت موجودی قابل استفاده برای این گروه
@@ -58,11 +51,6 @@ namespace SPPC.Tadbir.Model.Finance
         /// شرح یا ملاحظات گروه حساب به زبان پیش فرض برنامه
         /// </summary>
         public virtual string Description { get; set; }
-
-        /// <summary>
-        /// شرح یا ملاحظات گروه حساب به زبان انگلیسی
-        /// </summary>
-        public virtual string DescriptionEn { get; set; }
 
         private void InitReferences()
         {

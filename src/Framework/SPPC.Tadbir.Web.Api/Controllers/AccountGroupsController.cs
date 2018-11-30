@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
@@ -36,7 +35,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
             var accountGroups = await _repository.GetAccountGroupsAsync();
+            Localize(accountGroups);
             return Json(accountGroups);
+        }
+
+        private void Localize(IList<AccountGroupViewModel> accountGroups)
+        {
+            Array.ForEach(accountGroups.ToArray(), grp => grp.Category = _strings[grp.Category]);
         }
 
         private readonly IAccountGroupRepository _repository;

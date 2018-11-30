@@ -27,10 +27,8 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public AccountGroupViewModel()
         {
             Name = String.Empty;
-            NameEn = String.Empty;
             Category = String.Empty;
             Description = String.Empty;
-            DescriptionEn = String.Empty;
         }
 
         /// <summary>
@@ -46,12 +44,6 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public string Name { get; set; }
 
         /// <summary>
-        /// نام یا عنوان نمایشی گروه حساب به زبان انگلیسی
-        /// </summary>
-        [StringLength(64, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string NameEn { get; set; }
-
-        /// <summary>
         /// ماهیت گروه با توجه به مورد استفاده در گزارش های مالی 
         /// </summary>
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
@@ -63,11 +55,5 @@ namespace SPPC.Tadbir.ViewModel.Finance
         /// </summary>
         [StringLength(256, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Description { get; set; }
-
-        /// <summary>
-        /// شرح یا ملاحظات گروه حساب به زبان انگلیسی
-        /// </summary>
-        [StringLength(256, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
-        public string DescriptionEn { get; set; }
     }
 }

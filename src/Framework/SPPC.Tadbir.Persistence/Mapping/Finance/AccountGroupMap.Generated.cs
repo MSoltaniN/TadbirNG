@@ -28,16 +28,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(64);
-            builder.Property(e => e.NameEn)
-                .HasMaxLength(64);
             builder.Property(e => e.InventoryMode)
                 .IsRequired();
             builder.Property(e => e.Category)
                 .IsRequired()
                 .HasMaxLength(64);
             builder.Property(e => e.Description)
-                .HasMaxLength(256);
-            builder.Property(e => e.DescriptionEn)
                 .HasMaxLength(256);
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")

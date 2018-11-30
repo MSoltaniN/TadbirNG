@@ -685,30 +685,30 @@
     <value>Account group</value>
   </data>
   <data name="CategoryAsset" xml:space="preserve">
-    <value />
+    <value>Asset</value>
   </data>
   <data name="CategoryAssociation" xml:space="preserve">
-    <value />
+    <value>Association</value>
   </data>
   <data name="CategoryCapital" xml:space="preserve">
-    <value />
+    <value>Capital</value>
   </data>
   <data name="CategoryCoordination" xml:space="preserve">
-    <value />
+    <value>Coordination</value>
   </data>
   <data name="CategoryExpense" xml:space="preserve">
-    <value />
+    <value>Expense</value>
   </data>
   <data name="CategoryIncome" xml:space="preserve">
-    <value />
+    <value>Income</value>
   </data>
   <data name="CategoryLiability" xml:space="preserve">
-    <value />
+    <value>Liability</value>
   </data>
   <data name="CategoryPurchase" xml:space="preserve">
-    <value />
+    <value>Purchase</value>
   </data>
   <data name="CategorySales" xml:space="preserve">
-    <value />
+    <value>Sales</value>
   </data>
 </root>
