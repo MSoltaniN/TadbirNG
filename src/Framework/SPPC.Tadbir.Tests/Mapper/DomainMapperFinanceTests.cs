@@ -4,6 +4,7 @@ using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Report;
 
 namespace SPPC.Tadbir.Mapper.Tests
 {
@@ -415,6 +416,24 @@ namespace SPPC.Tadbir.Mapper.Tests
 
             // Act & Assert
             AssertMapperCanConvertFromSourceToDestination<Voucher, KeyValue>();
+        }
+
+        [Test]
+        public void ContainsMappingFromVoucherToVoucherSummaryViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMappingIsDefined<Voucher, VoucherSummaryViewModel>();
+        }
+
+        [Test]
+        public void CanMapFromVoucherToVoucherSummaryViewModel()
+        {
+            // Arrange (Done in FixtureSetup)
+
+            // Act & Assert
+            AssertMapperCanConvertFromSourceToDestination<Voucher, VoucherSummaryViewModel>();
         }
 
         #endregion // Voucher Mapping Tests

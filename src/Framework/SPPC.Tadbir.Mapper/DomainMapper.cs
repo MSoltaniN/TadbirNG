@@ -23,6 +23,7 @@ using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
+using SPPC.Tadbir.ViewModel.Report;
 using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Mapper
@@ -205,6 +206,7 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.Value,
                     opts => opts.MapFrom(
                         src => String.Join(",", new[] { "VoucherDisplay", src.No, src.Date.ToShortDateString() })));
+            mapperConfig.CreateMap<Voucher, VoucherSummaryViewModel>();
 
             mapperConfig.CreateMap<VoucherLine, VoucherLineViewModel>()
                 .ForMember(
