@@ -14,5 +14,7 @@ namespace SPPC.Tadbir.Persistence
         Task<IList<VoucherSummaryViewModel>> GetVoucherSummaryByDateReportAsync(GridOptions gridOptions);
 
         Task<int> GetVoucherSummaryByDateCountAsync(GridOptions gridOptions);
+
+        Task<StandardVoucherViewModel> GetStandardVoucherFormAsync(int voucherId);
     }
 }

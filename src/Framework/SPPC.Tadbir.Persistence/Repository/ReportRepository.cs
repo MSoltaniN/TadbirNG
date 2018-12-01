@@ -58,6 +58,103 @@ namespace SPPC.Tadbir.Persistence
             return count;
         }
 
+        public async Task<StandardVoucherViewModel> GetStandardVoucherFormAsync(int voucherId)
+        {
+            var standardForm = default(StandardVoucherViewModel);
+            var repository = _unitOfWork.GetAsyncRepository<Voucher>();
+            var voucher = await repository
+                .GetEntityQuery()
+                .Include(v => v.Lines)
+                    .ThenInclude(vl => vl.Account)
+                        .ThenInclude(acc => acc.Parent)
+                            .ThenInclude(acc => acc.Parent)
+                .Where(v => v.Id == voucherId)
+                .FirstOrDefaultAsync();
+            if (voucher != null)
+            {
+                standardForm = _mapper.Map<StandardVoucherViewModel>(voucher);
+                var lineItems = new List<StandardVoucherLineViewModel>();
+                foreach (var line in voucher.Lines)
+                {
+                    lineItems.Add(new StandardVoucherLineViewModel()
+                    {
+                        AccountFullCode = String.Empty,
+                        Description = line.Description,
+                        PartialAmount = Math.Max(line.Debit, line.Credit)
+                    });
+                    AddGeneralStandardLineItems(line, lineItems);
+                    AddAuxiliaryStandardLineItems(line, lineItems);
+                    AddDetailStandardLineItems(line, lineItems);
+
+                    lineItems.Reverse();
+                    standardForm.Lines.AddRange(lineItems);
+                    lineItems.Clear();
+                }
+            }
+
+            return standardForm;
+        }
+
+        private static void AddGeneralStandardLineItems(
+            VoucherLine line, IList<StandardVoucherLineViewModel> lineItems)
+        {
+            if (line.Account.Level == 0)
+            {
+                lineItems.Add(new StandardVoucherLineViewModel()
+                {
+                    AccountFullCode = line.Account.FullCode,
+                    Description = line.Account.Name,
+                    Debit = line.Debit,
+                    Credit = line.Credit
+                });
+            }
+        }
+
+        private static void AddAuxiliaryStandardLineItems(
+            VoucherLine line, IList<StandardVoucherLineViewModel> lineItems)
+        {
+            if (line.Account.Level == 1)
+            {
+                lineItems.Add(new StandardVoucherLineViewModel()
+                {
+                    AccountFullCode = line.Account.FullCode,
+                    Description = line.Account.Name
+                });
+                lineItems.Add(new StandardVoucherLineViewModel()
+                {
+                    AccountFullCode = line.Account.Parent.FullCode,
+                    Description = line.Account.Parent.Name,
+                    Debit = line.Debit,
+                    Credit = line.Credit
+                });
+            }
+        }
+
+        private static void AddDetailStandardLineItems(
+            VoucherLine line, IList<StandardVoucherLineViewModel> lineItems)
+        {
+            if (line.Account.Level == 2)
+            {
+                lineItems.Add(new StandardVoucherLineViewModel()
+                {
+                    AccountFullCode = line.Account.FullCode,
+                    Description = line.Account.Name
+                });
+                lineItems.Add(new StandardVoucherLineViewModel()
+                {
+                    AccountFullCode = line.Account.Parent.FullCode,
+                    Description = line.Account.Parent.Name
+                });
+                lineItems.Add(new StandardVoucherLineViewModel()
+                {
+                    AccountFullCode = line.Account.Parent.Parent.FullCode,
+                    Description = line.Account.Parent.Parent.Name,
+                    Debit = line.Debit,
+                    Credit = line.Credit
+                });
+            }
+        }
+
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;
         private readonly ISecureRepository _repository;
