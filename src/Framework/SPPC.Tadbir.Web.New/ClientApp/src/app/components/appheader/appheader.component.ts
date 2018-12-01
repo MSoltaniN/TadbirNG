@@ -79,24 +79,24 @@ export class AppheaderComponent implements OnInit {
     }
 
 
-    let menus: any;
+    let profileMenus: any;
     if (this.authenticationService.isRememberMe())
-        menus = localStorage.getItem(SessionKeys.Menu);
+        profileMenus = localStorage.getItem(SessionKeys.Profile);
     else
-        menus = sessionStorage.getItem(SessionKeys.Menu);
+        profileMenus = sessionStorage.getItem(SessionKeys.Profile);
 
     
-    if(menus)
-        this.menuList = JSON.parse(menus);
-
-        for (let parent of this.menuList) {
-          if (parent.id == 15)
-          {
-              this.profileItems = new Array<Command>();
-              for (let item of parent.children) {
-                  this.profileItems.push(item);
-              }
-          }
+    if(profileMenus)
+        this.menuList = JSON.parse(profileMenus);
+        this.profileItems = new Array<Command>();
+        for (let item of this.menuList) {
+          // if (parent.id == 15)
+          // {
+              
+              //for (let item of parent.children) {
+              this.profileItems.push(item);
+            //}
+          //}
       }
 
   }

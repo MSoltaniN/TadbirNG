@@ -66,6 +66,11 @@
     "Deleted": "{0} deleted successfully",
     "DeleteConfirm": "are you sure to delete {0} ?"
   },
+  "Report":
+  {
+    "ReportViewer": "Report Viewer"
+  }
+  ,
   "Buttons": {
     "Ok": "Ok",
     "Cancel": "Cancel",

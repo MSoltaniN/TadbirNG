@@ -99,4 +99,30 @@ export class UserService extends BaseService {
 
     }
 
+    getDefaultUserCommands(ticket : string) {
+
+        var url = UserApi.UserDefaultCommands;
+
+        var header = this.httpHeaders;
+        if (header) {
+            header = header.delete('X-Tadbir-AuthTicket');
+            header = header.delete('Accept-Language');
+
+            header = header.append('X-Tadbir-AuthTicket', ticket);         
+
+           if (this.CurrentLanguage == "fa")
+               header = header.append('Accept-Language', 'fa-IR,fa');
+
+           if (this.CurrentLanguage == "en")                
+               header = header.append('Accept-Language', 'en-US,en');
+
+        }
+
+        var options = { headers: header };
+        
+        return this.http.get(url, options)
+            .map(response => <any>(<Response>response));
+
+    }
+
 }

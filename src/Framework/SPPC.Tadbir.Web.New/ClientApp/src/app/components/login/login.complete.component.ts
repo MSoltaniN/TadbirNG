@@ -246,7 +246,7 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
             else {
                 sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(res));
                 sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
-            }                
+            }                        
 
             this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
                 if (this.authenticationService.isRememberMe())
@@ -271,6 +271,22 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
             }
 
         });
+
+        this.userService.getDefaultUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
+            var list: Array<Command> = res;
+            
+            if (this.authenticationService.isRememberMe()) {
+                localStorage.setItem(SessionKeys.Profile, JSON.stringify(res));                
+            }
+            else {
+                sessionStorage.setItem(SessionKeys.Profile, JSON.stringify(res));                
+            }       
+
+        });
+
+        
+
+        
 
         //#endregion
     }

@@ -15,13 +15,15 @@ import { Filter } from "../../class/filter";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
-import { VoucherApi } from '../../service/api/index';
+import { VoucherApi, VoucherReportApi } from '../../service/api/index';
 import { SecureEntity } from '../../security/secureEntity';
 import { VoucherPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
 import { DocumentStatusValue } from '../../enum/documentStatusValue';
 import { Http } from '@angular/http';
 import { ReportViewerComponent } from '../reportViewer/reportViewer.component';
+import { VoucherReportingService } from '../../service/report/voucher-reporting.service';
+
 
 
 export function getLayoutModule(layout: Layout) {
@@ -137,7 +139,12 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
   public showReport()
   {
-      this.viewer.showReport('reports/test.mrt',this.rowData.data);
+      this.reporingService.getAll(VoucherReportApi.VoucherSumReport,
+        this.currentOrder,this.currentFilter).subscribe((response: any) => {
+          var reportData = response.body;
+          this.viewer.showReport('reports/voucher/test.mrt',reportData);
+        });
+      
   }
 
   public saveHandler(model: Voucher) {
@@ -215,7 +222,8 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   constructor(public toastrService: ToastrService, public translate: TranslateService,
      public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
     private voucherService: VoucherService, public renderer: Renderer2,
-     public metadata: MetaDataService, public settingService: SettingService) {
+     public metadata: MetaDataService, public settingService: SettingService,
+     public reporingService:VoucherReportingService) {
     super(toastrService, translate, renderer, metadata, settingService, Entities.Voucher, Metadatas.Voucher);
   }
   //#endregion

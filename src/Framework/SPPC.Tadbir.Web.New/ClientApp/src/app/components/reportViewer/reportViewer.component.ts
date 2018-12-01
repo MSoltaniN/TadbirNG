@@ -44,8 +44,10 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
    super(toastrService, translate, renderer, metadata, settingService, Entities.Voucher, Metadatas.Voucher);
  }
   
+  innerWidth : number;
 
   ngOnInit() {
+    this.innerWidth = window.innerWidth;
   }
 
   closeForm()
@@ -66,6 +68,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       console.log('Load report from url');
       this.report.load(data._body);
       this.report.regData("Vouchers", "", rows);
+      this.report.render();
       this.viewer.report = this.report;
       
       console.log('Rendering the viewer to selected element');

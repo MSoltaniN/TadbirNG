@@ -1,6 +1,6 @@
-<kendo-dialog *ngIf="active"  (close)="closeForm()">
+<kendo-dialog *ngIf="active" [minWidth]="400" [width]="innerWidth"  (close)="closeForm()" >
     <kendo-dialog-titlebar>
-        نمایشگر گزارش
+        {{ 'Report.ReportViewer' | translate }}
     </kendo-dialog-titlebar>
 <div id='viewer' 
     [ngClass]="{'repLtr':this.currentlang === 'fa' , 'repRtl': this.currentlang === 'en'}">

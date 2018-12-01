@@ -66,7 +66,8 @@ export const ColumnVisibility =
 
 export const SessionKeys = {
   Menu: 'menu',
-  Setting: 'setting',
+  Profile : 'profile',
+  Setting: 'setting',  
   LastUserBranch: 'lastUserBranch',
   LastUserFpId: 'lastUserFpId',
   CurrentRoute: 'currentRoute',
