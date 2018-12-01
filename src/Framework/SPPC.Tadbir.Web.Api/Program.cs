@@ -14,10 +14,12 @@ namespace SPPC.Tadbir.Web.Api
         public static void Main(string[] args)
         {
             var builder = new FilterExpressionBuilder();
-            var gridOptions = new GridOptions() { Paging = new GridPaging() { PageIndex = 1, PageSize = 5 } };
-            var nameLike = new GridFilter() { FieldName = "Value", FieldTypeName = "System.String", Operator = GridFilterOperator.Contains, Value = "حساب" };
+            var gridOptions = new GridOptions();
+            var dateFrom = new GridFilter() { FieldName = "Date", FieldTypeName = "System.DateTime", Operator = GridFilterOperator.IsGreaterOrEqualTo, Value = "2016-03-21" };
+            var dateTo = new GridFilter() { FieldName = "Date", FieldTypeName = "System.DateTime", Operator = GridFilterOperator.IsLessOrEqualTo, Value = "2017-03-21" };
             gridOptions.Filter = builder
-                .New(nameLike)
+                .New(dateFrom)
+                .And(dateTo)
                 .Build();
             ////gridOptions.SortColumns.Add(new GridOrderBy() { FieldName = "Id", Direction = "DESC" });
             var json = JsonHelper.From(gridOptions, false);

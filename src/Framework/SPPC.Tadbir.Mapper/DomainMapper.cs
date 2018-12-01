@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Helpers;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Service.Security;
 using SPPC.Tadbir.Configuration;
 using SPPC.Tadbir.Configuration.Models;
+using SPPC.Tadbir.Mapper.ModelHelpers;
 using SPPC.Tadbir.Model.Auth;
 using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Core;
@@ -23,6 +25,7 @@ using SPPC.Tadbir.ViewModel.Core;
 using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
+using SPPC.Tadbir.ViewModel.Report;
 using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Mapper
@@ -186,18 +189,8 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => String.Format("{0} ({1})", src.Name, src.FullCode)));
 
             mapperConfig.CreateMap<Voucher, VoucherViewModel>()
-                .ForMember(
-                    dest => dest.DebitSum,
-                    opts => opts.MapFrom(
-                        src => src.Lines
-                            .Select(line => line.Debit)
-                            .Sum()))
-                .ForMember(
-                    dest => dest.CreditSum,
-                    opts => opts.MapFrom(
-                        src => src.Lines
-                            .Select(line => line.Credit)
-                            .Sum()));
+                .ForMember(dest => dest.DebitSum, opts => opts.MapFrom(src => VoucherHelper.GetDebitSum(src)))
+                .ForMember(dest => dest.CreditSum, opts => opts.MapFrom(src => VoucherHelper.GetCreditSum(src)));
             mapperConfig.CreateMap<VoucherViewModel, Voucher>();
             mapperConfig.CreateMap<Voucher, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
@@ -205,6 +198,20 @@ namespace SPPC.Tadbir.Mapper
                     dest => dest.Value,
                     opts => opts.MapFrom(
                         src => String.Join(",", new[] { "VoucherDisplay", src.No, src.Date.ToShortDateString() })));
+            mapperConfig.CreateMap<Voucher, VoucherSummaryViewModel>()
+                .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.Date.Date.ToShortDateString(false)))
+                .ForMember(dest => dest.DebitSum, opts => opts.MapFrom(src => VoucherHelper.GetDebitSum(src)))
+                .ForMember(dest => dest.CreditSum, opts => opts.MapFrom(src => VoucherHelper.GetCreditSum(src)))
+                .ForMember(
+                    dest => dest.Difference,
+                    opts => opts.MapFrom(
+                        src => Math.Abs(VoucherHelper.GetDebitSum(src) - VoucherHelper.GetCreditSum(src))))
+                .ForMember(
+                    dest => dest.BalanceStatus,
+                    opts => opts.MapFrom(src => VoucherHelper.GetBalanceStatus(src)))
+                .ForMember(dest => dest.CheckStatus, opts => opts.MapFrom(src => src.Status.Name))
+                .ForMember(dest => dest.Origin, opts => opts.UseValue("UserVoucher"))
+                .ForMember(dest => dest.PreparedById, opts => opts.MapFrom(src => src.ModifiedById));
 
             mapperConfig.CreateMap<VoucherLine, VoucherLineViewModel>()
                 .ForMember(

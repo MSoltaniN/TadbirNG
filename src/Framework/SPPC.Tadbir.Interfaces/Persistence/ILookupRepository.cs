@@ -110,6 +110,8 @@ namespace SPPC.Tadbir.Persistence
 
         #region Security Subsystem lookup
 
+        Task<IDictionary<int, string>> GetUserPersonsAsync();
+
         /// <summary>
         /// به روش آسنکرون، نقش های امنیتی تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
         /// </summary>
