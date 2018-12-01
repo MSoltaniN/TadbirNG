@@ -18,9 +18,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 
 export class ReportBaseService extends EnviromentComponent{
 
-  //option: any;
-  //httpHeaders = new HttpHeaders();
-
+ 
   constructor(public http: HttpClient) {
     super();
    

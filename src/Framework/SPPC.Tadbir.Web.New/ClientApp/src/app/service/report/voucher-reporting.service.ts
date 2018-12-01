@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { ReportBaseService } from '../../class/report-base.service';
+import { ReportBaseService } from '../../class/report.base.service';
 
 import { String } from '../../class/source';
 
