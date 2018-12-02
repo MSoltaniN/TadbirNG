@@ -47,6 +47,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(standardForm);
         }
 
+        // GET: api/reports/voucher/std-form-detail/{voucherId:min(1)}
+        [Route(ReportApi.VoucherStandardFormWithDetailUrl)]
+        [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
+        public async Task<IActionResult> GetStandardVoucherFormWithDetailAsync(int voucherId)
+        {
+            var formWithDetail = await _repository.GetStandardVoucherFormAsync(voucherId, true);
+            Localize(formWithDetail);
+            return JsonReadResult(formWithDetail);
+        }
+
         private void Localize(IList<VoucherSummaryViewModel> report)
         {
             var now = DateTime.Now;

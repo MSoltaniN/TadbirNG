@@ -58,17 +58,11 @@ namespace SPPC.Tadbir.Persistence
             return count;
         }
 
-        public async Task<StandardVoucherViewModel> GetStandardVoucherFormAsync(int voucherId)
+        public async Task<StandardVoucherViewModel> GetStandardVoucherFormAsync(
+            int voucherId, bool withDetail = false)
         {
             var standardForm = default(StandardVoucherViewModel);
-            var repository = _unitOfWork.GetAsyncRepository<Voucher>();
-            var voucher = await repository
-                .GetEntityQuery()
-                .Include(v => v.Lines)
-                    .ThenInclude(vl => vl.Account)
-                        .ThenInclude(acc => acc.Parent)
-                            .ThenInclude(acc => acc.Parent)
-                .Where(v => v.Id == voucherId)
+            var voucher = await GetStandardVoucherFormQuery(voucherId, withDetail)
                 .FirstOrDefaultAsync();
             if (voucher != null)
             {
@@ -82,6 +76,11 @@ namespace SPPC.Tadbir.Persistence
                         Description = line.Description,
                         PartialAmount = Math.Max(line.Debit, line.Credit)
                     });
+                    if (withDetail)
+                    {
+                        AddFloatingStandardLineItems(line, lineItems);
+                    }
+
                     AddGeneralStandardLineItems(line, lineItems);
                     AddAuxiliaryStandardLineItems(line, lineItems);
                     AddDetailStandardLineItems(line, lineItems);
@@ -153,6 +152,61 @@ namespace SPPC.Tadbir.Persistence
                     Credit = line.Credit
                 });
             }
+        }
+
+        private static void AddFloatingStandardLineItems(
+            VoucherLine line, IList<StandardVoucherLineViewModel> lineItems)
+        {
+            if (line.Project?.Id > 0)
+            {
+                lineItems.Add(new StandardVoucherLineViewModel()
+                {
+                    AccountFullCode = line.Project.FullCode,
+                    Description = line.Project.Name
+                });
+            }
+
+            if (line.CostCenter?.Id > 0)
+            {
+                lineItems.Add(new StandardVoucherLineViewModel()
+                {
+                    AccountFullCode = line.CostCenter.FullCode,
+                    Description = line.CostCenter.Name
+                });
+            }
+
+            if (line.DetailAccount?.Id > 0)
+            {
+                lineItems.Add(new StandardVoucherLineViewModel()
+                {
+                    AccountFullCode = line.DetailAccount.FullCode,
+                    Description = line.DetailAccount.Name
+                });
+            }
+        }
+
+        private IQueryable<Voucher> GetStandardVoucherFormQuery(int voucherId, bool withDetail = false)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Voucher>();
+            IQueryable<Voucher> query = repository
+                .GetEntityQuery()
+                .Include(v => v.Lines)
+                    .ThenInclude(vl => vl.Account)
+                        .ThenInclude(acc => acc.Parent)
+                            .ThenInclude(acc => acc.Parent);
+            if (withDetail)
+            {
+                query = query
+                    .Include(v => v.Lines)
+                        .ThenInclude(vl => vl.DetailAccount)
+                    .Include(v => v.Lines)
+                        .ThenInclude(vl => vl.CostCenter)
+                    .Include(v => v.Lines)
+                        .ThenInclude(vl => vl.Project);
+            }
+
+            query = query.Where(v => v.Id == voucherId);
+            return query;
         }
 
         private readonly IAppUnitOfWork _unitOfWork;
