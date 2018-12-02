@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.ViewModel.Metadata;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -46,6 +48,34 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات نمایشی گروه حساب مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="groupId">شناسه دیتابیسی گروه حساب مورد نظر</param>
+        /// <returns>اطلاعات نمایشی گروه حساب</returns>
+        public async Task<AccountGroupViewModel> GetAccountGroupAsync(int groupId)
+        {
+            var accountGroup = default(AccountGroupViewModel);
+            var repository = UnitOfWork.GetAsyncRepository<AccountGroup>();
+            var existing = await repository.GetByIDAsync(groupId);
+            if (existing != null)
+            {
+                accountGroup = Mapper.Map<AccountGroupViewModel>(existing);
+            }
+
+            return accountGroup;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات فراداده ای تعریف شده برای گروه حساب را
+        /// خوانده و برمی گرداند
+        /// </summary>
+        /// <returns>اطلاعات فراداده ای تعریف شده برای گروه حساب</returns>
+        public async Task<ViewViewModel> GetAccountGroupMetadataAsync()
+        {
+            return await Metadata.GetViewMetadataAsync<AccountGroup>();
+        }
+
+        /// <summary>
         /// به روش آسنکرون، تعداد گروه های حساب را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
@@ -61,13 +91,60 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، اطلاعات یک گروه حساب را ایجاد یا اصلاح می کند
+        /// </summary>
+        /// <param name="accountGroupView">گروه حساب مورد نظر برای ایجاد یا اصلاح</param>
+        /// <returns>اطلاعات نمایشی گروه حساب ایجاد یا اصلاح شده</returns>
+        public async Task<AccountGroupViewModel> SaveAccountGroupAsync(
+            AccountGroupViewModel accountGroupView)
+        {
+            Verify.ArgumentNotNull(accountGroupView, nameof(accountGroupView));
+            AccountGroup accountGroup = default(AccountGroup);
+            var repository = UnitOfWork.GetAsyncRepository<AccountGroup>();
+            if (accountGroupView.Id == 0)
+            {
+                accountGroup = Mapper.Map<AccountGroup>(accountGroupView);
+                await InsertAsync(repository, accountGroup);
+            }
+            else
+            {
+                accountGroup = await repository.GetByIDAsync(accountGroupView.Id);
+                if (accountGroup != null)
+                {
+                    await UpdateAsync(repository, accountGroup, accountGroupView);
+                }
+            }
+
+            return Mapper.Map<AccountGroupViewModel>(accountGroup);
+        }
+
+        public async Task<bool> CanDeleteAccountGroupAsync(int groupId)
+        {
+            return true;
+        }
+
+        public async Task DeleteAccountGroupAsync(int groupId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<AccountGroup>();
+            var accountGroup = await repository.GetByIDAsync(groupId);
+            if (accountGroup != null)
+            {
+                await DeleteAsync(repository, accountGroup);
+            }
+        }
+
+        /// <summary>
         /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
         /// </summary>
         /// <param name="entity">یکی از سطرهای اطلاعاتی موجود</param>
         /// <returns>اطلاعات خلاصه سطر اطلاعاتی داده شده به صورت رشته متنی</returns>
         protected override string GetState(AccountGroup entity)
         {
-            throw new NotImplementedException();
+            return (entity != null)
+                ? String.Format(
+                    "Name : {1}{0}Category : {2}{0}Description : {3}",
+                    Environment.NewLine, entity.Name, entity.Category, entity.Description)
+                : null;
         }
 
         /// <summary>
@@ -77,7 +154,9 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="accGroup">سطر اطلاعاتی موجود</param>
         protected override void UpdateExisting(AccountGroupViewModel accGroupView, AccountGroup accGroup)
         {
-            throw new NotImplementedException();
+            accGroup.Name = accGroupView.Name;
+            accGroup.Category = accGroupView.Category;
+            accGroup.Description = accGroupView.Description;
         }
     }
 }
