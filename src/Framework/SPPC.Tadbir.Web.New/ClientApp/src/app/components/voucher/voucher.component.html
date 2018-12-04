@@ -45,7 +45,7 @@
         <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>        
         <grid-setting entityTypeName="Voucher"></grid-setting>
         <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-        <!-- <button kendoButton (click)="showReport()" type="button" [icon]="'printer'"></button> -->
+        <button kendoButton (click)="showReport()" type="button" [icon]="'printer'"></button>
       </ng-template>
       <!-- template for mobile -->
       <kendo-grid-column media="(max-width: 449px)" title="">

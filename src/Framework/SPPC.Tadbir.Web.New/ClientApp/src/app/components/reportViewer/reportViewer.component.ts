@@ -55,7 +55,7 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       this.active = false;
   }
 
-  showReport(url : string , rows: any)
+  showReport(url : string , reportData: any)
   {
     //url
     //this.rowData.data
@@ -67,7 +67,9 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       
       console.log('Load report from url');
       this.report.load(data._body);
-      this.report.regData("Vouchers", "", rows);
+      this.report.regData("Vouchers", "", reportData.rows);
+      this.report.dictionary.variables.getByName("FromDate").valueObject = reportData.fromDate;
+      this.report.dictionary.variables.getByName("ToDate").valueObject = reportData.toDate;
       this.report.render();
       this.viewer.report = this.report;
       

@@ -23,7 +23,7 @@ import { DocumentStatusValue } from '../../enum/documentStatusValue';
 import { Http } from '@angular/http';
 import { ReportViewerComponent } from '../reportViewer/reportViewer.component';
 import { VoucherReportingService } from '../../service/report/voucher-reporting.service';
-
+import * as moment from 'jalali-moment';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -141,7 +141,21 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   {
       this.reporingService.getAll(VoucherReportApi.VoucherSumReport,
         this.currentOrder,this.currentFilter).subscribe((response: any) => {
-          var reportData = response.body;
+          //c = moment.from(this.FiscalPeriodStartDate.toDateString(),'en', 'YYYY/M/D').format('YYYY/M/D');
+        
+          //moment.locale('en'); // default locale is en
+          //var m = moment(this.FiscalPeriodStartDate.toDateString(), 'YYYY/M/D');
+          var fdate = moment(this.FiscalPeriodStartDate, 'YYYY-M-D HH:mm:ss')
+          .locale('fa')
+          .format('YYYY/M/D');
+
+          var tdate = moment(this.FiscalPeriodEndDate, 'YYYY-M-D HH:mm:ss')
+          .locale('fa')
+          .format('YYYY/M/D');
+
+
+          var reportData = {rows : response.body , fromDate: fdate ,
+             toDate : tdate};
           this.viewer.showReport('reports/voucher/test.mrt',reportData);
         });
       
