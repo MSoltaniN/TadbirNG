@@ -216,19 +216,19 @@
     "FullAccount": {
       "Account": {
         "Name": "Account Name",
-        "FullCode": "Account Full Code"
+        "FullCode": "Account Code"
       },
       "DetailAccount": {
         "Name": "Detail Account Name",
-        "FullCode": "Detail Account Full Code"
+        "FullCode": "Detail Account Code"
       },
       "CostCenter": {
         "Name": "Cost Center Name",
-        "FullCode": "Cost Center Full Code"
+        "FullCode": "Cost Center Code"
       },
       "Project": {
         "Name": "Project Name",
-        "FullCode": "Project Full Code"
+        "FullCode": "Project Code"
       }
     }
   },

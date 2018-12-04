@@ -87,10 +87,10 @@ export class VoucherFormComponent extends DetailComponent {
     }
   }
 
-  //public onCancel(e: any): void {
-  //  e.preventDefault();
-  //  this.closeForm();
-  //}
+  public onCancel(e: any): void {
+    e.preventDefault();
+    this.closeForm();
+  }
 
   private closeForm(): void {
     this.isNew = false;

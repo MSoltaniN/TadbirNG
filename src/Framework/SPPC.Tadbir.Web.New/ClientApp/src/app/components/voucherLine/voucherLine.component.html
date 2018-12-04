@@ -42,14 +42,17 @@
         <ng-template kendoGridCellTemplate let-voucherLine>
           <!-- template for mobile -->
           <dl>
-            <dt>{{ 'VoucherLine.Debit' | translate }}</dt>
+            <dt>{{ 'VoucherLine.FullAccount.Account.FullCode' | translate  }}:</dt>
+            <dd>{{ voucherLine.fullAccount.account.fullCode }}</dd>
+
+            <dt>{{ 'VoucherLine.Description' | translate  }}:</dt>
+            <dd>{{ voucherLine.description }}</dd>
+
+            <dt>{{ 'VoucherLine.Debit' | translate }}:</dt>
             <dd>{{ voucherLine.debit | number }}</dd>
 
-            <dt>{{ 'VoucherLine.Credit' | translate }}</dt>
+            <dt>{{ 'VoucherLine.Credit' | translate }}:</dt>
             <dd>{{ voucherLine.credit | number }}</dd>
-
-            <dt>{{ 'VoucherLine.Description' | translate  }}</dt>
-            <dd>{{ voucherLine.description }}</dd>
           </dl>
           <button kendoGridEditCommand [hidden]="documentStatus != documentStatusValue.Draft" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
           <button kendoGridRemoveCommand [hidden]="documentStatus != documentStatusValue.Draft">{{ 'Buttons.Delete' | translate }}</button>
@@ -83,6 +86,18 @@
           {{ 'VoucherLine.Sum' | translate }}
         </ng-template>
       </kendo-grid-checkbox-column>
+
+      <kendo-grid-column  media="(min-width: 450px) and (max-width: 1024px)" width="150" sppc-grid-column="VoucherLine.fullAccount.account.fullCode">
+
+        <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+          <sppc-grid-filter [metaData]="getMeta('fullAccount.account.fullCode')" [column]="column" [filter]="filter"></sppc-grid-filter>
+        </ng-template>
+
+        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+          <strong>{{dataItem.fullAccount.account.fullCode}}</strong>
+        </ng-template>
+
+      </kendo-grid-column>
 
       <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" format="{0:n}" sppc-grid-column="VoucherLine.debit">
         <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
@@ -124,10 +139,10 @@
         </ng-template>
       </kendo-grid-checkbox-column>
 
-      <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="VoucherLine.FullAccount.Account.FullCode">
+      <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="VoucherLine.fullAccount.account.fullCode">
 
         <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-          <sppc-grid-filter [metaData]="getMeta('fullAccount.Account.Id')" [column]="column" [filter]="filter"></sppc-grid-filter>
+          <sppc-grid-filter [metaData]="getMeta('fullAccount.account.fullCode')" [column]="column" [filter]="filter"></sppc-grid-filter>
         </ng-template>
 
         <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
