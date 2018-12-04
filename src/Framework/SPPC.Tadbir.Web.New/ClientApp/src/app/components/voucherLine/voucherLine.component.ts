@@ -142,9 +142,6 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     model.fiscalPeriodId = this.voucherModel.fiscalPeriodId;
     model.voucherId = this.voucherModel.id;
 
-    //debugger;
-
-
     this.grid.loading = true;
     if (!this.isNew) {
       this.isNew = false;

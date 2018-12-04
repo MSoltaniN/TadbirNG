@@ -30,30 +30,29 @@
     "User": "User",
     "Branch": "Branch"
   },
-  "Dashboard":
-  {
-      "Themes" : "Themes",
-      "Blue":"Blue",
-      "Black":"Black",
-      "Green":"Green",
-      "Red":"Red",
-      "Purple":"Purple",
-      "BlueLight":"BlueLight",
-      "BlackLight":"BlackLight",
-      "PurpleLight":"PurpleLight",
-      "GreenLight": "GreenLight",
-      "RedLight":"RedLight",
-      "YellowLight":"YellowLight",
-      "Yellow":"Yellow",
-      "InventoryFunds" : "Inventory Funds",
-      "BankBalance" : "Bank Balance",
-      "UnverifiedDocuments":"Unverified Documents",
-      "CurrentRatio" : "Current Ratio",
-      "NetSales":"Net Sales",
-      "GrossSales":"Gross Sales",
-      "DashboardTitle":"Dashboard",
-      "Home" : "Home",
-      "DashboardName" : "Dashboard"
+  "Dashboard": {
+    "Themes": "Themes",
+    "Blue": "Blue",
+    "Black": "Black",
+    "Green": "Green",
+    "Red": "Red",
+    "Purple": "Purple",
+    "BlueLight": "BlueLight",
+    "BlackLight": "BlackLight",
+    "PurpleLight": "PurpleLight",
+    "GreenLight": "GreenLight",
+    "RedLight": "RedLight",
+    "YellowLight": "YellowLight",
+    "Yellow": "Yellow",
+    "InventoryFunds": "Inventory Funds",
+    "BankBalance": "Bank Balance",
+    "UnverifiedDocuments": "Unverified Documents",
+    "CurrentRatio": "Current Ratio",
+    "NetSales": "Net Sales",
+    "GrossSales": "Gross Sales",
+    "DashboardTitle": "Dashboard",
+    "Home": "Home",
+    "DashboardName": "Dashboard"
   },
   "Exception": {
     "ErrorCode": "Error Code",
@@ -66,11 +65,9 @@
     "Deleted": "{0} deleted successfully",
     "DeleteConfirm": "are you sure to delete {0} ?"
   },
-  "Report":
-  {
+  "Report": {
     "ReportViewer": "Report Viewer"
-  }
-  ,
+  },
   "Buttons": {
     "Ok": "Ok",
     "Cancel": "Cancel",
@@ -234,6 +231,17 @@
         "FullCode": "Project Full Code"
       }
     }
+  },
+  "FullAccount": {
+    "Title": "Full Account",
+    "Account": "Account",
+    "DetailAccount": "Floating Account",
+    "CostCenter": "CostCenter",
+    "Project": "Project",
+    "AccountCode": "Account Code",
+    "AccountName": "Account Name",
+    "Code": "Code",
+    "Name": "Name"
   },
   "Company": {
     "CompanyName": "Company",

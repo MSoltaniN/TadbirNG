@@ -41,16 +41,24 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
     description: new FormControl("", Validators.maxLength(512)),
     fullAccount: new FormGroup({
       account: new FormGroup({
-        id: new FormControl("", Validators.required)
+        id: new FormControl("", Validators.required),
+        name: new FormControl(),
+        fullCode: new FormControl()
       }),
       detailAccount: new FormGroup({
-        id: new FormControl()
+        id: new FormControl(),
+        name: new FormControl(),
+        fullCode: new FormControl()
       }),
       costCenter: new FormGroup({
-        id: new FormControl()
+        id: new FormControl(),
+        name: new FormControl(),
+        fullCode: new FormControl()
       }),
       project: new FormGroup({
-        id: new FormControl()
+        id: new FormControl(),
+        name: new FormControl(),
+        fullCode: new FormControl()
       })
     })
   });
@@ -67,8 +75,6 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
 
   @Input() public set model(voucherLine: VoucherLine) {
-
-    debugger;
 
     this.editForm1.reset(voucherLine);
 
