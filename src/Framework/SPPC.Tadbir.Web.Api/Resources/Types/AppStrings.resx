@@ -720,4 +720,7 @@
   <data name="UserVoucher" xml:space="preserve">
     <value>سند عادی</value>
   </data>
+  <data name="CantDeleteUsedAccountGroup" xml:space="preserve">
+    <value>این گروه به یک یا چند حساب کل تخصیص داده شده و قابل حذف نیست.</value>
+  </data>
 </root>

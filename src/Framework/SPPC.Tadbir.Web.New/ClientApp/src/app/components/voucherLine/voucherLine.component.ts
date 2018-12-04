@@ -16,6 +16,7 @@ import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { VoucherApi } from '../../service/api/index';
 import { FilterExpression } from '../../class/filterExpression';
+import { DocumentStatusValue } from '../../enum/documentStatusValue';
 
 
 
@@ -64,12 +65,14 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
   groupDelete: boolean = false;
 
   @Input() voucherId: number;
+  @Input() documentStatus: number;
   voucherModel: Voucher;
-
+  documentStatusValue: any;
   //#endregion
 
   //#region Events
   ngOnInit() {
+    this.documentStatusValue = DocumentStatusValue;
     this.getVoucher();
     var test = this.voucherId;
     this.reloadGrid();
@@ -141,9 +144,6 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     model.branchId = this.voucherModel.branchId;
     model.fiscalPeriodId = this.voucherModel.fiscalPeriodId;
     model.voucherId = this.voucherModel.id;
-
-    //debugger;
-
 
     this.grid.loading = true;
     if (!this.isNew) {

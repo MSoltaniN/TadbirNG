@@ -30,9 +30,9 @@
         {{showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate)}}
       </ng-template>
       <ng-template kendoGridToolbarTemplate>
-        <button kendoGridAddCommand (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'VoucherLine.New' | translate }}</button>
-        <button kendoGridAddCommand [icon]="'plus-outline'" *ngIf="balance != 0" class="k-button" (click)="addNewWithBalance()" type="button">{{ 'VoucherLine.NewWithDifference' | translate }}</button>
-        <button *ngIf="groupDelete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
+        <button kendoGridAddCommand (click)="addNew()" [hidden]="documentStatus != documentStatusValue.Draft" [icon]="'plus-outline'" type="button">{{ 'VoucherLine.New' | translate }}</button>
+        <button kendoGridAddCommand [hidden]="documentStatus != documentStatusValue.Draft" [icon]="'plus-outline'" *ngIf="balance != 0" class="k-button" (click)="addNewWithBalance()" type="button">{{ 'VoucherLine.NewWithDifference' | translate }}</button>
+        <button *ngIf="groupDelete" [hidden]="documentStatus != documentStatusValue.Draft" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
         <grid-setting entityTypeName="VoucherLine"></grid-setting>
         <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
       </ng-template>
@@ -51,8 +51,8 @@
             <dt>{{ 'VoucherLine.Description' | translate  }}</dt>
             <dd>{{ voucherLine.description }}</dd>
           </dl>
-          <button kendoGridEditCommand class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-          <button kendoGridRemoveCommand>{{ 'Buttons.Delete' | translate }}</button>
+          <button kendoGridEditCommand [hidden]="documentStatus != documentStatusValue.Draft" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+          <button kendoGridRemoveCommand [hidden]="documentStatus != documentStatusValue.Draft">{{ 'Buttons.Delete' | translate }}</button>
         </ng-template>
         <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
           <table>
@@ -104,8 +104,8 @@
 
       <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px) and (max-width: 1024px)">
         <ng-template kendoGridCellTemplate let-dataItem>
-          <button [icon]="'edit'" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
-          <button [icon]="'delete'" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
+          <button [hidden]="documentStatus != documentStatusValue.Draft" [icon]="'edit'" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
+          <button [hidden]="documentStatus != documentStatusValue.Draft" [icon]="'delete'" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
         </ng-template>
 
         <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">
@@ -165,8 +165,8 @@
 
       <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
         <ng-template kendoGridCellTemplate let-dataItem>
-          <button [icon]="'edit'" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
-          <button [icon]="'delete'" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
+          <button [hidden]="documentStatus != documentStatusValue.Draft" [icon]="'edit'" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
+          <button [hidden]="documentStatus != documentStatusValue.Draft" [icon]="'delete'" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
         </ng-template>
 
         <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex" *ngIf="totalRecords > 0">

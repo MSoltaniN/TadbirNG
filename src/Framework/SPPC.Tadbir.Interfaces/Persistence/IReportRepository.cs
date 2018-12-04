@@ -11,8 +11,12 @@ namespace SPPC.Tadbir.Persistence
     {
         void SetCurrentContext(UserContextViewModel userContext);
 
-        Task<IList<VoucherSummaryViewModel>> GetVoucherSummaryByDateReportAsync(GridOptions gridOptions);
+        Task<IList<VoucherSummaryViewModel>> GetVoucherSummaryByDateReportAsync(
+            GridOptions gridOptions);
 
         Task<int> GetVoucherSummaryByDateCountAsync(GridOptions gridOptions);
+
+        Task<StandardVoucherViewModel> GetStandardVoucherFormAsync(
+            int voucherId, bool withDetail = false);
     }
 }

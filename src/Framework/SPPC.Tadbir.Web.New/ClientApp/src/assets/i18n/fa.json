@@ -30,32 +30,30 @@
     "User": "کاربر جاری",
     "Branch": "شعبه"
   },
-  "Dashboard":
-  {
-      "Themes" : "قالب ها",
-      "Blue":"آبی",
-      "Black":"مشکی",
-      "Green":"سبز",
-      "Red":"قرمز",
-      "Purple":"بنقش",
-      "BlueLight":"آبی روشن",
-      "BlackLight":"مشکی روشن",
-      "PurpleLight":"بنفش روشن",
-      "GreenLight": "سبز روشن",
-      "RedLight":"قرمز روشن",
-      "YellowLight":"زرد روشن",
-      "Yellow":"زرد",      
-      "InventoryFunds" : "موجودی صندوق",
-      "BankBalance" : "موجودی بانک",
-      "UnverifiedDocuments":"تعداد سندهای ناتراز",
-      "CurrentRatio" : "نسبت جاری",
-      "NetSales":"نمودار ماهانه فروش خالص",
-      "GrossSales":"نمودار ماهانه فروش ناخالص",
-      "DashboardTitle":"داشبورد",
-      "Home" : "خانه",
-      "DashboardName" : "داشبورد"
-  }
-  ,
+  "Dashboard": {
+    "Themes": "قالب ها",
+    "Blue": "آبی",
+    "Black": "مشکی",
+    "Green": "سبز",
+    "Red": "قرمز",
+    "Purple": "بنقش",
+    "BlueLight": "آبی روشن",
+    "BlackLight": "مشکی روشن",
+    "PurpleLight": "بنفش روشن",
+    "GreenLight": "سبز روشن",
+    "RedLight": "قرمز روشن",
+    "YellowLight": "زرد روشن",
+    "Yellow": "زرد",
+    "InventoryFunds": "موجودی صندوق",
+    "BankBalance": "موجودی بانک",
+    "UnverifiedDocuments": "تعداد سندهای ناتراز",
+    "CurrentRatio": "نسبت جاری",
+    "NetSales": "نمودار ماهانه فروش خالص",
+    "GrossSales": "نمودار ماهانه فروش ناخالص",
+    "DashboardTitle": "داشبورد",
+    "Home": "خانه",
+    "DashboardName": "داشبورد"
+  },
   "Exception": {
     "ErrorCode": "کد خطا",
     "ErrorMsg": "جزئیات خطا",
@@ -67,8 +65,7 @@
     "Deleted": "{0} با موفقیت حذف شد",
     "DeleteConfirm": "آیا برای حذف {0} اطمینان دارید؟"
   },
-  "Report":
-  {
+  "Report": {
     "ReportViewer": "نمایشگر گزارش"
   },
   "Buttons": {
@@ -232,6 +229,17 @@
         "FullCode": "کد کامل پروژه"
       }
     }
+  },
+  "FullAccount": {
+    "Title": "بردار حساب",
+    "Account": "حساب",
+    "DetailAccount": "تفصیلی شناور",
+    "CostCenter": "مرکز هزینه",
+    "Project": "پروژه",
+    "AccountCode": "کد حساب",
+    "AccountName": "نام حساب",
+    "Code": "کد",
+    "Name": "نام"
   },
   "Company": {
     "CompanyName": "شرکت",

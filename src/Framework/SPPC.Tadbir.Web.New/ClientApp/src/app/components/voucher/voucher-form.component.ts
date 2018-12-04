@@ -47,6 +47,7 @@ export class VoucherFormComponent extends DetailComponent {
 
   //create properties
   public voucher_Id: number;
+  documentStatus: number;
   editModel: Voucher;
 
   active: boolean = false;
@@ -61,6 +62,7 @@ export class VoucherFormComponent extends DetailComponent {
 
     if (voucher != undefined) {
       this.voucher_Id = voucher.id;
+      this.documentStatus = voucher.statusId;
     }
 
   }
@@ -117,6 +119,8 @@ export class VoucherFormComponent extends DetailComponent {
         this.editModel.statusId = DocumentStatusValue.NormalCheck;
         this.showMessage(this.updateMsg, MessageType.Succes);
 
+        this.documentStatus = DocumentStatusValue.NormalCheck;
+
       }, (error => {
         var message = error.message ? error.message : error;
         this.showMessage(message, MessageType.Warning);
@@ -129,6 +133,8 @@ export class VoucherFormComponent extends DetailComponent {
 
         this.editModel.statusId = DocumentStatusValue.Draft;
         this.showMessage(this.updateMsg, MessageType.Succes);
+
+        this.documentStatus = DocumentStatusValue.Draft;
 
       }, (error => {
         var message = error.message ? error.message : error;

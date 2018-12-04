@@ -720,4 +720,7 @@
   <data name="UserVoucher" xml:space="preserve">
     <value>Manual</value>
   </data>
+  <data name="CantDeleteUsedAccountGroup" xml:space="preserve">
+    <value>This group is assigned to one or more general accounts and cannot be deleted.</value>
+  </data>
 </root>

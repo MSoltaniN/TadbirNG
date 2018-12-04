@@ -212,6 +212,9 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.CheckStatus, opts => opts.MapFrom(src => src.Status.Name))
                 .ForMember(dest => dest.Origin, opts => opts.UseValue("UserVoucher"))
                 .ForMember(dest => dest.PreparedById, opts => opts.MapFrom(src => src.ModifiedById));
+            mapperConfig.CreateMap<Voucher, StandardVoucherViewModel>()
+                .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.Date.Date.ToShortDateString(false)))
+                .ForMember(dest => dest.Lines, opts => opts.Ignore());
 
             mapperConfig.CreateMap<VoucherLine, VoucherLineViewModel>()
                 .ForMember(

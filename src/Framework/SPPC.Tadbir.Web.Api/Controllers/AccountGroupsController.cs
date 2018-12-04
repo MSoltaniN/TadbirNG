@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Finance;
+using SPPC.Tadbir.Web.Api.Extensions;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
@@ -29,19 +30,104 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         // GET: api/accgroups
         [Route(AccountGroupApi.AccountGroupsUrl)]
-        [AuthorizeRequest(SecureEntity.Account, (int)AccountPermissions.View)]
+        [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
         public async Task<IActionResult> GetAccountGroupsAsync()
         {
             int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
             var accountGroups = await _repository.GetAccountGroupsAsync();
-            Localize(accountGroups);
+            Localize(accountGroups.ToArray());
             return Json(accountGroups);
         }
 
-        private void Localize(IList<AccountGroupViewModel> accountGroups)
+        // GET: api/accgroups/{groupId:min(1)}
+        [Route(AccountGroupApi.AccountGroupUrl)]
+        [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
+        public async Task<IActionResult> GetAccountGroupAsync(int groupId)
         {
-            Array.ForEach(accountGroups.ToArray(), grp => grp.Category = _strings[grp.Category]);
+            var accountGroup = await _repository.GetAccountGroupAsync(groupId);
+            if (accountGroup != null)
+            {
+                Localize(accountGroup);
+            }
+
+            return JsonReadResult(accountGroup);
+        }
+
+        // GET: api/accgroups/metadata
+        [Route(AccountGroupApi.AccountGroupMetadataUrl)]
+        [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
+        public async Task<IActionResult> GetAccountGroupMetadataAsync()
+        {
+            var metadata = await _repository.GetAccountGroupMetadataAsync();
+            return JsonReadResult(metadata);
+        }
+
+        // POST: api/accgroups
+        [HttpPost]
+        [Route(AccountGroupApi.AccountGroupsUrl)]
+        [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.Create)]
+        public async Task<IActionResult> PostNewAccountGroupAsync(
+            [FromBody] AccountGroupViewModel accountGroup)
+        {
+            var result = BasicValidationResult(accountGroup);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            _repository.SetCurrentContext(SecurityContext.User);
+            var outputItem = await _repository.SaveAccountGroupAsync(accountGroup);
+            return StatusCode(StatusCodes.Status201Created, outputItem);
+        }
+
+        // PUT: api/accgroups/{groupId:min(1)}
+        [HttpPut]
+        [Route(AccountGroupApi.AccountGroupUrl)]
+        [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.Edit)]
+        public async Task<IActionResult> PutModifiedAccountGroupAsync(
+            int groupId, [FromBody] AccountGroupViewModel accountGroup)
+        {
+            var result = BasicValidationResult(accountGroup, groupId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            _repository.SetCurrentContext(SecurityContext.User);
+            var outputItem = await _repository.SaveAccountGroupAsync(accountGroup);
+            result = (outputItem != null)
+                ? Ok(outputItem)
+                : NotFound() as IActionResult;
+            return result;
+        }
+
+        // DELETE: api/accgroups/{groupId:min(1)}
+        [HttpDelete]
+        [Route(AccountGroupApi.AccountGroupUrl)]
+        [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.Delete)]
+        public async Task<IActionResult> DeleteExistingAccountGroupAsync(int groupId)
+        {
+            var accountGroup = await _repository.GetAccountGroupAsync(groupId);
+            if (accountGroup == null)
+            {
+                return BadRequest(_strings.Format(AppStrings.ItemNotFound, AppStrings.AccountGroup));
+            }
+
+            bool canDelete = await _repository.CanDeleteAccountGroupAsync(groupId);
+            if (!canDelete)
+            {
+                return BadRequest(_strings.Format(AppStrings.CantDeleteUsedAccountGroup));
+            }
+
+            _repository.SetCurrentContext(SecurityContext.User);
+            await _repository.DeleteAccountGroupAsync(groupId);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+
+        private void Localize(params AccountGroupViewModel[] accountGroups)
+        {
+            Array.ForEach(accountGroups, grp => grp.Category = _strings[grp.Category]);
         }
 
         private readonly IAccountGroupRepository _repository;

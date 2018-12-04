@@ -32,5 +32,15 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for a single account group specified by unique identifier
         /// </summary>
         public const string AccountGroupUrl = "accgroups/{groupId:min(1)}";
+
+        /// <summary>
+        /// API client URL for account group metadata
+        /// </summary>
+        public const string AccountGroupMetadata = "accgroups/metadata";
+
+        /// <summary>
+        /// API server route URL for account group metadata
+        /// </summary>
+        public const string AccountGroupMetadataUrl = "accgroups/metadata";
     }
 }

@@ -58,7 +58,7 @@
     </form>
 
     <div *ngIf="!isNew">
-        <voucherLine [voucherId]="voucher_Id"></voucherLine>
+        <voucherLine [voucherId]="voucher_Id" [documentStatus]="documentStatus"></voucherLine>
     </div>
 
     <kendo-dialog-actions *ngIf="isNew">
