@@ -75,7 +75,7 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
     private fillViewModel(rowData: ListFormViewConfig): Array<SettingViewModelInfo> {
         var rows: Array<SettingViewModelInfo> = new Array<SettingViewModelInfo>();
 
-        rowData.columnViews.forEach((item) => {
+      rowData.columnViews.forEach((item) => {
             var model = new SettingViewModelInfo();
             var setting = this.settingService.getCurrentColumnViewConfig(item);
             if (setting && setting.index && setting.visibility != ColumnVisibility.AlwaysHidden) {
@@ -86,8 +86,16 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
                 model.width = setting.width;
                 model.name = item.name;
 
+              var parts = item.name.split('.');
+
+              for (var i = 0; i < parts.length; i++) {
+                parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+              }
+
+
                 var title = "";
-                var key = this.entityTypeName + "." + item.name.charAt(0).toUpperCase() + item.name.slice(1);
+              //var key = this.entityTypeName + "." + item.name.charAt(0).toUpperCase() + item.name.slice(1);
+              var key = this.entityTypeName + "." + parts.join('.');
                 this.translate.get(key).subscribe((msg: string) => {
                     title = msg;
 
@@ -95,8 +103,8 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
                     rows.push(model);
                 });
-                
-                
+
+              //console.log(rows);
             }
         });
 
@@ -114,7 +122,8 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
     }
 
     /** چپ چین کردن دکمه تنظیمات و لود کردن ستون ها در گرید */
-    private loadSetting() {
+  private loadSetting() {
+
         if (this.CurrentLanguage == 'fa')
             this.rtl = true;
         else
@@ -138,10 +147,10 @@ export class GridSettingComponent extends BaseComponent implements OnInit, OnDes
 
         var fields : Array<string> = new Array<string>();
 
+
         //#region change column in runtime and fill ro data from desgined grid
         this.grid.leafColumns.toArray().forEach((item, index, arr) => {
-
-           
+        
             if (item instanceof ColumnComponent) {
 
                 fields.push(item.field);

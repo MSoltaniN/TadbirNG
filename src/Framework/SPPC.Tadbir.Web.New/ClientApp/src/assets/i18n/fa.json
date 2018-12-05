@@ -214,19 +214,19 @@
     "FullAccount": {
       "Account": {
         "Name": "نام حساب",
-        "FullCode": "کد کامل حساب"
+        "FullCode": "کد حساب"
       },
       "DetailAccount": {
         "Name": "نام تفصیلی",
-        "FullCode": "کد کامل تفصیلی"
+        "FullCode": "کد تفصیلی"
       },
       "CostCenter": {
         "Name": "نام مرکز هزینه",
-        "FullCode": "کد کامل مرکز هزینه"
+        "FullCode": "کد مرکز هزینه"
       },
       "Project": {
         "Name": "نام پروژه",
-        "FullCode": "کد کامل پروژه"
+        "FullCode": "کد پروژه"
       }
     }
   },

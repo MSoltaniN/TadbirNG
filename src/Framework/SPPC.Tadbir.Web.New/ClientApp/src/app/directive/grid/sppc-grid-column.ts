@@ -13,98 +13,109 @@ import { GridFilterComponent } from "./component/grid-filter.component";
 
 
 @Directive({
-    selector: '[sppc-grid-column]',
-    providers: [String,DefaultComponent,GridFilterComponent]
+  selector: '[sppc-grid-column]',
+  providers: [String, DefaultComponent, GridFilterComponent]
 })
 
 export class SppcGridColumn {
-    constructor( @Host() private hostColumn: ColumnComponent,
-        @Host() public hostColumn1: DefaultComponent, private elementRef: ElementRef,
-        private renderer: Renderer2, private translate: TranslateService, @Host() private gridSetting: GridFilterComponent)
-    {
-        //var props = def.properties;
-    }
+  constructor( @Host() private hostColumn: ColumnComponent,
+    @Host() public hostColumn1: DefaultComponent, private elementRef: ElementRef,
+    private renderer: Renderer2, private translate: TranslateService, @Host() private gridSetting: GridFilterComponent) {
+    //var props = def.properties;
+  }
 
+
+  @Input('sppc-grid-column') value: string;
+
+  ngOnInit() {
+    var item = this.hostColumn1;
+
+  }
+
+
+  ngOnChanges() {
+
+    this.hostColumn.resizable = true;
+    this.hostColumn.sortable = true;
+
+    var parts = this.value.split('.');
+
+    //this.hostColumn.field = parts[1];
+
+    //var key = parts[0] + "." + parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
+
+    this.hostColumn.field = parts.slice(1).join('.');
+
+    for (var i = 0; i < parts.length; i++) {
+      parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+    }
     
-    @Input('sppc-grid-column') value: string;
-
-    ngOnInit() {
-        var item = this.hostColumn1;
-        
-    }
-
+    var key = parts.join('.');
     
-    ngOnChanges() {
 
-        
-        this.hostColumn.resizable = true;
-        this.hostColumn.sortable = true;
+    this.translate.get(key).subscribe((msg: string) => {
+      this.hostColumn.title = msg;
+    });
 
-        var parts = this.value.split('.');        
+    console.log(this.hostColumn);
 
-        this.hostColumn.field = parts[1];
-        
-        var key = parts[0] + "." + parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
-        this.translate.get(key).subscribe((msg: string) => {
-            this.hostColumn.title = msg;
-        });
+  }
 
-    }
+  ngAfterContentInit(): void {
 
-    ngAfterContentInit(): void {
-        
-        
-        //this.elementRef.nativeElement.addEventListener('keydown', this.myEventHandler, false);
-        
-    }
 
-    ngAfterViewInit() {
+    //this.elementRef.nativeElement.addEventListener('keydown', this.myEventHandler, false);
 
-        var self = this.hostColumn;
-        
-        var items = document.getElementsByTagName('kendo-dropdownlist');
-        //console.log(items);
+  }
 
-        if (items.length > 0) {
+  ngAfterViewInit() {
 
-            for (var i = 0; i < items.length; i++) {
-                var element = items.item(i);
-                if (element.getAttribute('used') == null) {
-                    var observer = new MutationObserver(mutations => {
-                        mutations.forEach(function (mutation) {
-                            //console.log(mutation.type);
-                            if (mutation.type == 'attributes' && mutation.attributeName == "ng-reflect-value") {
-                                var temp = <any>self.filterCellTemplate.templateRef;
-                                temp._parentView.component.reloadGrid();
-                                //self..dataStateChange.emit(self)
-                                //observer.disconnect();
-                                
-                            }
-                        });
-                    });
+    var self = this.hostColumn;
 
-                    var config = { attributes: true, childList: true, characterData: true };
+    var items = document.getElementsByTagName('kendo-dropdownlist');
+    //console.log(items);
 
-                    observer.observe(element, config);
-                    element.setAttribute('used', '1');
-                }
-            }
+    if (items.length > 0) {
 
+      for (var i = 0; i < items.length; i++) {
+        var element = items.item(i);
+        if (element.getAttribute('used') == null) {
+          var observer = new MutationObserver(mutations => {
+            mutations.forEach(function (mutation) {
+              //console.log(mutation.type);
+              if (mutation.type == 'attributes' && mutation.attributeName == "ng-reflect-value") {
+                var temp = <any>self.filterCellTemplate.templateRef;
+                temp._parentView.component.reloadGrid();
+                //self..dataStateChange.emit(self)
+                //observer.disconnect();
+
+              }
+            });
+          });
+
+          var config = { attributes: true, childList: true, characterData: true };
+
+          observer.observe(element, config);
+          element.setAttribute('used', '1');
         }
+      }
 
     }
 
-    getAllElementsWithAttribute(attribute) {
-        var matchingElements = [];
-        var allElements = document.getElementsByTagName('*');
-        for (var i = 0, n = allElements.length; i < n; i++) {
-        if (allElements[i].getAttribute(attribute) !== null) {
-            // Element exists with attribute. Add to array.
-            matchingElements.push(allElements[i]);
-            }
-        }
-        return matchingElements;
+  }
+
+  getAllElementsWithAttribute(attribute) {
+
+    var matchingElements = [];
+    var allElements = document.getElementsByTagName('*');
+    for (var i = 0, n = allElements.length; i < n; i++) {
+      if (allElements[i].getAttribute(attribute) !== null) {
+        // Element exists with attribute. Add to array.
+        matchingElements.push(allElements[i]);
+      }
     }
-   
-    //my new properties
+    return matchingElements;
+  }
+
+  //my new properties
 }
