@@ -16,7 +16,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 
-import { Environment } from "../../enviroment";
+import { environment } from "../../../environments/environment";
 
 export class <#= _csType.Name #> {
 <#
@@ -26,6 +26,6 @@ string fieldValue = GetFieldValue(_csType, field);
 string hint = GetFieldValue(_csType, String.Format("{0}Url", field)); #>
 
     // <#= hint #>
-    public static <#= field #> = Environment.BaseUrl + "/<#= fieldValue #>";
+    public static <#= field #> = environment.BaseUrl + "/<#= fieldValue #>";
 <# } #>
 }
