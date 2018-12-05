@@ -236,7 +236,14 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
         
         var commands: any;
 
-        this.userService.getCurrentUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
+      this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
+        if (this.authenticationService.isRememberMe())
+          localStorage.setItem('fiscalPeriod', JSON.stringify(res));
+        else
+          sessionStorage.setItem('fiscalPeriod', JSON.stringify(res));
+      })
+
+      this.userService.getCurrentUserCommands(this.Ticket).subscribe((res: Array<Command>) => {
             var list: Array<Command> = res;
             
             if (this.authenticationService.isRememberMe()) {
@@ -247,13 +254,6 @@ export class LoginCompleteComponent extends DefaultComponent implements OnInit {
                 sessionStorage.setItem(SessionKeys.Menu, JSON.stringify(res));
                 sessionStorage.setItem('currentContext', JSON.stringify(currentUser));
             }                        
-
-            this.authenticationService.getFiscalPeriodById(currentUser.fpId, this.Ticket).subscribe(res => {
-                if (this.authenticationService.isRememberMe())
-                    localStorage.setItem('fiscalPeriod', JSON.stringify(res));
-                else
-                    sessionStorage.setItem('fiscalPeriod', JSON.stringify(res));
-            })
 
             if (this.route.snapshot.queryParams['returnUrl'] != undefined) {
                 var url = this.route.snapshot.queryParams['returnUrl'];
