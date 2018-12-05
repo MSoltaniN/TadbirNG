@@ -517,6 +517,26 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
     this.isOpenDialog = false;
   }
 
+  onReset() {
+    this.accountsRows = this.accountList = [];
+    this.detailAccountsRows = this.detailAccountList = [];
+    this.costCentersRows = this.costCenterList = [];
+    this.projectsRows = this.projectList = [];
+
+    this.accountSelectedId = [];
+    this.detailAccountSelectedId = [];
+    this.costCenterSelectedId = [];
+    this.projectSelectedId = [];
+
+    this.accountTitle = this.detailAccountTitle = this.costCenterTitle = this.projectTitle = this.accountFullCode = undefined;  
+    this.accFilterValue = this.dAccFilterValue = this.cCenterFilterValue = this.pFilterValue = undefined;
+    this.isEnableAccountFilter = this.isEnableDetailAccountFilter = this.isEnableCostCenterFilter = this.isEnableProjectFilter = false;
+
+
+
+    this.openDialog(this.selectedItem);
+  }
+
   /**
    * بستن فرم بردار حساب
    */

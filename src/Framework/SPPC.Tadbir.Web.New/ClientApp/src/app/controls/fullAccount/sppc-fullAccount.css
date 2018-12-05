@@ -6,19 +6,27 @@
 .ddl-fAcc {
   width: 100%
 }
-
+.fullAccount {
+  position:relative;
+}
 .fullAccount > input[type=text] {
   border: none;
   display: inline;
-  width: calc(100% - 25px);
+  width: 100%;
   text-align: center;
-  direction:ltr;
+  direction: ltr;
 }
 
-.fullAccount > .glyphicon-search:hover {
-  cursor:pointer;
-  opacity:.8;
-}
+  .fullAccount > .glyphicon-search{
+    position:absolute;
+    left:10px;
+  }
+
+
+  .fullAccount > .glyphicon-search:hover {
+    cursor: pointer;
+    opacity: .8;
+  }
 
 .fullAccount .fullAccount-item > div {
   width: 49%;

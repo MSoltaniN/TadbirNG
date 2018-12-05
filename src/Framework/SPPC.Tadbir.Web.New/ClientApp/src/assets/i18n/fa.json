@@ -239,7 +239,8 @@
     "AccountCode": "کد حساب",
     "AccountName": "نام حساب",
     "Code": "کد",
-    "Name": "نام"
+    "Name": "نام",
+    "Reset": "تنظیم مجدد"
   },
   "Company": {
     "CompanyName": "شرکت",

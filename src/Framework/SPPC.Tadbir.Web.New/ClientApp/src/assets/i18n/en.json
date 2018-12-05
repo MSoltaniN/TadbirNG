@@ -241,7 +241,8 @@
     "AccountCode": "Account Code",
     "AccountName": "Account Name",
     "Code": "Code",
-    "Name": "Name"
+    "Name": "Name",
+    "Reset": "Reset"
   },
   "Company": {
     "CompanyName": "Company",

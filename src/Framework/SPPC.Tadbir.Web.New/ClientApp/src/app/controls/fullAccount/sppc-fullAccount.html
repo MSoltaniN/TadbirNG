@@ -1,6 +1,6 @@
 <ng-container [formGroup]="controlContainer.control">
   <div class="fullAccount">
-    <input type="text" [(ngModel)]="accountFullCode" placeholder="     - - - -" readonly [ngModelOptions]="{standalone: true}" />
+    <input type="text" [(ngModel)]="accountFullCode" placeholder="- - - -" readonly [ngModelOptions]="{standalone: true}" />
     <span class="glyphicon glyphicon-search" (click)="openDialog(accountItem.Account)"></span>
     <div class="fullAccount-item">
       <div formGroupName="account">
@@ -160,6 +160,7 @@
   </div>
   <kendo-dialog-actions>
     <button class="k-button k-primary" [disabled]="accountSelectedId.length == 0" (click)="onSave()">{{ 'Buttons.Ok' | translate }}</button>
+    <button class="k-button k-primary" [disabled]="accountSelectedId.length == 0" (click)="onReset()">{{ 'FullAccount.Reset' | translate }}</button>
     <button class="k-button" (click)="closeDialog()">{{ 'Buttons.Cancel' | translate }}</button>
   </kendo-dialog-actions>
 </kendo-dialog>
