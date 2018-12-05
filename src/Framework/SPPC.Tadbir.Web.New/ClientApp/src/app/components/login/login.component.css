@@ -18,10 +18,17 @@
     transform: translateY(-50%);   
 }
 
-.active {
-    border-style: ridge;
+
+.flag
+{
+    width: 28px;
+    height: 23px;    
 }
 
+.flag.active{
+    border: 3px white solid;
+    border-radius: 4px;
+}
 
 .flag:hover {
     transition: all .4s;    

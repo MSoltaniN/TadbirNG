@@ -156,7 +156,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
           var reportData = {rows : response.body , fromDate: fdate ,
              toDate : tdate};
-          this.viewer.showReport('reports/voucher/test.mrt',reportData);
+          this.viewer.showVoucherReport('reports/voucher/voucher.summary.mrt',reportData);
         });
       
   }

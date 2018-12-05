@@ -14,7 +14,12 @@ import { environment } from "../../../../environments/environment";
 
 export class VoucherReportApi {
 
-  // vouchers
+  //reports/voucher/sum-by-date
   public static VoucherSumReport = environment.BaseUrl + "/reports/voucher/sum-by-date";
+
+
+  //reports/voucher/std-form/{voucherId:min(1)}
+  public static VoucherStdFormReport = environment.BaseUrl + "/reports/voucher/std-form/{0}";
+
 
 }

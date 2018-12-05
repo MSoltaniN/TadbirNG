@@ -164,15 +164,16 @@ label {
 
 .flag
 {
-    width:25px;
-    height:25px;
+    width: 28px;
+    height: 23px;    
 }
 
-.activeflag {
-    border-width: 1px;
-    width: 36px;
-    border-style: solid;
+.flag .active{
+    border: 3px white solid;
+    border-radius: 4px;
 }
+
+
 
 .k-pager-wrap
 {

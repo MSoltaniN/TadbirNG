@@ -1,5 +1,6 @@
 <div class="panel panel-primary voucher-line">
-  <div class="panel-body">
+  <div class="panel-body">   
+    <button kendoButton (click)="showReport()" type="button"  [icon]="'printer'"></button>
     <kendo-grid id="3" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
                 [data]="rowData"
                 [sortable]="true"
@@ -236,12 +237,13 @@
                                 (save)="saveHandler($event)"
                                 (cancel)="cancelHandler()">
     </voucherLine-form-component>
+    <report-viewer id='compviewer'></report-viewer>
   </div>
   <kendo-dialog title="{{'VoucherLine.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
     <p>
       {{ deleteConfirmMsg }}
     </p>
-    <kendo-dialog-actions>
+    <kendo-dialog-actions>      
       <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
       <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
     </kendo-dialog-actions>

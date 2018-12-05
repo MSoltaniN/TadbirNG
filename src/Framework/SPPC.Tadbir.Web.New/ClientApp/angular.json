@@ -19,7 +19,7 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/reports"
+              "src/reports"             
             ],
             "styles": [
               "src/styles.css",
@@ -82,7 +82,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "assets": [
-              "src/assets"              
+              "src/assets"             
             ]
           }
         },

@@ -14,10 +14,12 @@ import { MessageType, Entities, Metadatas } from "../../../environments/environm
 import { Filter } from "../../class/filter";
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
-import { VoucherApi } from '../../service/api/index';
+import { VoucherApi, VoucherReportApi } from '../../service/api/index';
 import { FilterExpression } from '../../class/filterExpression';
 import { DocumentStatusValue } from '../../enum/documentStatusValue';
-
+import { VoucherReportingService } from '../../service/report/voucher-reporting.service';
+import { ReportViewerComponent } from '../reportViewer/reportViewer.component';
+import * as moment from 'jalali-moment';
 
 
 @Component({
@@ -38,6 +40,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
   //#region Fields
   @ViewChild(GridComponent) grid: GridComponent;
+  @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
 
   public rowData: GridDataResult;
   public selectedRows: string[] = [];
@@ -190,8 +193,14 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
   //#endregion
 
   //#region Constructor
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-    private voucherLineService: VoucherLineService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
+  constructor(public toastrService: ToastrService, 
+    public translate: TranslateService,
+     public sppcLoading: SppcLoadingService,
+    private voucherLineService: VoucherLineService,
+     public renderer: Renderer2,
+     public metadata: MetaDataService,
+      public settingService: SettingService,
+      public reporingService:VoucherReportingService) {
     super(toastrService, translate, renderer, metadata, settingService, Entities.VoucherLine, Metadatas.VoucherArticles);
   }
   //#endregion
@@ -251,6 +260,25 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
       this.grid.loading = false;
     })
+  }
+
+  public showReport()
+  {
+      var url = String.Format(VoucherReportApi.VoucherStdFormReport, this.voucherId);
+
+      this.reporingService.getAll(url,
+        this.currentOrder,this.currentFilter).subscribe((response: any) => {
+
+           const m = moment();
+           var dateStr : string;
+           m.locale('fa'); 
+           if (m.isValid())
+              dateStr = m.format('jYYYY/jMM/jDD');  
+
+          var reportData = {rows : response.body , currentDate: dateStr};
+          this.viewer.showVoucherStdFormReport('reports/voucher/voucher.stdform.mrt',reportData);
+        });
+      
   }
 
   getVoucher() {
