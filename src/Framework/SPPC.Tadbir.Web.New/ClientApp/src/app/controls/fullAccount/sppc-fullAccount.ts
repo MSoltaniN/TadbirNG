@@ -419,7 +419,7 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
     switch (item) {
       case AccountRelationsType.Account: {
 
-        this.GetAccounts(AccountRelationApi.EnvironmentAccounts);
+        this.GetAccounts(AccountRelationApi.EnvironmentAccountsLookup);
 
         if (!this.isNew) {
           this.GetDetailAccounts(String.Format(AccountRelationApi.DetailAccountsRelatedToAccount, this.accountSelectedId[0]));
@@ -432,7 +432,7 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
       }
       case AccountRelationsType.DetailAccount: {
 
-        this.GetDetailAccounts(AccountRelationApi.EnvironmentDetailAccounts);
+        this.GetDetailAccounts(AccountRelationApi.EnvironmentDetailAccountsLookup);
 
         if (!this.isNew) {
           this.GetAccounts(String.Format(AccountRelationApi.AccountsRelatedToDetailAccount, this.detailAccountSelectedId[0]));
@@ -444,7 +444,7 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
       }
       case AccountRelationsType.CostCenter: {
 
-        this.GetCostCenters(AccountRelationApi.EnvironmentCostCenters);
+        this.GetCostCenters(AccountRelationApi.EnvironmentCostCentersLookup);
 
         if (!this.isNew) {
           this.GetAccounts(String.Format(AccountRelationApi.AccountsRelatedToCostCenter, this.costCenterSelectedId[0]));
@@ -456,7 +456,7 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
       }
       case AccountRelationsType.Project: {
 
-        this.GetProjects(AccountRelationApi.EnvironmentProjects);
+        this.GetProjects(AccountRelationApi.EnvironmentProjectsLookup);
 
         if (!this.isNew) {
           this.GetAccounts(String.Format(AccountRelationApi.AccountsRelatedToProject, this.projectSelectedId[0]));
