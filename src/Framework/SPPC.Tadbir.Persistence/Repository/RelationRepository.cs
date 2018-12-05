@@ -104,12 +104,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>سرفصل های حسابداری قابل استفاده در دوره مالی و شعبه جاری</returns>
-        public async Task<IList<KeyValue>> GetUsableAccountsLookupAsync(GridOptions gridOptions = null)
+        public async Task<IList<AccountItemBriefViewModel>> GetUsableAccountsLookupAsync(
+            GridOptions gridOptions = null)
         {
             var items = await _itemRepository.GetLeafAccountsAsync(gridOptions);
-            return items
-                .Select(item => _mapper.Map<KeyValue>(item))
-                .ToList();
+            return items;
         }
 
         /// <summary>
@@ -117,12 +116,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تفصیلی های شناور قابل استفاده در دوره مالی و شعبه جاری</returns>
-        public async Task<IList<KeyValue>> GetUsableDetailAccountsLookupAsync(GridOptions gridOptions = null)
+        public async Task<IList<AccountItemBriefViewModel>> GetUsableDetailAccountsLookupAsync(
+            GridOptions gridOptions = null)
         {
             var items = await _itemRepository.GetLeafDetailAccountsAsync(gridOptions);
-            return items
-                .Select(item => _mapper.Map<KeyValue>(item))
-                .ToList();
+            return items;
         }
 
         /// <summary>
@@ -130,12 +128,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مراکز هزینه قابل استفاده در دوره مالی و شعبه جاری</returns>
-        public async Task<IList<KeyValue>> GetUsableCostCentersLookupAsync(GridOptions gridOptions = null)
+        public async Task<IList<AccountItemBriefViewModel>> GetUsableCostCentersLookupAsync(
+            GridOptions gridOptions = null)
         {
             var items = await _itemRepository.GetLeafCostCentersAsync(gridOptions);
-            return items
-                .Select(item => _mapper.Map<KeyValue>(item))
-                .ToList();
+            return items;
         }
 
         /// <summary>
@@ -143,12 +140,11 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>پروژه های قابل استفاده در دوره مالی و شعبه جاری</returns>
-        public async Task<IList<KeyValue>> GetUsableProjectsLookupAsync(GridOptions gridOptions = null)
+        public async Task<IList<AccountItemBriefViewModel>> GetUsableProjectsLookupAsync(
+            GridOptions gridOptions = null)
         {
             var items = await _itemRepository.GetLeafProjectsAsync(gridOptions);
-            return items
-                .Select(item => _mapper.Map<KeyValue>(item))
-                .ToList();
+            return items;
         }
 
         /// <summary>

@@ -54,28 +54,32 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>سرفصل های حسابداری قابل استفاده در دوره مالی و شعبه جاری</returns>
-        Task<IList<KeyValue>> GetUsableAccountsLookupAsync(GridOptions gridOptions = null);
+        Task<IList<AccountItemBriefViewModel>> GetUsableAccountsLookupAsync(
+            GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، تفصیلی های شناور قابل استفاده در دوره مالی و شعبه جاری را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تفصیلی های شناور قابل استفاده در دوره مالی و شعبه جاری</returns>
-        Task<IList<KeyValue>> GetUsableDetailAccountsLookupAsync(GridOptions gridOptions = null);
+        Task<IList<AccountItemBriefViewModel>> GetUsableDetailAccountsLookupAsync(
+            GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، مراکز هزینه قابل استفاده در دوره مالی و شعبه جاری را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>مراکز هزینه قابل استفاده در دوره مالی و شعبه جاری</returns>
-        Task<IList<KeyValue>> GetUsableCostCentersLookupAsync(GridOptions gridOptions = null);
+        Task<IList<AccountItemBriefViewModel>> GetUsableCostCentersLookupAsync(
+            GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، پروژه های قابل استفاده در دوره مالی و شعبه جاری را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>پروژه های قابل استفاده در دوره مالی و شعبه جاری</returns>
-        Task<IList<KeyValue>> GetUsableProjectsLookupAsync(GridOptions gridOptions = null);
+        Task<IList<AccountItemBriefViewModel>> GetUsableProjectsLookupAsync(
+            GridOptions gridOptions = null);
 
         /// <summary>
         /// به روش آسنکرون، مدل نمایشی بردار حساب داده شده را در ارتباطات موجود جستجو کرده
