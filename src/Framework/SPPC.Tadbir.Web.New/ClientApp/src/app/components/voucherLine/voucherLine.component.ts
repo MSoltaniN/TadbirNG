@@ -276,7 +276,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
               dateStr = m.format('jYYYY/jMM/jDD');  
 
           var reportData = {rows : response.body , currentDate: dateStr};
-          this.viewer.showVoucherStdFormReport('reports/voucher/voucher.stdform.mrt',reportData);
+          this.viewer.showVoucherStdFormReport('assets/reports/voucher/voucher.stdform.mrt',reportData);
         });
       
   }

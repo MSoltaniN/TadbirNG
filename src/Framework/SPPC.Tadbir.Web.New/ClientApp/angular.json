@@ -18,8 +18,7 @@
             "progress": true,
             "polyfills": "src/polyfills.ts",
             "assets": [
-              "src/assets",
-              "src/reports"             
+              "src/assets"                      
             ],
             "styles": [
               "src/styles.css",
