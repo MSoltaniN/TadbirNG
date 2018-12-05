@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using AutoMapper;
 using SPPC.Framework.Common;
@@ -200,12 +201,12 @@ namespace SPPC.Tadbir.Mapper
                         src => String.Join(",", new[] { "VoucherDisplay", src.No, src.Date.ToShortDateString() })));
             mapperConfig.CreateMap<Voucher, VoucherSummaryViewModel>()
                 .ForMember(dest => dest.Date, opts => opts.MapFrom(src => src.Date.Date.ToShortDateString(false)))
-                .ForMember(dest => dest.DebitSum, opts => opts.MapFrom(src => VoucherHelper.GetDebitSum(src)))
-                .ForMember(dest => dest.CreditSum, opts => opts.MapFrom(src => VoucherHelper.GetCreditSum(src)))
+                .ForMember(dest => dest.DebitSum, opts => opts.MapFrom(src => FormatAsCurrency(VoucherHelper.GetDebitSum(src))))
+                .ForMember(dest => dest.CreditSum, opts => opts.MapFrom(src => FormatAsCurrency(VoucherHelper.GetCreditSum(src))))
                 .ForMember(
                     dest => dest.Difference,
                     opts => opts.MapFrom(
-                        src => Math.Abs(VoucherHelper.GetDebitSum(src) - VoucherHelper.GetCreditSum(src))))
+                        src => FormatAsCurrency(Math.Abs(VoucherHelper.GetDebitSum(src) - VoucherHelper.GetCreditSum(src)))))
                 .ForMember(
                     dest => dest.BalanceStatus,
                     opts => opts.MapFrom(src => VoucherHelper.GetBalanceStatus(src)))
@@ -528,6 +529,14 @@ namespace SPPC.Tadbir.Mapper
             }
 
             return fullAccount;
+        }
+
+        private static string FormatAsCurrency(decimal money)
+        {
+            var faCulture = new CultureInfo("fa");
+            faCulture.NumberFormat.CurrencySymbol = String.Empty;
+            faCulture.NumberFormat.CurrencyDecimalDigits = 0;
+            return money.ToString("C", faCulture);
         }
 
         private static ICryptoService _crypto;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -74,7 +75,7 @@ namespace SPPC.Tadbir.Persistence
                     {
                         AccountFullCode = String.Empty,
                         Description = line.Description,
-                        PartialAmount = Math.Max(line.Debit, line.Credit)
+                        PartialAmount = FormatAsCurrency(Math.Max(line.Debit, line.Credit))
                     });
                     if (withDetail)
                     {
@@ -103,8 +104,8 @@ namespace SPPC.Tadbir.Persistence
                 {
                     AccountFullCode = line.Account.FullCode,
                     Description = line.Account.Name,
-                    Debit = line.Debit,
-                    Credit = line.Credit
+                    Debit = FormatAsCurrency(line.Debit),
+                    Credit = FormatAsCurrency(line.Credit)
                 });
             }
         }
@@ -123,8 +124,8 @@ namespace SPPC.Tadbir.Persistence
                 {
                     AccountFullCode = line.Account.Parent.FullCode,
                     Description = line.Account.Parent.Name,
-                    Debit = line.Debit,
-                    Credit = line.Credit
+                    Debit = FormatAsCurrency(line.Debit),
+                    Credit = FormatAsCurrency(line.Credit)
                 });
             }
         }
@@ -148,8 +149,8 @@ namespace SPPC.Tadbir.Persistence
                 {
                     AccountFullCode = line.Account.Parent.Parent.FullCode,
                     Description = line.Account.Parent.Parent.Name,
-                    Debit = line.Debit,
-                    Credit = line.Credit
+                    Debit = FormatAsCurrency(line.Debit),
+                    Credit = FormatAsCurrency(line.Credit)
                 });
             }
         }
@@ -183,6 +184,14 @@ namespace SPPC.Tadbir.Persistence
                     Description = line.DetailAccount.Name
                 });
             }
+        }
+
+        private static string FormatAsCurrency(decimal money)
+        {
+            var faCulture = new CultureInfo("fa");
+            faCulture.NumberFormat.CurrencySymbol = String.Empty;
+            faCulture.NumberFormat.CurrencyDecimalDigits = 0;
+            return money.ToString("C", faCulture);
         }
 
         private IQueryable<Voucher> GetStandardVoucherFormQuery(int voucherId, bool withDetail = false)

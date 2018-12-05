@@ -21,16 +21,16 @@ namespace SPPC.Tadbir.ViewModel.Report
         /// <summary>
         /// مبلغ جزء که برای سطر اصلی آرتیکل فقط مقدار غیر صفر خواهد داشت
         /// </summary>
-        public decimal PartialAmount { get; set; }
+        public string PartialAmount { get; set; }
 
         /// <summary>
         /// مبلغ بدهکار در آرتیکل سند
         /// </summary>
-        public decimal Debit { get; set; }
+        public string Debit { get; set; }
 
         /// <summary>
         /// مبلغ بستانکار در آرتیکل سند
         /// </summary>
-        public decimal Credit { get; set; }
+        public string Credit { get; set; }
     }
 }
