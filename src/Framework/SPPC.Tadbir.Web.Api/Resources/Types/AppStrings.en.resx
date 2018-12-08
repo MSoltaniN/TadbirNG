@@ -723,4 +723,7 @@
   <data name="CantDeleteUsedAccountGroup" xml:space="preserve">
     <value>This group is assigned to one or more general accounts and cannot be deleted.</value>
   </data>
+  <data name="AccountGroups" xml:space="preserve">
+    <value>Account groups</value>
+  </data>
 </root>

@@ -66,5 +66,10 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی شرکت ها
         /// </summary>
         public const int Company = 11;
+
+        /// <summary>
+        /// نمای اطلاعاتی گروه های حساب
+        /// </summary>
+        public const int AccountGroup = 12;
     }
 }

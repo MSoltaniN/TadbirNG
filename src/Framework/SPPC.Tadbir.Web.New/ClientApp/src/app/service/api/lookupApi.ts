@@ -58,4 +58,10 @@ export class LookupApi {
 
   // lookup/currencies
   public static Currencies = environment.BaseUrl + "/lookup/currencies";
+
+  // lookup/accgroup/categories
+  public static AccountGroupCategories = environment.BaseUrl + "/lookup/accgroup/categories";
+
+  // lookup/accgroups
+  public static AccountGroups = environment.BaseUrl + "/lookup/accgroups";
 }

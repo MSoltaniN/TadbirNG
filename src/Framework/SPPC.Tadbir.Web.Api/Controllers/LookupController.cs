@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -130,6 +131,24 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(branchLookup);
         }
 
+        // GET: api/lookup/accgroup/categories
+        [Route(LookupApi.AccountGroupCategoriesUrl)]
+        public IActionResult GetAccountGroupCategoriesLookup()
+        {
+            var categoryLookup = _repository.GetAccountGroupCategoriesAsync();
+            Localize(categoryLookup);
+            return Json(categoryLookup);
+        }
+
+        // GET: api/lookup/accgroups
+        [Route(LookupApi.AccountGroupsUrl)]
+        [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
+        public async Task<IActionResult> GetAccountGroupsLookupAsync()
+        {
+            var accGroupLookup = await _repository.GetAccountGroupsAsync();
+            return Json(accGroupLookup);
+        }
+
         #endregion
 
         #region Security Subsystem API
@@ -169,6 +188,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         }
 
         #endregion
+
+        private void Localize(IList<string> keys)
+        {
+            Array.ForEach(keys.ToArray(), key => key = _strings[key]);
+        }
 
         private readonly ILookupRepository _repository;
     }

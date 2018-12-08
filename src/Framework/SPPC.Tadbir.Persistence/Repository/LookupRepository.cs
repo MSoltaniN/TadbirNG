@@ -288,6 +288,38 @@ namespace SPPC.Tadbir.Persistence
                 .Select(br => _mapper.Map<KeyValue>(br));
         }
 
+        /// <summary>
+        /// به روش آسنکرون، ماهیت های قابل استفاده در تعریف گروه های حساب را
+        /// به صورت مجموعه ای از متن های چندزبانه برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه ماهیت های قابل استفاده در تعریف گروه های حساب</returns>
+        public IList<string> GetAccountGroupCategoriesAsync()
+        {
+            var categories = new string[]
+            {
+                "CategoryAsset", "CategoryAssociation", "CategoryCapital",
+                "CategoryCoordination", "CategoryExpense", "CategoryIncome",
+                "CategoryLiability", "CategoryPurchase", "CategorySales"
+            };
+            categories
+                .ToList()
+                .Sort();
+            return categories;
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، گروه های حساب تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه گروه های حساب تعریف شده</returns>
+        public async Task<IEnumerable<KeyValue>> GetAccountGroupsAsync()
+        {
+            var repository = _unitOfWork.GetAsyncRepository<AccountGroup>();
+            return await repository
+                .GetEntityQuery()
+                .Select(grp => _mapper.Map<KeyValue>(grp))
+                .ToListAsync();
+        }
+
         #endregion
 
         #region Security Subsystem lookup

@@ -115,6 +115,26 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string CurrenciesUrl = "lookup/currencies";
 
+        /// <summary>
+        /// API client URL for lookup collection of all categories used in account groups
+        /// </summary>
+        public const string AccountGroupCategories = "lookup/accgroup/categories";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all categories used in account groups
+        /// </summary>
+        public const string AccountGroupCategoriesUrl = "lookup/accgroup/categories";
+
+        /// <summary>
+        /// API client URL for lookup collection of all account groups
+        /// </summary>
+        public const string AccountGroups = "lookup/accgroups";
+
+        /// <summary>
+        /// API server route URL for lookup collection of all account groups
+        /// </summary>
+        public const string AccountGroupsUrl = "lookup/accgroups";
+
         #endregion
     }
 }
