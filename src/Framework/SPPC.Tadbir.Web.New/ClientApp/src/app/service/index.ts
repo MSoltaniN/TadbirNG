@@ -1,4 +1,4 @@
-﻿export * from './account.service';
+export * from './account.service';
 export * from './voucher-line.service';
 export * from './fiscal-period.service';
 export * from './branch.service';
@@ -18,3 +18,4 @@ export * from './viewRowPermission.Service';
 export * from './fullCode.Service';
 export * from './operationLog.service';
 export * from './dashboard.service';
+export * from './accountGroups.service';

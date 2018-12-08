@@ -11,21 +11,21 @@
 // ------------------------------------------------------------------------------
 
 export const SecureEntity = {
-    Account: 'Account',
-    DetailAccount: 'DetailAccount',
-    CostCenter: 'CostCenter',
-    Project: 'Project',
-    AccountRelations : "AccountRelations",
-    Currency: 'Currency',
-    FiscalPeriod: 'FiscalPeriod',
-    Branch: 'Branch',
-    BusinessUnit: 'BusinessUnit',
-    BusinessPartner: 'BusinessPartner',
-    Voucher: 'Voucher',
-    User: 'User',
-    Role: 'Role',
-    ProductInventory: 'ProductInventory',
-    Requisition: 'RequisitionVoucher',
-    Company: 'Company'
-
+  Account: 'Account',
+  DetailAccount: 'DetailAccount',
+  CostCenter: 'CostCenter',
+  Project: 'Project',
+  AccountRelations: "AccountRelations",
+  Currency: 'Currency',
+  FiscalPeriod: 'FiscalPeriod',
+  Branch: 'Branch',
+  BusinessUnit: 'BusinessUnit',
+  BusinessPartner: 'BusinessPartner',
+  Voucher: 'Voucher',
+  User: 'User',
+  Role: 'Role',
+  ProductInventory: 'ProductInventory',
+  Requisition: 'RequisitionVoucher',
+  Company: 'Company',
+  AccountGroup: "AccountGroup"
 }

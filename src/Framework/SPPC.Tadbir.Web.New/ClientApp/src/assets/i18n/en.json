@@ -106,7 +106,8 @@
     "OperationLog": "Operation Logs",
     "Unsuccessful": "Unsuccessful",
     "Successful": "Successful",
-    "ViewTreeConfig": "View Tree Config"
+    "ViewTreeConfig": "View Tree Config",
+    "AccountGroup": "Account Group"
   },
   "BranchScope": {
     "AllBranches": "All Branches",
@@ -257,6 +258,13 @@
     "Password": "Password",
     "Description": "Description",
     "NotFoundData": "Not Found Company"
+  },
+  "AccountGroup": {
+    "New": "New Account Group",
+    "Delete": "Delete",
+    "Name": "Name",
+    "Category": "Category",
+    "Description": "Description"
   },
   "Branch": {
     "BranchName": "Branch",
@@ -594,6 +602,13 @@
       "PasswordIsTooLong": "Database password can have a maximum of 32 characters.",
       "DescriptionIsTooLong": "Description can have a maximum of 512 characters.",
       "NoError": ""
+    },
+    "AccountGroup": {
+      "NameIsRequired": "Name is required.",
+      "NameIsTooLong": "Name can have a maximum of 128 characters.",
+      "CategoryIsRequired": "Category is required.",
+      "CategoryIsTooLong": "Category can have a maximum of 128 characters.",
+      "DescriptionIsTooLong": "Description can have a maximum of 256 characters."
     }
   }
 }
