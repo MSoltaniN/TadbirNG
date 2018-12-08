@@ -226,6 +226,7 @@
     <None Remove="ClientApp\src\assets\resources\images\line.gif" />
     <None Remove="ClientApp\src\assets\resources\images\loading.gif" />
     <None Remove="ClientApp\src\assets\resources\images\password-meter.png" />
+    <None Remove="ClientApp\src\assets\resources\IranSans-en.css" />
     <None Remove="ClientApp\src\assets\resources\IranSans.css" />
     <None Remove="ClientApp\src\assets\resources\jquery-1.11.2.min.js" />
     <None Remove="ClientApp\src\assets\resources\main.css" />
@@ -610,6 +611,9 @@
     <Content Include="ClientApp\src\assets\resources\images\password-meter.png">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="ClientApp\src\assets\resources\IranSans-en.css">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="ClientApp\src\assets\resources\IranSans.css">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -960,6 +964,7 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\app\components\error\" />
+    <Folder Include="ClientApp\src\assets\resources\fonts\IranSans-En\" />
   </ItemGroup>
 
   <ItemGroup>
