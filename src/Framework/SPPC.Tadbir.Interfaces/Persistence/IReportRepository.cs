@@ -7,15 +7,38 @@ using SPPC.Tadbir.ViewModel.Report;
 
 namespace SPPC.Tadbir.Persistence
 {
+    /// <summary>
+    /// عملیات مورد نیاز برای تهیه و محاسبه اطلاعات گزارش های برنامه را تعریف می کند
+    /// </summary>
     public interface IReportRepository
     {
+        /// <summary>
+        /// اطلاعات محیطی و امنیتی کاربر جاری برنامه را برای کنترل قواعد کاری برنامه تنظیم می کند
+        /// </summary>
+        /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
         void SetCurrentContext(UserContextViewModel userContext);
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش خلاصه اسناد حسابداری را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>اطلاعات گزارش خلاصه اسناد حسابداری</returns>
         Task<IList<VoucherSummaryViewModel>> GetVoucherSummaryByDateReportAsync(
             GridOptions gridOptions);
 
+        /// <summary>
+        /// به روش آسنکرون، نعداد سطرهای اطلاعاتی در گزارش خلاصه اسناد حسابداری را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
+        /// <returns>تعداد سطرهای گزارش خلاصه اسناد حسابداری</returns>
         Task<int> GetVoucherSummaryByDateCountAsync(GridOptions gridOptions);
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش فرم مرسوم سند را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="voucherId">شناسه دیتابیسی یک سند مالی موجود</param>
+        /// <param name="withDetail">مشخص می کند که آیا جزییات سطوح شناور نیز مورد نیاز است یا نه</param>
+        /// <returns>اطلاعات گزارش فرم مرسوم سند</returns>
         Task<StandardVoucherViewModel> GetStandardVoucherFormAsync(
             int voucherId, bool withDetail = false);
     }

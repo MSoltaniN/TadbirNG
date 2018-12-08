@@ -152,6 +152,7 @@ GO
 CREATE TABLE [Finance].[Account] (
     [AccountID]      INT              IDENTITY (1, 1) NOT NULL,
 	[ParentID]       INT              NULL,
+	[GroupID]        INT              NOT NULL,
 	[FiscalPeriodID] INT              NOT NULL,
 	[BranchID]       INT              NOT NULL,
 	[BranchScope]    SMALLINT         CONSTRAINT [DF_Finance_Account_BranchScope] DEFAULT (0) NOT NULL,
@@ -164,6 +165,7 @@ CREATE TABLE [Finance].[Account] (
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Finance_Account_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Finance_Account] PRIMARY KEY CLUSTERED ([AccountID] ASC)
     , CONSTRAINT [FK_Finance_Account_Finance_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Finance].[Account]([AccountID])
+    , CONSTRAINT [FK_Finance_Account_Finance_AccountGroup] FOREIGN KEY ([GroupID]) REFERENCES [Finance].[AccountGroup]([GroupID])
     , CONSTRAINT [FK_Finance_Account_Finance_FiscalPeriod] FOREIGN KEY ([FiscalPeriodID]) REFERENCES [Finance].[FiscalPeriod] ([FiscalPeriodID])
     , CONSTRAINT [FK_Finance_Account_Corporate_Branch] FOREIGN KEY ([BranchID]) REFERENCES [Corporate].[Branch] ([BranchID])
 )

@@ -118,11 +118,20 @@ namespace SPPC.Tadbir.Persistence
             return Mapper.Map<AccountGroupViewModel>(accountGroup);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، مشخص می کند که آیا گروه حساب مورد نظر قابل حذف هست یا نه؟
+        /// </summary>
+        /// <param name="groupId">شناسه دیتابیسی گروه حساب مورد نظر برای حذف</param>
+        /// <returns>اگر قابل حذف باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
         public async Task<bool> CanDeleteAccountGroupAsync(int groupId)
         {
             return true;
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات یک گروه حساب موجود را حذف می کند
+        /// </summary>
+        /// <param name="groupId">شناسه گروه حساب مورد نظر برای حذف</param>
         public async Task DeleteAccountGroupAsync(int groupId)
         {
             var repository = UnitOfWork.GetAsyncRepository<AccountGroup>();

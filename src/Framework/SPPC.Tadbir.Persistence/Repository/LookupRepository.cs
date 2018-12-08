@@ -324,6 +324,11 @@ namespace SPPC.Tadbir.Persistence
 
         #region Security Subsystem lookup
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات اشخاص تعریف شده در برنامه را به صورت یک دیکشنری
+        /// که بر حسب شناسه دیتابیسی کاربر ایندکس شده برمی گرداند
+        /// </summary>
+        /// <returns>مجموعه اطلاعات کاربران موجود به صورت دیکشنری</returns>
         public async Task<IDictionary<int, string>> GetUserPersonsAsync()
         {
             var userPersons = new Dictionary<int, string>();
