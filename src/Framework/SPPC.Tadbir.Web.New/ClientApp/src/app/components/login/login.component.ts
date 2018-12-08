@@ -62,15 +62,18 @@ export class LoginComponent extends DefaultComponent implements OnInit {
 
         if (this.currentlang == 'fa') {
             this.renderer.addClass(document.body, 'tRtl');
-            this.renderer.removeClass(document.body, 'tLtr');            
+          this.renderer.removeClass(document.body, 'tLtr');
+
+          this.document.getElementById('sppcFont').setAttribute('href','assets/resources/IranSans.css');
         }
 
         if (this.currentlang == 'en') {
             this.renderer.addClass(document.body, 'tLtr');
-            this.renderer.removeClass(document.body, 'tRtl');            
+          this.renderer.removeClass(document.body, 'tRtl');
+
+          this.document.getElementById('sppcFont').setAttribute('href', 'assets/resources/IranSans-en.css');
         }
 
-        
         // if(language == 'fa')
         // {
         //     if(this.document.getElementById('adminlte').getAttribute('href') != '../assets/dist/css/AdminLTE.Rtl.css')
