@@ -726,4 +726,10 @@
   <data name="AccountGroups" xml:space="preserve">
     <value>گروه های حساب</value>
   </data>
+  <data name="Category" xml:space="preserve">
+    <value>ماهیت</value>
+  </data>
+  <data name="Reference" xml:space="preserve">
+    <value>رفرنس</value>
+  </data>
 </root>

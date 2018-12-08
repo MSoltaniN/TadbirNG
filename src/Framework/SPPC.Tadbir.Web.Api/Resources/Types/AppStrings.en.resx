@@ -726,4 +726,10 @@
   <data name="AccountGroups" xml:space="preserve">
     <value>Account groups</value>
   </data>
+  <data name="Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="Reference" xml:space="preserve">
+    <value>Reference</value>
+  </data>
 </root>
