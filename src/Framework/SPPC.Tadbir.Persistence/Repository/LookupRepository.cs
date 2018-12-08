@@ -295,15 +295,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>مجموعه ماهیت های قابل استفاده در تعریف گروه های حساب</returns>
         public IList<string> GetAccountGroupCategoriesAsync()
         {
-            var categories = new string[]
+            var categories = new List<string>
             {
                 "CategoryAsset", "CategoryAssociation", "CategoryCapital",
                 "CategoryCoordination", "CategoryExpense", "CategoryIncome",
                 "CategoryLiability", "CategoryPurchase", "CategorySales"
             };
-            categories
-                .ToList()
-                .Sort();
             return categories;
         }
 

@@ -191,7 +191,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         private void Localize(IList<string> keys)
         {
-            Array.ForEach(keys.ToArray(), key => key = _strings[key]);
+            for (int i = 0; i < keys.Count; i++)
+            {
+                keys[i] = _strings[keys[i]];
+            }
+
+            (keys as List<string>).Sort();
         }
 
         private readonly ILookupRepository _repository;
