@@ -1,0 +1,115 @@
+<app-bread-cumb ></app-bread-cumb>
+<div SppcCheckAccess="View" class='panel-body'>
+    <kendo-grid id="10" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
+                [sortable]="true"
+                [pageSize]="pageSize"
+                [skip]="skip"
+                [filter]="state.filter"
+                [pageable]="true"
+                [resizable]="true"
+                [filterable]="true"
+                [scrollable]="'none'"
+                (pageChange)="pageChange($event)"
+                (sortChange)="sortChange($event)"
+                (edit)="editHandler($event)"
+                (remove)="removeHandler($event)"
+                [sort]="state.sort"
+                [loading]="true"
+                [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+                [selectedKeys]="selectedRows"
+                [kendoGridSelectBy]="selectionKey"
+                (filterChange)="filterChange($event)"
+                (selectedKeysChange)="onSelectedKeysChange($event)"
+                sppc-grid-reorder sppc-grid-resize>
+        <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                                pagerOf="{{ 'Paging.Of' | translate }}"
+                                pagerItems="{{ 'Paging.Record' | translate }}">
+        </kendo-grid-messages>
+        <ng-template kendoGridNoRecordsTemplate>
+            {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
+        </ng-template>
+        <ng-template kendoGridToolbarTemplate let-accountGroup>
+            <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'plus-outline'" type="button" title="{{ 'AccountGroup.New' | translate }}"></button>
+            <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
+            <grid-setting entityTypeName="AccountGroup"></grid-setting>
+            <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+        </ng-template>
+
+        <!-- template for mobile -->
+        <kendo-grid-column media="(max-width: 449px)" title="">
+            <ng-template kendoGridCellTemplate let-accountGroup>
+                <!-- template for mobile -->
+                <dl>
+                    <dt>{{ 'AccountGroup.Name' | translate }}:</dt>
+                    <dd>{{ accountGroup.name }}</dd>
+
+                    <dt>{{ 'AccountGroup.Category' | translate }}:</dt>
+                    <dd>{{ accountGroup.category }}</dd>
+
+                    <dt>{{ 'AccountGroup.Description' | translate  }}:</dt>
+                    <dd>{{ accountGroup.description }}</dd>
+                </dl>
+                <button kendoGridEditCommand SppcCheckAccess="Edit" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
+                <button kendoGridRemoveCommand SppcCheckAccess="Delete">{{ 'Buttons.Delete' | translate }}</button>
+            </ng-template>
+        </kendo-grid-column>
+        <!-- template for mobile -->
+        <!-- template for mid-size devices -->
+        <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px)"></kendo-grid-checkbox-column>
+
+        <kendo-grid-column media="(min-width: 450px)" width="150" sppc-grid-column="AccountGroup.name">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column media="(min-width: 450px)" width="150" sppc-grid-column="AccountGroup.category">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                <sppc-grid-filter [metaData]="getMeta('category')" [column]="column" [filter]="filter"></sppc-grid-filter>
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column media="(min-width: 450px)" width="190" sppc-grid-column="AccountGroup.description">
+            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+                <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px)">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
+                <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
+            </ng-template>
+        </kendo-grid-command-column>
+
+        <!-- template for mid-size devices -->        
+
+    </kendo-grid>
+    <accountGroups-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
+                                    (save)="saveHandler($event)"
+                                    (cancel)="cancelHandler()">
+    </accountGroups-form-component>
+</div>
+<kendo-dialog title="{{'AccountGroup.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
+    <p>
+        {{ deleteConfirmMsg }}
+    </p>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+        <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="{{'AccountGroup.Delete' | translate}}" *ngIf="deleteModelsConfirm" (close)="deleteModels(false)" [minWidth]="250" [width]="450">
+    <p>
+        {{ this.deleteConfirmMsg }}
+    </p>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="deleteModels(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+        <button class="k-button" (click)="deleteModels(false)">{{ 'Buttons.No' | translate }}</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+
+
+
+

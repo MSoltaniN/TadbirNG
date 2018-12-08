@@ -104,7 +104,8 @@
     "Settings": "تنظیمات",
     "ViewRowPermission": "دسترسی به سطرهای اطلاعاتی",
     "OperationLog": "لاگ های عملیاتی",
-    "ViewTreeConfig": "تنظیمات ساختار درختی"
+    "ViewTreeConfig": "تنظیمات ساختار درختی",
+    "AccountGroup": "گروه حساب"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",
@@ -255,6 +256,13 @@
     "Password": "کلمه عبور",
     "Description": "شرح",
     "NotFoundData": "شرکتی وجود ندارد"
+  },
+  "AccountGroup": {
+    "New": "گروه حساب جدید",
+    "Delete": "حذف گروه حسای",
+    "Name": "نام",
+    "Category": "ماهیت",
+    "Description": "شرح"
   },
   "Branch": {
     "BranchName": "شعبه",
@@ -592,6 +600,13 @@
       "PasswordIsTooLong": "کلمه عبور دیتابیس می تواند حداکثر 32 حرف داشته باشد.",
       "DescriptionIsTooLong": "شرح می تواند حداکثر 512 حرف داشته باشد.",
       "NoError": ""
+    },
+    "AccountGroup": {
+      "NameIsRequired": "وارد کردن نام اجباری است.",
+      "NameIsTooLong": "نام می تواند حداکثر 64 حرف داشته باشد.",
+      "CategoryIsRequired": "وارد کردن ماهیت اجباری است.",
+      "CategoryIsTooLong": "ماهیت می تواند حداکثر 64 حرف داشته باشد.",
+      "DescriptionIsTooLong": "شرح می تواند حداکثر 256 حرف داشته باشد."
     }
   }
 }

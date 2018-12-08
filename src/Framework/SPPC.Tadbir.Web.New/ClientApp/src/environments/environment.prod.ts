@@ -20,7 +20,8 @@ export const Metadatas = {
   FiscalPeriod: 'fperiods',
   Branch: 'branches',
   Company: 'companies',
-  OperationLog: 'system/oplog'
+  OperationLog: 'system/oplog',
+  AccountGroup: "accgroups"
 }
 
 
@@ -40,7 +41,8 @@ export const Entities = {
   AccountRelations: "AccountRelations",
   Settings: "Settings",
   ViewRowPermission: "ViewRowPermission",
-  OperationLog: "OperationLog"
+  OperationLog: "OperationLog",
+  AccountGroup: "AccountGroup"
 }
 
 export const ColumnVisibility =

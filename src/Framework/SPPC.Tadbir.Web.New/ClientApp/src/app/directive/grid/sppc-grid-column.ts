@@ -51,13 +51,10 @@ export class SppcGridColumn {
     }
     
     var key = parts.join('.');
-    
 
     this.translate.get(key).subscribe((msg: string) => {
       this.hostColumn.title = msg;
     });
-
-    console.log(this.hostColumn);
 
   }
 
@@ -73,7 +70,6 @@ export class SppcGridColumn {
     var self = this.hostColumn;
 
     var items = document.getElementsByTagName('kendo-dropdownlist');
-    //console.log(items);
 
     if (items.length > 0) {
 

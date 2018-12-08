@@ -168,6 +168,15 @@ export enum CompanyPermissions {
   All = 15
 }
 
+export enum AccountGroupPermissions {
+  None = 0,
+  View = 1,
+  Create = 2,
+  Edit = 4,
+  Delete = 8,
+  All = 15
+}
+
 
 @Injectable()
 export class Permissions {
@@ -224,7 +233,9 @@ export class Permissions {
       case "company":
         id = <any>CompanyPermissions[<any>premissionName];
         break;
-
+      case "accountGroup":
+        id = <any>AccountGroupPermissions[<any>premissionName];
+        break;
     }
 
 

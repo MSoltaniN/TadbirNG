@@ -56,6 +56,8 @@ import { OperationLogsComponent } from './components/operationLogs/operationLogs
 import { OperationLogsDetailComponent } from './components/operationLogs/operationLogs-detail.component';
 import { EditorFormTitleComponent } from './directive/editorForm/editor-title.component';
 import { ViewTreeConfigComponent } from './components/viewTreeConfig/viewTreeConfig.component';
+import { AccountGroupsComponent } from './components/accountGroups/accountGroups.component';
+import { AccountGroupsFormComponent } from './components/accountGroups/accountGroups-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -77,7 +79,7 @@ import { SppcBranchScope } from './controls/branchScope/sppc-branch-scope';
 
 import { BrowserModule } from "@angular/platform-browser";
 //import { TranslateModule, TranslateLoader, TranslateStaticLoader } from "ng2-translate";
-import { TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { GridModule } from '@progress/kendo-angular-grid';
@@ -93,8 +95,7 @@ import { HotkeyModule } from 'angular2-hotkeys';
 import {
   AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
   BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService, FullCodeService,
-  OperationLogService,
-  DashboardService
+  OperationLogService, DashboardService, AccountGroupsService
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
 import { SppcGridReorder } from "./directive/grid/sppc-grid-reorder";
@@ -230,7 +231,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppsettingComponent,
     DashboardComponent,
     BreadCumbComponent,
-    ReportViewerComponent
+    ReportViewerComponent,
+    AccountGroupsComponent,
+    AccountGroupsFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -283,13 +286,13 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'viewRowPermission', component: ViewRowPermissionComponent, canActivate: [AuthGuard] },
       { path: 'operation-log', component: OperationLogsComponent, canActivate: [AuthGuard] },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-      //{ path: 'view-tree-config', component: ViewTreeConfigComponent, canActivate: [AuthGuard] },
-      { path: '**', redirectTo: 'account' }
+      { path: 'account-groups', component: AccountGroupsComponent, canActivate: [AuthGuard] },
+      { path: '**', redirectTo: 'dashboard' }
     ])
   ],
   providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
     UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService,
-    FullCodeService, OperationLogService,DashboardService,VoucherReportingService,
+    FullCodeService, OperationLogService, DashboardService, VoucherReportingService, AccountGroupsService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: ErrorHandler, useClass: GeneralErrorHandler },
     //{

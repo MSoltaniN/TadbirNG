@@ -36,6 +36,7 @@
     <None Remove="ClientApp\src\app\class\filterExpressionOperator.ts" />
     <None Remove="ClientApp\src\app\class\grid.orderby.ts" />
     <None Remove="ClientApp\src\app\class\metadata\property.ts" />
+    <None Remove="ClientApp\src\app\components\accountGroups\accountGroups-form.component.ts" />
     <None Remove="ClientApp\src\app\components\accountRelations\accountRelations-form.component.ts" />
     <None Remove="ClientApp\src\app\components\accountRelations\accountRelations.component.ts" />
     <None Remove="ClientApp\src\app\components\account\account-form.component.ts" />
@@ -870,6 +871,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\class\filterExpressionOperator.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\grid.orderby.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\metadata\property.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\accountGroups\accountGroups-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\accountRelations\accountRelations-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\accountRelations\accountRelations.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\account\account-form.component.ts" />

@@ -11,5 +11,6 @@ export enum ViewName {
   Project = 8,
   FiscalPeriod = 9,
   Branch = 10,
-  Company = 11
+  Company = 11,
+  AccountGroup = 12
 }
