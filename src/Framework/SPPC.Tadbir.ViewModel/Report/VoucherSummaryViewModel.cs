@@ -33,17 +33,17 @@ namespace SPPC.Tadbir.ViewModel.Report
         /// <summary>
         /// جمع مبالغ بدهکار در آرتیکل های سند مالی
         /// </summary>
-        public string DebitSum { get; set; }
+        public decimal DebitSum { get; set; }
 
         /// <summary>
         /// جمع مبالغ بستانکار در آرتیکل های سند مالی
         /// </summary>
-        public string CreditSum { get; set; }
+        public decimal CreditSum { get; set; }
 
         /// <summary>
         /// مبلغ اختلاف میان جمع بدهکار و جمع بستانکار
         /// </summary>
-        public string Difference { get; set; }
+        public decimal Difference { get; set; }
 
         /// <summary>
         /// تنظیم کننده سند مالی شامل نام و نام خانوادگی با قالب نمایشی پیش فرض سیستم
