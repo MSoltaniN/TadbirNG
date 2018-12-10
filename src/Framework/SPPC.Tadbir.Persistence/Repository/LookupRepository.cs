@@ -289,11 +289,11 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، ماهیت های قابل استفاده در تعریف گروه های حساب را
+        /// ماهیت های قابل استفاده در تعریف گروه های حساب را
         /// به صورت مجموعه ای از متن های چندزبانه برمی گرداند
         /// </summary>
         /// <returns>مجموعه ماهیت های قابل استفاده در تعریف گروه های حساب</returns>
-        public IList<string> GetAccountGroupCategoriesAsync()
+        public IList<string> GetAccountGroupCategories()
         {
             var categories = new List<string>
             {

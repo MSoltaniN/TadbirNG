@@ -151,6 +151,9 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<AccountGroup, AccountGroupViewModel>();
             mapperConfig.CreateMap<AccountGroupViewModel, AccountGroup>();
+            mapperConfig.CreateMap<AccountGroup, KeyValue>()
+                .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
+                .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
 
             mapperConfig.CreateMap<Account, AccountViewModel>()
                 .ForMember(dest => dest.ChildCount, opts => opts.MapFrom(src => src.Children.Count));

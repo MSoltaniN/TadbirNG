@@ -35,6 +35,11 @@ namespace SPPC.Tadbir.Model.Finance
         }
 
         /// <summary>
+        /// شناسه دیتابیسی گروه مرتبط با حساب کل
+        /// </summary>
+        public virtual int? GroupId { get; set; }
+
+        /// <summary>
         /// کد شناسایی برای سطح جاری سرفصل حسابداری در ساختار درختی
         /// </summary>
         public virtual string Code { get; set; }
@@ -63,6 +68,11 @@ namespace SPPC.Tadbir.Model.Finance
         /// حساب والد (پدر) برای این سرفصل حسابداری که در سطح بالایی آن در ساختار درختی تعریف شده
         /// </summary>
         public virtual Account Parent { get; set; }
+
+        /// <summary>
+        /// گروه حساب مرتبط با حساب کل
+        /// </summary>
+        public virtual AccountGroup Group { get; set; }
 
         /// <summary>
         /// مجموعه ای از تفصیلی های شناور مرتبط با این حساب

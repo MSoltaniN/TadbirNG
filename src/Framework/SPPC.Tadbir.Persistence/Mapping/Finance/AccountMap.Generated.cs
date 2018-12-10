@@ -25,6 +25,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("AccountID");
+            builder.Property(e => e.GroupId)
+                .IsRequired(false);
             builder.Property(e => e.BranchScope)
                 .IsRequired();
             builder.Property(e => e.Code)
@@ -51,6 +53,11 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .WithMany(p => p.Children)
                 .HasForeignKey(e => e.ParentId)
                 .HasConstraintName("FK_Finance_Account_Finance_Parent");
+            builder.HasOne(d => d.Group)
+                .WithMany()
+                .HasForeignKey(e => e.GroupId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Finance_Account_Finance_AccountGroup");
             builder.HasOne(d => d.Branch)
                 .WithMany()
                 .HasForeignKey(e => e.BranchId)

@@ -732,4 +732,7 @@
   <data name="Reference" xml:space="preserve">
     <value>رفرنس</value>
   </data>
+  <data name="AccountGroupIsRequired" xml:space="preserve">
+    <value>انتخاب گروه حساب برای حساب در سطح کل اجباری است.</value>
+  </data>
 </root>

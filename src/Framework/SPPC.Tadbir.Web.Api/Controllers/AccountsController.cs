@@ -187,6 +187,11 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            if (account.Level == 0 && !account.GroupId.HasValue)
+            {
+                return BadRequest(_strings.Format(AppStrings.AccountGroupIsRequired));
+            }
+
             if (await _repository.IsDuplicateAccountAsync(account))
             {
                 return BadRequest(_strings.Format(AppStrings.DuplicateCodeValue, AppStrings.Account, account.FullCode));

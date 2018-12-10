@@ -9,6 +9,12 @@
           <ColumnView name="Id" visible="True" width="120" />
           <ValidationRule name="Id_Validation" required="False" minimum="0" maximum="2147483647" format="" type="Value" />
         </Property>
+        <Property name="GroupId" type="Int32" isValidated="True" description="شناسه دیتابیسی گروه مرتبط با حساب کل" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="spnGroupId" format="" type="SpinButton" bindingMember="Value" />
+          <PropertyStorage name="GroupID" type="int" nullable="True" />
+          <ColumnView name="Group Id" visible="True" width="120" />
+          <ValidationRule name="GroupId_Validation" required="False" minimum="" maximum="" format="" type="Value" />
+        </Property>
         <Property name="BranchScope" type="Int16" isValidated="True" description="محدوده دسترسی به حساب را در سطح شعبه های موجود در سازمان مشخص می کند. مقادیر مجاز شامل &quot;کلیه شعبه ها&quot; (مقدار 0)، &quot;شعبه جاری و زیرمجموعه ها&quot; (مقدار 1) و &quot;شعبه جاری&quot; (مقدار 2) می شود." clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="spnBranchScope" format="" type="SpinButton" bindingMember="Value" />
           <PropertyStorage name="BranchScope" type="smallint" nullable="False" />
@@ -65,6 +71,7 @@
         <Relation multiplicity="ManyToMany" endpointName="DetailAccount" entityName="DetailAccount" hasKey="False" joinTable="AccountDetailAccount" description="مجموعه ای از تفصیلی های شناور مرتبط با این حساب" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToMany" endpointName="CostCenter" entityName="CostCenter" hasKey="False" joinTable="AccountCostCenter" description="مجموعه ای از مراکز هزینه مرتبط با این حساب" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
         <Relation multiplicity="ManyToMany" endpointName="Project" entityName="Project" hasKey="False" joinTable="AccountProject" description="مجموعه ای از پروژه های مرتبط با این حساب" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+        <Relation multiplicity="ManyToOne" endpointName="Group" entityName="AccountGroup" hasKey="True" joinTable="" description="گروه حساب مرتبط با حساب کل" clrType="BabakSoft.Platform.Metadata.Relation, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
       </Relations>
     </Entity>
     <Entity name="AccountGroup" area="Finance" identifier="Id" description="اطلاعات یکی از گروه های حساب را نگهداری می کند" clrType="BabakSoft.Platform.Metadata.Entity, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">

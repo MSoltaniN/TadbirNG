@@ -135,7 +135,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [Route(LookupApi.AccountGroupCategoriesUrl)]
         public IActionResult GetAccountGroupCategoriesLookup()
         {
-            var categoryLookup = _repository.GetAccountGroupCategoriesAsync();
+            var categoryLookup = _repository.GetAccountGroupCategories();
             Localize(categoryLookup);
             return Json(categoryLookup);
         }

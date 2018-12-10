@@ -12,6 +12,11 @@ namespace SPPC.Tadbir.ViewModel.Finance
         public int? ParentId { get; set; }
 
         /// <summary>
+        /// شناسه دیتابیسی گروه مرتبط با حساب کل
+        /// </summary>
+        public int? GroupId { get; set; }
+
+        /// <summary>
         /// شناسه دیتابیسی دوره مالی که این سرفصل حسابداری در آن تعریف شده است
         /// </summary>
         public int FiscalPeriodId { get; set; }
