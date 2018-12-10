@@ -111,7 +111,7 @@ namespace SPPC.Tadbir.Persistence
         /// به صورت مجموعه ای از متن های چندزبانه برمی گرداند
         /// </summary>
         /// <returns>مجموعه ماهیت های قابل استفاده در تعریف گروه های حساب</returns>
-        IList<string> GetAccountGroupCategories();
+        IList<KeyValue> GetAccountGroupCategories();
 
         /// <summary>
         /// به روش آسنکرون، گروه های حساب تعریف شده را به صورت مجموعه ای از کلید و مقدار برمی گرداند

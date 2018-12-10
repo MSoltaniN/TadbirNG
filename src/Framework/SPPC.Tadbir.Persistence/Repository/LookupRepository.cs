@@ -293,14 +293,16 @@ namespace SPPC.Tadbir.Persistence
         /// به صورت مجموعه ای از متن های چندزبانه برمی گرداند
         /// </summary>
         /// <returns>مجموعه ماهیت های قابل استفاده در تعریف گروه های حساب</returns>
-        public IList<string> GetAccountGroupCategories()
+        public IList<KeyValue> GetAccountGroupCategories()
         {
-            var categories = new List<string>
+            var categories = new List<KeyValue>();
+            var items = new string[]
             {
                 "CategoryAsset", "CategoryAssociation", "CategoryCapital",
                 "CategoryCoordination", "CategoryExpense", "CategoryIncome",
                 "CategoryLiability", "CategoryPurchase", "CategorySales"
             };
+            Array.ForEach(items, item => categories.Add(new KeyValue(item, item)));
             return categories;
         }
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using SPPC.Framework.Common;
+using SPPC.Framework.Helpers;
 using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
@@ -136,8 +137,8 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public IActionResult GetAccountGroupCategoriesLookup()
         {
             var categoryLookup = _repository.GetAccountGroupCategories();
-            Localize(categoryLookup);
-            return Json(categoryLookup);
+            var sortedLookup = Localize(categoryLookup);
+            return Json(sortedLookup);
         }
 
         // GET: api/lookup/accgroups
@@ -189,14 +190,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
 
         #endregion
 
-        private void Localize(IList<string> keys)
+        private IList<KeyValue> Localize(IList<KeyValue> keyValues)
         {
-            for (int i = 0; i < keys.Count; i++)
+            for (int i = 0; i < keyValues.Count; i++)
             {
-                keys[i] = _strings[keys[i]];
+                keyValues[i].Value = _strings[keyValues[i].Key];
             }
 
-            (keys as List<string>).Sort();
+            return keyValues
+                .OrderBy(kv => kv.Value)
+                .ToList();
         }
 
         private readonly ILookupRepository _repository;

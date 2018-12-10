@@ -125,7 +125,12 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اگر قابل حذف باشد مقدار "درست" و در غیر این صورت مقدار "نادرست" را برمی گرداند</returns>
         public async Task<bool> CanDeleteAccountGroupAsync(int groupId)
         {
-            return true;
+            var repository = UnitOfWork.GetAsyncRepository<Account>();
+            int usageCount = await repository
+                .GetEntityQuery()
+                .Where(acc => acc.GroupId == groupId)
+                .CountAsync();
+            return (usageCount == 0);
         }
 
         /// <summary>
