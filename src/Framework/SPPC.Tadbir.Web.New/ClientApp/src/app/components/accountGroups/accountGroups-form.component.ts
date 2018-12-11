@@ -20,6 +20,10 @@ export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
 }
 
+interface Item {
+  key: string,
+  value: string
+}
 
 @Component({
   selector: 'accountGroups-form-component',
@@ -38,14 +42,20 @@ export function getLayoutModule(layout: Layout) {
 
 export class AccountGroupsFormComponent extends DetailComponent {
 
-  categoriesList: Array<string> = [];
+  categoriesList: Array<Item> = [];
   //create properties
+  categorySelected: string;
   active: boolean = false;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
   @Input() public set model(accountGroup: AccountGroup) {
     this.editForm.reset(accountGroup);
+
+    if (accountGroup && this.categoriesList.length > 0) {
+      var item = this.categoriesList.find(f => f.value == accountGroup.category);
+      this.categorySelected = item ? item.key : undefined;
+    }
 
     this.active = accountGroup !== undefined || this.isNew;
   }
@@ -85,7 +95,8 @@ export class AccountGroupsFormComponent extends DetailComponent {
 
   getAccountGroupCategory() {
     this.lookupService.getAll(LookupApi.AccountGroupCategories).subscribe(res => {
-      this.categoriesList=res.body;
+
+      this.categoriesList = res.body;
     })
   }
 }

@@ -120,6 +120,7 @@ export class AccountGroupsComponent extends DefaultComponent implements OnInit {
       this.editDataItem = res;
       this.grid.loading = false;
     })
+    this.grid.loading = false;
     this.isNew = false;
     this.errorMessage = '';
   }
@@ -141,7 +142,7 @@ export class AccountGroupsComponent extends DefaultComponent implements OnInit {
         }, (error => {
           this.editDataItem = model;
           this.errorMessage = error;
-          this.grid.loading = true;
+          this.grid.loading = false;
         }));
     }
     else {
@@ -155,7 +156,7 @@ export class AccountGroupsComponent extends DefaultComponent implements OnInit {
         }, (error => {
           this.isNew = true;
           this.errorMessage = error;
-          this.grid.loading = true;
+          this.grid.loading = false;
         }));
     }
   }

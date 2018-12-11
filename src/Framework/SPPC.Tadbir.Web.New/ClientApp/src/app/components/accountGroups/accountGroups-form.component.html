@@ -27,7 +27,11 @@
 
       <kendo-dropdownlist class="ddl-category"
                           [data]="categoriesList"
+                          [textField]="'value'"
+                          [valueField]="'key'"
                           [valuePrimitive]="true"
+                          [value]="categorySelected"
+                          [(ngModel)]="categorySelected"
                           formControlName="category">
       </kendo-dropdownlist>
 
