@@ -11,7 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { TreeViewModule } from '@progress/kendo-angular-treeview';
 import { ReactiveFormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TextMaskModule } from 'angular2-text-mask';
-
+import { PopupModule } from '@progress/kendo-angular-popup';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
@@ -58,6 +58,7 @@ import { EditorFormTitleComponent } from './directive/editorForm/editor-title.co
 import { ViewTreeConfigComponent } from './components/viewTreeConfig/viewTreeConfig.component';
 import { AccountGroupsComponent } from './components/accountGroups/accountGroups.component';
 import { AccountGroupsFormComponent } from './components/accountGroups/accountGroups-form.component';
+import { InlineTestComponent } from './components/inlineTest/inlineTest.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -233,7 +234,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     BreadCumbComponent,
     ReportViewerComponent,
     AccountGroupsComponent,
-    AccountGroupsFormComponent
+    AccountGroupsFormComponent,
+    InlineTestComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -243,6 +245,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    PopupModule,
     ToastrModule.forRoot({ preventDuplicates: true }),
     HotkeyModule.forRoot(),
     DialogModule, DropDownsModule, GridModule, InputsModule, CalendarModule,
@@ -287,6 +290,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'operation-log', component: OperationLogsComponent, canActivate: [AuthGuard] },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'account-groups', component: AccountGroupsComponent, canActivate: [AuthGuard] },
+      { path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'dashboard' }
     ])
   ],

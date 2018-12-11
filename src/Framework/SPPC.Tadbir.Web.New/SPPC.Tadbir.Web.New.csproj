@@ -35,6 +35,7 @@
     <None Remove="ClientApp\src\app\class\filterExpressionBuilder.ts" />
     <None Remove="ClientApp\src\app\class\filterExpressionOperator.ts" />
     <None Remove="ClientApp\src\app\class\grid.orderby.ts" />
+    <None Remove="ClientApp\src\app\class\inlineGrid.component.ts" />
     <None Remove="ClientApp\src\app\class\metadata\property.ts" />
     <None Remove="ClientApp\src\app\components\accountGroups\accountGroups-form.component.ts" />
     <None Remove="ClientApp\src\app\components\accountRelations\accountRelations-form.component.ts" />
@@ -49,6 +50,7 @@
     <None Remove="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod-form.component.ts" />
     <None Remove="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod-roles-form.component.ts" />
     <None Remove="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod.component.ts" />
+    <None Remove="ClientApp\src\app\components\inlineTest\inlineTest.component.ts" />
     <None Remove="ClientApp\src\app\components\login\index.ts" />
     <None Remove="ClientApp\src\app\components\login\login.complete.component.ts" />
     <None Remove="ClientApp\src\app\components\login\login.component.ts" />
@@ -861,6 +863,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\class\base.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\base.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\class\inlineGrid.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\detail.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\dictionary.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\enviroment.component.ts" />
@@ -884,6 +887,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod-roles-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\fiscalPeriod\fiscalPeriod.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\inlineTest\inlineTest.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\login\index.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\login\login.complete.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\login\login.component.ts" />

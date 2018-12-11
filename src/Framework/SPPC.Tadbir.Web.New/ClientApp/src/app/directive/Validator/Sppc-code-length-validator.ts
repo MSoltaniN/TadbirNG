@@ -18,6 +18,7 @@ export class SppcCodeLengthDirective implements Validator {
   @Input() ViewId: number;
   validate(c: AbstractControl): { [key: string]: any; } {
 
+
     if (this.SppcCodeLength && this.ViewId) {
       var config = this.defultComponent.getViewTreeSettings(this.ViewId);
 
