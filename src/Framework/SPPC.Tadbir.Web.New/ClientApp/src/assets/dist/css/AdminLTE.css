@@ -161,7 +161,7 @@
  body.tLtr .h4,
  body.tLtr .h5,
  body.tLtr .h6 {
-   font-family: 'Source Sans Pro', sans-serif;
+   /*font-family: 'Source Sans Pro', sans-serif;*/
  }
  /* General Links */
  a {
@@ -4987,6 +4987,5 @@
    margin-top: 6px!important;
    margin-right: 6px!important;
  }
- 
  
  

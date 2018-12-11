@@ -23,6 +23,21 @@
 
     </div>
 
+    <div class="form-group" [hidden]="parentModel">
+      <label for="category" class="control-label">{{ 'Account.AccountGroup' | translate }}</label>
+
+      <kendo-dropdownlist class="ddl-accGroup"
+                          [data]="accGroupList"
+                          [textField]="'value'"
+                          [valueField]="'key'"
+                          [valuePrimitive]="true"
+                          [value]="accGroupSelected"
+                          [(ngModel)]="accGroupSelected"
+                          formControlName="groupId">
+      </kendo-dropdownlist>
+
+    </div>
+
 
     <div class="form-group">
       <label for="code" class="control-label">{{ 'Account.Code' | translate }}</label>

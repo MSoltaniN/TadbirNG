@@ -129,7 +129,8 @@
     "Tafzili": "حساب تفصیلی",
     "Kol": "حساب کل",
     "TafziliToUp": "حساب تفصیلی سطح",
-    "BranchScope": "دسترسی شعبه"
+    "BranchScope": "دسترسی شعبه",
+    "AccountGroup": "گروه حساب"
   },
   "Settings": {
     "AccountRelation": {

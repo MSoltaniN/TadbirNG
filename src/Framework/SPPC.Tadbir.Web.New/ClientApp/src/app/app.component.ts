@@ -130,8 +130,16 @@ export class AppComponent implements AfterViewInit  {
               this.document.getElementById('mainBody').classList.remove('skin-blue');
           }
         }
-        
 
+        var lang = localStorage.getItem('lang');
+        if (lang == 'fa' || lang == null) {
+          if (this.document.getElementById('sppcFont').getAttribute('href') != 'assets/resources/IranSans.css')
+            this.document.getElementById('sppcFont').setAttribute('href', 'assets/resources/IranSans.css');
+        }
+        else {
+          if (this.document.getElementById('sppcFont').getAttribute('href') != 'assets/resources/IranSans-en.css')
+            this.document.getElementById('sppcFont').setAttribute('href', 'assets/resources/IranSans-en.css');
+        }
         // var lang = localStorage.getItem('lang');
         // if(lang == 'fa' || lang == null)
         // {

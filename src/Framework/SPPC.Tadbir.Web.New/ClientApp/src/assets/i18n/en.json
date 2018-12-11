@@ -131,7 +131,8 @@
     "Tafzili": "Floating Account Level",
     "Kol": "Ledger Level",
     "TafziliToUp": "Floating Account",
-    "BranchScope": "Branch Scope"
+    "BranchScope": "Branch Scope",
+    "AccountGroup": "Account Group"
   },
   "Settings": {
     "AccountRelation": {

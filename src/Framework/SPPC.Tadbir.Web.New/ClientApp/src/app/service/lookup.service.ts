@@ -62,4 +62,11 @@ export class LookupService extends BaseService {
     return this.http.get(LookupApi.Currencies, options)
       .map(response => <any>(<Response>response));
   }
+
+  GetAccountGroupsLookup() {
+    var url = LookupApi.AccountGroups;
+    var options = { headers: this.httpHeaders };
+    return this.http.get(url, options)
+      .map(response => <any>(<Response>response));
+  }
 }
