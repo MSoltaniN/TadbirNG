@@ -64,14 +64,16 @@ export class LoginComponent extends DefaultComponent implements OnInit {
             this.renderer.addClass(document.body, 'tRtl');
           this.renderer.removeClass(document.body, 'tLtr');
 
-          this.document.getElementById('sppcFont').setAttribute('href','assets/resources/IranSans.css');
+          if (this.document.getElementById('sppcFont').getAttribute('href') != 'assets/resources/IranSans.css')
+              this.document.getElementById('sppcFont').setAttribute('href','assets/resources/IranSans.css');
         }
 
         if (this.currentlang == 'en') {
             this.renderer.addClass(document.body, 'tLtr');
           this.renderer.removeClass(document.body, 'tRtl');
 
-          this.document.getElementById('sppcFont').setAttribute('href', 'assets/resources/IranSans-en.css');
+          if (this.document.getElementById('sppcFont').getAttribute('href') != 'assets/resources/IranSans-en.css')
+              this.document.getElementById('sppcFont').setAttribute('href', 'assets/resources/IranSans-en.css');
         }
 
         // if(language == 'fa')
