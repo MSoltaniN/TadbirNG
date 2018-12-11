@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, Renderer2, OnInit, Host, Inject } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { AccountService, AccountInfo, VoucherLineService, FiscalPeriodService } from '../../service/index';
+import { AccountService, AccountInfo, VoucherLineService, FiscalPeriodService, LookupService } from '../../service/index';
 import { Account } from '../../model/index';
 import { Property } from "../../class/metadata/property"
 import { TranslateService } from '@ngx-translate/core';
@@ -28,7 +28,7 @@ interface Item {
 
 @Component({
   selector: 'account-form-component',
-  styles: ["input[type=text],textarea { width: 100%; },"],
+  styles: ["input[type=text],textarea,.ddl-accGroup { width: 100%; },"],
   templateUrl: './account-form.component.html',
   providers: [{
     provide: RTL,
@@ -48,13 +48,14 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
   parentModel: Account;
   parentScopeValue: number = 0;
 
+  accGroupList: Array<Item> = [];
+  accGroupSelected: string;
+
   @Input() public disableSaveBtn: boolean = false;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
   @Input() public set parent(parent: Account) {
-    //debugger;
-    //console.log(parent);
     this.parentModel = parent;
     this.parentScopeValue = 0;
     this.fullCodeApiUrl = String.Format(AccountApi.AccountFullCode, 0);
@@ -63,15 +64,22 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       this.fullCodeApiUrl = String.Format(AccountApi.AccountFullCode, parent.id);
       this.parentScopeValue = parent.branchScope;
     }
-  };
+    else {
+      this.getAccountGroups();
+    }
+  }
 
   @Input() public set model(account: Account) {
-    //debugger;
     this.editModel = account;
     this.editForm.reset(account);
 
     this.active = account !== undefined || this.isNew;
     this.disableSaveBtn = false;
+
+    if (account && account.groupId) {
+      this.accGroupSelected = account.groupId.toString();
+    }
+
   }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
@@ -115,12 +123,15 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       this.parentScopeValue = this.parentModel.branchScope;
   }
 
-  constructor(private accountService: AccountService, private voucherLineService: VoucherLineService, private fiscalPeriodService: FiscalPeriodService,
-    public toastrService: ToastrService, public translate: TranslateService,
+  constructor(private accountService: AccountService, public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
     public renderer: Renderer2, public metadata: MetaDataService) {
 
     super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
   }
 
-
+  getAccountGroups() {
+    this.lookupService.GetAccountGroupsLookup().subscribe(res => {
+      this.accGroupList = res;
+    })
+  }
 }

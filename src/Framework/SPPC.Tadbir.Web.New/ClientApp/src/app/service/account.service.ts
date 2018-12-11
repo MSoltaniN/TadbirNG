@@ -12,7 +12,7 @@ import { GridOrderBy } from '../class/grid.orderby';
 import { Observable } from 'rxjs/Observable';
 
 export class AccountInfo implements Account {
-    constructor(public id: number = 0, public code: string = "", public name: string = "",
+  constructor(public id: number = 0, public code: string = "", public name: string = "", public groupId?: number,
         public fiscalPeriodId: number = 0, public description: string = "", public branchScope: number = 0,
         public branchId: number = 0, public level: number = 0, public fullCode: string = "",
         public childCount: number = 0, public parentId: number = 0, public companyId: number = 0) { }
