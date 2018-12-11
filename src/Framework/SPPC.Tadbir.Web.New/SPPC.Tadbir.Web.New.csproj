@@ -12,6 +12,10 @@
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG;NETCOREAPP2_0</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
@@ -309,6 +313,7 @@
     <None Remove="ClientApp\src\assets\resources\themes\voclain\theme.scss" />
     <None Remove="ClientApp\src\assets\resources\themes\_theme.scss" />
     <None Remove="ClientApp\src\assets\resources\toastr.css" />
+    <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -967,6 +972,7 @@
   <ItemGroup>
     <Folder Include="ClientApp\src\app\components\error\" />
     <Folder Include="ClientApp\src\assets\resources\fonts\IranSans-En\" />
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
   <ItemGroup>
