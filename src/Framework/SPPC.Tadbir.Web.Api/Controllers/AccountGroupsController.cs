@@ -35,7 +35,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             int itemCount = await _repository.GetCountAsync(GridOptions);
             SetItemCount(itemCount);
-            var accountGroups = await _repository.GetAccountGroupsAsync();
+            var accountGroups = await _repository.GetAccountGroupsAsync(GridOptions);
             Localize(accountGroups.ToArray());
             return Json(accountGroups);
         }
