@@ -16,6 +16,7 @@ using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Corporate;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Model.Workflow;
 using SPPC.Tadbir.Values;
 using SPPC.Tadbir.ViewModel;
@@ -26,6 +27,7 @@ using SPPC.Tadbir.ViewModel.Corporate;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 using SPPC.Tadbir.ViewModel.Report;
+using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.ViewModel.Workflow;
 
 namespace SPPC.Tadbir.Mapper
@@ -485,6 +487,11 @@ namespace SPPC.Tadbir.Mapper
             mapperConfig.CreateMap<View, KeyValue>()
                 .ForMember(dest => dest.Key, opts => opts.MapFrom(src => src.Id.ToString()))
                 .ForMember(dest => dest.Value, opts => opts.MapFrom(src => src.Name));
+        }
+
+        private static void MapReportingTypes(IMapperConfigurationExpression mapperConfig)
+        {
+            mapperConfig.CreateMap<Report, ReportViewModel>();
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

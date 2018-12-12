@@ -16,6 +16,9 @@ GO
 CREATE SCHEMA [Auth]
 GO
 
+CREATE SCHEMA [Reporting]
+GO
+
 CREATE SCHEMA [Config]
 GO
 
@@ -160,6 +163,54 @@ CREATE TABLE [Auth].[ViewRowPermission] (
     , CONSTRAINT [FK_Auth_ViewRowPermission_Metadata_View] FOREIGN KEY ([ViewID]) REFERENCES [Metadata].[View]([ViewID])
 )
 GO
+
+CREATE TABLE [Reporting].[CoreReport] (
+    [CoreReportID]   INT              IDENTITY (1, 1) NOT NULL,
+    [ParentID]       INT              NULL,
+    [Code]           NVARCHAR(128)    NOT NULL,
+    [Name]           NVARCHAR(128)    NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_CoreReport_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Reporting_CoreReport_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_CoreReport] PRIMARY KEY CLUSTERED ([CoreReportID] ASC)
+    , CONSTRAINT [FK_Reporting_CoreReport_Reporting_Parent] FOREIGN KEY ([ParentID]) REFERENCES [Reporting].[CoreReport]([CoreReportID])
+)
+GO
+
+CREATE TABLE [Reporting].[Report] (
+    [ReportID]       INT              IDENTITY (1, 1) NOT NULL,
+    [BaseID]         INT              NULL,
+    [CreatedByID]    INT              NULL,
+    [Template]       NVARCHAR(MAX)    NULL,
+    [IsSystem]       BIT              NOT NULL,
+    [IsDefault]      BIT              NOT NULL,
+    [SubsystemId]    INT              NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_Report_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Reporting_Report_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_Report] PRIMARY KEY CLUSTERED ([ReportID] ASC)
+    , CONSTRAINT [FK_Reporting_Report_Auth_CreatedBy] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User]([UserID])
+    , CONSTRAINT [FK_Reporting_Report_Reporting_Base] FOREIGN KEY ([BaseID]) REFERENCES [Reporting].[CoreReport]([CoreReportID])
+)
+GO
+
+SET IDENTITY_INSERT [Reporting].[CoreReport] ON
+INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name]) VALUES (1, NULL, N'Accounting', N'Accounting')
+INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name]) VALUES (2, 1, N'Accnt-Base', N'BaseData')
+INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name]) VALUES (3, 1, N'Accnt-Operation', N'OperationData')
+INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name]) VALUES (4, 3, N'Voucher-Printing', N'VoucherPrinting')
+INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name]) VALUES (5, 4, N'Voucher-Sum-By-Date', N'VoucherSummaryByDate')
+INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name]) VALUES (6, 4, N'Voucher-Std-Form', N'VoucherStandardForm')
+INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name]) VALUES (7, 4, N'Voucher-Std-Form-Detail', N'VoucherStandardFormWithDetail')
+SET IDENTITY_INSERT [Reporting].[CoreReport] OFF
+
+
+SET IDENTITY_INSERT [Reporting].[Report] ON
+INSERT INTO [Reporting].[Report] ([ReportID], [BaseID], [IsSystem], [IsDefault], [SubsystemId])
+    VALUES (1, 5, 1, 1, 1)
+INSERT INTO [Reporting].[Report] ([ReportID], [BaseID], [IsSystem], [IsDefault], [SubsystemId])
+    VALUES (2, 6, 1, 1, 1)
+INSERT INTO [Reporting].[Report] ([ReportID], [BaseID], [IsSystem], [IsDefault], [SubsystemId])
+    VALUES (3, 7, 1, 1, 1)
+SET IDENTITY_INSERT [Reporting].[Report] OFF
 
 CREATE TABLE [Config].[Setting] (
     [SettingID]      INT              IDENTITY (1, 1) NOT NULL,

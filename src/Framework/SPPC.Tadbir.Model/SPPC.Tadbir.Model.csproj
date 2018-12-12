@@ -72,6 +72,7 @@
 
   <ItemGroup>
     <Folder Include="Config\" />
+    <Folder Include="Reporting\" />
   </ItemGroup>
 
 </Project>
