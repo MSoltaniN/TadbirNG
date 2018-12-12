@@ -296,6 +296,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="account">سطر اطلاعاتی موجود</param>
         protected override void UpdateExisting(AccountViewModel accountViewModel, Account account)
         {
+            account.GroupId = accountViewModel.GroupId;
             account.Code = accountViewModel.Code;
             account.FullCode = accountViewModel.FullCode;
             account.Name = accountViewModel.Name;
