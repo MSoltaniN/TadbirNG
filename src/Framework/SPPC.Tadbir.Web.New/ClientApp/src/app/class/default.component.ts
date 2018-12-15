@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 
 import { String } from './source';
-import { State, CompositeFilterDescriptor } from "@progress/kendo-data-query";
+import { State, CompositeFilterDescriptor, SortDescriptor } from "@progress/kendo-data-query";
 import { BaseComponent } from "./base.component"
 import { Property } from "./metadata/property"
 
@@ -319,6 +319,8 @@ export class DefaultComponent extends BaseComponent {
       filters: [{ field: "code", operator: "contains", value: "" }]
     }
   };
+
+  public sort: SortDescriptor[] = [];
 
   /**
    * بعد از افزودن یک رکورد، رکورد جدید به صفحه آخر اضافه میشود و صفحه آخر صفحه بندی فعال میشود 

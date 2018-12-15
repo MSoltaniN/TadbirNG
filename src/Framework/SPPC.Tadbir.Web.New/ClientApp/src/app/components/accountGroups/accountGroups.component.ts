@@ -29,6 +29,17 @@ export function getLayoutModule(layout: Layout) {
 @Component({
   selector: 'accountGroups',
   templateUrl: './accountGroups.component.html',
+  styles: [`
+.popup-secton{
+    padding: 30px;    
+    border: 1px solid rgba(0,0,0,.05);
+}
+
+.popup-secton button{
+margin:10px;
+}
+
+`],
   providers: [{
     provide: RTL,
     useFactory: getLayoutModule,
@@ -43,7 +54,7 @@ export class AccountGroupsComponent extends DefaultComponent implements OnInit {
   @ViewChild(GridComponent) grid: GridComponent;
 
   public rowData: GridDataResult;
-  public selectedRows: string[] = [];
+  public selectedRows: number[] = [];
   public totalRecords: number;
 
   //permission flag
@@ -56,7 +67,7 @@ export class AccountGroupsComponent extends DefaultComponent implements OnInit {
 
   currentFilter: FilterExpression;
   currentOrder: string = "";
-  public sort: SortDescriptor[] = [];
+  //public sort: SortDescriptor[] = [];
 
   showloadingMessage: boolean = true;
 
@@ -74,9 +85,16 @@ export class AccountGroupsComponent extends DefaultComponent implements OnInit {
     this.reloadGrid();
   }
 
+  private show: boolean = false;
+
+  public onToggle(): void {
+    this.show = !this.show;
+  }
+
   selectionKey(context: RowArgs): string {
     if (context.dataItem == undefined) return "";
-    return context.dataItem.id + " " + context.index;
+    return context.dataItem.id;
+    //return context.dataItem.id + " " + context.index;
   }
 
   onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
@@ -97,16 +115,13 @@ export class AccountGroupsComponent extends DefaultComponent implements OnInit {
     }
   }
 
-  public sortChange(sort: SortDescriptor[]): void {
-    if (sort)
+  sortChange(sort: SortDescriptor[]): void {
+    this.sort = sort;
+    if (sort) {      
       this.currentOrder = sort[0].field + " " + sort[0].dir;
+    }
+      
     this.reloadGrid();
-  }
-
-  removeHandler(arg: any) {
-    this.prepareDeleteConfirm(arg.dataItem.name);
-    this.deleteModelId = arg.dataItem.id;
-    this.deleteConfirm = true;
   }
 
   pageChange(event: PageChangeEvent): void {
@@ -114,11 +129,23 @@ export class AccountGroupsComponent extends DefaultComponent implements OnInit {
     this.reloadGrid();
   }
 
-  public editHandler(arg: any) {
+  public removeHandler() {
+
+    var recordId = this.selectedRows[0];
+    var record = this.rowData.data.find(f => f.id == recordId);
+    
+    this.prepareDeleteConfirm(record.name);
+    this.deleteModelId = recordId;
+    this.deleteConfirm = true;
+  }
+
+  public editHandler() {
+    var recordId = this.selectedRows[0];
     this.grid.loading = true;
-    this.accountGroupsService.getById(String.Format(AccountGroupApi.AccountGroup, arg.dataItem.id)).subscribe(res => {
+    this.accountGroupsService.getById(String.Format(AccountGroupApi.AccountGroup, recordId)).subscribe(res => {
       this.editDataItem = res;
       this.grid.loading = false;
+      //this.selectedRows = [];
     })
     this.grid.loading = false;
     this.isNew = false;
@@ -153,6 +180,11 @@ export class AccountGroupsComponent extends DefaultComponent implements OnInit {
           this.showMessage(this.insertMsg, MessageType.Succes);
           var insertedModel = response;
           this.reloadGrid(insertedModel);
+
+          setTimeout(() => {
+            this.addNew();
+          });
+
         }, (error => {
           this.isNew = true;
           this.errorMessage = error;
@@ -208,7 +240,6 @@ export class AccountGroupsComponent extends DefaultComponent implements OnInit {
         var resData = res.body;
 
         var totalCount = 0;
-
         if (res.headers != null) {
           var headers = res.headers != undefined ? res.headers : null;
           if (headers != null) {
@@ -246,6 +277,7 @@ export class AccountGroupsComponent extends DefaultComponent implements OnInit {
           this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
 
         this.reloadGrid();
+        this.selectedRows = [];
       }, (error => {
         this.grid.loading = false;
         var message = error.message ? error.message : error;

@@ -81,7 +81,10 @@
     "Search": "جستجو",
     "Filter": "اعمال فیلتر",
     "DeleteFilter": "حذف فیلتر",
-    "OkAndNew": "تایید و ایجاد"
+    "OkAndNew": "تایید و ایجاد",
+    "Help": "راهنما",
+    "FilterForm": "فرم فیلتر",
+    "Tools": "ابزارها"
   },
   "GridSetting": {
     "Visibility": "نمایش/عدم نمایش ستون",
@@ -260,7 +263,7 @@
   },
   "AccountGroup": {
     "New": "گروه حساب جدید",
-    "Delete": "حذف گروه حسای",
+    "Delete": "حذف گروه حساب",
     "Name": "نام",
     "Category": "ماهیت",
     "Description": "شرح"

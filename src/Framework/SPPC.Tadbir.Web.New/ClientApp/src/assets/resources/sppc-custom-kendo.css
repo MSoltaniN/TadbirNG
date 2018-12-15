@@ -5819,7 +5819,7 @@ kendo-sortable,
     }
 
         .k-grid-toolbar .k-button + .k-button {
-            margin-left: 4px;
+            /*margin-left: 4px;*/
         }
 
 .k-grouping-header {
