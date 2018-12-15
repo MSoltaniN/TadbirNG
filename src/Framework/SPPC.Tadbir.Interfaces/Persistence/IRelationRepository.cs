@@ -248,6 +248,24 @@ namespace SPPC.Tadbir.Persistence
             int projectId, GridOptions gridOptions = null);
 
         /// <summary>
+        /// به روش آسنکرون، هماهنگ سازی ارتباطات موجود را بعد از ایجاد یک تفصیلی شناور جدید انجام می دهد
+        /// </summary>
+        /// <param name="insertedDetailId">شناسه دیتابیسی تفصیلی شناور ایجاد شده</param>
+        Task OnDetailAccountInsertedAsync(int insertedDetailId);
+
+        /// <summary>
+        /// به روش آسنکرون، هماهنگ سازی ارتباطات موجود را بعد از ایجاد یک مرکز هزینه جدید انجام می دهد
+        /// </summary>
+        /// <param name="insertedCenterId">شناسه دیتابیسی مرکز هزینه ایجاد شده</param>
+        Task OnCostCenterInsertedAsync(int insertedCenterId);
+
+        /// <summary>
+        /// به روش آسنکرون، هماهنگ سازی ارتباطات موجود را بعد از ایجاد یک پروژه جدید انجام می دهد
+        /// </summary>
+        /// <param name="insertedProjectId">شناسه دیتابیسی پروژه ایجاد شده</param>
+        Task OnProjectInsertedAsync(int insertedProjectId);
+
+        /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای برای خواندن اطلاعات وابسته به شعبه تنظیم می کند
         /// </summary>
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>

@@ -661,6 +661,120 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، هماهنگ سازی ارتباطات موجود را بعد از ایجاد یک تفصیلی شناور جدید انجام می دهد
+        /// </summary>
+        /// <param name="insertedDetailId">شناسه دیتابیسی تفصیلی شناور ایجاد شده</param>
+        public async Task OnDetailAccountInsertedAsync(int insertedDetailId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var detailAccount = await repository.GetByIDWithTrackingAsync(
+                insertedDetailId, facc => facc.AccountDetailAccounts);
+            if (detailAccount != null && detailAccount.ParentId.HasValue)
+            {
+                int count = detailAccount.AccountDetailAccounts.Count;
+                var parent = await repository
+                    .GetEntityWithTrackingQuery()
+                        .Include(facc => facc.AccountDetailAccounts)
+                            .ThenInclude(ada => ada.Account)
+                    .Where(facc => facc.Id == detailAccount.ParentId.Value)
+                    .SingleAsync();
+                foreach (var relation in parent.AccountDetailAccounts)
+                {
+                    var accountDetailAccount = new AccountDetailAccount()
+                    {
+                        Account = relation.Account,
+                        AccountId = relation.AccountId,
+                        DetailAccount = detailAccount,
+                        DetailId = detailAccount.Id
+                    };
+                    detailAccount.AccountDetailAccounts.Add(accountDetailAccount);
+                }
+
+                if (detailAccount.AccountDetailAccounts.Count != count)
+                {
+                    repository.Update(detailAccount);
+                    await _unitOfWork.CommitAsync();
+                }
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، هماهنگ سازی ارتباطات موجود را بعد از ایجاد یک مرکز هزینه جدید انجام می دهد
+        /// </summary>
+        /// <param name="insertedCenterId">شناسه دیتابیسی مرکز هزینه ایجاد شده</param>
+        public async Task OnCostCenterInsertedAsync(int insertedCenterId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var costCenter = await repository.GetByIDWithTrackingAsync(
+                insertedCenterId, cc => cc.AccountCostCenters);
+            if (costCenter != null && costCenter.ParentId.HasValue)
+            {
+                int count = costCenter.AccountCostCenters.Count;
+                var parent = await repository
+                    .GetEntityWithTrackingQuery()
+                        .Include(cc => cc.AccountCostCenters)
+                            .ThenInclude(ac => ac.Account)
+                    .Where(cc => cc.Id == costCenter.ParentId.Value)
+                    .SingleAsync();
+                foreach (var relation in parent.AccountCostCenters)
+                {
+                    var accountCostCenter = new AccountCostCenter()
+                    {
+                        Account = relation.Account,
+                        AccountId = relation.AccountId,
+                        CostCenter = costCenter,
+                        CostCenterId = costCenter.Id
+                    };
+                    costCenter.AccountCostCenters.Add(accountCostCenter);
+                }
+
+                if (costCenter.AccountCostCenters.Count != count)
+                {
+                    repository.Update(costCenter);
+                    await _unitOfWork.CommitAsync();
+                }
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، هماهنگ سازی ارتباطات موجود را بعد از ایجاد یک پروژه جدید انجام می دهد
+        /// </summary>
+        /// <param name="insertedProjectId">شناسه دیتابیسی پروژه ایجاد شده</param>
+        public async Task OnProjectInsertedAsync(int insertedProjectId)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var project = await repository.GetByIDWithTrackingAsync(
+                insertedProjectId, prj => prj.AccountProjects);
+            if (project != null && project.ParentId.HasValue)
+            {
+                int count = project.AccountProjects.Count;
+                var parent = await repository
+                    .GetEntityWithTrackingQuery()
+                        .Include(prj => prj.AccountProjects)
+                            .ThenInclude(ap => ap.Account)
+                    .Where(prj => prj.Id == project.ParentId.Value)
+                    .SingleAsync();
+                foreach (var relation in parent.AccountProjects)
+                {
+                    var accountProject = new AccountProject()
+                    {
+                        Account = relation.Account,
+                        AccountId = relation.AccountId,
+                        Project = project,
+                        ProjectId = project.Id
+                    };
+                    project.AccountProjects.Add(accountProject);
+                }
+
+                if (project.AccountProjects.Count != count)
+                {
+                    repository.Update(project);
+                    await _unitOfWork.CommitAsync();
+                }
+            }
+        }
+
+        /// <summary>
         /// اطلاعات محیطی کاربر جاری برنامه را برای برای خواندن اطلاعات وابسته به شعبه تنظیم می کند
         /// </summary>
         /// <param name="userContext">اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها</param>
