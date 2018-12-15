@@ -5,6 +5,7 @@ using SPPC.Tadbir.Model.Config;
 using SPPC.Tadbir.Model.Contact;
 using SPPC.Tadbir.Model.Core;
 using SPPC.Tadbir.Model.Metadata;
+using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.Persistence.Mapping;
 
 namespace SPPC.Tadbir.Persistence
@@ -32,12 +33,14 @@ namespace SPPC.Tadbir.Persistence
         {
             CommandMap.BuildMapping(modelBuilder.Entity<Command>());
             CompanyDbMap.BuildMapping(modelBuilder.Entity<CompanyDb>());
+            CoreReportMap.BuildMapping(modelBuilder.Entity<CoreReport>());
             ViewMap.BuildMapping(modelBuilder.Entity<View>());
             OperationLogMap.BuildMapping(modelBuilder.Entity<OperationLog>());
             PermissionMap.BuildMapping(modelBuilder.Entity<Permission>());
             PermissionGroupMap.BuildMapping(modelBuilder.Entity<PermissionGroup>());
             PersonMap.BuildMapping(modelBuilder.Entity<Person>());
             ColumnMap.BuildMapping(modelBuilder.Entity<Column>());
+            ReportMap.BuildMapping(modelBuilder.Entity<Report>());
             RoleMap.BuildMapping(modelBuilder.Entity<Role>());
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());
             SettingMap.BuildMapping(modelBuilder.Entity<Setting>());

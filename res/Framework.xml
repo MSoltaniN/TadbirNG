@@ -404,6 +404,12 @@
           <ColumnView name="Name" visible="True" width="120" />
           <ValidationRule name="Name_Validation" required="True" minimum="" maximum="128" format="" type="Length" />
         </Property>
+        <Property name="IsGroup" type="Boolean" isValidated="True" description="مشخص می کند که آیا شاخه مورد نظر مربوط به گروه بندی گزارشات است یا نه؟" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <PropertyView name="chkIsGroup" format="" type="CheckBox" bindingMember="Checked" />
+          <PropertyStorage name="IsGroup" type="bit" nullable="False" />
+          <ColumnView name="Is Group" visible="True" width="120" />
+          <ValidationRule name="IsGroup_Validation" required="True" minimum="" maximum="" format="" type="Value" />
+        </Property>
         <Property name="RowGuid" type="Guid" isValidated="False" description="" clrType="BabakSoft.Platform.Metadata.Property, BabakSoft.Platform.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
           <PropertyView name="txtRowGuid" format="" type="TextBox" bindingMember="Text" />
           <PropertyStorage name="rowguid" type="uniqueidentifier" nullable="False" />

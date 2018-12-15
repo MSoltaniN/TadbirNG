@@ -48,5 +48,10 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         [Required(ErrorMessage = ValidationMessages.FieldIsRequired)]
         [StringLength(128, ErrorMessage = ValidationMessages.TextFieldIsTooLong)]
         public string Name { get; set; }
+
+        /// <summary>
+        /// مشخص می کند که آیا شاخه مورد نظر مربوط به گروه بندی گزارشات است یا نه؟
+        /// </summary>
+        public bool IsGroup { get; set; }
     }
 }

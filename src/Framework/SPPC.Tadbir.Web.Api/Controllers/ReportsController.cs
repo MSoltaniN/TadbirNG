@@ -24,6 +24,14 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
         }
 
+        // GET: api/reports/{baseId:min(1)}
+        [Route(ReportApi.DefaultSystemReportUrl)]
+        public async Task<IActionResult> GetDefaultSystemReportAsync(int baseId)
+        {
+            var report = await _repository.GetDefaultSystemReportAsync(baseId);
+            return JsonReadResult(report);
+        }
+
         // GET: api/reports/voucher/sum-by-date
         [Route(ReportApi.EnvironmentVoucherSummaryByDateUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]

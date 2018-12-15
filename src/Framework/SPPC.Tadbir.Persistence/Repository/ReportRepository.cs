@@ -9,8 +9,10 @@ using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Report;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -43,6 +45,22 @@ namespace SPPC.Tadbir.Persistence
         public void SetCurrentContext(UserContextViewModel userContext)
         {
             _repository.SetCurrentContext(userContext);
+        }
+
+        public async Task<ReportViewModel> GetDefaultSystemReportAsync(int baseId)
+        {
+            _unitOfWork.UseSystemContext();
+            var report = default(ReportViewModel);
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var existing = await repository.GetFirstByCriteriaAsync(
+                rpt => rpt.Base.Id == baseId && rpt.IsDefault, rpt => rpt.Base);
+            if (existing != null)
+            {
+                report = _mapper.Map<ReportViewModel>(existing);
+            }
+
+            _unitOfWork.UseCompanyContext();
+            return report;
         }
 
         /// <summary>

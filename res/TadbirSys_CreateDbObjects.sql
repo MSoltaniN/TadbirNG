@@ -169,6 +169,7 @@ CREATE TABLE [Reporting].[CoreReport] (
     [ParentID]       INT              NULL,
     [Code]           NVARCHAR(128)    NOT NULL,
     [Name]           NVARCHAR(128)    NOT NULL,
+	[IsGroup]        BIT              NOT NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_CoreReport_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Reporting_CoreReport_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Reporting_CoreReport] PRIMARY KEY CLUSTERED ([CoreReportID] ASC)
@@ -193,13 +194,13 @@ CREATE TABLE [Reporting].[Report] (
 GO
 
 SET IDENTITY_INSERT [Reporting].[CoreReport] ON
-INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name]) VALUES (1, NULL, N'Accounting', N'Accounting')
-INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name]) VALUES (2, 1, N'Accnt-Base', N'BaseData')
-INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name]) VALUES (3, 1, N'Accnt-Operation', N'OperationData')
-INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name]) VALUES (4, 3, N'Voucher-Printing', N'VoucherPrinting')
-INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name]) VALUES (5, 4, N'Voucher-Sum-By-Date', N'VoucherSummaryByDate')
-INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name]) VALUES (6, 4, N'Voucher-Std-Form', N'VoucherStandardForm')
-INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name]) VALUES (7, 4, N'Voucher-Std-Form-Detail', N'VoucherStandardFormWithDetail')
+INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name], [IsGroup]) VALUES (1, NULL, N'Accounting', N'Accounting', 1)
+INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name], [IsGroup]) VALUES (2, 1, N'Accnt-Base', N'BaseData', 1)
+INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name], [IsGroup]) VALUES (3, 1, N'Accnt-Operation', N'OperationData', 1)
+INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name], [IsGroup]) VALUES (4, 3, N'Voucher-Printing', N'VoucherPrinting', 1)
+INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name], [IsGroup]) VALUES (5, 4, N'Voucher-Sum-By-Date', N'VoucherSummaryByDate', 0)
+INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name], [IsGroup]) VALUES (6, 4, N'Voucher-Std-Form', N'VoucherStandardForm', 0)
+INSERT INTO [Reporting].[CoreReport] ([CoreReportID], [ParentID], [Code], [Name], [IsGroup]) VALUES (7, 4, N'Voucher-Std-Form-Detail', N'VoucherStandardFormWithDetail', 0)
 SET IDENTITY_INSERT [Reporting].[CoreReport] OFF
 
 

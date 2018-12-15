@@ -13,6 +13,26 @@ namespace SPPC.Tadbir.Api
         }
 
         /// <summary>
+        /// API client URL for report hierarchy for Report Manager UI
+        /// </summary>
+        public const string ReportsHierarchy = "reports/tree";
+
+        /// <summary>
+        /// API server route URL for report hierarchy for Report Manager UI
+        /// </summary>
+        public const string ReportsHierarchyUrl = "reports/tree";
+
+        /// <summary>
+        /// API client URL for metadata of a single report specified by unique identifier
+        /// </summary>
+        public const string DefaultSystemReport = "reports/{0}";
+
+        /// <summary>
+        /// API server route URL for metadata of a single report specified by unique identifier
+        /// </summary>
+        public const string DefaultSystemReportUrl = "reports/{baseId:min(1)}";
+
+        /// <summary>
         /// API client URL for Voucher Summary by Date report
         /// </summary>
         public const string EnvironmentVoucherSummaryByDate = "reports/voucher/sum-by-date";

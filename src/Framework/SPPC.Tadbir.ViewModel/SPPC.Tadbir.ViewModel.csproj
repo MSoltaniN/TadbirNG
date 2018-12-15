@@ -77,8 +77,4 @@
     <ProjectReference Include="..\SPPC.Tadbir.Configuration\SPPC.Tadbir.Configuration.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Reporting\" />
-  </ItemGroup>
-
 </Project>

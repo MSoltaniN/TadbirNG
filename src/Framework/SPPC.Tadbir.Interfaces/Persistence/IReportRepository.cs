@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Report;
+using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
 {
@@ -17,6 +18,8 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
         void SetCurrentContext(UserContextViewModel userContext);
+
+        Task<ReportViewModel> GetDefaultSystemReportAsync(int baseId);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش خلاصه اسناد حسابداری را خوانده و برمی گرداند

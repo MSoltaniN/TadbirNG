@@ -82,6 +82,7 @@ namespace SPPC.Tadbir.Mapper
             MapConfigTypes(mapperConfig);
             MapCoreTypes(mapperConfig);
             MapMetadataTypes(mapperConfig);
+            MapReportingTypes(mapperConfig);
         }
 
         private static void MapSecurityTypes(IMapperConfigurationExpression mapperConfig)

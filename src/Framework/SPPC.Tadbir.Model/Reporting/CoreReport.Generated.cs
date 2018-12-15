@@ -48,6 +48,11 @@ namespace SPPC.Tadbir.Model.Reporting
         public virtual string Name { get; set; }
 
         /// <summary>
+        /// مشخص می کند که آیا شاخه مورد نظر مربوط به گروه بندی گزارشات است یا نه؟
+        /// </summary>
+        public virtual bool IsGroup { get; set; }
+
+        /// <summary>
         /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
         /// </summary>
         public virtual Guid RowGuid { get; set; }
@@ -64,7 +69,6 @@ namespace SPPC.Tadbir.Model.Reporting
 
         private void InitReferences()
         {
-            Parent = new Report();
         }
     }
 }
