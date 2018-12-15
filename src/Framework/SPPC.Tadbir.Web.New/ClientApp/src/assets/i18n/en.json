@@ -81,7 +81,10 @@
     "Search": "Search",
     "Filter": "filter",
     "DeleteFilter": "Delete Filter",
-    "OkAndNew": "Ok And New"
+    "OkAndNew": "Save And New",
+    "Help": "Help",
+    "FilterForm": "Filter Form",
+    "Tools": "Tools"
   },
   "GridSetting": {
     "Visibility": "Visibility",
