@@ -13,17 +13,10 @@ namespace SPPC.Tadbir.Configuration.Models
         /// </summary>
         public RelationsConfig()
         {
-            UseLeafAccounts = true;
             UseLeafDetails = true;
             UseLeafCostCenters = true;
             UseLeafProjects = true;
         }
-
-        /// <summary>
-        /// مشخص می کند که آیا ارتباطات فقط در آخرین سطح سرفصل های حسابداری برقرار شوند یا نه.
-        /// پیش فرض این تنظیم، مقدار "درست" است
-        /// </summary>
-        public bool UseLeafAccounts { get; set; }
 
         /// <summary>
         /// مشخص می کند که آیا ارتباطات فقط در آخرین سطح تفصیلی های شناور برقرار شوند یا نه.

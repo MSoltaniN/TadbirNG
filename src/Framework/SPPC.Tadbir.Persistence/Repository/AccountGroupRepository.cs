@@ -86,7 +86,7 @@ namespace SPPC.Tadbir.Persistence
             return await repository
                 .GetEntityQuery()
                 .Select(grp => Mapper.Map<AccountGroupViewModel>(grp))
-                .Apply(gridOptions)
+                .Apply(gridOptions, false)
                 .CountAsync();
         }
 
