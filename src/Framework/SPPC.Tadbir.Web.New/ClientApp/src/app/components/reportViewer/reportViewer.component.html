@@ -3,9 +3,6 @@
         {{ 'Report.ReportViewer' | translate }}
     </kendo-dialog-titlebar>
 <div id='viewer' 
-    [ngClass]="{'repLtr':this.currentlang === 'fa' , 'repRtl': this.currentlang === 'en'}">
-  </div>
-  <kendo-dialog-actions>      
-      <button class="k-button" (click)="closeForm($event)">{{ 'Buttons.Cancel' | translate }}</button>
-  </kendo-dialog-actions>
+    [ngClass]="{'repLtr':this.currentlang !== 'fa' , 'repRtl': this.currentlang === 'fa'}">
+  </div>  
 </kendo-dialog>

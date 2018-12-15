@@ -6,8 +6,8 @@
     <Loading>بارگداری...</Loading>
     <NextPage>صفحه بعد</NextPage>
     <OnePage>یک صفحه</OnePage>
-    <Page>صفحه</Page>
-    <PageOf>ی</PageOf>
+    <Page> </Page>
+    <PageOf> </PageOf>
     <PreviousPage>صفحه ی قبل </PreviousPage>
     <PrintReport>چاپ گزارش</PrintReport>
     <PrintToPdf>پرینت به PDF</PrintToPdf>

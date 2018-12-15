@@ -268,7 +268,27 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
           }]
       },
       options: {
-        responsive: true
+        responsive: true,
+        scales: {
+          yAxes: [
+              {
+                  ticks: {
+                      callback: function(label, index, labels) {
+                          return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+                      },                      
+                  }    
+              }
+          ]
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+        callbacks: {
+            label: function (t, d) {                
+                return t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+            }
+        }
+      }     
       }
     });
         
@@ -301,8 +321,29 @@ export class DashboardComponent extends DefaultComponent implements OnInit {
           }]
       },
       options: {
-        responsive: true        
-      }
+        responsive: true,
+        scales: {
+          yAxes: [
+              {
+                  ticks: {
+                      callback: function(label, index, labels) {
+                          return label.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+                      },                      
+                  }    
+              }
+          ]
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+        callbacks: {
+            label: function (t, d) {                
+                return t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+            }
+        }
+      }     
+      },
+      
     });
 
     
