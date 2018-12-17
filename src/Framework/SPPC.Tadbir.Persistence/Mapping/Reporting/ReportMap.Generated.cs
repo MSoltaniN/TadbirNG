@@ -29,6 +29,9 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("ReportID");
+            builder.Property(e => e.ServiceUrl)
+                .IsRequired()
+                .HasMaxLength(256);
             builder.Property(e => e.Template);
             builder.Property(e => e.IsSystem)
                 .IsRequired();

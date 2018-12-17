@@ -39,10 +39,10 @@ namespace SPPC.Tadbir.Persistence
         /// <summary>
         /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش فرم مرسوم سند را خوانده و برمی گرداند
         /// </summary>
-        /// <param name="voucherId">شناسه دیتابیسی یک سند مالی موجود</param>
+        /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
         /// <param name="withDetail">مشخص می کند که آیا جزییات سطوح شناور نیز مورد نیاز است یا نه</param>
         /// <returns>اطلاعات گزارش فرم مرسوم سند</returns>
         Task<StandardVoucherViewModel> GetStandardVoucherFormAsync(
-            int voucherId, bool withDetail = false);
+            GridOptions gridOptions, bool withDetail = false);
     }
 }

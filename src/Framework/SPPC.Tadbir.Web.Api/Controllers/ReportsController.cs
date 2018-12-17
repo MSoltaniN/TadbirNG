@@ -45,22 +45,22 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(report);
         }
 
-        // GET: api/reports/voucher/std-form/{voucherId:min(1)}
+        // GET: api/reports/voucher/std-form
         [Route(ReportApi.VoucherStandardFormUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetStandardVoucherFormAsync(int voucherId)
+        public async Task<IActionResult> GetStandardVoucherFormAsync()
         {
-            var standardForm = await _repository.GetStandardVoucherFormAsync(voucherId);
+            var standardForm = await _repository.GetStandardVoucherFormAsync(GridOptions);
             Localize(standardForm);
             return JsonReadResult(standardForm);
         }
 
-        // GET: api/reports/voucher/std-form-detail/{voucherId:min(1)}
+        // GET: api/reports/voucher/std-form-detail
         [Route(ReportApi.VoucherStandardFormWithDetailUrl)]
         [AuthorizeRequest(SecureEntity.Voucher, (int)VoucherPermissions.View)]
-        public async Task<IActionResult> GetStandardVoucherFormWithDetailAsync(int voucherId)
+        public async Task<IActionResult> GetStandardVoucherFormWithDetailAsync()
         {
-            var formWithDetail = await _repository.GetStandardVoucherFormAsync(voucherId, true);
+            var formWithDetail = await _repository.GetStandardVoucherFormAsync(GridOptions, true);
             Localize(formWithDetail);
             return JsonReadResult(formWithDetail);
         }

@@ -38,6 +38,11 @@ namespace SPPC.Tadbir.Model.Reporting
         public virtual int Id { get; set; }
 
         /// <summary>
+        /// آدرس مورد نیاز برای خواندن اطلاعات گزارش از سرویس وب
+        /// </summary>
+        public virtual string ServiceUrl { get; set; }
+
+        /// <summary>
         /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه
         /// </summary>
         public virtual string Template { get; set; }

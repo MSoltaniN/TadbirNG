@@ -181,6 +181,7 @@ CREATE TABLE [Reporting].[Report] (
     [ReportID]       INT              IDENTITY (1, 1) NOT NULL,
     [BaseID]         INT              NULL,
     [CreatedByID]    INT              NULL,
+	[ServiceUrl]     NVARCHAR(256)    NOT NULL,
     [Template]       NVARCHAR(MAX)    NULL,
     [IsSystem]       BIT              NOT NULL,
     [IsDefault]      BIT              NOT NULL,
