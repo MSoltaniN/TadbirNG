@@ -199,7 +199,8 @@ namespace SPPC.Tadbir.Persistence
             var relationRepository = _unitOfWork.GetAsyncRepository<AccountDetailAccount>();
             var relatedDetailIds = await relationRepository
                 .GetEntityQuery()
-                .Where(ada => ada.AccountId == accountId)
+                .Where(ada => ada.AccountId == accountId
+                    && ada.DetailAccount.Children.Count == 0)
                 .Select(ada => ada.DetailId)
                 .ToListAsync();
             var detailAccounts = await _repository
@@ -225,7 +226,8 @@ namespace SPPC.Tadbir.Persistence
             var relationRepository = _unitOfWork.GetAsyncRepository<AccountCostCenter>();
             var relatedCenterIds = await relationRepository
                 .GetEntityQuery()
-                .Where(ac => ac.AccountId == accountId)
+                .Where(ac => ac.AccountId == accountId
+                    && ac.CostCenter.Children.Count == 0)
                 .Select(ac => ac.CostCenterId)
                 .ToListAsync();
             var costCenters = await _repository
@@ -251,7 +253,8 @@ namespace SPPC.Tadbir.Persistence
             var relationRepository = _unitOfWork.GetAsyncRepository<AccountProject>();
             var relatedProjectIds = await relationRepository
                 .GetEntityQuery()
-                .Where(ap => ap.AccountId == accountId)
+                .Where(ap => ap.AccountId == accountId
+                    && ap.Project.Children.Count == 0)
                 .Select(ap => ap.ProjectId)
                 .ToListAsync();
             var projects = await _repository
@@ -277,7 +280,8 @@ namespace SPPC.Tadbir.Persistence
             var relationRepository = _unitOfWork.GetAsyncRepository<AccountDetailAccount>();
             var relatedAccountIds = await relationRepository
                 .GetEntityQuery()
-                .Where(ada => ada.DetailId == detailId)
+                .Where(ada => ada.DetailId == detailId
+                    && ada.Account.Children.Count == 0)
                 .Select(ada => ada.AccountId)
                 .ToListAsync();
             var accounts = await _repository
@@ -303,7 +307,8 @@ namespace SPPC.Tadbir.Persistence
             var relationRepository = _unitOfWork.GetAsyncRepository<AccountCostCenter>();
             var relatedAccountIds = await relationRepository
                 .GetEntityQuery()
-                .Where(ac => ac.CostCenterId == costCenterId)
+                .Where(ac => ac.CostCenterId == costCenterId
+                    && ac.Account.Children.Count == 0)
                 .Select(ac => ac.AccountId)
                 .ToListAsync();
             var accounts = await _repository
@@ -329,7 +334,8 @@ namespace SPPC.Tadbir.Persistence
             var relationRepository = _unitOfWork.GetAsyncRepository<AccountProject>();
             var relatedAccountIds = await relationRepository
                 .GetEntityQuery()
-                .Where(ap => ap.ProjectId == projectId)
+                .Where(ap => ap.ProjectId == projectId
+                    && ap.Account.Children.Count == 0)
                 .Select(ap => ap.AccountId)
                 .ToListAsync();
             var accounts = await _repository
