@@ -409,7 +409,7 @@ namespace SPPC.Tadbir.Persistence
                     RemoveDisconnectedCostCenters(existing, relations);
                 }
 
-                await AddNewCostCenters(existing, relations);
+                await AddNewAccountCostCenters(existing, relations);
                 repository.Update(existing);
                 await _unitOfWork.CommitAsync();
             }
@@ -432,7 +432,7 @@ namespace SPPC.Tadbir.Persistence
                     RemoveDisconnectedProjects(existing, relations);
                 }
 
-                await AddNewProjects(existing, relations);
+                await AddNewAccountProjects(existing, relations);
                 repository.Update(existing);
                 await _unitOfWork.CommitAsync();
             }
@@ -1015,6 +1015,14 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task AddNewAccountDetailAccount(Account existing, int detailId)
         {
+            var existingRelation = existing.AccountDetailAccounts
+                .Where(ada => ada.AccountId == existing.Id && ada.DetailId == detailId)
+                .FirstOrDefault();
+            if (existingRelation != null)
+            {
+                return;
+            }
+
             var repository = _unitOfWork.GetRepository<DetailAccount>();
             var detailAccount = repository.GetByIDWithTracking(detailId, facc => facc.Children);
             var accountDetailAccount = new AccountDetailAccount()
@@ -1031,18 +1039,26 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
-        private async Task AddNewCostCenters(Account existing, AccountItemRelationsViewModel relations)
+        private async Task AddNewAccountCostCenters(Account existing, AccountItemRelationsViewModel relations)
         {
             var currentItems = existing.AccountCostCenters.Select(ac => ac.CostCenterId);
             var newItems = relations.RelatedItemIds.Where(id => !currentItems.Contains(id));
             foreach (int centerId in newItems)
             {
-                await AddNewCostCenter(existing, centerId);
+                await AddNewAccountCostCenter(existing, centerId);
             }
         }
 
-        private async Task AddNewCostCenter(Account existing, int centerId)
+        private async Task AddNewAccountCostCenter(Account existing, int centerId)
         {
+            var existingRelation = existing.AccountCostCenters
+                .Where(ac => ac.AccountId == existing.Id && ac.CostCenterId == centerId)
+                .FirstOrDefault();
+            if (existingRelation != null)
+            {
+                return;
+            }
+
             var repository = _unitOfWork.GetRepository<CostCenter>();
             var costCenter = repository.GetByIDWithTracking(centerId, cc => cc.Children);
             var accountCostCenter = new AccountCostCenter()
@@ -1055,22 +1071,30 @@ namespace SPPC.Tadbir.Persistence
             existing.AccountCostCenters.Add(accountCostCenter);
             foreach (var child in costCenter.Children)
             {
-                await AddNewCostCenter(existing, child.Id);
+                await AddNewAccountCostCenter(existing, child.Id);
             }
         }
 
-        private async Task AddNewProjects(Account existing, AccountItemRelationsViewModel relations)
+        private async Task AddNewAccountProjects(Account existing, AccountItemRelationsViewModel relations)
         {
             var currentItems = existing.AccountProjects.Select(ap => ap.ProjectId);
             var newItems = relations.RelatedItemIds.Where(id => !currentItems.Contains(id));
             foreach (int projectId in newItems)
             {
-                await AddNewProject(existing, projectId);
+                await AddNewAccountProject(existing, projectId);
             }
         }
 
-        private async Task AddNewProject(Account existing, int projectId)
+        private async Task AddNewAccountProject(Account existing, int projectId)
         {
+            var existingRelation = existing.AccountProjects
+                .Where(ap => ap.AccountId == existing.Id && ap.ProjectId == projectId)
+                .FirstOrDefault();
+            if (existingRelation != null)
+            {
+                return;
+            }
+
             var repository = _unitOfWork.GetRepository<Project>();
             var project = repository.GetByIDWithTracking(projectId, prj => prj.Children);
             var accountProject = new AccountProject()
@@ -1083,7 +1107,7 @@ namespace SPPC.Tadbir.Persistence
             existing.AccountProjects.Add(accountProject);
             foreach (var child in project.Children)
             {
-                await AddNewProject(existing, child.Id);
+                await AddNewAccountProject(existing, child.Id);
             }
         }
 
