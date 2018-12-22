@@ -28,7 +28,7 @@ export function getLayoutModule(layout: Layout) {
     templateUrl: './viewRowPermission.component.html',
     styles: [`
 .input-frm{ width:100%; }
-.input-frm-btn { width: calc(100% - 80px); }
+.input-frm-btn { width: calc(100% - 125px); }
 #permission-type-panle { height: 150px; border: solid 1px #337ab7; margin-top: 20px;}
 .panel-type-btn{ padding: 40px 25px 40px 10px; }.panel-type,.panel-type-multiple{ padding: 40px 25px; }
 @media screen and (max-width:768px){.panel-type-multiple{ padding:15px 0; }}
