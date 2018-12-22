@@ -103,6 +103,16 @@ namespace SPPC.Tadbir.Api
         public const string DetailAccountsRelatedToAccountUrl = "relations/account/{accountId:min(1)}/faccounts";
 
         /// <summary>
+        /// API client URL for all usable detail accounts related to an account specified by unique identifier
+        /// </summary>
+        public const string UsableDetailAccountsRelatedToAccount = "relations/account/{0}/faccounts/usable";
+
+        /// <summary>
+        /// API server route URL for all usable detail accounts related to an account specified by unique identifier
+        /// </summary>
+        public const string UsableDetailAccountsRelatedToAccountUrl = "relations/account/{accountId:min(1)}/faccounts/usable";
+
+        /// <summary>
         /// API client URL for all cost centers related to an account specified by unique identifier
         /// </summary>
         public const string CostCentersRelatedToAccount = "relations/account/{0}/ccenters";
@@ -113,6 +123,16 @@ namespace SPPC.Tadbir.Api
         public const string CostCentersRelatedToAccountUrl = "relations/account/{accountId:min(1)}/ccenters";
 
         /// <summary>
+        /// API client URL for all usable cost centers related to an account specified by unique identifier
+        /// </summary>
+        public const string UsableCostCentersRelatedToAccount = "relations/account/{0}/ccenters/usable";
+
+        /// <summary>
+        /// API server route URL for all usable cost centers related to an account specified by unique identifier
+        /// </summary>
+        public const string UsableCostCentersRelatedToAccountUrl = "relations/account/{accountId:min(1)}/ccenters/usable";
+
+        /// <summary>
         /// API client URL for all projects related to an account specified by unique identifier
         /// </summary>
         public const string ProjectsRelatedToAccount = "relations/account/{0}/projects";
@@ -121,6 +141,16 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for all projects related to an account specified by unique identifier
         /// </summary>
         public const string ProjectsRelatedToAccountUrl = "relations/account/{accountId:min(1)}/projects";
+
+        /// <summary>
+        /// API client URL for all usable projects related to an account specified by unique identifier
+        /// </summary>
+        public const string UsableProjectsRelatedToAccount = "relations/account/{0}/projects/usable";
+
+        /// <summary>
+        /// API server route URL for all usable projects related to an account specified by unique identifier
+        /// </summary>
+        public const string UsableProjectsRelatedToAccountUrl = "relations/account/{accountId:min(1)}/projects/usable";
 
         /// <summary>
         /// API client URL for all accounts related to a detail account specified by unique identifier

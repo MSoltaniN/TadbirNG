@@ -192,15 +192,22 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="leafOnly">مشخص می کند که آیا ارتباطات موجود فقط در آخرین سطح مورد نظر است یا نه</param>
         /// <returns>مجموعه ای از تفصیلی های شناور مرتبط با حساب مشخص شده</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetAccountDetailAccountsAsync(
-            int accountId, GridOptions gridOptions = null)
+            int accountId, GridOptions gridOptions = null, bool leafOnly = true)
         {
             var relationRepository = _unitOfWork.GetAsyncRepository<AccountDetailAccount>();
-            var relatedDetailIds = await relationRepository
+            var existingItemsQuery = relationRepository
                 .GetEntityQuery()
-                .Where(ada => ada.AccountId == accountId
-                    && ada.DetailAccount.Children.Count == 0)
+                .Where(ada => ada.AccountId == accountId);
+            if (leafOnly)
+            {
+                existingItemsQuery = existingItemsQuery
+                    .Where(ada => ada.DetailAccount.Children.Count == 0);
+            }
+
+            var relatedDetailIds = await existingItemsQuery
                 .Select(ada => ada.DetailId)
                 .ToListAsync();
             var detailAccounts = await _repository
@@ -219,15 +226,22 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="leafOnly">مشخص می کند که آیا ارتباطات موجود فقط در آخرین سطح مورد نظر است یا نه</param>
         /// <returns>مجموعه ای از مراکز هزینه مرتبط با حساب مشخص شده</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetAccountCostCentersAsync(
-            int accountId, GridOptions gridOptions = null)
+            int accountId, GridOptions gridOptions = null, bool leafOnly = true)
         {
             var relationRepository = _unitOfWork.GetAsyncRepository<AccountCostCenter>();
-            var relatedCenterIds = await relationRepository
+            var existingItemsQuery = relationRepository
                 .GetEntityQuery()
-                .Where(ac => ac.AccountId == accountId
-                    && ac.CostCenter.Children.Count == 0)
+                .Where(ac => ac.AccountId == accountId);
+            if (leafOnly)
+            {
+                existingItemsQuery = existingItemsQuery
+                    .Where(ac => ac.CostCenter.Children.Count == 0);
+            }
+
+            var relatedCenterIds = await existingItemsQuery
                 .Select(ac => ac.CostCenterId)
                 .ToListAsync();
             var costCenters = await _repository
@@ -246,15 +260,22 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="accountId">شناسه دیتابیسی یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="leafOnly">مشخص می کند که آیا ارتباطات موجود فقط در آخرین سطح مورد نظر است یا نه</param>
         /// <returns>مجموعه ای از پروژه های مرتبط با حساب مشخص شده</returns>
         public async Task<IList<AccountItemBriefViewModel>> GetAccountProjectsAsync(
-            int accountId, GridOptions gridOptions = null)
+            int accountId, GridOptions gridOptions = null, bool leafOnly = true)
         {
             var relationRepository = _unitOfWork.GetAsyncRepository<AccountProject>();
-            var relatedProjectIds = await relationRepository
+            var existingItemsQuery = relationRepository
                 .GetEntityQuery()
-                .Where(ap => ap.AccountId == accountId
-                    && ap.Project.Children.Count == 0)
+                .Where(ap => ap.AccountId == accountId);
+            if (leafOnly)
+            {
+                existingItemsQuery = existingItemsQuery
+                    .Where(ap => ap.Project.Children.Count == 0);
+            }
+
+            var relatedProjectIds = await existingItemsQuery
                 .Select(ap => ap.ProjectId)
                 .ToListAsync();
             var projects = await _repository
@@ -360,9 +381,10 @@ namespace SPPC.Tadbir.Persistence
                 relations.Id, acc => acc.AccountDetailAccounts);
             if (existing != null)
             {
-                existing.AccountDetailAccounts.Clear();
-                repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                if (existing.AccountDetailAccounts.Count > 0)
+                {
+                    RemoveDisconnectedDetailAccounts(existing, relations);
+                }
 
                 await AddNewAccountDetailAccounts(existing, relations);
                 repository.Update(existing);
@@ -382,9 +404,10 @@ namespace SPPC.Tadbir.Persistence
                 relations.Id, acc => acc.AccountCostCenters);
             if (existing != null)
             {
-                existing.AccountCostCenters.Clear();
-                repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                if (existing.AccountCostCenters.Count > 0)
+                {
+                    RemoveDisconnectedCostCenters(existing, relations);
+                }
 
                 await AddNewCostCenters(existing, relations);
                 repository.Update(existing);
@@ -404,9 +427,10 @@ namespace SPPC.Tadbir.Persistence
                 relations.Id, acc => acc.AccountProjects);
             if (existing != null)
             {
-                existing.AccountProjects.Clear();
-                repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                if (existing.AccountProjects.Count > 0)
+                {
+                    RemoveDisconnectedProjects(existing, relations);
+                }
 
                 await AddNewProjects(existing, relations);
                 repository.Update(existing);
@@ -804,6 +828,51 @@ namespace SPPC.Tadbir.Persistence
                 && left.All(value => right.Contains(value));
         }
 
+        private static void RemoveDisconnectedDetailAccounts(Account existing, AccountItemRelationsViewModel relations)
+        {
+            var currentItems = relations.RelatedItemIds;
+            var disconnectedItems = existing.AccountDetailAccounts
+                .Select(ada => ada.DetailId)
+                .Where(id => !currentItems.Contains(id))
+                .ToList();
+            foreach (int id in disconnectedItems)
+            {
+                existing.AccountDetailAccounts.Remove(existing.AccountDetailAccounts
+                    .Where(ada => ada.DetailId == id)
+                    .Single());
+            }
+        }
+
+        private static void RemoveDisconnectedCostCenters(Account existing, AccountItemRelationsViewModel relations)
+        {
+            var currentItems = relations.RelatedItemIds;
+            var disconnectedItems = existing.AccountCostCenters
+                .Select(ac => ac.CostCenterId)
+                .Where(id => !currentItems.Contains(id))
+                .ToList();
+            foreach (int id in disconnectedItems)
+            {
+                existing.AccountCostCenters.Remove(existing.AccountCostCenters
+                    .Where(ac => ac.CostCenterId == id)
+                    .Single());
+            }
+        }
+
+        private static void RemoveDisconnectedProjects(Account existing, AccountItemRelationsViewModel relations)
+        {
+            var currentItems = relations.RelatedItemIds;
+            var disconnectedItems = existing.AccountProjects
+                .Select(ap => ap.ProjectId)
+                .Where(id => !currentItems.Contains(id))
+                .ToList();
+            foreach (int id in disconnectedItems)
+            {
+                existing.AccountProjects.Remove(existing.AccountProjects
+                    .Where(ap => ap.ProjectId == id)
+                    .Single());
+            }
+        }
+
         private static void RemoveDisconnectedAccounts(DetailAccount existing, AccountItemRelationsViewModel relations)
         {
             var currentItems = relations.RelatedItemIds;
@@ -936,7 +1005,9 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task AddNewAccountDetailAccounts(Account existing, AccountItemRelationsViewModel relations)
         {
-            foreach (int detailId in relations.RelatedItemIds)
+            var currentItems = existing.AccountDetailAccounts.Select(ada => ada.DetailId);
+            var newItems = relations.RelatedItemIds.Where(id => !currentItems.Contains(id));
+            foreach (int detailId in newItems)
             {
                 await AddNewAccountDetailAccount(existing, detailId);
             }
@@ -962,7 +1033,9 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task AddNewCostCenters(Account existing, AccountItemRelationsViewModel relations)
         {
-            foreach (int centerId in relations.RelatedItemIds)
+            var currentItems = existing.AccountCostCenters.Select(ac => ac.CostCenterId);
+            var newItems = relations.RelatedItemIds.Where(id => !currentItems.Contains(id));
+            foreach (int centerId in newItems)
             {
                 await AddNewCostCenter(existing, centerId);
             }
@@ -988,7 +1061,9 @@ namespace SPPC.Tadbir.Persistence
 
         private async Task AddNewProjects(Account existing, AccountItemRelationsViewModel relations)
         {
-            foreach (int projectId in relations.RelatedItemIds)
+            var currentItems = existing.AccountProjects.Select(ap => ap.ProjectId);
+            var newItems = relations.RelatedItemIds.Where(id => !currentItems.Contains(id));
+            foreach (int projectId in newItems)
             {
                 await AddNewProject(existing, projectId);
             }
