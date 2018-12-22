@@ -46,6 +46,7 @@
     <None Remove="ClientApp\src\app\components\accountRelations\accountRelations.component.ts" />
     <None Remove="ClientApp\src\app\components\account\account-form.component.ts" />
     <None Remove="ClientApp\src\app\components\account\account.component.ts" />
+    <None Remove="ClientApp\src\app\components\account\form.component.ts" />
     <None Remove="ClientApp\src\app\components\branch\branch-form.component.ts" />
     <None Remove="ClientApp\src\app\components\branch\branch-roles-form.component.ts" />
     <None Remove="ClientApp\src\app\components\company\company-form.component.ts" />
@@ -93,6 +94,7 @@
     <None Remove="ClientApp\src\app\controls\textbox\sppc-numerictextbox.ts" />
     <None Remove="ClientApp\src\app\directive\editorForm\editor-title.component.ts" />
     <None Remove="ClientApp\src\app\directive\fullCode\fullCode.directive.ts" />
+    <None Remove="ClientApp\src\app\directive\fullCode\fullCodeTest.directive.ts" />
     <None Remove="ClientApp\src\app\directive\grid\component\grid-filter.component.ts" />
     <None Remove="ClientApp\src\app\directive\grid\component\grid-setting.component.ts" />
     <None Remove="ClientApp\src\app\directive\grid\sppc-check-access.ts" />
@@ -882,6 +884,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\accountGroups\accountGroups-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\accountRelations\accountRelations-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\accountRelations\accountRelations.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\account\form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\account\account-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\account\account.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\branch\branch-form.component.ts" />
@@ -930,6 +933,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\controls\textbox\sppc-mask-textbox.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\controls\textbox\sppc-numerictextbox.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\editorForm\editor-title.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\directive\fullCode\fullCodeTest.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\fullCode\fullCode.directive.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\grid\component\grid-filter.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\directive\grid\component\grid-setting.component.ts" />

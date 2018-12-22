@@ -22,6 +22,8 @@ import { AccountPermissions } from '../../security/permissions';
 import { DefaultComponent } from '../../class/default.component';
 import { FilterExpression } from '../../class/filterExpression';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
+import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
+import { FormComponent } from './form.component';
 //#endregion
 
 export function getLayoutModule(layout: Layout) {
@@ -37,6 +39,7 @@ export function getLayoutModule(layout: Layout) {
         padding-right: 0px;
         padding-left: 0px;
     }
+/deep/.dialog .k-window-content {padding: 0 !important}
   `],
   providers: [{
     provide: RTL,
@@ -80,15 +83,14 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
   editDataItem?: Account = undefined;
   parentModel: Account;
-  isNew: boolean;
+  //isNew: boolean;
   disableSaveBtn: boolean | undefined;
   errorMessage: string;
   groupDelete: boolean = false;
   addToContainer: boolean = false;
-
-  isChildExpanding: boolean;
   componentParentId: number;
-  goLastPage: boolean;
+  isChildExpanding: boolean;
+   goLastPage: boolean;
   //#endregion
 
   //#region Events
@@ -104,10 +106,59 @@ export class AccountComponent extends DefaultComponent implements OnInit {
       this.parentAccount.addChildAccount(this);
       this.parentId = this.parent.id;
       this.componentParentId = this.parentId;
-
-      this.parentModel = this.parent;
+      this.parentModel = this.parent;      
     }
   }
+
+
+   public dialogRef: DialogRef;
+  /**
+   * باز کردن و مقداردهی اولیه به فرم ویرایشگر
+   */
+  openEditorDialog(isNew: boolean) {
+    //debugger;
+    //if (this.parentAccount) {
+     //console.log(this.grid);
+    //  this.grid = this.parentAccount.grid;
+    //}
+    
+
+    this.dialogRef = this.dialogService.open({
+      title: this.getText(isNew ? 'Buttons.New' : 'Buttons.Edit'),
+      content: FormComponent,
+    });
+
+    const dialogModel = this.dialogRef.content.instance;
+    dialogModel.parent = this.parentModel;
+    dialogModel.errorMessage = this.errorMessage;
+    dialogModel.model = this.editDataItem;
+    dialogModel.isNew = isNew;
+
+    this.dialogRef.content.instance.save.subscribe((res) => {
+      debugger;
+      this.saveHandler(res, isNew);
+      if (!this.errorMessage) {
+        this.dialogRef.close();
+
+        dialogModel.parent = undefined;
+        dialogModel.errorMessage = undefined;
+        dialogModel.model = undefined;
+      }
+      
+
+    });
+
+    const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
+      this.dialogRef.close();
+
+      dialogModel.parent = undefined;
+      dialogModel.errorMessage = undefined;
+      dialogModel.model = undefined;
+
+      this.parentId = this.componentParentId;
+    });
+  }
+
 
   selectionKey(context: RowArgs): string {
     if (context.dataItem == undefined) return "";
@@ -164,32 +215,24 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
   //account form events
   public editHandler(arg: any) {
+    this.errorMessage = undefined;
     this.grid.loading = true;
     this.accountService.getById(String.Format(AccountApi.Account, arg.dataItem.id)).subscribe(res => {
+
       this.editDataItem = res;
       this.setParentModel(res.parentId);
 
       this.parentId = res.parentId;
 
+      this.openEditorDialog(false);
+
       this.grid.loading = false;
     })
-    this.isNew = false;
-    this.errorMessage = '';
   }
 
-  public cancelHandler() {
-    this.editDataItem = undefined;
-    this.errorMessage = '';
-    this.isNew = false;
-
-    this.parentId = this.componentParentId;    
-  }
-
-  public saveHandler(model: Account) {
+  public saveHandler(model: Account, isNew: boolean) {
     this.grid.loading = true;
-    if (!this.isNew) {
-      this.isNew = false;
-      this.disableSaveBtn = undefined;
+    if (!isNew) {
       this.accountService.edit<Account>(String.Format(AccountApi.Account, model.id), model)
         .subscribe(response => {
           this.editDataItem = undefined;
@@ -198,62 +241,12 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         }, (error => {
           this.editDataItem = model;
           this.errorMessage = error;
-          this.disableSaveBtn = false;
         }));
     }
     else {
-      model.branchId = this.BranchId;
-      model.fiscalPeriodId = this.FiscalPeriodId;
-      model.companyId = this.CompanyId;
-
-
-      //if (this.parentId) {
-      //  this.parentId = undefined;
-      //}
-
       this.parentId = this.componentParentId;
-
-      //set parentid for childs accounts
-      //if (this.parentId) {
-        //model.parentId = this.parentId;
-
-        ////var currentLevel = this.parent ? this.parent.level : 0;
-        //var parentAc = this.parentAccount;
-        //var currentLevel = 0;
-
-        //while (parentAc) {
-        //  currentLevel++;
-        //  parentAc = parentAc.parentAccount
-        //}
-
-        //model.level = currentLevel + 1;
-
-      //  this.parentId = undefined;
-      //}
-      //else if (this.parent) {
-      //  model.parentId = this.parent.id;
-      //  model.level = this.parent.level + 1;
-      //}
-
-
-
-
-
-
-      if (this.parentModel) {
-        model.parentId = this.parentModel.id;
-        model.level = this.parentModel.level + 1;
-      }
-      else {
-        model.parentId = undefined;
-        model.level = 0;
-      }
-
-      //set parentid for childs accounts
-      this.disableSaveBtn = undefined;
       this.accountService.insert<Account>(AccountApi.EnvironmentAccounts, model)
         .subscribe((response: any) => {
-          this.isNew = false;
           this.editDataItem = undefined;
           this.showMessage(this.insertMsg, MessageType.Succes);
           var insertedModel = response;
@@ -268,14 +261,12 @@ export class AccountComponent extends DefaultComponent implements OnInit {
           this.reloadGrid(insertedModel);
 
         }, (error => {
-          this.isNew = true;
-          this.disableSaveBtn = false;
           this.errorMessage = error;
         }));
 
     }
     this.grid.loading = false;
-    
+
   }
 
   //#endregion
@@ -285,7 +276,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
   constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
     private accountService: AccountService, private voucherLineService: VoucherLineService,
     private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService,
-    @SkipSelf() @Host() @Optional() private parentAccount: AccountComponent) {
+    @SkipSelf() @Host() @Optional() private parentAccount: AccountComponent,public dialogService: DialogService) {
     super(toastrService, translate, renderer, metadata, settingService, Entities.Account, Metadatas.Account);
   }
 
@@ -508,7 +499,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
   public addNew(parentModelId?: number, addToThis?: boolean) {
 
-    this.isNew = true;
     this.editDataItem = new AccountInfo();
     this.setParentModel(parentModelId);
     //آی دی مربوط به حساب سطح بالاتر برای درج در زیر حساب ها در متغیر parentId مقدار دهی میشود
@@ -520,7 +510,9 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     else
       this.addToContainer = false;
 
-    this.errorMessage = '';
+    this.errorMessage = undefined;
+
+    this.openEditorDialog(true);
   }
 
   public showOnlyParent(dataItem: Account, index: number): boolean {

@@ -58,11 +58,13 @@ import { EditorFormTitleComponent } from './directive/editorForm/editor-title.co
 import { ViewTreeConfigComponent } from './components/viewTreeConfig/viewTreeConfig.component';
 import { AccountGroupsComponent } from './components/accountGroups/accountGroups.component';
 import { AccountGroupsFormComponent } from './components/accountGroups/accountGroups-form.component';
-import { InlineTestComponent } from './components/inlineTest/inlineTest.component';
+//import { InlineTestComponent } from './components/inlineTest/inlineTest.component';
+import { FormComponent } from './components/account/form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
 import { FullCodeDirective } from './directive/fullCode/fullCode.directive';
+import { FullCodeTestDirective } from './directive/fullCode/fullCodeTest.directive';
 import { SppcCodeLengthDirective } from './directive/Validator/Sppc-code-length-validator';
 import { SpccOnlyNumberDirective } from './directive/onlyNumber/sppc.onlyNumber';
 
@@ -198,6 +200,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CostCenterFormComponent,
     ConfirmEqualValidator,
     FullCodeDirective,
+    FullCodeTestDirective,
     SppcCodeLengthDirective,
     SpccOnlyNumberDirective,
     FiscalPeriodComponent,
@@ -235,7 +238,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReportViewerComponent,
     AccountGroupsComponent,
     AccountGroupsFormComponent,
-    InlineTestComponent
+    
+    FormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -290,7 +294,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'operation-log', component: OperationLogsComponent, canActivate: [AuthGuard] },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'account-groups', component: AccountGroupsComponent, canActivate: [AuthGuard] },
-      { path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
+      //{ path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'dashboard' }
     ])
   ],
@@ -321,7 +325,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   schemas: [NO_ERRORS_SCHEMA],
   entryComponents: [
-    SppcGridDatepicker
+    SppcGridDatepicker, FormComponent
   ],
   bootstrap: [AppComponent]
 })
