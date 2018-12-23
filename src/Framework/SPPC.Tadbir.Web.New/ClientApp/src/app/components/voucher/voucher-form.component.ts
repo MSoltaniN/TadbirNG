@@ -55,6 +55,7 @@ export class VoucherFormComponent extends DetailComponent {
   @Input() public errorMessage: string;
 
   @Input() public set model(voucher: Voucher) {
+
     this.editModel = voucher;
     this.editForm.reset(voucher);
 
@@ -74,11 +75,12 @@ export class VoucherFormComponent extends DetailComponent {
   //Events
   public onSave(e: any): void {
     e.preventDefault();
-    if (this.editForm.valid) {
+    if (this.editForm.valid) {      
       if (this.editModel) {
         let model: Voucher = this.editForm.value;
         model.branchId = this.editModel.branchId;
         model.fiscalPeriodId = this.editModel.fiscalPeriodId;
+        model.statusId = this.editModel.statusId;
         this.save.emit(model);
       }
       else
