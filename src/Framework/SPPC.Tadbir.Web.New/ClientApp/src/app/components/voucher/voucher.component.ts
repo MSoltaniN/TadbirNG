@@ -128,7 +128,6 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     var recordId = this.selectedRows[0];
     this.grid.loading = true;
     this.voucherService.getById(String.Format(VoucherApi.Voucher, recordId)).subscribe(res => {
-      debugger;
       this.editDataItem = res;
       this.grid.loading = false;
     })
