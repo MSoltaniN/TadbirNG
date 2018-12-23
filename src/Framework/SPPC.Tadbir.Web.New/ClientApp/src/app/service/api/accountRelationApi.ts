@@ -41,11 +41,20 @@ export class AccountRelationApi {
     // relations/account/{accountId:min(1)}/faccounts
     public static DetailAccountsRelatedToAccount = environment.BaseUrl + "/relations/account/{0}/faccounts";
 
+    // relations/account/{accountId:min(1)}/faccounts/usable
+    public static UsableDetailAccountsRelatedToAccount = environment.BaseUrl + "/relations/account/{0}/faccounts/usable";
+
     // relations/account/{accountId:min(1)}/ccenters
     public static CostCentersRelatedToAccount = environment.BaseUrl + "/relations/account/{0}/ccenters";
 
+    // relations/account/{accountId:min(1)}/ccenters/usable
+    public static UsableCostCentersRelatedToAccount = environment.BaseUrl + "/relations/account/{0}/ccenters/usable";
+
     // relations/account/{accountId:min(1)}/projects
     public static ProjectsRelatedToAccount = environment.BaseUrl + "/relations/account/{0}/projects";
+
+    // relations/account/{accountId:min(1)}/projects/usable
+    public static UsableProjectsRelatedToAccount = environment.BaseUrl + "/relations/account/{0}/projects/usable";
 
     // relations/faccount/{faccountId:min(1)}/accounts
     public static AccountsRelatedToDetailAccount = environment.BaseUrl + "/relations/faccount/{0}/accounts";
