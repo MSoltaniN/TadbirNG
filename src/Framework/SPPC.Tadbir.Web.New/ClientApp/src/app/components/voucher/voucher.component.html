@@ -41,36 +41,38 @@
                                 [displayToDate]="FiscalPeriodEndDate">
         </sppc-dateRangeSelector>
 
-        <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'Voucher.New' | translate }}</button>
-        <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>        
+        <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Voucher.New' | translate }}"></button>
+
+        <button SppcCheckAccess="Edit" (click)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
+        <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+
         <grid-setting entityTypeName="Voucher"></grid-setting>
         <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-        <button kendoButton (click)="showReport()" type="button"  [icon]="'printer'"></button>
+        <button kendoButton (click)="showReport()" type="button" [icon]="'printer'"></button>
       </ng-template>
+
+      <kendo-grid-checkbox-column showSelectAll="true" width="10"></kendo-grid-checkbox-column>
       <!-- template for mobile -->
       <kendo-grid-column media="(max-width: 449px)" title="">
         <ng-template kendoGridCellTemplate let-voucher>
           <!-- template for mobile -->
           <dl>
-            <dt>{{ 'Voucher.No' | translate }}</dt>
+            <dt>{{ 'Voucher.No' | translate }}:</dt>
             <dd>{{ voucher.no }}</dd>
 
-            <dt>{{ 'Voucher.Date' | translate }}</dt>
+            <dt>{{ 'Voucher.Date' | translate }}:</dt>
             <dd>{{ voucher.date | SppcDate }}</dd>
 
-            <dt>{{ 'Voucher.Description' | translate  }}</dt>
+            <dt>{{ 'Voucher.Description' | translate }}:</dt>
             <dd>{{ voucher.description }}</dd>
 
-            <dt>{{ 'Voucher.StatusName' | translate  }}</dt>
+            <dt>{{ 'Voucher.StatusName' | translate }}:</dt>
             <dd>{{ voucher.statusName }}</dd>
           </dl>
-          <button kendoGridEditCommand SppcCheckAccess="Edit" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-          <button kendoGridRemoveCommand SppcCheckAccess="Delete">{{ 'Buttons.Delete' | translate }}</button>
         </ng-template>
       </kendo-grid-column>
       <!-- template for mobile -->
       <!-- template for mid-size devices -->
-      <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px) and (max-width: 1024px)"></kendo-grid-checkbox-column>
       <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Voucher.no">
         <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
           <sppc-grid-filter [metaData]="getMeta('no')" [column]="column" [filter]="filter"></sppc-grid-filter>
@@ -92,15 +94,9 @@
         </ng-template>
       </kendo-grid-column>
 
-      <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px) and (max-width: 1024px)">
-        <ng-template kendoGridCellTemplate let-dataItem>
-          <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
-          <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
-        </ng-template>
-      </kendo-grid-command-column>
+
       <!-- template for mid-size devices -->
       <!-- additional columns on large devices -->
-      <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 1024px)"></kendo-grid-checkbox-column>
       <kendo-grid-column media="(min-width: 1024px)" width="150" sppc-grid-column="Voucher.no">
         <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
           <sppc-grid-filter [metaData]="getMeta('no')" [column]="column" [filter]="filter"></sppc-grid-filter>
@@ -128,12 +124,6 @@
         </ng-template>
       </kendo-grid-column>
 
-      <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
-        <ng-template kendoGridCellTemplate let-dataItem>
-          <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
-          <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
-        </ng-template>
-      </kendo-grid-command-column>
       <!-- additional columns on large devices -->
 
     </kendo-grid>

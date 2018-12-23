@@ -23,252 +23,253 @@ import { FilterExpression } from '../../class/filterExpression';
 
 
 export function getLayoutModule(layout: Layout) {
-    return layout.getLayout();
+  return layout.getLayout();
 }
 
 
 @Component({
-    selector: 'company',
-    templateUrl: './company.component.html',
-    providers: [{
-        provide: RTL,
-        useFactory: getLayoutModule,
-        deps: [Layout]
-    }]
+  selector: 'company',
+  templateUrl: './company.component.html',
+  providers: [{
+    provide: RTL,
+    useFactory: getLayoutModule,
+    deps: [Layout]
+  }]
 })
 
 
 export class CompanyComponent extends DefaultComponent implements OnInit {
 
-    //#region Fields
-    @ViewChild(GridComponent) grid: GridComponent;
+  //#region Fields
+  @ViewChild(GridComponent) grid: GridComponent;
 
-    public rowData: GridDataResult;
-    public selectedRows: string[] = [];
-    public totalRecords: number;
+  public rowData: GridDataResult;
+  public selectedRows: number[] = [];
+  public totalRecords: number;
 
-    //permission flag
-    viewAccess: boolean;
+  //permission flag
+  viewAccess: boolean;
 
-    ////for add in delete messageText
-    deleteConfirm: boolean;
-    deleteModelsConfirm: boolean;
-    deleteModelId: number;
+  ////for add in delete messageText
+  deleteConfirm: boolean;
+  deleteModelId: number;
 
-    currentFilter: FilterExpression;
-    currentOrder: string = "";
-    public sort: SortDescriptor[] = [];
+  currentFilter: FilterExpression;
+  currentOrder: string = "";
+  public sort: SortDescriptor[] = [];
 
-    showloadingMessage: boolean = true;
+  showloadingMessage: boolean = true;
 
-    editDataItem?: CompanyDb = undefined;
-    isNew: boolean;
-    errorMessage: string;
-    groupDelete: boolean = false;
-    addToContainer: boolean = false;
+  editDataItem?: CompanyDb = undefined;
+  isNew: boolean;
+  errorMessage: string;
+  groupDelete: boolean = false;
+  addToContainer: boolean = false;
 
-    //#endregion
+  //#endregion
 
-    //#region Events
-    ngOnInit() {
-        this.viewAccess = this.isAccess(SecureEntity.Company, CompanyPermissions.View);
-        this.reloadGrid();
+  //#region Events
+  ngOnInit() {
+    this.viewAccess = this.isAccess(SecureEntity.Company, CompanyPermissions.View);
+    this.reloadGrid();
+  }
+
+  selectionKey(context: RowArgs): string {
+    if (context.dataItem == undefined) return "";
+    return context.dataItem.id;
+  }
+
+  onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
+    if (this.selectedRows.length > 1)
+      this.groupDelete = true;
+    else
+      this.groupDelete = false;
+  }
+
+  filterChange(filter: CompositeFilterDescriptor): void {
+    var isReload: boolean = false;
+    if (this.currentFilter && this.currentFilter.children.length > filter.filters.length)
+      isReload = true;
+
+    this.currentFilter = this.getFilters(filter);
+    if (isReload) {
+      this.reloadGrid();
     }
+  }
 
-    selectionKey(context: RowArgs): string {
-        if (context.dataItem == undefined) return "";
-        return context.dataItem.id + " " + context.index;
+  public sortChange(sort: SortDescriptor[]): void {
+    if (sort)
+      this.currentOrder = sort[0].field + " " + sort[0].dir;
+    this.reloadGrid();
+  }
+
+  removeHandler(arg: any) {
+    this.deleteConfirm = true;
+    if (!this.groupDelete) {
+      var recordId = this.selectedRows[0];
+      var record = this.rowData.data.find(f => f.id == recordId);
+
+      this.prepareDeleteConfirm(record.name);
+      this.deleteModelId = recordId;
     }
+  }
 
-    onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
-        if (this.selectedRows.length > 1)
-            this.groupDelete = true;
-        else
-            this.groupDelete = false;
+  pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.reloadGrid();
+  }
+
+  public editHandler(arg: any) {
+    var recordId = this.selectedRows[0];
+    this.grid.loading = true;
+    this.companyService.getById(String.Format(CompanyApi.Company, recordId)).subscribe(res => {
+      this.editDataItem = res;
+      this.grid.loading = false;
+    })
+    this.isNew = false;
+    this.errorMessage = '';
+  }
+
+  public cancelHandler() {
+    this.editDataItem = undefined;
+    this.errorMessage = '';
+  }
+
+  public saveHandler(model: CompanyDb) {
+    this.grid.loading = true;
+    if (!this.isNew) {
+      this.isNew = false;
+      this.companyService.edit<CompanyDb>(String.Format(CompanyApi.Company, model.id), model)
+        .subscribe(response => {
+          this.editDataItem = undefined;
+          this.showMessage(this.updateMsg, MessageType.Succes);
+          this.reloadGrid();
+        }, (error => {
+          this.editDataItem = model;
+          this.errorMessage = error;
+          this.grid.loading = true;
+        }));
     }
+    else {
+      this.companyService.insert<CompanyDb>(CompanyApi.Companies, model)
+        .subscribe((response: any) => {
+          this.isNew = false;
+          this.editDataItem = undefined;
+          this.showMessage(this.insertMsg, MessageType.Succes);
+          var insertedModel = response;
+          this.reloadGrid(insertedModel);
+        }, (error => {
+          this.isNew = true;
+          this.errorMessage = error;
+          this.grid.loading = true;
+        }));
+    }
+  }
 
-    filterChange(filter: CompositeFilterDescriptor): void {
-        var isReload: boolean = false;
-        if (this.currentFilter && this.currentFilter.children.length > filter.filters.length)
-            isReload = true;
+  //#endregion
 
-        this.currentFilter = this.getFilters(filter);
-        if (isReload) {
-            this.reloadGrid();
+  //#region Constructor
+
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+    private companyService: CompanyService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
+    super(toastrService, translate, renderer, metadata, settingService, Entities.Company, Metadatas.Company);
+  }
+
+  //#endregion
+
+  //#region Methods
+
+  reloadGridEvent() {
+    this.reloadGrid();
+  }
+
+  reloadGrid(insertedModel?: Company) {
+    if (this.viewAccess) {
+      this.grid.loading = true;
+      var filter = this.currentFilter;
+      var order = this.currentOrder;
+      if (this.totalRecords == this.skip && this.totalRecords != 0) {
+        this.skip = this.skip - this.pageSize;
+      }
+
+      if (insertedModel)
+        this.goToLastPage(this.totalRecords);
+
+      var url = CompanyApi.Companies;
+      this.companyService.getAll(url, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+
+        var resData = res.body;
+
+        var totalCount = 0;
+
+        if (res.headers != null) {
+          var headers = res.headers != undefined ? res.headers : null;
+          if (headers != null) {
+            var retheader = headers.get('X-Total-Count');
+            if (retheader != null)
+              totalCount = parseInt(retheader.toString());
+          }
         }
-    }
 
-    public sortChange(sort: SortDescriptor[]): void {
-        if (sort)
-            this.currentOrder = sort[0].field + " " + sort[0].dir;
-        this.reloadGrid();
-    }
+        this.rowData = {
+          data: resData,
+          total: totalCount
+        }
 
-    removeHandler(arg: any) {
-        this.prepareDeleteConfirm(arg.dataItem.name);
-        this.deleteModelId = arg.dataItem.id;
-        this.deleteConfirm = true;
+        this.showloadingMessage = !(resData.length == 0);
+        this.totalRecords = totalCount;
+        this.grid.loading = false;
+      })
     }
-
-    pageChange(event: PageChangeEvent): void {
-        this.skip = event.skip;
-        this.reloadGrid();
+    else {
+      this.rowData = {
+        data: [],
+        total: 0
+      }
     }
+  }
 
-    public editHandler(arg: any) {
+  deleteModel(confirm: boolean) {
+    if (confirm) {
+      if (this.groupDelete) {
+        //حذف گروهی
+      }
+      else {
+
         this.grid.loading = true;
-        this.companyService.getById(String.Format(CompanyApi.Company, arg.dataItem.id)).subscribe(res => {
-            this.editDataItem = res;
-            this.grid.loading = false;
-        })
-        this.isNew = false;
-        this.errorMessage = '';
+        this.companyService.delete(String.Format(CompanyApi.Company, this.deleteModelId)).subscribe(response => {
+          this.deleteModelId = 0;
+          this.showMessage(this.deleteMsg, MessageType.Info);
+          if (this.rowData.data.length == 1 && this.pageIndex > 1)
+            this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
+          this.selectedRows = [];
+          this.reloadGrid();
+        }, (error => {
+          this.grid.loading = false;
+          var message = error.message ? error.message : error;
+          this.showMessage(message, MessageType.Warning);
+        }));
+
+      }     
     }
 
-    public cancelHandler() {
-        this.editDataItem = undefined;
-        this.errorMessage = '';
-    }
+    //hide confirm dialog
+    this.deleteConfirm = false;
+  }
 
-    public saveHandler(model: CompanyDb) {
-        this.grid.loading = true;
-        if (!this.isNew) {
-            this.isNew = false;
-            this.companyService.edit<CompanyDb>(String.Format(CompanyApi.Company, model.id), model)
-                .subscribe(response => {
-                    this.editDataItem = undefined;
-                    this.showMessage(this.updateMsg, MessageType.Succes);
-                    this.reloadGrid();
-                }, (error => {
-                    this.editDataItem = model;
-                    this.errorMessage = error;
-                    this.grid.loading = true;
-                }));
-        }
-        else {
-            this.companyService.insert<CompanyDb>(CompanyApi.Companies, model)
-                .subscribe((response: any) => {
-                    this.isNew = false;
-                    this.editDataItem = undefined;
-                    this.showMessage(this.insertMsg, MessageType.Succes);
-                    var insertedModel = response;
-                    this.reloadGrid(insertedModel);
-                }, (error => {
-                    this.isNew = true;
-                    this.errorMessage = error;
-                    this.grid.loading = true;
-                }));
-        }
-    }
+  public addNew(parentModelId?: number, addToThis?: boolean) {
+    this.isNew = true;
+    this.editDataItem = new CompanyDbInfo();
 
-    //#endregion
+    this.errorMessage = '';
+  }
 
-    //#region Constructor
+  public showOnlyParent(dataItem: Company, index: number): boolean {
+    return dataItem.childCount > 0;
+  }
 
-    constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
-      private companyService: CompanyService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService ) {
-      super(toastrService, translate, renderer, metadata, settingService, Entities.Company, Metadatas.Company);
-    }
-
-    //#endregion
-
-    //#region Methods
-    showConfirm() {
-        this.deleteModelsConfirm = true;
-    }
-
-    deleteModels(confirm: boolean) {
-        if (confirm) {
-            //this.sppcLoading.show();
-        }
-
-        this.groupDelete = false;
-        this.deleteModelsConfirm = false;
-    }
-
-    reloadGridEvent() {
-        this.reloadGrid();
-    }
-
-    reloadGrid(insertedModel?: Company) {
-        if (this.viewAccess) {
-            this.grid.loading = true;
-            var filter = this.currentFilter;
-            var order = this.currentOrder;
-            if (this.totalRecords == this.skip && this.totalRecords != 0) {
-                this.skip = this.skip - this.pageSize;
-            }
-
-            if (insertedModel)
-                this.goToLastPage(this.totalRecords);
-
-            var url = CompanyApi.Companies;
-            this.companyService.getAll(url, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-
-                var resData = res.body;
-
-                var totalCount = 0;
-
-                if (res.headers != null) {
-                    var headers = res.headers != undefined ? res.headers : null;
-                    if (headers != null) {
-                        var retheader = headers.get('X-Total-Count');
-                        if (retheader != null)
-                            totalCount = parseInt(retheader.toString());
-                    }
-                }
-
-                this.rowData = {
-                    data: resData,
-                    total: totalCount
-                }
-
-                this.showloadingMessage = !(resData.length == 0);
-                this.totalRecords = totalCount;
-                this.grid.loading = false;
-            })
-        }
-        else {
-            this.rowData = {
-                data: [],
-                total: 0
-            }
-        }
-    }
-
-    deleteModel(confirm: boolean) {
-        if (confirm) {
-            this.grid.loading = true;
-            this.companyService.delete(String.Format(CompanyApi.Company, this.deleteModelId)).subscribe(response => {
-                this.deleteModelId = 0;
-                this.showMessage(this.deleteMsg, MessageType.Info);
-                if (this.rowData.data.length == 1 && this.pageIndex > 1)
-                    this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
-
-                this.reloadGrid();
-            }, (error => {
-                    this.grid.loading = false;
-                    var message = error.message ? error.message : error;
-                    this.showMessage(message, MessageType.Warning);
-            }));
-        }
-
-        //hide confirm dialog
-        this.deleteConfirm = false;
-    }
-
-    public addNew(parentModelId?: number, addToThis?: boolean) {
-        this.isNew = true;
-        this.editDataItem = new CompanyDbInfo();
-
-        this.errorMessage = '';
-    }
-
-    public showOnlyParent(dataItem: Company, index: number): boolean {
-        return dataItem.childCount > 0;
-    }
-
-    //#endregion
+  //#endregion
 }
 
 

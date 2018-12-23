@@ -116,6 +116,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountDetailAccountsAsync(int accountId)
         {
             _repository.SetCurrentContext(SecurityContext.User);
+            var detailAccounts = await _repository.GetAccountDetailAccountsAsync(accountId, GridOptions, false);
+            return Json(detailAccounts);
+        }
+
+        // GET: api/relations/account/{accountId:min(1)}/faccounts/usable
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.UsableDetailAccountsRelatedToAccountUrl)]
+        public async Task<IActionResult> GetUsableAccountDetailAccountsAsync(int accountId)
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
             var detailAccounts = await _repository.GetAccountDetailAccountsAsync(accountId, GridOptions);
             return Json(detailAccounts);
         }
@@ -143,6 +153,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetAccountCostCentersAsync(int accountId)
         {
             _repository.SetCurrentContext(SecurityContext.User);
+            var costCenters = await _repository.GetAccountCostCentersAsync(accountId, GridOptions, false);
+            return Json(costCenters);
+        }
+
+        // GET: api/relations/account/{accountId:min(1)}/ccenters/usable
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.UsableCostCentersRelatedToAccountUrl)]
+        public async Task<IActionResult> GetUsableAccountCostCentersAsync(int accountId)
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
             var costCenters = await _repository.GetAccountCostCentersAsync(accountId, GridOptions);
             return Json(costCenters);
         }
@@ -168,6 +188,16 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
         [Route(AccountRelationApi.ProjectsRelatedToAccountUrl)]
         public async Task<IActionResult> GetAccountProjectsAsync(int accountId)
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            var projects = await _repository.GetAccountProjectsAsync(accountId, GridOptions, false);
+            return Json(projects);
+        }
+
+        // GET: api/relations/account/{accountId:min(1)}/projects/usable
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ViewRelationships)]
+        [Route(AccountRelationApi.UsableProjectsRelatedToAccountUrl)]
+        public async Task<IActionResult> GetUsableAccountProjectsAsync(int accountId)
         {
             _repository.SetCurrentContext(SecurityContext.User);
             var projects = await _repository.GetAccountProjectsAsync(accountId, GridOptions);

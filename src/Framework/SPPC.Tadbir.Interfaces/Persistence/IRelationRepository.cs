@@ -94,9 +94,10 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="leafOnly">مشخص می کند که آیا ارتباطات موجود فقط در آخرین سطح مورد نظر است یا نه</param>
         /// <returns>مجموعه ای از تفصیلی های شناور مرتبط با حساب مشخص شده</returns>
         Task<IList<AccountItemBriefViewModel>> GetAccountDetailAccountsAsync(
-            int accountId, GridOptions gridOptions = null);
+            int accountId, GridOptions gridOptions = null, bool leafOnly = true);
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از مراکز هزینه مرتبط با حساب مشخص شده را
@@ -104,9 +105,10 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="leafOnly">مشخص می کند که آیا ارتباطات موجود فقط در آخرین سطح مورد نظر است یا نه</param>
         /// <returns>مجموعه ای از مراکز هزینه مرتبط با حساب مشخص شده</returns>
         Task<IList<AccountItemBriefViewModel>> GetAccountCostCentersAsync(
-            int accountId, GridOptions gridOptions = null);
+            int accountId, GridOptions gridOptions = null, bool leafOnly = true);
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از پروژه های مرتبط با حساب مشخص شده را
@@ -114,9 +116,10 @@ namespace SPPC.Tadbir.Persistence
         /// </summary>
         /// <param name="accountId">شناسه یکتای یکی از حساب های موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <param name="leafOnly">مشخص می کند که آیا ارتباطات موجود فقط در آخرین سطح مورد نظر است یا نه</param>
         /// <returns>مجموعه ای از پروژه های مرتبط با حساب مشخص شده</returns>
         Task<IList<AccountItemBriefViewModel>> GetAccountProjectsAsync(
-            int accountId, GridOptions gridOptions = null);
+            int accountId, GridOptions gridOptions = null, bool leafOnly = true);
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از حساب های مرتبط با تفصیلی شناور مشخص شده را

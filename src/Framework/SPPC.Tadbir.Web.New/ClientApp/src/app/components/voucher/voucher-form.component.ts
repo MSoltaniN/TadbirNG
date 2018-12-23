@@ -29,12 +29,13 @@ interface Item {
 @Component({
   //changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'voucher-form-component',
-  styles: [
-    "input[type=text],textarea { width: 100%; } /deep/ .new-dialog > .k-dialog {width: 450px !important; min-width: 250px !important;}",
-    "/deep/ .edit-dialog > .k-dialog {width: 100% !important; min-width: 250px !important; height:100%}",
-    "/deep/ .edit-dialog .k-window-titlebar{ padding: 5px 16px !important;}",
-    "/deep/ .edit-dialog .edit-form-body { background: #f6f6f6; border: solid 1px #989898; border-radius: 4px; padding-top: 10px;}"
-  ],
+  styles: [`
+    input[type=text],textarea { width: 100%; } /deep/ .new-dialog > .k-dialog {width: 450px !important; min-width: 250px !important;}
+    /deep/ .edit-dialog > .k-dialog {width: 100% !important; min-width: 250px !important; height:100%}
+    /deep/ .edit-dialog .k-window-titlebar{ padding: 5px 16px !important;}
+    /deep/ .edit-dialog .edit-form-body { background: #f6f6f6; border: solid 1px #989898; border-radius: 4px;}
+    .form-toolbar{border-bottom: solid 1px #e3e3e3; margin-bottom: 10px; padding: 10px;} .form-toolbar button{padding: 5px 6px;}
+  `],
   templateUrl: './voucher-form.component.html',
   providers: [{
     provide: RTL,
@@ -55,6 +56,7 @@ export class VoucherFormComponent extends DetailComponent {
   @Input() public errorMessage: string;
 
   @Input() public set model(voucher: Voucher) {
+
     this.editModel = voucher;
     this.editForm.reset(voucher);
 
@@ -74,11 +76,12 @@ export class VoucherFormComponent extends DetailComponent {
   //Events
   public onSave(e: any): void {
     e.preventDefault();
-    if (this.editForm.valid) {
+    if (this.editForm.valid) {      
       if (this.editModel) {
         let model: Voucher = this.editForm.value;
         model.branchId = this.editModel.branchId;
         model.fiscalPeriodId = this.editModel.fiscalPeriodId;
+        model.statusId = this.editModel.statusId;
         this.save.emit(model);
       }
       else

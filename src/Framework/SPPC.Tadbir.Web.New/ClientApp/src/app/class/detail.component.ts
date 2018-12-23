@@ -13,35 +13,36 @@ import { String } from './source';
 export class DetailComponent extends BaseComponent {
 
     private form: FormGroup;
-    public properties: { [id: string]: Array<Property>; } = {}
+    public properties: Map<string, Array<Property>>; 
 
     constructor(public toastrService: ToastrService, public translate: TranslateService
         , public renderer: Renderer2, private metadataService: MetaDataService,
         @Optional() @Inject('empty') public entityType: string, @Optional() @Inject('empty') public metaDataName: string) {        
         super(toastrService);
 
-        this.localizeMsg();
+      this.localizeMsg();
+      var propertiesValue = localStorage.getItem(this.metaDataName)
+
+      this.properties = new Map<string, Array<Property>>(); 
+      this.properties.set(this.metaDataName, JSON.parse(propertiesValue));
     }    
 
-    public get editForm(): FormGroup {
-
+  public get editForm(): FormGroup {
         if (this.form == undefined) {
 
             this.form = new FormGroup({ id: new FormControl() });
+            if (!this.properties.get(this.metaDataName)) {              
 
+              this.metadataService.getMetaData(this.metaDataName).finally(() => {
 
-            if (this.properties[this.metaDataName] == undefined) {
-    
-                this.metadataService.getMetaData(this.metaDataName).finally(() => {
                     this.fillFormValidators();
 
                     return this.form;
 
                 }).subscribe((res1: any) => {
 
-                    this.properties[this.metaDataName] = res1.columns;
-
-                    localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))
+                    this.properties.set(this.metaDataName, res1.columns);
+                  localStorage.setItem(this.metaDataName, JSON.stringify(res1.columns));
 
                     return
                 });
@@ -57,13 +58,11 @@ export class DetailComponent extends BaseComponent {
 
     }
 
-    private fillFormValidators() {
+  private fillFormValidators() {
+    var p: Property | undefined = undefined;
+        if (this.properties.get(this.metaDataName) == undefined) return;
 
-        var p: Property | undefined = undefined;
-
-        if (this.properties[this.metaDataName] == undefined) return;
-
-        for (let entry of this.properties[this.metaDataName]) {
+        for (let entry of this.properties.get(this.metaDataName)) {
 
             var name: string = entry.name.toLowerCase().substring(0, 1) + entry.name.substring(1);
 

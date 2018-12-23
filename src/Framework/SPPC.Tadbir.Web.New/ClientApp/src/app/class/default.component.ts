@@ -32,48 +32,7 @@ export class DefaultComponent extends BaseComponent {
 
 
   /** array of property.this variable is a container for metadata */
-  public properties: { [id: string]: Array<Property>; } = {}
-
-  /*
-  private form: FormGroup;
-
-  public get editForm(): FormGroup {
-
-      if (this.form == undefined) {
-
-          this.form = new FormGroup({ id: new FormControl() });
-
-
-          if (this.properties[this.metaDataName] == undefined) {
-
-              this.metadataService.getMetaData(this.metaDataName).finally(() => {
-                  this.fillFormValidators();
-
-                  return this.form;
-
-              }).subscribe((res1: any) => {
-
-                  this.properties[this.metaDataName] = res1.properties;
-
-                  localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))
-
-                  return
-              });
-
-          }
-
-      }
-      else {
-          this.fillFormValidators();
-      }
-
-      return this.form;
-
-  }
-
-  */
-
-
+  public properties: Map<string, Array<Property>>;
 
   constructor(public toastrService: ToastrService, public translate: TranslateService
     , public renderer: Renderer2, public metadataService: MetaDataService, public settingService: SettingService,
@@ -86,65 +45,14 @@ export class DefaultComponent extends BaseComponent {
 
     this.localizeMsg();
 
-        //if(metaDataName != null && metaDataName != "")
-        //  this.saveMetadataInCache(metaDataName);
-        //if (createForm)
-        //this.initializeFrom();
+    var propertiesValue = localStorage.getItem(this.metaDataName)
+    if (!propertiesValue) {
+      this.properties = new Map<string, Array<Property>>();
+      this.properties.set(this.metaDataName, JSON.parse(propertiesValue));
     }
-
-  //abstract filterChange(filter: CompositeFilterDescriptor): void 
-
-  //abstract reloadGrid(insertedModel?: IEntity | undefined): void 
-
-  /*
-  private fillFormValidators() {
-
-      var p: Property | undefined = undefined;
-
-      if (this.properties[this.metaDataName] == undefined) return;
-
-      for (let entry of this.properties[this.metaDataName]) {
-
-          var name: string = entry.name.toLowerCase().substring(0, 1) + entry.name.substring(1);
-
-          var validators: ValidatorFn[] = [];
-
-          if (entry.length > 0) validators.push(Validators.maxLength(entry.length));
-
-          if (entry.minLength > 0) validators.push(Validators.minLength(entry.minLength));
-
-          if (!entry.isNullable) validators.push(Validators.required);
-
-          if (!this.form.contains(name)) {
-              this.form.addControl(name, new FormControl("", validators));
-          }
-      }
-
   }
 
-  private initializeFrom() {
-
-      if (this.properties[this.metaDataName] == undefined) {
-
-          this.metadataService.getMetaData(this.metaDataName).finally(() => {
-              this.fillFormValidators();
-
-          }).subscribe((res1: any) => {
-
-              this.properties[this.metaDataName] = res1.properties;
-
-              localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))
-
-              return
-          });
-
-      }
-      else {
-          this.fillFormValidators();
-      }
-
-  }
-  */
+  
 
   /**
    * تنظیمات مربوط به زبان سیستم را انجام میدهد
@@ -199,22 +107,22 @@ export class DefaultComponent extends BaseComponent {
 
     if (this.metaDataName) {
 
-      if (localStorage.getItem(this.metaDataName) == "undefined" || localStorage.getItem(this.metaDataName) == null) {
+      if (!localStorage.getItem(this.metaDataName)) {
         this.metadataService.getMetaData(this.metaDataName).finally(() => {
 
-          if (this.properties[this.metaDataName] == undefined || this.properties[this.metaDataName].length == 0) return undefined;
+          if (!this.properties.get(this.metaDataName)) return undefined;
 
-          var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());
+          var result = this.properties.get(this.metaDataName).find(p => p.name.toLowerCase() == name.toLowerCase());
 
           return result;
 
         }).subscribe((res1: any) => {
 
-          this.properties[this.metaDataName] = res1.columns;
+          this.properties.set(this.metaDataName, res1.columns);
 
-          localStorage.setItem(this.metaDataName, JSON.stringify(this.properties[this.metaDataName]))
+          localStorage.setItem(this.metaDataName, JSON.stringify(res1.columns))
 
-          var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());
+          var result = this.properties.get(this.metaDataName).find(p => p.name.toLowerCase() == name.toLowerCase());
 
           return result;
         });
@@ -225,13 +133,13 @@ export class DefaultComponent extends BaseComponent {
         var item: string | null;
         item = localStorage.getItem(this.metaDataName);
 
-        if (this.properties == undefined) this.properties = {};
+        if (!this.properties) this.properties = new Map<string, Array<Property>>();
+        var arr = JSON.parse(item != null ? item.toString() : "");
+        this.properties.set(this.metaDataName, arr);
 
-        this.properties[this.metaDataName] = JSON.parse(item != null ? item.toString() : "");
+        if (!this.properties.get(this.metaDataName)) return undefined;
 
-        if (this.properties[this.metaDataName] == undefined || this.properties[this.metaDataName].length == 0) return undefined;
-
-        var result = this.properties[this.metaDataName].find(p => p.name.toLowerCase() == name.toLowerCase());
+        var result = this.properties.get(this.metaDataName).find(p => p.name.toLowerCase() == name.toLowerCase());
 
         return result;
 
@@ -283,8 +191,8 @@ export class DefaultComponent extends BaseComponent {
   }
 
 
-    /** return the current language */
-    public currentlang: string = "";
+  /** return the current language */
+  public currentlang: string = "";
 
 
   /** the default value of grid paging size  */
@@ -500,22 +408,7 @@ export class DefaultComponent extends BaseComponent {
 
     this.localizeMsg();
 
-    //switch (value) {
-    //    case "fa":
-    //        {
-    //            this.rtlUse = "rtl";
-    //            this.rtlClass = "ui-rtl"
-    //            break;
-    //        }
-    //    case "en":
-    //        {
-    //            this.rtlUse = "ltr";
-    //            this.rtlClass = ""
-    //            break;
-    //        }
-    //}
-
-
+   
   }
 
 }

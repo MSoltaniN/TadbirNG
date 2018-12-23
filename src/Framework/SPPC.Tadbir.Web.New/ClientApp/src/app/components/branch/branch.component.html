@@ -1,121 +1,107 @@
-﻿<app-bread-cumb *ngIf="!isChild"></app-bread-cumb>
+<app-bread-cumb *ngIf="!isChild"></app-bread-cumb>
 <div SppcCheckAccess="View" [ngClass]="{'panel-body' : !isChild }">
-    <kendo-grid id="grdBranch" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
-                [sortable]="true"
-                [pageSize]="pageSize"
-                [skip]="skip"
-                [filter]="state.filter"
-                [pageable]="true"
-                [resizable]="true"
-                [filterable]="!isChild"
-                [scrollable]="'none'"
-                (pageChange)="pageChange($event)"
-                (sortChange)="sortChange($event)"
-                (edit)="editHandler($event)"
-                (remove)="removeHandler($event)"
-                [sort]="state.sort"
-                [loading]="true"
-                [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-                [selectedKeys]="selectedRows"
-                [kendoGridSelectBy]="selectionKey"
-                (filterChange)="filterChange($event)"
-                (selectedKeysChange)="onSelectedKeysChange($event)"
-                sppc-grid-reorder sppc-grid-resize>
-        <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
-                                pagerOf="{{ 'Paging.Of' | translate }}"
-                                pagerItems="{{ 'Paging.Record' | translate }}">
-        </kendo-grid-messages>
-        <ng-template kendoGridNoRecordsTemplate>
-            {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
-        </ng-template>
-        <ng-template kendoGridToolbarTemplate let-branch>
-            <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(parentId , true)" [icon]="'plus-outline'" type="button">{{ 'Branch.New' | translate }}</button>
-            <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
-            <grid-setting entityTypeName="Branch"></grid-setting>
-            <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-        </ng-template>
+  <kendo-grid id="grdBranch" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
+              [sortable]="true"
+              [pageSize]="pageSize"
+              [skip]="skip"
+              [filter]="state.filter"
+              [pageable]="true"
+              [resizable]="true"
+              [filterable]="!isChild"
+              [scrollable]="'none'"
+              (pageChange)="pageChange($event)"
+              (sortChange)="sortChange($event)"
+              (edit)="editHandler($event)"
+              (remove)="removeHandler($event)"
+              [sort]="state.sort"
+              [loading]="true"
+              [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+              [selectedKeys]="selectedRows"
+              [kendoGridSelectBy]="selectionKey"
+              (filterChange)="filterChange($event)"
+              (selectedKeysChange)="onSelectedKeysChange($event)"
+              sppc-grid-reorder sppc-grid-resize>
+    <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                         pagerOf="{{ 'Paging.Of' | translate }}"
+                         pagerItems="{{ 'Paging.Record' | translate }}">
+    </kendo-grid-messages>
+    <ng-template kendoGridNoRecordsTemplate>
+      {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
+    </ng-template>
+    <ng-template kendoGridToolbarTemplate let-branch>
+      <button kendoGridAddCommand SppcCheckAccess="Create" *ngIf="!parentId" (click)="addNew(parentId , true)" [icon]="'file-add'" type="button" title="{{ 'Branch.New' | translate }}"></button>
 
+      <button SppcCheckAccess="Edit" (click)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
+      <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+
+      <grid-setting entityTypeName="Branch"></grid-setting>
+      <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+    </ng-template>
+
+    <kendo-grid-checkbox-column showSelectAll="true" width="10"></kendo-grid-checkbox-column>
+    <!-- template for mobile -->
+    <kendo-grid-column media="(max-width: 449px)" title="">
+      <ng-template kendoGridCellTemplate let-branch>
         <!-- template for mobile -->
-        <kendo-grid-column media="(max-width: 449px)" title="">
-            <ng-template kendoGridCellTemplate let-branch>
-                <!-- template for mobile -->
-                <dl>
-                    <dt>{{ 'Branch.Name' | translate }}</dt>
-                    <dd>{{ branch.name }}</dd>
+        <dl>
+          <dt>{{ 'Branch.Name' | translate }}</dt>
+          <dd>{{ branch.name }}</dd>
 
-                    <dt>{{ 'Branch.Description' | translate  }}</dt>
-                    <dd>{{ branch.description }}</dd>
-                </dl>
-                <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(branch.id)" [icon]="'plus-outline'" type="button">{{ 'Buttons.New' | translate }}</button>
-                <button kendoGridEditCommand SppcCheckAccess="Edit" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                <button kendoGridRemoveCommand SppcCheckAccess="Delete">{{ 'Buttons.Delete' | translate }}</button>
-                <button kendoButton (click)="rolesHandler(branch.id)" [primary]="true">{{ 'Branch.Roles' | translate }}</button>
-            </ng-template>
-        </kendo-grid-column>
-        <!-- template for mobile -->
-        <!-- additional columns on large devices -->
-        <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px)"></kendo-grid-checkbox-column>
+          <dt>{{ 'Branch.Description' | translate  }}</dt>
+          <dd>{{ branch.description }}</dd>
+        </dl>
+        <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(branch.id)" [icon]="'plus-outline'" type="button">{{ 'Buttons.New' | translate }}</button>
 
-        <ng-template kendoGridDetailTemplate let-dataItem
-                        [kendoGridDetailTemplateShowIf]="showOnlyParent">
-            <div ng-if="dataItem.childCount > 0">
-                <branch [isChild]="true" [parent]="dataItem"></branch>
-            </div>
-        </ng-template>
+        <button kendoButton (click)="rolesHandler(branch.id)" [primary]="true">{{ 'Branch.Roles' | translate }}</button>
+      </ng-template>
+    </kendo-grid-column>
+    <!-- template for mobile -->
+    <!-- additional columns on large devices -->
+    <ng-template kendoGridDetailTemplate let-dataItem
+                 [kendoGridDetailTemplateShowIf]="showOnlyParent">
+      <div ng-if="dataItem.childCount > 0">
+        <branch [isChild]="true" [parent]="dataItem"></branch>
+      </div>
+    </ng-template>
 
-        <kendo-grid-column media="(min-width: 450px)" width="150" sppc-grid-column="Branch.name">
-            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
-            </ng-template>
-        </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" width="150" sppc-grid-column="Branch.name">
+      <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+        <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+      </ng-template>
+    </kendo-grid-column>
 
-        <kendo-grid-column media="(min-width: 450px)" width="190" sppc-grid-column="Branch.description">
-            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
-            </ng-template>
-        </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" width="190" sppc-grid-column="Branch.description">
+      <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+        <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
+      </ng-template>
+    </kendo-grid-column>
 
-        <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px)">
-            <ng-template kendoGridCellTemplate let-dataItem>
-                <button [icon]="'plus'" (click)="addNew(dataItem.id)" kendoGridAddCommand SppcCheckAccess="Create" title="{{ 'Branch.NewSubBrench' | translate }}"></button>
-                <button [icon]="'edit'" SppcCheckAccess="Edit" kendoGridEditCommand title="{{ 'Buttons.Edit' | translate }}"></button>
-                <button [icon]="'delete'" SppcCheckAccess="Delete" kendoGridRemoveCommand title="{{ 'Buttons.Delete' | translate }}"></button>
-                <button kendoButton (click)="rolesHandler(dataItem.id)" [primary]="true">{{ 'Branch.Roles' | translate }}</button>
-            </ng-template>
-        </kendo-grid-command-column>
-        <!-- additional columns on large devices -->
+    <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px)">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <button [icon]="'plus-outline'" (click)="addNew(dataItem.id)" kendoGridAddCommand SppcCheckAccess="Create" title="{{ 'Branch.NewSubBrench' | translate }}"></button>
 
-    </kendo-grid>
-    <branch-form-component [model]="editDataItem" [parentId]="parentId" [parentTitle]="parentTitle" [parentValue]="parentValue" [isNew]="isNew" [errorMessage]="errorMessage"
-                            (save)="saveHandler($event)"
-                            (cancel)="cancelHandler()">
-    </branch-form-component>
+        <button kendoButton (click)="rolesHandler(dataItem.id)" [primary]="true">{{ 'Branch.Roles' | translate }}</button>
+      </ng-template>
+    </kendo-grid-command-column>
+    <!-- additional columns on large devices -->
 
-    <branch-roles-form-component [rolesList]="rolesList" [branchRoles]="branchRolesData" [errorMessage]="errorMessage"
-                                    (saveBranchRoles)="saveBranchRolesHandler($event)"
-                                    (cancelBranchRoles)="cancelBranchRolesHandler()">
-    </branch-roles-form-component>
+  </kendo-grid>
+  <branch-form-component [model]="editDataItem" [parentId]="parentId" [parentTitle]="parentTitle" [parentValue]="parentValue" [isNew]="isNew" [errorMessage]="errorMessage"
+                         (save)="saveHandler($event)"
+                         (cancel)="cancelHandler()">
+  </branch-form-component>
+
+  <branch-roles-form-component [rolesList]="rolesList" [branchRoles]="branchRolesData" [errorMessage]="errorMessage"
+                               (saveBranchRoles)="saveBranchRolesHandler($event)"
+                               (cancelBranchRoles)="cancelBranchRolesHandler()">
+  </branch-roles-form-component>
 </div>
 <kendo-dialog title="{{'Branch.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
-    <p>
-        {{ deleteConfirmMsg }}
-    </p>
-    <kendo-dialog-actions>
-        <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-        <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
-    </kendo-dialog-actions>
+  <p>
+    {{ deleteConfirmMsg }}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+    <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
+  </kendo-dialog-actions>
 </kendo-dialog>
-<kendo-dialog title="{{'Branch.Delete' | translate}}" *ngIf="deleteModelsConfirm" (close)="deleteModels(false)" [minWidth]="250" [width]="450">
-    <p>
-        {{ this.deleteConfirmMsg }}
-    </p>
-    <kendo-dialog-actions>
-        <button class="k-button" (click)="deleteModels(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-        <button class="k-button" (click)="deleteModels(false)">{{ 'Buttons.No' | translate }}</button>
-    </kendo-dialog-actions>
-</kendo-dialog>
-
-
-
-
-

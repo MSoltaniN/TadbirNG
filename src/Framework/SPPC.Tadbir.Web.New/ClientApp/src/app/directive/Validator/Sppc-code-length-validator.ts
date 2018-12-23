@@ -31,6 +31,7 @@ export class SppcCodeLengthDirective implements Validator {
         //console.log(viewConfig);
 
         //console.log("code");
+        //debugger;
         //console.log(this.SppcCodeLength);
 
         var inputValue = c.value;
