@@ -137,12 +137,11 @@ export class BaseService extends EnviromentComponent{
    * @param apiUrl آدرس api
    * @param models رکوردها
    */
-  public groupDelete(apiUrl: string, models: string[]): Observable<string> {
+  public groupDelete(apiUrl: string, models: number[]): Observable<string> {
     var modelId: string = '';
     let modelArray: Array<number> = Array();
     for (var i = 0; i < models.length; i++) {
-      var modelId = models[i].split(' ')[0];
-      modelArray.push(parseInt(modelId));
+      modelArray.push(models[i]);
     }
     let body = JSON.stringify({ paraph: '', items: modelArray });
     return this.http.put(apiUrl, body, this.option)

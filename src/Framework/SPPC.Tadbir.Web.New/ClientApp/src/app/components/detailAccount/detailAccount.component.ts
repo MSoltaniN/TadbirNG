@@ -52,7 +52,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
   public parentId?: number = undefined;
 
   public rowData: GridDataResult;
-  public selectedRows: string[] = [];
+  public selectedRows: number[] = [];
   public totalRecords: number;
 
   //permission flag
@@ -60,7 +60,6 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
   ////for add in delete messageText
   deleteConfirm: boolean;
-  deleteModelsConfirm: boolean;
   deleteModelId: number;
 
   currentFilter: FilterExpression;
@@ -106,7 +105,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
   selectionKey(context: RowArgs): string {
     if (context.dataItem == undefined) return "";
-    return context.dataItem.id + " " + context.index;
+    return context.dataItem.id;
   }
 
   onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
@@ -127,23 +126,6 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     }
   }
 
-  //dataStateChange(state: DataStateChangeEvent): void {
-  //    this.currentFilter = this.getFilters(state.filter);
-
-  //    if (state.sort)
-  //        if (state.sort.length > 0)
-  //            this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
-  //    this.state = state;
-  //    this.skip = state.skip;
-
-  //    if (this.currentFilter)
-  //        this.showFilterBtn = true;
-  //    else {
-  //        this.showFilterBtn = false;
-  //        this.reloadGrid();
-  //    }
-  //}
-
   public sortChange(sort: SortDescriptor[]): void {
     if (sort)
       this.currentOrder = sort[0].field + " " + sort[0].dir;
@@ -152,9 +134,14 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
   }
 
   removeHandler(arg: any) {
-    this.prepareDeleteConfirm(arg.dataItem.name);
-    this.deleteModelId = arg.dataItem.id;
     this.deleteConfirm = true;
+    if (!this.groupDelete) {
+      var recordId = this.selectedRows[0];
+      var record = this.rowData.data.find(f => f.id == recordId);
+
+      this.prepareDeleteConfirm(record.name);
+      this.deleteModelId = recordId;
+    }
   }
 
   pageChange(event: PageChangeEvent): void {
@@ -162,10 +149,10 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     this.reloadGrid();
   }
 
-
   public editHandler(arg: any) {
+    var recordId = this.selectedRows[0];
     this.grid.loading = true;
-    this.detailAccountService.getById(String.Format(DetailAccountApi.DetailAccount, arg.dataItem.id)).subscribe(res => {
+    this.detailAccountService.getById(String.Format(DetailAccountApi.DetailAccount, recordId)).subscribe(res => {
       this.editDataItem = res;
       this.setParentModel(res.parentId);
 
@@ -259,32 +246,6 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     if (this.Childrens == undefined) this.Childrens = new Array<DetailAccountComponent>();
     if (this.Childrens.findIndex(p => p.parent.id === detailAccountComponent.parent.id) == -1)
       this.Childrens.push(detailAccountComponent);
-  }
-
-  showConfirm() {
-    this.deleteModelsConfirm = true;
-  }
-
-  deleteModels(confirm: boolean) {
-    if (confirm) {
-      this.grid.loading = true;
-      this.detailAccountService.groupDelete(DetailAccountApi.EnvironmentDetailAccounts, this.selectedRows).subscribe(res => {
-        this.showMessage(this.deleteMsg, MessageType.Info);
-
-        if (this.rowData.data.length == this.selectedRows.length && this.pageIndex > 1)
-          this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
-
-        this.selectedRows = [];
-        this.groupDelete = false;
-        this.reloadGrid();
-        return;
-      }, (error => {
-        this.grid.loading = false;
-        this.showMessage(error, MessageType.Warning);
-      }));
-    }
-
-    this.deleteModelsConfirm = false;
   }
 
   reloadGridEvent() {
@@ -412,19 +373,43 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
   deleteModel(confirm: boolean) {
     if (confirm) {
-      this.grid.loading = true;
-      this.detailAccountService.delete(String.Format(DetailAccountApi.DetailAccount, this.deleteModelId)).subscribe(response => {
-        this.deleteModelId = 0;
-        this.showMessage(this.deleteMsg, MessageType.Info);
-        if (this.rowData.data.length == 1 && this.pageIndex > 1)
-          this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+      if (this.groupDelete) {
 
-        this.reloadGrid();
-      }, (error => {
-        this.grid.loading = false;
-        var message = error.message ? error.message : error;
-        this.showMessage(message, MessageType.Warning);
-      }));
+        this.grid.loading = true;
+        this.detailAccountService.groupDelete(DetailAccountApi.EnvironmentDetailAccounts, this.selectedRows).subscribe(res => {
+          this.showMessage(this.deleteMsg, MessageType.Info);
+
+          if (this.rowData.data.length == this.selectedRows.length && this.pageIndex > 1)
+            this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
+          this.selectedRows = [];
+          this.groupDelete = false;
+          this.reloadGrid();
+
+        }, (error => {
+          this.grid.loading = false;
+          this.showMessage(error, MessageType.Warning);
+        }));
+
+      }
+      else {
+
+        this.grid.loading = true;
+        this.detailAccountService.delete(String.Format(DetailAccountApi.DetailAccount, this.deleteModelId)).subscribe(response => {
+          this.deleteModelId = 0;
+          this.showMessage(this.deleteMsg, MessageType.Info);
+          if (this.rowData.data.length == 1 && this.pageIndex > 1)
+            this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
+          this.selectedRows = [];
+          this.reloadGrid();
+        }, (error => {
+          this.grid.loading = false;
+          var message = error.message ? error.message : error;
+          this.showMessage(message, MessageType.Warning);
+        }));
+
+      }      
     }
 
     //hide confirm dialog
@@ -468,17 +453,6 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
     this.errorMessage = '';
   }
-
-  //filterRowData() {
-  //    this.reloadGrid();
-  //}
-
-  //clearFilterRowData() {
-  //    this.state.filter = undefined;
-  //    this.currentFilter = new FilterExpression();
-  //    //this.showFilterBtn = false;
-  //    this.reloadGrid();
-  //}
 
   public showOnlyParent(dataItem: DetailAccount, index: number): boolean {
     return dataItem.childCount > 0;

@@ -49,7 +49,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
 
   public rowData: GridDataResult;
-  public selectedRows: string[] = [];
+  public selectedRows: number[] = [];
   public totalRecords: number;
 
   //permission flag
@@ -80,7 +80,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
   selectionKey(context: RowArgs): string {
     if (context.dataItem == undefined) return "";
-    return context.dataItem.id + " " + context.index;
+    return context.dataItem.id;
   }
 
   onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
@@ -109,9 +109,14 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
   removeHandler(arg: any) {
-    this.prepareDeleteConfirm(arg.dataItem.name);
-    this.deleteModelId = arg.dataItem.id;
     this.deleteConfirm = true;
+    if (!this.groupDelete) {
+      var recordId = this.selectedRows[0];
+      var record = this.rowData.data.find(f => f.id == recordId);
+
+      this.prepareDeleteConfirm(record.name);
+      this.deleteModelId = recordId;
+    }
   }
 
   pageChange(event: PageChangeEvent): void {
@@ -120,8 +125,10 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
   public editHandler(arg: any) {
+    var recordId = this.selectedRows[0];
     this.grid.loading = true;
-    this.voucherService.getById(String.Format(VoucherApi.Voucher, arg.dataItem.id)).subscribe(res => {
+    this.voucherService.getById(String.Format(VoucherApi.Voucher, recordId)).subscribe(res => {
+      debugger;
       this.editDataItem = res;
       this.grid.loading = false;
     })
@@ -162,7 +169,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
   public saveHandler(model: Voucher) {
-
+    debugger;
     this.grid.loading = true;
     if (!this.isNew) {
       this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model)
@@ -243,25 +250,10 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   //#endregion
 
   //#region Methods
-  deleteModels() {
-    ////this.sppcLoading.show();
-    //this.voucherService.groupDelete(VoucherApi.Vouchers, this.selectedRows).subscribe(res => {
-    //    this.showMessage(this.deleteMsg, MessageType.Info);
-    //    this.selectedRows = [];
-    //    this.reloadGrid();
-    //}, (error => {
-    //    //this.sppcLoading.hide();
-    //    this.showMessage(error, MessageType.Warning);
-    //}));
-  }
-
-  
 
   reloadGridEvent() {    
     this.reloadGrid();
   }
-
-  
 
   reloadGrid(insertedModel?: Voucher) {
     if (this.viewAccess) {
@@ -310,20 +302,28 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
   deleteModel(confirm: boolean) {
     if (confirm) {
-      this.grid.loading = true;
-      this.voucherService.delete(String.Format(VoucherApi.Voucher, this.deleteModelId)).subscribe(response => {
-        this.deleteModelId = 0;
-        this.showMessage(this.deleteMsg, MessageType.Info);
+      if (this.groupDelete) {
+        //حذف گروهی
+      }
+      else {
 
-        if (this.rowData.data.length == 1 && this.pageIndex > 1)
-          this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+        this.grid.loading = true;
+        this.voucherService.delete(String.Format(VoucherApi.Voucher, this.deleteModelId)).subscribe(response => {
+          this.deleteModelId = 0;
+          this.showMessage(this.deleteMsg, MessageType.Info);
 
-        this.reloadGrid();
-      }, (error => {
-        this.grid.loading = false;
-        var message = error.message ? error.message : error;
-        this.showMessage(message, MessageType.Warning);
-      }));
+          if (this.rowData.data.length == 1 && this.pageIndex > 1)
+            this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
+          this.selectedRows = [];
+          this.reloadGrid();
+        }, (error => {
+          this.grid.loading = false;
+          var message = error.message ? error.message : error;
+          this.showMessage(message, MessageType.Warning);
+        }));
+
+      }
     }
 
     //hide confirm dialog
