@@ -10,7 +10,7 @@ import { String } from '../../class/source';
 import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
-import { MessageType, Layout, Entities, Metadatas } from "../../../environments/environment";
+import { MessageType, Layout, Entities, Metadatas, environment } from "../../../environments/environment";
 import { Filter } from "../../class/filter";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
@@ -22,8 +22,11 @@ import { FilterExpression } from '../../class/filterExpression';
 import { DocumentStatusValue } from '../../enum/documentStatusValue';
 import { Http } from '@angular/http';
 import { ReportViewerComponent } from '../reportViewer/reportViewer.component';
-import { VoucherReportingService } from '../../service/report/voucher-reporting.service';
+
 import * as moment from 'jalali-moment';
+import { ReportApi } from '../../service/api/reportApi';
+import { Report } from '../../model/report';
+import { ReportingService } from '../../service/report/reporting.service';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -139,25 +142,32 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
   public showReport()
   {
-      this.reporingService.getAll(VoucherReportApi.VoucherSumReport,
-        this.currentOrder,this.currentFilter).subscribe((response: any) => {
-          //c = moment.from(this.FiscalPeriodStartDate.toDateString(),'en', 'YYYY/M/D').format('YYYY/M/D');
-        
-          //moment.locale('en'); // default locale is en
-          //var m = moment(this.FiscalPeriodStartDate.toDateString(), 'YYYY/M/D');
-          var fdate = moment(this.FiscalPeriodStartDate, 'YYYY-M-D HH:mm:ss')
-          .locale('fa')
-          .format('YYYY/M/D');
+    var url = String.Format(ReportApi.DefaultSystemReport, this.viewer.baseId);
 
-          var tdate = moment(this.FiscalPeriodEndDate, 'YYYY-M-D HH:mm:ss')
-          .locale('fa')
-          .format('YYYY/M/D');
+    this.reporingService.getAll(url).subscribe((res: Response) => {
+          
+      var report :Report = <any>res.body;
+      var serviceUrl = environment.BaseUrl + "/" + report.serviceUrl;
 
+      this.reporingService.getAll(serviceUrl,
+          this.currentOrder,this.currentFilter).subscribe((response: any) => {
+            
+            var fdate = moment(this.FiscalPeriodStartDate, 'YYYY-M-D HH:mm:ss')
+            .locale('fa')
+            .format('YYYY/M/D');
+  
+            var tdate = moment(this.FiscalPeriodEndDate, 'YYYY-M-D HH:mm:ss')
+            .locale('fa')
+            .format('YYYY/M/D');
+  
+  
+            var reportData = {rows : response.body , fromDate: fdate ,
+               toDate : tdate};
+               //'/assets/reports/voucher/voucher.summary.mrt'
+            this.viewer.showVoucherReport(report,reportData);           
 
-          var reportData = {rows : response.body , fromDate: fdate ,
-             toDate : tdate};
-          this.viewer.showVoucherReport('/assets/reports/voucher/voucher.summary.mrt',reportData);
-        });
+          });
+      });
       
   }
 
@@ -237,7 +247,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
      public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
     private voucherService: VoucherService, public renderer: Renderer2,
      public metadata: MetaDataService, public settingService: SettingService,
-     public reporingService:VoucherReportingService) {
+     public reporingService:ReportingService) {
     super(toastrService, translate, renderer, metadata, settingService, Entities.Voucher, Metadatas.Voucher);
   }
   //#endregion

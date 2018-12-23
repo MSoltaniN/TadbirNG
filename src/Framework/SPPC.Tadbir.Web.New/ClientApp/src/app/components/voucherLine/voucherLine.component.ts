@@ -10,16 +10,18 @@ import { String } from '../../class/source';
 import { State, CompositeFilterDescriptor } from '@progress/kendo-data-query';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DefaultComponent } from "../../class/default.component";
-import { MessageType, Entities, Metadatas } from "../../../environments/environment";
+import { MessageType, Entities, Metadatas, environment } from "../../../environments/environment";
 import { Filter } from "../../class/filter";
 import { MetaDataService } from '../../service/metadata/metadata.service';
 import { SppcLoadingService } from '../../controls/sppcLoading/index';
 import { VoucherApi, VoucherReportApi } from '../../service/api/index';
 import { FilterExpression } from '../../class/filterExpression';
 import { DocumentStatusValue } from '../../enum/documentStatusValue';
-import { VoucherReportingService } from '../../service/report/voucher-reporting.service';
 import { ReportViewerComponent } from '../reportViewer/reportViewer.component';
 import * as moment from 'jalali-moment';
+import { ReportingService } from '../../service/report/reporting.service';
+import { ReportApi } from '../../service/api/reportApi';
+import { Report } from '../../model/report';
 
 
 @Component({
@@ -200,7 +202,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
      public renderer: Renderer2,
      public metadata: MetaDataService,
       public settingService: SettingService,
-      public reporingService:VoucherReportingService) {
+      public reporingService:ReportingService) {
     super(toastrService, translate, renderer, metadata, settingService, Entities.VoucherLine, Metadatas.VoucherArticles);
   }
   //#endregion
@@ -264,20 +266,32 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
   public showReport()
   {
-      var url = String.Format(VoucherReportApi.VoucherStdFormReport, this.voucherId);
+      //var url = String.Format(VoucherReportApi.VoucherStdFormReport, this.voucherId);
+      var url = String.Format(ReportApi.DefaultSystemReport, this.viewer.baseId);
 
-      this.reporingService.getAll(url,
-        this.currentOrder,this.currentFilter).subscribe((response: any) => {
+      this.reporingService.getAll(url).subscribe((res: Response) => {
+          
+        var report :Report = <any>res.body;
+        var serviceUrl = environment.BaseUrl + "/" + report.serviceUrl;
+        //add voucher filter to filters
+        var filter = this.addFilter(this.currentFilter,"Id",this.voucherId.toString(),"=={0}")
 
-           const m = moment();
-           var dateStr : string;
-           m.locale('fa'); 
-           if (m.isValid())
-              dateStr = m.format('jYYYY/jMM/jDD');  
+        this.reporingService.getAll(serviceUrl,
+          this.currentOrder,filter).subscribe((response: any) => {
+  
+             const m = moment();
+             var dateStr : string;
+             m.locale('fa'); 
+             if (m.isValid())
+                dateStr = m.format('jYYYY/jMM/jDD');  
+  
+            var reportData = {rows : response.body , currentDate: dateStr};
+            this.viewer.showVoucherStdFormReport(report ,reportData);
+          });
+        
+      });
 
-          var reportData = {rows : response.body , currentDate: dateStr};
-          this.viewer.showVoucherStdFormReport('/assets/reports/voucher/voucher.stdform.mrt',reportData);
-        });
+      
       
   }
 

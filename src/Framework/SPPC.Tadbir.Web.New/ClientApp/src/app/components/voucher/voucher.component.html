@@ -141,7 +141,7 @@
                             (save)="saveHandler($event)"
                             (cancel)="cancelHandler()">
     </voucher-form-component>
-    <report-viewer id='compviewer'></report-viewer>
+    <report-viewer id='compviewer' baseId='5'></report-viewer>
   </div>
   <kendo-dialog title="{{'Voucher.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
     <p>

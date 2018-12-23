@@ -421,6 +421,22 @@ export class DefaultComponent extends BaseComponent {
 
   }
 
+  public addFilter(currentFilter:FilterExpression,filedName : string,
+    value : string , operator:string) : FilterExpression
+  {
+      var fi = new FilterExpression();
+      //var metadata = this.getMeta(filedName);   
+      fi.filter = new Filter(filedName,value,operator,"System.Int32");      
+      
+      if(!currentFilter)
+          currentFilter = new FilterExpression();
+      
+      currentFilter.filter = fi.filter;
+
+      return currentFilter;
+  } 
+
+
   /**
    * this method localize CRUD messages 
    */

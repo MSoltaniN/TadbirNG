@@ -251,8 +251,7 @@
     <voucherLine-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage" [balance]="balance" [isNewBalance]="isNewBalance"
                                 (save)="saveHandler($event)"
                                 (cancel)="cancelHandler()">
-    </voucherLine-form-component>
-    <report-viewer id='compviewer'></report-viewer>
+    </voucherLine-form-component>    
   </div>
   <kendo-dialog title="{{'VoucherLine.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
     <p>
@@ -264,4 +263,4 @@
     </kendo-dialog-actions>
   </kendo-dialog>
 </div>
-
+<report-viewer id='compviewer' baseId='6'></report-viewer>

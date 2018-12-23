@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 
 
 @Injectable()
-export class VoucherReportingService extends ReportBaseService {
+export class ReportingService extends ReportBaseService {
 
 
     constructor(public http: HttpClient) {

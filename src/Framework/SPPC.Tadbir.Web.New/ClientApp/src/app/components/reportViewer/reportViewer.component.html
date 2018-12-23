@@ -2,7 +2,6 @@
     <kendo-dialog-titlebar>
         {{ 'Report.ReportViewer' | translate }}
     </kendo-dialog-titlebar>
-<div id='viewer' 
-    [ngClass]="{'repLtr':this.currentlang !== 'fa' , 'repRtl': this.currentlang === 'fa'}">
+<div id='viewer' dir="ltr" >
   </div>  
 </kendo-dialog>
