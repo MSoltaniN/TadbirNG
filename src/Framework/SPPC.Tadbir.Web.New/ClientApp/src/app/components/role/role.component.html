@@ -1,116 +1,116 @@
-﻿<app-bread-cumb></app-bread-cumb>
+<app-bread-cumb></app-bread-cumb>
 <div SppcCheckAccess="View" class="panel-body">
-    <kendo-grid id="5" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
-                [sortable]="true"
-                [pageSize]="pageSize"
-                [skip]="skip"
-                [filter]="state.filter"
-                [pageable]="true"
-                [resizable]="true"
-                [filterable]="true"
-                [scrollable]="'none'"
-                (pageChange)="pageChange($event)"
-                (sortChange)="sortChange($event)"
-                (edit)="editHandler($event)"
-                (remove)="removeHandler($event)"
-                [sort]="state.sort"
-                [loading]="true"
-                [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
-                [selectedKeys]="selectedRows"
-                [kendoGridSelectBy]="selectionKey"
-                (filterChange)="filterChange($event)"
-                (selectedKeysChange)="onSelectedKeysChange($event)"
-                sppc-grid-reorder sppc-grid-resize>
-        <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
-                                pagerOf="{{ 'Paging.Of' | translate }}"
-                                pagerItems="{{ 'Paging.Record' | translate }}">
-        </kendo-grid-messages>
-        <ng-template kendoGridNoRecordsTemplate>
-            {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
-        </ng-template>
-        <ng-template kendoGridToolbarTemplate>
-            <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'plus-outline'" type="button">{{ 'Role.New' | translate }}</button>
-            <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="showConfirm()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
-            <grid-setting entityTypeName="Role"></grid-setting>
-            <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-        </ng-template>
+  <kendo-grid id="5" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
+              [sortable]="true"
+              [pageSize]="pageSize"
+              [skip]="skip"
+              [filter]="state.filter"
+              [pageable]="true"
+              [resizable]="true"
+              [filterable]="true"
+              [scrollable]="'none'"
+              (pageChange)="pageChange($event)"
+              (sortChange)="sortChange($event)"
+              (edit)="editHandler($event)"
+              (remove)="removeHandler($event)"
+              [sort]="state.sort"
+              [loading]="true"
+              [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+              [selectedKeys]="selectedRows"
+              [kendoGridSelectBy]="selectionKey"
+              (filterChange)="filterChange($event)"
+              (selectedKeysChange)="onSelectedKeysChange($event)"
+              sppc-grid-reorder sppc-grid-resize>
+    <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                         pagerOf="{{ 'Paging.Of' | translate }}"
+                         pagerItems="{{ 'Paging.Record' | translate }}">
+    </kendo-grid-messages>
+    <ng-template kendoGridNoRecordsTemplate>
+      {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
+    </ng-template>
+    <ng-template kendoGridToolbarTemplate>
+      <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew()" [icon]="'file-add'" type="button" title="{{ 'Role.New' | translate }}"></button>
+
+      <button SppcCheckAccess="Edit" (click)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
+      <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+
+      <grid-setting entityTypeName="Role"></grid-setting>
+      <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+    </ng-template>
+    <kendo-grid-checkbox-column showSelectAll="true" width="10"></kendo-grid-checkbox-column>
+
+    <!-- template for mobile -->
+    <kendo-grid-column media="(max-width: 450px)" title="">
+      <ng-template kendoGridCellTemplate let-role>
         <!-- template for mobile -->
-        <kendo-grid-column media="(max-width: 450px)" title="">
-            <ng-template kendoGridCellTemplate let-role>
-                <!-- template for mobile -->
-                <h4>
-                    {{ role.name }}
-                </h4>
-                <dl>
-                    <dt>{{ 'Role.Name' | translate }}</dt>
-                    <dd>{{ role.name }}</dd>
-                    <dt>{{ 'Role.Description' | translate }}</dt>
-                    <dd>{{ role.description }}</dd>
-                </dl>
+        <h4>
+          {{ role.name }}
+        </h4>
+        <dl>
+          <dt>{{ 'Role.Name' | translate }}:</dt>
+          <dd>{{ role.name }}</dd>
+          <dt>{{ 'Role.Description' | translate }}:</dt>
+          <dd>{{ role.description }}</dd>
+        </dl>
 
-                <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
-                <button kendoButton SppcCheckAccess="AssignUsers" (click)="userHandler(role.id,role.name)" [primary]="true">{{ 'Role.Users' | translate }}</button>
-                <button kendoButton SppcCheckAccess="AssignBranches" (click)="branchHandler(role.id,role.name)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
-                <button kendoButton SppcCheckAccess="AssignFiscalPeriods" (click)="fiscalPeriodHandler(role.id,role.name)" [primary]="true">{{ 'Role.FiscalPeriod' | translate }}</button>
-                <button kendoGridEditCommand SppcCheckAccess="Edit" *ngIf="role.id!=1" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                <button kendoGridRemoveCommand SppcCheckAccess="Delete" *ngIf="role.id!=1">{{ 'Buttons.Delete' | translate }}</button>
-            </ng-template>
-        </kendo-grid-column>
-        <!-- template for mobile -->
-        <!-- additional columns on large devices -->
-        <kendo-grid-checkbox-column showSelectAll="true" width="10" media="(min-width: 450px)"></kendo-grid-checkbox-column>
-        <kendo-grid-column width="130" media="(min-width: 450px)" sppc-grid-column="Role.name">
-            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
-            </ng-template>
-        </kendo-grid-column>
-        <kendo-grid-column media="(min-width: 450px)" width="350" sppc-grid-column="Role.description">
-            <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
-                <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
-            </ng-template>
-        </kendo-grid-column>
+        <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
+        <button kendoButton SppcCheckAccess="AssignUsers" (click)="userHandler(role.id,role.name)" [primary]="true">{{ 'Role.Users' | translate }}</button>
+        <button kendoButton SppcCheckAccess="AssignBranches" (click)="branchHandler(role.id,role.name)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
+        <button kendoButton SppcCheckAccess="AssignFiscalPeriods" (click)="fiscalPeriodHandler(role.id,role.name)" [primary]="true">{{ 'Role.FiscalPeriod' | translate }}</button>
+      </ng-template>
+    </kendo-grid-column>
+    <!-- template for mobile -->
+    <!-- additional columns on large devices -->
+    <kendo-grid-column width="130" media="(min-width: 450px)" sppc-grid-column="Role.name">
+      <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+        <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px)" width="350" sppc-grid-column="Role.description">
+      <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+        <sppc-grid-filter [metaData]="getMeta('description')" [column]="column" [filter]="filter"></sppc-grid-filter>
+      </ng-template>
+    </kendo-grid-column>
 
-        <kendo-grid-command-column media="(min-width: 450px)" width="320">
-            <ng-template kendoGridCellTemplate let-role>
-                <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
-                <button kendoButton SppcCheckAccess="AssignUsers" (click)="userHandler(role.id,role.name)" [primary]="true">{{ 'Role.Users' | translate }}</button>
-                <button kendoButton SppcCheckAccess="AssignBranches" (click)="branchHandler(role.id,role.name)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
-                <button kendoButton SppcCheckAccess="AssignFiscalPeriods" (click)="fiscalPeriodHandler(role.id,role.name)" [primary]="true">{{ 'Role.FiscalPeriod' | translate }}</button>
-                <button kendoGridEditCommand SppcCheckAccess="Edit" *ngIf="role.id!=1" class="k-primary">{{ 'Buttons.Edit' | translate }}</button>
-                <button kendoGridRemoveCommand SppcCheckAccess="Delete" *ngIf="role.id!=1">{{ 'Buttons.Delete' | translate }}</button>
-            </ng-template>
-        </kendo-grid-command-column>
-        <!-- additional columns on large devices -->
+    <kendo-grid-command-column media="(min-width: 450px)" width="320">
+      <ng-template kendoGridCellTemplate let-role>
+        <button kendoButton (click)="detailHandler(role.id)" [primary]="true">{{ 'Role.Detail' | translate }}</button>
+        <button kendoButton SppcCheckAccess="AssignUsers" (click)="userHandler(role.id,role.name)" [primary]="true">{{ 'Role.Users' | translate }}</button>
+        <button kendoButton SppcCheckAccess="AssignBranches" (click)="branchHandler(role.id,role.name)" [primary]="true">{{ 'Role.Branches' | translate }}</button>
+        <button kendoButton SppcCheckAccess="AssignFiscalPeriods" (click)="fiscalPeriodHandler(role.id,role.name)" [primary]="true">{{ 'Role.FiscalPeriod' | translate }}</button>
+      </ng-template>
+    </kendo-grid-command-column>
+    <!-- additional columns on large devices -->
 
-    </kendo-grid>
-    <role-form-component [model]="editDataItem" [permissionModel]="permissionsData" [isNew]="isNew" [errorMessage]="errorMessage"
-                            (save)="saveHandler($event)"
-                            (cancel)="cancelHandler()">
-    </role-form-component>
-    <role-user-form-component [usersList]="usersList" [roleUser]="roleUsersData" [errorMessage]="errorMessage" [roleName]="roleName"
-                                (saveRoleUsers)="saveRoleUsersHandler($event)"
-                                (cancelRoleUsers)="cancelRoleUsersHandler()">
-    </role-user-form-component>
-    <role-branch-form-component [inputRoleBranches]="roleBranches" [roleBranches]="roleBranchesData" [errorMessage]="errorMessage" [roleName]="roleName"
-                                (saveRoleBranches)="saveRoleBranchesHandler($event)"
-                                (cancelRoleBranches)="cancelRoleBranchesHandler()">
-    </role-branch-form-component>
-    <role-fiscalPeriod-form-component [fiscalPeriodList]="roleFiscalPeriod" [roleFiscalPeriod]="roleFiscalPeriodsData" [errorMessage]="errorMessage" [roleName]="roleName"
-                                (saveRoleFiscalPeriod)="saveRoleFiscalPeriodHandler($event)"
-                                (cancelRoleFiscalPeriod)="cancelRoleFiscalPeriodHandler()">
-    </role-fiscalPeriod-form-component>
-    <role-detail-form-component [roleDetail]="roleDetail" [roleDetails]="roleDetailData" [errorMessage]="errorMessage"
-                                (cancelRoleDetail)="cancelRoleDetailHandler()">
-    </role-detail-form-component>
+  </kendo-grid>
+  <role-form-component [model]="editDataItem" [permissionModel]="permissionsData" [isNew]="isNew" [errorMessage]="errorMessage"
+                       (save)="saveHandler($event)"
+                       (cancel)="cancelHandler()">
+  </role-form-component>
+  <role-user-form-component [usersList]="usersList" [roleUser]="roleUsersData" [errorMessage]="errorMessage" [roleName]="roleName"
+                            (saveRoleUsers)="saveRoleUsersHandler($event)"
+                            (cancelRoleUsers)="cancelRoleUsersHandler()">
+  </role-user-form-component>
+  <role-branch-form-component [inputRoleBranches]="roleBranches" [roleBranches]="roleBranchesData" [errorMessage]="errorMessage" [roleName]="roleName"
+                              (saveRoleBranches)="saveRoleBranchesHandler($event)"
+                              (cancelRoleBranches)="cancelRoleBranchesHandler()">
+  </role-branch-form-component>
+  <role-fiscalPeriod-form-component [fiscalPeriodList]="roleFiscalPeriod" [roleFiscalPeriod]="roleFiscalPeriodsData" [errorMessage]="errorMessage" [roleName]="roleName"
+                                    (saveRoleFiscalPeriod)="saveRoleFiscalPeriodHandler($event)"
+                                    (cancelRoleFiscalPeriod)="cancelRoleFiscalPeriodHandler()">
+  </role-fiscalPeriod-form-component>
+  <role-detail-form-component [roleDetail]="roleDetail" [roleDetails]="roleDetailData" [errorMessage]="errorMessage"
+                              (cancelRoleDetail)="cancelRoleDetailHandler()">
+  </role-detail-form-component>
 </div>
 <kendo-dialog title="{{'Role.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteRole(false)" [minWidth]="250" [width]="450">
-    <p>
-        {{ this.deleteConfirmMsg }}
-    </p>
-    <kendo-dialog-actions>
-        <button class="k-button" (click)="deleteRole(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-        <button class="k-button" (click)="deleteRole(false)">{{ 'Buttons.No' | translate }}</button>
-    </kendo-dialog-actions>
+  <p>
+    {{ this.deleteConfirmMsg }}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="deleteRole(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+    <button class="k-button" (click)="deleteRole(false)">{{ 'Buttons.No' | translate }}</button>
+  </kendo-dialog-actions>
 </kendo-dialog>
 
 

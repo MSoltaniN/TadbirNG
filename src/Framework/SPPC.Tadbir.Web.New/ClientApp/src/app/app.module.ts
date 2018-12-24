@@ -145,7 +145,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { BreadCumbComponent } from './components/breadCumb/breadcrumb.component';
 import { ReportViewerComponent } from './components/reportViewer/reportViewer.component';
 import { ReportBaseService } from './class/report.base.service';
-import { VoucherReportingService } from './service/report/voucher-reporting.service';
+import { ReportingService } from './service/report/reporting.service';
 
 
 
@@ -300,7 +300,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
     UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService,
-    FullCodeService, OperationLogService, DashboardService, VoucherReportingService, AccountGroupsService,
+    FullCodeService, OperationLogService, DashboardService, ReportingService, AccountGroupsService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: ErrorHandler, useClass: GeneralErrorHandler },
     //{

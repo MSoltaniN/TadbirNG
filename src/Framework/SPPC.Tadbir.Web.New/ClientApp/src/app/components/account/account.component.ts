@@ -63,7 +63,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
   public parentId?: number = undefined;
   public rowData: GridDataResult;
-  public selectedRows: string[] = [];
+  public selectedRows: number[] = [];
   public accountArticleRows: any[];
   public totalRecords: number;
 
@@ -72,7 +72,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
   //for add in delete messageText
   deleteConfirm: boolean;
-  deleteModelsConfirm: boolean;
   deleteModelId: number;
 
   currentFilter: FilterExpression;
@@ -83,14 +82,13 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
   editDataItem?: Account = undefined;
   parentModel: Account;
-  //isNew: boolean;
   disableSaveBtn: boolean | undefined;
-  errorMessage: string;
+  //errorMessage: string;
   groupDelete: boolean = false;
   addToContainer: boolean = false;
   componentParentId: number;
   isChildExpanding: boolean;
-   goLastPage: boolean;
+  goLastPage: boolean;
   //#endregion
 
   //#region Events
@@ -106,63 +104,53 @@ export class AccountComponent extends DefaultComponent implements OnInit {
       this.parentAccount.addChildAccount(this);
       this.parentId = this.parent.id;
       this.componentParentId = this.parentId;
-      this.parentModel = this.parent;      
+      this.parentModel = this.parent;
     }
   }
 
+  private dialogRef: DialogRef;
+  private dialogModel: any;
 
-   public dialogRef: DialogRef;
   /**
    * باز کردن و مقداردهی اولیه به فرم ویرایشگر
    */
   openEditorDialog(isNew: boolean) {
     //debugger;
     //if (this.parentAccount) {
-     //console.log(this.grid);
+    //console.log(this.grid);
     //  this.grid = this.parentAccount.grid;
     //}
-    
+
 
     this.dialogRef = this.dialogService.open({
       title: this.getText(isNew ? 'Buttons.New' : 'Buttons.Edit'),
       content: FormComponent,
     });
 
-    const dialogModel = this.dialogRef.content.instance;
-    dialogModel.parent = this.parentModel;
-    dialogModel.errorMessage = this.errorMessage;
-    dialogModel.model = this.editDataItem;
-    dialogModel.isNew = isNew;
+    this.dialogModel = this.dialogRef.content.instance;
+    this.dialogModel.parent = this.parentModel;
+    this.dialogModel.errorMessage = undefined;
+    this.dialogModel.model = this.editDataItem;
+    this.dialogModel.isNew = isNew;
 
     this.dialogRef.content.instance.save.subscribe((res) => {
-      debugger;
       this.saveHandler(res, isNew);
-      if (!this.errorMessage) {
-        this.dialogRef.close();
-
-        dialogModel.parent = undefined;
-        dialogModel.errorMessage = undefined;
-        dialogModel.model = undefined;
-      }
-      
-
     });
 
     const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
       this.dialogRef.close();
 
-      dialogModel.parent = undefined;
-      dialogModel.errorMessage = undefined;
-      dialogModel.model = undefined;
+      this.dialogModel.parent = undefined;
+      this.dialogModel.errorMessage = undefined;
+      this.dialogModel.model = undefined;
 
       this.parentId = this.componentParentId;
     });
   }
 
-
   selectionKey(context: RowArgs): string {
     if (context.dataItem == undefined) return "";
-    return context.dataItem.id + " " + context.index;
+    return context.dataItem.id;
   }
 
   onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
@@ -181,20 +169,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     if (isReload) {
       this.reloadGrid();
     }
-    //console.log(filter);
-
   }
-
-  //dataStateChange(state: DataStateChangeEvent): void {
-  //    //this.currentFilter = this.getFilters(state.filter);
-  //    if (state.sort)
-  //        if (state.sort.length > 0)
-  //            this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
-  //    this.state = state;
-  //    this.skip = state.skip;
-  //    this.reloadGrid();
-  //}
-
 
   public sortChange(sort: SortDescriptor[]): void {
     if (sort)
@@ -203,9 +178,14 @@ export class AccountComponent extends DefaultComponent implements OnInit {
   }
 
   removeHandler(arg: any) {
-    this.prepareDeleteConfirm(arg.dataItem.name);
-    this.deleteModelId = arg.dataItem.id;
     this.deleteConfirm = true;
+    if (!this.groupDelete) {
+      var recordId = this.selectedRows[0];
+      var record = this.rowData.data.find(f => f.id == recordId);
+
+      this.prepareDeleteConfirm(record.name);
+      this.deleteModelId = recordId;
+    }
   }
 
   pageChange(event: PageChangeEvent): void {
@@ -215,9 +195,10 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
   //account form events
   public editHandler(arg: any) {
-    this.errorMessage = undefined;
+    var recordId = this.selectedRows[0];
+
     this.grid.loading = true;
-    this.accountService.getById(String.Format(AccountApi.Account, arg.dataItem.id)).subscribe(res => {
+    this.accountService.getById(String.Format(AccountApi.Account, recordId)).subscribe(res => {
 
       this.editDataItem = res;
       this.setParentModel(res.parentId);
@@ -237,10 +218,16 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         .subscribe(response => {
           this.editDataItem = undefined;
           this.showMessage(this.updateMsg, MessageType.Succes);
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
           this.reloadGrid();
         }, (error => {
           this.editDataItem = model;
-          this.errorMessage = error;
+          this.dialogModel.errorMessage = error;
         }));
     }
     else {
@@ -258,10 +245,17 @@ export class AccountComponent extends DefaultComponent implements OnInit {
               return;
             }
           }
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
+
           this.reloadGrid(insertedModel);
 
         }, (error => {
-          this.errorMessage = error;
+          this.dialogModel.errorMessage = error;
         }));
 
     }
@@ -276,7 +270,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
   constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
     private accountService: AccountService, private voucherLineService: VoucherLineService,
     private fiscalPeriodService: FiscalPeriodService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService,
-    @SkipSelf() @Host() @Optional() private parentAccount: AccountComponent,public dialogService: DialogService) {
+    @SkipSelf() @Host() @Optional() private parentAccount: AccountComponent, public dialogService: DialogService) {
     super(toastrService, translate, renderer, metadata, settingService, Entities.Account, Metadatas.Account);
   }
 
@@ -296,32 +290,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
       this.Childrens.push(accountComponent);
 
 
-  }
-
-  showConfirm() {
-    this.deleteModelsConfirm = true;
-  }
-
-  deleteModels(confirm: boolean) {
-    if (confirm) {
-      this.grid.loading = true;
-      this.accountService.groupDelete(AccountApi.EnvironmentAccounts, this.selectedRows).subscribe(res => {
-        this.showMessage(this.deleteMsg, MessageType.Info);
-
-        if (this.rowData.data.length == this.selectedRows.length && this.pageIndex > 1)
-          this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
-
-        this.selectedRows = [];
-        this.groupDelete = false;
-        this.reloadGrid();
-        return;
-      }, (error => {
-        this.grid.loading = false;
-        this.showMessage(error, MessageType.Warning);
-      }));
-    }
-
-    this.deleteModelsConfirm = false;
   }
 
   reloadGridEvent() {
@@ -387,7 +355,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
       }
     }
   }
-
 
   loadGridData(insertedModel?: Account, order?: string, filter?: FilterExpression) {
 
@@ -457,19 +424,43 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
   deleteModel(confirm: boolean) {
     if (confirm) {
-      this.grid.loading = true;
-      this.accountService.delete(String.Format(AccountApi.Account, this.deleteModelId)).subscribe(response => {
-        this.deleteModelId = 0;
-        this.showMessage(this.deleteMsg, MessageType.Info);
-        if (this.rowData.data.length == 1 && this.pageIndex > 1)
-          this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+      if (this.groupDelete) {
 
-        this.reloadGrid();
-      }, (error => {
-        this.grid.loading = false;
-        var message = error.message ? error.message : error;
-        this.showMessage(message, MessageType.Warning);
-      }));
+        this.grid.loading = true;
+        this.accountService.groupDelete(AccountApi.EnvironmentAccounts, this.selectedRows).subscribe(res => {
+          this.showMessage(this.deleteMsg, MessageType.Info);
+
+          if (this.rowData.data.length == this.selectedRows.length && this.pageIndex > 1)
+            this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
+          this.selectedRows = [];
+          this.groupDelete = false;
+          this.reloadGrid();
+
+        }, (error => {
+          this.grid.loading = false;
+          this.showMessage(error, MessageType.Warning);
+        }));
+
+      }
+      else {
+
+        this.grid.loading = true;
+        this.accountService.delete(String.Format(AccountApi.Account, this.deleteModelId)).subscribe(response => {
+          this.deleteModelId = 0;
+          this.showMessage(this.deleteMsg, MessageType.Info);
+          if (this.rowData.data.length == 1 && this.pageIndex > 1)
+            this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
+          this.reloadGrid();
+          this.selectedRows = [];
+        }, (error => {
+          this.grid.loading = false;
+          var message = error.message ? error.message : error;
+          this.showMessage(message, MessageType.Warning);
+        }));
+
+      }
     }
     //hide confirm dialog
     this.deleteConfirm = false;
@@ -509,9 +500,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
       this.addToContainer = addToThis;
     else
       this.addToContainer = false;
-
-    this.errorMessage = undefined;
-
     this.openEditorDialog(true);
   }
 

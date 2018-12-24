@@ -51,7 +51,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
   public parentId?: number = undefined;
 
   public rowData: GridDataResult;
-  public selectedRows: string[] = [];
+  public selectedRows: number[] = [];
   public totalRecords: number;
 
   //permission flag
@@ -59,7 +59,6 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
 
   ////for add in delete messageText
   deleteConfirm: boolean;
-  deleteModelsConfirm: boolean;
   deleteModelId: number;
 
   currentFilter: FilterExpression;
@@ -105,7 +104,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
 
   selectionKey(context: RowArgs): string {
     if (context.dataItem == undefined) return "";
-    return context.dataItem.id + " " + context.index;
+    return context.dataItem.id;
   }
 
   onSelectedKeysChange(checkedState: SelectAllCheckboxState) {
@@ -133,9 +132,14 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
   }
 
   removeHandler(arg: any) {
-    this.prepareDeleteConfirm(arg.dataItem.name);
-    this.deleteModelId = arg.dataItem.id;
     this.deleteConfirm = true;
+    if (!this.groupDelete) {
+      var recordId = this.selectedRows[0];
+      var record = this.rowData.data.find(f => f.id == recordId);
+
+      this.prepareDeleteConfirm(record.name);
+      this.deleteModelId = recordId;
+    }
   }
 
   pageChange(event: PageChangeEvent): void {
@@ -144,8 +148,9 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
   }
 
   public editHandler(arg: any) {
+    var recordId = this.selectedRows[0];
     this.grid.loading = true;
-    this.projectService.getById(String.Format(ProjectApi.Project, arg.dataItem.id)).subscribe(res => {
+    this.projectService.getById(String.Format(ProjectApi.Project, recordId)).subscribe(res => {
       this.editDataItem = res;
       this.setParentModel(res.parentId);
 
@@ -236,32 +241,6 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     if (this.Childrens == undefined) this.Childrens = new Array<ProjectComponent>();
     if (this.Childrens.findIndex(p => p.parent.id === projectComponent.parent.id) == -1)
       this.Childrens.push(projectComponent);
-  }
-
-  showConfirm() {
-    this.deleteModelsConfirm = true;
-  }
-
-  deleteModels(confirm: boolean) {
-    if (confirm) {
-      this.grid.loading = true;
-      this.projectService.groupDelete(ProjectApi.EnvironmentProjects, this.selectedRows).subscribe(res => {
-        this.showMessage(this.deleteMsg, MessageType.Info);
-
-        if (this.rowData.data.length == this.selectedRows.length && this.pageIndex > 1)
-          this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
-
-        this.selectedRows = [];
-        this.groupDelete = false;
-        this.reloadGrid();
-        return;
-      }, (error => {
-        this.grid.loading = false;
-        this.showMessage(error, MessageType.Warning);
-      }));
-    }
-
-    this.deleteModelsConfirm = false;
   }
 
   reloadGridEvent() {
@@ -389,19 +368,43 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
 
   deleteModel(confirm: boolean) {
     if (confirm) {
-      this.grid.loading = true;
-      this.projectService.delete(String.Format(ProjectApi.Project, this.deleteModelId)).subscribe(response => {
-        this.deleteModelId = 0;
-        this.showMessage(this.deleteMsg, MessageType.Info);
-        if (this.rowData.data.length == 1 && this.pageIndex > 1)
-          this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+      if (this.groupDelete) {
 
-        this.reloadGrid();
-      }, (error => {
-        this.grid.loading = false;
-        var message = error.message ? error.message : error;
-        this.showMessage(error, MessageType.Warning);
-      }));
+        this.grid.loading = true;
+        this.projectService.groupDelete(ProjectApi.EnvironmentProjects, this.selectedRows).subscribe(res => {
+          this.showMessage(this.deleteMsg, MessageType.Info);
+
+          if (this.rowData.data.length == this.selectedRows.length && this.pageIndex > 1)
+            this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
+          this.selectedRows = [];
+          this.groupDelete = false;
+          this.reloadGrid();
+          return;
+        }, (error => {
+          this.grid.loading = false;
+          this.showMessage(error, MessageType.Warning);
+          }));
+
+      }
+      else {
+
+        this.grid.loading = true;
+        this.projectService.delete(String.Format(ProjectApi.Project, this.deleteModelId)).subscribe(response => {
+          this.deleteModelId = 0;
+          this.showMessage(this.deleteMsg, MessageType.Info);
+          if (this.rowData.data.length == 1 && this.pageIndex > 1)
+            this.pageIndex = ((this.pageIndex - 1) * this.pageSize) - this.pageSize;
+
+          this.selectedRows = [];
+          this.reloadGrid();
+        }, (error => {
+          this.grid.loading = false;
+          var message = error.message ? error.message : error;
+          this.showMessage(error, MessageType.Warning);
+        }));
+
+      }
     }
 
     //hide confirm dialog
