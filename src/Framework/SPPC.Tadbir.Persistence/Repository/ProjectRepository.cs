@@ -30,13 +30,15 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="repository">امکان فیلتر اطلاعات روی سطرها و شعبه ها را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         /// <param name="config">امکان مدیریت تنظیمات برنامه را در دیتابیس فراهم می کند</param>
+        /// <param name="relations">امکان مدیریت ارتباطات بردار حساب را فراهم می کند</param>
         public ProjectRepository(
             IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
-            ISecureRepository repository, IConfigRepository config)
+            ISecureRepository repository, IConfigRepository config, IRelationRepository relations)
             : base(unitOfWork, mapper, metadata, log)
         {
             _repository = repository;
             _configRepository = config;
+            _relationRepository = relations;
         }
 
         /// <summary>
@@ -137,6 +139,7 @@ namespace SPPC.Tadbir.Persistence
                 projectModel = Mapper.Map<Project>(project);
                 await InsertAsync(repository, projectModel);
                 await UpdateLevelUsageAsync(projectModel.Level);
+                await _relationRepository.OnProjectInsertedAsync(projectModel.Id);
             }
             else
             {
@@ -343,5 +346,6 @@ namespace SPPC.Tadbir.Persistence
 
         private readonly ISecureRepository _repository;
         private readonly IConfigRepository _configRepository;
+        private readonly IRelationRepository _relationRepository;
     }
 }

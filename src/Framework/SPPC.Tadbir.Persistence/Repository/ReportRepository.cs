@@ -47,6 +47,11 @@ namespace SPPC.Tadbir.Persistence
             _repository.SetCurrentContext(userContext);
         }
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات متادیتای گزارش سیستمی پیش فرض مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="baseId">شناسه یکی از گزارش های سیستمی</param>
+        /// <returns>اطلاعات متادیتای گزارش سیستمی مشخص شده</returns>
         public async Task<ReportViewModel> GetDefaultSystemReportAsync(int baseId)
         {
             _unitOfWork.UseSystemContext();

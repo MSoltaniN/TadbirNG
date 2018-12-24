@@ -19,6 +19,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
         void SetCurrentContext(UserContextViewModel userContext);
 
+        /// <summary>
+        /// به روش آسنکرون، اطلاعات متادیتای گزارش سیستمی پیش فرض مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="baseId">شناسه یکی از گزارش های سیستمی</param>
+        /// <returns>اطلاعات متادیتای گزارش سیستمی مشخص شده</returns>
         Task<ReportViewModel> GetDefaultSystemReportAsync(int baseId);
 
         /// <summary>
