@@ -83,7 +83,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
   editDataItem?: Account = undefined;
   parentModel: Account;
   disableSaveBtn: boolean | undefined;
-  errorMessage: string;
+  //errorMessage: string;
   groupDelete: boolean = false;
   addToContainer: boolean = false;
   componentParentId: number;
@@ -108,7 +108,8 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     }
   }
 
-  public dialogRef: DialogRef;
+  private dialogRef: DialogRef;
+  private dialogModel: any;
 
   /**
    * باز کردن و مقداردهی اولیه به فرم ویرایشگر
@@ -126,32 +127,22 @@ export class AccountComponent extends DefaultComponent implements OnInit {
       content: FormComponent,
     });
 
-    const dialogModel = this.dialogRef.content.instance;
-    dialogModel.parent = this.parentModel;
-    dialogModel.errorMessage = this.errorMessage;
-    dialogModel.model = this.editDataItem;
-    dialogModel.isNew = isNew;
+    this.dialogModel = this.dialogRef.content.instance;
+    this.dialogModel.parent = this.parentModel;
+    this.dialogModel.errorMessage = undefined;
+    this.dialogModel.model = this.editDataItem;
+    this.dialogModel.isNew = isNew;
 
     this.dialogRef.content.instance.save.subscribe((res) => {
-      debugger;
       this.saveHandler(res, isNew);
-      if (!this.errorMessage) {
-        this.dialogRef.close();
-
-        dialogModel.parent = undefined;
-        dialogModel.errorMessage = undefined;
-        dialogModel.model = undefined;
-      }
-
-
     });
 
     const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
       this.dialogRef.close();
 
-      dialogModel.parent = undefined;
-      dialogModel.errorMessage = undefined;
-      dialogModel.model = undefined;
+      this.dialogModel.parent = undefined;
+      this.dialogModel.errorMessage = undefined;
+      this.dialogModel.model = undefined;
 
       this.parentId = this.componentParentId;
     });
@@ -205,7 +196,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
   //account form events
   public editHandler(arg: any) {
     var recordId = this.selectedRows[0];
-    this.errorMessage = undefined;
     this.grid.loading = true;
     this.accountService.getById(String.Format(AccountApi.Account, recordId)).subscribe(res => {
 
@@ -227,10 +217,16 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         .subscribe(response => {
           this.editDataItem = undefined;
           this.showMessage(this.updateMsg, MessageType.Succes);
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
           this.reloadGrid();
         }, (error => {
           this.editDataItem = model;
-          this.errorMessage = error;
+          this.dialogModel.errorMessage = error;
         }));
     }
     else {
@@ -248,10 +244,17 @@ export class AccountComponent extends DefaultComponent implements OnInit {
               return;
             }
           }
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
+
           this.reloadGrid(insertedModel);
 
         }, (error => {
-          this.errorMessage = error;
+          this.dialogModel.errorMessage = error;
         }));
 
     }
@@ -496,8 +499,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
       this.addToContainer = addToThis;
     else
       this.addToContainer = false;
-
-    this.errorMessage = undefined;
 
     this.openEditorDialog(true);
   }
