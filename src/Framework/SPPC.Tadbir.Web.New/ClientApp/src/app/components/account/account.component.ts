@@ -135,6 +135,18 @@ export class AccountComponent extends DefaultComponent implements OnInit {
 
     this.dialogRef.content.instance.save.subscribe((res) => {
       this.saveHandler(res, isNew);
+<<<<<<< HEAD
+=======
+      //if (!this.errorMessage) {
+      //  this.dialogRef.close();
+
+      //  this.dialogModel.parent = undefined;
+      //  this.dialogModel.errorMessage = undefined;
+      //  this.dialogModel.model = undefined;
+      //}
+
+
+>>>>>>> 0345aa786f9463d5234f53ff45dbc884ba1fa357
     });
 
     const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
@@ -196,6 +208,10 @@ export class AccountComponent extends DefaultComponent implements OnInit {
   //account form events
   public editHandler(arg: any) {
     var recordId = this.selectedRows[0];
+<<<<<<< HEAD
+=======
+    //this.errorMessage = undefined;
+>>>>>>> 0345aa786f9463d5234f53ff45dbc884ba1fa357
     this.grid.loading = true;
     this.accountService.getById(String.Format(AccountApi.Account, recordId)).subscribe(res => {
 
@@ -226,6 +242,10 @@ export class AccountComponent extends DefaultComponent implements OnInit {
           this.reloadGrid();
         }, (error => {
           this.editDataItem = model;
+<<<<<<< HEAD
+=======
+          //this.errorMessage = error;
+>>>>>>> 0345aa786f9463d5234f53ff45dbc884ba1fa357
           this.dialogModel.errorMessage = error;
         }));
     }
@@ -254,6 +274,10 @@ export class AccountComponent extends DefaultComponent implements OnInit {
           this.reloadGrid(insertedModel);
 
         }, (error => {
+<<<<<<< HEAD
+=======
+          //this.errorMessage = error;
+>>>>>>> 0345aa786f9463d5234f53ff45dbc884ba1fa357
           this.dialogModel.errorMessage = error;
         }));
 
@@ -500,6 +524,11 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     else
       this.addToContainer = false;
 
+<<<<<<< HEAD
+=======
+    //this.errorMessage = undefined;
+
+>>>>>>> 0345aa786f9463d5234f53ff45dbc884ba1fa357
     this.openEditorDialog(true);
   }
 
