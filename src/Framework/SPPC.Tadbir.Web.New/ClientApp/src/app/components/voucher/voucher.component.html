@@ -129,7 +129,8 @@
     </kendo-grid>
     <voucher-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
                             (save)="saveHandler($event)"
-                            (cancel)="cancelHandler()">
+                            (cancel)="cancelHandler()"
+                            (changeMode)="changeMode($event)">
     </voucher-form-component>
     <report-viewer id='compviewer' baseId='5'></report-viewer>
   </div>

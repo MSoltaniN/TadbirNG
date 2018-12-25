@@ -71,21 +71,24 @@ export class VoucherFormComponent extends DetailComponent {
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<Voucher> = new EventEmitter();
+  @Output() changeMode: EventEmitter<boolean> = new EventEmitter();
   //create properties
 
   //Events
   public onSave(e: any): void {
     e.preventDefault();
-    if (this.editForm.valid) {      
-      if (this.editModel) {
-        let model: Voucher = this.editForm.value;
+    if (this.editForm.valid) {
+      let model: Voucher = this.editForm.value;
+      if (this.editModel && this.editModel.id > 0) {
         model.branchId = this.editModel.branchId;
         model.fiscalPeriodId = this.editModel.fiscalPeriodId;
-        model.statusId = this.editModel.statusId;
-        this.save.emit(model);
+        model.statusId = this.editModel.statusId;        
       }
-      else
-        this.save.emit(this.editForm.value);
+      else {
+        model.branchId = this.BranchId;
+        model.fiscalPeriodId = this.FiscalPeriodId;        
+      }
+      this.save.emit(model);
       this.active = true;
     }
   }
@@ -148,4 +151,12 @@ export class VoucherFormComponent extends DetailComponent {
 
   }
 
+
+  addNew() {
+    this.changeMode.emit(true);
+    this.isNew = true;
+    this.editModel = new VoucherInfo();
+    this.editModel.date = new Date();
+    this.editForm.reset(this.editModel);
+  }
 }

@@ -72,7 +72,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   isNew: boolean;
   errorMessage: string;
   groupDelete: boolean = false;
-  
+
   //#endregion
 
   //#region Events
@@ -146,39 +146,44 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     this.reloadGrid();
   }
 
-  public showReport()
-  {
+  public showReport() {
     var url = String.Format(ReportApi.DefaultSystemReport, this.viewer.baseId);
 
     this.reporingService.getAll(url).subscribe((res: Response) => {
-          
-      var report :Report = <any>res.body;
+
+      var report: Report = <any>res.body;
       var serviceUrl = environment.BaseUrl + "/" + report.serviceUrl;
 
       this.reporingService.getAll(serviceUrl,
-          this.currentOrder,this.currentFilter).subscribe((response: any) => {
-            
-            var fdate = moment(this.FiscalPeriodStartDate, 'YYYY-M-D HH:mm:ss')
-            .locale('fa')
-            .format('YYYY/M/D');
-  
-            var tdate = moment(this.FiscalPeriodEndDate, 'YYYY-M-D HH:mm:ss')
-            .locale('fa')
-            .format('YYYY/M/D');
-  
-  
-            var reportData = {rows : response.body , fromDate: fdate ,
-               toDate : tdate};
-               //'/assets/reports/voucher/voucher.summary.mrt'
-            this.viewer.showVoucherReport(report,reportData);           
+        this.currentOrder, this.currentFilter).subscribe((response: any) => {
 
-          });
-      });
-      
+          var fdate = moment(this.FiscalPeriodStartDate, 'YYYY-M-D HH:mm:ss')
+            .locale('fa')
+            .format('YYYY/M/D');
+
+          var tdate = moment(this.FiscalPeriodEndDate, 'YYYY-M-D HH:mm:ss')
+            .locale('fa')
+            .format('YYYY/M/D');
+
+
+          var reportData = {
+            rows: response.body, fromDate: fdate,
+            toDate: tdate
+          };
+          //'/assets/reports/voucher/voucher.summary.mrt'
+          this.viewer.showVoucherReport(report, reportData);
+
+        });
+    });
+
+  }
+
+  public changeMode(isNew: boolean) {
+    this.isNew = isNew;
   }
 
   public saveHandler(model: Voucher) {
-    debugger;
+
     this.grid.loading = true;
     if (!this.isNew) {
       this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model)
@@ -193,15 +198,15 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
         }));
     }
     else {
-      model.branchId = this.BranchId;
-      model.fiscalPeriodId = this.FiscalPeriodId;
-
       this.voucherService.insert<Voucher>(VoucherApi.EnvironmentVouchers, model)
         .subscribe((response: any) => {
           this.isNew = false;
           this.editDataItem = undefined;
           this.showMessage(this.insertMsg, MessageType.Succes);
           var insertedModel = response;
+
+          this.selectedRows = [];
+
           this.reloadGrid(insertedModel);
         }, (error => {
           this.isNew = true;
@@ -250,17 +255,17 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
   //#region Constructor
   constructor(public toastrService: ToastrService, public translate: TranslateService,
-     public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
+    public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
     private voucherService: VoucherService, public renderer: Renderer2,
-     public metadata: MetaDataService, public settingService: SettingService,
-     public reporingService:ReportingService) {
+    public metadata: MetaDataService, public settingService: SettingService,
+    public reporingService: ReportingService) {
     super(toastrService, translate, renderer, metadata, settingService, Entities.Voucher, Metadatas.Voucher);
   }
   //#endregion
 
   //#region Methods
 
-  reloadGridEvent() {    
+  reloadGridEvent() {
     this.reloadGrid();
   }
 

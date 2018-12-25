@@ -15,7 +15,7 @@
       <div class="form-toolbar" *ngIf="!isNew">
         <div [ngClass]="{'pull-right':this.CurrentLanguage === 'fa','pull-left':this.CurrentLanguage === 'en'}">
 
-          <button class="k-button" title="سند جدید">
+          <button class="k-button" title="سند جدید" (click)="addNew()">
             <span class="k-icon k-i-file-add"></span>
           </button>
 
