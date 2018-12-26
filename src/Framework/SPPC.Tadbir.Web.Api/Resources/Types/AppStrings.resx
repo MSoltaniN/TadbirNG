@@ -735,4 +735,22 @@
   <data name="AccountGroupIsRequired" xml:space="preserve">
     <value>انتخاب گروه حساب برای حساب در سطح کل اجباری است.</value>
   </data>
+  <data name="BalanceLabel" xml:space="preserve">
+    <value>تراز</value>
+  </data>
+  <data name="CheckLabel" xml:space="preserve">
+    <value>ثبت</value>
+  </data>
+  <data name="Difference" xml:space="preserve">
+    <value>اختلاف</value>
+  </data>
+  <data name="Origin" xml:space="preserve">
+    <value>مأخذ</value>
+  </data>
+  <data name="PreparedBy" xml:space="preserve">
+    <value>تنظیم کننده</value>
+  </data>
+  <data name="RowNo" xml:space="preserve">
+    <value>ردیف</value>
+  </data>
 </root>

@@ -33,6 +33,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .IsRequired()
                 .HasMaxLength(256);
             builder.Property(e => e.Template);
+            builder.Property(e => e.TemplateLtr);
             builder.Property(e => e.IsSystem)
                 .IsRequired();
             builder.Property(e => e.IsDefault)

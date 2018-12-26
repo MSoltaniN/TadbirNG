@@ -492,7 +492,8 @@ namespace SPPC.Tadbir.Mapper
 
         private static void MapReportingTypes(IMapperConfigurationExpression mapperConfig)
         {
-            mapperConfig.CreateMap<Report, ReportViewModel>();
+            mapperConfig.CreateMap<Report, ReportViewModel>()
+                .ForMember(dest => dest.ResourceMap, opts => opts.Ignore());
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

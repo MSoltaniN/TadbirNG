@@ -53,5 +53,10 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// مشخص می کند که آیا شاخه مورد نظر مربوط به گروه بندی گزارشات است یا نه؟
         /// </summary>
         public bool IsGroup { get; set; }
+
+        /// <summary>
+        /// مجموعه کلیدهای متن های چند زبانه مورد نیاز در گزارش که با کاراکتر جداکننده از یکدیگر تفکیک شده اند
+        /// </summary>
+        public string ResourceKeys { get; set; }
     }
 }

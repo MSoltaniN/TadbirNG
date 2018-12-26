@@ -11,6 +11,7 @@
 // ------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using SPPC.Framework.Values;
 
@@ -27,6 +28,8 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public ReportViewModel()
         {
             Template = String.Empty;
+            TemplateLtr = String.Empty;
+            ResourceMap = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -40,9 +43,14 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         public string ServiceUrl { get; set; }
 
         /// <summary>
-        /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه
+        /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان راست به چپ
         /// </summary>
         public string Template { get; set; }
+
+        /// <summary>
+        /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان چپ به راست
+        /// </summary>
+        public string TemplateLtr { get; set; }
 
         /// <summary>
         /// مشخص می کند که آیا گزارش مورد نظر سیستمی است یا توسط کاربر ذخیره شده است

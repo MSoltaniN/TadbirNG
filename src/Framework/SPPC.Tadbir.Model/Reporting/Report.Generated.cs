@@ -43,9 +43,14 @@ namespace SPPC.Tadbir.Model.Reporting
         public virtual string ServiceUrl { get; set; }
 
         /// <summary>
-        /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه
+        /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان راست به چپ
         /// </summary>
         public virtual string Template { get; set; }
+
+        /// <summary>
+        /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان چپ به راست
+        /// </summary>
+        public virtual string TemplateLtr { get; set; }
 
         /// <summary>
         /// مشخص می کند که آیا گزارش مورد نظر سیستمی است یا توسط کاربر ذخیره شده است

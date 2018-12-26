@@ -10,6 +10,7 @@ using SPPC.Tadbir.Api;
 using SPPC.Tadbir.Persistence;
 using SPPC.Tadbir.Security;
 using SPPC.Tadbir.ViewModel.Report;
+using SPPC.Tadbir.ViewModel.Reporting;
 using SPPC.Tadbir.Web.Api.Filters;
 using SPPC.Tadbir.Web.Api.Resources.Types;
 
@@ -29,6 +30,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetDefaultSystemReportAsync(int baseId)
         {
             var report = await _repository.GetDefaultSystemReportAsync(baseId);
+            Localize(report);
             return JsonReadResult(report);
         }
 
@@ -99,6 +101,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 standardVoucher.Date = JalaliDateTime
                     .FromDateTime(now.Parse(standardVoucher.Date, false))
                     .ToShortDateString();
+            }
+        }
+
+        private void Localize(ReportViewModel report)
+        {
+            if (report != null)
+            {
+                var keys = report.BaseResourceKeys.Split(',');
+                Array.ForEach(keys, key => report.ResourceMap.Add(key, _strings[key]));
             }
         }
 

@@ -735,4 +735,22 @@
   <data name="AccountGroupIsRequired" xml:space="preserve">
     <value>Selecting account group is required for a general-level account.</value>
   </data>
+  <data name="BalanceLabel" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="CheckLabel" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="Difference" xml:space="preserve">
+    <value>Difference</value>
+  </data>
+  <data name="Origin" xml:space="preserve">
+    <value>Origin</value>
+  </data>
+  <data name="PreparedBy" xml:space="preserve">
+    <value>Prepared by</value>
+  </data>
+  <data name="RowNo" xml:space="preserve">
+    <value>Row no.</value>
+  </data>
 </root>

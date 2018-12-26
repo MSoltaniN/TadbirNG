@@ -53,6 +53,11 @@ namespace SPPC.Tadbir.Model.Reporting
         public virtual bool IsGroup { get; set; }
 
         /// <summary>
+        /// مجموعه کلیدهای متن های چند زبانه مورد نیاز در گزارش که با کاراکتر جداکننده از یکدیگر تفکیک شده اند
+        /// </summary>
+        public virtual string ResourceKeys { get; set; }
+
+        /// <summary>
         /// شناسه یکتای ردیف دیتابیسی که به صورت خودکار توسط دیتابیس مقداردهی می شود
         /// </summary>
         public virtual Guid RowGuid { get; set; }
