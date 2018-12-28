@@ -151,8 +151,12 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
     this.reporingService.getAll(url).subscribe((res: Response) => {
 
+     
+
       var report: Report = <any>res.body;
       var serviceUrl = environment.BaseUrl + "/" + report.serviceUrl;
+
+      
 
       this.reporingService.getAll(serviceUrl,
         this.currentOrder, this.currentFilter).subscribe((response: any) => {

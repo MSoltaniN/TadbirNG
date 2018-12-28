@@ -753,4 +753,19 @@
   <data name="RowNo" xml:space="preserve">
     <value>Row no.</value>
   </data>
+  <data name="FromDate" xml:space="preserve">
+    <value>From Date:</value>
+  </data>
+  <data name="PgNumber" xml:space="preserve">
+    <value>Page Number :</value>
+  </data>
+  <data name="ReportTitle" xml:space="preserve">
+    <value>Summary of accounting documents - by date</value>
+  </data>
+  <data name="Sum" xml:space="preserve">
+    <value>Sum</value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>To Date:</value>
+  </data>
 </root>

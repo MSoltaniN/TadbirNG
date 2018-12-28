@@ -20,5 +20,7 @@ export interface Report {
     isSystem: boolean;
     isDefault: boolean;
     subsystemId: number;    
-    modifiedDate:Date;    
+    modifiedDate:Date; 
+    baseResourceKeys:string;
+    resourceMap:any;  
 }

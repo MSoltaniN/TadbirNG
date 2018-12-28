@@ -34,9 +34,24 @@
     <Relations isList="true" count="0" />
     <Report isRef="0" />
     <Resources isList="true" count="0" />
-    <Variables isList="true" count="2">
-      <value>,FromDate,FromDate,,System.String,,False,False,False,False</value>
-      <value>,ToDate,ToDate,,System.String,,False,False,False,False</value>
+    <Variables isList="true" count="17">
+      <value>,FromDate,از_x0020_تاریخ_x0020_:,,System.String,,False,False,False,False</value>
+      <value>,ToDate,تا_x0020_تاریخ_x0020_:,,System.String,,False,False,False,False</value>
+      <value>,RowNo,ردیف,,System.String,,False,False,False,False</value>
+      <value>,Voucher,سند,,System.String,,False,False,False,False</value>
+      <value>,PreparedBy,تنظیم_x0020_کننده,,System.String,,False,False,False,False</value>
+      <value>,Origin,مأخذ,,System.String,,False,False,False,False</value>
+      <value>,Difference,اختلاف,,System.String,,False,False,False,False</value>
+      <value>,DebitSum,جمع_x0020_بدهکار,,System.String,,False,False,False,False</value>
+      <value>,Date,تاریخ,,System.String,,False,False,False,False</value>
+      <value>,CreditSum,جمع_x0020_بستانکار,,System.String,,False,False,False,False</value>
+      <value>,CheckLabel,ثبت,,System.String,,False,False,False,False</value>
+      <value>,BalanceLabel,تراز,,System.String,,False,False,False,False</value>
+      <value>,PgNumber,شماره_x0020_صفحه,,System.String,,False,False,False,False</value>
+      <value>,Sum,جمع,,System.String,,False,False,False,False</value>
+      <value>,FDate,From_x0020_Date,,System.String,,False,False,False,False</value>
+      <value>,TDate,To_x0020_Date,,System.String,,False,False,False,False</value>
+      <value>,ReportTitle,خلاصه_x0020_اسناد_x0020_حسابداری_x0020_-_x0020_براساس_x0020_تاریخ,,System.String,,False,False,False,False</value>
     </Variables>
   </Dictionary>
   <EngineVersion>EngineV2</EngineVersion>
@@ -55,15 +70,16 @@
           <Components isList="true" count="8">
             <Text1 Ref="6" type="Text" isKey="true">
               <Brush>Transparent</Brush>
-              <ClientRectangle>1.9,0,3.2,0.4</ClientRectangle>
+              <ClientRectangle>1.1,0,5.1,0.4</ClientRectangle>
               <Conditions isList="true" count="0" />
               <Font>B Titr,16</Font>
               <Guid>e1697aa4a76c4d009692aee89258d420</Guid>
+              <HorAlignment>Center</HorAlignment>
               <Margins>0,0,0,0</Margins>
               <Name>Text1</Name>
               <Page isRef="4" />
               <Parent isRef="5" />
-              <Text>خلاصه اسناد حسابداری - براساس تاریخ</Text>
+              <Text>{ReportTitle}</Text>
               <TextBrush>Black</TextBrush>
               <Type>Expression</Type>
             </Text1>
@@ -78,7 +94,7 @@
               <Name>Text6</Name>
               <Page isRef="4" />
               <Parent isRef="5" />
-              <Text>از تاریخ :</Text>
+              <Text>{FromDate}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,RightToLeft=True,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -95,7 +111,7 @@
               <Name>Text7</Name>
               <Page isRef="4" />
               <Parent isRef="5" />
-              <Text>تا تاریخ :</Text>
+              <Text>{ToDate}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,RightToLeft=True,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -111,7 +127,7 @@
               <Name>Text8</Name>
               <Page isRef="4" />
               <Parent isRef="5" />
-              <Text>{FromDate}</Text>
+              <Text>{FDate}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,RightToLeft=True,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -127,7 +143,7 @@
               <Name>Text9</Name>
               <Page isRef="4" />
               <Parent isRef="5" />
-              <Text>{ToDate}</Text>
+              <Text>{TDate}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,RightToLeft=True,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -160,7 +176,7 @@
               <Name>Text26</Name>
               <Page isRef="4" />
               <Parent isRef="5" />
-              <Text>شماره صفحه :</Text>
+              <Text>{PgNumber}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,RightToLeft=True,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -218,7 +234,7 @@
               <Name>Text2</Name>
               <Page isRef="4" />
               <Parent isRef="17" />
-              <Text>سند</Text>
+              <Text>{Voucher}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -236,7 +252,7 @@
               <Name>Text3</Name>
               <Page isRef="4" />
               <Parent isRef="17" />
-              <Text>تاریخ</Text>
+              <Text>{Date}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -254,7 +270,7 @@
               <Name>Text4</Name>
               <Page isRef="4" />
               <Parent isRef="17" />
-              <Text>مبلغ اختلاف</Text>
+              <Text>{Difference}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -272,7 +288,7 @@
               <Name>Text5</Name>
               <Page isRef="4" />
               <Parent isRef="17" />
-              <Text>تراز</Text>
+              <Text>{BalanceLabel}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -290,7 +306,7 @@
               <Name>Text13</Name>
               <Page isRef="4" />
               <Parent isRef="17" />
-              <Text>ردیف</Text>
+              <Text>{RowNo}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -308,7 +324,7 @@
               <Name>Text15</Name>
               <Page isRef="4" />
               <Parent isRef="17" />
-              <Text>جمع بدهکار</Text>
+              <Text>{DebitSum}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -326,7 +342,7 @@
               <Name>Text14</Name>
               <Page isRef="4" />
               <Parent isRef="17" />
-              <Text>جمع بستانکار</Text>
+              <Text>{CreditSum}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -344,7 +360,7 @@
               <Name>Text17</Name>
               <Page isRef="4" />
               <Parent isRef="17" />
-              <Text>ثبت</Text>
+              <Text>{CheckLabel}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -840,7 +856,7 @@
               <Name>Text22</Name>
               <Page isRef="4" />
               <Parent isRef="83" />
-              <Text>جمع</Text>
+              <Text>{Sum}</Text>
               <TextBrush>Black</TextBrush>
               <TextOptions>,,,,WordWrap=True,A=0</TextOptions>
               <Type>Expression</Type>
@@ -1386,10 +1402,10 @@
     <value>Stimulsoft.Report.Dll</value>
   </ReferencedAssemblies>
   <ReportAlias>Report</ReportAlias>
-  <ReportChanged>12/12/2018 2:34:18 AM</ReportChanged>
+  <ReportChanged>12/28/2018 5:48:17 AM</ReportChanged>
   <ReportCreated>11/12/2018 11:48:30 PM</ReportCreated>
   <ReportFile>D:\Tadbir\repos\NewRepo\src\Framework\SPPC.Tadbir.Web.New\ClientApp\src\assets\reports\voucher\voucher.summary.mrt</ReportFile>
-  <ReportGuid>5431aca03e72409b82fea8b9951b002c</ReportGuid>
+  <ReportGuid>cd4bb051fb2c499e8c00a2126c00a88c</ReportGuid>
   <ReportName>Report</ReportName>
   <ReportUnit>Inches</ReportUnit>
   <ReportVersion>2018.3.3.0</ReportVersion>
