@@ -4,6 +4,7 @@
     {{ isNew ?  ('Voucher.New' | translate) :  ('Buttons.Edit' | translate) }}
   </kendo-dialog-titlebar>
   <div *ngIf="errorMessage != ''">
+    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
     <div class="alert alert-danger">
       {{ errorMessage }}
     </div>

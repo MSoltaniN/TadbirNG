@@ -1,4 +1,4 @@
-﻿<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               (close)="closeForm()" [minWidth]="250" [width]="450">
     <kendo-dialog-titlebar>
         {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
@@ -11,9 +11,10 @@
     </div>
 
     <div *ngIf="errorMessage != ''">
-        <div class="alert alert-danger">
-            {{ errorMessage }}
-        </div>
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+      <div class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
     </div>
 
     <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">

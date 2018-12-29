@@ -2,9 +2,10 @@
 <div class="panel-body">
 
     <div *ngIf="errorMessage != ''">
-        <div class="alert alert-danger">
-            {{ errorMessage }}
-        </div>
+      <div class="alert alert-danger">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        {{ errorMessage }}
+      </div>
     </div>
     <div *ngIf="!viewAccess">
         {{ 'App.NotViewAccess' | translate }}
@@ -44,9 +45,10 @@
                 <div class="section-body">
 
                     <div *ngIf="noResultMessage">
-                        <div class="alert alert-danger">
-                            {{ 'AccountRelations.NotFound' | translate }}
-                        </div>
+                      <div class="alert alert-danger">
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        {{ 'AccountRelations.NotFound' | translate }}
+                      </div>
                     </div>
 
                     <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}">
@@ -102,6 +104,7 @@
 
                     <div *ngIf="noRelatedResultMessage">
                       <div class="alert alert-danger">
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                         {{ 'AccountRelations.NoRelateion' | translate }}
                       </div>
                     </div>
