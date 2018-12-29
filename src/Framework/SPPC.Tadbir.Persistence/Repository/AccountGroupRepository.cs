@@ -7,7 +7,9 @@ using SPPC.Framework.Common;
 using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
+using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
+using SPPC.Tadbir.ViewModel.Auth;
 using SPPC.Tadbir.ViewModel.Finance;
 using SPPC.Tadbir.ViewModel.Metadata;
 
@@ -26,9 +28,11 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="metadata">امکان خواندن متادیتا برای یک موجودیت را فراهم می کند</param>
         /// <param name="log">امکان ایجاد لاگ های عملیاتی را در دیتابیس سیستمی برنامه فراهم می کند</param>
         public AccountGroupRepository(
-            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log)
+            IAppUnitOfWork unitOfWork, IDomainMapper mapper, IMetadataRepository metadata, IOperationLogRepository log,
+            ISecureRepository repository)
             : base(unitOfWork, mapper, metadata, log)
         {
+            _repository = repository;
         }
 
         /// <summary>
@@ -91,6 +95,39 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
+        /// به روش آسنکرون، تعداد حساب های کل زیرمجموعه گروه حساب مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="groupId">شناسه دیتابیسی گروه مورد نظر</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد حساب های کل زیرمجموعه گروه حساب</returns>
+        public async Task<int> GetSubItemCountAsync(int groupId, GridOptions gridOptions = null)
+        {
+            int count = await _repository
+                .GetAllQuery<Account>(ViewName.Account)
+                .Where(acc => acc.GroupId == groupId)
+                .Apply(gridOptions, false)
+                .CountAsync();
+            return count;
+        }
+
+        /// <summary>
+        /// مجوعه ای از حساب های کل زیرمجموعه گروه مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="groupId">شناسه دیتابیسی گروه مورد نظر</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه حساب های کل زیرمجموعه</returns>
+        public async Task<IList<AccountViewModel>> GetGroupLedgerAccountsAsync(int groupId, GridOptions gridOptions = null)
+        {
+            var accounts = await _repository
+                .GetAllQuery<Account>(ViewName.Account, acc => acc.Children)
+                .Where(acc => acc.GroupId == groupId)
+                .Select(acc => Mapper.Map<AccountViewModel>(acc))
+                .Apply(gridOptions)
+                .ToListAsync();
+            return accounts;
+        }
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات یک گروه حساب را ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="accountGroupView">گروه حساب مورد نظر برای ایجاد یا اصلاح</param>
@@ -147,6 +184,12 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        public override void SetCurrentContext(UserContextViewModel userContext)
+        {
+            base.SetCurrentContext(userContext);
+            _repository.SetCurrentContext(userContext);
+        }
+
         /// <summary>
         /// اطلاعات خلاصه سطر اطلاعاتی داده شده را به صورت یک رشته متنی برمی گرداند
         /// </summary>
@@ -172,5 +215,7 @@ namespace SPPC.Tadbir.Persistence
             accGroup.Category = accGroupView.Category;
             accGroup.Description = accGroupView.Description;
         }
+
+        private readonly ISecureRepository _repository;
     }
 }

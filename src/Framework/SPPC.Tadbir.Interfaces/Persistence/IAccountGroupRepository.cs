@@ -42,6 +42,22 @@ namespace SPPC.Tadbir.Persistence
         Task<int> GetCountAsync(GridOptions gridOptions = null);
 
         /// <summary>
+        /// به روش آسنکرون، تعداد حساب های کل زیرمجموعه گروه حساب مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="groupId">شناسه دیتابیسی گروه مورد نظر</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>تعداد حساب های کل زیرمجموعه گروه حساب</returns>
+        Task<int> GetSubItemCountAsync(int groupId, GridOptions gridOptions = null);
+
+        /// <summary>
+        /// مجوعه ای از حساب های کل زیرمجموعه گروه مشخص شده را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="groupId">شناسه دیتابیسی گروه مورد نظر</param>
+        /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
+        /// <returns>مجموعه حساب های کل زیرمجموعه</returns>
+        Task<IList<AccountViewModel>> GetGroupLedgerAccountsAsync(int groupId, GridOptions gridOptions = null);
+
+        /// <summary>
         /// به روش آسنکرون، اطلاعات یک گروه حساب را ایجاد یا اصلاح می کند
         /// </summary>
         /// <param name="accountGroup">گروه حساب مورد نظر برای ایجاد یا اصلاح</param>

@@ -54,6 +54,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(accountGroup);
         }
 
+        // GET: api/accgroups/{groupId:min(1)}/accounts
+        [Route(AccountGroupApi.GroupLedgerAccountsUrl)]
+        [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
+        public async Task<IActionResult> GetGroupLedgerAccountsAsync(int groupId)
+        {
+            _repository.SetCurrentContext(SecurityContext.User);
+            int itemCount = await _repository.GetSubItemCountAsync(groupId, GridOptions);
+            SetItemCount(itemCount);
+            var accounts = await _repository.GetGroupLedgerAccountsAsync(groupId, GridOptions);
+            return Json(accounts);
+        }
+
         // GET: api/accgroups/metadata
         [Route(AccountGroupApi.AccountGroupMetadataUrl)]
         [AuthorizeRequest(SecureEntity.AccountGroup, (int)AccountGroupPermissions.View)]
