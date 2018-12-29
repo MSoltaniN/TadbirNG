@@ -4440,7 +4440,7 @@
  body.tRtl .modal-danger .modal-body,
  body.tRtl .modal-danger .modal-header,
  body.tRtl .modal-danger .modal-footer {
-   color: #fff !important;
+   /*color: #fff !important;*/
  }
  body.tRtl .bg-gray {
    color: #000;
@@ -4458,7 +4458,7 @@
  body.tRtl .alert-error,
  body.tRtl .label-danger,
  body.tRtl .modal-danger .modal-body {
-   background-color: #dd4b39 !important;
+   /*background-color: #dd4b39 !important;*/
  }
  body.tRtl .bg-yellow,
  body.tRtl .callout.callout-warning,
@@ -4987,4 +4987,3 @@
  
  
 
- 

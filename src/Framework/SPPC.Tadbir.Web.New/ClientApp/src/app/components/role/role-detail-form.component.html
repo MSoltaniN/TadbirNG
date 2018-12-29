@@ -1,13 +1,14 @@
-﻿<kendo-dialog *ngIf="roleDetail" class="user-dialog" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+<kendo-dialog *ngIf="roleDetail" class="user-dialog" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               (close)="closeForm()">
     <kendo-dialog-titlebar>
         {{ getTitleText('RoleDetail.RoleDetailTitle' | translate) }}
     </kendo-dialog-titlebar>
 
     <div *ngIf="errorMessage != ''">
-        <div class="alert alert-danger">
-            {{ errorMessage }}
-        </div>
+      <div class="alert alert-danger">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+        {{ errorMessage }}
+      </div>
     </div>
 
     <div class="panel panel-primary">
