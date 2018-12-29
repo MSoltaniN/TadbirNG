@@ -162,11 +162,11 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
         this.currentOrder, this.currentFilter).subscribe((response: any) => {
 
           var fdate = moment(this.FiscalPeriodStartDate, 'YYYY-M-D HH:mm:ss')
-            .locale('fa')
+            .locale(this.CurrentLanguage)
             .format('YYYY/M/D');
 
           var tdate = moment(this.FiscalPeriodEndDate, 'YYYY-M-D HH:mm:ss')
-            .locale('fa')
+            .locale(this.CurrentLanguage)
             .format('YYYY/M/D');
 
 

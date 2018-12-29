@@ -114,7 +114,14 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
      
      
       console.log('Load report from url');
-      this.report.load(reportObject.template);
+      var reportTemplate : string;
+
+      if (this.CurrentLanguage == "fa")
+          reportTemplate = reportObject.template;
+      else
+          reportTemplate = reportObject.templateLtr;
+
+      this.report.load(reportTemplate);
      
       this.report.regData("Vouchers", "", reportData.rows);
       this.report.dictionary.variables.getByName("FDate").valueObject = reportData.fromDate;

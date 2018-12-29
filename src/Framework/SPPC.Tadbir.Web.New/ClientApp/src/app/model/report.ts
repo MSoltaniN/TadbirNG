@@ -17,6 +17,7 @@ export interface Report {
     createdById: number;
     serviceUrl: string;
     template: string;
+    templateLtr: string;
     isSystem: boolean;
     isDefault: boolean;
     subsystemId: number;    
