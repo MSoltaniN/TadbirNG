@@ -228,7 +228,6 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
     }
 
     openMultipleForm() {
-        // debugger;
         this.errorMessage = '';
 
         this.entity = this.singleFormSelectedModel;
@@ -249,15 +248,11 @@ export class ViewRowPermissionComponent extends DefaultComponent implements OnIn
     }
 
     saveMultipleFormHandler(items: number[]) {
-        //debugger;
-
         this.multipleFormItemsSelected = items;
         this.isChangeMultipleForm = true;
         this.updateDataItem();
 
         this.isActiveMultipleForm = false;
-
-        console.log(this.dataItem);
     }
 
     saveRowPermission() {
