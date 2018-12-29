@@ -130,6 +130,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(detailAccounts);
         }
 
+        // POST: api/relations/account/{accountId:min(1)}/faccounts
+        [HttpPost]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [Route(AccountRelationApi.DetailAccountsRelatedToAccountUrl)]
+        public async Task<IActionResult> PostNewAccountDetailAccountsAsync(
+            int accountId, [FromBody] AccountItemRelationsViewModel relations)
+        {
+            var result = BasicValidationResult(relations, accountId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.AddAccountDetailAccountsAsync(relations);
+            return Ok();
+        }
+
         // PUT: api/relations/account/{accountId:min(1)}/faccounts
         [HttpPut]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
@@ -143,7 +160,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SaveAccountDetailAccountsAsync(relations);
+            await _repository.RemoveAccountDetailAccountsAsync(relations);
             return Ok();
         }
 
@@ -167,6 +184,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(costCenters);
         }
 
+        // POST: api/relations/account/{accountId:min(1)}/ccenters
+        [HttpPost]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [Route(AccountRelationApi.CostCentersRelatedToAccountUrl)]
+        public async Task<IActionResult> PostNewAccountCostCentersAsync(
+            int accountId, [FromBody] AccountItemRelationsViewModel relations)
+        {
+            var result = BasicValidationResult(relations, accountId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.AddAccountCostCentersAsync(relations);
+            return Ok();
+        }
+
         // PUT: api/relations/account/{accountId:min(1)}/ccenters
         [HttpPut]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
@@ -180,7 +214,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SaveAccountCostCentersAsync(relations);
+            await _repository.RemoveAccountCostCentersAsync(relations);
             return Ok();
         }
 
@@ -204,6 +238,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(projects);
         }
 
+        // POST: api/relations/account/{accountId:min(1)}/projects
+        [HttpPost]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [Route(AccountRelationApi.ProjectsRelatedToAccountUrl)]
+        public async Task<IActionResult> PostNewAccountProjectsAsync(
+            int accountId, [FromBody] AccountItemRelationsViewModel relations)
+        {
+            var result = BasicValidationResult(relations, accountId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.AddAccountProjectsAsync(relations);
+            return Ok();
+        }
+
         // PUT: api/relations/account/{accountId:min(1)}/projects
         [HttpPut]
         [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
@@ -217,7 +268,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SaveAccountProjectsAsync(relations);
+            await _repository.RemoveAccountProjectsAsync(relations);
             return Ok();
         }
 
@@ -229,6 +280,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository.SetCurrentContext(SecurityContext.User);
             var accounts = await _repository.GetDetailAccountAccountsAsync(faccountId, GridOptions);
             return Json(accounts);
+        }
+
+        // POST: api/relations/faccount/{faccountId:min(1)}/accounts
+        [HttpPost]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [Route(AccountRelationApi.AccountsRelatedToDetailAccountUrl)]
+        public async Task<IActionResult> PostNewDetailAccountAccountsAsync(
+            int faccountId, [FromBody] AccountItemRelationsViewModel relations)
+        {
+            var result = BasicValidationResult(relations, faccountId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.AddDetailAccountAccountsAsync(relations);
+            return Ok();
         }
 
         // PUT: api/relations/faccount/{faccountId:min(1)}/accounts
@@ -244,7 +312,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SaveDetailAccountAccountsAsync(relations);
+            await _repository.RemoveDetailAccountAccountsAsync(relations);
             return Ok();
         }
 
@@ -256,6 +324,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository.SetCurrentContext(SecurityContext.User);
             var accounts = await _repository.GetCostCenterAccountsAsync(ccenterId, GridOptions);
             return Json(accounts);
+        }
+
+        // POST: api/relations/ccenter/{ccenterId:min(1)}/accounts
+        [HttpPost]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [Route(AccountRelationApi.AccountsRelatedToCostCenterUrl)]
+        public async Task<IActionResult> PostNewCostCenterAccountsAsync(
+            int ccenterId, [FromBody] AccountItemRelationsViewModel relations)
+        {
+            var result = BasicValidationResult(relations, ccenterId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.AddCostCenterAccountsAsync(relations);
+            return Ok();
         }
 
         // PUT: api/relations/ccenter/{ccenterId:min(1)}/accounts
@@ -271,7 +356,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SaveCostCenterAccountsAsync(relations);
+            await _repository.RemoveCostCenterAccountsAsync(relations);
             return Ok();
         }
 
@@ -283,6 +368,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository.SetCurrentContext(SecurityContext.User);
             var accounts = await _repository.GetProjectAccountsAsync(projectId, GridOptions);
             return Json(accounts);
+        }
+
+        // POST: api/relations/project/{projectId:min(1)}/accounts
+        [HttpPost]
+        [AuthorizeRequest(SecureEntity.AccountRelations, (int)AccountRelationPermissions.ManageRelationships)]
+        [Route(AccountRelationApi.AccountsRelatedToProjectUrl)]
+        public async Task<IActionResult> PostNewProjectAccountsAsync(
+            int projectId, [FromBody] AccountItemRelationsViewModel relations)
+        {
+            var result = BasicValidationResult(relations, projectId);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
+            await _repository.AddProjectAccountsAsync(relations);
+            return Ok();
         }
 
         // PUT: api/relations/project/{projectId:min(1)}/accounts
@@ -298,7 +400,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
-            await _repository.SaveProjectAccountsAsync(relations);
+            await _repository.RemoveProjectAccountsAsync(relations);
             return Ok();
         }
 

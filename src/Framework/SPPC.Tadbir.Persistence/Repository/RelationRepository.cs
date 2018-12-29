@@ -369,152 +369,588 @@ namespace SPPC.Tadbir.Persistence
             return accounts;
         }
 
+        #region AccountDetailAccount Methods
+
         /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت تفصیلی های شناور مرتبط با یک حساب را ذخیره می کند
+        /// به روش آسنکرون، تفصیلی های شناور مرتبط با یک حساب را اضافه می کند
         /// </summary>
         /// <param name="relations">اطلاعات تفصیلی های شناور مرتبط با یک حساب</param>
-        public async Task SaveAccountDetailAccountsAsync(AccountItemRelationsViewModel relations)
+        public async Task AddAccountDetailAccountsAsync(AccountItemRelationsViewModel relations)
         {
-            Verify.ArgumentNotNull(relations, "relations");
+            Verify.ArgumentNotNull(relations, nameof(relations));
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, acc => acc.AccountDetailAccounts);
             if (existing != null)
             {
-                if (existing.AccountDetailAccounts.Count > 0)
-                {
-                    RemoveDisconnectedDetailAccounts(existing, relations);
-                }
-
-                await AddNewAccountDetailAccounts(existing, relations);
+                await AddNewAccountDetailAccountsAsync(existing, relations);
                 repository.Update(existing);
                 await _unitOfWork.CommitAsync();
             }
         }
 
+        private async Task AddNewAccountDetailAccountsAsync(
+            Account existing, AccountItemRelationsViewModel relations)
+        {
+            foreach (int detailId in relations.RelatedItemIds)
+            {
+                await AddNewAccountDetailAccount(existing, detailId);
+            }
+        }
+
+        private async Task AddNewAccountDetailAccount(Account existing, int detailId)
+        {
+            var existingRelation = existing.AccountDetailAccounts
+                .Where(ada => ada.AccountId == existing.Id && ada.DetailId == detailId)
+                .FirstOrDefault();
+            if (existingRelation != null)
+            {
+                return;
+            }
+
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var detailAccount = await repository.GetByIDWithTrackingAsync(detailId, facc => facc.Children);
+            var accountDetailAccount = new AccountDetailAccount()
+            {
+                Account = existing,
+                AccountId = existing.Id,
+                DetailAccount = detailAccount,
+                DetailId = detailAccount.Id
+            };
+            existing.AccountDetailAccounts.Add(accountDetailAccount);
+            foreach (var child in detailAccount.Children)
+            {
+                await AddNewAccountDetailAccount(existing, child.Id);
+            }
+        }
+
         /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت مراکز هزینه مرتبط با یک حساب را ذخیره می کند
+        /// به روش آسنکرون، تفصیلی های شناور مرتبط با یک حساب را حذف می کند
         /// </summary>
-        /// <param name="relations">اطلاعات مراکز هزینه مرتبط با یک حساب</param>
-        public async Task SaveAccountCostCentersAsync(AccountItemRelationsViewModel relations)
+        /// <param name="relations">اطلاعات تفصیلی های شناور مرتبط با یک حساب</param>
+        public async Task RemoveAccountDetailAccountsAsync(AccountItemRelationsViewModel relations)
+        {
+            Verify.ArgumentNotNull(relations, nameof(relations));
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var existing = await repository.GetByIDWithTrackingAsync(
+                relations.Id, acc => acc.AccountDetailAccounts);
+            if (existing != null)
+            {
+                await RemoveDisconnectedDetailAccountsAsync(existing, relations);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        private async Task RemoveDisconnectedDetailAccountsAsync(
+            Account existing, AccountItemRelationsViewModel relations)
+        {
+            foreach (int id in relations.RelatedItemIds)
+            {
+                await RemoveAccountDetailAccountAsync(existing, id);
+            }
+        }
+
+        private async Task RemoveAccountDetailAccountAsync(Account existing, int detailId)
+        {
+            var existingRelation = existing.AccountDetailAccounts
+                .Where(ada => ada.DetailId == detailId)
+                .SingleOrDefault();
+            if (existingRelation == null)
+            {
+                return;
+            }
+
+            existing.AccountDetailAccounts.Remove(existingRelation);
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var detailAccount = await repository.GetByIDWithTrackingAsync(detailId, facc => facc.Children);
+            foreach (var child in detailAccount.Children)
+            {
+                await RemoveAccountDetailAccountAsync(existing, child.Id);
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، حساب های مرتبط با یک تفصیلی شناور را اضافه می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات حساب های مرتبط با یک تفصیلی شناور</param>
+        public async Task AddDetailAccountAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, "relations");
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var existing = await repository.GetByIDWithTrackingAsync(
+                relations.Id, facc => facc.AccountDetailAccounts, facc => facc.Children);
+            if (existing != null)
+            {
+                await AddConnectedAccountsAsync(existing, relations);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        private async Task AddConnectedAccountsAsync(
+            DetailAccount existing, AccountItemRelationsViewModel relations)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            foreach (int id in relations.RelatedItemIds)
+            {
+                var account = await repository.GetByIDWithTrackingAsync(id);
+                await AddConnectedAccountAsync(existing, account);
+            }
+        }
+
+        private async Task AddConnectedAccountAsync(DetailAccount existing, Account account)
+        {
+            var existingRelation = existing.AccountDetailAccounts
+                .Where(ada => ada.AccountId == account.Id && ada.DetailId == existing.Id)
+                .FirstOrDefault();
+            if (existingRelation != null)
+            {
+                return;
+            }
+
+            var accountDetailAccount = new AccountDetailAccount()
+            {
+                Account = account,
+                AccountId = account.Id,
+                DetailAccount = existing,
+                DetailId = existing.Id
+            };
+            existing.AccountDetailAccounts.Add(accountDetailAccount);
+            foreach (var child in existing.Children)
+            {
+                await AddConnectedAccountAsync(child, account);
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، حساب های مرتبط با یک تفصیلی شناور را حذف می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات حساب های مرتبط با یک تفصیلی شناور</param>
+        public async Task RemoveDetailAccountAccountsAsync(AccountItemRelationsViewModel relations)
+        {
+            Verify.ArgumentNotNull(relations, "relations");
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
+            var existing = await repository.GetByIDWithTrackingAsync(
+                relations.Id, facc => facc.AccountDetailAccounts, facc => facc.Children);
+            if (existing != null)
+            {
+                await RemoveDisconnectedAccountsAsync(existing, relations);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        private async Task RemoveDisconnectedAccountsAsync(
+            DetailAccount existing, AccountItemRelationsViewModel relations)
+        {
+            foreach (int id in relations.RelatedItemIds)
+            {
+                await RemoveDisconnectedAccountAsync(existing, id);
+            }
+        }
+
+        private async Task RemoveDisconnectedAccountAsync(DetailAccount existing, int accountId)
+        {
+            var existingRelation = existing.AccountDetailAccounts
+                .Where(ada => ada.AccountId == accountId)
+                .SingleOrDefault();
+            if (existingRelation == null)
+            {
+                return;
+            }
+
+            existing.AccountDetailAccounts.Remove(existingRelation);
+            foreach (var child in existing.Children)
+            {
+                await RemoveDisconnectedAccountAsync(child, accountId);
+            }
+        }
+
+        #endregion
+
+        #region AccountCostCenter Methods
+
+        /// <summary>
+        /// به روش آسنکرون، مراکز هزینه مرتبط با یک حساب را اضافه می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات مراکز هزینه مرتبط با یک حساب</param>
+        public async Task AddAccountCostCentersAsync(AccountItemRelationsViewModel relations)
+        {
+            Verify.ArgumentNotNull(relations, nameof(relations));
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, acc => acc.AccountCostCenters);
             if (existing != null)
             {
-                if (existing.AccountCostCenters.Count > 0)
-                {
-                    RemoveDisconnectedCostCenters(existing, relations);
-                }
-
-                await AddNewAccountCostCenters(existing, relations);
+                await AddNewAccountCostCentersAsync(existing, relations);
                 repository.Update(existing);
                 await _unitOfWork.CommitAsync();
             }
         }
 
+        private async Task AddNewAccountCostCentersAsync(
+            Account existing, AccountItemRelationsViewModel relations)
+        {
+            foreach (int centerId in relations.RelatedItemIds)
+            {
+                await AddNewAccountCostCenterAsync(existing, centerId);
+            }
+        }
+
+        private async Task AddNewAccountCostCenterAsync(Account existing, int centerId)
+        {
+            var existingRelation = existing.AccountCostCenters
+                .Where(ac => ac.AccountId == existing.Id && ac.CostCenterId == centerId)
+                .FirstOrDefault();
+            if (existingRelation != null)
+            {
+                return;
+            }
+
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var costCenter = await repository.GetByIDWithTrackingAsync(centerId, cc => cc.Children);
+            var accountCostCenter = new AccountCostCenter()
+            {
+                Account = existing,
+                AccountId = existing.Id,
+                CostCenter = costCenter,
+                CostCenterId = costCenter.Id
+            };
+            existing.AccountCostCenters.Add(accountCostCenter);
+            foreach (var child in costCenter.Children)
+            {
+                await AddNewAccountCostCenterAsync(existing, child.Id);
+            }
+        }
+
         /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت پروژه های مرتبط با یک حساب را ذخیره می کند
+        /// به روش آسنکرون، مراکز هزینه مرتبط با یک حساب را حذف می کند
         /// </summary>
-        /// <param name="relations">اطلاعات پروژه های مرتبط با یک حساب</param>
-        public async Task SaveAccountProjectsAsync(AccountItemRelationsViewModel relations)
+        /// <param name="relations">اطلاعات مراکز هزینه مرتبط با یک حساب</param>
+        public async Task RemoveAccountCostCentersAsync(AccountItemRelationsViewModel relations)
+        {
+            Verify.ArgumentNotNull(relations, nameof(relations));
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var existing = await repository.GetByIDWithTrackingAsync(
+                relations.Id, acc => acc.AccountCostCenters);
+            if (existing != null)
+            {
+                await RemoveDisconnectedCostCentersAsync(existing, relations);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        private async Task RemoveDisconnectedCostCentersAsync(
+            Account existing, AccountItemRelationsViewModel relations)
+        {
+            foreach (int id in relations.RelatedItemIds)
+            {
+                await RemoveAccountCostCenterAsync(existing, id);
+            }
+        }
+
+        private async Task RemoveAccountCostCenterAsync(Account existing, int centerId)
+        {
+            var existingRelation = existing.AccountCostCenters
+                .Where(ac => ac.CostCenterId == centerId)
+                .SingleOrDefault();
+            if (existingRelation == null)
+            {
+                return;
+            }
+
+            existing.AccountCostCenters.Remove(existingRelation);
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var costCenter = await repository.GetByIDWithTrackingAsync(centerId, cc => cc.Children);
+            foreach (var child in costCenter.Children)
+            {
+                await RemoveAccountCostCenterAsync(existing, child.Id);
+            }
+        }
+
+        public async Task AddCostCenterAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, "relations");
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var existing = await repository.GetByIDWithTrackingAsync(
+                relations.Id, cc => cc.AccountCostCenters, cc => cc.Children);
+            if (existing != null)
+            {
+                await AddConnectedAccountsAsync(existing, relations);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        private async Task AddConnectedAccountsAsync(
+            CostCenter existing, AccountItemRelationsViewModel relations)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            foreach (int id in relations.RelatedItemIds)
+            {
+                var account = await repository.GetByIDWithTrackingAsync(id);
+                await AddConnectedAccountAsync(existing, account);
+            }
+        }
+
+        private async Task AddConnectedAccountAsync(CostCenter existing, Account account)
+        {
+            var existingRelation = existing.AccountCostCenters
+                .Where(ac => ac.AccountId == account.Id && ac.CostCenterId == existing.Id)
+                .FirstOrDefault();
+            if (existingRelation != null)
+            {
+                return;
+            }
+
+            var accountCostCenter = new AccountCostCenter()
+            {
+                Account = account,
+                AccountId = account.Id,
+                CostCenter = existing,
+                CostCenterId = existing.Id
+            };
+            existing.AccountCostCenters.Add(accountCostCenter);
+            foreach (var child in existing.Children)
+            {
+                await AddConnectedAccountAsync(child, account);
+            }
+        }
+
+        public async Task RemoveCostCenterAccountsAsync(AccountItemRelationsViewModel relations)
+        {
+            Verify.ArgumentNotNull(relations, "relations");
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
+            var existing = await repository.GetByIDWithTrackingAsync(
+                relations.Id, cc => cc.AccountCostCenters, cc => cc.Children);
+            if (existing != null)
+            {
+                await RemoveDisconnectedAccountsAsync(existing, relations);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        private async Task RemoveDisconnectedAccountsAsync(
+            CostCenter existing, AccountItemRelationsViewModel relations)
+        {
+            foreach (int id in relations.RelatedItemIds)
+            {
+                await RemoveDisconnectedAccountAsync(existing, id);
+            }
+        }
+
+        private async Task RemoveDisconnectedAccountAsync(CostCenter existing, int accountId)
+        {
+            var existingRelation = existing.AccountCostCenters
+                .Where(ac => ac.AccountId == accountId)
+                .SingleOrDefault();
+            if (existingRelation == null)
+            {
+                return;
+            }
+
+            existing.AccountCostCenters.Remove(existingRelation);
+            foreach (var child in existing.Children)
+            {
+                await RemoveDisconnectedAccountAsync(child, accountId);
+            }
+        }
+
+        #endregion
+
+        #region AccountProject Methods
+
+        /// <summary>
+        /// به روش آسنکرون، پروژه های مرتبط با یک حساب را اضافه می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات پروژه های مرتبط با یک حساب</param>
+        public async Task AddAccountProjectsAsync(AccountItemRelationsViewModel relations)
+        {
+            Verify.ArgumentNotNull(relations, nameof(relations));
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             var existing = await repository.GetByIDWithTrackingAsync(
                 relations.Id, acc => acc.AccountProjects);
             if (existing != null)
             {
-                if (existing.AccountProjects.Count > 0)
-                {
-                    RemoveDisconnectedProjects(existing, relations);
-                }
-
-                await AddNewAccountProjects(existing, relations);
+                await AddNewAccountProjectsAsync(existing, relations);
                 repository.Update(existing);
                 await _unitOfWork.CommitAsync();
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت حساب های مرتبط با یک تفصیلی شناور را ذخیره می کند
-        /// </summary>
-        /// <param name="relations">اطلاعات حساب های مرتبط با یک تفصیلی شناور</param>
-        public async Task SaveDetailAccountAccountsAsync(AccountItemRelationsViewModel relations)
+        private async Task AddNewAccountProjectsAsync(Account existing, AccountItemRelationsViewModel relations)
         {
-            Verify.ArgumentNotNull(relations, "relations");
-            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
-            var existing = await repository.GetByIDWithTrackingAsync(relations.Id, facc => facc.AccountDetailAccounts);
-            if (existing != null && AreRelationsModified(
-                    existing.AccountDetailAccounts
-                        .Select(ada => ada.AccountId)
-                        .ToArray(),
-                    relations))
+            foreach (int projectId in relations.RelatedItemIds)
             {
-                if (existing.AccountDetailAccounts.Count > 0)
-                {
-                    RemoveDisconnectedAccounts(existing, relations);
-                }
-
-                AddConnectedAccounts(existing, relations);
-                repository.Update(existing);
-                await _unitOfWork.CommitAsync();
+                await AddNewAccountProjectAsync(existing, projectId);
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت حساب های مرتبط با یک مرکز هزینه را ذخیره می کند
-        /// </summary>
-        /// <param name="relations">اطلاعات حساب های مرتبط با یک مرکز هزینه</param>
-        public async Task SaveCostCenterAccountsAsync(AccountItemRelationsViewModel relations)
+        private async Task AddNewAccountProjectAsync(Account existing, int projectId)
         {
-            Verify.ArgumentNotNull(relations, "relations");
-            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
-            var existing = await repository.GetByIDWithTrackingAsync(relations.Id, cc => cc.AccountCostCenters);
-            if (existing != null && AreRelationsModified(
-                    existing.AccountCostCenters
-                        .Select(ac => ac.AccountId)
-                        .ToArray(),
-                    relations))
+            var existingRelation = existing.AccountProjects
+                .Where(ap => ap.AccountId == existing.Id && ap.ProjectId == projectId)
+                .FirstOrDefault();
+            if (existingRelation != null)
             {
-                if (existing.AccountCostCenters.Count > 0)
-                {
-                    RemoveDisconnectedAccounts(existing, relations);
-                }
+                return;
+            }
 
-                AddConnectedAccounts(existing, relations);
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var project = await repository.GetByIDWithTrackingAsync(projectId, prj => prj.Children);
+            var accountProject = new AccountProject()
+            {
+                Account = existing,
+                AccountId = existing.Id,
+                Project = project,
+                ProjectId = project.Id
+            };
+            existing.AccountProjects.Add(accountProject);
+            foreach (var child in project.Children)
+            {
+                await AddNewAccountProjectAsync(existing, child.Id);
+            }
+        }
+
+        /// <summary>
+        /// به روش آسنکرون، پروژه های مرتبط با یک حساب را حذف می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات پروژه های مرتبط با یک حساب</param>
+        public async Task RemoveAccountProjectsAsync(AccountItemRelationsViewModel relations)
+        {
+            Verify.ArgumentNotNull(relations, nameof(relations));
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            var existing = await repository.GetByIDWithTrackingAsync(
+                relations.Id, acc => acc.AccountProjects);
+            if (existing != null)
+            {
+                await RemoveDisconnectedProjectsAsync(existing, relations);
                 repository.Update(existing);
                 await _unitOfWork.CommitAsync();
             }
         }
 
-        /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت حساب های مرتبط با یک پروژه را ذخیره می کند
-        /// </summary>
-        /// <param name="relations">اطلاعات حساب های مرتبط با یک پروژه</param>
-        public async Task SaveProjectAccountsAsync(AccountItemRelationsViewModel relations)
+        private async Task RemoveDisconnectedProjectsAsync(
+            Account existing, AccountItemRelationsViewModel relations)
+        {
+            foreach (int id in relations.RelatedItemIds)
+            {
+                await RemoveAccountProjectAsync(existing, id);
+            }
+        }
+
+        private async Task RemoveAccountProjectAsync(Account existing, int projectId)
+        {
+            var existingRelation = existing.AccountProjects
+                .Where(ap => ap.ProjectId == projectId)
+                .SingleOrDefault();
+            if (existingRelation == null)
+            {
+                return;
+            }
+
+            existing.AccountProjects.Remove(existingRelation);
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var project = await repository.GetByIDWithTrackingAsync(projectId, prj => prj.Children);
+            foreach (var child in project.Children)
+            {
+                await RemoveAccountProjectAsync(existing, child.Id);
+            }
+        }
+
+        public async Task AddProjectAccountsAsync(AccountItemRelationsViewModel relations)
         {
             Verify.ArgumentNotNull(relations, "relations");
             var repository = _unitOfWork.GetAsyncRepository<Project>();
-            var existing = await repository.GetByIDWithTrackingAsync(relations.Id, prj => prj.AccountProjects);
-            if (existing != null && AreRelationsModified(
-                    existing.AccountProjects
-                        .Select(ap => ap.AccountId)
-                        .ToArray(),
-                    relations))
+            var existing = await repository.GetByIDWithTrackingAsync(
+                relations.Id, prj => prj.AccountProjects, prj => prj.Children);
+            if (existing != null)
             {
-                if (existing.AccountProjects.Count > 0)
-                {
-                    RemoveDisconnectedAccounts(existing, relations);
-                }
-
-                AddConnectedAccounts(existing, relations);
+                await AddConnectedAccountsAsync(existing, relations);
                 repository.Update(existing);
                 await _unitOfWork.CommitAsync();
             }
         }
+
+        private async Task AddConnectedAccountsAsync(
+            Project existing, AccountItemRelationsViewModel relations)
+        {
+            var repository = _unitOfWork.GetAsyncRepository<Account>();
+            foreach (int id in relations.RelatedItemIds)
+            {
+                var account = await repository.GetByIDWithTrackingAsync(id);
+                await AddConnectedAccountAsync(existing, account);
+            }
+        }
+
+        private async Task AddConnectedAccountAsync(Project existing, Account account)
+        {
+            var existingRelation = existing.AccountProjects
+                .Where(ap => ap.AccountId == account.Id && ap.ProjectId == existing.Id)
+                .FirstOrDefault();
+            if (existingRelation != null)
+            {
+                return;
+            }
+
+            var accountProject = new AccountProject()
+            {
+                Account = account,
+                AccountId = account.Id,
+                Project = existing,
+                ProjectId = existing.Id
+            };
+            existing.AccountProjects.Add(accountProject);
+            foreach (var child in existing.Children)
+            {
+                await AddConnectedAccountAsync(child, account);
+            }
+        }
+
+        public async Task RemoveProjectAccountsAsync(AccountItemRelationsViewModel relations)
+        {
+            Verify.ArgumentNotNull(relations, "relations");
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
+            var existing = await repository.GetByIDWithTrackingAsync(
+                relations.Id, prj => prj.AccountProjects, prj => prj.Children);
+            if (existing != null)
+            {
+                await RemoveDisconnectedAccountsAsync(existing, relations);
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+        }
+
+        private async Task RemoveDisconnectedAccountsAsync(
+            Project existing, AccountItemRelationsViewModel relations)
+        {
+            foreach (int id in relations.RelatedItemIds)
+            {
+                await RemoveDisconnectedAccountAsync(existing, id);
+            }
+        }
+
+        private async Task RemoveDisconnectedAccountAsync(Project existing, int accountId)
+        {
+            var existingRelation = existing.AccountProjects
+                .Where(ap => ap.AccountId == accountId)
+                .SingleOrDefault();
+            if (existingRelation == null)
+            {
+                return;
+            }
+
+            existing.AccountProjects.Remove(existingRelation);
+            foreach (var child in existing.Children)
+            {
+                await RemoveDisconnectedAccountAsync(child, accountId);
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور قابل ارتباط با حساب مشخص شده را
@@ -814,108 +1250,17 @@ namespace SPPC.Tadbir.Persistence
             _itemRepository.SetCurrentContext(userContext);
         }
 
-        private static bool AreRelationsModified(int[] existingIds, AccountItemRelationsViewModel relations)
-        {
-            var connectedItems = relations
-                .RelatedItemIds
-                .ToArray();
-            return (!AreEqual(existingIds, connectedItems));
-        }
+        #region Account Vector Validation Methods
 
-        private static bool AreEqual(IEnumerable<int> left, IEnumerable<int> right)
+        private static FullAccountCriteriaViewModel GetFullAccountCriteria(Account account)
         {
-            return left.Count() == right.Count()
-                && left.All(value => right.Contains(value));
-        }
-
-        private static void RemoveDisconnectedDetailAccounts(Account existing, AccountItemRelationsViewModel relations)
-        {
-            var currentItems = relations.RelatedItemIds;
-            var disconnectedItems = existing.AccountDetailAccounts
-                .Select(ada => ada.DetailId)
-                .Where(id => !currentItems.Contains(id))
-                .ToList();
-            foreach (int id in disconnectedItems)
+            return new FullAccountCriteriaViewModel()
             {
-                existing.AccountDetailAccounts.Remove(existing.AccountDetailAccounts
-                    .Where(ada => ada.DetailId == id)
-                    .Single());
-            }
-        }
-
-        private static void RemoveDisconnectedCostCenters(Account existing, AccountItemRelationsViewModel relations)
-        {
-            var currentItems = relations.RelatedItemIds;
-            var disconnectedItems = existing.AccountCostCenters
-                .Select(ac => ac.CostCenterId)
-                .Where(id => !currentItems.Contains(id))
-                .ToList();
-            foreach (int id in disconnectedItems)
-            {
-                existing.AccountCostCenters.Remove(existing.AccountCostCenters
-                    .Where(ac => ac.CostCenterId == id)
-                    .Single());
-            }
-        }
-
-        private static void RemoveDisconnectedProjects(Account existing, AccountItemRelationsViewModel relations)
-        {
-            var currentItems = relations.RelatedItemIds;
-            var disconnectedItems = existing.AccountProjects
-                .Select(ap => ap.ProjectId)
-                .Where(id => !currentItems.Contains(id))
-                .ToList();
-            foreach (int id in disconnectedItems)
-            {
-                existing.AccountProjects.Remove(existing.AccountProjects
-                    .Where(ap => ap.ProjectId == id)
-                    .Single());
-            }
-        }
-
-        private static void RemoveDisconnectedAccounts(DetailAccount existing, AccountItemRelationsViewModel relations)
-        {
-            var currentItems = relations.RelatedItemIds;
-            var disconnectedItems = existing.AccountDetailAccounts
-                .Select(ada => ada.AccountId)
-                .Where(id => !currentItems.Contains(id))
-                .ToArray();
-            foreach (int id in disconnectedItems)
-            {
-                existing.AccountDetailAccounts.Remove(existing.AccountDetailAccounts
-                    .Where(ada => ada.AccountId == id)
-                    .Single());
-            }
-        }
-
-        private static void RemoveDisconnectedAccounts(CostCenter existing, AccountItemRelationsViewModel relations)
-        {
-            var currentItems = relations.RelatedItemIds;
-            var disconnectedItems = existing.AccountCostCenters
-                .Select(ac => ac.AccountId)
-                .Where(id => !currentItems.Contains(id))
-                .ToArray();
-            foreach (int id in disconnectedItems)
-            {
-                existing.AccountCostCenters.Remove(existing.AccountCostCenters
-                    .Where(ac => ac.AccountId == id)
-                    .Single());
-            }
-        }
-
-        private static void RemoveDisconnectedAccounts(Project existing, AccountItemRelationsViewModel relations)
-        {
-            var currentItems = relations.RelatedItemIds;
-            var disconnectedItems = existing.AccountProjects
-                .Select(ap => ap.AccountId)
-                .Where(id => !currentItems.Contains(id))
-                .ToArray();
-            foreach (int id in disconnectedItems)
-            {
-                existing.AccountProjects.Remove(existing.AccountProjects
-                    .Where(ap => ap.AccountId == id)
-                    .Single());
-            }
+                AccountId = account.Id,
+                RequiresDetailAccount = account.AccountDetailAccounts.Count > 0,
+                RequiresCostCenter = account.AccountCostCenters.Count > 0,
+                RequiresProject = account.AccountProjects.Count > 0
+            };
         }
 
         private static string EnsureValidAccountInFullAccount(Account account)
@@ -990,191 +1335,6 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return String.Empty;
-        }
-
-        private static FullAccountCriteriaViewModel GetFullAccountCriteria(Account account)
-        {
-            return new FullAccountCriteriaViewModel()
-            {
-                AccountId = account.Id,
-                RequiresDetailAccount = account.AccountDetailAccounts.Count > 0,
-                RequiresCostCenter = account.AccountCostCenters.Count > 0,
-                RequiresProject = account.AccountProjects.Count > 0
-            };
-        }
-
-        private async Task AddNewAccountDetailAccounts(Account existing, AccountItemRelationsViewModel relations)
-        {
-            var currentItems = existing.AccountDetailAccounts.Select(ada => ada.DetailId);
-            var newItems = relations.RelatedItemIds.Where(id => !currentItems.Contains(id));
-            foreach (int detailId in newItems)
-            {
-                await AddNewAccountDetailAccount(existing, detailId);
-            }
-        }
-
-        private async Task AddNewAccountDetailAccount(Account existing, int detailId)
-        {
-            var existingRelation = existing.AccountDetailAccounts
-                .Where(ada => ada.AccountId == existing.Id && ada.DetailId == detailId)
-                .FirstOrDefault();
-            if (existingRelation != null)
-            {
-                return;
-            }
-
-            var repository = _unitOfWork.GetRepository<DetailAccount>();
-            var detailAccount = repository.GetByIDWithTracking(detailId, facc => facc.Children);
-            var accountDetailAccount = new AccountDetailAccount()
-            {
-                Account = existing,
-                AccountId = existing.Id,
-                DetailAccount = detailAccount,
-                DetailId = detailAccount.Id
-            };
-            existing.AccountDetailAccounts.Add(accountDetailAccount);
-            foreach (var child in detailAccount.Children)
-            {
-                await AddNewAccountDetailAccount(existing, child.Id);
-            }
-        }
-
-        private async Task AddNewAccountCostCenters(Account existing, AccountItemRelationsViewModel relations)
-        {
-            var currentItems = existing.AccountCostCenters.Select(ac => ac.CostCenterId);
-            var newItems = relations.RelatedItemIds.Where(id => !currentItems.Contains(id));
-            foreach (int centerId in newItems)
-            {
-                await AddNewAccountCostCenter(existing, centerId);
-            }
-        }
-
-        private async Task AddNewAccountCostCenter(Account existing, int centerId)
-        {
-            var existingRelation = existing.AccountCostCenters
-                .Where(ac => ac.AccountId == existing.Id && ac.CostCenterId == centerId)
-                .FirstOrDefault();
-            if (existingRelation != null)
-            {
-                return;
-            }
-
-            var repository = _unitOfWork.GetRepository<CostCenter>();
-            var costCenter = repository.GetByIDWithTracking(centerId, cc => cc.Children);
-            var accountCostCenter = new AccountCostCenter()
-            {
-                Account = existing,
-                AccountId = existing.Id,
-                CostCenter = costCenter,
-                CostCenterId = costCenter.Id
-            };
-            existing.AccountCostCenters.Add(accountCostCenter);
-            foreach (var child in costCenter.Children)
-            {
-                await AddNewAccountCostCenter(existing, child.Id);
-            }
-        }
-
-        private async Task AddNewAccountProjects(Account existing, AccountItemRelationsViewModel relations)
-        {
-            var currentItems = existing.AccountProjects.Select(ap => ap.ProjectId);
-            var newItems = relations.RelatedItemIds.Where(id => !currentItems.Contains(id));
-            foreach (int projectId in newItems)
-            {
-                await AddNewAccountProject(existing, projectId);
-            }
-        }
-
-        private async Task AddNewAccountProject(Account existing, int projectId)
-        {
-            var existingRelation = existing.AccountProjects
-                .Where(ap => ap.AccountId == existing.Id && ap.ProjectId == projectId)
-                .FirstOrDefault();
-            if (existingRelation != null)
-            {
-                return;
-            }
-
-            var repository = _unitOfWork.GetRepository<Project>();
-            var project = repository.GetByIDWithTracking(projectId, prj => prj.Children);
-            var accountProject = new AccountProject()
-            {
-                Account = existing,
-                AccountId = existing.Id,
-                Project = project,
-                ProjectId = project.Id
-            };
-            existing.AccountProjects.Add(accountProject);
-            foreach (var child in project.Children)
-            {
-                await AddNewAccountProject(existing, child.Id);
-            }
-        }
-
-        private void AddConnectedAccounts(DetailAccount existing, AccountItemRelationsViewModel relations)
-        {
-            var repository = _unitOfWork.GetRepository<Account>();
-            var currentItems = existing
-                .AccountDetailAccounts
-                .Select(ada => ada.AccountId);
-            var newItems = relations.RelatedItemIds
-                .Where(id => !currentItems.Contains(id));
-            foreach (var item in newItems)
-            {
-                var account = repository.GetByIDWithTracking(item);
-                var accountDetailAccount = new AccountDetailAccount()
-                {
-                    DetailAccount = existing,
-                    DetailId = existing.Id,
-                    Account = account,
-                    AccountId = account.Id
-                };
-                existing.AccountDetailAccounts.Add(accountDetailAccount);
-            }
-        }
-
-        private void AddConnectedAccounts(CostCenter existing, AccountItemRelationsViewModel relations)
-        {
-            var repository = _unitOfWork.GetRepository<Account>();
-            var currentItems = existing
-                .AccountCostCenters
-                .Select(ac => ac.AccountId);
-            var newItems = relations.RelatedItemIds
-                .Where(id => !currentItems.Contains(id));
-            foreach (var item in newItems)
-            {
-                var account = repository.GetByIDWithTracking(item);
-                var accountCostCenter = new AccountCostCenter()
-                {
-                    Account = account,
-                    AccountId = account.Id,
-                    CostCenter = existing,
-                    CostCenterId = existing.Id
-                };
-                existing.AccountCostCenters.Add(accountCostCenter);
-            }
-        }
-
-        private void AddConnectedAccounts(Project existing, AccountItemRelationsViewModel relations)
-        {
-            var repository = _unitOfWork.GetRepository<Account>();
-            var currentItems = existing
-                .AccountProjects
-                .Select(ap => ap.AccountId);
-            var newItems = relations.RelatedItemIds
-                .Where(id => !currentItems.Contains(id));
-            foreach (var item in newItems)
-            {
-                var account = repository.GetByIDWithTracking(item);
-                var accountProject = new AccountProject()
-                {
-                    Account = account,
-                    AccountId = account.Id,
-                    Project = existing,
-                    ProjectId = existing.Id
-                };
-                existing.AccountProjects.Add(accountProject);
-            }
         }
 
         private async Task<string> EnsureValidItemsInFullAccountAsync(
@@ -1268,6 +1428,8 @@ namespace SPPC.Tadbir.Persistence
 
             return errorKey;
         }
+
+        #endregion
 
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;

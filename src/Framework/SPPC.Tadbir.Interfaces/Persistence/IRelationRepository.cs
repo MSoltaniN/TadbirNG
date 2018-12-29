@@ -152,40 +152,76 @@ namespace SPPC.Tadbir.Persistence
             int projectId, GridOptions gridOptions = null);
 
         /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت تفصیلی های شناور مرتبط با یک حساب را ذخیره می کند
+        /// به روش آسنکرون، تفصیلی های شناور مرتبط با یک حساب را اضافه می کند
         /// </summary>
         /// <param name="relations">اطلاعات تفصیلی های شناور مرتبط با یک حساب</param>
-        Task SaveAccountDetailAccountsAsync(AccountItemRelationsViewModel relations);
+        Task AddAccountDetailAccountsAsync(AccountItemRelationsViewModel relations);
 
         /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت مراکز هزینه مرتبط با یک حساب را ذخیره می کند
+        /// به روش آسنکرون، تفصیلی های شناور مرتبط با یک حساب را حذف می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات تفصیلی های شناور مرتبط با یک حساب</param>
+        Task RemoveAccountDetailAccountsAsync(AccountItemRelationsViewModel relations);
+
+        /// <summary>
+        /// به روش آسنکرون، مراکز هزینه مرتبط با یک حساب را اضافه می کند
         /// </summary>
         /// <param name="relations">اطلاعات مراکز هزینه مرتبط با یک حساب</param>
-        Task SaveAccountCostCentersAsync(AccountItemRelationsViewModel relations);
+        Task AddAccountCostCentersAsync(AccountItemRelationsViewModel relations);
 
         /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت پروژه های مرتبط با یک حساب را ذخیره می کند
+        /// به روش آسنکرون، مراکز هزینه مرتبط با یک حساب را حذف می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات مراکز هزینه مرتبط با یک حساب</param>
+        Task RemoveAccountCostCentersAsync(AccountItemRelationsViewModel relations);
+
+        /// <summary>
+        /// به روش آسنکرون، پروژه های مرتبط با یک حساب را اضافه می کند
         /// </summary>
         /// <param name="relations">اطلاعات پروژه های مرتبط با یک حساب</param>
-        Task SaveAccountProjectsAsync(AccountItemRelationsViewModel relations);
+        Task AddAccountProjectsAsync(AccountItemRelationsViewModel relations);
 
         /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت حساب های مرتبط با یک تفصیلی شناور را ذخیره می کند
+        /// به روش آسنکرون، پروژه های مرتبط با یک حساب را حذف می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات پروژه های مرتبط با یک حساب</param>
+        Task RemoveAccountProjectsAsync(AccountItemRelationsViewModel relations);
+
+        /// <summary>
+        /// به روش آسنکرون، حساب های مرتبط با یک تفصیلی شناور را اضافه می کند
         /// </summary>
         /// <param name="relations">اطلاعات حساب های مرتبط با یک تفصیلی شناور</param>
-        Task SaveDetailAccountAccountsAsync(AccountItemRelationsViewModel relations);
+        Task AddDetailAccountAccountsAsync(AccountItemRelationsViewModel relations);
 
         /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت حساب های مرتبط با یک مرکز هزینه را ذخیره می کند
+        /// به روش آسنکرون، حساب های مرتبط با یک تفصیلی شناور را حذف می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات حساب های مرتبط با یک تفصیلی شناور</param>
+        Task RemoveDetailAccountAccountsAsync(AccountItemRelationsViewModel relations);
+
+        /// <summary>
+        /// به روش آسنکرون، حساب های مرتبط با یک مرکز هزینه را اضافه می کند
         /// </summary>
         /// <param name="relations">اطلاعات حساب های مرتبط با یک مرکز هزینه</param>
-        Task SaveCostCenterAccountsAsync(AccountItemRelationsViewModel relations);
+        Task AddCostCenterAccountsAsync(AccountItemRelationsViewModel relations);
 
         /// <summary>
-        /// به روش آسنکرون، آخرین وضعیت حساب های مرتبط با یک پروژه را ذخیره می کند
+        /// به روش آسنکرون، حساب های مرتبط با یک مرکز هزینه را حذف می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات حساب های مرتبط با یک مرکز هزینه</param>
+        Task RemoveCostCenterAccountsAsync(AccountItemRelationsViewModel relations);
+
+        /// <summary>
+        /// به روش آسنکرون، حساب های مرتبط با یک پروژه را اضافه می کند
         /// </summary>
         /// <param name="relations">اطلاعات حساب های مرتبط با یک پروژه</param>
-        Task SaveProjectAccountsAsync(AccountItemRelationsViewModel relations);
+        Task AddProjectAccountsAsync(AccountItemRelationsViewModel relations);
+
+        /// <summary>
+        /// به روش آسنکرون، حساب های مرتبط با یک پروژه را حذف می کند
+        /// </summary>
+        /// <param name="relations">اطلاعات حساب های مرتبط با یک پروژه</param>
+        Task RemoveProjectAccountsAsync(AccountItemRelationsViewModel relations);
 
         /// <summary>
         /// به روش آسنکرون، مجموعه ای از تفصیلی های شناور قابل ارتباط با حساب مشخص شده را
