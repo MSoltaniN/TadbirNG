@@ -753,4 +753,19 @@
   <data name="RowNo" xml:space="preserve">
     <value>ردیف</value>
   </data>
+  <data name="FromDate" xml:space="preserve">
+    <value>از تاریخ :</value>
+  </data>
+  <data name="PgNumber" xml:space="preserve">
+    <value>شماره  صفحه :</value>
+  </data>
+  <data name="ReportTitle" xml:space="preserve">
+    <value>خلاصه اسناد حسابداری - براساس تاریخ</value>
+  </data>
+  <data name="Sum" xml:space="preserve">
+    <value>جمع</value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>تا تاریخ :</value>
+  </data>
 </root>

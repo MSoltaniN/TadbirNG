@@ -17,8 +17,11 @@ export interface Report {
     createdById: number;
     serviceUrl: string;
     template: string;
+    templateLtr: string;
     isSystem: boolean;
     isDefault: boolean;
     subsystemId: number;    
-    modifiedDate:Date;    
+    modifiedDate:Date; 
+    baseResourceKeys:string;
+    resourceMap:any;  
 }

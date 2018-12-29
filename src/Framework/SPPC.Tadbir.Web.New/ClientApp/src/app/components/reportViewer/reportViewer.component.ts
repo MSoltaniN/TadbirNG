@@ -88,7 +88,23 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       
   }
 
-  showVoucherReport(report : Report, reportData: any)
+  fillResourceVariables(reportObject:Report,stiReport:any)
+  {
+
+    reportObject.baseResourceKeys.split(',').forEach(function(resKey)
+    {
+      var resValue = reportObject.resourceMap[resKey];
+      var found = stiReport.dictionary.variables.items.find(x => x.name === resKey)      
+      if(found)
+          stiReport.dictionary.variables.getByName(found.name).valueObject = resValue;
+
+      
+    });
+     
+
+  }
+
+  showVoucherReport(reportObject : Report, reportData: any)
   {
    
     this.active = true;
@@ -98,14 +114,26 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
      
      
       console.log('Load report from url');
-      this.report.load(report.template);
+      var reportTemplate : string;
+
+      if (this.CurrentLanguage == "fa")
+          reportTemplate = reportObject.template;
+      else
+          reportTemplate = reportObject.templateLtr;
+
+      this.report.load(reportTemplate);
      
       this.report.regData("Vouchers", "", reportData.rows);
-      this.report.dictionary.variables.getByName("FromDate").valueObject = reportData.fromDate;
-      this.report.dictionary.variables.getByName("ToDate").valueObject = reportData.toDate;
+      this.report.dictionary.variables.getByName("FDate").valueObject = reportData.fromDate;
+      this.report.dictionary.variables.getByName("TDate").valueObject = reportData.toDate;
+      
+      this.fillResourceVariables(reportObject,this.report);
+
       this.report.render();
       this.viewer.report = this.report;
       
+
+
       console.log('Rendering the viewer to selected element');
       this.viewer.renderHtml('viewer');
 
