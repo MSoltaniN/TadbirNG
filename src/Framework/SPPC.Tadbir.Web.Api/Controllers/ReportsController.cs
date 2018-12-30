@@ -107,9 +107,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         private void Localize(ReportViewModel report)
         {
             if (report != null)
-            {
-                var keys = report.BaseResourceKeys.Split(',');
-                Array.ForEach(keys, key => report.ResourceMap.Add(key, _strings[key]));
+            {                
+                if (report.BaseResourceKeys != null)
+                {
+                    var keys = report.BaseResourceKeys.Split(',');
+                    Array.ForEach(keys, key => report.ResourceMap.Add(key, _strings[key]));
+                }
             }
         }
 
