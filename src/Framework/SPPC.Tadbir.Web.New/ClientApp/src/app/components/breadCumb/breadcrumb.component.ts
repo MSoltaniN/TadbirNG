@@ -13,6 +13,7 @@ export class BreadCumbComponent implements OnInit {
   title: string;
 
   constructor(public parentComponet: ViewContainerRef, public translate: TranslateService) {
+
     var entityType = (<any>this.parentComponet)._view.component.entityType
     switch (entityType.toString().toLowerCase()) {
       case "account":
@@ -54,7 +55,7 @@ export class BreadCumbComponent implements OnInit {
       case "settings":
         this.getText("Entity.Settings");
         break;
-      case "viewRowPermission":
+      case "viewrowpermission":
         this.getText("Entity.ViewRowPermission");
         break;
       case "operationlog":
