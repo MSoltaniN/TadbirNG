@@ -1,0 +1,138 @@
+
+<section class="content-header" *ngIf="accountGroupModel && !isChild">
+  <h1>
+    {{ 'AccountGroup.RelatedAccountsWith' | translate }}
+    {{ accountGroupModel.name }}
+  </h1>
+  <ol class="breadcrumb">
+    <li><a href="#/dashboard"><i class="fa fa-dashboard"></i>{{ 'Dashboard.Home' | translate }}</a></li>
+    <li><a [routerLink]="['/account-groups']">{{ 'Entity.AccountGroup' | translate}}</a></li>
+    <li class="active">{{ accountGroupModel.name }}</li>
+  </ol>
+</section>
+
+
+<div SppcCheckAccess="View" [ngClass]="{'panel-body' : !isChild }">
+  <kendo-grid id="1" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
+              [sortable]="true"
+              [pageSize]="pageSize"
+              [skip]="skip"
+              [filter]="state.filter"
+              [pageable]="true"
+              [resizable]="true"
+              [filterable]="!isChild"
+              [scrollable]="'none'"
+              (pageChange)="pageChange($event)"
+              (sortChange)="sortChange($event)"
+              (edit)="editHandler($event)"
+              (remove)="removeHandler($event)"
+              [sort]="state.sort"
+              [loading]="true"
+              [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
+              [selectedKeys]="selectedRows"
+              [kendoGridSelectBy]="selectionKey"
+              (filterChange)="filterChange($event)"
+              (selectedKeysChange)="onSelectedKeysChange($event)"
+              sppc-grid-reorder sppc-grid-resize>
+    <!--(dataStateChange)="dataStateChange($event)"-->
+
+    <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                         pagerOf="{{ 'Paging.Of' | translate }}"
+                         pagerItems="{{ 'Paging.Record' | translate }}">
+    </kendo-grid-messages>
+    <ng-template kendoGridNoRecordsTemplate>
+      {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
+    </ng-template>
+    <ng-template kendoGridToolbarTemplate let-account>
+      <button kendoGridAddCommand SppcCheckAccess="Create" *ngIf="!parentId" (click)="addNew(parentId , true)" [icon]="'file-add'" title="{{ 'Account.New' | translate }}"></button>
+
+      <button SppcCheckAccess="Edit" (click)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
+      <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length == 0" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
+
+      <grid-setting ng-if="account.level == 0" entityTypeName="Account"></grid-setting>
+      <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" (reloadEvent)="reloadGridEvent($event)" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
+    </ng-template>
+    <!-- template for mobile -->
+    <kendo-grid-checkbox-column showSelectAll="true" width="10"></kendo-grid-checkbox-column>
+
+    <kendo-grid-column media="(max-width: 450px)" title="">
+      <ng-template kendoGridCellTemplate let-account>
+        <!-- template for mobile -->
+        <h4>
+          {{ account.name }}
+        </h4>
+        <dl>
+          <dt>{{ 'Account.Code' | translate }}:</dt>
+          <dd>{{ account.code }}</dd>
+          <dt>{{ 'Account.Name' | translate }}:</dt>
+          <dd>{{ account.name }}</dd>
+          <dt>{{ 'Account.Description' | translate }}:</dt>
+          <dd>{{ account.description }}</dd>
+        </dl>
+        <button kendoGridAddCommand SppcCheckAccess="Create" (click)="addNew(account.id)" type="button">{{ 'Buttons.New' | translate }}</button>
+      </ng-template>
+    </kendo-grid-column>
+    <!-- template for mobile -->
+    <!-- template for mid-size devices -->
+    <ng-template kendoGridDetailTemplate let-dataItem
+                 [kendoGridDetailTemplateShowIf]="showOnlyParent">
+      <div *ngIf="dataItem.childCount > 0">
+        <relatedAccounts [isChild]="true" [parent]="dataItem"></relatedAccounts>
+      </div>
+    </ng-template>
+    <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Account.code">
+      <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+        <sppc-grid-filter [metaData]="getMeta('code')" [column]="column" [spinners]="true" [filter]="filter"></sppc-grid-filter>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column width="250" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="Account.name">
+      <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+        <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 450px) and (max-width: 1024px)">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <button [icon]="'plus-outline'" SppcCheckAccess="Create" (click)="addNew(dataItem.id)" kendoGridAddCommand title="{{ 'Account.NewSubAccount' | translate }}"></button>
+      </ng-template>
+    </kendo-grid-command-column>
+    <!-- template for mid-size devices -->
+    <!-- additional columns on large devices -->
+    <kendo-grid-column width="130" media="(min-width: 1024px)" sppc-grid-column="Account.code">
+      <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+        <sppc-grid-filter [metaData]="getMeta('code')" [column]="column" [filter]="filter"></sppc-grid-filter>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="Account.name">
+      <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+        <sppc-grid-filter [metaData]="getMeta('name')" [column]="column" [filter]="filter"></sppc-grid-filter>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 1024px)" width="200" sppc-grid-column="Account.description">
+      <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
+        <sppc-grid-filter [metaData]="getMeta('descrption')" [column]="column" [filter]="filter"></sppc-grid-filter>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-command-column [minWidth]="140" width="140" media="(min-width: 1024px)">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <button [icon]="'plus-outline'" SppcViewTreeConfig SppcCheckAccess="Create" (click)="addNew(dataItem.id)" kendoGridAddCommand title="{{ 'Account.NewSubAccount' | translate }}"></button>
+      </ng-template>
+    </kendo-grid-command-column>
+    <!-- additional columns on large devices -->
+
+  </kendo-grid>
+
+  <relatedAccounts-form-component [model]="editDataItem" [parent]="parentModel" [isNew]="isNew" [errorMessage]="errorMessage" [accGroupId]="accountGroupId"
+                                  (save)="saveHandler($event)"
+                                  (cancel)="cancelHandler()">
+  </relatedAccounts-form-component>
+
+</div>
+<kendo-dialog title="{{'Account.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
+  <p>
+    {{ this.deleteConfirmMsg }}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+    <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
+  </kendo-dialog-actions>
+</kendo-dialog>

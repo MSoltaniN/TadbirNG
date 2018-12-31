@@ -268,7 +268,9 @@
     "Delete": "Delete",
     "Name": "Name",
     "Category": "Category",
-    "Description": "Description"
+    "Description": "Description",
+    "RelatedAccounts": "Related Accounts",
+    "RelatedAccountsWith": "Related Accounts with"
   },
   "Branch": {
     "BranchName": "Branch",

@@ -60,6 +60,8 @@ import { AccountGroupsComponent } from './components/accountGroups/accountGroups
 import { AccountGroupsFormComponent } from './components/accountGroups/accountGroups-form.component';
 //import { InlineTestComponent } from './components/inlineTest/inlineTest.component';
 import { FormComponent } from './components/account/form.component';
+import { RelatedAccountsComponent } from './components/relatedAccounts/relatedAccounts.component';
+import { RelatedAccountsFormComponent } from './components/relatedAccounts/relatedAccounts-form.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -239,7 +241,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     AccountGroupsComponent,
     AccountGroupsFormComponent,
     
-    FormComponent
+    FormComponent,
+    RelatedAccountsComponent,
+    RelatedAccountsFormComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -294,6 +298,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'operation-log', component: OperationLogsComponent, canActivate: [AuthGuard] },
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'account-groups', component: AccountGroupsComponent, canActivate: [AuthGuard] },
+      { path: 'accounts/group/:groupid', component: RelatedAccountsComponent, canActivate: [AuthGuard] },
       //{ path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'dashboard' }
     ])
