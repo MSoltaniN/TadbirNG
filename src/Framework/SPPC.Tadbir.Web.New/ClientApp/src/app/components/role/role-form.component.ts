@@ -12,7 +12,7 @@ import { DefaultComponent } from "../../class/default.component";
 import { Layout, Entities, Metadatas } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
 import { MetaDataService } from '../../service/metadata/metadata.service';
-import { TreeNode, TreeNodeInfo } from '../../model/role';
+import { TreeNode, TreeNodeInfo } from '../../model/index';
 import { DetailComponent } from '../../class/detail.component';
 
 

@@ -31,3 +31,4 @@ export * from './companyLogin';
 export * from './viewTreeLevelConfig';
 export * from './viewTreeConfig';
 export * from './accountGroup';
+export * from './treeNodeInfo';

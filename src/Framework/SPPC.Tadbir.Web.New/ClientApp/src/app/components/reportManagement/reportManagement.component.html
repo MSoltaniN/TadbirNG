@@ -1,0 +1,17 @@
+<kendo-dialog [minWidth]="300" [width]="450" *ngIf="active" class="permission-dialog" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              (close)="closeForm()">
+    <kendo-dialog-titlebar>
+        {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
+    </kendo-dialog-titlebar>
+    <div class="panel panel-primary">
+      <div class="panel-heading">{{ 'Role.Permissions' | translate }}</div>
+      <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}" >
+          <kendo-treeview [nodes]="treeReports" textField="name"
+                          kendoTreeViewExpandable                          
+                          kendoTreeViewFlatDataBinding
+                          idField="id"
+                          parentIdField="parentId">
+          </kendo-treeview>
+      </div>
+    </div>    
+</kendo-dialog>

@@ -23,17 +23,8 @@ export interface Role extends IEntity{
     description?: string;  
 }
 
-export interface TreeNode extends IEntity{
-    id: number;
-    parentId?: number;
-    name: string;
-}
 
-export class TreeNodeInfo implements TreeNode {
-    constructor(public id: number = 0,
-        public parentId: number | undefined,
-        public name: string) { }
-}
+
 
 
 export interface RoleFullViewModel extends IEntity{

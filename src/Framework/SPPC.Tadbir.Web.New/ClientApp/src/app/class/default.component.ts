@@ -329,7 +329,7 @@ export class DefaultComponent extends BaseComponent {
 
   }
 
-  public addFilter(currentFilter:FilterExpression,filedName : string,
+  public  addFilter(currentFilter:FilterExpression,filedName : string,
     value : string , operator:string) : FilterExpression
   {
       var fi = new FilterExpression();

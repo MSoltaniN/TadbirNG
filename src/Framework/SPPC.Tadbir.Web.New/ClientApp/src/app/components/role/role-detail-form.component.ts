@@ -10,7 +10,7 @@ import { ContextInfo } from "../../service/login/authentication.service";
 import { DefaultComponent } from "../../class/default.component";
 import { Layout } from "../../../environments/environment";
 import { RTL } from '@progress/kendo-angular-l10n';
-import { TreeNodeInfo } from '../../model/role';
+import { TreeNodeInfo } from '../../model/index';
 import { Permission } from '../../model/permission';
 import { DetailComponent } from '../../class/detail.component';
 

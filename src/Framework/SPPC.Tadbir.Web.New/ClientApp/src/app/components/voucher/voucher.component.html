@@ -49,6 +49,7 @@
         <grid-setting entityTypeName="Voucher"></grid-setting>
         <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
         <button kendoButton (click)="showReport()" type="button" [icon]="'printer'"></button>
+        <button kendoButton (click)="showReportManagement()" type="button" [icon]="'printer'"></button>
       </ng-template>
 
       <kendo-grid-checkbox-column showSelectAll="true" width="10"></kendo-grid-checkbox-column>
@@ -133,6 +134,7 @@
                             (changeMode)="changeMode($event)">
     </voucher-form-component>
     <report-viewer id='compviewer' baseId='5'></report-viewer>
+    <report-management baseId='5'></report-management>
   </div>
   <kendo-dialog title="{{'Voucher.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
     <p>

@@ -146,6 +146,7 @@ import { BreadCumbComponent } from './components/breadCumb/breadcrumb.component'
 import { ReportViewerComponent } from './components/reportViewer/reportViewer.component';
 import { ReportBaseService } from './class/report.base.service';
 import { ReportingService } from './service/report/reporting.service';
+import { ReportManagementComponent } from "./components/reportManagement/reportManagement.component";
 
 
 
@@ -239,7 +240,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     AccountGroupsComponent,
     AccountGroupsFormComponent,
     
-    FormComponent
+    FormComponent,
+    
+    ReportManagementComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

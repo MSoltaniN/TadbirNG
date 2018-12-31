@@ -27,6 +27,7 @@ import * as moment from 'jalali-moment';
 import { ReportApi } from '../../service/api/reportApi';
 import { Report } from '../../model/report';
 import { ReportingService } from '../../service/report/reporting.service';
+import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -50,6 +51,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   //#region Fields
   @ViewChild(GridComponent) grid: GridComponent;
   @ViewChild(ReportViewerComponent) viewer: ReportViewerComponent;
+  @ViewChild(ReportManagementComponent) reportManager: ReportManagementComponent;
 
   public rowData: GridDataResult;
   public selectedRows: number[] = [];
@@ -147,16 +149,13 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
   public showReport() {
+    
     var url = String.Format(ReportApi.DefaultSystemReport, this.viewer.baseId);
 
-    this.reporingService.getAll(url).subscribe((res: Response) => {
-
-     
+    this.reporingService.getAll(url).subscribe((res: Response) => {    
 
       var report: Report = <any>res.body;
-      var serviceUrl = environment.BaseUrl + "/" + report.serviceUrl;
-
-      
+      var serviceUrl = environment.BaseUrl + "/" + report.serviceUrl;    
 
       this.reporingService.getAll(serviceUrl,
         this.currentOrder, this.currentFilter).subscribe((response: any) => {
@@ -179,7 +178,11 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
         });
     });
+  }
 
+  public showReportManagement()
+  {
+      this.reportManager.showDialog();
   }
 
   public changeMode(isNew: boolean) {
