@@ -29,6 +29,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id)
                 .HasColumnName("CoreReportID");
+            builder.Property(e => e.ParentId)
+                .IsRequired(false);
             builder.Property(e => e.Code)
                 .IsRequired()
                 .HasMaxLength(128);
@@ -47,7 +49,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.Parent)
                 .WithMany()
-                .HasForeignKey("ParentID")
+                .HasForeignKey(e => e.ParentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_CoreReport_Reporting_Parent");
         }

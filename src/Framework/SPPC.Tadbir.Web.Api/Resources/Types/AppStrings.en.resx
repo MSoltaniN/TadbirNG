@@ -768,4 +768,22 @@
   <data name="ToDate" xml:space="preserve">
     <value>To Date:</value>
   </data>
+  <data name="BaseData" xml:space="preserve">
+    <value>Base data</value>
+  </data>
+  <data name="OperationData" xml:space="preserve">
+    <value>Operational data</value>
+  </data>
+  <data name="VoucherPrinting" xml:space="preserve">
+    <value>Voucher printing</value>
+  </data>
+  <data name="VoucherStandardForm" xml:space="preserve">
+    <value>Voucher - Standard form</value>
+  </data>
+  <data name="VoucherStandardFormWithDetail" xml:space="preserve">
+    <value>Voucher - Standard form with detail levels</value>
+  </data>
+  <data name="VoucherSummaryByDate" xml:space="preserve">
+    <value>Voucher summary by date</value>
+  </data>
 </root>

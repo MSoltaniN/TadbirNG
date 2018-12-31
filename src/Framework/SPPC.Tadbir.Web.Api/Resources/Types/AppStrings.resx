@@ -768,4 +768,22 @@
   <data name="ToDate" xml:space="preserve">
     <value>تا تاریخ :</value>
   </data>
+  <data name="BaseData" xml:space="preserve">
+    <value>اطلاعات پایه</value>
+  </data>
+  <data name="OperationData" xml:space="preserve">
+    <value>اطلاعات عملیاتی</value>
+  </data>
+  <data name="VoucherPrinting" xml:space="preserve">
+    <value>چاپ سند</value>
+  </data>
+  <data name="VoucherStandardForm" xml:space="preserve">
+    <value>فرم مرسوم سند</value>
+  </data>
+  <data name="VoucherStandardFormWithDetail" xml:space="preserve">
+    <value>فرم مرسوم سند با سطوح شناور</value>
+  </data>
+  <data name="VoucherSummaryByDate" xml:space="preserve">
+    <value>خلاصه اسناد بر حسب تاریخ</value>
+  </data>
 </root>

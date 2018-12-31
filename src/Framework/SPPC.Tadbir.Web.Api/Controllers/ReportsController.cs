@@ -67,6 +67,23 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(formWithDetail);
         }
 
+        // GET: api/reports/tree
+        [Route(ReportApi.ReportsHierarchyUrl)]
+        public async Task<IActionResult> GetReportTreeAsync()
+        {
+            var tree = await _repository.GetReportTreeAsync();
+            Localize(tree);
+            return Json(tree);
+        }
+
+        private void Localize(IList<CoreReportViewModel> reports)
+        {
+            foreach (var report in reports)
+            {
+                report.Name = _strings[report.Name];
+            }
+        }
+
         private void Localize(IList<VoucherSummaryViewModel> report)
         {
             var now = DateTime.Now;

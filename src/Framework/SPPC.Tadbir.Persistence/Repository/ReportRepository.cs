@@ -148,6 +148,19 @@ namespace SPPC.Tadbir.Persistence
             return standardForm;
         }
 
+        public async Task<IList<CoreReportViewModel>> GetReportTreeAsync()
+        {
+            _unitOfWork.UseSystemContext();
+            var repository = _unitOfWork.GetAsyncRepository<CoreReport>();
+            var tree = await repository
+                .GetEntityQuery()
+                .Select(rep => _mapper.Map<CoreReportViewModel>(rep))
+                .ToListAsync();
+
+            _unitOfWork.UseCompanyContext();
+            return tree;
+        }
+
         private static void AddGeneralStandardLineItems(
             VoucherLine line, IList<StandardVoucherLineViewModel> lineItems)
         {
