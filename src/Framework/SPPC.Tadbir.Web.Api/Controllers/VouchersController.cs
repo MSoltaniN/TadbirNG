@@ -223,6 +223,13 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 return result;
             }
 
+            _relationRepository.SetCurrentContext(SecurityContext.User);
+            result = await FullAccountValidationResult(article.FullAccount, _relationRepository);
+            if (result is BadRequestObjectResult)
+            {
+                return result;
+            }
+
             result = BranchValidationResult(article);
             if (result is BadRequestObjectResult)
             {
@@ -343,13 +350,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             if ((article.Debit > 0m) && (article.Credit > 0m))
             {
                 return BadRequest(_strings.Format(AppStrings.DebitAndCreditNotAllowed));
-            }
-
-            _relationRepository.SetCurrentContext(SecurityContext.User);
-            result = await FullAccountValidationResult(article.FullAccount, _relationRepository);
-            if (result is BadRequestObjectResult)
-            {
-                return result;
             }
 
             return Ok();
