@@ -1,0 +1,95 @@
+
+<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              (close)="closeForm()" [minWidth]="250" [width]="450">
+  <kendo-dialog-titlebar>
+    {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
+  </kendo-dialog-titlebar>
+
+  <div *ngIf="errorMessage != ''">
+    <div class="alert alert-danger">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+      {{ errorMessage }}
+    </div>
+  </div>
+
+
+  <editor-form-title [parentModel]="parentModel" [entityType]="viewId"></editor-form-title>
+
+  <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
+
+    <div class="form-group">
+      <label for="branchScope" class="control-label">{{ 'Account.BranchScope' | translate }}</label>
+
+      <sppc-branch-scope formControlName="branchScope" [parentScope]="parentScopeValue" [isNew]="isNew"></sppc-branch-scope>
+
+    </div>
+
+    <div class="form-group" [hidden]="parentModel">
+      <label for="category" class="control-label">{{ 'Account.AccountGroup' | translate }}</label>
+
+      <kendo-dropdownlist class="ddl-accGroup"
+                          [data]="accGroupList"
+                          [textField]="'value'"
+                          [valueField]="'key'"
+                          [valuePrimitive]="true"
+                          [value]="accGroupSelected"
+                          [(ngModel)]="accGroupSelected"
+                          formControlName="groupId"
+                          [disabled]="true">
+      </kendo-dropdownlist>
+
+    </div>
+
+
+    <div class="form-group">
+      <label for="code" class="control-label">{{ 'Account.Code' | translate }}</label>
+
+      <input type="text" class="k-textbox" formControlName="code" [OnlyNumber] [SppcCodeLength]="parentModel ? parentModel.level + 2 : 1" [ViewId]="viewId" [sppcFullCode]="'fullCode'" [apiUrl]="fullCodeApiUrl" />
+
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
+        <span *ngIf="editForm.controls.code.errors?.required">{{ 'AllValidations.Account.CodeIsRequired' | translate }}</span>
+        <span *ngIf="editForm.controls.code.errors?.maxlength">{{ 'AllValidations.Account.CodeIsTooLong' | translate }}</span>
+        <span *ngIf="editForm.controls.code.errors?.sppcCodeLength">{{ 'MetaDataValidation.CodeLength' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="fullCode" class="control-label">{{ 'Account.FullCode' | translate }}</label>
+
+      <input type="text" class="k-textbox" formControlName="fullCode" readonly id="fullCode" style="direction:ltr" />
+
+    </div>
+
+    <!--<div class="form-group">
+    <sppc-mask-textbox class="k-textbox" value="13:10" mask="00:00"></sppc-mask-textbox>
+    </div>-->
+    <!--<div class="form-group">
+        <sppc-numberbox class="k-textbox" value="13" ></sppc-numberbox>
+    </div>-->
+    <div class="form-group">
+      <label for="name" class="control-label">{{ 'Account.Name' | translate }}</label>
+
+      <input type="text" class="k-textbox" formControlName="name" />
+
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.name.valid || editForm.controls.name.pristine">
+        <span *ngIf="editForm.controls.name.errors?.required">{{ 'AllValidations.Account.NameIsRequired' | translate }}</span>
+        <span *ngIf="editForm.controls.name.errors?.maxlength">{{ 'AllValidations.Account.NameIsTooLong' | translate }}</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="description" class="control-label">{{ 'Account.Description' | translate }}</label>
+
+      <textarea class="k-textarea" formControlName="description"></textarea>
+
+      <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.description.valid || editForm.controls.description.pristine">
+        {{ 'AllValidations.Account.DescriptionIsTooLong' | translate }}
+      </div>
+    </div>
+  </form>
+  <div>
+  </div>
+  <kendo-dialog-actions>
+    <button class="k-button k-primary" [disabled]="!editForm.valid || disableSaveBtn" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+    <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+  </kendo-dialog-actions>
+</kendo-dialog>

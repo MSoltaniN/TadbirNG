@@ -31,11 +31,7 @@
 
       <button SppcCheckAccess="Edit" (click)="editHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Edit' | translate }}"><span class="k-icon k-i-pencil"></span></button>
       <button SppcCheckAccess="Delete" (click)="removeHandler()" class="k-button k-button-icon" [disabled]="selectedRows.length != 1" title="{{ 'Buttons.Delete' | translate }}"><span class="k-icon k-i-delete"></span></button>
-      <button class="k-button k-button-icon" title="{{ 'Buttons.FilterForm' | translate }}"><span class="k-icon k-i-filter"></span></button>
-
-
-      <button *ngIf="groupDelete" SppcCheckAccess="Delete" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
-
+      <button class="k-button k-button-icon" [disabled]="selectedRows.length != 1" [routerLink]="['/accounts/group', selectedRows[0]]" title="{{ 'AccountGroup.RelatedAccounts' | translate }}"><span class="k-icon k-i-layout-stacked"></span></button>
 
       <button #anchor (click)="onToggle()" class="k-button k-button-icon" [ngClass]="{'pull-left':CurrentLanguage === 'fa','pull-right':CurrentLanguage === 'en'}" title="{{ 'Buttons.Tools' | translate }}"><span class="k-icon k-i-grid"></span></button>
       <button class="k-button k-button-icon" [ngClass]="{'pull-left':CurrentLanguage === 'fa','pull-right':CurrentLanguage === 'en'}" style="margin:0 4px;" title="{{ 'Buttons.Help' | translate }}"><span class="k-icon k-i-help"></span></button>

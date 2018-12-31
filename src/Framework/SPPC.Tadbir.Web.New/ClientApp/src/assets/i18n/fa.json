@@ -266,7 +266,9 @@
     "Delete": "حذف گروه حساب",
     "Name": "نام",
     "Category": "ماهیت",
-    "Description": "شرح"
+    "Description": "شرح",
+    "RelatedAccounts": "حساب های مرتبط",
+    "RelatedAccountsWith": "حساب های مرتبط با"
   },
   "Branch": {
     "BranchName": "شعبه",
