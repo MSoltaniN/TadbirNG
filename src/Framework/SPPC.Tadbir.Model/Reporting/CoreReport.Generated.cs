@@ -37,6 +37,8 @@ namespace SPPC.Tadbir.Model.Reporting
         /// </summary>
         public virtual int Id { get; set; }
 
+        public virtual int? ParentId { get; set; }
+
         /// <summary>
         /// کد شناسایی گزارش سیستمی در زیرساخت گزارشات
         /// </summary>
@@ -70,7 +72,7 @@ namespace SPPC.Tadbir.Model.Reporting
         /// <summary>
         /// گروه بندی اصلی این گزارش در ساختار درختی گزارشات
         /// </summary>
-        public virtual Report Parent { get; set; }
+        public virtual CoreReport Parent { get; set; }
 
         private void InitReferences()
         {
