@@ -45,9 +45,9 @@
     <None Remove="ClientApp\src\app\components\accountGroups\accountGroups-form.component.ts" />
     <None Remove="ClientApp\src\app\components\accountRelations\accountRelations-form.component.ts" />
     <None Remove="ClientApp\src\app\components\accountRelations\accountRelations.component.ts" />
+    <None Remove="ClientApp\src\app\components\account\account-form-old.component.ts" />
     <None Remove="ClientApp\src\app\components\account\account-form.component.ts" />
     <None Remove="ClientApp\src\app\components\account\account.component.ts" />
-    <None Remove="ClientApp\src\app\components\account\form.component.ts" />
     <None Remove="ClientApp\src\app\components\branch\branch-form.component.ts" />
     <None Remove="ClientApp\src\app\components\branch\branch-roles-form.component.ts" />
     <None Remove="ClientApp\src\app\components\company\company-form.component.ts" />
@@ -888,8 +888,8 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\accountGroups\accountGroups-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\accountRelations\accountRelations-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\accountRelations\accountRelations.component.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\components\account\form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\account\account-form.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\components\account\account-form-old.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\account\account.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\branch\branch-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\branch\branch-roles-form.component.ts" />

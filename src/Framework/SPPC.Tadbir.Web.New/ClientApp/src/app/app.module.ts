@@ -59,7 +59,6 @@ import { ViewTreeConfigComponent } from './components/viewTreeConfig/viewTreeCon
 import { AccountGroupsComponent } from './components/accountGroups/accountGroups.component';
 import { AccountGroupsFormComponent } from './components/accountGroups/accountGroups-form.component';
 //import { InlineTestComponent } from './components/inlineTest/inlineTest.component';
-import { FormComponent } from './components/account/form.component';
 import { RelatedAccountsComponent } from './components/relatedAccounts/relatedAccounts.component';
 import { RelatedAccountsFormComponent } from './components/relatedAccounts/relatedAccounts-form.component';
 import { DialogComponent } from './class/dialog.component';
@@ -241,8 +240,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReportViewerComponent,
     AccountGroupsComponent,
     AccountGroupsFormComponent,
-    
-    FormComponent,
     RelatedAccountsComponent,
     RelatedAccountsFormComponent,
     DialogComponent
@@ -332,7 +329,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   schemas: [NO_ERRORS_SCHEMA],
   entryComponents: [
-    SppcGridDatepicker, FormComponent
+    SppcGridDatepicker, AccountFormComponent
   ],
   bootstrap: [AppComponent]
 })
