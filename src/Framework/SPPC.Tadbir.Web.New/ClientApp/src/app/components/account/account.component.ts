@@ -39,7 +39,6 @@ export function getLayoutModule(layout: Layout) {
         padding-right: 0px;
         padding-left: 0px;
     }
-/deep/.dialog .k-window-content {padding: 0 !important}
   `],
   providers: [{
     provide: RTL,

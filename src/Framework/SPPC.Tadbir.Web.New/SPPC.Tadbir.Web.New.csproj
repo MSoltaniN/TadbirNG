@@ -31,6 +31,7 @@
     <None Remove="ClientApp\src\app\class\base.component.ts" />
     <None Remove="ClientApp\src\app\class\base.service.ts" />
     <None Remove="ClientApp\src\app\class\detail.component.ts" />
+    <None Remove="ClientApp\src\app\class\dialog.component.ts" />
     <None Remove="ClientApp\src\app\class\dictionary.ts" />
     <None Remove="ClientApp\src\app\class\enviroment.component.ts" />
     <None Remove="ClientApp\src\app\class\error.handler.ts" />
@@ -870,6 +871,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\class\dialog.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\base.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\base.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\inlineGrid.component.ts" />

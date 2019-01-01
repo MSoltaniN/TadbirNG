@@ -62,6 +62,7 @@ import { AccountGroupsFormComponent } from './components/accountGroups/accountGr
 import { FormComponent } from './components/account/form.component';
 import { RelatedAccountsComponent } from './components/relatedAccounts/relatedAccounts.component';
 import { RelatedAccountsFormComponent } from './components/relatedAccounts/relatedAccounts-form.component';
+import { DialogComponent } from './class/dialog.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -243,7 +244,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     
     FormComponent,
     RelatedAccountsComponent,
-    RelatedAccountsFormComponent
+    RelatedAccountsFormComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -112,10 +112,6 @@
                           (cancel)="cancelHandler()">
   </account-form-component>-->
 
-  <div class="dialog">
-    <div kendoDialogContainer></div>
-  </div>
-
 </div>
 <kendo-dialog title="{{'Account.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
   <p>
