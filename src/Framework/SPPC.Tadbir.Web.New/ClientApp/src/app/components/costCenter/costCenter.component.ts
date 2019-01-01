@@ -22,6 +22,8 @@ import { CostCenterPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
 import { ViewName } from '../../security/viewName';
+import { DialogRef, DialogService } from '@progress/kendo-angular-dialog';
+import { CostCenterFormComponent } from './costCenter-form.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -70,24 +72,19 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
 
   editDataItem?: CostCenter = undefined;
   parentModel: CostCenter;
-  isNew: boolean;
-  errorMessage: string;
   groupDelete: boolean = false;
 
   addToContainer: boolean = false;
-
-  parentTitle: string = '';
-  parentValue: string = '';
-  parentScope: number = 0;
-
   isChildExpanding: boolean;
   componentParentId: number;
   goLastPage: boolean;
+
+  private dialogRef: DialogRef;
+  private dialogModel: any;
   //#endregion
 
   //#region Events
   ngOnInit() {
-
     this.viewAccess = this.isAccess(SecureEntity.CostCenter, CostCenterPermissions.View);
     if (this.parentComponent && this.parentComponent.isChildExpanding) {
       this.goLastPage = true;
@@ -99,9 +96,39 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
       this.parentComponent.addChildComponent(this);
       this.parentId = this.parent.id;
       this.componentParentId = this.parentId;
-
       this.parentModel = this.parent;
     }
+  }
+
+  /**
+ * باز کردن و مقداردهی اولیه به فرم ویرایشگر
+ */
+  openEditorDialog(isNew: boolean) {
+
+    this.dialogRef = this.dialogService.open({
+      title: this.getText(isNew ? 'Buttons.New' : 'Buttons.Edit'),
+      content: CostCenterFormComponent,
+    });
+
+    this.dialogModel = this.dialogRef.content.instance;
+    this.dialogModel.parent = this.parentModel;
+    this.dialogModel.errorMessage = undefined;
+    this.dialogModel.model = this.editDataItem;
+    this.dialogModel.isNew = isNew;
+
+    this.dialogRef.content.instance.save.subscribe((res) => {
+      this.saveHandler(res, isNew);
+    });
+
+    const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
+      this.dialogRef.close();
+
+      this.dialogModel.parent = undefined;
+      this.dialogModel.errorMessage = undefined;
+      this.dialogModel.model = undefined;
+
+      this.parentId = this.componentParentId;
+    });
   }
 
   selectionKey(context: RowArgs): string {
@@ -155,56 +182,38 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     this.costCenterService.getById(String.Format(CostCenterApi.CostCenter, recordId)).subscribe(res => {
       this.editDataItem = res;
       this.setParentModel(res.parentId)
-      //this.setTitle(res.parentId);
 
       this.parentId = res.parentId;
 
+      this.openEditorDialog(false);
+
       this.grid.loading = false;
     })
-    this.isNew = false;
-    this.errorMessage = '';
   }
 
-  public cancelHandler() {
-    this.editDataItem = undefined;
-    this.errorMessage = '';
-    this.isNew = false;
-    this.parentId = this.componentParentId;
-  }
+  public saveHandler(model: CostCenter, isNew: boolean) {
 
-  public saveHandler(model: CostCenter) {
-
-    if (!this.isNew) {
-      this.isNew = false;
+    if (!isNew) {
       this.costCenterService.edit<CostCenter>(String.Format(CostCenterApi.CostCenter, model.id), model)
         .subscribe(response => {
           this.editDataItem = undefined;
           this.showMessage(this.updateMsg, MessageType.Succes);
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
           this.reloadGrid();
         }, (error => {
           this.editDataItem = model;
-          this.errorMessage = error;
+          this.dialogModel.errorMessage = error;
         }));
     }
     else {
-      model.branchId = this.BranchId;
-      model.fiscalPeriodId = this.FiscalPeriodId;
-      model.companyId = this.CompanyId;
-
       this.parentId = this.componentParentId;
-
-      if (this.parentModel) {
-        model.parentId = this.parentModel.id;
-        model.level = this.parentModel.level + 1;
-      }
-      else {
-        model.parentId = undefined;
-        model.level = 0;
-      }
-
       this.costCenterService.insert<CostCenter>(CostCenterApi.EnvironmentCostCenters, model)
         .subscribe((response: any) => {
-          this.isNew = false;
           this.editDataItem = undefined;
           this.showMessage(this.insertMsg, MessageType.Succes);
           var insertedModel = response;
@@ -213,13 +222,17 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
             var childFiltered = this.Childrens.filter(f => f.parent.id == model.parentId);
             if (childFiltered.length > 0) {
               childFiltered[0].reloadGrid(insertedModel);
-              return;
             }
           }
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
           this.reloadGrid(insertedModel);
         }, (error => {
-          this.isNew = true;
-          this.errorMessage = error;
+          this.dialogModel.errorMessage = error;
         }));
     }
   }
@@ -227,7 +240,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
   //#endregion
 
   //#region Constructor
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public dialogService: DialogService,
     private costCenterService: CostCenterService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService,
     @SkipSelf() @Host() @Optional() private parentComponent: CostCenterComponent) {
     super(toastrService, translate, renderer, metadata, settingService, Entities.CostCenter, Metadatas.CostCenter);
@@ -470,7 +483,9 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
   //}
 
   public addNew(parentModelId?: number, addToThis?: boolean) {
-    this.isNew = true;
+
+    debugger;
+
     this.editDataItem = new CostCenterInfo();
     this.setParentModel(parentModelId);
 
@@ -482,7 +497,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     else
       this.addToContainer = false;
 
-    this.errorMessage = '';
+    this.openEditorDialog(true);
   }
 
   public showOnlyParent(dataItem: CostCenter, index: number): boolean {

@@ -51,7 +51,7 @@ export function getLayoutModule(layout: Layout) {
 export class AccountComponent extends DefaultComponent implements OnInit {
 
 
-  //#region Fields
+   //#region Fields
 
   public Childrens: Array<AccountComponent>;
 
@@ -88,6 +88,9 @@ export class AccountComponent extends DefaultComponent implements OnInit {
   componentParentId: number;
   isChildExpanding: boolean;
   goLastPage: boolean;
+
+  private dialogRef: DialogRef;
+  private dialogModel: any;
   //#endregion
 
   //#region Events
@@ -105,10 +108,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
       this.componentParentId = this.parentId;
       this.parentModel = this.parent;
     }
-  }
-
-  private dialogRef: DialogRef;
-  private dialogModel: any;
+  } 
 
   /**
    * باز کردن و مقداردهی اولیه به فرم ویرایشگر
