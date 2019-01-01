@@ -21,6 +21,8 @@ import { SecureEntity } from '../../security/secureEntity';
 import { DetailAccountPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
+import { DialogRef, DialogService } from '@progress/kendo-angular-dialog';
+import { DetailAccountFormComponent } from './detailAccount-form.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -50,7 +52,6 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
   @Input() public isChild: boolean = false;
 
   public parentId?: number = undefined;
-
   public rowData: GridDataResult;
   public selectedRows: number[] = [];
   public totalRecords: number;
@@ -70,19 +71,15 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
   editDataItem?: DetailAccount = undefined;
   parentModel: DetailAccount;
-  isNew: boolean;
-  errorMessage: string;
   groupDelete: boolean = false;
   //showFilterBtn: boolean = false;
   addToContainer: boolean = false;
-
-  parentTitle: string = '';
-  parentValue: string = '';
-  parentScope: number = 0;
-
   isChildExpanding: boolean;
   componentParentId: number;
   goLastPage: boolean;
+
+  private dialogRef: DialogRef;
+  private dialogModel: any;
   //#endregion
 
   //#region Events
@@ -98,9 +95,39 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
       this.parentComponent.addChildComponent(this);
       this.parentId = this.parent.id;
       this.componentParentId = this.parentId;
-
       this.parentModel = this.parent;
     }
+  }
+
+  /**
+   * باز کردن و مقداردهی اولیه به فرم ویرایشگر
+   */
+  openEditorDialog(isNew: boolean) {
+
+    this.dialogRef = this.dialogService.open({
+      title: this.getText(isNew ? 'Buttons.New' : 'Buttons.Edit'),
+      content: DetailAccountFormComponent,
+    });
+
+    this.dialogModel = this.dialogRef.content.instance;
+    this.dialogModel.parent = this.parentModel;
+    this.dialogModel.errorMessage = undefined;
+    this.dialogModel.model = this.editDataItem;
+    this.dialogModel.isNew = isNew;
+
+    this.dialogRef.content.instance.save.subscribe((res) => {
+      this.saveHandler(res, isNew);
+    });
+
+    const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
+      this.dialogRef.close();
+
+      this.dialogModel.parent = undefined;
+      this.dialogModel.errorMessage = undefined;
+      this.dialogModel.model = undefined;
+
+      this.parentId = this.componentParentId;
+    });
   }
 
   selectionKey(context: RowArgs): string {
@@ -157,53 +184,35 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
       this.setParentModel(res.parentId);
 
       this.parentId = res.parentId;
-
+      this.openEditorDialog(false);
       this.grid.loading = false;
     })
-    this.isNew = false;
-    this.errorMessage = '';
   }
 
-  public cancelHandler() {
-    this.editDataItem = undefined;
-    this.errorMessage = '';
-    this.isNew = false;
-    this.parentId = this.componentParentId;
-  }
-
-  public saveHandler(model: DetailAccount) {
+  public saveHandler(model: DetailAccount, isNew: boolean) {
     //this.sppcLoading.show();
-    if (!this.isNew) {
-      this.isNew = false;
+    if (!isNew) {
       this.detailAccountService.edit<DetailAccount>(String.Format(DetailAccountApi.DetailAccount, model.id), model)
         .subscribe(response => {
           this.editDataItem = undefined;
           this.showMessage(this.updateMsg, MessageType.Succes);
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
           this.reloadGrid();
         }, (error => {
           this.editDataItem = model;
-          this.errorMessage = error;
+          this.dialogModel.errorMessage = error;
         }));
     }
     else {
-      model.branchId = this.BranchId;
-      model.fiscalPeriodId = this.FiscalPeriodId;
-      model.companyId = this.CompanyId;
-
       this.parentId = this.componentParentId;
-
-      if (this.parentModel) {
-        model.parentId = this.parentModel.id;
-        model.level = this.parentModel.level + 1;
-      }
-      else {
-        model.parentId = undefined;
-        model.level = 0;
-      }
 
       this.detailAccountService.insert<DetailAccount>(DetailAccountApi.EnvironmentDetailAccounts, model)
         .subscribe((response: any) => {
-          this.isNew = false;
           this.editDataItem = undefined;
           this.showMessage(this.insertMsg, MessageType.Succes);
           var insertedModel = response;
@@ -212,13 +221,17 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
             var childFiltered = this.Childrens.filter(f => f.parent.id == model.parentId);
             if (childFiltered.length > 0) {
               childFiltered[0].reloadGrid(insertedModel);
-              return;
             }
           }
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
           this.reloadGrid(insertedModel);
         }, (error => {
-          this.isNew = true;
-          this.errorMessage = error;
+          this.dialogModel.errorMessage = error;
         }));
     }
     //this.sppcLoading.hide();
@@ -227,7 +240,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
   //#endregion
 
   //#region Constructor
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService, public dialogService: DialogService,
     private detailAccountService: DetailAccountService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService,
     @SkipSelf() @Host() @Optional() private parentComponent: DetailAccountComponent) {
     super(toastrService, translate, renderer, metadata, settingService, Entities.DetailAccount, Metadatas.DetailAccount);
@@ -439,7 +452,6 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
 
   public addNew(parentModelId?: number, addToThis?: boolean) {
 
-    this.isNew = true;
     this.editDataItem = new DetailAccountInfo();
     this.setParentModel(parentModelId);
 
@@ -450,8 +462,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
       this.addToContainer = addToThis;
     else
       this.addToContainer = false;
-
-    this.errorMessage = '';
+    this.openEditorDialog(true);
   }
 
   public showOnlyParent(dataItem: DetailAccount, index: number): boolean {

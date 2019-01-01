@@ -124,10 +124,6 @@
     <!-- additional columns on large devices -->
 
   </kendo-grid>
-    <detailAccount-form-component [model]="editDataItem" [parent]="parentModel" [isNew]="isNew" [errorMessage]="errorMessage"
-                                    (save)="saveHandler($event)"
-                                    (cancel)="cancelHandler()">
-    </detailAccount-form-component>
 </div>
 <kendo-dialog title="{{'DetailAccount.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
     <p>
