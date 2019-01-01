@@ -1,12 +1,9 @@
-<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
-              (close)="closeForm()" [minWidth]="250" [width]="450">
-  <kendo-dialog-titlebar>
-    {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
-  </kendo-dialog-titlebar>
+
+<div style="padding:15px;">
 
   <editor-form-title [parentModel]="parentModel" [entityType]="viewId"></editor-form-title>
 
-  <div *ngIf="errorMessage != ''">
+  <div *ngIf="errorMessage">
     <div class="alert alert-danger">
       <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
       {{ errorMessage }}
@@ -36,7 +33,7 @@
     <div class="form-group">
       <label for="code" class="control-label">{{ 'Project.Code' | translate }}</label>
 
-      <input type="text" class="k-textbox" formControlName="code" [OnlyNumber] [SppcCodeLength]="parentModel ? parentModel.level + 2 : 1" [ViewId]="viewId" [sppcFullCode]="'fullCode'" [apiUrl]="fullCodeApiUrl" />
+      <input type="text" class="k-textbox" formControlName="code" [OnlyNumber] [SppcCodeLength]="level + 1" [ViewId]="viewId" [sppcFullCodeTest]="'fullCode'" [parentFullCode]="parentFullCode" />
 
       <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.code.valid || editForm.controls.code.pristine">
         <span *ngIf="editForm.controls.code.errors?.required">{{ 'AllValidations.Project.CodeIsRequired' | translate }}</span>
@@ -66,9 +63,10 @@
       </div>
     </div>
   </form>
+</div>
 
-  <kendo-dialog-actions>
-    <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
-    <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
-  </kendo-dialog-actions>
-</kendo-dialog>
+<kendo-dialog-actions>
+  <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+  <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+</kendo-dialog-actions>
+

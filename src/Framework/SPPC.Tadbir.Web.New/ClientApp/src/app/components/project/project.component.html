@@ -125,10 +125,7 @@
     <!-- additional columns on large devices -->
 
   </kendo-grid>
-    <project-form-component [model]="editDataItem" [parent]="parentModel" [isNew]="isNew" [errorMessage]="errorMessage"
-                                    (save)="saveHandler($event)"
-                                    (cancel)="cancelHandler()">
-    </project-form-component>
+
 </div>
 <kendo-dialog title="{{'Project.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
     <p>
