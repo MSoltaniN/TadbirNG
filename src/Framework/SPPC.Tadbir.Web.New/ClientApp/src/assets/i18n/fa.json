@@ -66,7 +66,10 @@
     "DeleteConfirm": "آیا برای حذف {0} اطمینان دارید؟"
   },
   "Report": {
-    "ReportViewer": "نمایشگر گزارش"
+    "ReportViewer": "نمایشگر گزارش",
+    "ReportDesign" : "طراحی گزارش",
+    "Reports" : "گزارشات",
+    "ReportManagement" : "مدیریت گزارشات"
   },
   "Buttons": {
     "Ok": "تایید",

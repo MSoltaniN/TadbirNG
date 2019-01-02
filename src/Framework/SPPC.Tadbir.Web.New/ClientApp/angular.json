@@ -23,11 +23,13 @@
             "styles": [
               "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/stimulsoft/stimulsoft.viewer.office2013.whiteblue.css"
+              "src/stimulsoft/stimulsoft.viewer.office2013.whiteblue.css",
+              "src/stimulsoft/stimulsoft.designer.office2013.whiteblue.css"
             ],
             "scripts": [
               "src/stimulsoft/stimulsoft.reports.js",
-              "src/stimulsoft/stimulsoft.viewer.js"
+              "src/stimulsoft/stimulsoft.viewer.js",
+              "src/stimulsoft/stimulsoft.designer.js"
 
             ]
           },

@@ -12,7 +12,7 @@ import { TreeViewModule } from '@progress/kendo-angular-treeview';
 import { ReactiveFormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PopupModule } from '@progress/kendo-angular-popup';
-
+ 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { AccountComponent } from './components/account/account.component';
@@ -250,7 +250,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     ButtonsModule,
     CommonModule,
-    HttpModule,
+    HttpModule,    
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,

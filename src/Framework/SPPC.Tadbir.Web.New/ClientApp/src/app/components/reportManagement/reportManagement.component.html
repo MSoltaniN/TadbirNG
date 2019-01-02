@@ -1,17 +1,31 @@
-<kendo-dialog [minWidth]="300" [width]="450" *ngIf="active" class="permission-dialog" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
-              (close)="closeForm()">
+<kendo-dialog [minWidth]="400" [width]="innerWidth"
+   [height]="innerHeight" *ngIf="active" class="permission-dialog" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              (close)="closeDialog()">
     <kendo-dialog-titlebar>
-        {{ isNew ?  ('Buttons.New' | translate) :  ('Buttons.Edit' | translate) }}
+            {{ 'Report.ReportManagement' | translate }}
     </kendo-dialog-titlebar>
-    <div class="panel panel-primary">
-      <div class="panel-heading">{{ 'Role.Permissions' | translate }}</div>
+    <div class="">      
       <div [ngClass]="{'k-rtl':this.CurrentLanguage === 'fa'}" >
-          <kendo-treeview [nodes]="treeReports" textField="name"
-                          kendoTreeViewExpandable                          
-                          kendoTreeViewFlatDataBinding
-                          idField="id"
-                          parentIdField="parentId">
-          </kendo-treeview>
+            <div class='col-lg-3 col-sm-12 col-md-12 col-xs-12 noprl ' 
+            [ngClass]="{'pull-right':this.CurrentLanguage === 'fa' , 'pull-left': this.CurrentLanguage === 'en'}" >
+                <h4>{{ 'Report.Reports' | translate }}</h4>                                    
+                <kendo-treeview [nodes]="treeData" textField="name"
+                    kendoTreeViewExpandable  
+                    kendoTreeViewSelectable                        
+                    kendoTreeViewFlatDataBinding
+                    kendoTreeViewHierarchyBinding
+                    idField="id"                    
+                    parentIdField="parentId"
+                    [(expandedKeys)]="expandedKeys" 
+                    (nodeClick)="onNodeClick($event)"                    
+                    (selectionChange)="onNodeClick($event)">
+                    </kendo-treeview>        
+            </div>
+            <div class='col-lg-9 col-sm-12 col-md-12 col-xs-12 noprl'
+            [ngClass]="{'pull-left':this.CurrentLanguage === 'fa' , 'pull-right': this.CurrentLanguage === 'en'}">
+                    <h4>{{ 'Report.ReportDesign' | translate }}</h4>
+                    <div id="designer"></div>
+             </div>              
       </div>
     </div>    
 </kendo-dialog>
