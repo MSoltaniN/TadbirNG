@@ -21,6 +21,8 @@ import { SecureEntity } from '../../security/secureEntity';
 import { ProjectPermissions } from '../../security/permissions';
 import { FilterExpression } from '../../class/filterExpression';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
+import { DialogRef, DialogService } from '@progress/kendo-angular-dialog';
+import { ProjectFormComponent } from './project-form.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -69,19 +71,14 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
 
   editDataItem?: Project = undefined;
   parentModel: Project;
-  isNew: boolean;
-  errorMessage: string;
   groupDelete: boolean = false;
-
   addToContainer: boolean = false;
-
-  parentTitle: string = '';
-  parentValue: string = '';
-  parentScope: number = 0;
-
   isChildExpanding: boolean;
   componentParentId: number;
   goLastPage: boolean;
+
+  private dialogRef: DialogRef;
+  private dialogModel: any;
   //#endregion
 
   //#region Events
@@ -100,6 +97,37 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
 
       this.parentModel = this.parent;
     }
+  }
+
+  /**
+   * باز کردن و مقداردهی اولیه به فرم ویرایشگر
+   */
+  openEditorDialog(isNew: boolean) {
+
+    this.dialogRef = this.dialogService.open({
+      title: this.getText(isNew ? 'Buttons.New' : 'Buttons.Edit'),
+      content: ProjectFormComponent,
+    });
+
+    this.dialogModel = this.dialogRef.content.instance;
+    this.dialogModel.parent = this.parentModel;
+    this.dialogModel.errorMessage = undefined;
+    this.dialogModel.model = this.editDataItem;
+    this.dialogModel.isNew = isNew;
+
+    this.dialogRef.content.instance.save.subscribe((res) => {
+      this.saveHandler(res, isNew);
+    });
+
+    const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
+      this.dialogRef.close();
+
+      this.dialogModel.parent = undefined;
+      this.dialogModel.errorMessage = undefined;
+      this.dialogModel.model = undefined;
+
+      this.parentId = this.componentParentId;
+    });
   }
 
   selectionKey(context: RowArgs): string {
@@ -155,53 +183,36 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
       this.setParentModel(res.parentId);
 
       this.parentId = res.parentId;
+      this.openEditorDialog(false);
 
       this.grid.loading = false;
     })
-    this.isNew = false;
-    this.errorMessage = '';
   }
 
-  public cancelHandler() {
-    this.editDataItem = undefined;
-    this.errorMessage = '';
-    this.isNew = false;
-    this.parentId = this.componentParentId;
-  }
+  public saveHandler(model: Project, isNew: boolean) {
 
-  public saveHandler(model: Project) {
-
-    if (!this.isNew) {
-      this.isNew = false;
+    if (!isNew) {
       this.projectService.edit<Project>(String.Format(ProjectApi.Project, model.id), model)
         .subscribe(response => {
           this.editDataItem = undefined;
           this.showMessage(this.updateMsg, MessageType.Succes);
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
           this.reloadGrid();
         }, (error => {
           this.editDataItem = model;
-          this.errorMessage = error;
+          this.dialogModel.errorMessage = error;
         }));
     }
     else {
-      model.branchId = this.BranchId;
-      model.fiscalPeriodId = this.FiscalPeriodId;
-      model.companyId = this.CompanyId;
-
       this.parentId = this.componentParentId;
-
-      if (this.parentModel) {
-        model.parentId = this.parentModel.id;
-        model.level = this.parentModel.level + 1;
-      }
-      else {
-        model.parentId = undefined;
-        model.level = 0;
-      }
 
       this.projectService.insert<Project>(ProjectApi.EnvironmentProjects, model)
         .subscribe((response: any) => {
-          this.isNew = false;
           this.editDataItem = undefined;
           this.showMessage(this.insertMsg, MessageType.Succes);
           var insertedModel = response;
@@ -209,13 +220,17 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
             var childFiltered = this.Childrens.filter(f => f.parent.id == model.parentId);
             if (childFiltered.length > 0) {
               childFiltered[0].reloadGrid(insertedModel);
-              return;
             }
           }
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
           this.reloadGrid(insertedModel);
         }, (error => {
-          this.isNew = true;
-          this.errorMessage = error;
+          this.dialogModel.errorMessage = error;
         }));
     }
   }
@@ -223,7 +238,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
   //#endregion
 
   //#region Constructor
-  constructor(public toastrService: ToastrService, public translate: TranslateService, public sppcLoading: SppcLoadingService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public dialogService: DialogService,
     private projectService: ProjectService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService,
     @SkipSelf() @Host() @Optional() private parentComponent: ProjectComponent) {
     super(toastrService, translate, renderer, metadata, settingService, Entities.Project, Metadatas.Project);
@@ -433,7 +448,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
   }
 
   public addNew(parentModelId?: number, addToThis?: boolean) {
-    this.isNew = true;
+
     this.editDataItem = new ProjectInfo();
     this.setParentModel(parentModelId);
 
@@ -445,7 +460,7 @@ export class ProjectComponent extends DefaultComponent implements OnInit {
     else
       this.addToContainer = false;
 
-    this.errorMessage = '';
+    this.openEditorDialog(true);
   }
 
   public showOnlyParent(dataItem: Project, index: number): boolean {

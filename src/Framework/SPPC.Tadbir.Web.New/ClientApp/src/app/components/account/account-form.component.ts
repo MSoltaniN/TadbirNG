@@ -28,7 +28,7 @@ interface Item {
 
 @Component({
   selector: 'account-form-component',
-  styles: ["input[type=text],textarea,.ddl-accGroup { width: 100%; },"],
+  styles: ["input[type=text],textarea,.ddl-accGroup { width: 100%; } /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}"],
   templateUrl: './account-form.component.html',
   providers: [{
     provide: RTL,
@@ -41,98 +41,94 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
 
   //create properties
   viewId: number;
-  active: boolean = false;
-
-  fullCodeApiUrl: string;
-  editModel: Account;
-  parentModel: Account;
   parentScopeValue: number = 0;
+  parentFullCode: string = '';
 
   accGroupList: Array<Item> = [];
   accGroupSelected: string;
+  level: number = 0;
 
-  @Input() public disableSaveBtn: boolean = false;
+  @Input() public parent: Account;
+  @Input() public model: Account;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string = '';
 
-  @Input() public set parent(parent: Account) {
-    this.parentModel = parent;
-    this.parentScopeValue = 0;
-    this.fullCodeApiUrl = String.Format(AccountApi.AccountFullCode, 0);
-
-    if (parent) {
-      this.fullCodeApiUrl = String.Format(AccountApi.AccountFullCode, parent.id);
-      this.parentScopeValue = parent.branchScope;
-    }
-    else {
-      this.getAccountGroups();
-    }
-  }
-
-  @Input() public set model(account: Account) {
-    this.editModel = account;
-    this.editForm.reset(account);
-
-    //this.active = account !== undefined || this.isNew;
-    this.active = false;
-    this.disableSaveBtn = false;
-
-    if (account && account.groupId) {
-      this.accGroupSelected = account.groupId.toString();
-    }
-
-  }
-
-  @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<Account> = new EventEmitter();
-  //create properties
+  @Output() cancel: EventEmitter<any> = new EventEmitter();
 
-  //Events
+
+  ////Events
   public onSave(e: any): void {
     e.preventDefault();
+
     if (this.editForm.valid) {
-      this.disableSaveBtn = true;
-      if (this.editModel.id > 0) {
+      if (this.model.id > 0) {
         let model: Account = this.editForm.value;
-        model.branchId = this.editModel.branchId;
-        model.fiscalPeriodId = this.editModel.fiscalPeriodId;
-        model.companyId = this.editModel.companyId;
+        model.branchId = this.model.branchId;
+        model.fiscalPeriodId = this.model.fiscalPeriodId;
+        model.companyId = this.model.companyId;
         this.save.emit(model);
       }
-      else
-        this.save.emit(this.editForm.value);
-      this.active = true;
+      else {
+        let model: Account = this.editForm.value;
+        model.branchId = this.BranchId;
+        model.fiscalPeriodId = this.FiscalPeriodId;
+        model.companyId = this.CompanyId;
+        model.parentId = this.parent ? this.parent.id : undefined;
+        model.level = this.level;
+        this.save.emit(model);
+      }
     }
   }
-
 
   public onCancel(e: any): void {
     e.preventDefault();
-    this.closeForm();
-  }
-
-  private closeForm(): void {
-    this.isNew = false;
-    this.active = false;
     this.cancel.emit();
   }
+
   //Events
 
   ngOnInit(): void {
+
     this.viewId = ViewName.Account;
-    if (this.parentModel)
-      this.parentScopeValue = this.parentModel.branchScope;
+
+    this.editForm.reset();
+
+    this.parentScopeValue = 0;
+
+    if (this.parent) {
+      this.parentFullCode = this.parent.fullCode;
+      this.model.fullCode = this.parentFullCode;      
+      this.parentScopeValue = this.parent.branchScope;
+      this.level = this.parent.level + 1;
+    }
+    else {
+      this.level = 0;
+      this.getAccountGroups();
+    }
+
+    if (this.model && this.model.code)
+      this.model.fullCode = this.parentFullCode + this.model.code;
+
+    setTimeout(() => {
+      this.editForm.reset(this.model);
+    })
+
   }
 
   constructor(private accountService: AccountService, public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,
     public renderer: Renderer2, public metadata: MetaDataService) {
-
     super(toastrService, translate, renderer, metadata, Entities.Account, Metadatas.Account);
+
   }
 
   getAccountGroups() {
     this.lookupService.GetAccountGroupsLookup().subscribe(res => {
       this.accGroupList = res;
+
+      if (this.model && this.model.groupId) {
+        this.accGroupSelected = this.model.groupId.toString();
+      }
     })
   }
 }

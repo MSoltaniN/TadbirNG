@@ -121,11 +121,6 @@
 
   </kendo-grid>
 
-  <relatedAccounts-form-component [model]="editDataItem" [parent]="parentModel" [isNew]="isNew" [errorMessage]="errorMessage" [accGroupId]="accountGroupId"
-                                  (save)="saveHandler($event)"
-                                  (cancel)="cancelHandler()">
-  </relatedAccounts-form-component>
-
 </div>
 <kendo-dialog title="{{'Account.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
   <p>

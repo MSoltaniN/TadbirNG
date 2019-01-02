@@ -123,10 +123,6 @@
     <!-- additional columns on large devices -->
 
   </kendo-grid>
-    <costCenter-form-component [model]="editDataItem" [parent]="parentModel" [isNew]="isNew" [errorMessage]="errorMessage"
-                                    (save)="saveHandler($event)"
-                                    (cancel)="cancelHandler()">
-    </costCenter-form-component>
 </div>
 <kendo-dialog title="{{'CostCenter.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
     <p>

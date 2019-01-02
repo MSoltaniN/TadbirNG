@@ -23,7 +23,7 @@ import { DefaultComponent } from '../../class/default.component';
 import { FilterExpression } from '../../class/filterExpression';
 import { FilterExpressionOperator } from '../../class/filterExpressionOperator';
 import { DialogService, DialogRef } from '@progress/kendo-angular-dialog';
-import { FormComponent } from './form.component';
+import { AccountFormComponent } from './account-form.component';
 //#endregion
 
 export function getLayoutModule(layout: Layout) {
@@ -39,7 +39,6 @@ export function getLayoutModule(layout: Layout) {
         padding-right: 0px;
         padding-left: 0px;
     }
-/deep/.dialog .k-window-content {padding: 0 !important}
   `],
   providers: [{
     provide: RTL,
@@ -52,7 +51,7 @@ export function getLayoutModule(layout: Layout) {
 export class AccountComponent extends DefaultComponent implements OnInit {
 
 
-  //#region Fields
+   //#region Fields
 
   public Childrens: Array<AccountComponent>;
 
@@ -89,6 +88,9 @@ export class AccountComponent extends DefaultComponent implements OnInit {
   componentParentId: number;
   isChildExpanding: boolean;
   goLastPage: boolean;
+
+  private dialogRef: DialogRef;
+  private dialogModel: any;
   //#endregion
 
   //#region Events
@@ -106,25 +108,16 @@ export class AccountComponent extends DefaultComponent implements OnInit {
       this.componentParentId = this.parentId;
       this.parentModel = this.parent;
     }
-  }
-
-  private dialogRef: DialogRef;
-  private dialogModel: any;
+  } 
 
   /**
    * باز کردن و مقداردهی اولیه به فرم ویرایشگر
    */
   openEditorDialog(isNew: boolean) {
-    //debugger;
-    //if (this.parentAccount) {
-    //console.log(this.grid);
-    //  this.grid = this.parentAccount.grid;
-    //}
-
 
     this.dialogRef = this.dialogService.open({
       title: this.getText(isNew ? 'Buttons.New' : 'Buttons.Edit'),
-      content: FormComponent,
+      content: AccountFormComponent,
     });
 
     this.dialogModel = this.dialogRef.content.instance;
@@ -242,7 +235,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
             var childFiltered = this.Childrens.filter(f => f.parent.id == model.parentId);
             if (childFiltered.length > 0) {
               childFiltered[0].reloadGrid(insertedModel);
-              return;
             }
           }
 

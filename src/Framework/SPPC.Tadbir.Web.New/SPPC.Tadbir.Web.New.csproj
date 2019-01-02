@@ -31,6 +31,7 @@
     <None Remove="ClientApp\src\app\class\base.component.ts" />
     <None Remove="ClientApp\src\app\class\base.service.ts" />
     <None Remove="ClientApp\src\app\class\detail.component.ts" />
+    <None Remove="ClientApp\src\app\class\dialog.component.ts" />
     <None Remove="ClientApp\src\app\class\dictionary.ts" />
     <None Remove="ClientApp\src\app\class\enviroment.component.ts" />
     <None Remove="ClientApp\src\app\class\error.handler.ts" />
@@ -46,7 +47,6 @@
     <None Remove="ClientApp\src\app\components\accountRelations\accountRelations.component.ts" />
     <None Remove="ClientApp\src\app\components\account\account-form.component.ts" />
     <None Remove="ClientApp\src\app\components\account\account.component.ts" />
-    <None Remove="ClientApp\src\app\components\account\form.component.ts" />
     <None Remove="ClientApp\src\app\components\branch\branch-form.component.ts" />
     <None Remove="ClientApp\src\app\components\branch\branch-roles-form.component.ts" />
     <None Remove="ClientApp\src\app\components\company\company-form.component.ts" />
@@ -870,6 +870,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\class\dialog.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\base.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\base.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\class\inlineGrid.component.ts" />
@@ -886,7 +887,6 @@
     <TypeScriptCompile Include="ClientApp\src\app\components\accountGroups\accountGroups-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\accountRelations\accountRelations-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\accountRelations\accountRelations.component.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\components\account\form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\account\account-form.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\account\account.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\components\branch\branch-form.component.ts" />

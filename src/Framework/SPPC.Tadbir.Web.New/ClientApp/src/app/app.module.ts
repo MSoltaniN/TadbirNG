@@ -59,9 +59,9 @@ import { ViewTreeConfigComponent } from './components/viewTreeConfig/viewTreeCon
 import { AccountGroupsComponent } from './components/accountGroups/accountGroups.component';
 import { AccountGroupsFormComponent } from './components/accountGroups/accountGroups-form.component';
 //import { InlineTestComponent } from './components/inlineTest/inlineTest.component';
-import { FormComponent } from './components/account/form.component';
 import { RelatedAccountsComponent } from './components/relatedAccounts/relatedAccounts.component';
 import { RelatedAccountsFormComponent } from './components/relatedAccounts/relatedAccounts-form.component';
+import { DialogComponent } from './class/dialog.component';
 
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { ConfirmEqualValidator } from './directive/Validator/confirm-equal-validator';
@@ -244,7 +244,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReportManagementComponent,
     FormComponent,
     RelatedAccountsComponent,
-    RelatedAccountsFormComponent
+    RelatedAccountsFormComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -331,7 +332,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   schemas: [NO_ERRORS_SCHEMA],
   entryComponents: [
-    SppcGridDatepicker, FormComponent
+    SppcGridDatepicker, AccountFormComponent, CostCenterFormComponent, DetailAccountFormComponent, ProjectFormComponent, RelatedAccountsFormComponent
   ],
   bootstrap: [AppComponent]
 })
