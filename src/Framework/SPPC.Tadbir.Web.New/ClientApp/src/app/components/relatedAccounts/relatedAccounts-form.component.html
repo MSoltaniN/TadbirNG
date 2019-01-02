@@ -84,7 +84,7 @@
   </form>
 </div>
 <kendo-dialog-actions>
-  <button class="k-button k-primary" [disabled]="!editForm.valid || disableSaveBtn" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+  <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
   <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
 </kendo-dialog-actions>
 

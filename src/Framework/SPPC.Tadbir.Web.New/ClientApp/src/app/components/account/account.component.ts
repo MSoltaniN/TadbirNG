@@ -51,7 +51,7 @@ export function getLayoutModule(layout: Layout) {
 export class AccountComponent extends DefaultComponent implements OnInit {
 
 
-   //#region Fields
+  //#region Fields
 
   public Childrens: Array<AccountComponent>;
 
@@ -108,7 +108,35 @@ export class AccountComponent extends DefaultComponent implements OnInit {
       this.componentParentId = this.parentId;
       this.parentModel = this.parent;
     }
-  } 
+  }
+
+
+
+
+
+  public cellClickHandler({ dataItem, rowIndex }): void {
+
+    this.grid.loading = true;
+    this.accountService.getById(String.Format(AccountApi.Account, dataItem.id)).subscribe(res => {
+
+      this.editDataItem = res;
+      this.setParentModel(res.parentId);
+
+      this.parentId = res.parentId;
+
+      this.openEditorDialog(false);
+
+      this.grid.loading = false;
+    })
+
+  }
+
+
+
+
+
+
+
 
   /**
    * باز کردن و مقداردهی اولیه به فرم ویرایشگر

@@ -13,7 +13,7 @@
               (pageChange)="pageChange($event)"
               (sortChange)="sortChange($event)"
               (edit)="editHandler($event)"
-              (remove)="removeHandler($event)"
+              (remove)="removeHandler()"
               [sort]="state.sort"
               [loading]="true"
               [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
