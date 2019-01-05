@@ -461,7 +461,8 @@
     "DialogTitle": "Operation Log Detail",
     "BeforeState": "Before State",
     "AfterState": "After State",
-    "ErrorMessage": "Error Message"
+    "ErrorMessage": "Error Message",
+    "Detail": "Detail"
   },
   "MetaDataValidation": {
     "CodeLength": "Code length is not allowed"

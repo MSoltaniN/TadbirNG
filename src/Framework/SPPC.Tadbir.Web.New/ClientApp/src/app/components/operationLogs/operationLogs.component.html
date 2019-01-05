@@ -1,242 +1,121 @@
-﻿<app-bread-cumb></app-bread-cumb>
+<app-bread-cumb></app-bread-cumb>
 <div class="panel-body">
-    <kendo-grid id="12" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
-                [data]="rowData"
-                [sortable]="true"
-                [pageSize]="pageSize"
-                [skip]="skip"
-                [pageable]="true"
-                [resizable]="true"
-                [filterable]="false"
-                [scrollable]="'none'"
-                (pageChange)="pageChange($event)"
-                (sortChange)="sortChange($event)"
-                (edit)="editHandler($event)"
-                [sort]="state.sort"
-                (dataStateChange)="dataStateChange($event)">
-        <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
-                                pagerOf="{{ 'Paging.Of' | translate }}"
-                                pagerItems="{{ 'Paging.Record' | translate }}">
-        </kendo-grid-messages>
-        <ng-template kendoGridNoRecordsTemplate>
-            {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
-        </ng-template>
-        <ng-template kendoGridToolbarTemplate>
-            <!--<grid-setting entityTypeName="OperationLog"></grid-setting>-->
-            <div class="row">
-                <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
-                    <label class="control-label">کاربر:</label>
-                    <input type="text" class="k-textbox"/>
+  <kendo-grid id="12" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+              [data]="rowData"
+              [sortable]="{ allowUnsort: true, mode: 'multiple' }"
+              [sort]="sort"
+              [pageSize]="pageSize"
+              [skip]="skip"
+              [pageable]="true"
+              [resizable]="true"
+              [filterable]="false"
+              [scrollable]="'none'"
+              (pageChange)="pageChange($event)"
+              (sortChange)="sortChange($event)"
+              (edit)="editHandler($event)">
+    <!--(dataStateChange)="dataStateChange($event)"-->
 
-                    <button class="k-button btn-search"
-                            (click)="onMainComponentSearch()">
-                        <span class="k-i-filter k-icon"></span>
-                    </button>
+    <kendo-grid-messages pagerPage="{{ 'Paging.Record' | translate }}"
+                         pagerOf="{{ 'Paging.Of' | translate }}"
+                         pagerItems="{{ 'Paging.Record' | translate }}">
+    </kendo-grid-messages>
+    <ng-template kendoGridNoRecordsTemplate>
+      {{ showloadingMessage  ? ('App.Loading' | translate) : ('App.RecordNotFound' | translate) }}
+    </ng-template>
+    <!--<ng-template kendoGridToolbarTemplate>
+      <grid-setting entityTypeName="OperationLog"></grid-setting>
 
-                    <button class="k-button btn-search"
-                            (click)="removeMainComponentFilter()">
-                        <span class="k-icon k-i-filter-clear"></span>
-                    </button>
-                </div>
-
-                <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
-                    <label class="control-label">شعبه:</label>
-                    <input type="text" class="k-textbox" />
-
-                    <button class="k-button btn-search"
-                            (click)="onMainComponentSearch()">
-                        <span class="k-i-filter k-icon"></span>
-                    </button>
-
-                    <button class="k-button btn-search"
-                            (click)="removeMainComponentFilter()">
-                        <span class="k-icon k-i-filter-clear"></span>
-                    </button>
-                </div>
-
-                <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
-                    <label class="control-label">موجودیت:</label>
-                    <input type="text" class="k-textbox" />
-
-                    <button class="k-button btn-search"
-                            (click)="onMainComponentSearch()">
-                        <span class="k-i-filter k-icon"></span>
-                    </button>
-
-                    <button class="k-button btn-search"
-                            (click)="removeMainComponentFilter()">
-                        <span class="k-icon k-i-filter-clear"></span>
-                    </button>
-                </div>
-
-                <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
-                    <label class="control-label">شرکت:</label>
-                    <input type="text" class="k-textbox" />
-
-                    <button class="k-button btn-search"
-                            (click)="onMainComponentSearch()">
-                        <span class="k-i-filter k-icon"></span>
-                    </button>
-
-                    <button class="k-button btn-search"
-                            (click)="removeMainComponentFilter()">
-                        <span class="k-icon k-i-filter-clear"></span>
-                    </button>
-                </div>
-
-                <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
-                    <label class="control-label">دوره مالی:</label>
-                    <input type="text" class="k-textbox" />
-
-                    <button class="k-button btn-search"
-                            (click)="onMainComponentSearch()">
-                        <span class="k-i-filter k-icon"></span>
-                    </button>
-
-                    <button class="k-button btn-search"
-                            (click)="removeMainComponentFilter()">
-                        <span class="k-icon k-i-filter-clear"></span>
-                    </button>
-                </div>
-
-                <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
-                    <label class="control-label">عملیات:</label>
-                    <input type="text" class="k-textbox" />
-
-                    <button class="k-button btn-search"
-                            (click)="onMainComponentSearch()">
-                        <span class="k-i-filter k-icon"></span>
-                    </button>
-
-                    <button class="k-button btn-search"
-                            (click)="removeMainComponentFilter()">
-                        <span class="k-icon k-i-filter-clear"></span>
-                    </button>
-                </div>
-
-                <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
-                    <label class="control-label">از تاریخ:</label>
-                    <input type="text" class="k-textbox" />
-
-                    <button class="k-button btn-search"
-                            (click)="onMainComponentSearch()">
-                        <span class="k-i-filter k-icon"></span>
-                    </button>
-
-                    <button class="k-button btn-search"
-                            (click)="removeMainComponentFilter()">
-                        <span class="k-icon k-i-filter-clear"></span>
-                    </button>
-                </div>
-
-                <div class="col-sm-4" [ngClass]="{'pull-right':this.currentlang === 'fa'}">
-                    <label class="control-label">تا تاریخ:</label>
-                    <input type="text" class="k-textbox" />
-
-                    <button class="k-button btn-search"
-                            (click)="onMainComponentSearch()">
-                        <span class="k-i-filter k-icon"></span>
-                    </button>
-
-                    <button class="k-button btn-search"
-                            (click)="removeMainComponentFilter()">
-                        <span class="k-icon k-i-filter-clear"></span>
-                    </button>
-                </div>
-            </div>
-        </ng-template>
+  </ng-template>-->
+    <!-- template for mobile -->
+    <kendo-grid-column media="(max-width: 449px)" title="">
+      <ng-template kendoGridCellTemplate let-operationLog>
         <!-- template for mobile -->
-        <kendo-grid-column media="(max-width: 449px)" title="">
-            <ng-template kendoGridCellTemplate let-operationLog>
-                <!-- template for mobile -->
-                <dl>
-                    <dt>{{ 'OperationLog.UserName' | translate }}</dt>
-                    <dd>{{ operationLog.userName }}</dd>
+        <dl>
+          <dt>{{ 'OperationLog.UserName' | translate }}</dt>
+          <dd>{{ operationLog.userName }}</dd>
 
-                    <dt>{{ 'OperationLog.CompanyName' | translate }}</dt>
-                    <dd>{{ operationLog.companyName }}</dd>
+          <dt>{{ 'OperationLog.CompanyName' | translate }}</dt>
+          <dd>{{ operationLog.companyName }}</dd>
 
-                    <dt>{{ 'OperationLog.Date' | translate }}</dt>
-                    <dd>{{ operationLog.date | SppcDate }}</dd>
+          <dt>{{ 'OperationLog.Date' | translate }}</dt>
+          <dd>{{ operationLog.date | SppcDate }}</dd>
 
-                    <dt>{{ 'OperationLog.Time' | translate }}</dt>
-                    <dd>{{ operationLog.time | slice:0:8 }}</dd>
+          <dt>{{ 'OperationLog.Time' | translate }}</dt>
+          <dd>{{ operationLog.time | slice:0:8 }}</dd>
 
-                    <dt>{{ 'OperationLog.Entity' | translate }}</dt>
-                    <dd>{{ operationLog.entity }}</dd>
+          <dt>{{ 'OperationLog.Entity' | translate }}</dt>
+          <dd>{{ operationLog.entity }}</dd>
 
-                    <dt>{{ 'OperationLog.Action' | translate }}</dt>
-                    <dd>{{ operationLog.action }}</dd>
+          <dt>{{ 'OperationLog.Action' | translate }}</dt>
+          <dd>{{ operationLog.action }}</dd>
 
-                    <dt>{{ 'OperationLog.Result' | translate }}</dt>
-                    <dd>{{ operationLog.result }}</dd>
-                </dl>
-                <button kendoGridEditCommand class="k-primary">جزئیات</button>
-            </ng-template>
-        </kendo-grid-column>
-        <!-- template for mobile -->
-        <!-- template for mid-size devices -->
-        <kendo-grid-column media="(min-width: 450px) and (max-width: 1024px)" width="130" sppc-grid-column="OperationLog.userName">
-        </kendo-grid-column>
+          <dt>{{ 'OperationLog.Result' | translate }}</dt>
+          <dd>{{ operationLog.result }}</dd>
+        </dl>
+        <button kendoGridEditCommand class="k-primary">{{ 'OperationLog.Detail' | translate }}</button>
+      </ng-template>
+    </kendo-grid-column>
+    <!-- template for mobile -->
+    <!-- template for mid-size devices -->
+    <kendo-grid-column media="(min-width: 450px) and (max-width: 1024px)" width="130" sppc-grid-column="OperationLog.userName">
+    </kendo-grid-column>
 
-        <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="OperationLog.companyName">
-        </kendo-grid-column>
+    <kendo-grid-column width="150" media="(min-width: 450px) and (max-width: 1024px)" sppc-grid-column="OperationLog.companyName">
+    </kendo-grid-column>
 
-        <kendo-grid-column media="(min-width: 450px) and (max-width: 1024px)" width="80" sppc-grid-column="OperationLog.date">
-            <ng-template kendoGridCellTemplate let-operationLog>
-                {{ operationLog.date | SppcDate }}
-            </ng-template>
-        </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px) and (max-width: 1024px)" width="80" sppc-grid-column="OperationLog.date">
+      <ng-template kendoGridCellTemplate let-operationLog>
+        {{ operationLog.date | SppcDate }}
+      </ng-template>
+    </kendo-grid-column>
 
-        <kendo-grid-column media="(min-width: 450px) and (max-width: 1024px)" width="100" sppc-grid-column="OperationLog.entity">
-        </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 450px) and (max-width: 1024px)" width="100" sppc-grid-column="OperationLog.entity">
+    </kendo-grid-column>
 
-        <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)">
-            <ng-template kendoGridCellTemplate>
-                <button [icon]="'edit'" kendoGridEditCommand title="جزئیات"></button>
-            </ng-template>
-        </kendo-grid-command-column>
-        <!-- template for mid-size devices -->
-        <!-- additional columns on large devices -->
-        <kendo-grid-column media="(min-width: 1024px)" width="130" sppc-grid-column="OperationLog.userName">
-        </kendo-grid-column>
+    <kendo-grid-command-column media="(min-width: 450px) and (max-width: 1024px)">
+      <ng-template kendoGridCellTemplate>
+        <button [icon]="'edit'" kendoGridEditCommand title="{{ 'OperationLog.Detail' | translate }}"></button>
+      </ng-template>
+    </kendo-grid-command-column>
+    <!-- template for mid-size devices -->
+    <!-- additional columns on large devices -->
+    <kendo-grid-column media="(min-width: 1024px)" width="130" sppc-grid-column="OperationLog.userName">
+    </kendo-grid-column>
 
-        <kendo-grid-column media="(min-width: 1024px)" width="140" sppc-grid-column="OperationLog.companyName">
-        </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 1024px)" width="140" sppc-grid-column="OperationLog.companyName">
+    </kendo-grid-column>
 
-        <kendo-grid-column media="(min-width: 1024px)" width="80" sppc-grid-column="OperationLog.date">
-            <ng-template kendoGridCellTemplate let-operationLog>
-                {{ operationLog.date | SppcDate }}
-            </ng-template>
-        </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 1024px)" width="80" sppc-grid-column="OperationLog.date">
+      <ng-template kendoGridCellTemplate let-operationLog>
+        {{ operationLog.date | SppcDate }}
+      </ng-template>
+    </kendo-grid-column>
 
-        <kendo-grid-column media="(min-width: 1024px)" width="70" sppc-grid-column="OperationLog.time">
-            <ng-template kendoGridCellTemplate let-operationLog>
-                {{ operationLog.time | slice:0:8 }}
-            </ng-template>
-        </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 1024px)" width="70" sppc-grid-column="OperationLog.time">
+      <ng-template kendoGridCellTemplate let-operationLog>
+        {{ operationLog.time | slice:0:8 }}
+      </ng-template>
+    </kendo-grid-column>
 
-        <kendo-grid-column media="(min-width: 1024px)" width="100" sppc-grid-column="OperationLog.entity">
-        </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 1024px)" width="100" sppc-grid-column="OperationLog.entity">
+    </kendo-grid-column>
 
-        <kendo-grid-column media="(min-width: 1024px)" width="100" sppc-grid-column="OperationLog.action">
-        </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 1024px)" width="100" sppc-grid-column="OperationLog.action">
+    </kendo-grid-column>
 
-        <kendo-grid-column media="(min-width: 1024px)" width="50" sppc-grid-column="OperationLog.result">
-        </kendo-grid-column>
+    <kendo-grid-column media="(min-width: 1024px)" width="50" sppc-grid-column="OperationLog.result">
+    </kendo-grid-column>
 
+    <kendo-grid-command-column media="(min-width: 1024px)" width="60">
+      <ng-template kendoGridCellTemplate>
+        <button [icon]="'information'" kendoGridEditCommand title="{{ 'OperationLog.Detail' | translate }}"></button>
+      </ng-template>
+    </kendo-grid-command-column>
+    <!-- additional columns on large devices -->
 
-
-        <kendo-grid-command-column media="(min-width: 1024px)" width="60">
-            <ng-template kendoGridCellTemplate>
-                <button [icon]="'information'" kendoGridEditCommand title="جزئیات"></button>
-            </ng-template>
-        </kendo-grid-command-column>
-        <!-- additional columns on large devices -->
-
-    </kendo-grid>
-    <operationLogs-detail-component [model]="detailDataItem" (cancel)="cancelHandler()">
-    </operationLogs-detail-component>
+  </kendo-grid>
+  <operationLogs-detail-component [model]="detailDataItem" (cancel)="cancelHandler()">
+  </operationLogs-detail-component>
 </div>
 
 

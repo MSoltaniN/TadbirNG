@@ -20,117 +20,128 @@ import { FilterExpression } from '../../class/filterExpression';
 
 
 export function getLayoutModule(layout: Layout) {
-    return layout.getLayout();
+  return layout.getLayout();
 }
 
 @Component({
-    selector: 'operationLogs',
-    templateUrl: './operationLogs.component.html',
-    providers: [{
-        provide: RTL,
-        useFactory: getLayoutModule,
-        deps: [Layout]
-    }, DefaultComponent]
+  selector: 'operationLogs',
+  templateUrl: './operationLogs.component.html',
+  providers: [{
+    provide: RTL,
+    useFactory: getLayoutModule,
+    deps: [Layout]
+  }, DefaultComponent]
 })
 
 
 export class OperationLogsComponent extends DefaultComponent implements OnInit {
 
-    //#region Fields
+  //#region Fields
 
-    @ViewChild(GridComponent) grid: GridComponent;
+  @ViewChild(GridComponent) grid: GridComponent;
 
-    public rowData: GridDataResult;
-    public totalRecords: number;
+  public rowData: GridDataResult;
+  public totalRecords: number;
 
-    currentFilter: FilterExpression;
-    currentOrder: string = "";
-    public sort: SortDescriptor[] = [];
+  currentFilter: FilterExpression;
+  currentOrder: string = "";
 
-    showloadingMessage: boolean = true;
+  showloadingMessage: boolean = true;
 
-    detailDataItem?: OperationLog = undefined;
-    //#endregion
+  detailDataItem?: OperationLog = undefined;
+  //#endregion
 
-    //#region Events
-    ngOnInit() {
-        this.reloadGrid();
+  //#region Events
+  ngOnInit() {
+    this.reloadGrid();
+  }
+
+  selectionKey(context: RowArgs): string {
+    if (context.dataItem == undefined) return "";
+    return context.dataItem.id + " " + context.index;
+  }
+
+  //dataStateChange(state: DataStateChangeEvent): void {
+
+
+  //  debugger;
+
+  //  //this.currentFilter = this.getFilters(state.filter);
+  //  if (state.sort)
+  //    if (state.sort.length > 0)
+  //      this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
+  //  this.state = state;
+  //  this.skip = state.skip;
+  //  this.reloadGrid();
+  //}
+
+  sortChange(sort: SortDescriptor[]): void {
+
+    debugger;
+
+    this.sort = sort.filter(f => f.dir != undefined);
+
+    //this.sort = sort;
+    //if (sort) {
+    //  this.currentOrder = sort[0].field + " " + sort[0].dir;
+    //}
+
+    this.reloadGrid();
+  }
+
+  pageChange(event: PageChangeEvent): void {
+    this.skip = event.skip;
+    this.reloadGrid();
+  }
+
+  public editHandler(arg: any) {
+    this.detailDataItem = arg.dataItem;
+  }
+
+  public cancelHandler() {
+    this.detailDataItem = undefined;
+  }
+
+  //#endregion
+
+  //#region Constructor
+  constructor(public toastrService: ToastrService, public translate: TranslateService,
+    private operationLogService: OperationLogService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
+    super(toastrService, translate, renderer, metadata, settingService, Entities.OperationLog, Metadatas.OperationLog);
+  }
+  //#endregion
+
+  //#region Methods
+  reloadGrid(insertedModel?: OperationLog) {
+
+    this.grid.loading = true;
+    var filter = this.currentFilter;
+    var order = this.currentOrder;
+    if (this.totalRecords == this.skip && this.totalRecords != 0) {
+      this.skip = this.skip - this.pageSize;
     }
+    this.operationLogService.getAll(SystemApi.AllOperationLogs, this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
+      var resData = res.body;
+      var totalCount = 0;
 
-    selectionKey(context: RowArgs): string {
-        if (context.dataItem == undefined) return "";
-        return context.dataItem.id + " " + context.index;
-    }
-
-    dataStateChange(state: DataStateChangeEvent): void {
-        this.currentFilter = this.getFilters(state.filter);
-        if (state.sort)
-            if (state.sort.length > 0)
-                this.currentOrder = state.sort[0].field + " " + state.sort[0].dir;
-        this.state = state;
-        this.skip = state.skip;
-        this.reloadGrid();
-    }
-
-    public sortChange(sort: SortDescriptor[]): void {
-        if (sort)
-            this.currentOrder = sort[0].field + " " + sort[0].dir;
-
-        this.reloadGrid();
-    }
-
-    pageChange(event: PageChangeEvent): void {
-        this.skip = event.skip;
-        this.reloadGrid();
-    }
-
-    public editHandler(arg: any) {
-        this.detailDataItem = arg.dataItem;
-    }
-
-    public cancelHandler() {
-        this.detailDataItem = undefined;
-    }
-
-    //#endregion
-
-    //#region Constructor
-    constructor(public toastrService: ToastrService, public translate: TranslateService,
-      private operationLogService: OperationLogService, public renderer: Renderer2, public metadata: MetaDataService, public settingService: SettingService) {
-      super(toastrService, translate, renderer, metadata, settingService, Entities.OperationLog, Metadatas.OperationLog);
-    }
-    //#endregion
-
-    //#region Methods
-    reloadGrid(insertedModel?: OperationLog) {
-            this.grid.loading = true;
-            var filter = this.currentFilter;
-            var order = this.currentOrder;
-            if (this.totalRecords == this.skip && this.totalRecords != 0) {
-                this.skip = this.skip - this.pageSize;
-            }
-        this.operationLogService.getAll(SystemApi.AllOperationLogs, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
-                var resData = res.body;
-                var totalCount = 0;
-                
-                if (res.headers != null) {
-                    var headers = res.headers != undefined ? res.headers : null;
-                    if (headers != null) {
-                        var retheader = headers.get('X-Total-Count');
-                        if (retheader != null)
-                            totalCount = parseInt(retheader.toString());
-                    }
-                }
-                this.rowData = {
-                    data: resData,
-                    total: totalCount
-                }
-                this.showloadingMessage = !(resData.length == 0);
-                this.totalRecords = totalCount;
-                this.grid.loading = false;
-            })       
-    }
-     //#endregion
+      if (res.headers != null) {
+        var headers = res.headers != undefined ? res.headers : null;
+        if (headers != null) {
+          var retheader = headers.get('X-Total-Count');
+          if (retheader != null)
+            totalCount = parseInt(retheader.toString());
+        }
+      }
+      this.rowData = {
+        data: resData,
+        total: totalCount
+      }
+      this.showloadingMessage = !(resData.length == 0);
+      this.totalRecords = totalCount;
+      this.grid.loading = false;
+    })
+  }
+  //#endregion
 }
 
 

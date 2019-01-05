@@ -459,7 +459,8 @@
     "DialogTitle": "جزئیات لاگ عملیاتی",
     "BeforeState": "وضعیت قدیم",
     "AfterState": "وضعیت جدید",
-    "ErrorMessage": "پیغام خطا"
+    "ErrorMessage": "پیغام خطا",
+    "Detail": "جزئیات"
   },
   "MetaDataValidation": {
     "CodeLength": "طول کد مجاز نمیباشد."
