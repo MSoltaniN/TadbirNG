@@ -119,6 +119,26 @@ namespace SPPC.Framework.Persistence
         TEntity GetByRowID(Guid rowId);
 
         /// <summary>
+        /// Loads a navigation property into a tracked entity instance
+        /// </summary>
+        /// <typeparam name="TReference">Type of navigation property</typeparam>
+        /// <param name="entity">Entity instance whose property must be loaded</param>
+        /// <param name="reference">Lambda expression that specifies the navigation property</param>
+        void LoadReference<TReference>(
+            TEntity entity, Expression<Func<TEntity, TReference>> reference)
+            where TReference : class;
+
+        /// <summary>
+        /// Loads a navigation collection into a tracked entity instance
+        /// </summary>
+        /// <typeparam name="TProperty">Type of items in navigation collection</typeparam>
+        /// <param name="entity">Entity instance whose collection must be loaded</param>
+        /// <param name="collection">Lambda expression that specifies the navigation collection</param>
+        void LoadCollection<TProperty>(
+            TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> collection)
+            where TProperty : class;
+
+        /// <summary>
         /// Inserts a single entity instance into the data store
         /// </summary>
         /// <param name="entity">Entity to insert</param>

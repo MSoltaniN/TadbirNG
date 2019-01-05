@@ -271,6 +271,36 @@ namespace SPPC.Framework.Persistence
             return entity;
         }
 
+        /// <summary>
+        /// Asynchronously, loads a navigation property into a tracked entity instance
+        /// </summary>
+        /// <typeparam name="TReference">Type of navigation property</typeparam>
+        /// <param name="entity">Entity instance whose property must be loaded</param>
+        /// <param name="reference">Lambda expression that specifies the navigation property</param>
+        public async Task LoadReferenceAsync<TReference>(
+            TEntity entity, Expression<Func<TEntity, TReference>> reference)
+            where TReference : class
+        {
+            await _dataContext.Entry(entity)
+                .Reference(reference)
+                .LoadAsync();
+        }
+
+        /// <summary>
+        /// Asynchronously, loads a navigation collection into a tracked entity instance
+        /// </summary>
+        /// <typeparam name="TProperty">Type of items in navigation collection</typeparam>
+        /// <param name="entity">Entity instance whose collection must be loaded</param>
+        /// <param name="collection">Lambda expression that specifies the navigation collection</param>
+        public async Task LoadCollectionAsync<TProperty>(
+            TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> collection)
+            where TProperty : class
+        {
+            await _dataContext.Entry(entity)
+                .Collection(collection)
+                .LoadAsync();
+        }
+
         #endregion
 
         #region Synchronous Methods
@@ -416,6 +446,35 @@ namespace SPPC.Framework.Persistence
                 .Where(item => item.RowGuid == rowId)
                 .SingleOrDefault();
             return entity;
+        }
+
+        /// <summary>
+        /// Loads a navigation property into a tracked entity instance
+        /// </summary>
+        /// <typeparam name="TReference">Type of navigation property</typeparam>
+        /// <param name="entity">Entity instance whose property must be loaded</param>
+        /// <param name="reference">Lambda expression that specifies the navigation property</param>
+        public void LoadReference<TReference>(TEntity entity, Expression<Func<TEntity, TReference>> reference)
+            where TReference : class
+        {
+            _dataContext.Entry(entity)
+                .Reference(reference)
+                .Load();
+        }
+
+        /// <summary>
+        /// Loads a navigation collection into a tracked entity instance
+        /// </summary>
+        /// <typeparam name="TProperty">Type of items in navigation collection</typeparam>
+        /// <param name="entity">Entity instance whose collection must be loaded</param>
+        /// <param name="collection">Lambda expression that specifies the navigation collection</param>
+        public void LoadCollection<TProperty>(
+            TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> collection)
+            where TProperty : class
+        {
+            _dataContext.Entry(entity)
+                .Collection(collection)
+                .Load();
         }
 
         /// <summary>

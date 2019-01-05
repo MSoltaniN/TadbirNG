@@ -185,5 +185,25 @@ namespace SPPC.Framework.Persistence
         /// <remarks>Use this method when the entity does not have any navigation properties, or you don't need
         /// to retrieve them via additional JOIN statements.</remarks>
         Task<TEntity> GetByRowIDAsync(Guid rowId);
+
+        /// <summary>
+        /// Asynchronously, loads a navigation property into a tracked entity instance
+        /// </summary>
+        /// <typeparam name="TReference">Type of navigation property</typeparam>
+        /// <param name="entity">Entity instance whose property must be loaded</param>
+        /// <param name="reference">Lambda expression that specifies the navigation property</param>
+        Task LoadReferenceAsync<TReference>(
+            TEntity entity, Expression<Func<TEntity, TReference>> reference)
+            where TReference : class;
+
+        /// <summary>
+        /// Asynchronously, loads a navigation collection into a tracked entity instance
+        /// </summary>
+        /// <typeparam name="TProperty">Type of items in navigation collection</typeparam>
+        /// <param name="entity">Entity instance whose collection must be loaded</param>
+        /// <param name="collection">Lambda expression that specifies the navigation collection</param>
+        Task LoadCollectionAsync<TProperty>(
+            TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> collection)
+            where TProperty : class;
     }
 }
