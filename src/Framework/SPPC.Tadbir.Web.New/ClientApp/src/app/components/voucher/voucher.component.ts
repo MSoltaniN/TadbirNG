@@ -70,6 +70,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
   showloadingMessage: boolean = true;
 
+  clickedRowItem: Voucher = undefined;
   editDataItem?: Voucher = undefined;
   isNew: boolean;
   errorMessage: string;
@@ -82,6 +83,24 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     this.viewAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.View);
     this.reloadGrid();
   }
+
+  onCellClick(e) {
+    this.clickedRowItem = e.dataItem;
+  }
+
+  public rowDoubleClickHandler() {
+
+    var recordId = this.selectedRows[0];
+    this.grid.loading = true;
+    this.voucherService.getById(String.Format(VoucherApi.Voucher, this.clickedRowItem.id)).subscribe(res => {
+      this.editDataItem = res;
+      this.grid.loading = false;
+    })
+    this.isNew = false;
+    this.errorMessage = '';
+
+  }
+
 
   selectionKey(context: RowArgs): string {
     if (context.dataItem == undefined) return "";
