@@ -786,4 +786,13 @@
   <data name="VoucherSummaryByDate" xml:space="preserve">
     <value>Voucher summary by date</value>
   </data>
+  <data name="Operation" xml:space="preserve">
+    <value>Operation</value>
+  </data>
+  <data name="OperationLogs" xml:space="preserve">
+    <value>Operation logs</value>
+  </data>
+  <data name="OperationResult" xml:space="preserve">
+    <value>Operation result</value>
+  </data>
 </root>

@@ -439,6 +439,7 @@ INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, 
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (10, 'Branch', 0, 0, N'')
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (11, 'CompanyDb', 0, 0, N'')
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (12, 'AccountGroup', 0, 0, N'')
+INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (13, 'OperationLog', 0, 0, N'')
 SET IDENTITY_INSERT [Metadata].[View] OFF
 
 SET IDENTITY_INSERT [Metadata].[Column] ON
@@ -524,6 +525,13 @@ INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [Storage
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (72, 12, N'Category', N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (73, 12, N'Description', N'System.String', N'nvarchar', N'string', 256, 0, 0, 1, 1, 1, NULL)
 INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (74, 1, N'GroupId', N'System.Int32', N'int', N'number', 0, 0, 0, 1, 1, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (75, 13, N'UserName', N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (76, 13, N'Company', N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (77, 13, N'Date', N'System.Date', N'int', N'Date', 0, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (78, 13, N'Time', N'System.TimeSpan', N'int', N'Date', 0, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (79, 13, N'Entity', N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (80, 13, N'Operation', N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, NULL)
+INSERT [Metadata].[Column] ([ColumnID], [ViewID], [Name], [DotNetType], [StorageType], [ScriptType], [Length], [MinLength], [IsFixedLength], [IsNullable], [AllowSorting], [AllowFiltering], [Settings]) VALUES (81, 13, N'OperationResult', N'System.String', N'nvarchar', N'string', 64, 0, 0, 0, 1, 1, NULL)
 SET IDENTITY_INSERT [Metadata].[Column] OFF
 
 
@@ -754,6 +762,7 @@ INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, R
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (19, 12, 60, N'Settings', N'/settings', 'tasks', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (20, 15, NULL, N'CompanyLogin', N'/login', 'tasks', NULL)
 INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (21, 1, NULL, N'AccountGroups', N'/account-groups', 'list', NULL)
+INSERT INTO [Metadata].[Command] (CommandID, ParentID, PermissionID, TitleKey, RouteUrl, IconName, HotKey) VALUES (22, 12, NULL, N'OperationLogs', N'/operation-log', 'list', NULL)
 SET IDENTITY_INSERT [Metadata].[Command] OFF
 
 SET ANSI_NULLS OFF

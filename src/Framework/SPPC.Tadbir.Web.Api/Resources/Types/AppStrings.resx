@@ -786,4 +786,13 @@
   <data name="VoucherSummaryByDate" xml:space="preserve">
     <value>خلاصه اسناد بر حسب تاریخ</value>
   </data>
+  <data name="Operation" xml:space="preserve">
+    <value>عملیات</value>
+  </data>
+  <data name="OperationLogs" xml:space="preserve">
+    <value>لاگ های عملیاتی</value>
+  </data>
+  <data name="OperationResult" xml:space="preserve">
+    <value>نتیجه عملیات</value>
+  </data>
 </root>

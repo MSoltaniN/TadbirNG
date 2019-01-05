@@ -53,6 +53,8 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return await query
+                .OrderByDescending(log => log.Date)
+                .ThenByDescending(log => log.Time)
                 .Select(log => Mapper.Map<OperationLogViewModel>(log))
                 .Apply(gridOptions)
                 .ToListAsync();
