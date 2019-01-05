@@ -494,7 +494,7 @@ namespace SPPC.Tadbir.Persistence
             var repository = _unitOfWork.GetAsyncRepository<Account>();
             foreach (int id in relations.RelatedItemIds)
             {
-                var account = await repository.GetByIDWithTrackingAsync(id);
+                var account = await repository.GetByIDWithTrackingAsync(id, acc => acc.AccountDetailAccounts);
                 await AddConnectedAccountAsync(existing, account);
             }
         }
@@ -509,6 +509,7 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
             var accountDetailAccount = new AccountDetailAccount()
             {
                 Account = account,
@@ -519,6 +520,8 @@ namespace SPPC.Tadbir.Persistence
             existing.AccountDetailAccounts.Add(accountDetailAccount);
             foreach (var child in existing.Children)
             {
+                await repository.LoadCollectionAsync(child, facc => facc.AccountDetailAccounts);
+                await repository.LoadCollectionAsync(child, facc => facc.Children);
                 await AddConnectedAccountAsync(child, account);
             }
         }
@@ -560,9 +563,12 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
+            var repository = _unitOfWork.GetAsyncRepository<DetailAccount>();
             existing.AccountDetailAccounts.Remove(existingRelation);
             foreach (var child in existing.Children)
             {
+                await repository.LoadCollectionAsync(child, facc => facc.AccountDetailAccounts);
+                await repository.LoadCollectionAsync(child, facc => facc.Children);
                 await RemoveDisconnectedAccountAsync(child, accountId);
             }
         }
@@ -705,6 +711,7 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
             var accountCostCenter = new AccountCostCenter()
             {
                 Account = account,
@@ -715,6 +722,8 @@ namespace SPPC.Tadbir.Persistence
             existing.AccountCostCenters.Add(accountCostCenter);
             foreach (var child in existing.Children)
             {
+                await repository.LoadCollectionAsync(child, cc => cc.AccountCostCenters);
+                await repository.LoadCollectionAsync(child, cc => cc.Children);
                 await AddConnectedAccountAsync(child, account);
             }
         }
@@ -752,9 +761,12 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
+            var repository = _unitOfWork.GetAsyncRepository<CostCenter>();
             existing.AccountCostCenters.Remove(existingRelation);
             foreach (var child in existing.Children)
             {
+                await repository.LoadCollectionAsync(child, cc => cc.AccountCostCenters);
+                await repository.LoadCollectionAsync(child, cc => cc.Children);
                 await RemoveDisconnectedAccountAsync(child, accountId);
             }
         }
@@ -896,6 +908,7 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
             var accountProject = new AccountProject()
             {
                 Account = account,
@@ -906,6 +919,8 @@ namespace SPPC.Tadbir.Persistence
             existing.AccountProjects.Add(accountProject);
             foreach (var child in existing.Children)
             {
+                await repository.LoadCollectionAsync(child, prj => prj.AccountProjects);
+                await repository.LoadCollectionAsync(child, prj => prj.Children);
                 await AddConnectedAccountAsync(child, account);
             }
         }
@@ -943,9 +958,12 @@ namespace SPPC.Tadbir.Persistence
                 return;
             }
 
+            var repository = _unitOfWork.GetAsyncRepository<Project>();
             existing.AccountProjects.Remove(existingRelation);
             foreach (var child in existing.Children)
             {
+                await repository.LoadCollectionAsync(child, prj => prj.AccountProjects);
+                await repository.LoadCollectionAsync(child, prj => prj.Children);
                 await RemoveDisconnectedAccountAsync(child, accountId);
             }
         }
