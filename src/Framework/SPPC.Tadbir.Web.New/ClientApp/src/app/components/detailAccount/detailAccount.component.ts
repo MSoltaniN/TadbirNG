@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Renderer2, ViewChild, SkipSelf, Host, Optiona
 import { DetailAccountService, DetailAccountInfo, SettingService } from '../../service/index';
 import { DetailAccount } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
+import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -64,8 +64,6 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
   deleteModelId: number;
 
   currentFilter: FilterExpression;
-  currentOrder: string = "";
-  public sort: SortDescriptor[] = [];
 
   showloadingMessage: boolean = true;
 
@@ -154,8 +152,8 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
   }
 
   public sortChange(sort: SortDescriptor[]): void {
-    if (sort)
-      this.currentOrder = sort[0].field + " " + sort[0].dir;
+
+    this.sort = sort.filter(f => f.dir != undefined);
 
     this.reloadGrid();
   }
@@ -269,7 +267,6 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     if (this.viewAccess) {
       this.grid.loading = true;
       var filter = this.currentFilter;
-      var order = this.currentOrder;
       if (this.totalRecords == this.skip && this.totalRecords != 0) {
         this.skip = this.skip - this.pageSize;
       }
@@ -289,7 +286,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
       if (this.parentComponent != null && (this.goLastPage || (insertedModel && !this.addToContainer))) {
 
         //call top 1 account for get totalcount
-        this.detailAccountService.getAll(DetailAccountApi.EnvironmentDetailAccounts, 0, 1, order, filter).subscribe((res) => {
+        this.detailAccountService.getAll(DetailAccountApi.EnvironmentDetailAccounts, 0, 1, this.sort, filter).subscribe((res) => {
           if (res.headers != null) {
             var headers = res.headers != undefined ? res.headers : null;
             if (headers != null) {
@@ -302,7 +299,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
           this.goToLastPage(this.totalRecords);
           this.goLastPage = false;
 
-          this.loadGridData(insertedModel, order, filter);
+          this.loadGridData(insertedModel, filter);
         });
       }
       //#endregion
@@ -310,7 +307,7 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
         if (insertedModel && this.addToContainer)
           this.goToLastPage(this.totalRecords);
 
-        this.loadGridData(insertedModel, order, filter);
+        this.loadGridData(insertedModel, filter);
       }
     }
     else {
@@ -321,9 +318,9 @@ export class DetailAccountComponent extends DefaultComponent implements OnInit {
     }
   }
 
-  loadGridData(insertedModel?: DetailAccount, order?: string, filter?: FilterExpression) {
+  loadGridData(insertedModel?: DetailAccount, filter?: FilterExpression) {
 
-    this.detailAccountService.getAll(DetailAccountApi.EnvironmentDetailAccounts, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+    this.detailAccountService.getAll(DetailAccountApi.EnvironmentDetailAccounts, this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
       var resData = res.body;
 
       var totalCount = 0;

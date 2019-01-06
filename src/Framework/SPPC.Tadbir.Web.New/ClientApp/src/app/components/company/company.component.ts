@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Renderer2, Optional, Host, SkipSelf, ViewChil
 import { CompanyService, CompanyInfo, CompanyDbInfo, SettingService } from '../../service/index';
 import { Company, CompanyDb } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
+import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -55,8 +55,6 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
   deleteModelId: number;
 
   currentFilter: FilterExpression;
-  currentOrder: string = "";
-  public sort: SortDescriptor[] = [];
 
   showloadingMessage: boolean = true;
 
@@ -98,8 +96,9 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
   }
 
   public sortChange(sort: SortDescriptor[]): void {
-    if (sort)
-      this.currentOrder = sort[0].field + " " + sort[0].dir;
+
+    this.sort = sort.filter(f => f.dir != undefined);
+
     this.reloadGrid();
   }
 
@@ -187,7 +186,6 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
     if (this.viewAccess) {
       this.grid.loading = true;
       var filter = this.currentFilter;
-      var order = this.currentOrder;
       if (this.totalRecords == this.skip && this.totalRecords != 0) {
         this.skip = this.skip - this.pageSize;
       }
@@ -196,7 +194,7 @@ export class CompanyComponent extends DefaultComponent implements OnInit {
         this.goToLastPage(this.totalRecords);
 
       var url = CompanyApi.Companies;
-      this.companyService.getAll(url, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+      this.companyService.getAll(url, this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
 
         var resData = res.body;
 

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Renderer2, ViewChild } from '@angular/core';
 import { RoleService, RoleInfo, RoleFullInfo, PermissionInfo, RoleDetailsInfo, RelatedItemsInfo, SettingService } from '../../service/index';
 import { Role, RoleFull, Permission, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
+import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
@@ -59,8 +59,6 @@ export class RoleComponent extends DefaultComponent implements OnInit {
   deleteModelId: number;
 
   currentFilter: FilterExpression;
-  currentOrder: string = "";
-  public sort: SortDescriptor[] = [];
 
   showloadingMessage: boolean = true;
 
@@ -113,8 +111,9 @@ export class RoleComponent extends DefaultComponent implements OnInit {
   }
 
   public sortChange(sort: SortDescriptor[]): void {
-    if (sort)
-      this.currentOrder = sort[0].field + " " + sort[0].dir;
+
+    this.sort = sort.filter(f => f.dir != undefined);
+
     this.reloadGrid();
   }
 
@@ -224,7 +223,6 @@ export class RoleComponent extends DefaultComponent implements OnInit {
     if (this.viewAccess) {
       this.grid.loading = true;
       var filter = this.currentFilter;
-      var order = this.currentOrder;
       if (this.totalRecords == this.skip && this.totalRecords != 0) {
         this.skip = this.skip - this.pageSize;
       }
@@ -232,7 +230,7 @@ export class RoleComponent extends DefaultComponent implements OnInit {
       if (insertedModel)
         this.goToLastPage(this.totalRecords);
 
-      this.roleService.getAll(String.Format(RoleApi.Roles, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+      this.roleService.getAll(String.Format(RoleApi.Roles, this.FiscalPeriodId, this.BranchId), this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
         var resData = res.body;
         var totalCount = 0;
 

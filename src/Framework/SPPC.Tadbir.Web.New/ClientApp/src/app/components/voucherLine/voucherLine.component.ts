@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Renderer2, ViewChild } from '@angular/core';
 import { VoucherLineInfo, VoucherLineService, FiscalPeriodService, SettingService } from '../../service/index';
 import { VoucherLine, Voucher } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
+import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -57,8 +57,6 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
   deleteModelId: number;
 
   currentFilter: FilterExpression;
-  currentOrder: string = "";
-  public sort: SortDescriptor[] = [];
 
   showloadingMessage: boolean = true;
 
@@ -107,8 +105,9 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
   }
 
   public sortChange(sort: SortDescriptor[]): void {
-    if (sort)
-      this.currentOrder = sort[0].field + " " + sort[0].dir;
+
+    this.sort = sort.filter(f => f.dir != undefined);
+
     this.reloadGrid();
   }
 
@@ -225,14 +224,13 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
   reloadGrid(insertedModel?: VoucherLine) {
     this.grid.loading = true;
     var filter = this.currentFilter;
-    var order = this.currentOrder;
     if (this.totalRecords == this.skip && this.totalRecords != 0) {
       this.skip = this.skip - this.pageSize;
     }
 
     if (insertedModel)
       this.goToLastPage(this.totalRecords);
-    this.voucherLineService.getAll(String.Format(VoucherApi.VoucherArticles, this.voucherId), this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+    this.voucherLineService.getAll(String.Format(VoucherApi.VoucherArticles, this.voucherId), this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
       var resData = res.body;
       this.properties = resData.properties;
       var totalCount = 0;
@@ -277,7 +275,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
         var filter = this.addFilter(this.currentFilter,"Id",this.voucherId.toString(),"=={0}")
 
         this.reporingService.getAll(serviceUrl,
-          this.currentOrder,filter).subscribe((response: any) => {
+          this.sort, filter).subscribe((response: any) => {
   
              const m = moment();
              var dateStr : string;

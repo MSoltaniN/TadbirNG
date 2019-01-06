@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Renderer2, SkipSelf, Host, Optional, ViewChil
 import { CostCenterService, CostCenterInfo, SettingService } from '../../service/index';
 import { CostCenter } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
+import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -65,8 +65,6 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
   deleteModelId: number;
 
   currentFilter: FilterExpression;
-  currentOrder: string = "";
-  public sort: SortDescriptor[] = [];
 
   showloadingMessage: boolean = true;
 
@@ -155,9 +153,10 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
   }
 
   public sortChange(sort: SortDescriptor[]): void {
-    if (sort)
-      this.currentOrder = sort[0].field + " " + sort[0].dir;
+
+    this.sort = sort.filter(f => f.dir != undefined);
     this.reloadGrid();
+
   }
 
   removeHandler(arg: any) {
@@ -268,7 +267,6 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     if (this.viewAccess) {
       this.grid.loading = true;
       var filter = this.currentFilter;
-      var order = this.currentOrder;
       if (this.totalRecords == this.skip && this.totalRecords != 0) {
         this.skip = this.skip - this.pageSize;
       }
@@ -288,7 +286,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
       if (this.parentComponent != null && (this.goLastPage || (insertedModel && !this.addToContainer))) {
 
         //call top 1 for get totalcount
-        this.costCenterService.getAll(CostCenterApi.EnvironmentCostCenters, 0, 1, order, filter).subscribe((res) => {
+        this.costCenterService.getAll(CostCenterApi.EnvironmentCostCenters, 0, 1, this.sort, filter).subscribe((res) => {
           if (res.headers != null) {
             var headers = res.headers != undefined ? res.headers : null;
             if (headers != null) {
@@ -301,7 +299,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
           this.goToLastPage(this.totalRecords);
           this.goLastPage = false;
 
-          this.loadGridData(insertedModel, order, filter);
+          this.loadGridData(insertedModel, filter);
         });
       }
       //#endregion
@@ -309,7 +307,7 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
         if (insertedModel && this.addToContainer)
           this.goToLastPage(this.totalRecords);
 
-        this.loadGridData(insertedModel, order, filter);
+        this.loadGridData(insertedModel, filter);
       }
     }
     else {
@@ -320,9 +318,9 @@ export class CostCenterComponent extends DefaultComponent implements OnInit {
     }
   }
 
-  loadGridData(insertedModel?: CostCenter, order?: string, filter?: FilterExpression) {
+  loadGridData(insertedModel?: CostCenter, filter?: FilterExpression) {
 
-    this.costCenterService.getAll(CostCenterApi.EnvironmentCostCenters, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+    this.costCenterService.getAll(CostCenterApi.EnvironmentCostCenters, this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
       var resData = res.body;
 
       var totalCount = 0;

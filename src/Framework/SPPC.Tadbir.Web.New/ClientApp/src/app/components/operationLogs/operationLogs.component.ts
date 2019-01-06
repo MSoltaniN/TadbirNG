@@ -77,14 +77,7 @@ export class OperationLogsComponent extends DefaultComponent implements OnInit {
 
   sortChange(sort: SortDescriptor[]): void {
 
-    debugger;
-
     this.sort = sort.filter(f => f.dir != undefined);
-
-    //this.sort = sort;
-    //if (sort) {
-    //  this.currentOrder = sort[0].field + " " + sort[0].dir;
-    //}
 
     this.reloadGrid();
   }

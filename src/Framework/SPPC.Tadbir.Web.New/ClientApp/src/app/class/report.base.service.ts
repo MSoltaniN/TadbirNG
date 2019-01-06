@@ -50,14 +50,14 @@ export class ReportBaseService extends EnviromentComponent{
    * @param orderby مرتب سازی
    * @param filters فیلتر
    */
-  public getAll(apiUrl: string, orderby?: string, filter?: FilterExpression) {
+  public getAll(apiUrl: string, orderby?: any, filter?: FilterExpression) {
     
     var sort = new Array<GridOrderBy>();
-    if (orderby) {
-      var orderByParts = orderby.split(' ');
-      var fieldName = orderByParts[0];
-      if (orderByParts[1] != 'undefined')
-        sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
+    if (orderby && orderby.length > 0) {
+
+      for (let item of orderby) {
+        sort.push(new GridOrderBy(item.field, item.dir.toUpperCase()));
+      }
     }
     var postItem = { filter: filter, sortColumns: sort };
     var searchHeaders = this.httpHeaders;

@@ -74,8 +74,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
   deleteModelId: number;
 
   currentFilter: FilterExpression;
-  currentOrder: string = "";
-  public sort: SortDescriptor[] = [];
 
   showloadingMessage: boolean = true;
 
@@ -165,8 +163,9 @@ export class AccountComponent extends DefaultComponent implements OnInit {
   }
 
   public sortChange(sort: SortDescriptor[]): void {
-    if (sort)
-      this.currentOrder = sort[0].field + " " + sort[0].dir;
+
+    this.sort = sort.filter(f => f.dir != undefined);
+
     this.reloadGrid();
   }
 
@@ -292,7 +291,6 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     if (this.viewAccess) {
       this.grid.loading = true;
       var filter = this.currentFilter;
-      var order = this.currentOrder;
       if (this.totalRecords == this.skip && this.totalRecords != 0) {
         this.skip = this.skip - this.pageSize;
       }
@@ -314,7 +312,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
       if (this.parentAccount != null && (this.goLastPage || (insertedModel && !this.addToContainer))) {
         //Todo: for all tree component
         //call top 1 account for get totalcount
-        this.accountService.getAll(AccountApi.EnvironmentAccounts, 0, 1, order, filter).subscribe((res) => {
+        this.accountService.getAll(AccountApi.EnvironmentAccounts, 0, 1, this.sort, filter).subscribe((res) => {
 
           if (res.headers != null) {
             var headers = res.headers != undefined ? res.headers : null;
@@ -328,7 +326,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
           this.goToLastPage(this.totalRecords);
           this.goLastPage = false;
 
-          this.loadGridData(insertedModel, order, filter);
+          this.loadGridData(insertedModel, filter);
         });
       }
       //#endregion
@@ -336,7 +334,7 @@ export class AccountComponent extends DefaultComponent implements OnInit {
         if (insertedModel && this.addToContainer)
           this.goToLastPage(this.totalRecords);
 
-        this.loadGridData(insertedModel, order, filter);
+        this.loadGridData(insertedModel, filter);
       }
 
     }
@@ -348,9 +346,9 @@ export class AccountComponent extends DefaultComponent implements OnInit {
     }
   }
 
-  loadGridData(insertedModel?: Account, order?: string, filter?: FilterExpression) {
+  loadGridData(insertedModel?: Account, filter?: FilterExpression) {
 
-    this.accountService.getAll(AccountApi.EnvironmentAccounts, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+    this.accountService.getAll(AccountApi.EnvironmentAccounts, this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
 
       var resData = res.body;
 

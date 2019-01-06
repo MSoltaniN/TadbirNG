@@ -1,7 +1,8 @@
-<app-bread-cumb ></app-bread-cumb>
+<app-bread-cumb></app-bread-cumb>
 <div SppcCheckAccess="View" class='panel-body'>
   <kendo-grid id="10" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" #GridID [data]="rowData"
-              [sortable]="true"
+              [sortable]="{ allowUnsort: true, mode: 'multiple' }"
+              [sort]="sort"
               [pageSize]="pageSize"
               [skip]="skip"
               [filter]="state.filter"
@@ -13,7 +14,6 @@
               (sortChange)="sortChange($event)"
               (edit)="editHandler($event)"
               (remove)="removeHandler($event)"
-              [sort]="state.sort"
               [loading]="true"
               [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
               [selectedKeys]="selectedRows"
@@ -128,17 +128,17 @@
     <!-- additional columns on large devices -->
 
   </kendo-grid>
-    <company-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
-                                    (save)="saveHandler($event)"
-                                    (cancel)="cancelHandler()">
-    </company-form-component>
+  <company-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
+                          (save)="saveHandler($event)"
+                          (cancel)="cancelHandler()">
+  </company-form-component>
 </div>
 <kendo-dialog title="{{'Company.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
-    <p>
-        {{ deleteConfirmMsg }}
-    </p>
-    <kendo-dialog-actions>
-        <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
-        <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
-    </kendo-dialog-actions>
+  <p>
+    {{ deleteConfirmMsg }}
+  </p>
+  <kendo-dialog-actions>
+    <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
+    <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
+  </kendo-dialog-actions>
 </kendo-dialog>

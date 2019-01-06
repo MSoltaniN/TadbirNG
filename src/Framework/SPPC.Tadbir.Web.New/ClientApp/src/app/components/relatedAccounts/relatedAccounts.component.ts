@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Renderer2, ViewChild, SkipSelf, Host, Optiona
 import { AccountGroupsService, AccountInfo, SettingService, AccountService } from '../../service/index';
 import { Account, AccountGroup } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
+import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -64,8 +64,6 @@ export class RelatedAccountsComponent extends DefaultComponent implements OnInit
   deleteModelId: number;
 
   currentFilter: FilterExpression;
-  currentOrder: string = "";
-  public sort: SortDescriptor[] = [];
 
   showloadingMessage: boolean = true;
 
@@ -172,8 +170,9 @@ export class RelatedAccountsComponent extends DefaultComponent implements OnInit
   }
 
   public sortChange(sort: SortDescriptor[]): void {
-    if (sort)
-      this.currentOrder = sort[0].field + " " + sort[0].dir;
+
+    this.sort = sort.filter(f => f.dir != undefined);
+
     this.reloadGrid();
   }
 
@@ -208,8 +207,6 @@ export class RelatedAccountsComponent extends DefaultComponent implements OnInit
   }
 
   public saveHandler(model: Account, isNew: boolean) {
-
-    debugger;
 
     if (!isNew) {
       this.accountService.edit<Account>(String.Format(AccountApi.Account, model.id), model)
@@ -291,7 +288,6 @@ export class RelatedAccountsComponent extends DefaultComponent implements OnInit
     if (this.viewAccess) {
       this.grid.loading = true;
       var filter = this.currentFilter;
-      var order = this.currentOrder;
       if (this.totalRecords == this.skip && this.totalRecords != 0) {
         this.skip = this.skip - this.pageSize;
       }
@@ -312,7 +308,7 @@ export class RelatedAccountsComponent extends DefaultComponent implements OnInit
       if (this.parentComponent != null && (this.goLastPage || (insertedModel && !this.addToContainer))) {
 
         //call top 1 for get totalcount
-        this.accountService.getAll(apiUrl, 0, 1, order, filter).subscribe((res) => {
+        this.accountService.getAll(apiUrl, 0, 1, this.sort, filter).subscribe((res) => {
           if (res.headers != null) {
             var headers = res.headers != undefined ? res.headers : null;
             if (headers != null) {
@@ -325,7 +321,7 @@ export class RelatedAccountsComponent extends DefaultComponent implements OnInit
           this.goToLastPage(this.totalRecords);
           this.goLastPage = false;
 
-          this.loadGridData(apiUrl,insertedModel, order, filter);
+          this.loadGridData(apiUrl,insertedModel, filter);
         });
       }
       //#endregion
@@ -333,7 +329,7 @@ export class RelatedAccountsComponent extends DefaultComponent implements OnInit
         if (insertedModel && this.addToContainer)
           this.goToLastPage(this.totalRecords);
 
-        this.loadGridData(apiUrl,insertedModel, order, filter);
+        this.loadGridData(apiUrl,insertedModel, filter);
       }
     }
     else {
@@ -344,9 +340,9 @@ export class RelatedAccountsComponent extends DefaultComponent implements OnInit
     }
   }
 
-  loadGridData(apiUrl:string, insertedModel?: Account, order?: string, filter?: FilterExpression) {
+  loadGridData(apiUrl:string, insertedModel?: Account, filter?: FilterExpression) {
 
-    this.accountService.getAll(apiUrl, this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+    this.accountService.getAll(apiUrl, this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
 
       var resData = res.body;
 

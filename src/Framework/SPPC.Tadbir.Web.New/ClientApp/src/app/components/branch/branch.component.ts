@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Renderer2, Optional, Host, SkipSelf, ViewChil
 import { BranchService, BranchInfo, RelatedItemsInfo, SettingService } from '../../service/index';
 import { Branch, RelatedItems } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
-import { GridDataResult, DataStateChangeEvent, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
+import { GridDataResult, PageChangeEvent, RowArgs, SelectAllCheckboxState, GridComponent } from '@progress/kendo-angular-grid';
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { TranslateService } from '@ngx-translate/core';
@@ -61,8 +61,6 @@ export class BranchComponent extends DefaultComponent implements OnInit {
   deleteModelId: number;
 
   currentFilter: FilterExpression;
-  currentOrder: string = "";
-  public sort: SortDescriptor[] = [];
 
   showloadingMessage: boolean = true;
   rolesList: boolean = false;
@@ -125,9 +123,10 @@ export class BranchComponent extends DefaultComponent implements OnInit {
   }
 
   public sortChange(sort: SortDescriptor[]): void {
-    if (sort)
-      this.currentOrder = sort[0].field + " " + sort[0].dir;
+
+    this.sort = sort.filter(f => f.dir != undefined);
     this.reloadGrid();
+
   }
 
   removeHandler(arg: any) {
@@ -286,7 +285,6 @@ export class BranchComponent extends DefaultComponent implements OnInit {
     if (this.viewAccess) {
       this.grid.loading = true;
       var filter = this.currentFilter;
-      var order = this.currentOrder;
       if (this.totalRecords == this.skip && this.totalRecords != 0) {
         this.skip = this.skip - this.pageSize;
       }
@@ -307,7 +305,7 @@ export class BranchComponent extends DefaultComponent implements OnInit {
 
         //call top 1 for get totalcount
         this.branchService.getAll(String.Format(BranchApi.CompanyBranches, this.CompanyId),
-          0, 1, order, filter).subscribe((res) => {
+          0, 1, this.sort, filter).subscribe((res) => {
             if (res.headers != null) {
               var headers = res.headers != undefined ? res.headers : null;
               if (headers != null) {
@@ -320,7 +318,7 @@ export class BranchComponent extends DefaultComponent implements OnInit {
             this.goToLastPage(this.totalRecords);
             this.goLastPage = false;
 
-            this.loadGridData(insertedModel, order, filter);
+            this.loadGridData(insertedModel, filter);
           });
       }
       //#endregion
@@ -328,7 +326,7 @@ export class BranchComponent extends DefaultComponent implements OnInit {
         if (insertedModel && this.addToContainer)
           this.goToLastPage(this.totalRecords);
 
-        this.loadGridData(insertedModel, order, filter);
+        this.loadGridData(insertedModel, filter);
       }
     }
     else {
@@ -339,10 +337,10 @@ export class BranchComponent extends DefaultComponent implements OnInit {
     }
   }
 
-  loadGridData(insertedModel?: Branch, order?: string, filter?: FilterExpression) {
+  loadGridData(insertedModel?: Branch, filter?: FilterExpression) {
 
     this.branchService.getAll(String.Format(BranchApi.CompanyBranches, this.CompanyId),
-      this.pageIndex, this.pageSize, order, filter).subscribe((res) => {
+      this.pageIndex, this.pageSize, this.sort, filter).subscribe((res) => {
         var resData = res.body;
 
         var totalCount = 0;

@@ -67,12 +67,7 @@ export class BaseService extends EnviromentComponent{
 
     var gridPaging = { pageIndex: start, pageSize: count };
     var sort = new Array<GridOrderBy>();
-    if (orderby.length > 0) {
-      //var orderByParts = orderby.split(' ');
-      //var fieldName = orderByParts[0];
-      //if (orderByParts[1] != 'undefined')
-      //  sort.push(new GridOrderBy(orderByParts[0], orderByParts[1].toUpperCase()));
-
+    if (orderby && orderby.length > 0) {
       for (let item of orderby) {
         sort.push(new GridOrderBy(item.field, item.dir.toUpperCase()));
       }

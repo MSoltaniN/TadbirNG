@@ -1,8 +1,9 @@
 <div class="panel panel-primary voucher-line">
-  <div class="panel-body">  
+  <div class="panel-body">
     <kendo-grid id="3" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
                 [data]="rowData"
-                [sortable]="true"
+                [sortable]="{ allowUnsort: true, mode: 'multiple' }"
+                [sort]="sort"
                 [pageSize]="pageSize"
                 [skip]="skip"
                 [filter]="state.filter"
@@ -14,7 +15,6 @@
                 (sortChange)="sortChange($event)"
                 (edit)="editHandler($event)"
                 (remove)="removeHandler($event)"
-                [sort]="state.sort"
                 [loading]="true"
                 [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
                 [selectedKeys]="selectedRows"
@@ -33,7 +33,7 @@
         <button kendoGridAddCommand (click)="addNew()" [hidden]="documentStatus != documentStatusValue.Draft" [icon]="'plus-outline'" type="button">{{ 'VoucherLine.New' | translate }}</button>
         <button kendoGridAddCommand [hidden]="documentStatus != documentStatusValue.Draft" [icon]="'plus-outline'" *ngIf="balance != 0" class="k-button" (click)="addNewWithBalance()" type="button">{{ 'VoucherLine.NewWithDifference' | translate }}</button>
         <button *ngIf="groupDelete" [hidden]="documentStatus != documentStatusValue.Draft" class="k-button" (click)="deleteModels()" type="button">{{ 'Buttons.GroupDelete' | translate }}</button>
-        <button kendoButton (click)="showReport()" type="button"  [icon]="'printer'"></button>
+        <button kendoButton (click)="showReport()" type="button" [icon]="'printer'"></button>
         <grid-setting entityTypeName="VoucherLine"></grid-setting>
         <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
       </ng-template>
@@ -88,7 +88,7 @@
         </ng-template>
       </kendo-grid-checkbox-column>
 
-      <kendo-grid-column  media="(min-width: 450px) and (max-width: 1024px)" width="150" sppc-grid-column="VoucherLine.fullAccount.account.fullCode">
+      <kendo-grid-column media="(min-width: 450px) and (max-width: 1024px)" width="150" sppc-grid-column="VoucherLine.fullAccount.account.fullCode">
 
         <ng-template kendoGridFilterCellTemplate let-filter let-column="column">
           <sppc-grid-filter [metaData]="getMeta('fullAccount.account.fullCode')" [column]="column" [filter]="filter"></sppc-grid-filter>
@@ -251,13 +251,13 @@
     <voucherLine-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage" [balance]="balance" [isNewBalance]="isNewBalance"
                                 (save)="saveHandler($event)"
                                 (cancel)="cancelHandler()">
-    </voucherLine-form-component>    
+    </voucherLine-form-component>
   </div>
   <kendo-dialog title="{{'VoucherLine.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
     <p>
       {{ deleteConfirmMsg }}
     </p>
-    <kendo-dialog-actions>      
+    <kendo-dialog-actions>
       <button class="k-button" (click)="deleteModel(true)" primary="true">{{ 'Buttons.Yes' | translate }}</button>
       <button class="k-button" (click)="deleteModel(false)">{{ 'Buttons.No' | translate }}</button>
     </kendo-dialog-actions>

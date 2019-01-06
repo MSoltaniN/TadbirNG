@@ -2,7 +2,8 @@
 <div SppcCheckAccess="View" class="panel-body">
   <kendo-grid id="4" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               [data]="rowData"
-              [sortable]="true"
+              [sortable]="{ allowUnsort: true, mode: 'multiple' }"
+              [sort]="sort"
               [pageSize]="pageSize"
               [skip]="skip"
               [filter]="state.filter"
@@ -13,7 +14,6 @@
               (pageChange)="pageChange($event)"
               (sortChange)="sortChange($event)"
               (edit)="editHandler($event)"
-              [sort]="state.sort"
               [loading]="true"
               [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
               [selectedKeys]="selectedRows"
@@ -153,15 +153,15 @@
     <!-- additional columns on large devices -->
 
   </kendo-grid>
-    <user-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
-                            (save)="saveHandler($event)"
-                            (cancel)="cancelHandler()">
-    </user-form-component>
+  <user-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage"
+                       (save)="saveHandler($event)"
+                       (cancel)="cancelHandler()">
+  </user-form-component>
 
-    <user-roles-form-component [rolesList]="rolesList" [userRoles]="userRolesData" [errorMessage]="errorMessage"
-                                (saveUserRoles)="saveUserRolesHandler($event)"
-                                (cancelUserRoles)="cancelUserRolesHandler()">
-    </user-roles-form-component>
+  <user-roles-form-component [rolesList]="rolesList" [userRoles]="userRolesData" [errorMessage]="errorMessage"
+                             (saveUserRoles)="saveUserRolesHandler($event)"
+                             (cancelUserRoles)="cancelUserRolesHandler()">
+  </user-roles-form-component>
 </div>
 
 

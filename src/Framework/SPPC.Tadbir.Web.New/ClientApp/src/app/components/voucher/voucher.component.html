@@ -3,7 +3,8 @@
 <div SppcCheckAccess="View" class="panel-body">
   <kendo-grid id="2" #GridID [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
               [data]="rowData"
-              [sortable]="true"
+              [sortable]="{ allowUnsort: true, mode: 'multiple' }"
+              [sort]="sort"
               [pageSize]="pageSize"
               [skip]="skip"
               [filter]="state.filter"
@@ -15,7 +16,6 @@
               (sortChange)="sortChange($event)"
               (edit)="editHandler($event)"
               (remove)="removeHandler($event)"
-              [sort]="state.sort"
               [loading]="true"
               [selectable]="{ checkboxOnly: true, mode: 'multiple' }"
               [selectedKeys]="selectedRows"
