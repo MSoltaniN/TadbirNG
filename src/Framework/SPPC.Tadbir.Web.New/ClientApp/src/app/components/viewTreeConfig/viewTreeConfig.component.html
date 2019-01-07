@@ -50,7 +50,7 @@
             <div class="clearfix"></div>
           </div>
 
-          <button kendoGridAddCommand [disabled]="finalViewTreeConfig.length == 0" >{{ 'ViewTreeConfig.Save' | translate }}</button>
+          <button kendoGridAddCommand  [primary]="true" [disabled]="finalViewTreeConfig.length == 0" >{{ 'ViewTreeConfig.Save' | translate }}</button>
 
         </ng-template>
         <kendo-grid-column field="no" title="{{ 'ViewTreeConfig.LevelNo' | translate }}" width="95"></kendo-grid-column>
@@ -59,7 +59,7 @@
 
         <kendo-grid-command-column>
           <ng-template kendoGridCellTemplate let-level>
-            <button  class="k-button k-primary" [disabled]="!level.isEnabled || level.isUsed" (click)="setDefaultConfig(level.no)">{{ 'ViewTreeConfig.DefaultSettings' | translate }}</button>
+            <button class="k-button k-primary" [disabled]="!level.isEnabled || level.isUsed" (click)="setDefaultConfig(level.no)">{{ 'ViewTreeConfig.DefaultSettings' | translate }}</button>
           </ng-template>
         </kendo-grid-command-column>
 

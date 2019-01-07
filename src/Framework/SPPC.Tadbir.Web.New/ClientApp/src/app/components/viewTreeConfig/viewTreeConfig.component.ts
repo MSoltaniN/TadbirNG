@@ -80,7 +80,7 @@ export class ViewTreeConfigComponent extends DefaultComponent implements OnInit 
 
 
   public ngOnInit(): void {
-    this.loadEntity();
+    this.loadEntity();    
   }
 
 
