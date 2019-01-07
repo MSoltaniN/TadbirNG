@@ -71,6 +71,7 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
 
   ngOnInit(): void {
+
     this.accountItem = AccountRelationsType;
 
     this.fullAccount = this.controlContainer.value;
@@ -132,9 +133,9 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
         this.costCenterSelectedId = [];
         this.projectSelectedId = [];
 
-        this.GetDetailAccounts(String.Format(AccountRelationApi.DetailAccountsRelatedToAccount, this.accountSelectedId[0]));
-        this.GetCostCenters(String.Format(AccountRelationApi.CostCentersRelatedToAccount, this.accountSelectedId[0]));
-        this.GetProjects(String.Format(AccountRelationApi.ProjectsRelatedToAccount, this.accountSelectedId[0]));
+        this.GetDetailAccounts(String.Format(AccountRelationApi.UsableDetailAccountsRelatedToAccount, this.accountSelectedId[0]));
+        this.GetCostCenters(String.Format(AccountRelationApi.UsableCostCentersRelatedToAccount, this.accountSelectedId[0]));
+        this.GetProjects(String.Format(AccountRelationApi.UsableProjectsRelatedToAccount, this.accountSelectedId[0]));
         break;
       }
       case AccountRelationsType.DetailAccount: {
@@ -413,6 +414,9 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
   //#endregion
 
   openDialog(item: number) {
+
+    this.initItems();
+
     this.isOpenDialog = true;
     this.selectedItem = item;
 
@@ -422,9 +426,9 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
         this.GetAccounts(AccountRelationApi.EnvironmentAccountsLookup);
 
         if (!this.isNew) {
-          this.GetDetailAccounts(String.Format(AccountRelationApi.DetailAccountsRelatedToAccount, this.accountSelectedId[0]));
-          this.GetCostCenters(String.Format(AccountRelationApi.CostCentersRelatedToAccount, this.accountSelectedId[0]));
-          this.GetProjects(String.Format(AccountRelationApi.ProjectsRelatedToAccount, this.accountSelectedId[0]));
+          this.GetDetailAccounts(String.Format(AccountRelationApi.UsableDetailAccountsRelatedToAccount, this.accountSelectedId[0]));
+          this.GetCostCenters(String.Format(AccountRelationApi.UsableCostCentersRelatedToAccount, this.accountSelectedId[0]));
+          this.GetProjects(String.Format(AccountRelationApi.UsableProjectsRelatedToAccount, this.accountSelectedId[0]));
         }
 
 
@@ -436,8 +440,8 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
         if (!this.isNew) {
           this.GetAccounts(String.Format(AccountRelationApi.AccountsRelatedToDetailAccount, this.detailAccountSelectedId[0]));
-          this.GetCostCenters(String.Format(AccountRelationApi.CostCentersRelatedToAccount, this.accountSelectedId[0]));
-          this.GetProjects(String.Format(AccountRelationApi.ProjectsRelatedToAccount, this.accountSelectedId[0]));
+          this.GetCostCenters(String.Format(AccountRelationApi.UsableCostCentersRelatedToAccount, this.accountSelectedId[0]));
+          this.GetProjects(String.Format(AccountRelationApi.UsableProjectsRelatedToAccount, this.accountSelectedId[0]));
         }
 
         break;
@@ -448,8 +452,8 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
         if (!this.isNew) {
           this.GetAccounts(String.Format(AccountRelationApi.AccountsRelatedToCostCenter, this.costCenterSelectedId[0]));
-          this.GetDetailAccounts(String.Format(AccountRelationApi.DetailAccountsRelatedToAccount, this.accountSelectedId[0]));
-          this.GetProjects(String.Format(AccountRelationApi.ProjectsRelatedToAccount, this.accountSelectedId[0]));
+          this.GetDetailAccounts(String.Format(AccountRelationApi.UsableDetailAccountsRelatedToAccount, this.accountSelectedId[0]));
+          this.GetProjects(String.Format(AccountRelationApi.UsableProjectsRelatedToAccount, this.accountSelectedId[0]));
         }
 
         break;
@@ -460,8 +464,8 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
         if (!this.isNew) {
           this.GetAccounts(String.Format(AccountRelationApi.AccountsRelatedToProject, this.projectSelectedId[0]));
-          this.GetDetailAccounts(String.Format(AccountRelationApi.DetailAccountsRelatedToAccount, this.accountSelectedId[0]));
-          this.GetCostCenters(String.Format(AccountRelationApi.CostCentersRelatedToAccount, this.accountSelectedId[0]));
+          this.GetDetailAccounts(String.Format(AccountRelationApi.UsableDetailAccountsRelatedToAccount, this.accountSelectedId[0]));
+          this.GetCostCenters(String.Format(AccountRelationApi.UsableCostCentersRelatedToAccount, this.accountSelectedId[0]));
         }
 
         break;
@@ -560,6 +564,37 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
     //}
 
     //this.controlContainer.reset();
+  }
+
+
+
+  initItems() {
+
+    this.accFilterValue = undefined;
+    this.dAccFilterValue = undefined;
+    this.cCenterFilterValue = undefined;  
+    this.pFilterValue = undefined;
+
+
+    this.fullAccount = this.controlContainer.value;
+
+    if (this.fullAccount.account.id > 0) {
+      this.isNew = false;
+      this.accountSelectedId.push(this.fullAccount.account.id);
+    }
+    else {
+      this.isNew = true;
+    }
+
+    if (this.fullAccount.detailAccount.id > 0) 
+      this.detailAccountSelectedId.push(this.fullAccount.detailAccount.id);
+
+    if (this.fullAccount.costCenter.id > 0) 
+      this.costCenterSelectedId.push(this.fullAccount.costCenter.id);
+
+    if (this.fullAccount.project.id > 0) 
+      this.projectSelectedId.push(this.fullAccount.project.id);
+
   }
 }
 
