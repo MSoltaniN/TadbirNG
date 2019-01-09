@@ -170,6 +170,8 @@ CREATE TABLE [Reporting].[CoreReport] (
     [Code]           NVARCHAR(128)    NOT NULL,
     [Name]           NVARCHAR(128)    NOT NULL,
 	[IsGroup]        BIT              NOT NULL,
+    [Template]       NVARCHAR(MAX)    NULL,
+    [TemplateLtr]    NVARCHAR(MAX)    NULL,
     [ResourceKeys]   VARCHAR(MAX)     NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_CoreReport_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Reporting_CoreReport_ModifiedDate] DEFAULT (getdate()) NOT NULL
@@ -183,8 +185,6 @@ CREATE TABLE [Reporting].[Report] (
     [BaseID]         INT              NULL,
     [CreatedByID]    INT              NULL,
 	[ServiceUrl]     NVARCHAR(256)    NOT NULL,
-    [Template]       NVARCHAR(MAX)    NULL,
-    [TemplateLtr]    NVARCHAR(MAX)    NULL,
     [IsSystem]       BIT              NOT NULL,
     [IsDefault]      BIT              NOT NULL,
     [SubsystemId]    INT              NOT NULL,
@@ -193,6 +193,39 @@ CREATE TABLE [Reporting].[Report] (
     , CONSTRAINT [PK_Reporting_Report] PRIMARY KEY CLUSTERED ([ReportID] ASC)
     , CONSTRAINT [FK_Reporting_Report_Auth_CreatedBy] FOREIGN KEY ([CreatedByID]) REFERENCES [Auth].[User]([UserID])
     , CONSTRAINT [FK_Reporting_Report_Reporting_Base] FOREIGN KEY ([BaseID]) REFERENCES [Reporting].[CoreReport]([CoreReportID])
+)
+GO
+
+CREATE TABLE [Reporting].[Parameter] (
+    [ParamID]          INT              IDENTITY (1, 1) NOT NULL,
+    [ReportID]         INT              NOT NULL,
+    [FieldName]        NVARCHAR(64)     NOT NULL,
+    [Operator]         NVARCHAR(16)     NOT NULL,
+    [DataType]         NVARCHAR(64)     NOT NULL,
+    [ControlType]      NVARCHAR(64)     NOT NULL,
+    [CaptionKey]       NVARCHAR(64)     NOT NULL,
+    [DefaultValue]     NVARCHAR(64)     NULL,
+    [MinValue]         NVARCHAR(64)     NULL,
+    [MaxValue]         NVARCHAR(64)     NULL,
+    [DescriptionKey]   NVARCHAR(64)     NULL,
+    [rowguid]          UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_Parameter_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]     DATETIME         CONSTRAINT [DF_Reporting_Parameter_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_Parameter] PRIMARY KEY CLUSTERED ([ParamID] ASC)
+    , CONSTRAINT [FK_Reporting_Parameter_Reporting_Report] FOREIGN KEY ([ReportID]) REFERENCES [Reporting].[Report]([ReportID])
+)
+GO
+
+CREATE TABLE [Reporting].[LocalReport] (
+    [LocalReportID]   INT              IDENTITY (1, 1) NOT NULL,
+    [LocaleID]        INT              NULL,
+    [ReportID]        INT              NOT NULL,
+    [Caption]         NVARCHAR(128)    NOT NULL,
+    [Template]        NVARCHAR(MAX)    NOT NULL,
+    [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_LocalReport_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]    DATETIME         CONSTRAINT [DF_Reporting_LocalReport_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Reporting_LocalReport] PRIMARY KEY CLUSTERED ([LocalReportID] ASC)
+    --, CONSTRAINT [FK_Reporting_LocalReport_Reporting_Locale] FOREIGN KEY ([LocaleID]) REFERENCES [Reporting].[Locale]([LocaleID])
+    , CONSTRAINT [FK_Reporting_LocalReport_Reporting_Report] FOREIGN KEY ([ReportID]) REFERENCES [Reporting].[Report]([ReportID])
 )
 GO
 

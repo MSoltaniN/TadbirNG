@@ -39,6 +39,8 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasMaxLength(128);
             builder.Property(e => e.IsGroup)
                 .IsRequired();
+            builder.Property(e => e.Template);
+            builder.Property(e => e.TemplateLtr);
             builder.Property(e => e.ResourceKeys);
             builder.Property(e => e.RowGuid)
                 .HasColumnName("rowguid")

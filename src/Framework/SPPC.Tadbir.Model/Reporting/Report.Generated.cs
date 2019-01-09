@@ -27,7 +27,6 @@ namespace SPPC.Tadbir.Model.Reporting
         /// </summary>
         public Report()
         {
-            Template = String.Empty;
             ModifiedDate = DateTime.Now;
             InitReferences();
         }
@@ -41,16 +40,6 @@ namespace SPPC.Tadbir.Model.Reporting
         /// آدرس مورد نیاز برای خواندن اطلاعات گزارش از سرویس وب
         /// </summary>
         public virtual string ServiceUrl { get; set; }
-
-        /// <summary>
-        /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان راست به چپ
-        /// </summary>
-        public virtual string Template { get; set; }
-
-        /// <summary>
-        /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان چپ به راست
-        /// </summary>
-        public virtual string TemplateLtr { get; set; }
 
         /// <summary>
         /// مشخص می کند که آیا گزارش مورد نظر سیستمی است یا توسط کاربر ذخیره شده است

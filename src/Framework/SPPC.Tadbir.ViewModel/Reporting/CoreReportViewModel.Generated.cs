@@ -28,6 +28,8 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         {
             Code = String.Empty;
             Name = String.Empty;
+            Template = String.Empty;
+            TemplateLtr = String.Empty;
         }
 
         /// <summary>
@@ -53,6 +55,16 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// مشخص می کند که آیا شاخه مورد نظر مربوط به گروه بندی گزارشات است یا نه؟
         /// </summary>
         public bool IsGroup { get; set; }
+
+        /// <summary>
+        /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان راست به چپ
+        /// </summary>
+        public string Template { get; set; }
+
+        /// <summary>
+        /// محتوای الگوی طراحی شده برای نمایش گزارش در برنامه - برای چیدمان چپ به راست
+        /// </summary>
+        public string TemplateLtr { get; set; }
 
         /// <summary>
         /// مجموعه کلیدهای متن های چند زبانه مورد نیاز در گزارش که با کاراکتر جداکننده از یکدیگر تفکیک شده اند

@@ -31,15 +31,16 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="modelBuilder">Builder instance used for mapping definitions</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            ColumnMap.BuildMapping(modelBuilder.Entity<Column>());
             CommandMap.BuildMapping(modelBuilder.Entity<Command>());
             CompanyDbMap.BuildMapping(modelBuilder.Entity<CompanyDb>());
             CoreReportMap.BuildMapping(modelBuilder.Entity<CoreReport>());
-            ViewMap.BuildMapping(modelBuilder.Entity<View>());
+            LocalReportMap.BuildMapping(modelBuilder.Entity<LocalReport>());
             OperationLogMap.BuildMapping(modelBuilder.Entity<OperationLog>());
+            ParameterMap.BuildMapping(modelBuilder.Entity<Parameter>());
             PermissionMap.BuildMapping(modelBuilder.Entity<Permission>());
             PermissionGroupMap.BuildMapping(modelBuilder.Entity<PermissionGroup>());
             PersonMap.BuildMapping(modelBuilder.Entity<Person>());
-            ColumnMap.BuildMapping(modelBuilder.Entity<Column>());
             ReportMap.BuildMapping(modelBuilder.Entity<Report>());
             RoleMap.BuildMapping(modelBuilder.Entity<Role>());
             RolePermissionMap.BuildMapping(modelBuilder.Entity<RolePermission>());
@@ -47,6 +48,7 @@ namespace SPPC.Tadbir.Persistence
             UserMap.BuildMapping(modelBuilder.Entity<User>());
             UserRoleMap.BuildMapping(modelBuilder.Entity<UserRole>());
             UserSettingMap.BuildMapping(modelBuilder.Entity<UserSetting>());
+            ViewMap.BuildMapping(modelBuilder.Entity<View>());
             ViewRowPermissionMap.BuildMapping(modelBuilder.Entity<ViewRowPermission>());
             ViewSettingMap.BuildMapping(modelBuilder.Entity<ViewSetting>());
         }
