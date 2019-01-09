@@ -15,6 +15,7 @@ import { AccountApi } from '../../service/api/accountApi';
 import { String } from '../../class/source';
 import { DetailComponent } from '../../class/detail.component';
 import { ViewName } from '../../security/viewName';
+import { DetailAccountFormComponent } from '../detailAccount/detailAccount-form.component';
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -86,6 +87,9 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
     this.cancel.emit();
   }
 
+  escPress() {
+    this.cancel.emit();
+  }
   //Events
 
   ngOnInit(): void {
@@ -131,4 +135,5 @@ export class AccountFormComponent extends DetailComponent implements OnInit {
       }
     })
   }
+
 }

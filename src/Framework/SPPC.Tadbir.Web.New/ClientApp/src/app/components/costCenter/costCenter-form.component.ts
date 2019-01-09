@@ -86,6 +86,9 @@ export class CostCenterFormComponent extends DetailComponent implements OnInit {
     this.cancel.emit();
   }
 
+  escPress() {
+    this.cancel.emit();
+  }
   //Events
 
   ngOnInit(): void {

@@ -82,7 +82,11 @@ export class RoleUserFormComponent extends DetailComponent {
         this.usersList = false;
         this.selectedRows = [];
         this.cancelRoleUsers.emit();
-    }
+  }
+
+  escPress() {
+    this.closeForm();
+  }
     ////Events
 
     selectionKey(context: RowArgs): string {

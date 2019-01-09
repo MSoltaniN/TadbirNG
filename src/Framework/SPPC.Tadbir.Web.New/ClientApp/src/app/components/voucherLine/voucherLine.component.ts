@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Renderer2, ViewChild, Output, EventEmitter } from '@angular/core';
 import { VoucherLineInfo, VoucherLineService, FiscalPeriodService, SettingService } from '../../service/index';
 import { VoucherLine, Voucher } from '../../model/index';
 import { ToastrService } from 'ngx-toastr';
@@ -22,6 +22,8 @@ import * as moment from 'jalali-moment';
 import { ReportingService } from '../../service/report/reporting.service';
 import { ReportApi } from '../../service/api/reportApi';
 import { Report } from '../../model/report';
+import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
+import { VoucherLineFormComponent } from '../../components/voucherLine/voucherLine-form.component';
 
 
 @Component({
@@ -62,15 +64,18 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
   editDataItem?: VoucherLine = undefined;
 
-  isNew: boolean;
   isNewBalance: boolean;
-  errorMessage: string;
   groupDelete: boolean = false;
 
   @Input() voucherId: number;
   @Input() documentStatus: number;
+
+  @Output() setFocus: EventEmitter<any> = new EventEmitter();
   voucherModel: Voucher;
   documentStatusValue: any;
+
+  private dialogRef: DialogRef;
+  private dialogModel: any;
   //#endregion
 
   //#region Events
@@ -79,6 +84,52 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     this.getVoucher();
     var test = this.voucherId;
     this.reloadGrid();
+  }
+
+  /**
+   * باز کردن و مقداردهی اولیه به فرم ویرایشگر
+   */
+  openEditorDialog(isNew: boolean) {
+
+    this.dialogRef = this.dialogService.open({
+      title: this.getText(isNew ? 'Buttons.New' : 'Buttons.Edit'),
+      content: VoucherLineFormComponent,
+    });
+
+    this.dialogRef.dialog.location.nativeElement.classList.add('dialog-style');
+
+    this.dialogModel = this.dialogRef.content.instance;
+    this.dialogModel.model = this.editDataItem;
+    this.dialogModel.errorMessage = undefined;
+    this.dialogModel.isNew = isNew;
+    this.dialogModel.isNewBalance = this.isNewBalance;
+    this.dialogModel.balance = this.balance;
+
+    this.dialogRef.content.instance.save.subscribe((res) => {
+      this.saveHandler(res, isNew);
+    });
+
+    const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
+      this.dialogRef.close();
+
+      this.dialogModel.errorMessage = undefined;
+      this.dialogModel.model = undefined;
+
+      this.setFocus.emit();
+    });
+
+
+    this.dialogRef.result.subscribe((result) => {
+      if (result instanceof DialogCloseResult) {
+        this.setFocus.emit();
+      }
+    });
+
+    this.dialogRef.content.instance.setFocus.subscribe((res) => {
+      debugger;
+      this.dialogRef.dialog.instance.focus();
+    });
+
   }
 
   selectionKey(context: RowArgs): string {
@@ -126,20 +177,14 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     this.grid.loading = true;
     this.voucherLineService.getById(String.Format(VoucherApi.VoucherArticle, arg.dataItem.id)).subscribe(res => {
       this.editDataItem = res;
+
+      this.openEditorDialog(false);
+
       this.grid.loading = false;
     })
-    this.isNew = false;
-    this.errorMessage = '';
   }
 
-  public cancelHandler() {
-    this.editDataItem = undefined;
-    this.isNew = false;
-    this.isNewBalance = false;
-    this.errorMessage = '';
-  }
-
-  public saveHandler(viewModel: any) {
+  public saveHandler(viewModel: any, isNew: boolean) {
     this.isNewBalance = false;
     //this.balance = this.debitSum - this.creditSum;
     var model = viewModel.model;
@@ -150,12 +195,17 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
     model.voucherId = this.voucherModel.id;
 
     this.grid.loading = true;
-    if (!this.isNew) {
-      this.isNew = false;
+    if (!isNew) {
       this.voucherLineService.edit<VoucherLine>(String.Format(VoucherApi.VoucherArticle, model.id), model)
         .subscribe(response => {
           this.editDataItem = undefined;
           this.showMessage(this.updateMsg, MessageType.Succes);
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
           this.reloadGrid();
 
           if (isOpen) {
@@ -164,18 +214,23 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
             });
           }
         }, (error => {
-          //this.editDataItem = voucherLine;
-          this.errorMessage = error;
+          this.editDataItem = model;
+          this.dialogModel.errorMessage = error;
           this.grid.loading = false;
         }));
     }
     else {     
       this.voucherLineService.insert<VoucherLine>(String.Format(VoucherApi.VoucherArticles, this.voucherId), model)
         .subscribe((response: any) => {
-          this.isNew = false;
           this.editDataItem = undefined;
           this.showMessage(this.insertMsg, MessageType.Succes);
           var insertedModel = response;
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
           this.reloadGrid(insertedModel);
 
           if (isOpen) {
@@ -184,8 +239,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
             });           
           }
         }, (error => {
-          this.isNew = true;
-          this.errorMessage = error;
+          this.dialogModel.errorMessage = error;
           this.grid.loading = false;
         }));
     }
@@ -194,7 +248,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
   //#endregion
 
   //#region Constructor
-  constructor(public toastrService: ToastrService, 
+  constructor(public toastrService: ToastrService, public dialogService: DialogService,
     public translate: TranslateService,
      public sppcLoading: SppcLoadingService,
     private voucherLineService: VoucherLineService,
@@ -323,9 +377,9 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
   }
 
   public addNew() {
-    this.isNew = true;
-    this.errorMessage = '';
     this.editDataItem = new VoucherLineInfo();
+
+    this.openEditorDialog(true);
   }
 
   public addNewWithBalance() {

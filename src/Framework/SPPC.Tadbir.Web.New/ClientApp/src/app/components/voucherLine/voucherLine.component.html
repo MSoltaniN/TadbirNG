@@ -245,13 +245,8 @@
 
       </ng-template>
 
-
-
     </kendo-grid>
-    <voucherLine-form-component [model]="editDataItem" [isNew]="isNew" [errorMessage]="errorMessage" [balance]="balance" [isNewBalance]="isNewBalance"
-                                (save)="saveHandler($event)"
-                                (cancel)="cancelHandler()">
-    </voucherLine-form-component>
+
   </div>
   <kendo-dialog title="{{'VoucherLine.Delete' | translate}}" *ngIf="deleteConfirm" (close)="deleteModel(false)" [minWidth]="250" [width]="450">
     <p>

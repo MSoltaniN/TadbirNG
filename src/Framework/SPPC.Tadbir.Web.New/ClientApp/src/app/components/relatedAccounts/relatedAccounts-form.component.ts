@@ -88,6 +88,9 @@ export class RelatedAccountsFormComponent extends DetailComponent implements OnI
     this.cancel.emit();
   }
 
+  escPress() {
+    this.cancel.emit();
+  }
   //Events
 
   ngOnInit(): void {

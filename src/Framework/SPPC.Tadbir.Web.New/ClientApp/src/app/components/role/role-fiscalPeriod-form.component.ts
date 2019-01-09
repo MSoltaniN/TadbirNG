@@ -83,7 +83,12 @@ export class RoleFiscalPeriodFormComponent extends DetailComponent {
         this.fiscalPeriodList = false;
         this.selectedRows = [];
         this.cancelRoleFiscalPeriod.emit();
-    }
+  }
+
+  escPress() {
+    this.closeForm();
+  }
+
     ////Events
 
     selectionKey(context: RowArgs): string {

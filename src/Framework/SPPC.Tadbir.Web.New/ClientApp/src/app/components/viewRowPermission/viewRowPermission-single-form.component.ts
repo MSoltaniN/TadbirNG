@@ -86,6 +86,10 @@ export class ViewRowPermissionSingleFormComponent extends DetailComponent {
     }
     //Events
 
+  escPress() {
+    this.closeForm();
+  }
+
     constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
         public viewRowPermissionService: ViewRowPermissionService) {
         super(toastrService, translate, renderer, metadata, Entities.ViewRowPermission, '');

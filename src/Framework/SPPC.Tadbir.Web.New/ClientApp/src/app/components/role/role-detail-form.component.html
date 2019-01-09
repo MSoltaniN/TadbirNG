@@ -1,4 +1,4 @@
-<kendo-dialog *ngIf="roleDetail" class="user-dialog" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}"
+<kendo-dialog *ngIf="roleDetail" class="user-dialog" [ngClass]="{'tRtl':this.currentlang === 'fa' , 'tLtr': this.currentlang === 'en'}" (keydown.esc)="escPress()"
               (close)="closeForm()">
     <kendo-dialog-titlebar>
         {{ getTitleText('RoleDetail.RoleDetailTitle' | translate) }}

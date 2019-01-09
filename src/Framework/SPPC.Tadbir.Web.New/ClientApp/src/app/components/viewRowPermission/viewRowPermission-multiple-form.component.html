@@ -1,4 +1,4 @@
-<kendo-dialog *ngIf="active" id="multipleForm" [ngClass]="{'tRtl':this.CurrentLanguage === 'fa' , 'tLtr': this.CurrentLanguage === 'en'}"
+<kendo-dialog *ngIf="active" id="multipleForm" [ngClass]="{'tRtl':this.CurrentLanguage === 'fa' , 'tLtr': this.CurrentLanguage === 'en'}" (keydown.esc)="escPress()"
               (close)="closeForm()">
     <kendo-dialog-titlebar>
         {{ getTitleText('ViewRowPermission.FormTitle' | translate) }}       

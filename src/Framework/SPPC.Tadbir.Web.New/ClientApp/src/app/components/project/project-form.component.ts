@@ -90,6 +90,10 @@ export class ProjectFormComponent extends DetailComponent implements OnInit {
     e.preventDefault();
     this.cancel.emit();
   }
+
+  escPress() {
+    this.cancel.emit();
+  }
   //Events
 
   ngOnInit(): void {

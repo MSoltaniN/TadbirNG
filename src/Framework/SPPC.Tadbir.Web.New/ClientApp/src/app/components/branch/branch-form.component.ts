@@ -71,7 +71,12 @@ export class BranchFormComponent extends DetailComponent {
         this.isNew = false;
         this.active = false;
         this.cancel.emit();
-    }
+  }
+
+  escPress() {
+    this.closeForm();
+  }
+
     //Events
 
     constructor(public toastrService: ToastrService, public translate: TranslateService,

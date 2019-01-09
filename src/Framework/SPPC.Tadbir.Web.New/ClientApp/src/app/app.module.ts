@@ -70,7 +70,6 @@ import { FullCodeTestDirective } from './directive/fullCode/fullCodeTest.directi
 import { SppcCodeLengthDirective } from './directive/Validator/Sppc-code-length-validator';
 import { SpccOnlyNumberDirective } from './directive/onlyNumber/sppc.onlyNumber';
 
-
 import { Layout } from '../environments/environment';
 
 //custom controls
@@ -331,7 +330,8 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   schemas: [NO_ERRORS_SCHEMA],
   entryComponents: [
-    SppcGridDatepicker, AccountFormComponent, CostCenterFormComponent, DetailAccountFormComponent, ProjectFormComponent, RelatedAccountsFormComponent
+    SppcGridDatepicker, AccountFormComponent, CostCenterFormComponent, DetailAccountFormComponent, ProjectFormComponent, RelatedAccountsFormComponent, VoucherFormComponent,
+    VoucherLineFormComponent
   ],
   bootstrap: [AppComponent]
 })

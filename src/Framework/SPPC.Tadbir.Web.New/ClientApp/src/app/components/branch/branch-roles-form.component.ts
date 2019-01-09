@@ -89,7 +89,11 @@ export class BranchRolesFormComponent extends DetailComponent implements OnInit 
         this.rolesList = false;
         this.selectedRows = [];
         this.cancelBranchRoles.emit();
-    }
+  }
+
+  escPress() {
+    this.closeForm();
+  }
     ////Events
 
     selectionKey(context: RowArgs): string {

@@ -203,7 +203,11 @@ export class RoleFormComponent extends DetailComponent {
         this.active = false;
         this.selectedRows = [];
         this.cancel.emit();
-    }
+  }
+
+  escPress() {
+    this.closeForm();
+  }
     ////Events
 
     selectionKey(context: RowArgs): string {
