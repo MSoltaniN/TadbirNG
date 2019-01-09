@@ -146,7 +146,12 @@ namespace SPPC.Tadbir.Persistence
                 projectModel = await repository.GetByIDAsync(project.Id);
                 if (projectModel != null)
                 {
+                    bool needsCascade = (projectModel.Code != project.Code);
                     await UpdateAsync(repository, projectModel, project);
+                    if (needsCascade)
+                    {
+                        await CascadeUpdateFullCodeAsync(projectModel.Id);
+                    }
                 }
             }
 
@@ -341,6 +346,22 @@ namespace SPPC.Tadbir.Persistence
                 child.ChildCount = (grandchild != null)
                     ? grandchild.Count()
                     : 0;
+            }
+        }
+
+        private async Task CascadeUpdateFullCodeAsync(int projectId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<Project>();
+            var project = await repository.GetByIDAsync(projectId, prj => prj.Children);
+            if (project != null)
+            {
+                foreach (var child in project.Children)
+                {
+                    child.FullCode = project.FullCode + child.Code;
+                    repository.Update(child);
+                    await UnitOfWork.CommitAsync();
+                    await CascadeUpdateFullCodeAsync(child.Id);
+                }
             }
         }
 

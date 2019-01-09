@@ -145,7 +145,12 @@ namespace SPPC.Tadbir.Persistence
                 detailModel = await repository.GetByIDAsync(detailAccount.Id);
                 if (detailModel != null)
                 {
+                    bool needsCascade = (detailModel.Code != detailAccount.Code);
                     await UpdateAsync(repository, detailModel, detailAccount);
+                    if (needsCascade)
+                    {
+                        await CascadeUpdateFullCodeAsync(detailModel.Id);
+                    }
                 }
             }
 
@@ -340,6 +345,22 @@ namespace SPPC.Tadbir.Persistence
                 child.ChildCount = (grandchild != null)
                     ? grandchild.Count()
                     : 0;
+            }
+        }
+
+        private async Task CascadeUpdateFullCodeAsync(int faccountId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<DetailAccount>();
+            var detailAccount = await repository.GetByIDAsync(faccountId, facc => facc.Children);
+            if (detailAccount != null)
+            {
+                foreach (var child in detailAccount.Children)
+                {
+                    child.FullCode = detailAccount.FullCode + child.Code;
+                    repository.Update(child);
+                    await UnitOfWork.CommitAsync();
+                    await CascadeUpdateFullCodeAsync(child.Id);
+                }
             }
         }
 

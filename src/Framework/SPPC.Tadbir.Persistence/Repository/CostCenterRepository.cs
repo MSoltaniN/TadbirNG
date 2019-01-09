@@ -145,7 +145,12 @@ namespace SPPC.Tadbir.Persistence
                 costCenterModel = await repository.GetByIDAsync(costCenter.Id);
                 if (costCenterModel != null)
                 {
+                    bool needsCascade = (costCenterModel.Code != costCenter.Code);
                     await UpdateAsync(repository, costCenterModel, costCenter);
+                    if (needsCascade)
+                    {
+                        await CascadeUpdateFullCodeAsync(costCenterModel.Id);
+                    }
                 }
             }
 
@@ -340,6 +345,22 @@ namespace SPPC.Tadbir.Persistence
                 child.ChildCount = (grandchild != null)
                     ? grandchild.Count()
                     : 0;
+            }
+        }
+
+        private async Task CascadeUpdateFullCodeAsync(int costCenterId)
+        {
+            var repository = UnitOfWork.GetAsyncRepository<CostCenter>();
+            var costCenter = await repository.GetByIDAsync(costCenterId, cc => cc.Children);
+            if (costCenter != null)
+            {
+                foreach (var child in costCenter.Children)
+                {
+                    child.FullCode = costCenter.FullCode + child.Code;
+                    repository.Update(child);
+                    await UnitOfWork.CommitAsync();
+                    await CascadeUpdateFullCodeAsync(child.Id);
+                }
             }
         }
 
