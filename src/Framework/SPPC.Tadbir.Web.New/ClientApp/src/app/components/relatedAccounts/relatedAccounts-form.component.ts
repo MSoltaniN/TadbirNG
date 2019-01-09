@@ -96,11 +96,11 @@ export class RelatedAccountsFormComponent extends DetailComponent implements OnI
   ngOnInit(): void {
     this.viewId = ViewName.Account;
 
-    debugger;
-
     this.editForm.reset();
 
     this.parentScopeValue = 0;
+
+    debugger;
 
     if (this.parent) {
       this.parentFullCode = this.parent.fullCode;
@@ -112,9 +112,10 @@ export class RelatedAccountsFormComponent extends DetailComponent implements OnI
       this.level = 0;
 
       this.editForm.patchValue({ groupId: this.accGroupId });
-      this.accGroupSelected = this.accGroupId.toString();
-
-      this.getAccountGroups();
+      
+      setTimeout(() => {
+        this.getAccountGroups();
+      })
     }
 
     if (this.model && this.model.code)

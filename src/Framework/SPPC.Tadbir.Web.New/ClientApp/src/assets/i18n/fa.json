@@ -239,7 +239,7 @@
     }
   },
   "FullAccount": {
-    "Title": "بردار حساب",
+    "Title": "انتخاب حساب",
     "Account": "حساب",
     "DetailAccount": "تفصیلی شناور",
     "CostCenter": "مرکز هزینه",
@@ -271,7 +271,7 @@
     "Category": "ماهیت",
     "Description": "شرح",
     "RelatedAccounts": "حساب های مرتبط",
-    "RelatedAccountsWith": "حساب های مرتبط با"
+    "RelatedAccountsWith": "حساب های زیر مجموعه"
   },
   "Branch": {
     "BranchName": "شعبه",

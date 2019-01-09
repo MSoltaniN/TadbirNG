@@ -67,9 +67,9 @@
   },
   "Report": {
     "ReportViewer": "Report Viewer",
-    "ReportDesign" : "Report Design",
-    "Reports" : "Reports",
-    "ReportManagement" : "Report Management"
+    "ReportDesign": "Report Design",
+    "Reports": "Reports",
+    "ReportManagement": "Report Management"
   },
   "Buttons": {
     "Ok": "Ok",
@@ -241,7 +241,7 @@
     }
   },
   "FullAccount": {
-    "Title": "Full Account",
+    "Title": "Select Account",
     "Account": "Account",
     "DetailAccount": "Floating Account",
     "CostCenter": "CostCenter",
@@ -273,7 +273,7 @@
     "Category": "Category",
     "Description": "Description",
     "RelatedAccounts": "Related Accounts",
-    "RelatedAccountsWith": "Related Accounts with"
+    "RelatedAccountsWith": "Sub-accounts"
   },
   "Branch": {
     "BranchName": "Branch",

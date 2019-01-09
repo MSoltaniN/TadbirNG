@@ -26,7 +26,6 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
   //#region Fields
   isNew: boolean;
   accountItem: any;
-  //isOpenDialog: boolean = false;
 
   selectedItem: any;
 
@@ -437,7 +436,6 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
     });
 
 
-
   }
 
 
@@ -445,7 +443,6 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
     this.initItems();
 
-    //this.isOpenDialog = true;
     this.selectedItem = item;
 
     switch (item) {
@@ -503,10 +500,6 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
   }
 
 
-
-
-
-
   /**
    * ذخیره بردار حساب انتخاب شده
    */
@@ -549,8 +542,6 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
       this.accountFullCode += project.fullCode;
     }
 
-
-    //this.isOpenDialog = false;
     this.dialogRef.close();
   }
 
@@ -569,8 +560,6 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
     this.accFilterValue = this.dAccFilterValue = this.cCenterFilterValue = this.pFilterValue = undefined;
     this.isEnableAccountFilter = this.isEnableDetailAccountFilter = this.isEnableCostCenterFilter = this.isEnableProjectFilter = false;
 
-
-
     this.initDialog(this.selectedItem);
   }
 
@@ -578,8 +567,6 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
    * بستن فرم بردار حساب
    */
   closeDialog() {
-    //this.isOpenDialog = false;
-
     this.selectedItem = undefined;
 
     this.accountsRows = this.accountList = [];
@@ -587,16 +574,11 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
     this.costCentersRows = this.costCenterList = [];
     this.projectsRows = this.projectList = [];
 
-    //if (this.isNew) {
+
     this.accountSelectedId = [];
     this.detailAccountSelectedId = [];
     this.costCenterSelectedId = [];
     this.projectSelectedId = [];
-
-    //  this.accountTitle = this.detailAccountTitle = this.costCenterTitle = this.projectTitle = this.accountFullCode = undefined;
-    //}
-
-    //this.controlContainer.reset();
 
     this.dialogRef.close();
   }

@@ -108,13 +108,11 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
   //Events
 
   ngOnInit(): void {
-    this.editForm1.reset();
+
 
     this.editForm1.reset(this.model);
 
-    if (this.model != undefined && this.model.currencyId != undefined) {
-      this.selectedCurrencyValue = this.model.currencyId.toString();
-    }
+    this.GetCurrencies();  
 
     if (this.isNewBalance)
       if (this.balance > 0)
@@ -123,10 +121,6 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
         if (this.balance < 0)
           this.editForm1.patchValue({ 'debit': Math.abs(this.balance) });
 
-
-    setTimeout(() => {
-      this.editForm1.reset(this.model);
-    })
   }
 
   constructor(private voucherLineService: VoucherLineService, private accountService: AccountService,
@@ -136,13 +130,18 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
     super(toastrService, translate, renderer, metadata, Entities.VoucherLine, Metadatas.VoucherArticles);
 
-    this.GetCurrencies();
+    
   }
 
 
   GetCurrencies() {
     this.lookupService.GetCurrenciesLookup().subscribe(res => {
       this.currenciesRows = res;
+
+      if (this.model != undefined && this.model.currencyId != undefined) {
+        this.selectedCurrencyValue = this.model.currencyId.toString();
+      }
+
     })
   }
 
