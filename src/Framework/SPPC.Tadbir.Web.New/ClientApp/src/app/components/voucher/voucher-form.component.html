@@ -1,16 +1,13 @@
-<kendo-dialog *ngIf="active" [ngClass]="{'tRtl':this.CurrentLanguage === 'fa' , 'tLtr': this.CurrentLanguage === 'en','new-dialog':isNew , 'edit-dialog':!isNew}"
-              (close)="closeForm()">
-  <kendo-dialog-titlebar>
-    {{ isNew ?  ('Voucher.New' | translate) :  ('Buttons.Edit' | translate) }}
-  </kendo-dialog-titlebar>
-  <div *ngIf="errorMessage != ''">
-    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+
+<div style="padding:15px;" [ngClass]="{'new-dialog' : isNew,'edit-dialog' : !isNew}" (keydown.esc)="escPress()">
+  <div *ngIf="errorMessage">
     <div class="alert alert-danger">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
       {{ errorMessage }}
     </div>
   </div>
   <form novalidate [formGroup]="editForm" (keydown.enter)="onSave($event)">
-    
+
     <div class="clearfix edit-form-body">
 
       <div class="form-toolbar" *ngIf="!isNew">
@@ -106,12 +103,14 @@
   </form>
 
   <div *ngIf="!isNew">
-    <voucherLine [voucherId]="voucher_Id" [documentStatus]="documentStatus"></voucherLine>
+    <voucherLine [voucherId]="voucher_Id"
+                 [documentStatus]="documentStatus"
+                 (setFocus)="focusHandler($event)">
+    </voucherLine>
   </div>
+</div>
 
-  <kendo-dialog-actions *ngIf="isNew">
-    <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
-    <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
-  </kendo-dialog-actions>
-
-</kendo-dialog>
+<kendo-dialog-actions *ngIf="isNew">
+  <button class="k-button k-primary" [disabled]="!editForm.valid" (click)="onSave($event)">{{ 'Buttons.Ok' | translate }}</button>
+  <button class="k-button" (click)="onCancel($event)">{{ 'Buttons.Cancel' | translate }}</button>
+</kendo-dialog-actions>

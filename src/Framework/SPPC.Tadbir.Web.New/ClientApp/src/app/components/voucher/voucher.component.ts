@@ -28,6 +28,8 @@ import { ReportApi } from '../../service/api/reportApi';
 import { Report } from '../../model/report';
 import { ReportingService } from '../../service/report/reporting.service';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
+import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
+import { VoucherFormComponent } from '../../components/voucher/voucher-form.component';
 
 
 export function getLayoutModule(layout: Layout) {
@@ -70,10 +72,12 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
   clickedRowItem: Voucher = undefined;
   editDataItem?: Voucher = undefined;
-  isNew: boolean;
-  errorMessage: string;
+
   groupDelete: boolean = false;
 
+
+  private dialogRef: DialogRef;
+  private dialogModel: any;
   //#endregion
 
   //#region Events
@@ -81,6 +85,51 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     this.viewAccess = this.isAccess(SecureEntity.Voucher, VoucherPermissions.View);
     this.reloadGrid();
   }
+
+  /**
+   * باز کردن و مقداردهی اولیه به فرم ویرایشگر
+   */
+  openEditorDialog(isNew: boolean) {
+
+    this.dialogRef = this.dialogService.open({
+      title: this.getText(isNew ? 'Buttons.New' : 'Buttons.Edit'),
+      content: VoucherFormComponent,
+    });
+
+    this.dialogRef.dialog.location.nativeElement.classList.add(isNew ? 'new-dialog' : 'edit-dialog');
+
+    this.dialogModel = this.dialogRef.content.instance;
+    this.dialogModel.editModel = this.editDataItem;
+    this.dialogModel.errorMessage = undefined;
+    this.dialogModel.isNew = isNew;
+
+    this.dialogRef.content.instance.save.subscribe((res) => {
+      this.saveHandler(res, isNew);
+    });
+
+    const closeForm = this.dialogRef.content.instance.cancel.subscribe((res) => {
+      this.dialogRef.close();
+
+      this.dialogModel.errorMessage = undefined;
+      this.dialogModel.editModel = undefined;
+    });
+
+
+    this.dialogRef.content.instance.changeMode.subscribe((res) => {
+
+      this.dialogRef.close();
+      this.editDataItem = new VoucherInfo();
+
+      this.openEditorDialog(true);
+
+    })
+
+    this.dialogRef.content.instance.setFocus.subscribe((res) => {
+      debugger;
+      this.dialogRef.dialog.instance.focus();
+    });
+  }
+
 
   onCellClick(e) {
     this.clickedRowItem = e.dataItem;
@@ -92,11 +141,11 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     this.grid.loading = true;
     this.voucherService.getById(String.Format(VoucherApi.Voucher, this.clickedRowItem.id)).subscribe(res => {
       this.editDataItem = res;
+
+      this.openEditorDialog(false);
+
       this.grid.loading = false;
     })
-    this.isNew = false;
-    this.errorMessage = '';
-
   }
 
 
@@ -151,21 +200,14 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
     this.grid.loading = true;
     this.voucherService.getById(String.Format(VoucherApi.Voucher, recordId)).subscribe(res => {
       this.editDataItem = res;
+
+      this.openEditorDialog(false);
+
       this.grid.loading = false;
     })
-    this.isNew = false;
-    this.errorMessage = '';
   }
 
-  public cancelHandler() {
-    this.editDataItem = undefined;
-    this.isNew = false;
-    this.errorMessage = '';
-
-    this.reloadGrid();
-  }
-
-  public showReport() {
+   public showReport() {
     
     var url = String.Format(ReportApi.DefaultSystemReport, this.viewer.baseId);
 
@@ -202,40 +244,43 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
       this.reportManager.showDialog();
   }
 
-  public changeMode(isNew: boolean) {
-    this.isNew = isNew;
-  }
-
-  public saveHandler(model: Voucher) {
+  public saveHandler(model: Voucher, isNew: boolean) {
 
     this.grid.loading = true;
-    if (!this.isNew) {
+    if (!isNew) {
       this.voucherService.edit<Voucher>(String.Format(VoucherApi.Voucher, model.id), model)
         .subscribe(response => {
-          this.isNew = false;
           this.editDataItem = undefined;
           this.showMessage(this.updateMsg, MessageType.Succes);
+
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
           this.reloadGrid();
         }, (error => {
-          this.errorMessage = error;
-          this.grid.loading = false;
+          this.editDataItem = model;
+          this.dialogModel.errorMessage = error;
         }));
     }
     else {
       this.voucherService.insert<Voucher>(VoucherApi.EnvironmentVouchers, model)
         .subscribe((response: any) => {
-          this.isNew = false;
           this.editDataItem = undefined;
           this.showMessage(this.insertMsg, MessageType.Succes);
           var insertedModel = response;
 
           this.selectedRows = [];
 
+          this.dialogRef.close();
+          this.dialogModel.parent = undefined;
+          this.dialogModel.errorMessage = undefined;
+          this.dialogModel.model = undefined;
+
           this.reloadGrid(insertedModel);
         }, (error => {
-          this.isNew = true;
-          this.errorMessage = error;
-          this.grid.loading = false;
+          this.dialogModel.errorMessage = error;
         }));
     }
 
@@ -278,7 +323,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   //#endregion
 
   //#region Constructor
-  constructor(public toastrService: ToastrService, public translate: TranslateService,
+  constructor(public toastrService: ToastrService, public translate: TranslateService, public dialogService: DialogService,
     public sppcLoading: SppcLoadingService, private cdref: ChangeDetectorRef,
     private voucherService: VoucherService, public renderer: Renderer2,
     public metadata: MetaDataService, public settingService: SettingService,
@@ -368,9 +413,9 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
   public addNew() {
-    this.isNew = true;
     this.editDataItem = new VoucherInfo();
-    this.errorMessage = '';
+
+    this.openEditorDialog(true);
   }
 
   //#endregion

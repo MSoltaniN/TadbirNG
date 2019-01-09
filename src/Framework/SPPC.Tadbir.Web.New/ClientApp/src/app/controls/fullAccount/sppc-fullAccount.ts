@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core'
+import { Component, OnInit, Renderer2, TemplateRef, Output, EventEmitter } from '@angular/core'
 import { FormBuilder, ControlContainer, Validators } from '@angular/forms'
 import { FullAccountService, FullAccountInfo } from '../../service/index';
 import { DetailComponent } from '../../class/detail.component';
@@ -10,6 +10,7 @@ import { AccountRelationApi } from '../../service/api/index';
 import { AccountItemBrief, FullAccount } from '../../model/index';
 import { String } from '../../class/source'
 import { Entities } from '../../../environments/environment';
+import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
 
 
 
@@ -25,7 +26,7 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
   //#region Fields
   isNew: boolean;
   accountItem: any;
-  isOpenDialog: boolean = false;
+  //isOpenDialog: boolean = false;
 
   selectedItem: any;
 
@@ -61,10 +62,15 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
   accountFullCode: string;
 
   fullAccount: FullAccountInfo;
+
+  private dialogRef: DialogRef;
+  private dialogModel: any;
+
+  @Output() setFocus: EventEmitter<any> = new EventEmitter();
   //#endregion
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,
-    public controlContainer: ControlContainer, private fullAccountService: FullAccountService) {
+    public controlContainer: ControlContainer, private fullAccountService: FullAccountService, private dialogService: DialogService) {
     super(toastrService, translate, renderer, metadata, '', '');
 
   }
@@ -413,11 +419,33 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
   }
   //#endregion
 
-  openDialog(item: number) {
+  openDialog(template: TemplateRef<any>,item: number) {
+
+    this.initDialog(item);
+
+    this.dialogRef = this.dialogService.open({
+      title: this.getText('FullAccount.Title'),
+      content: template,
+    });
+
+    this.dialogRef.dialog.location.nativeElement.classList.add('fullAccountForm');
+
+    this.dialogRef.result.subscribe((result) => {
+      if (result instanceof DialogCloseResult) {
+        this.setFocus.emit();
+      }
+    });
+
+
+
+  }
+
+
+  initDialog(item: number) {
 
     this.initItems();
 
-    this.isOpenDialog = true;
+    //this.isOpenDialog = true;
     this.selectedItem = item;
 
     switch (item) {
@@ -474,6 +502,11 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
     }
   }
 
+
+
+
+
+
   /**
    * ذخیره بردار حساب انتخاب شده
    */
@@ -517,8 +550,8 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
     }
 
 
-    //this.closeDialog();
-    this.isOpenDialog = false;
+    //this.isOpenDialog = false;
+    this.dialogRef.close();
   }
 
   onReset() {
@@ -538,14 +571,14 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
 
 
 
-    this.openDialog(this.selectedItem);
+    this.initDialog(this.selectedItem);
   }
 
   /**
    * بستن فرم بردار حساب
    */
   closeDialog() {
-    this.isOpenDialog = false;
+    //this.isOpenDialog = false;
 
     this.selectedItem = undefined;
 
@@ -564,9 +597,13 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
     //}
 
     //this.controlContainer.reset();
+
+    this.dialogRef.close();
   }
 
-
+  escPress(e: any) {
+    this.dialogRef.close();
+  }
 
   initItems() {
 
@@ -596,5 +633,6 @@ export class SppcFullAccountComponent extends DetailComponent implements OnInit 
       this.projectSelectedId.push(this.fullAccount.project.id);
 
   }
+
 }
 

@@ -83,6 +83,10 @@ export class AccountGroupsFormComponent extends DetailComponent {
     this.active = false;
     this.cancel.emit();
   }
+
+  escPress() {
+    this.closeForm();
+  }
   //Events
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public lookupService: LookupService,

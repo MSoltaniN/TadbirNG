@@ -75,7 +75,11 @@ export class UserFormComponent extends DetailComponent {
         this.isNew = false;
         this.active = false;
         this.cancel.emit();
-    }
+  }
+
+  escPress() {
+    this.closeForm();
+  }
     //Events
 
 

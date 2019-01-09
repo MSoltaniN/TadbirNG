@@ -84,6 +84,9 @@ export class DetailAccountFormComponent extends DetailComponent implements OnIni
     this.cancel.emit();
   }
 
+  escPress() {
+    this.cancel.emit();
+  }
   //Events
 
   ngOnInit(): void {

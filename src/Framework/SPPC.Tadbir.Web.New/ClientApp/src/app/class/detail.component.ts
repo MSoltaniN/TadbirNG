@@ -133,4 +133,12 @@ export class DetailComponent extends BaseComponent {
 
     }
 
+
+  public getText(key: string): string {
+    var msgText = '';
+    this.translate.get(key).subscribe((msg: string) => {
+      msgText = msg;
+    });
+    return msgText;
+  }
 }

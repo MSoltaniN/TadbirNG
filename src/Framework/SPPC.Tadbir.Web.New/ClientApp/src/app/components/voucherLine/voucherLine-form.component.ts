@@ -23,9 +23,10 @@ interface Item {
 
 @Component({
   selector: 'voucherLine-form-component',
-  styles: [
-    "input[type=text],textarea { width: 100%; } /deep/ kendo-numerictextbox{ width:100% !important; }"
-  ],
+  styles: [`
+    input[type=text],textarea { width: 100%; } /deep/ kendo-numerictextbox{ width:100% !important; }
+    /deep/ .dialog-style .k-dialog { width:250px } @media (max-width: 450px) { /deep/ .dialog-style .k-dialog { width:100% } }
+`  ],
   templateUrl: './voucherLine-form.component.html'
 })
 
@@ -67,34 +68,17 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
   public selectedCurrencyValue: string | undefined;
 
-  active: boolean = false;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string;
   @Input() public isNewBalance: boolean = false;
   @Input() public balance: number = 0;
-
-
-  @Input() public set model(voucherLine: VoucherLine) {
-
-    this.editForm1.reset(voucherLine);
-
-    if (this.isNewBalance)
-      if (this.balance > 0)
-        this.editForm1.patchValue({'credit': Math.abs(this.balance) });
-      else
-        if (this.balance < 0)
-          this.editForm1.patchValue({ 'debit': Math.abs(this.balance) });
-
-    this.active = voucherLine !== undefined || this.isNew;
-
-    if (voucherLine != undefined && voucherLine.currencyId != undefined)
-      this.selectedCurrencyValue = voucherLine.currencyId.toString();
-
-   }
+  @Input() public model: VoucherLine;
 
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<{ model: VoucherLine, isOpen: boolean }> = new EventEmitter();
+  @Output() setFocus: EventEmitter<any> = new EventEmitter();
+
   //create properties
 
   //Events
@@ -110,25 +94,39 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
 
       this.save.emit({ model, isOpen });
 
-      this.active = true;
     }
   }
 
   public onCancel(e: any): void {
     e.preventDefault();
-    this.closeForm();
+    this.cancel.emit();
   }
 
-  private closeForm(): void {
-    this.isNew = false;
-    this.active = false;
-    //this.isNewBalance = false;
+  escPress() {
     this.cancel.emit();
   }
   //Events
 
   ngOnInit(): void {
-    
+    this.editForm1.reset();
+
+    this.editForm1.reset(this.model);
+
+    if (this.model != undefined && this.model.currencyId != undefined) {
+      this.selectedCurrencyValue = this.model.currencyId.toString();
+    }
+
+    if (this.isNewBalance)
+      if (this.balance > 0)
+        this.editForm1.patchValue({ 'credit': Math.abs(this.balance) });
+      else
+        if (this.balance < 0)
+          this.editForm1.patchValue({ 'debit': Math.abs(this.balance) });
+
+
+    setTimeout(() => {
+      this.editForm1.reset(this.model);
+    })
   }
 
   constructor(private voucherLineService: VoucherLineService, private accountService: AccountService,
@@ -146,6 +144,10 @@ export class VoucherLineFormComponent extends DetailComponent implements OnInit 
     this.lookupService.GetCurrenciesLookup().subscribe(res => {
       this.currenciesRows = res;
     })
+  }
+
+  focusHandler(e: any) {
+    this.setFocus.emit();
   }
 
 }

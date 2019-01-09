@@ -139,7 +139,11 @@ export class RoleDetailFormComponent extends DetailComponent {
         //this.gridBranchesData = undefined;
         this.gridUsersData = undefined;
         this.cancelRoleDetail.emit();
-    }
+  }
+
+  escPress() {
+    this.closeForm();
+  }
     ////Events
 
 

@@ -108,6 +108,10 @@ export class ViewRowPermissionMultipleFormComponent extends DetailComponent {
     this.noData = false;
     this.cancel.emit();
   }
+
+  escPress() {
+    this.closeForm();
+  }
   //Events
 
   constructor(public toastrService: ToastrService, public translate: TranslateService, public renderer: Renderer2, public metadata: MetaDataService,

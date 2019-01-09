@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Renderer2, ChangeDetectionStrategy, Host } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Renderer2, ChangeDetectionStrategy, Host, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { VoucherService, VoucherInfo, VoucherLineService, FiscalPeriodService } from '../../service/index';
 import { Voucher } from '../../model/index';
@@ -30,11 +30,13 @@ interface Item {
   //changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'voucher-form-component',
   styles: [`
-    input[type=text],textarea { width: 100%; } /deep/ .new-dialog > .k-dialog {width: 450px !important; min-width: 250px !important;}
-    /deep/ .edit-dialog > .k-dialog {width: 100% !important; min-width: 250px !important; height:100%}
+    input[type=text],textarea { width: 100%; } /deep/ .new-dialog .k-dialog {width: 450px !important; min-width: 250px !important;}
+    /deep/ .edit-dialog .k-dialog {width: 100% !important; min-width: 250px !important; height:100%}
     /deep/ .edit-dialog .k-window-titlebar{ padding: 5px 16px !important;}
     /deep/ .edit-dialog .edit-form-body { background: #f6f6f6; border: solid 1px #989898; border-radius: 4px;}
     .form-toolbar{border-bottom: solid 1px #e3e3e3; margin-bottom: 10px; padding: 10px;} .form-toolbar button{padding: 5px 6px;}
+    /deep/ .voucher-dialog .k-window .k-overlay { opacity: .6 !important; }
+   /deep/ .k-dialog-buttongroup {border-color: #f1f1f1;}"
   `],
   templateUrl: './voucher-form.component.html',
   providers: [{
@@ -44,34 +46,22 @@ interface Item {
   }]
 })
 
-export class VoucherFormComponent extends DetailComponent {
+export class VoucherFormComponent extends DetailComponent implements OnInit {
 
   //create properties
   public voucher_Id: number;
   documentStatus: number;
-  editModel: Voucher;
 
-  active: boolean = false;
   @Input() public isNew: boolean = false;
   @Input() public errorMessage: string;
+  @Input() public editModel: Voucher;
 
-  @Input() public set model(voucher: Voucher) {
-
-    this.editModel = voucher;
-    this.editForm.reset(voucher);
-
-    this.active = voucher !== undefined || this.isNew;
-
-    if (voucher != undefined) {
-      this.voucher_Id = voucher.id;
-      this.documentStatus = voucher.statusId;
-    }
-
-  }
 
   @Output() cancel: EventEmitter<any> = new EventEmitter();
   @Output() save: EventEmitter<Voucher> = new EventEmitter();
   @Output() changeMode: EventEmitter<boolean> = new EventEmitter();
+  @Output() setFocus: EventEmitter<any> = new EventEmitter();
+
   //create properties
 
   //Events
@@ -88,8 +78,7 @@ export class VoucherFormComponent extends DetailComponent {
         model.branchId = this.BranchId;
         model.fiscalPeriodId = this.FiscalPeriodId;        
       }
-      this.save.emit(model);
-      this.active = true;
+      this.save.emit(model);      
     }
   }
 
@@ -100,12 +89,16 @@ export class VoucherFormComponent extends DetailComponent {
 
   private closeForm(): void {
     this.isNew = false;
-    this.active = false;
     this.cancel.emit();
   }
 
   public onDeleteData() {
     alert("Data deleted.");
+  }
+
+
+  escPress() {
+    this.closeForm();
   }
   //Events
 
@@ -114,6 +107,23 @@ export class VoucherFormComponent extends DetailComponent {
     public renderer: Renderer2, public metadata: MetaDataService) {
 
     super(toastrService, translate, renderer, metadata, Entities.Voucher, Metadatas.Voucher);
+  }
+
+  ngOnInit(): void {
+
+    this.editForm.reset();
+
+    this.editForm.reset(this.editModel);
+
+    if (this.editModel != undefined) {
+      this.voucher_Id = this.editModel.id;
+      this.documentStatus = this.editModel.statusId;
+    }
+
+    setTimeout(() => {
+      this.editForm.reset(this.editModel);
+    })
+
   }
 
 
@@ -159,4 +169,10 @@ export class VoucherFormComponent extends DetailComponent {
     this.editModel.date = new Date();
     this.editForm.reset(this.editModel);
   }
+
+
+  focusHandler(e: any) {
+    this.setFocus.emit();
+  }
+
 }

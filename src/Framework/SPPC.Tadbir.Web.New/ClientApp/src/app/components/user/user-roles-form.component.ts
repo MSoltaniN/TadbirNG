@@ -89,7 +89,11 @@ export class UserRolesFormComponent extends DetailComponent implements OnInit {
         this.rolesList = false;
         this.selectedRows = [];
         this.cancelUserRoles.emit();
-    }
+  }
+
+  escPress() {
+    this.closeForm();
+  }
     ////Events
 
     selectionKey(context: RowArgs): string {

@@ -83,6 +83,10 @@ export class FiscalPeriodFormComponent extends DetailComponent {
         this.cancel.emit();
     }
 
+  escPress() {
+    this.closeForm();
+  }
+
     public onDeleteData() {
         alert("Data deleted.");
     }
