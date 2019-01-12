@@ -795,4 +795,10 @@
   <data name="OperationResult" xml:space="preserve">
     <value>نتیجه عملیات</value>
   </data>
+  <data name="LocaleIsRequired" xml:space="preserve">
+    <value>زبان مورد نظر برای گزارش وارد نشده است.</value>
+  </data>
+  <data name="SourceReportIsRequired" xml:space="preserve">
+    <value>گزارش مبدأ مشخص نشده است.</value>
+  </data>
 </root>

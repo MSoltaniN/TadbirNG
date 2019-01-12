@@ -64,6 +64,16 @@ CREATE TABLE [Metadata].[Column] (
 )
 GO
 
+CREATE TABLE [Metadata].[Locale] (
+    [LocaleID]       INT              IDENTITY (1, 1) NOT NULL,
+    [Name]           VARCHAR(64)      NOT NULL,
+    [LocalName]      NVARCHAR(64)     NOT NULL,
+    [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Locale_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
+    [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Locale_ModifiedDate] DEFAULT (getdate()) NOT NULL
+    , CONSTRAINT [PK_Metadata_Locale] PRIMARY KEY CLUSTERED ([LocaleID] ASC)
+)
+GO
+
 CREATE TABLE [Auth].[User] (
     [UserID]         INT              IDENTITY (1, 1) NOT NULL,
     [UserName]       NVARCHAR(64)     NOT NULL,
@@ -217,14 +227,14 @@ GO
 
 CREATE TABLE [Reporting].[LocalReport] (
     [LocalReportID]   INT              IDENTITY (1, 1) NOT NULL,
-    [LocaleID]        INT              NULL,
+    [LocaleID]        INT              NOT NULL,
     [ReportID]        INT              NOT NULL,
     [Caption]         NVARCHAR(128)    NOT NULL,
     [Template]        NVARCHAR(MAX)    NOT NULL,
     [rowguid]         UNIQUEIDENTIFIER CONSTRAINT [DF_Reporting_LocalReport_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]    DATETIME         CONSTRAINT [DF_Reporting_LocalReport_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Reporting_LocalReport] PRIMARY KEY CLUSTERED ([LocalReportID] ASC)
-    --, CONSTRAINT [FK_Reporting_LocalReport_Reporting_Locale] FOREIGN KEY ([LocaleID]) REFERENCES [Reporting].[Locale]([LocaleID])
+    , CONSTRAINT [FK_Reporting_LocalReport_Metadata_Locale] FOREIGN KEY ([LocaleID]) REFERENCES [Metadata].[Locale]([LocaleID])
     , CONSTRAINT [FK_Reporting_LocalReport_Reporting_Report] FOREIGN KEY ([ReportID]) REFERENCES [Reporting].[Report]([ReportID])
 )
 GO
@@ -458,6 +468,13 @@ GO
 
 
 -- Create system metadata records
+
+SET IDENTITY_INSERT [Metadata].[Locale] ON
+INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (1, 'English', N'English')
+INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (2, 'Persian', N'فارسی')
+INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (3, 'Arabic', N'العربیه')
+INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (4, 'French', N'Français')
+SET IDENTITY_INSERT [Metadata].[Locale] OFF
 
 SET IDENTITY_INSERT [Metadata].[View] ON
 INSERT INTO [Metadata].[View] (ViewID, Name, IsHierarchy, IsCartableIntegrated, FetchUrl) VALUES (1, 'Account', 1, 1, N'/lookup/accounts/fp/{0}/branch/{1}')

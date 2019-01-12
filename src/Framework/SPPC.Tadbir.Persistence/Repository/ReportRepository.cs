@@ -44,6 +44,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
         public void SetCurrentContext(UserContextViewModel userContext)
         {
+            _currentContext = userContext;
             _repository.SetCurrentContext(userContext);
         }
 
@@ -148,17 +149,58 @@ namespace SPPC.Tadbir.Persistence
             return standardForm;
         }
 
-        public async Task<IList<CoreReportViewModel>> GetReportTreeAsync()
+        public async Task<IList<TreeItemViewModel>> GetReportTreeAsync()
         {
             _unitOfWork.UseSystemContext();
-            var repository = _unitOfWork.GetAsyncRepository<CoreReport>();
-            var tree = await repository
+            var treeRepository = _unitOfWork.GetAsyncRepository<CoreReport>();
+            var tree = await treeRepository
                 .GetEntityQuery()
-                .Select(rep => _mapper.Map<CoreReportViewModel>(rep))
+                .Where(rep => rep.IsGroup)
+                .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
                 .ToListAsync();
 
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var items = await repository
+                .GetEntityQuery(rep => rep.Base)
+                .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
+                .ToListAsync();
+            tree.AddRange(items);
             _unitOfWork.UseCompanyContext();
             return tree;
+        }
+
+        public async Task SaveUserReportAsync(LocalReportViewModel report)
+        {
+            _unitOfWork.UseSystemContext();
+            Verify.ArgumentNotNull(report, nameof(report));
+            if (report.Id == 0)
+            {
+                var repository = _unitOfWork.GetAsyncRepository<Report>();
+                var existing = await repository.GetByIDAsync(report.ReportId, rep => rep.LocalReports);
+                if (existing != null)
+                {
+                    var userReport = _mapper.Map<Report>(existing);
+                    userReport.Id = 0;
+                    userReport.IsSystem = false;
+                    userReport.IsDefault = false;
+                    userReport.CreatedById = _currentContext.Id;
+                    repository.Insert(userReport);
+                    await _unitOfWork.CommitAsync();
+
+                    var localReport = _mapper.Map<LocalReport>(existing.LocalReports
+                        .Where(rep => rep.LocaleId == report.LocaleId)
+                        .Single());
+                    localReport.Id = 0;
+                    localReport.Caption = report.Caption;
+                    localReport.ReportId = 0;
+                    localReport.Locale = null;
+                    userReport.LocalReports.Add(localReport);
+                    repository.Update(userReport, rep => rep.LocalReports);
+                    await _unitOfWork.CommitAsync();
+                }
+            }
+
+            _unitOfWork.UseCompanyContext();
         }
 
         private static void AddGeneralStandardLineItems(
@@ -279,5 +321,6 @@ namespace SPPC.Tadbir.Persistence
         private readonly IDomainMapper _mapper;
         private readonly ISecureRepository _repository;
         private readonly ILookupRepository _lookupRepository;
+        private UserContextViewModel _currentContext;
     }
 }

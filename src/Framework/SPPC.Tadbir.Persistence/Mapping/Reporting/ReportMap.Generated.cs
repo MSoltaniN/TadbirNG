@@ -47,12 +47,12 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.CreatedBy)
                 .WithMany()
-                .HasForeignKey("CreatedByID")
+                .HasForeignKey(e => e.CreatedById)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_Report_Reporting_CreatedBy");
             builder.HasOne(e => e.Base)
                 .WithMany()
-                .HasForeignKey("BaseID")
+                .HasForeignKey(e => e.BaseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_Report_Reporting_Base");
         }

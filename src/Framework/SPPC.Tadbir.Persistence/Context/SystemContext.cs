@@ -35,6 +35,7 @@ namespace SPPC.Tadbir.Persistence
             CommandMap.BuildMapping(modelBuilder.Entity<Command>());
             CompanyDbMap.BuildMapping(modelBuilder.Entity<CompanyDb>());
             CoreReportMap.BuildMapping(modelBuilder.Entity<CoreReport>());
+            LocaleMap.BuildMapping(modelBuilder.Entity<Locale>());
             LocalReportMap.BuildMapping(modelBuilder.Entity<LocalReport>());
             OperationLogMap.BuildMapping(modelBuilder.Entity<OperationLog>());
             ParameterMap.BuildMapping(modelBuilder.Entity<Parameter>());

@@ -32,6 +32,14 @@ namespace SPPC.Tadbir.Api
         /// </summary>
         public const string DefaultSystemReportUrl = "reports/{baseId:min(1)}";
 
+        public const string UserReports = "reports/user";
+
+        public const string UserReportsUrl = "reports/user";
+
+        public const string UserReport = "reports/user/{0}";
+
+        public const string UserReportUrl = "reports/user/{reportId:min(1)}";
+
         /// <summary>
         /// API client URL for Voucher Summary by Date report
         /// </summary>

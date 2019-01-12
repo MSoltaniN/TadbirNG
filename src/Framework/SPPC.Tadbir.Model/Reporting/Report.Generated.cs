@@ -76,9 +76,15 @@ namespace SPPC.Tadbir.Model.Reporting
         /// </summary>
         public virtual CoreReport Base { get; set; }
 
+        /// <summary>
+        /// مجوعه ای از گزارش های محلی شده برای این گزارش
+        /// </summary>
+        public IList<LocalReport> LocalReports { get; protected set; }
+
         private void InitReferences()
         {
             Base = new CoreReport();
+            LocalReports = new List<LocalReport>();
         }
     }
 }

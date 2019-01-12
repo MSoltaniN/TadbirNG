@@ -26,7 +26,9 @@ namespace SPPC.Tadbir.Persistence
         /// <returns>اطلاعات متادیتای گزارش سیستمی مشخص شده</returns>
         Task<ReportViewModel> GetDefaultSystemReportAsync(int baseId);
 
-        Task<IList<CoreReportViewModel>> GetReportTreeAsync();
+        Task<IList<TreeItemViewModel>> GetReportTreeAsync();
+
+        Task SaveUserReportAsync(LocalReportViewModel report);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش خلاصه اسناد حسابداری را خوانده و برمی گرداند

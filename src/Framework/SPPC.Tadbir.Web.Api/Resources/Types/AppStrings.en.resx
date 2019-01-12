@@ -795,4 +795,10 @@
   <data name="OperationResult" xml:space="preserve">
     <value>Operation result</value>
   </data>
+  <data name="LocaleIsRequired" xml:space="preserve">
+    <value>Report locale is not specified.</value>
+  </data>
+  <data name="SourceReportIsRequired" xml:space="preserve">
+    <value>Source report is not specified.</value>
+  </data>
 </root>
