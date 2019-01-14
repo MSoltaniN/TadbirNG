@@ -45,6 +45,15 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(tree);
         }
 
+        // GET: api/reports/user/{reportId:min(1)}
+        [Route(ReportApi.UserReportUrl)]
+        public async Task<IActionResult> GetUserReportAsync(int reportId)
+        {
+            string localeCode = GetAcceptLanguages().Substring(0, 2);
+            var userReport = await _repository.GetUserReportAsync(reportId, localeCode);
+            return JsonReadResult(userReport);
+        }
+
         // POST: api/reports/user
         [HttpPost]
         [Route(ReportApi.UserReportsUrl)]

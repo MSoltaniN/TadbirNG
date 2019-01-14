@@ -169,6 +169,13 @@ namespace SPPC.Tadbir.Persistence
             return tree;
         }
 
+        public async Task<PrintInfoViewModel> GetUserReportAsync(int reportId, string localeCode)
+        {
+            Verify.ArgumentNotNullOrEmptyString(localeCode, nameof(localeCode));
+            throw new NotImplementedException();
+            //var repository = _unitOfWork.GetAsyncRepository<
+        }
+
         public async Task SaveUserReportAsync(LocalReportViewModel report)
         {
             _unitOfWork.UseSystemContext();

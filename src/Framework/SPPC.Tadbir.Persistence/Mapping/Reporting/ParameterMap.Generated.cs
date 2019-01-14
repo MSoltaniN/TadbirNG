@@ -60,7 +60,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
                 .HasDefaultValueSql("(getdate())");
 
             builder.HasOne(e => e.Report)
-                .WithMany()
+                .WithMany(d => d.Parameters)
                 .HasForeignKey("ReportID")
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_Parameter_Reporting_Report");
