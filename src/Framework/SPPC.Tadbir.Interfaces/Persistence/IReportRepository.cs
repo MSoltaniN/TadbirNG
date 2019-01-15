@@ -28,7 +28,9 @@ namespace SPPC.Tadbir.Persistence
 
         Task<IList<TreeItemViewModel>> GetReportTreeAsync();
 
-        Task<PrintInfoViewModel> GetUserReportAsync(int reportId, string localeCode);
+        Task<PrintInfoViewModel> GetReportAsync(int reportId, string localeCode);
+
+        Task<PrintInfoViewModel> GetReportDesignAsync(int reportId, string localeCode);
 
         Task SaveUserReportAsync(LocalReportViewModel report);
 

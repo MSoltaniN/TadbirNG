@@ -68,6 +68,7 @@ CREATE TABLE [Metadata].[Locale] (
     [LocaleID]       INT              IDENTITY (1, 1) NOT NULL,
     [Name]           VARCHAR(64)      NOT NULL,
     [LocalName]      NVARCHAR(64)     NOT NULL,
+    [Code]           VARCHAR(16)      NOT NULL,
     [rowguid]        UNIQUEIDENTIFIER CONSTRAINT [DF_Metadata_Locale_rowguid] DEFAULT (newid()) ROWGUIDCOL NOT NULL,
     [ModifiedDate]   DATETIME         CONSTRAINT [DF_Metadata_Locale_ModifiedDate] DEFAULT (getdate()) NOT NULL
     , CONSTRAINT [PK_Metadata_Locale] PRIMARY KEY CLUSTERED ([LocaleID] ASC)
@@ -470,10 +471,10 @@ GO
 -- Create system metadata records
 
 SET IDENTITY_INSERT [Metadata].[Locale] ON
-INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (1, 'English', N'English')
-INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (2, 'Persian', N'فارسی')
-INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (3, 'Arabic', N'العربیه')
-INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName) VALUES (4, 'French', N'Français')
+INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName, Code) VALUES (1, 'English', N'English', 'en')
+INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName, Code) VALUES (2, 'Persian', N'فارسی', 'fa')
+INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName, Code) VALUES (3, 'Arabic', N'العربیه', 'ar')
+INSERT INTO [Metadata].[Locale] (LocaleID, Name, LocalName, Code) VALUES (4, 'French', N'Français', 'fr')
 SET IDENTITY_INSERT [Metadata].[Locale] OFF
 
 SET IDENTITY_INSERT [Metadata].[View] ON

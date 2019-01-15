@@ -169,11 +169,14 @@ namespace SPPC.Tadbir.Persistence
             return tree;
         }
 
-        public async Task<PrintInfoViewModel> GetUserReportAsync(int reportId, string localeCode)
+        public async Task<PrintInfoViewModel> GetReportAsync(int reportId, string localeCode)
         {
-            Verify.ArgumentNotNullOrEmptyString(localeCode, nameof(localeCode));
-            throw new NotImplementedException();
-            //var repository = _unitOfWork.GetAsyncRepository<
+            return await GetReportPrintInfo(reportId, localeCode);
+        }
+
+        public async Task<PrintInfoViewModel> GetReportDesignAsync(int reportId, string localeCode)
+        {
+            return await GetReportPrintInfo(reportId, localeCode, false);
         }
 
         public async Task SaveUserReportAsync(LocalReportViewModel report)
@@ -183,7 +186,8 @@ namespace SPPC.Tadbir.Persistence
             if (report.Id == 0)
             {
                 var repository = _unitOfWork.GetAsyncRepository<Report>();
-                var existing = await repository.GetByIDAsync(report.ReportId, rep => rep.LocalReports);
+                var existing = await repository.GetByIDAsync(
+                    report.ReportId, rep => rep.LocalReports, rep => rep.Parameters);
                 if (existing != null)
                 {
                     var userReport = _mapper.Map<Report>(existing);
@@ -194,17 +198,30 @@ namespace SPPC.Tadbir.Persistence
                     repository.Insert(userReport);
                     await _unitOfWork.CommitAsync();
 
-                    var localReport = _mapper.Map<LocalReport>(existing.LocalReports
-                        .Where(rep => rep.LocaleId == report.LocaleId)
-                        .Single());
-                    localReport.Id = 0;
-                    localReport.Caption = report.Caption;
-                    localReport.ReportId = 0;
-                    localReport.Locale = null;
-                    userReport.LocalReports.Add(localReport);
-                    repository.Update(userReport, rep => rep.LocalReports);
+                    Array.ForEach(existing.LocalReports.ToArray(), rep =>
+                    {
+                        var clone = _mapper.Map<LocalReport>(rep);
+                        clone.Id = 0;
+                        clone.Caption = (rep.LocaleId == report.LocaleId)
+                            ? report.Caption
+                            : String.Format("Copy of '{0}'", rep.Caption);
+                        clone.ReportId = 0;
+                        clone.Locale = null;
+                        userReport.LocalReports.Add(clone);
+                    });
+                    Array.ForEach(existing.Parameters.ToArray(), param =>
+                    {
+                        var clone = _mapper.Map<Parameter>(param);
+                        clone.Id = 0;
+                        clone.ReportId = 0;
+                        userReport.Parameters.Add(clone);
+                    });
+                    repository.Update(userReport, rep => rep.LocalReports, rep => rep.Parameters);
                     await _unitOfWork.CommitAsync();
                 }
+            }
+            else
+            {
             }
 
             _unitOfWork.UseCompanyContext();
@@ -322,6 +339,37 @@ namespace SPPC.Tadbir.Persistence
             }
 
             return query;
+        }
+
+        private async Task<PrintInfoViewModel> GetReportPrintInfo(
+            int reportId, string localeCode, bool withParams = true)
+        {
+            _unitOfWork.UseSystemContext();
+            Verify.ArgumentNotNullOrEmptyString(localeCode, nameof(localeCode));
+            var reportView = default(PrintInfoViewModel);
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            IQueryable<Report> reportQuery = repository
+                .GetEntityQuery()
+                .Include(rep => rep.LocalReports)
+                    .ThenInclude(rep => rep.Locale);
+            if (withParams)
+            {
+                reportQuery = reportQuery
+                    .Include(rep => rep.Parameters);
+            }
+
+            var report = await reportQuery.SingleOrDefaultAsync(rep => rep.Id == reportId);
+            if (report != null)
+            {
+                reportView = _mapper.Map<PrintInfoViewModel>(report);
+                var localReport = report.LocalReports
+                    .Where(rep => localeCode.StartsWith(rep.Locale.Code))
+                    .FirstOrDefault();
+                reportView.Template = localReport?.Template;
+            }
+
+            _unitOfWork.UseCompanyContext();
+            return reportView;
         }
 
         private readonly IAppUnitOfWork _unitOfWork;

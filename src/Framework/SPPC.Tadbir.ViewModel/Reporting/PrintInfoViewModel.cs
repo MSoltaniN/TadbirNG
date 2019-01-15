@@ -15,7 +15,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
         /// </summary>
         public int Id { get; set; }
 
-        public int LocaleId { get; set; }
+        public string ServiceUrl { get; set; }
 
         public string Template { get; set; }
 

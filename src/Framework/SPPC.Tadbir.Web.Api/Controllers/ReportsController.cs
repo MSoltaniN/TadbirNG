@@ -36,7 +36,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(report);
         }
 
-        // GET: api/reports/tree
+        // GET: api/reports/sys/tree
         [Route(ReportApi.ReportsHierarchyUrl)]
         public async Task<IActionResult> GetReportTreeAsync()
         {
@@ -45,18 +45,27 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Json(tree);
         }
 
-        // GET: api/reports/user/{reportId:min(1)}
-        [Route(ReportApi.UserReportUrl)]
-        public async Task<IActionResult> GetUserReportAsync(int reportId)
+        // GET: api/reports/sys/{reportId:min(1)}
+        [Route(ReportApi.ReportUrl)]
+        public async Task<IActionResult> GetReportAsync(int reportId)
         {
             string localeCode = GetAcceptLanguages().Substring(0, 2);
-            var userReport = await _repository.GetUserReportAsync(reportId, localeCode);
-            return JsonReadResult(userReport);
+            var report = await _repository.GetReportAsync(reportId, localeCode);
+            return JsonReadResult(report);
         }
 
-        // POST: api/reports/user
+        // GET: api/reports/sys/{reportId:min(1)}/design
+        [Route(ReportApi.ReportDesignUrl)]
+        public async Task<IActionResult> GetReportDesignAsync(int reportId)
+        {
+            string localeCode = GetAcceptLanguages().Substring(0, 2);
+            var reportDesign = await _repository.GetReportDesignAsync(reportId, localeCode);
+            return JsonReadResult(reportDesign);
+        }
+
+        // POST: api/reports/sys
         [HttpPost]
-        [Route(ReportApi.UserReportsUrl)]
+        [Route(ReportApi.ReportsUrl)]
         public async Task<IActionResult> PostNewUserReportAsync([FromBody] LocalReportViewModel report)
         {
             if (report != null && report.LocaleId == 0)
@@ -74,18 +83,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        // PUT: api/reports/user/{reportId:min(1)}
+        // PUT: api/reports/sys/{reportId:min(1)}
         [HttpPost]
-        [Route(ReportApi.UserReportUrl)]
+        [Route(ReportApi.ReportUrl)]
         public async Task<IActionResult> PutModifiedUserReportAsync(
             int reportId, [FromBody] LocalReportViewModel report)
         {
             return Ok();
         }
 
-        // DELETE: api/reports/user/{reportId:min(1)}
+        // DELETE: api/reports/sys/{reportId:min(1)}
         [HttpPost]
-        [Route(ReportApi.UserReportUrl)]
+        [Route(ReportApi.ReportUrl)]
         public async Task<IActionResult> DeleteExistingUserReportAsync(int reportId)
         {
             return Ok();
