@@ -179,11 +179,26 @@ namespace SPPC.Tadbir.Persistence
             return await GetReportPrintInfo(reportId, localeCode, false);
         }
 
+        public async Task<ReportSummaryViewModel> GetReportSummaryAsync(int reportId)
+        {
+            _unitOfWork.UseSystemContext();
+            var summary = default(ReportSummaryViewModel);
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var report = await repository.GetByIDAsync(reportId);
+            if (report != null)
+            {
+                summary = _mapper.Map<ReportSummaryViewModel>(report);
+            }
+
+            _unitOfWork.UseCompanyContext();
+            return summary;
+        }
+
         public async Task SaveUserReportAsync(LocalReportViewModel report)
         {
             _unitOfWork.UseSystemContext();
             Verify.ArgumentNotNull(report, nameof(report));
-            if (report.Id == 0)
+            if (String.IsNullOrEmpty(report.Template))
             {
                 var repository = _unitOfWork.GetAsyncRepository<Report>();
                 var existing = await repository.GetByIDAsync(
@@ -222,6 +237,49 @@ namespace SPPC.Tadbir.Persistence
             }
             else
             {
+                var repository = _unitOfWork.GetAsyncRepository<LocalReport>();
+                var existing = await repository.GetSingleByCriteriaAsync(
+                    rep => rep.ReportId == report.ReportId && rep.LocaleId == report.LocaleId);
+                if (existing != null)
+                {
+                    existing.Template = report.Template;
+                    repository.Update(existing);
+                    await _unitOfWork.CommitAsync();
+                }
+            }
+
+            _unitOfWork.UseCompanyContext();
+        }
+
+        public async Task SetUserReportCaptionAsync(LocalReportViewModel report)
+        {
+            _unitOfWork.UseSystemContext();
+            Verify.ArgumentNotNull(report, nameof(report));
+            var repository = _unitOfWork.GetAsyncRepository<LocalReport>();
+            var existing = await repository.GetSingleByCriteriaAsync(
+                rep => rep.ReportId == report.ReportId && rep.LocaleId == report.LocaleId);
+            if (existing != null)
+            {
+                existing.Caption = report.Caption;
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+
+            _unitOfWork.UseCompanyContext();
+        }
+
+        public async Task DeleteUserReportAsync(int reportId)
+        {
+            _unitOfWork.UseSystemContext();
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var report = await repository.GetByIDWithTrackingAsync(
+                reportId, rep => rep.LocalReports, rep => rep.Parameters);
+            if (report != null)
+            {
+                report.LocalReports.Clear();
+                report.Parameters.Clear();
+                repository.Delete(report);
+                await _unitOfWork.CommitAsync();
             }
 
             _unitOfWork.UseCompanyContext();

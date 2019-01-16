@@ -502,6 +502,7 @@ namespace SPPC.Tadbir.Mapper
                 .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Base.Name));
             mapperConfig.CreateMap<Report, PrintInfoViewModel>()
                 .ForMember(dest => dest.Template, opts => opts.Ignore());
+            mapperConfig.CreateMap<Report, ReportSummaryViewModel>();
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

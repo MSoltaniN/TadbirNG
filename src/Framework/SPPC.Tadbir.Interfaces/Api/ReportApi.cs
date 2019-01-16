@@ -44,6 +44,10 @@ namespace SPPC.Tadbir.Api
 
         public const string ReportDesignUrl = "reports/sys/{reportId:min(1)}/design";
 
+        public const string ReportCaption = "reports/sys/{0}/caption";
+
+        public const string ReportCaptionUrl = "reports/sys/{reportId:min(1)}/caption";
+
         /// <summary>
         /// API client URL for Voucher Summary by Date report
         /// </summary>

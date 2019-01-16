@@ -62,7 +62,7 @@ namespace SPPC.Tadbir.Persistence.Mapping
             builder.HasOne(e => e.Report)
                 .WithMany(d => d.Parameters)
                 .HasForeignKey(e => e.ReportId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Reporting_Parameter_Reporting_Report");
         }
     }

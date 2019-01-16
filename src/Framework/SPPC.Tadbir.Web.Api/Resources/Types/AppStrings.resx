@@ -801,4 +801,10 @@
   <data name="SourceReportIsRequired" xml:space="preserve">
     <value>گزارش مبدأ مشخص نشده است.</value>
   </data>
+  <data name="CantModifySystemReport" xml:space="preserve">
+    <value>گزارش مورد نظر سیستمی بوده و قابل ویرایش یا حذف نیست.</value>
+  </data>
+  <data name="UserReport" xml:space="preserve">
+    <value>گزارش کاربری</value>
+  </data>
 </root>

@@ -32,7 +32,13 @@ namespace SPPC.Tadbir.Persistence
 
         Task<PrintInfoViewModel> GetReportDesignAsync(int reportId, string localeCode);
 
+        Task<ReportSummaryViewModel> GetReportSummaryAsync(int reportId);
+
         Task SaveUserReportAsync(LocalReportViewModel report);
+
+        Task SetUserReportCaptionAsync(LocalReportViewModel report);
+
+        Task DeleteUserReportAsync(int reportId);
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش خلاصه اسناد حسابداری را خوانده و برمی گرداند
