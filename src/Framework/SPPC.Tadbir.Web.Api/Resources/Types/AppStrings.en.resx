@@ -795,4 +795,16 @@
   <data name="OperationResult" xml:space="preserve">
     <value>Operation result</value>
   </data>
+  <data name="LocaleIsRequired" xml:space="preserve">
+    <value>Report locale is not specified.</value>
+  </data>
+  <data name="SourceReportIsRequired" xml:space="preserve">
+    <value>Source report is not specified.</value>
+  </data>
+  <data name="CantModifySystemReport" xml:space="preserve">
+    <value>This is a system report and cannot be modified or deleted.</value>
+  </data>
+  <data name="UserReport" xml:space="preserve">
+    <value>User report</value>
+  </data>
 </root>

@@ -43,13 +43,13 @@ namespace SPPC.Tadbir.Persistence.Mapping
 
             builder.HasOne(e => e.Locale)
                 .WithMany()
-                .HasForeignKey("LocaleID")
+                .HasForeignKey(e => e.LocaleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Reporting_LocalReport_Reporting_Locale");
             builder.HasOne(e => e.Report)
-                .WithMany()
-                .HasForeignKey("ReportID")
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .WithMany(d => d.LocalReports)
+                .HasForeignKey(e => e.ReportId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Reporting_LocalReport_Reporting_Report");
         }
     }

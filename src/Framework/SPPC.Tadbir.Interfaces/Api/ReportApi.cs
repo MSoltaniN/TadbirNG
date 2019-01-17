@@ -15,12 +15,12 @@ namespace SPPC.Tadbir.Api
         /// <summary>
         /// API client URL for report hierarchy for Report Manager UI
         /// </summary>
-        public const string ReportsHierarchy = "reports/tree";
+        public const string ReportsHierarchy = "reports/sys/tree";
 
         /// <summary>
         /// API server route URL for report hierarchy for Report Manager UI
         /// </summary>
-        public const string ReportsHierarchyUrl = "reports/tree";
+        public const string ReportsHierarchyUrl = "reports/sys/tree";
 
         /// <summary>
         /// API client URL for metadata of a single report specified by unique identifier
@@ -31,6 +31,22 @@ namespace SPPC.Tadbir.Api
         /// API server route URL for metadata of a single report specified by unique identifier
         /// </summary>
         public const string DefaultSystemReportUrl = "reports/{baseId:min(1)}";
+
+        public const string Reports = "reports/sys";
+
+        public const string ReportsUrl = "reports/sys";
+
+        public const string Report = "reports/sys/{0}";
+
+        public const string ReportUrl = "reports/sys/{reportId:min(1)}";
+
+        public const string ReportDesign = "reports/sys/{0}/design";
+
+        public const string ReportDesignUrl = "reports/sys/{reportId:min(1)}/design";
+
+        public const string ReportCaption = "reports/sys/{0}/caption";
+
+        public const string ReportCaptionUrl = "reports/sys/{reportId:min(1)}/caption";
 
         /// <summary>
         /// API client URL for Voucher Summary by Date report

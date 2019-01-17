@@ -494,6 +494,15 @@ namespace SPPC.Tadbir.Mapper
         {
             mapperConfig.CreateMap<Report, ReportViewModel>()
                 .ForMember(dest => dest.ResourceMap, opts => opts.Ignore());
+            mapperConfig.CreateMap<CoreReport, TreeItemViewModel>()
+                .ForMember(dest => dest.Id, opts => opts.UseValue(0))
+                .ForMember(dest => dest.BaseId, opts => opts.MapFrom(src => src.Id));
+            mapperConfig.CreateMap<Report, TreeItemViewModel>()
+                .ForMember(dest => dest.ParentId, opts => opts.MapFrom(src => src.Base.ParentId))
+                .ForMember(dest => dest.Name, opts => opts.MapFrom(src => src.Base.Name));
+            mapperConfig.CreateMap<Report, PrintInfoViewModel>()
+                .ForMember(dest => dest.Template, opts => opts.Ignore());
+            mapperConfig.CreateMap<Report, ReportSummaryViewModel>();
         }
 
         private static TValue ValueOrDefault<TValue>(IDictionary<string, object> dictionary, string key)

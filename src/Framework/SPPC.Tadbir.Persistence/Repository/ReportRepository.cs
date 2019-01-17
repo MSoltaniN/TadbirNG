@@ -44,6 +44,7 @@ namespace SPPC.Tadbir.Persistence
         /// <param name="userContext">اطلاعات محیطی و امنیتی کاربر جاری برنامه</param>
         public void SetCurrentContext(UserContextViewModel userContext)
         {
+            _currentContext = userContext;
             _repository.SetCurrentContext(userContext);
         }
 
@@ -148,17 +149,140 @@ namespace SPPC.Tadbir.Persistence
             return standardForm;
         }
 
-        public async Task<IList<CoreReportViewModel>> GetReportTreeAsync()
+        public async Task<IList<TreeItemViewModel>> GetReportTreeAsync()
         {
             _unitOfWork.UseSystemContext();
-            var repository = _unitOfWork.GetAsyncRepository<CoreReport>();
-            var tree = await repository
+            var treeRepository = _unitOfWork.GetAsyncRepository<CoreReport>();
+            var tree = await treeRepository
                 .GetEntityQuery()
-                .Select(rep => _mapper.Map<CoreReportViewModel>(rep))
+                .Where(rep => rep.IsGroup)
+                .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
                 .ToListAsync();
 
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var items = await repository
+                .GetEntityQuery(rep => rep.Base)
+                .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
+                .ToListAsync();
+            tree.AddRange(items);
             _unitOfWork.UseCompanyContext();
             return tree;
+        }
+
+        public async Task<PrintInfoViewModel> GetReportAsync(int reportId, string localeCode)
+        {
+            return await GetReportPrintInfo(reportId, localeCode);
+        }
+
+        public async Task<PrintInfoViewModel> GetReportDesignAsync(int reportId, string localeCode)
+        {
+            return await GetReportPrintInfo(reportId, localeCode, false);
+        }
+
+        public async Task<ReportSummaryViewModel> GetReportSummaryAsync(int reportId)
+        {
+            _unitOfWork.UseSystemContext();
+            var summary = default(ReportSummaryViewModel);
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var report = await repository.GetByIDAsync(reportId);
+            if (report != null)
+            {
+                summary = _mapper.Map<ReportSummaryViewModel>(report);
+            }
+
+            _unitOfWork.UseCompanyContext();
+            return summary;
+        }
+
+        public async Task SaveUserReportAsync(LocalReportViewModel report)
+        {
+            _unitOfWork.UseSystemContext();
+            Verify.ArgumentNotNull(report, nameof(report));
+            if (String.IsNullOrEmpty(report.Template))
+            {
+                var repository = _unitOfWork.GetAsyncRepository<Report>();
+                var existing = await repository.GetByIDAsync(
+                    report.ReportId, rep => rep.LocalReports, rep => rep.Parameters);
+                if (existing != null)
+                {
+                    var userReport = _mapper.Map<Report>(existing);
+                    userReport.Id = 0;
+                    userReport.IsSystem = false;
+                    userReport.IsDefault = false;
+                    userReport.CreatedById = _currentContext.Id;
+                    repository.Insert(userReport);
+                    await _unitOfWork.CommitAsync();
+
+                    Array.ForEach(existing.LocalReports.ToArray(), rep =>
+                    {
+                        var clone = _mapper.Map<LocalReport>(rep);
+                        clone.Id = 0;
+                        clone.Caption = (rep.LocaleId == report.LocaleId)
+                            ? report.Caption
+                            : String.Format("Copy of '{0}'", rep.Caption);
+                        clone.ReportId = 0;
+                        clone.Locale = null;
+                        userReport.LocalReports.Add(clone);
+                    });
+                    Array.ForEach(existing.Parameters.ToArray(), param =>
+                    {
+                        var clone = _mapper.Map<Parameter>(param);
+                        clone.Id = 0;
+                        clone.ReportId = 0;
+                        userReport.Parameters.Add(clone);
+                    });
+                    repository.Update(userReport, rep => rep.LocalReports, rep => rep.Parameters);
+                    await _unitOfWork.CommitAsync();
+                }
+            }
+            else
+            {
+                var repository = _unitOfWork.GetAsyncRepository<LocalReport>();
+                var existing = await repository.GetSingleByCriteriaAsync(
+                    rep => rep.ReportId == report.ReportId && rep.LocaleId == report.LocaleId);
+                if (existing != null)
+                {
+                    existing.Template = report.Template;
+                    repository.Update(existing);
+                    await _unitOfWork.CommitAsync();
+                }
+            }
+
+            _unitOfWork.UseCompanyContext();
+        }
+
+        public async Task SetUserReportCaptionAsync(LocalReportViewModel report)
+        {
+            _unitOfWork.UseSystemContext();
+            Verify.ArgumentNotNull(report, nameof(report));
+            var repository = _unitOfWork.GetAsyncRepository<LocalReport>();
+            var existing = await repository.GetSingleByCriteriaAsync(
+                rep => rep.ReportId == report.ReportId && rep.LocaleId == report.LocaleId);
+            if (existing != null)
+            {
+                existing.Caption = report.Caption;
+                repository.Update(existing);
+                await _unitOfWork.CommitAsync();
+            }
+
+            _unitOfWork.UseCompanyContext();
+        }
+
+        public async Task DeleteUserReportAsync(int reportId)
+        {
+            _unitOfWork.UseSystemContext();
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            var report = await repository.GetByIDWithTrackingAsync(
+                reportId, rep => rep.LocalReports, rep => rep.Parameters);
+            if (report != null)
+            {
+                report.LocalReports.Clear();
+                report.Parameters.Clear();
+                repository.Delete(report);
+                await _unitOfWork.CommitAsync();
+            }
+
+            _unitOfWork.UseCompanyContext();
         }
 
         private static void AddGeneralStandardLineItems(
@@ -275,9 +399,41 @@ namespace SPPC.Tadbir.Persistence
             return query;
         }
 
+        private async Task<PrintInfoViewModel> GetReportPrintInfo(
+            int reportId, string localeCode, bool withParams = true)
+        {
+            _unitOfWork.UseSystemContext();
+            Verify.ArgumentNotNullOrEmptyString(localeCode, nameof(localeCode));
+            var reportView = default(PrintInfoViewModel);
+            var repository = _unitOfWork.GetAsyncRepository<Report>();
+            IQueryable<Report> reportQuery = repository
+                .GetEntityQuery()
+                .Include(rep => rep.LocalReports)
+                    .ThenInclude(rep => rep.Locale);
+            if (withParams)
+            {
+                reportQuery = reportQuery
+                    .Include(rep => rep.Parameters);
+            }
+
+            var report = await reportQuery.SingleOrDefaultAsync(rep => rep.Id == reportId);
+            if (report != null)
+            {
+                reportView = _mapper.Map<PrintInfoViewModel>(report);
+                var localReport = report.LocalReports
+                    .Where(rep => localeCode.StartsWith(rep.Locale.Code))
+                    .FirstOrDefault();
+                reportView.Template = localReport?.Template;
+            }
+
+            _unitOfWork.UseCompanyContext();
+            return reportView;
+        }
+
         private readonly IAppUnitOfWork _unitOfWork;
         private readonly IDomainMapper _mapper;
         private readonly ISecureRepository _repository;
         private readonly ILookupRepository _lookupRepository;
+        private UserContextViewModel _currentContext;
     }
 }
