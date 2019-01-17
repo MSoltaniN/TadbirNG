@@ -320,7 +320,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
   public showReport()
   {
       //var url = String.Format(VoucherReportApi.VoucherStdFormReport, this.voucherId);
-      var url = String.Format(ReportApi.DefaultSystemReportUrl, this.viewer.baseId);
+      var url = String.Format(ReportApi.DefaultSystemReport, this.viewer.baseId);
 
       this.reporingService.getAll(url).subscribe((res: Response) => {
           
