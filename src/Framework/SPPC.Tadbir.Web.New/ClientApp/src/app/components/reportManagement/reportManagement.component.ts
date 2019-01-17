@@ -1,6 +1,6 @@
 import { Layout } from "../../../environments/environment";
 import { TreeNode } from '../../model/index';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { DetailComponent } from '../../class/detail.component';
 import { RTL } from '@progress/kendo-angular-l10n';
 import { TreeNodeInfo } from '../../model/index';
@@ -13,6 +13,8 @@ import { ReportApi } from "../../service/api/reportApi";
 import { of } from "rxjs/observable/of";
 import { Report } from "../../model/report";
 import { String } from '../../class/source';
+import { CoreReport } from "../../model/coreReport";
+import { ReportParametersComponent } from "../reportParameters/reportParameters.component";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -35,7 +37,8 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   @Input() public baseId: string;
   treeData: any[];
   active: boolean = false;
-  public expandedKeys: any[] = ['1','3','4'];  
+  //public expandedKeys: any[] = ['1','3','4'];  
+  @ViewChild(ReportParametersComponent) reportParameter: ReportParametersComponent;
 
   constructor(public toastrService: ToastrService,
      public translate: TranslateService,
@@ -56,10 +59,12 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   public selectedKeys: any[] = [];
 
   report: any = new Stimulsoft.Report.StiReport();
+  currentReportId : any;
   
   ngOnInit() {
     this.innerWidth = window.innerWidth;
-    this.innerHeight = window.innerHeight
+    this.innerHeight = window.screen.height;//window.innerHeight
+    
 
     this.initViewer();
   }
@@ -68,7 +73,10 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   {
     var data = e.dataItem;
     if(!data.isGroup)
+    {
       this.designReport(data.id);
+      this.currentReportId = data.id;
+    }
   }
 
   public showDialog()
@@ -115,6 +123,11 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
   }
 
+  public showParameterForm()
+  {
+      this.reportParameter.showDialog(this.currentReportId);
+  }
+
   private initViewer()
   {
     
@@ -138,7 +151,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
     this.reportingService.getAll(url).subscribe((res: Response) => {    
 
-        var report: Report = <any>res.body;
+        var report: CoreReport = <any>res.body;
 
          var options = new Stimulsoft.Designer.StiDesignerOptions();
         options.appearance.fullScreenMode = true;

@@ -5413,7 +5413,7 @@ kendo-sortable,
 .k-dialog-titlebar {
     border-color: inherit;
     color: #ffffff;
-    background-color: #337ab7;
+    background-color: #337ab7 !important;
 }
 
 .k-dialog-buttongroup .k-button {

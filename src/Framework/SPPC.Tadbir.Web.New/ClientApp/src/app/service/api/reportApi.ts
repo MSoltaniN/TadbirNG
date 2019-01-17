@@ -14,18 +14,69 @@ import { environment } from "../../../environments/environment";
 
 export class ReportApi {
 
-    // reports/tree
-    public static ReportsHierarchy = environment.BaseUrl + "/reports/tree";
+    // // reports/tree
+    // public static ReportsHierarchy = environment.BaseUrl + "/reports/tree";
 
-    // reports/{baseId:min(1)}
-    public static DefaultSystemReport = environment.BaseUrl + "/reports/{0}";
+    // // reports/{baseId:min(1)}
+    // public static DefaultSystemReport = environment.BaseUrl + "/reports/{0}";
 
-    // reports/voucher/sum-by-date
-    public static EnvironmentVoucherSummaryByDate = environment.BaseUrl + "/reports/voucher/sum-by-date";
+    // // reports/voucher/sum-by-date
+    // public static EnvironmentVoucherSummaryByDate = environment.BaseUrl + "/reports/voucher/sum-by-date";
 
-    // reports/voucher/std-form/{voucherId:min(1)}
-    public static VoucherStandardForm = environment.BaseUrl + "/reports/voucher/std-form/{0}";
+    // // reports/voucher/std-form/{voucherId:min(1)}
+    // public static VoucherStandardForm = environment.BaseUrl + "/reports/voucher/std-form/{0}";
 
-    // reports/voucher/std-form-detail/{voucherId:min(1)}
-    public static VoucherStandardFormWithDetail = environment.BaseUrl + "/reports/voucher/std-form-detail/{0}";
+    // // reports/voucher/std-form-detail/{voucherId:min(1)}
+    // public static VoucherStandardFormWithDetail = environment.BaseUrl + "/reports/voucher/std-form-detail/{0}";
+
+
+    /// <summary>
+        /// API client URL for report hierarchy for Report Manager UI
+        /// </summary>
+        public static  ReportsHierarchy = environment.BaseUrl + "reports/tree";
+
+        /// <summary>
+        /// API server route URL for report hierarchy for Report Manager UI
+        /// </summary>
+        public static  ReportsHierarchyUrl = environment.BaseUrl + "reports/tree";
+
+        /// <summary>
+        /// API client URL for metadata of a single report specified by unique identifier
+        /// </summary>
+        public static  DefaultSystemReport = environment.BaseUrl + "reports/{0}";
+
+        /// <summary>
+        /// API server route URL for metadata of a single report specified by unique identifier
+        /// </summary>
+        public static  DefaultSystemReportUrl = environment.BaseUrl + "reports/{baseId:min(1)}";
+
+        /// <summary>
+        /// API client URL for Voucher Summary by Date report
+        /// </summary>
+        public static  EnvironmentVoucherSummaryByDate = environment.BaseUrl + "reports/voucher/sum-by-date";
+
+        /// <summary>
+        /// API server route URL for Voucher Summary by Date report
+        /// </summary>
+        public static  EnvironmentVoucherSummaryByDateUrl = environment.BaseUrl + "reports/voucher/sum-by-date";
+
+        /// <summary>
+        /// API client URL for Voucher Standard Form report
+        /// </summary>
+        public static  VoucherStandardForm = environment.BaseUrl + "reports/voucher/std-form";
+
+        /// <summary>
+        /// API server route URL for Voucher Standard Form report
+        /// </summary>
+        public static  VoucherStandardFormUrl = environment.BaseUrl + "reports/voucher/std-form";
+
+        /// <summary>
+        /// API client URL for Voucher Standard Form With Detail report
+        /// </summary>
+        public static  VoucherStandardFormWithDetail = environment.BaseUrl + "reports/voucher/std-form-detail";
+
+        /// <summary>
+        /// API server route URL for Voucher Standard Form With Detail report
+        /// </summary>
+        public static  VoucherStandardFormWithDetailUrl = environment.BaseUrl + "reports/voucher/std-form-detail";
 }

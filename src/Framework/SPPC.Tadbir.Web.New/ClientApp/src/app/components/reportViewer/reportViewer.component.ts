@@ -22,6 +22,7 @@ import { MessageType, Layout, Entities, Metadatas, environment } from "../../../
 import { HttpErrorResponse, HttpClient, HttpHeaders, HttpResponse } from "@angular/common/http";
 import { Report } from '../../model/report';
 import { ReportingService } from '../../service/report/reporting.service';
+import { CoreReport } from '../../model/coreReport';
 
 
 
@@ -116,10 +117,10 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
       console.log('Load report from url');
       var reportTemplate : string;
 
-      if (this.CurrentLanguage == "fa")
-          reportTemplate = reportObject.template;
-      else
-          reportTemplate = reportObject.templateLtr;
+      // if (this.CurrentLanguage == "fa")
+      //     reportTemplate = reportObject.template;
+      // else
+      //     reportTemplate = reportObject.templateLtr;
 
       this.report.load(reportTemplate);
      
@@ -149,7 +150,8 @@ export class ReportViewerComponent extends DefaultComponent implements OnInit {
     setTimeout(() => {      
 
       console.log('Load report from url');
-      this.report.load(report.template);
+      //comment by nouri
+      //this.report.load(report.template);
       this.report.regData("Vouchers", "VouchersStdForm", reportData.rows.lines);
 
       this.report.dictionary.variables.getByName("currentDate").valueObject = reportData.currentDate;
