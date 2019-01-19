@@ -5,6 +5,9 @@ namespace SPPC.Tadbir.ViewModel.Reporting
 {
     public partial class ReportViewModel
     {
+        /// <summary>
+        /// شناسه دیتابیسی گروه بندی گزارش در ساختمان درختی
+        /// </summary>
         public int? ParentId { get; set; }
 
         /// <summary>

@@ -128,6 +128,11 @@ namespace SPPC.Tadbir.Persistence
             return standardForm;
         }
 
+        /// <summary>
+        /// ساختار درختی گزارش های تعریف شده را به زبان جاری برنامه خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="localeCode">کد استاندارد  دو حرفی زبان جاری برنامه</param>
+        /// <returns>ساختار درختی گزارش ها به زبان جاری برنامه</returns>
         public async Task<IList<TreeItemViewModel>> GetReportTreeAsync(string localeCode)
         {
             _unitOfWork.UseSystemContext();
@@ -146,16 +151,33 @@ namespace SPPC.Tadbir.Persistence
             return tree;
         }
 
+        /// <summary>
+        /// اطلاعات مورد نیاز برای پیش نمایش یا چاپ گزارش را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
+        /// <param name="localeCode">کد استاندارد  دو حرفی زبان جاری برنامه</param>
+        /// <returns>اطلاعات مورد نیاز برای پیش نمایش یا چاپ گزارش</returns>
         public async Task<PrintInfoViewModel> GetReportAsync(int reportId, string localeCode)
         {
             return await GetReportPrintInfo(reportId, localeCode);
         }
 
+        /// <summary>
+        /// اطلاعات مورد نیاز برای طراحی گزارش را خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
+        /// <param name="localeCode">کد استاندارد  دو حرفی زبان جاری برنامه</param>
+        /// <returns>اطلاعات مورد نیاز برای طراحی گزارش</returns>
         public async Task<PrintInfoViewModel> GetReportDesignAsync(int reportId, string localeCode)
         {
             return await GetReportPrintInfo(reportId, localeCode, false);
         }
 
+        /// <summary>
+        /// اطلاعات خلاصه گزارش را برای عملیات اعتبارسنجی خوانده و برمی گرداند
+        /// </summary>
+        /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
+        /// <returns>اطلاعات خلاصه گزارش موزد نظر</returns>
         public async Task<ReportSummaryViewModel> GetReportSummaryAsync(int reportId)
         {
             _unitOfWork.UseSystemContext();
@@ -171,6 +193,10 @@ namespace SPPC.Tadbir.Persistence
             return summary;
         }
 
+        /// <summary>
+        /// اطلاعات یک گزارش ذخیره شده کاربری را ذخیره یا بروزرسانی می کند
+        /// </summary>
+        /// <param name="report">اطلاعات محلی شده گزارش کاربری</param>
         public async Task SaveUserReportAsync(LocalReportViewModel report)
         {
             _unitOfWork.UseSystemContext();
@@ -228,6 +254,10 @@ namespace SPPC.Tadbir.Persistence
             _unitOfWork.UseCompanyContext();
         }
 
+        /// <summary>
+        /// عنوان یک گزارش ذخیره شده کاربری را بروزرسانی می کند
+        /// </summary>
+        /// <param name="report">اطلاعات محلی شده گزارش کاربری شامل عنوان جدید مورد نظر</param>
         public async Task SetUserReportCaptionAsync(LocalReportViewModel report)
         {
             _unitOfWork.UseSystemContext();
@@ -245,6 +275,10 @@ namespace SPPC.Tadbir.Persistence
             _unitOfWork.UseCompanyContext();
         }
 
+        /// <summary>
+        /// یک گزارش ذخیر شده کاربری را به همراه کلیه اطلاعات مرتبط حذف می کند
+        /// </summary>
+        /// <param name="reportId">شناسه دیتابیسی گزارش مورد نظر</param>
         public async Task DeleteUserReportAsync(int reportId)
         {
             _unitOfWork.UseSystemContext();

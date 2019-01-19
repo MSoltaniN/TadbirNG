@@ -217,7 +217,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PostNewArticleAsync(
             int voucherId, [FromBody] VoucherLineViewModel article)
         {
-            var result = await VoucherLineValidationResultAsync(article);
+            var result = VoucherLineValidationResultAsync(article);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -248,7 +248,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> PutModifiedArticleAsync(
             int articleId, [FromBody] VoucherLineViewModel article)
         {
-            var result = await VoucherLineValidationResultAsync(article, articleId);
+            var result = VoucherLineValidationResultAsync(article, articleId);
             if (result is BadRequestObjectResult)
             {
                 return result;
@@ -338,7 +338,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> VoucherLineValidationResultAsync(
+        private IActionResult VoucherLineValidationResultAsync(
             VoucherLineViewModel article, int articleId = 0)
         {
             var result = BasicValidationResult(article, AppStrings.VoucherLine, articleId);
