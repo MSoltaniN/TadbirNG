@@ -15,6 +15,7 @@ import { Report } from "../../model/report";
 import { String } from '../../class/source';
 import { CoreReport } from "../../model/coreReport";
 import { ReportParametersComponent } from "../reportParameters/reportParameters.component";
+import { TreeViewComponent } from "@progress/kendo-angular-treeview";
 
 export function getLayoutModule(layout: Layout) {
   return layout.getLayout();
@@ -39,6 +40,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   active: boolean = false;
   //public expandedKeys: any[] = ['1','3','4'];  
   @ViewChild(ReportParametersComponent) reportParameter: ReportParametersComponent;
+  @ViewChild(TreeViewComponent) treeView: TreeViewComponent;
 
   constructor(public toastrService: ToastrService,
      public translate: TranslateService,
@@ -58,9 +60,12 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   innerHeight : number;
   public selectedKeys: any[] = [];
 
+
   report: any = new Stimulsoft.Report.StiReport();
   currentReportId : any;
   
+  expandedKeys :any[] = [];
+
   ngOnInit() {
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.screen.height;//window.innerHeight
@@ -82,44 +87,63 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   public showDialog()
   {
       this.active = true;
-      var expandKeysArray : string[];
-
-      this.reportingService.getAll(ReportApi.ReportsHierarchy)      
+      
+      this.reportingService.getAll(ReportApi.ReportsHierarchy)
       .subscribe((res: any) => {
           //var i = res;
-          this.treeData = res.body;
+           this.treeData = res.body;
+          this.treeData[1].id = 10;
+          this.treeData[1].parentId = 0;
+
+          this.treeData[2].id = 20;
+          this.treeData[2].parentId = 10;
+
+          this.treeData[3].id = 4;
+          this.treeData[3].parentId = 20;
+
+          this.treeData.pop();
+          
+          //expand treeview base on baseid
           if(this.baseId)
           {
-            var found = this.treeData.filter((p: any)=>p.id == this.baseId)[0].value;
-            
-            /*if(found)
-            {
-                var node = node.parentId;
-                while(node.parentId)
-                {
-
-                    expandKeysArray.push(node.id);                    
-                    var parentNode = this.treeData.filter((p: any)=>p.id == node.parentId)[0].value;
-                    node = parentNode;
-
-                    
-                }  
-
-                var exkeys :string;
-                for(var i = expandKeysArray.length -1; i >= 0 ; i++)
-                {
-                    exkeys = exkeys + this.treeData.findIndex(n=>n.id === expandKeysArray[i]) + '_';
-                }                
-                
-                exkeys = exkeys.substring(0,exkeys.length - 1);  
-                this.expandedKeys.push(exkeys);
-      
-            }*/
-            
+            this.expandAndSelectDefault(this.baseId);                      
           }
+            
+          
       }); 
       
       
+
+  }
+
+  //select and expand tree node baseon report baseId
+    public expandAndSelectDefault(baseId: string) {
+        var expandKeysArray: string[];
+
+        var defaltReportUrl = String.Format(ReportApi.DefaultSystemReport, this.baseId);
+        this.reportingService.getAll(defaltReportUrl)
+            .subscribe((res: any) => {
+                var report = <Report>res.body;
+
+                expandKeysArray = new Array<any>();
+                this.selectedKeys = new Array<any>();
+
+                var nodeData = this.treeData.filter((p: any) => p.id == report.id)[0];
+                this.selectedKeys.push(nodeData.id);
+
+                while (nodeData.parentId != null) {
+                    expandKeysArray.push(nodeData.parentId);
+                    var parentNode = this.treeData.filter((p: any) => p.id == nodeData.parentId);
+                    nodeData = parentNode[0];
+                }
+
+                this.expandedKeys = expandKeysArray;
+            });
+
+    }
+
+  public onchildrenLoaded(event:any)
+  {
 
   }
 

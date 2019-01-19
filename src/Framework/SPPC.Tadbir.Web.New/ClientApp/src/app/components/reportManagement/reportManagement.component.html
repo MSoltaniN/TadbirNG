@@ -15,14 +15,21 @@
                                         <button kendoButton (click)="previewReport()" type="button" [icon]="'eye'"></button>
                                 </div>
                                 <div class='form-group'>
-                                        <div class='col-lg-3 col-sm-12 col-md-12 col-xs-12 noprl ' [ngClass]="{'pull-right':this.CurrentLanguage === 'fa' , 'pull-left': this.CurrentLanguage === 'en'}">
+                                        <div class='col-sm-12 col-md-12 col-xs-12 noprl ' [ngClass]="{'pull-right':this.CurrentLanguage === 'fa' , 'pull-left': this.CurrentLanguage === 'en'}">
                                                 <h4>{{ 'Report.Reports' | translate }}</h4>
                                                 <kendo-treeview [nodes]="treeData" textField="name"
-                                                        kendoTreeViewExpandable kendoTreeViewSelectable
+                                                        kendoTreeViewExpandable 
+                                                        kendoTreeViewSelectable
                                                         kendoTreeViewFlatDataBinding
-                                                        kendoTreeViewHierarchyBinding idField="id"
-                                                        parentIdField="parentId" [(expandedKeys)]="expandedKeys"
-                                                        (nodeClick)="onNodeClick($event)" (selectionChange)="onNodeClick($event)">
+                                                        kendoTreeViewHierarchyBinding 
+                                                        idField="id"
+                                                        [selectBy]="'id'"
+                                                        [expandBy]="'id'"
+                                                        [(selectedKeys)]="selectedKeys"
+                                                        [(expandedKeys)]="expandedKeys" 
+                                                        parentIdField="parentId"      
+                                                        (childrenLoaded)="onchildrenLoaded($event)"                                                  
+                                                         (selectionChange)="onNodeClick($event)">
                                                 </kendo-treeview>
                                         </div>
                                 </div>
