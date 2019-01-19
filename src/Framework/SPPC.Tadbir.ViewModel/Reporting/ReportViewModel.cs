@@ -5,12 +5,7 @@ namespace SPPC.Tadbir.ViewModel.Reporting
 {
     public partial class ReportViewModel
     {
-        /// <summary>
-        /// شناسه دیتابیسی گزارش سیستمی مرتبط با این گزارش
-        /// </summary>
-        public int BaseId { get; set; }
-
-        public string BaseResourceKeys { get; set; }
+        public int? ParentId { get; set; }
 
         /// <summary>
         /// یک دیکشنری از متن های چند زبانه مورد نیاز در گزارش

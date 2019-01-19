@@ -49,27 +49,6 @@ namespace SPPC.Tadbir.Persistence
         }
 
         /// <summary>
-        /// به روش آسنکرون، اطلاعات متادیتای گزارش سیستمی پیش فرض مشخص شده را خوانده و برمی گرداند
-        /// </summary>
-        /// <param name="baseId">شناسه یکی از گزارش های سیستمی</param>
-        /// <returns>اطلاعات متادیتای گزارش سیستمی مشخص شده</returns>
-        public async Task<ReportViewModel> GetDefaultSystemReportAsync(int baseId)
-        {
-            _unitOfWork.UseSystemContext();
-            var report = default(ReportViewModel);
-            var repository = _unitOfWork.GetAsyncRepository<Report>();
-            var existing = await repository.GetFirstByCriteriaAsync(
-                rpt => rpt.Base.Id == baseId && rpt.IsDefault, rpt => rpt.Base);
-            if (existing != null)
-            {
-                report = _mapper.Map<ReportViewModel>(existing);
-            }
-
-            _unitOfWork.UseCompanyContext();
-            return report;
-        }
-
-        /// <summary>
         /// به روش آسنکرون، اطلاعات مورد نیاز در گزارش خلاصه اسناد حسابداری را خوانده و برمی گرداند
         /// </summary>
         /// <param name="gridOptions">گزینه های برنامه برای فیلتر، مرتب سازی و صفحه بندی اطلاعات</param>
@@ -149,22 +128,20 @@ namespace SPPC.Tadbir.Persistence
             return standardForm;
         }
 
-        public async Task<IList<TreeItemViewModel>> GetReportTreeAsync()
+        public async Task<IList<TreeItemViewModel>> GetReportTreeAsync(string localeCode)
         {
             _unitOfWork.UseSystemContext();
-            var treeRepository = _unitOfWork.GetAsyncRepository<CoreReport>();
-            var tree = await treeRepository
-                .GetEntityQuery()
-                .Where(rep => rep.IsGroup)
-                .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
-                .ToListAsync();
-
             var repository = _unitOfWork.GetAsyncRepository<Report>();
-            var items = await repository
-                .GetEntityQuery(rep => rep.Base)
-                .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
+            var reports = await repository
+                .GetEntityQuery()
+                .Include(rep => rep.Parent)
+                .Include(rep => rep.LocalReports)
+                    .ThenInclude(rep => rep.Locale)
                 .ToListAsync();
-            tree.AddRange(items);
+            var tree = reports
+                .Select(rep => _mapper.Map<TreeItemViewModel>(rep))
+                .ToList();
+            Localize(localeCode, reports, tree);
             _unitOfWork.UseCompanyContext();
             return tree;
         }
@@ -428,6 +405,20 @@ namespace SPPC.Tadbir.Persistence
 
             _unitOfWork.UseCompanyContext();
             return reportView;
+        }
+
+        private void Localize(string localeCode, List<Report> reports, List<TreeItemViewModel> tree)
+        {
+            foreach (var node in tree)
+            {
+                var report = reports
+                    .Where(rep => rep.Id == node.Id)
+                    .Single();
+                var localReport = report.LocalReports
+                    .Where(rep => localeCode == rep.Locale.Code)
+                    .Single();
+                node.Caption = localReport.Caption;
+            }
         }
 
         private readonly IAppUnitOfWork _unitOfWork;

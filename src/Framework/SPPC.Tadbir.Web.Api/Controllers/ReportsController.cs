@@ -27,21 +27,12 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             _repository = repository;
         }
 
-        // GET: api/reports/{baseId:min(1)}
-        [Route(ReportApi.DefaultSystemReportUrl)]
-        public async Task<IActionResult> GetDefaultSystemReportAsync(int baseId)
-        {
-            var report = await _repository.GetDefaultSystemReportAsync(baseId);
-            Localize(report);
-            return JsonReadResult(report);
-        }
-
         // GET: api/reports/sys/tree
         [Route(ReportApi.ReportsHierarchyUrl)]
         public async Task<IActionResult> GetReportTreeAsync()
         {
-            var tree = await _repository.GetReportTreeAsync();
-            Localize(tree);
+            string localeCode = GetAcceptLanguages().Substring(0, 2);
+            var tree = await _repository.GetReportTreeAsync(localeCode);
             return Json(tree);
         }
 
@@ -203,14 +194,6 @@ namespace SPPC.Tadbir.Web.Api.Controllers
             return JsonReadResult(formWithDetail);
         }
 
-        private void Localize(IList<TreeItemViewModel> reports)
-        {
-            foreach (var report in reports)
-            {
-                report.Name = _strings[report.Name];
-            }
-        }
-
         private void Localize(IList<VoucherSummaryViewModel> report)
         {
             var now = DateTime.Now;
@@ -252,9 +235,9 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             if (report != null)
             {
-                if (report.BaseResourceKeys != null)
+                if (report.ResourceKeys != null)
                 {
-                    var keys = report.BaseResourceKeys.Split(',');
+                    var keys = report.ResourceKeys.Split(',');
                     Array.ForEach(keys, key => report.ResourceMap.Add(key, _strings[key]));
                 }
             }
