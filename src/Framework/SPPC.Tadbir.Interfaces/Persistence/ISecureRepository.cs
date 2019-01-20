@@ -86,22 +86,26 @@ namespace SPPC.Tadbir.Persistence
         /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TEntity">نوع موجودیتی که تعداد سطرهای آن باید خوانده شود</typeparam>
+        /// <typeparam name="TEntityView">نوع مدل نمایشی که برای نمایش اطلاعات موجودیت استفاده می شود</typeparam>
         /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای اطلاعاتی موجودیت مورد نظر</returns>
-        Task<int> GetCountAsync<TEntity>(int viewId, GridOptions gridOptions = null)
-            where TEntity : class, IBaseEntity;
+        Task<int> GetCountAsync<TEntity, TEntityView>(int viewId, GridOptions gridOptions = null)
+            where TEntity : class, IBaseEntity
+            where TEntityView : class, new();
 
         /// <summary>
         /// به روش آسنکرون، تعداد سطرهای یک موجودیت عملیاتی را که در دوره مالی و شعبه جاری تعریف شده اند،
         /// پس از اعمال محدودیت های تعریف شده برای شعب و دسترسی به رکوردها از محل ذخیره خوانده و برمی گرداند
         /// </summary>
         /// <typeparam name="TEntity">نوع موجودیتی که تعداد سطرهای آن باید خوانده شود</typeparam>
+        /// <typeparam name="TEntityView">نوع مدل نمایشی که برای نمایش اطلاعات موجودیت استفاده می شود</typeparam>
         /// <param name="viewId">شناسه نمای اطلاعاتی اصلی موجودیت پایه</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد سطرهای اطلاعاتی موجودیت مورد نظر</returns>
-        Task<int> GetOperationCountAsync<TEntity>(int viewId, GridOptions gridOptions = null)
-            where TEntity : class, IFiscalEntity;
+        Task<int> GetOperationCountAsync<TEntity, TEntityView>(int viewId, GridOptions gridOptions = null)
+            where TEntity : class, IFiscalEntity
+            where TEntityView : class, new();
 
         /// <summary>
         /// تنظیمات موجود برای فیلتر سطرهای اطلاعاتی را روی مجموعه ای از اطلاعات اعمال می کند

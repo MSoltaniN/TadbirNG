@@ -43,7 +43,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetEnvironmentAccountsAsync()
         {
             _repository.SetCurrentContext(SecurityContext.User);
-            int itemCount = await _repository.GetCountAsync(GridOptions);
+            int itemCount = await _repository.GetCountAsync<AccountViewModel>(GridOptions);
             SetItemCount(itemCount);
             var accounts = await _repository.GetAccountsAsync(GridOptions);
             return Json(accounts);

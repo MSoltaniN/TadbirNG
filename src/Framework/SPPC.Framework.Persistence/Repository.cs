@@ -221,6 +221,20 @@ namespace SPPC.Framework.Persistence
         }
 
         /// <summary>
+        /// Asynchronously retrieves the count of all records
+        /// </summary>
+        /// <typeparam name="TEntityView">Type of view model used for displaying items</typeparam>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <returns>count of all records</returns>
+        public async Task<int> GetCountAsync<TEntityView>(GridOptions gridOptions = null)
+        {
+            return await GetEntityQuery()
+                .Apply(gridOptions, false)
+                .CountAsync();
+        }
+
+        /// <summary>
         /// Asynchronously retrieves record count for a subset of existing entities, as defined by
         /// the specified criteria.
         /// </summary>

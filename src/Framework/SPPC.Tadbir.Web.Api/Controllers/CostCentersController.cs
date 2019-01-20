@@ -43,7 +43,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         public async Task<IActionResult> GetEnvironmentCostCentersAsync()
         {
             _repository.SetCurrentContext(SecurityContext.User);
-            int itemCount = await _repository.GetCountAsync(GridOptions);
+            int itemCount = await _repository.GetCountAsync<CostCenterViewModel>(GridOptions);
             SetItemCount(itemCount);
             var costCenters = await _repository.GetCostCentersAsync(GridOptions);
             return Json(costCenters);

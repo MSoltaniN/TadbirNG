@@ -106,6 +106,7 @@ namespace SPPC.Tadbir.Persistence
             int count = await _repository
                 .GetAllQuery<Account>(ViewName.Account)
                 .Where(acc => acc.GroupId == groupId)
+                .Select(acc => Mapper.Map<AccountViewModel>(acc))
                 .Apply(gridOptions, false)
                 .CountAsync();
             return count;

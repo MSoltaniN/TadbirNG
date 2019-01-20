@@ -154,6 +154,15 @@ namespace SPPC.Framework.Persistence
             Expression<Func<TEntity, bool>> criteria, params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>
+        /// Asynchronously retrieves the count of all records
+        /// </summary>
+        /// <typeparam name="TEntityView">Type of view model used for displaying items</typeparam>
+        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
+        /// </param>
+        /// <returns>count of all records</returns>
+        Task<int> GetCountAsync<TEntityView>(GridOptions gridOptions = null);
+
+        /// <summary>
         /// Asynchronously retrieves record count for a subset of existing entities, as defined by
         /// the specified criteria.
         /// </summary>

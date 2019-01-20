@@ -38,13 +38,12 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد آرتیکل های یک سند مالی را بعد از اعمال فیلتر (در صورت وجود)
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
-        /// <param name="userContext">
-        /// اطلاعات دسترسی کاربر به منابع محدود شده مانند نقش ها، دوره های مالی و شعبه ها
-        /// </param>
+        /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات موجودیت استفاده می شود</typeparam>
         /// <param name="voucherId">شناسه یکی از اسناد مالی موجود</param>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد آرتیکل های سند مالی بعد از اعمال فیلتر</returns>
-        Task<int> GetArticleCountAsync(UserContextViewModel userContext, int voucherId, GridOptions gridOptions = null);
+        Task<int> GetArticleCountAsync<TViewModel>(int voucherId, GridOptions gridOptions = null)
+            where TViewModel : class, new();
 
         /// <summary>
         /// به روش آسنکرون، مدل نمایشی سرفصل حسابداری مشخص شده
