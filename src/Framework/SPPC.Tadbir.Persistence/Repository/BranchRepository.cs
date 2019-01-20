@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Model.Auth;
@@ -46,10 +47,10 @@ namespace SPPC.Tadbir.Persistence
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
             var branches = await repository
                 .GetByCriteriaAsync(
-                    br => br.CompanyId == companyId,
-                    gridOptions, br => br.Parent, br => br.Children);
+                    br => br.CompanyId == companyId, br => br.Parent, br => br.Children);
             return branches
                 .Select(item => Mapper.Map<BranchViewModel>(item))
+                .Apply(gridOptions)
                 .ToList();
         }
 
@@ -63,11 +64,12 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync(int companyId, GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<Branch>();
-            var count = await repository
-                .GetCountByCriteriaAsync(
-                    br => br.CompanyId == companyId,
-                    gridOptions);
-            return count;
+            var items = await repository
+                .GetByCriteriaAsync(br => br.CompanyId == companyId);
+            return items
+                .Select(br => Mapper.Map<BranchViewModel>(br))
+                .Apply(gridOptions, false)
+                .Count();
         }
 
         /// <summary>

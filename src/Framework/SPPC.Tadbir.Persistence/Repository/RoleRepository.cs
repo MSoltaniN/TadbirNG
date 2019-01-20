@@ -197,8 +197,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetRoleCountAsync(GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<Role>();
-            var count = await repository.GetCountByCriteriaAsync(null, gridOptions);
-            return count;
+            var items = await repository.GetAllAsync();
+            return items
+                .Select(role => Mapper.Map<RoleViewModel>(role))
+                .Apply(gridOptions, false)
+                .Count();
         }
 
         /// <summary>

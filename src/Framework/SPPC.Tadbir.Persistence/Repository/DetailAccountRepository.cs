@@ -232,7 +232,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var accDetailrepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
             int relatedAccounts = await accDetailrepository.GetCountByCriteriaAsync(
-                ada => ada.DetailId == faccountId, null);
+                ada => ada.DetailId == faccountId);
             return (relatedAccounts > 0);
         }
 

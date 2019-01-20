@@ -238,13 +238,13 @@ namespace SPPC.Tadbir.Persistence
         {
             var accDetailrepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
             int relatedDetails = await accDetailrepository.GetCountByCriteriaAsync(
-                ada => ada.AccountId == accountId, null);
+                ada => ada.AccountId == accountId);
             var accCenterRepository = UnitOfWork.GetAsyncRepository<AccountCostCenter>();
             int relatedCenters = await accCenterRepository.GetCountByCriteriaAsync(
-                ac => ac.AccountId == accountId, null);
+                ac => ac.AccountId == accountId);
             var accProjectRepository = UnitOfWork.GetAsyncRepository<AccountProject>();
             int relatedProjects = await accProjectRepository.GetCountByCriteriaAsync(
-                ap => ap.AccountId == accountId, null);
+                ap => ap.AccountId == accountId);
 
             return (relatedDetails > 0 || relatedCenters > 0 || relatedProjects > 0);
         }
