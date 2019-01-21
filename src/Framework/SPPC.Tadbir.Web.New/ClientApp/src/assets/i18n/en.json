@@ -69,7 +69,15 @@
     "ReportViewer": "Report Viewer",
     "ReportDesign": "Report Design",
     "Reports": "Reports",
-    "ReportManagement": "Report Management"
+    "ReportManagement": "Report Management",
+    "ReportParameter" : "Report parameters",
+    "Design":"ِDesign Report",
+    "Preview":"Preview Report",
+    "Delete":"Delete Report",
+    "SaveAs":"SaveAs Report",
+    "SaveIsOk":"Report saved successfully",
+    "SaveAsIsOk":"Report copied successfully",
+    "Title" : "Report title"
   },
   "Buttons": {
     "Ok": "Ok",

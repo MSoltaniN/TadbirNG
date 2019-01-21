@@ -17,11 +17,14 @@ export class ReportApi {
     // reports/sys/tree
     public static ReportsHierarchy = environment.BaseUrl + "/reports/sys/tree";
 
-    // reports/{baseId:min(1)}
-    public static DefaultSystemReport = environment.BaseUrl + "/reports/{0}";
+    //reports/sys/tree
+    public static ReportsHierarchyUrl = environment.BaseUrl +"reports/sys/tree";
 
     // reports/sys
     public static Reports = environment.BaseUrl + "/reports/sys";
+
+    //reports/sys/{reportId:min(1)}
+    public static ReportsUrl = environment.BaseUrl + "reports/sys";
 
     // reports/sys/{reportId:min(1)}
     public static Report = environment.BaseUrl + "/reports/sys/{0}";

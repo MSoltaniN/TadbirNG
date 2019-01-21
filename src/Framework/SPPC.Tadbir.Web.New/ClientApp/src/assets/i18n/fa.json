@@ -69,7 +69,15 @@
     "ReportViewer": "نمایشگر گزارش",
     "ReportDesign" : "طراحی گزارش",
     "Reports" : "گزارشات",
-    "ReportManagement" : "مدیریت گزارشات"
+    "ReportManagement" : "مدیریت گزارشات",
+    "ReportParameter" : "پارامترهای گزارش",
+    "Design":"طراحی گزارش",
+    "Preview":"نمایش گزارش",
+    "Delete":"حذف گزارش",
+    "SaveAs":"کپی گزارش",
+    "SaveIsOk":"گزارش با موفقیت ذخیره شد",
+    "SaveAsIsOk":"گزارش با موفقیت کپی شد",
+    "Title" : "نام گزارش"
   },
   "Buttons": {
     "Ok": "تایید",

@@ -24,7 +24,7 @@ import { ReportApi } from '../../service/api/reportApi';
 import { Report } from '../../model/report';
 import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
 import { VoucherLineFormComponent } from '../../components/voucherLine/voucherLine-form.component';
-import { CoreReport } from '../../model/coreReport';
+
 
 
 @Component({
@@ -319,7 +319,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
 
   public showReport()
   {
-      //var url = String.Format(VoucherReportApi.VoucherStdFormReport, this.voucherId);
+     /*
       var url = String.Format(ReportApi.DefaultSystemReport, this.viewer.baseId);
 
       this.reporingService.getAll(url).subscribe((res: Response) => {
@@ -344,7 +344,7 @@ export class VoucherLineComponent extends DefaultComponent implements OnInit {
         
       });
 
-      
+      */
       
   }
 

@@ -30,7 +30,7 @@ import { ReportingService } from '../../service/report/reporting.service';
 import { ReportManagementComponent } from '../reportManagement/reportManagement.component';
 import { DialogService, DialogRef, DialogCloseResult } from '@progress/kendo-angular-dialog';
 import { VoucherFormComponent } from '../../components/voucher/voucher-form.component';
-import { CoreReport } from '../../model/coreReport';
+
 
 
 export function getLayoutModule(layout: Layout) {
@@ -209,7 +209,7 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
   }
 
    public showReport() {
-    
+    /*
     var url = String.Format(ReportApi.DefaultSystemReport, this.viewer.baseId);
 
     this.reporingService.getAll(url).subscribe((res: Response) => {    
@@ -238,6 +238,8 @@ export class VoucherComponent extends DefaultComponent implements OnInit {
 
         });
     });
+
+    */
   }
 
   public showReportManagement()
