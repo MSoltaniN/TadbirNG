@@ -73,11 +73,13 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه جاری را
         /// از دیتابیس خوانده و برمی گرداند
         /// </summary>
+        /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات از آن استفاده می شود</typeparam>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد مراکز هزینه تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<int> GetCountAsync(GridOptions gridOptions = null)
+        public async Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
+            where TViewModel : class, new()
         {
-            return await _repository.GetCountAsync<CostCenter>(ViewName.CostCenter, gridOptions);
+            return await _repository.GetCountAsync<CostCenter, TViewModel>(ViewName.CostCenter, gridOptions);
         }
 
         /// <summary>
@@ -230,7 +232,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var accCenterRepository = UnitOfWork.GetAsyncRepository<AccountCostCenter>();
             int relatedAccounts = await accCenterRepository.GetCountByCriteriaAsync(
-                ac => ac.CostCenterId == costCenterId, null);
+                ac => ac.CostCenterId == costCenterId);
             return (relatedAccounts > 0);
         }
 

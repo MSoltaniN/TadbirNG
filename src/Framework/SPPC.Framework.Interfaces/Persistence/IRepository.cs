@@ -40,8 +40,6 @@ namespace SPPC.Framework.Persistence
         /// Retrieves complete information for all existing entities in data store, including specified
         /// navigation properties, if any.
         /// </summary>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
         /// <param name="relatedProperties">Variable array of expressions that specify navigation
         /// properties that must be loaded in the main entity</param>
         /// <returns>Collection of all existing entities</returns>
@@ -49,8 +47,7 @@ namespace SPPC.Framework.Persistence
         /// Use this method when you need to retrieve the entity's navigation properties in a single level
         /// (i.e. no navigation properties inside the main entity's navigation properties are required)
         /// </remarks>
-        IList<TEntity> GetAll(
-            GridOptions gridOptions = null, params Expression<Func<TEntity, object>>[] relatedProperties);
+        IList<TEntity> GetAll(params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>
         /// Retrieves a single entity instance with the specified unique identifier, including specified
@@ -86,8 +83,6 @@ namespace SPPC.Framework.Persistence
         /// including specified navigation properties, if any.
         /// </summary>
         /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
         /// <param name="relatedProperties">Variable array of expressions that specify navigation
         /// properties that must be loaded in the main entity</param>
         /// <returns></returns>
@@ -97,17 +92,14 @@ namespace SPPC.Framework.Persistence
         /// </remarks>
         IList<TEntity> GetByCriteria(
             Expression<Func<TEntity, bool>> criteria,
-            GridOptions gridOptions = null,
             params Expression<Func<TEntity, object>>[] relatedProperties);
 
         /// <summary>
         /// Retrieves record count for a subset of existing entities, as defined by the specified criteria.
         /// </summary>
         /// <param name="criteria">Expression that defines criteria for filtering existing instances</param>
-        /// <param name="gridOptions">Options used for filtering, sorting and paging retrieved records (can be null)
-        /// </param>
         /// <returns>Record count for filtered items</returns>
-        int GetCountByCriteria(Expression<Func<TEntity, bool>> criteria, GridOptions gridOptions);
+        int GetCountByCriteria(Expression<Func<TEntity, bool>> criteria);
 
         /// <summary>
         /// Retrieves a single entity instance with the specified row identifier

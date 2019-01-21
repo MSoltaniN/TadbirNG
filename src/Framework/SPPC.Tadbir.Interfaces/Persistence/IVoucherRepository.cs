@@ -45,9 +45,11 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد اسناد مالی تعریف شده در دوره مالی و شعبه جاری را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
+        /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات موجودیت استفاده می شود</typeparam>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد اسناد مالی تعریف شده در دوره مالی و شعبه جاری</returns>
-        Task<int> GetCountAsync(GridOptions gridOptions = null);
+        Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
+            where TViewModel : class, new();
 
         /// <summary>
         /// به روش آسنکرون، اطلاعات یک سند مالی را در محل ذخیره ایجاد یا اصلاح می کند

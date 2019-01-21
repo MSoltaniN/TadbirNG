@@ -11,7 +11,6 @@ using SPPC.Tadbir.Domain;
 using SPPC.Tadbir.Model.Finance;
 using SPPC.Tadbir.Model.Reporting;
 using SPPC.Tadbir.ViewModel.Auth;
-using SPPC.Tadbir.ViewModel.Report;
 using SPPC.Tadbir.ViewModel.Reporting;
 
 namespace SPPC.Tadbir.Persistence
@@ -387,6 +386,20 @@ namespace SPPC.Tadbir.Persistence
             }
         }
 
+        private static void Localize(string localeCode, List<Report> reports, List<TreeItemViewModel> tree)
+        {
+            foreach (var node in tree)
+            {
+                var report = reports
+                    .Where(rep => rep.Id == node.Id)
+                    .Single();
+                var localReport = report.LocalReports
+                    .Where(rep => localeCode == rep.Locale.Code)
+                    .Single();
+                node.Caption = localReport.Caption;
+            }
+        }
+
         private IQueryable<Voucher> GetStandardVoucherFormQuery(bool withDetail = false)
         {
             var repository = _unitOfWork.GetAsyncRepository<Voucher>();
@@ -439,20 +452,6 @@ namespace SPPC.Tadbir.Persistence
 
             _unitOfWork.UseCompanyContext();
             return reportView;
-        }
-
-        private void Localize(string localeCode, List<Report> reports, List<TreeItemViewModel> tree)
-        {
-            foreach (var node in tree)
-            {
-                var report = reports
-                    .Where(rep => rep.Id == node.Id)
-                    .Single();
-                var localReport = report.LocalReports
-                    .Where(rep => localeCode == rep.Locale.Code)
-                    .Single();
-                node.Caption = localReport.Caption;
-            }
         }
 
         private readonly IAppUnitOfWork _unitOfWork;

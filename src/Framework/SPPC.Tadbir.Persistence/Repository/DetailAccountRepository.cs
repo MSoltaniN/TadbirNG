@@ -73,11 +73,13 @@ namespace SPPC.Tadbir.Persistence
         /// به روش آسنکرون، تعداد تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری را
         /// از محل ذخیره خوانده و برمی گرداند
         /// </summary>
+        /// <typeparam name="TViewModel">نوع مدل نمایشی که برای نمایش اطلاعات از آن استفاده می شود</typeparam>
         /// <param name="gridOptions">گزینه های مورد نظر برای نمایش رکوردها در نمای لیستی</param>
         /// <returns>تعداد تفصیلی های شناور تعریف شده در دوره مالی و شعبه جاری</returns>
-        public async Task<int> GetCountAsync(GridOptions gridOptions = null)
+        public async Task<int> GetCountAsync<TViewModel>(GridOptions gridOptions = null)
+            where TViewModel : class, new()
         {
-            return await _repository.GetCountAsync<DetailAccount>(ViewName.DetailAccount, gridOptions);
+            return await _repository.GetCountAsync<DetailAccount, TViewModel>(ViewName.DetailAccount, gridOptions);
         }
 
         /// <summary>
@@ -230,7 +232,7 @@ namespace SPPC.Tadbir.Persistence
         {
             var accDetailrepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
             int relatedAccounts = await accDetailrepository.GetCountByCriteriaAsync(
-                ada => ada.DetailId == faccountId, null);
+                ada => ada.DetailId == faccountId);
             return (relatedAccounts > 0);
         }
 

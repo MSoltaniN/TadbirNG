@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SPPC.Framework.Common;
+using SPPC.Framework.Extensions;
 using SPPC.Framework.Mapper;
 using SPPC.Framework.Presentation;
 using SPPC.Tadbir.Domain;
@@ -44,11 +45,10 @@ namespace SPPC.Tadbir.Persistence
         {
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
             var fiscalPeriods = await repository
-                .GetByCriteriaAsync(
-                    fp => fp.CompanyId == companyId,
-                    gridOptions);
+                .GetByCriteriaAsync(fp => fp.CompanyId == companyId);
             return fiscalPeriods
                 .Select(item => Mapper.Map<FiscalPeriodViewModel>(item))
+                .Apply(gridOptions)
                 .ToList();
         }
 
@@ -62,11 +62,11 @@ namespace SPPC.Tadbir.Persistence
         public async Task<int> GetCountAsync(int companyId, GridOptions gridOptions = null)
         {
             var repository = UnitOfWork.GetAsyncRepository<FiscalPeriod>();
-            var count = await repository
-                .GetCountByCriteriaAsync(
-                    fp => fp.CompanyId == companyId,
-                    gridOptions);
-            return count;
+            var items = await repository.GetByCriteriaAsync(fp => fp.CompanyId == companyId);
+            return items
+                .Select(fp => Mapper.Map<FiscalPeriodViewModel>(fp))
+                .Apply(gridOptions, false)
+                .Count();
         }
 
         /// <summary>
