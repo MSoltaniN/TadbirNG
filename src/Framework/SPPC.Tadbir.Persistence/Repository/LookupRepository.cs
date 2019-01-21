@@ -186,7 +186,7 @@ namespace SPPC.Tadbir.Persistence
                     role =>
                     {
                         var roleBranchesModel = relatedRepository.GetByCriteria(
-                            rb => rb.RoleId == role.Id, null, rb => rb.Branch);
+                            rb => rb.RoleId == role.Id, rb => rb.Branch);
                         companies.AddRange(
                             roleBranchesModel
                                 .Select(rb => rb.Branch.CompanyId));
@@ -230,7 +230,7 @@ namespace SPPC.Tadbir.Persistence
                     role =>
                     {
                         var rolePeriodsModel = relatedRepository.GetByCriteria(
-                            rfp => rfp.RoleId == role.Id, null, rfp => rfp.FiscalPeriod);
+                            rfp => rfp.RoleId == role.Id, rfp => rfp.FiscalPeriod);
                         fiscalPeriods.AddRange(
                             rolePeriodsModel
                                 .Select(rfp => rfp.FiscalPeriod)
@@ -271,7 +271,7 @@ namespace SPPC.Tadbir.Persistence
                     role =>
                     {
                         var roleBranchesModel = relatedRepository.GetByCriteria(
-                            rb => rb.RoleId == role.Id, null, rb => rb.Branch);
+                            rb => rb.RoleId == role.Id, rb => rb.Branch);
                         branches.AddRange(
                             roleBranchesModel
                                 .Select(rb => rb.Branch)

@@ -236,8 +236,8 @@ namespace SPPC.Tadbir.Persistence
         /// مقدار "نادرست" را برمی گرداند</returns>
         public async Task<bool> IsRelatedAccountAsync(int accountId)
         {
-            var accDetailrepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
-            int relatedDetails = await accDetailrepository.GetCountByCriteriaAsync(
+            var accDetailRepository = UnitOfWork.GetAsyncRepository<AccountDetailAccount>();
+            int relatedDetails = await accDetailRepository.GetCountByCriteriaAsync(
                 ada => ada.AccountId == accountId);
             var accCenterRepository = UnitOfWork.GetAsyncRepository<AccountCostCenter>();
             int relatedCenters = await accCenterRepository.GetCountByCriteriaAsync(
