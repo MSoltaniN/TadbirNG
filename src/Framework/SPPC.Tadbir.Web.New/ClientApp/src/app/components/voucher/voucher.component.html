@@ -50,8 +50,8 @@
 
       <grid-setting entityTypeName="Voucher"></grid-setting>
       <grid-filter *ngIf="this.grid.filterable" [parentComponent]="this" [showClearFilter]="this.grid.filter.filters.length"></grid-filter>
-      <button kendoButton (click)="showReport()" type="button" [icon]="'printer'"></button>
-      <button kendoButton (click)="showReportManagement()" type="button" [icon]="'template-manager'"></button>
+      <!-- <button kendoButton (click)="showReport()" disabled="disabled" type="button" [icon]="'printer'"></button> -->
+      <button kendoButton (click)="showReportManagement()" type="button" [icon]="'printer'"></button>
     </ng-template>
 
     <kendo-grid-checkbox-column showSelectAll="true" width="10"></kendo-grid-checkbox-column>

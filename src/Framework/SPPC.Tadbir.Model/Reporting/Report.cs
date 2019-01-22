@@ -13,6 +13,6 @@ namespace SPPC.Tadbir.Model.Reporting
         /// <summary>
         /// شناسه دیتابیسی شاخه والد این گزارش در ساختار درختی گزارشات
         /// </summary>
-        public int ParentId { get; set; }
+        public int? ParentId { get; set; }
     }
 }

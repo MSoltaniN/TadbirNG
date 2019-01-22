@@ -77,7 +77,11 @@
     "SaveAs":"SaveAs Report",
     "SaveIsOk":"Report saved successfully",
     "SaveAsIsOk":"Report copied successfully",
-    "Title" : "Report title"
+    "Title" : "Report title",
+    "DeleteReportConfirm": "are you sure to delete report {0}?",
+    "ReportDeleted":"Report deleted successfully",
+    "ReportNameIsReq":"Report name is required",
+    "ReportNameTooLong":"Report name is too long"
   },
   "Buttons": {
     "Ok": "Ok",

@@ -30,6 +30,7 @@ export class ReportParametersComponent implements OnInit {
 
   public showDialog(printInfo : PrintInfo)
   {   
+      this.active = true;
       //add sample parameters
       //TODO: get paramaters from service by reportId
       var paramsForm = new FormGroup({});
@@ -53,7 +54,7 @@ export class ReportParametersComponent implements OnInit {
       this.fieldArray = paramArrays;
       this.parameterForm = paramsForm;
       //show dialog
-      this.active = true;
+      
   }
 
   public cancelDialog()

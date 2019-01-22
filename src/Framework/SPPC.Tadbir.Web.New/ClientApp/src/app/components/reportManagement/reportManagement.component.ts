@@ -56,6 +56,10 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
   currentReportId : any;
   currentPrintInfo : PrintInfo;
   expandedKeys :any[] = [];
+  deleteConfirmMsg : string;
+  deleteConfirm:boolean = false;
+  deleteMsg :string;
+  disableButtons:boolean = false;
   viewer: any = new Stimulsoft.Viewer.StiViewer(null, 'StiViewer', false);
    
   private reportForm = new FormGroup({    
@@ -84,6 +88,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     this.innerWidth = window.innerWidth;
     this.innerHeight = window.screen.height;//window.innerHeight
     this.initViewer();
+    this.disableButtons = true;
   }
 
   onNodeClick(e :any)
@@ -92,7 +97,12 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     if(!data.isGroup)
     {      
       this.currentReportId = data.id;
+      this.deleteConfirmMsg = String.Format(this.getText("Report.DeleteReportConfirm"),data.caption);
+      this.disableButtons = false;
     }
+    else
+      this.disableButtons = true;
+
   }
 
   public showDialog()
@@ -231,6 +241,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     localReport.reportId = this.currentReportId;
     var localId = this.CurrentLanguage == 'fa' ? 2 : 1;
     localReport.localeId = localId;
+    localReport.caption = this.reportForm.controls.reportName.value;
 
     var url = ReportApi.Reports;
     this.reportingService.saveAsReport(url,localReport).subscribe((response: any) => {
@@ -267,6 +278,9 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
   public previewReport(params : ParameterInfo[])
   {
+    this.showReportViewer = true;
+    this.showReportDesigner = false;    
+
     var serviceUrl = environment.BaseUrl + "/" + this.currentPrintInfo.serviceUrl;    
     var filterExpression = this.createFilters(params);
     var sort = "";
@@ -286,19 +300,18 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
           rows: response.body, 
           fromDate: fdate,
           toDate: tdate
-        };
-        
-        this.showReportViewer = true;
-        this.showReportDesigner = false;        
+        };  
 
         this.reportViewer.showReportViewer(this.currentPrintInfo.template, reportData);  
       });      
   } 
 
-  public designReport()
+  designReport()
   {
     var url = String.Format(ReportApi.ReportDesign, this.currentReportId);
-
+    this.showReportViewer = false;
+    this.showReportDesigner = true;
+    
     this.reportingService.getAll(url).subscribe((res: Response) => {    
 
         var printInfo: PrintInfo = <any>res.body;
@@ -326,9 +339,7 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
 
         designer.renderHtml('designer');
 
-        this.showReportViewer = false;
-        this.showReportDesigner = true;
-        
+      
         var currentId = this.currentReportId;
         var service = this.reportingService;
         var localId = this.CurrentLanguage == 'fa' ? 2 : 1;
@@ -359,8 +370,50 @@ export class ReportManagementComponent extends DetailComponent implements OnInit
     
   }
 
-  public closeDialog()
+  deleteReport(deleteFlag : boolean)
+  {
+      this.deleteConfirm = false;
+      if(deleteFlag)
+      {
+          var reportId = this.currentReportId;
+          var url = String.Format(ReportApi.Report,reportId);
+
+          this.reportingService.deleteReport(url).subscribe((response: any) => {
+            this.showMessage(this.getText('Report.ReportDeleted'));
+            this.currentReportId = null;
+            this.disableButtons = true;
+            this.reportingService.getAll(ReportApi.ReportsHierarchy)
+            .subscribe((res: any) => {          
+                this.treeData = <Array<TreeItem>>res.body;                 
+            });               
+          }, (error => {
+            this.showMessage(error);
+          }));
+      }      
+  }
+
+  showDeleteConfirm()
+  {
+    this.deleteConfirm = true;
+  }
+
+  closeDialog()
   {
       this.active = false;
+  }
+
+  public iconClass(dataItem: any): any {
+    return {
+        'k-i-ascx': dataItem.isGroup == false,
+        'k-i-folder': dataItem.isGroup == true        
+    };
+  }
+
+  public setClass(dataItem: any): any {
+    return {
+        'rep-folder': dataItem.isGroup ,
+        'rep-system': !dataItem.isGroup && dataItem.isSystem,
+        'rep-user': !dataItem.isGroup && !dataItem.isSystem        
+    };
   }
 }
