@@ -41,6 +41,7 @@ namespace SPPC.Tadbir.Web.Api.Controllers
         {
             string localeCode = GetAcceptLanguages().Substring(0, 2);
             var report = await _repository.GetReportAsync(reportId, localeCode);
+            Localize(report);
             return JsonReadResult(report);
         }
 
@@ -238,6 +239,18 @@ namespace SPPC.Tadbir.Web.Api.Controllers
                 {
                     var keys = report.ResourceKeys.Split(',');
                     Array.ForEach(keys, key => report.ResourceMap.Add(key, _strings[key]));
+                }
+            }
+        }
+
+        private void Localize(PrintInfoViewModel report)
+        {
+            if (report != null)
+            {
+                foreach (var param in report.Parameters)
+                {
+                    param.CaptionKey = _strings[param.CaptionKey];
+                    param.DescriptionKey = _strings[param.DescriptionKey];
                 }
             }
         }

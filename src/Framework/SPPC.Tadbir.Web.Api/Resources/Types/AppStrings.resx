@@ -754,7 +754,7 @@
     <value>ردیف</value>
   </data>
   <data name="FromDate" xml:space="preserve">
-    <value>از تاریخ :</value>
+    <value>از تاریخ</value>
   </data>
   <data name="PgNumber" xml:space="preserve">
     <value>شماره  صفحه :</value>
@@ -766,7 +766,7 @@
     <value>جمع</value>
   </data>
   <data name="ToDate" xml:space="preserve">
-    <value>تا تاریخ :</value>
+    <value>تا تاریخ</value>
   </data>
   <data name="BaseData" xml:space="preserve">
     <value>اطلاعات پایه</value>
@@ -806,5 +806,11 @@
   </data>
   <data name="UserReport" xml:space="preserve">
     <value>گزارش کاربری</value>
+  </data>
+  <data name="FromDateDescription" xml:space="preserve">
+    <value>شروع محدوده تاریخی مورد استفاده در این گزارش</value>
+  </data>
+  <data name="ToDateDescription" xml:space="preserve">
+    <value>پایان محدوده تاریخی مورد استفاده در این گزارش</value>
   </data>
 </root>

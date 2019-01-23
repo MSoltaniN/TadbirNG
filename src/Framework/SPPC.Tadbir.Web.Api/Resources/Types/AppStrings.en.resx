@@ -754,7 +754,7 @@
     <value>Row no</value>
   </data>
   <data name="FromDate" xml:space="preserve">
-    <value>From Date:</value>
+    <value>From Date</value>
   </data>
   <data name="PgNumber" xml:space="preserve">
     <value>Page Number :</value>
@@ -766,7 +766,7 @@
     <value>Sum</value>
   </data>
   <data name="ToDate" xml:space="preserve">
-    <value>To Date:</value>
+    <value>To Date</value>
   </data>
   <data name="BaseData" xml:space="preserve">
     <value>Base data</value>
@@ -806,5 +806,11 @@
   </data>
   <data name="UserReport" xml:space="preserve">
     <value>User report</value>
+  </data>
+  <data name="FromDateDescription" xml:space="preserve">
+    <value>Start of date range used in this report</value>
+  </data>
+  <data name="ToDateDescription" xml:space="preserve">
+    <value>End of date range used in this report</value>
   </data>
 </root>
