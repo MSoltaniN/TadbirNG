@@ -806,6 +806,7 @@
   </data>
   <data name="AccountCollections" xml:space="preserve">
     <value>مجموعه حساب ها</value>
+  </data>
   <data name="CantModifySystemReport" xml:space="preserve">
     <value>گزارش مورد نظر سیستمی بوده و قابل ویرایش یا حذف نیست.</value>
   </data>

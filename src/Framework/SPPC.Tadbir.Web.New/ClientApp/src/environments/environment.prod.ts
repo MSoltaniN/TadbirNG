@@ -21,7 +21,8 @@ export const Metadatas = {
   Branch: 'branches',
   Company: 'companies',
   OperationLog: 'system/oplog',
-  AccountGroup: "accgroups"
+  AccountGroup: "accgroups",
+  AccountCollection: "acccollections"
 }
 
 
@@ -42,7 +43,8 @@ export const Entities = {
   Settings: "Settings",
   ViewRowPermission: "ViewRowPermission",
   OperationLog: "OperationLog",
-  AccountGroup: "AccountGroup"
+  AccountGroup: "AccountGroup",
+  AccountCollection: "AccountCollection"
 }
 
 export const ColumnVisibility =

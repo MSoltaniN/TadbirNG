@@ -82,7 +82,8 @@ namespace SPPC.Tadbir.Persistence.Repository
         /// <returns>تعداد حساب های تعریف شده در دوره مالی و شعبه مشخص شده</returns>
         public async Task<int> GetCountAsync(GridOptions gridOptions = null)
         {
-            return await _repository.GetCountAsync<Account>(ViewName.Account, gridOptions);
+            return await _repository.GetCountAsync<Account, AccountCollectionItemsViewModel>(
+                ViewName.Account, gridOptions);
         }
 
         /// <summary>

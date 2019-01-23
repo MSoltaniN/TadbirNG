@@ -246,7 +246,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     RelatedAccountsComponent,
     RelatedAccountsFormComponent,
     DialogComponent,
-    AccountCollectionComponent
+    AccountCollectionComponent,
     DialogComponent,    
     ReportParametersComponent
   ],
