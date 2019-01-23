@@ -801,4 +801,10 @@
   <data name="SourceReportIsRequired" xml:space="preserve">
     <value>گزارش مبدأ مشخص نشده است.</value>
   </data>
+  <data name="AccountCollection" xml:space="preserve">
+    <value>مجموعه حساب</value>
+  </data>
+  <data name="AccountCollections" xml:space="preserve">
+    <value>مجموعه حساب ها</value>
+  </data>
 </root>

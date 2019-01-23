@@ -32,8 +32,9 @@ export const Metadatas = {
   Branch: 'branches',
   Company: 'companies',
   OperationLog: 'system/oplog',
-  AccountGroup: "accgroups"
-}   
+  AccountGroup: "accgroups",
+  AccountCollection: "acccollections"
+}
 
 
 export const Entities = {
@@ -53,7 +54,8 @@ export const Entities = {
   Settings: "Settings",
   ViewRowPermission: "ViewRowPermission",
   OperationLog: "OperationLog",
-  AccountGroup: "AccountGroup"
+  AccountGroup: "AccountGroup",
+  AccountCollection: "AccountCollection"
 }
 
 export const ColumnVisibility =
@@ -68,12 +70,12 @@ export const ColumnVisibility =
 
 export const SessionKeys = {
   Menu: 'menu',
-  Profile : 'profile',
-  Setting: 'setting',  
+  Profile: 'profile',
+  Setting: 'setting',
   LastUserBranch: 'lastUserBranch',
   LastUserFpId: 'lastUserFpId',
   CurrentRoute: 'currentRoute',
-  CurrentSkin:'currentSkin'
+  CurrentSkin: 'currentSkin'
 }
 
 

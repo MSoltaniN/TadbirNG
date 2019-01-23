@@ -22,6 +22,12 @@ export enum AccountPermissions {
   All = 15
 }
 
+export enum AccountCollectionPermissions {
+  None = 0,
+  View = 1,
+  Create = 2
+}
+
 export enum DetailAccountPermissions {
   None = 0,
   View = 1,
@@ -187,6 +193,9 @@ export class Permissions {
     switch (entity.toLowerCase()) {
       case "account":
         id = <any>AccountPermissions[<any>premissionName];
+        break;
+      case "accountcollection":
+        id = <any>AccountCollectionPermissions[<any>premissionName];
         break;
       case "detailaccount":
         id = <any>DetailAccountPermissions[<any>premissionName];

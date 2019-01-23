@@ -189,6 +189,28 @@ namespace SPPC.Tadbir.Security
     }
 
     /// <summary>
+    /// فلگ های تعریف شده برای دسترسی های امنیتی به یک مجموعه حساب را تعریف می کند
+    /// </summary>
+    [Flags]
+    public enum AccountCollectionPermissions
+    {
+        /// <summary>
+        /// عدم دسترسی به مجموعه های حساب
+        /// </summary>
+        None = 0x0,
+
+        /// <summary>
+        /// دسترسی مشاهده مجموعه حساب
+        /// </summary>
+        View = 0x1,
+
+        /// <summary>
+        /// دسترسی ایجاد یک مجموعه حساب جدید
+        /// </summary>
+        Create = 0x2,
+    }
+
+    /// <summary>
     /// فلگ های تعریف شده برای دسترسی های امنیتی در مدیریت ارتباطات بین مولفه های بردار حساب را تعریف می کند
     /// </summary>
     [Flags]

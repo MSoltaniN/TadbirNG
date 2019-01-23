@@ -64,6 +64,9 @@ export class BreadCumbComponent implements OnInit {
       case "accountgroup":
         this.getText("Entity.AccountGroup");
         break;
+      case "accountcollection":
+        this.getText("Entity.AccountCollection");
+        break;
     }
 
   }

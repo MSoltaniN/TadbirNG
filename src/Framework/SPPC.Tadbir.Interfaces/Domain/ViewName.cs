@@ -71,5 +71,10 @@ namespace SPPC.Tadbir.Domain
         /// نمای اطلاعاتی گروه های حساب
         /// </summary>
         public const int AccountGroup = 12;
+
+        /// <summary>
+        /// نمای اطلاعاتی مجموعه حساب ها
+        /// </summary>
+        public const int AccountCollectionAccount = 14;
     }
 }

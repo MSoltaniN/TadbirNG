@@ -67,9 +67,9 @@
   },
   "Report": {
     "ReportViewer": "نمایشگر گزارش",
-    "ReportDesign" : "طراحی گزارش",
-    "Reports" : "گزارشات",
-    "ReportManagement" : "مدیریت گزارشات"
+    "ReportDesign": "طراحی گزارش",
+    "Reports": "گزارشات",
+    "ReportManagement": "مدیریت گزارشات"
   },
   "Buttons": {
     "Ok": "تایید",
@@ -111,7 +111,8 @@
     "ViewRowPermission": "دسترسی به سطرهای اطلاعاتی",
     "OperationLog": "لاگ های عملیاتی",
     "ViewTreeConfig": "تنظیمات ساختار درختی",
-    "AccountGroup": "گروه حساب"
+    "AccountGroup": "گروه حساب",
+    "AccountCollection": "مجموعه حساب"
   },
   "BranchScope": {
     "AllBranches": "کلیه شعب",
@@ -137,6 +138,12 @@
     "TafziliToUp": "حساب تفصیلی سطح",
     "BranchScope": "دسترسی شعبه",
     "AccountGroup": "گروه حساب"
+  },
+  "AccountCollection": {
+    "Category": "مجموعه حساب ها",
+    "Account": "حساب ها",
+    "Name": "نام حساب",
+    "FullCode": "کد حساب"
   },
   "Settings": {
     "AccountRelation": {

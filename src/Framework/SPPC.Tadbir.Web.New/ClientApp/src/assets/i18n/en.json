@@ -113,7 +113,8 @@
     "Unsuccessful": "Unsuccessful",
     "Successful": "Successful",
     "ViewTreeConfig": "View Tree Config",
-    "AccountGroup": "Account Group"
+    "AccountGroup": "Account Group",
+    "AccountCollection": "Account Collection"
   },
   "BranchScope": {
     "AllBranches": "All Branches",
@@ -139,6 +140,12 @@
     "TafziliToUp": "Floating Account",
     "BranchScope": "Branch Scope",
     "AccountGroup": "Account Group"
+  },
+  "AccountCollection": {
+    "Category": "Account Collection Categories",
+    "Account": "Accounts",
+    "Name": "Name",
+    "FullCode": "Full Code"
   },
   "Settings": {
     "AccountRelation": {

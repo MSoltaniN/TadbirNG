@@ -99,7 +99,7 @@ import { HotkeyModule } from 'angular2-hotkeys';
 import {
   AccountService, VoucherLineService, FiscalPeriodService, GridMessageService, CompanyService, UserService, RoleService, DetailAccountService, CostCenterService,
   BranchService, VoucherService, LookupService, FullAccountService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService, FullCodeService,
-  OperationLogService, DashboardService, AccountGroupsService
+  OperationLogService, DashboardService, AccountGroupsService, AccountCollectionService
 } from './service/index';
 import { SppcGridColumn } from "./directive/grid/sppc-grid-column";
 import { SppcGridReorder } from "./directive/grid/sppc-grid-reorder";
@@ -148,7 +148,7 @@ import { ReportViewerComponent } from './components/reportViewer/reportViewer.co
 import { ReportBaseService } from './class/report.base.service';
 import { ReportingService } from './service/report/reporting.service';
 import { ReportManagementComponent } from "./components/reportManagement/reportManagement.component";
-
+import { AccountCollectionComponent } from './components/accountCollection/accountCollection.component';
 
 
 
@@ -243,7 +243,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReportManagementComponent,
     RelatedAccountsComponent,
     RelatedAccountsFormComponent,
-    DialogComponent
+    DialogComponent,
+    AccountCollectionComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -299,13 +300,14 @@ export function HttpLoaderFactory(http: HttpClient) {
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'account-groups', component: AccountGroupsComponent, canActivate: [AuthGuard] },
       { path: 'accounts/group/:groupid', component: RelatedAccountsComponent, canActivate: [AuthGuard] },
+      { path: 'account-collection', component: AccountCollectionComponent, canActivate: [AuthGuard] },
       //{ path: 'inlinetest', component: InlineTestComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: 'dashboard' }
     ])
   ],
   providers: [AccountService, VoucherLineService, FiscalPeriodService, BranchService, CompanyService, VoucherService, LookupService, MetaDataService, SppcLoadingService,
     UserService, RoleService, FullAccountService, DetailAccountService, CostCenterService, ProjectService, AccountRelationsService, SettingService, ViewRowPermissionService,
-    FullCodeService, OperationLogService, DashboardService, ReportingService, AccountGroupsService,
+    FullCodeService, OperationLogService, DashboardService, ReportingService, AccountGroupsService, AccountCollectionService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: ErrorHandler, useClass: GeneralErrorHandler },
     //{
